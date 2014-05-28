@@ -46,7 +46,7 @@ CTreeViewEx::CTreeViewEx(void)
     m_bEditing = FALSE;
     m_hCurMoveDown = AfxGetApp()->LoadCursor(MAKEINTRESOURCE(IDC_CURMDOWN));
     m_hCurMoveUp = AfxGetApp()->LoadCursor(MAKEINTRESOURCE(IDC_CURMUP));
-    m_hCurNoDrop = ::LoadCursor(NULL, MAKEINTRESOURCE(IDC_NO));
+    m_hCurNoDrop = ::LoadCursor(nullptr, MAKEINTRESOURCE(IDC_NO));
     m_hOrigCursor = ::GetCursor();
     m_omBkColor = def_COLOR_TREE_BKG;
     m_omTextColor = def_COLOR_TREE_TEXT;
@@ -200,7 +200,7 @@ void CTreeViewEx::OnLButtonDown(UINT unFlag, CPoint point)
     UINT unHitTestFlags = 0;
     HTREEITEM hItem = GetTreeCtrl().HitTest(point, &unHitTestFlags);
 
-    if((hItem != NULL) && (TVHT_ONITEMSTATEICON & unHitTestFlags))
+    if((hItem != nullptr) && (TVHT_ONITEMSTATEICON & unHitTestFlags))
     {
         BOOL bCheck = bIsItemChecked(hItem);
         vSetCheck(hItem, !bCheck);
@@ -224,7 +224,7 @@ Modifications  :
 ******************************************************************************/
 BOOL CTreeViewEx::bIsItemChecked(HTREEITEM hItem)
 {
-    if(hItem == NULL)
+    if(hItem == nullptr)
     {
         return FALSE;
     }
@@ -246,7 +246,7 @@ Modifications  :
 ******************************************************************************/
 void CTreeViewEx::vSetCheck(HTREEITEM hItem, BOOL bCheck)
 {
-    if (hItem != NULL)
+    if (hItem != nullptr)
     {
         int nState = (bCheck == TRUE) ? 2 : 1;
         GetTreeCtrl().SetItemState( hItem, INDEXTOSTATEIMAGEMASK(nState), TVIS_STATEIMAGEMASK );
@@ -268,7 +268,7 @@ Modifications  :
 ******************************************************************************/
 void CTreeViewEx::vSetCheckChildren(HTREEITEM hItem, BOOL bCheck)
 {
-    if(hItem == NULL)
+    if(hItem == nullptr)
     {
         return;
     }
@@ -283,7 +283,7 @@ void CTreeViewEx::vSetCheckChildren(HTREEITEM hItem, BOOL bCheck)
     if ( omTreeCtrl.ItemHasChildren(hItem))
     {
         HTREEITEM htiChild = omTreeCtrl.GetChildItem (hItem);
-        if (htiChild == NULL)
+        if (htiChild == nullptr)
         {
             return;
         }
@@ -314,7 +314,7 @@ Modifications  :
 ******************************************************************************/
 void CTreeViewEx::vSetCheckParent(HTREEITEM hItem)
 {
-    if(hItem == NULL)
+    if(hItem == nullptr)
     {
         return;
     }
@@ -400,7 +400,7 @@ BOOL CTreeViewEx::IsItemCanDropOn(HTREEITEM hSource, HTREEITEM hTarget)
 {
     CTreeCtrl& omTreeCtrl = GetTreeCtrl();
 
-    if(hSource != NULL || hTarget != NULL)
+    if(hSource != nullptr || hTarget != nullptr)
     {
         if(omTreeCtrl.GetParentItem(hSource) == omTreeCtrl.GetParentItem(hTarget))
         {
@@ -460,14 +460,14 @@ void CTreeViewEx::DragEnd(VOID)
     eTYPE_DROPPING eDropping;
     HTREEITEM hDroppingItem = GetDropItem(eDropping);
 
-    if (hDroppingItem == NULL)
+    if (hDroppingItem == nullptr)
     {
         return;
     }
     CTreeCtrl& omTempTreeCtrl = GetTreeCtrl();
     //UINT unFirstIndex = unGetIndex(m_hDraggingItemgedItem);
     HTREEITEM hInsertAfter = DragMoveItem(m_hDraggingItemgedItem, hDroppingItem, eDropping);
-    if(hInsertAfter == NULL)
+    if(hInsertAfter == nullptr)
     {
         return;
     }
@@ -511,7 +511,7 @@ int CTreeViewEx::unGetIndex(HTREEITEM hTreeItem)
     {
         HTREEITEM hChildItemItem = omTempTreeCtrl.GetChildItem(hParent);
         int i = -1;
-        while (hChildItemItem != NULL)
+        while (hChildItemItem != nullptr)
         {
             i++;
             if(hChildItemItem == hTreeItem)
@@ -541,22 +541,22 @@ HTREEITEM CTreeViewEx::DragMoveItem(HTREEITEM hDraggingItem, HTREEITEM hDropping
 
     if(eDropping == NO_DROPPING)
     {
-        return NULL;
+        return nullptr;
     }
 
     if(bAnscestor(hDraggingItem, hDroppingItem) || !IsItemCanDropOn(hDraggingItem, hDroppingItem))
     {
-        return NULL;
+        return nullptr;
     }
 
     if(bSuccessor(hDraggingItem, hDroppingItem) && (eDropping == DROPPING_ABOVE))
     {
-        return NULL;
+        return nullptr;
     }
 
     if(hDraggingItem == hDroppingItem)
     {
-        return NULL;
+        return nullptr;
     }
 
     if(!hDroppingItem && eDropping == DROPPING_BELOW)
@@ -608,7 +608,7 @@ HTREEITEM CTreeViewEx::CopyTotalBranch( HTREEITEM hBranchItem, HTREEITEM hNewPar
     CTreeCtrl& omTreeCtrl = GetTreeCtrl();
     HTREEITEM hNewItem = CopyTreeItem( hBranchItem, hNewParentItem, hAfterItem );
     hChildItem = omTreeCtrl.GetChildItem(hBranchItem);
-    while( hChildItem != NULL)
+    while( hChildItem != nullptr)
     {
         CopyTotalBranch(hChildItem, hNewItem, TVI_LAST);
         hChildItem = omTreeCtrl.GetNextSiblingItem( hChildItem );
@@ -879,7 +879,7 @@ CTreeViewEx::eTYPE_DROPPING CTreeViewEx::GetDroppingPosition(UINT flags)
     return eDroppingPos;
 }
 
-//If Image List Is NULL the Image List will be removed.
+//If Image List Is nullptr the Image List will be removed.
 /******************************************************************************
 Function Name  :  SetImageList
 Input(s)       :
@@ -896,17 +896,17 @@ INT CTreeViewEx::SetImageList(CImageList* pomImageListNormal, CImageList* pomIma
     CImageList* pomOldImageList;
 
     pomOldImageList = GetTreeCtrl().SetImageList(pomImageListNormal, TVSIL_NORMAL);
-    if( pomOldImageList != NULL )
+    if( pomOldImageList != nullptr )
     {
         delete pomOldImageList;
     }
 
-    if(pomImageListNormal != NULL)
+    if(pomImageListNormal != nullptr)
     {
         pomOldImageList = GetTreeCtrl().SetImageList(pomImageListState, TVSIL_STATE);
     }
 
-    if( pomOldImageList != NULL )
+    if( pomOldImageList != nullptr )
     {
         delete pomOldImageList;
     }
@@ -936,11 +936,11 @@ BOOL CTreeViewEx::PreTranslateMessage(MSG* pMsg)
     if( pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE && m_bDragging)
     {
         m_bDragging = FALSE;
-        CImageList::DragLeave(NULL);
+        CImageList::DragLeave(nullptr);
         CImageList::EndDrag();
         ReleaseCapture();
         GetTreeCtrl().SetInsertMark(0, 0);
-        GetTreeCtrl().SelectDropTarget(NULL);
+        GetTreeCtrl().SelectDropTarget(nullptr);
         return TRUE;        // DO NOT process further
     }
     if(pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_F2 )
@@ -1054,7 +1054,7 @@ void CTreeViewEx::vCollapseTreeBranch( HTREEITEM hTreeItem)
     {
         omTreeCtrl.Expand( hTreeItem, TVE_COLLAPSE );
         hTreeItem = omTreeCtrl.GetChildItem( hTreeItem );
-        while(hTreeItem != NULL)
+        while(hTreeItem != nullptr)
         {
             vCollapseTreeBranch( hTreeItem );
             hTreeItem = omTreeCtrl.GetNextSiblingItem( hTreeItem );
@@ -1077,7 +1077,7 @@ void CTreeViewEx::vCollapseFull()
 {
     CTreeCtrl& omTreeCtrl = GetTreeCtrl();
     HTREEITEM hTreeItem = omTreeCtrl.GetRootItem();
-    while(hTreeItem != NULL)
+    while(hTreeItem != nullptr)
     {
         vCollapseTreeBranch( hTreeItem );
         hTreeItem = omTreeCtrl.GetNextSiblingItem( hTreeItem );
@@ -1102,7 +1102,7 @@ void CTreeViewEx::vExpandTreeBranch( HTREEITEM hTreeItem)
     {
         omTreeCtrl.Expand( hTreeItem, TVE_EXPAND );
         hTreeItem = omTreeCtrl.GetChildItem( hTreeItem );
-        while(hTreeItem != NULL)
+        while(hTreeItem != nullptr)
         {
             vExpandTreeBranch( hTreeItem );
             hTreeItem = omTreeCtrl.GetNextSiblingItem( hTreeItem );
@@ -1125,7 +1125,7 @@ void CTreeViewEx::vExpandFull()
 {
     CTreeCtrl& omTreeCtrl = GetTreeCtrl();
     HTREEITEM hTreeItem = omTreeCtrl.GetRootItem();
-    while(hTreeItem != NULL)
+    while(hTreeItem != nullptr)
     {
         vExpandTreeBranch( hTreeItem );
         hTreeItem = omTreeCtrl.GetNextSiblingItem( hTreeItem );
@@ -1190,7 +1190,7 @@ void CTreeViewEx::vDeleteChildItems(HTREEITEM hItem)
         HTREEITEM hNextItem;
         HTREEITEM hChildItemItem = omTempTreeCtrl.GetChildItem(hItem);
 
-        while (hChildItemItem != NULL)
+        while (hChildItemItem != nullptr)
         {
             hNextItem = omTempTreeCtrl.GetNextItem(hChildItemItem, TVGN_NEXT);
             omTempTreeCtrl.DeleteItem(hChildItemItem);
@@ -1242,7 +1242,7 @@ void CTreeViewEx::OnTvnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 {
     LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
     CWnd* omParentWnd= GetEditorWindow();
-    if(omParentWnd != NULL)
+    if(omParentWnd != nullptr)
     {
         omParentWnd->SendMessage(WM_TS_SELCHANGED, (WPARAM)pNMTreeView , 0);
     }
@@ -1300,7 +1300,7 @@ void CTreeViewEx::OnTvnSelchanging(NMHDR* pNMHDR, LRESULT* pResult)
 {
     LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
     CWnd* omParentWnd= GetEditorWindow();
-    if(omParentWnd != NULL)
+    if(omParentWnd != nullptr)
     {
         *pResult = omParentWnd->SendMessage(WM_TS_SELCHANGING, (WPARAM)pNMTreeView , 0);
     }
@@ -1320,15 +1320,15 @@ Modifications  :
 CTSEditorChildFrame* CTreeViewEx::GetEditorWindow()
 {
     CWnd* wndParent;
-    if((wndParent = GetParent())!= NULL)
+    if((wndParent = GetParent())!= nullptr)
     {
         wndParent = wndParent->GetParent();
-        if(wndParent != NULL)
+        if(wndParent != nullptr)
         {
             return ((CTSEditorChildFrame*)wndParent);
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 /******************************************************************************
@@ -1373,7 +1373,7 @@ void CTreeViewEx::OnTvnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
     LPTSTR pszText = pTVDispInfo->item.pszText;
     *pResult = ( pszText && (*pszText != _T('\0')));
     CString omstrItemNewName(pszText);
-    GetEditorWindow()->nChangeEntityTitle(NULL, omstrItemNewName);
+    GetEditorWindow()->nChangeEntityTitle(nullptr, omstrItemNewName);
     m_bEditing = FALSE;
 }
 

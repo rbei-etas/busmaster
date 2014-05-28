@@ -38,7 +38,7 @@
 
 #define CALLBACK_TYPE
 #define DRV_LOCK_TYPE pthread_mutex_t
-#define DRV_LOCK_INIT(x) pthread_mutex_init((x), NULL);
+#define DRV_LOCK_INIT(x) pthread_mutex_init((x), nullptr);
 #define DRV_LOCK_DESTROY(x) pthread_mutex_destroy((x))
 #define DRV_LOCK_ENTER(x) pthread_mutex_lock((x))
 #define DRV_LOCK_LEAVE(x) pthread_mutex_unlock((x))

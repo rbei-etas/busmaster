@@ -101,7 +101,7 @@ CCAN_ICS_neoVIApp theApp;
 /**
  * CCAN_ICS_neoVIApp initialization
  */
-static HINSTANCE ghLangInst=NULL;
+static HINSTANCE ghLangInst=nullptr;
 
 BOOL CCAN_ICS_neoVIApp::InitInstance()
 {
@@ -158,12 +158,12 @@ struct tagClientBufMap
     tagClientBufMap()
     {
         dwClientID = 0;
-        hClientHandle = NULL;
+        hClientHandle = 0;
         unBufCount = 0;
         memset(pacClientName, 0, sizeof (char) * MAX_PATH);
         for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
-            pClientBuf[i] = NULL;
+            pClientBuf[i] = nullptr;
         }
 
     }
@@ -210,10 +210,10 @@ static UINT64 sg_TimeStamp = 0;
  */
 static LARGE_INTEGER sg_QueryTickCount;
 static LARGE_INTEGER sg_lnFrequency;
-static HWND sg_hOwnerWnd = NULL;
+static HWND sg_hOwnerWnd = nullptr;
 
 //static CBaseCANBufFSE* sg_pCanBufObj[MAX_BUFF_ALLOWED];
-static Base_WrapperErrorLogger* sg_pIlog   = NULL;
+static Base_WrapperErrorLogger* sg_pIlog   = nullptr;
 
 static CPARAM_THREADPROC sg_sParmRThread;
 static s_STATUSMSG sg_sCurrStatus;
@@ -256,9 +256,9 @@ std::string sg_acErrStr = "";
 static UINT sg_unClientCnt = 0;
 static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
 static UINT sg_unCntrlrInitialised = 0;
-static HMODULE sg_hDll = NULL;
-static HANDLE m_hDataEvent = NULL;
-static HANDLE sg_hCntrlStateChangeEvent = NULL;
+static HMODULE sg_hDll = nullptr;
+static HANDLE m_hDataEvent = nullptr;
+static HANDLE sg_hCntrlStateChangeEvent = nullptr;
 static DWORD  sg_dwClientID = 0;
 
 // Current buffer size
@@ -309,7 +309,7 @@ static int m_anhObject[MAX_DEVICES][NETWORKS_COUNT+1] = {0};
 static int m_anhWriteObject[MAX_DEVICES] = {0};
 static char m_omErrStr[MAX_STRING] = {0};
 static BOOL m_bInSimMode = FALSE;
-//static CWinThread* m_pomDatInd = NULL;
+//static CWinThread* m_pomDatInd = nullptr;
 static int s_anErrorCodes[TOTAL_ERROR] = {0};
 
 static INT sg_anSelectedItems[CHANNEL_ALLOWED];
@@ -409,7 +409,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -432,7 +432,7 @@ public:
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
 };
-static CDIL_CAN_ICSNeoVI* sg_pouDIL_CAN_ICSNeoVI = NULL;
+static CDIL_CAN_ICSNeoVI* sg_pouDIL_CAN_ICSNeoVI = nullptr;
 
 /**
  * \return S_OK for success, S_FALSE for failure
@@ -442,9 +442,9 @@ static CDIL_CAN_ICSNeoVI* sg_pouDIL_CAN_ICSNeoVI = NULL;
 USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 {
     HRESULT hResult = S_OK;
-    if ( NULL == sg_pouDIL_CAN_ICSNeoVI )
+    if ( nullptr == sg_pouDIL_CAN_ICSNeoVI )
     {
-        if ((sg_pouDIL_CAN_ICSNeoVI = new CDIL_CAN_ICSNeoVI) == NULL)
+        if ((sg_pouDIL_CAN_ICSNeoVI = new CDIL_CAN_ICSNeoVI) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -464,11 +464,11 @@ static int nCreateAndSetReadIndicationEvent(HANDLE& hReadEvent)
     int nReturn = -1;
 
     // Create a event
-    m_hDataEvent = CreateEvent( NULL,           // lpEventAttributes
+    m_hDataEvent = CreateEvent( nullptr,           // lpEventAttributes
                                 FALSE,          // bManualReset
                                 FALSE,          // bInitialState
                                 STR_EMPTY);     // Name
-    if (m_hDataEvent != NULL)
+    if (m_hDataEvent != nullptr)
     {
         s_DatIndThread.m_hHandle = m_hDataEvent;
         hReadEvent = m_hDataEvent;
@@ -659,11 +659,11 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
 {
     BOOL bReturn = FALSE;
     // If successful
-    if (pControllerDetails != NULL)
+    if (pControllerDetails != nullptr)
     {
         for( int nIndex = 0; nIndex < defNO_OF_CHANNELS; nIndex++ )
         {
-            char* pcStopStr = NULL;
+            char* pcStopStr = nullptr;
             CChannel& odChannel = sg_odHardwareNetwork.m_aodChannels[ nIndex ];
 
             // Get Warning Limit
@@ -1021,7 +1021,7 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
         icsSpyMessage& CurrSpyMsg = s_asSpyMsg[s_CurrIndex];
 
         //sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)(nCurrChannel + 1);
-        if ( m_anhObject[nChannelIndex][CurrSpyMsg.NetworkID+1] != NULL )
+        if ( m_anhObject[nChannelIndex][CurrSpyMsg.NetworkID+1] != 0 )
         {
             bChannelCnfgrd = true; // Set channel configured flag to true.
             sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel = (UCHAR)(m_anhObject[nChannelIndex][CurrSpyMsg.NetworkID+1]  );
@@ -1102,17 +1102,17 @@ static BOOL bRemoveClient(DWORD dwClientId)
         if (bGetClientObj(dwClientId, unClientIndex))
         {
             //clear the client first
-            if (sg_asClientToBufMap[unClientIndex].hClientHandle != NULL)
+            if (sg_asClientToBufMap[unClientIndex].hClientHandle != 0)
             {
                 HRESULT hResult = S_OK;//(*pfCAN_RemoveClient)(sg_asClientToBufMap[unClientIndex].hClientHandle);
                 if (hResult == S_OK)
                 {
                     sg_asClientToBufMap[unClientIndex].dwClientID = 0;
-                    sg_asClientToBufMap[unClientIndex].hClientHandle = NULL;
+                    sg_asClientToBufMap[unClientIndex].hClientHandle = 0;
                     memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                     for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                     {
-                        sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                        sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                     }
                     sg_asClientToBufMap[unClientIndex].unBufCount = 0;
                     bResult = TRUE;
@@ -1128,7 +1128,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
                 memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                 for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                 {
-                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                 }
                 sg_asClientToBufMap[unClientIndex].unBufCount = 0;
                 bResult = TRUE;
@@ -1322,7 +1322,7 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
 
     // Close the notification event for startup
     CloseHandle(pThreadParam->m_hActionEvent);
-    pThreadParam->m_hActionEvent = NULL;
+    pThreadParam->m_hActionEvent = nullptr;
 
     return 0;
 }
@@ -1333,12 +1333,12 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
 static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int& nChannels, const int nDevID)
 {
     int nResult = 0;
-    int hObject = NULL;
+    int hObject = 0;
     char acTempStr[512] = {'\0'};
     char acFirmware[128] = {"X.X"};
 
-    nResult = (*icsneoOpenNeoDevice)(&sg_ndNeoToOpen[nDevID], &hObject, NULL, 1, 0);
-    if (nResult == NEOVI_OK && hObject!=NULL)
+    nResult = (*icsneoOpenNeoDevice)(&sg_ndNeoToOpen[nDevID], &hObject, nullptr, 1, 0);
+    if (nResult == NEOVI_OK && hObject != 0)
     {
         stAPIFirmwareInfo objstFWInfo;
         int nErrors = 0;
@@ -1385,8 +1385,8 @@ static int nCreateSingleHardwareNetwork()
     s_DatIndThread.m_bIsConnected = FALSE;
     s_DatIndThread.m_unChannels = 1;
 
-    int hObject = NULL;
-    int nResult = (*icsneoOpenNeoDevice)(&sg_ndNeoToOpen[0], &hObject, NULL, 1, 0);
+    int hObject = 0;
+    int nResult = (*icsneoOpenNeoDevice)(&sg_ndNeoToOpen[0], &hObject, nullptr, 1, 0);
 
     //If connection fails
     if ( nResult != NEOVI_OK)
@@ -1481,11 +1481,11 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
             {
                 int narrVCAN3NtwID[] = {NETID_HSCAN, NETID_MSCAN};
                 int nCntNtwIDs = 2;
-                int hObject = NULL;
+                int hObject = 0;
                 int nResult = 0;
 
-                nResult = (*icsneoOpenNeoDevice)(pNeoDevice, &hObject, NULL, 1, 0);
-                if (nResult == NEOVI_OK && hObject!=NULL)
+                nResult = (*icsneoOpenNeoDevice)(pNeoDevice, &hObject, nullptr, 1, 0);
+                if (nResult == NEOVI_OK && hObject!=0)
                 {
                     stAPIFirmwareInfo objstFWInfo;
                     (void) (*icsneoGetHWFirmwareInfo)(hObject, &objstFWInfo);
@@ -1636,7 +1636,7 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt = 0)
 
     if( nDevices == 0 )
     {
-        MessageBox(NULL,m_omErrStr, NULL, MB_OK | MB_ICONERROR);
+        MessageBox(nullptr,m_omErrStr, nullptr, MB_OK | MB_ICONERROR);
     }
     // Available hardware is lesser then the supported channels
     else
@@ -1969,7 +1969,7 @@ static void vMapDeviceChannelIndex()
     {
         for (UINT j = 1; j <= NETWORKS_COUNT; j++)
         {
-            m_anhObject[i][j] = NULL;    //Reset Channel Index
+            m_anhObject[i][j] = 0;    //Reset Channel Index
         }
     }
 
@@ -1991,117 +1991,117 @@ static void vMapDeviceChannelIndex()
 HRESULT GetICS_neoVI_APIFuncPtrs(void)
 {
     LRESULT unResult = 0;
-    if (sg_hDll != NULL)
+    if (sg_hDll != nullptr)
     {
         //Check1
         icsneoFindNeoDevices = (FINDNEODEVICES) GetProcAddress(sg_hDll, "icsneoFindNeoDevices");
-        if (NULL == icsneoFindNeoDevices)
+        if (nullptr == icsneoFindNeoDevices)
         {
             unResult = unResult | (1<<0);
         }
         //Check2
         icsneoOpenNeoDevice = (OPENNEODEVICE) GetProcAddress(sg_hDll, "icsneoOpenNeoDevice");
-        if (NULL == icsneoOpenNeoDevice)
+        if (nullptr == icsneoOpenNeoDevice)
         {
             unResult = unResult | (1<<1);
         }
         //Check3
         icsneoClosePort  = (CLOSEPORT) GetProcAddress(sg_hDll, "icsneoClosePort");
-        if (NULL == icsneoClosePort)
+        if (nullptr == icsneoClosePort)
         {
             unResult = unResult | (1<<2);
         }
         //Check4
         icsneoFreeObject = (FREEOBJECT) GetProcAddress(sg_hDll, "icsneoFreeObject");
-        if (NULL == icsneoFreeObject)
+        if (nullptr == icsneoFreeObject)
         {
             unResult = unResult | (1<<3);
         }
 
         //Check5
         icsneoGetMessages = (GETMESSAGES) GetProcAddress(sg_hDll, "icsneoGetMessages");
-        if (NULL == icsneoGetMessages)
+        if (nullptr == icsneoGetMessages)
         {
             unResult = unResult | (1<<4);
         }
         //Check6
         icsneoTxMessages = (TXMESSAGES) GetProcAddress(sg_hDll, "icsneoTxMessages");
-        if (NULL == icsneoTxMessages)
+        if (nullptr == icsneoTxMessages)
         {
             unResult = unResult | (1<<5);
         }
         //Check7
         icsneoWaitForRxMessagesWithTimeOut = (WAITFORRXMSGS) GetProcAddress(sg_hDll, "icsneoWaitForRxMessagesWithTimeOut");
-        if (NULL == icsneoWaitForRxMessagesWithTimeOut)
+        if (nullptr == icsneoWaitForRxMessagesWithTimeOut)
         {
             unResult = unResult | (1<<6);
         }
         //Check8
         icsneoEnableNetworkRXQueue = (ENABLERXQUEUE) GetProcAddress(sg_hDll, "icsneoEnableNetworkRXQueue");
-        if (NULL == icsneoEnableNetworkRXQueue)
+        if (nullptr == icsneoEnableNetworkRXQueue)
         {
             unResult = unResult | (1<<7);
         }
         //Check9
         icsneoGetTimeStampForMsg = (GETTSFORMSG) GetProcAddress(sg_hDll, "icsneoGetTimeStampForMsg");
-        if (NULL == icsneoGetTimeStampForMsg)
+        if (nullptr == icsneoGetTimeStampForMsg)
         {
             unResult = unResult | (1<<8);
         }
 
         //Check10
         icsneoGetConfiguration  = (GETCONFIG) GetProcAddress(sg_hDll, "icsneoGetConfiguration");
-        if (NULL == icsneoGetConfiguration)
+        if (nullptr == icsneoGetConfiguration)
         {
             unResult = unResult | (1<<9);
         }
         //Check11
         icsneoSendConfiguration  = (SENDCONFIG) GetProcAddress(sg_hDll, "icsneoSendConfiguration");
-        if (NULL == icsneoSendConfiguration)
+        if (nullptr == icsneoSendConfiguration)
         {
             unResult = unResult | (1<<10);
         }
         //Check12
         icsneoSetBitRate = (SETBITRATE) GetProcAddress(sg_hDll, "icsneoSetBitRate");
-        if (NULL == icsneoSetBitRate)
+        if (nullptr == icsneoSetBitRate)
         {
             unResult = unResult | (1<<11);
         }
 
         //Check13
         icsneoGetLastAPIError  = (GETLASTAPIERROR) GetProcAddress(sg_hDll, "icsneoGetLastAPIError");
-        if (NULL == icsneoGetLastAPIError)
+        if (nullptr == icsneoGetLastAPIError)
         {
             unResult = unResult | (1<<12);
         }
         //Check14
         icsneoGetErrorMessages  = (GETERRMSGS) GetProcAddress(sg_hDll, "icsneoGetErrorMessages");
-        if (NULL == icsneoGetErrorMessages)
+        if (nullptr == icsneoGetErrorMessages)
         {
             unResult = unResult | (1<<13);
         }
         //Check15
         icsneoGetErrorInfo = (GETERRORINFO) GetProcAddress(sg_hDll, "icsneoGetErrorInfo");
-        if (NULL == icsneoGetErrorInfo)
+        if (nullptr == icsneoGetErrorInfo)
         {
             unResult = unResult | (1<<14);
         }
 
         //Check16
         icsneoGetDLLVersion  = (GETDLLVERSION) GetProcAddress(sg_hDll, "icsneoGetDLLVersion");
-        if (NULL == icsneoGetDLLVersion)
+        if (nullptr == icsneoGetDLLVersion)
         {
             unResult = unResult | (1<<15);
         }
         //Check17
         icsneoGetHardwareLicense = (GETHWLICENSE) GetProcAddress(sg_hDll, "icsneoGetHardwareLicense");
-        if (NULL == icsneoGetHardwareLicense)
+        if (nullptr == icsneoGetHardwareLicense)
         {
             unResult = unResult | (1<<16);
         }
         //Check18
         icsneoGetHWFirmwareInfo = (GETHWFIRMWAREINFO) GetProcAddress(sg_hDll, "icsneoGetHWFirmwareInfo");
-        if (NULL == icsneoGetHWFirmwareInfo)
+        if (nullptr == icsneoGetHWFirmwareInfo)
         {
             unResult = unResult | (1<<17);
         }
@@ -2170,7 +2170,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT6
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = sg_TimeStamp;
-    if(QueryTickCount != NULL)
+    if(QueryTickCount != nullptr)
     {
         *QueryTickCount = sg_QueryTickCount;
     }
@@ -2333,11 +2333,11 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
         int nHardwareLic = 0;
         if (sg_ndNeoToOpen[i].DeviceType == NEODEVICE_VCAN3)
         {
-            int hObject = NULL;
+            int hObject = 0;
             int nResult = 0;
 
-            nResult = (*icsneoOpenNeoDevice)(&sg_ndNeoToOpen[i], &hObject, NULL, 1, 0);
-            if (nResult == NEOVI_OK && hObject!=NULL)
+            nResult = (*icsneoOpenNeoDevice)(&sg_ndNeoToOpen[i], &hObject, nullptr, 1, 0);
+            if (nResult == NEOVI_OK && hObject!=0)
             {
                 int nErrors = 0;
                 if ( icsneoGetHardwareLicense )
@@ -2738,7 +2738,7 @@ static int nWriteMessage(STCAN_MSG sMessage)
         return nReturn;
     }
 
-    if (sg_podActiveNetwork != NULL &&
+    if (sg_podActiveNetwork != nullptr &&
             sMessage.m_ucChannel > 0 &&
             sMessage.m_ucChannel <= sg_podActiveNetwork->m_nNoOfChannels)
     {
@@ -2831,7 +2831,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLog
     sg_QueryTickCount.QuadPart = 0;
     //INITIALISE_ARRAY(sg_acErrStr);
     sg_acErrStr = "";;
-    CAN_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
+    CAN_ManageMsgBuf(MSGBUF_CLEAR, 0, nullptr);
 
     return S_OK;
 }
@@ -2937,7 +2937,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, ch
 HRESULT CDIL_CAN_ICSNeoVI::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
-    if (ClientID != NULL)
+    if (ClientID != 0)
     {
         UINT unClientIndex;
         if (bGetClientObj(ClientID, unClientIndex))
@@ -2946,7 +2946,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
             if (bAction == MSGBUF_ADD)
             {
                 //Add msg buffer
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     if (sClientObj.unBufCount < MAX_BUFF_ALLOWED)
                     {
@@ -2965,7 +2965,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
             else if (bAction == MSGBUF_CLEAR)
             {
                 //clear msg buffer
-                if (pBufObj != NULL) //REmove only buffer mentioned
+                if (pBufObj != nullptr) //REmove only buffer mentioned
                 {
                     bRemoveClientBuffer(sClientObj.pClientBuf, sClientObj.unBufCount, pBufObj);
                 }
@@ -2973,7 +2973,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
                 {
                     for (UINT i = 0; i < sClientObj.unBufCount; i++)
                     {
-                        sClientObj.pClientBuf[i] = NULL;
+                        sClientObj.pClientBuf[i] = nullptr;
                     }
                     sClientObj.unBufCount = 0;
                 }
@@ -2996,7 +2996,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
             //clear msg buffer
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, nullptr);
             }
             hResult = S_OK;
         }
@@ -3014,7 +3014,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_LoadDriverLibrary(void)
 
     HRESULT hResult = S_OK;
 
-    if (sg_hDll != NULL)
+    if (sg_hDll != nullptr)
     {
         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, "icsneo40.dll already loaded");
         hResult = DLL_ALREADY_LOADED;
@@ -3024,14 +3024,14 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_LoadDriverLibrary(void)
     {
         //Load the version i.e icsneo40.dll
         sg_hDll = LoadLibrary("icsneo40.dll");
-        if (sg_hDll == NULL)
+        if (sg_hDll == nullptr)
         {
             sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, "icsneo40.dll loading failed");
             sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, "Please have a look at: https://github.com/rbei-etas/busmaster/wiki/Hardware-support");
             hResult = ERR_LOAD_DRIVER;
         }
 
-        if (sg_hDll != NULL)
+        if (sg_hDll != nullptr)
         {
             int nResult = GetICS_neoVI_APIFuncPtrs();
             if (nResult != 0)
@@ -3058,10 +3058,10 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_UnloadDriverLibrary(void)
 
     // Store the Boardinfo to global variable
 
-    if (sg_hDll != NULL)
+    if (sg_hDll != nullptr)
     {
         FreeLibrary(sg_hDll);
-        sg_hDll = NULL;
+        sg_hDll = nullptr;
     }
     return S_OK;
 }
@@ -3071,7 +3071,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_UnloadDriverLibrary(void)
 
 HRESULT CDIL_CAN_ICSNeoVI::CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
 {
-    if (hEvent != NULL)
+    if (hEvent != nullptr)
     {
         sg_hCntrlStateChangeEvent = hEvent;
     }

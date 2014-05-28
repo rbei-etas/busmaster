@@ -58,7 +58,7 @@ class CCANControllerConfigDlg : public CDialog
     DECLARE_DYNAMIC(CCANControllerConfigDlg)
 
 public:
-    CCANControllerConfigDlg(int iBTRRegisters, CWnd* pParent /*=NULL*/);
+    CCANControllerConfigDlg(int iBTRRegisters, CWnd* pParent /*=nullptr*/);
     virtual ~CCANControllerConfigDlg();
 
     // Dialog Data

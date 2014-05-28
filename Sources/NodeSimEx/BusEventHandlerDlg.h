@@ -12,7 +12,7 @@ private:
     BOOL m_bIsDelete;
 
 public:
-    CBusEventHandlerDlg(CFunctionEditorDoc* pDoc, CWnd* pParent =NULL, BOOL bIsDelete = FALSE);   // standard constructor
+    CBusEventHandlerDlg(CFunctionEditorDoc* pDoc, CWnd* pParent =nullptr, BOOL bIsDelete = FALSE);   // standard constructor
     CStringArray m_omStrArrayBusEventHandler;
     virtual ~CBusEventHandlerDlg();
 

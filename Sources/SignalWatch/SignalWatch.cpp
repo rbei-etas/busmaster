@@ -32,9 +32,9 @@
 #define USAGE_EXPORT
 #include "SignalWatch_extern.h"
 
-static CSignalWatch_CAN* sg_pouSW_CAN = NULL;
-static CSignalWatch_J1939* sg_pouSW_J1939 = NULL;
-static CSignalWatch_LIN* sg_pouSW_LIN = NULL;
+static CSignalWatch_CAN* sg_pouSW_CAN = nullptr;
+static CSignalWatch_J1939* sg_pouSW_J1939 = nullptr;
+static CSignalWatch_LIN* sg_pouSW_LIN = nullptr;
 //
 //  Note!
 //
@@ -83,7 +83,7 @@ CSignalWatchApp theApp;
 
 
 // CSignalWatchApp initialization
-static HINSTANCE ghLangInst=NULL;
+static HINSTANCE ghLangInst=nullptr;
 BOOL CSignalWatchApp::InitInstance()
 {
     CWinApp::InitInstance();
@@ -109,17 +109,17 @@ BOOL CSignalWatchApp::InitInstance()
 
 INT CSignalWatchApp::ExitInstance()
 {
-    if (NULL != sg_pouSW_CAN)
+    if (nullptr != sg_pouSW_CAN)
     {
         sg_pouSW_CAN->ExitInstance();
         delete sg_pouSW_CAN;
-        sg_pouSW_CAN = NULL;
+        sg_pouSW_CAN = nullptr;
     }
-    if (NULL != sg_pouSW_J1939)
+    if (nullptr != sg_pouSW_J1939)
     {
         sg_pouSW_J1939->ExitInstance();
         delete sg_pouSW_J1939;
-        sg_pouSW_J1939 = NULL;
+        sg_pouSW_J1939 = nullptr;
     }
     CWinApp::ExitInstance();
 
@@ -136,9 +136,9 @@ USAGEMODE HRESULT SW_GetInterface(ETYPE_BUS eBus,
     {
         case CAN:
         {
-            if (NULL == sg_pouSW_CAN)
+            if (nullptr == sg_pouSW_CAN)
             {
-                if ((sg_pouSW_CAN = new CSignalWatch_CAN) == NULL)
+                if ((sg_pouSW_CAN = new CSignalWatch_CAN) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;
@@ -155,9 +155,9 @@ if sg_pouFP_CAN is null */
         break;
         case J1939:
         {
-            if (NULL == sg_pouSW_J1939)
+            if (nullptr == sg_pouSW_J1939)
             {
-                if ((sg_pouSW_J1939 = new CSignalWatch_J1939) == NULL)
+                if ((sg_pouSW_J1939 = new CSignalWatch_J1939) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;
@@ -174,9 +174,9 @@ if sg_pouFP_CAN is null */
         break;
         case LIN:
         {
-            if (NULL == sg_pouSW_LIN)
+            if (nullptr == sg_pouSW_LIN)
             {
-                if ((sg_pouSW_LIN = new CSignalWatch_LIN) == NULL)
+                if ((sg_pouSW_LIN = new CSignalWatch_LIN) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;

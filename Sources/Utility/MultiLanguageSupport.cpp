@@ -20,17 +20,17 @@
 //Getting the function pointer for multilanguage support
 char* chGetText(char* __msgid)
 {
-    if(g_pfGetText == NULL)
+    if(g_pfGetText == nullptr)
     {
 
         //hLibIntl = GetModuleHandle("intl.dll");
-        if (NULL == g_hLibIntl)
+        if (nullptr == g_hLibIntl)
         {
             g_hLibIntl = LoadLibrary("intl.dll");
         }
         g_pfGetText = (PSGETTEXT)GetProcAddress(g_hLibIntl, "gettext");
     }
-    if(g_pfGetText != NULL)
+    if(g_pfGetText != nullptr)
     {
         char* pReturn = g_pfGetText(__msgid);
         int a = 0;
@@ -44,15 +44,15 @@ char* chGetText(char* __msgid)
 
 char* textdomain(const char* __domainname)
 {
-    if(g_pfTextDomain == NULL)
+    if(g_pfTextDomain == nullptr)
     {
-        if (NULL == g_hLibIntl)
+        if (nullptr == g_hLibIntl)
         {
             g_hLibIntl = LoadLibrary("intl.dll");
         }
         g_pfTextDomain = (PSTEXTDOMAIN)GetProcAddress(g_hLibIntl, "textdomain");
     }
-    if(g_pfTextDomain != NULL)
+    if(g_pfTextDomain != nullptr)
     {
         char* pReturn = g_pfTextDomain(__domainname);
         return pReturn;
@@ -65,15 +65,15 @@ char* textdomain(const char* __domainname)
 
 char* bindtextdomain(const char* __domainname, const char* __dirname)
 {
-    if(g_pfBindTextDomain == NULL)
+    if(g_pfBindTextDomain == nullptr)
     {
-        if (NULL == g_hLibIntl)
+        if (nullptr == g_hLibIntl)
         {
             g_hLibIntl = LoadLibrary("intl.dll");
         }
         g_pfBindTextDomain = (PSBINDTEXTDOMAIN)GetProcAddress(g_hLibIntl, "bindtextdomain");
     }
-    if(g_pfBindTextDomain != NULL)
+    if(g_pfBindTextDomain != nullptr)
     {
         char* pReturn = g_pfBindTextDomain(__domainname, __dirname);
         return pReturn;

@@ -49,12 +49,12 @@ DWORD WINAPI ExecuteThread( LPVOID pParam )
     USES_CONVERSION;
 
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pParam;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         return ((DWORD)-1);
     }
     CTSExecutorChildFrame* pExecutionFrame = (CTSExecutorChildFrame*)pThreadParam->m_pBuffer;
-    if (pExecutionFrame == NULL)
+    if (pExecutionFrame == nullptr)
     {
         return ((DWORD)-1);
     }
@@ -121,7 +121,7 @@ CTSExecutorChildFrame::CTSExecutorChildFrame(void)
     m_sTSDefPlacement.ptMaxPosition = MaxPosition;
     m_sTSDefPlacement.ptMinPosition = MinPosition;
     m_sTSDefPlacement.rcNormalPosition = NormalPosition;
-    m_bConnected = NULL;
+    m_bConnected = false;
 }
 
 /******************************************************************************
@@ -166,7 +166,7 @@ Code Tag       :
 void CTSExecutorChildFrame::OnDestroy(void)
 {
     CMDIChildWnd::OnDestroy();
-    g_pomTSExecutorChildWindow = NULL;
+    g_pomTSExecutorChildWindow = nullptr;
 }
 
 /******************************************************************************
@@ -237,11 +237,11 @@ int CTSExecutorChildFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     CString omstrName;
     m_ouTSExecutor.GetTestsuiteName(omstrName);
 
-    m_hParentTreeItem = m_odTreeView->InsertTreeItem(NULL, omstrName, NULL,def_INDEX_TESTSUITEIMAGE,
+    m_hParentTreeItem = m_odTreeView->InsertTreeItem(nullptr, omstrName, nullptr,def_INDEX_TESTSUITEIMAGE,
                         def_INDEX_TESTSUITEIMAGE, def_ID_TESTSUITE);
 
     m_ouExecutionThread.m_pBuffer = this;
-    m_ouExecutionThread.m_hActionEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+    m_ouExecutionThread.m_hActionEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
     m_ouExecutionThread.bStartThread(ExecuteThread);
     //SSH + issue#438
     SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_BUSMASTER), FALSE);
@@ -282,7 +282,7 @@ HRESULT CTSExecutorChildFrame::OnAddTestSetup(WPARAM wparam, LPARAM lparam)
     if(nRetVal == IDOK)
     {
         POSITION pos = omTestSetupBrowser.GetStartPosition();
-        while(pos != NULL)
+        while(pos != nullptr)
         {
 
             CString omstrTestSetup = omTestSetupBrowser.GetNextPathName(pos);
@@ -343,7 +343,7 @@ BOOL CTSExecutorChildFrame::bParseTestSetup(INT nIndex)
     STestSetupInfo sTSInfo;
     if( m_ouTSExecutor.GetTestSetupInfo(nIndex, sTSInfo) == S_OK)
     {
-        HTREEITEM hTSItem = m_odTreeView->InsertTreeItem(m_hParentTreeItem, sTSInfo.m_omstrName, NULL, def_INDEX_TESTSETUPIMAGE,
+        HTREEITEM hTSItem = m_odTreeView->InsertTreeItem(m_hParentTreeItem, sTSInfo.m_omstrName, nullptr, def_INDEX_TESTSETUPIMAGE,
                             def_INDEX_TESTSETUPIMAGE, sTSInfo.m_dwID);
 
         m_odTreeView->GetTreeCtrl().SetCheck(hTSItem, sTSInfo.m_bEnable);
@@ -354,7 +354,7 @@ BOOL CTSExecutorChildFrame::bParseTestSetup(INT nIndex)
             if(m_ouTSExecutor.GetTestCaseInfo(sTSInfo.m_dwID, i, &pouTCData) == S_OK)
             {
                 pouTCData->GetEntityData(TEST_CASE, &ouTCData);
-                HTREEITEM hTCItem =  m_odTreeView->InsertTreeItem(hTSItem, ouTCData.m_omTitle, NULL, def_INDEX_TESTCASEIMAGE,
+                HTREEITEM hTCItem =  m_odTreeView->InsertTreeItem(hTSItem, ouTCData.m_omTitle, nullptr, def_INDEX_TESTCASEIMAGE,
                                      def_INDEX_TESTCASEIMAGE, pouTCData->GetID());
                 m_odTreeView->GetTreeCtrl().SetCheck(hTCItem, pouTCData->bGetEnableStatus());
             }
@@ -496,13 +496,13 @@ BOOL CTSExecutorChildFrame::GetConfigurationData(xmlNodePtr& pxmlNodePtr)
     GetWindowPlacement(&wndPlacement);
 
     const char* omcVarChar ;
-    pxmlNodePtr = xmlNewNode(NULL, BAD_CAST DEF_TS_EXECUTOR);
+    pxmlNodePtr = xmlNewNode(nullptr, BAD_CAST DEF_TS_EXECUTOR);
     m_ouTSExecutor.GetConfigurationData(pxmlNodePtr);
 
     //Window position
 
 
-    xmlNodePtr pNodeWndPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
+    xmlNodePtr pNodeWndPos = xmlNewNode(nullptr, BAD_CAST DEF_WND_POS);
     xmlAddChild(pxmlNodePtr, pNodeWndPos);
 
     if(IsWindowVisible() == FALSE)
@@ -516,21 +516,21 @@ BOOL CTSExecutorChildFrame::GetConfigurationData(xmlNodePtr& pxmlNodePtr)
     INT nCxCur, nCxMin;
     m_omSplitterWnd.GetColumnInfo(0, nCxCur, nCxMin);
 
-    xmlNodePtr pNodeSplitterWnd = xmlNewNode(NULL, BAD_CAST DEF_SPLITTER_WINDOW);
+    xmlNodePtr pNodeSplitterWnd = xmlNewNode(nullptr, BAD_CAST DEF_SPLITTER_WINDOW);
     xmlAddChild(pxmlNodePtr, pNodeSplitterWnd);
 
     //<CxIdeal />
     CString  csCxIdeal;
     csCxIdeal.Format("%d", nCxCur );
     omcVarChar = csCxIdeal;
-    xmlNodePtr pCxIdeal = xmlNewChild(pNodeSplitterWnd, NULL, BAD_CAST DEF_CX_IDEAL, BAD_CAST omcVarChar);
+    xmlNodePtr pCxIdeal = xmlNewChild(pNodeSplitterWnd, nullptr, BAD_CAST DEF_CX_IDEAL, BAD_CAST omcVarChar);
     xmlAddChild(pNodeSplitterWnd, pCxIdeal);
 
     // <CxMin />
     CString  csCxMin;
     csCxMin.Format("%d",nCxMin );
     omcVarChar = csCxMin;
-    xmlNodePtr pcsCxMin = xmlNewChild(pNodeSplitterWnd, NULL, BAD_CAST DEF_CX_MIN, BAD_CAST omcVarChar);
+    xmlNodePtr pcsCxMin = xmlNewChild(pNodeSplitterWnd, nullptr, BAD_CAST DEF_CX_MIN, BAD_CAST omcVarChar);
     xmlAddChild(pNodeSplitterWnd, pcsCxMin);
     return true;
 }
@@ -592,14 +592,14 @@ HRESULT CTSExecutorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
     WINDOWPLACEMENT wndPlacement;
     wndPlacement = m_sTSDefPlacement;
 
-    if( NULL != pXmlNode )
+    if( nullptr != pXmlNode )
     {
         vInitialise();
-        xmlNodePtr pTempNode = NULL;
-        xmlXPathObjectPtr pObjectPtr = NULL;
+        xmlNodePtr pTempNode = nullptr;
+        xmlXPathObjectPtr pObjectPtr = nullptr;
 
         pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"Window_Position");
-        if( NULL != pObjectPtr)
+        if( nullptr != pObjectPtr)
         {
             pTempNode = pObjectPtr->nodesetval->nodeTab[0];
             if( S_FALSE == xmlUtils::ParseWindowsPlacement(pTempNode, wndPlacement) )
@@ -607,14 +607,14 @@ HRESULT CTSExecutorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
                 wndPlacement = m_sTSDefPlacement;
             }
             xmlXPathFreeObject(pObjectPtr);
-            pObjectPtr = NULL;
+            pObjectPtr = nullptr;
         }
 
         //Splitter Position
         pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"Splitter_Window");
         int nCxCur = 0;
         int nCxMin = 0;
-        if( NULL != pObjectPtr)
+        if( nullptr != pObjectPtr)
         {
             pTempNode = pObjectPtr->nodesetval->nodeTab[0];
             if ( S_OK == xmlUtils::ParseSplitterWindow(pTempNode, nCxCur, nCxMin) )
@@ -643,7 +643,7 @@ HRESULT CTSExecutorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
         }
 
     }
-    if( NULL == pXmlNode )
+    if( nullptr == pXmlNode )
     {
         vInitialise();
     }
@@ -672,7 +672,7 @@ VOID CTSExecutorChildFrame::vInitialise(void)
     CString omstrName;
     m_ouTSExecutor.GetTestsuiteName(omstrName);
 
-    m_hParentTreeItem = m_odTreeView->InsertTreeItem(NULL, omstrName, NULL,def_INDEX_TESTSUITEIMAGE,
+    m_hParentTreeItem = m_odTreeView->InsertTreeItem(nullptr, omstrName, nullptr,def_INDEX_TESTSUITEIMAGE,
                         def_INDEX_TESTSUITEIMAGE, def_ID_TESTSUITE);
     m_ouTSExecutor.m_bTestSuiteStatus = FALSE;
 }
@@ -775,7 +775,7 @@ VOID CTSExecutorChildFrame::vUpdateTreeView(void)
     m_ouTSExecutor.GetTestsuiteName(omStrTestSuiteName);
     BOOL bCheck = m_odTreeView->bIsItemChecked(m_hParentTreeItem);
     m_odTreeView->GetTreeCtrl().DeleteAllItems();
-    m_hParentTreeItem = m_odTreeView->InsertTreeItem(NULL, omStrTestSuiteName, NULL, 0, 0, def_ID_TESTSUITE);
+    m_hParentTreeItem = m_odTreeView->InsertTreeItem(nullptr, omStrTestSuiteName, nullptr, 0, 0, def_ID_TESTSUITE);
     m_ouTSExecutor.GetTestSetupCount(nCount);
     for(int i = 0; i < nCount; i++)
     {

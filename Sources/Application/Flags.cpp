@@ -30,7 +30,7 @@
 
 extern CCANMonitorApp theApp;
 
-CFlags CFlags::sm_ouSingletonObj(NULL);     // Create singleton object here
+CFlags CFlags::sm_ouSingletonObj(nullptr);     // Create singleton object here
 
 /******************************************************************************/
 /*  Function Name    :  CFlags                                                */
@@ -118,7 +118,7 @@ CFlags::CFlags(PSTOOLBARINFO psToolBarInfo)
     vInitializeFlags();
     // If Configuration file has this info
     // use the same
-    if( psToolBarInfo != NULL )
+    if( psToolBarInfo != nullptr )
     {
         m_bDisplayFilterOn      = psToolBarInfo->m_byMsgFilter;
         m_bDisplayFilterOnLin      = psToolBarInfo->m_byMsgFilterLin;
@@ -756,7 +756,7 @@ int CFlags::nGetFlagStatus(eFLEXRAYMONITORFLAG eWhichFlag)
 /******************************************************************************/
 void CFlags::vGetToolbarButtonStatus(PSTOOLBARINFO psToolBarInfo)
 {
-    if ( psToolBarInfo != NULL )
+    if ( psToolBarInfo != nullptr )
     {
         psToolBarInfo->m_byMsgFilter        = static_cast<BYTE>(m_bDisplayFilterOn);
         psToolBarInfo->m_byMsgFilterLin        = static_cast<BYTE>(m_bDisplayFilterOnLin);
@@ -799,7 +799,7 @@ void CFlags::vGetToolbarButtonStatus(PSTOOLBARINFO psToolBarInfo)
 /******************************************************************************/
 void CFlags::vSetToolbarButtonStatus(PSTOOLBARINFO psToolBarInfo)
 {
-    if ( psToolBarInfo != NULL )
+    if ( psToolBarInfo != nullptr )
     {
         m_bDisplayFilterOn      = psToolBarInfo->m_byMsgFilter;
         m_bDisplayFilterOnLin      = psToolBarInfo->m_byMsgFilterLin;

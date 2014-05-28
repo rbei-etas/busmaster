@@ -32,18 +32,18 @@
 #define new DEBUG_NEW
 #endif
 
-static CNodeSim* sg_pouNS_CAN = NULL;
-static CNodeSim* sg_pouNS_J1939 = NULL;
-static CNodeSim* sg_pouNS_LIN = NULL;
+static CNodeSim* sg_pouNS_CAN = nullptr;
+static CNodeSim* sg_pouNS_J1939 = nullptr;
+static CNodeSim* sg_pouNS_LIN = nullptr;
 
-static CDynLinkLibrary* sg_pomDynLinkLib = NULL;
+static CDynLinkLibrary* sg_pomDynLinkLib = nullptr;
 
-static AFX_EXTENSION_MODULE NodeSimExDLL = { NULL, NULL };
+static AFX_EXTENSION_MODULE NodeSimExDLL = { false, nullptr };
 
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
-    static HINSTANCE shLangInst=NULL;
+    static HINSTANCE shLangInst=nullptr;
 
     // Remove this if you use lpReserved
     UNREFERENCED_PARAMETER(lpReserved);
@@ -99,28 +99,28 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
     }
     else if (dwReason == DLL_PROCESS_DETACH)
     {
-        if (sg_pouNS_CAN != NULL)
+        if (sg_pouNS_CAN != nullptr)
         {
             sg_pouNS_CAN->ExitInstance();
             delete sg_pouNS_CAN;
-            sg_pouNS_CAN = NULL;
+            sg_pouNS_CAN = nullptr;
         }
-        if (sg_pouNS_J1939 != NULL)
+        if (sg_pouNS_J1939 != nullptr)
         {
             sg_pouNS_J1939->ExitInstance();
             delete sg_pouNS_J1939;
-            sg_pouNS_J1939 = NULL;
+            sg_pouNS_J1939 = nullptr;
         }
-        if(sg_pouNS_LIN != NULL)
+        if(sg_pouNS_LIN != nullptr)
         {
             sg_pouNS_LIN->ExitInstance();
             delete sg_pouNS_LIN;
-            sg_pouNS_LIN = NULL;
+            sg_pouNS_LIN = nullptr;
         }
-        if (NULL != sg_pomDynLinkLib)
+        if (nullptr != sg_pomDynLinkLib)
         {
             delete sg_pomDynLinkLib;
-            sg_pomDynLinkLib = NULL;
+            sg_pomDynLinkLib = nullptr;
         }
 
         if (shLangInst)
@@ -132,7 +132,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         // Terminate the library before destructors are called
         AfxTermExtensionModule(NodeSimExDLL);
     }
-    //CGlobalObj::m_pEditorDocTemplate = NULL;
+    //CGlobalObj::m_pEditorDocTemplate = nullptr;
     return 1;   // ok
 }
 USAGEMODE HRESULT NS_GetInterface(ETYPE_BUS eBus,
@@ -149,9 +149,9 @@ USAGEMODE HRESULT NS_GetInterface(ETYPE_BUS eBus,
     {
         case CAN:
         {
-            if (NULL == sg_pouNS_CAN)
+            if (nullptr == sg_pouNS_CAN)
             {
-                if ((sg_pouNS_CAN = new CNodeSim(CAN)) == NULL)
+                if ((sg_pouNS_CAN = new CNodeSim(CAN)) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;
@@ -168,9 +168,9 @@ if sg_pouFP_CAN is null */
         break;
         case J1939:
         {
-            if (NULL == sg_pouNS_J1939)
+            if (nullptr == sg_pouNS_J1939)
             {
-                if ((sg_pouNS_J1939 = new CNodeSim(J1939)) == NULL)
+                if ((sg_pouNS_J1939 = new CNodeSim(J1939)) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;
@@ -187,9 +187,9 @@ if sg_pouFP_J1939 is null */
         break;
         case LIN:
         {
-            if (NULL == sg_pouNS_LIN)
+            if (nullptr == sg_pouNS_LIN)
             {
-                if ((sg_pouNS_LIN = new CNodeSim(LIN)) == NULL)
+                if ((sg_pouNS_LIN = new CNodeSim(LIN)) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;
@@ -207,7 +207,7 @@ if sg_pouNS_LIN is null */
         default:
         {
             hResult = S_FALSE;
-            *ppvInterface = NULL;
+            *ppvInterface = nullptr;
         }
         break;
     }

@@ -209,7 +209,7 @@ USAGEMODE int AddModifySectionData(std::string& ProjectName, std::string& Sectio
     int nReturn = 0;
     if(sdataStorageInfo.m_Datastore == FILEMODE)
     {
-        if (SectionData != NULL)
+        if (SectionData != nullptr)
         {
             nReturn = FileAddModifySectionData(ProjectName,SectionName, *SectionData);
         }
@@ -292,7 +292,7 @@ USAGEMODE int SetDatastorageConfig(DATASTORAGEINFO* StorageInfo)
     sdataStorageInfo.m_Datastore = StorageInfo->m_Datastore ;
     if (sdataStorageInfo.m_Datastore == FILEMODE)
     {
-        if (sdataStorageInfo.FSInfo == NULL)
+        if (sdataStorageInfo.FSInfo == nullptr)
         {
             sdataStorageInfo.FSInfo = new FILESTORAGEINFO; //Change
         }
@@ -317,14 +317,14 @@ USAGEMODE int GetDatastorageConfig(DATASTORAGEINFO* StorageInfo)
     StorageInfo->m_Datastore = sdataStorageInfo.m_Datastore;
     if (sdataStorageInfo.m_Datastore == FILEMODE)
     {
-        if (sdataStorageInfo.FSInfo != NULL)
+        if (sdataStorageInfo.FSInfo != nullptr)
         {
             StorageInfo->FSInfo = new FILESTORAGEINFO;
             strcpy_s(StorageInfo->FSInfo->m_FilePath,sdataStorageInfo.FSInfo->m_FilePath);
         }
         else
         {
-            StorageInfo->FSInfo = NULL;
+            StorageInfo->FSInfo = nullptr;
         }
     }
     else
@@ -358,10 +358,10 @@ USAGEMODE int DoDatastorageOperation(short operation)
         else if (operation & CLOSE)
         {
             CloseDataFile();
-            if (sdataStorageInfo.FSInfo != NULL)
+            if (sdataStorageInfo.FSInfo != nullptr)
             {
                 delete sdataStorageInfo.FSInfo;
-                sdataStorageInfo.FSInfo = NULL;
+                sdataStorageInfo.FSInfo = nullptr;
             }
         }
     }

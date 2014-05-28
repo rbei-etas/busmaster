@@ -46,7 +46,7 @@ extern CCANMonitorApp theApp;
   Date Created   : 01/12/2004
   Modifications  :
 *******************************************************************************/
-CGraphConfiguration::CGraphConfiguration(CWnd* pParent /*=NULL*/)
+CGraphConfiguration::CGraphConfiguration(CWnd* pParent /*=nullptr*/)
     : CDialog(CGraphConfiguration::IDD, pParent)
     , m_nLineDisplay(0)
 {
@@ -135,10 +135,10 @@ void CGraphConfiguration::OnOK()
     // Update Global Structure
     CMainFrame* pMainFrame = static_cast<CMainFrame*> (theApp.m_pMainWnd);
 
-    if( pMainFrame != NULL )
+    if( pMainFrame != nullptr )
     {
         CGraphList* pList = &(pMainFrame->m_odGraphList[m_eBusType]);
-        if( pList != NULL && UpdateData() == TRUE )
+        if( pList != nullptr && UpdateData() == TRUE )
         {
             pList->m_odGraphParameters.m_nBufferSize = m_nBufferSize;
             pList->m_odGraphParameters.m_nRefreshRate = m_nUpdateRate;
@@ -176,10 +176,10 @@ BOOL CGraphConfiguration::OnInitDialog()
     // Update Data from Global Structure
     CMainFrame* pMainFrame = static_cast<CMainFrame*> (theApp.m_pMainWnd);
 
-    if( pMainFrame != NULL )
+    if( pMainFrame != nullptr )
     {
         CGraphList* pList = &(pMainFrame->m_odGraphList[m_eBusType]);
-        if( pList != NULL )
+        if( pList != nullptr )
         {
             vSetValues( pList->m_odGraphParameters );
         }

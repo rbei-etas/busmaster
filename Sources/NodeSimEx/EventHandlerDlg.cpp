@@ -32,7 +32,7 @@
 // CEventHandlerDlg dialog
 
 IMPLEMENT_DYNAMIC(CEventHandlerDlg, CDialog)
-CEventHandlerDlg::CEventHandlerDlg(CTreeCtrl& omTreeCtrl, CFunctionEditorDoc* pDoc, CWnd* pParent /*=NULL*/)
+CEventHandlerDlg::CEventHandlerDlg(CTreeCtrl& omTreeCtrl, CFunctionEditorDoc* pDoc, CWnd* pParent /*=nullptr*/)
     : CDialog(CEventHandlerDlg::IDD, pParent),
       m_omTreeCtrl(omTreeCtrl)
 {
@@ -194,9 +194,9 @@ void CEventHandlerDlg::OnBnClickedOk()
     {
         vAddAdresClaimHandler(hParent);
     }
-    if (m_pDoc != NULL)
+    if (m_pDoc != nullptr)
     {
-        m_pDoc->UpdateAllViews( NULL );
+        m_pDoc->UpdateAllViews( nullptr );
         m_pDoc->SetModifiedFlag( TRUE );
     }
     OnOK();

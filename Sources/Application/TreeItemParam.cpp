@@ -53,7 +53,7 @@ CTreeItemParam::CTreeItemParam(CWnd* pomParent,
     {
         CString omCurrStr = omStringArray.ElementAt(i);
         ItemHandle =  m_odTreeCtrl.InsertItem(omCurrStr);
-        if (ItemHandle != NULL)
+        if (ItemHandle != nullptr)
         {
             m_aomItemHandle.Add(ItemHandle);
         }
@@ -85,12 +85,12 @@ void CTreeItemParam::vUpdateTreeValues(CStringArray& omStringArray, COLORREF Tex
     {
         m_aomItemHandle.RemoveAll();
         m_odTreeCtrl.DeleteAllItems();
-        HTREEITEM ItemHandle = NULL;
+        HTREEITEM ItemHandle = nullptr;
         for (int i = 0; i < nCount; i++)
         {
             omCurrStr = omStringArray.ElementAt(i);
             ItemHandle=  m_odTreeCtrl.InsertItem(omCurrStr);
-            if (ItemHandle != NULL)
+            if (ItemHandle != nullptr)
             {
                 m_aomItemHandle.Add(ItemHandle);
             }
@@ -121,7 +121,7 @@ void CTreeItemParam::vUpdateTreeValues(CStringArray& omStringArray, COLORREF Tex
         m_TextColour = TextColour;
         m_odTreeCtrl.SetTextColor(m_TextColour);
     }
-    HTREEITEM ItemHandle = NULL;
+    HTREEITEM ItemHandle = nullptr;
 
     if (nCount > m_aomItemHandle.GetSize())
     {
@@ -131,13 +131,13 @@ void CTreeItemParam::vUpdateTreeValues(CStringArray& omStringArray, COLORREF Tex
     for (int i = 0; i < nCount; i++)
     {
         omCurrStr = omStringArray.ElementAt(i);
-        ItemHandle = NULL;
+        ItemHandle = nullptr;
 
         if(m_aomItemHandle.GetSize() > i)
         {
             ItemHandle = m_aomItemHandle.GetAt(i);
         }
-        if (ItemHandle != NULL)
+        if (ItemHandle != nullptr)
         {
             m_odTreeCtrl.SetItemText(ItemHandle, omCurrStr.GetBuffer(MAX_PATH));
         }
@@ -156,7 +156,7 @@ void CTreeItemParam::vRemoveTreeCtrl(void)
 {
     m_aomItemHandle.RemoveAll();
     m_odTreeCtrl.DeleteAllItems();
-    if (m_odTreeCtrl.m_hWnd != NULL)
+    if (m_odTreeCtrl.m_hWnd != nullptr)
     {
         m_odTreeCtrl.DestroyWindow();
     }

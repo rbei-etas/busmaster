@@ -37,9 +37,9 @@
 
 
 
-static CFrameProcessor_CAN* sg_pouFP_CAN = NULL;
-static CFrameProcessor_J1939* sg_pouFP_J1939 = NULL;
-static CFrameProcessor_LIN* sg_pouFP_LIN = NULL;
+static CFrameProcessor_CAN* sg_pouFP_CAN = nullptr;
+static CFrameProcessor_J1939* sg_pouFP_J1939 = nullptr;
+static CFrameProcessor_LIN* sg_pouFP_LIN = nullptr;
 
 //
 //  Note!
@@ -103,25 +103,25 @@ BOOL CFrameProcessorApp::InitInstance()
 int CFrameProcessorApp::ExitInstance()
 {
     // TODO: Add your specialized code here and/or call the base class
-    if (NULL != sg_pouFP_CAN)
+    if (nullptr != sg_pouFP_CAN)
     {
         sg_pouFP_CAN->ExitInstance();
         delete sg_pouFP_CAN;
-        sg_pouFP_CAN = NULL;
+        sg_pouFP_CAN = nullptr;
     }
 
-    if (NULL != sg_pouFP_J1939)
+    if (nullptr != sg_pouFP_J1939)
     {
         sg_pouFP_J1939->ExitInstance();
         delete sg_pouFP_J1939;
-        sg_pouFP_J1939 = NULL;
+        sg_pouFP_J1939 = nullptr;
     }
 
-    if (NULL != sg_pouFP_LIN)
+    if (nullptr != sg_pouFP_LIN)
     {
         sg_pouFP_LIN->ExitInstance();
         delete sg_pouFP_LIN;
-        sg_pouFP_LIN = NULL;
+        sg_pouFP_LIN = nullptr;
     }
     return CWinApp::ExitInstance();
 }
@@ -137,9 +137,9 @@ USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT eInterfaceID, void** ppvInterfac
     {
         case FRAMEPROC_CAN:
         {
-            if (NULL == sg_pouFP_CAN)
+            if (nullptr == sg_pouFP_CAN)
             {
-                if ((sg_pouFP_CAN = new CFrameProcessor_CAN) == NULL)
+                if ((sg_pouFP_CAN = new CFrameProcessor_CAN) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;
@@ -156,9 +156,9 @@ USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT eInterfaceID, void** ppvInterfac
         break;
         case FRAMEPROC_LIN:
         {
-            if (NULL == sg_pouFP_LIN)
+            if (nullptr == sg_pouFP_LIN)
             {
-                if ((sg_pouFP_LIN = new CFrameProcessor_LIN) == NULL)
+                if ((sg_pouFP_LIN = new CFrameProcessor_LIN) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;
@@ -175,9 +175,9 @@ USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT eInterfaceID, void** ppvInterfac
         break;
         case FRAMEPROC_J1939:
         {
-            if (NULL == sg_pouFP_J1939)
+            if (nullptr == sg_pouFP_J1939)
             {
-                if ((sg_pouFP_J1939 = new CFrameProcessor_J1939) == NULL)
+                if ((sg_pouFP_J1939 = new CFrameProcessor_J1939) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;

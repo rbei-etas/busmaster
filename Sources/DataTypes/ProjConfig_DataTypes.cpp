@@ -198,12 +198,12 @@ bool PROJECTDATA::Read(FILE* pFile)
     // For obvious reason reading takes place in the same order as writing.
     if (fread(&n, sizeof(int), 1, pFile) == 1)
     {
-        if (fread(Buffer, sizeof(char) * n, 1, pFile) != NULL)
+        if (fread(Buffer, sizeof(char) * n, 1, pFile) != 0)
         {
             m_ProjectName = Buffer;
             if (fread(&n, sizeof(int), 1, pFile) == 1)
             {
-                if (fread(Buffer, sizeof(char) * n, 1, pFile) != NULL)
+                if (fread(Buffer, sizeof(char) * n, 1, pFile) != 0)
                 {
                     m_Language = Buffer;
                     if (fread(&m_ProjSysTime, sizeof(SYSTEMTIME), 1, pFile) == 1)
@@ -241,7 +241,7 @@ bool PROJECTDATA::Read(FILE* pFile)
 ******************************************************************************/
 SECTIONDATA::SECTIONDATA()
 {
-    m_bBLOB = NULL;
+    m_bBLOB = nullptr;
     m_nBLOBLen = 0;
     m_omSectionName = "";
 }
@@ -277,10 +277,10 @@ SECTIONDATA::~SECTIONDATA()
 ******************************************************************************/
 void SECTIONDATA::Initialise(void)
 {
-    if (NULL != m_bBLOB)
+    if (nullptr != m_bBLOB)
     {
         delete[] m_bBLOB;
-        m_bBLOB = NULL;
+        m_bBLOB = nullptr;
     }
     m_nBLOBLen = 0;
     m_omSectionName = "";
@@ -303,7 +303,7 @@ SECTIONDATA& SECTIONDATA::operator=(const SECTIONDATA& RefObj)
     Initialise();
 
     m_bBLOB = new BYTE[RefObj.m_nBLOBLen];
-    if (m_bBLOB != NULL)
+    if (m_bBLOB != nullptr)
     {
         m_nBLOBLen = RefObj.m_nBLOBLen;
         memcpy(m_bBLOB, RefObj.m_bBLOB, RefObj.m_nBLOBLen);
@@ -342,7 +342,7 @@ bool SECTIONDATA::Write(FILE* pFile)
         {
             if (fwrite(&m_nBLOBLen, sizeof(m_nBLOBLen), 1, pFile) == 1)
             {
-                if (m_bBLOB != NULL)
+                if (m_bBLOB != nullptr)
                 {
                     if ((int) fwrite(m_bBLOB, 1, m_nBLOBLen, pFile) == m_nBLOBLen)
                     {
@@ -379,13 +379,13 @@ bool SECTIONDATA::Read(FILE* pFile)
 
     if (fread(&n, sizeof(int), 1, pFile) == 1)
     {
-        if (fread(Buffer, sizeof(char) * n, 1,pFile) != NULL)
+        if (fread(Buffer, sizeof(char) * n, 1,pFile) != 0)
         {
             m_omSectionName = Buffer;
             if (fread(&m_nBLOBLen, sizeof(m_nBLOBLen), 1, pFile) == 1)
             {
                 m_bBLOB = new BYTE[m_nBLOBLen];
-                if (m_bBLOB != NULL)
+                if (m_bBLOB != nullptr)
                 {
                     if ((int) fread(m_bBLOB, 1, m_nBLOBLen, pFile) == m_nBLOBLen)
                     {

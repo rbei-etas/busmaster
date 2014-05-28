@@ -30,11 +30,11 @@ class CSplFileDlg : public CFileDialog
 
 public:
     CSplFileDlg(BOOL bOpenFileDialog, // TRUE for FileOpen, FALSE for FileSaveAs
-                LPCTSTR lpszDefExt = NULL,
-                LPCTSTR lpszFileName = NULL,
+                LPCTSTR lpszDefExt = nullptr,
+                LPCTSTR lpszFileName = nullptr,
                 DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-                LPCTSTR lpszFilter = NULL,
-                CWnd* pParentWnd = NULL,
+                LPCTSTR lpszFilter = nullptr,
+                CWnd* pParentWnd = nullptr,
                 CString omStrButtonCaption = "Select");
 
 protected:

@@ -36,7 +36,7 @@ public:
     // Dialog Data
     enum { IDD = IDD_FLEXRAYMSGHANDLER_DIALOG };
 
-    CFlexrayMsgHandlerDlg(INT nChannel = 1, CWnd* pParent = NULL);
+    CFlexrayMsgHandlerDlg(INT nChannel = 1, CWnd* pParent = nullptr);
     afx_msg void OnBnClickedCbtnSelectmsg();
     afx_msg void OnBnClickedCbtnCancelmsgselection();
     afx_msg void OnColumnclickLstcMsgDetails(NMHDR* pNMHDR, LRESULT* pResult);

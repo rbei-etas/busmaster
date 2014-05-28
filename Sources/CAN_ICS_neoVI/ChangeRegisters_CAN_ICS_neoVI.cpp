@@ -47,7 +47,7 @@ static char THIS_FILE[] = __FILE__;
 /*  Modifications    :  Raja N on 14.03.2005, Added init of member variable   */
 /*                      m_pControllerDetails                                  */
 /******************************************************************************/
-CChangeRegisters_CAN_ICS_neoVI::CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent /*=NULL*/, PSCONTROLLER_DETAILS psControllerDetails, UINT nHardwareCount)
+CChangeRegisters_CAN_ICS_neoVI::CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent /*=nullptr*/, PSCONTROLLER_DETAILS psControllerDetails, UINT nHardwareCount)
     : CDialog(CChangeRegisters_CAN_ICS_neoVI::IDD, pParent)
     //, m_nClock(32)
     , m_omStrPropDelay("")
@@ -316,7 +316,7 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::OnInitDialog()
 
     m_omEditWarningLimit.SetReadOnly(TRUE);
     CWnd* pWndFilter = GetDlgItem(IDC_CBTN_ACCEPTANCE);
-    if (pWndFilter != NULL)
+    if (pWndFilter != nullptr)
     {
         pWndFilter->EnableWindow(FALSE);
     }
@@ -909,7 +909,7 @@ DOUBLE CChangeRegisters_CAN_ICS_neoVI::dCalculateBaudRateFromBTRs(CString omStrC
     uCNF3 uCNF3val;
     DOUBLE dBaudRate = 0;
     BYTE   bTSEG2 = 0;
-    char* pcStopStr = NULL;
+    char* pcStopStr = nullptr;
 
     uCNF1val.ucCNF1 =
         static_cast <UCHAR >(_tcstol((LPCTSTR)omStrCNF1.GetBuffer(MAX_PATH),&pcStopStr,defHEXADECIMAL));
@@ -963,7 +963,7 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::bFillControllerConfig()
 {
     BOOL bReturn = FALSE;
     // If successful then set the result to pass
-    if (m_pControllerDetails != NULL)
+    if (m_pControllerDetails != nullptr)
     {
         bReturn = TRUE;
     }
@@ -1136,7 +1136,7 @@ void CChangeRegisters_CAN_ICS_neoVI::vFillControllerConfigDetails()
     int nIndex = m_nLastSelection;
     /* Add hardware info to the description field */
     CWnd* pWnd = GetDlgItem(IDC_EDIT_CHANNEL_DESC);
-    if (pWnd != NULL)
+    if (pWnd != nullptr)
     {
         pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc.c_str());
     }
@@ -1174,7 +1174,7 @@ void CChangeRegisters_CAN_ICS_neoVI::vFillControllerConfigDetails()
     if (nReturn == defSUCCESS)
     {
         // read the item to set the focus from the configuration
-        if (m_pControllerDetails != NULL)
+        if (m_pControllerDetails != nullptr)
         {
             nReturn = m_pControllerDetails[m_nLastSelection].m_nItemUnderFocus;
         }
@@ -1196,7 +1196,7 @@ void CChangeRegisters_CAN_ICS_neoVI::vFillControllerConfigDetails()
 *******************************************************************************/
 void CChangeRegisters_CAN_ICS_neoVI::vUpdateControllerDetails()
 {
-    char*    pcStopStr              = NULL;
+    char*    pcStopStr              = nullptr;
     CString omStrComboSampling      = "";
     CString omStrEditBtr0           = "";
     CString omStrEditBtr1           = "";
@@ -1343,7 +1343,7 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::bSetBaudRateFromCom(int nChannel,BYTE bBTR0
 BOOL CChangeRegisters_CAN_ICS_neoVI::bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1)
 {
     BOOL bReturn =FALSE;
-    if (m_pControllerDetails != NULL)
+    if (m_pControllerDetails != nullptr)
     {
         int nTempBTR0BTR1 = m_pControllerDetails[ nChannel-1 ].m_nBTR0BTR1;
         bBTR1 = (BYTE)(nTempBTR0BTR1 & 0XFF);
@@ -1447,7 +1447,7 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::bGetFilterFromCom(BOOL&  bExtended, double&
         double& dEndMsgId)
 {
     BOOL bReturn = FALSE;
-    if (m_pControllerDetails != NULL)
+    if (m_pControllerDetails != nullptr)
     {
 
         char* pcStopStr ;
@@ -1645,7 +1645,7 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::GetRegisterValues(BYTE& bCNF1, BYTE& bCNF2,
         sCOLUMNS* psCurrEntry =
             (sCOLUMNS*) (m_omListCtrlBitTime.GetItemData(nIndexSel));
 
-        if (psCurrEntry != NULL)
+        if (psCurrEntry != nullptr)
         {
             bResult = TRUE;
             bCNF1 = psCurrEntry->uCNFReg1.ucCNF1;
@@ -1673,7 +1673,7 @@ int CChangeRegisters_CAN_ICS_neoVI::GetSelectedEntryIndex(void)
     int nResult = -1;
     // First of all - get the current selection
     POSITION Pos = m_omListCtrlBitTime.GetFirstSelectedItemPosition();
-    if (Pos != NULL)
+    if (Pos != nullptr)
     {
         nResult = m_omListCtrlBitTime.GetNextSelectedItem(Pos);
     }

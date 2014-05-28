@@ -163,7 +163,7 @@ void CMsgSignal::unListGetMessageIDs(UINT* omListId)
     POSITION pos = m_omMsgDetailsIDMap.GetStartPosition( );
     sMESSAGE* psTempMsgStruct;
     UINT unMsgKey;
-    for (int unMsgIndex = 0; unMsgIndex < nTotalMsgCount && pos != NULL; unMsgIndex++ )
+    for (int unMsgIndex = 0; unMsgIndex < nTotalMsgCount && pos != nullptr; unMsgIndex++ )
     {
         m_omMsgDetailsIDMap.GetNextAssoc(pos,unMsgKey,psTempMsgStruct);
         omListId[unMsgIndex] = psTempMsgStruct->m_unMessageCode;
@@ -229,10 +229,10 @@ CString CMsgSignal::omStrGetMessageNameFromMsgCode( UINT unMsgCode)
 
     if (unMsgCode >= 0)
     {
-        sMESSAGE* psMsgStruct = NULL;
+        sMESSAGE* psMsgStruct = nullptr;
         m_omMsgDetailsIDMap.Lookup(unMsgCode,psMsgStruct);
 
-        if(psMsgStruct != NULL)
+        if(psMsgStruct != nullptr)
         {
             strMsgName = psMsgStruct->m_omStrMessageName;
         }
@@ -247,10 +247,10 @@ CString CMsgSignal::omStrGetMessageLengthFromMsgCode( UINT unMsgCode)
 
     if (unMsgCode >= 0)
     {
-        sMESSAGE* psMsgStruct = NULL;
+        sMESSAGE* psMsgStruct = nullptr;
         m_omMsgDetailsIDMap.Lookup(unMsgCode,psMsgStruct);
 
-        if(psMsgStruct != NULL)
+        if(psMsgStruct != nullptr)
         {
             UINT nMsgLength = 0;
             nMsgLength = psMsgStruct->m_unMessageLength;
@@ -266,7 +266,7 @@ CString CMsgSignal::omStrGetMessageLengthFromMsgCode( UINT unMsgCode)
   Input(s)         :  UINT unMsgID
   Output           :  sMESSAGE*
   Functionality    :  Returns associted message pointer if found, otherwise
-                      NULL.
+                      nullptr.
   Member of        :  CMsgSignal
   Friend of        :      -
   Author(s)        :  Amitesh Bharti
@@ -276,7 +276,7 @@ CString CMsgSignal::omStrGetMessageLengthFromMsgCode( UINT unMsgCode)
 ******************************************************************************/
 sMESSAGE* CMsgSignal::psGetMessagePointer( UINT unMsgID)
 {
-    sMESSAGE* psMsgStruct = NULL;
+    sMESSAGE* psMsgStruct = nullptr;
     m_omMsgDetailsIDMap.Lookup(unMsgID,psMsgStruct);
     return psMsgStruct;
 }

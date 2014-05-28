@@ -39,7 +39,7 @@ Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
 Modifications  :
 ******************************************************************************/
-CTSEditorSettingsDlg::CTSEditorSettingsDlg(CWnd* /*pParent*/ /*=NULL*/)
+CTSEditorSettingsDlg::CTSEditorSettingsDlg(CWnd* /*pParent*/ /*=nullptr*/)
     : CDialog(CTSEditorSettingsDlg::IDD)
     , m_bQueryConfirm(FALSE)
 {

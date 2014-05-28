@@ -98,7 +98,7 @@ int CProjConfigManager::GetSectionCount(std::string ProjectName)
 {
     int nResult = 0;
 
-    CProjConfig* ProjConfig = NULL;
+    CProjConfig* ProjConfig = nullptr;
     if (GetProjectConfig(ProjectName, ProjConfig))
     {
         nResult = ProjConfig->GetSectionCount();
@@ -111,7 +111,7 @@ int CProjConfigManager::GetSectionList(std::string ProjectName, std::list<std::s
 {
     int nResult = 0;
 
-    CProjConfig* ProjConfig = NULL;
+    CProjConfig* ProjConfig = nullptr;
     if (GetProjectConfig(ProjectName, ProjConfig))
     {
         nResult = ProjConfig->GetSectionList(SectionList);
@@ -125,7 +125,7 @@ bool CProjConfigManager::GetSectionData(std::string ProjectName, std::string Sec
 {
     bool bResult = false;
 
-    CProjConfig* ProjConfig = NULL;
+    CProjConfig* ProjConfig = nullptr;
     if (GetProjectConfig(ProjectName, ProjConfig))
     {
         bResult = ProjConfig->GetSectionData(SectionName, Sectiondata);
@@ -138,7 +138,7 @@ bool CProjConfigManager::GetSectionData(std::string ProjectName, std::string Sec
 
 void CProjConfigManager::AddModifyProjDetail(const PROJECTDATA& NewProjData)
 {
-    CProjConfig* pProjConfig = NULL;
+    CProjConfig* pProjConfig = nullptr;
     if (GetProjectConfig(NewProjData.m_ProjectName, pProjConfig))
     {
         pProjConfig->ModifyProjValues(NewProjData);
@@ -157,7 +157,7 @@ bool CProjConfigManager::AddModifySection(std::string ProjectName,
 {
     bool bResult = false;
 
-    CProjConfig* ProjConfig = NULL;
+    CProjConfig* ProjConfig = nullptr;
     if (GetProjectConfig(ProjectName, ProjConfig))
     {
         bResult = ProjConfig->AddModifySectionDetail(SectionData);

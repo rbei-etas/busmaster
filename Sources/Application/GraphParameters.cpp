@@ -99,7 +99,7 @@ CGraphParameters::~CGraphParameters()
 BYTE* CGraphParameters::pbyGetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
 {
     BYTE* pbyTemp = pbyTrgtData;
-    if (pbyTemp != NULL)
+    if (pbyTemp != nullptr)
     {
         // Set the def
         COPY_DATA(pbyTemp, &m_nBufferSize, sizeof(int));
@@ -138,84 +138,84 @@ BYTE* CGraphParameters::pbyGetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
 void CGraphParameters::pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion)
 {
     // Writing Graphical parameters in to xml
-    xmlNodePtr pGrphParams = xmlNewNode(NULL, BAD_CAST DEF_GRAPH_PARAMETERS);
+    xmlNodePtr pGrphParams = xmlNewNode(nullptr, BAD_CAST DEF_GRAPH_PARAMETERS);
     xmlAddChild(pNodePtr, pGrphParams);
 
     // Writing buffersize in to xml
     CString strBufferSize = "";
     strBufferSize.Format("%d", m_nBufferSize);
 
-    xmlNodePtr pBufferSize = xmlNewChild(pGrphParams, NULL, BAD_CAST DEF_Buffer_Size, BAD_CAST strBufferSize.GetBuffer(strBufferSize.GetLength()));
+    xmlNodePtr pBufferSize = xmlNewChild(pGrphParams, nullptr, BAD_CAST DEF_Buffer_Size, BAD_CAST strBufferSize.GetBuffer(strBufferSize.GetLength()));
     xmlAddChild(pGrphParams, pBufferSize);
 
     // Writing Refresh rate in to xml
     CString strRefreshRate = "";
     strRefreshRate.Format("%d", m_nRefreshRate);
 
-    xmlNodePtr pRefrshRate = xmlNewChild(pGrphParams, NULL, BAD_CAST DEF_Refresh_Rate, BAD_CAST strRefreshRate.GetBuffer(strRefreshRate.GetLength()));
+    xmlNodePtr pRefrshRate = xmlNewChild(pGrphParams, nullptr, BAD_CAST DEF_Refresh_Rate, BAD_CAST strRefreshRate.GetBuffer(strRefreshRate.GetLength()));
     xmlAddChild(pGrphParams, pRefrshRate);
 
     // Writing Frame Color in to xml
     CString strFrameColor = "";
     strFrameColor.Format("%d", m_nFrameColor);
 
-    xmlNodePtr pFrameColor = xmlNewChild(pGrphParams, NULL, BAD_CAST DEF_Frame_Color, BAD_CAST strFrameColor.GetBuffer(strFrameColor.GetLength()));
+    xmlNodePtr pFrameColor = xmlNewChild(pGrphParams, nullptr, BAD_CAST DEF_Frame_Color, BAD_CAST strFrameColor.GetBuffer(strFrameColor.GetLength()));
     xmlAddChild(pGrphParams, pFrameColor);
 
     // Writing to Frame Style in to xml
     CString strFrameStyle = "";
     strFrameStyle.Format("%d", m_nFrameStyle);
 
-    xmlNodePtr pFrameStyle = xmlNewChild(pGrphParams, NULL, BAD_CAST DEF_Frame_Style, BAD_CAST strFrameStyle.GetBuffer(strFrameStyle.GetLength()));
+    xmlNodePtr pFrameStyle = xmlNewChild(pGrphParams, nullptr, BAD_CAST DEF_Frame_Style, BAD_CAST strFrameStyle.GetBuffer(strFrameStyle.GetLength()));
     xmlAddChild(pGrphParams, pFrameStyle);
 
     // Writing Plot area color in to xml
     CString strPltAreaClr = "";
     strPltAreaClr.Format("%d", m_nPlotAreaColor);
 
-    xmlNodePtr pPltAreaClr = xmlNewChild(pGrphParams, NULL, BAD_CAST DEF_Plot_Area_Color, BAD_CAST strPltAreaClr.GetBuffer(strPltAreaClr.GetLength()));
+    xmlNodePtr pPltAreaClr = xmlNewChild(pGrphParams, nullptr, BAD_CAST DEF_Plot_Area_Color, BAD_CAST strPltAreaClr.GetBuffer(strPltAreaClr.GetLength()));
     xmlAddChild(pGrphParams, pPltAreaClr);
 
     // Writing Grid color in to xml
     CString strGridClr = "";
     strGridClr.Format("%d", m_nGridColor);
 
-    xmlNodePtr pGridClr = xmlNewChild(pGrphParams, NULL, BAD_CAST DEF_Grid_Color, BAD_CAST strGridClr.GetBuffer(strGridClr.GetLength()));
+    xmlNodePtr pGridClr = xmlNewChild(pGrphParams, nullptr, BAD_CAST DEF_Grid_Color, BAD_CAST strGridClr.GetBuffer(strGridClr.GetLength()));
     xmlAddChild(pGrphParams, pGridClr);
 
     // Writing Axis Color in to xml
     CString strAxisClr = "";
     strAxisClr.Format("%d", m_nAxisColor);
 
-    xmlNodePtr pAxisClr = xmlNewChild(pGrphParams, NULL, BAD_CAST DEF_Axis_Color, BAD_CAST strAxisClr.GetBuffer(strAxisClr.GetLength()));
+    xmlNodePtr pAxisClr = xmlNewChild(pGrphParams, nullptr, BAD_CAST DEF_Axis_Color, BAD_CAST strAxisClr.GetBuffer(strAxisClr.GetLength()));
     xmlAddChild(pGrphParams, pAxisClr);
 
     // Writing XGridLines in to xml
     CString strXGrdAxisLines = "";
     strXGrdAxisLines.Format("%d", m_nXGridLines);
 
-    xmlNodePtr pXGrdAxisLines = xmlNewChild(pGrphParams, NULL, BAD_CAST DEF_X_Grid_Lines, BAD_CAST strXGrdAxisLines.GetBuffer(strXGrdAxisLines.GetLength()));
+    xmlNodePtr pXGrdAxisLines = xmlNewChild(pGrphParams, nullptr, BAD_CAST DEF_X_Grid_Lines, BAD_CAST strXGrdAxisLines.GetBuffer(strXGrdAxisLines.GetLength()));
     xmlAddChild(pGrphParams, pXGrdAxisLines);
 
     // Writing YGridLines in to xml
     CString strYGrdAxisLines = "";
     strYGrdAxisLines.Format("%d", m_nYGridLines);
 
-    xmlNodePtr pYGrdAxisLines = xmlNewChild(pGrphParams, NULL, BAD_CAST DEF_Y_Grid_Lines, BAD_CAST strYGrdAxisLines.GetBuffer(strYGrdAxisLines.GetLength()));
+    xmlNodePtr pYGrdAxisLines = xmlNewChild(pGrphParams, nullptr, BAD_CAST DEF_Y_Grid_Lines, BAD_CAST strYGrdAxisLines.GetBuffer(strYGrdAxisLines.GetLength()));
     xmlAddChild(pGrphParams, pYGrdAxisLines);
 
     // Writing Active Axis in to xml
     CString strActiveAxis = "";
     strActiveAxis.Format("%d", m_nActiveAxis);
 
-    xmlNodePtr pActiveAxis = xmlNewChild(pGrphParams, NULL, BAD_CAST DEF_Active_Axis, BAD_CAST strActiveAxis.GetBuffer(strActiveAxis.GetLength()));
+    xmlNodePtr pActiveAxis = xmlNewChild(pGrphParams, nullptr, BAD_CAST DEF_Active_Axis, BAD_CAST strActiveAxis.GetBuffer(strActiveAxis.GetLength()));
     xmlAddChild(pGrphParams, pActiveAxis);
 
     // Writing Action in to xml
     CString strAction = "";
     strAction.Format("%d", m_nAction);
 
-    xmlNodePtr pActionPtr = xmlNewChild(pGrphParams, NULL, BAD_CAST DEF_Selected_Action, BAD_CAST strAction.GetBuffer(strAction.GetLength()));
+    xmlNodePtr pActionPtr = xmlNewChild(pGrphParams, nullptr, BAD_CAST DEF_Selected_Action, BAD_CAST strAction.GetBuffer(strAction.GetLength()));
     xmlAddChild(pGrphParams, pActionPtr);
 
     // Writing Show Grid in to xml
@@ -231,7 +231,7 @@ void CGraphParameters::pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion)
     }
 
     // Writing show grid in to xml
-    xmlNodePtr pShwGridPtr = xmlNewChild(pGrphParams, NULL, BAD_CAST DEF_Show_Grid, BAD_CAST strShowGrid.GetBuffer(strShowGrid.GetLength()));
+    xmlNodePtr pShwGridPtr = xmlNewChild(pGrphParams, nullptr, BAD_CAST DEF_Show_Grid, BAD_CAST strShowGrid.GetBuffer(strShowGrid.GetLength()));
     xmlAddChild(pGrphParams, pShwGridPtr);
 
     if(byVersion == 2)
@@ -252,12 +252,12 @@ void CGraphParameters::pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion)
         }
 
         // Writing display type in to xml
-        xmlNodePtr pDisplayTypePtr = xmlNewChild(pGrphParams, NULL, BAD_CAST DEF_Display_Type, BAD_CAST strDisplayType.GetBuffer(strDisplayType.GetLength()));
+        xmlNodePtr pDisplayTypePtr = xmlNewChild(pGrphParams, nullptr, BAD_CAST DEF_Display_Type, BAD_CAST strDisplayType.GetBuffer(strDisplayType.GetLength()));
         xmlAddChild(pGrphParams, pDisplayTypePtr);
     }
 
     //BYTE* pbyTemp = pbyTrgtData;
-    //if (pbyTemp != NULL)
+    //if (pbyTemp != nullptr)
     //{
     //    // Set the def
     //    COPY_DATA(pbyTemp, &m_nBufferSize, sizeof(int));
@@ -295,16 +295,16 @@ void CGraphParameters::pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion)
 
 void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfigFiledoc)
 {
-    if(xmlConfigFiledoc != NULL)
+    if(xmlConfigFiledoc != nullptr)
     {
         pNodePtr = pNodePtr->xmlChildrenNode;
 
-        while(pNodePtr != NULL)
+        while(pNodePtr != nullptr)
         {
             if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Buffer_Size")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
 
                     m_nBufferSize = atoi((CString)ptext);
@@ -315,7 +315,7 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
             if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Refresh_Rate")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     m_nRefreshRate = atoi((CString)ptext);
                     xmlFree(ptext);
@@ -325,7 +325,7 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
             if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Frame_Color")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     m_nFrameColor = atoi((CString)ptext);
                     xmlFree(ptext);
@@ -335,7 +335,7 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
             if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Frame_Style")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     m_nFrameStyle = atoi((CString)ptext);
                     xmlFree(ptext);
@@ -345,7 +345,7 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
             if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Plot_Area_Color")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     m_nPlotAreaColor = atoi((CString)ptext);
                     xmlFree(ptext);
@@ -355,7 +355,7 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
             if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Grid_Color")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     m_nGridColor = atoi((CString)ptext);
                     xmlFree(ptext);
@@ -365,7 +365,7 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
             if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Axis_Color")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     m_nAxisColor = atoi((CString)ptext);
                     xmlFree(ptext);
@@ -375,7 +375,7 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
             if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"X_Grid_Lines")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     m_nXGridLines = atoi((CString)ptext);
                     xmlFree(ptext);
@@ -385,7 +385,7 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
             if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Y_Grid_Lines")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     m_nYGridLines = atoi((CString)ptext);
                     xmlFree(ptext);
@@ -395,7 +395,7 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
             if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Active_Axis")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     m_nActiveAxis = atoi((CString)ptext);
                     xmlFree(ptext);
@@ -405,7 +405,7 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
             if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Selected_Action")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     m_nAction = atoi((CString)ptext);
                     xmlFree(ptext);
@@ -415,7 +415,7 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
             if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Show_Grid")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     CString strSG = ptext;
                     if(strSG == "TRUE")
@@ -433,7 +433,7 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
             if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Display_Type")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     CString strDisplayType = ptext;
 
@@ -458,7 +458,7 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
         }
     }
     //BYTE* pbyTemp = pbyTrgtData;
-    //   if (pbyTemp != NULL)
+    //   if (pbyTemp != nullptr)
     //   {
     //       // Set the def
     //       COPY_DATA_2(&m_nBufferSize, pbyTemp, sizeof(int));
@@ -500,7 +500,7 @@ void CGraphParameters::pbySetConfigData(xmlNodePtr& pNodePtr, xmlDocPtr xmlConfi
 BYTE* CGraphParameters::pbySetConfigData(BYTE* pbyTrgtData, BYTE byVersion)
 {
     BYTE* pbyTemp = pbyTrgtData;
-    if (pbyTemp != NULL)
+    if (pbyTemp != nullptr)
     {
         // Set the def
         COPY_DATA_2(&m_nBufferSize, pbyTemp, sizeof(int));

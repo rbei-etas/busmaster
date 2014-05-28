@@ -47,7 +47,7 @@ CMsgSgTreeView::CMsgSgTreeView()
     m_omCurrDbName          = m_sDbParams.m_omDBPath;
     m_bIsNewMessage         = FALSE;
     m_omSelectedItemText    = STR_EMPTY;
-    m_hTreeItem             = NULL;
+    m_hTreeItem             = nullptr;
 }
 
 /**
@@ -100,7 +100,7 @@ BOOL CMsgSgTreeView::bPopulateTree()
 
     BOOL bReturnValue = TRUE;
 
-    CMsgSignal* pTempMsgSg = NULL;
+    CMsgSignal* pTempMsgSg = nullptr;
 
     pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
@@ -141,7 +141,7 @@ BOOL CMsgSgTreeView::bPopulateTree()
 
         BOOL bSelFirstChild = FALSE;
         // Insert all message names
-        while ( pos != NULL )
+        while ( pos != nullptr )
         {
             CString omStrMsgName = omMessageNames.GetNext(pos);
 
@@ -231,7 +231,7 @@ int CMsgSgTreeView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
     /*  m_pomToolTip = new CToolTipCtrl;
 
-    if ( m_pomToolTip != NULL && m_pomToolTip->Create( this ))
+    if ( m_pomToolTip != nullptr && m_pomToolTip->Create( this ))
     {
         // Associate tooltip to the tree ctrl
         GetTreeCtrl().SetToolTips( m_pomToolTip);
@@ -292,7 +292,7 @@ void CMsgSgTreeView::OnItemexpanding(NMHDR* pNMHDR, LRESULT* pResult)
     // Get selected item
     HTREEITEM hSelectedItem = pNMTreeView->itemNew.hItem;
 
-    if(pNMTreeView->action == TVE_EXPAND && hSelectedItem != NULL )
+    if(pNMTreeView->action == TVE_EXPAND && hSelectedItem != nullptr )
     {
         // if the item has child
         if (om_tree.ItemHasChildren(hSelectedItem))
@@ -356,7 +356,7 @@ void CMsgSgTreeView::vSetMessageName(CString omStrMsgName)
 
     HTREEITEM hItem = om_tree.GetSelectedItem();
 
-    if ( hItem != NULL )
+    if ( hItem != nullptr )
     {
         // for new message, insert the new message name under root
         if ( hItem == om_tree.GetRootItem() )
@@ -401,11 +401,11 @@ void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     CTreeCtrl& om_Tree = GetTreeCtrl();
     CMenu* m_pomContextMenu = new CMenu;
     HTREEITEM hSelectedItem = om_Tree.HitTest( m_omRightClickPoint, &uFlags );
-    CMsgSgDetView* pMsgSgDetView = NULL;
-    sMESSAGE* pMsg = NULL;
+    CMsgSgDetView* pMsgSgDetView = nullptr;
+    sMESSAGE* pMsg = nullptr;
     CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
-    if ( pMainFrm != NULL )
+    if ( pMainFrm != nullptr )
     {
         pMsgSgDetView =
             pMainFrm->podGetMsgSgDetView(m_sDbParams.m_eBus);
@@ -413,7 +413,7 @@ void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 
     if ( uFlags != TVHT_ONITEMICON && uFlags != TVHT_ONITEMLABEL )
     {
-        hSelectedItem = NULL ;
+        hSelectedItem = nullptr ;
     }
     else
     {
@@ -421,7 +421,7 @@ void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 
         // Display the selected message details in the
         // right view
-        CMsgSignal* pTempMsgSg = NULL;
+        CMsgSignal* pTempMsgSg = nullptr;
 
         pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
@@ -433,13 +433,13 @@ void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 
             // Get message pointer from the data structure
             // corresponding to the message selected name
-            if ( pMsgSgDetView != NULL )
+            if ( pMsgSgDetView != nullptr )
             {
                 pMsg =
                     pTempMsgSg->psGetMessagePointerInactive( omStrMsgName );
             }
 
-            if ( pMsg != NULL )
+            if ( pMsg != nullptr )
             {
                 // check if the controls in the form view are hidden
                 if ( pMsgSgDetView->bGetControlStatus() == TRUE )//  TRUE - Hidden
@@ -470,7 +470,7 @@ void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 
         CMenu* pomSubMenu = m_pomContextMenu->GetSubMenu(0);
 
-        if ( hParentItem == NULL && m_pomContextMenu != NULL ) // Selected item corresponds to root
+        if ( hParentItem == nullptr && m_pomContextMenu != nullptr ) // Selected item corresponds to root
         {
             pomSubMenu->EnableMenuItem(IDM_NEW_MSG, MF_BYCOMMAND | MF_ENABLED   );
             pomSubMenu->EnableMenuItem(IDM_DELETE_MSG, MF_BYCOMMAND | MF_DISABLED |MF_GRAYED );
@@ -489,10 +489,10 @@ void CMsgSgTreeView::OnRightClickTreeItem(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                                     m_omRightClickPoint.x,
                                     m_omRightClickPoint.y,
                                     this,
-                                    NULL);
+                                    nullptr);
     }
 
-    if (m_pomContextMenu != NULL )
+    if (m_pomContextMenu != nullptr )
     {
         delete m_pomContextMenu;
     }
@@ -548,7 +548,7 @@ void CMsgSgTreeView::OnDeleteMessage()
         return;
     }
 
-    if ( hItem != NULL )
+    if ( hItem != nullptr )
     {
         int nReturnVal = AfxMessageBox(_(MSG_DELETE_CONFMN), MB_YESNO|MB_ICONQUESTION);
 
@@ -558,9 +558,9 @@ void CMsgSgTreeView::OnDeleteMessage()
             CString omStrSelecetedText = om_tree.GetItemText(hItem);
 
             // Get appropriate msg pinter
-            CMsgSignal* pTempMsgSg = NULL;
+            CMsgSignal* pTempMsgSg = nullptr;
 
-            //CMsgSgDetView* pMsgSgDetView = NULL;
+            //CMsgSgDetView* pMsgSgDetView = nullptr;
 
             pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
@@ -571,7 +571,7 @@ void CMsgSgTreeView::OnDeleteMessage()
             }
             else
             {
-                m_hTreeItem = NULL;
+                m_hTreeItem = nullptr;
 
                 // Get previous sibbling item
                 HTREEITEM hPrevItem = om_tree.GetPrevSiblingItem( hItem );
@@ -579,19 +579,19 @@ void CMsgSgTreeView::OnDeleteMessage()
                 // Remove the item from the tree
                 om_tree.DeleteItem( hItem );
 
-                CMainFrame* pMainFrm = NULL;
+                CMainFrame* pMainFrm = nullptr;
 
                 pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
                 // Get form view pointer
-                CMsgSgDetView* pMsgSgDetView = NULL;
+                CMsgSgDetView* pMsgSgDetView = nullptr;
 
-                if(pMainFrm != NULL)
+                if(pMainFrm != nullptr)
                 {
                     pMsgSgDetView = pMainFrm->podGetMsgSgDetView(m_sDbParams.m_eBus);
                 }
 
-                if ( pMainFrm != NULL && hPrevItem != NULL )
+                if ( pMainFrm != nullptr && hPrevItem != nullptr )
                 {
                     // Select prev item
                     om_tree.SelectItem( hPrevItem );
@@ -602,7 +602,7 @@ void CMsgSgTreeView::OnDeleteMessage()
                     sMESSAGE* pMsg = pTempMsgSg->
                                      psGetMessagePointerInactive(omStrPrev);
 
-                    if ( pMsg != NULL && pMsgSgDetView != NULL )
+                    if ( pMsg != nullptr && pMsgSgDetView != nullptr )
                     {
                         pMsgSgDetView->vDisplayMsgSgInformation( pMsg );
                     }
@@ -660,7 +660,7 @@ void CMsgSgTreeView::vSetTextBold()
 
     HTREEITEM hItem = om_tree.GetSelectedItem();
 
-    if ( hItem != NULL )
+    if ( hItem != nullptr )
     {
         om_tree.SetItemState( hItem, TVIS_BOLD, TVIS_BOLD );
     }
@@ -673,7 +673,7 @@ void CMsgSgTreeView::vSetAllItemsNormal()
     // Show all of the visible items in NORMAL FONT.
     HTREEITEM hItem = om_tree.GetFirstVisibleItem();
 
-    while (hItem != NULL)
+    while (hItem != nullptr)
     {
         om_tree.SetItemState(hItem, FALSE, TVIS_BOLD);
         hItem = om_tree.GetNextVisibleItem(hItem);
@@ -693,7 +693,7 @@ void CMsgSgTreeView::OnInfoToolTip( NMHDR* /*pNMHDR*/, LRESULT* pResult )
 
         CToolInfo omInfo;
         CMainFrame* podFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
-        CWnd* pomWnd = NULL;
+        CWnd* pomWnd = nullptr;
 
         if (podFrm)
         {
@@ -725,13 +725,13 @@ void CMsgSgTreeView::OnEditMsg()
  */
 void CMsgSgTreeView::vAddEditMessage(BOOL bMode)
 {
-    CMsgSignal* pTempMsgSg = NULL;
+    CMsgSignal* pTempMsgSg = nullptr;
 
-    CMsgSgDetView* pMsgSgDetView = NULL;
+    CMsgSgDetView* pMsgSgDetView = nullptr;
 
     pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
-    sMESSAGE* pMsg =    NULL;
+    sMESSAGE* pMsg =    nullptr;
 
     // For Edit mode
     if ( bMode == TRUE )
@@ -744,7 +744,7 @@ void CMsgSgTreeView::vAddEditMessage(BOOL bMode)
             return;
         }
 
-        if (hItem != NULL)
+        if (hItem != nullptr)
         {
             CString omStr = omTree.GetItemText(hItem);
             pMsg =
@@ -754,7 +754,7 @@ void CMsgSgTreeView::vAddEditMessage(BOOL bMode)
     }
     // End Edit mode
 
-    CMessageDetailsDlg odMsgDlg(m_sDbParams, pMsg,NULL);
+    CMessageDetailsDlg odMsgDlg(m_sDbParams, pMsg,nullptr);
 
     if (odMsgDlg.DoModal() == IDOK )
     {
@@ -767,12 +767,12 @@ void CMsgSgTreeView::vAddEditMessage(BOOL bMode)
             pTempMsgSg->psGetMessagePointerInactive(odMsgDlg.m_omStrMessageName);
         CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
-        if ( pMainFrm != NULL )
+        if ( pMainFrm != nullptr )
         {
             pMsgSgDetView =
                 pMainFrm->podGetMsgSgDetView(m_sDbParams.m_eBus);
 
-            if ( pMsg != NULL && pMsgSgDetView != NULL )
+            if ( pMsg != nullptr && pMsgSgDetView != nullptr )
             {
                 // check if the controls in the form view are hidden
                 if ( pMsgSgDetView->bGetControlStatus() == TRUE )//  TRUE - Hidden
@@ -805,20 +805,20 @@ void CMsgSgTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
     // is missing. If yes,
     // don't let the user to select any item
     // from the tree view
-    CMsgSgDetView* pMsgSgDetView = NULL;
+    CMsgSgDetView* pMsgSgDetView = nullptr;
     CTreeCtrl& om_tree = GetTreeCtrl();
-    sMESSAGE* pMsg = NULL;
-    CMsgSignal* pTempMsgSg = NULL;
+    sMESSAGE* pMsg = nullptr;
+    CMsgSignal* pTempMsgSg = nullptr;
 
     pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
     CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
-    if ( pMainFrm != NULL )
+    if ( pMainFrm != nullptr )
     {
         pMsgSgDetView =
             pMainFrm->podGetMsgSgDetView(m_sDbParams.m_eBus);
 
-        if ( pMsgSgDetView != NULL)
+        if ( pMsgSgDetView != nullptr)
         {
             if ( pMsgSgDetView->bGetControlStatus() == FALSE )//  TRUE - Hidden
             {
@@ -840,7 +840,7 @@ void CMsgSgTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
                     pMsg = pTempMsgSg->psGetMessagePointerInactive(
                                pMsgSgDetView->m_omStrMessageName );
 
-                    if (pMsg != NULL)
+                    if (pMsg != nullptr)
                         pMsgSgDetView->m_omStrMessageCode.
                         Format( "%x", pMsg->m_unMessageCode);
 
@@ -854,7 +854,7 @@ void CMsgSgTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
     // Get handle to selected item
     HTREEITEM hSelectedItem = pNMTreeView->itemNew.hItem;
 
-    if ( (hSelectedItem != NULL) && (pMsgSgDetView != NULL) )
+    if ( (hSelectedItem != nullptr) && (pMsgSgDetView != nullptr) )
     {
         if ( !om_tree.ItemHasChildren(hSelectedItem))// only for message names
         {
@@ -867,7 +867,7 @@ void CMsgSgTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
             sMESSAGE* pMsg =
                 pTempMsgSg->psGetMessagePointerInactive( omStrMsgName );
 
-            if ( pMsg != NULL )
+            if ( pMsg != nullptr )
             {
                 // check if the controls in the form view are hidden
                 if ( pMsgSgDetView->bGetControlStatus() == TRUE )//  TRUE - Hidden

@@ -65,7 +65,7 @@ CGraphElement::~CGraphElement()
 BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData)
 {
     BYTE* pbyTemp = pbyTrgData;
-    if (pbyTemp != NULL)
+    if (pbyTemp != nullptr)
     {
         // Save properties one after another
         // Message ID
@@ -101,7 +101,7 @@ BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData)
 BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData)
 {
     BYTE* pbyTemp = pbyTrgData;
-    if (pbyTemp != NULL)
+    if (pbyTemp != nullptr)
     {
         // Save properties one after another
         // Message ID

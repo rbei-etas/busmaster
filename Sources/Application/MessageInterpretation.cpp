@@ -42,7 +42,7 @@ extern CCANMonitorApp theApp;
  Function Name  :   CMessageInterpretation
 
  Description    :
- Input(s)       :   CWnd* pParent =NULL, Pointer to parent window.
+ Input(s)       :   CWnd* pParent =nullptr, Pointer to parent window.
  Output         :   -
  Functionality  :   Default contructor
  Member of      :   CMessageInterpretation
@@ -52,7 +52,7 @@ extern CCANMonitorApp theApp;
  Modifications  :   Raja N
                     05/04/2004 Modified the color value to reduce the contrest
 ******************************************************************************/
-CMessageInterpretation::CMessageInterpretation(CWnd* pParent /*=NULL*/)
+CMessageInterpretation::CMessageInterpretation(CWnd* pParent /*=nullptr*/)
     : CDialog(CMessageInterpretation::IDD, pParent)
     , m_strCaption("  Message")
 {
@@ -62,7 +62,7 @@ CMessageInterpretation::CMessageInterpretation(CWnd* pParent /*=NULL*/)
     //}}AFX_DATA_INIT
 
     m_hBrushStatic = CreateSolidBrush(RGB(30, 60, 150));
-    m_hWndParent = NULL;
+    m_hWndParent = nullptr;
 }
 
 /******************************************************************************
@@ -127,7 +127,7 @@ void CMessageInterpretation::OnSize(UINT nType, int cx, int cy)
     {
         vResizeControls();
     }
-    ::PostMessage(m_hWndParent, WM_UPDATE_MSG_INTRP_WND_PLC , NULL, NULL);
+    ::PostMessage(m_hWndParent, WM_UPDATE_MSG_INTRP_WND_PLC, 0, 0);
 }
 /******************************************************************************
  Function Name  :   OnCtlColor
@@ -195,12 +195,12 @@ HBRUSH CMessageInterpretation::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void CMessageInterpretation::vResizeControls(void)
 {
     RECT WndClientRect, CtrlRect;
-    CStatic* pomStatic = NULL;
+    CStatic* pomStatic = nullptr;
 
     GetClientRect(&WndClientRect);
 
     /* Resize "Message" static control */
-    if ((pomStatic = (CStatic*) GetDlgItem(IDC_CAPTION)) != NULL)
+    if ((pomStatic = (CStatic*) GetDlgItem(IDC_CAPTION)) != nullptr)
     {
         pomStatic->GetWindowRect(&CtrlRect);
         ScreenToClient(&CtrlRect);
@@ -210,7 +210,7 @@ void CMessageInterpretation::vResizeControls(void)
     }
 
     /* Resize "Signal" static control */
-    if ((pomStatic = (CStatic*) GetDlgItem(IDC_CAPTION2)) != NULL)
+    if ((pomStatic = (CStatic*) GetDlgItem(IDC_CAPTION2)) != nullptr)
     {
         pomStatic->GetWindowRect(&CtrlRect);
         ScreenToClient(&CtrlRect);
@@ -376,7 +376,7 @@ void CMessageInterpretation::OnClose()
 {
     // TODO: Add your message handler code here and/or call default
     this->ShowWindow(SW_HIDE);
-    ::PostMessage(m_hWndParent, WM_UPDATE_MSG_INTRP_WND_PLC , NULL, NULL);
+    ::PostMessage(m_hWndParent, WM_UPDATE_MSG_INTRP_WND_PLC, 0, 0);
     //CDialog::OnClose();
 }
 /******************************************************************************
@@ -395,7 +395,7 @@ void CMessageInterpretation::OnClose()
 ******************************************************************************/
 BOOL CMessageInterpretation::DestroyWindow()
 {
-    if(m_hBrushStatic != NULL )
+    if(m_hBrushStatic != nullptr )
     {
         DeleteObject(m_hBrushStatic);
     }
@@ -695,5 +695,5 @@ void CMessageInterpretation::vClearWindowContent()
 void CMessageInterpretation::OnMove(int x, int y)
 {
     CDialog::OnMove(x, y);
-    ::PostMessage(m_hWndParent, WM_UPDATE_MSG_INTRP_WND_PLC , NULL, NULL);
+    ::PostMessage(m_hWndParent, WM_UPDATE_MSG_INTRP_WND_PLC, 0, 0);
 }

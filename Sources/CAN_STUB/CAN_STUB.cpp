@@ -81,12 +81,12 @@ BOOL CCAN_STUBApp::InitInstance()
    broker thread to the bus simulation component */
 static CRITICAL_SECTION sg_CSBroker;
 static HRESULT          sg_hResult          = S_FALSE;
-static HANDLE           sg_hNotifyFinish    = NULL;
-static STCAN_MSG*       sg_pouCanTxMsg      = NULL;
+static HANDLE           sg_hNotifyFinish    = nullptr;
+static STCAN_MSG*       sg_pouCanTxMsg      = nullptr;
 static SYSTEMTIME       sg_CurrSysTime      = {'\0'};
 static LARGE_INTEGER    sg_QueryTickCount;
 static UINT64           sg_TimeStampRef     = 0x0;
-static HWND             sg_hOwnerWnd        = NULL;
+static HWND             sg_hOwnerWnd        = nullptr;
 
 /**
  * Broker thread for the bus emulation
@@ -142,14 +142,14 @@ public:
     SCLIENTBUFMAP()
     {
         dwClientID = 0;
-        hClientHandle = NULL;
-        hPipeFileHandle = NULL;
+        hClientHandle = nullptr;
+        hPipeFileHandle = nullptr;
         unBufCount = 0;
         pacClientName = "";
 
         for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
-            pClientBuf[i] = NULL;
+            pClientBuf[i] = nullptr;
         }
     }
 };
@@ -166,12 +166,12 @@ static std::vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
  * Application buffer, logging interface and client id
  */
 static CPARAM_THREADPROC sg_sParmRThreadStub;
-static Base_WrapperErrorLogger* sg_pIlog   = NULL;
+static Base_WrapperErrorLogger* sg_pIlog   = nullptr;
 
 /* Starts definitions of static global variables */
 static USHORT sg_ushTempClientID = 0;
-static HANDLE sg_hTmpClientHandle = NULL;
-static HANDLE sg_hTmpPipeHandle = NULL;
+static HANDLE sg_hTmpClientHandle = nullptr;
+static HANDLE sg_hTmpPipeHandle = nullptr;
 /* Ends definitions of static global variables */
 
 
@@ -201,7 +201,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -227,7 +227,7 @@ public:
     HRESULT CAN_UnloadDriverLibrary(void);
 };
 
-static CDIL_CAN_STUB* sg_pouDIL_CAN_STUB = NULL;
+static CDIL_CAN_STUB* sg_pouDIL_CAN_STUB = nullptr;
 
 /**
  * \return S_OK for success, S_FALSE for failure
@@ -237,9 +237,9 @@ static CDIL_CAN_STUB* sg_pouDIL_CAN_STUB = NULL;
 USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 {
     HRESULT hResult = S_OK;
-    if ( NULL == sg_pouDIL_CAN_STUB )
+    if ( nullptr == sg_pouDIL_CAN_STUB )
     {
-        if ((sg_pouDIL_CAN_STUB = new CDIL_CAN_STUB) == NULL)
+        if ((sg_pouDIL_CAN_STUB = new CDIL_CAN_STUB) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -292,12 +292,12 @@ static void GetSystemErrorString()
                    FORMAT_MESSAGE_ALLOCATE_BUFFER |
                    FORMAT_MESSAGE_FROM_SYSTEM |
                    FORMAT_MESSAGE_IGNORE_INSERTS,
-                   NULL,
+                   nullptr,
                    GetLastError(),
                    MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
                    (LPTSTR) &lpMsgBuf,
                    0,
-                   NULL );
+                   nullptr );
     if (dwResult <= 0)
     {
         sg_acErrStr = _("system error message retrieval operation failed");
@@ -359,8 +359,8 @@ static void ProcessCanMsg(HANDLE hClientHandle, UINT unIndex)
     is so by implementation. Efficiency is the motivation behind. */
     BYTE abyData[SIZE_DAT_P] = {'\0'};
 
-    //if (ReadFile(hClientHandle, &sPipeCanMsg, SIZE_PIPE_CANMSG, &dwBytes, NULL))
-    if (ReadFile(hClientHandle, abyData, SIZE_DAT_P, &dwBytes, NULL))
+    //if (ReadFile(hClientHandle, &sPipeCanMsg, SIZE_PIPE_CANMSG, &dwBytes, nullptr))
+    if (ReadFile(hClientHandle, abyData, SIZE_DAT_P, &dwBytes, nullptr))
     {
         memcpy(&(sPipeCanMsg.m_byTxRxFlag), abyData, 1);
         memcpy(&(sPipeCanMsg.m_unTimeStamp), abyData + 1, SIZE_TIMESTAMP);
@@ -491,7 +491,7 @@ HRESULT CDIL_CAN_STUB::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger*
 
     if (GetCurrState() == STATE_PRIMORDIAL) // Only now this operation makes sense
     {
-        if ((pILog != NULL))
+        if ((pILog != nullptr))
         {
             sg_hOwnerWnd = hWndOwner;       // Owner window handle
             sg_pIlog = pILog;               // Log interface pointer
@@ -598,12 +598,12 @@ static BOOL bRemoveClient(DWORD dwClientId)
             if (hResult == S_OK)
             {
                 sg_asClientToBufMap[unClientIndex].dwClientID = 0;
-                sg_asClientToBufMap[unClientIndex].hClientHandle = NULL;
-                sg_asClientToBufMap[unClientIndex].hPipeFileHandle = NULL;
+                sg_asClientToBufMap[unClientIndex].hClientHandle = nullptr;
+                sg_asClientToBufMap[unClientIndex].hPipeFileHandle = nullptr;
                 sg_asClientToBufMap[unClientIndex].pacClientName = "";
                 for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                 {
-                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                 }
                 sg_asClientToBufMap[unClientIndex].unBufCount = 0;
                 bResult = TRUE;
@@ -697,7 +697,7 @@ HRESULT CDIL_CAN_STUB::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, char* 
 HRESULT CDIL_CAN_STUB::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
-    if (ClientID != NULL)
+    if (ClientID != 0)
     {
         UINT unClientIndex;
         if (bGetClientObj(ClientID, unClientIndex))
@@ -706,7 +706,7 @@ HRESULT CDIL_CAN_STUB::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBu
             if (bAction == MSGBUF_ADD)
             {
                 //Add msg buffer
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     if (sClientObj.unBufCount < MAX_BUFF_ALLOWED)
                     {
@@ -726,7 +726,7 @@ HRESULT CDIL_CAN_STUB::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBu
             {
                 //clear msg buffer
                 //clear msg buffer
-                if (pBufObj != NULL) //REmove only buffer mentioned
+                if (pBufObj != nullptr) //REmove only buffer mentioned
                 {
                     bRemoveClientBuffer(sClientObj.pClientBuf, sClientObj.unBufCount, pBufObj);
                 }
@@ -734,7 +734,7 @@ HRESULT CDIL_CAN_STUB::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBu
                 {
                     for (UINT i = 0; i < sClientObj.unBufCount; i++)
                     {
-                        sClientObj.pClientBuf[i] = NULL;
+                        sClientObj.pClientBuf[i] = nullptr;
                     }
                     sClientObj.unBufCount = 0;
                 }
@@ -757,7 +757,7 @@ HRESULT CDIL_CAN_STUB::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBu
             //clear msg buffer
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, nullptr);
             }
             hResult = S_OK;
         }
@@ -881,7 +881,7 @@ HRESULT CDIL_CAN_STUB::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& T
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = sg_TimeStampRef;
-    if(QueryTickCount != NULL)
+    if(QueryTickCount != nullptr)
     {
         *QueryTickCount = sg_QueryTickCount;
     }
@@ -903,12 +903,12 @@ HRESULT CDIL_CAN_STUB::CAN_PerformInitOperations(void)
     InitializeCriticalSection(&sg_CSBroker);
 
     // Create the notification event
-    sg_hNotifyFinish = CreateEvent(NULL, false, false, NULL);
-    if (NULL != sg_hNotifyFinish)
+    sg_hNotifyFinish = CreateEvent(nullptr, false, false, nullptr);
+    if (nullptr != sg_hNotifyFinish)
     {
         // Then create the broker worker thread
-        sg_sBrokerObjBusEmulation.m_hActionEvent = CreateEvent(NULL, false,
-                false, NULL);
+        sg_sBrokerObjBusEmulation.m_hActionEvent = CreateEvent(nullptr, false,
+                false, nullptr);
         ResetEvent(sg_sBrokerObjBusEmulation.m_hActionEvent);
         sg_sBrokerObjBusEmulation.m_unActionCode = INACTION;
         if (sg_sBrokerObjBusEmulation.bStartThread(BrokerThreadBusEmulation))
@@ -918,7 +918,7 @@ HRESULT CDIL_CAN_STUB::CAN_PerformInitOperations(void)
         else
         {
             CloseHandle(sg_hNotifyFinish);
-            sg_hNotifyFinish = NULL;
+            sg_hNotifyFinish = nullptr;
         }
     }
 
@@ -946,15 +946,15 @@ HRESULT CDIL_CAN_STUB::CAN_PerformClosureOperations(void)
     // Then terminate the broker thread
     sg_sBrokerObjBusEmulation.bTerminateThread();
     // Close the notification event
-    if (NULL != sg_hNotifyFinish)
+    if (nullptr != sg_hNotifyFinish)
     {
         CloseHandle(sg_hNotifyFinish);
-        sg_hNotifyFinish = NULL;
+        sg_hNotifyFinish = nullptr;
     }
     // Delete the critical section
     DeleteCriticalSection(&sg_CSBroker);
 
-    sg_pIlog = NULL;         // Log interface pointer
+    sg_pIlog = nullptr;         // Log interface pointer
 
     SetCurrState(STATE_PRIMORDIAL);
 
@@ -1055,12 +1055,12 @@ DWORD WINAPI BrokerThreadBusEmulation(LPVOID pVoid)
     //VALIDATE_POINTER_RETURN_VALUE_LOG(pThreadParam->m_hActionEvent, -1);
 
     // Get hold of the bus simulation and error logger interfaces
-    HRESULT hResult = CoInitialize(NULL);
+    HRESULT hResult = CoInitialize(nullptr);
 
-    ISimENG* pISimENG = NULL;
-    hResult = CoCreateInstance(CLSID_SimENG, NULL, CLSCTX_LOCAL_SERVER,
+    ISimENG* pISimENG = nullptr;
+    hResult = CoCreateInstance(CLSID_SimENG, nullptr, CLSCTX_LOCAL_SERVER,
                                IID_ISimENG, (LPVOID*) &pISimENG);
-    if ((S_OK != hResult) || (NULL == pISimENG))
+    if ((S_OK != hResult) || (nullptr == pISimENG))
     {
         return 0L;
     }
@@ -1140,7 +1140,7 @@ DWORD WINAPI BrokerThreadBusEmulation(LPVOID pVoid)
     //pISimENG->Release();
 
     // Reset the interface pointers
-    pISimENG = NULL;
+    pISimENG = nullptr;
 
     SetEvent(pThreadParam->hGetExitNotifyEvent());
 
@@ -1166,7 +1166,7 @@ HRESULT Worker_Connect(ISimENG* pISimENGLoc, Base_WrapperErrorLogger* pIlogLoc)
     sg_sParmRThreadStub.m_unActionCode = INVOKE_FUNCTION;
     if (sg_sParmRThreadStub.bStartThread(FlexMsgReadThreadProc_Stub) == FALSE)
     {
-        sg_sParmRThreadStub.m_hActionEvent = NULL;
+        sg_sParmRThreadStub.m_hActionEvent = nullptr;
         // Unregister from the simulation engine
         for (UINT i = 0; i < sg_unClientCnt; i++)
         {
@@ -1175,8 +1175,8 @@ HRESULT Worker_Connect(ISimENG* pISimENGLoc, Base_WrapperErrorLogger* pIlogLoc)
             sg_hTmpPipeHandle   = sg_asClientToBufMap[i].hPipeFileHandle;
             Worker_UnregisterClient(pISimENGLoc, pIlogLoc);
             sg_asClientToBufMap[i].dwClientID = 0;
-            sg_asClientToBufMap[i].hClientHandle = NULL;
-            sg_asClientToBufMap[i].hPipeFileHandle = NULL;
+            sg_asClientToBufMap[i].hClientHandle = nullptr;
+            sg_asClientToBufMap[i].hPipeFileHandle = nullptr;
         }
         sg_pIlog->vLogAMessage(__FILE__, __LINE__,
                                (_("Unable to start the reading thread")));
@@ -1325,10 +1325,10 @@ HRESULT Worker_RegisterClient(ISimENG* pISimENG, Base_WrapperErrorLogger* pIlog)
                             acPipeName,     // pipe name
                             GENERIC_READ,   // read access
                             0,              // no sharing
-                            NULL,           // no security attributes
+                            nullptr,           // no security attributes
                             OPEN_EXISTING,  // opens existing pipe
                             0,              // default attributes
-                            NULL);          // no template file
+                            nullptr);          // no template file
 
     if (sg_hTmpPipeHandle == INVALID_HANDLE_VALUE)
     {
@@ -1340,10 +1340,10 @@ HRESULT Worker_RegisterClient(ISimENG* pISimENG, Base_WrapperErrorLogger* pIlog)
     }
 
     sg_hTmpClientHandle = OpenEvent(EVENT_ALL_ACCESS, FALSE, acEventName);
-    if (sg_hTmpClientHandle == NULL)
+    if (sg_hTmpClientHandle == nullptr)
     {
         CloseHandle(sg_hTmpPipeHandle);
-        sg_hTmpPipeHandle = NULL;
+        sg_hTmpPipeHandle = nullptr;
         // Unregister from the simulation engine
         pISimENG->UnregisterClient(ushClientID);
         GetSystemErrorString();
@@ -1356,13 +1356,13 @@ HRESULT Worker_RegisterClient(ISimENG* pISimENG, Base_WrapperErrorLogger* pIlog)
 HRESULT Worker_UnregisterClient(ISimENG* pISimENG, Base_WrapperErrorLogger* /*pIlog*/)
 {
     // Close reading handle of the pipe from simulation engine
-    if (NULL != sg_hTmpPipeHandle)
+    if (nullptr != sg_hTmpPipeHandle)
     {
         CloseHandle(sg_hTmpPipeHandle);
-        sg_hTmpPipeHandle = NULL;
+        sg_hTmpPipeHandle = nullptr;
     }
 
-    if (NULL != pISimENG)
+    if (nullptr != pISimENG)
     {
         // Unregister from the simulation engine
         if (pISimENG->UnregisterClient(sg_ushTempClientID) == S_OK)
@@ -1371,7 +1371,7 @@ HRESULT Worker_UnregisterClient(ISimENG* pISimENG, Base_WrapperErrorLogger* /*pI
         }
     }
     // just make read event null, don't close it
-    sg_hTmpClientHandle = NULL;
+    sg_hTmpClientHandle = nullptr;
 
     //SetCurrState(STATE_RESET);
 

@@ -36,16 +36,16 @@
 DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         // TBD
     }
-    CMsgContainerBase* pCurrObj = NULL;
-    if(pThreadParam != NULL)
+    CMsgContainerBase* pCurrObj = nullptr;
+    if(pThreadParam != nullptr)
     {
         pCurrObj = (CMsgContainerBase*) pThreadParam->m_pBuffer;
     }
-    if (pCurrObj == NULL)
+    if (pCurrObj == nullptr)
     {
         // TBD
     }
@@ -96,7 +96,7 @@ DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
 
 CMsgContainerBase::CMsgContainerBase()
 {
-    m_pRxMsgCallBack  = NULL;
+    m_pRxMsgCallBack  = nullptr;
 }
 
 CMsgContainerBase::~CMsgContainerBase()

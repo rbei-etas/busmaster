@@ -23,7 +23,7 @@ class CJ1939TimeOutCfg : public CDialog
     DECLARE_DYNAMIC(CJ1939TimeOutCfg)
 
 public:
-    CJ1939TimeOutCfg(CWnd* pParent = NULL);   // standard constructor
+    CJ1939TimeOutCfg(CWnd* pParent = nullptr);   // standard constructor
     virtual BOOL OnInitDialog();
     virtual ~CJ1939TimeOutCfg();
 

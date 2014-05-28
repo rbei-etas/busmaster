@@ -36,7 +36,7 @@
 ///The one and only class object for VCI access.
 //  It will be created in the C-function GetIDIL_CAN_Controller
 //  and deleted in the ExitInstance function.
-static CDIL_CAN_IXXAT_VCI* g_pouDIL_CAN_IXXAT_VCI = NULL;
+static CDIL_CAN_IXXAT_VCI* g_pouDIL_CAN_IXXAT_VCI = nullptr;
 
 // The one and only CCAN_IXXAT_VCIApp object
 CCAN_IXXAT_VCIApp theApp;
@@ -93,7 +93,7 @@ CCAN_IXXAT_VCIApp::CCAN_IXXAT_VCIApp()
  *  true if it succeeds, false if it fails.
  *
  */
-static HINSTANCE ghLangInst=NULL;
+static HINSTANCE ghLangInst=nullptr;
 
 BOOL CCAN_IXXAT_VCIApp::InitInstance()
 {
@@ -137,11 +137,11 @@ BOOL CCAN_IXXAT_VCIApp::InitInstance()
  */
 int CCAN_IXXAT_VCIApp::ExitInstance( )
 {
-    if (NULL != g_pouDIL_CAN_IXXAT_VCI)
+    if (nullptr != g_pouDIL_CAN_IXXAT_VCI)
     {
 
         delete g_pouDIL_CAN_IXXAT_VCI;
-        g_pouDIL_CAN_IXXAT_VCI = NULL;
+        g_pouDIL_CAN_IXXAT_VCI = nullptr;
     }
 
 #ifdef _IXXAT_DEBUG
@@ -162,12 +162,12 @@ int CCAN_IXXAT_VCIApp::ExitInstance( )
 USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 //HRESULT __stdcall GetIDIL_CAN_Controller(void** ppvInterface)
 {
-    CoInitialize(NULL);
+    CoInitialize(nullptr);
 
     HRESULT hResult = S_OK;
-    if ( NULL == g_pouDIL_CAN_IXXAT_VCI )
+    if ( nullptr == g_pouDIL_CAN_IXXAT_VCI )
     {
-        if ((g_pouDIL_CAN_IXXAT_VCI = new CDIL_CAN_IXXAT_VCI) == NULL)
+        if ((g_pouDIL_CAN_IXXAT_VCI = new CDIL_CAN_IXXAT_VCI) == nullptr)
         {
             hResult = S_FALSE;
         }

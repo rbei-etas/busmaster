@@ -61,25 +61,25 @@ public:
     CPARAM_THREADPROC(void)
     {
         vInitialise();
-        m_hNotifyExit = CreateEvent(NULL, FALSE, FALSE, NULL);
-        //ASSERT(NULL != m_hNotifyExit);
+        m_hNotifyExit = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+        //ASSERT(nullptr != m_hNotifyExit);
 
-        m_hThread2Owner = CreateEvent(NULL, FALSE, FALSE, NULL);
-        //ASSERT(NULL != m_hThread2Owner);
+        m_hThread2Owner = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+        //ASSERT(nullptr != m_hThread2Owner);
 
-        m_hOwner2Thread = CreateEvent(NULL, FALSE, FALSE, NULL);
-        //ASSERT(NULL != m_hOwner2Thread);
+        m_hOwner2Thread = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+        //ASSERT(nullptr != m_hOwner2Thread);
     }
     ~CPARAM_THREADPROC(void)
     {
         CloseHandle(m_hNotifyExit);
-        m_hNotifyExit = NULL;
+        m_hNotifyExit = nullptr;
 
         CloseHandle(m_hThread2Owner);
-        m_hThread2Owner = NULL;
+        m_hThread2Owner = nullptr;
 
         CloseHandle(m_hOwner2Thread);
-        m_hOwner2Thread = NULL;
+        m_hOwner2Thread = nullptr;
     }
 
     BOOL bStartThread(LPTHREAD_START_ROUTINE NewThreadProc);

@@ -223,7 +223,7 @@ char* CFormatMsgJ1939::vFormatCurrErrorEntry(USHORT usErrorID)
         }
         nCount++;
     }
-    return NULL;
+    return nullptr;
 }
 
 /*******************************************************************************

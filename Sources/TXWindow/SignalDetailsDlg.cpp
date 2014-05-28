@@ -82,7 +82,7 @@ CSignalDetailsDlg::CSignalDetailsDlg(eMODES eMode,
                                      CString omStrMinVal/*""*/,
                                      CString omStrOffset/*""*/,
                                      CString omStrScale/*""*/,
-                                     CWnd* pParent /*=NULL*/)
+                                     CWnd* pParent /*=nullptr*/)
     : CDialog(CSignalDetailsDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CSignalDetailsDlg)
@@ -126,10 +126,10 @@ CSignalDetailsDlg::CSignalDetailsDlg(eMODES eMode,
 /******************************************************************************/
 CSignalDetailsDlg::CSignalDetailsDlg( eMODES eMode,
                                       sSIGNALS* psSigInfo,
-                                      CWnd* pParent /*=NULL*/)
+                                      CWnd* pParent /*=nullptr*/)
     : CDialog(CSignalDetailsDlg::IDD, pParent)
 {
-    if( psSigInfo != NULL)
+    if( psSigInfo != nullptr)
     {
         if( eMode == MD_READ_ONLY )
         {
@@ -260,7 +260,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
     // Set Byte order (m_nDataFormat)
     CButton* pRadioIntel = (CButton*)GetDlgItem(IDC_RADIO_INTEL);
     CButton* pRadioMotorola = (CButton*)GetDlgItem(IDC_RADIO_MOTOROLA);
-    if ((pRadioIntel != NULL) && (pRadioMotorola != NULL))
+    if ((pRadioIntel != nullptr) && (pRadioMotorola != nullptr))
     {
         if (m_nDataFormat == DATA_FORMAT_INTEL)
         {
@@ -303,87 +303,87 @@ BOOL CSignalDetailsDlg::OnInitDialog()
         m_odMaxValue.SetReadOnly();
 
         // Use control ID if control is not defined
-        CEdit* pomEdit = NULL;
+        CEdit* pomEdit = nullptr;
         // Unit edit box
         pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_UNIT));
-        if( pomEdit != NULL )
+        if( pomEdit != nullptr )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Name
         pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_SGNAME));
-        if( pomEdit != NULL )
+        if( pomEdit != nullptr )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Length
         pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_SGLEN));
-        if( pomEdit != NULL )
+        if( pomEdit != nullptr )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Byte Index
         pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_BYINDEX));
-        if( pomEdit != NULL )
+        if( pomEdit != nullptr )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Start Bit
         pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_STBIT));
-        if( pomEdit != NULL )
+        if( pomEdit != nullptr )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Length
         pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_SGLEN));
-        if( pomEdit != NULL )
+        if( pomEdit != nullptr )
         {
             pomEdit->SetReadOnly();
         }
-        // Init the pointer to NULL to avoid unknown access
-        pomEdit = NULL;
+        // Init the pointer to nullptr to avoid unknown access
+        pomEdit = nullptr;
         // These controls doesn't support read only property
         // So Disable these
-        CWnd* pomWnd = NULL;
+        CWnd* pomWnd = nullptr;
         // Signal Type Combobox
         pomWnd = GetDlgItem(IDC_COMB_SGTYPE);
-        if( pomWnd != NULL )
+        if( pomWnd != nullptr )
         {
             pomWnd->EnableWindow(FALSE);
         }
         // Signal Length Spin control
         pomWnd = GetDlgItem(IDC_SPIN_SGLENGTH);
-        if( pomWnd != NULL )
+        if( pomWnd != nullptr )
         {
             pomWnd->EnableWindow(FALSE);
         }
         // Signal Byte index Spin control
         pomWnd = GetDlgItem(IDC_SPIN_BYINDEX);
-        if( pomWnd != NULL )
+        if( pomWnd != nullptr )
         {
             pomWnd->EnableWindow(FALSE);
         }
         // Signal Bit index Spin control
         pomWnd = GetDlgItem(IDC_SPIN_BIT);
-        if( pomWnd != NULL )
+        if( pomWnd != nullptr )
         {
             pomWnd->EnableWindow(FALSE);
         }
         //Signal data format intel
         pomWnd = GetDlgItem(IDC_RADIO_INTEL);
-        if( pomWnd != NULL )
+        if( pomWnd != nullptr )
         {
             pomWnd->EnableWindow(FALSE);
         }
         //Signal data format motorola
         pomWnd = GetDlgItem(IDC_RADIO_MOTOROLA);
-        if( pomWnd != NULL )
+        if( pomWnd != nullptr )
         {
             pomWnd->EnableWindow(FALSE);
         }
         // Hide Ok Button
         pomWnd = GetDlgItem(IDOK);
-        if( pomWnd != NULL )
+        if( pomWnd != nullptr )
         {
             pomWnd->ShowWindow(SW_HIDE);
         }
@@ -391,7 +391,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
         // Now rename cancel button to "Close" and center the button
         CButton* pomCancelButton;
         pomCancelButton = (CButton*)GetDlgItem(IDCANCEL);
-        if( pomCancelButton != NULL )
+        if( pomCancelButton != nullptr )
         {
             pomCancelButton->SetWindowText(_(defSTR_CLOSE_MENU_TEXT));
             // Get the rect before centering
@@ -527,11 +527,11 @@ void CSignalDetailsDlg::OnOK()
         else if(bReturnFlag == TRUE)
         {
             // Get appropriate msg structure ptr
-            CMsgSignal* pTempMsgSg = NULL;
+            CMsgSignal* pTempMsgSg = nullptr;
 
             pTempMsgSg = m_pouMsgSgInactive;
 
-            if(pTempMsgSg != NULL)
+            if(pTempMsgSg != nullptr)
             {
                 if ( m_bNameChanged &&
                         (pTempMsgSg->bIsDuplicateSignalName( m_omStrMsgName,
@@ -576,7 +576,7 @@ void CSignalDetailsDlg::OnOK()
 
                 CMsgSignal::sSIGNALS* pSg = new CMsgSignal::sSIGNALS;
 
-                if ( pSg != NULL )
+                if ( pSg != nullptr )
                 {
                     pSg->m_eFormat = m_nDataFormat;
                     CString omStrSgType = "";
@@ -643,7 +643,7 @@ void CSignalDetailsDlg::OnOK()
 
                     delete pSg;
 
-                    pSg = NULL;
+                    pSg = nullptr;
                 }
                 else
                 {

@@ -27,12 +27,12 @@
 #include "WaveFormTransmitter.h"
 
 const float SINE_COEFF = (8 / (PI* PI));
-CPARAM_THREADPROC* pThreadParam = NULL; //declare global for termination in destructor
+CPARAM_THREADPROC* pThreadParam = nullptr; //declare global for termination in destructor
 
 // Start of helper functions
 BOOL CWaveformTransmitter::bIsWaveformSignalPresent(void)
 {
-    ASSERT(NULL != m_pWaveDataHandler);
+    ASSERT(nullptr != m_pWaveDataHandler);
     CStringArray arrSignalNames;
     m_pWaveDataHandler->vGetAllDefinedSignalsNames(arrSignalNames);
     return (m_pWaveDataHandler->nGetNumberOfDefinedSignals() > 0
@@ -129,9 +129,9 @@ BOOL CWaveformTransmitter::bGetSignalEntry(CString omSignalName,
 {
     BOOL bIsPresent = FALSE;
 
-    ASSERT(NULL != pomSigWaveList);
+    ASSERT(nullptr != pomSigWaveList);
     POSITION CurrSigPos = pomSigWaveList->GetHeadPosition();
-    while ((NULL != CurrSigPos) && (FALSE == bIsPresent))
+    while ((nullptr != CurrSigPos) && (FALSE == bIsPresent))
     {
         // Retrieve the present signal entry and query for the next one
         sSigWaveMap& ouCurrSig = pomSigWaveList->GetNext(CurrSigPos);
@@ -156,19 +156,19 @@ void CWaveformTransmitter::vProcessWaveForm(int CurrItr,int& iStep,eWAVEFORMTYPE
         6. Repeat steps 2 to 5 for the entire set of messages. */
 
     POSITION CurrMsgPos = m_omSigGenList.GetHeadPosition();
-    while (NULL != CurrMsgPos)
+    while (nullptr != CurrMsgPos)
     {
         // Retrieve the present entry and query for the next one
         SSigGeneration& ouCurrEntry = m_omSigGenList.GetNext(CurrMsgPos);
 
-        if(NULL == *m_ppouDBPtr)
+        if(nullptr == *m_ppouDBPtr)
         {
             break;
         }
 
         // Get message and signal details from database.
         sMESSAGE* psCurrMsg = (*m_ppouDBPtr)->psGetMessagePointer(ouCurrEntry.m_nMsgID);
-        if(NULL == psCurrMsg)
+        if(nullptr == psCurrMsg)
         {
             break;
         }
@@ -181,8 +181,8 @@ void CWaveformTransmitter::vProcessWaveForm(int CurrItr,int& iStep,eWAVEFORMTYPE
 
         // Iterate through the master signal list and query for each signal in
         // the waveform list.
-        sSIGNALS* psCurrSignal = NULL;
-        if(NULL == psCurrMsg->m_psSignals)
+        sSIGNALS* psCurrSignal = nullptr;
+        if(nullptr == psCurrMsg->m_psSignals)
         {
             break;
         }
@@ -193,7 +193,7 @@ void CWaveformTransmitter::vProcessWaveForm(int CurrItr,int& iStep,eWAVEFORMTYPE
 
         bool bSawtoothExists = false;
 
-        while (NULL != psCurrSignal)
+        while (nullptr != psCurrSignal)
         {
             // Search if it occurs in the waveform list.
             sSigWaveMap ouCurrSig;
@@ -231,7 +231,7 @@ void CWaveformTransmitter::vProcessWaveForm(int CurrItr,int& iStep,eWAVEFORMTYPE
         {
             /* Reloop for sending Sawtooth signals with value 0 */
             psCurrSignal = psCurrMsg->m_psSignals;
-            while (NULL != psCurrSignal)
+            while (nullptr != psCurrSignal)
             {
                 // Search if it occurs in the waveform list.
                 sSigWaveMap ouCurrSig;
@@ -271,10 +271,10 @@ Modification    :
 DWORD WINAPI TransmissionThreadProc(LPVOID pVoid)
 {
     pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    ASSERT(NULL != pThreadParam);
+    ASSERT(nullptr != pThreadParam);
 
     CWaveformTransmitter* pCurrObj = static_cast<CWaveformTransmitter*> (pThreadParam->m_pBuffer);
-    ASSERT(NULL != pCurrObj);
+    ASSERT(nullptr != pCurrObj);
 
     UINT SamplingRate = pCurrObj->shGetSamplingTimePeriod();
     int nIterLimit = pCurrObj->nGetIterationLimit();
@@ -298,12 +298,12 @@ DWORD WINAPI TransmissionThreadProc(LPVOID pVoid)
 
     // As thread parameter we need an auto-reset event.
     pThreadParam->m_unActionCode = INVOKE_FUNCTION;
-    pThreadParam->m_hActionEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+    pThreadParam->m_hActionEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 
     MMRESULT Result = timeSetEvent(SamplingRate, SamplingRate /*time.wPeriodMin*/,
-                                   (LPTIMECALLBACK) pThreadParam->m_hActionEvent, NULL,
+                                   (LPTIMECALLBACK) pThreadParam->m_hActionEvent, 0,
                                    TIME_CALLBACK_EVENT_SET | TIME_PERIODIC);
-    ASSERT(NULL != Result);
+    ASSERT(nullptr != Result);
 
     bool bLoopON = true;
     int i = 0;
@@ -357,7 +357,7 @@ DWORD WINAPI TransmissionThreadProc(LPVOID pVoid)
         Result = timeKillEvent(Result);
     }
 
-    pThreadParam = NULL; //thread terminated
+    pThreadParam = nullptr; //thread terminated
 
     return 0;
 }
@@ -368,18 +368,18 @@ CWaveformTransmitter::CWaveformTransmitter()
     m_bEnabled = FALSE;
     m_bTxON = FALSE;
     m_nIterLimit = 0;
-    m_pWaveDataHandler      = NULL;
-    m_pouDIL_CAN_Interface  = NULL;
-    m_ppouDBPtr             = NULL;
+    m_pWaveDataHandler      = nullptr;
+    m_pouDIL_CAN_Interface  = nullptr;
+    m_ppouDBPtr             = nullptr;
 }
 
 CWaveformTransmitter::~CWaveformTransmitter()
 {
     //terminate the thread if it is still running
-    while(pThreadParam != NULL)
+    while(pThreadParam != nullptr)
     {
         ::Sleep(10);
-        if(pThreadParam != NULL) //check for thread is terminated or not
+        if(pThreadParam != nullptr) //check for thread is terminated or not
         {
             pThreadParam->m_unActionCode = EXIT_THREAD;
             SetEvent(pThreadParam->hGetExitNotifyEvent());

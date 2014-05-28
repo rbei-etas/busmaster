@@ -46,11 +46,11 @@ CWaveFormDataHandler::~CWaveFormDataHandler(void)
 SSigGeneration* CWaveFormDataHandler::psGetMsgEntryFromList(UINT MsgID,
         CSigGenerationInfoList& omCurrList)
 {
-    SSigGeneration* Result = NULL;
+    SSigGeneration* Result = nullptr;
 
     POSITION Pos = omCurrList.GetHeadPosition();
 
-    while ((NULL != Pos) && (NULL == Result))
+    while ((nullptr != Pos) && (nullptr == Result))
     {
         SSigGeneration& CurrEntry = omCurrList.GetNext(Pos);
         if (CurrEntry.m_nMsgID == MsgID)
@@ -67,7 +67,7 @@ sWaveformInfo* CWaveFormDataHandler::psGetSignalEntryFromMsgEntry(
     sWaveformInfo* Result = FALSE;
 
     POSITION Pos = ouMsgEntry.m_omSigWaveMapList.GetHeadPosition();
-    while ((NULL != Pos) && (NULL == Result))
+    while ((nullptr != Pos) && (nullptr == Result))
     {
         sSigWaveMap& CurrWaveEntry = ouMsgEntry.m_omSigWaveMapList.GetNext(Pos);
         if (CurrWaveEntry.m_omSigName == omSignalName)
@@ -81,15 +81,15 @@ sWaveformInfo* CWaveFormDataHandler::psGetSignalEntryFromMsgEntry(
 sWaveformInfo* CWaveFormDataHandler::psGetSignalEntryFromList(UINT MsgID,
         CString omSignalName, CSigGenerationInfoList& omCurrList)
 {
-    sWaveformInfo* Result = NULL;
+    sWaveformInfo* Result = nullptr;
 
     SSigGeneration* psMsgEntry = psGetMsgEntryFromList(MsgID, omCurrList);
 
-    if (NULL != psMsgEntry)
+    if (nullptr != psMsgEntry)
     {
         POSITION Pos = psMsgEntry->m_omSigWaveMapList.GetHeadPosition();
 
-        while ((NULL != Pos) && (NULL == Result))
+        while ((nullptr != Pos) && (nullptr == Result))
         {
             sSigWaveMap& CurrEntry = psMsgEntry->m_omSigWaveMapList.GetNext(Pos);
             if (CurrEntry.m_omSigName == omSignalName)
@@ -120,7 +120,7 @@ float CWaveFormDataHandler::fGetMsgIDDefaultValue(UINT unMsgID)
 
     SSigGeneration* psMsgEntry = psGetMsgEntryFromList(unMsgID,
                                  m_lstTempSignalWaveformInfo);
-    if (NULL != psMsgEntry)
+    if (nullptr != psMsgEntry)
     {
         Result = psMsgEntry->m_fDefaultAmplitude;
     }
@@ -132,7 +132,7 @@ void CWaveFormDataHandler::vSetMsgIDDefaultValue(UINT unMsgID, float fDefaultVal
 {
     SSigGeneration* psMsgEntry = psGetMsgEntryFromList(unMsgID,
                                  m_lstTempSignalWaveformInfo);
-    if (NULL != psMsgEntry)
+    if (nullptr != psMsgEntry)
     {
         psMsgEntry->m_fDefaultAmplitude = fDefaultValue;
     }
@@ -145,7 +145,7 @@ BOOL CWaveFormDataHandler::bGetSignalWavePatternDetails(UINT unMsgID,
 
     sWaveformInfo* psWaveformEntry = psGetSignalEntryFromList(unMsgID,
                                      omSignalName, m_lstTempSignalWaveformInfo);
-    if (NULL != psWaveformEntry)
+    if (nullptr != psWaveformEntry)
     {
         sSigWaveInfo = *psWaveformEntry;
         Result = TRUE;
@@ -158,7 +158,7 @@ void CWaveFormDataHandler::vSetSignalWavePatternDetails(UINT unMsgID,
 {
     sWaveformInfo* psWaveformEntry = psGetSignalEntryFromList(unMsgID,
                                      omSignalName, m_lstTempSignalWaveformInfo);
-    if (NULL != psWaveformEntry)
+    if (nullptr != psWaveformEntry)
     {
         *psWaveformEntry = sSigWaveInfo;
     }
@@ -167,7 +167,7 @@ void CWaveFormDataHandler::vSetSignalWavePatternDetails(UINT unMsgID,
 BOOL CWaveFormDataHandler::bIsSignalInMsgIDDefined(UINT unMsgID, CString omSignalName)
 {
     return (psGetSignalEntryFromList(unMsgID, omSignalName,
-                                     m_lstTempSignalWaveformInfo) != NULL);
+                                     m_lstTempSignalWaveformInfo) != nullptr);
 }
 
 void CWaveFormDataHandler::vGetDefinedSignalsInMsgID(UINT unMsgID,
@@ -176,11 +176,11 @@ void CWaveFormDataHandler::vGetDefinedSignalsInMsgID(UINT unMsgID,
     SSigGeneration* Result = psGetMsgEntryFromList(
                                  unMsgID, m_lstTempSignalWaveformInfo);
 
-    if (NULL != Result)
+    if (nullptr != Result)
     {
         omDefinedSignals.RemoveAll();
         POSITION Pos = Result->m_omSigWaveMapList.GetHeadPosition();
-        while (NULL != Pos)
+        while (nullptr != Pos)
         {
             sSigWaveMap& SigEntry = Result->m_omSigWaveMapList.GetNext(Pos);
             omDefinedSignals.Add(SigEntry.m_omSigName);
@@ -191,11 +191,11 @@ void CWaveFormDataHandler::vGetDefinedSignalsInMsgID(UINT unMsgID,
 sSigWaveMap* CWaveFormDataHandler::psGetSignalEntry(
     CString omSignalName, CSigWaveMapList& omSigWaveList)
 {
-    sSigWaveMap* Result = NULL;
+    sSigWaveMap* Result = nullptr;
 
     POSITION Pos = omSigWaveList.GetHeadPosition();
 
-    while ((NULL != Pos) && (NULL == Result))
+    while ((nullptr != Pos) && (nullptr == Result))
     {
         sSigWaveMap& CurrEntry = omSigWaveList.GetNext(Pos);
         if (CurrEntry.m_omSigName == omSignalName)
@@ -212,7 +212,7 @@ BOOL CWaveFormDataHandler::bSetSignalWaveEntry(sSigWaveMap ouSignalEntry,
 {
     sSigWaveMap* psCurrEntry = psGetSignalEntry(ouSignalEntry.m_omSigName, omSigWaveList);
 
-    if (NULL == psCurrEntry)
+    if (nullptr == psCurrEntry)
     {
         omSigWaveList.AddTail(ouSignalEntry);
     }
@@ -235,7 +235,7 @@ BOOL CWaveFormDataHandler::bAddSignalToDefinedWavesList(UINT unMsgID,
     ouSignalWaveEntry.sWaveInfo.m_fGranularity =
         fCalculateGranularity(sSigWaveInfo, m_shSamplingTP);
 
-    if (NULL == psMsgEntry) // Msg entry doesn't exist. So add the same
+    if (nullptr == psMsgEntry) // Msg entry doesn't exist. So add the same
     {
         SSigGeneration ouNewMsgEntry;
         ouNewMsgEntry.m_nMsgID = unMsgID;
@@ -261,12 +261,12 @@ BOOL CWaveFormDataHandler::bRemoveSignalFromDefinedWavesList(
     ouCurrSigEntry.m_omSigName = omSignalName;
 
     POSITION PosMsg = m_lstTempSignalWaveformInfo.Find(ouCurrMsgEntry);
-    if (NULL != PosMsg)
+    if (nullptr != PosMsg)
     {
         SSigGeneration& ouCurrMsgEntryAlias = m_lstTempSignalWaveformInfo.GetAt(PosMsg);
 
         POSITION PosSig = ouCurrMsgEntryAlias.m_omSigWaveMapList.Find(ouCurrSigEntry);
-        if (NULL!= PosSig)
+        if (nullptr!= PosSig)
         {
             ouCurrMsgEntryAlias.m_omSigWaveMapList.RemoveAt(PosSig);
             if (ouCurrMsgEntryAlias.m_omSigWaveMapList.GetCount() == 0)// If the
@@ -304,7 +304,7 @@ UINT CWaveFormDataHandler::nGetNumberOfDefinedSignals(void)
 
     POSITION PosMsg = m_lstTempSignalWaveformInfo.GetHeadPosition();
 
-    while (NULL != PosMsg)
+    while (nullptr != PosMsg)
     {
         SSigGeneration& CurrMsgEntry = m_lstTempSignalWaveformInfo.GetNext(PosMsg);
         Result += CurrMsgEntry.m_omSigWaveMapList.GetCount();
@@ -318,12 +318,12 @@ void CWaveFormDataHandler::vGetAllDefinedSignalsNames(CStringArray& omSignalName
     omSignalNames.RemoveAll();  // First clear the destination buffer.
 
     POSITION PosMsg = m_lstTempSignalWaveformInfo.GetHeadPosition();
-    while (NULL != PosMsg)
+    while (nullptr != PosMsg)
     {
         SSigGeneration& ouCurrMsg = m_lstTempSignalWaveformInfo.GetNext(PosMsg);
 
         POSITION PosSig = ouCurrMsg.m_omSigWaveMapList.GetHeadPosition();
-        while (NULL != PosSig)
+        while (nullptr != PosSig)
         {
             sSigWaveMap& ouCurrSig = ouCurrMsg.m_omSigWaveMapList.GetNext(PosSig);
 
@@ -345,16 +345,16 @@ void CWaveFormDataHandler::vGetAllDefinedSignalsNames(CStringArray& omSignalName
 
 bool CWaveFormDataHandler::bIsSignalInMsgFoundInDB(UINT& nMsgID, CString& strSignalName)
 {
-    if (m_podMsgEntyList != NULL)
+    if (m_podMsgEntyList != nullptr)
     {
         SMAINENTRY sMainEntry;
         sMainEntry.m_unMainEntryID = nMsgID;
         POSITION pos = m_podMsgEntyList->Find(sMainEntry);
-        if ( pos != NULL)
+        if ( pos != nullptr)
         {
             sMainEntry = m_podMsgEntyList->GetAt(pos);
             POSITION SubPos = sMainEntry.m_odUnSelEntryList.GetHeadPosition();
-            while (SubPos != NULL)
+            while (SubPos != nullptr)
             {
                 SSUBENTRY& sSubEntry = sMainEntry.m_odUnSelEntryList.GetNext(SubPos);
 
@@ -390,11 +390,11 @@ void CWaveFormDataHandler::vSetSamplingTimePeriod(short shSamplingTimePeriod)
 
     // Recalculate granularity of each waveform entry
     POSITION Pos = m_lstTempSignalWaveformInfo.GetHeadPosition();
-    while (NULL != Pos)
+    while (nullptr != Pos)
     {
         SSigGeneration& CurrMsgEntry = m_lstTempSignalWaveformInfo.GetNext(Pos);
         POSITION SigPos = CurrMsgEntry.m_omSigWaveMapList.GetHeadPosition();
-        while (NULL != SigPos)
+        while (nullptr != SigPos)
         {
             sSigWaveMap& WaveEntry = CurrMsgEntry.m_omSigWaveMapList.GetNext(SigPos);
             WaveEntry.sWaveInfo.m_fGranularity =
@@ -435,30 +435,30 @@ HRESULT CWaveFormDataHandler::SetConfigData(xmlDocPtr pDoc)
     m_lstSignalWaveformInfo.RemoveAll();
     m_lstTempSignalWaveformInfo.RemoveAll();
     INT nRetVal = S_OK;
-    if( NULL != pDoc )
+    if( nullptr != pDoc )
     {
-        xmlXPathObjectPtr pOjectPath = NULL;
-        xmlNodePtr pNodePtr = NULL;
+        xmlXPathObjectPtr pOjectPath = nullptr;
+        xmlNodePtr pNodePtr = nullptr;
         xmlChar* pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Wave_Form_Genarator/WAVE_FORM";
 
         pOjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
-        if(pOjectPath != NULL)
+        if(pOjectPath != nullptr)
         {
             xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
             UINT nMsgCount = pNodeSet->nodeNr;
-            if(pNodeSet != NULL)
+            if(pNodeSet != nullptr)
             {
                 for(UINT i=0; i<nMsgCount; i++)
                 {
                     BOOL bMsgIdFound = FALSE;
                     SSigGeneration objSigGeneration;
                     xmlNodePtr pNode = pNodeSet->nodeTab[i]->children;
-                    while (pNode != NULL)
+                    while (pNode != nullptr)
                     {
                         if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Message_ID")))    //Reading Message ID.
                         {
                             xmlChar* key = xmlNodeListGetString(pDoc, pNode->xmlChildrenNode, 1);
-                            if(NULL != key)
+                            if(nullptr != key)
                             {
                                 objSigGeneration.m_nMsgID = atoi((char*)key);
                                 xmlFree(key);
@@ -468,7 +468,7 @@ HRESULT CWaveFormDataHandler::SetConfigData(xmlDocPtr pDoc)
                         if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Default_Amplitude")))     //Reading Default Amplitude.
                         {
                             xmlChar* key = xmlNodeListGetString(pDoc, pNode->xmlChildrenNode, 1);
-                            if(NULL != key)
+                            if(nullptr != key)
                             {
                                 objSigGeneration.m_fDefaultAmplitude = atof((char*)key);
                                 xmlFree(key);
@@ -502,16 +502,16 @@ HRESULT CWaveFormDataHandler::SetConfigData(xmlDocPtr pDoc)
         xmlChar* pXpath2 = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Wave_Form_Genarator/Default_Sampling_Period";
 
         pOjectPath = xmlUtils::pGetNodes(pDoc, pXpath2);
-        if(pOjectPath != NULL)
+        if(pOjectPath != nullptr)
         {
             xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
-            if(pNodeSet != NULL)
+            if(pNodeSet != nullptr)
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];
-                if(pNode != NULL)
+                if(pNode != nullptr)
                 {
                     xmlChar* key = xmlNodeListGetString(pDoc, pNode->xmlChildrenNode, 1);
-                    if(NULL != key)
+                    if(nullptr != key)
                     {
                         m_shSamplingTP = atoi((char*)key);
                         xmlFree((char*)key);
@@ -522,16 +522,16 @@ HRESULT CWaveFormDataHandler::SetConfigData(xmlDocPtr pDoc)
         }
         xmlChar* pXpath3 = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Wave_Form_Genarator/SignalDefiner_AutoCorrect";
         pOjectPath = xmlUtils::pGetNodes(pDoc, pXpath3);
-        if(pOjectPath != NULL)
+        if(pOjectPath != nullptr)
         {
             xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
-            if(pNodeSet != NULL)
+            if(pNodeSet != nullptr)
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];
-                if(pNode != NULL)
+                if(pNode != nullptr)
                 {
                     xmlChar* key = xmlNodeListGetString(pDoc, pNode->xmlChildrenNode, 1);
-                    if(NULL != key)
+                    if(nullptr != key)
                     {
                         m_bSignalDefinerAutoCorrect = (bool)atoi((char*)key);
                         xmlFree((char*)key);
@@ -541,7 +541,7 @@ HRESULT CWaveFormDataHandler::SetConfigData(xmlDocPtr pDoc)
             xmlXPathFreeObject(pOjectPath);
         }
     }
-    else if( pDoc == NULL || nRetVal == FALSE )   //Assign Default Values
+    else if( pDoc == nullptr || nRetVal == FALSE )   //Assign Default Values
     {
         m_sDefaultWaveInfo.m_eSignalWaveType = eWave_SINE;
         m_sDefaultWaveInfo.m_fAmplitude   = 10;
@@ -553,12 +553,12 @@ HRESULT CWaveFormDataHandler::SetConfigData(xmlDocPtr pDoc)
 int CWaveFormDataHandler::ParseSignalNode(xmlNodePtr pNode, sSigWaveMap& sSignalWave)
 {
     pNode = pNode->children;
-    while (pNode != NULL)
+    while (pNode != nullptr)
     {
         if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Name")))  //Reading Message ID.
         {
             xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 sSignalWave.m_omSigName = (char*)key;
                 xmlFree(key);
@@ -567,7 +567,7 @@ int CWaveFormDataHandler::ParseSignalNode(xmlNodePtr pNode, sSigWaveMap& sSignal
         else if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Wave_Type")))    //Reading Message ID.
         {
             xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 sSignalWave.sWaveInfo.m_eSignalWaveType = xmlUtils::eGetWaveType((char*)key);
                 xmlFree(key);
@@ -576,7 +576,7 @@ int CWaveFormDataHandler::ParseSignalNode(xmlNodePtr pNode, sSigWaveMap& sSignal
         else if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Amplitude")))    //Reading Message ID.
         {
             xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 sSignalWave.sWaveInfo.m_fAmplitude = atoi((char*)key);
                 xmlFree(key);
@@ -585,7 +585,7 @@ int CWaveFormDataHandler::ParseSignalNode(xmlNodePtr pNode, sSigWaveMap& sSignal
         else if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Frequency")))    //Reading Message ID.
         {
             xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 sSignalWave.sWaveInfo.m_fFrequency = atoi((char*)key);
                 xmlFree(key);
@@ -594,7 +594,7 @@ int CWaveFormDataHandler::ParseSignalNode(xmlNodePtr pNode, sSigWaveMap& sSignal
         else if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Granularity")))  //Reading Message ID.
         {
             xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 sSignalWave.sWaveInfo.m_fGranularity = atof((char*)key);
                 xmlFree(key);
@@ -611,7 +611,7 @@ HRESULT CWaveFormDataHandler::SetConfigData(BYTE* pvDataStream)
 
     BYTE* pByteTrgt = pvDataStream;
 
-    if (pByteTrgt != NULL)
+    if (pByteTrgt != nullptr)
     {
         BYTE byVer = 0;
         COPY_DATA_2(&byVer, pByteTrgt, sizeof(BYTE));
@@ -750,7 +750,7 @@ BOOL CWaveFormDataHandler::pbyGetListConfigData(xmlNodePtr pxmlNodePtr)
     while(pos)
     {
         //<WAVE_FORM>
-        xmlNodePtr pWaveForm = xmlNewNode(NULL, BAD_CAST DEF_WAVE_FORM);
+        xmlNodePtr pWaveForm = xmlNewNode(nullptr, BAD_CAST DEF_WAVE_FORM);
         xmlAddChild(pxmlNodePtr, pWaveForm);
 
         SSigGeneration& objSigGen = m_lstSignalWaveformInfo.GetNext(pos);
@@ -759,14 +759,14 @@ BOOL CWaveFormDataHandler::pbyGetListConfigData(xmlNodePtr pxmlNodePtr)
         CString csMsdID;
         csMsdID.Format("%d", objSigGen.m_nMsgID);
         omcVarChar = csMsdID;
-        xmlNodePtr pMsgID= xmlNewChild(pWaveForm, NULL, BAD_CAST DEF_MSG_ID, BAD_CAST omcVarChar);
+        xmlNodePtr pMsgID= xmlNewChild(pWaveForm, nullptr, BAD_CAST DEF_MSG_ID, BAD_CAST omcVarChar);
         xmlAddChild(pWaveForm, pMsgID);
 
         //<Default_Amplitude />
         CString csDefaultAmp;
         csDefaultAmp.Format("%f", objSigGen.m_fDefaultAmplitude);
         omcVarChar = csDefaultAmp;
-        xmlNodePtr pDefAmp= xmlNewChild(pWaveForm, NULL, BAD_CAST DEF_DEFAULT_AMPLITUDE, BAD_CAST omcVarChar);
+        xmlNodePtr pDefAmp= xmlNewChild(pWaveForm, nullptr, BAD_CAST DEF_DEFAULT_AMPLITUDE, BAD_CAST omcVarChar);
         xmlAddChild(pWaveForm, pDefAmp);
 
         POSITION posSig = objSigGen.m_omSigWaveMapList.GetHeadPosition();
@@ -775,12 +775,12 @@ BOOL CWaveFormDataHandler::pbyGetListConfigData(xmlNodePtr pxmlNodePtr)
             sSigWaveMap& objSigMap = objSigGen.m_omSigWaveMapList.GetNext(posSig);
 
             //<SIGNALS>
-            xmlNodePtr pSignals = xmlNewNode(NULL, BAD_CAST DEF_SIGNALS);
+            xmlNodePtr pSignals = xmlNewNode(nullptr, BAD_CAST DEF_SIGNALS);
             xmlAddChild(pWaveForm, pSignals);
 
             //<Name>
             omcVarChar = objSigMap.m_omSigName;
-            xmlNodePtr pName = xmlNewChild(pSignals, NULL, BAD_CAST DEF_NAME, BAD_CAST omcVarChar);
+            xmlNodePtr pName = xmlNewChild(pSignals, nullptr, BAD_CAST DEF_NAME, BAD_CAST omcVarChar);
             xmlAddChild(pSignals, pName);
 
             //<Wave_Type>
@@ -806,27 +806,27 @@ BOOL CWaveFormDataHandler::pbyGetListConfigData(xmlNodePtr pxmlNodePtr)
                 csWaveType = "SAWTOOTH";
             }
             omcVarChar = csWaveType;
-            xmlNodePtr pWaveType= xmlNewChild(pSignals, NULL, BAD_CAST DEF_WAVE_TYPE, BAD_CAST omcVarChar);
+            xmlNodePtr pWaveType= xmlNewChild(pSignals, nullptr, BAD_CAST DEF_WAVE_TYPE, BAD_CAST omcVarChar);
             xmlAddChild(pSignals, pWaveType);
             //<Amplitude>9</Amplitude>
             CString csAmp;
             csAmp.Format("%f", objSigMap.sWaveInfo.m_fAmplitude);
             omcVarChar = csAmp;
-            xmlNodePtr pAmp= xmlNewChild(pSignals, NULL, BAD_CAST DEF_AMPLITUDE, BAD_CAST omcVarChar);
+            xmlNodePtr pAmp= xmlNewChild(pSignals, nullptr, BAD_CAST DEF_AMPLITUDE, BAD_CAST omcVarChar);
             xmlAddChild(pSignals, pAmp);
 
             //<Frequency>100</Frequency>
             CString csFreq;
             csFreq.Format("%f", objSigMap.sWaveInfo.m_fFrequency);
             omcVarChar = csFreq;
-            xmlNodePtr pFreq= xmlNewChild(pSignals, NULL, BAD_CAST DEF_FREQUENCY, BAD_CAST omcVarChar);
+            xmlNodePtr pFreq= xmlNewChild(pSignals, nullptr, BAD_CAST DEF_FREQUENCY, BAD_CAST omcVarChar);
             xmlAddChild(pSignals, pFreq);
 
             //<Granularity>1</Granularity>
             CString csGranularity;
             csGranularity.Format("%f", objSigMap.sWaveInfo.m_fGranularity);
             omcVarChar = csGranularity;
-            xmlNodePtr pGranularity = xmlNewChild(pSignals, NULL, BAD_CAST DEF_GRANULARITY, BAD_CAST omcVarChar);
+            xmlNodePtr pGranularity = xmlNewChild(pSignals, nullptr, BAD_CAST DEF_GRANULARITY, BAD_CAST omcVarChar);
             xmlAddChild(pSignals, pGranularity);
         }
     }
@@ -835,13 +835,13 @@ BOOL CWaveFormDataHandler::pbyGetListConfigData(xmlNodePtr pxmlNodePtr)
     CString csDefSamplinPeriod;
     csDefSamplinPeriod.Format("%d", m_shSamplingTP);
     omcVarChar = csDefSamplinPeriod;
-    xmlNodePtr pDefSP= xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_DEF_SAMPLING_PERIOD, BAD_CAST omcVarChar);
+    xmlNodePtr pDefSP= xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_DEF_SAMPLING_PERIOD, BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pDefSP);
 
     CString csAutoCorrect;
     csAutoCorrect.Format("%d", m_bSignalDefinerAutoCorrect);
     omcVarChar = csAutoCorrect;
-    xmlNodePtr pAutoCorrect= xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_SIGDEF_AUTOCORRECT, BAD_CAST omcVarChar);
+    xmlNodePtr pAutoCorrect= xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_SIGDEF_AUTOCORRECT, BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pAutoCorrect);
     return true;
 }
@@ -890,7 +890,7 @@ void CWaveFormDataHandler::vGetCompleteMsgList(CStringArray& arrMsgList) const
 void CWaveFormDataHandler::vSetCompleteMsgList(CMainEntryList* podMsgIDList)
 {
     m_omMsgIDList.RemoveAll();
-    if (podMsgIDList != NULL)
+    if (podMsgIDList != nullptr)
     {
         m_podMsgEntyList = podMsgIDList;
         UINT unNoOfMainEntries = podMsgIDList->GetCount();
@@ -899,7 +899,7 @@ void CWaveFormDataHandler::vSetCompleteMsgList(CMainEntryList* podMsgIDList)
         {
             // Add every message name into the message list
             POSITION pos = podMsgIDList->GetHeadPosition();
-            while (pos != NULL)
+            while (pos != nullptr)
             {
                 SMAINENTRY& sMainEntry = podMsgIDList->GetNext(pos);
                 CString omMainEntryName = sMainEntry.m_omMainEntryName;
@@ -915,16 +915,16 @@ void CWaveFormDataHandler::vSetCompleteMsgList(CMainEntryList* podMsgIDList)
 void CWaveFormDataHandler::vGetAvailableSignalsInMsgID(UINT& nMsgID,
         CStringArray& arrAvailableSignals,bool bExcludeDefinedSignals)
 {
-    if (m_podMsgEntyList != NULL)
+    if (m_podMsgEntyList != nullptr)
     {
         SMAINENTRY sMainEntry;
         sMainEntry.m_unMainEntryID = nMsgID;
         POSITION pos = m_podMsgEntyList->Find(sMainEntry);
-        if ( pos != NULL)
+        if ( pos != nullptr)
         {
             sMainEntry = m_podMsgEntyList->GetAt(pos);
             POSITION SubPos = sMainEntry.m_odUnSelEntryList.GetHeadPosition();
-            while (SubPos != NULL)
+            while (SubPos != nullptr)
             {
                 SSUBENTRY& sSubEntry = sMainEntry.m_odUnSelEntryList.GetNext(SubPos);
 

@@ -42,13 +42,13 @@ UINT gunSendMsg_LIN(STLIN_MSG* psTxMsg, HMODULE hModule)
     sMsg.m_ucMsgID       = psTxMsg->m_ucMsgID;
     sMsg.m_ucMsgTyp      = psTxMsg->m_ucMsgTyp;
 
-    memset(sMsg.m_ucData, NULL, sMsg.m_ucDataLen);
+    memset(sMsg.m_ucData, 0, sMsg.m_ucDataLen);
     for(int j=0; j < 8; j++)
     {
         sMsg.m_ucData[j] = psTxMsg->m_ucData[j];
     }
 
-    if (pmCEexecuteFunc != NULL)
+    if (pmCEexecuteFunc != nullptr)
     {
         BOOL bMsgTxFlag = pmCEexecuteFunc->bGetMsgTxFlag();
         if (bMsgTxFlag)
@@ -116,16 +116,16 @@ BOOL gbStartStopHardware_LIN(BOOL bState)
 DWORD gdGetFirstLINdbName(char* cBuffer, DWORD /* size */)
 {
     strcpy(cBuffer,"");
-    //cBuffer = NULL;
+    //cBuffer = nullptr;
 
     if (CExecuteManager::bIsExist((ETYPE_BUS)LIN) == TRUE)
     {
-        POSITION        MainPos = NULL;
+        POSITION        MainPos = nullptr;
         //CAPL_DB_NAME_CHANGE
         //loop through the DB list to search in all the DB whether the message is present.
 
         MainPos =  CGlobalObj::ouGetObj((ETYPE_BUS)0).m_odMsgNameMsgCodeListDb.GetTailPosition();// get only CAN db
-        if(MainPos != NULL)         //if present stop searching
+        if(MainPos != nullptr)         //if present stop searching
         {
             SDB_NAME_MSG&  sDbNameMsg = CGlobalObj::ouGetObj((ETYPE_BUS)0).
                                         m_odMsgNameMsgCodeListDb.GetAt(MainPos);

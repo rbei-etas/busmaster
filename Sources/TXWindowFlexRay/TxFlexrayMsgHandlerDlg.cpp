@@ -20,7 +20,7 @@
 
 
 
-CFlexrayMsgHandlerDlg::CFlexrayMsgHandlerDlg(INT nChannel , CWnd* pParent /*=NULL*/)
+CFlexrayMsgHandlerDlg::CFlexrayMsgHandlerDlg(INT nChannel , CWnd* pParent /*=nullptr*/)
     : CDialog(CFlexrayMsgHandlerDlg::IDD, pParent)
 {
     m_nCurrentChannel = nChannel;
@@ -110,7 +110,7 @@ BOOL CFlexrayMsgHandlerDlg::OnInitDialog()
 
 
     // Associate Header control Image List
-    if( m_omHeaderImageList.m_hImageList == NULL )
+    if( m_omHeaderImageList.m_hImageList == nullptr )
     {
         m_omHeaderImageList.Create( IDR_BMP_CHECKBOX,
                                     16,
@@ -119,10 +119,10 @@ BOOL CFlexrayMsgHandlerDlg::OnInitDialog()
     }
     // Set the Image List
     // Only if it is sucessfully created
-    if( m_omHeaderImageList.m_hImageList != NULL )
+    if( m_omHeaderImageList.m_hImageList != nullptr )
     {
         CHeaderCtrl* pHeader = m_lstcMsgList.GetHeaderCtrl();
-        if( pHeader != NULL )
+        if( pHeader != nullptr )
         {
             pHeader->SetImageList( &m_omHeaderImageList );
             HDITEM hditem;
@@ -201,7 +201,7 @@ void CFlexrayMsgHandlerDlg::OnColumnclickLstcMsgDetails(NMHDR* pNMHDR, LRESULT* 
         BOOL bToBeChecked = FALSE;
         // Change header Control Image Index
         CHeaderCtrl* pHeader = m_lstcMsgList.GetHeaderCtrl();
-        if( pHeader != NULL )
+        if( pHeader != nullptr )
         {
             // Get Current Image Index
             HDITEM hditem;
@@ -227,7 +227,7 @@ void CFlexrayMsgHandlerDlg::OnColumnclickLstcMsgDetails(NMHDR* pNMHDR, LRESULT* 
                 /*CTxFunctionsView* pView = (CTxFunctionsView*)
                                           pomGetFunctionsViewPointer();
 
-                if( pView != NULL )
+                if( pView != nullptr )
                 {
                     if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
                     {

@@ -48,21 +48,21 @@ END_MESSAGE_MAP()
 //Modifications :   -
 //************************************************************************************/
 CTxMsgList::CTxMsgList(void)
-    : m_pWndEdit(NULL)
+    : m_pWndEdit(nullptr)
     , m_bAllowEdit(FALSE)
     , m_nSortCol(-1)
     , m_bSortAscending(TRUE)
 {
-    m_pWndEdit = NULL;
+    m_pWndEdit = nullptr;
 
     m_ptEditting.x = -1;
     m_ptEditting.y = -1;
     m_dwPrevEditFmt = ES_LEFT;
     m_ouColumnPropMap.clear();
 #if 0
-    CFRAME_BaseUIDoc* pDoc = NULL;
+    CFRAME_BaseUIDoc* pDoc = nullptr;
     CMDIChildWnd* pMDIActive = ((CMainFrame*)AfxGetMainWnd())->MDIGetActive();
-    if (pMDIActive == NULL)
+    if (pMDIActive == nullptr)
     {
         pDoc = (CFRAME_BaseUIDoc*)theApp.m_pTransmitViewTemplate->CreateNewDocument();
     }
@@ -71,25 +71,25 @@ CTxMsgList::CTxMsgList(void)
         pDoc = (CFRAME_BaseUIDoc*)pMDIActive->GetActiveDocument();
     }
 
-    if (pDoc == NULL)
+    if (pDoc == nullptr)
     {
         pDoc = ((CMainFrame*)AfxGetMainWnd())->m_pDoc;
     }
 
     _bstr_t bstrProjCfgName = _T("");
-    IProjectCfgHandlerPtr pProjCfgHandler = NULL;
+    IProjectCfgHandlerPtr pProjCfgHandler = nullptr;
     pProjCfgHandler = pDoc->m_oProjCfgHandler->GetProjCfgHandler();
-    ASSERT(pProjCfgHandler != NULL);
+    ASSERT(pProjCfgHandler != nullptr);
 
     pProjCfgHandler->MoveFirst();
     pProjCfgHandler->get_ProjectCfgByName(&bstrProjCfgName.GetBSTR());
 
-    IProjectCfgPtr pProjCfg = NULL;
+    IProjectCfgPtr pProjCfg = nullptr;
     pProjCfgHandler->get_ProjectCfgName(bstrProjCfgName, &pProjCfg);
-    ASSERT(pProjCfg != NULL);
+    ASSERT(pProjCfg != nullptr);
 
     pProjCfg->get_ProjCfg_MsgDisp(&m_pProjCfgMsgDisp);
-    ASSERT(m_pProjCfgMsgDisp != NULL);
+    ASSERT(m_pProjCfgMsgDisp != nullptr);
 #endif
 }
 
@@ -106,10 +106,10 @@ CTxMsgList::CTxMsgList(void)
 //************************************************************************************/
 CTxMsgList::~CTxMsgList(void)
 {
-    if(m_pWndEdit != NULL)
+    if(m_pWndEdit != nullptr)
     {
         delete m_pWndEdit;
-        m_pWndEdit =  NULL;
+        m_pWndEdit =  nullptr;
     }
     m_fntText.DeleteObject();
 }
@@ -405,19 +405,19 @@ BOOL CTxMsgList::StartEdit(int nItem, int nSubItem)
     if(nSubItem == TX_COLUMN_MESSAGE_ID || nSubItem == TX_COLUMN_CYCLE_NO
             || nSubItem == TX_COLUMN_DATA_LENGTH || nSubItem == TX_COLUMN_DATA_BYTES)
     {
-        if(m_pWndEdit != NULL)
+        if(m_pWndEdit != nullptr)
         {
             delete m_pWndEdit;
-            m_pWndEdit =  NULL;
+            m_pWndEdit =  nullptr;
         }
         m_pWndEdit = new CHexEdit;
     }
     else if( nSubItem == TX_COLUMN_DESCRIPTION) //For Hexa-Decimal column types
     {
-        if(m_pWndEdit != NULL)
+        if(m_pWndEdit != nullptr)
         {
             delete m_pWndEdit;
-            m_pWndEdit =  NULL;
+            m_pWndEdit =  nullptr;
         }
         m_pWndEdit = new CEdit;
     }
@@ -437,7 +437,7 @@ BOOL CTxMsgList::StartEdit(int nItem, int nSubItem)
         // sometimes and fails other times. It just cannot guarantee to be succeed.
         // So I decided to destroy and recreate the CEdit every time when the text
         // format changes.
-        if (m_pWndEdit->GetSafeHwnd() != NULL)
+        if (m_pWndEdit->GetSafeHwnd() != nullptr)
         {
             m_pWndEdit->DestroyWindow();
         }
@@ -449,7 +449,7 @@ BOOL CTxMsgList::StartEdit(int nItem, int nSubItem)
     }
     else
     {
-        if (m_pWndEdit->GetSafeHwnd() == NULL
+        if (m_pWndEdit->GetSafeHwnd() == nullptr
                 && !m_pWndEdit->Create(ES_AUTOHSCROLL | ES_NOHIDESEL | WS_CHILD | WS_BORDER | FMT, CRect(0, 0, 1, 1), this, 0))
         {
             return FALSE;
@@ -466,7 +466,7 @@ BOOL CTxMsgList::StartEdit(int nItem, int nSubItem)
 
     CRect rcEdit;
     ListView_GetSubItemRect(GetSafeHwnd(), m_ptEditting.x, m_ptEditting.y, LVIR_LABEL, &rcEdit);
-    if (m_ptEditting.y > 0 && GetImageList() != NULL && GetItemImage(m_ptEditting.x, m_ptEditting.y) >= 0)
+    if (m_ptEditting.y > 0 && GetImageList() != nullptr && GetItemImage(m_ptEditting.x, m_ptEditting.y) >= 0)
     {
         rcEdit.DeflateRect(16, 0, 0, 0);
     }
@@ -931,7 +931,7 @@ BOOL CTxMsgList::PreTranslateMessage(MSG* pMsg)
                 {
                     EndEdit(TRUE);
                     HWND hwnd = GetParent()->m_hWnd;
-                    ::SendMessage(hwnd,WM_TX_EDIT_COMPLETE ,NULL,NULL);
+                    ::SendMessage(hwnd,WM_TX_EDIT_COMPLETE, 0, 0);
                 }
                 return TRUE;
 
@@ -998,10 +998,10 @@ void CTxMsgList::OnNMClick(NMHDR* pNMHDR, LRESULT* pResult)
     CString omFrameData = "";
     CString omFibexId   = "";
     int nFibexCount = 0;
-    //IFibex* pFibex  =  NULL;
+    //IFibex* pFibex  =  nullptr;
     int nFrameLength = 0;
     CString omFrameLength = "";
-    //IFrames *pFrame = NULL;
+    //IFrames *pFrame = nullptr;
     int nFrameCount = 0;
     NMITEMACTIVATE* pNMListView = reinterpret_cast<NMITEMACTIVATE*>(pNMHDR);
 
@@ -1038,7 +1038,7 @@ void CTxMsgList::OnNMClick(NMHDR* pNMHDR, LRESULT* pResult)
                         /// Get the FibexKey
 
                         CMainFrame *pMainFrame = (CMainFrame * ) AfxGetMainWnd();
-                        if ( pMainFrame->m_pFibexHan != NULL )
+                        if ( pMainFrame->m_pFibexHan != nullptr )
                         {
                             // Get Fibex Count
                             nFibexCount = pMainFrame->m_pFibexHan->GetCount();
@@ -1046,16 +1046,16 @@ void CTxMsgList::OnNMClick(NMHDR* pNMHDR, LRESULT* pResult)
                             {
                                 pMainFrame->m_pFibexHan->MoveFirst();
                                 pFibex = pMainFrame->m_pFibexHan->GetByIterator();
-                                if(pFibex != NULL )
+                                if(pFibex != nullptr )
                                 {
                                     CHex_Block_EditorDlg oHexBlockEditorDLG(pFibex,omFrameId,omFrameData);
                                     INT_PTR nResult = oHexBlockEditorDLG.DoModal();
                                     if( nResult == IDOK )
                                     {
                                     } /// nResult == IDOK
-                                } //pFibex != NULL
+                                } //pFibex != nullptr
                             } // nFibexCount > 0
-                        }// pMainFrame->m_pFibexHan != NULL
+                        }// pMainFrame->m_pFibexHan != nullptr
                     }
                     break;
         */
@@ -1110,12 +1110,12 @@ CComboBox* CTxMsgList::ShowCombo(int nItem, int nSubItem, const CStringArray& om
     // Make sure that the item is visible
     if( !EnsureVisible(nItem, TRUE))
     {
-        return NULL;
+        return nullptr;
     }
 
     if(bIsChangeable(nItem,nSubItem) == false)
     {
-        return NULL;
+        return nullptr;
     }
     // Get the size of the list item
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
@@ -1151,7 +1151,7 @@ CComboBox* CTxMsgList::ShowCombo(int nItem, int nSubItem, const CStringArray& om
                      WS_VSCROLL | CBS_SORT | CBS_DROPDOWNLIST;
 
     // Create the non editable combobox
-    CListComboBox* pomCBox = NULL;
+    CListComboBox* pomCBox = nullptr;
 
     // Create the control
     pomCBox = new CListComboBox(  nItem,        // Item Index
@@ -1159,7 +1159,7 @@ CComboBox* CTxMsgList::ShowCombo(int nItem, int nSubItem, const CStringArray& om
                                   omList,       // Lsit of strings
                                   strFind,      // Selected Text
                                   FALSE);       // Editing is FALSE
-    if( pomCBox != NULL )
+    if( pomCBox != nullptr )
     {
         // Create the UI
         pomCBox->Create(dwStyle, omRect, this, IDC_CONTROL);
@@ -1199,17 +1199,17 @@ CComboBox* CTxMsgList::ShowCombo(int nItem, int nSubItem, const CStringArray& om
 int CTxMsgList::CalcHorzExtent(CWnd* pWnd, CStringList* pList)
 {
     int nExtent=0;
-    if(pWnd!=NULL)
+    if(pWnd!=nullptr)
     {
         CDC* pDC = pWnd->GetDC();
         HFONT hFont = (HFONT)pWnd->SendMessage(WM_GETFONT); //why not pWnd->GetFont();..I like the send thing alot and
         CFont* pFont = CFont::FromHandle(hFont);            //this way I get to use this function..cool :)
-        if(pFont!=NULL)                                     //ya what ever makes me happy,.right :}
+        if(pFont!=nullptr)                                     //ya what ever makes me happy,.right :}
         {
             CFont* pOldFont = pDC->SelectObject(pFont);
             CSize newExtent;
             POSITION pos = pList->GetHeadPosition();
-            while(pos != NULL)
+            while(pos != nullptr)
             {
                 CString str(pList->GetNext(pos));
                 newExtent = pDC->GetTextExtent(str);
@@ -1245,7 +1245,7 @@ void CTxMsgList::OnLvnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
     LV_ITEM* pItem = &(pDispInfo)->item;
 
     if( pItem->iItem != -1 &&  // valid item
-            pItem->pszText != NULL)       // valid text
+            pItem->pszText != nullptr)       // valid text
     {
         // Update the list text
         SetItemText( pItem->iItem, pItem->iSubItem, pItem->pszText);
@@ -1355,13 +1355,13 @@ void CTxMsgList::MeasureItem (LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
 
     TEXTMETRIC tm;
-    HDC hDC = ::GetDC(NULL);
+    HDC hDC = ::GetDC(nullptr);
     CFont* pFont = GetFont();
     HFONT hFontOld = (HFONT)SelectObject(hDC, pFont->GetSafeHandle());
     GetTextMetrics(hDC, &tm);
     lpMeasureItemStruct->itemHeight = tm.tmHeight + tm.tmExternalLeading + 1;
     SelectObject(hDC, hFontOld);
-    ::ReleaseDC(NULL, hDC);
+    ::ReleaseDC(nullptr, hDC);
 }
 
 //********************************************************************************

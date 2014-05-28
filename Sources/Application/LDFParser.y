@@ -11,7 +11,7 @@ extern "C" int yylex();
 extern "C" int yyparse(void);
 extern "C" char* yytext;
 
-CParserHelper *g_obParserHelper = NULL;
+CParserHelper *g_obParserHelper = nullptr;
 void yyerror(const char * /* str */)
 {
 }
@@ -23,20 +23,20 @@ extern "C" int yywrap()
 extern "C" int  nParseLDFFile(std::string strInputFile, CHANNEL_CONFIG& ouCluster)
 {
 	FILE *fpInputFile = fopen(strInputFile.c_str(), "r");
-	if( (NULL != fpInputFile) )
+	if( (nullptr != fpInputFile) )
 	{ 
-		if ( g_obParserHelper == NULL )
+		if ( g_obParserHelper == nullptr )
 		{
 			g_obParserHelper = new CParserHelper(ouCluster);
 		}
 		yyin = fpInputFile;
-		yyout = NULL;
+		yyout = nullptr;
 		yyparse();
 
-		if ( g_obParserHelper != NULL )
+		if ( g_obParserHelper != nullptr )
 		{
 			delete g_obParserHelper;
-			g_obParserHelper = NULL;
+			g_obParserHelper = nullptr;
 		}
 
 	}
@@ -236,7 +236,7 @@ Unconditional_Frame_Def_Int:
 	IDENTIFIER COLONE FLOAT IDENTIFIER FLOAT OPENBRACE
 	{
 		g_obParserHelper->OnSectionStarted(SEC_FRAME_DEF);
-		int nId = strtoul((char*)$3, NULL, 10);
+		int nId = strtoul((char*)$3, nullptr, 10);
 		g_obParserHelper->OnFrameStarted((char*)$1, nId, (char*)$4, (char*)$5 );
 		//fprintf(yyout, "Frame are %s\n", $1);
 	}
@@ -244,7 +244,7 @@ Unconditional_Frame_Def_Hex:
 	IDENTIFIER COLONE HEXNUMBER IDENTIFIER FLOAT OPENBRACE
 	{
 		g_obParserHelper->OnSectionStarted(SEC_FRAME_DEF);
-		int nId = strtoul((char*)$3, NULL, 16);
+		int nId = strtoul((char*)$3, nullptr, 16);
 		g_obParserHelper->OnFrameStarted((char*)$1, nId, (char*)$4, (char*)$5 );
 		//fprintf(yyout, "Frame are %s\n", $1);
 	}
@@ -307,7 +307,7 @@ Diagnostic_Frame_Start:
 Diagnostic_Frame_Start_DEC:
 	IDENTIFIER COLONE FLOAT OPENBRACE
 	{
-		int nId = strtoul((char*)$3, NULL, 10);
+		int nId = strtoul((char*)$3, nullptr, 10);
 		g_obParserHelper->OnFrameStarted((char*)$1, nId, "", "" );
 		//fprintf(yyout, "Diag Frame is %s\n", $1);
 		g_obParserHelper->OnSectionStarted(SEC_DIAG_FRAME_DEF);
@@ -315,7 +315,7 @@ Diagnostic_Frame_Start_DEC:
 Diagnostic_Frame_Start_HEX:
 	IDENTIFIER COLONE HEXNUMBER OPENBRACE
 	{
-		int nId = strtoul((char*)$3, NULL, 16);
+		int nId = strtoul((char*)$3, nullptr, 16);
 		g_obParserHelper->OnFrameStarted((char*)$1, nId, "", "" );
 		//fprintf(yyout, "Diag Frame is %s\n", $1);
 		g_obParserHelper->OnSectionStarted(SEC_DIAG_FRAME_DEF);

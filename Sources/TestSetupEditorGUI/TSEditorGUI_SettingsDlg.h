@@ -39,7 +39,7 @@ public:
     // Dialog Data
     enum { IDD = IDD_SETTINGS};
 public:
-    CTSEditorSettingsDlg(CWnd* pParent = NULL);   // standard constructor
+    CTSEditorSettingsDlg(CWnd* pParent = nullptr);   // standard constructor
     virtual ~CTSEditorSettingsDlg();
     afx_msg void OnBnClickedDefault();
 

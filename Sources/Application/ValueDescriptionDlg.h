@@ -38,7 +38,7 @@ public:
                             CString omStrMessageCode,
                             CString omStrSgName,
                             INT nIndex,
-                            CWnd* pParent = NULL );
+                            CWnd* pParent = nullptr );
 
     // Dialog Data
     //{{AFX_DATA(CValueDescriptionDlg)

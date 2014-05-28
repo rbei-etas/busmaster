@@ -30,7 +30,7 @@ class CDLLHandlerDlg : public CDialog
 public:
     CStringArray m_omStrArrayDLLHandler;
 
-    CDLLHandlerDlg(BYTE byType, CFunctionEditorDoc* pDoc, CWnd* pParent = NULL, BOOL bIsDelete = FALSE);   // standard constructor
+    CDLLHandlerDlg(BYTE byType, CFunctionEditorDoc* pDoc, CWnd* pParent = nullptr, BOOL bIsDelete = FALSE);   // standard constructor
 
     // Dialog Data
     //{{AFX_DATA(CDLLHandlerDlg)

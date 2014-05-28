@@ -48,8 +48,8 @@ Friend of        :      -
 Author(s)        :  Harika M
 Date Created     :  27-12-2005
 *****************************************************************************/
-CNodeDetailsDlg::CNodeDetailsDlg(ETYPE_BUS eBus, PSNODEINFO pNode /*=NULL*/,
-                                 CWnd* pParent /*=NULL*/)
+CNodeDetailsDlg::CNodeDetailsDlg(ETYPE_BUS eBus, PSNODEINFO pNode /*=nullptr*/,
+                                 CWnd* pParent /*=nullptr*/)
     : CDialog(CNodeDetailsDlg::IDD, pParent)
 
 {
@@ -141,9 +141,9 @@ BOOL CNodeDetailsDlg::OnInitDialog()
         }
     }
 
-    // If Not NULL, mode is Edit,
+    // If Not nullptr, mode is Edit,
     // Fill the dialog with the node details
-    if (m_psNodeStuctPtr != NULL && m_bEdit )
+    if (m_psNodeStuctPtr != nullptr && m_bEdit )
     {
         m_omStrNodeName  = m_psNodeStuctPtr->m_omStrNodeName;
         m_omStrDllPath   = m_psNodeStuctPtr->m_omStrDllName;
@@ -359,7 +359,7 @@ void CNodeDetailsDlg::OnBrowse()
     // Display open file dialog
     // which will allow the user to select
     // only .dll files
-    if((m_psNodeStuctPtr != NULL) &&(m_psNodeStuctPtr->m_bIsDllLoaded))
+    if((m_psNodeStuctPtr != nullptr) &&(m_psNodeStuctPtr->m_bIsDllLoaded))
     {
         AfxMessageBox("Dll is already Loaded! Unload it first and try again.",
                       MB_OK|MB_ICONINFORMATION);
@@ -367,12 +367,12 @@ void CNodeDetailsDlg::OnBrowse()
     else
     {
         CFileDialog om_Dlg( TRUE,  //open an existing file
-                            NULL,  //extension to file
+                            nullptr,  //extension to file
                             "",  //initial file name
                             OFN_FILEMUSTEXIST| OFN_HIDEREADONLY|
                             OFN_PATHMUSTEXIST,
                             "Dll Files(*.dll)|*.dll||",
-                            NULL );
+                            nullptr );
         // Set caption text
         om_Dlg.m_ofn.lpstrTitle = "Select the Dll";
 

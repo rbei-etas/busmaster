@@ -61,7 +61,7 @@ public:
     // To set int 64 value
     void SetPos(__int64 val);
     // To set the formatting string depending on the mode and type
-    void vSetFormatString (LPCTSTR lpszFormatString = NULL);
+    void vSetFormatString (LPCTSTR lpszFormatString = nullptr);
     // To set the type Signed or Not
     void vSetSigned(BOOL bIsSigned);
     // To set the type Int or Float

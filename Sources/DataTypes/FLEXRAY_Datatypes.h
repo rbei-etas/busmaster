@@ -41,8 +41,8 @@ typedef struct tagSCALCEXECTIMETHREAD
     tagSCALCEXECTIMETHREAD()
     {
         m_bThreadStop  = FALSE;
-        m_pomThreadPtr = NULL;
-        m_pTxLINDataStore = NULL;
+        m_pomThreadPtr = nullptr;
+        m_pTxLINDataStore = nullptr;
     }
 } SCALCEXECTIMETHREAD,*PSCALCEXECTIMETHREAD;
 typedef enum MSGBUFTYPE

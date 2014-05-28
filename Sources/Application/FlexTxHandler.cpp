@@ -72,12 +72,12 @@ PFSETCHANNELCONFIG          pfSetChannelConfig;
 
 CFlexTxHandler::CFlexTxHandler(void)
 {
-    m_hTxHandle = NULL;
+    m_hTxHandle = nullptr;
 }
 
 CFlexTxHandler::~CFlexTxHandler(void)
 {
-    if ( m_hTxHandle != NULL )
+    if ( m_hTxHandle != nullptr )
     {
         FreeLibrary(m_hTxHandle);
     }
@@ -95,10 +95,10 @@ CFlexTxHandler::~CFlexTxHandler(void)
 *******************************************************************************/
 void CFlexTxHandler::vLoadTx_DLL()
 {
-    if ( m_hTxHandle != NULL )
+    if ( m_hTxHandle != nullptr )
     {
         FreeLibrary(m_hTxHandle);
-        m_hTxHandle = NULL;
+        m_hTxHandle = nullptr;
     }
     m_hTxHandle = LoadLibrary("TXWindowFlexRay.dll");
     vloadFuncPtrAddress();
@@ -116,26 +116,26 @@ void CFlexTxHandler::vLoadTx_DLL()
 *******************************************************************************/
 void CFlexTxHandler::vInitializeFuncPtrs()
 {
-    pfFlexSetMsgDBPtrInDetailsView      = NULL;
-    pfFlexShowConfigureMsgWindow        = NULL;
-    pfFlexSetClientId                   = NULL;
-    pfFlexSetDILInterfacePtr            = NULL;
-    pfFlexPostMessageToTxWnd            = NULL;
-    pfFlexConfigWindowShown             = NULL;
-    pfFlexStartTransmission             = NULL;
-    pfFlexAllocateMemoryForGlobalTxList = NULL;
-    pfFlexAssignMsgBlockList            = NULL;
-    pfFlexDeleteTxBlockMemory           = NULL;
-    pfFlexStopTransmission              = NULL;
-    pfFlexGetTxWndConfigData            = NULL;
-    pfFlexSetTxWndConfigData            = NULL;
-    //pfIsTxWndConfigChanged            = NULL;
-    pfFlexSetTxStopFlag                 = NULL;
-    pfFlexGetTxStopFlag                 = NULL;
-    pfFlexFileChanged                   = NULL;
-    pfUpdateFibexConfig                 = NULL;
-    pfBusStatusChanged                  = NULL;
-    pfSetChannelConfig                  = NULL;
+    pfFlexSetMsgDBPtrInDetailsView      = nullptr;
+    pfFlexShowConfigureMsgWindow        = nullptr;
+    pfFlexSetClientId                   = nullptr;
+    pfFlexSetDILInterfacePtr            = nullptr;
+    pfFlexPostMessageToTxWnd            = nullptr;
+    pfFlexConfigWindowShown             = nullptr;
+    pfFlexStartTransmission             = nullptr;
+    pfFlexAllocateMemoryForGlobalTxList = nullptr;
+    pfFlexAssignMsgBlockList            = nullptr;
+    pfFlexDeleteTxBlockMemory           = nullptr;
+    pfFlexStopTransmission              = nullptr;
+    pfFlexGetTxWndConfigData            = nullptr;
+    pfFlexSetTxWndConfigData            = nullptr;
+    //pfIsTxWndConfigChanged            = nullptr;
+    pfFlexSetTxStopFlag                 = nullptr;
+    pfFlexGetTxStopFlag                 = nullptr;
+    pfFlexFileChanged                   = nullptr;
+    pfUpdateFibexConfig                 = nullptr;
+    pfBusStatusChanged                  = nullptr;
+    pfSetChannelConfig                  = nullptr;
 }
 
 /*******************************************************************************
@@ -178,7 +178,7 @@ void CFlexTxHandler::vloadFuncPtrAddress()
 
 void CFlexTxHandler::vBusStatusChanged(ETYPE_BUS eBusType, ESTATUS_BUS eBusStatus)
 {
-    if ( pfBusStatusChanged != NULL )
+    if ( pfBusStatusChanged != nullptr )
     {
         pfBusStatusChanged(eBusType, eBusStatus);
     }
@@ -198,7 +198,7 @@ void CFlexTxHandler::vBusStatusChanged(ETYPE_BUS eBusType, ESTATUS_BUS eBusStatu
 *******************************************************************************/
 void CFlexTxHandler::vSetMsgDBPtrInDetailsView(void* pMsgDB)
 {
-    if(pfFlexSetMsgDBPtrInDetailsView != NULL)
+    if(pfFlexSetMsgDBPtrInDetailsView != nullptr)
     {
         pfFlexSetMsgDBPtrInDetailsView(pMsgDB);
     }
@@ -216,7 +216,7 @@ void CFlexTxHandler::vSetMsgDBPtrInDetailsView(void* pMsgDB)
 *******************************************************************************/
 void CFlexTxHandler::vShowConfigureMsgWindow(void* pParentWnd, ETYPE_BUS eBUS)
 {
-    if(pfFlexShowConfigureMsgWindow != NULL)
+    if(pfFlexShowConfigureMsgWindow != nullptr)
     {
         pfFlexShowConfigureMsgWindow(pParentWnd, eBUS);
     }
@@ -234,7 +234,7 @@ void CFlexTxHandler::vShowConfigureMsgWindow(void* pParentWnd, ETYPE_BUS eBUS)
 *******************************************************************************/
 void CFlexTxHandler::vSetClientID(ETYPE_BUS eBusType,  DWORD dwClientID)
 {
-    if(pfFlexSetClientId != NULL)
+    if(pfFlexSetClientId != nullptr)
     {
         pfFlexSetClientId(eBusType, dwClientID);
     }
@@ -252,7 +252,7 @@ void CFlexTxHandler::vSetClientID(ETYPE_BUS eBusType,  DWORD dwClientID)
 *******************************************************************************/
 void CFlexTxHandler::vSetDILInterfacePtr(ETYPE_BUS eBusType, void* pDilInterface)
 {
-    if(pfFlexSetDILInterfacePtr != NULL)
+    if(pfFlexSetDILInterfacePtr != nullptr)
     {
         pfFlexSetDILInterfacePtr(eBusType, pDilInterface );
     }
@@ -270,7 +270,7 @@ void CFlexTxHandler::vSetDILInterfacePtr(ETYPE_BUS eBusType, void* pDilInterface
 *******************************************************************************/
 void CFlexTxHandler::vFlexFileChanged()
 {
-    if(pfFlexFileChanged != NULL)
+    if(pfFlexFileChanged != nullptr)
     {
         pfFlexFileChanged();
     }
@@ -288,7 +288,7 @@ void CFlexTxHandler::vFlexFileChanged()
 *******************************************************************************/
 void CFlexTxHandler::vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    if(pfFlexPostMessageToTxWnd != NULL)
+    if(pfFlexPostMessageToTxWnd != nullptr)
     {
         pfFlexPostMessageToTxWnd(msg, wParam, lParam);
     }
@@ -308,7 +308,7 @@ HRESULT CFlexTxHandler::hConfigWindowShown(ETYPE_BUS eBusType)
 {
     HRESULT hResult = S_FALSE;
 
-    if(pfFlexConfigWindowShown != NULL)
+    if(pfFlexConfigWindowShown != nullptr)
     {
         hResult = pfFlexConfigWindowShown(eBusType);
     }
@@ -328,7 +328,7 @@ HRESULT CFlexTxHandler::hConfigWindowShown(ETYPE_BUS eBusType)
 *******************************************************************************/
 void CFlexTxHandler::vStartTransmission(UCHAR ucKeyVal)
 {
-    if(pfFlexStartTransmission != NULL)
+    if(pfFlexStartTransmission != nullptr)
     {
         pfFlexStartTransmission(ucKeyVal);
     }
@@ -348,7 +348,7 @@ HRESULT CFlexTxHandler::hAllocateMemoryForGlobalTxList()
 {
     HRESULT hResult = S_OK;
 
-    if(pfFlexAllocateMemoryForGlobalTxList != NULL)
+    if(pfFlexAllocateMemoryForGlobalTxList != nullptr)
     {
         hResult = pfFlexAllocateMemoryForGlobalTxList();
     }
@@ -368,7 +368,7 @@ HRESULT CFlexTxHandler::hAllocateMemoryForGlobalTxList()
 *******************************************************************************/
 void CFlexTxHandler::vAssignMsgBlockList()
 {
-    if(pfFlexAssignMsgBlockList != NULL)
+    if(pfFlexAssignMsgBlockList != nullptr)
     {
         pfFlexAssignMsgBlockList();
     }
@@ -386,7 +386,7 @@ void CFlexTxHandler::vAssignMsgBlockList()
 *******************************************************************************/
 void CFlexTxHandler::vDeleteTxBlockMemory()
 {
-    if(pfFlexDeleteTxBlockMemory != NULL)
+    if(pfFlexDeleteTxBlockMemory != nullptr)
     {
         pfFlexDeleteTxBlockMemory();
     }
@@ -404,7 +404,7 @@ void CFlexTxHandler::vDeleteTxBlockMemory()
 *******************************************************************************/
 void CFlexTxHandler::vStopTransmission(UINT unMaxWaitTime)
 {
-    if(pfFlexStopTransmission != NULL)
+    if(pfFlexStopTransmission != nullptr)
     {
         pfFlexStopTransmission(unMaxWaitTime);
     }
@@ -421,7 +421,7 @@ void CFlexTxHandler::vStopTransmission(UINT unMaxWaitTime)
 *******************************************************************************/
 void CFlexTxHandler::vGetTxWndConfigData(ETYPE_BUS eBusType, xmlNodePtr pxmlNodePtr)
 {
-    if(pfFlexGetTxWndConfigData != NULL)
+    if(pfFlexGetTxWndConfigData != nullptr)
     {
         pfFlexGetTxWndConfigData(eBusType, pxmlNodePtr);
     }
@@ -453,14 +453,14 @@ void CFlexTxHandler::vGetTxWndConfigData(BYTE * & /* pDesBuffer */, int & /* nBu
 *******************************************************************************/
 void CFlexTxHandler::vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize)
 {
-    if(pfFlexSetTxWndConfigData != NULL)
+    if(pfFlexSetTxWndConfigData != nullptr)
     {
         pfFlexSetTxWndConfigData(pSrcBuffer,nBuffSize);
     }
 }
 void CFlexTxHandler::vSetTxWndConfigData( ETYPE_BUS eBusType, xmlDocPtr pDoc)
 {
-    if(pfFlexSetTxWndConfigDataXML != NULL)
+    if(pfFlexSetTxWndConfigDataXML != nullptr)
     {
         pfFlexSetTxWndConfigDataXML(eBusType, pDoc);
     }
@@ -479,7 +479,7 @@ void CFlexTxHandler::vSetTxWndConfigData( ETYPE_BUS eBusType, xmlDocPtr pDoc)
 HRESULT CFlexTxHandler::hIsTxWndConfigChanged()
 {
     HRESULT hResult = S_OK;
-    //if(pfIsTxWndConfigChanged != NULL)
+    //if(pfIsTxWndConfigChanged != nullptr)
     //  hResult = pfIsTxWndConfigChanged();
     return hResult;
 }
@@ -488,7 +488,7 @@ UINT CFlexTxHandler::unGetTxBlockCount(void)
 {
     UINT Result = 0;
 
-    if (NULL != pfFlexGetTxBlockCount)
+    if (nullptr != pfFlexGetTxBlockCount)
     {
         Result = pfFlexGetTxBlockCount();
     }
@@ -507,7 +507,7 @@ UINT CFlexTxHandler::unGetTxBlockCount(void)
 *******************************************************************************/
 void CFlexTxHandler::vSetTxStopFlag(BOOL bStartStop)
 {
-    if (NULL != pfFlexSetTxStopFlag)
+    if (nullptr != pfFlexSetTxStopFlag)
     {
         pfFlexSetTxStopFlag(bStartStop);
     }
@@ -527,7 +527,7 @@ BOOL CFlexTxHandler::bGetTxStopFlag(void)
 {
     BOOL bResult = TRUE;
 
-    if (NULL != pfFlexGetTxStopFlag)
+    if (nullptr != pfFlexGetTxStopFlag)
     {
         bResult = pfFlexGetTxStopFlag();
     }
@@ -538,7 +538,7 @@ BOOL CFlexTxHandler::bGetTxStopFlag(void)
 
 HRESULT CFlexTxHandler::SetFibexConfig(ETYPE_BUS eBusType, ClusterConfig& ouFlexConfig)
 {
-    if ( NULL != pfUpdateFibexConfig )
+    if ( nullptr != pfUpdateFibexConfig )
     {
         return pfUpdateFibexConfig(eBusType, ouFlexConfig);
     }
@@ -548,7 +548,7 @@ HRESULT CFlexTxHandler::SetFibexConfig(ETYPE_BUS eBusType, ClusterConfig& ouFlex
 
 HRESULT CFlexTxHandler::SetChannelConfig(ETYPE_BUS eBus, ClusterConfig* ouFlexConfig)
 {
-    if ( NULL != pfUpdateFibexConfig )
+    if ( nullptr != pfUpdateFibexConfig )
     {
         return pfSetChannelConfig(eBus, ouFlexConfig);
     }

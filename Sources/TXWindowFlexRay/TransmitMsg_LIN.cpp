@@ -48,7 +48,7 @@ const BYTE COLUMN_DATABYTE  = 0x40;
 #define defSTR_FORMAT_DISPLAY_HEX    _T("%-60s   [%16I64X]")
 #define def_MAXIMUM_TIMER_VAL       60000
 #define def_MINIMUM_TIMER_VAL       1
-HWND CTransmitMsgLIN::m_hTransmitWnd = NULL;
+HWND CTransmitMsgLIN::m_hTransmitWnd = nullptr;
 
 #define TX_MSG_WND_CONFIG_SECTION_NAME                  "TXWndProperty"
 #define def_SEND_Message                                "&Send"
@@ -121,7 +121,7 @@ CTransmitMsgLIN::CTransmitMsgLIN()
     m_bStartEnabled = TRUE;
     m_bDisplayColumns = COLUMN_MSGID | COLUMN_DESCR | COLUMN_CYCLE |
                         COLUMN_CHANNEL | COLUMN_DATALEN | COLUMN_DATABYTE;
-    //  m_pouFlxTxMsgBuffer = NULL;
+    //  m_pouFlxTxMsgBuffer = nullptr;
     m_bModified = FALSE;
     m_bDataModified  = false;
     m_CurrentMsgType = LIN_SLAVE_RESPONSE;
@@ -231,7 +231,7 @@ LRESULT CTransmitMsgLIN::vUserCommand(WPARAM wParam, LPARAM lParam)
 void CTransmitMsgLIN::vChangeDelButtonStatus(bool /* bStatus */)
 {
     CWnd* omBtWnd = (CWnd*)GetDlgItem(IDC_DEL_FRAME);
-    if ( omBtWnd != NULL )
+    if ( omBtWnd != nullptr )
     {
         if( CTxLINDataStore::ouGetTxLINDataStoreObj().m_eBusStatus == BUS_DISCONNECTED && m_lstMsg.GetItemCount() > 0 )
         {
@@ -245,7 +245,7 @@ void CTransmitMsgLIN::vChangeDelButtonStatus(bool /* bStatus */)
     }
 
     omBtWnd = (CWnd*)GetDlgItem(IDC_BT_DEL_ALL);
-    if ( omBtWnd != NULL )
+    if ( omBtWnd != nullptr )
     {
         if( CTxLINDataStore::ouGetTxLINDataStoreObj().m_eBusStatus == BUS_DISCONNECTED && m_lstMsg.GetItemCount() > 0 )
         {
@@ -259,7 +259,7 @@ void CTransmitMsgLIN::vChangeDelButtonStatus(bool /* bStatus */)
     }
 
     omBtWnd = (CWnd*)GetDlgItem(IDC_CBTN_ADDNEW);
-    if ( omBtWnd != NULL )
+    if ( omBtWnd != nullptr )
     {
         int nChannel = m_wndComboChannel.GetCurSel();
         if ( (nChannel < 0 || nChannel > CHANNEL_ALLOWED) || CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouFrameList[nChannel].size() <= 0  )
@@ -394,11 +394,11 @@ void CTransmitMsgLIN::OnInitialUpdate()
     CFormView::OnInitialUpdate();
 
     m_bUpdating = FALSE;
-    CWnd* pParentWnd = NULL;
+    CWnd* pParentWnd = nullptr;
     // Get Parent window pointer
     pParentWnd = pomGetParentWindow();
     // Update view pointer
-    if( pParentWnd != NULL )
+    if( pParentWnd != nullptr )
     {
         // Register this view pointer
         ((CTxMsgChildFrame*)pParentWnd)->m_pLinTransmitMsgView = this;
@@ -439,7 +439,7 @@ void CTransmitMsgLIN::OnInitialUpdate()
     m_lstMsg.SetExtendedStyle( LVS_EX_FULLROWSELECT |  LVS_EX_SUBITEMIMAGES | LVS_EX_GRIDLINES);
 
     CWnd* pWnd = m_lstMsg.GetWindow(GW_CHILD);
-    ASSERT(pWnd != NULL);
+    ASSERT(pWnd != nullptr);
 
 
     //m_lstMsg.SetEditable();
@@ -464,17 +464,17 @@ void CTransmitMsgLIN::OnInitialUpdate()
 
 
     // Associate Header control Image List
-    if( m_omHeaderImageList.m_hImageList == NULL )
+    if( m_omHeaderImageList.m_hImageList == nullptr )
     {
         m_omHeaderImageList.Create( IDR_BMP_CHECKBOX, 16, 1, RGB(0,0,255) );
     }
     // Set the Image List
     // Only if it is sucessfully created
-    if( m_omHeaderImageList.m_hImageList != NULL )
+    if( m_omHeaderImageList.m_hImageList != nullptr )
     {
         m_lstMsg.SetImageList(&m_omHeaderImageList, LVSIL_SMALL);
         CHeaderCtrl* pHeader = m_lstMsg.GetHeaderCtrl();
-        if( pHeader != NULL )
+        if( pHeader != nullptr )
         {
             pHeader->SetImageList( &m_omHeaderImageList );
             HDITEM hditem;
@@ -512,7 +512,7 @@ void CTransmitMsgLIN::OnInitialUpdate()
         lvcolumn.pszText = acColData[i];
         lvcolumn.cchTextMax = (int)strlen(acColData[i]);
         lvcolumn.iSubItem = i;
-        lvcolumn.cx = (acColData[i + 1] == NULL) ? nColWidth - total_cx - 2 : (nColWidth * colwidths[i]) / 64;
+        lvcolumn.cx = (acColData[i + 1] == nullptr) ? nColWidth - total_cx - 2 : (nColWidth * colwidths[i]) / 64;
         total_cx += lvcolumn.cx;
         ouProperty.bMovable = true;
         if ( i== FIFTH_COL|| i == SEVENTH_COL )
@@ -527,11 +527,11 @@ void CTransmitMsgLIN::OnInitialUpdate()
 
     // Set the Image List
     // Only if it is sucessfully created
-    /*if( m_omHeaderImageList.m_hImageList != NULL )
+    /*if( m_omHeaderImageList.m_hImageList != nullptr )
     {
         //m_lstMsg.SetImageList(&m_omHeaderImageList, LVS_SMALLICON);
         CHeaderCtrl* pHeader = m_lstMsg.GetHeaderCtrl();
-        if( pHeader != NULL )
+        if( pHeader != nullptr )
         {
             pHeader->SetImageList( &m_omHeaderImageList );
             HDITEM hditem;
@@ -563,7 +563,7 @@ void CTransmitMsgLIN::OnInitialUpdate()
     m_wndComboChannel.SetCurSel(0);
 
     CButton* pBtWnd = (CButton*)GetDlgItem(IDC_RADIO_BYTE_VIEW);
-    if ( pBtWnd != NULL)
+    if ( pBtWnd != nullptr)
     {
         pBtWnd->SetCheck(TRUE);
     }
@@ -640,7 +640,7 @@ void CTransmitMsgLIN::vInitSignalListCtrl()
     INT nTotalStrLengthPixel = 0;
     INT nColumnSize = 0;
     // Set the Image List
-    /*if( m_omSigImageList.m_hImageList == NULL )
+    /*if( m_omSigImageList.m_hImageList == nullptr )
     {
         m_omSigImageList.Create( IDR_BMP_MSG_SIG_WATCH, 16,
                                  1, defCOLOR_WHITE );
@@ -785,7 +785,7 @@ Function Name  : pomGetParentWindow
 Input(s)       : -
 Output         : CWnd * - Pointer to CTxMsgChildFrame
 Functionality  : This Function will return parent window pointer. That is
-pointer to CTxMsgChildFrame. This will return NULL incase of
+pointer to CTxMsgChildFrame. This will return nullptr incase of
 failure
 Member of      : CTxFunctionsView
 Author(s)      : Raja N
@@ -794,15 +794,15 @@ Modifications  :
 *******************************************************************************/
 CWnd* CTransmitMsgLIN::pomGetParentWindow() const
 {
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     // Get Splitter window pointer
     pWnd = GetParent();
     // Get Tx Msg Child Window pointer from Splitter window pointer
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd = pWnd->GetParent();
     }
-    // Return Tx Msg Child window pointer or NULL incase of failure
+    // Return Tx Msg Child window pointer or nullptr incase of failure
     return pWnd;
 }
 
@@ -1324,7 +1324,7 @@ void CTransmitMsgLIN::OnClose()
 
 void CTransmitMsgLIN::vLoadTxMsgConfig()
 {
-    BYTE* SectionBuffer = NULL;
+    BYTE* SectionBuffer = nullptr;
     int nBufferLength = 0;
     //Remove all the TX msg block before copying from config file
     // CTxLINDataStore::ouGetTxLINDataStoreObj().vRemoveAllBlock(m_omMsgBlockMan);
@@ -1333,7 +1333,7 @@ void CTransmitMsgLIN::vLoadTxMsgConfig()
 
     CConfigDetails::ouGetConfigDetailsObject().bGetData((void*&) SectionBuffer,
             nBufferLength,TX_MSG_WND_CONFIG_SECTION_NAME);
-    if (SectionBuffer != NULL)
+    if (SectionBuffer != nullptr)
     {
         delete [] SectionBuffer;
     }
@@ -1380,10 +1380,10 @@ Modifications  :
 void CTransmitMsgLIN::OnBtnClose()
 {
     // Get Child Frame Pointer
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     pWnd = pomGetParentWindow();
     // Post close message
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         // This will invoked the InvokeClose function
         ((CTxMsgChildFrame*)pWnd)->PostMessage( WM_CLOSE );
@@ -1464,7 +1464,7 @@ void CTransmitMsgLIN::vUpdateMessageList()
 
     while ( itrLinData != ouLinData.m_ouLIN_Frame_Data.end())
     {
-        if ( CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouClusterConfig != NULL )
+        if ( CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouClusterConfig != nullptr )
         {
             if ( S_OK == ouLinData.m_ouClusterConfig->m_ouFlexChannelConfig[itrLinData->m_ouLinMessage.m_ucChannel-1].GetFrame(itrLinData->m_ouLinMessage.m_ucMsgID, ouFrame) )
             {
@@ -1533,7 +1533,7 @@ void CTransmitMsgLIN::OnEditchangeCombMsgIdName()
             CString strMsgId;
             m_omComboMsgIDorName.GetWindowText(strMsgId);
             BOOL bHex = TRUE;
-            CHAR* pcStr = NULL;
+            CHAR* pcStr = nullptr;
             bHex =   CTxLINDataStore::ouGetTxLINDataStoreObj().m_bHexMode;
             UINT nMsgId;
             if(bHex == true )
@@ -1602,10 +1602,10 @@ void CTransmitMsgLIN::OnEditchangeCombMsgIdName()
 BOOL CTransmitMsgLIN::bSetStatusText(const char* pStrText)
 {
     BOOL bSuccess = FALSE;
-    if( pStrText != NULL )
+    if( pStrText != nullptr )
     {
         CWnd* pWnd = GetDlgItem(IDC_STAT_STATUS_LIN);
-        if( pWnd != NULL )
+        if( pWnd != nullptr )
         {
             pWnd->SetWindowText(pStrText);
             bSuccess = TRUE;
@@ -1657,7 +1657,7 @@ void CTransmitMsgLIN::vUpdateViews(BOOL bIsUpdate)
     {
         //INT nMsgID = unGetMsgIDFromName(omStrMsgName);
         ClusterConfig* pTemConfig = CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouClusterConfig;
-        if ( pTemConfig != NULL )
+        if ( pTemConfig != nullptr )
         {
             FRAME_STRUCT ouFrameStruct;
             CString omStrMsgName = STR_EMPTY;
@@ -1757,7 +1757,7 @@ UINT CTransmitMsgLIN::unGetMsgIDFromName(CString omMsgName)
 {
     CString omStrMsgID;
     UINT unMsgID = (UINT)-1;
-    CHAR* pcStopStr = NULL;
+    CHAR* pcStopStr = nullptr;
     std::string strStartKey;
     if ( CTxLINDataStore::ouGetTxLINDataStoreObj().m_bHexMode == false)
     {
@@ -1801,14 +1801,14 @@ BOOL CTransmitMsgLIN::bCheckIfValueIsMoreThan255(USHORT usNoOfEditCtrlsToCheck, 
 
     CString omStrValue(STR_EMPTY);
     UINT unValue;
-    CRadixEdit* pRadixEdit = NULL;
+    CRadixEdit* pRadixEdit = nullptr;
 
     while ( ( usTempCount < usNoOfEditCtrlsToCheck ) &&
             ( bResult == FALSE ))
     {
         // Get value
         pRadixEdit = (CRadixEdit*)GetDlgItem(unIDValue);
-        if ( pRadixEdit != NULL)
+        if ( pRadixEdit != nullptr)
         {
             unValue = static_cast<UINT> (pRadixEdit->lGetValue());
             if ( unValue > 255 )
@@ -1841,7 +1841,7 @@ int CTransmitMsgLIN::nGetDbFrame(FRAME_STRUCT& ouFrame)
         // Get the message ID.
         int nMsgCode = nGetMessageID();
         ClusterConfig* pTempConfig = CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouClusterConfig;
-        if ( pTempConfig != NULL )
+        if ( pTempConfig != nullptr )
         {
             return pTempConfig->m_ouFlexChannelConfig[nChannel].GetFrame(nMsgCode, 0, UNSPECIFIED, ouFrame);
         }
@@ -1857,7 +1857,7 @@ int CTransmitMsgLIN::nGetMessageName(std::string & strMsgName)
         // Get the message ID.
         int nMsgCode = nGetMessageID();
         ClusterConfig* pTempConfig = CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouClusterConfig;
-        if ( pTempConfig != NULL )
+        if ( pTempConfig != nullptr )
         {
             FRAME_STRUCT ouFrame;
             if ( S_OK==nGetDbFrame(ouFrame) )
@@ -2056,7 +2056,7 @@ INT CTransmitMsgLIN::nGetMessageID()
     else
     {
         UINT unMsgID = 0;
-        CHAR* pcStr = NULL;
+        CHAR* pcStr = nullptr;
         BOOL bHex = TRUE;
 
         bHex =   CTxLINDataStore::ouGetTxLINDataStoreObj().m_bHexMode;
@@ -2302,7 +2302,7 @@ void CTransmitMsgLIN::vUpdateSignalMatrix(int nSelectedIndex, FRAME_STRUCT ouFrm
         UINT nMsgLen = 0;
         CString strMsgId;
         BOOL bHex = TRUE;
-        CHAR* pcStr = NULL;
+        CHAR* pcStr = nullptr;
         bHex =   CTxLINDataStore::ouGetTxLINDataStoreObj().m_bHexMode;
         UINT nMsgId;
         if(bHex == true )
@@ -2656,7 +2656,7 @@ void CTransmitMsgLIN::vUpdateDataBytes()
 {
     // Display databytes
     UINT unIDValue = IDC_EDIT_DB1;// ID of first databyte edit control
-    CEdit* pEdit = NULL;
+    CEdit* pEdit = nullptr;
     CString omStr, omStrFormatData;
 
     /*int nSel = m_lstMsg.GetNextItem(-1, LVIS_SELECTED);
@@ -2678,7 +2678,7 @@ void CTransmitMsgLIN::vUpdateDataBytes()
         {
             pEdit = (CEdit*)GetDlgItem(unIDValue + i);
             int index = i;
-            if ( pEdit != NULL  )
+            if ( pEdit != nullptr  )
             {
                 if(i >= m_odDLC.lGetValue())
                 {
@@ -2699,7 +2699,7 @@ void CTransmitMsgLIN::vUpdateDataBytes()
 void CTransmitMsgLIN::vUpdateDataBytes(LIN_FRAME_DATA& ouData)
 {
     UINT unIDValue = IDC_EDIT_DB1;// ID of first databyte edit control
-    CEdit* pEdit = NULL;
+    CEdit* pEdit = nullptr;
     CString omStr, omStrFormatData;
 
     if( true == CTxLINDataStore::ouGetTxLINDataStoreObj().m_bHexMode)
@@ -2715,7 +2715,7 @@ void CTransmitMsgLIN::vUpdateDataBytes(LIN_FRAME_DATA& ouData)
     {
         pEdit = (CEdit*)GetDlgItem(unIDValue + i);
         int index = i;
-        if ( pEdit != NULL  )
+        if ( pEdit != nullptr  )
         {
             if(i >= ouData.m_ouLinMessage.m_ucDataLen)
             {
@@ -2768,7 +2768,7 @@ UINT64 CTransmitMsgLIN::un64GetBitMask(SIGNAL_STRUCT CurrSig)
 void CTransmitMsgLIN::vSetSignalValue(SIGNAL_STRUCT ouSigStrct, UCHAR aucData[8],
                                       UINT64 u64SignVal)
 {
-    ASSERT(pouCurrSignal != NULL);
+    ASSERT(pouCurrSignal != nullptr);
     /* Signal valuedata type happens to be of the same size of the entire CAN
     data byte array. Hence there is an opportunity to take advantage of this
     idiosyncratic characteristics. We will shifts the bit array in u64SignVal
@@ -2815,11 +2815,11 @@ void CTransmitMsgLIN::vSetSignalValue(SIGNAL_STRUCT ouSigStrct, UCHAR aucData[8]
 //void CTransmitMsgLIN::vUpdateFromPhysicalValue(int nItem, int nSubItem)
 //{
 //    CString omStrSignalName;
-//    sSIGNALS* psSignal = NULL;
+//    sSIGNALS* psSignal = nullptr;
 //
 //    psSignal = psGetSelectedSignalStruct(nItem);
 //    // If it is a valid signal
-//    if( psSignal != NULL )
+//    if( psSignal != nullptr )
 //    {
 //        CString omstrDefault;
 //        double dSignVal = 0.0;
@@ -2830,12 +2830,12 @@ void CTransmitMsgLIN::vSetSignalValue(SIGNAL_STRUCT ouSigStrct, UCHAR aucData[8]
 //        BOOL bFound = FALSE;
 //        BOOL bDataInvalid = FALSE;
 //        // Check for Signal Descriptor
-//        if( psSignal->m_oSignalIDVal != NULL )
+//        if( psSignal->m_oSignalIDVal != nullptr )
 //        {
-//            CSignalDescVal* psDesc = NULL;
+//            CSignalDescVal* psDesc = nullptr;
 //            psDesc = psSignal->m_oSignalIDVal;
 //
-//            while( psDesc != NULL && bFound == FALSE )
+//            while( psDesc != nullptr && bFound == FALSE )
 //            {
 //                if( psDesc->m_omStrSignalDescriptor.Compare(omStr) == 0 )
 //                {
@@ -3010,12 +3010,12 @@ void CTransmitMsgLIN::vSetSignalValue(SIGNAL_STRUCT ouSigStrct, UCHAR aucData[8]
 //        // Check for Signal Descriptor value
 //        if ( bFound == FALSE || bDataInvalid == TRUE)
 //        {
-//            if( psSignal->m_oSignalIDVal != NULL )
+//            if( psSignal->m_oSignalIDVal != nullptr )
 //            {
-//                CSignalDescVal* psDesc = NULL;
+//                CSignalDescVal* psDesc = nullptr;
 //                psDesc = psSignal->m_oSignalIDVal;
 //
-//                while( psDesc != NULL && bFound == FALSE )
+//                while( psDesc != nullptr && bFound == FALSE )
 //                {
 //                    //                    if( psDesc->m_n64SignalVal == n64SigVal )
 //                    if( psDesc->m_DescValue.n64Value == n64SigVal )
@@ -3100,7 +3100,7 @@ void CTransmitMsgLIN::vSetSignalValue(SIGNAL_STRUCT ouSigStrct, UCHAR aucData[8]
  Input(s)         : nIndex      -  Selected Signal index
  Output           : sSIGNALS *  - Selected Signal Pointer
  Functionality    : This function will return the signal pointer of the signal
-                    pointed by the index. If it is not found it will return NULL
+                    pointed by the index. If it is not found it will return nullptr
  Member of        : CTxMsgDetailsView
  Friend of        :  -
  Author(s)        : Raja N
@@ -3140,7 +3140,7 @@ void CTransmitMsgLIN::vGetSelSignalFromFrame(UINT unMsgId, std::list<SIGNAL_STRU
         return;
     }
 
-    if ( pTemConfig != NULL )
+    if ( pTemConfig != nullptr )
     {
         FRAME_STRUCT ouFrameStruct;
         CString omStrMsgName = STR_EMPTY;
@@ -3176,7 +3176,7 @@ void CTransmitMsgLIN::OnKillfocusDataBytesEdit()
 {
     UINT unIDValue = IDC_EDIT_DB1;// ID of first databyte edit control
 
-    CEdit* pEdit = NULL;
+    CEdit* pEdit = nullptr;
     CString omStr = "";
 
     UCHAR ucData[8];
@@ -3354,7 +3354,7 @@ void CTransmitMsgLIN::vUpdateSelMsgDetails(eMsgUpdate eUpdateType, INT nItem, IN
 
                 //BOOL bHex =   CTxLINDataStore::ouGetTxLINDataStoreObj().m_bHexMode;
                 UINT nTimer;
-                /*CHAR* pcStr = NULL;
+                /*CHAR* pcStr = nullptr;
                 if(bHex == TRUE )
                 {
                     nTimer = strtol(omVal,&pcStr,16);
@@ -3423,7 +3423,7 @@ void CTransmitMsgLIN::OnUpdateEditDLC()
     CWnd* pomWnd = GetFocus();
     bSetStatusText(STR_EMPTY);
     // Avoid processing the data if the dialog is canceled
-    if( pomWnd != NULL)
+    if( pomWnd != nullptr)
     {
         INT unID = pomWnd->GetDlgCtrlID();
         // If the update is because of user change

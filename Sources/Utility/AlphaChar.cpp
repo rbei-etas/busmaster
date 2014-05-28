@@ -119,7 +119,7 @@ void CAlphaCharEdit::OnKillFocus(CWnd* pNewWnd)
         lvDispinfo.item.iItem = m_nRow;
         lvDispinfo.item.iSubItem = m_nColumn;
         lvDispinfo.item.pszText =
-            m_bVK_ESCAPE ? NULL : LPTSTR((LPCTSTR)omStr);
+            m_bVK_ESCAPE ? nullptr : LPTSTR((LPCTSTR)omStr);
         lvDispinfo.item.cchTextMax = omStr.GetLength();
 
         // For non editable the selection should not be -1

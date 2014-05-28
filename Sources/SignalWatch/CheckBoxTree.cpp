@@ -26,7 +26,7 @@ END_MESSAGE_MAP()
 
 BOOL CCheckBoxTree::bIsItemChecked(HTREEITEM hItem)
 {
-    if(hItem == NULL)
+    if(hItem == nullptr)
     {
         return FALSE;
     }
@@ -39,7 +39,7 @@ void CCheckBoxTree::OnLButtonDown(UINT nFlags, CPoint point)
     UINT nHitTestFlags = 0;
     HTREEITEM hItem = HitTest(point, &nHitTestFlags);
     //MessageBox( "BEFORE IF", "IF1", MB_OK);
-    if((hItem != NULL) && (TVHT_ONITEMSTATEICON & nHitTestFlags))
+    if((hItem != nullptr) && (TVHT_ONITEMSTATEICON & nHitTestFlags))
     {
         //MessageBox( "INSIDE IF", "IF1", MB_OK);
         //BOOL bCheck= GetCheck(hItem);
@@ -91,14 +91,14 @@ void CCheckBoxTree::OnLButtonDown(UINT nFlags, CPoint point)
                                 SetCheck(parent);
                             }
                             child=GetNextSiblingItem(child);
-                            if ( child == NULL )
+                            if ( child == nullptr )
                             {
                                 break;
                             }
                         }
                     }
                     parent=GetNextSiblingItem(parent);
-                    if ( parent == NULL )
+                    if ( parent == nullptr )
                     {
                         break;
                     }
@@ -106,7 +106,7 @@ void CCheckBoxTree::OnLButtonDown(UINT nFlags, CPoint point)
                 }
 
                 parent=GetNextSiblingItem(parent);
-                if ( parent == NULL )
+                if ( parent == nullptr )
                 {
                     break;
                 }
@@ -128,11 +128,11 @@ void CCheckBoxTree::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CCheckBoxTree::vSetCheck(HTREEITEM hItem, BOOL bCheck)
 {
-    if(hItem == NULL)
+    if(hItem == nullptr)
     {
         return;
     }
-    if (hItem != NULL)
+    if (hItem != nullptr)
     {
         int nState = (bCheck == TRUE) ? 2 : 1;
         SetItemState( hItem, INDEXTOSTATEIMAGEMASK(nState), TVIS_STATEIMAGEMASK );
@@ -144,7 +144,7 @@ void CCheckBoxTree::vSetCheck(HTREEITEM hItem, BOOL bCheck)
 
 void CCheckBoxTree::vSetCheckParent(HTREEITEM hItem)
 {
-    if(hItem == NULL)
+    if(hItem == nullptr)
     {
         return;
     }
@@ -174,7 +174,7 @@ void CCheckBoxTree::vSetCheckParent(HTREEITEM hItem)
 
 void CCheckBoxTree::vSetCheckChildren(HTREEITEM hItem, BOOL fCheck)
 {
-    if(hItem == NULL)
+    if(hItem == nullptr)
     {
         return;
     }
@@ -187,7 +187,7 @@ void CCheckBoxTree::vSetCheckChildren(HTREEITEM hItem, BOOL fCheck)
     if ( ItemHasChildren(hItem))
     {
         HTREEITEM htiChild = GetChildItem (hItem);
-        while (htiChild != NULL)
+        while (htiChild != nullptr)
         {
             vSetCheck(htiChild, fCheck);
             vSetCheckChildren(htiChild, fCheck);

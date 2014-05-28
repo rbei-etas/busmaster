@@ -46,7 +46,7 @@ CCommonStatistics::CCommonStatistics(UINT unIDtemplate, ETYPE_BUS eBus)
     : CPropertyPage(unIDtemplate),
       m_eBusType(eBus)
 {
-    m_pxmlNodePtr = NULL;
+    m_pxmlNodePtr = nullptr;
 }
 
 /*******************************************************************************
@@ -99,11 +99,11 @@ CNetworkStatistics::CNetworkStatistics(UINT nIDCaption, CWnd* pParentWnd, UINT i
     :CPropertySheet(nIDCaption, pParentWnd, iSelectPage)
 {
 
-    m_pCopyBusStsticsNode_LIN = NULL;
+    m_pCopyBusStsticsNode_LIN = nullptr;
 
     for(UINT unIndex = 0; unIndex < BUS_TOTAL; unIndex++)
     {
-        m_omStatistics[unIndex] = NULL;
+        m_omStatistics[unIndex] = nullptr;
     }
 
     m_bIsWindowInitialised = FALSE;
@@ -113,11 +113,11 @@ CNetworkStatistics::CNetworkStatistics(LPCTSTR pszCaption, CWnd* pParentWnd, UIN
     :CPropertySheet(pszCaption, pParentWnd, iSelectPage)
 {
 
-    m_pCopyBusStsticsNode_LIN = NULL;
+    m_pCopyBusStsticsNode_LIN = nullptr;
 
     for(UINT unIndex = 0; unIndex < BUS_TOTAL; unIndex++)
     {
-        m_omStatistics[unIndex] = NULL;
+        m_omStatistics[unIndex] = nullptr;
     }
 
     m_bIsWindowInitialised = FALSE;
@@ -130,7 +130,7 @@ CNetworkStatistics::CNetworkStatistics(UINT unChnl[BUS_TOTAL])
 
     for(UINT unIndex = 0; unIndex < BUS_TOTAL; unIndex++)
     {
-        m_omStatistics[unIndex] = NULL;
+        m_omStatistics[unIndex] = nullptr;
     }
 
     vAddPages(unChnl);
@@ -147,11 +147,11 @@ void CNetworkStatistics::vAddPages(UINT unChnl[BUS_TOTAL])
         switch(unIndex)
         {
             case CAN:
-                m_omStatistics[CAN] = new CBusStatisticsDlg(GetICANBusStat(), NULL, unChnl[CAN]);
+                m_omStatistics[CAN] = new CBusStatisticsDlg(GetICANBusStat(), nullptr, unChnl[CAN]);
                 AddPage(m_omStatistics[CAN]);
                 break;
             case LIN:
-                m_omStatistics[LIN] = new CLINBusStatisticsDlg(GetILINBusStat(), NULL, unChnl[LIN]);
+                m_omStatistics[LIN] = new CLINBusStatisticsDlg(GetILINBusStat(), nullptr, unChnl[LIN]);
                 AddPage(m_omStatistics[LIN]);
                 break;
             default:
@@ -159,8 +159,8 @@ void CNetworkStatistics::vAddPages(UINT unChnl[BUS_TOTAL])
         }
     }
 
-    /*m_cBSD = new CBusStatisticsDlg(GetICANBusStat(), NULL, unChlCAN);
-    m_lBSD = new CLINBusStatisticsDlg(GetILINBusStat(), NULL, unChlLIN);
+    /*m_cBSD = new CBusStatisticsDlg(GetICANBusStat(), nullptr, unChlCAN);
+    m_lBSD = new CLINBusStatisticsDlg(GetILINBusStat(), nullptr, unChlLIN);
     AddPage(m_cBSD);
     AddPage(m_lBSD);
     */
@@ -181,7 +181,7 @@ int CNetworkStatistics::OnCreate(LPCREATESTRUCT lpCreateStruct)
     // adjust size to reflect new style
     ::AdjustWindowRectEx(&rect, GetStyle(),
                          ::IsMenu(GetMenu()->GetSafeHmenu()), GetExStyle());
-    SetWindowPos(NULL, 0, 0, rect.Width(), rect.Height(), SWP_FRAMECHANGED|
+    SetWindowPos(nullptr, 0, 0, rect.Width(), rect.Height(), SWP_FRAMECHANGED|
                  SWP_NOMOVE|SWP_NOZORDER|SWP_NOACTIVATE|SWP_NOREPOSITION);
 
     return 0;
@@ -197,14 +197,14 @@ BOOL CNetworkStatistics::OnInitDialog()
     {
         SetIcon( ::LoadIcon(hModAdvancedUILib, MAKEINTRESOURCE( IDI_ICON_NETWORKSTAT )), TRUE);
         ::FreeLibrary(hModAdvancedUILib);
-        hModAdvancedUILib = NULL;
+        hModAdvancedUILib = nullptr;
     }
     else
     {
         SetIcon( AfxGetApp()->LoadIcon(IDI_ICON_NETWORKSTAT), TRUE);
     }
 
-    m_pCopyBusStsticsNode_LIN = NULL;
+    m_pCopyBusStsticsNode_LIN = nullptr;
 
     CRect r;
     GetWindowRect(&r);
@@ -237,7 +237,7 @@ void CNetworkStatistics::OnSize(UINT nType, int cx, int cy)
     }
 
     CTabCtrl* pTab = GetTabControl();
-    ASSERT(NULL != pTab && IsWindow(pTab->m_hWnd));
+    ASSERT(nullptr != pTab && IsWindow(pTab->m_hWnd));
 
     int dx = cx - m_rCrt.Width();
     int dy = cy - m_rCrt.Height();
@@ -248,13 +248,13 @@ void CNetworkStatistics::OnSize(UINT nType, int cx, int cy)
     pTab->GetClientRect(&r1);
     r1.right += dx;
     r1.bottom += dy;
-    ::DeferWindowPos(hDWP, pTab->m_hWnd, NULL,
+    ::DeferWindowPos(hDWP, pTab->m_hWnd, nullptr,
                      0, 0, r1.Width(), r1.Height(),
                      SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOZORDER);
 
     // Move all buttons with the lower right sides
     for (CWnd* pChild = GetWindow(GW_CHILD);
-            pChild != NULL;
+            pChild != nullptr;
             pChild = pChild->GetWindow(GW_HWNDNEXT))
     {
         if (pChild->SendMessage(WM_GETDLGCODE) & DLGC_BUTTON)
@@ -265,7 +265,7 @@ void CNetworkStatistics::OnSize(UINT nType, int cx, int cy)
             r1.bottom += dy;
             r1.left+= dx;
             r1.right += dx;
-            ::DeferWindowPos(hDWP, pChild->m_hWnd, NULL,
+            ::DeferWindowPos(hDWP, pChild->m_hWnd, nullptr,
                              r1.left, r1.top, 0, 0,
                              SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOZORDER);
         }
@@ -275,7 +275,7 @@ void CNetworkStatistics::OnSize(UINT nType, int cx, int cy)
             pChild->GetClientRect(&r1);
             r1.right += dx;
             r1.bottom += dy;
-            ::DeferWindowPos(hDWP, pChild->m_hWnd, NULL, 0, 0, r1.Width(), r1.Height(),SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOZORDER);
+            ::DeferWindowPos(hDWP, pChild->m_hWnd, nullptr, 0, 0, r1.Width(), r1.Height(),SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOZORDER);
         }
 
     }
@@ -298,7 +298,7 @@ void CNetworkStatistics::AutoMove(int iID, double dXMovePct, double dYMovePct, d
     ASSERT((dYMovePct + dYSizePct) <= 100.0);   // can't use more than 100% of the resize for the child
     SMovingChild s;
     GetDlgItem(iID, &s.m_hWnd);
-    ASSERT(s.m_hWnd != NULL);
+    ASSERT(s.m_hWnd != nullptr);
     s.m_dXMoveFrac = dXMovePct / 100.0;
     s.m_dYMoveFrac = dYMovePct / 100.0;
     s.m_dXSizeFrac = dXSizePct / 100.0;
@@ -331,11 +331,11 @@ HRESULT CCommonStatistics::vGetConfigData(xmlNodePtr& pxmlNodePtr)
 HRESULT CCommonStatistics::vGetConfigDetails(xmlNodePtr& pxmlNodePtr)
 {
     const char* omcVarChar ;
-    if(m_omStatList.m_hWnd == NULL)
+    if(m_omStatList.m_hWnd == nullptr)
     {
-        if(m_pxmlNodePtr != NULL)
+        if(m_pxmlNodePtr != nullptr)
         {
-            xmlNodePtr pBUSStatNode = NULL;
+            xmlNodePtr pBUSStatNode = nullptr;
             pBUSStatNode = xmlCopyNode(m_pxmlNodePtr, 1);
             xmlAddChild(pxmlNodePtr, pBUSStatNode);
         }
@@ -345,11 +345,11 @@ HRESULT CCommonStatistics::vGetConfigDetails(xmlNodePtr& pxmlNodePtr)
     switch (m_eBusType)
     {
         case CAN:
-            pxmlNodePtr = xmlNewNode(NULL, BAD_CAST DEF_BUS_STATS_CAN);
+            pxmlNodePtr = xmlNewNode(nullptr, BAD_CAST DEF_BUS_STATS_CAN);
 
             break;
         case LIN:
-            pxmlNodePtr = xmlNewNode(NULL, BAD_CAST DEF_BUS_STATS_LIN);
+            pxmlNodePtr = xmlNewNode(nullptr, BAD_CAST DEF_BUS_STATS_LIN);
             break;
         default:
             break;
@@ -363,7 +363,7 @@ HRESULT CCommonStatistics::vGetConfigDetails(xmlNodePtr& pxmlNodePtr)
 
     for(INT nIndex = 0; nIndex < nColumnCount; nIndex++)
     {
-        if(pnOrder != NULL)
+        if(pnOrder != nullptr)
         {
             INT nColumn = pnOrder[nIndex];
             pnOrderTemp[nColumn] = nIndex;
@@ -379,7 +379,7 @@ HRESULT CCommonStatistics::vGetConfigDetails(xmlNodePtr& pxmlNodePtr)
     for (int iItr = 0 ; iItr < nColumnCount; iItr++)
     {
 
-        xmlNodePtr pNodeColumn = xmlNewNode(NULL, BAD_CAST DEF_COLUMN);
+        xmlNodePtr pNodeColumn = xmlNewNode(nullptr, BAD_CAST DEF_COLUMN);
         xmlAddChild(pxmlNodePtr, pNodeColumn);
 
         m_omStatList.GetColumn(iItr, &oCol);
@@ -388,14 +388,14 @@ HRESULT CCommonStatistics::vGetConfigDetails(xmlNodePtr& pxmlNodePtr)
         CString csColumnName;
         csColumnName.Format("%s", oCol.pszText);
         omcVarChar = csColumnName;
-        xmlNodePtr pColName = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_ID,BAD_CAST omcVarChar);
+        xmlNodePtr pColName = xmlNewChild(pNodeColumn, nullptr, BAD_CAST DEF_ID,BAD_CAST omcVarChar);
         xmlAddChild(pNodeColumn, pColName);
 
         //<Order>1</Order>
         CString csOrder;
         csOrder.Format("%d", pnOrderTemp[iItr] + 1);
         omcVarChar = csOrder;
-        xmlNodePtr pOrder = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_MWND_ORDER,BAD_CAST omcVarChar);
+        xmlNodePtr pOrder = xmlNewChild(pNodeColumn, nullptr, BAD_CAST DEF_MWND_ORDER,BAD_CAST omcVarChar);
         xmlAddChild(pNodeColumn, pOrder);
 
 
@@ -403,7 +403,7 @@ HRESULT CCommonStatistics::vGetConfigDetails(xmlNodePtr& pxmlNodePtr)
         CString csWidth;
         csWidth.Format("%d", m_omStatList.GetColumnWidth(iItr));
         omcVarChar = csWidth;
-        xmlNodePtr pWidth = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_MWND_COL_WIDTH,BAD_CAST omcVarChar);
+        xmlNodePtr pWidth = xmlNewChild(pNodeColumn, nullptr, BAD_CAST DEF_MWND_COL_WIDTH,BAD_CAST omcVarChar);
         xmlAddChild(pNodeColumn, pWidth);
 
         CString csVisible;
@@ -420,7 +420,7 @@ HRESULT CCommonStatistics::vGetConfigDetails(xmlNodePtr& pxmlNodePtr)
         }
         //csVisible.Format("%d",sm_sBusSerializationData.m_arrbColumnVisible[iItr]);
         omcVarChar = csVisible;
-        xmlNodePtr pVisisble = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_IS_VISIBLE,BAD_CAST omcVarChar);
+        xmlNodePtr pVisisble = xmlNewChild(pNodeColumn, nullptr, BAD_CAST DEF_IS_VISIBLE,BAD_CAST omcVarChar);
         xmlAddChild(pNodeColumn, pVisisble);
     }
 
@@ -431,12 +431,12 @@ HRESULT CCommonStatistics::vGetConfigDetails(xmlNodePtr& pxmlNodePtr)
 
 HRESULT CCommonStatistics::hSetConfigData(xmlNodePtr pDocPtr)
 {
-    xmlXPathObjectPtr pTempNode = NULL;
+    xmlXPathObjectPtr pTempNode = nullptr;
     switch (m_eBusType)
     {
         case CAN:
         {
-            if(pDocPtr != NULL)
+            if(pDocPtr != nullptr)
             {
                 pTempNode = xmlUtils::pGetChildNodes(pDocPtr, (xmlChar*)("CAN_Statistics"));
                 //pTempNode = xmlUtils::pGetNodes(pDocPtr, (xmlChar*)("CAN_Statistics"));
@@ -445,7 +445,7 @@ HRESULT CCommonStatistics::hSetConfigData(xmlNodePtr pDocPtr)
         break;
         case LIN:
         {
-            if(pDocPtr != NULL)
+            if(pDocPtr != nullptr)
             {
                 pTempNode = xmlUtils::pGetChildNodes(pDocPtr, (xmlChar*)("LIN_Statistics"));
                 //pTempNode = xmlUtils::pGetNodes(pDocPtr, (xmlChar*)("LIN_Statistics"));
@@ -456,13 +456,13 @@ HRESULT CCommonStatistics::hSetConfigData(xmlNodePtr pDocPtr)
             break;
     }
 
-    if(pTempNode != NULL && pTempNode->nodesetval != NULL && pTempNode->nodesetval->nodeTab[0] != NULL)
+    if(pTempNode != nullptr && pTempNode->nodesetval != nullptr && pTempNode->nodesetval->nodeTab[0] != nullptr)
     {
         m_pxmlNodePtr = xmlCopyNode(pTempNode->nodesetval->nodeTab[0], 1);
     }
     else
     {
-        m_pxmlNodePtr = NULL;
+        m_pxmlNodePtr = nullptr;
     }
 
     // Sets the dialog configuration for CAN and LIN
@@ -486,20 +486,20 @@ HRESULT CCommonStatistics::hSetConfigData()
 
     sm_sBusSerializationData.vLoadDefaults();
 
-    if(m_omStatList.m_hWnd != NULL && m_pxmlNodePtr != NULL)
+    if(m_omStatList.m_hWnd != nullptr && m_pxmlNodePtr != nullptr)
     {
-        xmlXPathObjectPtr pObjectPath = NULL;
+        xmlXPathObjectPtr pObjectPath = nullptr;
         nRetVal = S_OK;
         //xmlChar* pXmlPath = (xmlChar*) BUS_STATICS_CONFIG_PATH;
 
         pObjectPath = xmlUtils::pGetChildNodes(m_pxmlNodePtr, (xmlChar*) "COLUMN");
 
-        if(pObjectPath != NULL)
+        if(pObjectPath != nullptr)
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
             sm_sBusSerializationData.m_nColumnCount = pObjectPath->nodesetval->nodeNr;
 
-            if(pNodeSet != NULL && (sm_sBusSerializationData.m_nColumnCount == m_nChannelCount + 1))
+            if(pNodeSet != nullptr && (sm_sBusSerializationData.m_nColumnCount == m_nChannelCount + 1))
             {
                 ColumnInfoMap ColumnMap;
                 nRetVal = xmlUtils::parseColumnInfoNode(pNodeSet, ColumnMap);
@@ -511,10 +511,10 @@ HRESULT CCommonStatistics::hSetConfigData()
                     {
                         xmlNodePtr pNodePtr = pNodeSet->nodeTab[i]->xmlChildrenNode;
 
-                        while(pNodePtr != NULL)
+                        while(pNodePtr != nullptr)
                         {
                             CString strName = pNodePtr->name;
-                            if( pNodePtr->xmlChildrenNode != NULL)
+                            if( pNodePtr->xmlChildrenNode != nullptr)
                             {
                                 if(strName == "ID")
                                 {
@@ -549,13 +549,13 @@ HRESULT CCommonStatistics::hSetConfigData()
 
                 }
 
-                if(pnOrder != NULL)
+                if(pnOrder != nullptr)
                 {
                     free(pnOrder);
-                    pnOrder = NULL;
+                    pnOrder = nullptr;
                 }
 
-                m_pxmlNodePtr = NULL;
+                m_pxmlNodePtr = nullptr;
             }
             else
             {
@@ -590,7 +590,7 @@ void CCommonStatistics::vLoadDefaultValues()
 {
     sm_sBusSerializationData.vLoadDefaults();
 
-    if(m_omStatList.m_hWnd != NULL)
+    if(m_omStatList.m_hWnd != nullptr)
     {
         for (int i = 0 ; i < m_nChannelCount+1; i++)
         {
@@ -603,12 +603,12 @@ void CCommonStatistics::vLoadDefaultValues()
 
 void CNetworkStatistics::vGetConfigData(xmlNodePtr& pxmlNodePtr)
 {
-    pxmlNodePtr = xmlNewNode(NULL, BAD_CAST DEF_BUS_STATS);
+    pxmlNodePtr = xmlNewNode(nullptr, BAD_CAST DEF_BUS_STATS);
 
-    xmlNodePtr pxmlBusStats = NULL;
+    xmlNodePtr pxmlBusStats = nullptr;
     for(UINT unIndex = 0; unIndex < BUS_TOTAL; unIndex++)
     {
-        if(m_omStatistics[unIndex] != NULL)
+        if(m_omStatistics[unIndex] != nullptr)
         {
             m_omStatistics[unIndex]->vGetConfigData(pxmlBusStats);
             xmlAddChild(pxmlNodePtr, pxmlBusStats);
@@ -616,14 +616,14 @@ void CNetworkStatistics::vGetConfigData(xmlNodePtr& pxmlNodePtr)
     }
 
     //xmlAddChild(pxmlNodePtr, pxmlBusStats);
-    xmlNodePtr pxmlWndPos = NULL;
+    xmlNodePtr pxmlWndPos = nullptr;
     vGetWndPosConfig(pxmlWndPos);
     xmlAddChild(pxmlNodePtr, pxmlWndPos);
 }
 
 void CNetworkStatistics::vGetWndPosConfig(xmlNodePtr& pxmlBusStats)
 {
-    pxmlBusStats = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
+    pxmlBusStats = xmlNewNode(nullptr, BAD_CAST DEF_WND_POS);
     wpWindowPosition();
     xmlUtils::CreateXMLNodeFrmWindowsPlacement(pxmlBusStats, wpWindowPosition());
 
@@ -632,17 +632,17 @@ void CNetworkStatistics::vGetWndPosConfig(xmlNodePtr& pxmlBusStats)
 
 void CNetworkStatistics::vSetNtwStatWndPos(xmlNodePtr pDocPtr, BOOL bShow)
 {
-    if ( NULL != pDocPtr )
+    if ( nullptr != pDocPtr )
     {
-        xmlXPathObjectPtr pTempNode = NULL;
+        xmlXPathObjectPtr pTempNode = nullptr;
         pTempNode = xmlUtils::pGetChildNodes(pDocPtr, (xmlChar*)("Window_Position"));
 
-        if(pTempNode != NULL && pTempNode->nodesetval != NULL && pTempNode->nodesetval->nodeTab[0] != NULL)
+        if(pTempNode != nullptr && pTempNode->nodesetval != nullptr && pTempNode->nodesetval->nodeTab[0] != nullptr)
         {
             pDocPtr = xmlCopyNode(pTempNode->nodesetval->nodeTab[0], 1);
         }
     }
-    if(pDocPtr == NULL)
+    if(pDocPtr == nullptr)
     {
         vSetDefaultWindowPos();
         m_sBusStatsDlgCoOrd.showCmd = SW_SHOWNORMAL;
@@ -686,7 +686,7 @@ HRESULT CNetworkStatistics::hSetConfigData(xmlNodePtr pDocPtr, BOOL bShow)
     vSetNtwStatWndPos(pDocPtr, bShow);
     for(UINT unIndex = 0; unIndex < BUS_TOTAL; unIndex++)
     {
-        if(m_omStatistics[unIndex] != NULL)
+        if(m_omStatistics[unIndex] != nullptr)
         {
             m_omStatistics[unIndex]->hSetConfigData(pDocPtr);
         }

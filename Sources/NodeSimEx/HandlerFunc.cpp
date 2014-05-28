@@ -44,13 +44,13 @@ CRITICAL_SECTION g_omDllMsgCritiSec;
 ******************************************************************************/
 UINT unKeyHandlerProc(LPVOID pParam)
 {
-    if (pParam != NULL)
+    if (pParam != nullptr)
     {
         PSEXECUTE_KEY_HANDLER psExecuteKeyHandler =
             (PSEXECUTE_KEY_HANDLER) pParam;
-        // There is no memory allocation is this thread. So initialise it to NULL
+        // There is no memory allocation is this thread. So initialise it to nullptr
         psExecuteKeyHandler->m_pCExecuteFunc->m_asUtilThread[defKEY_HANDLER_THREAD].
-        m_pvThread = NULL;
+        m_pvThread = nullptr;
         // Reset the event signaled
         psExecuteKeyHandler->m_pCExecuteFunc->
         m_aomState[defKEY_HANDLER_THREAD ].ResetEvent();
@@ -70,12 +70,12 @@ UINT unKeyHandlerProc(LPVOID pParam)
             gbSendStrToTrace(acError);
         }
 
-        //       psExecuteKeyHandler = NULL;
+        //       psExecuteKeyHandler = nullptr;
         psExecuteKeyHandler->m_pCExecuteFunc->
-        m_asUtilThread[defKEY_HANDLER_THREAD].m_pvThread = NULL;
+        m_asUtilThread[defKEY_HANDLER_THREAD].m_pvThread = nullptr;
         // Reinitialise the Thread handle before terminating it.
         psExecuteKeyHandler->m_pCExecuteFunc->
-        m_asUtilThread[defKEY_HANDLER_THREAD].m_hThread = NULL;
+        m_asUtilThread[defKEY_HANDLER_THREAD].m_hThread = nullptr;
         // Set the event to indicate termination of this thread.
         psExecuteKeyHandler->m_pCExecuteFunc->
         m_aomState[defKEY_HANDLER_THREAD].SetEvent();
@@ -85,12 +85,12 @@ UINT unKeyHandlerProc(LPVOID pParam)
 }
 UINT unErrorHandlerProcLin(LPVOID pParam)
 {
-    if (pParam != NULL)
+    if (pParam != nullptr)
     {
         PSEVENTHANDLERLIN pErrorHandler = (PSEVENTHANDLERLIN) pParam; //ell2kor
-        // There is no memory allocation is this thread. So initialise it to NULL
+        // There is no memory allocation is this thread. So initialise it to nullptr
         pErrorHandler->m_pCExecuteFunc->
-        m_asUtilThread[defERROR_HANDLER_THREAD].m_pvThread = NULL;
+        m_asUtilThread[defERROR_HANDLER_THREAD].m_pvThread = nullptr;
         // Reset the event signaled
         pErrorHandler->m_pCExecuteFunc->
         m_aomState[defERROR_HANDLER_THREAD].ResetEvent();
@@ -133,7 +133,7 @@ UINT unErrorHandlerProcLin(LPVOID pParam)
             gbSendStrToTrace(_(defSTR_ERROR_IN_ERR_PROG));
         }
         // Reinitialise the Thread handle before terminating it.
-        pErrorHandler->m_pCExecuteFunc->m_asUtilThread[defERROR_HANDLER_THREAD].m_hThread = NULL;
+        pErrorHandler->m_pCExecuteFunc->m_asUtilThread[defERROR_HANDLER_THREAD].m_hThread = nullptr;
 
 
         // Set the event to indicate termination of this thread.
@@ -159,12 +159,12 @@ UINT unErrorHandlerProcLin(LPVOID pParam)
 ******************************************************************************/
 UINT unErrorHandlerProc(LPVOID pParam)
 {
-    if (pParam != NULL)
+    if (pParam != nullptr)
     {
         PSERRORHANDLER pErrorHandler = (PSERRORHANDLER) pParam; //ell2kor
-        // There is no memory allocation is this thread. So initialise it to NULL
+        // There is no memory allocation is this thread. So initialise it to nullptr
         pErrorHandler->m_pCExecuteFunc->
-        m_asUtilThread[defERROR_HANDLER_THREAD].m_pvThread = NULL;
+        m_asUtilThread[defERROR_HANDLER_THREAD].m_pvThread = nullptr;
         // Reset the event signaled
         pErrorHandler->m_pCExecuteFunc->
         m_aomState[defERROR_HANDLER_THREAD].ResetEvent();
@@ -179,7 +179,7 @@ UINT unErrorHandlerProc(LPVOID pParam)
         }
         // Reinitialise the Thread handle before terminating it.
         pErrorHandler->m_pCExecuteFunc->
-        m_asUtilThread[defERROR_HANDLER_THREAD].m_hThread = NULL;
+        m_asUtilThread[defERROR_HANDLER_THREAD].m_hThread = nullptr;
         // Set the event to indicate termination of this thread.
         pErrorHandler->m_pCExecuteFunc->
         m_aomState[defERROR_HANDLER_THREAD].SetEvent();
@@ -206,12 +206,12 @@ UINT unEventHandlerProc(LPVOID pParam)
     PSEVENTHANDLER pEventHandler = (PSEVENTHANDLER) pParam;
     pEventHandler->m_pCExecuteFunc->
     m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread = AfxGetThread();
-    if (pParam != NULL)
+    if (pParam != nullptr)
     {
         // PSEVENTHANDLER pEventHandler = (PSEVENTHANDLER) pParam; //ell2kor
-        // There is no memory allocation is this thread. So initialise it to NULL
+        // There is no memory allocation is this thread. So initialise it to nullptr
         pEventHandler->m_pCExecuteFunc->
-        m_asUtilThread[defEVENT_HANDLER_THREAD].m_pvThread = NULL;
+        m_asUtilThread[defEVENT_HANDLER_THREAD].m_pvThread = nullptr;
         // Reset the event signaled
         pEventHandler->m_pCExecuteFunc->
         m_aomState[defEVENT_HANDLER_THREAD].ResetEvent();
@@ -235,7 +235,7 @@ UINT unEventHandlerProc(LPVOID pParam)
         }
         // Reinitialise the Thread handle before terminating it.
         pEventHandler->m_pCExecuteFunc->
-        m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread = NULL;
+        m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread = nullptr;
         // Set the event to indicate termination of this thread.
         pEventHandler->m_pCExecuteFunc->
         m_aomState[defEVENT_HANDLER_THREAD].SetEvent();
@@ -257,13 +257,13 @@ UINT unEventHandlerProc(LPVOID pParam)
 ******************************************************************************/
 UINT unDLLUnloadHandlerProc(LPVOID pParam)
 {
-    if (pParam != NULL)
+    if (pParam != nullptr)
     {
         PSEXECUTE_LOAD_HANDLER psExecuteUnLoadHandler=(PSEXECUTE_LOAD_HANDLER) pParam;
         // Reset the event signaled
         psExecuteUnLoadHandler->m_pCExecuteFunc->
         m_aomState[defDLL_UNLOAD_HANDLER_THREAD].ResetEvent();
-        if(psExecuteUnLoadHandler->m_pCExecuteFunc!=NULL)
+        if(psExecuteUnLoadHandler->m_pCExecuteFunc!=nullptr)
         {
             try
             {
@@ -274,17 +274,17 @@ UINT unDLLUnloadHandlerProc(LPVOID pParam)
                 // Display the error information in the Trace window
                 gbSendStrToTrace(_(defSTR_ERROR_IN_DLL_UNLOAD));
             }
-            // There is no memory allocation is this thread. So initialise it to NULL
+            // There is no memory allocation is this thread. So initialise it to nullptr
             psExecuteUnLoadHandler->m_pCExecuteFunc->
-            m_asUtilThread[defDLL_UNLOAD_HANDLER_THREAD].m_pvThread = NULL;
+            m_asUtilThread[defDLL_UNLOAD_HANDLER_THREAD].m_pvThread = nullptr;
             // Reinitialise the Thread handle before terminating it.
             psExecuteUnLoadHandler->m_pCExecuteFunc->
-            m_asUtilThread[defDLL_UNLOAD_HANDLER_THREAD].m_hThread = NULL;
+            m_asUtilThread[defDLL_UNLOAD_HANDLER_THREAD].m_hThread = nullptr;
             // Set the event to indicate termination of this thread.
             psExecuteUnLoadHandler->m_pCExecuteFunc->
             m_aomState[defDLL_UNLOAD_HANDLER_THREAD].SetEvent();
             delete psExecuteUnLoadHandler;
-            psExecuteUnLoadHandler=NULL;
+            psExecuteUnLoadHandler=nullptr;
         }
     }
 
@@ -310,11 +310,11 @@ UINT unDLLUnloadHandlerProc(LPVOID pParam)
 
 UINT unDLLloadHandlerProc(LPVOID pParam)
 {
-    if (pParam != NULL)
+    if (pParam != nullptr)
     {
         PSEXECUTE_LOAD_HANDLER psExecuteLoadHandler=(PSEXECUTE_LOAD_HANDLER) pParam;
         // Reset the event signaled
-        if(psExecuteLoadHandler->m_pCExecuteFunc!=NULL)
+        if(psExecuteLoadHandler->m_pCExecuteFunc!=nullptr)
         {
             psExecuteLoadHandler->m_pCExecuteFunc->
             m_aomState[defDLL_LOAD_HANDLER_THREAD].ResetEvent();
@@ -327,17 +327,17 @@ UINT unDLLloadHandlerProc(LPVOID pParam)
                 // Display the error information in the Trace window
                 gbSendStrToTrace(_(defSTR_ERROR_IN_DLL_LOAD));
             }
-            // There is no memory allocation is this thread. So initialise it to NULL
+            // There is no memory allocation is this thread. So initialise it to nullptr
             psExecuteLoadHandler->m_pCExecuteFunc->
-            m_asUtilThread[defDLL_LOAD_HANDLER_THREAD].m_pvThread = NULL;
+            m_asUtilThread[defDLL_LOAD_HANDLER_THREAD].m_pvThread = nullptr;
             // Reinitialise the Thread handle before terminating it.
             psExecuteLoadHandler->m_pCExecuteFunc->
-            m_asUtilThread[defDLL_LOAD_HANDLER_THREAD].m_hThread = NULL;
+            m_asUtilThread[defDLL_LOAD_HANDLER_THREAD].m_hThread = nullptr;
             // Set the event to indicate termination of this thread.
             psExecuteLoadHandler->m_pCExecuteFunc->
             m_aomState[defDLL_LOAD_HANDLER_THREAD].SetEvent();
             delete psExecuteLoadHandler;
-            psExecuteLoadHandler=NULL;
+            psExecuteLoadHandler=nullptr;
         }
     }
     return 0;
@@ -346,11 +346,11 @@ UINT unDLLloadHandlerProc(LPVOID pParam)
 UINT unBusPreConnectHandlerProc(LPVOID pParam)
 {
     //USES_CONVERSION;
-    if (pParam != NULL)
+    if (pParam != nullptr)
     {
         PSEXECUTE_BUSEVENT_HANDLER psExecuteBusEventHandler=(PSEXECUTE_BUSEVENT_HANDLER) pParam;
         // Reset the event signaled
-        if(psExecuteBusEventHandler->m_pCExecuteFunc!=NULL)
+        if(psExecuteBusEventHandler->m_pCExecuteFunc!=nullptr)
         {
             psExecuteBusEventHandler->m_pCExecuteFunc->
             m_aomState[defBUSEVENT_HANDLER_THREAD].ResetEvent();
@@ -363,17 +363,17 @@ UINT unBusPreConnectHandlerProc(LPVOID pParam)
                 // Display the error information in the Trace window
                 gbSendStrToTrace(_(defSTR_ERROR_IN_BUS_PRE_CONNECT));
             }
-            // There is no memory allocation is this thread. So initialise it to NULL
+            // There is no memory allocation is this thread. So initialise it to nullptr
             psExecuteBusEventHandler->m_pCExecuteFunc->
-            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_pvThread = NULL;
+            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_pvThread = nullptr;
             // Reinitialise the Thread handle before terminating it.
             psExecuteBusEventHandler->m_pCExecuteFunc->
-            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_hThread = NULL;
+            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_hThread = nullptr;
             // Set the event to indicate termination of this thread.
             psExecuteBusEventHandler->m_pCExecuteFunc->
             m_aomState[defBUSEVENT_HANDLER_THREAD].SetEvent();
             delete psExecuteBusEventHandler;
-            psExecuteBusEventHandler=NULL;
+            psExecuteBusEventHandler=nullptr;
         }
     }
 
@@ -383,11 +383,11 @@ UINT unBusPreConnectHandlerProc(LPVOID pParam)
 UINT unBusConnectHandlerProc(LPVOID pParam)
 {
     //USES_CONVERSION;
-    if (pParam != NULL)
+    if (pParam != nullptr)
     {
         PSEXECUTE_BUSEVENT_HANDLER psExecuteBusEventHandler=(PSEXECUTE_BUSEVENT_HANDLER) pParam;
         // Reset the event signaled
-        if(psExecuteBusEventHandler->m_pCExecuteFunc!=NULL)
+        if(psExecuteBusEventHandler->m_pCExecuteFunc!=nullptr)
         {
             psExecuteBusEventHandler->m_pCExecuteFunc->
             m_aomState[defBUSEVENT_HANDLER_THREAD].ResetEvent();
@@ -400,17 +400,17 @@ UINT unBusConnectHandlerProc(LPVOID pParam)
                 // Display the error information in the Trace window
                 gbSendStrToTrace(_(defSTR_ERROR_IN_BUS_DISCONNECT));
             }
-            // There is no memory allocation is this thread. So initialise it to NULL
+            // There is no memory allocation is this thread. So initialise it to nullptr
             psExecuteBusEventHandler->m_pCExecuteFunc->
-            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_pvThread = NULL;
+            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_pvThread = nullptr;
             // Reinitialise the Thread handle before terminating it.
             psExecuteBusEventHandler->m_pCExecuteFunc->
-            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_hThread = NULL;
+            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_hThread = nullptr;
             // Set the event to indicate termination of this thread.
             psExecuteBusEventHandler->m_pCExecuteFunc->
             m_aomState[defBUSEVENT_HANDLER_THREAD].SetEvent();
             delete psExecuteBusEventHandler;
-            psExecuteBusEventHandler=NULL;
+            psExecuteBusEventHandler=nullptr;
         }
     }
 
@@ -419,11 +419,11 @@ UINT unBusConnectHandlerProc(LPVOID pParam)
 UINT unBusDisConnectHandlerProc(LPVOID pParam)
 {
     //USES_CONVERSION;
-    if (pParam != NULL)
+    if (pParam != nullptr)
     {
         PSEXECUTE_BUSEVENT_HANDLER psExecuteBusEventHandler=(PSEXECUTE_BUSEVENT_HANDLER) pParam;
         // Reset the event signaled
-        if(psExecuteBusEventHandler->m_pCExecuteFunc!=NULL)
+        if(psExecuteBusEventHandler->m_pCExecuteFunc!=nullptr)
         {
             psExecuteBusEventHandler->m_pCExecuteFunc->
             m_aomState[defBUSEVENT_HANDLER_THREAD].ResetEvent();
@@ -436,17 +436,17 @@ UINT unBusDisConnectHandlerProc(LPVOID pParam)
                 // Display the error information in the Trace window
                 gbSendStrToTrace(_(defSTR_ERROR_IN_BUS_CONNECT));
             }
-            // There is no memory allocation is this thread. So initialise it to NULL
+            // There is no memory allocation is this thread. So initialise it to nullptr
             psExecuteBusEventHandler->m_pCExecuteFunc->
-            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_pvThread = NULL;
+            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_pvThread = nullptr;
             // Reinitialise the Thread handle before terminating it.
             psExecuteBusEventHandler->m_pCExecuteFunc->
-            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_hThread = NULL;
+            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_hThread = nullptr;
             // Set the event to indicate termination of this thread.
             psExecuteBusEventHandler->m_pCExecuteFunc->
             m_aomState[defBUSEVENT_HANDLER_THREAD].SetEvent();
             delete psExecuteBusEventHandler;
-            psExecuteBusEventHandler=NULL;
+            psExecuteBusEventHandler=nullptr;
         }
     }
 
@@ -468,7 +468,7 @@ UINT unBusDisConnectHandlerProc(LPVOID pParam)
 ******************************************************************************/
 UINT unReadNodeMsgHandlerBuffer(LPVOID pParam)
 {
-    if(pParam != NULL)
+    if(pParam != nullptr)
     {
         CExecuteFunc* pCExecuteFunc=(CExecuteFunc*)pParam;
         pCExecuteFunc->m_aomState[defMSG_HANDLER_THREAD].ResetEvent();
@@ -510,11 +510,11 @@ UINT unReadNodeMsgHandlerBuffer(LPVOID pParam)
 ******************************************************************************/
 UINT unReadNodeMsgHandlerBufferLIN(LPVOID pParam)
 {
-    if(pParam != NULL)
+    if(pParam != nullptr)
     {
         CExecuteFunc* pCExecuteFunc=(CExecuteFunc*)pParam;
 
-        if(NULL != pCExecuteFunc)
+        if(nullptr != pCExecuteFunc)
         {
             pCExecuteFunc->m_aomState[defMSG_HANDLER_THREAD].ResetEvent();
             //if dll is unloaded exit loop and end thread
@@ -595,7 +595,7 @@ UINT unReadDllMsgBuffer(LPVOID pParam)
 UINT unTimerHandlerProc(LPVOID pParam)
 {
     PSTIMERHANDLER psTimerStruct=(PSTIMERHANDLER)pParam;
-    if(psTimerStruct!=NULL)
+    if(psTimerStruct!=nullptr)
         while(psTimerStruct->hDllHandle)
         {
             WaitForSingleObject(psTimerStruct->omWaitEvent,INFINITE);
@@ -603,7 +603,7 @@ UINT unTimerHandlerProc(LPVOID pParam)
             {
                 psTimerStruct->omWaitEvent.ResetEvent();
 
-                if( psTimerStruct->pFTimerHandler!=NULL &&
+                if( psTimerStruct->pFTimerHandler!=nullptr &&
                         psTimerStruct->bTimerSelected&&
                         psTimerStruct->hDllHandle )
                 {
@@ -632,9 +632,9 @@ UINT unTimerHandlerProc(LPVOID pParam)
             }
 
         }
-    if(psTimerStruct != NULL)
+    if(psTimerStruct != nullptr)
     {
-        psTimerStruct->pomThreadHandle=NULL;
+        psTimerStruct->pomThreadHandle=nullptr;
     }
     return 0;
 }

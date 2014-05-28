@@ -89,15 +89,15 @@ const BYTE BITS_EXPRN           = (BITS_TM | BITS_NUM);
 #define UNUSED_INTENTIONALLY(X)    (X)
 
 #define DELETE_PTR(PtrVal)      {                                       \
-        if (NULL != PtrVal)                 \
+        if (nullptr != PtrVal)                 \
         {                                   \
-            delete PtrVal; PtrVal = NULL;   \
+            delete PtrVal; PtrVal = nullptr;   \
         }                                   \
     }
 
 #define DELETE_ARRAY(PtrVal)    {                                       \
-        if (NULL != PtrVal)                 \
+        if (nullptr != PtrVal)                 \
         {                                   \
-            delete[] PtrVal; PtrVal = NULL; \
+            delete[] PtrVal; PtrVal = nullptr; \
         }                                   \
     }

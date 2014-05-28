@@ -10,7 +10,7 @@
 
 IMPLEMENT_DYNAMIC(CMsgSignalSelect, CDialog)
 
-CMsgSignalSelect::CMsgSignalSelect(ClusterConfig* cluster, CWnd* pParent /*=NULL*/, std::map<int, std::list<std::string>>* pMapMsgIDtoSignallst)
+CMsgSignalSelect::CMsgSignalSelect(ClusterConfig* cluster, CWnd* pParent /*=nullptr*/, std::map<int, std::list<std::string>>* pMapMsgIDtoSignallst)
     : CDialog(CMsgSignalSelect::IDD,pParent)
 {
     m_ouCluster=*cluster;
@@ -57,7 +57,7 @@ void CMsgSignalSelect::AutoMove(int iID, double dXMovePct, double dYMovePct, dou
     ASSERT((dYMovePct + dYSizePct) <= 100.0);   // can't use more than 100% of the resize for the child
     SMovingChild s;
     GetDlgItem(iID, &s.m_hWnd);
-    ASSERT(s.m_hWnd != NULL);
+    ASSERT(s.m_hWnd != nullptr);
     s.m_dXMoveFrac = dXMovePct / 100.0;
     s.m_dYMoveFrac = dYMovePct / 100.0;
     s.m_dXSizeFrac = dXSizePct / 100.0;
@@ -146,7 +146,7 @@ BOOL CMsgSignalSelect::OnInitDialog()
     pTreeStruct->ModifyStyle( TVS_CHECKBOXES, 0 );
     /* Now explicitly set it */
     pTreeStruct->ModifyStyle( 0, TVS_CHECKBOXES );
-    if( NULL == pTreeStruct )
+    if( nullptr == pTreeStruct )
     {
 
         return FALSE;
@@ -225,7 +225,7 @@ void CMsgSignalSelect::vStoreintoMap()
     m_mapMsgIDtoSignallst->clear();
     HTREEITEM root = pTreeStruct->GetRootItem();
 
-    if(root == NULL)
+    if(root == nullptr)
     {
         return;
     }
@@ -279,7 +279,7 @@ void CMsgSignalSelect::vStoreintoMap()
 
             msgs= pTreeStruct->GetNextSiblingItem(msgs);
 
-            if(msgs == NULL)
+            if(msgs == nullptr)
             {
                 break;
 
@@ -302,16 +302,16 @@ void CMsgSignalSelect::OnSize(UINT nType, int cx, int cy)
 
     int iXDelta = cx - m_szInitial.cx;
     int iYDelta = cy - m_szInitial.cy;
-    HDWP hDefer = NULL;
+    HDWP hDefer = nullptr;
     for (MovingChildren::iterator p = m_MovingChildren.begin();  p != m_MovingChildren.end();  ++p)
     {
-        if (p->m_hWnd != NULL)
+        if (p->m_hWnd != nullptr)
         {
             CRect rcNew(p->m_rcInitial);
             rcNew.OffsetRect(int(iXDelta * p->m_dXMoveFrac), int(iYDelta * p->m_dYMoveFrac));
             rcNew.right += int(iXDelta * p->m_dXSizeFrac);
             rcNew.bottom += int(iYDelta * p->m_dYSizeFrac);
-            if (hDefer == NULL)
+            if (hDefer == nullptr)
             {
                 hDefer = BeginDeferWindowPos(m_MovingChildren.size());
             }
@@ -320,15 +320,15 @@ void CMsgSignalSelect::OnSize(UINT nType, int cx, int cy)
             {
                 uFlags |= SWP_NOCOPYBITS;
             }
-            DeferWindowPos(hDefer, p->m_hWnd, NULL, rcNew.left, rcNew.top, rcNew.Width(), rcNew.Height(), uFlags);
+            DeferWindowPos(hDefer, p->m_hWnd, nullptr, rcNew.left, rcNew.top, rcNew.Width(), rcNew.Height(), uFlags);
         }
     }
-    if (hDefer != NULL)
+    if (hDefer != nullptr)
     {
         EndDeferWindowPos(hDefer);
     }
 
-    //if (m_hGripper != NULL)
+    //if (m_hGripper != nullptr)
     //   ::ShowWindow(m_hGripper, (nType == SIZE_MAXIMIZED) ? SW_HIDE : SW_SHOW);
 }
 

@@ -34,17 +34,17 @@
 #define SIMSYS_CONFIG_SECTION_NAME      "SimSysConfig"
 
 //INstantiation of singleton class
-CSimSysManager* CSimSysManager::sm_pouSimSysManager[BUS_TOTAL] = {NULL};
+CSimSysManager* CSimSysManager::sm_pouSimSysManager[BUS_TOTAL] = {nullptr};
 
 CSimSysManager::CSimSysManager(ETYPE_BUS eBus) : m_ouSimSysNodeInfo(eBus),
     m_omSimSysConfig(eBus)
 {
-    m_pomSimSysDetView = NULL;
-    m_pomSimSysTreeView = NULL;
-    m_CopyJ1939SimNode = NULL;
+    m_pomSimSysDetView = nullptr;
+    m_pomSimSysTreeView = nullptr;
+    m_CopyJ1939SimNode = nullptr;
     m_eBus = eBus;
 
-    m_pTEXmlNode = NULL;
+    m_pTEXmlNode = nullptr;
 }
 
 CSimSysManager::~CSimSysManager(void)
@@ -64,7 +64,7 @@ void CSimSysManager::vApplicationClosing(bool bSave)
 void CSimSysManager::vSaveAllSimSys()
 {
     PSSIMSYSINFO psSimSys = m_ouSimSysNodeInfo.psReturnSimsysInfoListPtr();
-    while (psSimSys != NULL)
+    while (psSimSys != nullptr)
     {
         m_omSimSysConfig.nSaveConfiguration(psSimSys->m_omStrSimSysName,
                                             psSimSys );
@@ -75,7 +75,7 @@ void CSimSysManager::vSaveAllSimSys()
 void CSimSysManager::vSaveSimSys(CString omStrSimSysName)
 {
     PSSIMSYSINFO psSimSys = m_ouSimSysNodeInfo.psReturnSimsysInfoListPtr();
-    while (psSimSys != NULL)
+    while (psSimSys != nullptr)
     {
         if ( omStrSimSysName.Compare(psSimSys->m_omStrSimSysName) == 0 )
         {
@@ -88,7 +88,7 @@ void CSimSysManager::vSaveSimSys(CString omStrSimSysName)
 
 CSimSysManager& CSimSysManager::ouGetSimSysManager(ETYPE_BUS eBus)
 {
-    if (sm_pouSimSysManager[eBus] == NULL)
+    if (sm_pouSimSysManager[eBus] == nullptr)
     {
         sm_pouSimSysManager[eBus] = new CSimSysManager(eBus);
     }
@@ -97,10 +97,10 @@ CSimSysManager& CSimSysManager::ouGetSimSysManager(ETYPE_BUS eBus)
 
 void CSimSysManager::vClearObj(ETYPE_BUS eBus)
 {
-    if (sm_pouSimSysManager[eBus] != NULL)
+    if (sm_pouSimSysManager[eBus] != nullptr)
     {
         delete sm_pouSimSysManager[eBus];
-        sm_pouSimSysManager[eBus] = NULL;
+        sm_pouSimSysManager[eBus] = nullptr;
     }
 }
 
@@ -167,16 +167,16 @@ CFlags& CSimSysManager::ouGetFlags()
 /*****************************************************************************/
 void CSimSysManager::vSaveSimSysWndConfig()
 {
-    if (CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd != NULL)
+    if (CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd != nullptr)
     {
         CGlobalObj::ouGetObj(m_eBus).m_nSimSysDataSize = unGetStoreSIMFBufferSize(); //Get the required size
 
-        if (CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != NULL)
+        if (CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != nullptr)
         {
             delete[] CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr;
         }
         CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = new BYTE[CGlobalObj::ouGetObj(m_eBus).m_nSimSysDataSize];
-        if (CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != NULL)
+        if (CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != nullptr)
         {
             SaveSIMDataIntoBuffer(CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr);// save the config into buffer
             /* Add into a different section SIM_WND_CONFIG_SECTION_NAME*/
@@ -187,7 +187,7 @@ void CSimSysManager::vSaveSimSysWndConfig()
     }
     else
     {
-        if (CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr == NULL)
+        if (CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr == nullptr)
         {
             //New configuration. So get default values
             int nCount = 0;//Total number of simsys
@@ -211,7 +211,7 @@ bool CSimSysManager::bGetConfigData(xmlNodePtr pNodePtr)
     const char* omcVarChar ;
     UINT unCount = m_ouSimSysNodeInfo.unGetNumberOfSimSys();
     PSSIMSYSINFO pSimSysInfo = m_ouSimSysNodeInfo.psReturnSimsysInfoListPtr();
-    for (UINT i = 0; (i < unCount) && (pSimSysInfo != NULL); i++)
+    for (UINT i = 0; (i < unCount) && (pSimSysInfo != nullptr); i++)
     {
         CString omTmp = pSimSysInfo->m_omStrSimSysName;
 
@@ -223,7 +223,7 @@ bool CSimSysManager::bGetConfigData(xmlNodePtr pNodePtr)
 
 
         omcVarChar = omPath.c_str();
-        xmlNodePtr pColName = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_SYS_PATH,BAD_CAST omcVarChar);
+        xmlNodePtr pColName = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_SYS_PATH,BAD_CAST omcVarChar);
         xmlAddChild(pNodePtr, pColName);
 
         pSimSysInfo = pSimSysInfo->m_psSimsysNext;
@@ -231,17 +231,17 @@ bool CSimSysManager::bGetConfigData(xmlNodePtr pNodePtr)
 
 
     //window placement
-    xmlNodePtr pNodeWindowsPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
+    xmlNodePtr pNodeWindowsPos = xmlNewNode(nullptr, BAD_CAST DEF_WND_POS);
     xmlAddChild(pNodePtr, pNodeWindowsPos);
 
 
     WINDOWPLACEMENT sWndPlacement;
-    if(CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd != NULL)
+    if(CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd != nullptr)
     {
         CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->GetWindowPlacement(&sWndPlacement);
         xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWindowsPos,sWndPlacement);
     }
-    else if(CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd == NULL)
+    else if(CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd == nullptr)
     {
         xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWindowsPos,CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
     }
@@ -250,42 +250,42 @@ bool CSimSysManager::bGetConfigData(xmlNodePtr pNodePtr)
     //CString csVisibility;
     //csVisibility.Format("%d",  sWndPlacement.flags);
     //omcVarChar = csVisibility;
-    //xmlNodePtr pVisibility = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_VISIBILITY,BAD_CAST omcVarChar);
+    //xmlNodePtr pVisibility = xmlNewChild(pNodeWindowsPos, nullptr, BAD_CAST DEF_VISIBILITY,BAD_CAST omcVarChar);
     //xmlAddChild(pNodeWindowsPos, pVisibility);
 
     ////WindowPlacement
     //CString csWindowPlacement;
     //csWindowPlacement.Format("%d",  sWndPlacement.flags);
     //omcVarChar = csWindowPlacement;
-    //xmlNodePtr pWindowPlacement = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_MWND_PLACEMENT,BAD_CAST omcVarChar);
+    //xmlNodePtr pWindowPlacement = xmlNewChild(pNodeWindowsPos, nullptr, BAD_CAST DEF_MWND_PLACEMENT,BAD_CAST omcVarChar);
     //xmlAddChild(pNodeWindowsPos, pWindowPlacement);
 
     ////Top
     //CString csTop;
     //csTop.Format("%d",  sWndPlacement.rcNormalPosition.top);
     //omcVarChar = csTop;
-    //xmlNodePtr pTop= xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_MWND_TOP,BAD_CAST omcVarChar);
+    //xmlNodePtr pTop= xmlNewChild(pNodeWindowsPos, nullptr, BAD_CAST DEF_MWND_TOP,BAD_CAST omcVarChar);
     //xmlAddChild(pNodeWindowsPos, pTop);
 
     ////Left
     //CString csLeft;
     //csLeft.Format("%d",  sWndPlacement.rcNormalPosition.left);
     //omcVarChar = csLeft;
-    //xmlNodePtr pLeft = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_MWND_LEFT,BAD_CAST omcVarChar);
+    //xmlNodePtr pLeft = xmlNewChild(pNodeWindowsPos, nullptr, BAD_CAST DEF_MWND_LEFT,BAD_CAST omcVarChar);
     //xmlAddChild(pNodeWindowsPos, pLeft);
 
     ////Bottom
     //CString csBottom;
     //csBottom.Format("%d",  sWndPlacement.rcNormalPosition.bottom);
     //omcVarChar = csBottom;
-    //xmlNodePtr pBottom= xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_BOTTOM,BAD_CAST omcVarChar);
+    //xmlNodePtr pBottom= xmlNewChild(pNodeWindowsPos, nullptr, BAD_CAST DEF_BOTTOM,BAD_CAST omcVarChar);
     //xmlAddChild(pNodeWindowsPos, pBottom);
 
     ////Right
     //CString csRight;
     //csRight.Format("%d",  sWndPlacement.rcNormalPosition.right);
     //omcVarChar = csRight;
-    //xmlNodePtr pRight = xmlNewChild(pNodeWindowsPos, NULL, BAD_CAST DEF_RIGHT,BAD_CAST omcVarChar);
+    //xmlNodePtr pRight = xmlNewChild(pNodeWindowsPos, nullptr, BAD_CAST DEF_RIGHT,BAD_CAST omcVarChar);
     //xmlAddChild(pNodeWindowsPos, pRight);
 
     return true;
@@ -340,7 +340,7 @@ void CSimSysManager::SaveSIMDataIntoBuffer(BYTE* DesBuffer)
     UINT unCount = m_ouSimSysNodeInfo.unGetNumberOfSimSys();
     COPY_DATA(tempBuffAddress, &unCount, sizeof (UINT));
     PSSIMSYSINFO pSimSysInfo = m_ouSimSysNodeInfo.psReturnSimsysInfoListPtr();
-    for (UINT i = 0; (i < unCount) && (pSimSysInfo != NULL); i++)
+    for (UINT i = 0; (i < unCount) && (pSimSysInfo != nullptr); i++)
     {
         UINT unSize = 0;
         CString omTmp = pSimSysInfo->m_omStrSimSysName;
@@ -357,7 +357,7 @@ void CSimSysManager::vLoadSimSysWndConfig(xmlDocPtr pDoc, ETYPE_BUS eBus)
     //First initialize all data
     vInitailizeSimSysInfo();
 
-    if ( NULL != pDoc )
+    if ( nullptr != pDoc )
     {
         /* Copy the retrieved config data into member variables and apply*/
         CopySIMDataFromBuffer(pDoc, eBus);
@@ -367,25 +367,25 @@ void CSimSysManager::vLoadSimSysWndConfig(xmlDocPtr pDoc, ETYPE_BUS eBus)
     if(eBus == J1939)
     {
         //m_bByXml = TRUE;
-        if(m_pTEXmlNode != NULL)
+        if(m_pTEXmlNode != nullptr)
         {
             xmlFreeNode(m_pTEXmlNode);
-            m_pTEXmlNode = NULL;
+            m_pTEXmlNode = nullptr;
         }
         xmlXPathObjectPtr pTempNode = xmlUtils::pGetNodes(pDoc, (xmlChar*)("//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Simulated_Systems"));
 
-        if(pTempNode != NULL)
+        if(pTempNode != nullptr)
         {
             m_pTEXmlNode = xmlCopyNode(pTempNode->nodesetval->nodeTab[0], 1);
         }
         else
         {
-            m_pTEXmlNode = NULL;
+            m_pTEXmlNode = nullptr;
         }
     }
 
     //Now Populate the tree view if it is present
-    if (m_pomSimSysTreeView != NULL)
+    if (m_pomSimSysTreeView != nullptr)
     {
         if (m_pomSimSysTreeView->IsWindowVisible())
         {
@@ -395,8 +395,8 @@ void CSimSysManager::vLoadSimSysWndConfig(xmlDocPtr pDoc, ETYPE_BUS eBus)
 }
 void CSimSysManager::CopySIMDataFromBuffer(xmlNodePtr pDoc, ETYPE_BUS eBus)
 {
-    /*xmlChar* pXpath = NULL;
-    xmlXPathObjectPtr pObjectPath = NULL;
+    /*xmlChar* pXpath = nullptr;
+    xmlXPathObjectPtr pObjectPath = nullptr;
 
     if(eBus == CAN)
     {
@@ -409,34 +409,34 @@ void CSimSysManager::CopySIMDataFromBuffer(xmlNodePtr pDoc, ETYPE_BUS eBus)
         pObjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
     }
 
-    if(m_CopyJ1939SimNode != NULL && (eBus == J1939))
+    if(m_CopyJ1939SimNode != nullptr && (eBus == J1939))
     {
         xmlFreeNode(m_CopyJ1939SimNode);
-        m_CopyJ1939SimNode = NULL;
+        m_CopyJ1939SimNode = nullptr;
     }
 
-    else if(pObjectPath != NULL && (eBus == J1939))
+    else if(pObjectPath != nullptr && (eBus == J1939))
     {
         m_CopyJ1939SimNode = xmlCopyNode(pObjectPath->nodesetval->nodeTab[0], 1);
     }
     else
     {
         xmlFreeNode(m_CopyJ1939SimNode);
-        m_CopyJ1939SimNode = NULL;
+        m_CopyJ1939SimNode = nullptr;
     }*/
 
     xmlNodePtr pNode = pDoc;
-    //if( NULL != pObjectPath )
+    //if( nullptr != pObjectPath )
     {
         //xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-        //if( NULL != pNodeSet )
+        //if( nullptr != pNodeSet )
         //{
         //  pNode = pNodeSet->nodeTab[0];       //Take First One only
         //}
-        if( NULL != pNode )
+        if( nullptr != pNode )
         {
             pNode = pNode->xmlChildrenNode;
-            while (pNode != NULL)
+            while (pNode != nullptr)
             {
                 if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Window_Position")))
                 {
@@ -445,7 +445,7 @@ void CSimSysManager::CopySIMDataFromBuffer(xmlNodePtr pDoc, ETYPE_BUS eBus)
                 if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Sym_Path")))
                 {
                     xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
-                    if(NULL != key)
+                    if(nullptr != key)
                     {
                         CString omStrFileName;
                         if(PathIsRelative((char*)key) == TRUE)
@@ -490,8 +490,8 @@ void CSimSysManager::CopySIMDataFromBuffer(xmlNodePtr pDoc, ETYPE_BUS eBus)
 
 void CSimSysManager::CopySIMDataFromBuffer(xmlDocPtr pDoc, ETYPE_BUS eBus)
 {
-    xmlChar* pXpath = NULL;
-    xmlXPathObjectPtr pObjectPath = NULL;
+    xmlChar* pXpath = nullptr;
+    xmlXPathObjectPtr pObjectPath = nullptr;
 
     if(eBus == CAN)
     {
@@ -509,30 +509,30 @@ void CSimSysManager::CopySIMDataFromBuffer(xmlDocPtr pDoc, ETYPE_BUS eBus)
         pObjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
     }
 
-    if(m_CopyJ1939SimNode != NULL && (eBus == J1939))
+    if(m_CopyJ1939SimNode != nullptr && (eBus == J1939))
     {
         xmlFreeNode(m_CopyJ1939SimNode);
-        m_CopyJ1939SimNode = NULL;
+        m_CopyJ1939SimNode = nullptr;
     }
 
-    else if(pObjectPath != NULL && (eBus == J1939))
+    else if(pObjectPath != nullptr && (eBus == J1939))
     {
         m_CopyJ1939SimNode = xmlCopyNode(pObjectPath->nodesetval->nodeTab[0], 1);
     }
     else
     {
         xmlFreeNode(m_CopyJ1939SimNode);
-        m_CopyJ1939SimNode = NULL;
+        m_CopyJ1939SimNode = nullptr;
     }
 
-    xmlNodePtr pNode = NULL;
+    xmlNodePtr pNode = nullptr;
 
 
 
-    if( NULL != pObjectPath )
+    if( nullptr != pObjectPath )
     {
         xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-        if( NULL != pNodeSet )
+        if( nullptr != pNodeSet )
         {
             pNode = pNodeSet->nodeTab[0];       //Take First One only
         }
@@ -545,11 +545,11 @@ void CSimSysManager::vSetConfigData(xmlNodePtr pNode)
 {
     INT nWndPos = S_FALSE;
     vInitailizeSimSysInfo();
-    if( NULL != pNode )
+    if( nullptr != pNode )
     {
         pNode = pNode->xmlChildrenNode;
 
-        while (pNode != NULL)
+        while (pNode != nullptr)
         {
             if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Window_Position")))
             {
@@ -558,7 +558,7 @@ void CSimSysManager::vSetConfigData(xmlNodePtr pNode)
             if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Sym_Path")))
             {
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     CString omStrFileName;
                     if(PathIsRelative((char*)key) == TRUE)
@@ -592,7 +592,7 @@ void CSimSysManager::vSetConfigData(xmlNodePtr pNode)
         CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.showCmd = SW_NORMAL;*/
         CGlobalObj::ouGetObj(m_eBus).bGetDefaultValue(SIMSYS_WND_PLACEMENT, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
     }
-    if (m_pomSimSysTreeView != NULL)
+    if (m_pomSimSysTreeView != nullptr)
     {
         if (m_pomSimSysTreeView->IsWindowVisible())
         {
@@ -618,18 +618,18 @@ void CSimSysManager :: vLoadSimSysWndConfig()
     vInitailizeSimSysInfo();
     //Now load the data
     //int nBufferCount = 0;
-    //BYTE *SrcBuffer = NULL;
+    //BYTE *SrcBuffer = nullptr;
     /* Retrieve the section SIMSYS_WND_CONFIG_SECTION_NAME*/
     /*CConfigDetails::ouGetConfigDetailsObject().bGetData((void *&)(SrcBuffer),
                                             nBufferCount,SIM_WND_CONFIG_SECTION_NAME);*/
-    if (CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != NULL)
+    if (CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != nullptr)
     {
         /* Copy the retrieved config data into member variables and apply*/
         CopySIMDataFromBuffer(CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr);
         //delete SrcBuffer;
     }
     //Now Populate the tree view if it is present
-    if (m_pomSimSysTreeView != NULL)
+    if (m_pomSimSysTreeView != nullptr)
     {
         if (m_pomSimSysTreeView->IsWindowVisible())
         {
@@ -661,13 +661,13 @@ void CSimSysManager ::vInitailizeSimSysInfo()
             vSaveAllSimSys();
         }
     }
-    //if(m_CopyJ1939SimNode == NULL)
+    //if(m_CopyJ1939SimNode == nullptr)
     {
         m_ouSimSysNodeInfo.bDeleteSimsysFromInfo(STR_EMPTY);
     }
     //Now Populate the tree view if it is present
     //SSH + commneted to resolve issue #392 'Duplicate simulated systems'
-    /*if (m_pomSimSysTreeView != NULL)
+    /*if (m_pomSimSysTreeView != nullptr)
     {
         if (m_pomSimSysTreeView->IsWindowVisible())
         {
@@ -721,9 +721,9 @@ void CSimSysManager :: CopySIMDataFromBuffer(BYTE* SrcBuffer)
 /*****************************************************************************/
 void CSimSysManager ::vLoadSimInfoFromConfiguration(CString omFileName)
 {
-    PSSIMSYSINFO pSimsys = NULL;
+    PSSIMSYSINFO pSimsys = nullptr;
     int nReturn = m_omSimSysConfig.nLoadConfiguration(omFileName, pSimsys);
-    if((nReturn == defCONFIG_FILE_SUCCESS) && (pSimsys != NULL))
+    if((nReturn == defCONFIG_FILE_SUCCESS) && (pSimsys != nullptr))
     {
         m_ouSimSysNodeInfo.vAddSimSys(pSimsys);
     }
@@ -744,10 +744,10 @@ BOOL CSimSysManager :: bIsConfigChanged()
 {
     //int nBufferCount = 0;
     BOOL bReturn = FALSE;
-    //BYTE *SrcBuffer = NULL;
+    //BYTE *SrcBuffer = nullptr;
     /*CConfigDetails::ouGetConfigDetailsObject().bGetData((void *&)(SrcBuffer),
                                             nBufferCount,SIM_WND_CONFIG_SECTION_NAME);*/
-    if (CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != NULL)
+    if (CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != nullptr)
     {
         BYTE* tempBuffAddress = CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr;
         //
@@ -758,7 +758,7 @@ BOOL CSimSysManager :: bIsConfigChanged()
         if (bReturn)
         {
             PSSIMSYSINFO pSimSysInfo = m_ouSimSysNodeInfo.psReturnSimsysInfoListPtr();
-            for (UINT i = 0; (i < unCount) && (pSimSysInfo != NULL); i++)
+            for (UINT i = 0; (i < unCount) && (pSimSysInfo != nullptr); i++)
             {
                 UINT nSize = 0;
                 memcpy(&nSize, tempBuffAddress, sizeof(UINT));
@@ -783,7 +783,7 @@ BOOL CSimSysManager :: bIsConfigChanged()
     else
     {
         CSimSysNodeInfo* pSimSysNodeInfo = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-        if (NULL != pSimSysNodeInfo)
+        if (nullptr != pSimSysNodeInfo)
         {
             return pSimSysNodeInfo->bIsAnySimSysModified();
         }

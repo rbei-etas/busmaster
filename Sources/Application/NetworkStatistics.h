@@ -72,8 +72,8 @@ public:
 
 
     CNetworkStatistics(UINT unChnl[BUS_TOTAL]);
-    CNetworkStatistics(UINT nIDCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
-    CNetworkStatistics(LPCTSTR pszCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
+    CNetworkStatistics(UINT nIDCaption, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);
+    CNetworkStatistics(LPCTSTR pszCaption, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);
     virtual ~CNetworkStatistics();
     void vSendMessage(ETYPE_BUS bus, BOOL bUpdateSpecific = FALSE);
     void vGetConfigData(xmlNodePtr& pxmlNodePtr);

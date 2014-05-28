@@ -61,23 +61,23 @@ UINT CalcTimersExecTime(LPVOID pParam);
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modification on  :  08.03.2002                                            */
 /******************************************************************************/
-CSetResetTimer::CSetResetTimer(ETYPE_BUS eBus, CWnd* pParent /*=NULL*/)
+CSetResetTimer::CSetResetTimer(ETYPE_BUS eBus, CWnd* pParent /*=nullptr*/)
     : CDialog(CSetResetTimer::IDD, pParent),
       m_bDialogGettingInit(TRUE),
       m_bApplyButtonPressed(FALSE),
-      m_psFirstNodeTimerList(NULL),
-      m_psLastNodeTimerList(NULL),
-      m_psSelectedNodeTimerListPtr(NULL),
+      m_psFirstNodeTimerList(nullptr),
+      m_psLastNodeTimerList(nullptr),
+      m_psSelectedNodeTimerListPtr(nullptr),
       m_nSelectedNode(0),
       m_bNodeNameChanged(FALSE),
-      m_psCalTimerThreadStruct(NULL),
+      m_psCalTimerThreadStruct(nullptr),
       m_unTimerID(0)
 {
     m_eBus = eBus;
     //{{AFX_DATA_INIT(CSetResetTimer)
     m_omStrNodeName = "";
     //}}AFX_DATA_INIT
-    //   m_omApptEvent = CreateEvent(NULL,TRUE,FALSE,NULL);
+    //   m_omApptEvent = CreateEvent(nullptr,TRUE,FALSE,nullptr);
 
 
 }
@@ -157,7 +157,7 @@ BOOL CSetResetTimer::OnInitDialog()
     if(FALSE==m_bSimSysNodes)
     {
         PSNODETIMERLIST psCurrTimerListPtr=m_psFirstNodeTimerList;
-        while(psCurrTimerListPtr!=NULL)
+        while(psCurrTimerListPtr!=nullptr)
         {
             m_omComboNodeName.AddString(psCurrTimerListPtr->omNodeName);
             psCurrTimerListPtr=psCurrTimerListPtr->psNextTimerListPtr;
@@ -190,14 +190,14 @@ BOOL CSetResetTimer::OnInitDialog()
     // Set the style and insert column.
     m_omTimerList.SetExtendedStyle(LVS_EX_CHECKBOXES);
     m_omTimerList.InsertColumn(0,_(defTIMER_HEADER_NAME),LVCFMT_CENTER,-1,-1);
-    if(m_psSelectedNodeTimerListPtr==NULL&&m_psFirstNodeTimerList!=NULL)
+    if(m_psSelectedNodeTimerListPtr==nullptr&&m_psFirstNodeTimerList!=nullptr)
     {
         CString omNodeName;
         m_omComboNodeName.GetLBText(0,omNodeName);
         //get the corressponding node's timer list pointer
         BOOL bFound=FALSE;
         PSNODETIMERLIST psCurrTimerListPtr=m_psFirstNodeTimerList;
-        while(psCurrTimerListPtr!=NULL&&!bFound)
+        while(psCurrTimerListPtr!=nullptr&&!bFound)
         {
             if(omNodeName==psCurrTimerListPtr->omNodeName)
             {
@@ -221,7 +221,7 @@ BOOL CSetResetTimer::OnInitDialog()
             BOOL bFound=FALSE;
             CString omNodeName=m_omSysNodeName.GetAt(0);
             PSNODETIMERLIST psCurrTimerListPtr=m_psFirstNodeTimerList;
-            while(psCurrTimerListPtr!=NULL&&!bFound)
+            while(psCurrTimerListPtr!=nullptr&&!bFound)
             {
                 if(omNodeName==psCurrTimerListPtr->omNodeName)
                 {
@@ -232,7 +232,7 @@ BOOL CSetResetTimer::OnInitDialog()
                     psCurrTimerListPtr=psCurrTimerListPtr->psNextTimerListPtr;
                 }
             }
-            if(psCurrTimerListPtr != NULL)
+            if(psCurrTimerListPtr != nullptr)
             {
                 m_psSelectedNodeTimerListPtr= psCurrTimerListPtr->psTimerListPtr;
             }
@@ -251,13 +251,13 @@ BOOL CSetResetTimer::OnInitDialog()
     // the subsequent controls for timer and its type.
     INT nColumnWidth = 0;
     INT nTemp = 0;
-    while(ps_CurrTimeHandler!=NULL)
+    while(ps_CurrTimeHandler!=nullptr)
     {
         m_omTimerList.InsertItem(nCountTimer,
                                  ps_CurrTimeHandler->sTimerHandler.omStrTimerHandlerName);
         m_omTimerList.SetCheck(nCountTimer,
                                ps_CurrTimeHandler->sTimerHandler.bTimerSelected);
-        // If it is Mono shot timer, make the timer ID as NULL.
+        // If it is Mono shot timer, make the timer ID as nullptr.
         if(ps_CurrTimeHandler->sTimerHandler.bTimerType !=FALSE)
         {
             ps_CurrTimeHandler->sTimerHandler.bTimerType = FALSE;
@@ -292,7 +292,7 @@ BOOL CSetResetTimer::OnInitDialog()
         PSTIMERHANDLER ps_CurrTimeHandler=GetPointerOfHandler(
                                               m_psSelectedNodeTimerListPtr,nReturn);
         //if found
-        if(ps_CurrTimeHandler!=NULL&&ps_CurrTimeHandler->bTimerType!=FALSE)
+        if(ps_CurrTimeHandler!=nullptr&&ps_CurrTimeHandler->bTimerType!=FALSE)
         {
             GetDlgItem(IDC_BTN_APPLY)->EnableWindow(FALSE);
         }
@@ -431,7 +431,7 @@ void CSetResetTimer::OnUpdateEditTimerValue()
         //get the corressponding node's timer list pointer
         BOOL bFound=FALSE;
         PSNODETIMERLIST psCurrTimerListPtr=m_psFirstNodeTimerList;
-        while(psCurrTimerListPtr!=NULL&&!bFound)
+        while(psCurrTimerListPtr!=nullptr&&!bFound)
         {
             if(omNodeName==psCurrTimerListPtr->omNodeName)
             {
@@ -443,7 +443,7 @@ void CSetResetTimer::OnUpdateEditTimerValue()
             }
         }
         CEdit* pomTimerValue = (CEdit*)GetDlgItem(IDC_EDIT_TIMER_VALUE);
-        if(pomTimerValue != NULL)
+        if(pomTimerValue != nullptr)
         {
             pomTimerValue->SetFocus();
             int nSelectedItem = m_omTimerList.GetNextItem(-1, LVNI_SELECTED);
@@ -453,7 +453,7 @@ void CSetResetTimer::OnUpdateEditTimerValue()
                 PSTIMERHANDLER ps_CurrTimeHandler=GetPointerOfHandler(
                                                       psCurrTimerListPtr->psTimerListPtr,nSelectedItem);
 
-                if(ps_CurrTimeHandler!=NULL)
+                if(ps_CurrTimeHandler!=nullptr)
                 {
                     SetDlgItemInt(IDC_EDIT_TIMER_VALUE,
                                   ps_CurrTimeHandler->unTimerVal,
@@ -481,7 +481,7 @@ void CSetResetTimer::OnUpdateEditTimerValue()
 void CSetResetTimer::vSaveUpdatedTimerInformation()
 {
     PSTIMERHANDLERLIST psTimerList=m_psSelectedNodeTimerListPtr;
-    if(psTimerList!=NULL)
+    if(psTimerList!=nullptr)
     {
         CButton* pomTimerType;
         int nSelectedItem = m_omTimerList.GetNextItem(-1, LVNI_SELECTED);
@@ -490,11 +490,11 @@ void CSetResetTimer::vSaveUpdatedTimerInformation()
             pomTimerType    = (CButton*)GetDlgItem(IDC_CHCK_MONOSHOT);
             PSTIMERHANDLER ps_CurrTimeHandler=GetPointerOfHandler(
                                                   psTimerList,nSelectedItem);
-            if(ps_CurrTimeHandler!=NULL)
+            if(ps_CurrTimeHandler!=nullptr)
             {
                 ps_CurrTimeHandler->unTimerVal =
                     GetDlgItemInt(IDC_EDIT_TIMER_VALUE, 0, FALSE);
-                if( pomTimerType != NULL)
+                if( pomTimerType != nullptr)
                 {
                     ps_CurrTimeHandler->bTimerType = pomTimerType->GetCheck();
                 }
@@ -522,28 +522,28 @@ void CSetResetTimer::vSaveUpdatedTimerInformation()
 void CSetResetTimer::vUpdateTimerInformation(PSTIMERHANDLERLIST ps_CurrTimeHandl
         ,int nSelectedItem)
 {
-    if(ps_CurrTimeHandl!=NULL)
+    if(ps_CurrTimeHandl!=nullptr)
     {
         CButton* pomTimerValue = (CButton*)GetDlgItem(IDC_EDIT_TIMER_VALUE);
         CButton* pomTimerType =  (CButton*)GetDlgItem(IDC_CHCK_MONOSHOT);
         PSTIMERHANDLER ps_CurrTimeHandler;
-        if(pomTimerType  != NULL)
+        if(pomTimerType  != nullptr)
         {
             ps_CurrTimeHandler=GetPointerOfHandler(ps_CurrTimeHandl,
                                                    nSelectedItem);
             pomTimerType ->SetCheck(ps_CurrTimeHandler->bTimerType);
-            // If timer timer ID is not NULL -> timer is
+            // If timer timer ID is not nullptr -> timer is
             // running or waiting for trigger. Don't enable the controls.
 
             pomTimerType ->EnableWindow(TRUE);
 
         }
-        if(pomTimerValue != NULL)
+        if(pomTimerValue != nullptr)
         {
             SetDlgItemInt(IDC_EDIT_TIMER_VALUE,
                           ps_CurrTimeHandler->unTimerVal,
                           TRUE);
-            // If timer timer ID is not NULL -> timer is
+            // If timer timer ID is not nullptr -> timer is
             // running or waiting for trigger. Don't enable the controls.
             //ani1
             pomTimerValue->EnableWindow(FALSE);
@@ -587,7 +587,7 @@ void CSetResetTimer::OnCancel()
 /******************************************************************************/
 BOOL CSetResetTimer::DestroyWindow()
 {
-    m_psSelectedNodeTimerListPtr=NULL;
+    m_psSelectedNodeTimerListPtr=nullptr;
     m_nSelectedNode=0;
     // Set the flag to FALSE to indicate the dialog is closed.
     CSimSysManager::ouGetSimSysManager(m_eBus).
@@ -661,7 +661,7 @@ void CSetResetTimer::OnItemchangedLstcTimerHandler(NMHDR* pNMHDR,
             {
                 PSTIMERHANDLER ps_CurrTimeHandler=
                     GetPointerOfHandler(psTimerList,pNMListView->iItem);
-                if(ps_CurrTimeHandler!=NULL)
+                if(ps_CurrTimeHandler!=nullptr)
                 {
                     ps_CurrTimeHandler->bTimerSelected =
                         m_omTimerList.GetCheck(pNMListView->iItem);
@@ -673,7 +673,7 @@ void CSetResetTimer::OnItemchangedLstcTimerHandler(NMHDR* pNMHDR,
         CButton* pomTimerType =  (CButton*)GetDlgItem(IDC_CHCK_MONOSHOT);
         if(pNMListView->uNewState == 0 )
         {
-            if(pomTimerType  != NULL && pomTimerValue  != NULL )
+            if(pomTimerType  != nullptr && pomTimerValue  != nullptr )
             {
                 pomTimerType->EnableWindow(TRUE);
                 pomTimerValue->EnableWindow(TRUE);
@@ -684,10 +684,10 @@ void CSetResetTimer::OnItemchangedLstcTimerHandler(NMHDR* pNMHDR,
             INT nIndex = m_omTimerList.GetNextItem(-1,LVIS_SELECTED);
             PSTIMERHANDLER ps_CurrTimeHandler=GetPointerOfHandler(
                                                   psTimerList,nIndex);
-            if( nIndex != -1 && ps_CurrTimeHandler!=NULL&&
+            if( nIndex != -1 && ps_CurrTimeHandler!=nullptr&&
                     ps_CurrTimeHandler->bTimerType == FALSE )
             {
-                if(pomTimerType  != NULL && pomTimerValue  != NULL )
+                if(pomTimerType  != nullptr && pomTimerValue  != nullptr )
                 {
                     pomTimerType->EnableWindow(TRUE);
                     pomTimerValue->EnableWindow(TRUE);
@@ -723,9 +723,9 @@ void CSetResetTimer::vTimerStatusChanged()
     if( nIndex != -1 &&
             ps_CurrTimeHandler->bTimerType == FALSE )
     {
-        if(    pomTimerType   != NULL
-                && pomTimerValue  != NULL
-                && pomButtonApply != NULL )
+        if(    pomTimerType   != nullptr
+                && pomTimerValue  != nullptr
+                && pomButtonApply != nullptr )
         {
             pomTimerType->EnableWindow(TRUE);
             pomTimerValue->EnableWindow(TRUE);
@@ -734,9 +734,9 @@ void CSetResetTimer::vTimerStatusChanged()
     }
     else
     {
-        if(    pomTimerType   != NULL
-                && pomTimerValue  != NULL
-                && pomButtonApply != NULL )
+        if(    pomTimerType   != nullptr
+                && pomTimerValue  != nullptr
+                && pomButtonApply != nullptr )
         {
             pomTimerType->EnableWindow(FALSE);
             pomTimerValue->EnableWindow(FALSE);
@@ -765,7 +765,7 @@ void CSetResetTimer::vSetResetAllTimers(CString om_StrNode,BOOL bEnable)
 {
     PSNODETIMERLIST ps_CurrNodeTrLst=m_psFirstNodeTimerList;
     BOOL bFound=FALSE;
-    while(ps_CurrNodeTrLst!=NULL&&!bFound)
+    while(ps_CurrNodeTrLst!=nullptr&&!bFound)
     {
         if(om_StrNode==ps_CurrNodeTrLst->omNodeName)
         {
@@ -776,10 +776,10 @@ void CSetResetTimer::vSetResetAllTimers(CString om_StrNode,BOOL bEnable)
             ps_CurrNodeTrLst=ps_CurrNodeTrLst->psNextTimerListPtr;
         }
     }
-    if(ps_CurrNodeTrLst!=NULL)
+    if(ps_CurrNodeTrLst!=nullptr)
     {
         PSTIMERHANDLERLIST psTimerLst=ps_CurrNodeTrLst->psTimerListPtr;
-        while(psTimerLst!=NULL)
+        while(psTimerLst!=nullptr)
         {
             psTimerLst->sTimerHandler.bTimerSelected=bEnable;
             psTimerLst->sTimerHandler.unCurrTime=0;
@@ -824,17 +824,17 @@ PSTIMERHANDLER CSetResetTimer::GetPointerOfHandler(
 {
     CString om_TimerName=m_omTimerList.GetItemText(nSelectedItem,0);
     PSTIMERHANDLERLIST ps_CurrTimeHandler=psTimerHandl;
-    while(ps_CurrTimeHandler!=NULL&&
+    while(ps_CurrTimeHandler!=nullptr&&
             om_TimerName!=ps_CurrTimeHandler->sTimerHandler.omStrTimerHandlerName)
     {
         ps_CurrTimeHandler=ps_CurrTimeHandler->psNextTimer;
     }
-    if(ps_CurrTimeHandler!=NULL)
+    if(ps_CurrTimeHandler!=nullptr)
     {
         return &ps_CurrTimeHandler->sTimerHandler;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 
@@ -855,14 +855,14 @@ void CSetResetTimer::vAddNewNodeTimerList(CString om_NodeName,
         PSTIMERHANDLERLIST psTimerStrList)
 {
     //Make a local timer list for the node
-    PSTIMERHANDLERLIST psFirstIndex=NULL;
-    PSTIMERHANDLERLIST psLastIndex=NULL;
+    PSTIMERHANDLERLIST psFirstIndex=nullptr;
+    PSTIMERHANDLERLIST psLastIndex=nullptr;
     PSTIMERHANDLERLIST ps_CurrTimer=psTimerStrList;
     //copy the timer list
-    while(ps_CurrTimer!=NULL)
+    while(ps_CurrTimer!=nullptr)
     {
         PSTIMERHANDLERLIST psTimerLst=new STIMERHANDLERLIST;
-        psTimerLst->psNextTimer=NULL;
+        psTimerLst->psNextTimer=nullptr;
 
         psTimerLst->sTimerHandler.omStrTimerHandlerName =
             ps_CurrTimer->sTimerHandler.omStrTimerHandlerName ;
@@ -886,7 +886,7 @@ void CSetResetTimer::vAddNewNodeTimerList(CString om_NodeName,
 
 
 
-        if(psFirstIndex!=NULL)
+        if(psFirstIndex!=nullptr)
         {
             psLastIndex->psNextTimer=psTimerLst;
             psLastIndex=psTimerLst;
@@ -900,14 +900,14 @@ void CSetResetTimer::vAddNewNodeTimerList(CString om_NodeName,
     }
     //After the node's timer list is prepared add it to node timer list
     PSNODETIMERLIST psNodeTimer=new SNODETIMERLIST;
-    if(psNodeTimer!=NULL)
+    if(psNodeTimer!=nullptr)
     {
         psNodeTimer->omNodeName=om_NodeName;
         //Assign the first pointer of the list to NodeTimer structure
         psNodeTimer->psTimerListPtr=psFirstIndex;
-        psNodeTimer->psNextTimerListPtr=NULL;
+        psNodeTimer->psNextTimerListPtr=nullptr;
         //Add to NodeTimer List
-        if(m_psFirstNodeTimerList!=NULL)
+        if(m_psFirstNodeTimerList!=nullptr)
         {
             m_psLastNodeTimerList->psNextTimerListPtr=psNodeTimer;
             m_psLastNodeTimerList=psNodeTimer;
@@ -935,7 +935,7 @@ void CSetResetTimer::vAddNewNodeTimerList(CString om_NodeName,
 /******************************************************************************/
 void CSetResetTimer::vDeleteNodeTimerList(CString om_NodeName)
 {
-    if(m_psFirstNodeTimerList!=NULL)
+    if(m_psFirstNodeTimerList!=nullptr)
     {
         PSNODETIMERLIST psPrevNodeList,psCurrNodeList;
         //If it is first structure
@@ -944,38 +944,38 @@ void CSetResetTimer::vDeleteNodeTimerList(CString om_NodeName)
             psCurrNodeList=m_psFirstNodeTimerList;
             if(m_psFirstNodeTimerList==m_psLastNodeTimerList)
             {
-                m_psLastNodeTimerList=NULL;
+                m_psLastNodeTimerList=nullptr;
             }
             m_psFirstNodeTimerList=m_psFirstNodeTimerList->psNextTimerListPtr;
-            if(psCurrNodeList->psTimerListPtr!=NULL)
+            if(psCurrNodeList->psTimerListPtr!=nullptr)
             {
                 vDeleteTimerListOfNode(psCurrNodeList->psTimerListPtr);
             }
             delete psCurrNodeList;
-            psCurrNodeList=NULL;
+            psCurrNodeList=nullptr;
         }
         else
         {
-            psPrevNodeList=NULL;
+            psPrevNodeList=nullptr;
             psCurrNodeList=m_psFirstNodeTimerList;
-            while(psCurrNodeList!=NULL && om_NodeName!=psCurrNodeList->omNodeName)
+            while(psCurrNodeList!=nullptr && om_NodeName!=psCurrNodeList->omNodeName)
             {
                 psPrevNodeList=psCurrNodeList;
                 psCurrNodeList=psCurrNodeList->psNextTimerListPtr;
             }
-            if(psCurrNodeList!=NULL)
+            if(psCurrNodeList!=nullptr)
             {
                 psPrevNodeList->psNextTimerListPtr=psCurrNodeList->psNextTimerListPtr;
                 if(psCurrNodeList==m_psLastNodeTimerList)
                 {
                     m_psLastNodeTimerList=psPrevNodeList;
                 }
-                if(psCurrNodeList->psTimerListPtr!=NULL)
+                if(psCurrNodeList->psTimerListPtr!=nullptr)
                 {
                     vDeleteTimerListOfNode(psCurrNodeList->psTimerListPtr);
                 }
                 delete psCurrNodeList;
-                psCurrNodeList=NULL;
+                psCurrNodeList=nullptr;
             }
 
         }
@@ -994,12 +994,12 @@ void CSetResetTimer::vDeleteNodeTimerList(CString om_NodeName)
 void CSetResetTimer::vStartTimer()
 {
     omMainTimerEvent.ResetEvent();
-    if(m_psCalTimerThreadStruct == NULL)
+    if(m_psCalTimerThreadStruct == nullptr)
     {
         m_psCalTimerThreadStruct = new SCALCEXECTIMETHREAD;
-        m_psCalTimerThreadStruct->m_pomThreadPtr=NULL;
+        m_psCalTimerThreadStruct->m_pomThreadPtr=nullptr;
     }
-    if(m_psCalTimerThreadStruct->m_pomThreadPtr == NULL)
+    if(m_psCalTimerThreadStruct->m_pomThreadPtr == nullptr)
     {
         CSetResetTimer::sm_eBus = m_eBus;
         m_psCalTimerThreadStruct->m_bThreadStop = FALSE;
@@ -1011,7 +1011,7 @@ void CSetResetTimer::vStartTimer()
     if(m_unTimerID == 0)
     {
 
-        m_unTimerID = timeSetEvent(1, 0, (LPTIMECALLBACK)TimerProc, NULL,
+        m_unTimerID = timeSetEvent(1, 0, (LPTIMECALLBACK)TimerProc, 0,
                                    TIME_CALLBACK_FUNCTION|TIME_PERIODIC );
     }
 }
@@ -1032,20 +1032,20 @@ void CSetResetTimer::vStartTimer()
 **************************************************************************/
 void CSetResetTimer::vStopTimer()
 {
-    if(m_psCalTimerThreadStruct != NULL)
+    if(m_psCalTimerThreadStruct != nullptr)
     {
         m_psCalTimerThreadStruct->m_bThreadStop = TRUE;
         omMainTimerEvent.SetEvent();
         WaitForSingleObject(m_psCalTimerThreadStruct->m_omExitThreadEvent,20);
         timeKillEvent(m_unTimerID);
         m_unTimerID = 0;
-        if(m_psCalTimerThreadStruct->m_pomThreadPtr != NULL)
+        if(m_psCalTimerThreadStruct->m_pomThreadPtr != nullptr)
         {
             TerminateThread(m_psCalTimerThreadStruct->m_pomThreadPtr->m_hThread,0);
-            m_psCalTimerThreadStruct->m_pomThreadPtr=NULL;
+            m_psCalTimerThreadStruct->m_pomThreadPtr=nullptr;
         }
         delete m_psCalTimerThreadStruct;
-        m_psCalTimerThreadStruct=NULL;
+        m_psCalTimerThreadStruct=nullptr;
     }
 }
 
@@ -1073,7 +1073,7 @@ void CSetResetTimer::OnSelchangeNodeList()
         //get the corressponding node's timer list pointer
         BOOL bFound=FALSE;
         PSNODETIMERLIST psCurrTimerListPtr=m_psFirstNodeTimerList;
-        while(psCurrTimerListPtr!=NULL&&!bFound)
+        while(psCurrTimerListPtr!=nullptr&&!bFound)
         {
             if(omNodeName==psCurrTimerListPtr->omNodeName)
             {
@@ -1090,7 +1090,7 @@ void CSetResetTimer::OnSelchangeNodeList()
             m_nSelectedNode=nCurSel;
         }
     }
-    if(m_psSelectedNodeTimerListPtr!=NULL)
+    if(m_psSelectedNodeTimerListPtr!=nullptr)
     {
         //Get
         m_omTimerList.DeleteAllItems();
@@ -1099,7 +1099,7 @@ void CSetResetTimer::OnSelchangeNodeList()
         PSTIMERHANDLERLIST ps_CurrTimeHandl=m_psSelectedNodeTimerListPtr;
         INT nCountTimer = 0;
         INT nColumnWidth = 0;
-        while(ps_CurrTimeHandl!=NULL)
+        while(ps_CurrTimeHandl!=nullptr)
         {
             m_omTimerList.InsertItem(nCountTimer,
                                      ps_CurrTimeHandl->sTimerHandler.omStrTimerHandlerName);
@@ -1140,7 +1140,7 @@ void CSetResetTimer::OnSelchangeNodeList()
             PSTIMERHANDLER ps_CurrTimerHandler=GetPointerOfHandler(
                                                    m_psSelectedNodeTimerListPtr,nReturn);
             //if found
-            if(ps_CurrTimerHandler!=NULL&&ps_CurrTimerHandler->bTimerType!=FALSE)
+            if(ps_CurrTimerHandler!=nullptr&&ps_CurrTimerHandler->bTimerType!=FALSE)
             {
                 GetDlgItem(IDC_BTN_APPLY)->EnableWindow(FALSE);
             }
@@ -1194,15 +1194,15 @@ void CSetResetTimer::vSetSimSysNodeArray(const CStringArray& omSysNode,
 /******************************************************************************/
 void CSetResetTimer::vDeleteTimerListOfNode(PSTIMERHANDLERLIST psListOfTimer)
 {
-    if(psListOfTimer!=NULL)
+    if(psListOfTimer!=nullptr)
     {
         PSTIMERHANDLERLIST psCurrTimerLst;
-        while(psListOfTimer!=NULL)
+        while(psListOfTimer!=nullptr)
         {
             psCurrTimerLst=psListOfTimer;
             psListOfTimer=psListOfTimer->psNextTimer;
             delete psCurrTimerLst;
-            psCurrTimerLst=NULL;
+            psCurrTimerLst=nullptr;
         }
     }
 }
@@ -1221,11 +1221,11 @@ void CSetResetTimer::vDeleteTimerListOfNode(PSTIMERHANDLERLIST psListOfTimer)
 void CSetResetTimer::vRestoreTimerStatus(CString omNodeName,
         PSTIMERHANDLERLIST psTimerListPtr)
 {
-    if(m_psFirstNodeTimerList!=NULL)
+    if(m_psFirstNodeTimerList!=nullptr)
     {
         PSNODETIMERLIST psCurrNodeTimerLst=m_psFirstNodeTimerList;
         BOOL bFound=FALSE;
-        while(psCurrNodeTimerLst!=NULL&&!bFound)
+        while(psCurrNodeTimerLst!=nullptr&&!bFound)
         {
             if(omNodeName==psCurrNodeTimerLst->omNodeName)
             {
@@ -1239,11 +1239,11 @@ void CSetResetTimer::vRestoreTimerStatus(CString omNodeName,
         if(bFound)
         {
             PSTIMERHANDLERLIST psCurrTimerLst=psCurrNodeTimerLst->psTimerListPtr;
-            while(psCurrTimerLst!=NULL)
+            while(psCurrTimerLst!=nullptr)
             {
                 PSTIMERHANDLERLIST psLocalTLst=psTimerListPtr;
                 bFound=FALSE;
-                while(psLocalTLst!=NULL&&!bFound)
+                while(psLocalTLst!=nullptr&&!bFound)
                 {
                     if(psLocalTLst->sTimerHandler.omStrTimerHandlerName==
                             psCurrTimerLst->sTimerHandler.omStrTimerHandlerName)
@@ -1291,7 +1291,7 @@ UINT CalcTimersExecTime(LPVOID pParam)
             CExecuteManager::ouGetExecuteManager(psThreadInfo->m_eBus).vManageTimerExecution(); //Added for issue #356
         }
     }
-    psThreadInfo->m_pomThreadPtr = NULL;
+    psThreadInfo->m_pomThreadPtr = nullptr;
     psThreadInfo->m_omExitThreadEvent.SetEvent();
     return 0;
 }

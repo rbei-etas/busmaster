@@ -25,19 +25,19 @@ class CGraphItem
 public:
     CGraphItem()
     {
-        m_pCtrl = NULL;
+        m_pCtrl = nullptr;
         m_nID = -1;
     }
     virtual void AttachToGraph(CDMGraphCtrl* pCtrl, int id)
     {
-        ATLASSERT(m_pCtrl == NULL);
+        ATLASSERT(m_pCtrl == nullptr);
         m_pCtrl = pCtrl;
         m_nID = id;
     }
     virtual void DetachFromGraph()
     {
         ATLASSERT(m_pCtrl);
-        m_pCtrl = NULL;
+        m_pCtrl = nullptr;
         m_nID = -1;
     }
 protected:

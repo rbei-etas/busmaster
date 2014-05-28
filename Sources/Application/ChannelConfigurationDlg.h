@@ -22,7 +22,7 @@ class CChannelConfigurationDlg : public CDialog
     DECLARE_DYNAMIC(CChannelConfigurationDlg)
 
 public:
-    CChannelConfigurationDlg( CMsgSignal*& pMsgSignal ,CHANNEL_CONFIG ouFlexrayChannelConfig[], INT& m_nChannelConfigured, ETYPE_BUS eBusType, CWnd* pParent =NULL);
+    CChannelConfigurationDlg( CMsgSignal*& pMsgSignal ,CHANNEL_CONFIG ouFlexrayChannelConfig[], INT& m_nChannelConfigured, ETYPE_BUS eBusType, CWnd* pParent =nullptr);
     virtual ~CChannelConfigurationDlg();
 
     // Dialog Data

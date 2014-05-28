@@ -37,7 +37,7 @@ void* CBusStatisticCAN:: sm_pouBSCan;
  */
 int ReadBSDataBuffer(CBusStatisticCAN* pBSCan)
 {
-    ASSERT(pBSCan != NULL);
+    ASSERT(pBSCan != nullptr);
     while (pBSCan->m_ouCanBufFSE.GetMsgCount() > 0)
     {
         static STCANDATA sCanData;
@@ -69,14 +69,14 @@ int ReadBSDataBuffer(CBusStatisticCAN* pBSCan)
 DWORD WINAPI BSDataReadThreadProc(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         return ((DWORD)-1);
     }
 
     CBusStatisticCAN* pBusStatistics = static_cast<CBusStatisticCAN*> (pThreadParam->m_pBuffer);
 
-    if (pBusStatistics == NULL)
+    if (pBusStatistics == nullptr)
     {
         return ((DWORD)-1);
     }
@@ -126,7 +126,7 @@ CBusStatisticCAN::CBusStatisticCAN(void)
 {
     InitializeCriticalSection(&m_omCritSecBS);
     m_ouReadThread.m_hActionEvent = m_ouCanBufFSE.hGetNotifyingEvent();
-    m_nTimerHandle = NULL;
+    m_nTimerHandle = 0;
     //Initialise Number of Bits in Standard CAN and FD Messages
     UINT unBitsStdMsg[] = {51, 60, 70, 79, 89, 99, 108, 118, 127};
     UINT unBitsStdFDMsgCRC15[] = {54, 64, 73, 83, 93, 102, 112, 121, 131};
@@ -167,9 +167,9 @@ CBusStatisticCAN::~CBusStatisticCAN(void)
     m_ouReadThread.bTerminateThread();      // Terminate read thread
     m_ouCanBufFSE.vClearMessageBuffer();    // clear can buffer
     DeleteCriticalSection(&m_omCritSecBS);  // delete critical section
-    if( m_nTimerHandle != NULL )
+    if( m_nTimerHandle != 0 )
     {
-        KillTimer(NULL, m_nTimerHandle);
+        KillTimer(nullptr, m_nTimerHandle);
     }
 }
 
@@ -205,15 +205,15 @@ BOOL CBusStatisticCAN::BSC_bStartUpdation(BOOL bStart)
 {
     if(bStart == TRUE)
     {
-        if(m_nTimerHandle == NULL)
+        if(m_nTimerHandle == 0)
         {
-            m_nTimerHandle = ::SetTimer(NULL, 0, 1000, OnTimeWrapper);
+            m_nTimerHandle = ::SetTimer(nullptr, 0, 1000, OnTimeWrapper);
         }
     }
     else
     {
-        KillTimer(NULL, m_nTimerHandle);
-        m_nTimerHandle = NULL;
+        KillTimer(nullptr, m_nTimerHandle);
+        m_nTimerHandle = 0;
     }
     return 0;
 }

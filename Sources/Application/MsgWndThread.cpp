@@ -44,7 +44,7 @@ CMsgWndThread::CMsgWndThread()
 
     for(short shBusID = CAN; shBusID < BUS_TOTAL; shBusID++)
     {
-        m_pMsgWnd[shBusID] = NULL;
+        m_pMsgWnd[shBusID] = nullptr;
     }
 }
 
@@ -111,7 +111,7 @@ void CMsgWndThread::vModifyVisibilityStatus(UINT unParam, LONG lParam)
     eTYPE_BUS eBusType = (eTYPE_BUS) lParam;
     if(unParam == SW_SHOW)
     {
-        if (m_pMsgWnd[eBusType] != NULL)
+        if (m_pMsgWnd[eBusType] != nullptr)
         {
             m_pMsgWnd[eBusType]->ShowWindow(SW_SHOW);
             m_pMsgWnd[eBusType]->MDIActivate();
@@ -119,7 +119,7 @@ void CMsgWndThread::vModifyVisibilityStatus(UINT unParam, LONG lParam)
     }
     else if(unParam == SW_HIDE)
     {
-        if (m_pMsgWnd[eBusType] != NULL)
+        if (m_pMsgWnd[eBusType] != nullptr)
         {
             m_pMsgWnd[eBusType]->ShowWindow(SW_HIDE);
         }
@@ -134,7 +134,7 @@ HWND CMsgWndThread::hGetHandleMsgWnd(eTYPE_BUS eBusType)
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -153,14 +153,14 @@ void CMsgWndThread::vSetDILInterfacePointer(eTYPE_BUS eBusType, void** ppvJ1939D
 
 void CMsgWndThread::vUpdateSigWatchList(PSSIGNALWATCHLIST psSigWatchList, CMsgSignal* psMsgDatabase)
 {
-    if (m_pMsgWnd != NULL)
+    if (m_pMsgWnd != nullptr)
     {
         m_pMsgWnd->vUpdateSigWatchList(psSigWatchList, psMsgDatabase);
     }
 }
 void CMsgWndUIThread::vUpdateSigWatchDlgPtr(CSigWatchDlg* pouSigWatchDlg)
 {
-    if (m_pMsgWnd != NULL)
+    if (m_pMsgWnd != nullptr)
     {
         m_pMsgWnd->vUpdateSigWatchDlgPtr(pouSigWatchDlg);
     }

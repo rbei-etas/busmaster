@@ -308,7 +308,7 @@ Modifications  :
 ******************************************************************************/
 HRESULT CBaseEntityTA::SearchEntityObject(DWORD dwId, CBaseEntityTA** pEnityObject)
 {
-    *pEnityObject = NULL;
+    *pEnityObject = nullptr;
 
     if( GetID() == dwId)
     {
@@ -318,9 +318,9 @@ HRESULT CBaseEntityTA::SearchEntityObject(DWORD dwId, CBaseEntityTA** pEnityObje
     {
         UINT unSubEntities = 0;
         GetSubEntryCount(unSubEntities);
-        for( UINT i = 0; (i < unSubEntities)&&(*pEnityObject == NULL); i++)
+        for( UINT i = 0; (i < unSubEntities)&&(*pEnityObject == nullptr); i++)
         {
-            CBaseEntityTA* pouSubEntityObj = NULL;
+            CBaseEntityTA* pouSubEntityObj = nullptr;
             GetSubEntityObj(i, &pouSubEntityObj);
             pouSubEntityObj->SearchEntityObject(dwId, pEnityObject);
         }

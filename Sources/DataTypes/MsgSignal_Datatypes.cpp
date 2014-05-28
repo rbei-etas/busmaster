@@ -29,7 +29,7 @@ CSignalDescVal::CSignalDescVal()
     m_omStrSignalDescriptor = "";
     //m_n64SignalVal = 0x0;
     m_DescValue.un64Value = 0x0;
-    m_pouNextSignalSignalDescVal = NULL;
+    m_pouNextSignalSignalDescVal = nullptr;
 }
 
 CSignalDescVal::~CSignalDescVal()
@@ -39,11 +39,11 @@ CSignalDescVal::~CSignalDescVal()
 void CSignalDescVal::vClearNext(void)
 {
     // This function clears all the succeeding entries
-    if (NULL != m_pouNextSignalSignalDescVal)
+    if (nullptr != m_pouNextSignalSignalDescVal)
     {
         m_pouNextSignalSignalDescVal->vClearNext();
         delete m_pouNextSignalSignalDescVal;
-        m_pouNextSignalSignalDescVal = NULL;
+        m_pouNextSignalSignalDescVal = nullptr;
     }
 }
 
@@ -66,7 +66,7 @@ CSignalDescVal& CSignalDescVal::operator=(const CSignalDescVal& RefObj)
 
     // Clearly, we must go on until the end of the reference linked list.
     for (CSignalDescVal* pouCurrSrc = RefObj.m_pouNextSignalSignalDescVal;
-            pouCurrSrc != NULL;
+            pouCurrSrc != nullptr;
             pouCurrSrc = pouCurrSrc->m_pouNextSignalSignalDescVal)
     {
         (*ppouCurrTgt) = new CSignalDescVal; // Indirect value assigning to 'next'
@@ -173,7 +173,7 @@ SSigGeneration& SSigGeneration::operator=(const SSigGeneration& RefObj)
     m_fDefaultAmplitude = RefObj.m_fDefaultAmplitude;
 
     POSITION Pos = RefObj.m_omSigWaveMapList.GetHeadPosition();
-    while (NULL != Pos)
+    while (nullptr != Pos)
     {
         const sSigWaveMap& CurrObj = RefObj.m_omSigWaveMapList.GetNext(Pos);
         sSigWaveMap TmpObj = CurrObj;
@@ -225,7 +225,7 @@ UINT64 sSIGNALS::un64GetBitMask(sSIGNALS* CurrSig)
 void sSIGNALS::vSetSignalValue(sSIGNALS* pouCurrSignal, UCHAR aucData[8],
                                UINT64 u64SignVal)
 {
-    ASSERT(pouCurrSignal != NULL);
+    ASSERT(pouCurrSignal != nullptr);
     /* Signal valuedata type happens to be of the same size of the entire CAN
     data byte array. Hence there is an opportunity to take advantage of this
     idiosyncratic characteristics. We will shifts the bit array in u64SignVal
@@ -279,39 +279,39 @@ void sSIGNALS::vSetSignalValue(sSIGNALS* pouCurrSignal, UCHAR aucData[8],
 
 tagSMSGENTRY::tagSMSGENTRY()
 {
-    m_psMsg = NULL;
-    m_psNext = NULL;
+    m_psMsg = nullptr;
+    m_psNext = nullptr;
 }
 
 tagSMSGENTRY::~tagSMSGENTRY()
 {
-    if (NULL != m_psMsg)
+    if (nullptr != m_psMsg)
     {
         delete m_psMsg;
-        m_psMsg = NULL;
+        m_psMsg = nullptr;
     }
-    if (NULL != m_psNext)
+    if (nullptr != m_psNext)
     {
         delete m_psNext;
-        m_psNext = NULL;
+        m_psNext = nullptr;
     }
 }
 
 void tagSMSGENTRY::vClearMsgList(SMSGENTRY*& psMsgRoot)
 {
     SMSGENTRY* psCurrEntry = psMsgRoot;
-    while (NULL != psCurrEntry) // The message list
+    while (nullptr != psCurrEntry) // The message list
     {
         SMSGENTRY* psNext = psCurrEntry->m_psNext;
 
         vClearSignalList(psCurrEntry->m_psMsg->m_psSignals); // delete all
-        psCurrEntry->m_psNext = NULL;
+        psCurrEntry->m_psNext = nullptr;
         DELETE_PTR(psCurrEntry);    // the data
 
         psCurrEntry = psNext; // Get on with the next one
 
-    } // while (NULL != psCurrEntry)
-    psMsgRoot = NULL;
+    } // while (nullptr != psCurrEntry)
+    psMsgRoot = nullptr;
 }
 
 // Given the root, this clears the signal linked list
@@ -319,18 +319,18 @@ void tagSMSGENTRY::vClearSignalList(sSIGNALS* psSignals)
 {
     sSIGNALS* psCurrSignal = psSignals;
 
-    while (NULL != psCurrSignal)
+    while (nullptr != psCurrSignal)
     {
         sSIGNALS* psSignalNext = psCurrSignal->m_psNextSignalList;
-        psCurrSignal->m_psNextSignalList = NULL;
-        if (NULL != psCurrSignal->m_oSignalIDVal)
+        psCurrSignal->m_psNextSignalList = nullptr;
+        if (nullptr != psCurrSignal->m_oSignalIDVal)
         {
             psCurrSignal->m_oSignalIDVal->vClearNext();
             DELETE_PTR(psCurrSignal->m_oSignalIDVal);
         }
         DELETE_PTR(psCurrSignal);
         psCurrSignal = psSignalNext;
-    } // while (NULL != psCurrSignal)
+    } // while (nullptr != psCurrSignal)
 }
 
 // This function copies the current message entry except the signal list
@@ -338,14 +338,14 @@ sMESSAGE* tagSMSGENTRY::psCopyMsgVal(sMESSAGE* psMsg)
 {
     sMESSAGE* Result = new sMESSAGE;
 
-    if (NULL != Result)
+    if (nullptr != Result)
     {
         Result->m_omStrMessageName      = psMsg->m_omStrMessageName;
         Result->m_unMessageCode         = psMsg->m_unMessageCode;
         Result->m_unNumberOfSignals     = psMsg->m_unNumberOfSignals;
         Result->m_unMessageLength       = psMsg->m_unMessageLength;
         Result->m_bMessageFrameFormat   = psMsg->m_bMessageFrameFormat;
-        Result->m_psSignals             = NULL;
+        Result->m_psSignals             = nullptr;
         memcpy(Result->m_bySignalMatrix, psMsg->m_bySignalMatrix, 1785);
         Result->m_nMsgDataFormat        = psMsg->m_nMsgDataFormat;
     }
@@ -362,7 +362,7 @@ sSIGNALS* tagSMSGENTRY::psCopySignalVal(sSIGNALS* psSignal)
 {
     sSIGNALS* Result = new sSIGNALS;
 
-    if (NULL != Result)
+    if (nullptr != Result)
     {
         Result->m_omStrSignalName       = psSignal->m_omStrSignalName;
         Result->m_unStartByte           = psSignal->m_unStartByte;
@@ -375,10 +375,10 @@ sSIGNALS* tagSMSGENTRY::psCopySignalVal(sSIGNALS* psSignal)
         Result->m_fSignalOffset         = psSignal->m_fSignalOffset;
         Result->m_omStrSignalUnit       = psSignal->m_omStrSignalUnit;
         Result->m_eFormat               = psSignal->m_eFormat;
-        Result->m_oSignalIDVal          = NULL;
-        Result->m_psNextSignalList      = NULL;
+        Result->m_oSignalIDVal          = nullptr;
+        Result->m_psNextSignalList      = nullptr;
 
-        if (NULL != psSignal->m_oSignalIDVal)
+        if (nullptr != psSignal->m_oSignalIDVal)
         {
             Result->m_oSignalIDVal = new CSignalDescVal;
             *(Result->m_oSignalIDVal) = *(psSignal->m_oSignalIDVal);
@@ -394,12 +394,12 @@ sSIGNALS* tagSMSGENTRY::psCopySignalVal(sSIGNALS* psSignal)
 // This function copies the signal linked list and returns root of the new list
 sSIGNALS* tagSMSGENTRY::psCopySignalList(sSIGNALS* psSignal)
 {
-    sSIGNALS* Result = NULL;
+    sSIGNALS* Result = nullptr;
 
     sSIGNALS** ppsCurrDest = &Result;
     sSIGNALS** ppsCurrSrc = &psSignal;
 
-    while (NULL != *ppsCurrSrc)
+    while (nullptr != *ppsCurrSrc)
     {
         *ppsCurrDest = psCopySignalVal(*ppsCurrSrc); // Copy signal values
 
@@ -419,7 +419,7 @@ BOOL tagSMSGENTRY::bUpdateMsgList(SMSGENTRY*& Root,
     SMSGENTRY** ppsCurrDest = &Root;
     //sMESSAGE** ppsCurrSrc = &psMsg;
 
-    while (NULL != *ppsCurrDest) // The idea is to reach the end of message list
+    while (nullptr != *ppsCurrDest) // The idea is to reach the end of message list
     {
         ppsCurrDest = &((*ppsCurrDest)->m_psNext); // Iterate to the next entry
     }
@@ -435,7 +435,7 @@ BOOL SMSGENTRY::bGetMsgPtrFromMsgId(const tagSMSGENTRY* psRoot,UINT unMsgId, sME
 {
     BOOL bResult = FALSE;
     const SMSGENTRY* pTemp = psRoot;
-    while (pTemp != NULL && bResult == FALSE)
+    while (pTemp != nullptr && bResult == FALSE)
     {
         if (pTemp->m_psMsg->m_unMessageCode == unMsgId)
         {

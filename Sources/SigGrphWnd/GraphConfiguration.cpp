@@ -33,7 +33,7 @@
   Date Created   : 01/12/2004
   Modifications  :
 *******************************************************************************/
-CGraphConfiguration::CGraphConfiguration(CWnd* pParent /*=NULL*/)
+CGraphConfiguration::CGraphConfiguration(CWnd* pParent /*=nullptr*/)
     : CDialog(CGraphConfiguration::IDD, pParent)
     , m_nLineDisplay(0)
 {
@@ -44,8 +44,8 @@ CGraphConfiguration::CGraphConfiguration(CWnd* pParent /*=NULL*/)
     m_nBufferSize = 0;
     m_omFrameType = -1;
     //}}AFX_DATA_INIT
-    m_pGraphList = NULL;
-    m_pDMGraphCtrl = NULL;
+    m_pGraphList = nullptr;
+    m_pDMGraphCtrl = nullptr;
 }
 
 /*******************************************************************************
@@ -121,7 +121,7 @@ void CGraphConfiguration::OnSetDefault()
 void CGraphConfiguration::OnOK()
 {
     // Update Global Structure
-    if( m_pGraphList != NULL && UpdateData() == TRUE)
+    if( m_pGraphList != nullptr && UpdateData() == TRUE)
     {
         m_pGraphList->m_odGraphParameters.m_nBufferSize = m_nBufferSize;
         m_pGraphList->m_odGraphParameters.m_nRefreshRate = m_nUpdateRate;
@@ -137,7 +137,7 @@ void CGraphConfiguration::OnOK()
         m_pGraphList->m_odGraphParameters.m_eDisplayType = (eDISPLAY_TYPE)m_nLineDisplay;
 
         // Update Graph Control
-        if( m_pDMGraphCtrl != NULL )
+        if( m_pDMGraphCtrl != nullptr )
         {
             // Buffer size and Refresh rate will be taken care
             // during connect
@@ -181,7 +181,7 @@ BOOL CGraphConfiguration::OnInitDialog()
 {
     CDialog::OnInitDialog();
     // Update Data from Global Structure
-    if( m_pGraphList != NULL )
+    if( m_pGraphList != nullptr )
     {
         vSetValues( m_pGraphList->m_odGraphParameters );
     }

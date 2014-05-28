@@ -59,22 +59,22 @@ CMsgContainerJ1939::CMsgContainerJ1939(void)
 {
     InitializeCriticalSection(&m_sCritSecDataSync);
     InitializeCriticalSection(&m_omCritSecFilter);
-    m_pouDIL_J1939 = NULL;
+    m_pouDIL_J1939 = nullptr;
     // Allocate necessary amount of memory.
     m_sJ1939Data.m_unDLC = MAX_DATA_LEN_J1939;
     m_sJ1939Data.m_pbyData = new BYTE[m_sJ1939Data.m_unDLC];// For basic data object
-    ASSERT(NULL != m_sJ1939Data.m_pbyData);
+    ASSERT(nullptr != m_sJ1939Data.m_pbyData);
 
     // For raw data bytes. It should be equal to the size of m_sJ1939Data
     m_pbyJ1939Data = new BYTE[MAX_MSG_LEN_J1939 +  sizeof(__int64)];
-    ASSERT(NULL != m_pbyJ1939Data);
+    ASSERT(nullptr != m_pbyJ1939Data);
     USHORT Length = ushCalculateStrLen(true, MAX_DATA_LEN_J1939);
     m_sOutFormattedData.m_pcDataHex = new char[Length];
-    ASSERT(NULL != m_sOutFormattedData.m_pcDataHex);
+    ASSERT(nullptr != m_sOutFormattedData.m_pcDataHex);
     memset(m_sOutFormattedData.m_pcDataHex, '\0', Length * sizeof(char));
     Length = ushCalculateStrLen(false, MAX_DATA_LEN_J1939);
     m_sOutFormattedData.m_pcDataDec = new char[Length];
-    ASSERT(NULL != m_sOutFormattedData.m_pcDataDec);
+    ASSERT(nullptr != m_sOutFormattedData.m_pcDataDec);
     memset(m_sOutFormattedData.m_pcDataDec, '\0', Length * sizeof(char));
 }
 
@@ -139,7 +139,7 @@ void CMsgContainerJ1939::InitTimeParams(void)
 {
     SYSTEMTIME CurrSysTime;
     UINT64 unAbsTime;
-    if (NULL != m_pouDIL_J1939)
+    if (nullptr != m_pouDIL_J1939)
     {
         m_pouDIL_J1939->DILIJ_GetTimeModeMapping(CurrSysTime, unAbsTime);
         m_ouFormatJ1939.vSetTimeParams(CurrSysTime, unAbsTime);
@@ -278,7 +278,7 @@ void CMsgContainerJ1939::vProcessNewData(STJ1939_MSG& sJ1939Msg)
             m_sJ1939ReadMsgSpl.vGetDataStream(arrBuf);
             m_ouAppendJ1939Buf.WriteIntoBuffer(J1939, arrBuf/*(BYTE*)&m_sJ1939ReadMsgSpl*/, m_sJ1939ReadMsgSpl.nGetSize());
 
-            if (NULL != m_pRxMsgCallBack)
+            if (nullptr != m_pRxMsgCallBack)
             {
                 m_pRxMsgCallBack((void*)&sJ1939Msg, J1939);
             }
@@ -298,7 +298,7 @@ void CMsgContainerJ1939::vProcessNewData(STJ1939_MSG& sJ1939Msg)
     //    *pStcan = sCanData;
     //    m_ouAppendCanBuf.WriteIntoBuffer(&m_sCANReadDataSpl);
 
-    //    if (NULL != m_pRxMsgCallBack)
+    //    if (nullptr != m_pRxMsgCallBack)
     //    {
     //        m_pRxMsgCallBack((void*)&sCanData, CAN);
     //    }
@@ -338,7 +338,7 @@ BOOL CMsgContainerJ1939:: bStartReadThread()
 {
     int bResult = TRUE;
     HRESULT hResult;
-    if (NULL != m_pouDIL_J1939)
+    if (nullptr != m_pouDIL_J1939)
     {
         hResult = m_pouDIL_J1939->DILIJ_ManageMsgBuf(MSGBUF_ADD,
                   m_dwClientId, &m_ouVSEBufJ1939);
@@ -362,7 +362,7 @@ BOOL CMsgContainerJ1939:: bStartReadThread()
 HRESULT CMsgContainerJ1939:: hToggleDILBufferRead(BOOL bRead)
 {
     HRESULT hResult =  S_FALSE;
-    if (NULL != m_pouDIL_J1939)
+    if (nullptr != m_pouDIL_J1939)
     {
         if(bRead)
             hResult = m_pouDIL_J1939->DILIJ_ManageMsgBuf(MSGBUF_ADD,
@@ -387,7 +387,7 @@ HRESULT CMsgContainerJ1939:: hToggleDILBufferRead(BOOL bRead)
 BOOL CMsgContainerJ1939:: bStopReadThread()
 {
     BOOL bReturn = CMsgContainerBase::bStopReadThread();
-    if (NULL != m_pouDIL_J1939)
+    if (nullptr != m_pouDIL_J1939)
     {
         m_pouDIL_J1939->DILIJ_ManageMsgBuf(MSGBUF_CLEAR,
                                            m_dwClientId, &m_ouVSEBufJ1939);
@@ -563,7 +563,7 @@ HRESULT CMsgContainerJ1939::ApplyFilterScheme(void* pvFilterApplied)
 {
     HRESULT hResult = S_FALSE;
     SFILTERAPPLIED_J1939* psFilterJ1939 = (SFILTERAPPLIED_J1939*)pvFilterApplied;
-    if (psFilterJ1939 != NULL)
+    if (psFilterJ1939 != nullptr)
     {
         EnterCriticalSection(&m_omCritSecFilter);
         if (m_sFilterJ1939.bClone(*psFilterJ1939) == TRUE)
@@ -589,7 +589,7 @@ HRESULT CMsgContainerJ1939::GetFilterScheme(void* pvFilterApplied)
 {
     HRESULT hResult = S_FALSE;
     SFILTERAPPLIED_J1939* psFilterJ1939 = (SFILTERAPPLIED_J1939*)pvFilterApplied;
-    if (psFilterJ1939 != NULL)
+    if (psFilterJ1939 != nullptr)
     {
         if (psFilterJ1939->bClone(m_sFilterJ1939) == TRUE)
         {
@@ -677,7 +677,7 @@ HRESULT CMsgContainerJ1939::hUpdateFormattedMsgStruct(int nListIndex,
             (PSTJ1939_MSG) &(m_sJ1939ReadMsgSpl), m_sJ1939ReadMsgSpl.m_nDeltime,
             &m_sOutFormattedData, bExprnFlag_Disp);
         //Now add the name of message if present in database else show the code
-        if (NULL != m_sJ1939ReadMsgSpl.m_pbyData)
+        if (nullptr != m_sJ1939ReadMsgSpl.m_pbyData)
         {
             //nMsgCode = m_sJ1939ReadMsgSpl.m_pbyData[0];
             nMsgCode = m_sJ1939ReadMsgSpl.m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN();
@@ -812,7 +812,7 @@ BOOL CMsgContainerJ1939::bGetDilInterFace()
 {
     BOOL bFound = FALSE;;
     DIL_GetInterface(J1939, (void**) &m_pouDIL_J1939);
-    if (NULL != m_pouDIL_J1939)
+    if (nullptr != m_pouDIL_J1939)
     {
         bFound = TRUE;
     }

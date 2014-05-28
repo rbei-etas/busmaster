@@ -132,7 +132,7 @@ void CTxFunctionsView::OnSize(UINT nType, int cx, int cy)
     // Get Update Window pointer
     CWnd* pWnd = GetDlgItem( IDC_BTN_UPDATE );
     // If valid
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         CRect omRect;
         // Move the button to center postion
@@ -152,7 +152,7 @@ void CTxFunctionsView::OnSize(UINT nType, int cx, int cy)
     // Get Close Window pointer
     pWnd = GetDlgItem( IDC_BTN_CLOSE );
     // If valid
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         CRect omRect;
         // Move the button to center postion
@@ -187,11 +187,11 @@ void CTxFunctionsView::OnInitialUpdate()
     CFormView::OnInitialUpdate();
     // Update View pointer in to the child frame
     // Get Child Window Pointer
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     // Get Parent window pointer
     pWnd = pomGetParentWindow();
     // Update view pointer
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         // Register this view pointer
         ((CTxMsgChildFrame*)pWnd)->vSetTxMsgViewPointers( eTxMsgFunctionsView,
@@ -239,9 +239,9 @@ void CTxFunctionsView::OnButtonApply()
     //save the values of delay between blocks
     UINT                    unTimerVal;
     CString                 csTimerVal;
-    CTxMsgBlocksView* pomBlockView = NULL;
+    CTxMsgBlocksView* pomBlockView = nullptr;
     pomBlockView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
-    if(pomBlockView == NULL)
+    if(pomBlockView == nullptr)
     {
         return;
     }
@@ -275,8 +275,8 @@ void CTxFunctionsView::OnButtonApply()
     /*if(CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG))
     {
         CTxMsgBlocksView* pBlocksView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
-        PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
-        if (NULL != pomBlockView)
+        PSMSGBLOCKLIST psMsgCurrentBlock = nullptr;
+        if (nullptr != pomBlockView)
         {
             psMsgCurrentBlock =  pomBlockView->psGetMsgBlockPointer(
                 pomBlockView->m_nSelectedMsgBlockIndex,
@@ -299,9 +299,9 @@ void CTxFunctionsView::SetUpdateBtnChanges()
     // starting the transmission.
 
     // Get Other view pointers
-    CTxMsgBlocksView* pomBlockView = NULL;
+    CTxMsgBlocksView* pomBlockView = nullptr;
     pomBlockView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
-    if( pomBlockView != NULL )
+    if( pomBlockView != nullptr )
     {
         // Message deletion is not allowed runtime from any block. This is only for Update button Scenario
         if((m_CheckBoxAutoUpdate.GetCheck() == BST_UNCHECKED))
@@ -348,20 +348,20 @@ void CTxFunctionsView::SetUpdateBtnChanges()
 void CTxFunctionsView::vApplyChanges()
 {
     // Get Other view pointers
-    CTxMsgBlocksView* pomBlockView = NULL;
-    CTxMsgListView* pomListView = NULL;
+    CTxMsgBlocksView* pomBlockView = nullptr;
+    CTxMsgListView* pomListView = nullptr;
     pomBlockView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
     pomListView = (CTxMsgListView* )pomGetListViewPointer();
 
-    if( pomBlockView != NULL && pomListView != NULL )
+    if( pomBlockView != nullptr && pomListView != nullptr )
     {
-        PSMSGBLOCKLIST psMsgBlock = NULL;
+        PSMSGBLOCKLIST psMsgBlock = nullptr;
         psMsgBlock = pomBlockView->psGetMsgBlockPointer(
                          pomBlockView->m_nSelectedMsgBlockIndex,
                          pomBlockView->m_psMsgBlockList );
         // Update the last selected message block details in case user has
         // modified it.
-        if(psMsgBlock != NULL )
+        if(psMsgBlock != nullptr )
         {
             pomBlockView->vUpdateMsgBlockDetials(psMsgBlock);
             psMsgBlock->m_bModified = true;
@@ -387,7 +387,7 @@ void CTxFunctionsView::vApplyChanges()
         //Save Window position
         CTxMsgChildFrame* pTxWnd = (CTxMsgChildFrame*)pomGetParentWindow();
         // Update view pointer
-        if( pTxWnd != NULL )
+        if( pTxWnd != nullptr )
         {
             // Register this view pointer
             pTxWnd->vUpdateWndCo_Ords();
@@ -422,7 +422,7 @@ void CTxFunctionsView::vApplyChanges()
   Input(s)       : -
   Output         : CWnd * - Pointer to CTxMsgChildFrame
   Functionality  : This Function will return parent window pointer. That is
-                   pointer to CTxMsgChildFrame. This will return NULL incase of
+                   pointer to CTxMsgChildFrame. This will return nullptr incase of
                    failure
   Member of      : CTxFunctionsView
   Author(s)      : Raja N
@@ -431,22 +431,22 @@ void CTxFunctionsView::vApplyChanges()
 *******************************************************************************/
 CWnd* CTxFunctionsView::pomGetParentWindow() const
 {
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     // Get Splitter window pointer
     pWnd = GetParent();
     // Get Tx Msg Child Window pointer from Splitter window pointer
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd = pWnd->GetParent();
     }
-    // Return Tx Msg Child window pointer or NULL incase of failure
+    // Return Tx Msg Child window pointer or nullptr incase of failure
     return pWnd;
 }
 
 /*******************************************************************************
   Function Name  : pomGetBlocksViewPointer
   Input(s)       : -
-  Output         : CWnd * - Pointer to CTxMsgBlocksView or NULL incase of
+  Output         : CWnd * - Pointer to CTxMsgBlocksView or nullptr incase of
                    failure
   Functionality  : This function will return CTxMsgBlocksView pointer. This will
                    get child window pointer to get view pointer.
@@ -457,12 +457,12 @@ CWnd* CTxFunctionsView::pomGetParentWindow() const
 *******************************************************************************/
 CWnd* CTxFunctionsView::pomGetBlocksViewPointer() const
 {
-    CWnd* pView = NULL;
+    CWnd* pView = nullptr;
     // Get Child Frame Pointer
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     pWnd = pomGetParentWindow();
     // Get View Pointer
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pView = ((CTxMsgChildFrame*)pWnd)->pomGetTxMsgViewPointers(
                     eTxMsgBlocksView );
@@ -474,7 +474,7 @@ CWnd* CTxFunctionsView::pomGetBlocksViewPointer() const
 /*******************************************************************************
   Function Name  : pomGetListViewPointer
   Input(s)       : -
-  Output         : CWnd * - Pointer to CTxMsgListView or NULL incase of
+  Output         : CWnd * - Pointer to CTxMsgListView or nullptr incase of
                    failure
   Functionality  : This function will return CTxMsgListView pointer. This will
                    get child window pointer to get view pointer.
@@ -485,12 +485,12 @@ CWnd* CTxFunctionsView::pomGetBlocksViewPointer() const
 *******************************************************************************/
 CWnd* CTxFunctionsView::pomGetListViewPointer() const
 {
-    CWnd* pView = NULL;
+    CWnd* pView = nullptr;
     // Get Child Frame Pointer
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     pWnd = pomGetParentWindow();
     // Get View Pointer
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pView = ((CTxMsgChildFrame*)pWnd)->pomGetTxMsgViewPointers(
                     eTxMsgMessageListView );
@@ -502,7 +502,7 @@ CWnd* CTxFunctionsView::pomGetListViewPointer() const
 /*******************************************************************************
   Function Name  : pomGetDetailsViewPointer
   Input(s)       : -
-  Output         : CWnd * - Pointer to CTxMsgDetailsView or NULL incase of
+  Output         : CWnd * - Pointer to CTxMsgDetailsView or nullptr incase of
                    failure
   Functionality  : This function will return CTxMsgDetailsView pointer. This
                    will get child window pointer to get view pointer.
@@ -513,12 +513,12 @@ CWnd* CTxFunctionsView::pomGetListViewPointer() const
 *******************************************************************************/
 CWnd* CTxFunctionsView::pomGetDetailsViewPointer() const
 {
-    CWnd* pView = NULL;
+    CWnd* pView = nullptr;
     // Get Child Frame Pointer
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     pWnd = pomGetParentWindow();
     // Get View Pointer
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pView = ((CTxMsgChildFrame*)pWnd)->pomGetTxMsgViewPointers(
                     eTxMsgMessageDetailsView );
@@ -548,15 +548,15 @@ CWnd* CTxFunctionsView::pomGetDetailsViewPointer() const
 void CTxFunctionsView::vReloadData()
 {
     // Get Other View Ponters
-    CTxMsgBlocksView* pomBlockView = NULL;
-    CTxMsgListView* pomlistView = NULL;
-    CTxMsgDetailsView* pomDetailsView = NULL;
+    CTxMsgBlocksView* pomBlockView = nullptr;
+    CTxMsgListView* pomlistView = nullptr;
+    CTxMsgDetailsView* pomDetailsView = nullptr;
     // Fetch pointers from Tx Child Frame
     pomBlockView = ( CTxMsgBlocksView* )pomGetBlocksViewPointer();
     pomlistView = ( CTxMsgListView* )pomGetListViewPointer();
     pomDetailsView = ( CTxMsgDetailsView* )pomGetDetailsViewPointer();
 
-    if( pomBlockView != NULL && pomlistView != NULL && pomDetailsView != NULL )
+    if( pomBlockView != nullptr && pomlistView != nullptr && pomDetailsView != nullptr )
     {
         // Clear all data
         pomBlockView->m_omLctrMsgBlockName.DeleteAllItems();
@@ -569,7 +569,7 @@ void CTxFunctionsView::vReloadData()
 
         //Clear the existing memory
         CTxWndDataStore::ouGetTxWndDataStoreObj().vReleaseMultiMsgInfo( pomBlockView->m_psMsgBlockList );
-        pomBlockView->m_psMsgBlockList = NULL;
+        pomBlockView->m_psMsgBlockList = nullptr;
         /*vRelease( TX_SEND_MULTI_MSGS,
                          (void**)&(pomBlockView->m_psMsgBlockList) );*/
         // Get the message block count. No memory allocation is required.
@@ -601,7 +601,7 @@ void CTxFunctionsView::vReloadData()
             EnableWindow(!CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG) );
         }
 
-        PSMSGBLOCKLIST psCurrentMsgBlock = NULL;
+        PSMSGBLOCKLIST psCurrentMsgBlock = nullptr;
         CString omStr = STR_EMPTY;
         psCurrentMsgBlock = pomBlockView->m_psMsgBlockList;
 
@@ -615,7 +615,7 @@ void CTxFunctionsView::vReloadData()
         for(UINT i = 0; i< pomBlockView->m_unMsgBlockCount; i++)
         {
             omStr = STR_EMPTY;
-            if(psCurrentMsgBlock != NULL )
+            if(psCurrentMsgBlock != nullptr )
             {
                 pomBlockView->m_omLctrMsgBlockName.InsertItem( i,
                         psCurrentMsgBlock->m_acStrBlockName);
@@ -689,15 +689,15 @@ void CTxFunctionsView::OnInvokeClose()
     {
         return;
     }
-    if(pBlocksView != NULL)
+    if(pBlocksView != nullptr)
     {
 
-        PSMSGBLOCKLIST psMsgBlock = NULL;
+        PSMSGBLOCKLIST psMsgBlock = nullptr;
         psMsgBlock = pBlocksView->psGetMsgBlockPointer(
                          0,
                          pBlocksView->m_psMsgBlockList );
 
-        if(psMsgBlock != NULL)
+        if(psMsgBlock != nullptr)
         {
             bUnChanged = CTxWndDataStore::ouGetTxWndDataStoreObj().nCompareBlockLists(psMsgBlock);
             if(pBlocksView->m_bDelayBtnBlocks != CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks)
@@ -711,7 +711,7 @@ void CTxFunctionsView::OnInvokeClose()
                 bUnChanged = false;
             }
         }
-        else if(CTxWndDataStore::ouGetTxWndDataStoreObj().psReturnMsgBlockPointer()!= NULL)
+        else if(CTxWndDataStore::ouGetTxWndDataStoreObj().psReturnMsgBlockPointer()!= nullptr)
         {
             bUnChanged = false;
         }
@@ -747,10 +747,10 @@ void CTxFunctionsView::OnInvokeClose()
 void CTxFunctionsView::OnBtnClose()
 {
     // Get Child Frame Pointer
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     pWnd = pomGetParentWindow();
     // Post close message
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         // This will invoked the InvokeClose function
         ((CTxMsgChildFrame*)pWnd)->PostMessage( WM_CLOSE );
@@ -771,9 +771,9 @@ void CTxFunctionsView::OnBtnClose()
 void CTxFunctionsView::OnBnClickedCheckAutoUpdate()
 {
     CTxMsgBlocksView* pBlocksView = (CTxMsgBlocksView*)pomGetBlocksViewPointer();
-    if (NULL != pBlocksView)
+    if (nullptr != pBlocksView)
     {
-        if (NULL == pBlocksView->m_psMsgBlockList)
+        if (nullptr == pBlocksView->m_psMsgBlockList)
         {
             GetDlgItem(IDC_BTN_UPDATE)->EnableWindow(FALSE);
         }
@@ -792,7 +792,7 @@ void CTxFunctionsView::OnBnClickedCheckAutoUpdate()
         vAccessButtonApply();
         CTxWndDataStore::ouGetTxWndDataStoreObj().m_bAutoSavedEnabled = true;
         //CTxMsgManager::s_bDelayBetweenBlocksOnly = true;
-        if (NULL != pBlocksView)
+        if (nullptr != pBlocksView)
         {
             UINT                    unTimerVal;
             CString                 csTimerVal;

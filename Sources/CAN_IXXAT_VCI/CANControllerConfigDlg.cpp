@@ -51,7 +51,7 @@ END_MESSAGE_MAP()
  * @param [in,out]  pParent
  *  If non-null, the parent window.
  */
-CCANControllerConfigDlg::CCANControllerConfigDlg(int iBTRRegisters, CWnd* pParent /*=NULL*/)
+CCANControllerConfigDlg::CCANControllerConfigDlg(int iBTRRegisters, CWnd* pParent /*=nullptr*/)
     : CDialog(CCANControllerConfigDlg::IDD, pParent)
 {
     m_dwBTR0 = (iBTRRegisters & 0xFF00) >> 8;

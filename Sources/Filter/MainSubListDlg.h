@@ -91,7 +91,7 @@ private:
     // Delete/Delete All the signals selected from the temp list
     void vDelSelSubEntries(BOOL bAllSignals);
     // Get the selected message ID
-    UINT unGetSelectedMainEntryID(CString* pomMainEntryName = NULL);
+    UINT unGetSelectedMainEntryID(CString* pomMainEntryName = nullptr);
     // Delete temp list. Called from Close and Delete All
     BOOL bDeleteTempList();
     // Fun to get Msg and Signal name from Signal Watch List

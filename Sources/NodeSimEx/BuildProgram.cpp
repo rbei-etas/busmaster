@@ -48,8 +48,8 @@ static char THIS_FILE[]=__FILE__;
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modified On      :  20.03.2002                                            */
 /******************************************************************************/
-CBuildProgram::CBuildProgram(ETYPE_BUS eBus, HMODULE hModuleHandle /* NULL*/):
-    m_hModuleHandle(hModuleHandle),m_podOutWnd(NULL)
+CBuildProgram::CBuildProgram(ETYPE_BUS eBus, HMODULE hModuleHandle /* nullptr*/):
+    m_hModuleHandle(hModuleHandle),m_podOutWnd(nullptr)
 {
     m_eBus = eBus;
 }
@@ -68,7 +68,7 @@ CBuildProgram::CBuildProgram(ETYPE_BUS eBus, HMODULE hModuleHandle /* NULL*/):
 /******************************************************************************/
 CBuildProgram::~CBuildProgram()
 {
-    if(m_podOutWnd != NULL)
+    if(m_podOutWnd != nullptr)
     {
         m_podOutWnd->DestroyWindow();
     }
@@ -121,9 +121,9 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
         // sub key
         if(lError==ERROR_SUCCESS)
         {
-            HANDLE hStdInput        = NULL; // Standard input handle of the child process.
-            HANDLE hStdOutput       = NULL; // - Standard output handle of the child process.
-            HANDLE hStdError        = NULL; //- Standard error handle of the child process.
+            HANDLE hStdInput        = nullptr; // Standard input handle of the child process.
+            HANDLE hStdOutput       = nullptr; // - Standard output handle of the child process.
+            HANDLE hStdError        = nullptr; //- Standard error handle of the child process.
 
             lError = ERROR_SUCCESS;
             /*lError = RegQueryValueEx(sKey,_T("path"),0, &ulType, acGCCPath,&dwSize);
@@ -143,7 +143,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
             // output of process.
             sSecurityAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
             sSecurityAttr.bInheritHandle = TRUE;
-            sSecurityAttr.lpSecurityDescriptor = NULL;
+            sSecurityAttr.lpSecurityDescriptor = nullptr;
 
             omStrFilePath   = omFileName.Left(omFileName.ReverseFind('\\'));
             omStrFilePath  += "\\output.txt";
@@ -154,7 +154,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                                      &sSecurityAttr,
                                      CREATE_ALWAYS,
                                      FILE_ATTRIBUTE_NORMAL,
-                                     NULL ) ;
+                                     nullptr ) ;
 
             // check if file is open successfully
             if(hStdOutput== INVALID_HANDLE_VALUE)
@@ -176,7 +176,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
             // all error message generated.
             sSecurityAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
             sSecurityAttr.bInheritHandle = TRUE;
-            sSecurityAttr.lpSecurityDescriptor = NULL;
+            sSecurityAttr.lpSecurityDescriptor = nullptr;
 
             omStrFilePath   = omFileName.Left(omFileName.ReverseFind('\\'));
             omStrFilePath  += "\\error.txt";
@@ -187,7 +187,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                                     &sSecurityAttr,
                                     CREATE_ALWAYS,
                                     FILE_ATTRIBUTE_NORMAL,
-                                    NULL );
+                                    nullptr );
 
             // check if error file is created successfully
             if(hStdError == INVALID_HANDLE_VALUE)
@@ -211,7 +211,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
             // create input file which will be used by create process
             sSecurityAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
             sSecurityAttr.bInheritHandle = TRUE;
-            sSecurityAttr.lpSecurityDescriptor = NULL;
+            sSecurityAttr.lpSecurityDescriptor = nullptr;
 
             omStrFilePath   = omFileName.Left(omFileName.ReverseFind('\\'));
             omStrFilePath  += "\\input.txt";
@@ -222,7 +222,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                                     &sSecurityAttr,
                                     CREATE_ALWAYS,
                                     FILE_ATTRIBUTE_NORMAL,
-                                    NULL );
+                                    nullptr );
 
             // Check if input file created successfully
             if(hStdInput == INVALID_HANDLE_VALUE)
@@ -316,10 +316,10 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                 CString omStrCommandParam = pucGccMakeFile ;
                 omStrCommandParam += " ";
                 omStrCommandParam += pucGccParameter;
-                INT nSuccess = CreateProcess( NULL, omStrCommandParam.GetBuffer(MAX_PATH),
-                                              NULL, NULL,
+                INT nSuccess = CreateProcess( nullptr, omStrCommandParam.GetBuffer(MAX_PATH),
+                                              nullptr, nullptr,
                                               true, CREATE_NO_WINDOW,
-                                              NULL, NULL,
+                                              nullptr, nullptr,
                                               &sStartInfo, &sProcessInfo);
 
                 // check if process is not created successfully else
@@ -334,12 +334,12 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
 
                     FormatMessage(
                         dwFormatFlags,
-                        NULL, // module to get message from (NULL == system)
+                        nullptr, // module to get message from (nullptr == system)
                         dwError,
                         MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // default language
                         (LPTSTR) &pcMessageBuffer,
                         0,
-                        NULL
+                        nullptr
                     );
 
                     omStrErrorMsg.Format("%s: %s",
@@ -476,16 +476,16 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
             int n=omLongFileName.ReverseFind('.');
             omLongFileName=omLongFileName.Left(n);
             omLongFileName+= defDOT_DLL;
-            HMODULE hModuleHandle  = NULL;
+            HMODULE hModuleHandle  = nullptr;
 
             hModuleHandle = LoadLibrary(omLongFileName);
-            if(hModuleHandle!=NULL)
+            if(hModuleHandle!=nullptr)
             {
                 //check for the version number
                 PFGET_PRG_VER pFGetPrgVer = (PFGET_PRG_VER)
                                             GetProcAddress( hModuleHandle,
                                                     defNAME_FUNC_GET_PRG_VER );
-                if( pFGetPrgVer != NULL )
+                if( pFGetPrgVer != nullptr )
                 {
                     bVersion = pFGetPrgVer(&iMajorVer,&iMinorVer,hModuleHandle);
                     if( bVersion == TRUE )
@@ -499,10 +499,10 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                             bReturn = FALSE ;
                             if( FreeLibrary(hModuleHandle) != 0 )
                             {
-                                hModuleHandle = NULL;
+                                hModuleHandle = nullptr;
                             }
                             // Remove Key Panel entry
-                            /*if (CGlobalObj::g_podNodeToDllMap != NULL)
+                            /*if (CGlobalObj::g_podNodeToDllMap != nullptr)
                             {
                                 CGlobalObj::g_podNodeToDllMap->RemoveKey(psNodeInfo->m_omStrDllName);
                             }*/
@@ -512,7 +512,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                         }
                         else
                         {
-                            /*if (CGlobalObj::g_podNodeToDllMap != NULL)
+                            /*if (CGlobalObj::g_podNodeToDllMap != nullptr)
                             {
                                 CGlobalObj::g_podNodeToDllMap->operator [](psNodeInfo->m_omStrDllName) = hModuleHandle;
                                 ::PostMessage(CGlobalObj::hWmdMDIParentFrame,WM_LOAD_UNLOAD, 1, 0);
@@ -527,7 +527,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                     bReturn = FALSE ;
                     if( FreeLibrary(hModuleHandle) != 0 )
                     {
-                        hModuleHandle = NULL;
+                        hModuleHandle = nullptr;
                     }
                     //AfxMessageBox(omStrErrMsg);
                     m_omStrArray.Add(omStrErrMsg);
@@ -591,14 +591,14 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
         CFile::modeRead | CFile::typeText, &omException);
         if(bFileOpen!=FALSE)
         {
-            CHAR* pcBuff   = NULL;
+            CHAR* pcBuff   = nullptr;
             CString omTemp = "";
             // Get the size of file
             dwSize = (DWORD)omStdiofile.GetLength();
             //pcBuff = (char*) new char[dwSize];
             pcBuff = (char*) new char[dwSize+1];
 
-            if(pcBuff!=NULL)
+            if(pcBuff!=nullptr)
             {
                 memset(pcBuff, 0, dwSize);
                 // Read the whole file and put the content to pcBuff;
@@ -607,9 +607,9 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
                 *(pcBuff+dwRead) = '\0';
                 // copy the content to CString object;
                 omStrFile = pcBuff;
-                // Delete the buffer and initialise it to NULL
+                // Delete the buffer and initialise it to nullptr
                 delete []pcBuff;
-                pcBuff = NULL;
+                pcBuff = nullptr;
 
                 char acStrShortPath[1000] ;
                 // Convert long name to short name for GCC compiler
@@ -684,7 +684,7 @@ BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
     }
     CATCH_ALL(pomE)
     {
-        if(pomE != NULL )
+        if(pomE != nullptr )
         {
             // Get the exception error message
             pomE->GetErrorMessage(acErrorMsg,sizeof(acErrorMsg));
@@ -758,7 +758,7 @@ BOOL CBuildProgram::bAddStrToArrayFromFile(CString& omStrTextFileName,
     CATCH_ALL(pomException)
     {
 
-        if(pomException != NULL )
+        if(pomException != nullptr )
         {
             char scErrorMsg[255];
             CString cStrErrorMessage;
@@ -793,12 +793,12 @@ BOOL CBuildProgram::bAddStrToArrayFromFile(CString& omStrTextFileName,
 BOOL CBuildProgram::bAddString(CStringArray& omStrArray)
 {
     // Create output window if it is not arealdy created.
-    if(m_podOutWnd ==NULL)
+    if(m_podOutWnd ==nullptr)
     {
         vCreateOutputWindow();
     }
     // If it is created, add string item in the list box attached to it.
-    if(m_podOutWnd !=NULL)
+    if(m_podOutWnd !=nullptr)
     {
         m_podOutWnd->bAddString(omStrArray);
     }
@@ -823,8 +823,8 @@ BOOL CBuildProgram::bAddString(CStringArray& omStrArray)
 VOID CBuildProgram::vCreateOutputWindow()
 {
     m_podOutWnd = new COutWnd(m_eBus);
-    // check pointer is not NULL.
-    if(m_podOutWnd != NULL)
+    // check pointer is not nullptr.
+    if(m_podOutWnd != nullptr)
     {
         m_podOutWnd->bCreateOutputWindow();
     }
@@ -872,7 +872,7 @@ DWORD CBuildProgram::dwConvertShortPathName(CONST CString& omStrToConvert,
 void CBuildProgram::vClearArray()
 {
     m_omStrArray.RemoveAll();
-    if(m_podOutWnd!=NULL)
+    if(m_podOutWnd!=nullptr)
     {
         m_podOutWnd->vResetContent();
     }

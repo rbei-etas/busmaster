@@ -46,16 +46,16 @@ public:
         xmlXPathObjectPtr pXpathNodePtr;
         //Get Context
         pDocContext = xmlXPathNewContext(pDoc);
-        if ( NULL == pDocContext )
+        if ( nullptr == pDocContext )
         {
-            pXpathNodePtr = NULL;
+            pXpathNodePtr = nullptr;
         }
         else
         {
             //Evaluate Xml xPath
             pXpathNodePtr = xmlXPathEvalExpression(pchXpath, pDocContext);
 
-            if(pXpathNodePtr != NULL)
+            if(pXpathNodePtr != nullptr)
             {
 
                 //Close The DOC Context
@@ -63,7 +63,7 @@ public:
                 if(xmlXPathNodeSetIsEmpty(pXpathNodePtr->nodesetval))
                 {
                     xmlXPathFreeObject(pXpathNodePtr);
-                    pXpathNodePtr = NULL;
+                    pXpathNodePtr = nullptr;
                 }
             }
         }
@@ -88,9 +88,9 @@ public:
         xmlXPathObjectPtr pXpathNodePtr;
         //Get Context
         pDocContext = xmlXPathNewContext(pNode->doc);
-        if ( NULL == pDocContext )
+        if ( nullptr == pDocContext )
         {
-            pXpathNodePtr = NULL;
+            pXpathNodePtr = nullptr;
         }
         else
         {
@@ -103,7 +103,7 @@ public:
             if(xmlXPathNodeSetIsEmpty(pXpathNodePtr->nodesetval))
             {
                 xmlXPathFreeObject(pXpathNodePtr);
-                pXpathNodePtr = NULL;
+                pXpathNodePtr = nullptr;
             }
         }
         return pXpathNodePtr;
@@ -113,12 +113,12 @@ public:
     {
         xmlChar* xmlNodeName = (xmlChar* )cstrNodeName;
 
-        //char*  cData = NULL;
+        //char*  cData = nullptr;
         strData.clear();
         if (!xmlStrcmp(pNodePtr->name, xmlNodeName))
         {
             xmlChar* xmlData = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode,1);
-            if(NULL != xmlData)
+            if(nullptr != xmlData)
             {
                 strData = (char*)xmlData;
                 xmlFree(xmlData);
@@ -134,13 +134,13 @@ public:
         char values[6] = {0};
         pNodePtr = pNodePtr->xmlChildrenNode;
         wndPlacement.length = sizeof(WINDOWPLACEMENT);
-        while (pNodePtr != NULL)
+        while (pNodePtr != nullptr)
         {
             //Visibility
             if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     wndPlacement.showCmd = nGetWindowVisibility((char*)key);
                     xmlFree(key);
@@ -151,7 +151,7 @@ public:
             if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     wndPlacement.flags = unGetWindowPlacement((char*)key);
                     xmlFree(key);
@@ -162,7 +162,7 @@ public:
             if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     wndPlacement.rcNormalPosition.top = atoi((char*)key);
                     xmlFree(key);
@@ -173,7 +173,7 @@ public:
             if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     wndPlacement.rcNormalPosition.left = atoi((char*)key);
                     xmlFree(key);
@@ -184,7 +184,7 @@ public:
             if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     wndPlacement.rcNormalPosition.bottom = atoi((char*)key);
                     xmlFree(key);
@@ -195,7 +195,7 @@ public:
             if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     wndPlacement.rcNormalPosition.right = atoi((char*)key);
                     xmlFree(key);
@@ -412,7 +412,7 @@ public:
         //visibility
         strVar = nGetWindowVisibilityInString(wndPlacement.showCmd);
         omcVarChar = strVar.c_str();
-        xmlNodePtr pVisibility = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_VISIBILITY,BAD_CAST omcVarChar);
+        xmlNodePtr pVisibility = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_VISIBILITY,BAD_CAST omcVarChar);
         xmlAddChild(pNodePtr, pVisibility);
 
         //WindowPlacement
@@ -429,35 +429,35 @@ public:
         }
 
         omcVarChar = csWindowPlacement;
-        xmlNodePtr pWindowPlacement = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_MWND_PLACEMENT,BAD_CAST omcVarChar);
+        xmlNodePtr pWindowPlacement = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_MWND_PLACEMENT,BAD_CAST omcVarChar);
         xmlAddChild(pNodePtr, pWindowPlacement);
 
         //Top
         CString csTop;
         csTop.Format("%d",  wndPlacement.rcNormalPosition.top);
         omcVarChar = csTop;
-        xmlNodePtr pTop= xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_MWND_TOP,BAD_CAST omcVarChar);
+        xmlNodePtr pTop= xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_MWND_TOP,BAD_CAST omcVarChar);
         xmlAddChild(pNodePtr, pTop);
 
         //Left
         CString csLeft;
         csLeft.Format("%d",  wndPlacement.rcNormalPosition.left);
         omcVarChar = csLeft;
-        xmlNodePtr pLeft = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_MWND_LEFT,BAD_CAST omcVarChar);
+        xmlNodePtr pLeft = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_MWND_LEFT,BAD_CAST omcVarChar);
         xmlAddChild(pNodePtr, pLeft);
 
         //Bottom
         CString csBottom;
         csBottom.Format("%d",  wndPlacement.rcNormalPosition.bottom);
         omcVarChar = csBottom;
-        xmlNodePtr pBottom= xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_BOTTOM,BAD_CAST omcVarChar);
+        xmlNodePtr pBottom= xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_BOTTOM,BAD_CAST omcVarChar);
         xmlAddChild(pNodePtr, pBottom);
 
         //Right
         CString csRight;
         csRight.Format("%d",  wndPlacement.rcNormalPosition.right);
         omcVarChar = csRight;
-        xmlNodePtr pRight = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_RIGHT,BAD_CAST omcVarChar);
+        xmlNodePtr pRight = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_RIGHT,BAD_CAST omcVarChar);
         xmlAddChild(pNodePtr, pRight);
         return true;
     }
@@ -465,7 +465,7 @@ public:
     static int nGetWindowVisibility(char* pchVisibility)
     {
         int nShowCmd = SW_SHOW;
-        if( pchVisibility == NULL)
+        if( pchVisibility == nullptr)
         {
             return nShowCmd;
         }
@@ -522,7 +522,7 @@ public:
     static BOOL bGetBooleanValue(char* pchBoolValue)
     {
         BOOL bRetValue = TRUE;
-        if ( NULL != pchBoolValue )
+        if ( nullptr != pchBoolValue )
         {
             std::string strTemp = pchBoolValue;
 
@@ -537,7 +537,7 @@ public:
     static eDirection bGetDirection(char* pchBoolValue)
     {
         eDirection bRetValue = DIR_ALL;
-        if ( NULL != pchBoolValue )
+        if ( nullptr != pchBoolValue )
         {
             std::string strTemp = pchBoolValue;
             if(strTemp == "TX")
@@ -601,18 +601,18 @@ public:
     static int parseColumnNode(xmlNodePtr pNode, columnInfo& Info)
     {
         int nRetVal = S_OK;
-        if(pNode == NULL)
+        if(pNode == nullptr)
         {
             nRetVal = S_FALSE;
         }
         else
         {
-            while(pNode != NULL)
+            while(pNode != nullptr)
             {
                 if ((!xmlStrcmp(pNode->name, (const xmlChar*)"ID")))
                 {
                     xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
-                    if(NULL != key)
+                    if(nullptr != key)
                     {
                         Info.strId = (char*)key;
                         xmlFree(key);
@@ -621,7 +621,7 @@ public:
                 else if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Order")))
                 {
                     xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
-                    if(NULL != key)
+                    if(nullptr != key)
                     {
                         Info.nOrder = atoi((char*)key);
                         xmlFree(key);
@@ -630,7 +630,7 @@ public:
                 else if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Width")))
                 {
                     xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
-                    if(NULL != key)
+                    if(nullptr != key)
                     {
                         Info.nWidth = atoi((char*)key);
                         xmlFree(key);
@@ -639,7 +639,7 @@ public:
                 else if ((!xmlStrcmp(pNode->name, (const xmlChar*)"IsVisible")))
                 {
                     xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
-                    if(NULL != key)
+                    if(nullptr != key)
                     {
                         Info.isVisble = (bool)bGetBooleanValue((char*)key);
                         xmlFree(key);
@@ -654,21 +654,21 @@ public:
     static int xmlUtils::ParseSplitterWindow(xmlNodePtr pNode, int& nCxCur, int& nCxMax)
     {
         int nRetVal = S_OK;
-        if(pNode == NULL)
+        if(pNode == nullptr)
         {
             nRetVal = S_FALSE;
         }
         else
         {
             xmlXPathObjectPtr pObject = pGetChildNodes(pNode, (xmlChar*)"CxIdeal");
-            if(pObject != NULL)
+            if(pObject != nullptr)
             {
                 xmlNodePtr pTemp = pObject->nodesetval->nodeTab[0];
-                if(pTemp != NULL)
+                if(pTemp != nullptr)
                 {
                     char* pchKey = (char*)xmlNodeListGetString(pTemp->doc, pTemp->xmlChildrenNode, 1);
                     nCxCur = 0;
-                    if(pchKey != NULL)
+                    if(pchKey != nullptr)
                     {
                         nCxCur = atoi(pchKey);
                         xmlFree(pchKey);
@@ -681,14 +681,14 @@ public:
                 xmlXPathFreeObject(pObject);
             }
             pObject = pGetChildNodes(pNode, (xmlChar*)"CxMin");
-            if(pObject != NULL)
+            if(pObject != nullptr)
             {
                 xmlNodePtr pTemp = pObject->nodesetval->nodeTab[0];
-                if(pTemp != NULL)
+                if(pTemp != nullptr)
                 {
                     char* pchKey = (char*)xmlNodeListGetString(pTemp->doc, pTemp->xmlChildrenNode, 1);
                     nCxMax = 0;
-                    if(pchKey != NULL)
+                    if(pchKey != nullptr)
                     {
                         nCxMax = atoi(pchKey);
                         xmlFree(pchKey);
@@ -715,7 +715,7 @@ public:
         for( int i = 0; i < pNodeSet->nodeNr; i++ )
         {
             xmlNodePtr pNode = pNodeSet->nodeTab[i]->children;
-            if( pNode != NULL )
+            if( pNode != nullptr )
             {
                 columnInfo sColumnInfo;
                 if( S_OK == parseColumnNode(pNode, sColumnInfo))

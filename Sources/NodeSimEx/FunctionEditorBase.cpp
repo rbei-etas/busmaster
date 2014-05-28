@@ -67,15 +67,15 @@ BOOL CFunctionEditorBase::bInitBusInfo(SBUS_SPECIFIC_INFO& sInfo, eTYPE_BUS eBus
 CFunctionEditorDoc* CFunctionEditorBase::pCreateNewDocument(eTYPE_BUS eBus)
 {
     CMultiDocTemplate* pTemplate = CGlobalObj::ouGetObj(eBus).m_pEditorDocTemplate;
-    if (NULL == pTemplate)
+    if (nullptr == pTemplate)
     {
         AfxMessageBox("No Editor found. Please open the editor using simulated systems window", MB_OK);
-        return NULL;
+        return nullptr;
     }
 
     // Now open the selected file
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)pTemplate->CreateNewDocument();
-    if (pDoc != NULL)
+    if (pDoc != nullptr)
     {
         SBUS_SPECIFIC_INFO sInfo;
         if (bInitBusInfo(sInfo, eBus))

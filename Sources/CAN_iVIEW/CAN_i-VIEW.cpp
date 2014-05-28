@@ -55,7 +55,7 @@ BOOL CCAN_i_VIEW_DLL::InitInstance()
 /**
  * Application Log
  */
-static Base_WrapperErrorLogger* g_pLog = NULL;
+static Base_WrapperErrorLogger* g_pLog = nullptr;
 
 /***********************
  * VCI HW Class Members
@@ -73,7 +73,7 @@ VCI::VCI(   const std::string&   Name,
             UNUM32      CAN ) :
     m_Id(m_NextId++),
     m_Name( Name ),
-    m_VCiIF( NULL ),
+    m_VCiIF( nullptr ),
     m_TypeId(TypeId),
     m_CAN(CAN),
     m_TxErrorCounter(0),
@@ -149,7 +149,7 @@ T_IVIEW_STATUS VCI::Connect()
             if ((Err==IVIEW_NOERROR) && ((*i)->Type()==VCI_PASS_FILTER))
             {
                 Err = m_VCiIF->AddFilter((*i)->Type(),(*i)->Flags(),(*i)->Size(),
-                                         (*i)->Pattern(), (*i)->Mask(),0,NULL,Id);
+                                         (*i)->Pattern(), (*i)->Mask(),0,nullptr,Id);
                 (*i)->Id(Id);
             }
         }
@@ -258,7 +258,7 @@ void Client::RemoveClientBuffers()
     m_ClientBuf.clear();
 }
 
-static CDIL_CAN_i_VIEW* g_DIL_CAN_i_VIEW = NULL;
+static CDIL_CAN_i_VIEW* g_DIL_CAN_i_VIEW = nullptr;
 
 /**
  * \return S_OK for success, S_FALSE for failure
@@ -269,9 +269,9 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 {
     HRESULT hResult = S_OK;
 
-    if ( NULL == g_DIL_CAN_i_VIEW )
+    if ( nullptr == g_DIL_CAN_i_VIEW )
     {
-        if ((g_DIL_CAN_i_VIEW = new CDIL_CAN_i_VIEW) == NULL)
+        if ((g_DIL_CAN_i_VIEW = new CDIL_CAN_i_VIEW) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -285,15 +285,15 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
  */
 
 CDIL_CAN_i_VIEW::CDIL_CAN_i_VIEW() :
-    m_CreateCCommTCP(NULL),
-    m_CreateCVCiViewIF(NULL),
-    m_hDll( NULL ),
-    m_iViewBrowser(NULL),
+    m_CreateCCommTCP(nullptr),
+    m_CreateCVCiViewIF(nullptr),
+    m_hDll( nullptr ),
+    m_iViewBrowser(nullptr),
     m_CurrState(STATE_DRIVER_UNLOADED),
-    m_hOwnerWnd(NULL),
+    m_hOwnerWnd(nullptr),
     m_nChannels(0)
 {
-    m_Channel.assign(NULL);
+    m_Channel.assign(nullptr);
 }
 
 CDIL_CAN_i_VIEW::~CDIL_CAN_i_VIEW()
@@ -309,12 +309,12 @@ void CDIL_CAN_i_VIEW::GetSystemErrorString()
                  FORMAT_MESSAGE_ALLOCATE_BUFFER |
                  FORMAT_MESSAGE_FROM_SYSTEM |
                  FORMAT_MESSAGE_IGNORE_INSERTS,
-                 NULL,
+                 nullptr,
                  GetLastError(),
                  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
                  (LPTSTR) &MsgBuf,
                  0,
-                 NULL );
+                 nullptr );
 
     if (Result <= 0)
     {
@@ -385,7 +385,7 @@ pClient_t CDIL_CAN_i_VIEW::GetClient(std::string ClientName)
             return pClientItr->second;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 /**
@@ -401,7 +401,7 @@ pClient_t CDIL_CAN_i_VIEW::GetClient(
     pClientItr = m_Clients.find(ClientID);
     if ( pClientItr == m_Clients.end() )
     {
-        return NULL;
+        return nullptr;
     }
     return pClientItr->second;
 }
@@ -500,7 +500,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_SetAppParams(
 {
     HRESULT hResult = S_FALSE;
 
-    if ((pLog != NULL))
+    if ((pLog != nullptr))
     {
         m_hOwnerWnd = hWndOwner;    // Owner window handle
         g_pLog = pLog;      // Log interface pointer
@@ -541,7 +541,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_DisplayConfigDlg(
         //Result = DisplayConfigurationDlg(m_hOwnerWnd, Callback_DIL_iVIEW,
         //  psContrlDets, m_nChannels);
         AFX_MANAGE_STATE(AfxGetStaticModuleState());
-        CChangeRegisters ChangeRegisters(NULL, InitData, m_nChannels);
+        CChangeRegisters ChangeRegisters(nullptr, InitData, m_nChannels);
         ChangeRegisters.DoModal();
         Result = ChangeRegisters.nGetInitStatus();
 
@@ -633,14 +633,14 @@ HRESULT CDIL_CAN_i_VIEW::CAN_ManageMsgBuf(
 {
     HRESULT hResult = S_FALSE;
 
-    if (ClientID != NULL)
+    if (ClientID != 0)
     {
         pClient_t Client = GetClient(ClientID);
         if (Client)
         {
             if (Action == MSGBUF_ADD)
             {
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     if (Client->AddClientBuffer(pBufObj))
                     {
@@ -655,7 +655,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_ManageMsgBuf(
             else if (Action == MSGBUF_CLEAR)
             {
                 //Remove only buffer mentioned
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     Client->RemoveClientBuffer(pBufObj);
                 }
@@ -679,7 +679,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_ManageMsgBuf(
             for (UINT i = 0; i < m_Clients.size(); i++)
             {
                 CAN_ManageMsgBuf(MSGBUF_CLEAR,
-                                 m_Clients[i]->m_ClientID, NULL);
+                                 m_Clients[i]->m_ClientID, nullptr);
             }
             hResult = S_OK;
         }
@@ -741,7 +741,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_SetConfigData(
         VCI->ClearFilters();
         for( UINT f=0; f<CAN_MSG_IDS; f++ )
         {
-            pFilter_t Filter=NULL;
+            pFilter_t Filter=nullptr;
             UNUM8 Id[4]= {0,0,0,0}, Mask[4]= {0,0,0,0};
             if (InitData[i].m_enmHWFilterType[f]==HW_FILTER_MANUAL_SET)
             {
@@ -871,7 +871,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_GetTimeModeMapping(
     CurrSysTime = m_CurrSysTime;
     TimeStamp = m_TimeStamp;
 
-    if(QueryTickCount != NULL)
+    if(QueryTickCount != nullptr)
     {
         *QueryTickCount = m_QueryTickCount;
     }
@@ -935,7 +935,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_PerformClosureOperations(void)
     for (; CItr != Clients.end(); CItr++ )
     {
         DWORD Id = CItr->first;
-        CAN_RegisterClient(FALSE, Id, NULL);
+        CAN_RegisterClient(FALSE, Id, nullptr);
     }
 
     if (m_iViewBrowser)
@@ -1053,14 +1053,14 @@ HRESULT CDIL_CAN_i_VIEW::CAN_DeselectHwInterface(void)
  */
 HRESULT CDIL_CAN_i_VIEW::CAN_LoadDriverLibrary(void)
 {
-    if ( m_hDll != NULL )
+    if ( m_hDll != nullptr )
     {
         g_pLog->vLogAMessage(A2T(__FILE__), __LINE__, _T( iVIEW_DLL " already loaded" ));
         return DLL_ALREADY_LOADED;
     }
     m_hDll = LoadLibrary( iVIEW_DLL );
 
-    if ( m_hDll == NULL )
+    if ( m_hDll == nullptr )
     {
         g_pLog->vLogAMessage(A2T(__FILE__), __LINE__, _T( iVIEW_DLL " loading failed" ));
         return ERR_LOAD_DRIVER;
@@ -1079,10 +1079,10 @@ HRESULT CDIL_CAN_i_VIEW::CAN_LoadDriverLibrary(void)
  */
 HRESULT CDIL_CAN_i_VIEW::CAN_UnloadDriverLibrary(void)
 {
-    if ( m_hDll != NULL )
+    if ( m_hDll != nullptr )
     {
         FreeLibrary( m_hDll );
-        m_hDll = NULL;
+        m_hDll = nullptr;
     }
     m_CurrState = STATE_DRIVER_UNLOADED;
     return S_OK;

@@ -75,7 +75,7 @@ const BYTE QUEUE_DESTROY = 0x02;
  * CLIN_ETAS_BOA initialization
  */
 
-static HINSTANCE ghLangInst=NULL;
+static HINSTANCE ghLangInst=nullptr;
 
 BOOL CLIN_ETAS_BOA::InitInstance()
 {
@@ -130,17 +130,17 @@ BOOL bGetBOAInstallationPath(std::string & pcPath)
 HRESULT GetCSI_API_Pointers(HMODULE hLibCSI)
 {
     HRESULT hResult = S_OK;
-    if (hLibCSI != NULL)
+    if (hLibCSI != nullptr)
     {
-        if ((sBOA_PTRS.m_sCSI.createProtocolTree        = (PROC1)GetProcAddress(hLibCSI, "CSI_CreateProtocolTree")) == NULL)
+        if ((sBOA_PTRS.m_sCSI.createProtocolTree        = (PROC1)GetProcAddress(hLibCSI, "CSI_CreateProtocolTree")) == nullptr)
         {
             hResult = S_FALSE;
         }
-        else if ((sBOA_PTRS.m_sCSI.destroyProtocolTree  = (PROC2)GetProcAddress(hLibCSI, "CSI_DestroyProtocolTree")) == NULL)
+        else if ((sBOA_PTRS.m_sCSI.destroyProtocolTree  = (PROC2)GetProcAddress(hLibCSI, "CSI_DestroyProtocolTree")) == nullptr)
         {
             hResult = S_FALSE;
         }
-        else if ((sBOA_PTRS.m_sCSI.getUriForUuid        = (PROC3)GetProcAddress(hLibCSI, "CSI_GetUriForUuid")) == NULL)
+        else if ((sBOA_PTRS.m_sCSI.getUriForUuid        = (PROC3)GetProcAddress(hLibCSI, "CSI_GetUriForUuid")) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -154,161 +154,161 @@ HRESULT GetCSI_API_Pointers(HMODULE hLibCSI)
 HRESULT GetOCI_API_Pointers(HMODULE hLibOCI)
 {
     HRESULT hResult = S_OK;
-    if (hLibOCI != NULL)
+    if (hLibOCI != nullptr)
     {
         if ((sBOA_PTRS.m_sOCI.createLINController = (PF_OCI_CreateLINController)
-                GetProcAddress(hLibOCI, "OCI_CreateLINController")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_CreateLINController")) == nullptr)
         {
             hResult = S_FALSE;
         }
         if ((sBOA_PTRS.m_sOCI.destroyLINController = (PF_OCI_DestroyLINController )
-                GetProcAddress(hLibOCI, "OCI_DestroyLINController")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_DestroyLINController")) == nullptr)
         {
             hResult = S_FALSE;
         }
         if ((sBOA_PTRS.m_sOCI.openLINController = (PF_OCI_OpenLINController)
-                GetProcAddress(hLibOCI, "OCI_OpenLINController")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_OpenLINController")) == nullptr)
         {
             hResult = S_FALSE;
         }
 
         if ((sBOA_PTRS.m_sOCI.closeLINController = (PF_OCI_CloseLINController)
-                GetProcAddress(hLibOCI, "OCI_CloseLINController")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_CloseLINController")) == nullptr)
         {
             hResult = S_FALSE;
         }
         if ((sBOA_PTRS.m_sOCI.getLINConfiguration = (PF_OCI_GetLINConfiguration)
-                GetProcAddress(hLibOCI, "OCI_GetLINConfiguration")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_GetLINConfiguration")) == nullptr)
         {
             hResult = S_FALSE;
         }
 
         if ((sBOA_PTRS.m_sOCI.getLINControllerProperties = (PF_OCI_GetLINControllerProperties)
-                GetProcAddress(hLibOCI, "OCI_GetLINControllerProperties")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_GetLINControllerProperties")) == nullptr)
         {
             hResult = S_FALSE;
         }
         if ((sBOA_PTRS.m_sOCI.setLINControllerProperties = (PF_OCI_SetLINControllerProperties)
-                GetProcAddress(hLibOCI, "OCI_SetLINControllerProperties")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_SetLINControllerProperties")) == nullptr)
         {
             hResult = S_FALSE;
         }
 
         if ((sBOA_PTRS.m_sOCI.linioVTable.getLINControllerCapabilities = (PF_OCI_GetLINControllerCapabilities)
-                GetProcAddress(hLibOCI, "OCI_GetLINControllerCapabilities")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_GetLINControllerCapabilities")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.linioVTable.getLINControllerStatus = (PF_OCI_GetLINControllerStatus)
-                  GetProcAddress(hLibOCI, "OCI_GetCANControllerStatus")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetCANControllerStatus")) == nullptr)
         {
             hResult = S_FALSE;
         }
 
         else if ((sBOA_PTRS.m_sOCI.linioVTable.createLINTxQueue = (PF_OCI_CreateLINTxQueue)
-                  GetProcAddress(hLibOCI, "OCI_CreateLINTxQueue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_CreateLINTxQueue")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.linioVTable.writeLINData = (PF_OCI_WriteLINData)
-                  GetProcAddress(hLibOCI, "OCI_WriteLINData")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_WriteLINData")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.linioVTable.destroyLINTxQueue = (PF_OCI_DestroyLINTxQueue)
-                  GetProcAddress(hLibOCI, "OCI_DestroyLINTxQueue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_DestroyLINTxQueue")) == nullptr)
         {
             hResult = S_FALSE;
         }
 
         else if ((sBOA_PTRS.m_sOCI.linioVTable.createLINRxQueue = (PF_OCI_CreateLINRxQueue)
-                  GetProcAddress(hLibOCI, "OCI_CreateLINRxQueue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_CreateLINRxQueue")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.linioVTable.readLINData = (PF_OCI_ReadLINData)
-                  GetProcAddress(hLibOCI, "OCI_ReadLINData")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_ReadLINData")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.linioVTable.destroyLINRxQueue= (PF_OCI_DestroyLINRxQueue)
-                  GetProcAddress(hLibOCI, "OCI_DestroyLINRxQueue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_DestroyLINRxQueue")) == nullptr)
         {
             hResult = S_FALSE;
         }
 
         else if ((sBOA_PTRS.m_sOCI.linioVTable.addLINFrameFilter = (PF_OCI_AddLINFrameFilter)
-                  GetProcAddress(hLibOCI, "OCI_AddLINFrameFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_AddLINFrameFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.linioVTable.removeLINFrameFilter = (PF_OCI_RemoveLINFrameFilter)
-                  GetProcAddress(hLibOCI, "OCI_RemoveLINFrameFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_RemoveLINFrameFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.linioVTable.addLINEventFilter = (PF_OCI_AddLINEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_AddLINEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_AddLINEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.linioVTable.removeLINEventFilter = (PF_OCI_RemoveLINEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_RemoveLINEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_RemoveLINEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         /**/ //else if ((sBOA_PTRS.m_sOCI.LINIOVTable.addLINe = (PF_OCI_AddCANErrorFrameFilter)
-        //          GetProcAddress(hLibOCI, "OCI_AddCANErrorFrameFilter")) == NULL)
+        //          GetProcAddress(hLibOCI, "OCI_AddCANErrorFrameFilter")) == nullptr)
         //{
         //    hResult = S_FALSE;
         //}
         //else if ((sBOA_PTRS.m_sOCI.LINIOVTable.removeCANErrorFrameFilter = (PF_OCI_RemoveCANErrorFrameFilter)
-        //          GetProcAddress(hLibOCI, "OCI_RemoveCANErrorFrameFilter")) == NULL)
+        //          GetProcAddress(hLibOCI, "OCI_RemoveCANErrorFrameFilter")) == nullptr)
         //{
         //    hResult = S_FALSE;
         //}
         else if ((sBOA_PTRS.m_sOCI.timeVTable.getTimerStatus = (PF_OCI_GetTimerStatus)
-                  GetProcAddress(hLibOCI, "OCI_GetTimerStatus")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetTimerStatus")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.getTimerStatus = (PF_OCI_GetTimerStatus)
-                  GetProcAddress(hLibOCI, "OCI_GetTimerStatus")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetTimerStatus")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.getTimerCapabilities = (PF_OCI_GetTimerCapabilities)
-                  GetProcAddress(hLibOCI, "OCI_GetTimerCapabilities")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetTimerCapabilities")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.getTimerValue = (PF_OCI_GetTimerValue)
-                  GetProcAddress(hLibOCI, "OCI_GetTimerValue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetTimerValue")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.addTimerEventFilter = (PF_OCI_AddTimerEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_AddTimerEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_AddTimerEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.removeTimerEventFilter = (PF_OCI_RemoveTimerEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_RemoveTimerEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_RemoveTimerEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.errorVTable.getError = (PF_OCI_GetError)
-                  GetProcAddress(hLibOCI, "OCI_GetError")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetError")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.errorVTable.addInternalErrorEventFilter = (PF_OCI_AddInternalErrorEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_AddInternalErrorEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_AddInternalErrorEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.errorVTable.removeInternalErrorEventFilter = (PF_OCI_RemoveInternalErrorEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_RemoveInternalErrorEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_RemoveInternalErrorEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -337,7 +337,7 @@ void findLinNodes( CSI_Tree* sfsTree, OCI_URIName uriPrefix, OCI_URIName uriName
     if ( !sfsTree || !uriNames || !uriPrefix || !position )
     {
         return;
-        //exitWithMessage( "ERROR: parameter is NULL", OCI_ERR_UNEXPECTED_NULL );
+        //exitWithMessage( "ERROR: parameter is nullptr", OCI_ERR_UNEXPECTED_NULL );
     }
 
     /* Does the current tree node have the URI name which begins with "LIN:"?
@@ -384,7 +384,7 @@ BOA_ResultCode OCI_FindLINController(OCI_URIName uriName[], INT nSize, uint32* n
     //OCI_ErrorCode ec;
 
     ///* Container for search results */
-    //CSI_Tree* sfsTree = NULL;
+    //CSI_Tree* sfsTree = nullptr;
     ///* Specify that we want to search for nodes which implement v1.1.0.0 of OCI_LIN. */
     //static const BOA_UuidVersion ociLINUuid = { UUID_OCILIN, {1, 0, 0, 0} };
 
@@ -408,7 +408,7 @@ BOA_ResultCode OCI_FindLINController(OCI_URIName uriName[], INT nSize, uint32* n
     OCI_ErrorCode   ec;
 
     /* Container for search results */
-    CSI_Tree* sfsTree = NULL;
+    CSI_Tree* sfsTree = nullptr;
 
     /* Specify that we want to search for physical hardware nodes */
     const CSI_NodeRange nodeRange = {CSI_NODE_MIN_PHYSICAL_NODE , CSI_NODE_MAX_PHYSICAL_NODE };
@@ -418,7 +418,7 @@ BOA_ResultCode OCI_FindLINController(OCI_URIName uriName[], INT nSize, uint32* n
     /* parameter validation to avoid possible crash. */
     if ( !nFound )
     {
-        //exitWithMessage( "ERROR: parameter \'found\' is NULL", OCI_ERR_UNEXPECTED_NULL );
+        //exitWithMessage( "ERROR: parameter \'found\' is nullptr", OCI_ERR_UNEXPECTED_NULL );
         return OCI_ERR_UNEXPECTED_NULL;
     }
 
@@ -904,7 +904,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
 
             for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
             {
-                sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = NULL;
+                sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = nullptr;
             }
             sg_asClientToBufMap[unClientIndex].m_unBufCount = 0;
             if ((unClientIndex + 1) < sg_unClientCnt)
@@ -1024,7 +1024,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT LIN_PerformInitOperations(void);
     HRESULT LIN_PerformClosureOperations(void);
-    HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
     HRESULT LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT LIN_DeselectHwInterface(void);
@@ -1091,7 +1091,7 @@ public:
                                    OCI_LINMessage& BOA_FlexData, BOOL& bIsError);
 };
 
-CDIL_LIN_ETAS_BOA* g_pouDIL_LIN_BOA = NULL;
+CDIL_LIN_ETAS_BOA* g_pouDIL_LIN_BOA = nullptr;
 
 
 void CDIL_LIN_ETAS_BOA::vCopyOCI_LIN_EVENT_2_DATA(STLINDATA& stLinMsg,
@@ -1161,7 +1161,7 @@ void CDIL_LIN_ETAS_BOA::vCopyOCI_LIN_EVENT_2_DATA(STLINDATA& stLinMsg,
                 stLinMsg.m_uDataInfo.m_sLINMsg.m_ucChksumTyp = LIN_CHECKSUM_CLASSIC;
             }
 
-            if ( NULL != g_pouDIL_LIN_BOA )
+            if ( nullptr != g_pouDIL_LIN_BOA )
             {
                 stLinMsg.m_uDataInfo.m_sErrInfo.m_ucCrc = g_pouDIL_LIN_BOA->ucChecksumCalculation(sCRC);
             }
@@ -1238,7 +1238,7 @@ void CDIL_LIN_ETAS_BOA::vCopyOCI_LIN_RX_2_DATA(STLINDATA& stLinMsg,
                 stLinMsg.m_uDataInfo.m_sLINMsg.m_ucChksumTyp = LIN_CHECKSUM_CLASSIC;
             }
 
-            if ( NULL != g_pouDIL_LIN_BOA )
+            if ( nullptr != g_pouDIL_LIN_BOA )
             {
                 stLinMsg.m_uDataInfo.m_sLINMsg.m_ucChksum = g_pouDIL_LIN_BOA->ucChecksumCalculation(sCRC);
             }
@@ -1308,7 +1308,7 @@ void CDIL_LIN_ETAS_BOA:: ProcessLINMsg(void* userData, struct OCI_LINMessage* ms
     //Write the msg into registered client's buffer
     // bWrite will be true if it is succesful tranmissions
     // Hence avoided intimating
-    if ( NULL != g_pouDIL_LIN_BOA && bWrite == TRUE)
+    if ( nullptr != g_pouDIL_LIN_BOA && bWrite == TRUE)
     {
         g_pouDIL_LIN_BOA->vWriteIntoClientsBuffer(FlexData);
     }
@@ -1324,7 +1324,7 @@ static void (OCI_CALLBACK ProcessLINData)(void* userData, OCI_LINMessage* msg)
     {
         case OCI_LIN_RX_MESSAGE:
             EnterCriticalSection(&sg_DIL_CriticalSection);
-            if ( g_pouDIL_LIN_BOA != NULL )
+            if ( g_pouDIL_LIN_BOA != nullptr )
             {
                 g_pouDIL_LIN_BOA->ProcessLINMsg(userData, msg);
             }
@@ -1346,7 +1346,7 @@ static void EventCallback( void* userData,OCI_LINMessage* msg )
         case OCI_LIN_EVENT:
 
             EnterCriticalSection(&sg_DIL_CriticalSection);
-            if ( g_pouDIL_LIN_BOA != NULL )
+            if ( g_pouDIL_LIN_BOA != nullptr )
             {
                 g_pouDIL_LIN_BOA->ProcessLINMsg(userData, msg);
             }
@@ -1400,9 +1400,9 @@ void vInitializeQueueConfig(UINT nChannel)
 {
     /* configure Rx Queue*/
     sg_asChannel[nChannel].m_OCI_RxQueueCfg.onFrame.function = ProcessLINData;
-    sg_asChannel[nChannel].m_OCI_RxQueueCfg.onFrame.userData = NULL;
+    sg_asChannel[nChannel].m_OCI_RxQueueCfg.onFrame.userData = nullptr;
     sg_asChannel[nChannel].m_OCI_RxQueueCfg.onEvent.function = EventCallback;
-    sg_asChannel[nChannel].m_OCI_RxQueueCfg.onEvent.userData = NULL;
+    sg_asChannel[nChannel].m_OCI_RxQueueCfg.onEvent.userData = nullptr;
 
     sg_asChannel[nChannel].m_OCI_RxQueueCfg.selfReceptionMode = OCI_SELF_RECEPTION_ON;
 
@@ -1425,9 +1425,9 @@ void vInitializeQueueConfig(UINT nChannel)
 USAGEMODE HRESULT GetIDIL_LIN_Controller(void** ppvInterface)
 {
     HRESULT hResult = S_OK;
-    if ( NULL == g_pouDIL_LIN_BOA )
+    if ( nullptr == g_pouDIL_LIN_BOA )
     {
-        if ((g_pouDIL_LIN_BOA = new CDIL_LIN_ETAS_BOA) == NULL)
+        if ((g_pouDIL_LIN_BOA = new CDIL_LIN_ETAS_BOA) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -1441,7 +1441,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLog
 {
     HRESULT hResult = S_FALSE;
 
-    bool bResult = (pILog != NULL);
+    bool bResult = (pILog != nullptr);
 
     if (bResult)
     {
@@ -1472,9 +1472,9 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_LoadDriverLibrary(void)
     acLIB_CSL.append("\\");
     acLIB_CSL.append(LIB_CSL_NAME);
     /* LoadLibraryEx instead of LoadLibrary seems to be necessary under Windows 7 when the library is not in DLL search path (system32) */
-    sg_hLibCSI = LoadLibraryEx(acLIB_CSL.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+    sg_hLibCSI = LoadLibraryEx(acLIB_CSL.c_str(), nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
 
-    if (sg_hLibCSI != NULL)
+    if (sg_hLibCSI != nullptr)
     {
         hResult = GetCSI_API_Pointers(sg_hLibCSI);
 
@@ -1485,9 +1485,9 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_LoadDriverLibrary(void)
             acLIB_OCI.append(acPath);
             acLIB_OCI.append("\\");
             acLIB_OCI.append(LIB_OCI_NAME);
-            sg_hLibOCI = LoadLibraryEx(acLIB_OCI.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+            sg_hLibOCI = LoadLibraryEx(acLIB_OCI.c_str(), nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
 
-            if (sg_hLibOCI != NULL)
+            if (sg_hLibOCI != nullptr)
             {
                 hResult = GetOCI_API_Pointers(sg_hLibOCI);
                 if (hResult != S_OK)
@@ -1528,12 +1528,12 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_LoadDriverLibrary(void)
 HRESULT CDIL_LIN_ETAS_BOA::LIN_UnloadDriverLibrary(void)
 {
     /* Unload OCI library */
-    if (sg_hLibOCI != NULL)
+    if (sg_hLibOCI != nullptr)
     {
         FreeLibrary(sg_hLibOCI);
     }
     /* Unload CSI library */
-    if (sg_hLibCSI != NULL)
+    if (sg_hLibCSI != nullptr)
     {
         FreeLibrary(sg_hLibCSI);
     }
@@ -1550,7 +1550,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_PerformInitOperations(void)
        safeness of read message function */
     InitializeCriticalSection(&sg_DIL_CriticalSection);
     /* Create an event for timestamp calculations*/
-    sg_hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+    sg_hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
     /*Initial Channel info with default values.
       1. Controller configuration
       2. Queue configuration
@@ -1627,7 +1627,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_ListHwInterfaces(INTERFACE_HW_LIST & sSelHwInterf
                     OCI_LIN_VTable          sOCI;
 
                     if ((sOCI.createLINController = (PF_OCI_CreateLINController)
-                                                    GetProcAddress(sg_hLibOCI, "OCI_CreateLINController")) != NULL)
+                                                    GetProcAddress(sg_hLibOCI, "OCI_CreateLINController")) != nullptr)
                     {
                         OCI_ControllerHandle ouHandle;
 
@@ -1666,7 +1666,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_ListHwInterfaces(INTERFACE_HW_LIST & sSelHwInterf
                         }
                         nCount  = unDefaultChannelCnt;
                     }
-                    else if ( ListHardwareInterfaces(NULL, DRIVER_LIN_ETAS_BOA, psHWInterface, sg_anSelectedItems, nCount) != 0 )
+                    else if ( ListHardwareInterfaces(nullptr, DRIVER_LIN_ETAS_BOA, psHWInterface, sg_anSelectedItems, nCount) != 0 )
                     {
                         /* return if user cancels hardware selection */
                         return HW_INTERFACE_NO_SEL;
@@ -1718,7 +1718,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_SelectHwInterface(const INTERFACE_HW_LIST & sSelH
         OCI_LIN_VTable          sOCI;
 
         if ((sOCI.createLINController = (PF_OCI_CreateLINController)
-                                        GetProcAddress(sg_hLibOCI, "OCI_CreateLINController")) == NULL)
+                                        GetProcAddress(sg_hLibOCI, "OCI_CreateLINController")) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -2120,7 +2120,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_Send(STLIN_MSG& pouFlxTxMsg)
     if (m_bLINConnected == FALSE )          //Controller Not active
     {
         BOA_LINData ouData;
-        ouData.m_OCI_TxQueueHandle = NULL;
+        ouData.m_OCI_TxQueueHandle = 0;
         ouData.m_ouLinData =  pouFlxTxMsg;
         sg_asChannel[pouFlxTxMsg.m_ucChannel-1].m_ouBoaLINData[pouFlxTxMsg.m_ucMsgID]  = ouData;
     }

@@ -260,14 +260,14 @@ struct sMSGBLOCKLIST
 
     sMSGBLOCKLIST()
     {
-        m_psNextMsgBlocksList = NULL;
+        m_psNextMsgBlocksList = nullptr;
         m_unMsgCount          = 0;
         m_bActive             = TRUE;
         m_bType               = TRUE;
         m_bTxAllFrame         = FALSE;
         m_ucTrigger           = defTIME_TRIGGER;
         m_omStrBlockName      = defDEFAULT_MSG_BLOCK_NAME;
-        m_psTxCANMsgList      = NULL;
+        m_psTxCANMsgList      = nullptr;
         m_ucKeyValue          = 0;
         m_unTimeInterval      = defDEFAULT_TIME_VAL;
 

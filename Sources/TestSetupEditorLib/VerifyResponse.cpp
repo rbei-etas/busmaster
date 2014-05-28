@@ -173,7 +173,7 @@ Modifications  :
 ******************************************************************************/
 HRESULT CVerifyResponse::GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData)
 {
-    if(eCurrEntityType == VERIFYRESPONSE && pvEntityData != NULL)
+    if(eCurrEntityType == VERIFYRESPONSE && pvEntityData != nullptr)
     {
         ((CVerifyResponseData*)pvEntityData)->m_VerifyData = m_ouData;
         ((CVerifyResponseData*)pvEntityData)->m_ushDuration = m_ushDuration;
@@ -217,7 +217,7 @@ HRESULT CVerifyResponse::SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode)
     INT lCount = (INT)m_ouData.m_odVerify_MessageEntityList.GetCount();
     MSXML2::IXMLDOMElementPtr pIDomSendNode =  pIDOMDoc->createElement(_bstr_t(def_STR_VERIFYRES_NODE));
     MSXML2::IXMLDOMAttributePtr pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_ATTRIB_FAIL);
-    if(pIDomTSAtrrib!= NULL)
+    if(pIDomTSAtrrib!= nullptr)
     {
         switch(m_ouData.m_eAttributeError)
         {
@@ -240,7 +240,7 @@ HRESULT CVerifyResponse::SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode)
     }
 
     MSXML2::IXMLDOMAttributePtr pIDomTSAtrribWait = pIDOMDoc->createAttribute(def_STR_ATTRIB_WAITFOR);
-    if(pIDomTSAtrribWait!= NULL)
+    if(pIDomTSAtrribWait!= nullptr)
     {
         CString omstrWaitFor;
         omstrWaitFor.Format("%d", m_ushDuration);
@@ -273,7 +273,7 @@ Codetag        :
 ******************************************************************************/
 HRESULT CVerifyResponse::SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData)
 {
-    if(eCurrEntityType == VERIFYRESPONSE && pvEntityData != NULL)
+    if(eCurrEntityType == VERIFYRESPONSE && pvEntityData != nullptr)
     {
         m_ouData = ((CVerifyResponseData*)pvEntityData)->m_VerifyData;
         m_ushDuration = ((CVerifyResponseData*)pvEntityData)->m_ushDuration;
@@ -299,7 +299,7 @@ HRESULT CVerifyResponse::GetMessageFromId(UINT& unId, CVerify_MessageData* ouDat
     for(UINT i=0; i<nCount; i++)
     {
         POSITION pos = m_ouData.m_odVerify_MessageEntityList.FindIndex(i);
-        if(pos != NULL)
+        if(pos != nullptr)
         {
             CVerify_MessageEntity& VerifyMsgentity = (m_ouData.m_odVerify_MessageEntityList.GetAt(pos));
             if(unId == VerifyMsgentity.GetMsgID())

@@ -59,7 +59,7 @@ extern PSTXMSG g_psTxMsgBlockList;
 /******************************************************************************/
 CConfigDetails::CConfigDetails() :  m_bConfigInfoLoaded(FALSE),
     m_bIsDirty(FALSE),
-    m_hConfigFile(NULL),
+    m_hConfigFile(nullptr),
     m_fAppVersion(static_cast<FLOAT>(defAPPVERSION)),
     m_omStrMruCFile(defEMPTYSTR),
     m_omstrConfigFilename(defEMPTYSTR),
@@ -73,17 +73,17 @@ CConfigDetails::CConfigDetails() :  m_bConfigInfoLoaded(FALSE),
     m_ucCheckSum(0),
     m_bIsConfigurationModified(FALSE),
     m_unNumberOfMsgBlockCount(0),
-    m_psMsgBlockList(NULL),
-    m_psSignalWatchList(NULL),
-    m_psSimSysArray(NULL)
+    m_psMsgBlockList(nullptr),
+    m_psSignalWatchList(nullptr),
+    m_psSimSysArray(nullptr)
 
 {
-    //m_pSimSysNodeInfo = NULL;
+    //m_pSimSysNodeInfo = nullptr;
     //Create the CStringArray pointer to load/store database file names
     m_pomaStrDatabaseFilename = new CStringArray;
-    m_sMessageAttributes.m_psMsgAttribDetails = NULL;
+    m_sMessageAttributes.m_psMsgAttribDetails = nullptr;
     m_sMessageAttributes.m_usMsgCount = 0;
-    m_sMsgFilterDetails.m_punUndefinedMsgID = NULL;
+    m_sMsgFilterDetails.m_punUndefinedMsgID = nullptr;
     vInitDefaultValues();
     m_bConfigInfoLoaded = TRUE;
     m_sFilterConfigured.vClear();
@@ -113,16 +113,16 @@ CConfigDetails::CConfigDetails() :  m_bConfigInfoLoaded(FALSE),
 CConfigDetails::~CConfigDetails()
 {
     vReleaseMultiMsgInfo(m_psMsgBlockList);
-    m_psMsgBlockList = NULL;
+    m_psMsgBlockList = nullptr;
     vReleaseSignalWatchListMemory();
     vReleaseSimSysListMemory();
     vReleaseSimSysInfo();
     vReleaseMsgAttrib(&m_sMessageAttributes);
     vReleaseMsgFilterDetails(&m_sMsgFilterDetails);
-    if (m_pomaStrDatabaseFilename != NULL)
+    if (m_pomaStrDatabaseFilename != nullptr)
     {
         delete m_pomaStrDatabaseFilename;
-        m_pomaStrDatabaseFilename = NULL;
+        m_pomaStrDatabaseFilename = nullptr;
     }
 }
 
@@ -226,10 +226,10 @@ INT CConfigDetails::nIsCfgFileFound(CString& omStrFilename, BOOL bOpenExisting)
                                      dwDesiredAccess,
                                      //GENERIC_READ | GENERIC_WRITE,
                                      dwShareMode,
-                                     NULL,
+                                     nullptr,
                                      dwCreateMode,
                                      FILE_ATTRIBUTE_NORMAL,
-                                     NULL);
+                                     nullptr);
 
         // is file not found?
         if (m_hConfigFile == INVALID_HANDLE_VALUE)
@@ -355,11 +355,11 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
         {
             case MRU_C_FILE_NAME:
             {
-                *lpData = NULL;
+                *lpData = nullptr;
 
                 *lpData = static_cast<CString*>(new CString);
 
-                if (*lpData != NULL)
+                if (*lpData != nullptr)
                 {
                     *(static_cast<CString*>(*lpData)) = m_omStrMruCFile;
                 }
@@ -371,10 +371,10 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
             break;
             case LOG_FILE_NAME:
             {
-                *lpData = NULL;
+                *lpData = nullptr;
                 // copy the log file name into the buffer
                 *lpData = static_cast<CString*>(new CString);
-                if (*lpData != NULL)
+                if (*lpData != nullptr)
                 {
                     *(static_cast<CString*>(*lpData)) = m_omStrLogFilename;
                 }
@@ -387,10 +387,10 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
             break;
             case REPLAY_FILE_NAME:
             {
-                *lpData = NULL;
+                *lpData = nullptr;
                 // copy the replay file name into the buffer
                 *lpData = static_cast<CString*>(new CString);
-                if (*lpData != NULL)
+                if (*lpData != nullptr)
                 {
                     *(static_cast<CString*>(*lpData)) = m_omStrReplayFilename;
                 }
@@ -403,10 +403,10 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
             break;
             case DATABASE_FILE_NAME:
             {
-                *lpData = NULL;
+                *lpData = nullptr;
                 // copy the database file name into the buffer
                 *lpData = static_cast<CStringArray*>(new CStringArray);
-                if (*lpData != NULL && m_pomaStrDatabaseFilename != NULL)
+                if (*lpData != nullptr && m_pomaStrDatabaseFilename != nullptr)
                 {
                     static_cast<CStringArray*>(*lpData)->RemoveAll();
                     static_cast<CStringArray*>(*lpData)->
@@ -422,10 +422,10 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
             case MRU_DLL_FILE_NAME:
             {
 
-                *lpData = NULL;
+                *lpData = nullptr;
                 // copy the most recently used DLL file name into the buffer
                 *lpData = static_cast<CString*>(new CString);
-                if (*lpData != NULL)
+                if (*lpData != nullptr)
                 {
                     *(static_cast<CString*>(*lpData)) = m_omStrMruDLLFilename;
                 }
@@ -438,10 +438,10 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
             break;
             //case MESSAGE_NAME:
             //    {
-            //        *lpData = NULL;
+            //        *lpData = nullptr;
             //        // copy the message name into the buffer
             //        *lpData = static_cast<CString*>(new CString);
-            //        if (*lpData != NULL)
+            //        if (*lpData != nullptr)
             //        {
             //            *(static_cast<CString*>(*lpData)) = m_omStrMsgName;
             //        }
@@ -454,10 +454,10 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
             //    break;
             //case MESSAGE_ID:
             //    {
-            //        *lpData = NULL;
+            //        *lpData = nullptr;
             //        // copy the message id into the buffer
             //        *lpData = static_cast<CString*>(new CString);
-            //        if (*lpData != NULL)
+            //        if (*lpData != nullptr)
             //        {
             //            *(static_cast<CString*>(*lpData)) = m_omStrMsgID;
             //        }
@@ -470,11 +470,11 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
             //    break;
             case TOOLBAR_DETAILS:
             {
-                *lpData = NULL;
+                *lpData = nullptr;
                 // get the tool bar button status information
                 PSTOOLBARINFO pTemp = new STOOLBARINFO;
 
-                if (pTemp != NULL)
+                if (pTemp != nullptr)
                 {
                     pTemp->m_byMsgFilter      =
                         m_sToolBarButtonStatus.m_byMsgFilter;
@@ -521,12 +521,12 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
 
             case CONTROLLER_DETAILS:
             {
-                *lpData = NULL;
+                *lpData = nullptr;
                 PSCONTROLLER_DETAILS  psControllerDetails =
                     new SCONTROLLER_DETAILS[ defNO_OF_CHANNELS ];
 
                 // baud rate information
-                if (psControllerDetails != NULL)
+                if (psControllerDetails != nullptr)
                 {
                     // Fill all supported channel information
                     for (int nIndex = 0; nIndex < defNO_OF_CHANNELS; nIndex++)
@@ -547,9 +547,9 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
             break;
             case SEND_MULTI_MSGS:
             {
-                *lpData = NULL;
+                *lpData = nullptr;
                 PSMSGBLOCKLIST psMsgBlockList  = new SMSGBLOCKLIST;
-                if (psMsgBlockList != NULL)
+                if (psMsgBlockList != nullptr)
                 {
                     vInitialiseMsgBlock(psMsgBlockList);
                     // multiple message
@@ -559,7 +559,7 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                     if (bRetVal == FALSE)
                     {
                         vReleaseMultiMsgInfo(psMsgBlockList);
-                        psMsgBlockList = NULL;
+                        psMsgBlockList = nullptr;
                     }
                 }
                 else
@@ -577,7 +577,7 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
             case MSG_BLOCK_COUNT:
             {
                 UINT* punCount = static_cast<UINT*>(*lpData);
-                if (punCount != NULL)
+                if (punCount != nullptr)
                 {
                     *(punCount) = static_cast<UINT>(m_unNumberOfMsgBlockCount);
                 }
@@ -590,10 +590,10 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
             break;
             case MSG_ATTRIBUTES:
             {
-                *lpData = NULL;
+                *lpData = nullptr;
                 PSMESSAGE_ATTRIB pMsgAttrib = new SMESSAGE_ATTRIB;
 
-                if (pMsgAttrib != NULL)
+                if (pMsgAttrib != nullptr)
                 {
                     // attributes of all the messages
                     bRetVal = bGetMsgAttrib(pMsgAttrib);
@@ -602,7 +602,7 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                     if (bRetVal == FALSE)
                     {
                         vReleaseMsgAttrib(pMsgAttrib);
-                        pMsgAttrib = NULL;
+                        pMsgAttrib = nullptr;
                     }
                 }
                 else
@@ -619,10 +619,10 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
             break;
             case OLD_FILTER_DETAILS:
             {
-                *lpData = NULL;
+                *lpData = nullptr;
                 PSMESSAGE_FILTER_DETAILS pMsgFilterDetails =
                     new SMESSAGE_FILTER_DETAILS;
-                if (pMsgFilterDetails != NULL)
+                if (pMsgFilterDetails != nullptr)
                 {
                     // filter details
                     bRetVal = bGetMsgFilterDetails(pMsgFilterDetails);
@@ -631,7 +631,7 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                     if (bRetVal == FALSE)
                     {
                         vReleaseMsgFilterDetails(pMsgFilterDetails);
-                        pMsgFilterDetails = NULL;
+                        pMsgFilterDetails = nullptr;
                     }
                 }
                 else
@@ -675,7 +675,7 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
             case MSG_BUFFER_SIZE:
                 // Message Buffer Size
             {
-                if (lpData!= NULL && *lpData != NULL)
+                if (lpData!= nullptr && *lpData != nullptr)
                 {
                     PUINT punSize = static_cast<PUINT>(*lpData);
                     punSize[defAPPEND_DATA_INDEX] = m_unAppendBufferSize;
@@ -773,7 +773,7 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
             case CONFIG_FILE_VERSION:
             {
                 // Assign the file version
-                if (lpData != NULL && *lpData != NULL)
+                if (lpData != nullptr && *lpData != nullptr)
                 {
                     float* pData = static_cast<float*>(*lpData);
                     *pData = m_fAppVersion;
@@ -787,7 +787,7 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
                 CModuleFilterArray* psData =
                     static_cast<CModuleFilterArray*>(*lpData);
                 // Remove elements in the list if any
-                if (psData != NULL)
+                if (psData != nullptr)
                 {
                     psData->RemoveAll();
                     // Take display list and copy all
@@ -823,7 +823,7 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
             break;
             default:
             {
-                *lpData = NULL;
+                *lpData = nullptr;
                 // not in scope
                 bRetVal = FALSE;
             }
@@ -832,7 +832,7 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
     }
     else
     {
-        *lpData = NULL;
+        *lpData = nullptr;
         // invalid out-param..
         bRetVal = FALSE;
     }
@@ -913,7 +913,7 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
     BOOL bRetVal = TRUE;
 
     // check input param
-    if (lpVoid == NULL)
+    if (lpVoid == nullptr)
     {
         bRetVal = FALSE;
     }
@@ -955,7 +955,7 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                 break;
                 case DATABASE_FILE_NAME:
                 {
-                    if (m_pomaStrDatabaseFilename != NULL)
+                    if (m_pomaStrDatabaseFilename != nullptr)
                     {
                         // copy the database file name into the buffer
                         m_pomaStrDatabaseFilename->RemoveAll();
@@ -1053,7 +1053,7 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     {
                         // set the default values
                         vReleaseMultiMsgInfo(m_psMsgBlockList);
-                        m_psMsgBlockList = NULL;
+                        m_psMsgBlockList = nullptr;
                     }
 
                     m_dwModifiedVals |= defCHANGEDMULTIMSG;
@@ -1064,7 +1064,7 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                 {
                     UINT* punCount;
                     punCount = static_cast<UINT*>(lpVoid);
-                    if (punCount != NULL)
+                    if (punCount != nullptr)
                     {
                         m_unNumberOfMsgBlockCount = *(punCount);
                     }
@@ -1103,11 +1103,11 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                 {
                     PSSIGNALWATCHLIST psTemp =
                         static_cast<PSSIGNALWATCHLIST>(lpVoid);
-                    // Work around to pass NULL value
+                    // Work around to pass nullptr value
                     if ((const int)psTemp == -1)
                     {
                         // Empty Lsit
-                        //m_psSignalWatchList = NULL;
+                        //m_psSignalWatchList = nullptr;
                     }
                     else
                     {
@@ -1121,17 +1121,17 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                 {
                     PSSIMSYSARRAY psSimsysTemp =
                         static_cast<PSSIMSYSARRAY>(lpVoid);
-                    // Work around to pass NULL value
+                    // Work around to pass nullptr value
                     if ((const int)psSimsysTemp == -1)
                     {
                         // Empty Lsit
-                        m_psSimSysArray = NULL;
+                        m_psSimSysArray = nullptr;
                     }
                     else
                     {
                         ///////////////////////////// Modified List/////////////////////////////////////////////////
                         //Copy the entire linked list into a new linked list "m_psSimSysArray"
-                        if (m_psSimSysArray == NULL)
+                        if (m_psSimSysArray == nullptr)
                         {
                             m_psSimSysArray = new SSIMSYSARRAY; // Create Head node
                         }
@@ -1242,7 +1242,7 @@ BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
                     CModuleFilterArray* psData =
                         static_cast<CModuleFilterArray*>(lpVoid);
                     // Remove elements in the list if any
-                    if (psData != NULL)
+                    if (psData != nullptr)
                     {
                         m_omMsgDisplayFilter.RemoveAll();
                         // Take display list and copy all
@@ -1358,8 +1358,8 @@ nLoadConfiguration(CString& omStrFilename/*= defDEFAULTCFGFILE*/)
 {
     CMainFrame* pMainFrm = static_cast<CMainFrame*> (theApp.m_pMainWnd);
 
-    //CSimSysWnd* pSimSysWnd = NULL;
-    //CSimSysTreeView* pSimSysTree = NULL;
+    //CSimSysWnd* pSimSysWnd = nullptr;
+    //CSimSysTreeView* pSimSysTree = nullptr;
     // If the user loads configuration file,
     // make sure the prev config temp file is deleted
     if (m_omstrTempFilename.IsEmpty() == FALSE)
@@ -1388,14 +1388,14 @@ nLoadConfiguration(CString& omStrFilename/*= defDEFAULTCFGFILE*/)
         m_bConfigInfoLoaded = FALSE;
         // release the existing members
         vReleaseMultiMsgInfo(m_psMsgBlockList);
-        m_psMsgBlockList = NULL;
+        m_psMsgBlockList = nullptr;
         // Release signal Watch list memory
         vReleaseSignalWatchListMemory();
         // Release simulated system list memory
         vReleaseSimSysListMemory();
         //m_pSimSysNodeInfo = theApp.pomGetSimSysNodeInfo();
         //// Release simulated system info memory
-        //if (m_pSimSysNodeInfo != NULL)
+        //if (m_pSimSysNodeInfo != nullptr)
         //{
         //    m_pSimSysNodeInfo->vReleaseSimSysInfo();
         //}
@@ -1416,23 +1416,23 @@ nLoadConfiguration(CString& omStrFilename/*= defDEFAULTCFGFILE*/)
             {
                 m_bConfigInfoLoaded = TRUE;
                 m_omstrConfigFilename = omStrFilename;
-                /* if (m_pSimSysNodeInfo != NULL)
+                /* if (m_pSimSysNodeInfo != nullptr)
                  {
                      m_pSimSysNodeInfo->bPopulateSimSysInfo();
                  }*/
 
             }
-            if (pMainFrm != NULL)
+            if (pMainFrm != nullptr)
             {
                 /*
                    pSimSysWnd = pMainFrm->pomGetSimSysWnd();
                    pSimSysTree = pMainFrm->podGetSimSysTreeView();*/
             }
             // to indicate to the tree view about the new dlls built.
-            /*if (pSimSysWnd != NULL)
+            /*if (pSimSysWnd != nullptr)
             {
 
-                if (pSimSysTree != NULL)
+                if (pSimSysTree != nullptr)
                     pSimSysTree->bPopulateTree();
             }
             CExecuteManager::ouGetExecuteManager().vClearOutputWnd();*/
@@ -1443,10 +1443,10 @@ nLoadConfiguration(CString& omStrFilename/*= defDEFAULTCFGFILE*/)
             // file has been modified by external sources after the last
             // modification by the application.
             unErrorCode = defCONFIG_FILE_CORRUPT;
-            if (m_hConfigFile != NULL)
+            if (m_hConfigFile != nullptr)
             {
                 ::CloseHandle(m_hConfigFile);
-                m_hConfigFile = NULL;
+                m_hConfigFile = nullptr;
             }
         }
     }
@@ -1586,13 +1586,13 @@ INT  CConfigDetails::nNewConfiguration(CString& omStrFilename)
     int nError = defCONFIG_FILE_SUCCESS;
     //m_pSimSysNodeInfo = theApp.pomGetSimSysNodeInfo();
     //CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
-    //CSimSysWnd* pSimSysWnd = NULL;
-    //CSimSysTreeView* pSimSysTree = NULL;
+    //CSimSysWnd* pSimSysWnd = nullptr;
+    //CSimSysTreeView* pSimSysTree = nullptr;
 
     // pre caution - the structures already could be containing values, hence
     // release them..
     vReleaseMultiMsgInfo(m_psMsgBlockList);
-    m_psMsgBlockList = NULL;
+    m_psMsgBlockList = nullptr;
     vReleaseSignalWatchListMemory();
     // Release simulated system list memory
     //vReleaseSimSysListMemory();
@@ -1615,20 +1615,20 @@ INT  CConfigDetails::nNewConfiguration(CString& omStrFilename)
         // this is the name of the configuration file whose information is
         // currently loaded...
         m_omstrConfigFilename = omStrFilename;
-        //if (m_pSimSysNodeInfo != NULL)
+        //if (m_pSimSysNodeInfo != nullptr)
         //    m_pSimSysNodeInfo->bPopulateSimSysInfo();
         //
         //
-        //if (pMainFrm != NULL)
+        //if (pMainFrm != nullptr)
         //{
         //    pSimSysWnd = pMainFrm->pomGetSimSysWnd();
         //    pSimSysTree = pMainFrm->podGetSimSysTreeView();
         //}
         //// to indicate to the tree view about the new dlls built.
-        //if (pSimSysWnd != NULL)
+        //if (pSimSysWnd != nullptr)
         //{
         //
-        //    if (pSimSysTree != NULL)
+        //    if (pSimSysTree != nullptr)
         //        pSimSysTree->bPopulateTree();
         //}
         //CExecuteManager::ouGetExecuteManager().vClearOutputWnd();
@@ -1722,7 +1722,7 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
     // 4. MSDN documentation recommends the explicit conversion in these cases.
     //    Compiler error C2664
 
-    if (m_hConfigFile != NULL)
+    if (m_hConfigFile != nullptr)
     {
 #if _MFC_VER <= 0x0600
         CFile   oConfigFile((INT_PTR)m_hConfigFile);
@@ -1974,7 +1974,7 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
         // close the file
         oConfigFile.Close();
 
-        m_hConfigFile = NULL;
+        m_hConfigFile = nullptr;
     }
     else
     {
@@ -2046,7 +2046,7 @@ void CConfigDetails::vInitDefaultValues()
 
     m_bIsDirty  = FALSE;
 
-    m_hConfigFile = NULL ;
+    m_hConfigFile = nullptr ;
 
     m_omstrConfigFilename = defEMPTYSTR ;
 
@@ -2273,7 +2273,7 @@ void CConfigDetails::vInitBaudRateDetails()
 void CConfigDetails::vInitMsgAttributes()
 {
     m_sMessageAttributes.m_usMsgCount = 0;
-    m_sMessageAttributes.m_psMsgAttribDetails = NULL;
+    m_sMessageAttributes.m_psMsgAttribDetails = nullptr;
 }
 
 
@@ -2303,7 +2303,7 @@ void CConfigDetails::vInitFilterDetails()
 {
     m_sMsgFilterDetails.m_byFilterType = defMSGFILTERTYPE;
     m_sMsgFilterDetails.m_omMsgNameArray.RemoveAll();
-    m_sMsgFilterDetails.m_punUndefinedMsgID = NULL;
+    m_sMsgFilterDetails.m_punUndefinedMsgID = nullptr;
     m_sMsgFilterDetails.m_unCount = 0;
     m_sMsgFilterDetails.m_nRangeFrom = -1;
     m_sMsgFilterDetails.m_nRangeTo = -1;
@@ -2555,7 +2555,7 @@ BOOL CConfigDetails::bLoadStoreMsgAttributes(CArchive& roCfgArchive)
             PSMESSAGEATTR   pMsgAttr = new SMESSAGEATTR[usCount];
 
             // did allocation succeed
-            if (pMsgAttr != NULL)
+            if (pMsgAttr != nullptr)
             {
                 PSMESSAGEATTR   pHead = pMsgAttr;
 
@@ -2820,16 +2820,16 @@ BOOL CConfigDetails::bLoadStoreMultiMsgInfo(CArchive& roCfgArchive)
         // get the number of the messages present in the array..
         roCfgArchive >> m_unNumberOfMsgBlockCount;
 
-        m_psMsgBlockList = NULL;
-        PSMSGBLOCKLIST psMsgCurrentBlockList = NULL;
+        m_psMsgBlockList = nullptr;
+        PSMSGBLOCKLIST psMsgCurrentBlockList = nullptr;
         // are there any elements ?
         if (m_unNumberOfMsgBlockCount  != 0)
         {
-            if (m_psMsgBlockList == NULL)
+            if (m_psMsgBlockList == nullptr)
             {
                 m_psMsgBlockList = new SMSGBLOCKLIST;
                 vInitialiseMsgBlock(m_psMsgBlockList);
-                if (m_psMsgBlockList == NULL)
+                if (m_psMsgBlockList == nullptr)
                 {
                     bRetVal = FALSE;
                 }
@@ -2846,7 +2846,7 @@ BOOL CConfigDetails::bLoadStoreMultiMsgInfo(CArchive& roCfgArchive)
                         new SMSGBLOCKLIST;
                     vInitialiseMsgBlock(
                         psMsgCurrentBlockList->m_psNextMsgBlocksList);
-                    if (psMsgCurrentBlockList->m_psNextMsgBlocksList == NULL)
+                    if (psMsgCurrentBlockList->m_psNextMsgBlocksList == nullptr)
                     {
                         bRetVal = FALSE;
                     }
@@ -2862,7 +2862,7 @@ BOOL CConfigDetails::bLoadStoreMultiMsgInfo(CArchive& roCfgArchive)
         // store the number of the messages present in the array..
         roCfgArchive << m_unNumberOfMsgBlockCount ;
 
-        PSMSGBLOCKLIST psMsgCurrentBlockList = NULL;
+        PSMSGBLOCKLIST psMsgCurrentBlockList = nullptr;
         // are there any elements ?
         if (m_unNumberOfMsgBlockCount  != 0)
         {
@@ -3084,7 +3084,7 @@ BOOL CConfigDetails::bLoadStoreMsgFilterDetails(CArchive& roCfgArchive)
                 // Read unknown message ID
                 m_sMsgFilterDetails.m_punUndefinedMsgID =
                     new UINT[unUnknownIDArraySize + 1];
-                if( m_sMsgFilterDetails.m_punUndefinedMsgID != NULL )
+                if( m_sMsgFilterDetails.m_punUndefinedMsgID != nullptr )
                 {
                     m_sMsgFilterDetails.m_punUndefinedMsgID[0] =
                         unUnknownIDArraySize;
@@ -3180,11 +3180,11 @@ BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive,
         roCfgArchive >> psMsgBlockList->m_unMsgCount;
         if (psMsgBlockList->m_unMsgCount > 0)
         {
-            PSTXCANMSGLIST psCurrentMsgList = NULL;
+            PSTXCANMSGLIST psCurrentMsgList = nullptr;
             STXCANMSGDETAILS sTxMsgDetails;
             psMsgBlockList->m_psTxCANMsgList = new STXCANMSGLIST;
             vInitialiseMsgDetails(psMsgBlockList->m_psTxCANMsgList);
-            if (psMsgBlockList->m_psTxCANMsgList == NULL)
+            if (psMsgBlockList->m_psTxCANMsgList == nullptr)
             {
                 bRetVal = FALSE;
             }
@@ -3196,7 +3196,7 @@ BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive,
                     ( bRetVal == TRUE);
                     i++)
             {
-                if (psCurrentMsgList != NULL)
+                if (psCurrentMsgList != nullptr)
                 {
                     // Load Dirty Flag
                     roCfgArchive >> sTxMsgDetails.m_bIsMsgDirty;
@@ -3254,7 +3254,7 @@ BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive,
                     }
                     else
                     {
-                        psCurrentMsgList->m_psNextMsgDetails = NULL;
+                        psCurrentMsgList->m_psNextMsgDetails = nullptr;
                     }
                     psCurrentMsgList = psCurrentMsgList->m_psNextMsgDetails;
                 }
@@ -3266,9 +3266,9 @@ BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive,
         }
         else
         {
-            psMsgBlockList->m_psTxCANMsgList = NULL;
+            psMsgBlockList->m_psTxCANMsgList = nullptr;
         }
-        psMsgBlockList->m_psNextMsgBlocksList = NULL;
+        psMsgBlockList->m_psNextMsgBlocksList = nullptr;
     }
     // store the data
     if (roCfgArchive.IsStoring())
@@ -3283,7 +3283,7 @@ BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive,
         roCfgArchive << psMsgBlockList->m_unMsgCount;
         if (psMsgBlockList->m_unMsgCount > 0)
         {
-            PSTXCANMSGLIST psCurrentMsgList = NULL;
+            PSTXCANMSGLIST psCurrentMsgList = nullptr;
             STXCANMSGDETAILS sTxMsgDetails;
             psCurrentMsgList = psMsgBlockList->m_psTxCANMsgList;
             sTxMsgDetails = psCurrentMsgList->m_sTxMsgDetails;
@@ -3305,7 +3305,7 @@ BOOL CConfigDetails::bLoadStoreMsgInfo(CArchive& roCfgArchive,
                     roCfgArchive << sTxMsgDetails.m_sTxMsg.m_ucData[j];
                 }
                 psCurrentMsgList = psCurrentMsgList->m_psNextMsgDetails;
-                if (psCurrentMsgList != NULL)
+                if (psCurrentMsgList != nullptr)
                 {
                     sTxMsgDetails    = psCurrentMsgList->m_sTxMsgDetails;
                 }
@@ -3353,9 +3353,9 @@ BOOL CConfigDetails::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
 {
     BOOL bRetVal = TRUE;
     PSMSGBLOCKLIST psSrcMsgBlockList = m_psMsgBlockList;
-    PSTXCANMSGLIST psSrcTxMsgList    = NULL;
-    PSTXCANMSGLIST psDestTxMsgList   = NULL;
-    if (psSrcMsgBlockList != NULL && psDestMsgBlockList != NULL)
+    PSTXCANMSGLIST psSrcTxMsgList    = nullptr;
+    PSTXCANMSGLIST psDestTxMsgList   = nullptr;
+    if (psSrcMsgBlockList != nullptr && psDestMsgBlockList != nullptr)
     {
         for (UINT i =0; (i<m_unNumberOfMsgBlockCount) && (bRetVal == TRUE); i++)
         {
@@ -3380,7 +3380,7 @@ BOOL CConfigDetails::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
                 psSrcTxMsgList = psSrcMsgBlockList->m_psTxCANMsgList;
                 psDestMsgBlockList->m_psTxCANMsgList = new STXCANMSGLIST;
                 psDestTxMsgList = psDestMsgBlockList->m_psTxCANMsgList;
-                if (psDestTxMsgList != NULL)
+                if (psDestTxMsgList != nullptr)
                 {
                     for (UINT j =0;
                             (j<psSrcMsgBlockList->m_unMsgCount)&&(bRetVal == TRUE);
@@ -3390,14 +3390,14 @@ BOOL CConfigDetails::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
                         memcpy(&(psDestTxMsgList->m_sTxMsgDetails),
                                &(psSrcTxMsgList->m_sTxMsgDetails),
                                sizeof(psSrcTxMsgList->m_sTxMsgDetails));
-                        if (psSrcTxMsgList->m_psNextMsgDetails != NULL &&
+                        if (psSrcTxMsgList->m_psNextMsgDetails != nullptr &&
                                 j+1 <psSrcMsgBlockList->m_unMsgCount)
                         {
                             psDestTxMsgList->m_psNextMsgDetails =
                                 new STXCANMSGLIST;
                             vInitialiseMsgDetails(
                                 psDestTxMsgList->m_psNextMsgDetails);
-                            if (psDestTxMsgList->m_psNextMsgDetails != NULL)
+                            if (psDestTxMsgList->m_psNextMsgDetails != nullptr)
                             {
                                 psDestTxMsgList =
                                     psDestTxMsgList->m_psNextMsgDetails;
@@ -3411,7 +3411,7 @@ BOOL CConfigDetails::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
                         }
                         else
                         {
-                            psDestTxMsgList->m_psNextMsgDetails = NULL;;
+                            psDestTxMsgList->m_psNextMsgDetails = nullptr;;
                         }
                     }
                 }
@@ -3423,17 +3423,17 @@ BOOL CConfigDetails::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
             // Check the message count and don't allocate if the assignment for
             // last node is done i + 1 Because i is not incremented here
 
-            if (psSrcMsgBlockList->m_psNextMsgBlocksList != NULL &&
+            if (psSrcMsgBlockList->m_psNextMsgBlocksList != nullptr &&
                     (i + 1) < m_unNumberOfMsgBlockCount)
             {
                 psDestMsgBlockList->m_psNextMsgBlocksList = new SMSGBLOCKLIST;
                 vInitialiseMsgBlock(psDestMsgBlockList->m_psNextMsgBlocksList);
-                if (psDestMsgBlockList->m_psNextMsgBlocksList != NULL)
+                if (psDestMsgBlockList->m_psNextMsgBlocksList != nullptr)
                 {
                     psDestMsgBlockList =
                         psDestMsgBlockList->m_psNextMsgBlocksList;
-                    psDestMsgBlockList->m_psNextMsgBlocksList = NULL;
-                    psDestMsgBlockList->m_psTxCANMsgList = NULL;
+                    psDestMsgBlockList->m_psNextMsgBlocksList = nullptr;
+                    psDestMsgBlockList->m_psTxCANMsgList = nullptr;
                     psSrcMsgBlockList =
                         psSrcMsgBlockList->m_psNextMsgBlocksList;
                 }
@@ -3444,7 +3444,7 @@ BOOL CConfigDetails::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
             }
             else
             {
-                psDestMsgBlockList->m_psNextMsgBlocksList = NULL;
+                psDestMsgBlockList->m_psNextMsgBlocksList = nullptr;
             }
         }
     }
@@ -3493,23 +3493,23 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
     PSMSGBLOCKLIST psSrcMsgBlockList = psMsgBlockList;
     PSMSGBLOCKLIST psDesMsgBlockList = m_psMsgBlockList;
     PSTXMSG psTxMsg = g_psTxMsgBlockList;
-    if (psDesMsgBlockList == NULL)
+    if (psDesMsgBlockList == nullptr)
     {
         m_psMsgBlockList = new SMSGBLOCKLIST;
         vInitialiseMsgBlock(m_psMsgBlockList);
-        if (m_psMsgBlockList == NULL)
+        if (m_psMsgBlockList == nullptr)
         {
             bRetVal = FALSE;
         }
         else
         {
             psDesMsgBlockList = m_psMsgBlockList;
-            m_psMsgBlockList->m_psNextMsgBlocksList = NULL;
-            m_psMsgBlockList->m_psTxCANMsgList = NULL;
+            m_psMsgBlockList->m_psNextMsgBlocksList = nullptr;
+            m_psMsgBlockList->m_psTxCANMsgList = nullptr;
         }
     }
-    if (psSrcMsgBlockList != NULL &&
-            psDesMsgBlockList != NULL &&
+    if (psSrcMsgBlockList != nullptr &&
+            psDesMsgBlockList != nullptr &&
             bRetVal == TRUE)
     {
         do
@@ -3533,29 +3533,29 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
             {
                 PSTXCANMSGLIST psSrcTxMsgList =
                     psSrcMsgBlockList->m_psTxCANMsgList;
-                PSTXCANMSGLIST psDesTxMsgList = NULL;
-                if (psDesMsgBlockList->m_psTxCANMsgList == NULL)
+                PSTXCANMSGLIST psDesTxMsgList = nullptr;
+                if (psDesMsgBlockList->m_psTxCANMsgList == nullptr)
                 {
                     psDesTxMsgList = new STXCANMSGLIST;
                     psDesMsgBlockList->m_psTxCANMsgList = psDesTxMsgList;
-                    psDesTxMsgList->m_psNextMsgDetails  = NULL;
+                    psDesTxMsgList->m_psNextMsgDetails  = nullptr;
                 }
                 else
                 {
                     psDesTxMsgList = psDesMsgBlockList->m_psTxCANMsgList;
                 }
-                if (psDesTxMsgList != NULL && psSrcTxMsgList != NULL)
+                if (psDesTxMsgList != nullptr && psSrcTxMsgList != nullptr)
                 {
-                    LPLONG lpPreviousCount = NULL;
+                    LPLONG lpPreviousCount = nullptr;
                     BOOL   bTxON = FALSE;
                     CFlags* pouFlag = theApp.pouGetFlagsPtr();
-                    if (pouFlag != NULL)
+                    if (pouFlag != nullptr)
                     {
                         bTxON = pouFlag->nGetFlagStatus(SENDMESG);
                     }
                     do
                     {
-                        if (psTxMsg != NULL && bTxON == TRUE)
+                        if (psTxMsg != nullptr && bTxON == TRUE)
                         {
                             //EnterCriticalSection(
                             //          &psTxMsg->m_sMsgBlocksCriticalSection);
@@ -3567,7 +3567,7 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                         }
                         psDesTxMsgList->m_sTxMsgDetails =
                             psSrcTxMsgList->m_sTxMsgDetails;
-                        if (psTxMsg != NULL && bTxON == TRUE)
+                        if (psTxMsg != nullptr && bTxON == TRUE)
                         {
                             // LeaveCriticalSection(
                             //           &psTxMsg->m_sMsgBlocksCriticalSection);
@@ -3580,13 +3580,13 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                                              lpPreviousCount);
                         }
                         psSrcTxMsgList = psSrcTxMsgList->m_psNextMsgDetails;
-                        if (psSrcTxMsgList != NULL)
+                        if (psSrcTxMsgList != nullptr)
                         {
-                            if (psDesTxMsgList->m_psNextMsgDetails == NULL)
+                            if (psDesTxMsgList->m_psNextMsgDetails == nullptr)
                             {
                                 psDesTxMsgList->m_psNextMsgDetails =
                                     new STXCANMSGLIST;
-                                if (psDesTxMsgList->m_psNextMsgDetails == NULL)
+                                if (psDesTxMsgList->m_psNextMsgDetails == nullptr)
                                 {
                                     bRetVal = FALSE;
                                 }
@@ -3594,7 +3594,7 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                                 {
                                     psDesTxMsgList =
                                         psDesTxMsgList->m_psNextMsgDetails;
-                                    psDesTxMsgList->m_psNextMsgDetails = NULL;
+                                    psDesTxMsgList->m_psNextMsgDetails = nullptr;
                                 }
                             }
                             else
@@ -3604,20 +3604,20 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                             }
                         }
                     }
-                    while(psSrcTxMsgList!= NULL  && bRetVal == TRUE);
+                    while(psSrcTxMsgList!= nullptr  && bRetVal == TRUE);
 
                     // Delete the extra element if user has reduced the size.
-                    if (psDesTxMsgList->m_psNextMsgDetails != NULL)
+                    if (psDesTxMsgList->m_psNextMsgDetails != nullptr)
                     {
                         PSTXCANMSGLIST psDelTxMsgList =
                             psDesTxMsgList->m_psNextMsgDetails;
-                        psDesTxMsgList->m_psNextMsgDetails = NULL;
-                        while(psDesTxMsgList != NULL && psDelTxMsgList != NULL)
+                        psDesTxMsgList->m_psNextMsgDetails = nullptr;
+                        while(psDesTxMsgList != nullptr && psDelTxMsgList != nullptr)
                         {
                             psDesTxMsgList = psDelTxMsgList->m_psNextMsgDetails;
                             delete psDelTxMsgList ;
-                            psDelTxMsgList  = NULL;
-                            if (psDesTxMsgList != NULL)
+                            psDelTxMsgList  = nullptr;
+                            if (psDesTxMsgList != nullptr)
                             {
                                 psDelTxMsgList =
                                     psDesTxMsgList->m_psNextMsgDetails;
@@ -3630,15 +3630,15 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                     bRetVal = FALSE;
                 }
             }
-            if (psSrcMsgBlockList->m_psNextMsgBlocksList != NULL)
+            if (psSrcMsgBlockList->m_psNextMsgBlocksList != nullptr)
             {
-                if (psDesMsgBlockList->m_psNextMsgBlocksList == NULL)
+                if (psDesMsgBlockList->m_psNextMsgBlocksList == nullptr)
                 {
                     psDesMsgBlockList->m_psNextMsgBlocksList =
                         new SMSGBLOCKLIST;
                     vInitialiseMsgBlock(
                         psDesMsgBlockList->m_psNextMsgBlocksList);
-                    if (psDesMsgBlockList->m_psNextMsgBlocksList == NULL)
+                    if (psDesMsgBlockList->m_psNextMsgBlocksList == nullptr)
                     {
                         bRetVal = FALSE;
                     }
@@ -3646,8 +3646,8 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                     {
                         psDesMsgBlockList =
                             psDesMsgBlockList->m_psNextMsgBlocksList;
-                        psDesMsgBlockList->m_psTxCANMsgList = NULL;
-                        psDesMsgBlockList->m_psNextMsgBlocksList = NULL;
+                        psDesMsgBlockList->m_psTxCANMsgList = nullptr;
+                        psDesMsgBlockList->m_psNextMsgBlocksList = nullptr;
                     }
                 }
                 else
@@ -3658,12 +3658,12 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
 
             }
             psSrcMsgBlockList = psSrcMsgBlockList->m_psNextMsgBlocksList;
-            if (psTxMsg != NULL)
+            if (psTxMsg != nullptr)
             {
                 psTxMsg = psTxMsg->m_psNextTxMsgInfo;
             }
         }
-        while( psSrcMsgBlockList != NULL
+        while( psSrcMsgBlockList != nullptr
                 && bRetVal == TRUE);
     }
     else
@@ -3698,11 +3698,11 @@ BOOL CConfigDetails::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
 /******************************************************************************/
 void CConfigDetails::vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
 {
-    PSMSGBLOCKLIST psNextMsgBlockList    = NULL;
-    PSTXCANMSGLIST psNextTxCANMsgList    = NULL;
-    PSMSGBLOCKLIST psCurrentMsgBlockList = NULL;
-    PSTXCANMSGLIST psCurrentTxCANMsgList = NULL;
-    if (psMsgBlockList != NULL)
+    PSMSGBLOCKLIST psNextMsgBlockList    = nullptr;
+    PSTXCANMSGLIST psNextTxCANMsgList    = nullptr;
+    PSMSGBLOCKLIST psCurrentMsgBlockList = nullptr;
+    PSTXCANMSGLIST psCurrentTxCANMsgList = nullptr;
+    if (psMsgBlockList != nullptr)
     {
         psCurrentMsgBlockList = psMsgBlockList;
         do
@@ -3716,17 +3716,17 @@ void CConfigDetails::vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
                     psNextTxCANMsgList    =
                         psCurrentTxCANMsgList->m_psNextMsgDetails;
                     delete psCurrentTxCANMsgList;
-                    psCurrentTxCANMsgList = NULL;
+                    psCurrentTxCANMsgList = nullptr;
                     psCurrentTxCANMsgList = psNextTxCANMsgList;
                 }
-                while(psNextTxCANMsgList != NULL);
+                while(psNextTxCANMsgList != nullptr);
             }
             psNextMsgBlockList = psCurrentMsgBlockList->m_psNextMsgBlocksList;
             delete psCurrentMsgBlockList;
-            psCurrentMsgBlockList = NULL;
+            psCurrentMsgBlockList = nullptr;
             psCurrentMsgBlockList = psNextMsgBlockList;
         }
-        while(psNextMsgBlockList != NULL);
+        while(psNextMsgBlockList != nullptr);
     }
 }
 
@@ -3750,12 +3750,12 @@ void CConfigDetails::vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
 
 void CConfigDetails::vReleaseSimSysInfo()
 {
-    // CSimSysNodeInfo::PSSIMSYSINFO psNextSimSysInfo    = NULL;
-    // CSimSysNodeInfo::PSNODELIST psNextNodeList    = NULL;
-    // CSimSysNodeInfo::PSSIMSYSINFO psCurrentSimSysInfo = NULL;
-    // CSimSysNodeInfo::PSNODELIST psCurrentNodeList = NULL;
+    // CSimSysNodeInfo::PSSIMSYSINFO psNextSimSysInfo    = nullptr;
+    // CSimSysNodeInfo::PSNODELIST psNextNodeList    = nullptr;
+    // CSimSysNodeInfo::PSSIMSYSINFO psCurrentSimSysInfo = nullptr;
+    // CSimSysNodeInfo::PSNODELIST psCurrentNodeList = nullptr;
     // CSimSysNodeInfo::PSSIMSYSINFO psTempSimSysInfo = theApp.psReturnSimsysInfoPtr();
-    // if (psTempSimSysInfo != NULL)
+    // if (psTempSimSysInfo != nullptr)
     // {
     //     psCurrentSimSysInfo = psTempSimSysInfo;
     //     do
@@ -3769,19 +3769,19 @@ void CConfigDetails::vReleaseSimSysInfo()
     //                 psNextNodeList    =
     //                     psCurrentNodeList->m_psNextNode;
     //                 delete psCurrentNodeList;
-    //                 psCurrentNodeList = NULL;
+    //                 psCurrentNodeList = nullptr;
     //                 psCurrentNodeList = psNextNodeList;
-    //             }while(psNextNodeList != NULL);
+    //             }while(psNextNodeList != nullptr);
     //
     //         }
     //         psNextSimSysInfo = psCurrentSimSysInfo->m_psSimsysNext;
     //         delete psCurrentSimSysInfo;
-    //         psCurrentSimSysInfo = NULL;
+    //         psCurrentSimSysInfo = nullptr;
     //         psCurrentSimSysInfo = psNextSimSysInfo;
-    //     }while(psNextSimSysInfo != NULL);
+    //     }while(psNextSimSysInfo != nullptr);
     // }
-    // psTempSimSysInfo = NULL;
-    //// m_psSimSysInfo = NULL;
+    // psTempSimSysInfo = nullptr;
+    //// m_psSimSysInfo = nullptr;
     //// m_unSimSysCount = 0;
 }
 
@@ -3811,13 +3811,13 @@ BOOL CConfigDetails::bGetMsgAttrib(PSMESSAGE_ATTRIB pMsgAttrib)
 
     // count of the messages in the structure..
     pDest->m_usMsgCount = m_sMessageAttributes.m_usMsgCount;
-    pDest->m_psMsgAttribDetails = NULL;
+    pDest->m_psMsgAttribDetails = nullptr;
 
     if (m_sMessageAttributes.m_usMsgCount != 0)
     {
         pDest->m_psMsgAttribDetails = new SMESSAGEATTR[pDest->m_usMsgCount];
 
-        if (pDest->m_psMsgAttribDetails != NULL)
+        if (pDest->m_psMsgAttribDetails != nullptr)
         {
             PSMESSAGEATTR pDestPos = pDest->m_psMsgAttribDetails;
             PSMESSAGEATTR pSrcPos = m_sMessageAttributes.m_psMsgAttribDetails;
@@ -3871,20 +3871,20 @@ BOOL CConfigDetails::bSetMsgAttrib(PSMESSAGE_ATTRIB pMsgAttrib)
 
     // count of the messages in the structure..
     m_sMessageAttributes.m_usMsgCount = pMsgAttrib->m_usMsgCount;
-    m_sMessageAttributes.m_psMsgAttribDetails = NULL;
+    m_sMessageAttributes.m_psMsgAttribDetails = nullptr;
 
     if (pMsgAttrib->m_usMsgCount != 0)
     {
         m_sMessageAttributes.m_psMsgAttribDetails =
             new SMESSAGEATTR[m_sMessageAttributes.m_usMsgCount];
 
-        if (m_sMessageAttributes.m_psMsgAttribDetails != NULL)
+        if (m_sMessageAttributes.m_psMsgAttribDetails != nullptr)
         {
             PSMESSAGEATTR pSrcPos = pMsgAttrib->m_psMsgAttribDetails;
             PSMESSAGEATTR pDestPos = m_sMessageAttributes.m_psMsgAttribDetails;
 
             for (int i = 0; (i < pMsgAttrib->m_usMsgCount)
-                    && (pDestPos != NULL) && (pSrcPos != NULL); i++)
+                    && (pDestPos != nullptr) && (pSrcPos != nullptr); i++)
             {
                 pDestPos->omStrMsgname = pSrcPos->omStrMsgname;
                 pDestPos->sColor = pSrcPos->sColor;
@@ -3926,10 +3926,10 @@ BOOL CConfigDetails::bSetMsgAttrib(PSMESSAGE_ATTRIB pMsgAttrib)
 /******************************************************************************/
 void CConfigDetails::vReleaseMsgAttrib(PSMESSAGE_ATTRIB pData)
 {
-    if (pData->m_psMsgAttribDetails != NULL)
+    if (pData->m_psMsgAttribDetails != nullptr)
     {
         delete [] pData->m_psMsgAttribDetails;
-        pData->m_psMsgAttribDetails = NULL;
+        pData->m_psMsgAttribDetails = nullptr;
     }
 }
 
@@ -3973,9 +3973,9 @@ BOOL CConfigDetails::bGetMsgFilterDetails(PSMESSAGE_FILTER_DETAILS
     pDest->m_bChekTxMsg = m_sMsgFilterDetails.m_bChekTxMsg;
 
     // always initialize...
-    pDest->m_punUndefinedMsgID = NULL;
+    pDest->m_punUndefinedMsgID = nullptr;
 
-    if (m_sMsgFilterDetails.m_punUndefinedMsgID != NULL)
+    if (m_sMsgFilterDetails.m_punUndefinedMsgID != nullptr)
     {
         int nCount = m_sMsgFilterDetails.m_punUndefinedMsgID[0];
 
@@ -3984,7 +3984,7 @@ BOOL CConfigDetails::bGetMsgFilterDetails(PSMESSAGE_FILTER_DETAILS
 
         pDest->m_punUndefinedMsgID[0] = nCount;
 
-        if (pDest->m_punUndefinedMsgID != NULL)
+        if (pDest->m_punUndefinedMsgID != nullptr)
         {
             for (int j = 1; j <= nCount; j++)
             {
@@ -4042,16 +4042,16 @@ BOOL CConfigDetails::bSetMsgFilterDetails(PSMESSAGE_FILTER_DETAILS
     m_sMsgFilterDetails.m_nRangeTo = pSrc->m_nRangeTo;
     m_sMsgFilterDetails.m_byFilterType = pSrc->m_byFilterType;
     m_sMsgFilterDetails.m_bChekTxMsg = pSrc->m_bChekTxMsg;
-    m_sMsgFilterDetails.m_punUndefinedMsgID = NULL;
+    m_sMsgFilterDetails.m_punUndefinedMsgID = nullptr;
 
-    if (pSrc->m_punUndefinedMsgID != NULL)
+    if (pSrc->m_punUndefinedMsgID != nullptr)
     {
         int nCount = pSrc->m_punUndefinedMsgID[0];
 
         // the first element holds the info of the number of undefined msg ids
         m_sMsgFilterDetails.m_punUndefinedMsgID = new UINT [nCount + 1];
 
-        if (m_sMsgFilterDetails.m_punUndefinedMsgID != NULL)
+        if (m_sMsgFilterDetails.m_punUndefinedMsgID != nullptr)
         {
             m_sMsgFilterDetails.m_punUndefinedMsgID[0] = nCount;
 
@@ -4095,10 +4095,10 @@ void CConfigDetails::vReleaseMsgFilterDetails(PSMESSAGE_FILTER_DETAILS pData)
 {
     pData->m_omMsgNameArray.RemoveAll();
 
-    if (pData->m_punUndefinedMsgID != NULL)
+    if (pData->m_punUndefinedMsgID != nullptr)
     {
         delete [] pData->m_punUndefinedMsgID;
-        pData->m_punUndefinedMsgID = NULL;
+        pData->m_punUndefinedMsgID = nullptr;
     }
 }
 
@@ -4123,8 +4123,8 @@ void CConfigDetails::vReleaseMsgFilterDetails(PSMESSAGE_FILTER_DETAILS pData)
 /*  Date Created     :  18.10.2002                                            */
 /*  Modifications    :  Raja N on 05/04/2004                                  */
 /*                   :  Added an interface to release Signal Watch List memory*/
-/*                      checking NULL of the pointer to pointer to avoid crash*/
-/*                      if the parameter is NULL                              */
+/*                      checking nullptr of the pointer to pointer to avoid crash*/
+/*                      if the parameter is nullptr                              */
 /*  Modifications    :  Raja N on 09.03.2005, Modified delete code to use     */
 /*                      delete[] as controller information is now an array    */
 /*  Modifications    :  Raja N on 02.05.2005, Deleted code to free window     */
@@ -4141,12 +4141,12 @@ void CConfigDetails::vRelease(eCONFIGDETAILS eParam, LPVOID* lpDataPtr)
         case REPLAY_FILE_NAME:
         case    DATABASE_FILE_NAME:
         {
-            if (*lpDataPtr != NULL)
+            if (*lpDataPtr != nullptr)
             {
                 CStringArray*  paomDBFiles =
                     static_cast<CStringArray*>( *lpDataPtr);
                 delete paomDBFiles;
-                *lpDataPtr = NULL;
+                *lpDataPtr = nullptr;
             }
         }
         break;
@@ -4155,29 +4155,29 @@ void CConfigDetails::vRelease(eCONFIGDETAILS eParam, LPVOID* lpDataPtr)
             break;
         case CONTROLLER_DETAILS:
         {
-            if (*lpDataPtr != NULL)
+            if (*lpDataPtr != nullptr)
             {
                 PSCONTROLLER_DETAILS  psControllerDetails =
                     static_cast<PSCONTROLLER_DETAILS>( *lpDataPtr);
                 delete [] psControllerDetails;
-                *lpDataPtr = NULL;
+                *lpDataPtr = nullptr;
             }
         }
         break;
         case SEND_MULTI_MSGS:
         {
-            if (*lpDataPtr != NULL)
+            if (*lpDataPtr != nullptr)
             {
                 PSMSGBLOCKLIST psMsgBlockList =
                     static_cast<PSMSGBLOCKLIST>(*lpDataPtr);
                 vReleaseMultiMsgInfo(psMsgBlockList);
-                *lpDataPtr = NULL;
+                *lpDataPtr = nullptr;
             }
         }
         break;
         case MSG_ATTRIBUTES:
         {
-            if (*lpDataPtr != NULL)
+            if (*lpDataPtr != nullptr)
             {
                 PSMESSAGE_ATTRIB pData =
                     static_cast<PSMESSAGE_ATTRIB>(*lpDataPtr);
@@ -4187,7 +4187,7 @@ void CConfigDetails::vRelease(eCONFIGDETAILS eParam, LPVOID* lpDataPtr)
         break;
         case OLD_FILTER_DETAILS:
         {
-            if (*lpDataPtr != NULL)
+            if (*lpDataPtr != nullptr)
             {
                 PSMESSAGE_FILTER_DETAILS pData =
                     static_cast<PSMESSAGE_FILTER_DETAILS>(*lpDataPtr);
@@ -4212,10 +4212,10 @@ void CConfigDetails::vRelease(eCONFIGDETAILS eParam, LPVOID* lpDataPtr)
         break;
     }
 
-    if (lpDataPtr != NULL && *lpDataPtr != NULL)
+    if (lpDataPtr != nullptr && *lpDataPtr != nullptr)
     {
         delete *lpDataPtr;
-        *lpDataPtr = NULL;
+        *lpDataPtr = nullptr;
     }
 
 }
@@ -4240,7 +4240,7 @@ void CConfigDetails::vRelease(eCONFIGDETAILS eParam, LPVOID* lpDataPtr)
 void CConfigDetails::vResetAll()
 {
     vReleaseMultiMsgInfo(m_psMsgBlockList);
-    m_psMsgBlockList = NULL;
+    m_psMsgBlockList = nullptr;
     vReleaseMsgAttrib(&m_sMessageAttributes);
     vReleaseMsgFilterDetails(&m_sMsgFilterDetails);
 }
@@ -4317,13 +4317,13 @@ TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
   CFile::modeRead | CFile::typeBinary, &omException);
   if (bFileOpen!=FALSE)
   {
-  UCHAR *pucBuff   = NULL;
+  UCHAR *pucBuff   = nullptr;
   // Get the size of file
   dwSize = omStdiofile.GetLength();
   if (dwSize > 0)
   {
   pucBuff = static_cast<UCHAR*> (new UCHAR[dwSize]);
-  if (pucBuff!=NULL)
+  if (pucBuff!=nullptr)
   {
   // Read the whole file and put the content to pucBuff;
   dwRead = omStdiofile.Read(pucBuff,dwSize);
@@ -4333,7 +4333,7 @@ TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
   // Get the check sum stored in file ( Last byte)
   *pucCheckSumInFile  = pucBuff[dwSize-1];
   delete [] pucBuff;
-  pucBuff = NULL;
+  pucBuff = nullptr;
   }
   }
   omStdiofile.Close();
@@ -4350,7 +4350,7 @@ TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
       }
       CATCH_ALL(pomE)
       {
-      if (pomE != NULL)
+      if (pomE != nullptr)
       {
       // Get the exception error message
       pomE->GetErrorMessage(acErrorMsg,sizeof(acErrorMsg));
@@ -4402,12 +4402,12 @@ TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
   &omException);
   if (bFileOpen!=FALSE)
   {
-  UCHAR *pucBuff   = NULL;
+  UCHAR *pucBuff   = nullptr;
   UCHAR  ucCheckSum = 0;
   // Get the size of file
   dwSize = omStdiofile.GetLength();
   pucBuff = static_cast<UCHAR*> (new UCHAR[dwSize]);
-  if (pucBuff!=NULL)
+  if (pucBuff!=nullptr)
   {
   // Read the whole file and put the content to pucBuff;
   dwRead = omStdiofile.Read(pucBuff,dwSize);
@@ -4420,7 +4420,7 @@ TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
   // Write one byte checksum
   omStdiofile.Write(&ucCheckSum,1);
   // return the checksum
-  if (pucCheckSum!= NULL)
+  if (pucCheckSum!= nullptr)
   {
   *pucCheckSum = ucCheckSum;
   }
@@ -4430,7 +4430,7 @@ TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
   }
   }
   delete [] pucBuff;
-  pucBuff = NULL;
+  pucBuff = nullptr;
   }
   omStdiofile.Close();
   }
@@ -4446,7 +4446,7 @@ TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
       }
       CATCH_ALL(pomE)
       {
-      if (pomE != NULL)
+      if (pomE != nullptr)
       {
       // Get the exception error message
       pomE->GetErrorMessage(acErrorMsg,sizeof(acErrorMsg));
@@ -4484,7 +4484,7 @@ UCHAR* pucCheckSum)
 BOOL  bReturn     = FALSE;
 UCHAR ucTempByte  = 0;
 // check for pointer and size to be more then zero.
-if (pucBuff != NULL && dwSize >0)
+if (pucBuff != nullptr && dwSize >0)
 {
 for (UINT unIndex = 0; unIndex < dwSize; unIndex++)
 {
@@ -4492,9 +4492,9 @@ for (UINT unIndex = 0; unIndex < dwSize; unIndex++)
 // the result will be zero and XOR will return the byte itself.
 ucTempByte =  static_cast<UCHAR>(ucTempByte^ pucBuff[unIndex]);
 }
-// check for the pointer to be NULL. If not NULL  assign the
+// check for the pointer to be nullptr. If not nullptr  assign the
 // computed checksum
-if (pucCheckSum != NULL)
+if (pucCheckSum != nullptr)
 {
 *pucCheckSum = ucTempByte;
 bReturn = TRUE;
@@ -4543,16 +4543,16 @@ PSSIMSYSARRAY CConfigDetails::psReturnSimsysArrayPtr()
 
 VOID CConfigDetails::vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList)
 {
-    if (psMsgBlockList != NULL)
+    if (psMsgBlockList != nullptr)
     {
-        psMsgBlockList->m_psNextMsgBlocksList = NULL;
+        psMsgBlockList->m_psNextMsgBlocksList = nullptr;
         psMsgBlockList->m_unMsgCount          = 0;
         psMsgBlockList->m_bActive             = FALSE;
         psMsgBlockList->m_bType               = TRUE;
         psMsgBlockList->m_bTxAllFrame         = FALSE;
         psMsgBlockList->m_ucTrigger           = defTIME_TRIGGER;
         psMsgBlockList->m_omStrBlockName      = _(defDEFAULT_MSG_BLOCK_NAME);
-        psMsgBlockList->m_psTxCANMsgList      = NULL;
+        psMsgBlockList->m_psTxCANMsgList      = nullptr;
         psMsgBlockList->m_ucKeyValue          = defDEFAULT_KEY_VAL;
         psMsgBlockList->m_unTimeInterval      = defDEFAULT_TIME_VAL;
     }
@@ -4572,9 +4572,9 @@ VOID CConfigDetails::vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList)
 
 VOID CConfigDetails::vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails)
 {
-    if (psMsgDetails != NULL)
+    if (psMsgDetails != nullptr)
     {
-        psMsgDetails->m_psNextMsgDetails    = NULL;
+        psMsgDetails->m_psNextMsgDetails    = nullptr;
     }
 
 }
@@ -4619,7 +4619,7 @@ BOOL CConfigDetails::bLoadStoreSignalWatchList(CArchive& roCfgArchive)
             try
             {
                 // Allocate the first node
-                PSSIGNALWATCHLIST  psTemp = NULL;
+                PSSIGNALWATCHLIST  psTemp = nullptr;
                 psTemp = /*m_psSignalWatchList = */new sSignalWatchList;
                 // Iterate through list
                 for (register UINT index = 0; index < unLength; index++)
@@ -4668,17 +4668,17 @@ void CConfigDetails::vReleaseSignalWatchListMemory()
 {
 }
 //{
-//    PSSIGNALWATCHLIST psTemp = NULL;
+//    PSSIGNALWATCHLIST psTemp = nullptr;
 //    try
 //    {
-//        while( m_psSignalWatchList != NULL)
+//        while( m_psSignalWatchList != nullptr)
 //        {
 //            psTemp = m_psSignalWatchList->psNextMessageNode;
 //            delete m_psSignalWatchList;
 //            m_psSignalWatchList = psTemp;
 //        }
 //        // Initialise to zero
-//        m_psSignalWatchList = NULL;
+//        m_psSignalWatchList = nullptr;
 //    }
 //    catch(...)
 //    {
@@ -4723,7 +4723,7 @@ BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
         try
         {
             psSimsysTemp = m_psSimSysArray;
-            while( psSimsysTemp != NULL)
+            while( psSimsysTemp != nullptr)
             {
                 unLength++;
                 psSimsysTemp = psSimsysTemp->psNextSimsys;
@@ -4739,7 +4739,7 @@ BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
                 psSimsysTemp = m_psSimSysArray;
                 // Iterate through the list
                 for (register UINT index = 0;
-                        psSimsysTemp != NULL && index < unLength;
+                        psSimsysTemp != nullptr && index < unLength;
                         index++)
                 {
                     // Store the simulated system path
@@ -4778,7 +4778,7 @@ BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
                 try
                 {
                     // Allocate the first node
-                    PSSIMSYSARRAY psSimsysTemp = NULL;
+                    PSSIMSYSARRAY psSimsysTemp = nullptr;
                     psSimsysTemp = m_psSimSysArray = new SSIMSYSARRAY;
                     // Iterate through list
                     for (register UINT index = 0; index < unLength; index++)
@@ -4787,7 +4787,7 @@ BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
                         roCfgArchive >> psSimsysTemp->m_omStrSimSysPath;
                         // Get the simulated system name
                         roCfgArchive >> psSimsysTemp->m_omStrSimSysName;
-                        psSimsysTemp->psNextSimsys = NULL;
+                        psSimsysTemp->psNextSimsys = nullptr;
                         // Create next node. Eliminate creation for the last node.
                         if (index != (unLength - 1))
                         {
@@ -4800,10 +4800,10 @@ BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
                 }
                 catch(...)
                 {
-                    if (m_psSimSysArray != NULL)
+                    if (m_psSimSysArray != nullptr)
                     {
                         delete m_psSimSysArray;
-                        m_psSimSysArray = NULL;
+                        m_psSimSysArray = nullptr;
                     }
                     // Exception occuered
                     if (theApp.m_bFromAutomation == FALSE)
@@ -4834,8 +4834,8 @@ BOOL CConfigDetails::bLoadStoreSimSysList(CArchive& roCfgArchive)
 /******************************************************************************/
 void CConfigDetails::vReleaseSimSysListMemory()
 {
-    PSSIMSYSARRAY psSimsysTemp = NULL;
-    while( m_psSimSysArray != NULL)
+    PSSIMSYSARRAY psSimsysTemp = nullptr;
+    while( m_psSimSysArray != nullptr)
     {
         psSimsysTemp = m_psSimSysArray->psNextSimsys;
         delete m_psSimSysArray;
@@ -4938,7 +4938,7 @@ BOOL CConfigDetails::bGetDefaultSplitterPostion( eCONFIGDETAILS eParam,
             PSGRAPHSPLITTERDATA pData = static_cast<PSGRAPHSPLITTERDATA>
                                         (*psSplitterData);
             // Init Graph window splitter postion
-            if (pData != NULL)
+            if (pData != nullptr)
             {
                 pData->m_nRootSplitterData[0][0] =
                     (int)(omWndSize.Width() * defLEFT_VIEW_PROPOTION);
@@ -4970,7 +4970,7 @@ BOOL CConfigDetails::bGetDefaultSplitterPostion( eCONFIGDETAILS eParam,
             STXMSGSPLITTERDATA* pData = static_cast<STXMSGSPLITTERDATA*>
                                         (*psSplitterData);
             // Init Graph window splitter postion
-            if (pData != NULL)
+            if (pData != nullptr)
             {
                 // Root Splitter information
                 pData->m_nRootSplitterData[0][0] =
@@ -5076,11 +5076,11 @@ BOOL CConfigDetails::bGetDefaultValue(eCONFIGDETAILS eParam,
     int nBorderWidth = defBORDER_WIDTH_FACTOR *
                        GetSystemMetrics( SM_CXBORDER);
     // Get Main Frame window size and toolbar size
-    CMainFrame* pMainFrame = NULL;
+    CMainFrame* pMainFrame = nullptr;
     pMainFrame = static_cast<CMainFrame*> (theApp.m_pMainWnd);
 
     // If it is a valid window pointer
-    if (pMainFrame != NULL &&
+    if (pMainFrame != nullptr &&
             IsWindow(pMainFrame->m_hWnd))
     {
         // Get Main Frame Size

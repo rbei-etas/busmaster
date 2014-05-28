@@ -70,8 +70,8 @@ CDIL_CAN_IXXAT_VCI::CDIL_CAN_IXXAT_VCI()
     m_bDriverAccessLoaded = FALSE;
     m_iNumberOfCANChannelsTotal = 0;
 
-    m_pILog = NULL;
-    m_hOwnerWndHandle = NULL;
+    m_pILog = nullptr;
+    m_hOwnerWndHandle = nullptr;
     m_byCurrHardwareState = STATE_HARDWARE_NONE;
 
 
@@ -94,7 +94,7 @@ CDIL_CAN_IXXAT_VCI::~CDIL_CAN_IXXAT_VCI()
     // LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::~CDIL_CAN_IXXAT_VCI\n"));
 #endif
 
-    m_pILog = NULL;
+    m_pILog = nullptr;
     m_ClientList.DeleteAllEntries();
 }
 
@@ -227,7 +227,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterf
         {
             INT64 qiVCIDeviceID = 0;
             int iCANControllerNumber = 0;
-            CClientList* pClientList = NULL;
+            CClientList* pClientList = nullptr;
 
             if ( m_iNumberOfCANChannelsTotal == 1 ) /* Only single channel available */
             {
@@ -905,7 +905,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT
     memcpy(&CurrSysTime, &m_sCurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = m_qwTimeStamp;
     //TimeStamp = 0;
-    if(QueryTickCount != NULL)
+    if(QueryTickCount != nullptr)
     {
         QueryTickCount->QuadPart = m_qwQueryTickCount;
     }
@@ -949,7 +949,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ManageMsgBuf(BYTE byAction, DWORD ClientID, CBas
             else if (byAction == MSGBUF_CLEAR)
             {
                 /* clear msg buffer */
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     hResult = pClientBuf->RemoveMsgBuf(pBufObj);
                 }
@@ -1110,7 +1110,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_UnloadDriverLibrary(void)
 int CDIL_CAN_IXXAT_VCI::VciDeviceInfoAddToArray(int iStartPosArray, VCIDEVICEINFO* pVciDevInfo, INTERFACE_HW_LIST& sSelHwInterface)
 {
     int iNumOfCANController = 0;
-    HANDLE hDevice = NULL;
+    HANDLE hDevice = nullptr;
 
     VCIDEVICECAPS sVciDeviceCaps;
 
@@ -1195,7 +1195,7 @@ int CDIL_CAN_IXXAT_VCI::VciDeviceInfoAddToArray(int iStartPosArray, VCIDEVICEINF
         }
         // close the formerly opened device for later use
         DYNCALL(vciDeviceClose)(hDevice);
-        hDevice = NULL;
+        hDevice = nullptr;
     }
 
     // return the number of found CAN controllers
@@ -1232,7 +1232,7 @@ void CDIL_CAN_IXXAT_VCI::LogMessage(BOOL bShowOnlyInDebug, LPCTSTR pFormat, ...)
     if ( (bShowOnlyInDebug) && (bIsInDebugMode) )
     {
         OutputDebugString(buffer);
-        if (NULL != m_pILog)
+        if (nullptr != m_pILog)
         {
             m_pILog->vLogAMessage(A2T(__FILE__), __LINE__, buffer);
         }
@@ -1243,7 +1243,7 @@ void CDIL_CAN_IXXAT_VCI::LogMessage(BOOL bShowOnlyInDebug, LPCTSTR pFormat, ...)
     // then no OutputDebugString will called
     if ( (!bShowOnlyInDebug) && (!bIsInDebugMode) )
     {
-        if (NULL != m_pILog)
+        if (nullptr != m_pILog)
         {
             m_pILog->vLogAMessage(A2T(__FILE__), __LINE__, buffer);
         }

@@ -49,7 +49,7 @@ CMsgBufferConfigPage::CMsgBufferConfigPage() :
     m_unAppendSize = 0;
     m_unOverWriteSize = 0;
     m_unDisplayUpdateRate = 0;
-    m_pnBufferSize = NULL;
+    m_pnBufferSize = nullptr;
 }
 void CMsgBufferConfigPage::vSetBufferSize(INT* pnBufferSize)
 {

@@ -78,7 +78,7 @@ long lFromCString_2_Long(CString omStr, char** pccEndPtr, int nBase)
 /*                      m_pControllerDetails                                  */
 /******************************************************************************/
 //IMPLEMENT_DYNAMIC(CChangeRegisters, CPropertyPage)
-CChangeRegisters::CChangeRegisters(CWnd* pParent /*=NULL*/, PSCONTROLLER_DETAILS psControllerDetails, UINT nCount)
+CChangeRegisters::CChangeRegisters(CWnd* pParent /*=nullptr*/, PSCONTROLLER_DETAILS psControllerDetails, UINT nCount)
     : CDialog(CChangeRegisters::IDD, pParent)
     //: CPropertyPage(CChangeRegisters::IDD, IDS_PPAGE_CHANGE_REGISTER)
 {
@@ -809,7 +809,7 @@ void CChangeRegisters:: vUpdateBTRsBRPEditWindow(INT /*nColumnCount*/, INT nItem
     unNbt      = _tstoi(omStrItems[defNBT_COLUNM_POS-1].GetBuffer(MAX_PATH));
     if(unNbt>0)
     {
-        char* pcStopStr = NULL;
+        char* pcStopStr = nullptr;
         uBtr0.ucBTR0 = (UCHAR) lFromCString_2_Long(
                            omStrItems[defBRT0_COLUNM_POS-1], &pcStopStr, defHEXADECIMAL);
         unBrp = uBtr0.sBTR0Bit.ucBRPbit + 1;
@@ -852,7 +852,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR1(CString omStrBtr0)
     UINT    unBrp           = 0;
     UINT    unProductNbtNBrp= 0;
     uBTR0   sBtr0Reg    ;
-    char* pcStopStr         = NULL;
+    char* pcStopStr         = nullptr;
 
     // Get the baudrate for BTR0 and BTR1 values.
     dBaudRate = dCalculateBaudRateFromBTRs(omStrBtr0,m_omStrEditBTR1);
@@ -1000,7 +1000,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
     INT     nSample             = 0;
     INT     nSampleChange       = 0;
     INT     nGetValue           = 0;
-    char*  pcStopStr           = NULL;
+    char*  pcStopStr           = nullptr;
 
     uBTR1   sBtr1Reg;
     uBTR0   sBtr0Reg;
@@ -1515,7 +1515,7 @@ DOUBLE CChangeRegisters::dCalculateBaudRateFromBTRs(CString omStrBTR0,
     BYTE   byNBT        = 0;
     BYTE   byTSEG1      = 0;
     BYTE   byTSEG2      = 0;
-    char* pcStopStr     = NULL;
+    char* pcStopStr     = nullptr;
 
     uBTR0val.ucBTR0 = (UCHAR) lFromCString_2_Long(omStrBTR0, &pcStopStr,defHEXADECIMAL);
     uBTR1val.ucBTR1 = (UCHAR) lFromCString_2_Long(omStrBTR1, &pcStopStr,defHEXADECIMAL);
@@ -1558,7 +1558,7 @@ void CChangeRegisters::OnCbtnAcceptance()
 {
     // Send the controller details of selected channel
     // This dialog will modifiy this pointer as per user change
-    CAcceptanceFilterDlg odAcceptance( NULL,
+    CAcceptanceFilterDlg odAcceptance( nullptr,
                                        &m_pControllerDetails[ m_nLastSelection ]);
     odAcceptance.DoModal();
 }
@@ -1583,7 +1583,7 @@ BOOL CChangeRegisters::bFillControllerConfig()
     // Get the data from the configuration module
     //theApp.bGetData(CONTROLLER_DETAILS, (void**) &m_pControllerDetails);
     // If successful then set the result to pass
-    if (m_pControllerDetails != NULL)
+    if (m_pControllerDetails != nullptr)
     {
         bReturn = TRUE;
     }
@@ -1758,7 +1758,7 @@ void CChangeRegisters::vFillControllerConfigDetails()
     int nIndex = m_nLastSelection;
     /* Add hardware info to the description field */
     CWnd* pWnd = GetDlgItem(IDC_EDIT_CHANNEL_DESC);
-    if (pWnd != NULL)
+    if (pWnd != nullptr)
     {
         pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc.c_str());
     }
@@ -1795,7 +1795,7 @@ void CChangeRegisters::vFillControllerConfigDetails()
     {
 
         // read the item to set the focus from the configuration
-        if(m_pControllerDetails != NULL)
+        if(m_pControllerDetails != nullptr)
         {
             nReturn =
                 m_pControllerDetails[ m_nLastSelection ].m_nItemUnderFocus;
@@ -1805,7 +1805,7 @@ void CChangeRegisters::vFillControllerConfigDetails()
     }
     //Set the self reception option
     CButton* pCheckSelfRec = (CButton*)GetDlgItem(IDC_CHKB_SELF_RECEPTION);
-    if (pCheckSelfRec != NULL)
+    if (pCheckSelfRec != nullptr)
     {
         if ( m_pControllerDetails[ m_nLastSelection ].m_bSelfReception )
         {
@@ -1831,7 +1831,7 @@ void CChangeRegisters::vFillControllerConfigDetails()
 *******************************************************************************/
 void CChangeRegisters::vUpdateControllerDetails()
 {
-    char* pcStopStr                = NULL;
+    char* pcStopStr                = nullptr;
     CString omStrComboSampling      = "";
     CString omStrEditBtr0           = "";
     CString omStrEditBtr1           = "";
@@ -1874,7 +1874,7 @@ void CChangeRegisters::vUpdateControllerDetails()
 
         //Get the self reception option
         CButton* pCheckSelfRec = (CButton*)GetDlgItem(IDC_CHKB_SELF_RECEPTION);
-        if (pCheckSelfRec != NULL)
+        if (pCheckSelfRec != nullptr)
         {
             if ( pCheckSelfRec->GetCheck() == BST_CHECKED )
             {
@@ -1978,7 +1978,7 @@ BOOL CChangeRegisters::bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1)
 BOOL CChangeRegisters::bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1)
 {
     BOOL bReturn =FALSE;
-    if(m_pControllerDetails != NULL)
+    if(m_pControllerDetails != nullptr)
     {
         int nTempBTR0BTR1 = m_pControllerDetails[ nChannel-1 ].m_nBTR0BTR1;
         bBTR1 = (BYTE)(nTempBTR0BTR1 & 0XFF);
@@ -2069,10 +2069,10 @@ BOOL CChangeRegisters::bGetFilterFromCom(BOOL&  bExtended, double&  dBeginMsgId,
         double& dEndMsgId)
 {
     BOOL bReturn = FALSE;
-    if(m_pControllerDetails != NULL)
+    if(m_pControllerDetails != nullptr)
     {
 
-        char* pcStopStr = NULL;
+        char* pcStopStr = nullptr;
         //Change to separate integer value for each byte
         int nAccCodeByte1 = _tcstol(m_pControllerDetails[0].m_omStrAccCodeByte1[0].c_str(), &pcStopStr, defHEXADECIMAL);
         int nAccCodeByte2 = _tcstol(m_pControllerDetails[0].m_omStrAccCodeByte2[0].c_str(), &pcStopStr, defHEXADECIMAL);

@@ -75,7 +75,7 @@ void CBaseLogObject::vResetValues(void)
 {
     m_sLogInfo.vClear();    // Initialise the logging block
     m_omCurrLogFile = "";
-    m_pLogFile = NULL;
+    m_pLogFile = nullptr;
     m_CurrTriggerType = NONE;
     m_nCurrFileCnt = 0;
     m_dTotalBytes = 0;
@@ -228,7 +228,7 @@ BOOL CBaseLogObject::bLogString(CString& omStr)
         return FALSE;
     }
 
-    if (NULL == m_pLogFile)
+    if (nullptr == m_pLogFile)
     {
         ASSERT(FALSE);
         return FALSE;
@@ -336,11 +336,11 @@ CString CBaseLogObject::omRemoveGroupCountFromFileName(CString FileName)
 
 void CBaseLogObject::vCloseLogFile()
 {
-    if(m_pLogFile != NULL)
+    if(m_pLogFile != nullptr)
     {
         fclose(m_pLogFile);
     }
-    m_pLogFile = NULL;
+    m_pLogFile = nullptr;
 }
 /**
  * \brief Start logging
@@ -351,7 +351,7 @@ void CBaseLogObject::vCloseLogFile()
 BOOL CBaseLogObject::bStartLogging(ETYPE_BUS eBus)
 {
     BOOL bResult = FALSE;
-    if ((m_pLogFile == NULL) && (m_sLogInfo.m_bEnabled))
+    if ((m_pLogFile == nullptr) && (m_sLogInfo.m_bEnabled))
     {
         // This function should be called every time logging is started
         m_CurrTriggerType = m_sLogInfo.m_sLogTrigger.m_unTriggerType;
@@ -375,7 +375,7 @@ BOOL CBaseLogObject::bStartLogging(ETYPE_BUS eBus)
 
         fopen_s(&m_pLogFile, m_omCurrLogFile, Mode);
 
-        if (m_pLogFile != NULL)
+        if (m_pLogFile != nullptr)
         {
             CString omHeader = "";
             vFormatHeader(omHeader, eBus);
@@ -397,14 +397,14 @@ BOOL CBaseLogObject::bStopLogging()
 {
     BOOL bResult = FALSE;
 
-    if ((m_pLogFile != NULL) && (m_sLogInfo.m_bEnabled))
+    if ((m_pLogFile != nullptr) && (m_sLogInfo.m_bEnabled))
     {
         m_CurrTriggerType = NONE;
         CString omFooter = "";
         vFormatFooter(omFooter);
         _ftprintf(m_pLogFile,  "%s\n", omFooter.GetBuffer(MAX_PATH));
         fclose(m_pLogFile);
-        m_pLogFile = NULL;
+        m_pLogFile = nullptr;
         bResult = TRUE;
         m_bNewSession = FALSE;  // Old session closed
     }
@@ -416,14 +416,14 @@ BOOL CBaseLogObject::bStopOnlyLogging()
 {
     BOOL bResult = FALSE;
 
-    if ((m_pLogFile != NULL) && (m_sLogInfo.m_bEnabled))
+    if ((m_pLogFile != nullptr) && (m_sLogInfo.m_bEnabled))
     {
         //m_CurrTriggerType = NONE;
         CString omFooter = "";
         vFormatFooter(omFooter);
         _ftprintf(m_pLogFile,  "%s\n", omFooter.GetBuffer(MAX_PATH));
         fclose(m_pLogFile);
-        m_pLogFile = NULL;
+        m_pLogFile = nullptr;
         //bResult = TRUE;
         //m_bNewSession = FALSE;  // Old session closed
     }

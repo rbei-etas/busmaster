@@ -59,7 +59,7 @@ CMonitorNode::CMonitorNode(int nNodeNo, char* pacNodeName,
 {
     for (int i = 0; i < MAX_NODE_TO_MONITOR; i++)
     {
-        m_pMonNodeConDetArr[i] = NULL;
+        m_pMonNodeConDetArr[i] = nullptr;
     }
 }
 
@@ -72,13 +72,13 @@ void CMonitorNode::vRemoveAllConnections()
 {
     //Stop the read thread and then stop any proccessing of data
     //in det object and delete them. Delete the node manager
-    //and set the value in array to NULL
+    //and set the value in array to nullptr
     for (int i = 0; i < MAX_NODE_TO_MONITOR; i++)
     {
-        if (NULL != m_pMonNodeConDetArr[i])
+        if (nullptr != m_pMonNodeConDetArr[i])
         {
             delete m_pMonNodeConDetArr[i];
-            m_pMonNodeConDetArr[i] = NULL;
+            m_pMonNodeConDetArr[i] = nullptr;
         }
     }
 }
@@ -288,7 +288,7 @@ BOOL CMonitorNode::bProcessConLevelMsgByMon(const sTCANDATA& CurrMsgCAN)
     if (bIsEOM_ACK(sCanMsg.m_unMsgID, sCanMsg.m_ucData[0]))
     {
         pConDet = pGetConDet(byDest, bySrc);
-        if (pConDet != NULL)
+        if (pConDet != nullptr)
         {
             pConDet->m_byResult = DATA_EOM;
             SetEvent(pConDet->m_hDataAckWait);
@@ -298,7 +298,7 @@ BOOL CMonitorNode::bProcessConLevelMsgByMon(const sTCANDATA& CurrMsgCAN)
     else if (bIsConAbortMsg(sCanMsg.m_unMsgID, sCanMsg.m_ucData[0]))
     {
         pConDet = pGetConDet(byDest, bySrc);
-        if (pConDet != NULL)
+        if (pConDet != nullptr)
         {
             pConDet->m_byResult = DATA_CON_ABORT;
             SetEvent(pConDet->m_hDataAckWait);
@@ -308,7 +308,7 @@ BOOL CMonitorNode::bProcessConLevelMsgByMon(const sTCANDATA& CurrMsgCAN)
     else if (bIsConAckMsg(sCanMsg))
     {
         pConDet = pGetConDet(byDest, bySrc);
-        if (pConDet != NULL)
+        if (pConDet != nullptr)
         {
             pConDet->m_byResult = DATA_CLEAR_2_SEND;
             if (sCanMsg.m_ucData[1] == 0)
@@ -329,7 +329,7 @@ BOOL CMonitorNode::bProcessConLevelMsgByMon(const sTCANDATA& CurrMsgCAN)
     else if (bIsDataAckMsg(sCanMsg))
     {
         pConDet = pGetConDet(byDest, bySrc);
-        if (pConDet != NULL)
+        if (pConDet != nullptr)
         {
             pConDet->m_byResult = DATA_CLEAR_2_SEND;
             if (sCanMsg.m_ucData[1] == 0)
@@ -351,11 +351,11 @@ BOOL CMonitorNode::bProcessConLevelMsgByMon(const sTCANDATA& CurrMsgCAN)
     }
     else if(bIsConReqMsg(sCanMsg.m_unMsgID, sCanMsg.m_ucData[0]))
     {
-        if (pConDet == NULL)
+        if (pConDet == nullptr)
         {
             pConDet = pAddConDet(sCanMsg.m_unMsgID);
         }
-        if (pConDet != NULL)
+        if (pConDet != nullptr)
         {
             if (pConDet->eGetConStatus() == T_DISCONNECTED)
             {
@@ -392,11 +392,11 @@ BOOL CMonitorNode::bProcessConLevelMsgByMon(const sTCANDATA& CurrMsgCAN)
     }
     else if (bIsBAM(sCanMsg.m_unMsgID, sCanMsg.m_ucData[0]))    /* BROADCAST Announce*/
     {
-        if (pConDet == NULL)
+        if (pConDet == nullptr)
         {
             pConDet = pAddConDet(sCanMsg.m_unMsgID);
         }
-        if (pConDet != NULL)
+        if (pConDet != nullptr)
         {
             if (pConDet->eGetConStatus() == T_DISCONNECTED)
             {
@@ -415,7 +415,7 @@ BOOL CMonitorNode::bProcessConLevelMsgByMon(const sTCANDATA& CurrMsgCAN)
     }
     else if (bIsTPDT(sCanMsg.m_unMsgID))
     {
-        if (pConDet != NULL)
+        if (pConDet != nullptr)
         {
             if (pConDet->m_eRxConMode == CM_BROADCAST)
             {
@@ -459,7 +459,7 @@ CConnectionDet* CMonitorNode::pouCreateAndAddConnnection(UINT unId)
     BYTE bySrc = 254, byDest = 254;
     vGetSrcDestFromId(bySrc, byDest, unId);
     CConnectionDet* pConDet = new CConnectionDet(bySrc, byDest);
-    if (NULL != pConDet)
+    if (nullptr != pConDet)
     {
         bAddConDetObj(pConDet);
     }
@@ -468,7 +468,7 @@ CConnectionDet* CMonitorNode::pouCreateAndAddConnnection(UINT unId)
 
 CConnectionDet* CMonitorNode::pGetConDet(BYTE bySrc, BYTE byDest)
 {
-    CConnectionDet* pConDet = NULL;
+    CConnectionDet* pConDet = nullptr;
     if ((m_pConDet->m_bySrcAddress == bySrc)
             && (m_pConDet->m_byDestAddress == byDest))
     {
@@ -476,9 +476,9 @@ CConnectionDet* CMonitorNode::pGetConDet(BYTE bySrc, BYTE byDest)
     }
     else
     {
-        for (int i = 0; (i < m_byConCount) && (pConDet == NULL); i++)
+        for (int i = 0; (i < m_byConCount) && (pConDet == nullptr); i++)
         {
-            if (NULL != m_pMonNodeConDetArr[i])
+            if (nullptr != m_pMonNodeConDetArr[i])
             {
                 /* Create a new connection if source address is new */
                 if ( bySrc == m_pMonNodeConDetArr[i]->m_bySrcAddress )
@@ -496,7 +496,7 @@ CConnectionDet* CMonitorNode::pAddConDet(UINT unID)
     BYTE bySrc = 254, byDest = 254;
     vGetSrcDestFromId(bySrc, byDest, unID);
     CConnectionDet* pConDet = pGetConDet(bySrc, byDest);
-    if (NULL == pConDet)
+    if (nullptr == pConDet)
     {
         pConDet = pouCreateAndAddConnnection(unID);
     }

@@ -44,7 +44,7 @@ public:
     // To set List of hardware handles
     void vSetHardwareList(INTERFACE_HW*, int );
     // Constructor
-    CHardwareListing(INTERFACE_HW*, int , int*, CWnd* pParent = NULL);
+    CHardwareListing(INTERFACE_HW*, int , int*, CWnd* pParent = nullptr);
     // standard constructor
     CHardwareListing();
     //Get selection list

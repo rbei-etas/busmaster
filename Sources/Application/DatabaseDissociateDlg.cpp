@@ -31,7 +31,7 @@ extern CCANMonitorApp theApp;
 // CDatabaseDissociateDlg dialog
 
 IMPLEMENT_DYNAMIC(CDatabaseDissociateDlg, CDialog)
-CDatabaseDissociateDlg::CDatabaseDissociateDlg(const SDBPARAMS& sDbParams, CWnd* pParent /*=NULL*/)
+CDatabaseDissociateDlg::CDatabaseDissociateDlg(const SDBPARAMS& sDbParams, CWnd* pParent /*=nullptr*/)
     : CDialog(CDatabaseDissociateDlg::IDD, pParent)
 {
     m_sDbParams = sDbParams;
@@ -181,7 +181,7 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
         //Set the new file name array
         (*(CMsgSignal**)(m_sDbParams.m_ppvImportedDBs))->vSetDataBaseNames(&aomstrDBFiles);
         // Send a message to Tx Window about database change
-        if( pMainFrame != NULL)
+        if( pMainFrame != nullptr)
         {
             eUSERSELCTION eUserSel = eDATABASEIMPORTCMD;
             pMainFrame->m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
@@ -190,7 +190,7 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
         //// Check for Signal Watch & DLL load Condition
         //
         BOOL bUserOption = FALSE;
-        if(pMainFrame->m_psSignalWatchList != NULL)
+        if(pMainFrame->m_psSignalWatchList != nullptr)
         {
             if(theApp.m_bFromAutomation == FALSE)
                 bUserOption = AfxMessageBox(_(defIMPORT_WARNING),
@@ -235,7 +235,7 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
                     }
 
                     // Send the Message to the Left View to Update List for all buses
-                    if( pMainFrame != NULL )
+                    if( pMainFrame != nullptr )
                     {
                         pMainFrame->vPostConfigChangeCmdToSigGrphWnds(FALSE);
                     }

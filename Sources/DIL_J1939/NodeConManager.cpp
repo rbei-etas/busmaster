@@ -78,12 +78,12 @@ Modifications  :
 DWORD WINAPI TP_RxMsgThreadProc(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         return ((DWORD)-1);
     }
     CNodeConManager* pNodeConMgr = (CNodeConManager*)pThreadParam->m_pBuffer;
-    if (pNodeConMgr == NULL)
+    if (pNodeConMgr == nullptr)
     {
         return ((DWORD)-1);
     }
@@ -140,12 +140,12 @@ Modifications  :
 DWORD WINAPI TransmitMsgThreadProc(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         return ((DWORD)-1);
     }
     CNodeConManager* psNodeConMgr = (CNodeConManager*)pThreadParam->m_pBuffer;
-    if (psNodeConMgr == NULL)
+    if (psNodeConMgr == nullptr)
     {
         return ((DWORD)-1);
     }
@@ -269,7 +269,7 @@ CNodeConManager::CNodeConManager(int nNodeNo, char* pacNodeName, UINT64 un64ECUN
     m_u64ECUName.m_un64ECU_NAME = un64ECUName;
     for (int i = 0; i < DEF_MAX_CON_OF_A_NODE; i++)
     {
-        m_pNodeConDetArr[i] = NULL;
+        m_pNodeConDetArr[i] = nullptr;
     }
     m_pConDet = m_pNodeConDetArr[0] = new CConnectionDet(ADDRESS_NULL, ADDRESS_NULL);
     /* Allocate memory to Tx Msg */
@@ -277,18 +277,18 @@ CNodeConManager::CNodeConManager(int nNodeNo, char* pacNodeName, UINT64 un64ECUN
     m_sTxMsg.m_sMsgProperties.m_eType = MSG_TYPE_NONE;
     m_sTxMsg.m_unDLC = 0;
 
-    m_ouTransmitThread.m_hActionEvent = m_hTxActionEvent =  CreateEvent(NULL, FALSE, FALSE, NULL);
-    m_ouReceiveThread.m_hActionEvent = m_hRxActionEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+    m_ouTransmitThread.m_hActionEvent = m_hTxActionEvent =  CreateEvent(nullptr, FALSE, FALSE, nullptr);
+    m_ouReceiveThread.m_hActionEvent = m_hRxActionEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
     m_ouTransmitThread.m_pBuffer = this;
     m_ouReceiveThread.m_pBuffer = this;
     m_ouTransmitThread.bStartThread(TransmitMsgThreadProc);
     m_ouReceiveThread.bStartThread(TP_RxMsgThreadProc);
 
-    m_pClBckLDataConf   = NULL;
-    m_pClBckLDataInd    = NULL;
-    m_pClBckBcLDataConf = NULL;
-    m_pClBckBcLDataInd  = NULL;
-    m_pClBckNM_ACL      = NULL;
+    m_pClBckLDataConf   = nullptr;
+    m_pClBckLDataInd    = nullptr;
+    m_pClBckBcLDataConf = nullptr;
+    m_pClBckBcLDataInd  = nullptr;
+    m_pClBckNM_ACL      = nullptr;
 }
 /******************************************************************************
 Function Name  :  ~CNodeConManager
@@ -304,12 +304,12 @@ Modifications  :
 CNodeConManager::~CNodeConManager(void)
 {
     vRemoveAllConnections();
-    m_pConDet = NULL;
+    m_pConDet = nullptr;
     //Deallocate memory
-    if (m_sTxMsg.m_pbyData != NULL)
+    if (m_sTxMsg.m_pbyData != nullptr)
     {
         delete[] m_sTxMsg.m_pbyData;
-        m_sTxMsg.m_pbyData = NULL;
+        m_sTxMsg.m_pbyData = nullptr;
     }
     m_ouTransmitThread.bTerminateThread();
     m_ouReceiveThread.bTerminateThread();
@@ -359,7 +359,7 @@ Modifications  :
 ******************************************************************************/
 CConnectionDet* CNodeConManager::pouGetConDetObj(BYTE byConDetNum)
 {
-    CConnectionDet* pcondet = NULL;
+    CConnectionDet* pcondet = nullptr;
     if (byConDetNum < m_byConCount)
     {
         pcondet = m_pNodeConDetArr[byConDetNum];
@@ -551,16 +551,16 @@ void CNodeConManager::vRemoveAllConnections()
 {
     //Stop the read thread and then stop any proccessing of data
     //in det object and delete them. Delete the node manager
-    //and set the value in array to NULL
+    //and set the value in array to nullptr
     for (int i = 0; i < DEF_MAX_CON_OF_A_NODE; i++)
     {
-        if (NULL != m_pNodeConDetArr[i])
+        if (nullptr != m_pNodeConDetArr[i])
         {
             delete m_pNodeConDetArr[i];
-            m_pNodeConDetArr[i] = NULL;
+            m_pNodeConDetArr[i] = nullptr;
         }
     }
-    m_pConDet = NULL;
+    m_pConDet = nullptr;
 }
 
 /******************************************************************************
@@ -577,7 +577,7 @@ Modifications  :
 LONG CNodeConManager::lAddMsgBuffer(CBaseMsgBufVSE* pouMsgBuf)
 {
     LONG lResult = S_OK;
-    if (pouMsgBuf != NULL)
+    if (pouMsgBuf != nullptr)
     {
         //Find if the buffer is alrady present
         BOOL bFound = FALSE;
@@ -610,7 +610,7 @@ Modifications  :
 ******************************************************************************/
 void CNodeConManager::vClearMsgBuffer(CBaseMsgBufVSE* pBufObj)
 {
-    CBaseMsgBufVSE* pouMsgBuf = NULL;
+    CBaseMsgBufVSE* pouMsgBuf = nullptr;
     INT nCount = (INT)m_OutBufArr.GetSize();
     for(int i = 0; i < nCount; i++ )
     {
@@ -636,7 +636,7 @@ Modifications  :
 ******************************************************************************/
 void CALLBACK WaitOrTimerCallback(PVOID lpParameter, BOOLEAN /*TimerOrWaitFired*/)
 {
-    if (NULL != lpParameter)
+    if (nullptr != lpParameter)
     {
         /*CNodeConManager* pNodeConMgr = (CNodeConManager*)lpParameter;
         pNodeConMgr->vSendWatchDogFrame();*/
@@ -655,9 +655,9 @@ Modifications  :
 ******************************************************************************/
 void CNodeConManager::vStartTimerFunction(UINT /*unTimePeriod*/)
 {
-    if (m_hTimer != NULL)
+    if (m_hTimer != nullptr)
     {
-        DeleteTimerQueueTimer(NULL, m_hTimer, NULL);
+        DeleteTimerQueueTimer(nullptr, m_hTimer, nullptr);
     }
     else
     {
@@ -666,7 +666,7 @@ void CNodeConManager::vStartTimerFunction(UINT /*unTimePeriod*/)
         //      m_WDMsg[1] = 0;
     }
     CreateTimerQueueTimer(&m_hTimer,
-                          NULL,
+                          nullptr,
                           WaitOrTimerCallback,
                           this,
                           0,
@@ -687,9 +687,9 @@ Modifications  :
 BOOL CNodeConManager::bStopTimerFunction()
 {
     BOOL bReturn = FALSE;
-    if (m_hTimer != NULL)
+    if (m_hTimer != nullptr)
     {
-        DeleteTimerQueueTimer(NULL, m_hTimer, NULL);
+        DeleteTimerQueueTimer(nullptr, m_hTimer, nullptr);
         bReturn = TRUE;
     }
     return bReturn;
@@ -1095,7 +1095,7 @@ BOOL CNodeConManager::bProcessConLevelMsg(const sTCANDATA& CurrMsgCAN)
     uExtId.m_unExtID = sCanMsg.m_unMsgID;
     if (bIsEOM_ACK(sCanMsg.m_unMsgID, sCanMsg.m_ucData[0]))
     {
-        if (m_pConDet != NULL)
+        if (m_pConDet != nullptr)
         {
             m_pConDet->m_byResult = DATA_EOM;
             SetEvent(m_pConDet->m_hDataAckWait);
@@ -1104,7 +1104,7 @@ BOOL CNodeConManager::bProcessConLevelMsg(const sTCANDATA& CurrMsgCAN)
     }
     else if (bIsConAbortMsg(sCanMsg.m_unMsgID, sCanMsg.m_ucData[0]))
     {
-        if (m_pConDet != NULL)
+        if (m_pConDet != nullptr)
         {
             m_pConDet->m_byResult = DATA_CON_ABORT;
             SetEvent(m_pConDet->m_hDataAckWait);
@@ -1113,7 +1113,7 @@ BOOL CNodeConManager::bProcessConLevelMsg(const sTCANDATA& CurrMsgCAN)
     }
     else if (bIsConAckMsg(sCanMsg))
     {
-        if (m_pConDet != NULL)
+        if (m_pConDet != nullptr)
         {
             m_pConDet->m_byResult = DATA_CLEAR_2_SEND;
             if (sCanMsg.m_ucData[1] == 0)
@@ -1132,7 +1132,7 @@ BOOL CNodeConManager::bProcessConLevelMsg(const sTCANDATA& CurrMsgCAN)
     }
     else if (bIsDataAckMsg(sCanMsg))
     {
-        if (m_pConDet != NULL)
+        if (m_pConDet != nullptr)
         {
             m_pConDet->m_byResult = DATA_CLEAR_2_SEND;
             if (sCanMsg.m_ucData[1] == 0)
@@ -1153,7 +1153,7 @@ BOOL CNodeConManager::bProcessConLevelMsg(const sTCANDATA& CurrMsgCAN)
     }
     else if(bIsConReqMsg(sCanMsg.m_unMsgID, sCanMsg.m_ucData[0]))
     {
-        if (m_pConDet != NULL)
+        if (m_pConDet != nullptr)
         {
             if (m_pConDet->eGetConStatus() == T_DISCONNECTED)
             {
@@ -1170,7 +1170,7 @@ BOOL CNodeConManager::bProcessConLevelMsg(const sTCANDATA& CurrMsgCAN)
         else
         {
             m_pConDet = pCreateAndGetConDet((BYTE)sCanMsg.m_unMsgID);
-            ASSERT(m_pConDet != NULL);
+            ASSERT(m_pConDet != nullptr);
             vReInitConDet();
             m_pConDet->m_bySrcAddress = m_byNodeAddress;
             m_pConDet->m_byDestAddress = uExtId.m_s29BitId.m_bySrcAddress;
@@ -1179,7 +1179,7 @@ BOOL CNodeConManager::bProcessConLevelMsg(const sTCANDATA& CurrMsgCAN)
     }
     else if (bIsBAM(sCanMsg.m_unMsgID, sCanMsg.m_ucData[0]))    /* BROADCAST Announce*/
     {
-        if (m_pConDet != NULL)
+        if (m_pConDet != nullptr)
         {
             if (m_pConDet->eGetConStatus() == T_DISCONNECTED)
             {
@@ -1192,7 +1192,7 @@ BOOL CNodeConManager::bProcessConLevelMsg(const sTCANDATA& CurrMsgCAN)
         else
         {
             m_pConDet = pCreateAndGetConDet((BYTE)sCanMsg.m_unMsgID);   //W4 Removal
-            ASSERT(m_pConDet != NULL);
+            ASSERT(m_pConDet != nullptr);
             vReInitConDet();
             m_pConDet->m_bySrcAddress = m_byNodeAddress;
             m_pConDet->m_byDestAddress = uExtId.m_s29BitId.m_bySrcAddress;
@@ -1202,7 +1202,7 @@ BOOL CNodeConManager::bProcessConLevelMsg(const sTCANDATA& CurrMsgCAN)
     }
     else if (bIsTPDT(sCanMsg.m_unMsgID))
     {
-        if (m_pConDet != NULL)
+        if (m_pConDet != nullptr)
         {
             if (m_pConDet->bIsMsgRxForThisConnection(sCanMsg.m_unMsgID))
             {
@@ -1370,7 +1370,7 @@ Modifications  :
 ******************************************************************************/
 void CNodeConManager::vCloseConnection(CConnectionDet* pConDet)
 {
-    ASSERT(pConDet != NULL);
+    ASSERT(pConDet != nullptr);
     //pConDet->m_byResult = CON_ABORT;
     //SetEvent(pConDet->m_hBCDataRXWait);
     //SetEvent(pConDet->m_hBCDataRXWait);
@@ -1931,7 +1931,7 @@ void CNodeConManager::vExecuteClbckFuncPtrs(ETYPE_CLBCK_FN eClbckType,
     {
         case CLBCK_FN_LDATA_CONF:
         {
-            if ((m_pClBckLDataConf != NULL) && (m_bIsActive == TRUE))
+            if ((m_pClBckLDataConf != nullptr) && (m_bIsActive == TRUE))
             {
                 m_pClBckLDataConf(m_dwClientID, unPGN, bySrc, byDest, bSuccess);
             }
@@ -1939,7 +1939,7 @@ void CNodeConManager::vExecuteClbckFuncPtrs(ETYPE_CLBCK_FN eClbckType,
         break;
         case CLBCK_FN_LDATA_IND:
         {
-            if ((m_pClBckLDataInd != NULL) && (m_bIsActive == TRUE))
+            if ((m_pClBckLDataInd != nullptr) && (m_bIsActive == TRUE))
             {
                 m_pClBckLDataInd(m_dwClientID, unPGN, bySrc, byDest, bSuccess);
             }
@@ -1947,7 +1947,7 @@ void CNodeConManager::vExecuteClbckFuncPtrs(ETYPE_CLBCK_FN eClbckType,
         break;
         case CLBCK_FN_BC_LDATA_CONF:
         {
-            if ((m_pClBckBcLDataConf != NULL) && (m_bIsActive == TRUE))
+            if ((m_pClBckBcLDataConf != nullptr) && (m_bIsActive == TRUE))
             {
                 m_pClBckBcLDataConf(m_dwClientID, unPGN, bySrc, byDest, bSuccess);
             }
@@ -1955,7 +1955,7 @@ void CNodeConManager::vExecuteClbckFuncPtrs(ETYPE_CLBCK_FN eClbckType,
         break;
         case CLBCK_FN_BC_LDATA_IND:
         {
-            if ((m_pClBckBcLDataInd != NULL) && (m_bIsActive == TRUE))
+            if ((m_pClBckBcLDataInd != nullptr) && (m_bIsActive == TRUE))
             {
                 m_pClBckBcLDataInd(m_dwClientID, unPGN, bySrc, byDest, bSuccess);
             }
@@ -1963,7 +1963,7 @@ void CNodeConManager::vExecuteClbckFuncPtrs(ETYPE_CLBCK_FN eClbckType,
         break;
         case CLBCK_FN_NM_ACL:
         {
-            if (m_pClBckNM_ACL != NULL)
+            if (m_pClBckNM_ACL != nullptr)
             {
                 m_pClBckNM_ACL(m_dwClientID, bySrc);
             }
@@ -2070,7 +2070,7 @@ Modifications  :
 ******************************************************************************/
 CConnectionDet* CNodeConManager::pCreateAndGetConDet(BYTE byDestAdres)
 {
-    if (m_pConDet == NULL)
+    if (m_pConDet == nullptr)
     {
         m_pConDet = m_pNodeConDetArr[0] = new CConnectionDet(m_byNodeAddress, byDestAdres);
         m_byConCount = 1;
@@ -2103,7 +2103,7 @@ HRESULT CNodeConManager::TransmitRequestToSend(BYTE byDestAddress,
 {
     HRESULT hResult = S_FALSE;
     pCreateAndGetConDet(byDestAddress);
-    if ((m_pConDet != NULL) && (m_pConDet->eGetConStatus() == T_DISCONNECTED))
+    if ((m_pConDet != nullptr) && (m_pConDet->eGetConStatus() == T_DISCONNECTED))
     {
         m_pConDet->m_unPGN = unPGN;
         BYTE byFrameData[MAX_FRAME_DATA_SIZE] = {0xFF};

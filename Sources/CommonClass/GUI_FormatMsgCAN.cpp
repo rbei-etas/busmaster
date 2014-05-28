@@ -245,7 +245,7 @@ char* CFormatMsgCAN::vFormatCurrErrorEntry(USHORT usErrorID)
         nCount++;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 /*******************************************************************************
@@ -341,7 +341,7 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
         if( usErrCode != ERROR_UNKNOWN )
         {
             // Format error message
-            char* ptrStrErrName = NULL;
+            char* ptrStrErrName = nullptr;
             ptrStrErrName = vFormatCurrErrorEntry(usErrCode);
 
             if(ptrStrErrName)

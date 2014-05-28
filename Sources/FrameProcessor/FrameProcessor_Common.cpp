@@ -43,16 +43,16 @@
 DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         // TBD
     }
-    CFrameProcessor_Common* pCurrObj = NULL;
-    if(pThreadParam != NULL)
+    CFrameProcessor_Common* pCurrObj = nullptr;
+    if(pThreadParam != nullptr)
     {
         pCurrObj = (CFrameProcessor_Common*) pThreadParam->m_pBuffer;
     }
-    if (pCurrObj == NULL)
+    if (pCurrObj == nullptr)
     {
         // TBD
     }
@@ -63,7 +63,7 @@ DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
 
     while (bLoopON)
     {
-        if(pCurrObj != NULL)
+        if(pCurrObj != nullptr)
         {
             pCurrObj->m_bIsThreadBlocked = TRUE;
         }
@@ -185,7 +185,7 @@ UINT CFrameProcessor_Common::unGetBufSize(void)
     for (USHORT i = 0; i < ushLogBlks; i++)
     {
         CBaseLogObject* pouCurrLogObj = FindLoggingBlock(i);
-        if (NULL != pouCurrLogObj)
+        if (nullptr != pouCurrLogObj)
         {
             unBufSize += pouCurrLogObj->unGetBufSize();
         }
@@ -256,7 +256,7 @@ CBaseLogObject* CFrameProcessor_Common::FindLoggingBlock(USHORT ushID)
 {
     CLogObjArray* pomCurrArray = GetActiveLogObjArray();
 
-    CBaseLogObject* Result = NULL;
+    CBaseLogObject* Result = nullptr;
     USHORT Blocks = (USHORT) (pomCurrArray->GetSize());
     if (Blocks > ushID)
     {
@@ -313,12 +313,12 @@ void CFrameProcessor_Common::vCloseLogFile()
 {
     USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
 
-    CBaseLogObject* pouCurrLogObj = NULL;
+    CBaseLogObject* pouCurrLogObj = nullptr;
     for (USHORT i = 0; i < ushBlocks; i++)
     {
         pouCurrLogObj = m_omLogObjectArray.GetAt(i);
 
-        if (NULL == pouCurrLogObj)
+        if (nullptr == pouCurrLogObj)
         {
             pouCurrLogObj->vCloseLogFile();
         }
@@ -473,7 +473,7 @@ HRESULT CFrameProcessor_Common::GetLoggingBlock(USHORT ushBlk, SLOGINFO& sLogObj
 
     CBaseLogObject* pouLogObj = FindLoggingBlock(ushBlk);
 
-    if (pouLogObj != NULL)
+    if (pouLogObj != nullptr)
     {
         pouLogObj->GetLogInfo(sLogObject);
         hResult = S_OK;
@@ -490,7 +490,7 @@ HRESULT CFrameProcessor_Common::SetLoggingBlock(USHORT ushBlk, const SLOGINFO& s
     {
         CBaseLogObject* pouLogObj = FindLoggingBlock(ushBlk);
 
-        if (pouLogObj != NULL)
+        if (pouLogObj != nullptr)
         {
             pouLogObj->SetLogInfo(sLogObject);
             hResult = S_OK;
@@ -518,7 +518,7 @@ HRESULT CFrameProcessor_Common::GetConfigData(BYTE** ppvConfigData, UINT& unLeng
     for (USHORT i = 0; i < ushLogBlks; i++)
     {
         CBaseLogObject* pouLogObj = pomCurrArray->GetAt(i);
-        if (NULL != pouLogObj)
+        if (nullptr != pouLogObj)
         {
             pbBuff = pouLogObj->GetConfigData(pbBuff);
         }
@@ -549,12 +549,12 @@ HRESULT CFrameProcessor_Common::GetConfigData(xmlNodePtr pxmlNodePtr)
 
     for (USHORT i = 0; i < ushLogBlks; i++)
     {
-        xmlNodePtr pNodeLogBlckPtr = xmlNewNode(NULL, BAD_CAST DEF_LOG_BLOCK);
+        xmlNodePtr pNodeLogBlckPtr = xmlNewNode(nullptr, BAD_CAST DEF_LOG_BLOCK);
         xmlAddChild(pxmlNodePtr, pNodeLogBlckPtr);
 
         CBaseLogObject* pouLogObj = pomCurrArray->GetAt(i);
 
-        if (NULL != pouLogObj)
+        if (nullptr != pouLogObj)
         {
             pouLogObj->GetConfigData(pNodeLogBlckPtr);
         }
@@ -609,8 +609,8 @@ HRESULT CFrameProcessor_Common::SetConfigData( xmlDocPtr pDoc, ETYPE_BUS eBus)
 
 
     USHORT ushLogBlks = 0;
-    xmlChar* pchXpath = NULL;
-    xmlXPathObjectPtr pXpathPtr = NULL;
+    xmlChar* pchXpath = nullptr;
+    xmlXPathObjectPtr pXpathPtr = nullptr;
 
     if(eBus == CAN)
     {
@@ -627,10 +627,10 @@ HRESULT CFrameProcessor_Common::SetConfigData( xmlDocPtr pDoc, ETYPE_BUS eBus)
     pXpathPtr = xmlUtils::pGetNodes(pDoc, pchXpath);
     xmlNodePtr pNodePtr;
 
-    if ( pXpathPtr != NULL)
+    if ( pXpathPtr != nullptr)
     {
         xmlNodeSetPtr pNodeSet = pXpathPtr->nodesetval;
-        if(pNodeSet != NULL)
+        if(pNodeSet != nullptr)
         {
             ushLogBlks = pNodeSet->nodeNr;
             for(int i = 0; i < ushLogBlks; i++)
@@ -751,7 +751,7 @@ HRESULT CFrameProcessor_Common::EnableLoggingBlock(USHORT ushBlk, BOOL bEnable)
 
     CBaseLogObject* pouLogObj = FindLoggingBlock(ushBlk);
 
-    if (NULL != pouLogObj)
+    if (nullptr != pouLogObj)
     {
         if (pouLogObj->IsLoggingEnable() != bEnable)
         {
@@ -775,7 +775,7 @@ HRESULT CFrameProcessor_Common::AddLoggingBlock(const SLOGINFO& sLogObject)
     if (bIsEditingON())
     {
         CBaseLogObject* pouCurrLogBlk = CreateNewLogObj(m_omStrVersion);
-        if (NULL != pouCurrLogBlk)
+        if (nullptr != pouCurrLogBlk)
         {
             pouCurrLogBlk->SetLogInfo(sLogObject);
             m_omLogListTmp.Add(pouCurrLogBlk);
@@ -796,7 +796,7 @@ HRESULT CFrameProcessor_Common::RemoveLoggingBlock(USHORT ushBlk)
 
     //if (bIsEditingON())
     //{
-    if (FindLoggingBlock(ushBlk) != NULL)
+    if (FindLoggingBlock(ushBlk) != nullptr)
     {
         GetActiveLogObjArray()->RemoveAt(ushBlk);
         hResult = S_OK;
@@ -870,13 +870,13 @@ HRESULT CFrameProcessor_Common::SetDatabaseFiles(const CStringArray& omList)
     HRESULT hResult = S_OK; // Success is default assumption
 
     CLogObjArray* pomCurrArray = GetActiveLogObjArray();
-    if (NULL != pomCurrArray)
+    if (nullptr != pomCurrArray)
     {
         for (int nIdx = 0; nIdx < pomCurrArray->GetSize(); nIdx++)
         {
             CBaseLogObject* pouCurrLogObj = pomCurrArray->GetAt(nIdx);
 
-            if (NULL != pouCurrLogObj)
+            if (nullptr != pouCurrLogObj)
             {
                 pouCurrLogObj->Der_SetDatabaseFiles(omList);
             }
@@ -894,13 +894,13 @@ void CFrameProcessor_Common::SetChannelBaudRateDetails(void* controllerDetails,
     int nNumChannels, ETYPE_BUS /* eBus */)
 {
     CLogObjArray* pomCurrArray = GetActiveLogObjArray();
-    if (NULL != pomCurrArray)
+    if (nullptr != pomCurrArray)
     {
         for (int nIdx = 0; nIdx < pomCurrArray->GetSize(); nIdx++)
         {
             CBaseLogObject* pouCurrLogObj = pomCurrArray->GetAt(nIdx);
 
-            if (NULL != pouCurrLogObj)
+            if (nullptr != pouCurrLogObj)
             {
                 pouCurrLogObj->Der_SetChannelBaudRateDetails(controllerDetails,
                         nNumChannels);

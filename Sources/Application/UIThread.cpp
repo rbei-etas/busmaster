@@ -51,7 +51,7 @@ IMPLEMENT_DYNCREATE(CUIThread, CWinThread)
 CUIThread::CUIThread()
 {
     //m_omDispStrArray.RemoveAll();
-    m_podTraceWinObj = NULL;
+    m_podTraceWinObj = nullptr;
     //InitializeCriticalSection(&m_sCriticalSection);
 }
 /******************************************************************************
@@ -122,10 +122,10 @@ BOOL CUIThread::bCreateTraceWindow(CMDIFrameWnd* pomParentWnd)
 {
     BOOL bResult = FALSE;
 
-    if (m_podTraceWinObj == NULL)
+    if (m_podTraceWinObj == nullptr)
     {
         m_podTraceWinObj = new CNotificWnd();
-        if (m_podTraceWinObj != NULL)
+        if (m_podTraceWinObj != nullptr)
         {
             m_pMainWnd = m_podTraceWinObj;
             bResult = m_podTraceWinObj->bCreateNotificWindow(pomParentWnd);
@@ -155,7 +155,7 @@ BOOL CUIThread::bCreateTraceWindow(CMDIFrameWnd* pomParentWnd)
 /*****************************************************************************/
 void CUIThread::vUpdateWndCo_Ords(WINDOWPLACEMENT& wndPlacement, BOOL bLoadIntoTrace)
 {
-    if (m_podTraceWinObj != NULL)
+    if (m_podTraceWinObj != nullptr)
     {
         if (bLoadIntoTrace == TRUE)
         {
@@ -226,7 +226,7 @@ END_MESSAGE_MAP()
 /*****************************************************************************/
 void CUIThread::vUpdateWinStatusFromCfg(UINT /*unParam*/, LONG lParam)
 {
-    if (m_podTraceWinObj != NULL)
+    if (m_podTraceWinObj != nullptr)
     {
         WINDOWPLACEMENT* pWndCo_ords = (WINDOWPLACEMENT*)lParam;
         vUpdateWndCo_Ords(*pWndCo_ords, (BOOL)lParam);
@@ -261,7 +261,7 @@ void CUIThread::vUpdateWinStatusFromCfg(UINT /*unParam*/, LONG lParam)
 /*****************************************************************************/
 void CUIThread::vAddString(CString omStr)
 {
-    if (m_podTraceWinObj != NULL)
+    if (m_podTraceWinObj != nullptr)
     {
         m_podTraceWinObj->vDisplayString(omStr);
     }

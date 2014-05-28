@@ -123,7 +123,7 @@ const HRESULT ERR_OPEN_FILE         = MASK_ERR | COMMON | 0x09; // Error in open
 const HRESULT ALREADY_REGISTERED = MASK_WARN| TRALIB | 0x01; //Client already regd
 const HRESULT ALLOWED_NOMORE     = MASK_ERR | TRALIB | 0x02; //Client number reached max
 const HRESULT ERROR_NOCLIENT     = MASK_ERR | TRALIB | 0x03; //No client available for LCN
-const HRESULT DATAREP_INVALID    = MASK_ERR | TRALIB | 0x04; //MsgBuff is NULL
+const HRESULT DATAREP_INVALID    = MASK_ERR | TRALIB | 0x04; //MsgBuff is nullptr
 const HRESULT NOT_PERMITTED      = MASK_ERR | TRALIB | 0x05; //Watch dog not permitted for the node
 const HRESULT INVALID_PARAM      = MASK_ERR | TRALIB | 0x06; //Parameters not valid
 

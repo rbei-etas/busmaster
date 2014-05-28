@@ -175,13 +175,13 @@ void CGraphList::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr)
         //    }
         //}
 
-        xmlXPathObjectPtr pOjectPath = NULL;
+        xmlXPathObjectPtr pOjectPath = nullptr;
         xmlChar* pXmlPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Signal_Graph/GRAPH_ELEMENT";
         pOjectPath = xmlUtils::pGetNodes(pDocPtr, pXmlPath);
-        if(pOjectPath != NULL)
+        if(pOjectPath != nullptr)
         {
             xmlNodeSetPtr pNodeSet = pOjectPath->nodesetval;
-            if(pNodeSet != NULL)
+            if(pNodeSet != nullptr)
             {
                 nElementCount = pNodeSet->nodeNr;
                 if ( nElementCount > 0 )

@@ -73,12 +73,12 @@ static const FONTDESC _fontdescTitle =
 
 CDMGraphCtrl::CDMGraphCtrl()
 {
-    m_fontY = m_fontVLabel = NULL;
-    m_axisPen = m_gridPen = m_cursorPen = NULL;
-    m_brushPlot = m_brushFrame = NULL;
+    m_fontY = m_fontVLabel = nullptr;
+    m_axisPen = m_gridPen = m_cursorPen = nullptr;
+    m_brushPlot = m_brushFrame = nullptr;
 
-    m_linePen = m_pointPen = NULL;
-    m_lineBrush = m_pointBrush = m_annoBrush = NULL;
+    m_linePen = m_pointPen = nullptr;
+    m_lineBrush = m_pointBrush = m_annoBrush = nullptr;
 
     ZeroMemory(&m_rcBounds, sizeof(RECT));
 
@@ -90,9 +90,9 @@ CDMGraphCtrl::CDMGraphCtrl()
     m_nAvailablePlots = 0;
     m_bUnzoom = FALSE;
 
-    m_pElementList      = NULL;
-    m_pAnnotationList   = NULL;
-    m_pCursorList       = NULL;
+    m_pElementList      = nullptr;
+    m_pAnnotationList   = nullptr;
+    m_pCursorList       = nullptr;
     ZeroMemory(m_pAxis, 2*sizeof(CGraphAxis*));
 
     m_eTrackMode = None;
@@ -121,7 +121,7 @@ HRESULT CDMGraphCtrl::FinalConstruct()
 {
 
     m_pElementList = new CComObject< CGraphCollection< CGraphElement > >();
-    if(m_pElementList == NULL)
+    if(m_pElementList == nullptr)
     {
         return E_OUTOFMEMORY;
     }
@@ -129,7 +129,7 @@ HRESULT CDMGraphCtrl::FinalConstruct()
     m_pElementList->AddRef();
 
     m_pAnnotationList = new CComObject< CGraphCollection< CGraphAnnotation > >();
-    if(m_pAnnotationList == NULL)
+    if(m_pAnnotationList == nullptr)
     {
         return E_OUTOFMEMORY;
     }
@@ -137,7 +137,7 @@ HRESULT CDMGraphCtrl::FinalConstruct()
     m_pAnnotationList->AddRef();
 
     m_pCursorList = new CComObject< CGraphCollection< CGraphCursor > >();
-    if(m_pCursorList == NULL)
+    if(m_pCursorList == nullptr)
     {
         return E_OUTOFMEMORY;
     }
@@ -148,7 +148,7 @@ HRESULT CDMGraphCtrl::FinalConstruct()
     for(i=0; i<2; i++)
     {
         m_pAxis[i] = new CComObject<CGraphAxis>();
-        if(m_pAxis[i] == NULL)
+        if(m_pAxis[i] == nullptr)
         {
             return E_OUTOFMEMORY;
         }
@@ -165,7 +165,7 @@ HRESULT CDMGraphCtrl::FinalConstruct()
     m_bElementIdentify = FALSE;
 
     HBITMAP hBitmap = LoadBitmap(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDB_FRAME));
-    if(hBitmap == NULL)
+    if(hBitmap == nullptr)
     {
         return HRESULT_FROM_WIN32(GetLastError());
     }
@@ -174,7 +174,7 @@ HRESULT CDMGraphCtrl::FinalConstruct()
     pdesc.cbSizeofstruct = sizeof(PICTDESC);
     pdesc.picType = PICTYPE_BITMAP;
     pdesc.bmp.hbitmap = hBitmap;
-    pdesc.bmp.hpal = NULL;
+    pdesc.bmp.hpal = nullptr;
 
     HRESULT hr = OleCreatePictureIndirect(&pdesc, IID_IPicture,
                                           TRUE, (LPVOID*)&m_spPicFrame);
@@ -213,84 +213,84 @@ CDMGraphCtrl::~CDMGraphCtrl()
     if(m_fontY)
     {
         DeleteObject(m_fontY);
-        m_fontY = NULL;
+        m_fontY = nullptr;
     }
     if(m_fontVLabel)
     {
         DeleteObject(m_fontVLabel);
-        m_fontVLabel = NULL;
+        m_fontVLabel = nullptr;
     }
     if(m_axisPen)
     {
         DeleteObject(m_axisPen);
-        m_axisPen = NULL;
+        m_axisPen = nullptr;
     }
     if(m_gridPen)
     {
         DeleteObject(m_gridPen);
-        m_gridPen = NULL;
+        m_gridPen = nullptr;
     }
     if(m_cursorPen)
     {
         DeleteObject(m_cursorPen);
-        m_cursorPen = NULL;
+        m_cursorPen = nullptr;
     }
     if(m_brushPlot)
     {
         DeleteObject(m_brushPlot);
-        m_brushPlot = NULL;
+        m_brushPlot = nullptr;
     }
     if(m_brushFrame)
     {
         DeleteObject(m_brushFrame);
-        m_brushFrame = NULL;
+        m_brushFrame = nullptr;
     }
 
     if(m_linePen)
     {
         DeleteObject(m_linePen);
-        m_linePen = NULL;
+        m_linePen = nullptr;
     }
     if(m_pointPen)
     {
         DeleteObject(m_pointPen);
-        m_pointPen = NULL;
+        m_pointPen = nullptr;
     }
     if(m_lineBrush)
     {
         DeleteObject(m_lineBrush);
-        m_lineBrush = NULL;
+        m_lineBrush = nullptr;
     }
     if(m_pointBrush)
     {
         DeleteObject(m_pointBrush);
-        m_pointBrush = NULL;
+        m_pointBrush = nullptr;
     }
     if(m_annoBrush)
     {
         DeleteObject(m_annoBrush);
-        m_annoBrush = NULL;
+        m_annoBrush = nullptr;
     }
 
     if(m_pElementList)
     {
         m_pElementList->DetachFromGraph();
         m_pElementList->Release();
-        m_pElementList = NULL;
+        m_pElementList = nullptr;
     }
 
     if(m_pAnnotationList)
     {
         m_pAnnotationList->DetachFromGraph();
         m_pAnnotationList->Release();
-        m_pAnnotationList = NULL;
+        m_pAnnotationList = nullptr;
     }
 
     if(m_pCursorList)
     {
         m_pCursorList->DetachFromGraph();
         m_pCursorList->Release();
-        m_pCursorList= NULL;
+        m_pCursorList= nullptr;
     }
 
     int i;
@@ -300,7 +300,7 @@ CDMGraphCtrl::~CDMGraphCtrl()
         {
             m_pAxis[i]->DetachFromGraph();
             m_pAxis[i]->Release();
-            m_pAxis[i] = NULL;
+            m_pAxis[i] = nullptr;
         }
     }
 }
@@ -312,22 +312,22 @@ void CDMGraphCtrl::Refresh(BOOL withPenAndBrushes)
         if(m_linePen)
         {
             DeleteObject(m_linePen);
-            m_linePen = NULL;
+            m_linePen = nullptr;
         }
         if(m_pointPen)
         {
             DeleteObject(m_pointPen);
-            m_pointPen = NULL;
+            m_pointPen = nullptr;
         }
         if(m_lineBrush)
         {
             DeleteObject(m_lineBrush);
-            m_lineBrush = NULL;
+            m_lineBrush = nullptr;
         }
         if(m_pointBrush)
         {
             DeleteObject(m_pointBrush);
-            m_pointBrush = NULL;
+            m_pointBrush = nullptr;
         }
     }
 
@@ -345,7 +345,7 @@ STDMETHODIMP CDMGraphCtrl::AboutBox()
 
 STDMETHODIMP CDMGraphCtrl::get_AxisColor(OLE_COLOR* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -357,7 +357,7 @@ STDMETHODIMP CDMGraphCtrl::put_AxisColor(OLE_COLOR newVal)
 {
     HRESULT hr;
     COLORREF col;
-    hr = OleTranslateColor(newVal, NULL, &col);
+    hr = OleTranslateColor(newVal, nullptr, &col);
 
     if(m_colAxis == col)
     {
@@ -368,7 +368,7 @@ STDMETHODIMP CDMGraphCtrl::put_AxisColor(OLE_COLOR newVal)
     if(m_axisPen)
     {
         DeleteObject(m_axisPen);
-        m_axisPen = NULL;
+        m_axisPen = nullptr;
     }
     FireViewChange();
     m_bRequiresSave = TRUE;
@@ -377,7 +377,7 @@ STDMETHODIMP CDMGraphCtrl::put_AxisColor(OLE_COLOR newVal)
 
 STDMETHODIMP CDMGraphCtrl::get_GridColor(OLE_COLOR* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -389,7 +389,7 @@ STDMETHODIMP CDMGraphCtrl::put_GridColor(OLE_COLOR newVal)
 {
     HRESULT hr;
     COLORREF col;
-    hr = OleTranslateColor(newVal, NULL, &col);
+    hr = OleTranslateColor(newVal, nullptr, &col);
 
     if(m_colGrid == col)
     {
@@ -400,7 +400,7 @@ STDMETHODIMP CDMGraphCtrl::put_GridColor(OLE_COLOR newVal)
     if(m_gridPen)
     {
         DeleteObject(m_gridPen);
-        m_gridPen = NULL;
+        m_gridPen = nullptr;
     }
     FireViewChange();
     m_bRequiresSave = TRUE;
@@ -409,7 +409,7 @@ STDMETHODIMP CDMGraphCtrl::put_GridColor(OLE_COLOR newVal)
 
 STDMETHODIMP CDMGraphCtrl::get_LabelColor(OLE_COLOR* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -421,7 +421,7 @@ STDMETHODIMP CDMGraphCtrl::put_LabelColor(OLE_COLOR newVal)
 {
     HRESULT hr;
     COLORREF col;
-    hr = OleTranslateColor(newVal, NULL, &col);
+    hr = OleTranslateColor(newVal, nullptr, &col);
 
     if(m_colLabel == col)
     {
@@ -436,12 +436,12 @@ STDMETHODIMP CDMGraphCtrl::put_LabelColor(OLE_COLOR newVal)
 
 STDMETHODIMP CDMGraphCtrl::get_LabelFont(IFontDisp** pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
-    *pVal = NULL;
-    if(m_fontLabel == NULL)
+    *pVal = nullptr;
+    if(m_fontLabel == nullptr)
     {
         return S_FALSE;
     }
@@ -477,12 +477,12 @@ STDMETHODIMP CDMGraphCtrl::put_LabelFont(IFontDisp* newVal)
 
 STDMETHODIMP CDMGraphCtrl::get_TickFont(IFontDisp** pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
-    *pVal = NULL;
-    if(m_fontTick == NULL)
+    *pVal = nullptr;
+    if(m_fontTick == nullptr)
     {
         return S_FALSE;
     }
@@ -518,12 +518,12 @@ STDMETHODIMP CDMGraphCtrl::put_TickFont(IFontDisp* newVal)
 
 STDMETHODIMP CDMGraphCtrl::get_TitleFont(IFontDisp** pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
-    *pVal = NULL;
-    if(m_fontTitle == NULL)
+    *pVal = nullptr;
+    if(m_fontTitle == nullptr)
     {
         return S_FALSE;
     }
@@ -559,12 +559,12 @@ STDMETHODIMP CDMGraphCtrl::put_TitleFont(IFontDisp* newVal)
 
 STDMETHODIMP CDMGraphCtrl::get_IdentFont(IFontDisp** pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
-    *pVal = NULL;
-    if(m_fontIdent == NULL)
+    *pVal = nullptr;
+    if(m_fontIdent == nullptr)
     {
         return S_FALSE;
     }
@@ -600,7 +600,7 @@ STDMETHODIMP CDMGraphCtrl::put_IdentFont(IFontDisp* newVal)
 
 STDMETHODIMP CDMGraphCtrl::get_TrackMode(TrackModeState* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -636,7 +636,7 @@ STDMETHODIMP CDMGraphCtrl::put_TrackMode(TrackModeState newVal)
 
 STDMETHODIMP CDMGraphCtrl::get_ElementIdentify(VARIANT_BOOL* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -655,12 +655,12 @@ STDMETHODIMP CDMGraphCtrl::put_ElementIdentify(VARIANT_BOOL newVal)
 
 STDMETHODIMP CDMGraphCtrl::get_ControlFramePicture(IPictureDisp** pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
-    *pVal = NULL;
-    if(m_spControlFramePicture == NULL)
+    *pVal = nullptr;
+    if(m_spControlFramePicture == nullptr)
     {
         return S_FALSE;
     }
@@ -685,12 +685,12 @@ STDMETHODIMP CDMGraphCtrl::put_ControlFramePicture(IPictureDisp* newVal)
 
 STDMETHODIMP CDMGraphCtrl::get_PlotAreaPicture(IPictureDisp** pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
-    *pVal = NULL;
-    if(m_spPlotAreaPicture == NULL)
+    *pVal = nullptr;
+    if(m_spPlotAreaPicture == nullptr)
     {
         return S_FALSE;
     }
@@ -715,7 +715,7 @@ STDMETHODIMP CDMGraphCtrl::put_PlotAreaPicture(IPictureDisp* newVal)
 
 STDMETHODIMP CDMGraphCtrl::get_ControlFrameColor(OLE_COLOR* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -727,7 +727,7 @@ STDMETHODIMP CDMGraphCtrl::put_ControlFrameColor(OLE_COLOR newVal)
 {
     HRESULT hr;
     COLORREF col;
-    hr = OleTranslateColor(newVal, NULL, &col);
+    hr = OleTranslateColor(newVal, nullptr, &col);
 
     if(m_colControlFrameColor == col)
     {
@@ -738,7 +738,7 @@ STDMETHODIMP CDMGraphCtrl::put_ControlFrameColor(OLE_COLOR newVal)
     if(m_brushFrame)
     {
         DeleteObject(m_brushFrame);
-        m_brushFrame = NULL;
+        m_brushFrame = nullptr;
     }
     FireViewChange();
     m_bRequiresSave = TRUE;
@@ -747,7 +747,7 @@ STDMETHODIMP CDMGraphCtrl::put_ControlFrameColor(OLE_COLOR newVal)
 
 STDMETHODIMP CDMGraphCtrl::get_PlotAreaColor(OLE_COLOR* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -760,7 +760,7 @@ STDMETHODIMP CDMGraphCtrl::put_PlotAreaColor(OLE_COLOR newVal)
 {
     HRESULT hr;
     COLORREF col;
-    hr = OleTranslateColor(newVal, NULL, &col);
+    hr = OleTranslateColor(newVal, nullptr, &col);
 
     if(m_colPlotAreaColor == col)
     {
@@ -771,7 +771,7 @@ STDMETHODIMP CDMGraphCtrl::put_PlotAreaColor(OLE_COLOR newVal)
     if(m_brushPlot)
     {
         DeleteObject(m_brushPlot);
-        m_brushPlot = NULL;
+        m_brushPlot = nullptr;
     }
     FireViewChange();
     m_bRequiresSave = TRUE;
@@ -780,7 +780,7 @@ STDMETHODIMP CDMGraphCtrl::put_PlotAreaColor(OLE_COLOR newVal)
 
 STDMETHODIMP CDMGraphCtrl::get_FrameStyle(FrameStyle* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -799,7 +799,7 @@ STDMETHODIMP CDMGraphCtrl::put_FrameStyle(FrameStyle newVal)
     if(m_brushFrame)
     {
         DeleteObject(m_brushFrame);
-        m_brushFrame = NULL;
+        m_brushFrame = nullptr;
     }
     FireViewChange();
     m_bRequiresSave = TRUE;
@@ -809,7 +809,7 @@ STDMETHODIMP CDMGraphCtrl::put_FrameStyle(FrameStyle newVal)
 
 STDMETHODIMP CDMGraphCtrl::get_Annotations(IDMGraphCollection* *pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -823,7 +823,7 @@ STDMETHODIMP CDMGraphCtrl::get_Annotations(IDMGraphCollection* *pVal)
 
 STDMETHODIMP CDMGraphCtrl::get_Elements(IDMGraphCollection* *pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -837,7 +837,7 @@ STDMETHODIMP CDMGraphCtrl::get_Elements(IDMGraphCollection* *pVal)
 
 STDMETHODIMP CDMGraphCtrl::get_Cursors(IDMGraphCollection* *pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -851,13 +851,13 @@ STDMETHODIMP CDMGraphCtrl::get_Cursors(IDMGraphCollection* *pVal)
 
 STDMETHODIMP CDMGraphCtrl::get_Axis(Orientation eOrientation, IDMGraphAxis* *pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
     if(eOrientation < 0 || eOrientation > 1)
     {
-        *pVal = NULL;
+        *pVal = nullptr;
         return E_INVALIDARG;
     }
     *pVal = m_pAxis[ eOrientation ];
@@ -957,26 +957,26 @@ STDMETHODIMP CDMGraphCtrl::AutoRange()
 
 STDMETHODIMP CDMGraphCtrl::ShowProperties()
 {
-    return DoVerbProperties(NULL, GetParent());
+    return DoVerbProperties(nullptr, GetParent());
 }
 
 HFONT CDMGraphCtrl::SelectFontObject(HDC hdc, IFont* pFont)
 {
-    if(pFont == NULL)
+    if(pFont == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
     HRESULT hr;
     hr = pFont->SetRatio(m_rcBounds.bottom - m_rcBounds.top, m_sizeExtent.cy);
     if(FAILED(hr))
     {
-        return NULL;
+        return nullptr;
     }
-    HFONT hFont = NULL;
+    HFONT hFont = nullptr;
     hr = pFont->get_hFont(&hFont);
     if(FAILED(hr))
     {
-        return NULL;
+        return nullptr;
     }
 
     return (HFONT)::SelectObject(hdc, hFont);
@@ -987,12 +987,12 @@ void CDMGraphCtrl::OnFontChanged()
     if(m_fontY)
     {
         DeleteObject(m_fontY);
-        m_fontY = NULL;
+        m_fontY = nullptr;
     }
     if(m_fontVLabel)
     {
         DeleteObject(m_fontVLabel);
-        m_fontVLabel = NULL;
+        m_fontVLabel = nullptr;
     }
 
     FireViewChange();
@@ -1032,7 +1032,7 @@ STDMETHODIMP CDMGraphCtrl::InitNew()
 void CDMGraphCtrl::CreateFont(HDC hDC)
 {
 
-    if (m_fontY == NULL)
+    if (m_fontY == nullptr)
     {
         //Create system font
         LOGFONT lf;
@@ -1079,10 +1079,10 @@ void CDMGraphCtrl::PrepareForDrawing(HDC hDC, LPCRECT rect)
     ATLASSERT(rect);
 
     SetMapMode(hDC, MM_TEXT) ;
-    SetWindowOrgEx(hDC, 0,0, NULL) ;
-    SetWindowExtEx(hDC, rect->right , rect->bottom, NULL) ;
-    SetViewportOrgEx(hDC, 0,0, NULL) ;
-    SetViewportExtEx (hDC, rect->right , rect->bottom, NULL );
+    SetWindowOrgEx(hDC, 0,0, nullptr) ;
+    SetWindowExtEx(hDC, rect->right , rect->bottom, nullptr) ;
+    SetViewportOrgEx(hDC, 0,0, nullptr) ;
+    SetViewportExtEx (hDC, rect->right , rect->bottom, nullptr );
 
     memcpy(&m_ctlRect, rect, sizeof(RECT));
     DPtoLP(hDC, (LPPOINT)&m_ctlRect, 2);
@@ -1304,8 +1304,8 @@ void CDMGraphCtrl::DrawGraphOffScreen(HDC hDC, LPCRECT prcBounds, BOOL bOptimize
     // BitBlt uses logical coordinates.
     // Easiest thing is to change to MM_TEXT.
     SetMapMode(hDC, MM_TEXT) ;
-    SetWindowOrgEx(hDC, 0,0, NULL) ;
-    SetViewportOrgEx(hDC, 0,0, NULL) ;
+    SetWindowOrgEx(hDC, 0,0, nullptr) ;
+    SetViewportOrgEx(hDC, 0,0, nullptr) ;
 
     // Blt the memory device context to the screen.
     BitBlt(hDC, rcBoundsDP.left,
@@ -1405,12 +1405,12 @@ void CDMGraphCtrl::DrawGraph(HDC hdc, LPCRECT prcBounds, BOOL bOptimized)
 void CDMGraphCtrl::DrawControlFrame(HDC hDC, BOOL bOptimized)
 {
 
-    if (m_brushFrame == NULL)
+    if (m_brushFrame == nullptr)
     {
         m_brushFrame = CreateSolidBrush(m_colControlFrameColor);
     }
 
-    if (m_brushPlot == NULL)
+    if (m_brushPlot == nullptr)
     {
         m_brushPlot = CreateSolidBrush(m_colPlotAreaColor);
     }
@@ -1486,7 +1486,7 @@ void CDMGraphCtrl::DrawControlFrame(HDC hDC, BOOL bOptimized)
 void CDMGraphCtrl::DrawAxis(HDC hDC, BOOL bOptimized)
 {
 
-    if (m_axisPen == NULL)
+    if (m_axisPen == nullptr)
     {
         m_axisPen = CreatePen(PS_SOLID, 2, m_colAxis);
     }
@@ -1503,16 +1503,16 @@ void CDMGraphCtrl::DrawAxis(HDC hDC, BOOL bOptimized)
     Corrdinate(dRangeX[MIN],dRangeY[MAX], &pts[6]);
     Corrdinate(dRangeX[MAX],dRangeY[MAX], &pts[7]);
 
-    MoveToEx(hDC, pts[0].x, pts[0].y, NULL);
+    MoveToEx(hDC, pts[0].x, pts[0].y, nullptr);
     LineTo(  hDC, pts[1].x, pts[1].y);
 
-    MoveToEx(hDC, pts[2].x, pts[2].y, NULL);
+    MoveToEx(hDC, pts[2].x, pts[2].y, nullptr);
     LineTo(  hDC, pts[3].x, pts[3].y);
 
-    MoveToEx(hDC, pts[4].x, pts[4].y, NULL);
+    MoveToEx(hDC, pts[4].x, pts[4].y, nullptr);
     LineTo(  hDC, pts[5].x, pts[5].y);
 
-    MoveToEx(hDC, pts[6].x, pts[6].y, NULL);
+    MoveToEx(hDC, pts[6].x, pts[6].y, nullptr);
     LineTo(  hDC, pts[7].x, pts[7].y);
 
     if (! bOptimized)
@@ -1549,7 +1549,7 @@ void CDMGraphCtrl::DrawYLogGrid(HDC hDC, BOOL bOptimized)
     dRangeY[MAX] = nGridY;
     ResCalc();
 
-    if (m_gridPen == NULL)
+    if (m_gridPen == nullptr)
     {
         m_gridPen = CreatePen(PS_SOLID, 0, m_colGrid);
     }
@@ -1582,7 +1582,7 @@ void CDMGraphCtrl::DrawYLogGrid(HDC hDC, BOOL bOptimized)
                 }
             }
 
-            MoveToEx(hDC, m_start.x, m_start.y, NULL);
+            MoveToEx(hDC, m_start.x, m_start.y, nullptr);
             LineTo(hDC, m_stop.x, m_stop.y);
 
         }
@@ -1604,7 +1604,7 @@ void CDMGraphCtrl::DrawYLogGrid(HDC hDC, BOOL bOptimized)
                 {
                     m_start  = m_stop;
                     m_stop.x -= 5;
-                    MoveToEx(hDC, m_start.x, m_start.y, NULL);
+                    MoveToEx(hDC, m_start.x, m_start.y, nullptr);
                     LineTo(hDC, m_stop.x, m_stop.y);
                 }
 
@@ -1649,7 +1649,7 @@ void CDMGraphCtrl::DrawXLogGrid(HDC hDC, BOOL bOptimized)
     dRangeX[MAX] = nGridX;
     ResCalc();
 
-    if (m_gridPen == NULL)
+    if (m_gridPen == nullptr)
     {
         m_gridPen = CreatePen(PS_SOLID, 0, m_colGrid);
     }
@@ -1682,7 +1682,7 @@ void CDMGraphCtrl::DrawXLogGrid(HDC hDC, BOOL bOptimized)
                 }
             }
 
-            MoveToEx(hDC, m_start.x, m_start.y, NULL);
+            MoveToEx(hDC, m_start.x, m_start.y, nullptr);
             LineTo(hDC, m_stop.x, m_stop.y);
 
         }
@@ -1705,7 +1705,7 @@ void CDMGraphCtrl::DrawXLogGrid(HDC hDC, BOOL bOptimized)
                 {
                     m_start = m_stop;
                     m_stop.y+=5 ;
-                    MoveToEx(hDC, m_start.x, m_start.y, NULL);
+                    MoveToEx(hDC, m_start.x, m_start.y, nullptr);
                     LineTo(hDC, m_stop.x, m_stop.y);
                 }
 
@@ -1734,7 +1734,7 @@ void CDMGraphCtrl::DrawTicks(HDC hDC, BOOL bOptimized)
     double x ,y ;
     double step ;
 
-    if (m_gridPen == NULL)
+    if (m_gridPen == nullptr)
     {
         m_gridPen = CreatePen(PS_SOLID, 0, m_colGrid);
     }
@@ -1769,7 +1769,7 @@ void CDMGraphCtrl::DrawTicks(HDC hDC, BOOL bOptimized)
                 m_stop.y += 6;
             }
 
-            MoveToEx(hDC, m_start.x, m_start.y, NULL);
+            MoveToEx(hDC, m_start.x, m_start.y, nullptr);
             LineTo(hDC, m_stop.x, m_stop.y);
         }
 
@@ -1788,7 +1788,7 @@ void CDMGraphCtrl::DrawTicks(HDC hDC, BOOL bOptimized)
                 m_stop.y += 4;
             }
 
-            MoveToEx(hDC, m_start.x, m_start.y, NULL);
+            MoveToEx(hDC, m_start.x, m_start.y, nullptr);
             LineTo(hDC, m_stop.x, m_stop.y);
         }
 
@@ -1800,7 +1800,7 @@ void CDMGraphCtrl::DrawTicks(HDC hDC, BOOL bOptimized)
                 Corrdinate(x, dRangeY[MAX], &m_start);
                 m_stop = m_start;
                 m_stop.y += 6;
-                MoveToEx(hDC, m_start.x, m_start.y, NULL);
+                MoveToEx(hDC, m_start.x, m_start.y, nullptr);
                 LineTo(hDC, m_stop.x, m_stop.y);
             }
 
@@ -1810,7 +1810,7 @@ void CDMGraphCtrl::DrawTicks(HDC hDC, BOOL bOptimized)
                 Corrdinate(x, dRangeY[MAX], &m_start);
                 m_stop = m_start;
                 m_stop.y += 4;
-                MoveToEx(hDC, m_start.x, m_start.y, NULL);
+                MoveToEx(hDC, m_start.x, m_start.y, nullptr);
                 LineTo(hDC, m_stop.x, m_stop.y);
             }
         }
@@ -1839,7 +1839,7 @@ void CDMGraphCtrl::DrawTicks(HDC hDC, BOOL bOptimized)
                 m_stop.x -= 6;
             }
 
-            MoveToEx(hDC, m_start.x, m_start.y, NULL);
+            MoveToEx(hDC, m_start.x, m_start.y, nullptr);
             LineTo(hDC, m_stop.x, m_stop.y);
         }
 
@@ -1858,7 +1858,7 @@ void CDMGraphCtrl::DrawTicks(HDC hDC, BOOL bOptimized)
                 m_stop.x -= 4;
             }
 
-            MoveToEx(hDC, m_start.x, m_start.y, NULL);
+            MoveToEx(hDC, m_start.x, m_start.y, nullptr);
             LineTo(hDC, m_stop.x, m_stop.y);
         }
 
@@ -1870,7 +1870,7 @@ void CDMGraphCtrl::DrawTicks(HDC hDC, BOOL bOptimized)
                 Corrdinate(dRangeX[MAX], y, &m_start) ;
                 m_stop  = m_start;
                 m_stop.x -= 6;
-                MoveToEx(hDC, m_start.x, m_start.y, NULL);
+                MoveToEx(hDC, m_start.x, m_start.y, nullptr);
                 LineTo(hDC, m_stop.x, m_stop.y);
             }
             for( i = 1 ; i < nGridY*3 ; i++ )       // Minor Ticks on Right
@@ -1879,7 +1879,7 @@ void CDMGraphCtrl::DrawTicks(HDC hDC, BOOL bOptimized)
                 Corrdinate(dRangeX[MAX], y, &m_start) ;
                 m_stop  = m_start;
                 m_stop.x -= 4;
-                MoveToEx(hDC, m_start.x, m_start.y, NULL);
+                MoveToEx(hDC, m_start.x, m_start.y, nullptr);
                 LineTo(hDC, m_stop.x, m_stop.y);
             }
         }
@@ -1899,7 +1899,7 @@ void CDMGraphCtrl::DrawGrid(HDC hDC, BOOL bOptimized)
     double x ,y ;
     double step ;
 
-    if (m_gridPen == NULL)
+    if (m_gridPen == nullptr)
     {
         m_gridPen = CreatePen(PS_SOLID, 0, m_colGrid);
     }
@@ -1925,7 +1925,7 @@ void CDMGraphCtrl::DrawGrid(HDC hDC, BOOL bOptimized)
             x = dRangeX[MIN] + (step * (double)i) ;
             Corrdinate(x, dRangeY[MIN], &m_start);
             Corrdinate(x, dRangeY[MAX], &m_stop);
-            MoveToEx(hDC, m_start.x, m_start.y, NULL);
+            MoveToEx(hDC, m_start.x, m_start.y, nullptr);
             LineTo(hDC, m_stop.x, m_stop.y);
         }
     }
@@ -1942,7 +1942,7 @@ void CDMGraphCtrl::DrawGrid(HDC hDC, BOOL bOptimized)
             y = dRangeY[MIN] + (step * (double)i) ;
             Corrdinate(dRangeX[MIN], y, &m_start) ;
             Corrdinate(dRangeX[MAX], y, &m_stop) ;
-            MoveToEx(hDC, m_start.x, m_start.y, NULL);
+            MoveToEx(hDC, m_start.x, m_start.y, nullptr);
             LineTo(hDC, m_stop.x, m_stop.y);
         }
     }
@@ -2159,7 +2159,7 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
     }
 
     // Create the new pen as the color of element line
-    if (m_linePen == NULL)
+    if (m_linePen == nullptr)
         m_linePen = CreatePen (pElement->m_nType,
                                pElement->m_nLineWidth,
                                pElement->m_LineColor);
@@ -2167,13 +2167,13 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
     HPEN hPenSave = (HPEN)SelectObject(hDC, m_linePen);
 
     // Create the new pen as the color of element symbol
-    if (m_pointPen == NULL)
+    if (m_pointPen == nullptr)
     {
         m_pointPen = CreatePen (0, 0, pElement->m_PointColor);
     }
 
     // Create the new brush as the color of element symbol
-    if (m_lineBrush == NULL)
+    if (m_lineBrush == nullptr)
     {
         m_lineBrush = CreateSolidBrush (pElement->m_PointColor);
     }
@@ -2217,7 +2217,7 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
         point;
         Corrdinate(pt, &point);
 
-        MoveToEx (hDC, point.x, point.y, NULL);
+        MoveToEx (hDC, point.x, point.y, nullptr);
         memcpy(&oldpt, &point, sizeof(POINT));
     }
 
@@ -2251,7 +2251,7 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
                 ( oldpt.x>BoundingRect.right || oldpt.x<BoundingRect.left || oldpt.y<BoundingRect.top   || oldpt.y>BoundingRect.bottom )   )
         {
             oldpt = point;
-            MoveToEx (hDC, oldpt.x, oldpt.y, NULL);
+            MoveToEx (hDC, oldpt.x, oldpt.y, nullptr);
             continue;
         }
 
@@ -2310,7 +2310,7 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
             oldpt.x = DetermineX(oldpt, point, BoundingRect.bottom);
             oldpt.y=BoundingRect.bottom;
         }
-        MoveToEx (hDC, oldpt.x, oldpt.y, NULL);
+        MoveToEx (hDC, oldpt.x, oldpt.y, nullptr);
 
         if(
             (oldpt.x==BoundingRect.right && point.x==BoundingRect.right) ||
@@ -2326,11 +2326,11 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
                     SetRect(&rect, oldpt.x, oldpt.y, point.x, point.y);
                     //fill solid rect
                     ::SetBkColor(hDC, pElement->m_LineColor);
-                    ::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL);
-                    MoveToEx (hDC, point.x, point.y, NULL);
+                    ::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &rect, nullptr, 0, nullptr);
+                    MoveToEx (hDC, point.x, point.y, nullptr);
                     break;
                 case Stick:
-                    MoveToEx (hDC, point.x, point.y, NULL);
+                    MoveToEx (hDC, point.x, point.y, nullptr);
                     Corrdinate(pt.x, pElement->min.y, &p);
                     p.x = point.x;
                     if (p.y > BoundingRect.bottom)
@@ -2342,10 +2342,10 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
                         p.y = BoundingRect.right;
                     }
                     LineTo(hDC, p.x, p.y);
-                    MoveToEx (hDC, point.x, point.y, NULL);
+                    MoveToEx (hDC, point.x, point.y, nullptr);
                     break;
                 default:
-                    MoveToEx (hDC, point.x, point.y, NULL);
+                    MoveToEx (hDC, point.x, point.y, nullptr);
                     oldpt = point;
                     continue;
             }
@@ -2382,8 +2382,8 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
                 }
                 SetRect(&rect, oldpt.x, oldpt.y ,p.x, p.y);
                 ::SetBkColor(hDC, pElement->m_LineColor);
-                ::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL);
-                MoveToEx (hDC, point.x, point.y, NULL);
+                ::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &rect, nullptr, 0, nullptr);
+                MoveToEx (hDC, point.x, point.y, nullptr);
                 break;
 
             case Stick: // Draw sticked points to the base line
@@ -2399,7 +2399,7 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
                     p.y=BoundingRect.right;
                 }
                 LineTo(hDC, p.x, p.y);
-                MoveToEx (hDC, point.x, point.y, NULL);
+                MoveToEx (hDC, point.x, point.y, nullptr);
                 break;
 
             default:
@@ -2410,7 +2410,7 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
         if ( lngTempX != 0 || lngTempY != 0 )
         {
             point = ptTemp;
-            MoveToEx (hDC, point.x, point.y, NULL);
+            MoveToEx (hDC, point.x, point.y, nullptr);
         }
         oldpt = point;
 
@@ -2429,9 +2429,9 @@ void CDMGraphCtrl::PlotElementLines(HDC hDC, CGraphElement* pElement, BOOL bOpti
     }
 
     DeleteObject(m_linePen);
-    m_linePen = NULL;
+    m_linePen = nullptr;
     DeleteObject(m_lineBrush);
-    m_lineBrush = NULL;
+    m_lineBrush = nullptr;
 }
 
 /////////////////////////////////////
@@ -2444,7 +2444,7 @@ void CDMGraphCtrl::PlotElementPoints(HDC hDC, CGraphElement* pElement, BOOL bOpt
     }
 
     // Create the new pen as the color of element symbol
-    if (m_pointPen == NULL)
+    if (m_pointPen == nullptr)
     {
         m_pointPen = CreatePen (0, 0, pElement->m_PointColor);
     }
@@ -2452,7 +2452,7 @@ void CDMGraphCtrl::PlotElementPoints(HDC hDC, CGraphElement* pElement, BOOL bOpt
     HPEN hPenSave = (HPEN)SelectObject(hDC, m_pointPen);
 
     // Create the new brush as the color of element symbol
-    if (m_pointBrush == NULL)
+    if (m_pointBrush == nullptr)
     {
         m_pointBrush = CreateSolidBrush (pElement->m_PointColor);
     }
@@ -2509,7 +2509,7 @@ void CDMGraphCtrl::PlotElementPoints(HDC hDC, CGraphElement* pElement, BOOL bOpt
             point.y = BoundingRect.bottom;
         }
 
-        MoveToEx (hDC, point.x, point.y, NULL);
+        MoveToEx (hDC, point.x, point.y, nullptr);
         oldpt = point;
     }
 
@@ -2545,7 +2545,7 @@ void CDMGraphCtrl::PlotElementPoints(HDC hDC, CGraphElement* pElement, BOOL bOpt
             (oldpt.y == BoundingRect.bottom && point.y == BoundingRect.bottom )
         )
         {
-            MoveToEx(hDC, point.x, point.y, NULL);
+            MoveToEx(hDC, point.x, point.y, nullptr);
             oldpt = point;
             continue;
         }
@@ -2617,16 +2617,16 @@ void CDMGraphCtrl::PlotElementPoints(HDC hDC, CGraphElement* pElement, BOOL bOpt
     }
 
     DeleteObject(m_pointPen);
-    m_pointPen = NULL;
+    m_pointPen = nullptr;
     DeleteObject(m_pointBrush);
-    m_pointBrush = NULL;
+    m_pointBrush = nullptr;
 }
 
 
 LRESULT CDMGraphCtrl::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
     RECT rcPos = { CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT };
-    if (!m_ttip.Create(TOOLTIPS_CLASS, m_hWnd, rcPos, NULL, WS_POPUP|TTS_NOPREFIX|TTS_ALWAYSTIP, WS_EX_TOPMOST))
+    if (!m_ttip.Create(TOOLTIPS_CLASS, m_hWnd, rcPos, nullptr, WS_POPUP|TTS_NOPREFIX|TTS_ALWAYSTIP, WS_EX_TOPMOST))
     {
         ATLTRACE(_T("Error in creating ToolTip %#x\n"), GetLastError());
         return 0;
@@ -2640,7 +2640,7 @@ LRESULT CDMGraphCtrl::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
     m_ttip.SendMessage(TTM_SETDELAYTIME, TTDT_AUTOPOP, MAKELPARAM(SHRT_MAX, 0));   // stop the tooltip coming up automatically
     m_ttip.SendMessage(TTM_SETDELAYTIME, TTDT_INITIAL, 0);
 
-    ::SetClassLongPtr(m_hWnd, GCL_HCURSOR, (LONG_PTR)LoadCursor(NULL, IDC_CROSS));
+    ::SetClassLongPtr(m_hWnd, GCL_HCURSOR, (LONG_PTR)LoadCursor(nullptr, IDC_CROSS));
     return 0;
 }
 
@@ -2800,7 +2800,7 @@ LRESULT CDMGraphCtrl::OnLButtonDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 
     if (PtInRect (&m_axisRect, point))
     {
-        SetCursor(LoadCursor(NULL, IDC_ARROW));
+        SetCursor(LoadCursor(nullptr, IDC_ARROW));
         m_panPoint = point;
 
 
@@ -2870,7 +2870,7 @@ LRESULT CDMGraphCtrl::OnKillFocus(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&
 LRESULT CDMGraphCtrl::OnLButtonDblClk(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
     m_bIsGrpahWndActive = TRUE;
-    //DoVerbProperties(NULL, GetParent());
+    //DoVerbProperties(nullptr, GetParent());
     POINT point = { (int)(short)LOWORD(lParam), (int)(short)HIWORD(lParam) };
     if (PtInRect (&m_axisRect, point))
     {
@@ -2902,7 +2902,7 @@ STDMETHODIMP CDMGraphCtrl::CopyToClipboard()
 
     // Fill in memDC
     SetBkColor(memDC, GetBkColor(dc));
-    ExtTextOut(memDC, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL);
+    ExtTextOut(memDC, 0, 0, ETO_OPAQUE, &rect, nullptr, 0, nullptr);
 
     m_rcBounds = rect;
     DrawGraphOffScreen(memDC, &rect, FALSE);
@@ -2954,7 +2954,7 @@ STDMETHODIMP CDMGraphCtrl::PrintGraph()
     }
 
     // Obtain a handle to the device context.
-    if (pd.hDC == NULL)
+    if (pd.hDC == nullptr)
     {
         hr = S_FALSE;
         goto $end;
@@ -3045,8 +3045,8 @@ STDMETHODIMP CDMGraphCtrl::PrintGraph()
     // AT 10.07.2003 original: SIZE sz(500,300); // width, hieght
     RECT rect;
     SetRect(&rect, pt.x, pt.y, pt.x + sz.cx, pt.y + sz.cy);
-    SetViewportExtEx(pd.hDC, rect.right , rect.bottom, NULL);
-    SetViewportOrgEx(pd.hDC, 50, 50, NULL); // position
+    SetViewportExtEx(pd.hDC, rect.right , rect.bottom, nullptr);
+    SetViewportOrgEx(pd.hDC, 50, 50, nullptr); // position
     DrawGraph(pd.hDC, &rect, FALSE);
 
     EndPage(pd.hDC); // end a page
@@ -3172,7 +3172,7 @@ void CDMGraphCtrl::OnPlotDeleted()
 /****************************************/
 STDMETHODIMP CDMGraphCtrl::SaveAs(BSTR szFilename)
 {
-    if(szFilename == NULL)
+    if(szFilename == nullptr)
     {
         return E_POINTER;
     }
@@ -3181,7 +3181,7 @@ STDMETHODIMP CDMGraphCtrl::SaveAs(BSTR szFilename)
     PBITMAPINFO pbi;
     RECT rect;
     HDC dc = GetDC();
-    if(dc == NULL)
+    if(dc == nullptr)
     {
         return HRESULT_FROM_WIN32(GetLastError());
     }
@@ -3192,13 +3192,13 @@ STDMETHODIMP CDMGraphCtrl::SaveAs(BSTR szFilename)
 
     // Create memDC
     memDC = CreateCompatibleDC(dc);
-    if(memDC == NULL)
+    if(memDC == nullptr)
     {
         hr = HRESULT_FROM_WIN32(GetLastError());
         goto $end1;
     }
     hBitmap = CreateCompatibleBitmap(dc, rect.right - rect.left, rect.bottom - rect.top);
-    if(hBitmap == NULL)
+    if(hBitmap == nullptr)
     {
         hr = HRESULT_FROM_WIN32(GetLastError());
         goto $end2;
@@ -3208,7 +3208,7 @@ STDMETHODIMP CDMGraphCtrl::SaveAs(BSTR szFilename)
 
     // Fill in memDC
     SetBkColor(memDC, GetBkColor(dc));
-    ExtTextOut(memDC, 0, 0, ETO_OPAQUE, &rect, NULL, 0, NULL); //FillSolidRect
+    ExtTextOut(memDC, 0, 0, ETO_OPAQUE, &rect, nullptr, 0, nullptr); //FillSolidRect
 
     m_rcBounds = rect;
     DrawGraphOffScreen(memDC, &rect, FALSE);
@@ -3261,18 +3261,18 @@ STDMETHODIMP CDMGraphCtrl::ShiftDisplay(SHORT xShift,SHORT yShift)
 /****************************************/
 char* LPCTSTRToCharArray(LPCTSTR val)
 {
-    char* ansistr = NULL;
+    char* ansistr = nullptr;
 
     int lenW = _tcslen(val);
-    int lenA = ::WideCharToMultiByte(CP_ACP, 0, val, lenW, 0, 0, NULL, NULL);
+    int lenA = ::WideCharToMultiByte(CP_ACP, 0, val, lenW, 0, 0, nullptr, nullptr);
     if (lenA > 0)
     {
         ansistr = new char[lenA + 1]; // allocate a final null terminator as well
-        WideCharToMultiByte(CP_ACP, 0, val, lenW, ansistr, lenA, NULL, NULL);
+        WideCharToMultiByte(CP_ACP, 0, val, lenW, ansistr, lenA, nullptr, nullptr);
         ansistr[lenA] = 0; // Set the null terminator yourself
     }
     char* c = new char[lenA + 1];
-    if (NULL != ansistr)
+    if (nullptr != ansistr)
     {
         strcpy(c,ansistr);
         //...use the strings, then free their memory:
@@ -3373,13 +3373,13 @@ STDMETHODIMP CDMGraphCtrl::GetElementValueAtCursor( SHORT shElementID,
         DOUBLE dblCursorVal, DOUBLE* dblElemVal )
 {
     // Pointers to Element
-    CGraphElement* pElement = NULL;
+    CGraphElement* pElement = nullptr;
     pElement = (*m_pElementList)[ shElementID ];
 
-    if( pElement != NULL )
+    if( pElement != nullptr )
     {
         // If it is valid then only get the count
-        if( pElement != NULL )
+        if( pElement != nullptr )
         {
             // Get the number of points in the element's ring buffer
             int nCount = pElement->m_PointList.GetSize();
@@ -3443,28 +3443,28 @@ STDMETHODIMP CDMGraphCtrl::GetElementValueAtCursor( SHORT shElementID,
 STDMETHODIMP CDMGraphCtrl::GenerateCSVReport(LPCTSTR pFilename)
 {
     // Check for valid pointer
-    if( pFilename != NULL )
+    if( pFilename != nullptr )
     {
         // Create File Pointer
-        FILE* pFile = NULL;
+        FILE* pFile = nullptr;
         // Open the file in read mode
 
-        char* pchFileName = NULL;
+        char* pchFileName = nullptr;
         pchFileName = LPCTSTRToCharArray(pFilename);
         pFile = fopen( pchFileName,"w+");
         delete pchFileName;
         // If successful
-        if( pFile != NULL )
+        if( pFile != nullptr )
         {
             // Pointer to Pointers of Elements
-            CGraphElement** pElement = NULL;
+            CGraphElement** pElement = nullptr;
             long lElementCount = 0;
             // Get the element count
             m_pElementList->get_Count(&lElementCount);
             // Allocate memory for pointer array
             pElement = new CGraphElement*[ lElementCount ];
             // If enough memory is available then proceed
-            if( pElement != NULL )
+            if( pElement != nullptr )
             {
                 int nMaxCount = 0; // To store the number of iterations
 
@@ -3472,7 +3472,7 @@ STDMETHODIMP CDMGraphCtrl::GenerateCSVReport(LPCTSTR pFilename)
                 {
                     pElement[ nIndex ] = (*m_pElementList)[ nIndex ];
                     // If it is valid then only get the count
-                    if( pElement[ nIndex ] != NULL )
+                    if( pElement[ nIndex ] != nullptr )
                     {
                         // Get the number of points in the element's ring buffer
                         int nCount =
@@ -3495,7 +3495,7 @@ STDMETHODIMP CDMGraphCtrl::GenerateCSVReport(LPCTSTR pFilename)
                     BSTR bstrElementName;
                     pElement[ nIndex ]->get_Name(&bstrElementName);
                     //char chElementName[1024];
-                    char* pElementName = NULL;
+                    char* pElementName = nullptr;
                     pElementName = (char*)BStr2TStr(m_hWnd, bstrElementName);
 
                     fprintf( pFile,"%s,,", pElementName);
@@ -3549,7 +3549,7 @@ HRESULT CDMGraphCtrl::CreateBitmapInfoStruct(HBITMAP hBmp, PBITMAPINFO* pbi)
     BITMAP bmp;
     WORD cClrBits;
 
-    *pbi = NULL;
+    *pbi = nullptr;
 
     //Retrieve the bitmap colour format, width, and height.
     if(!GetObject(hBmp, sizeof(BITMAP), (LPSTR)&bmp))
@@ -3595,7 +3595,7 @@ HRESULT CDMGraphCtrl::CreateBitmapInfoStruct(HBITMAP hBmp, PBITMAPINFO* pbi)
     {
         *pbi = (PBITMAPINFO) malloc(sizeof(BITMAPINFOHEADER));
     }
-    if(*pbi == NULL)
+    if(*pbi == nullptr)
     {
         return E_OUTOFMEMORY;
     }
@@ -3666,10 +3666,10 @@ HRESULT CDMGraphCtrl::CreateBMPFile(LPCOLESTR pszFile, PBITMAPINFO pbi, HBITMAP 
     hf = CreateFileW(pszFile,
                      GENERIC_READ | GENERIC_WRITE,
                      (DWORD) 0,
-                     NULL,
+                     nullptr,
                      CREATE_ALWAYS,
                      FILE_ATTRIBUTE_NORMAL,
-                     (HANDLE) NULL);
+                     (HANDLE) nullptr);
 
     if(hf == INVALID_HANDLE_VALUE)
     {
@@ -3691,7 +3691,7 @@ HRESULT CDMGraphCtrl::CreateBMPFile(LPCOLESTR pszFile, PBITMAPINFO pbi, HBITMAP 
                     pbih->biSize + pbih->biClrUsed * sizeof (RGBQUAD);
 
     //Copy the BITMAPFILEHEADER into the .BMP file.
-    if(!WriteFile(hf, (LPVOID) &hdr, sizeof(BITMAPFILEHEADER), (LPDWORD) &dwTmp,  NULL))
+    if(!WriteFile(hf, (LPVOID) &hdr, sizeof(BITMAPFILEHEADER), (LPDWORD) &dwTmp,  nullptr))
     {
         hr = Error(L"Unable to write file header when saving bitmap", GUID_NULL, HRESULT_FROM_WIN32(GetLastError()));
         goto $end;
@@ -3700,7 +3700,7 @@ HRESULT CDMGraphCtrl::CreateBMPFile(LPCOLESTR pszFile, PBITMAPINFO pbi, HBITMAP 
     //Copy the BITMAPINFOHEADER and RGBQUAD array into the file.
     if(!WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER)
                   + pbih->biClrUsed * sizeof (RGBQUAD),
-                  (LPDWORD) &dwTmp, ( NULL)) )
+                  (LPDWORD) &dwTmp, ( nullptr)) )
     {
         hr = Error(L"Unable to write bitmap info", GUID_NULL, HRESULT_FROM_WIN32(GetLastError()));
         goto $end;
@@ -3709,7 +3709,7 @@ HRESULT CDMGraphCtrl::CreateBMPFile(LPCOLESTR pszFile, PBITMAPINFO pbi, HBITMAP 
     //Copy the array of color indices into the .BMP file.
     dwTotal = cb = pbih->biSizeImage;
     hp = lpBits;
-    if(!WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp,NULL))
+    if(!WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp,nullptr))
     {
         hr = Error(L"Unable to write colour indices when saving bitmap", GUID_NULL, HRESULT_FROM_WIN32(GetLastError()));
     }
@@ -3795,7 +3795,7 @@ void CDMGraphCtrl::Annotate(HDC hDC)
         SetRect(&rc, point.x, point.y, point.x+sz.cx, point.y+sz.cy);
 
         // Create the new brush as the color of element symbol
-        if (m_annoBrush == NULL)
+        if (m_annoBrush == nullptr)
         {
             m_annoBrush = CreateSolidBrush (anno->m_BkColor);
         }
@@ -3817,13 +3817,13 @@ void CDMGraphCtrl::Annotate(HDC hDC)
         if(m_annoBrush)
         {
             DeleteObject(m_annoBrush);
-            m_annoBrush = NULL;
+            m_annoBrush = nullptr;
         }
 
         if(m_fontVLabel)
         {
             DeleteObject(m_fontVLabel);
-            m_fontVLabel = NULL;
+            m_fontVLabel = nullptr;
         }
     }
 }
@@ -3844,7 +3844,7 @@ void CDMGraphCtrl::DrawCursor(HDC hDC, BOOL bOptimized)
             continue;
         }
 
-        if (m_cursorPen == NULL)
+        if (m_cursorPen == nullptr)
         {
             m_cursorPen = CreatePen(PS_SOLID, 0, cursor->m_Color);
         }
@@ -3856,7 +3856,7 @@ void CDMGraphCtrl::DrawCursor(HDC hDC, BOOL bOptimized)
             POINT pt[2];
             Corrdinate(dRangeX[MIN], cursor->position.y, &pt[0]);
             Corrdinate(dRangeX[MAX], cursor->position.y, &pt[1]);
-            MoveToEx(hDC, pt[0].x, pt[0].y, NULL);
+            MoveToEx(hDC, pt[0].x, pt[0].y, nullptr);
             LineTo(hDC, pt[1].x, pt[1].y);
         }
 
@@ -3865,7 +3865,7 @@ void CDMGraphCtrl::DrawCursor(HDC hDC, BOOL bOptimized)
             POINT pt[2];
             Corrdinate(cursor->position.x, dRangeY[MIN], &pt[0]);
             Corrdinate(cursor->position.x, dRangeY[MAX], &pt[1]);
-            MoveToEx(hDC, pt[0].x, pt[0].y, NULL);
+            MoveToEx(hDC, pt[0].x, pt[0].y, nullptr);
             LineTo(hDC, pt[1].x, pt[1].y);
 
             //To show Cursor ID
@@ -3898,7 +3898,7 @@ void CDMGraphCtrl::DrawCursor(HDC hDC, BOOL bOptimized)
         if(m_cursorPen)
         {
             DeleteObject(m_cursorPen);
-            m_cursorPen = NULL;
+            m_cursorPen = nullptr;
         }
     }
 }
@@ -4004,7 +4004,7 @@ HRESULT WINAPI GetSelectedCursor(IDMGraphCtrl* pGraphCtrl, IDMGraphCursor** pCur
     HRESULT hr;
     ATLASSERT(pGraphCtrl);
     ATLASSERT(pCursor);
-    *pCursor = NULL;
+    *pCursor = nullptr;
     CComPtr<IDMGraphCollection> spGraphCollection;
     hr = pGraphCtrl->get_Cursors(&spGraphCollection);
 
@@ -4136,7 +4136,7 @@ void CDMGraphCtrl::vUpdateCursorSelection(POINT point)
                 ptCursor.x+5 >= point.x )
         {
             /*HCURSOR hCursor;
-            hCursor = LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZEWE));
+            hCursor = LoadCursor(nullptr, MAKEINTRESOURCE(IDC_SIZEWE));
             ::SetCursor(hCursor);*/
             spGraphCollection->put_Selected(nIndex);
             break;

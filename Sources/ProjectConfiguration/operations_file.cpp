@@ -67,19 +67,19 @@ static bool ReadAString(FILE * pFile, std::string & ResultStr)
     //fseek(pFile, sizeof("\n")-1, SEEK_CUR);
     if (fread(&nLength, sizeof(int), 1, pFile) == 1)
     {
-        CHAR* Buffer = NULL;
+        CHAR* Buffer = nullptr;
         try
         {
             Buffer = new CHAR[nLength];
-            if (Buffer != NULL)
+            if (Buffer != nullptr)
             {
-                if (fread(Buffer, sizeof(char) * nLength, 1, pFile) != NULL)
+                if (fread(Buffer, sizeof(char) * nLength, 1, pFile) != 0)
                 {
                     ResultStr = Buffer;
                     bResult = true;
                 }
                 delete[] Buffer;
-                Buffer = NULL;
+                Buffer = nullptr;
             }
         }
         catch (...)
@@ -115,7 +115,7 @@ static int ReadAndValidateString(FILE* pFile, char Buffer[], char* ValidationStr
     if (fread(&nLength, sizeof(int), 1, pFile) == 1)
     {
         memset(Buffer, '\0', nLength);
-        if (fread(Buffer, sizeof(char) * nLength, 1, pFile) == NULL)
+        if (fread(Buffer, sizeof(char) * nLength, 1, pFile) == 0)
         {
             nResult = GetTheErrorType(pFile);
         }
@@ -209,7 +209,7 @@ bool FileAddModifySectionData(std::string ProjectName, std::string SectionName,
 
 
 static int ReadWriteASection(bool bToRead, short SectionID,
-                             FILE* pFile, void* pData = NULL)
+                             FILE* pFile, void* pData = nullptr)
 {
     int nResult = 0;
 
@@ -223,7 +223,7 @@ static int ReadWriteASection(bool bToRead, short SectionID,
                 nResult = ReadAndValidateString(pFile, acBuffer, DATABASE_SIGNATURE);
                 if (nResult != 0)
                 {
-                    ReadWriteASection(bToRead, SECTION_FILE_INVALID, NULL);
+                    ReadWriteASection(bToRead, SECTION_FILE_INVALID, nullptr);
                 }
             }
             else
@@ -280,7 +280,7 @@ static int ReadWriteASection(bool bToRead, short SectionID,
 
                 if (nResult != 0)
                 {
-                    ReadWriteASection(bToRead, SECTION_FILE_INVALID, NULL);
+                    ReadWriteASection(bToRead, SECTION_FILE_INVALID, nullptr);
                 }
             }
             else
@@ -303,7 +303,7 @@ static int ReadWriteASection(bool bToRead, short SectionID,
                 nResult = ReadAndValidateString(pFile, acBuffer, PROJECT_TABLE_SIG);
                 if (nResult != 0)
                 {
-                    ReadWriteASection(bToRead, SECTION_FILE_INVALID, NULL);
+                    ReadWriteASection(bToRead, SECTION_FILE_INVALID, nullptr);
                 }
             }
             else
@@ -480,7 +480,7 @@ static int ReadWriteASection(bool bToRead, short SectionID,
                 nResult = ReadAndValidateString(pFile, acBuffer, DB_END_SIGNATURE);
                 if (nResult != 0)
                 {
-                    ReadWriteASection(bToRead, SECTION_FILE_INVALID, NULL);
+                    ReadWriteASection(bToRead, SECTION_FILE_INVALID, nullptr);
                 }
             }
             else
@@ -511,7 +511,7 @@ int LoadDataFile(char FileName[])
     g_ProjCfgManager.DeleteAllProjectTable();
 
     int nResult = 0;
-    FILE* pFile = NULL;
+    FILE* pFile = nullptr;
 
     //Check if file exists
     if (fopen_s(&pFile, FileName, "rb") == 0)
@@ -531,7 +531,7 @@ int LoadDataFile(char FileName[])
 int SaveDataFile(char FileName[])
 {
     int nResult = 0;
-    FILE* pFile = NULL;
+    FILE* pFile = nullptr;
 
     //open again with write permission
     if (fopen_s(&pFile, FileName, "wb") == 0)

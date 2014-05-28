@@ -47,7 +47,7 @@
  */
 CReplayFileConfigDlg::CReplayFileConfigDlg( CReplayManager& rouManager,
         const SFILTERAPPLIED_CAN* psFilterConfigured,
-        CWnd* pParent /*=NULL*/)
+        CWnd* pParent /*=nullptr*/)
     : CDialog(CReplayFileConfigDlg::IDD, pParent),
       m_rouManager( rouManager ),
       m_psFilterConfigured(psFilterConfigured)
@@ -163,7 +163,7 @@ VOID CReplayFileConfigDlg::vCreateReplayFileList()
     // Set Col Width
     m_omLstcReplayFiles.SetColumnWidth( 0, nWidth );
     // Set Image List
-    if( m_omImageList.m_hImageList != NULL )
+    if( m_omImageList.m_hImageList != nullptr )
     {
         m_omLstcReplayFiles.SetImageList( &m_omImageList, LVSIL_SMALL );
     }
@@ -237,7 +237,7 @@ VOID CReplayFileConfigDlg::vEnableDisableButtons()
     vEnableReplayComps( bEnable );
     // Disable Enable/Delete button
     CWnd* pWnd = GetDlgItem(IDC_BTN_DELETE_FILE);
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
@@ -264,7 +264,7 @@ void CReplayFileConfigDlg::OnClickListRepalyFiles(NMHDR* /*pNMHDR*/, LRESULT* pR
                                           unItemStateMask,
                                           unItemStateMask );
     }
-    if( pResult != NULL )
+    if( pResult != nullptr )
     {
         *pResult = 0;
     }
@@ -288,7 +288,7 @@ void CReplayFileConfigDlg::OnDblclkListRepalyFiles(NMHDR* /*pNMHDR*/, LRESULT* p
                                           unItemStateMask,
                                           unItemStateMask );
     }
-    if( pResult != NULL )
+    if( pResult != nullptr )
     {
         *pResult = 0;
     }
@@ -326,7 +326,7 @@ void CReplayFileConfigDlg::OnItemchangedListRepalyFiles( NMHDR* pNMHDR,
             ouFile.m_bEnabled = nCurrentState;
         }
     }
-    if( pResult != NULL )
+    if( pResult != nullptr )
     {
         *pResult = 0;
     }
@@ -446,7 +446,7 @@ void CReplayFileConfigDlg::OnBtnBrowse()
                                ouFile.m_omStrFileName,
                                dwFlags,
                                defLOG_FILTER,
-                               NULL );
+                               nullptr );
         //Set the caption
         omFileDlg.m_ofn.lpstrTitle = _(defSTR_REPLAY_FILE_SELECTION_TITLE);
         // Show File open dialog
@@ -616,10 +616,10 @@ void CReplayFileConfigDlg::OnBtnAddFile()
         OFN_HIDEREADONLY | OFN_PATHMUSTEXIST | OFN_EXTENSIONDIFFERENT;
     CFileDialog omFileDlg( TRUE,
                            defSTR_LOG_FILE_EXTENSION,
-                           NULL,
+                           nullptr,
                            dwFlags,
                            defLOG_FILTER,
-                           NULL );
+                           nullptr );
     //Set the caption
     omFileDlg.m_ofn.lpstrTitle = _(defSTR_REPLAY_FILE_SELECTION_TITLE);
     // Show File open dialog
@@ -735,28 +735,28 @@ VOID CReplayFileConfigDlg::vEnableReplayComps( BOOL bEnable )
     // Interactive Replay Option
     m_omChkInteractive.EnableWindow( bEnable );
     // Repolay Mode Option buttons
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     // Monoshot
     pWnd = GetDlgItem( IDC_RADIO_REPLAY_MODE_MONO );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
     // Cyclic
     pWnd = GetDlgItem( IDC_RADIO_REPLAY_MODE_CYCLIC );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
     // Filter Button
     pWnd = GetDlgItem( IDC_BTN_FILTER );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
     // Msg Button
     pWnd = GetDlgItem( IDC_COMBO_MSG_TYPE );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
@@ -765,12 +765,12 @@ VOID CReplayFileConfigDlg::vEnableReplayComps( BOOL bEnable )
 static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_CAN* psFilterConfigured,
                                  const SFILTERAPPLIED_CAN* psFilterApplied)
 {
-    ASSERT(psFilterConfigured != NULL);
+    ASSERT(psFilterConfigured != nullptr);
     DestList.RemoveAll();
 
     SMAINENTRY sMainEntry;
     sMainEntry.m_omMainEntryName = "CAN";
-    if (psFilterApplied == NULL)
+    if (psFilterApplied == nullptr)
     {
         SMAINENTRY sMainEntry;
         sMainEntry.m_omMainEntryName = "FILTER_SELECTION_CAN";
@@ -792,7 +792,7 @@ static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_
                                               psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
             if (SFILTERSET::psGetFilterSetPointer(psFilterApplied->m_psFilters,
                                                   psFilterApplied->m_ushTotal,
-                                                  sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH)) != NULL)
+                                                  sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH)) != nullptr)
             {
                 sMainEntry.m_odSelEntryList.AddTail(sSubEntry);
             }
@@ -818,7 +818,7 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
         SSUBENTRY sSubEntry = sMainEntry.m_odSelEntryList.GetNext(pos);
         const PSFILTERSET psTemp = SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters,
                                    psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
-        ASSERT (psTemp != NULL);
+        ASSERT (psTemp != nullptr);
         sFilterApplied.m_psFilters[sFilterApplied.m_ushTotal].bClone(*psTemp);
         sFilterApplied.m_ushTotal++;
     }

@@ -35,7 +35,7 @@ class CErrHandlerDlg : public CDialog
 public:
     CStringArray m_omStrArrayErrorHandler;
     // standard constructor
-    CErrHandlerDlg(CFunctionEditorDoc* pDoc, CWnd* pParent = NULL,BOOL bIsDelete = FALSE);
+    CErrHandlerDlg(CFunctionEditorDoc* pDoc, CWnd* pParent = nullptr,BOOL bIsDelete = FALSE);
 
     // Dialog Data
     //{{AFX_DATA(CErrHandlerDlg)

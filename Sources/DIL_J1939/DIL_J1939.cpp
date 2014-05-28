@@ -133,11 +133,11 @@ USAGEMODE HRESULT DILJ_ManageMsgBuf(BYTE bAction, DWORD dwClientID,
                                     CBaseMsgBufVSE* pBufObj)
 {
     HRESULT hResult = INVALID_PARAM;
-    if (pBufObj != NULL)
+    if (pBufObj != nullptr)
     {
         CNodeConManager* pConManager =
             CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClientID);
-        if (pConManager != NULL)
+        if (pConManager != nullptr)
         {
             if (bAction == MSGBUF_ADD)
             {
@@ -176,9 +176,9 @@ USAGEMODE HRESULT DILJ_SendJ1939Msg (DWORD dwClientId, UINT unChannel, EJ1939_MS
                                      BYTE* pbyData, UINT unDLC, BYTE byPriority, BYTE bySrc, BYTE byDestAdres)
 {
     HRESULT hResult = S_FALSE;
-    CNodeConManager* pManager = NULL;
+    CNodeConManager* pManager = nullptr;
     pManager = CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClientId);
-    if (NULL != pManager && pManager->bIsActive())
+    if (nullptr != pManager && pManager->bIsActive())
     {
         hResult = S_OK;
         if (pManager->bIsMonitorNode())
@@ -236,16 +236,16 @@ USAGEMODE HRESULT DILJ_NM_RequestAddress(DWORD dwClient, UINT unChannel, BYTE by
         BYTE bySrc, BYTE byDestAddress)
 {
     HRESULT hResult = S_FALSE;
-    CNodeConManager* pManager = NULL;
+    CNodeConManager* pManager = nullptr;
     pManager = CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClient);
-    if (NULL != pManager && pManager->bIsActive())
+    if (nullptr != pManager && pManager->bIsActive())
     {
         hResult = S_OK;
         if (pManager->bIsMonitorNode())
         {
             pManager->vSetNodeAddress(bySrc);
         }
-        pManager->vSendMessage(unChannel, MSG_TYPE_NM_RQST_ACL, 0, NULL, 0, byPriority, byDestAddress);
+        pManager->vSendMessage(unChannel, MSG_TYPE_NM_RQST_ACL, 0, nullptr, 0, byPriority, byDestAddress);
     }
     return hResult;
 }
@@ -277,16 +277,16 @@ USAGEMODE BOOL DILJ_NM_bIsAddressClaimed(BYTE byAddress)
 USAGEMODE HRESULT DILJ_NM_ClaimAddress (DWORD dwClientId, UINT unChannel, BYTE byAddress, BYTE byPriority)
 {
     HRESULT hResult = S_FALSE;
-    CNodeConManager* pManager = NULL;
+    CNodeConManager* pManager = nullptr;
     pManager = CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClientId);
-    if (NULL != pManager && pManager->bIsActive())
+    if (nullptr != pManager && pManager->bIsActive())
     {
         hResult = S_OK;
         if (pManager->bIsMonitorNode())
         {
             pManager->vSetNodeAddress(byAddress);
         }
-        pManager->vSendMessage(unChannel, MSG_TYPE_NM_ACL, byAddress, 0, NULL, byPriority, ADDRESS_ALL);
+        pManager->vSendMessage(unChannel, MSG_TYPE_NM_ACL, byAddress, 0, 0, byPriority, ADDRESS_ALL);
     }
     return hResult;
 }
@@ -307,9 +307,9 @@ USAGEMODE HRESULT DILJ_NM_CommandAddress(DWORD dwClient, UINT unChannel, UINT64 
         BYTE byNewAddress, BYTE byPriority, BYTE bySrc, BYTE byDestAddress)
 {
     HRESULT hResult = S_FALSE;
-    CNodeConManager* pManager = NULL;
+    CNodeConManager* pManager = nullptr;
     pManager = CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClient);
-    if (NULL != pManager && pManager->bIsActive())
+    if (nullptr != pManager && pManager->bIsActive())
     {
         hResult = S_OK;
         if (pManager->bIsMonitorNode())
@@ -340,9 +340,9 @@ USAGEMODE HRESULT DILJ_RequestPGN(DWORD dwClient, UINT unChannel, UINT32 unPGN,
                                   BYTE byPriority, BYTE bySrc, BYTE byDestAddress)
 {
     HRESULT hResult = S_FALSE;
-    CNodeConManager* pManager = NULL;
+    CNodeConManager* pManager = nullptr;
     pManager = CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClient);
-    if (NULL != pManager && pManager->bIsActive())
+    if (nullptr != pManager && pManager->bIsActive())
     {
         hResult = S_OK;
         if (pManager->bIsMonitorNode())
@@ -370,9 +370,9 @@ USAGEMODE HRESULT DILJ_RequestPGN(DWORD dwClient, UINT unChannel, UINT32 unPGN,
 USAGEMODE HRESULT DILJ_SendAckMsg(DWORD dwClient, UINT unChannel, ETYPE_ACK eAckType, UINT32 unPGN, BYTE bySrc, BYTE byAddresAck)
 {
     HRESULT hResult = S_FALSE;
-    CNodeConManager* pManager = NULL;
+    CNodeConManager* pManager = nullptr;
     pManager = CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClient);
-    if (NULL != pManager && pManager->bIsActive())
+    if (nullptr != pManager && pManager->bIsActive())
     {
         hResult = S_OK;
         if (pManager->bIsMonitorNode())
@@ -502,9 +502,9 @@ USAGEMODE HRESULT DILJ_SetCallBckFuncPtr(DWORD dwClient, ETYPE_CLBCK_FN eClBckFn
         void* pvClBckFn)
 {
     HRESULT hResult = S_FALSE;
-    CNodeConManager* pManager = NULL;
+    CNodeConManager* pManager = nullptr;
     pManager = CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(dwClient);
-    if (NULL != pManager)
+    if (nullptr != pManager)
     {
         hResult = pManager->SetCallBackFuncPtr(eClBckFnType, pvClBckFn);
     }

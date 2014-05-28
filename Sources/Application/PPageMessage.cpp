@@ -60,7 +60,7 @@ CPPageMessage::CPPageMessage(BOOL bForDBMsg, ETYPE_BUS eBusType, void* pouMsgSig
                   bForDBMsg ? IDS_PPAGE_TITLE_DBMSG : IDS_PPAGE_TITLE_NDBMSG)
 {
     m_bForDBMsg    = bForDBMsg;
-    m_pRGBColors   = NULL;
+    m_pRGBColors   = nullptr;
     m_eBusType     = eBusType;
     m_pouDb =  pouMsgSigBUS;
 }
@@ -71,7 +71,7 @@ CPPageMessage::~CPPageMessage()
     {
         //delete[] m_pRGBColors;
         free(m_pRGBColors);
-        m_pRGBColors = NULL;
+        m_pRGBColors = nullptr;
     }
 }
 
@@ -123,7 +123,7 @@ BOOL CPPageMessage::OnInitDialog()
     m_odMsgList.InsertColumn(1, _("Message Text"), LVCFMT_LEFT, nWidth);
 
     UINT unTotalDBMsgs = 0;
-    UINT* punDBMsgs = NULL;
+    UINT* punDBMsgs = nullptr;
     if ( m_eBusType == LIN )
     {
         m_ouClusterConfig = (ClusterConfig*)m_pouDb;
@@ -133,7 +133,7 @@ BOOL CPPageMessage::OnInitDialog()
     else
     {
         m_pouMsgSigBus = (CMsgSignal*)m_pouDb;
-        if ( m_pouMsgSigBus == NULL)
+        if ( m_pouMsgSigBus == nullptr)
         {
             return FALSE;
         }
@@ -142,7 +142,7 @@ BOOL CPPageMessage::OnInitDialog()
         if (unTotalDBMsgs > 0)
         {
             punDBMsgs = new UINT[unTotalDBMsgs];
-            if (punDBMsgs != NULL)
+            if (punDBMsgs != nullptr)
             {
                 m_pouMsgSigBus->unListGetMessageIDs(punDBMsgs);
             }
@@ -154,7 +154,7 @@ BOOL CPPageMessage::OnInitDialog()
     GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(bAnyMsgEntered);
     GetDlgItem(IDC_BUTTON_EDIT)->EnableWindow(bAnyMsgEntered);
 
-    if( punDBMsgs != NULL)
+    if( punDBMsgs != nullptr)
     {
         delete[] punDBMsgs;
     }
@@ -168,7 +168,7 @@ BOOL CPPageMessage::bIsMsgIDPresent(UINT* punMsgIDBuffer, UINT unTotalMsgs,
 {
     BOOL bResult = FALSE;
 
-    if ((unTotalMsgs > 0) && (punMsgIDBuffer != NULL))
+    if ((unTotalMsgs > 0) && (punMsgIDBuffer != nullptr))
     {
         UINT unCount = 0;
         while ((unCount < unTotalMsgs) && (bResult != TRUE))
@@ -189,7 +189,7 @@ int CPPageMessage::nInitialiseMsgLCtrl(UINT unTotalDBMsgs, UINT* punDBMsgIDs)
     int nMessagesAdded = 0;
     CMessageAttrib& ouMsg = CMessageAttrib::ouGetHandle(m_eBusType);
 
-    SCanIDList* psList = NULL;
+    SCanIDList* psList = nullptr;
 
     int nEntries = ouMsg.nGetTotalIDs();
 
@@ -198,7 +198,7 @@ int CPPageMessage::nInitialiseMsgLCtrl(UINT unTotalDBMsgs, UINT* punDBMsgIDs)
         psList = new SCanIDList[nEntries];
     }
 
-    if (psList != NULL)
+    if (psList != nullptr)
     {
         ouMsg.nGetMsgAttribs(psList);
         int nLastItem = 0;
@@ -217,7 +217,7 @@ int CPPageMessage::nInitialiseMsgLCtrl(UINT unTotalDBMsgs, UINT* punDBMsgIDs)
             }
         }
         delete[] psList;
-        psList = NULL;
+        psList = nullptr;
     }
 
     return nMessagesAdded;
@@ -269,7 +269,7 @@ void CPPageMessage::OnButtonAdd()
         because the validation is already done */
         CMessageAttrib::ouGetHandle(m_eBusType).nAddNewAttrib(m_sNewItem);
 
-        if(m_pRGBColors == NULL)
+        if(m_pRGBColors == nullptr)
         {
             m_pRGBColors = (COLORREF*)malloc(sizeof(COLORREF));
         }
@@ -400,7 +400,7 @@ void CPPageMessage::OnItemchangedListMessage(NMHDR* /*pNMHDR*/, LRESULT* pResult
     BOOL bToEnable = ((m_odMsgList.GetNextItem(-1, LVNI_SELECTED)) >= 0);
 
     CButton* pomButton = (CButton*) GetDlgItem(IDC_BUTTON_EDIT);
-    if (pomButton != NULL)
+    if (pomButton != nullptr)
     {
         pomButton->EnableWindow(bToEnable);
     }
@@ -408,7 +408,7 @@ void CPPageMessage::OnItemchangedListMessage(NMHDR* /*pNMHDR*/, LRESULT* pResult
     if (m_bForDBMsg == FALSE)
     {
         pomButton = (CButton*) GetDlgItem(IDC_BUTTON_REMOVE);
-        if (pomButton != NULL)
+        if (pomButton != nullptr)
         {
             pomButton->EnableWindow(bToEnable);
         }
@@ -492,6 +492,6 @@ void CPPageMessage::OnNMCustomdrawListMessage(NMHDR* pNMHDR, LRESULT* pResult)
 //  for(int nTemp = 0 ; nTemp < nItem ; nTemp++)
 //  {
 //      omStrTemp = m_odMsgList.GetItemText(nTemp,0);
-//      theApp.m_omListOfNDBDisplayMsgID.AddHead(strtol(omStrTemp,NULL,16));
+//      theApp.m_omListOfNDBDisplayMsgID.AddHead(strtol(omStrTemp,nullptr,16));
 //  }
 //}

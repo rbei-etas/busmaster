@@ -53,7 +53,7 @@ STDMETHODIMP CGraphAnnotation::put_LabelCaption(BSTR newVal)
 
 STDMETHODIMP CGraphAnnotation::get_LabelX(double* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -80,7 +80,7 @@ STDMETHODIMP CGraphAnnotation::put_LabelX(double newVal)
 
 STDMETHODIMP CGraphAnnotation::get_LabelY(double* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -107,7 +107,7 @@ STDMETHODIMP CGraphAnnotation::put_LabelY(double newVal)
 
 STDMETHODIMP CGraphAnnotation::get_LabelColor(OLE_COLOR* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -119,7 +119,7 @@ STDMETHODIMP CGraphAnnotation::put_LabelColor(OLE_COLOR newVal)
 {
     HRESULT hr;
     COLORREF col;
-    hr = OleTranslateColor(newVal, NULL, &col);
+    hr = OleTranslateColor(newVal, nullptr, &col);
 
     if(m_Color == col)
     {
@@ -137,7 +137,7 @@ STDMETHODIMP CGraphAnnotation::put_LabelColor(OLE_COLOR newVal)
 
 STDMETHODIMP CGraphAnnotation::get_LabelHorizontal(VARIANT_BOOL* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -163,7 +163,7 @@ STDMETHODIMP CGraphAnnotation::put_LabelHorizontal(VARIANT_BOOL newVal)
 
 STDMETHODIMP CGraphAnnotation::get_Visible(VARIANT_BOOL* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -189,7 +189,7 @@ STDMETHODIMP CGraphAnnotation::put_Visible(VARIANT_BOOL newVal)
 
 STDMETHODIMP CGraphAnnotation::get_LabelBkColor(OLE_COLOR* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -201,7 +201,7 @@ STDMETHODIMP CGraphAnnotation::put_LabelBkColor(OLE_COLOR newVal)
 {
     HRESULT hr;
     COLORREF col;
-    hr = OleTranslateColor(newVal, NULL, &col);
+    hr = OleTranslateColor(newVal, nullptr, &col);
 
     if(m_BkColor == col)
     {

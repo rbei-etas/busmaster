@@ -36,13 +36,13 @@ bool CNodeUtil::bReadAttribute(MSXML2::IXMLDOMNode* iNode,
     std::string strTemp;
     bool bResult = false;
     MSXML2::IXMLDOMNamedNodeMapPtr pCodeAttrib;
-    MSXML2::IXMLDOMNodePtr iTempNode = NULL;
+    MSXML2::IXMLDOMNodePtr iTempNode = nullptr;
 
     pCodeAttrib = iNode->Getattributes();
     if (pCodeAttrib->Getlength() >= 1)
     {
         iTempNode = pCodeAttrib->getNamedItem(temp);
-        if (iTempNode != NULL)
+        if (iTempNode != nullptr)
         {
             omAttribute = _com_util::ConvertBSTRToString(iTempNode->text.GetBSTR());
             bResult = true;

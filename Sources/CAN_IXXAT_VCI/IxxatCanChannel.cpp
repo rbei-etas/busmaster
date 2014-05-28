@@ -55,15 +55,15 @@ CIxxatCanChannel::CIxxatCanChannel(void)
 {
     m_byChannelNumber = 0;
     m_qiVCIDeviceID = 0;
-    m_pClientList = NULL;
+    m_pClientList = nullptr;
 
     m_iCANControllerNumber = 0;
     m_bIsSelected = FALSE;
     m_byCtrlInitialized = FALSE;
 
-    m_hVciDevice = NULL;
-    m_hCANControl = NULL;
-    m_hCANChannel = NULL;
+    m_hVciDevice = nullptr;
+    m_hCANControl = nullptr;
+    m_hCANChannel = nullptr;
 
     m_bRxThreadRunning = FALSE;
     m_lMustQuit = 0;
@@ -275,7 +275,7 @@ HRESULT CIxxatCanChannel::ReleaseController()
     if (m_hVciDevice)
     {
         hResult = DYNCALL(vciDeviceClose)(m_hVciDevice);
-        m_hVciDevice = NULL;
+        m_hVciDevice = nullptr;
         if (VCI_OK == hResult)
         {
             hResult = CALL_SUCCESS;
@@ -474,7 +474,7 @@ void CIxxatCanChannel::DestroyCANController()
     {
         StopController();
         DYNCALL(canControlClose)( m_hCANControl );
-        m_hCANControl = NULL;
+        m_hCANControl = nullptr;
     }
 }
 
@@ -559,7 +559,7 @@ HRESULT CIxxatCanChannel::CreateCANChannel()
             {
                 m_bRxThreadRunning = TRUE;
                 InterlockedExchange(&m_lMustQuit, 0);
-                m_hThreadHasEnded =  CreateEvent(NULL, false, false, NULL);
+                m_hThreadHasEnded =  CreateEvent(nullptr, false, false, nullptr);
                 _beginthread( ReceiveThread, 0, this);
             }
         }
@@ -585,12 +585,12 @@ void CIxxatCanChannel::DestroyCANChannel()
         {
             InterlockedExchange(&m_lMustQuit, 1);
             WaitForSingleObject(m_hThreadHasEnded, INFINITE);
-            m_bRxThreadRunning = NULL;
+            m_bRxThreadRunning = false;
         }
 
         DYNCALL(canChannelActivate)(m_hCANChannel, FALSE);
         DYNCALL(canChannelClose)(m_hCANChannel);
-        m_hCANChannel = NULL;
+        m_hCANChannel = nullptr;
     }
 }
 

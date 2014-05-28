@@ -28,7 +28,7 @@
 CNVTCImageList::CNVTCImageList()
 {
     m_bUseAdvancedUILib = false;
-    m_hModAdvancedUILib = NULL;
+    m_hModAdvancedUILib = nullptr;
     m_hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
 
     /* If the AdvancedUIPlugIn DLL exists, use it */
@@ -44,7 +44,7 @@ CNVTCImageList::~CNVTCImageList()
     if ( m_bUseAdvancedUILib && m_hModAdvancedUILib )
     {
         ::FreeLibrary(m_hModAdvancedUILib);
-        m_hModAdvancedUILib = NULL;
+        m_hModAdvancedUILib = nullptr;
     }
 }
 

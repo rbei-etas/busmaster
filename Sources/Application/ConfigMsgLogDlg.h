@@ -74,7 +74,7 @@ class CConfigMsgLogDlg : public CDialog
 
 public:
     CConfigMsgLogDlg(ETYPE_BUS eCurrBus, void* pouBaseLogger, BOOL& bLogOnConnect,
-                     CWnd* pParent = NULL, const void* psFilter = NULL);
+                     CWnd* pParent = nullptr, const void* psFilter = nullptr);
     virtual ~CConfigMsgLogDlg();
     enum { IDD = IDD_DLG_CONFIG_MSG_LOG };
 

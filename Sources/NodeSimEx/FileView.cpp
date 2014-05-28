@@ -131,9 +131,9 @@ void CFileView::OnDraw(CDC* pDC)
     // No extra check is required to handle create failure
     /************************************************************/
     COffScreenDC  omMemDC(pDC, &omRect);
-    CDC* pomDC = NULL;
+    CDC* pomDC = nullptr;
     pomDC = &omMemDC;
-    if(pomDoc != NULL)
+    if(pomDoc != nullptr)
     {
         char acSourceLineNo[10]  = STR_EMPTY;
         long lLineCount          = LONG_INIT;
@@ -145,7 +145,7 @@ void CFileView::OnDraw(CDC* pDC)
 
         // Change Font
         CFont  omNewFont;
-        CFont* pomOldFont=NULL;
+        CFont* pomOldFont=nullptr;
         BOOL bCommentFound = FALSE;
         BOOL bWithInComment = FALSE;
 
@@ -179,7 +179,7 @@ void CFileView::OnDraw(CDC* pDC)
             if(lLineCount  > defCOUNT_INIT)
             {
                 POSITION Position = pomDoc -> SetPosToFirstLine();
-                if( Position!= NULL)
+                if( Position!= nullptr)
                 {
 
                     for(long lInt = defCOUNT_INIT; lInt < lLineCount ; lInt++)
@@ -350,13 +350,13 @@ void CFileView::OnDraw(CDC* pDC)
 
                     }// End of  for(long lInt = defCOUNT_INIT; lInt < lLin....
 
-                }// End of if( Position!= NULL)
+                }// End of if( Position!= nullptr)
             }// End of if(lLineCount  > defCOUNT_INIT)
 
             pomDC -> SelectObject(pomOldFont);
             omNewFont.DeleteObject();
         }
-    } // end of if(pomDoc != NULL)
+    } // end of if(pomDoc != nullptr)
 }
 /******************************************************************************
   Function Name    :  OnInitialUpdate
@@ -426,7 +426,7 @@ void CFileView::vDisplayWarningLineNumber( eMESSAGEFROM eMsgFrom, UINT unLineNo)
     CFunctionEditorDoc*  pomSrcFileDoc = omGetDocument();
 
     // Doc is valid
-    if(pomSrcFileDoc != NULL)
+    if(pomSrcFileDoc != nullptr)
     {
 
         // Main frame is valid and
@@ -445,7 +445,7 @@ void CFileView::vDisplayWarningLineNumber( eMESSAGEFROM eMsgFrom, UINT unLineNo)
             {
                 // Get next window
                 pChild = (CEditFrameWnd*) pChild->GetWindow(GW_HWNDNEXT);
-                if(pChild != NULL )
+                if(pChild != nullptr )
                 {
                     // Get Window caption
                     pChild->GetWindowText(omStrText);
@@ -464,7 +464,7 @@ void CFileView::vDisplayWarningLineNumber( eMESSAGEFROM eMsgFrom, UINT unLineNo)
             }
             while (bInLoop);
 
-            if (pChild != NULL)
+            if (pChild != nullptr)
             {
                 pChild->MDIActivate();
             }
@@ -508,7 +508,7 @@ void CFileView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*
     m_nCharWidth  = GET_FILE_VIEW_CHAR_WIDTH();
 
 
-    if(pomDoc != NULL)
+    if(pomDoc != nullptr)
     {
         omDocSize.cx  =  ((pomDoc -> nGetMaxLineLength() + 1) * m_nCharWidth);
         omDocSize.cy  =  m_nCharHeight * ((pomDoc -> dwGetLineCount() + 1) +

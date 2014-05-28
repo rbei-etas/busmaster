@@ -89,7 +89,7 @@ CMsgBufVFSE<SMSGBUFFER>::CMsgBufVFSE()
     }
     vClearMessageBuffer(); // Clear the message buffer
     InitializeCriticalSection(&m_CritSectionForGB);
-    m_hNotifyingEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+    m_hNotifyingEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 
     // For raw data bytes. It should be equal to the size of SMSGBUFFER
     m_pbyTempData = new BYTE[MAX_MSG_LEN_J1939];
@@ -111,11 +111,11 @@ template <typename SMSGBUFFER>
 CMsgBufVFSE<SMSGBUFFER>::~CMsgBufVFSE()
 {
     CloseHandle(m_hNotifyingEvent);
-    m_hNotifyingEvent = NULL;
-    if (m_pasMsgBuffer != NULL)
+    m_hNotifyingEvent = nullptr;
+    if (m_pasMsgBuffer != nullptr)
     {
         delete[] m_pasMsgBuffer;
-        m_pasMsgBuffer = NULL;
+        m_pasMsgBuffer = nullptr;
     }
     DELETE_ARRAY(m_pbyTempData);
     DeleteCriticalSection(&m_CritSectionForGB);
@@ -191,7 +191,7 @@ HRESULT CMsgBufVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, int nIndex)
     HRESULT nResult = S_OK;
 
 #ifdef _DEBUG
-    ASSERT(psMsg != NULL);
+    ASSERT(psMsg != nullptr);
     ASSERT(!(m_nIndexRead > TOTAL_SIZE_APP_BUFFER));
 #endif
 
@@ -235,7 +235,7 @@ HRESULT CMsgBufVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, __int64 nSlot
     HRESULT nResult = ERR_INVALID_SLOT;
 
 #ifdef _DEBUG
-    ASSERT(psMsg != NULL);
+    ASSERT(psMsg != nullptr);
     ASSERT(!(m_nIndexRead > TOTAL_SIZE_APP_BUFFER));
 #endif
 
@@ -280,7 +280,7 @@ HRESULT CMsgBufVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg, __int6
     int nResult = CALL_SUCCESS;
 
 #ifdef _DEBUG
-    ASSERT(psMsg != NULL);
+    ASSERT(psMsg != nullptr);
     ASSERT(!(m_nIndexWrite > TOTAL_SIZE_APP_BUFFER));
 #endif
 

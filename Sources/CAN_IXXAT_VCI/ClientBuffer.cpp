@@ -38,8 +38,8 @@ CClientBuffer::CClientBuffer()
     g_dwIxxatBufObjectCounter++;
 #endif
     dwClientID = 0;
-    hClientHandle = NULL;
-    hPipeFileHandle = NULL;
+    hClientHandle = nullptr;
+    hPipeFileHandle = nullptr;
     m_pacClientName = "";
 }
 
@@ -165,7 +165,7 @@ HRESULT CClientBuffer::RemoveAllMsgBuf()
  */
 CBaseCANBufFSE* CClientBuffer::GetSEBufferByIndex(int iBufIndex)
 {
-    CBaseCANBufFSE* pResultBufSE = NULL;
+    CBaseCANBufFSE* pResultBufSE = nullptr;
     if (iBufIndex < m_BaseCANBufFSEVector.size())
     {
         pResultBufSE = m_BaseCANBufFSEVector[iBufIndex];

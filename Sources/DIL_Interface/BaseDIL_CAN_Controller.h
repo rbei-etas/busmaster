@@ -48,7 +48,7 @@ public:
      *
      * @return S_OK for success, S_FALSE for failure
      */
-    virtual HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL) = 0;
+    virtual HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr) = 0;
 
     /**
      * Lists the hardware interface available. sSelHwInterface

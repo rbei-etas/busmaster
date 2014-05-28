@@ -39,12 +39,12 @@
 #include "DIL_Interface.h"
 
 
-static CDIL_CAN* sg_pouDIL_CAN = NULL;
+static CDIL_CAN* sg_pouDIL_CAN = nullptr;
 
-static CDIL_LIN* sg_pouDIL_LIN = NULL;
+static CDIL_LIN* sg_pouDIL_LIN = nullptr;
 
-static CDILI_J1939* sg_pouDILI_J1939 = NULL;
-static CDIL_FLEXRAY* sg_pouDIL_FLEXRAY = NULL;
+static CDILI_J1939* sg_pouDILI_J1939 = nullptr;
+static CDIL_FLEXRAY* sg_pouDIL_FLEXRAY = nullptr;
 
 // CDILApp
 
@@ -82,11 +82,11 @@ int CDILApp::ExitInstance()
 {
     INT nResult = -1;
     // TODO: Add your specialized code here and/or call the base class
-    if (NULL != sg_pouDIL_CAN)
+    if (nullptr != sg_pouDIL_CAN)
     {
         nResult = sg_pouDIL_CAN->ExitInstance();
         delete sg_pouDIL_CAN;
-        sg_pouDIL_CAN = NULL;
+        sg_pouDIL_CAN = nullptr;
     }
     return nResult;
 }
@@ -99,9 +99,9 @@ USAGEMODE HRESULT DIL_GetInterface(ETYPE_BUS eBusType, void** ppvInterface)
     {
         case CAN:
         {
-            if (NULL == sg_pouDIL_CAN)
+            if (nullptr == sg_pouDIL_CAN)
             {
-                if ((sg_pouDIL_CAN = new CDIL_CAN) == NULL)
+                if ((sg_pouDIL_CAN = new CDIL_CAN) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;
@@ -118,9 +118,9 @@ if sg_pouFP_CAN is null */
         break;
         case LIN:
         {
-            if (NULL == sg_pouDIL_LIN)
+            if (nullptr == sg_pouDIL_LIN)
             {
-                if ((sg_pouDIL_LIN = new CDIL_LIN) == NULL)
+                if ((sg_pouDIL_LIN = new CDIL_LIN) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;
@@ -139,9 +139,9 @@ if sg_pouFP_CAN is null */
             break;
         case J1939:
         {
-            if (NULL == sg_pouDILI_J1939)
+            if (nullptr == sg_pouDILI_J1939)
             {
-                if ((sg_pouDILI_J1939 = new CDILI_J1939) == NULL)
+                if ((sg_pouDILI_J1939 = new CDILI_J1939) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;
@@ -158,9 +158,9 @@ if sg_pouFP_CAN is null */
         break;
         case FLEXRAY:
         {
-            if (NULL == sg_pouDIL_FLEXRAY)
+            if (nullptr == sg_pouDIL_FLEXRAY)
             {
-                if ((sg_pouDIL_FLEXRAY = new CDIL_FLEXRAY) == NULL)
+                if ((sg_pouDIL_FLEXRAY = new CDIL_FLEXRAY) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;

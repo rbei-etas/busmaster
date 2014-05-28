@@ -160,7 +160,7 @@ sMsgDispMapEntry::sMsgDispMapEntry()
     m_eInterpretMode = NON_INTERPRETABLE ;
     m_nTimeStamp     = 0;
     m_nTimeOffset    = 0;
-    m_opTreeWndParam = NULL;
+    m_opTreeWndParam = nullptr;
 }
 
 sMsgDispMapEntry::sMsgDispMapEntry(const sMsgDispMapEntry& sRhsObj)
@@ -202,16 +202,16 @@ CMsgFrmtWnd::CMsgFrmtWnd(): m_sCurrEntry(sDummy0002), m_ouMsgAttr(CMessageAttrib
 CMsgFrmtWnd::CMsgFrmtWnd(ETYPE_BUS eBusType): m_sCurrEntry(sDummy0002), m_ouMsgAttr(CMessageAttrib::ouGetHandle(eBusType))
 {
     //changes done for CCP checker AUC
-    m_ppouIJ1939DIL  = NULL;
-    m_bMsgIntrprtnDlgShown = NULL;
+    m_ppouIJ1939DIL  = nullptr;
+    m_bMsgIntrprtnDlgShown = 0;
     m_dwClientID = 0;
     m_nColCount = 0;
 
     //------------------------------------
 
-    m_pouMsgContainerIntrf = NULL;
+    m_pouMsgContainerIntrf = nullptr;
     m_bInterPretMsg = FALSE;
-    m_hMainWnd =NULL;
+    m_hMainWnd =nullptr;
     m_bSignalWatchON = FALSE;
     m_unDispUpdateTimerId = 0;
     m_bUpdate = FALSE;
@@ -235,15 +235,15 @@ CMsgFrmtWnd::CMsgFrmtWnd(ETYPE_BUS eBusType): m_sCurrEntry(sDummy0002), m_ouMsgA
     m_pouMsgContainerIntrf->vSetRxMsgCallBkPtr(CMsgFrmtWnd::vRxMsgCallBk);
     //m_ouPsdiHandler.vSetRxMsgCallBkPtr(CMsgFrmtWnd::vRxMsgCallBk);
     m_bConnected = FALSE;
-    m_pExpandedMapIndexes = NULL;
-    m_ppMsgDB = NULL;
+    m_pExpandedMapIndexes = nullptr;
+    m_ppMsgDB = nullptr;
     for(int i=0; i<MAX_MSG_WND_COL_CNT; i++)
     {
-        m_pomDataPtrArr[i] = NULL;
+        m_pomDataPtrArr[i] = nullptr;
     }
     m_nIndex = 0;
     m_unCurrInterpretedMsgID = static_cast < UINT > (-1);
-    m_podMsgIntprtnDlg = NULL;
+    m_podMsgIntprtnDlg = nullptr;
 
     for( ETYPE_BUS eBus = CAN; eBus != BUS_TOTAL;  )
     {
@@ -267,7 +267,7 @@ CMsgFrmtWnd::~CMsgFrmtWnd()
     if(m_podMsgIntprtnDlg)
     {
         m_podMsgIntprtnDlg->DestroyWindow();
-        m_podMsgIntprtnDlg = NULL;
+        m_podMsgIntprtnDlg = nullptr;
     }
 }
 
@@ -325,7 +325,7 @@ BOOL CMsgFrmtWnd::Create(LPCTSTR szTitle, LONG style, const RECT& rect,
                          CMDIFrameWnd* parent)
 {
     // Setup the shared menu
-    if (menu.m_hMenu == NULL)
+    if (menu.m_hMenu == nullptr)
     {
         menu.LoadMenu(IDR_MAINFRAME);
     }
@@ -335,7 +335,7 @@ BOOL CMsgFrmtWnd::Create(LPCTSTR szTitle, LONG style, const RECT& rect,
     // This must be done because CHelloWnd has a custom icon.
     LPCTSTR lpszReceiveWndClass =
         AfxRegisterWndClass(CS_HREDRAW | CS_VREDRAW,
-                            LoadCursor(NULL, IDC_ARROW),
+                            LoadCursor(nullptr, IDC_ARROW),
                             (HBRUSH) (COLOR_WINDOW+1),
                             LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDI_ICON_MSGWND)));
     m_hWndOwner = parent->m_hWnd;
@@ -442,7 +442,7 @@ void CMsgFrmtWnd::OnSize(UINT nType, int cx, int cy)
 {
     CWnd::OnSize(nType, cx, cy);
 
-    if (m_lstMsg.m_hWnd != NULL)
+    if (m_lstMsg.m_hWnd != nullptr)
     {
 
         CRect rctClient;
@@ -656,7 +656,7 @@ LRESULT CMsgFrmtWnd::ProvideMsgWndProperty(WPARAM wParam, LPARAM /*lParam*/)
 *******************************************************************************/
 LRESULT CMsgFrmtWnd::vOnGetInterpretState(WPARAM wParam, LPARAM /*lParam*/)
 {
-    BOOL* pbInterpret = NULL;
+    BOOL* pbInterpret = nullptr;
     pbInterpret = (BOOL*) wParam;
     *pbInterpret = m_bInterPretMsg;
     return 0;
@@ -789,7 +789,7 @@ void CMsgFrmtWnd::OnEditClearAll()
     m_omMsgDispMap.RemoveAll();
     m_omMgsIndexVec.clear();
     PSDI_GetInterface(m_eBusType, (void**)&m_pouMsgContainerIntrf);
-    if(m_pouMsgContainerIntrf != NULL)
+    if(m_pouMsgContainerIntrf != nullptr)
     {
         m_pouMsgContainerIntrf->vEditClearAll();
     }
@@ -815,13 +815,13 @@ void CMsgFrmtWnd::vRemoveAllMsgTree()
     // Variable to hold message ID
     __int64 n64Temp = 0;
     POSITION pos = m_omMsgDispMap.GetStartPosition();
-    while( pos != NULL )
+    while( pos != nullptr )
     {
         m_omMsgDispMap.GetNextAssoc( pos, n64Temp, sTemp );
-        if (sTemp.m_opTreeWndParam != NULL)
+        if (sTemp.m_opTreeWndParam != nullptr)
         {
             delete sTemp.m_opTreeWndParam;
-            sTemp.m_opTreeWndParam = NULL;
+            sTemp.m_opTreeWndParam = nullptr;
             m_omMsgDispMap [n64Temp] = sTemp;
         }
     }
@@ -867,14 +867,14 @@ void CMsgFrmtWnd::OnParentNotify(UINT message, LPARAM lParam)
             {
                 if( IS_MODE_APPEND(m_bExprnFlag_Disp) )
                 {
-                    ::PostMessage(this->m_hWnd, WM_LSTC_DBLCLK, nIndex, NULL);
+                    ::PostMessage(this->m_hWnd, WM_LSTC_DBLCLK, nIndex, 0);
                 }
                 else
                 {
                     __int64 nMapIndex = m_omMgsIndexVec[nIndex];
                     if (nMapIndex != nInvalidKey)
                     {
-                        ::PostMessage(this->m_hWnd, WM_LSTC_DBLCLK, nIndex, NULL);
+                        ::PostMessage(this->m_hWnd, WM_LSTC_DBLCLK, nIndex, 0);
                     }
                 }
             }
@@ -887,7 +887,7 @@ void CMsgFrmtWnd::OnParentNotify(UINT message, LPARAM lParam)
         // Get the mouse click coordinates and get the list ctrl header rectangle
         CPoint tmpPoint = CPoint(LOWORD(lParam), HIWORD(lParam));
         CRect headerRect;
-        if (m_lstMsg.m_hWnd != NULL)
+        if (m_lstMsg.m_hWnd != nullptr)
         {
             m_lstMsg.GetHeaderCtrl()->GetClientRect(&headerRect);
         }
@@ -896,7 +896,7 @@ void CMsgFrmtWnd::OnParentNotify(UINT message, LPARAM lParam)
         if (!headerRect.PtInRect(tmpPoint))
         {
             POSITION Pos = m_lstMsg.GetFirstSelectedItemPosition();
-            if (Pos != NULL)
+            if (Pos != nullptr)
             {
                 nIndex = m_lstMsg.GetNextSelectedItem(Pos);
             }
@@ -922,7 +922,7 @@ void CMsgFrmtWnd::OnParentNotify(UINT message, LPARAM lParam)
             if ((nIndex >= 0) && (nFlag & LVHT_ONITEM))
             {
                 CMenu* pomContextMenu = new CMenu;
-                if (pomContextMenu != NULL)
+                if (pomContextMenu != nullptr)
                 {
                     // Load the Menu from the resource
                     pomContextMenu->DestroyMenu();
@@ -960,7 +960,7 @@ void CMsgFrmtWnd::OnParentNotify(UINT message, LPARAM lParam)
                     // Get flag object
                     CFlags* pouFlags = theApp.pouGetFlagsPtr();
                     // If valid
-                    if(pouFlags != NULL )
+                    if(pouFlags != nullptr )
                     {
                         bConnected = pouFlags->nGetFlagStatus( CONNECTED );
                     }
@@ -982,16 +982,16 @@ void CMsgFrmtWnd::OnParentNotify(UINT message, LPARAM lParam)
                         }
                     }
 
-                    if (pomSubMenu != NULL)
+                    if (pomSubMenu != nullptr)
                     {
                         CPoint omSrcPt(lParam);
                         ClientToScreen(&omSrcPt);
 
                         pomSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON,
-                                                   omSrcPt.x, omSrcPt.y, this, NULL);
+                                                   omSrcPt.x, omSrcPt.y, this, nullptr);
                     }
                     delete pomContextMenu;
-                    pomContextMenu = NULL;
+                    pomContextMenu = nullptr;
                 }
             }
         }
@@ -1015,7 +1015,7 @@ const int SIZE_STLIN_MSG = sizeof(STLIN_MSG);
 void CMsgFrmtWnd::OnSendSelectedMessageEntry()
 {
     POSITION Pos = m_lstMsg.GetFirstSelectedItemPosition();
-    if (Pos != NULL)
+    if (Pos != nullptr)
     {
         PSDI_GetInterface(m_eBusType, (void**)&m_pouMsgContainerIntrf);
         int nItem = m_lstMsg.GetNextSelectedItem(Pos);
@@ -1116,7 +1116,7 @@ void CMsgFrmtWnd::OnSendSelectedMessageEntry()
             if( hResult == S_OK && (sInfo.m_eMessageType == FLXMSGTYPE_DATA) )
             {
                 //TODO FLEX::Test his functionality for status message
-                if (NULL != g_pouDIL_FLEXRAY_Interface)
+                if (nullptr != g_pouDIL_FLEXRAY_Interface)
                 {
                     //TODO FLEX::Implementation pending
                     //s_FLXTXMSG sFlexTsMsg;
@@ -1142,7 +1142,7 @@ void CMsgFrmtWnd::OnSendSelectedMessageEntry()
 void CMsgFrmtWnd::OnExpandSelectedMessageEntry()
 {
     POSITION Pos = m_lstMsg.GetFirstSelectedItemPosition();
-    if (Pos != NULL)
+    if (Pos != nullptr)
     {
         int nItem = m_lstMsg.GetNextSelectedItem(Pos);
         vExpandContractMsg( nItem );
@@ -1262,7 +1262,7 @@ void CMsgFrmtWnd::OnTimer(UINT nIDEvent)
 static void vPopulateMsgEntryFromDB(SMSGENTRY*& psMsgEntry,
                                     CMsgSignal* pouMsgSig)
 {
-    if (pouMsgSig != NULL)
+    if (pouMsgSig != nullptr)
     {
         UINT nCount = pouMsgSig->unGetNumerOfMessages();
         UINT* punMsgIds = new UINT[nCount];
@@ -1271,7 +1271,7 @@ static void vPopulateMsgEntryFromDB(SMSGENTRY*& psMsgEntry,
         {
             sMESSAGE* pMsg = pouMsgSig->
                              psGetMessagePointer(punMsgIds[i]);
-            if (pMsg != NULL)
+            if (pMsg != nullptr)
             {
                 SMSGENTRY::bUpdateMsgList(psMsgEntry, pMsg);
             }
@@ -1300,9 +1300,9 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
         {
             m_ppMsgDB = (CMsgSignal**)lParam;
 
-            if(m_eBusType == J1939 && m_ppMsgDB != NULL)
+            if(m_eBusType == J1939 && m_ppMsgDB != nullptr)
             {
-                SMSGENTRY* psMsgEntry = NULL;
+                SMSGENTRY* psMsgEntry = nullptr;
                 vPopulateMsgEntryFromDB(psMsgEntry, *m_ppMsgDB);
                 m_ouMsgInterpretJ1939.vClear();
                 m_ouMsgInterpretJ1939.vSetJ1939Database(psMsgEntry);
@@ -1310,12 +1310,12 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
             }
             if(m_eBusType == FLEXRAY)
             {
-                m_ppMsgDB = NULL;
+                m_ppMsgDB = nullptr;
                 m_ouMsgInterpretFlexRay.vSetFlexRayClusterInfo((ClusterConfig*)lParam);
             }
             if ( m_eBusType == LIN )
             {
-                m_ppMsgDB = NULL;
+                m_ppMsgDB = nullptr;
                 m_ouMsgInterpretLin.vSetLINClusterInfo((ClusterConfig*)lParam);
             }
 
@@ -1354,7 +1354,7 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
 
             //xmlDocPtr pNodePtr = (xmlDocPtr)lParam;
 
-            //if(pNodePtr != NULL)
+            //if(pNodePtr != nullptr)
             //{
             //  //BYTE* pbyData = (BYTE*)lParam;
             //  SetConfigData(pNodePtr);
@@ -1364,7 +1364,7 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
         case eWINID_MSG_WND_SET_CONFIG_DATA_XML:
         {
             xmlDocPtr pNodePtr = (xmlDocPtr)lParam;
-            if(pNodePtr != NULL)
+            if(pNodePtr != nullptr)
             {
                 SetConfigData(pNodePtr);
             }
@@ -1373,7 +1373,7 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
         case eWINID_MSG_WND_SET_CONFIG_DATA_J1939_XML:
         {
             xmlDocPtr pNodePtr = (xmlDocPtr)lParam;
-            if(pNodePtr != NULL)
+            if(pNodePtr != nullptr)
             {
                 SetConfigDataJ1939(pNodePtr);
             }
@@ -1382,7 +1382,7 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
         case eWINID_MSG_WND_SET_CONFIG_DATA_FLEXRAY_XML:
         {
             xmlDocPtr pNodePtr = (xmlDocPtr)lParam;
-            if(pNodePtr != NULL)
+            if(pNodePtr != nullptr)
             {
                 SetConfigDataFlexRay(pNodePtr);
             }
@@ -1391,7 +1391,7 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
         case eWINID_MSG_WND_SET_CONFIG_DATA_LIN_XML:
         {
             xmlDocPtr pNodePtr = (xmlDocPtr)lParam;
-            if(pNodePtr != NULL)
+            if(pNodePtr != nullptr)
             {
                 SetConfigDataLIN(pNodePtr);
             }
@@ -1400,7 +1400,7 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
         case eWINID_MSG_WND_GET_BUFFER_DETAILS:
         {
             INT* pMsgBuffSize = (INT*)lParam;
-            //If it is NULL values.i.e user did not configure buffer details.
+            //If it is nullptr values.i.e user did not configure buffer details.
             if(pMsgBuffSize[defDISPLAY_UPDATE_DATA_INDEX] == 0)
             {
                 break;
@@ -1437,7 +1437,7 @@ void CMsgFrmtWnd::vUpdateMsgBufferDetails(INT* pMsgBuffSize)
     }
 
     if ((m_unDispUpdateTimerId = SetTimer(TIMER_ID_DISPLAY_UPDATE,
-                                          m_anMsgBuffSize[m_eBusType][defDISPLAY_UPDATE_DATA_INDEX], NULL)) == 0)
+                                          m_anMsgBuffSize[m_eBusType][defDISPLAY_UPDATE_DATA_INDEX], nullptr)) == 0)
     {
         // Log error message
     }
@@ -1482,7 +1482,7 @@ LRESULT CMsgFrmtWnd::OnListCtrlMsgDblClick(WPARAM wParam, LPARAM lParam)
 
     CPoint* pPoint = (CPoint*)lParam;
 
-    if(lParam!=NULL)
+    if(lParam!=0)
     {
         UINT nFlag;
         // Make sure this event occurs for a valid message item
@@ -1771,13 +1771,13 @@ LRESULT CMsgFrmtWnd::vOnGetNextPrevMsgIndex(WPARAM wParam, LPARAM lParam)
 *******************************************************************************/
 LRESULT CMsgFrmtWnd::vUpdateFormattedMsgStruct(WPARAM wParam, LPARAM /*lParam*/)
 {
-    SWMUPDATEPTRPARA* psParam = NULL;
+    SWMUPDATEPTRPARA* psParam = nullptr;
     HRESULT hResult = S_FALSE;
     int nMsgCode    = 0;
     psParam = (SWMUPDATEPTRPARA*) wParam;
 
     PSDI_GetInterface(m_eBusType, (void**)&m_pouMsgContainerIntrf);
-    if(NULL != m_pouMsgContainerIntrf)
+    if(nullptr != m_pouMsgContainerIntrf)
     {
         if( IS_MODE_APPEND(m_bExprnFlag_Disp) )
         {
@@ -1881,7 +1881,7 @@ LRESULT CMsgFrmtWnd::vSortMsgWndColumn(WPARAM wParam, LPARAM lParam)
     m_pouMsgContainerIntrf->DoSortBuffer(m_nField,m_bAscending);
 
     m_pExpandedMapIndexes = (__int64*)malloc(sizeof(__int64) * m_omMgsIndexVec.size());
-    if( m_pExpandedMapIndexes == NULL)
+    if( m_pExpandedMapIndexes == nullptr)
     {
         AfxMessageBox(_("Unable to Allocate Memory."));
         return 0;
@@ -2061,7 +2061,7 @@ CString CMsgFrmtWnd::strGetMsgNameOrCode(UINT nMsgCode)
         UINT unSlot =  HIBYTE(wDirId);
 
         //todo channel number
-        if ( m_ouMsgInterpretLin.m_ouLINConfig != NULL )
+        if ( m_ouMsgInterpretLin.m_ouLINConfig != nullptr )
         {
             if ( S_OK == m_ouMsgInterpretLin.m_ouLINConfig->m_ouFlexChannelConfig[0].GetFrame(unSlot, ouFrame) )
             {
@@ -2083,7 +2083,7 @@ CString CMsgFrmtWnd::strGetMsgNameOrCode(UINT nMsgCode)
         }
     }
 
-    else if (NULL != m_ppMsgDB)
+    else if (nullptr != m_ppMsgDB)
     {
         if ( !(*m_ppMsgDB)->bMessageNameFromMsgCode(nMsgCode, omName))
         {
@@ -2107,7 +2107,7 @@ CString CMsgFrmtWnd::strGetMsgLengthFromMessageCode(UINT unMsgCode)
 {
     CString omMsgLength = "";
 
-    if (NULL != m_ppMsgDB)
+    if (nullptr != m_ppMsgDB)
     {
         (*m_ppMsgDB)->bMessageLengthFromMsgCode(unMsgCode, omMsgLength);
 
@@ -2398,7 +2398,7 @@ int CMsgFrmtWnd::nGetListCtrlTextExtent(CString omColTitle)
 *******************************************************************************/
 void CMsgFrmtWnd::vRxMsgCallBk(void* pMsg, ETYPE_BUS eBusType)
 {
-    if (NULL != pThisPtr[eBusType])
+    if (nullptr != pThisPtr[eBusType])
     {
         pThisPtr[eBusType]->vOnRxMsg(pMsg);
     }
@@ -2439,7 +2439,7 @@ BOOL CMsgFrmtWnd:: bStartReadThread()
     if (m_pouMsgContainerIntrf->bStartReadThread())
     {
         if ((m_unDispUpdateTimerId = SetTimer(TIMER_ID_DISPLAY_UPDATE,
-                                              m_anMsgBuffSize[m_eBusType][defDISPLAY_UPDATE_DATA_INDEX], NULL)) == 0)
+                                              m_anMsgBuffSize[m_eBusType][defDISPLAY_UPDATE_DATA_INDEX], nullptr)) == 0)
         {
             // Log error message
             bResult = FALSE;
@@ -2543,7 +2543,7 @@ void CMsgFrmtWnd::vOnRxMsg(void* pMsg)
         sDispEntry.m_nBufferIndex = nBufIndex;
         CString msgName;
 
-        if (m_ppMsgDB != NULL)
+        if (m_ppMsgDB != nullptr)
         {
             if ((*m_ppMsgDB)->bMessageNameFromMsgCode(nMsgCode, msgName))
             {
@@ -2791,7 +2791,7 @@ void CMsgFrmtWnd::vUpdatePtrInLstCtrl()
 *******************************************************************************/
 LRESULT CMsgFrmtWnd::OnUpdateFont(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-    if (m_lstMsg.m_hWnd != NULL)
+    if (m_lstMsg.m_hWnd != nullptr)
     {
         CRect rc;
         m_lstMsg.GetWindowRect(&rc);
@@ -2946,7 +2946,7 @@ void CMsgFrmtWnd::vExpandContractAllEntries (BOOL bInterpretationON,
         SMSGDISPMAPENTRY sEntry;
         // Now shift the elements down Shift the map
         POSITION pos = m_omMsgDispMap.GetStartPosition();
-        while( pos != NULL )
+        while( pos != nullptr )
         {
             m_omMsgDispMap.GetNextAssoc( pos, n64Temp, sEntry );
             //If entry is expandable and not already expanded then expand
@@ -2980,7 +2980,7 @@ void CMsgFrmtWnd::vExpandContractAllEntries (BOOL bInterpretationON,
         SMSGDISPMAPENTRY sEntry;
         // Now shift the elements down Shift the map
         POSITION pos = m_omMsgDispMap.GetStartPosition();
-        while( pos != NULL )
+        while( pos != nullptr )
         {
             m_omMsgDispMap.GetNextAssoc( pos, n64Temp, sEntry );
             //If entry is expanded then contract
@@ -3025,14 +3025,14 @@ void CMsgFrmtWnd::vGetSignalInfoArray(__int64 nMapIndex, SSignalInfoArray& SigIn
         static CMsgInterpretation ouMsgInterpret;
         static EFORMAT eNumFormat;
         static STCANDATA sCANMsg;
-        sMESSAGE* pMsg = NULL;
+        sMESSAGE* pMsg = nullptr;
         SigInfoArray.RemoveAll();
         int nID = nGetCodefromMapKey(nMapIndex);
-        if (NULL != m_ppMsgDB)
+        if (nullptr != m_ppMsgDB)
         {
             pMsg = (*m_ppMsgDB)->psGetMessagePointer(nID);
 
-            if (NULL != pMsg)
+            if (nullptr != pMsg)
             {
                 if (IS_NUM_HEX_SET(m_bExprnFlag_Disp))
                 {
@@ -3051,7 +3051,7 @@ void CMsgFrmtWnd::vGetSignalInfoArray(__int64 nMapIndex, SSignalInfoArray& SigIn
 
                     HRESULT hResult = S_FALSE;
 
-                    if(m_pouMsgContainerIntrf != NULL)
+                    if(m_pouMsgContainerIntrf != nullptr)
                     {
                         hResult = m_pouMsgContainerIntrf->hReadFromAppendBuffer(&sCANMsg, nBuffMsgCnt);
                     }
@@ -3065,7 +3065,7 @@ void CMsgFrmtWnd::vGetSignalInfoArray(__int64 nMapIndex, SSignalInfoArray& SigIn
                              && sCANMsg.m_uDataInfo.m_sCANMsg.m_unMsgID != (UINT)nID)
                     {
                         HRESULT hResult = S_FALSE;
-                        if(m_pouMsgContainerIntrf != NULL)
+                        if(m_pouMsgContainerIntrf != nullptr)
                         {
                             hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sCANMsg, nMapIndex);
                         }
@@ -3078,7 +3078,7 @@ void CMsgFrmtWnd::vGetSignalInfoArray(__int64 nMapIndex, SSignalInfoArray& SigIn
                 {
                     HRESULT hResult = S_FALSE;
 
-                    if(m_pouMsgContainerIntrf != NULL)
+                    if(m_pouMsgContainerIntrf != nullptr)
                     {
                         hResult = m_pouMsgContainerIntrf->hReadFromOWBuffer(&sCANMsg, nMapIndex);
                     }
@@ -3098,7 +3098,7 @@ void CMsgFrmtWnd::vGetSignalInfoArray(__int64 nMapIndex, SSignalInfoArray& SigIn
         SigInfoArray.RemoveAll();
         UINT nID = nGetCodefromMapKey(nMapIndex);
 
-        if (NULL != m_ppMsgDB)
+        if (nullptr != m_ppMsgDB)
         {
             if (IS_NUM_HEX_SET(m_bExprnFlag_Disp))
             {
@@ -3151,7 +3151,7 @@ void CMsgFrmtWnd::vGetSignalInfoArray(__int64 nMapIndex, SSignalInfoArray& SigIn
         SigInfoArray.RemoveAll();
         UINT nID = nGetCodefromMapKey(nMapIndex);
 
-        //if (NULL != m_ppMsgDB)
+        //if (nullptr != m_ppMsgDB)
         {
             if (IS_NUM_HEX_SET(m_bExprnFlag_Disp))
             {
@@ -3207,11 +3207,11 @@ void CMsgFrmtWnd::vGetSignalInfoArray(__int64 nMapIndex, SSignalInfoArray& SigIn
         int nMsgType = HIBYTE(wEventMsgType);
         UINT nID =  HIBYTE(wDirId);
 
-        //if (NULL != m_ppMsgDB)
+        //if (nullptr != m_ppMsgDB)
         {
             //pMsg = (*m_ppMsgDB)->psGetMessagePointer(nID);
 
-            //if (NULL != pMsg)
+            //if (nullptr != pMsg)
             {
                 if (IS_NUM_HEX_SET(m_bExprnFlag_Disp))
                 {
@@ -3311,7 +3311,7 @@ void CMsgFrmtWnd::vExpandMsgEntry( SMSGDISPMAPENTRY& sEntry,
                 if (m_omMsgDispMap.Lookup(n64Temp, sTemp))
                 {
                     //Shift the Tree window
-                    if (sTemp.m_opTreeWndParam != NULL)
+                    if (sTemp.m_opTreeWndParam != nullptr)
                     {
                         sTemp.m_opTreeWndParam->vShift (omTreeRect.Height() +
                                                         defMSG_IPET_WND_BORDER_WIDTH);
@@ -3426,7 +3426,7 @@ LRESULT CMsgFrmtWnd::OnUpdateMsgTreeItemsPositions(WPARAM /*wParam*/, LPARAM /*l
             {
                 vGetTreeRect(i, sTemp.m_nSignalCnt, omTreeRect);
                 //Update the Tree window
-                if (sTemp.m_opTreeWndParam != NULL)
+                if (sTemp.m_opTreeWndParam != nullptr)
                 {
                     sTemp.m_opTreeWndParam->vUpdateTreeItemRect(omTreeRect);
                 }
@@ -3514,7 +3514,7 @@ void CMsgFrmtWnd::vContractMsgEntry(SMSGDISPMAPENTRY& sEntry, int nMsgIndex)
     //move other trees after this up by no. of signals, Delete the tree
     //Setitemcountex = no. of elements in the array
     EnterCriticalSection(&m_CritSec1);
-    if ( sEntry.m_opTreeWndParam != NULL )
+    if ( sEntry.m_opTreeWndParam != nullptr )
     {
         int nIndexShift = sEntry.m_nSignalCnt;
         EnterCriticalSection(&m_omCritSecForMapArr);
@@ -3547,7 +3547,7 @@ void CMsgFrmtWnd::vContractMsgEntry(SMSGDISPMAPENTRY& sEntry, int nMsgIndex)
                     if (m_omMsgDispMap.Lookup(n64Temp, sTemp))
                     {
                         //Shift the Tree window
-                        if (sTemp.m_opTreeWndParam != NULL)
+                        if (sTemp.m_opTreeWndParam != nullptr)
                         {
                             sTemp.m_opTreeWndParam->vShift ( -(omTreeRect.Height() +
                                                                defMSG_IPET_WND_BORDER_WIDTH));
@@ -3562,7 +3562,7 @@ void CMsgFrmtWnd::vContractMsgEntry(SMSGDISPMAPENTRY& sEntry, int nMsgIndex)
         }
 
         delete sEntry.m_opTreeWndParam;
-        sEntry.m_opTreeWndParam = NULL;
+        sEntry.m_opTreeWndParam = nullptr;
 
         sEntry.m_nSignalCnt = 0;
         m_lstMsg.SetItemCountEx(nSize);
@@ -3615,12 +3615,12 @@ void CMsgFrmtWnd::vFormatSignalInfo (const SSignalInfoArray& omSigInfoArray,
 //
 //    if (bCreateWnd == TRUE)
 //    {
-//        if (m_podSignalWatchDlg == NULL)
+//        if (m_podSignalWatchDlg == nullptr)
 //        {
 //            m_podSignalWatchDlg = new CSigWatchDlg;
 //        }
 //
-//        if (m_podSignalWatchDlg != NULL)
+//        if (m_podSignalWatchDlg != nullptr)
 //        {
 //            CWnd *pomGrandParent = GetParent()->GetParent();
 //            m_podSignalWatchDlg->Create(IDD_DLG_SIGNAL_WATCH, pomGrandParent);
@@ -3637,7 +3637,7 @@ void CMsgFrmtWnd::vFormatSignalInfo (const SSignalInfoArray& omSigInfoArray,
 //    }
 //    else // Window should be closed
 //    {
-//        if (m_podSignalWatchDlg != NULL)
+//        if (m_podSignalWatchDlg != nullptr)
 //        {
 //             // Set the Focus to Main Frame
 //            //theApp.m_pMainWnd->SetFocus();
@@ -3670,17 +3670,17 @@ void CMsgFrmtWnd::vChangeStateOfInterpretableMsgs()
     __int64 n64Temp;
     SMSGDISPMAPENTRY sEntry;
     POSITION pos = m_omMsgDispMap.GetStartPosition();
-    while( pos != NULL )
+    while( pos != nullptr )
     {
         m_omMsgDispMap.GetNextAssoc( pos, n64Temp, sEntry );
         //If entry is expanded then contract
         if (sEntry.m_eInterpretMode == MODE_NONE)
         {
-            if (NULL != m_ppMsgDB)
+            if (nullptr != m_ppMsgDB)
             {
                 int nID = nGetCodefromMapKey(n64Temp);
                 sMESSAGE* psMsgStruct = (*m_ppMsgDB)->psGetMessagePointer(nID);
-                if (psMsgStruct != NULL)
+                if (psMsgStruct != nullptr)
                 {
                     if (psMsgStruct->m_unNumberOfSignals > 0)
                     {
@@ -3714,7 +3714,7 @@ void CMsgFrmtWnd::vCreateAllMsgTree()
     // Variable to hold message ID
     __int64 n64Temp = 0;
     POSITION pos = m_omMsgDispMap.GetStartPosition();
-    while( pos != NULL )
+    while( pos != nullptr )
     {
         m_omMsgDispMap.GetNextAssoc( pos, n64Temp, sEntry );
         if (sEntry.m_eInterpretMode == INTERPRETING)
@@ -3827,7 +3827,7 @@ void CMsgFrmtWnd::vArrangeAllTreeWnd()
         n64Temp = m_omMgsIndexVec[i];
         if (m_omMsgDispMap.Lookup(n64Temp, sTemp))
         {
-            if (sTemp.m_opTreeWndParam != NULL)
+            if (sTemp.m_opTreeWndParam != nullptr)
             {
                 CRect rItem( -1, -1, -1, -1 );
                 m_lstMsg.GetItemRect(i, &rItem, LVIR_BOUNDS);
@@ -3862,7 +3862,7 @@ void CMsgFrmtWnd::vUpdateAllTreeWnd()
         n64Temp = m_omMgsIndexVec[i];
         if (m_omMsgDispMap.Lookup(n64Temp, sTemp))
         {
-            if (sTemp.m_opTreeWndParam != NULL)
+            if (sTemp.m_opTreeWndParam != nullptr)
             {
                 COLORREF rgbTreeItem = RGB(0,0,0);
                 if (n64Temp != nInvalidKey)
@@ -3933,7 +3933,7 @@ void CMsgFrmtWnd::vUpdateMsgTreeWnd(__int64 nMapIndex)
     SMSGDISPMAPENTRY sTemp;
     if (m_omMsgDispMap.Lookup(nMapIndex, sTemp))
     {
-        if (sTemp.m_opTreeWndParam != NULL /*&& sTemp.m_opTreeWndParam->bVerifyTreeCtrl()*/)
+        if (sTemp.m_opTreeWndParam != nullptr /*&& sTemp.m_opTreeWndParam->bVerifyTreeCtrl()*/)
         {
             COLORREF rgbTreeItem = RGB(0,0,0);
             if (nMapIndex != nInvalidKey)
@@ -4140,11 +4140,11 @@ void CMsgFrmtWnd::OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI)
 void CMsgFrmtWnd::OnMsgwndResetColumns()
 {
     CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
-    if (pHeaderCtrl != NULL)
+    if (pHeaderCtrl != nullptr)
     {
         int  nColumnCount = pHeaderCtrl->GetItemCount();
         LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
-        ASSERT(pnOrder != NULL);
+        ASSERT(pnOrder != nullptr);
         m_lstMsg.GetColumnOrderArray(pnOrder, nColumnCount);
 
         int i;
@@ -4189,7 +4189,7 @@ void CMsgFrmtWnd::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeact
 *******************************************************************************/
 HRESULT CMsgFrmtWnd::GetConfigData(BYTE* pvDataStream)
 {
-    BYTE* pByteTrgt = NULL;
+    BYTE* pByteTrgt = nullptr;
     pByteTrgt = pvDataStream;
 
     BYTE byVer = MSG_FRMT_WND_VERSION;
@@ -4200,14 +4200,14 @@ HRESULT CMsgFrmtWnd::GetConfigData(BYTE* pvDataStream)
 
     //Storing column Header Positions.
     CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
-    if (pHeaderCtrl != NULL)
+    if (pHeaderCtrl != nullptr)
     {
         int  nColumnCount = pHeaderCtrl->GetItemCount();
         COPY_DATA(pByteTrgt, &nColumnCount, sizeof(UINT)); //Storing column count.
 
         LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
 
-        ASSERT(pnOrder != NULL);
+        ASSERT(pnOrder != nullptr);
         m_lstMsg.GetColumnOrderArray(pnOrder, nColumnCount);
 
         for (int i = 0 ; i < nColumnCount; i++)
@@ -4266,16 +4266,16 @@ HRESULT CMsgFrmtWnd::GetConfigData(BYTE* pvDataStream)
 
 HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
 {
-    xmlNodeSetPtr pColMsgWnd = NULL;
+    xmlNodeSetPtr pColMsgWnd = nullptr;
     xmlDocPtr m_xmlConfigFiledoc = pDocPtr;
 
     xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/COLUMN";
     xmlXPathObjectPtr pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-    if( NULL != pPathObject )
+    if( nullptr != pPathObject )
     {
         pColMsgWnd = pPathObject->nodesetval;
     }
-    if(pColMsgWnd != NULL)
+    if(pColMsgWnd != nullptr)
     {
         ColumnInfoMap InfoMap;
 
@@ -4290,7 +4290,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
         {
             //Reading column Header Positions.
             CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
-            if (pHeaderCtrl != NULL)
+            if (pHeaderCtrl != nullptr)
             {
                 int  nColumnCount=0;
 
@@ -4305,7 +4305,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
                 {
                     xmlNodePtr pNodePtr = pColMsgWnd->nodeTab[i]->xmlChildrenNode;
 
-                    while(pNodePtr != NULL)
+                    while(pNodePtr != nullptr)
                     {
                         CString strName = pNodePtr->name;
 
@@ -4337,16 +4337,16 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/IsHex";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsHex = ptext;
                             if(strIsHex == "TRUE" || strIsHex == "1")
@@ -4386,16 +4386,16 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/IsAppend";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsAppend = ptext;
                             if(strIsAppend == "TRUE" || strIsAppend == "1")
@@ -4428,16 +4428,16 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/IsInterpret";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsInterpret = ptext;
                             if(strIsInterpret == "TRUE")
@@ -4465,16 +4465,16 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/Time_Mode";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsTimemode = ptext;
                             if(strIsTimemode == "ABSOLUTE")
@@ -4517,24 +4517,24 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/Window_Position";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
 
-            xmlNodeSetPtr pWndPos = NULL;
+            xmlNodeSetPtr pWndPos = nullptr;
 
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 pWndPos = pPathObject->nodesetval;
             }
-            if(pWndPos != NULL)
+            if(pWndPos != nullptr)
             {
                 for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
                 {
                     xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
 
-                    while(pNodePtr != NULL)
+                    while(pNodePtr != nullptr)
                     {
                         if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString pvisibility = ptext;
                                 sMsgWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(pvisibility.GetBuffer(pvisibility.GetLength()));
@@ -4545,7 +4545,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString pWindowPlacement = ptext;
                                 sMsgWndPlacement.flags =  xmlUtils::nGetWindowVisibility(pWindowPlacement.GetBuffer(pWindowPlacement.GetLength()));
@@ -4556,7 +4556,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strTop = ptext;
                                 INT nTop = atoi(strTop);
@@ -4569,7 +4569,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strLeft = ptext;
                                 INT nLeft = atoi(strLeft);
@@ -4582,7 +4582,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strBttm = ptext;
                                 INT nBttm = atoi(strBttm);
@@ -4595,7 +4595,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strRight = ptext;
                                 INT nRight = atoi(strRight);
@@ -4628,24 +4628,24 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Message_Window/Interpretation_Window_Position";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
 
-            pWndPos = NULL;
+            pWndPos = nullptr;
 
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 pWndPos = pPathObject->nodesetval;
             }
-            if(pWndPos != NULL)
+            if(pWndPos != nullptr)
             {
                 for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
                 {
                     xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
 
-                    while(pNodePtr != NULL)
+                    while(pNodePtr != nullptr)
                     {
                         if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString stVisibilty = ptext;
                                 m_sMsgIntrpWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(stVisibilty.GetBuffer(stVisibilty.GetLength()));
@@ -4656,7 +4656,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString stVWindowPlacement = ptext;
                                 m_sMsgIntrpWndPlacement.flags =  xmlUtils::nGetWindowVisibility(stVWindowPlacement.GetBuffer(stVWindowPlacement.GetLength()));
@@ -4667,7 +4667,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strTop = ptext;
                                 INT nTop = atoi(strTop);
@@ -4680,7 +4680,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strLeft = ptext;
                                 INT nLeft = atoi(strLeft);
@@ -4693,7 +4693,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strBttm = ptext;
                                 INT nBttm = atoi(strBttm);
@@ -4706,7 +4706,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strRight = ptext;
                                 INT nRight = atoi(strRight);
@@ -4742,10 +4742,10 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
     //Clear all the previous messages.
     OnEditClearAll();
 
-    //BYTE* pByteSrc = NULL;
+    //BYTE* pByteSrc = nullptr;
     //pByteSrc = pvDataStream;
 
-    //if (pByteSrc != NULL)
+    //if (pByteSrc != nullptr)
     //{
     //    //Reading Version.
     //    BYTE byVer = 0;
@@ -4757,7 +4757,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
     //    {
     //        //Reading column Header Positions.
     //        CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
-    //        if (pHeaderCtrl != NULL)
+    //        if (pHeaderCtrl != nullptr)
     //        {
     //            int  nColumnCount=0;
     //            //Reading column count.
@@ -4875,16 +4875,16 @@ HRESULT CMsgFrmtWnd::SetConfigDataJ1939(xmlDocPtr pDocPtr)
 
 HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
 {
-    xmlNodeSetPtr pColMsgWnd = NULL;
+    xmlNodeSetPtr pColMsgWnd = nullptr;
     xmlDocPtr m_xmlConfigFiledoc = pDocPtr;
 
     xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FlexRay_Message_Window/COLUMN";
     xmlXPathObjectPtr pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-    if( NULL != pPathObject )
+    if( nullptr != pPathObject )
     {
         pColMsgWnd = pPathObject->nodesetval;
     }
-    if(pColMsgWnd != NULL)
+    if(pColMsgWnd != nullptr)
     {
         ColumnInfoMap InfoMap;
 
@@ -4899,7 +4899,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
         {
             //Reading column Header Positions.
             CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
-            if (pHeaderCtrl != NULL)
+            if (pHeaderCtrl != nullptr)
             {
                 int  nColumnCount=0;
 
@@ -4914,7 +4914,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
                 {
                     xmlNodePtr pNodePtr = pColMsgWnd->nodeTab[i]->xmlChildrenNode;
 
-                    while(pNodePtr != NULL)
+                    while(pNodePtr != nullptr)
                     {
                         CString strName = pNodePtr->name;
 
@@ -4946,16 +4946,16 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FlexRay_Message_Window/IsHex";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsHex = ptext;
                             if(strIsHex == "TRUE" || strIsHex == "1")
@@ -4995,16 +4995,16 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FlexRay_Message_Window/IsAppend";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsAppend = ptext;
                             if(strIsAppend == "TRUE" || strIsAppend == "1")
@@ -5037,16 +5037,16 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FlexRay_Message_Window/IsInterpret";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsInterpret = ptext;
                             if(strIsInterpret == "TRUE" || strIsInterpret == "1")
@@ -5074,16 +5074,16 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FlexRay_Message_Window/Time_Mode";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsTimemode = ptext;
                             if(strIsTimemode == "ABSOLUTE")
@@ -5126,24 +5126,24 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FlexRay_Message_Window/Window_Position";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
 
-            xmlNodeSetPtr pWndPos = NULL;
+            xmlNodeSetPtr pWndPos = nullptr;
 
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 pWndPos = pPathObject->nodesetval;
             }
-            if(pWndPos != NULL)
+            if(pWndPos != nullptr)
             {
                 for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
                 {
                     xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
 
-                    while(pNodePtr != NULL)
+                    while(pNodePtr != nullptr)
                     {
                         if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString pvisibility = ptext;
                                 sMsgWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(pvisibility.GetBuffer(pvisibility.GetLength()));
@@ -5154,7 +5154,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString pWindowPlacement = ptext;
                                 sMsgWndPlacement.flags =  xmlUtils::nGetWindowVisibility(pWindowPlacement.GetBuffer(pWindowPlacement.GetLength()));
@@ -5165,7 +5165,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strTop = ptext;
                                 INT nTop = atoi(strTop);
@@ -5178,7 +5178,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strLeft = ptext;
                                 INT nLeft = atoi(strLeft);
@@ -5191,7 +5191,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strBttm = ptext;
                                 INT nBttm = atoi(strBttm);
@@ -5204,7 +5204,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strRight = ptext;
                                 INT nRight = atoi(strRight);
@@ -5237,24 +5237,24 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FlexRay_Message_Window/Interpretation_Window_Position";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
 
-            pWndPos = NULL;
+            pWndPos = nullptr;
 
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 pWndPos = pPathObject->nodesetval;
             }
-            if(pWndPos != NULL)
+            if(pWndPos != nullptr)
             {
                 for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
                 {
                     xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
 
-                    while(pNodePtr != NULL)
+                    while(pNodePtr != nullptr)
                     {
                         if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString stVisibilty = ptext;
                                 m_sMsgIntrpWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(stVisibilty.GetBuffer(stVisibilty.GetLength()));
@@ -5265,7 +5265,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString stVWindowPlacement = ptext;
                                 m_sMsgIntrpWndPlacement.flags =  xmlUtils::nGetWindowVisibility(stVWindowPlacement.GetBuffer(stVWindowPlacement.GetLength()));
@@ -5276,7 +5276,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strTop = ptext;
                                 INT nTop = atoi(strTop);
@@ -5289,7 +5289,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strLeft = ptext;
                                 INT nLeft = atoi(strLeft);
@@ -5302,7 +5302,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strBttm = ptext;
                                 INT nBttm = atoi(strBttm);
@@ -5315,7 +5315,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strRight = ptext;
                                 INT nRight = atoi(strRight);
@@ -5351,10 +5351,10 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
     //Clear all the previous messages.
     OnEditClearAll();
 
-    //BYTE* pByteSrc = NULL;
+    //BYTE* pByteSrc = nullptr;
     //pByteSrc = pvDataStream;
 
-    //if (pByteSrc != NULL)
+    //if (pByteSrc != nullptr)
     //{
     //    //Reading Version.
     //    BYTE byVer = 0;
@@ -5366,7 +5366,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
     //    {
     //        //Reading column Header Positions.
     //        CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
-    //        if (pHeaderCtrl != NULL)
+    //        if (pHeaderCtrl != nullptr)
     //        {
     //            int  nColumnCount=0;
     //            //Reading column count.
@@ -5484,16 +5484,16 @@ HRESULT CMsgFrmtWnd::SetConfigDataFlexRay(xmlDocPtr pDocPtr)
 
 HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
 {
-    xmlNodeSetPtr pColMsgWnd = NULL;
+    xmlNodeSetPtr pColMsgWnd = nullptr;
     xmlDocPtr m_xmlConfigFiledoc = pDocPtr;
 
     xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/COLUMN";
     xmlXPathObjectPtr pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-    if( NULL != pPathObject )
+    if( nullptr != pPathObject )
     {
         pColMsgWnd = pPathObject->nodesetval;
     }
-    if(pColMsgWnd != NULL)
+    if(pColMsgWnd != nullptr)
     {
         ColumnInfoMap InfoMap;
 
@@ -5507,7 +5507,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
         {
             //Reading column Header Positions.
             CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
-            if (pHeaderCtrl != NULL)
+            if (pHeaderCtrl != nullptr)
             {
                 int  nColumnCount=0;
 
@@ -5520,7 +5520,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
                 {
                     xmlNodePtr pNodePtr = pColMsgWnd->nodeTab[i]->xmlChildrenNode;
 
-                    while(pNodePtr != NULL)
+                    while(pNodePtr != nullptr)
                     {
                         CString strName = pNodePtr->name;
 
@@ -5552,16 +5552,16 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/IsHex";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsHex = ptext;
                             if(strIsHex == "TRUE" || strIsHex == "1")
@@ -5596,16 +5596,16 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/IsAppend";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsAppend = ptext;
                             if(strIsAppend == "TRUE" || strIsAppend == "1")
@@ -5632,16 +5632,16 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
             }
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/IsInterpret";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsInterpret = ptext;
                             if(strIsInterpret == "TRUE")
@@ -5669,16 +5669,16 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/Time_Mode";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsTimemode = ptext;
                             if(strIsTimemode == "ABSOLUTE")
@@ -5719,24 +5719,24 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/Window_Position";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
 
-            xmlNodeSetPtr pWndPos = NULL;
+            xmlNodeSetPtr pWndPos = nullptr;
 
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 pWndPos = pPathObject->nodesetval;
             }
-            if(pWndPos != NULL)
+            if(pWndPos != nullptr)
             {
                 for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
                 {
                     xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
 
-                    while(pNodePtr != NULL)
+                    while(pNodePtr != nullptr)
                     {
                         if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString pvisibility = ptext;
                                 sMsgWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(pvisibility.GetBuffer(pvisibility.GetLength()));
@@ -5747,7 +5747,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString pWindowPlacement = ptext;
                                 sMsgWndPlacement.flags =  xmlUtils::nGetWindowVisibility(pWindowPlacement.GetBuffer(pWindowPlacement.GetLength()));
@@ -5758,7 +5758,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strTop = ptext;
                                 INT nTop = atoi(strTop);
@@ -5771,7 +5771,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strLeft = ptext;
                                 INT nLeft = atoi(strLeft);
@@ -5784,7 +5784,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strBttm = ptext;
                                 INT nBttm = atoi(strBttm);
@@ -5797,7 +5797,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strRight = ptext;
                                 INT nRight = atoi(strRight);
@@ -5827,24 +5827,24 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Message_Window/Interpretation_Window_Position";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
 
-            pWndPos = NULL;
+            pWndPos = nullptr;
 
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 pWndPos = pPathObject->nodesetval;
             }
-            if(pWndPos != NULL)
+            if(pWndPos != nullptr)
             {
                 for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
                 {
                     xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
 
-                    while(pNodePtr != NULL)
+                    while(pNodePtr != nullptr)
                     {
                         if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString stVisibilty = ptext;
                                 m_sMsgIntrpWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(stVisibilty.GetBuffer(stVisibilty.GetLength()));
@@ -5855,7 +5855,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString stVWindowPlacement = ptext;
                                 m_sMsgIntrpWndPlacement.flags =  xmlUtils::nGetWindowVisibility(stVWindowPlacement.GetBuffer(stVWindowPlacement.GetLength()));
@@ -5866,7 +5866,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strTop = ptext;
                                 INT nTop = atoi(strTop);
@@ -5879,7 +5879,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strLeft = ptext;
                                 INT nLeft = atoi(strLeft);
@@ -5892,7 +5892,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strBttm = ptext;
                                 INT nBttm = atoi(strBttm);
@@ -5905,7 +5905,7 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strRight = ptext;
                                 INT nRight = atoi(strRight);
@@ -5945,15 +5945,15 @@ HRESULT CMsgFrmtWnd::SetConfigDataLIN(xmlDocPtr pDocPtr)
 
 HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
 {
-    xmlNodeSetPtr pColMsgWnd = NULL;
+    xmlNodeSetPtr pColMsgWnd = nullptr;
     xmlDocPtr m_xmlConfigFiledoc = pDocPtr;
     xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/COLUMN";
     xmlXPathObjectPtr pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-    if( NULL != pPathObject )
+    if( nullptr != pPathObject )
     {
         pColMsgWnd = pPathObject->nodesetval;
     }
-    if(pColMsgWnd != NULL)
+    if(pColMsgWnd != nullptr)
     {
         ColumnInfoMap InfoMap;
 
@@ -5968,7 +5968,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
         {
             //Reading column Header Positions.
             CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
-            if (pHeaderCtrl != NULL)
+            if (pHeaderCtrl != nullptr)
             {
                 int  nColumnCount=0;
 
@@ -5983,7 +5983,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
                 {
                     xmlNodePtr pNodePtr = pColMsgWnd->nodeTab[i]->xmlChildrenNode;
 
-                    while(pNodePtr != NULL)
+                    while(pNodePtr != nullptr)
                     {
                         CString strName = pNodePtr->name;
 
@@ -6015,16 +6015,16 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/IsHex";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsHex = ptext;
                             if(strIsHex == "TRUE" || strIsHex == "1")
@@ -6064,16 +6064,16 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/IsAppend";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsAppend = ptext;
                             if(strIsAppend == "TRUE" || strIsAppend == "1")
@@ -6106,16 +6106,16 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/IsInterpret";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsInterpret = ptext;
                             if(strIsInterpret == "TRUE" || strIsInterpret == "1")
@@ -6143,16 +6143,16 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
 
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Time_Mode";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 xmlNodeSetPtr pIsHexPtr = pPathObject->nodesetval;
 
-                if(NULL != pIsHexPtr)
+                if(nullptr != pIsHexPtr)
                 {
                     for(int i=0; i < pIsHexPtr->nodeNr; i++)
                     {
                         xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pIsHexPtr->nodeTab[i]->xmlChildrenNode, 1);
-                        if ( NULL != ptext )
+                        if ( nullptr != ptext )
                         {
                             CString strIsTimemode = ptext;
                             if(strIsTimemode == "ABSOLUTE")
@@ -6195,24 +6195,24 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Window_Position";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
 
-            xmlNodeSetPtr pWndPos = NULL;
+            xmlNodeSetPtr pWndPos = nullptr;
 
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 pWndPos = pPathObject->nodesetval;
             }
-            if(pWndPos != NULL)
+            if(pWndPos != nullptr)
             {
                 for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
                 {
                     xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
 
-                    while(pNodePtr != NULL)
+                    while(pNodePtr != nullptr)
                     {
                         if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString pvisibility = ptext;
                                 sMsgWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(pvisibility.GetBuffer(pvisibility.GetLength()));
@@ -6223,7 +6223,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString pWindowPlacement = ptext;
                                 sMsgWndPlacement.flags =  xmlUtils::nGetWindowVisibility(pWindowPlacement.GetBuffer(pWindowPlacement.GetLength()));
@@ -6234,7 +6234,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strTop = ptext;
                                 INT nTop = atoi(strTop);
@@ -6247,7 +6247,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strLeft = ptext;
                                 INT nLeft = atoi(strLeft);
@@ -6260,7 +6260,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strBttm = ptext;
                                 INT nBttm = atoi(strBttm);
@@ -6273,7 +6273,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strRight = ptext;
                                 INT nRight = atoi(strRight);
@@ -6306,24 +6306,24 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
             pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Message_Window/Interpretation_Window_Position";
             pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
 
-            pWndPos = NULL;
+            pWndPos = nullptr;
 
-            if( NULL != pPathObject )
+            if( nullptr != pPathObject )
             {
                 pWndPos = pPathObject->nodesetval;
             }
-            if(pWndPos != NULL)
+            if(pWndPos != nullptr)
             {
                 for(INT nIndex = 0; nIndex < pWndPos->nodeNr; nIndex++)
                 {
                     xmlNodePtr pNodePtr = pWndPos->nodeTab[nIndex]->xmlChildrenNode;
 
-                    while(pNodePtr != NULL)
+                    while(pNodePtr != nullptr)
                     {
                         if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString stVisibilty = ptext;
                                 m_sMsgIntrpWndPlacement.showCmd =  xmlUtils::nGetWindowVisibility(stVisibilty.GetBuffer(stVisibilty.GetLength()));
@@ -6334,7 +6334,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"WindowPlacement")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString stVWindowPlacement = ptext;
                                 m_sMsgIntrpWndPlacement.flags =  xmlUtils::nGetWindowVisibility(stVWindowPlacement.GetBuffer(stVWindowPlacement.GetLength()));
@@ -6345,7 +6345,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strTop = ptext;
                                 INT nTop = atoi(strTop);
@@ -6358,7 +6358,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strLeft = ptext;
                                 INT nLeft = atoi(strLeft);
@@ -6371,7 +6371,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strBttm = ptext;
                                 INT nBttm = atoi(strBttm);
@@ -6384,7 +6384,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlDocPtr pDocPtr)
                         else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
                         {
                             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                            if(NULL != ptext)
+                            if(nullptr != ptext)
                             {
                                 CString strRight = ptext;
                                 INT nRight = atoi(strRight);
@@ -6438,7 +6438,7 @@ bool CMsgFrmtWnd::GetConfigData(xmlNodePtr pxmlNodePtr)
 
     LPINT pnOrder = (LPINT) malloc(nColumnCount*sizeof(int));
 
-    ASSERT(pnOrder != NULL);
+    ASSERT(pnOrder != nullptr);
     m_lstMsg.GetColumnOrderArray(pnOrder, nColumnCount);
     const char* omcVarChar ;
 
@@ -6451,7 +6451,7 @@ bool CMsgFrmtWnd::GetConfigData(xmlNodePtr pxmlNodePtr)
     for (int i = 0 ; i < nColumnCount; i++)
     {
         //<COLUMN>
-        xmlNodePtr pNodeColumn = xmlNewNode(NULL, BAD_CAST DEF_COLUMN);
+        xmlNodePtr pNodeColumn = xmlNewNode(nullptr, BAD_CAST DEF_COLUMN);
         xmlAddChild(pxmlNodePtr, pNodeColumn);
 
         //<ID>Column_Name</ID>
@@ -6461,28 +6461,28 @@ bool CMsgFrmtWnd::GetConfigData(xmlNodePtr pxmlNodePtr)
         omcVarChar = csColumnName;
         csColumnName.TrimLeft();
         csColumnName.TrimRight();
-        xmlNodePtr pColName = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_ID,BAD_CAST omcVarChar);
+        xmlNodePtr pColName = xmlNewChild(pNodeColumn, nullptr, BAD_CAST DEF_ID,BAD_CAST omcVarChar);
         xmlAddChild(pNodeColumn, pColName);
 
         //<Order>1</Order>
         CString csOrder;
         csOrder.Format("%d", (pnOrder[i] + 1));
         omcVarChar = csOrder;
-        xmlNodePtr pOrder = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_MWND_ORDER,BAD_CAST omcVarChar);
+        xmlNodePtr pOrder = xmlNewChild(pNodeColumn, nullptr, BAD_CAST DEF_MWND_ORDER,BAD_CAST omcVarChar);
         xmlAddChild(pNodeColumn, pOrder);
 
         //<Width> int </Width>
         CString csVisible;
         csVisible.Format("%d", m_lstMsg.IsColumnVisible(i));
         omcVarChar = csVisible;
-        xmlNodePtr pVisisble = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_IS_VISIBLE,BAD_CAST omcVarChar);
+        xmlNodePtr pVisisble = xmlNewChild(pNodeColumn, nullptr, BAD_CAST DEF_IS_VISIBLE,BAD_CAST omcVarChar);
         xmlAddChild(pNodeColumn, pVisisble);
 
         //<IsVisible>bool</IsVisible>
         CString csWidth;
         csWidth.Format("%d", m_lstMsg.GetColumnWidth(i));
         omcVarChar = csWidth;
-        xmlNodePtr pWidth = xmlNewChild(pNodeColumn, NULL, BAD_CAST DEF_MWND_COL_WIDTH,BAD_CAST omcVarChar);
+        xmlNodePtr pWidth = xmlNewChild(pNodeColumn, nullptr, BAD_CAST DEF_MWND_COL_WIDTH,BAD_CAST omcVarChar);
         xmlAddChild(pNodeColumn, pWidth);
     }
     free(pnOrder);
@@ -6490,19 +6490,19 @@ bool CMsgFrmtWnd::GetConfigData(xmlNodePtr pxmlNodePtr)
     CString csHex;
     csHex.Format("%d", IS_NUM_HEX_SET(m_bExprnFlag_Disp) > 0 ? true: false);
     omcVarChar = csHex;
-    xmlNodePtr pHex = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_MWND_HEX,BAD_CAST omcVarChar);
+    xmlNodePtr pHex = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_MWND_HEX,BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pHex);
 
     CString csAppend;
     csAppend.Format("%d",  IS_MODE_APPEND(m_bExprnFlag_Disp) > 0 ? true: false);
     omcVarChar = csAppend;
-    xmlNodePtr pAppend = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_MWND_APPEND,BAD_CAST omcVarChar);
+    xmlNodePtr pAppend = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_MWND_APPEND,BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pAppend);
 
     CString csInterpret;
     csInterpret.Format("%d",  IS_MODE_INTRP(m_bExprnFlag_Disp) > 0 ? true: false);
     omcVarChar = csInterpret;
-    xmlNodePtr pInterpret = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_MWND_INTERPRET,BAD_CAST omcVarChar);
+    xmlNodePtr pInterpret = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_MWND_INTERPRET,BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pInterpret);
 
     //Storing Time Display.
@@ -6520,11 +6520,11 @@ bool CMsgFrmtWnd::GetConfigData(xmlNodePtr pxmlNodePtr)
         csTimeDisplay = "SYSTEM";
     }
     omcVarChar = csTimeDisplay;
-    xmlNodePtr pTimeDisplay = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_MWND_TIME_MODE,BAD_CAST omcVarChar);
+    xmlNodePtr pTimeDisplay = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_MWND_TIME_MODE,BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pTimeDisplay);
 
     //window placement
-    xmlNodePtr pNodeWindowsPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
+    xmlNodePtr pNodeWindowsPos = xmlNewNode(nullptr, BAD_CAST DEF_WND_POS);
     xmlAddChild(pxmlNodePtr, pNodeWindowsPos);
 
     WINDOWPLACEMENT sMsgWndPlacement;
@@ -6533,7 +6533,7 @@ bool CMsgFrmtWnd::GetConfigData(xmlNodePtr pxmlNodePtr)
     xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWindowsPos, sMsgWndPlacement);
 
     //Interpretation_Window_Position-------------------------------------------------------
-    xmlNodePtr pNodeInterpretationWndPos = xmlNewNode(NULL, BAD_CAST DEF_INTPRET_WND_POS);
+    xmlNodePtr pNodeInterpretationWndPos = xmlNewNode(nullptr, BAD_CAST DEF_INTPRET_WND_POS);
     xmlAddChild(pxmlNodePtr, pNodeInterpretationWndPos);
 
     m_podMsgIntprtnDlg->GetWindowPlacement(&m_sMsgIntrpWndPlacement);
@@ -6557,10 +6557,10 @@ bool CMsgFrmtWnd::GetConfigData(xmlNodePtr pxmlNodePtr)
 *******************************************************************************/
 HRESULT CMsgFrmtWnd::SetConfigData(BYTE* pvDataStream)
 {
-    BYTE* pByteSrc = NULL;
+    BYTE* pByteSrc = nullptr;
     pByteSrc = pvDataStream;
 
-    if (pByteSrc != NULL)
+    if (pByteSrc != nullptr)
     {
         //Reading Version.
         BYTE byVer = 0;
@@ -6572,7 +6572,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(BYTE* pvDataStream)
         {
             //Reading column Header Positions.
             CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
-            if (pHeaderCtrl != NULL)
+            if (pHeaderCtrl != nullptr)
             {
                 int  nColumnCount=0;
                 //Reading column count.
@@ -6691,8 +6691,8 @@ HRESULT CMsgFrmtWnd::SetConfigData(BYTE* pvDataStream)
 HRESULT CMsgFrmtWnd::SetConfigData(xmlNodePtr pNode)
 {
     int         nColCnt =0;
-    xmlNodePtr pCopyNodeptr = NULL;
-    xmlNodePtr pChildNode = NULL;
+    xmlNodePtr pCopyNodeptr = nullptr;
+    xmlNodePtr pChildNode = nullptr;
     int nIndividualCol = -1;
     std::string   strVar;
 
@@ -6811,10 +6811,10 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlNodePtr pNode)
 
     }
 
-    if(pnOrder != NULL)
+    if(pnOrder != nullptr)
     {
         free(pnOrder);
-        pnOrder = NULL;
+        pnOrder = nullptr;
     }
 
     if(!pNode)
@@ -6905,7 +6905,7 @@ UINT CMsgFrmtWnd::nGetMsgFrmtWndConfigSize()
     //Bytes for column Header Positions.
     nSize += sizeof(UINT); //to store the column count
     CHeaderCtrl* pHeaderCtrl = m_lstMsg.GetHeaderCtrl();
-    if (pHeaderCtrl != NULL)
+    if (pHeaderCtrl != nullptr)
     {
         UINT unColCount = pHeaderCtrl->GetItemCount();
         nSize += (sizeof(int) * unColCount); //Column order
@@ -7052,14 +7052,14 @@ LRESULT CMsgFrmtWnd::OnToggleInterpretStatusAllEntries (WPARAM wParam, LPARAM /*
         SMSGDISPMAPENTRY sEntry;
         // Now shift the elements down Shift the map
         POSITION pos = m_omMsgDispMap.GetStartPosition();
-        while( pos != NULL )
+        while( pos != nullptr )
         {
             m_omMsgDispMap.GetNextAssoc( pos, n64Temp, sEntry );
             //If entry is expandable and not already expanded then expand
 
             nMsgCode = nGetCodefromMapKey(n64Temp);
 
-            if (m_ppMsgDB != NULL)
+            if (m_ppMsgDB != nullptr)
             {
                 if ((*m_ppMsgDB)->bMessageNameFromMsgCode(nMsgCode, msgName))
                 {
@@ -7087,12 +7087,12 @@ LRESULT CMsgFrmtWnd::OnToggleInterpretStatusAllEntries (WPARAM wParam, LPARAM /*
         SMSGDISPMAPENTRY sEntry;
         // Now shift the elements down Shift the map
         POSITION pos = m_omMsgDispMap.GetStartPosition();
-        while( pos != NULL )
+        while( pos != nullptr )
         {
             m_omMsgDispMap.GetNextAssoc( pos, n64Temp, sEntry );
 
             nMsgCode = nGetCodefromMapKey(n64Temp);
-            if (m_ppMsgDB != NULL)
+            if (m_ppMsgDB != nullptr)
             {
                 if ((*m_ppMsgDB)->bMessageNameFromMsgCode(nMsgCode, msgName))
                 {

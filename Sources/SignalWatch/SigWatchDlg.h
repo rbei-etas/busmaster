@@ -66,7 +66,7 @@ public:
     //}}AFX_DATA
 
     // Construction
-    CSigWatchDlg(CWnd* pParent = NULL, ETYPE_BUS eBus = CAN);   // standard constructor
+    CSigWatchDlg(CWnd* pParent = nullptr, ETYPE_BUS eBus = CAN);   // standard constructor
     void vAddMsgToWnd(SSignalInfoArray * sSingnalinfo, BOOL bIntptrDone, std::map<int, std::list<std::string>> * m_mapDetails, unsigned char mID);
     std::map<int,std::list<std::string>> * m_mapMsgIDtoSignallst;
     // Operation

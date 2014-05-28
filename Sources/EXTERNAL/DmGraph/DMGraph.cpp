@@ -37,10 +37,10 @@ typedef HWND (WINAPI* fct_HtmlHelpW)(
     DWORD_PTR dwData
 );
 
-static fct_HtmlHelpW _HtmlHelpW = NULL;
+static fct_HtmlHelpW _HtmlHelpW = nullptr;
 
-static HMODULE hHelpLib = NULL;
-static HWND hWndHelp = NULL;
+static HMODULE hHelpLib = nullptr;
+static HWND hWndHelp = nullptr;
 
 CComModule _Module;
 
@@ -78,10 +78,10 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /*lpReserved*/)
             {
                 ::PostMessage(hWndHelp, WM_CLOSE, 0, 0);
             }
-            _HtmlHelpW = NULL;
+            _HtmlHelpW = nullptr;
 
             FreeLibrary(hHelpLib);
-            hHelpLib = NULL;
+            hHelpLib = nullptr;
         }
         _Module.Term();
     }
@@ -124,7 +124,7 @@ STDAPI DllUnregisterServer(void)
 
 void WINAPI DmOpenHelp(HWND hWndParent, LPCOLESTR /*pszHelpDir*/)
 {
-    if(hHelpLib == NULL)
+    if(hHelpLib == nullptr)
     {
         HRESULT hr;
         LPCTSTR szLib = _T("HHCTRL.ocx");
@@ -132,21 +132,21 @@ void WINAPI DmOpenHelp(HWND hWndParent, LPCOLESTR /*pszHelpDir*/)
         if(hHelpLib)
         {
             _HtmlHelpW = (fct_HtmlHelpW)GetProcAddress(hHelpLib, "HtmlHelpW");
-            if(_HtmlHelpW == NULL)
+            if(_HtmlHelpW == nullptr)
             {
                 hr = HRESULT_FROM_WIN32( GetLastError() );
                 ATLTRACE(_T("Error %#x\n"), hr);
-                MessageBoxW(NULL, L"Help cannot be loaded - HtmlHelpW could not be found", NULL, MB_OK|MB_ICONSTOP);
+                MessageBoxW(nullptr, L"Help cannot be loaded - HtmlHelpW could not be found", nullptr, MB_OK|MB_ICONSTOP);
             }
         }
         else
         {
             hr = HRESULT_FROM_WIN32( GetLastError() );
             ATLTRACE(_T("Error %#x\n"), hr);
-            MessageBoxW(NULL, L"Help cannot be loaded - HHCTRL.ocx could not be found", NULL, MB_OK|MB_ICONSTOP);
+            MessageBoxW(nullptr, L"Help cannot be loaded - HHCTRL.ocx could not be found", nullptr, MB_OK|MB_ICONSTOP);
         }
     }
-    if(_HtmlHelpW == NULL)
+    if(_HtmlHelpW == nullptr)
     {
         return;
     }
@@ -155,15 +155,15 @@ void WINAPI DmOpenHelp(HWND hWndParent, LPCOLESTR /*pszHelpDir*/)
 
     GetModuleFileNameW(_Module.GetModuleInstance(), szFullHelpPath, _MAX_PATH);
     ptr = wcsrchr(szFullHelpPath, '.');
-    if(ptr == NULL)
+    if(ptr == nullptr)
     {
         return;
     }
     wcscpy(ptr+1, L"chm");
 
     hWndHelp = _HtmlHelpW(hWndParent, szFullHelpPath, HH_DISPLAY_TOPIC, NULL);
-    if(hWndHelp == NULL)
+    if(hWndHelp == nullptr)
     {
-        MessageBoxW(hWndParent, L"Help cannot be loaded - chm file could not be found", NULL, MB_OK|MB_ICONSTOP);
+        MessageBoxW(hWndParent, L"Help cannot be loaded - chm file could not be found", nullptr, MB_OK|MB_ICONSTOP);
     }
 }

@@ -74,7 +74,7 @@ tagSTJ1939_MSG::tagSTJ1939_MSG()
 {
     memset(&m_sMsgProperties, 0, sizeof(STJ1939_MSG_PROPERTIES));
     m_unDLC = 0;
-    m_pbyData = NULL;
+    m_pbyData = nullptr;
 }
 
 /* Destructor */
@@ -103,7 +103,7 @@ void tagSTJ1939_MSG::vSetDataStream(BYTE* pbyData)
     COPY_DATA_2(&m_sMsgProperties, pbyData,  sizeof(STJ1939_MSG_PROPERTIES));
     UINT unTempDLC = 0;
     COPY_DATA_2(&unTempDLC, pbyData, sizeof (UINT));
-    if (/*unTempDLC > m_unDLC*/ m_pbyData == NULL)
+    if (/*unTempDLC > m_unDLC*/ m_pbyData == nullptr)
     {
         //DELETE_ARRAY(m_pbyData);
         m_pbyData = new BYTE[MAX_DATA_LEN_J1939];
@@ -292,8 +292,8 @@ tagFormattedData_J1939::tagFormattedData_J1939()
 
     m_acMsgDir[LEN_STR_DIR_J1939 - 2] = L'x'; // It will be either Tx or Rx
 
-    m_pcDataHex = NULL;
-    m_pcDataDec = NULL;
+    m_pcDataHex = nullptr;
+    m_pcDataDec = nullptr;
 }
 
 tagFormattedData_J1939::~tagFormattedData_J1939()

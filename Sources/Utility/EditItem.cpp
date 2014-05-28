@@ -224,7 +224,7 @@ void CEditItem::OnKillFocus(CWnd* pNewWnd)
     CEdit::OnKillFocus(pNewWnd);
 
     // TODO: Add your message handler code here
-    if( pNewWnd // NULL condition
+    if( pNewWnd // nullptr condition
             && pNewWnd != GetParent()->GetParent() //For Dialog Close using X Button
             && pNewWnd->GetDlgCtrlID() != IDCANCEL ) // For Cancel condition
     {

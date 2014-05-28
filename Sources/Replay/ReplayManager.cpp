@@ -40,7 +40,7 @@ BOOL CReplayManager::m_bCreated = FALSE;
 // created before CCANMonitorApp object. CCANMonitorApp class uses this class
 // So this should be created befor CCANMonitorApp object.
 CReplayManager CReplayManager::m_ouReplayManager;
-static CBaseAppServices* g_pouITracePtr = NULL;
+static CBaseAppServices* g_pouITracePtr = nullptr;
 
 
 /*******************************************************************************
@@ -57,7 +57,7 @@ CReplayManager::CReplayManager()
     // Indicate object creation
     m_bCreated = TRUE;
     // Init active replay window
-    m_pomActiveWindow = NULL;
+    m_pomActiveWindow = nullptr;
     // Connection status
     m_bConnection = FALSE;
     //Window placement invalid value
@@ -165,7 +165,7 @@ VOID CReplayManager::vInitReplayManager()
     // Clear all entries in the list
     m_omReplayFiles.RemoveAll();
     // Init active window
-    m_pomActiveWindow = NULL;
+    m_pomActiveWindow = nullptr;
     // Remove all entries
     m_omReplayWindowArray.RemoveAll();
     // Clear Replay Process Array
@@ -198,7 +198,7 @@ VOID CReplayManager::vShowInteractiveReplayWindows()
             // Create, load and show the window
             CMsgReplayWnd* pWnd =
                 new CMsgReplayWnd( omFile, m_sWndPlacement);
-            if( pWnd != NULL )
+            if( pWnd != nullptr )
             {
                 m_omReplayWindowArray.Add( pWnd );
                 pWnd->bCreateReplayWindow();
@@ -232,7 +232,7 @@ VOID CReplayManager::vStartNonInteractiveReplays()
         {
             // Create replay process
             CReplayProcess* pNewProcess = new CReplayProcess( omFile );
-            if( pNewProcess != NULL )
+            if( pNewProcess != nullptr )
             {
                 // Load the replay file
                 BOOL bResult = pNewProcess->bOpenReplayFile();
@@ -290,7 +290,7 @@ VOID CReplayManager::vStartNonInteractiveReplays()
   Input(s)       : pomWindow - Active replay window
   Output         : -
   Functionality  : To set the active replay window. To invalidate active window
-                   this will be NULL
+                   this will be nullptr
   Member of      : CReplayManager
   Author(s)      : Raja N
   Date Created   : 16.7.2005
@@ -314,7 +314,7 @@ VOID CReplayManager::vSetActiveReplayWindow(CMsgReplayWnd* pomWindow)
 VOID CReplayManager::vCmdStep()
 {
     // Pass it to the active window
-    if( m_pomActiveWindow != NULL )
+    if( m_pomActiveWindow != nullptr )
     {
         m_pomActiveWindow->vCmdStep();
     }
@@ -333,7 +333,7 @@ VOID CReplayManager::vCmdStep()
 VOID CReplayManager::vCmdSkip()
 {
     // Pass it to the active window
-    if( m_pomActiveWindow != NULL )
+    if( m_pomActiveWindow != nullptr )
     {
         m_pomActiveWindow->vCmdSkip();
     }
@@ -354,9 +354,9 @@ VOID CReplayManager::vEnableFilters(BOOL bEnabled)
 
     for(int nCnt = 0; nCnt < nCount; nCnt++)
     {
-        CReplayProcess* pReplayProcess = NULL;
+        CReplayProcess* pReplayProcess = nullptr;
         pReplayProcess = m_omReplayProcess.GetAt(nCnt);
-        if(pReplayProcess == NULL)
+        if(pReplayProcess == nullptr)
         {
             return;
         }
@@ -369,9 +369,9 @@ VOID CReplayManager::vEnableFilters(BOOL bEnabled)
 
     for(int nCnt = 0; nCnt < nCount; nCnt++)
     {
-        CMsgReplayWnd* pReplayWnd = NULL;
+        CMsgReplayWnd* pReplayWnd = nullptr;
         pReplayWnd = m_omReplayWindowArray.GetAt(nCnt);
-        if(pReplayWnd == NULL)
+        if(pReplayWnd == nullptr)
         {
             return;
         }
@@ -394,7 +394,7 @@ VOID CReplayManager::vEnableFilters(BOOL bEnabled)
 VOID CReplayManager::vCmdGo()
 {
     // Pass it to the active window
-    if( m_pomActiveWindow != NULL )
+    if( m_pomActiveWindow != nullptr )
     {
         m_pomActiveWindow->vCmdGo();
     }
@@ -413,7 +413,7 @@ VOID CReplayManager::vCmdGo()
 VOID CReplayManager::vCmdStop()
 {
     // Pass it to the active window
-    if( m_pomActiveWindow != NULL )
+    if( m_pomActiveWindow != nullptr )
     {
         m_pomActiveWindow->vCmdStop();
     }
@@ -433,7 +433,7 @@ BOOL CReplayManager::bGetUIStateCmdStep()
 {
     BOOL bEnable = FALSE;
     // If tool is connected
-    if( m_bConnection == TRUE && m_pomActiveWindow != NULL )
+    if( m_bConnection == TRUE && m_pomActiveWindow != nullptr )
     {
         bEnable = m_pomActiveWindow->bGetUIStateCmdStep();
     }
@@ -453,7 +453,7 @@ BOOL CReplayManager::bGetUIStateCmdStep()
 BOOL CReplayManager::bGetUIStateCmdSkip()
 {
     BOOL bEnable = FALSE;
-    if( m_bConnection == TRUE && m_pomActiveWindow != NULL )
+    if( m_bConnection == TRUE && m_pomActiveWindow != nullptr )
     {
         bEnable = m_pomActiveWindow->bGetUIStateCmdSkip();
     }
@@ -473,7 +473,7 @@ BOOL CReplayManager::bGetUIStateCmdSkip()
 BOOL CReplayManager::bGetUIStateCmdGo()
 {
     BOOL bEnable = FALSE;
-    if( m_bConnection == TRUE && m_pomActiveWindow != NULL )
+    if( m_bConnection == TRUE && m_pomActiveWindow != nullptr )
     {
         bEnable = m_pomActiveWindow->bGetUIStateCmdGo();
     }
@@ -493,7 +493,7 @@ BOOL CReplayManager::bGetUIStateCmdGo()
 BOOL CReplayManager::bGetUIStateCmdStop()
 {
     BOOL bEnable = FALSE;
-    if( m_bConnection == TRUE && m_pomActiveWindow != NULL )
+    if( m_bConnection == TRUE && m_pomActiveWindow != nullptr )
     {
         bEnable = m_pomActiveWindow->bGetUIStateCmdStop();
     }
@@ -514,7 +514,7 @@ BOOL CReplayManager::bGetUIStateCmdStop()
 BOOL CReplayManager::bRemovePointerFromList(CWnd* pWnd)
 {
     BOOL bFound = FALSE;
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         int nSize = (int)m_omReplayWindowArray.GetSize();
         for( int nIndex = 0; bFound == FALSE && nIndex < nSize; nIndex++ )
@@ -709,7 +709,7 @@ void CReplayManager::vGetReplayConfigData(BYTE*& pDesBuffer, int& nBuffSize)
         ouFile = m_omReplayFiles.ElementAt( nIndex );
         pbyTemp = ouFile.pbySaveConfig(pbyTemp);
     }
-    if (m_pomActiveWindow != NULL)
+    if (m_pomActiveWindow != nullptr)
     {
         m_pomActiveWindow->GetWindowPlacement(&m_sWndPlacement);
     }
@@ -722,7 +722,7 @@ void CReplayManager::vGetReplayConfigData(xmlNodePtr pxmlNodePtr)
     CReplayFile ouFile;
     for( int nIndex = 0; nIndex < nSize; nIndex++ )
     {
-        xmlNodePtr pNodeReplay = xmlNewNode(NULL, BAD_CAST DEF_REPLAY);
+        xmlNodePtr pNodeReplay = xmlNewNode(nullptr, BAD_CAST DEF_REPLAY);
         xmlAddChild(pxmlNodePtr, pNodeReplay);
         ouFile = m_omReplayFiles.ElementAt( nIndex );
         ouFile.pbySaveConfig(pNodeReplay);
@@ -733,7 +733,7 @@ void CReplayManager::vSetReplayConfigData(BYTE* pSrcBuffer, int /*nBuffSize*/)
     //Before loading another config initialize the display
     vStopReplayThread();
     vInitReplayManager();
-    if (NULL != pSrcBuffer)
+    if (nullptr != pSrcBuffer)
     {
         //Now load new config
         BYTE byVersion = 0;
@@ -755,16 +755,16 @@ void CReplayManager::vSetReplayConfigData(xmlDocPtr pDoc)
 {
     vStopReplayThread();
     vInitReplayManager();
-    if (NULL != pDoc)
+    if (nullptr != pDoc)
     {
         //Now load new config
         xmlChar* pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Replay/Replay";
         xmlXPathObjectPtr pPathObject = xmlUtils::pGetNodes(pDoc, pXpath);
-        xmlNodePtr pNode = NULL;
-        if( NULL != pPathObject )
+        xmlNodePtr pNode = nullptr;
+        if( nullptr != pPathObject )
         {
             xmlNodeSetPtr pNodeSet = pPathObject->nodesetval;
-            if( NULL != pNodeSet)
+            if( nullptr != pNodeSet)
             {
                 INT nSize = pNodeSet->nodeNr;
                 CReplayFile ouFile;
@@ -810,7 +810,7 @@ void CReplayManager::vAddReplayFile(CReplayFile& ouFile)
 //{
 //    BOOL bReturn = TRUE;
 /**************Get the old buffer pointer and then proceed *********/
-//    BYTE* pOldConfigBuff = NULL;
+//    BYTE* pOldConfigBuff = nullptr;
 /**************Get the old buffer pointer and then proceed *********/
 // Populate the list
 //    int nRplayCnt = 0;
@@ -838,7 +838,7 @@ void CReplayManager::vSetTraceObjPtr( PVOID pvObj)
 
 void CReplayManager::vSendToTrace(char* pcString)
 {
-    if (NULL != g_pouITracePtr)
+    if (nullptr != g_pouITracePtr)
     {
         g_pouITracePtr->bWriteToTrace(pcString);
     }

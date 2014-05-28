@@ -41,7 +41,7 @@ void CBrowseEditItem::OnKillFocus(CWnd* pNewWnd)
     CEdit::OnKillFocus(pNewWnd);
 
     // TODO: Add your message handler code here
-    if( pNewWnd // NULL condition
+    if( pNewWnd // nullptr condition
             && pNewWnd != GetParent()->GetParent() //For Dialog Close using X Button
             && pNewWnd->GetDlgCtrlID() != IDCANCEL ) // For Cancel condition
     {
@@ -66,7 +66,7 @@ void CBrowseEditItem::OnKillFocus(CWnd* pNewWnd)
                                                (LPARAM)&lvDispInfo);
     }
     //HWND hNewWnd = 0;
-    if(pNewWnd != NULL)
+    if(pNewWnd != nullptr)
     {
         if(m_pomButton->GetSafeHwnd() == pNewWnd->GetSafeHwnd())
         {
@@ -112,7 +112,7 @@ void CButtonItem::OnKillFocus(CWnd* pNewWnd)
 {
     CButton::OnKillFocus(pNewWnd);
     //HWND hNewWnd = 0;
-    if(pNewWnd != NULL)
+    if(pNewWnd != nullptr)
     {
         if(m_pomEditItem->GetSafeHwnd() == pNewWnd->GetSafeHwnd())
         {

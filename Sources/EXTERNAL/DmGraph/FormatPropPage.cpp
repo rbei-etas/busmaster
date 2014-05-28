@@ -52,7 +52,7 @@ void CFormatPropPage::UpdateControls(IDMGraphCtrl* pGraphCtrl)
 
     CComPtr<IDMGraphAxis> spAxis;
     hr = GetSelectedAxis(pGraphCtrl, &spAxis);
-    if(FAILED(hr) || spAxis == NULL)
+    if(FAILED(hr) || spAxis == nullptr)
     {
         return;
     }
@@ -66,14 +66,14 @@ void CFormatPropPage::UpdateControls(IDMGraphCtrl* pGraphCtrl)
         //if this axis is a date/time axis but the format is not a date/time then then adjust the type as well
         SendDlgItemMessage(IDC_COMBO_TYPE, CB_SETCURSEL, 3);
         BOOL bHandled;
-        OnSelChangeCombo_type(0, 0, NULL, bHandled);
+        OnSelChangeCombo_type(0, 0, nullptr, bHandled);
     }
     if(time == VARIANT_FALSE && idxType >= 3)
     {
         //if this axis is NOT a date/time axis but the format is a date/time then adjust the type as well
         SendDlgItemMessage(IDC_COMBO_TYPE, CB_SETCURSEL, 0);
         BOOL bHandled;
-        OnSelChangeCombo_type(0, 0, NULL, bHandled);
+        OnSelChangeCombo_type(0, 0, nullptr, bHandled);
     }
 
 
@@ -83,7 +83,7 @@ void CFormatPropPage::UpdateControls(IDMGraphCtrl* pGraphCtrl)
 HRESULT CFormatPropPage::GetSelectedAxis(IDMGraphCtrl* pGraphCtrl, IDMGraphAxis** ppAxis)
 {
     ATLASSERT(ppAxis);
-    *ppAxis = NULL;
+    *ppAxis = nullptr;
     int axis = SendDlgItemMessage(IDC_COMBO_AXIS, CB_GETCURSEL);
     if(axis == CB_ERR)
     {
@@ -114,7 +114,7 @@ LRESULT CFormatPropPage::OnChangeEdit_format(WORD wNotifyCode, WORD wID, HWND hW
 
     CComPtr<IDMGraphAxis> spAxis;
     hr = GetSelectedAxis(spGraph, &spAxis);
-    if(FAILED(hr) || spAxis == NULL)
+    if(FAILED(hr) || spAxis == nullptr)
     {
         return 0;
     }
@@ -133,7 +133,7 @@ LRESULT CFormatPropPage::OnClickedButton_default(WORD wNotifyCode, WORD wID, HWN
 
     SetDlgItemText(IDC_EDIT_FORMAT, _T("%g"));
     SendDlgItemMessage(IDC_COMBO_TYPE, CB_SETCURSEL, 0);
-    OnSelChangeCombo_type(0, 0, NULL, bHandled);
+    OnSelChangeCombo_type(0, 0, nullptr, bHandled);
 
     UpdateControls(spGraph);
     return 0;
@@ -157,7 +157,7 @@ LRESULT CFormatPropPage::OnSelChangeCombo_type(WORD wNotifyCode, WORD wID, HWND 
         _T(".##"),
         _T(".###"),
         _T(".####"),
-        NULL
+        nullptr
     };
     LPCTSTR szFmtTypes1[] =
     {
@@ -171,7 +171,7 @@ LRESULT CFormatPropPage::OnSelChangeCombo_type(WORD wNotifyCode, WORD wID, HWND 
         _T(".##E"),
         _T(".###E"),
         _T(".####E"),
-        NULL
+        nullptr
     };
     LPCTSTR szFmtTypes2[] =
     {
@@ -186,7 +186,7 @@ LRESULT CFormatPropPage::OnSelChangeCombo_type(WORD wNotifyCode, WORD wID, HWND 
         _T("$ ."),
         _T("$ .#"),
         _T("$ .##"),
-        NULL
+        nullptr
     };
     LPCTSTR szFmtTypes3[] =
     {
@@ -195,7 +195,7 @@ LRESULT CFormatPropPage::OnSelChangeCombo_type(WORD wNotifyCode, WORD wID, HWND 
         _T("d/m/y"),
         _T("m/y"),
         _T("d/m"),
-        NULL
+        nullptr
     };
     LPCTSTR szFmtTypes4[] =
     {
@@ -203,7 +203,7 @@ LRESULT CFormatPropPage::OnSelChangeCombo_type(WORD wNotifyCode, WORD wID, HWND 
         _T("hh:m"),
         _T("h:m"),
         _T("m:s"),
-        NULL
+        nullptr
     };
 
     LPCTSTR* szFmtTypes[] = { szFmtTypes0, szFmtTypes1, szFmtTypes2, szFmtTypes3, szFmtTypes4 };
@@ -254,7 +254,7 @@ LRESULT CFormatPropPage::OnSelchangeFormat_list(WORD wNotifyCode, WORD wID, HWND
         _T("%.2f"),
         _T("%.3f"),
         _T("%.4f"),
-        NULL
+        nullptr
     };
     LPCTSTR szFmt1[] =
     {
@@ -268,7 +268,7 @@ LRESULT CFormatPropPage::OnSelchangeFormat_list(WORD wNotifyCode, WORD wID, HWND
         _T("%.2E"),
         _T("%.3E"),
         _T("%.4E"),
-        NULL
+        nullptr
     };
     LPCTSTR szFmt2[] =
     {
@@ -283,7 +283,7 @@ LRESULT CFormatPropPage::OnSelchangeFormat_list(WORD wNotifyCode, WORD wID, HWND
         _T("$ %g"),
         _T("$ %.1f"),
         _T("$ %.2f"),
-        NULL
+        nullptr
     };
     LPCTSTR szFmt3[] =
     {
@@ -292,7 +292,7 @@ LRESULT CFormatPropPage::OnSelchangeFormat_list(WORD wNotifyCode, WORD wID, HWND
         _T("%d/%m/%Y"),
         _T("%b/%Y"),
         _T("%d/%B"),
-        NULL
+        nullptr
     };
     LPCTSTR szFmt4[] =
     {
@@ -300,7 +300,7 @@ LRESULT CFormatPropPage::OnSelchangeFormat_list(WORD wNotifyCode, WORD wID, HWND
         _T("%H %p/%M"),
         _T("%H:%M"),
         _T("%M:%S"),
-        NULL
+        nullptr
     };
     LPCTSTR* szFmt[] = { szFmt0, szFmt1, szFmt2, szFmt3, szFmt4 };
 
@@ -319,7 +319,7 @@ void CFormatPropPage::SetAxisTimeFormat(VARIANT_BOOL b)
 
     CComPtr<IDMGraphAxis> spAxis;
     hr = GetSelectedAxis(spGraph, &spAxis);
-    if(FAILED(hr) || spAxis == NULL)
+    if(FAILED(hr) || spAxis == nullptr)
     {
         return;
     }

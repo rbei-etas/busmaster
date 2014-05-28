@@ -52,7 +52,7 @@ BOOL bGetMsgInfoFromMsgStr( CONST CString& omSendMsgLine,
     CString omStrDLC        ="";
     CString omStrData       ="";
     CString omStrMsgIDType  ="";
-    CHAR* pcStopString      = NULL;
+    CHAR* pcStopString      = nullptr;
     BOOL nReturn            = FALSE;
 
     CByteArray omByteArrayDataTx;
@@ -304,11 +304,11 @@ BOOL bIsModeMismatch( std::ifstream& omInReplayFile,
 {
     BOOL bFlag = FALSE;
     BOOL bLine = TRUE;
-    CHAR Line[500] = { NULL };
+    CHAR Line[500] = { 0 };
     CString omStrLine;
     BOOL bLogModeChecked = FALSE;
     BOOL bReplayMsgTypeChecked = FALSE;
-    if(omInReplayFile != NULL)
+    if(omInReplayFile != nullptr)
     {
         while( bLine &&  ! omInReplayFile.eof())
         {
@@ -399,7 +399,7 @@ UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
     DOUBLE dNextTime         = 0;
     // Multiplication factors for HR, MIN, SECOND, and MILLI SECOND
     DOUBLE adMultiFac[4]     = {60*60*1000,60*1000,1000,0.1};
-    CHAR* pcStopString  = NULL;
+    CHAR* pcStopString  = nullptr;
 
     omStrMsgCurTime = omStrCurMsg.SpanExcluding("\t ");
     omStrMsgNextTime = omStrNextMsg.SpanExcluding("\t ");

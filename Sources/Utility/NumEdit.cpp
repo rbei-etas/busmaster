@@ -57,7 +57,7 @@ CNumEdit::CNumEdit( int nItem,
     m_sContent = sContent;
     m_bVK_ESCAPE = FALSE;
     m_sInfo = sInfo;
-    m_pomSpin = NULL;
+    m_pomSpin = nullptr;
 }
 
 /******************************************************************************
@@ -136,10 +136,10 @@ void CNumEdit::OnNcDestroy()
 {
     CRadixEdit::OnNcDestroy();
     // Delete Spin button Memory
-    if( IS_BUDDY_ENABLED( m_sInfo.m_byFlag) && m_pomSpin != NULL )
+    if( IS_BUDDY_ENABLED( m_sInfo.m_byFlag) && m_pomSpin != nullptr )
     {
         delete m_pomSpin;
-        m_pomSpin = NULL;
+        m_pomSpin = nullptr;
     }
     // Delete the control here
     delete this;
@@ -197,7 +197,7 @@ int CNumEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
             dwStyle ^= UDS_WRAP;
             // Create the spin Control
             m_pomSpin = new CNumSpinCtrl;
-            if( m_pomSpin != NULL )
+            if( m_pomSpin != nullptr )
             {
                 m_pomSpin->Create( dwStyle, omRect, GetParent(),
                                    IDC_NUM_CONTROL );
@@ -258,10 +258,10 @@ int CNumEdit::OnCreate(LPCREATESTRUCT lpCreateStruct)
         }
     }
     // Set the basic properties of the control
-    CWnd* pomWnd = NULL;
+    CWnd* pomWnd = nullptr;
     // Get parent window. That is list control
     pomWnd = GetParent();
-    if( pomWnd != NULL )
+    if( pomWnd != nullptr )
     {
         // Get parent's font
         CFont* pomFont = pomWnd->GetFont();
@@ -296,7 +296,7 @@ void CNumEdit::OnKillFocus(CWnd* pNewWnd)
 {
     CRadixEdit::OnKillFocus(pNewWnd);
     CWnd* m_pMainWnd = AfxGetMainWnd();
-    //if( pNewWnd != NULL                   // NULL condition - Minimize condition
+    //if( pNewWnd != nullptr                   // nullptr condition - Minimize condition
     //        && pNewWnd != m_pMainWnd ) // For Dialog Close
     {
         CString omStr;
@@ -311,12 +311,12 @@ void CNumEdit::OnKillFocus(CWnd* pNewWnd)
         lvDisplayInfo.item.iSubItem = m_nSubItem;
         lvDisplayInfo.item.iItem = m_nItem;
         lvDisplayInfo.item.cchTextMax = omStr.GetLength();
-        lvDisplayInfo.item.pszText = m_bVK_ESCAPE ? NULL : LPTSTR((LPCTSTR)omStr);
+        lvDisplayInfo.item.pszText = m_bVK_ESCAPE ? nullptr : LPTSTR((LPCTSTR)omStr);
         GetParent()->GetParent()->SendMessage( WM_NOTIFY,
                                                GetParent()->GetDlgCtrlID(),
                                                (LPARAM)&lvDisplayInfo);
         // Destroy Spin Control
-        if( IS_BUDDY_ENABLED( m_sInfo.m_byFlag) && m_pomSpin != NULL )
+        if( IS_BUDDY_ENABLED( m_sInfo.m_byFlag) && m_pomSpin != nullptr )
         {
             m_pomSpin->DestroyWindow();
         }

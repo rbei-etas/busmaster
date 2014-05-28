@@ -33,7 +33,7 @@ private:
     CFunctionEditorDoc* m_pDoc;
 public:
     CString m_omStrFunPrototype;
-    CUtlityDlg(CFunctionEditorDoc* pDoc, CWnd* pParent = NULL);   // standard constructor
+    CUtlityDlg(CFunctionEditorDoc* pDoc, CWnd* pParent = nullptr);   // standard constructor
     void vSetUtilFuncChange(CString omStrReturnType);
 
     // Dialog Data

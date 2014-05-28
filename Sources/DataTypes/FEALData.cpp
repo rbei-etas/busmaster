@@ -41,10 +41,10 @@ tagAbsSCluster::tagAbsSCluster()
 
 tagAbsSCluster::~tagAbsSCluster()
 {
-    if (m_ouBusInfo.m_pouFlexRayCluster != NULL)
+    if (m_ouBusInfo.m_pouFlexRayCluster != nullptr)
     {
         delete m_ouBusInfo.m_pouFlexRayCluster;
-        m_ouBusInfo.m_pouFlexRayCluster = NULL;
+        m_ouBusInfo.m_pouFlexRayCluster = nullptr;
     }
 }
 
@@ -55,11 +55,11 @@ tagAbsSCluster& tagAbsSCluster::operator=(tagAbsSCluster& RefObj)
 
     m_omChannelRefs.RemoveAll();
     m_omChannelRefs.Copy(RefObj.m_omChannelRefs);
-    if (m_ouBusInfo.m_pouFlexRayCluster == NULL)
+    if (m_ouBusInfo.m_pouFlexRayCluster == nullptr)
     {
         m_ouBusInfo.m_pouFlexRayCluster = new ABS_FLEXRAY_CLUSTER;
     }
-    if ((RefObj.m_ouBusInfo.m_pouFlexRayCluster != NULL) && (m_ouBusInfo.m_pouFlexRayCluster != NULL))
+    if ((RefObj.m_ouBusInfo.m_pouFlexRayCluster != nullptr) && (m_ouBusInfo.m_pouFlexRayCluster != nullptr))
     {
         *(m_ouBusInfo.m_pouFlexRayCluster) = *(RefObj.m_ouBusInfo.m_pouFlexRayCluster);
     }
@@ -101,14 +101,14 @@ tagAbsSPDU_TRIGGERING& tagAbsSPDU_TRIGGERING::operator=(tagAbsSPDU_TRIGGERING& R
 
 tagAbsSChannel::tagAbsSChannel()
 {
-    //m_pPDUTriggeringList = NULL;
+    //m_pPDUTriggeringList = nullptr;
 }
 tagAbsSChannel::~tagAbsSChannel()
 {
-    /*if (m_pPDUTriggeringList != NULL)
+    /*if (m_pPDUTriggeringList != nullptr)
     {
         m_pPDUTriggeringList->RemoveAll();
-        m_pPDUTriggeringList = NULL;
+        m_pPDUTriggeringList = nullptr;
     }*/
 }
 
@@ -120,10 +120,10 @@ tagAbsSChannel& tagAbsSChannel::operator=(tagAbsSChannel& RefObj)
 
     m_odFrameTriggeringList.RemoveAll();
     m_odFrameTriggeringList.AddTail(&(RefObj.m_odFrameTriggeringList));
-    // if (m_pPDUTriggeringList != NULL)
+    // if (m_pPDUTriggeringList != nullptr)
     {
         m_pPDUTriggeringList.RemoveAll();
-        //if (RefObj.m_pPDUTriggeringList != NULL)
+        //if (RefObj.m_pPDUTriggeringList != nullptr)
         if(RefObj.m_pPDUTriggeringList.IsEmpty() == FALSE)
         {
             m_pPDUTriggeringList.AddTail(&(RefObj.m_pPDUTriggeringList));
@@ -131,13 +131,13 @@ tagAbsSChannel& tagAbsSChannel::operator=(tagAbsSChannel& RefObj)
         /* else
          {
              delete m_pPDUTriggeringList;
-             m_pPDUTriggeringList = NULL;
+             m_pPDUTriggeringList = nullptr;
          }*/
 
     }
     /* else
      {
-         if (RefObj.m_pPDUTriggeringList != NULL)
+         if (RefObj.m_pPDUTriggeringList != nullptr)
          {
              m_pPDUTriggeringList = new AbsCPduTriggeringList;
              m_pPDUTriggeringList->AddTail(RefObj.m_pPDUTriggeringList);
@@ -152,7 +152,7 @@ void tagAbsSChannel::DoCleanup()
     m_omChannelName = EMPTY_STRING;
     m_odFrameTriggeringList.RemoveAll();
     m_pPDUTriggeringList.RemoveAll();
-    /* if (m_pPDUTriggeringList != NULL)
+    /* if (m_pPDUTriggeringList != nullptr)
      {
          m_pPDUTriggeringList->RemoveAll();
      }*/
@@ -250,14 +250,14 @@ void tagAbsSCONTROLLER::DoCleanup()
 
 tagAbsSECU::tagAbsSECU()
 {
-    m_odConnectorList = NULL;
+    m_odConnectorList = nullptr;
 }
 tagAbsSECU::~tagAbsSECU()
 {
-    if (m_odConnectorList != NULL)
+    if (m_odConnectorList != nullptr)
     {
         delete m_odConnectorList;
-        m_odConnectorList = NULL;
+        m_odConnectorList = nullptr;
     }
 }
 tagAbsSECU& tagAbsSECU::operator=(tagAbsSECU& RefObj)
@@ -497,7 +497,7 @@ BOOL tagAbsSElement::RemoveSignal(eENTITY_FIBEX eEntity, CString omID, CATEGORY_
         case TYPE_CSIGNAL:
         {
             POSITION pos = GetSignalPos(omID);
-            if (pos != NULL)
+            if (pos != nullptr)
             {
                 m_omSignalList.RemoveAt(pos);
             }
@@ -522,7 +522,7 @@ BOOL tagAbsSElement::RemoveCluster(eENTITY_FIBEX eEntity, CString omID, CATEGORY
         case TYPE_CCLUSTER:
         {
             POSITION pos = GetClusterPos(omID);
-            if (pos != NULL)
+            if (pos != nullptr)
             {
                 m_omClusterList.RemoveAt(pos);
             }
@@ -547,7 +547,7 @@ BOOL tagAbsSElement::RemoveChannel(eENTITY_FIBEX eEntity, CString omID, CATEGORY
         case TYPE_CCHANNEL:
         {
             POSITION pos = GetChannelPos(omID);
-            if (pos != NULL)
+            if (pos != nullptr)
             {
                 m_omChannelList.RemoveAt(pos);
             }
@@ -572,7 +572,7 @@ BOOL tagAbsSElement::RemoveECU(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GRO
         case TYPE_CECU:
         {
             POSITION pos = GetECUPos(omID);
-            if (pos != NULL)
+            if (pos != nullptr)
             {
                 m_omECUList.RemoveAt(pos);
             }
@@ -597,7 +597,7 @@ BOOL tagAbsSElement::RemoveFrame(eENTITY_FIBEX eEntity, CString omID, CATEGORY_G
         case TYPE_CFRAME:
         {
             POSITION pos = GetFramePos(omID);
-            if (pos != NULL)
+            if (pos != nullptr)
             {
                 m_omFrameList.RemoveAt(pos);
             }
@@ -622,7 +622,7 @@ BOOL tagAbsSElement::RemoveFunction(eENTITY_FIBEX eEntity, CString omID, CATEGOR
         case TYPE_CFUNCTION:
         {
             POSITION pos = GetFunctionPos(omID);
-            if (pos != NULL)
+            if (pos != nullptr)
             {
                 m_omFunctionList.RemoveAt(pos);
             }
@@ -647,7 +647,7 @@ BOOL tagAbsSElement::RemoveComposite(eENTITY_FIBEX eEntity, CString omID, CATEGO
         case TYPE_CCOMPOSITE:
         {
             POSITION pos = GetCompositePos(omID);
-            if (pos != NULL)
+            if (pos != nullptr)
             {
                 m_omCompositeList.RemoveAt(pos);
             }
@@ -672,7 +672,7 @@ BOOL tagAbsSElement::RemovePDU(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GRO
         case TYPE_CPDU:
         {
             POSITION pos = GetPDUPos(omID);
-            if (pos != NULL)
+            if (pos != nullptr)
             {
                 m_omPDUList.RemoveAt(pos);
             }
@@ -691,7 +691,7 @@ BOOL tagAbsSElement::RemovePDU(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GRO
 
 POSITION tagAbsSElement::GetFramePos(CString omID)
 {
-    POSITION pos = NULL;
+    POSITION pos = nullptr;
     int nListCount = m_omFrameList.GetCount();
     for (int i = 0; i < nListCount; i++)
     {
@@ -708,7 +708,7 @@ POSITION tagAbsSElement::GetFramePos(CString omID)
 
 POSITION tagAbsSElement::GetCompositePos(CString omID)
 {
-    POSITION pos = NULL;
+    POSITION pos = nullptr;
     int nListCount = m_omCompositeList.GetCount();
     for (int i = 0; i < nListCount; i++)
     {
@@ -725,7 +725,7 @@ POSITION tagAbsSElement::GetCompositePos(CString omID)
 
 POSITION tagAbsSElement::GetECUPos(CString omID)
 {
-    POSITION pos = NULL;
+    POSITION pos = nullptr;
     int nListCount = m_omECUList.GetCount();
     for (int i = 0; i < nListCount; i++)
     {
@@ -742,7 +742,7 @@ POSITION tagAbsSElement::GetECUPos(CString omID)
 
 POSITION tagAbsSElement::GetChannelPos(CString omID)
 {
-    POSITION pos = NULL;
+    POSITION pos = nullptr;
     int nListCount = m_omChannelList.GetCount();
     for (int i = 0; i < nListCount; i++)
     {
@@ -758,7 +758,7 @@ POSITION tagAbsSElement::GetChannelPos(CString omID)
 }
 POSITION tagAbsSElement::GetClusterPos(CString omID)
 {
-    POSITION pos = NULL;
+    POSITION pos = nullptr;
     int nListCount = m_omClusterList.GetCount();
     for (int i = 0; i < nListCount; i++)
     {
@@ -774,7 +774,7 @@ POSITION tagAbsSElement::GetClusterPos(CString omID)
 }
 POSITION tagAbsSElement::GetSignalPos(CString omID)
 {
-    POSITION pos = NULL;
+    POSITION pos = nullptr;
     int nListCount = m_omSignalList.GetCount();
     for (int i = 0; i < nListCount; i++)
     {
@@ -790,7 +790,7 @@ POSITION tagAbsSElement::GetSignalPos(CString omID)
 }
 POSITION tagAbsSElement::GetPDUPos(CString omID)
 {
-    POSITION pos = NULL;
+    POSITION pos = nullptr;
     int nListCount = m_omPDUList.GetCount();
     for (int i = 0; i < nListCount; i++)
     {
@@ -806,7 +806,7 @@ POSITION tagAbsSElement::GetPDUPos(CString omID)
 }
 POSITION tagAbsSElement::GetFunctionPos(CString omID)
 {
-    POSITION pos = NULL;
+    POSITION pos = nullptr;
     int nListCount = m_omFunctionList.GetCount();
     for (int i = 0; i < nListCount; i++)
     {
@@ -850,9 +850,9 @@ void tagAbsSFibexContainer::DoCleanup()
 //tagAbsSPDUTRIGGTIMING::tagAbsSPDUTRIGGTIMING()
 //{
 //    m_byTimeMode = 0x0;
-//   // m_psCyclicTiming = NULL;
-//    /*m_psEventControlledTiming = NULL;
-//    m_psRequestControlledTiming = NULL;*/
+//   // m_psCyclicTiming = nullptr;
+//    /*m_psEventControlledTiming = nullptr;
+//    m_psRequestControlledTiming = nullptr;*/
 //
 //}
 tagAbsSPDUTRIGGTIMING& tagAbsSPDUTRIGGTIMING::operator=(tagAbsSPDUTRIGGTIMING& RefObj)
@@ -864,25 +864,25 @@ tagAbsSPDUTRIGGTIMING& tagAbsSPDUTRIGGTIMING::operator=(tagAbsSPDUTRIGGTIMING& R
     m_psRequestControlledTiming = (RefObj.m_psRequestControlledTiming);
 
 
-    /*  if (RefObj.m_psCyclicTiming != NULL)
+    /*  if (RefObj.m_psCyclicTiming != nullptr)
       {
-          if (m_psCyclicTiming == NULL)
+          if (m_psCyclicTiming == nullptr)
           {
               m_psCyclicTiming = new ABS_CYCLIC_TIMING();
           }
           *m_psCyclicTiming = *(RefObj.m_psCyclicTiming);
       }*/
-    /* if (RefObj.m_psEventControlledTiming != NULL)
+    /* if (RefObj.m_psEventControlledTiming != nullptr)
      {
-         if (m_psEventControlledTiming == NULL)
+         if (m_psEventControlledTiming == nullptr)
          {
              m_psEventControlledTiming = new ABS_EVENT_CONTROLLED_TIMING();
          }
          *m_psEventControlledTiming = *(RefObj.m_psEventControlledTiming);
      }*/
-    /* if (RefObj.m_psRequestControlledTiming != NULL)
+    /* if (RefObj.m_psRequestControlledTiming != nullptr)
      {
-         if (m_psRequestControlledTiming == NULL)
+         if (m_psRequestControlledTiming == nullptr)
          {
              m_psRequestControlledTiming = new ABS_REQUEST_CONTROLLED_TIMING();
          }
@@ -892,20 +892,20 @@ tagAbsSPDUTRIGGTIMING& tagAbsSPDUTRIGGTIMING::operator=(tagAbsSPDUTRIGGTIMING& R
 }
 //tagAbsSPDUTRIGGTIMING::~tagAbsSPDUTRIGGTIMING()
 //{
-//    /*if (m_psCyclicTiming != NULL)
+//    /*if (m_psCyclicTiming != nullptr)
 //    {
 //        delete m_psCyclicTiming;
-//        m_psCyclicTiming = NULL;
+//        m_psCyclicTiming = nullptr;
 //    }*/
-//  /*  if (m_psEventControlledTiming != NULL)
+//  /*  if (m_psEventControlledTiming != nullptr)
 //    {
 //        delete m_psEventControlledTiming;
-//        m_psEventControlledTiming = NULL;
+//        m_psEventControlledTiming = nullptr;
 //    }
-//    if (m_psRequestControlledTiming != NULL)
+//    if (m_psRequestControlledTiming != nullptr)
 //    {
 //        delete m_psRequestControlledTiming;
-//        m_psRequestControlledTiming = NULL;
+//        m_psRequestControlledTiming = nullptr;
 //    }*/
 //}
 

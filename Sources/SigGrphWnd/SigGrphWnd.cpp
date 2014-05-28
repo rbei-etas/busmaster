@@ -34,7 +34,7 @@
 #include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
-static AFX_EXTENSION_MODULE SigGrphWndDLL = { NULL, NULL };
+static AFX_EXTENSION_MODULE SigGrphWndDLL = { false, nullptr };
 WINDOWPLACEMENT m_sGraphWndPlacement[AVAILABLE_PROTOCOLS];
 SGRAPHSPLITTERDATA m_sGraphSplitterPos[AVAILABLE_PROTOCOLS];
 CRect g_rcParent;
@@ -42,7 +42,7 @@ CRect g_rcParent;
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
-    static HINSTANCE shLangInst=NULL;
+    static HINSTANCE shLangInst=nullptr;
 
     // Remove this if you use lpReserved
     UNREFERENCED_PARAMETER(lpReserved);
@@ -117,7 +117,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
     return 1;   // ok
 }
 
-CGraphChildFrame* m_pomGraphWindows[MAX_PROTOCOLS] = {NULL};
+CGraphChildFrame* m_pomGraphWindows[MAX_PROTOCOLS] = {nullptr};
 CMsgBufVSE m_ouMsgInterpretBuffer;
 CPARAM_THREADPROC m_ouGraphReadThread;
 
@@ -138,7 +138,7 @@ USAGEMODE CMsgBufVSE* SG_GetGraphBuffer()
 
 USAGEMODE HRESULT SG_CreateGraphWindow( CMDIFrameWnd* pParentWnd,  short eBusType)
 {
-    if(m_pomGraphWindows[eBusType] == NULL)
+    if(m_pomGraphWindows[eBusType] == nullptr)
     {
         //Place this code at the beginning of the export function.
         //Save previous resource handle and switch to current one.
@@ -148,13 +148,13 @@ USAGEMODE HRESULT SG_CreateGraphWindow( CMDIFrameWnd* pParentWnd,  short eBusTyp
         // Register Window Class
         LPCTSTR strMDIClass = AfxRegisterWndClass(
                                   CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
-                                  ::LoadCursor(NULL, IDC_CROSS), 0,
+                                  ::LoadCursor(nullptr, IDC_CROSS), 0,
                                   AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_ICON_GRAPH)));
         // Create window instance
         m_pomGraphWindows[eBusType] = new CGraphChildFrame;
-        if( m_pomGraphWindows[eBusType] != NULL )
+        if( m_pomGraphWindows[eBusType] != nullptr )
         {
-            if( pParentWnd != NULL )
+            if( pParentWnd != nullptr )
             {
                 // Get Main Frame Size
                 ::GetWindowRect(pParentWnd->m_hWnd, &g_rcParent);
@@ -228,7 +228,7 @@ USAGEMODE HRESULT SG_ShowGraphWindow( short eBusType,  BOOL bShow)
 
 USAGEMODE BOOL SG_IsWindowVisible( short eBusType)
 {
-    if(m_pomGraphWindows[eBusType]!=NULL)
+    if(m_pomGraphWindows[eBusType]!=nullptr)
     {
         if(m_pomGraphWindows[eBusType]->IsWindowVisible())
         {
@@ -240,7 +240,7 @@ USAGEMODE BOOL SG_IsWindowVisible( short eBusType)
 
 USAGEMODE HRESULT SG_SetSignalListDetails(  short eBusType,  CGraphList* pSignalList)
 {
-    if(m_pomGraphWindows[eBusType] == NULL)
+    if(m_pomGraphWindows[eBusType] == nullptr)
     {
         return S_FALSE;
     }
@@ -376,7 +376,7 @@ void vClearGraphElementPoints(CComPtr<IDMGraphCollection>& spGraphCollection)
 DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         return (DWORD)-1;
     }
@@ -386,7 +386,7 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
 
     for(int nBUSId = 0; nBUSId<AVAILABLE_PROTOCOLS; nBUSId++)
     {
-        if(m_pomGraphWindows[nBUSId] != NULL)
+        if(m_pomGraphWindows[nBUSId] != nullptr)
         {
             int nRefreshTime =
                 m_pomGraphWindows[nBUSId]->m_pGraphList->m_odGraphParameters.m_nRefreshRate;
@@ -428,7 +428,7 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
 
             //Get access to the Graph control
             IDMGraphCtrl* pDMGraphCtrl = m_pomGraphWindows[nType]->m_pDMGraphCtrl;
-            if (  pDMGraphCtrl ==NULL )
+            if (  pDMGraphCtrl ==nullptr )
             {
                 return 0;
             }
@@ -438,7 +438,7 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
             pDMGraphCtrl->get_Elements(&spGraphCollection);
 
 
-            if(hResult == S_OK && m_pomGraphWindows[nType]!=NULL)
+            if(hResult == S_OK && m_pomGraphWindows[nType]!=nullptr)
             {
                 if(g_nInitTimeStamp[nType] == 0)
                 {
@@ -454,7 +454,7 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
                 dAbsTime+=g_dElapsdTime[nType];
 
                 CGraphElement odTemp;
-                CGraphList* podList = NULL;
+                CGraphList* podList = nullptr;
                 podList = m_pomGraphWindows[nType]->m_pGraphList;
                 INT_PTR nItemCount  = podList->m_omElementList.GetSize();
                 long    lElementCnt = 0;
@@ -463,7 +463,7 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
                 {
                     CGraphLeftView* pLeftView = ( CGraphLeftView*)
                                                 m_pomGraphWindows[CAN]->pomGetLeftViewPointer();
-                    if(pLeftView != NULL)
+                    if(pLeftView != nullptr)
                     {
                         pLeftView->vPopulateGraphControl();
                     }
@@ -479,7 +479,7 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
                         continue;
                     }
                     hResult = spGraphCollection->get_Item(nIndex, &spDispatch);
-                    if ( spDispatch == NULL )
+                    if ( spDispatch == nullptr )
                     {
                         return 0;
                     }
@@ -549,7 +549,7 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
 
         for(register int nBusID = 0; nBusID<AVAILABLE_PROTOCOLS; nBusID++)
         {
-            if(m_pomGraphWindows[nBusID] == NULL)
+            if(m_pomGraphWindows[nBusID] == nullptr)
             {
                 continue;
             }
@@ -557,19 +557,19 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
             //check if windows is already distroyed.
             if(!IsWindow(m_pomGraphWindows[nBusID]->m_hWnd))
             {
-                m_pomGraphWindows[nBusID]->m_pDMGraphCtrl = NULL;
-                m_pomGraphWindows[nBusID] = NULL;
+                m_pomGraphWindows[nBusID]->m_pDMGraphCtrl = nullptr;
+                m_pomGraphWindows[nBusID] = nullptr;
                 continue;
             }
 
-            if ( m_pomGraphWindows[nBusID]->m_pDMGraphCtrl == NULL )
+            if ( m_pomGraphWindows[nBusID]->m_pDMGraphCtrl == nullptr )
             {
                 break;
             }
 
             IDMGraphCtrl* pDMGraphCtrl = m_pomGraphWindows[nBusID]->m_pDMGraphCtrl;
 
-            if ( pDMGraphCtrl == NULL )
+            if ( pDMGraphCtrl == nullptr )
             {
                 break;
             }
@@ -596,9 +596,9 @@ BOOL bStartGraphReadThread()
     BOOL bReturn = FALSE;
     //First stop the thread if running
     bStopGraphReadThread();
-    m_ouGraphReadThread.m_hActionEvent = NULL;
+    m_ouGraphReadThread.m_hActionEvent = nullptr;
     m_ouGraphReadThread.m_unActionCode = IDLE;
-    m_ouGraphReadThread.m_pBuffer = NULL;
+    m_ouGraphReadThread.m_pBuffer = nullptr;
     m_ouGraphReadThread.m_hActionEvent = m_ouMsgInterpretBuffer.hGetNotifyingEvent();
     bReturn = m_ouGraphReadThread.bStartThread(SignalDataPlotterThread);
     return bReturn;
@@ -609,7 +609,7 @@ BOOL bStopGraphReadThread()
 {
     BOOL bReturn = FALSE;
     bReturn = m_ouGraphReadThread.bTerminateThread();
-    m_ouGraphReadThread.m_hActionEvent = NULL;
+    m_ouGraphReadThread.m_hActionEvent = nullptr;
     m_ouGraphReadThread.m_unActionCode = IDLE;
     return bReturn;
 }

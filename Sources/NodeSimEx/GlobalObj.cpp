@@ -37,10 +37,10 @@
 
 //definition
 CGlobalObj* CGlobalObj::sm_pThis[BUS_TOTAL] = {0};
-HWND CGlobalObj::sm_hWndMDIParentFrame = NULL;
-CBaseAppServices* CGlobalObj::sm_pouITraceWndPtr = NULL;
-CBaseDIL_CAN* CGlobalObj::sm_pouDilCanInterface = NULL;
-CBaseDIL_LIN* CGlobalObj::sm_pouDilLinInterface = NULL;
+HWND CGlobalObj::sm_hWndMDIParentFrame = nullptr;
+CBaseAppServices* CGlobalObj::sm_pouITraceWndPtr = nullptr;
+CBaseDIL_CAN* CGlobalObj::sm_pouDilCanInterface = nullptr;
+CBaseDIL_LIN* CGlobalObj::sm_pouDilLinInterface = nullptr;
 
 static bool g_bReqUserConfirmation;
 static bool g_bQueryConfirm;
@@ -60,8 +60,8 @@ CGlobalObj::CGlobalObj(ETYPE_BUS eBus)
 {
     bJ1939Activated = false;
     m_eBus = eBus;
-    m_pEditorDocTemplate = NULL;
-    m_pomSimSysWnd = NULL;
+    m_pEditorDocTemplate = nullptr;
+    m_pomSimSysWnd = nullptr;
     m_omStrSourceFilePathName = "";
     m_ArrAPIsList.RemoveAll();
     m_ArrAPIFuncNames.RemoveAll();
@@ -71,19 +71,19 @@ CGlobalObj::CGlobalObj(ETYPE_BUS eBus)
     m_omMsgStructFile = "CANIncludes.h";
     m_omErrorHandlerList.RemoveAll();
     m_omObjWrapperName = "wrapper.o";
-    m_podNodeToDllMap = NULL;
-    //CKeyPanelEntryList* CGlobalObj::g_podKeyPanelEntryList = NULL;
-    m_pfTransmitMsg         = NULL;
-    m_pfEnableDisableLog    = NULL;
-    m_pfDisconnectTool      = NULL;
-    m_pfWriteToLog          = NULL;
+    m_podNodeToDllMap = nullptr;
+    //CKeyPanelEntryList* CGlobalObj::g_podKeyPanelEntryList = nullptr;
+    m_pfTransmitMsg         = nullptr;
+    m_pfEnableDisableLog    = nullptr;
+    m_pfDisconnectTool      = nullptr;
+    m_pfWriteToLog          = nullptr;
     m_omFnEditHelpText.RemoveAll();
-    m_pSimSysDataPtr = NULL;
+    m_pSimSysDataPtr = nullptr;
     m_nSimSysDataSize = 0;
     m_omAppDirectory = "";
     memset(&m_wWindowPlacement, 0, sizeof(WINDOWPLACEMENT));
-    m_pEditFrameWnd = NULL;
-    m_ouClusterConfig = NULL;
+    m_pEditFrameWnd = nullptr;
+    m_ouClusterConfig = nullptr;
 }
 
 CGlobalObj::~CGlobalObj(void)
@@ -91,7 +91,7 @@ CGlobalObj::~CGlobalObj(void)
 }
 CBaseDIL_CAN* CGlobalObj::GetICANDIL()
 {
-    if (sm_pouDilCanInterface == NULL)
+    if (sm_pouDilCanInterface == nullptr)
     {
         DIL_GetInterface(CAN, (void**)&(sm_pouDilCanInterface));
     }
@@ -100,7 +100,7 @@ CBaseDIL_CAN* CGlobalObj::GetICANDIL()
 
 CBaseDIL_LIN* CGlobalObj::GetILINDIL()
 {
-    if (sm_pouDilLinInterface == NULL)
+    if (sm_pouDilLinInterface == nullptr)
     {
         DIL_GetInterface(LIN, (void**)&(sm_pouDilLinInterface));
     }
@@ -108,16 +108,16 @@ CBaseDIL_LIN* CGlobalObj::GetILINDIL()
 }
 CBaseDILI_J1939* CGlobalObj::GetIJ1939DIL(void)
 {
-    CBaseDILI_J1939* Result = NULL;
+    CBaseDILI_J1939* Result = nullptr;
     DIL_GetInterface(J1939, (void**)&(Result));
     return Result;
 }
 CFunctionEditorDoc* CGlobalObj::pGetDocPtrOfFile(CString strTempName)
 {
     CString strPath = "";
-    CFunctionEditorDoc* pDocRet = NULL;
-    CFunctionEditorDoc* pDoc = NULL;
-    if (m_pEditorDocTemplate != NULL)
+    CFunctionEditorDoc* pDocRet = nullptr;
+    CFunctionEditorDoc* pDoc = nullptr;
+    if (m_pEditorDocTemplate != nullptr)
     {
         POSITION pos = m_pEditorDocTemplate->GetFirstDocPosition();
         while (pos && !pDocRet)
@@ -137,11 +137,11 @@ CFunctionEditorDoc* CGlobalObj::pGetDocPtrOfFile(CString strTempName)
 }
 CFunctionEditorDoc* CGlobalObj::podGetFunctionEditorDoc()
 {
-    CFunctionEditorDoc* pDoc = NULL;
+    CFunctionEditorDoc* pDoc = nullptr;
     //Get the active window frame and document attached to it
     CFrameWnd* pParent = (CFrameWnd*)CWnd::FromHandle(sm_hWndMDIParentFrame);
     CEditFrameWnd* pWnd = (CEditFrameWnd*)pParent->GetActiveFrame();
-    if (pWnd != NULL)
+    if (pWnd != nullptr)
     {
         if (pWnd->IsKindOf(RUNTIME_CLASS(CEditFrameWnd)))
         {
@@ -199,7 +199,7 @@ BOOL CALLBACK EnumChildProc(HWND hwnd, LPARAM /* lParam */)
                             /* Based on user response, save the simulation files */
                             if ( g_bQueryConfirm )
                             {
-                                if (pDoc != NULL)
+                                if (pDoc != nullptr)
                                 {
                                     pDoc->OnSaveDocument(pDoc->GetPathName());
                                 }
@@ -233,12 +233,12 @@ bool CGlobalObj::bCloseFunctionEditorFrame()
 
 CFunctionView* CGlobalObj::podGetFunctionViewPtr()
 {
-    CView* pTempView = NULL;
-    CFunctionView* pFunctionView = NULL;
+    CView* pTempView = nullptr;
+    CFunctionView* pFunctionView = nullptr;
     BOOL bFound = FALSE;
     //Get the active document and find the CFunctionView attached to it
     CFunctionEditorDoc* pDoc = podGetFunctionEditorDoc();
-    if (pDoc != NULL)
+    if (pDoc != nullptr)
     {
         POSITION pos = pDoc->GetFirstViewPosition();
         while (pos && !bFound)
@@ -255,12 +255,12 @@ CFunctionView* CGlobalObj::podGetFunctionViewPtr()
 }
 CFnsTreeView* CGlobalObj::podGetFuncsTreeViewPtr()
 {
-    CFnsTreeView* pFnTreeView = NULL;
-    CView* pTempView = NULL;
+    CFnsTreeView* pFnTreeView = nullptr;
+    CView* pTempView = nullptr;
     BOOL bFound = FALSE;
     //Get the active document and find the FunctionTreeView attached to it
     CFunctionEditorDoc* pDoc = podGetFunctionEditorDoc();
-    if (pDoc != NULL)
+    if (pDoc != nullptr)
     {
         POSITION pos = pDoc->GetFirstViewPosition();
         while (pos && !bFound)
@@ -282,7 +282,7 @@ BOOL CGlobalObj::bOpenFunctioneditorfile(CString omStrNewCFileName)
 
     CFunctionEditorDoc* pDoc = CFunctionEditorBase::pCreateNewDocument(m_eBus);
     // file-attribute information
-    if (pDoc != NULL)
+    if (pDoc != nullptr)
     {
         CEditFrameWnd::sm_eBus = m_eBus;
         struct _tfinddata_t fileinfo;
@@ -296,14 +296,14 @@ BOOL CGlobalObj::bOpenFunctioneditorfile(CString omStrNewCFileName)
             //// Now open the selected file
             pDoc->OnOpenDocument(omStrNewCFileName);
             CMultiDocTemplate* pTemplate = m_pEditorDocTemplate;
-            m_pEditFrameWnd = (CEditFrameWnd*)(pTemplate->CreateNewFrame(pDoc, NULL));
+            m_pEditFrameWnd = (CEditFrameWnd*)(pTemplate->CreateNewFrame(pDoc, nullptr));
 
             //If null is passed as parameter the m_pdoc->GetNextView(pos)  will
             // give null value
-            if (m_pEditFrameWnd != NULL)
+            if (m_pEditFrameWnd != nullptr)
             {
                 ASSERT_KINDOF(CEditFrameWnd, m_pEditFrameWnd);
-                pTemplate->InitialUpdateFrame(m_pEditFrameWnd, /*NULL*/pDoc);
+                pTemplate->InitialUpdateFrame(m_pEditFrameWnd, /*nullptr*/pDoc);
             }
         }
     }
@@ -311,12 +311,12 @@ BOOL CGlobalObj::bOpenFunctioneditorfile(CString omStrNewCFileName)
 }
 CFileView* CGlobalObj::podGetFileViewPtr()
 {
-    CFileView* pFileView = NULL;
-    CView* pTempView = NULL;
+    CFileView* pFileView = nullptr;
+    CView* pTempView = nullptr;
     BOOL bFound = FALSE;
     //Get the active document and find the CFileView attached to it
     CFunctionEditorDoc* pDoc = podGetFunctionEditorDoc();
-    if (pDoc != NULL)
+    if (pDoc != nullptr)
     {
         POSITION pos = pDoc->GetFirstViewPosition();
         while (pos && !bFound)
@@ -372,12 +372,12 @@ BOOL CGlobalObj::bGetDefaultValue(eCONFIGDETAILS eParam, WINDOWPLACEMENT& sPosit
 
 BOOL CGlobalObj::bIsExist(ETYPE_BUS eBus)
 {
-    return (sm_pThis[eBus] != NULL);
+    return (sm_pThis[eBus] != nullptr);
 }
 
 CGlobalObj& CGlobalObj::ouGetObj(ETYPE_BUS eBus)
 {
-    if (sm_pThis[eBus] == NULL)
+    if (sm_pThis[eBus] == nullptr)
     {
         sm_pThis[eBus] = new CGlobalObj(eBus);
     }
@@ -387,7 +387,7 @@ void CGlobalObj::vClearAll(void)
 {
     for (UINT i = 0; i < BUS_TOTAL; i++)
     {
-        if (sm_pThis[i] != NULL)
+        if (sm_pThis[i] != nullptr)
         {
             DELETE_PTR(sm_pThis[i]);
         }

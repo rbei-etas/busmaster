@@ -541,7 +541,7 @@ CString Cluster::bWriteDBHeader(CString omStrActiveDataBase, ETYPE_BUS eBus)
             // call for MessageBox is used.
             if (m_bAutoServerMode == FALSE)
             {
-                ::MessageBox(NULL,acErrorMsg,("BUSMASTER") ,MB_ICONERROR|MB_OK);
+                ::MessageBox(nullptr,acErrorMsg,("BUSMASTER") ,MB_ICONERROR|MB_OK);
             }
         }
         else
@@ -676,7 +676,7 @@ CString Cluster::bWriteDBHeader(CString omStrActiveDataBase, ETYPE_BUS eBus)
     }
     CATCH_ALL(pomE)
     {
-        if(pomE != NULL )
+        if(pomE != nullptr )
         {
             pomE->GetErrorMessage(acErrorMsg ,sizeof(acErrorMsg) );
             bRetVal = FALSE;
@@ -684,7 +684,7 @@ CString Cluster::bWriteDBHeader(CString omStrActiveDataBase, ETYPE_BUS eBus)
             // union.h file  open error notification
             if (m_bAutoServerMode == FALSE)
             {
-                ::MessageBox(NULL,acErrorMsg,("BUSMASTER") ,MB_ICONERROR|MB_OK);
+                ::MessageBox(nullptr,acErrorMsg,("BUSMASTER") ,MB_ICONERROR|MB_OK);
             }
         }
         // Close opened file
@@ -886,7 +886,7 @@ BOOL Cluster::bFormSigNameAndLength(UINT* punLength,
     //rmdup(punStartBit, unSigCount);
     UINT* p = (UINT*)std::unique(punStartBit, punStartBit+unSigCount);
     unSigCount = (p-punStartBit);
-    if( itrSig != sigList.end() && punLength != NULL && punStartBit != NULL )
+    if( itrSig != sigList.end() && punLength != nullptr && punStartBit != nullptr )
     {
         //unSigCount = m_psMessages[nIndex].m_unNumberOfSignals;
         CString omFormatString;
@@ -1068,7 +1068,7 @@ BOOL Cluster::bSortSignalStartBitAscend(UINT* punSigStartBit, UINT unCount)
 {
     BOOL bReturn = FALSE;
 
-    if(unCount >0 && punSigStartBit != NULL )
+    if(unCount >0 && punSigStartBit != nullptr )
     {
         for(UINT i = 0 ; i< unCount ; i++ )
         {

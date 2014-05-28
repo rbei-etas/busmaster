@@ -45,9 +45,9 @@ public:
                        CString omStrMinVal = STR_EMPTY,
                        CString omStrOffset = "0",
                        CString omStrScale = "1",
-                       CWnd* pParent = NULL);   // standard constructor
+                       CWnd* pParent = nullptr);   // standard constructor
     CSignalDetailsDlg( eMODES eMode, sSIGNALS* psSigInfo,
-                       CWnd* pParent /*=NULL*/);
+                       CWnd* pParent /*=nullptr*/);
     // Dialog Data
     //{{AFX_DATA(CSignalDetailsDlg)
     enum { IDD = IDD_DLG_SIGNAL };

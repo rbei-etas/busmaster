@@ -48,12 +48,12 @@ DWORD WINAPI SigWatchDataReadThreadProc_J(LPVOID pVoid)
     /*USES_CONVERSION;*/
 
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         return (DWORD)-1;
     }
     CSignalWatch_J1939* pSWJ1939 = (CSignalWatch_J1939*)pThreadParam->m_pBuffer;
-    if (pSWJ1939 == NULL)
+    if (pSWJ1939 == nullptr)
     {
         return (DWORD)-1;
     }
@@ -94,8 +94,8 @@ DWORD WINAPI SigWatchDataReadThreadProc_J(LPVOID pVoid)
 BOOL CSignalWatch_J1939::InitInstance(void)
 {
     InitializeCriticalSection(&m_omCritSecSW);
-    m_pouSigWnd = NULL;
-    m_pMsgInterPretObj_J = NULL;
+    m_pouSigWnd = nullptr;
+    m_pMsgInterPretObj_J = nullptr;
     m_ouReadThread.m_hActionEvent = m_ouMsgBufVSE_J.hGetNotifyingEvent();
     return TRUE;
 }
@@ -105,20 +105,20 @@ int CSignalWatch_J1939::ExitInstance(void)
     m_ouReadThread.bTerminateThread(); // Terminate read thread
     m_ouMsgBufVSE_J.vClearMessageBuffer();//clear J1939 buffer
 
-    if (m_pMsgInterPretObj_J != NULL) // clear interpretation object
+    if (m_pMsgInterPretObj_J != nullptr) // clear interpretation object
     {
         m_pMsgInterPretObj_J->vClear();
         delete m_pMsgInterPretObj_J;
-        m_pMsgInterPretObj_J = NULL;
+        m_pMsgInterPretObj_J = nullptr;
     }
 
     DeleteCriticalSection(&m_omCritSecSW); //delete critical section
 
-    if (m_pouSigWnd != NULL)
+    if (m_pouSigWnd != nullptr)
     {
         m_pouSigWnd->DestroyWindow();
         delete m_pouSigWnd;
-        m_pouSigWnd = NULL;
+        m_pouSigWnd = nullptr;
     }
     return TRUE;
 }
@@ -133,7 +133,7 @@ BOOL CSignalWatch_J1939::bStartSigWatchReadThread()
 void CSignalWatch_J1939::vDisplayInSigWatchWnd(STJ1939_MSG& sMsg)
 {
     EnterCriticalSection(&m_omCritSecSW);
-    if (m_pMsgInterPretObj_J != NULL)
+    if (m_pMsgInterPretObj_J != nullptr)
     {
         static CString omMsgName;
         static SSignalInfoArray omSigInfoArray;
@@ -157,7 +157,7 @@ void CSignalWatch_J1939::vDisplayInSigWatchWnd(STJ1939_MSG& sMsg)
                 omRawValues.Add(sSignalInfo.m_omRawValue);
                 omPhyValues.Add(sSignalInfo.m_omEnggValue);
             }
-            if ((m_pouSigWnd != NULL) && (m_pouSigWnd->IsWindowVisible()))
+            if ((m_pouSigWnd != nullptr) && (m_pouSigWnd->IsWindowVisible()))
             {
                 m_pouSigWnd->vAddMsgSigIntoList(omMsgName,omSigNames, omRawValues, omPhyValues, FALSE);
             }
@@ -172,7 +172,7 @@ void CSignalWatch_J1939::vDisplayInSigWatchWnd(STJ1939_MSG& sMsg)
 void CSignalWatch_J1939::vDeleteRemovedListEntries()
 
 {
-    if ((m_pMsgInterPretObj_J != NULL) && (m_pouSigWnd != NULL))
+    if ((m_pMsgInterPretObj_J != nullptr) && (m_pouSigWnd != nullptr))
     {
         CStringArray strMsgList;
         int inSize = 0;
@@ -226,10 +226,10 @@ HRESULT CSignalWatch_J1939::SW_DoInitialization()
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     //Create the signal watch window for J1939
-    if (m_pouSigWnd == NULL)
+    if (m_pouSigWnd == nullptr)
     {
         m_pouSigWnd = new CSigWatchDlg(AfxGetMainWnd(), J1939);
-        m_pouSigWnd->Create(IDD_DLG_SIGNAL_WATCH, NULL);
+        m_pouSigWnd->Create(IDD_DLG_SIGNAL_WATCH, nullptr);
         m_pouSigWnd->SetWindowText("Signal Watch - J1939");
     }
 
@@ -254,7 +254,7 @@ HRESULT CSignalWatch_J1939::SW_ShowAddDelSignalsDlg(CWnd* pParent, void* podMain
 
 HRESULT CSignalWatch_J1939::SW_ShowSigWatchWnd(CWnd* /*pParent*/, HWND hMainWnd, INT nCmd)
 {
-    if (m_pouSigWnd != NULL)
+    if (m_pouSigWnd != nullptr)
     {
         m_pouSigWnd->vUpdateMainWndHandle(hMainWnd);
         m_pouSigWnd->SetParent(CWnd::FromHandle(hMainWnd));
@@ -271,7 +271,7 @@ HRESULT CSignalWatch_J1939::SW_GetConfigData(void* pbyConfigData)
     WINDOWPLACEMENT WndPlace;
     UINT nDebugSize  = 0;
     BYTE* pbyTemp = (BYTE*)pbyConfigData;
-    if ((m_pouSigWnd != NULL) && (pbyTemp != NULL))
+    if ((m_pouSigWnd != nullptr) && (pbyTemp != nullptr))
     {
         m_pouSigWnd->GetWindowPlacement(&WndPlace);
         COPY_DATA(pbyTemp, &WndPlace, sizeof (WINDOWPLACEMENT));
@@ -287,7 +287,7 @@ HRESULT CSignalWatch_J1939::SW_GetConfigData(void* pbyConfigData)
 HRESULT CSignalWatch_J1939::SW_SetConfigData(const void* pbyConfigData)
 {
     const BYTE* pbyTemp = (BYTE*)pbyConfigData;
-    if ((pbyConfigData != NULL) && (m_pouSigWnd != NULL))
+    if ((pbyConfigData != nullptr) && (m_pouSigWnd != nullptr))
     {
         WINDOWPLACEMENT WndPlace;
         memcpy(&WndPlace, pbyConfigData, sizeof (WINDOWPLACEMENT));
@@ -298,7 +298,7 @@ HRESULT CSignalWatch_J1939::SW_SetConfigData(const void* pbyConfigData)
             m_pouSigWnd->m_omSignalList.SetColumnWidth(i, pbyTemp[i]);
         }
     }
-    if(m_pouSigWnd != NULL)
+    if(m_pouSigWnd != nullptr)
     {
         //Signal watch window will move the List control in OnSize().
         //So the default values should be as followes.
@@ -314,7 +314,7 @@ HRESULT CSignalWatch_J1939::SW_SetConfigData(const void* pbyConfigData)
             m_pouSigWnd->m_omSignalList.MoveWindow(&sClientRect);
         }
 
-        if(pbyConfigData == NULL)
+        if(pbyConfigData == nullptr)
         {
             WINDOWPLACEMENT WndPlace;
             WndPlace.rcNormalPosition.top=70;
@@ -332,13 +332,13 @@ HRESULT CSignalWatch_J1939::SW_SetConfigData(const void* pbyConfigData)
 HRESULT CSignalWatch_J1939::SW_GetConfigData(xmlNodePtr pNodePtr)
 {
     // Setting signal watch window placement and column width
-    xmlNodePtr pWndPositn = xmlNewNode(NULL, BAD_CAST DEF_WINDOW_POSITION);
+    xmlNodePtr pWndPositn = xmlNewNode(nullptr, BAD_CAST DEF_WINDOW_POSITION);
     xmlAddChild(pNodePtr, pWndPositn);
 
     WINDOWPLACEMENT WndPlace;
     UINT nDebugSize  = 0;
     //BYTE* pbyTemp = (BYTE*)pbyConfigData;
-    if ((m_pouSigWnd != NULL))
+    if ((m_pouSigWnd != nullptr))
     {
         m_pouSigWnd->GetWindowPlacement(&WndPlace);
         //COPY_DATA(pbyTemp, &WndPlace, sizeof (WINDOWPLACEMENT));
@@ -350,7 +350,7 @@ HRESULT CSignalWatch_J1939::SW_GetConfigData(xmlNodePtr pNodePtr)
         strWindwVisibility = xmlUtils::nSetWindowVisibility(WndPlace.showCmd);
 
         // Writing visibility in to xml
-        xmlNodePtr pVisibility = xmlNewChild(pWndPositn, NULL, BAD_CAST DEF_VISIBILITY, BAD_CAST strWindwVisibility.GetBuffer(strWindwVisibility.GetLength()));
+        xmlNodePtr pVisibility = xmlNewChild(pWndPositn, nullptr, BAD_CAST DEF_VISIBILITY, BAD_CAST strWindwVisibility.GetBuffer(strWindwVisibility.GetLength()));
         xmlAddChild(pWndPositn, pVisibility);
 
         // Writing window Placement
@@ -361,7 +361,7 @@ HRESULT CSignalWatch_J1939::SW_GetConfigData(xmlNodePtr pNodePtr)
         strWindPlcmnt = xmlUtils::nSetWindowVisibility(nFlag);
 
         // Setting window Placement
-        xmlNodePtr pWndwVisibility = xmlNewChild(pWndPositn, NULL, BAD_CAST DEF_WINDOW_PLACEMENT, BAD_CAST strWindPlcmnt.GetBuffer(strWindPlcmnt.GetLength()));
+        xmlNodePtr pWndwVisibility = xmlNewChild(pWndPositn, nullptr, BAD_CAST DEF_WINDOW_PLACEMENT, BAD_CAST strWindPlcmnt.GetBuffer(strWindPlcmnt.GetLength()));
         xmlAddChild(pWndPositn, pWndwVisibility);
 
         CString strBottomPos = "", strLeftPos = "", strTopPos = "", strRightPos = "";
@@ -372,20 +372,20 @@ HRESULT CSignalWatch_J1939::SW_GetConfigData(xmlNodePtr pNodePtr)
         strBottomPos.Format("%d", WndPlace.rcNormalPosition.bottom);
 
         // Writing co-ordinates of the window in to XML file
-        xmlNodePtr pTopPos = xmlNewChild(pWndPositn, NULL, BAD_CAST DEF_TOP, BAD_CAST strTopPos.GetBuffer(strTopPos.GetLength()));
+        xmlNodePtr pTopPos = xmlNewChild(pWndPositn, nullptr, BAD_CAST DEF_TOP, BAD_CAST strTopPos.GetBuffer(strTopPos.GetLength()));
         xmlAddChild(pWndPositn, pTopPos);
 
-        xmlNodePtr pLeftPos = xmlNewChild(pWndPositn, NULL, BAD_CAST DEF_Left,BAD_CAST strLeftPos.GetBuffer(strLeftPos.GetLength()));
+        xmlNodePtr pLeftPos = xmlNewChild(pWndPositn, nullptr, BAD_CAST DEF_Left,BAD_CAST strLeftPos.GetBuffer(strLeftPos.GetLength()));
         xmlAddChild(pWndPositn, pLeftPos);
 
-        xmlNodePtr pRightPos = xmlNewChild(pWndPositn, NULL, BAD_CAST DEF_Right,BAD_CAST strRightPos.GetBuffer(strRightPos.GetLength()));
+        xmlNodePtr pRightPos = xmlNewChild(pWndPositn, nullptr, BAD_CAST DEF_Right,BAD_CAST strRightPos.GetBuffer(strRightPos.GetLength()));
         xmlAddChild(pWndPositn, pRightPos);
 
-        xmlNodePtr pBottomPos = xmlNewChild(pWndPositn, NULL, BAD_CAST DEF_Bottom,BAD_CAST strBottomPos.GetBuffer(strBottomPos.GetLength()));
+        xmlNodePtr pBottomPos = xmlNewChild(pWndPositn, nullptr, BAD_CAST DEF_Bottom,BAD_CAST strBottomPos.GetBuffer(strBottomPos.GetLength()));
         xmlAddChild(pWndPositn, pBottomPos);
 
         // Setting Column width in to the xml file
-        xmlNodePtr pColWidthPtr = xmlNewNode(NULL, BAD_CAST DEF_Columns_Width);
+        xmlNodePtr pColWidthPtr = xmlNewNode(nullptr, BAD_CAST DEF_Columns_Width);
         xmlAddChild(pNodePtr, pColWidthPtr);
 
         for (UINT i = 0; i < defSW_LIST_COLUMN_COUNT; i++)
@@ -397,25 +397,25 @@ HRESULT CSignalWatch_J1939::SW_GetConfigData(xmlNodePtr pNodePtr)
             if(i == 0)
             {
                 // Writing message column value in to xml
-                xmlNodePtr pMsgClmnPtr = xmlNewChild(pColWidthPtr, NULL, BAD_CAST DEF_Message_Column, BAD_CAST strWidth.GetBuffer(strWidth.GetLength()));
+                xmlNodePtr pMsgClmnPtr = xmlNewChild(pColWidthPtr, nullptr, BAD_CAST DEF_Message_Column, BAD_CAST strWidth.GetBuffer(strWidth.GetLength()));
                 xmlAddChild(pColWidthPtr, pMsgClmnPtr);
             }
             if(i == 1)
             {
                 // Writing Raw value column value in to xml
-                xmlNodePtr pRawValClmn = xmlNewChild(pColWidthPtr, NULL, BAD_CAST DEF_Raw_Val_Column, BAD_CAST strWidth.GetBuffer(strWidth.GetLength()));
+                xmlNodePtr pRawValClmn = xmlNewChild(pColWidthPtr, nullptr, BAD_CAST DEF_Raw_Val_Column, BAD_CAST strWidth.GetBuffer(strWidth.GetLength()));
                 xmlAddChild(pColWidthPtr, pRawValClmn);
             }
             if(i == 2)
             {
                 // Writing Raw value column value in to xml
-                xmlNodePtr pPhyalClmn = xmlNewChild(pColWidthPtr, NULL, BAD_CAST DEF_Physical_Val_Column, BAD_CAST strWidth.GetBuffer(strWidth.GetLength()));
+                xmlNodePtr pPhyalClmn = xmlNewChild(pColWidthPtr, nullptr, BAD_CAST DEF_Physical_Val_Column, BAD_CAST strWidth.GetBuffer(strWidth.GetLength()));
                 xmlAddChild(pColWidthPtr, pPhyalClmn);
             }
             if(i == 3)
             {
                 // Writing Raw value column value in to xml
-                xmlNodePtr pSigValClmn = xmlNewChild(pColWidthPtr, NULL, BAD_CAST DEF_Signal_Column, BAD_CAST strWidth.GetBuffer(strWidth.GetLength()));
+                xmlNodePtr pSigValClmn = xmlNewChild(pColWidthPtr, nullptr, BAD_CAST DEF_Signal_Column, BAD_CAST strWidth.GetBuffer(strWidth.GetLength()));
                 xmlAddChild(pColWidthPtr, pSigValClmn);
             }
         }
@@ -427,10 +427,10 @@ HRESULT CSignalWatch_J1939::SW_SetConfigData(xmlNodePtr pNode)
 {
     m_pouSigWnd->ShowWindow(SW_HIDE);
     INT nRetValue  = S_OK;
-    if ((pNode != NULL) && (m_pouSigWnd != NULL))
+    if ((pNode != nullptr) && (m_pouSigWnd != nullptr))
     {
         WINDOWPLACEMENT WndPlace;
-        while(pNode != NULL)
+        while(pNode != nullptr)
         {
             if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Window_Position")))
             {
@@ -465,7 +465,7 @@ HRESULT CSignalWatch_J1939::SW_SetConfigData(xmlNodePtr pNode)
 
 HRESULT CSignalWatch_J1939::SW_ClearSigWatchWnd(void)
 {
-    if (m_pouSigWnd != NULL)
+    if (m_pouSigWnd != nullptr)
     {
         m_pouSigWnd->PostMessage(WM_REMOVE_SIGNAL);
     }
@@ -476,7 +476,7 @@ HRESULT CSignalWatch_J1939::SW_UpdateMsgInterpretObj(void* pvRefObj)
 {
     CMsgInterpretationJ1939* RefObj = (CMsgInterpretationJ1939*) pvRefObj;
     EnterCriticalSection(&m_omCritSecSW);
-    if (m_pMsgInterPretObj_J == NULL)
+    if (m_pMsgInterPretObj_J == nullptr)
     {
         m_pMsgInterPretObj_J = new CMsgInterpretationJ1939;
     }
@@ -487,7 +487,7 @@ HRESULT CSignalWatch_J1939::SW_UpdateMsgInterpretObj(void* pvRefObj)
 BOOL CSignalWatch_J1939::SW_IsWindowVisible()
 {
     BOOL bResult = FALSE;
-    if (m_pouSigWnd != NULL)
+    if (m_pouSigWnd != nullptr)
     {
         bResult = m_pouSigWnd->IsWindowVisible();
     }

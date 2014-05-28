@@ -77,7 +77,7 @@ CSignalDefinerApp theApp;
 
 
 // CSignalDefinerApp initialization
-static HINSTANCE ghLangInst=NULL;
+static HINSTANCE ghLangInst=nullptr;
 
 BOOL CSignalDefinerApp::InitInstance()
 {

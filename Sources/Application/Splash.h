@@ -34,7 +34,7 @@ public:
     // Operations
 public:
     static void ActivateSplashScreen(BOOL bActivate = TRUE);
-    static void DisplaySplashScreen(CWnd* pParentWnd = NULL, INT nShow = SW_SHOW);
+    static void DisplaySplashScreen(CWnd* pParentWnd = nullptr, INT nShow = SW_SHOW);
     static BOOL PreTranslateAppMessage(MSG* pMsg);
 
     // Overrides
@@ -48,7 +48,7 @@ public:
     virtual void PostNcDestroy();
 
 protected:
-    BOOL Create(CWnd* pParentWnd = NULL);
+    BOOL Create(CWnd* pParentWnd = nullptr);
     static BOOL sm_bShowScreen;
     static CSplashScreen* sm_pouSplashScreen;
 

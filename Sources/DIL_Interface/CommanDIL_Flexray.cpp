@@ -76,7 +76,7 @@ HRESULT CCommanDIL_Flexray::FLEXRAY_ManageMsgBuf(BYTE byAction, DWORD ClientID, 
             else if (byAction == MSGBUF_CLEAR)
             {
                 /* clear msg buffer */
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     hResult = pClientBuf->RemoveMsgBuf(pBufObj);
                 }

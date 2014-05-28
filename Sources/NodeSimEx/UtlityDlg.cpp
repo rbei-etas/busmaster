@@ -54,7 +54,7 @@ static char THIS_FILE[] = __FILE__;
 /*                      added initialisation of m_omStrUtilsFunText           */
 /******************************************************************************/
 
-CUtlityDlg::CUtlityDlg(CFunctionEditorDoc* pDoc, CWnd* pParent /*=NULL*/)
+CUtlityDlg::CUtlityDlg(CFunctionEditorDoc* pDoc, CWnd* pParent /*=nullptr*/)
     : CDialog(CUtlityDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CUtlityDlg)
@@ -168,7 +168,7 @@ void CUtlityDlg::OnOk()
                         {
                             // Check for duplicate selection
                             // Get key handler array from the document
-                            if (m_pDoc != NULL)
+                            if (m_pDoc != nullptr)
                             {
                                 CStringArray* pArray =
                                     m_pDoc->omStrGetUtilityFunctionPrototypes();
@@ -282,7 +282,7 @@ BOOL CUtlityDlg::OnInitDialog()
     // Get all the message names of active DB
     // CMsgSignal &ouDatabase = CMsgSignal::ouGetMsgSignal();
     // If the database pointer is valid
-    //if( ouDatabase != NULL )
+    //if( ouDatabase != nullptr )
     //{
     //UINT unNoOfMessages = ouDatabase.unGetNumerOfMessages();
     // If there are some messages then get the names and add
@@ -297,7 +297,7 @@ BOOL CUtlityDlg::OnInitDialog()
     //// Insert every message name into the message list box
     //CString omStrMsgName = STR_EMPTY;
     //// Iterate through the list
-    //while ( pos != NULL )
+    //while ( pos != nullptr )
     //{
     //    omStrMsgName = omMessageNames.GetNext(pos);
     //    // Addition check to ensure there will not be any empty string

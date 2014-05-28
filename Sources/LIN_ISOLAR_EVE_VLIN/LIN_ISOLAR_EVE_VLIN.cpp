@@ -90,7 +90,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT LIN_PerformInitOperations(void);
     HRESULT LIN_PerformClosureOperations(void);
-    HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
     HRESULT LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT LIN_DeselectHwInterface(void);
@@ -122,7 +122,7 @@ public:
     HRESULT LIN_UnloadDriverLibrary(void);
 };
 
-CDIL_ISOLAR_EVE_VLIN* g_pouDIL_ISOLAR_EVE_VLIN = NULL;
+CDIL_ISOLAR_EVE_VLIN* g_pouDIL_ISOLAR_EVE_VLIN = nullptr;
 
 /**
 * \brief         Function to store the Tx message entry into sg_asAckMapBuf list.
@@ -283,7 +283,7 @@ DWORD WINAPI LinMsgReadThreadProc_LIN_ISolar_Eve(LPVOID pVoid)
     pThreadParam->m_unActionCode = CREATE_TIME_MAP;
 
     /* Dummy action event */
-    pThreadParam->m_hActionEvent = CreateEvent(NULL, false, false, NULL);
+    pThreadParam->m_hActionEvent = CreateEvent(nullptr, false, false, nullptr);
 
     bool bLoopON = true;
 
@@ -379,7 +379,7 @@ DWORD WINAPI LinMsgReadThreadProc_LIN_ISolar_Eve(LPVOID pVoid)
 
     }
     SetEvent(pThreadParam->hGetExitNotifyEvent());
-    pThreadParam->m_hActionEvent = NULL;
+    pThreadParam->m_hActionEvent = nullptr;
 
     return 0;
 }
@@ -397,9 +397,9 @@ DWORD WINAPI LinMsgReadThreadProc_LIN_ISolar_Eve(LPVOID pVoid)
 USAGEMODE HRESULT GetIDIL_LIN_Controller(void** ppvInterface)
 {
     HRESULT hResult = S_OK;
-    if ( NULL == g_pouDIL_ISOLAR_EVE_VLIN )
+    if ( nullptr == g_pouDIL_ISOLAR_EVE_VLIN )
     {
-        if ((g_pouDIL_ISOLAR_EVE_VLIN = new CDIL_ISOLAR_EVE_VLIN) == NULL)
+        if ((g_pouDIL_ISOLAR_EVE_VLIN = new CDIL_ISOLAR_EVE_VLIN) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -473,17 +473,17 @@ static BOOL bRemoveClient(DWORD dwClientId)
         if (bGetClientObj(dwClientId, unClientIndex))
         {
             /* clear the client first */
-            if (sg_asClientToBufMap[unClientIndex].hClientHandle != NULL)
+            if (sg_asClientToBufMap[unClientIndex].hClientHandle != 0)
             {
                 HRESULT hResult = S_OK;//(*pfLIN_RemoveClient)(sg_asClientToBufMap[unClientIndex].hClientHandle);
                 if (hResult == S_OK)
                 {
                     sg_asClientToBufMap[unClientIndex].dwClientID = 0;
-                    sg_asClientToBufMap[unClientIndex].hClientHandle = NULL;
+                    sg_asClientToBufMap[unClientIndex].hClientHandle = 0;
                     memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                     for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                     {
-                        sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                        sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                     }
                     sg_asClientToBufMap[unClientIndex].unBufCount = 0;
                     bResult = TRUE;
@@ -499,7 +499,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
                 memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                 for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                 {
-                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                 }
                 sg_asClientToBufMap[unClientIndex].unBufCount = 0;
                 bResult = TRUE;
@@ -674,7 +674,7 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UI
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = sg_TimeStampRef;
-    if(lQueryTickCount != NULL)
+    if(lQueryTickCount != nullptr)
     {
         *lQueryTickCount = sg_QueryTickCount;
     }
@@ -1092,7 +1092,7 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_RegisterClient(BOOL bRegister, DWORD& ClientID
 HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseLINBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
-    if (ClientID != NULL)
+    if (ClientID != 0)
     {
         UINT unClientIndex;
         if (bGetClientObj(ClientID, unClientIndex))
@@ -1101,7 +1101,7 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBa
             if (bAction == MSGBUF_ADD)
             {
                 /* Add msg buffer */
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     if (sClientObj.unBufCount < MAX_BUFF_ALLOWED)
                     {
@@ -1120,7 +1120,7 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBa
             else if (bAction == MSGBUF_CLEAR)
             {
                 /* clear msg buffer */
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     /* Remove only buffer mentioned */
                     bRemoveClientBuffer(sClientObj.pClientBuf, sClientObj.unBufCount, pBufObj);
@@ -1130,7 +1130,7 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBa
                     /* Remove all */
                     for (UINT i = 0; i < sClientObj.unBufCount; i++)
                     {
-                        sClientObj.pClientBuf[i] = NULL;
+                        sClientObj.pClientBuf[i] = nullptr;
                     }
                     sClientObj.unBufCount = 0;
                 }
@@ -1149,7 +1149,7 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBa
             /* clear msg buffer */
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                LIN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);
+                LIN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, nullptr);
             }
             hResult = S_OK;
         }

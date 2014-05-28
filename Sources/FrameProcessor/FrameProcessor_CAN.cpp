@@ -34,8 +34,8 @@ CFrameProcessor_CAN::CFrameProcessor_CAN():m_ouFormatMsgCAN(m_ouRefTimer)
 {
     DIL_GetInterface(CAN, (void**)&m_pouDilCanInterface);
 
-    m_sCANProcParams.m_pILog = NULL;
-    m_sCANProcParams.m_pouCANBuffer = NULL;
+    m_sCANProcParams.m_pILog = nullptr;
+    m_sCANProcParams.m_pouCANBuffer = nullptr;
     m_bIsDataLogged = FALSE;
 
     m_sDataCopyThread.m_hActionEvent = m_ouFSEBufCAN.hGetNotifyingEvent();
@@ -65,7 +65,7 @@ int CFrameProcessor_CAN::ExitInstance(void)
 
 CBaseLogObject* CFrameProcessor_CAN::CreateNewLogObj(const CString& omStrVersion)
 {
-    CLogObjectCAN* pLogObj = NULL;
+    CLogObjectCAN* pLogObj = nullptr;
     CString strVersion = CString(m_sCANProcParams.m_acVersion);
     if (strVersion.IsEmpty())
     {
@@ -78,10 +78,10 @@ CBaseLogObject* CFrameProcessor_CAN::CreateNewLogObj(const CString& omStrVersion
 void CFrameProcessor_CAN::DeleteLogObj(CBaseLogObject*& pouLogObj)
 {
     CLogObjectCAN* pLogObj = static_cast<CLogObjectCAN*> (pouLogObj);
-    if (NULL != pLogObj)
+    if (nullptr != pLogObj)
     {
         delete pLogObj;
-        pouLogObj = NULL;
+        pouLogObj = nullptr;
     }
     else
     {
@@ -92,7 +92,7 @@ void CFrameProcessor_CAN::DeleteLogObj(CBaseLogObject*& pouLogObj)
 void CFrameProcessor_CAN::CreateTimeModeMapping(SYSTEMTIME& CurrSysTime,
         UINT64& unAbsTime)
 {
-    if (m_pouDilCanInterface != NULL)
+    if (m_pouDilCanInterface != nullptr)
     {
         m_pouDilCanInterface->DILC_GetTimeModeMapping(CurrSysTime, unAbsTime);
     }
@@ -160,17 +160,17 @@ HRESULT CFrameProcessor_CAN::FPC_DoInitialisation(SCANPROC_PARAMS* psInitParams)
 {
     HRESULT hResult = S_FALSE;
 
-    if (psInitParams != NULL)
+    if (psInitParams != nullptr)
     {
         m_sCANProcParams = *psInitParams;
-        ASSERT(NULL != m_sCANProcParams.m_pouCANBuffer);
-        ASSERT(NULL != m_sCANProcParams.m_pILog);
+        ASSERT(nullptr != m_sCANProcParams.m_pouCANBuffer);
+        ASSERT(nullptr != m_sCANProcParams.m_pILog);
 
         m_ouFSEBufCAN.vClearMessageBuffer();
         //m_sDataCopyThread.m_hActionEvent = m_ouFSEBufCAN.hGetNotifyingEvent();
         if (this->CFrameProcessor_Common::DoInitialisation() == S_OK)
         {
-            if (m_pouDilCanInterface != NULL)
+            if (m_pouDilCanInterface != nullptr)
             {
                 if (m_pouDilCanInterface->DILC_ManageMsgBuf(MSGBUF_ADD, m_sCANProcParams.dwClientID, &m_ouFSEBufCAN) != S_OK)
                 {
@@ -197,7 +197,7 @@ HRESULT CFrameProcessor_CAN::FPC_ApplyFilteringScheme(USHORT ushLogBlkID,
         const SFILTERAPPLIED_CAN& sFilterObj)
 {
     HRESULT hResult = S_FALSE;
-    CLogObjectCAN* pLogObj = NULL;
+    CLogObjectCAN* pLogObj = nullptr;
 
     if (bIsEditingON())
     {
@@ -217,7 +217,7 @@ HRESULT CFrameProcessor_CAN::FPC_ApplyFilteringScheme(USHORT ushLogBlkID,
     }
 
     //update the filters
-    if (NULL != pLogObj)
+    if (nullptr != pLogObj)
     {
         pLogObj->SetFilterInfo(sFilterObj);
         hResult = S_OK;
@@ -239,7 +239,7 @@ HRESULT CFrameProcessor_CAN::FPC_GetFilteringScheme(USHORT ushLogBlk,
     CBaseLogObject* pouBaseLogObj = FindLoggingBlock(ushLogBlk);
     CLogObjectCAN* pouLogObj = static_cast<CLogObjectCAN*> (pouBaseLogObj);
 
-    if (NULL != pouLogObj)
+    if (nullptr != pouLogObj)
     {
         pouLogObj->GetFilterInfo(sFilterObj);
         hResult = S_OK;
@@ -259,7 +259,7 @@ HRESULT CFrameProcessor_CAN::FPC_SetClientCANBufON(BOOL bEnable)
 
     /* There is only one erroneous situation likely to occur: the client buffer
     doesn't exist and the updation of the same is to be enabled. */
-    if ((bEnable == TRUE) && (NULL == m_sCANProcParams.m_pouCANBuffer))
+    if ((bEnable == TRUE) && (nullptr == m_sCANProcParams.m_pouCANBuffer))
     {
         ;
     }
@@ -298,12 +298,12 @@ void CFrameProcessor_CAN::FPC_vCloseLogFile()
 {
     USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
 
-    CBaseLogObject* pouCurrLogObj  = NULL;
+    CBaseLogObject* pouCurrLogObj  = nullptr;
     for (USHORT i = 0; i < ushBlocks; i++)
     {
         pouCurrLogObj = m_omLogObjectArray.GetAt(i);
 
-        if (pouCurrLogObj != NULL)
+        if (pouCurrLogObj != nullptr)
         {
             pouCurrLogObj->bStopOnlyLogging();
             //pouCurrLogObj->vCloseLogFile();

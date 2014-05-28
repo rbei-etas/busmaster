@@ -30,7 +30,7 @@
 
 static CEvent sg_omMainTimerEvent;
 class CTxMsgChildFrame;
-CBaseDIL_FLEXRAY* g_pouDIL_FLEXRAY_Interface = NULL; // FLEXRAY DIL interface
+CBaseDIL_FLEXRAY* g_pouDIL_FLEXRAY_Interface = nullptr; // FLEXRAY DIL interface
 CTxFlexRayDataStore CTxFlexRayDataStore::m_sTxFlexRayDataStoreObj;
 
 CTxFlexRayDataStore::CTxFlexRayDataStore(void)
@@ -87,10 +87,10 @@ CTxFlexRayDataStore& CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj()
 UINT CalcTxTimersExecTime(LPVOID pParam)
 {
     PSCALCEXECTIMETHREAD psThreadInfo = (PSCALCEXECTIMETHREAD) pParam;
-    if (psThreadInfo != NULL)
+    if (psThreadInfo != nullptr)
     {
         CTxFlexRayDataStore* pDataStoreObj = psThreadInfo->m_pTxFlexRayDataStore;
-        if (pDataStoreObj != NULL)
+        if (pDataStoreObj != nullptr)
         {
             while (!psThreadInfo->m_bThreadStop)
             {
@@ -100,7 +100,7 @@ UINT CalcTxTimersExecTime(LPVOID pParam)
                     //pDataStoreObj->vManageTimerExecution();
                 }
             }
-            psThreadInfo->m_pomThreadPtr = NULL;
+            psThreadInfo->m_pomThreadPtr = nullptr;
             psThreadInfo->m_omExitThreadEvent.SetEvent();
         }
         else
@@ -134,7 +134,7 @@ void CTxFlexRayDataStore::vSetBusStatus(ESTATUS_BUS eBusStatus)
 
 int CTxFlexRayDataStore::UpdateMessagetoDIL(FLEXRAY_FRAME_DATA& ouFlexData,  bool bDelete)
 {
-    if ( g_pouDIL_FLEXRAY_Interface != NULL && m_eBusStatus == BUS_CONNECTED)
+    if ( g_pouDIL_FLEXRAY_Interface != nullptr && m_eBusStatus == BUS_CONNECTED)
     {
         s_FLXTXMSG ouFlxMsg;
         ouFlxMsg.m_sFlxMsg.m_nSlotID = ouFlexData.m_ouFlexFrame.m_nSlotId;
@@ -163,10 +163,10 @@ bool CTxFlexRayDataStore::bSetChannelConfig(xmlNodePtr pNode)
     int nChannel = -1;
     xmlChar* pchPath = (xmlChar*)"Index";
     xmlXPathObjectPtr pObjectPath = xmlUtils::pGetChildNodes(pNode, pchPath);
-    if  (pObjectPath != NULL )
+    if  (pObjectPath != nullptr )
     {
         xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-        if( NULL != pNodeSet )
+        if( nullptr != pNodeSet )
         {
             xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
             std::string strVar;
@@ -184,10 +184,10 @@ bool CTxFlexRayDataStore::bSetChannelConfig(xmlNodePtr pNode)
 
     xmlChar* pchPathMsg = (xmlChar*)"Message";
     pObjectPath = xmlUtils::pGetChildNodes(pNode, pchPathMsg);
-    if  (pObjectPath != NULL )
+    if  (pObjectPath != nullptr )
     {
         xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-        if( NULL != pNodeSet )
+        if( nullptr != pNodeSet )
         {
 
             for ( int i =0 ; i < pNodeSet->nodeNr; i++ )
@@ -231,7 +231,7 @@ bool bIsValidMessage(int /* nChannelIndex */, FLEXRAY_CONFIG_DATA & /* ouConfigF
 
 bool CTxFlexRayDataStore::parseForMessage(xmlNodePtr ptrNode, FLEXRAY_CONFIG_DATA& ouData)
 {
-    if ( ptrNode == NULL)
+    if ( ptrNode == nullptr)
     {
         return false;
     }
@@ -240,10 +240,10 @@ bool CTxFlexRayDataStore::parseForMessage(xmlNodePtr ptrNode, FLEXRAY_CONFIG_DAT
         //Name
         xmlChar* pchPathMsg = (xmlChar*)DEF_NAME;
         xmlXPathObjectPtr pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -254,10 +254,10 @@ bool CTxFlexRayDataStore::parseForMessage(xmlNodePtr ptrNode, FLEXRAY_CONFIG_DAT
         //Slot Id
         pchPathMsg = (xmlChar*)DEF_SLOT;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -269,10 +269,10 @@ bool CTxFlexRayDataStore::parseForMessage(xmlNodePtr ptrNode, FLEXRAY_CONFIG_DAT
         //BaseCycle
         pchPathMsg = (xmlChar*)DEF_BASECYCLE;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -284,10 +284,10 @@ bool CTxFlexRayDataStore::parseForMessage(xmlNodePtr ptrNode, FLEXRAY_CONFIG_DAT
         //Repetion
         pchPathMsg = (xmlChar*)DEF_REPETION;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -298,10 +298,10 @@ bool CTxFlexRayDataStore::parseForMessage(xmlNodePtr ptrNode, FLEXRAY_CONFIG_DAT
         //DLC
         pchPathMsg = (xmlChar*)DEF_DLC;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -312,10 +312,10 @@ bool CTxFlexRayDataStore::parseForMessage(xmlNodePtr ptrNode, FLEXRAY_CONFIG_DAT
         //DataBytes
         pchPathMsg = (xmlChar*)DEF_DATABYTES;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -323,10 +323,10 @@ bool CTxFlexRayDataStore::parseForMessage(xmlNodePtr ptrNode, FLEXRAY_CONFIG_DAT
                 char* pch;
                 pch = strtok ((char*)key," ,.-");
                 int i =0;
-                while (pch != NULL)
+                while (pch != nullptr)
                 {
                     ouData.m_ucData[i] = atoi(pch);
-                    pch = strtok (NULL, " ,.-");
+                    pch = strtok (nullptr, " ,.-");
                     i++;
                 }
             }
@@ -335,10 +335,10 @@ bool CTxFlexRayDataStore::parseForMessage(xmlNodePtr ptrNode, FLEXRAY_CONFIG_DAT
         //Enabled?
         pchPathMsg = (xmlChar*)DEF_ENABLE;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -357,7 +357,7 @@ bool CTxFlexRayDataStore::parseForMessage(xmlNodePtr ptrNode, FLEXRAY_CONFIG_DAT
 
 bool CTxFlexRayDataStore::bSetConfigData(xmlDocPtr pDoc)
 {
-    if(pDoc == NULL)
+    if(pDoc == nullptr)
     {
         m_sTxWndPlacement.rcNormalPosition.top = -1;
         m_sTxWndPlacement.length = 0;
@@ -372,10 +372,10 @@ bool CTxFlexRayDataStore::bSetConfigData(xmlDocPtr pDoc)
     xmlChar* pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FLEX_Tx_Window/Window_Position";
 
     xmlXPathObjectPtr pObjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
-    if  (pObjectPath != NULL )
+    if  (pObjectPath != nullptr )
     {
         xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-        if( NULL != pNodeSet )
+        if( nullptr != pNodeSet )
         {
             xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
             WINDOWPLACEMENT WndPlacement;
@@ -391,10 +391,10 @@ bool CTxFlexRayDataStore::bSetConfigData(xmlDocPtr pDoc)
 
     xmlChar* pXpathChannel = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/FLEX_Tx_Window/Channel_Msg_List";
     pObjectPath = xmlUtils::pGetNodes(pDoc, pXpathChannel);
-    if  (pObjectPath != NULL )
+    if  (pObjectPath != nullptr )
     {
         xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-        if( NULL != pNodeSet )
+        if( nullptr != pNodeSet )
         {
             for ( int i = 0 ; i < pNodeSet->nodeNr; i++)
             {
@@ -411,7 +411,7 @@ bool CTxFlexRayDataStore::bSetConfigData(xmlDocPtr pDoc)
 BOOL CTxFlexRayDataStore::bGetConfigData(xmlNodePtr pxmlNodePtr)
 {
     //windows position
-    xmlNodePtr pNodeWndPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
+    xmlNodePtr pNodeWndPos = xmlNewNode(nullptr, BAD_CAST DEF_WND_POS);
     xmlAddChild(pxmlNodePtr, pNodeWndPos);
 
     xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWndPos,m_sTxWndPlacement);
@@ -419,7 +419,7 @@ BOOL CTxFlexRayDataStore::bGetConfigData(xmlNodePtr pxmlNodePtr)
     //Channel Messages;
     for ( int i = 0; i < m_nChannelsConfigured; i++ )
     {
-        xmlNodePtr pNodeWndPos = xmlNewNode(NULL, BAD_CAST DEF_CHANNEL_MSG_NAME);
+        xmlNodePtr pNodeWndPos = xmlNewNode(nullptr, BAD_CAST DEF_CHANNEL_MSG_NAME);
         if ( bGetMessageListConfig(i, pNodeWndPos) == TRUE )
         {
             xmlAddChild(pxmlNodePtr, pNodeWndPos);
@@ -440,32 +440,32 @@ BOOL CTxFlexRayDataStore::bGetMessageListConfig(int nChannel, xmlNodePtr pNode)
 
     //Index
     sprintf(pchData, "%d", nChannel);
-    xmlNewChild(pNode, NULL, BAD_CAST DEF_INDEX, BAD_CAST pchData);
+    xmlNewChild(pNode, nullptr, BAD_CAST DEF_INDEX, BAD_CAST pchData);
 
     std::list<FLEXRAY_FRAME_DATA>::iterator itrFrameData = m_ouFlexray_Frame_Data[nChannel].begin();
     for (; itrFrameData != m_ouFlexray_Frame_Data[nChannel].end(); itrFrameData++ )
     {
-        xmlNodePtr pMsgNode = xmlNewNode(NULL, BAD_CAST DEF_MESSAGE );
-        if ( NULL != pMsgNode )
+        xmlNodePtr pMsgNode = xmlNewNode(nullptr, BAD_CAST DEF_MESSAGE );
+        if ( nullptr != pMsgNode )
         {
             //Name
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_NAME, BAD_CAST itrFrameData->m_ouFlexFrame.m_strFrameName.c_str());
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_NAME, BAD_CAST itrFrameData->m_ouFlexFrame.m_strFrameName.c_str());
 
             //Slot Id
             sprintf(pchData, "%d", itrFrameData->m_ouFlexFrame.m_nSlotId);
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_SLOT, BAD_CAST pchData);
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_SLOT, BAD_CAST pchData);
 
             //Base Cycle
             sprintf(pchData, "%d", itrFrameData->m_ouFlexFrame.m_nBaseCycle);
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_BASECYCLE, BAD_CAST pchData);
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_BASECYCLE, BAD_CAST pchData);
 
             //Repetition
             sprintf(pchData, "%d", itrFrameData->m_ouFlexFrame.m_nReptition);
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_REPETION, BAD_CAST pchData);
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_REPETION, BAD_CAST pchData);
 
             //DLC
             sprintf(pchData, "%d", itrFrameData->m_ouFlexFrame.m_nLength);
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_DLC, BAD_CAST pchData);
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_DLC, BAD_CAST pchData);
 
             //Data Bytes
             std::string strDatabytes;
@@ -477,16 +477,16 @@ BOOL CTxFlexRayDataStore::bGetMessageListConfig(int nChannel, xmlNodePtr pNode)
                 strDatabytes.append(pchData);
             }
 
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_DATABYTES, BAD_CAST strDatabytes.c_str());
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_DATABYTES, BAD_CAST strDatabytes.c_str());
 
             //is selected
             if ( itrFrameData->bSelected == true )
             {
-                xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_ENABLE, BAD_CAST "TRUE");
+                xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_ENABLE, BAD_CAST "TRUE");
             }
             else
             {
-                xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_ENABLE, BAD_CAST "FALSE");
+                xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_ENABLE, BAD_CAST "FALSE");
             }
         }
         xmlAddChild(pNode, pMsgNode);
@@ -558,7 +558,7 @@ BOOL CTxFlexRayDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
 BOOL CTxFlexRayDataStore::bSetDILInterfacePtr()
 {
     HRESULT hResult = S_OK;
-    if (g_pouDIL_FLEXRAY_Interface == NULL)
+    if (g_pouDIL_FLEXRAY_Interface == nullptr)
     {
         hResult = DIL_GetInterface(FLEXRAY, (void**)&g_pouDIL_FLEXRAY_Interface);
     }

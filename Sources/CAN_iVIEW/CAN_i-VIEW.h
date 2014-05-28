@@ -223,7 +223,7 @@ public:
         }
         else
         {
-            return NULL;
+            return nullptr;
         }
     }
     UNUM8* Mask()
@@ -234,7 +234,7 @@ public:
         }
         else
         {
-            return NULL;
+            return nullptr;
         }
     }
     void Id( UNUM32 Id)
@@ -408,7 +408,7 @@ public:
     virtual ~CDIL_CAN_i_VIEW();
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);

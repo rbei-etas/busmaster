@@ -77,7 +77,7 @@ CGraphBottomView::CGraphBottomView()
     m_dRangeTo = 0.0;
     //}}AFX_DATA_INIT
     // Initialise Graph control interface pointer
-    m_pDMGraphCtrl = NULL;
+    m_pDMGraphCtrl = nullptr;
     // Set update timer Id to invalid
     nTimerID = 0;
     m_dblarrTime[0] = 0;
@@ -189,8 +189,8 @@ void CGraphBottomView::OnInitialUpdate()
     m_omBtnLeft.SetIcon(AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDI_ICON_LEFT)));
     m_omBtnRight.SetIcon(AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDI_ICON_RIGHT)));
 
-    //CGraphList * podList = NULL;
-    CGraphChildFrame* pParentWnd = NULL;
+    //CGraphList * podList = nullptr;
+    CGraphChildFrame* pParentWnd = nullptr;
     pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
     pParentWnd->m_pomBottomView = this;
@@ -198,11 +198,11 @@ void CGraphBottomView::OnInitialUpdate()
     // Get Graph Control Pointer
     m_pDMGraphCtrl = pParentWnd->m_pDMGraphCtrl;
 
-    // If window handle is invalid then init pointer with NULL
-    /*if( m_opDMGraphCtrl != NULL &&
+    // If window handle is invalid then init pointer with nullptr
+    /*if( m_opDMGraphCtrl != nullptr &&
         IsWindow(m_opDMGraphCtrl->m_hWnd) == FALSE )
     {
-        m_opDMGraphCtrl = NULL;
+        m_opDMGraphCtrl = nullptr;
     }*/
 
     //Update initial values
@@ -301,12 +301,12 @@ void CGraphBottomView::vInsertSignalData()
     m_lstSignalDetails.DeleteAllItems();
 
     // Get Element List
-    CGraphList* podList = NULL;
+    CGraphList* podList = nullptr;
 
-    CGraphChildFrame* pParentWnd = NULL;
+    CGraphChildFrame* pParentWnd = nullptr;
     pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
-    if(pParentWnd != NULL)
+    if(pParentWnd != nullptr)
     {
         podList = pParentWnd->pGetSignalListDetails();
     }
@@ -316,7 +316,7 @@ void CGraphBottomView::vInsertSignalData()
     }
 
     CGraphElement odTemp;
-    if( podList != NULL )
+    if( podList != nullptr )
     {
         UINT unMsgID = 0;
         CString omStrName;
@@ -382,12 +382,12 @@ void CGraphBottomView::vInsertSignalData()
 *******************************************************************************/
 void CGraphBottomView::vUpdateSignalData()
 {
-    if ( m_pDMGraphCtrl == NULL )
+    if ( m_pDMGraphCtrl == nullptr )
     {
         return;
     }
 
-    CGraphChildFrame* pParentWnd = NULL;
+    CGraphChildFrame* pParentWnd = nullptr;
     pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
     double dblValue1 = 0, dblValue2 = 0, dblDiff;
     CString strValue1, strValue2, strDiffVal;
@@ -504,11 +504,11 @@ void CGraphBottomView::OnBtnConfigure()
     // Create configuration dialog and show it
     CGraphConfiguration omGraphConf;
 
-    CGraphList* podList = NULL;
-    CGraphChildFrame* pParentWnd = NULL;
+    CGraphList* podList = nullptr;
+    CGraphChildFrame* pParentWnd = nullptr;
     pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
-    if(pParentWnd != NULL)
+    if(pParentWnd != nullptr)
     {
         podList = pParentWnd->pGetSignalListDetails();
     }
@@ -529,7 +529,7 @@ void CGraphBottomView::OnBtnConfigure()
   Input(s)       : -
   Output         : CWnd * - Pointer to CGraphChildFrame
   Functionality  : This Function will return parent window pointer. That is
-                   pointer to CGraphChildFrame. This will return NULL incase of
+                   pointer to CGraphChildFrame. This will return nullptr incase of
                    failure
   Member of      : CGraphBottomView
   Author(s)      : ArunKumar K
@@ -538,20 +538,20 @@ void CGraphBottomView::OnBtnConfigure()
 *******************************************************************************/
 CWnd* CGraphBottomView::pomGetParentWindow() const
 {
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     // Get Splitter window pointer
     pWnd = GetParent();
     // Get CGraphChildFrame pointer from Splitter window pointer
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd = pWnd->GetParent();
     }
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd = pWnd->GetParent();
     }
 
-    // Return CGraphChildFrame pointer or NULL incase of failure
+    // Return CGraphChildFrame pointer or nullptr incase of failure
     return pWnd;
 }
 
@@ -568,7 +568,7 @@ CWnd* CGraphBottomView::pomGetParentWindow() const
 *******************************************************************************/
 void CGraphBottomView::OnBtnCopy()
 {
-    if( m_pDMGraphCtrl != NULL )
+    if( m_pDMGraphCtrl != nullptr )
     {
         m_pDMGraphCtrl->CopyToClipboard();
     }
@@ -587,11 +587,11 @@ void CGraphBottomView::OnBtnCopy()
 *******************************************************************************/
 void CGraphBottomView::OnBtnGrid()
 {
-    CGraphList* podList = NULL;
-    CGraphChildFrame* pParentWnd = NULL;
+    CGraphList* podList = nullptr;
+    CGraphChildFrame* pParentWnd = nullptr;
     pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
-    if(pParentWnd != NULL)
+    if(pParentWnd != nullptr)
     {
         podList = pParentWnd->pGetSignalListDetails();
     }
@@ -600,17 +600,17 @@ void CGraphBottomView::OnBtnGrid()
         return;
     }
 
-    if( podList != NULL)
+    if( podList != nullptr)
     {
         CGraphParameters* pEnv =
             &(podList->m_odGraphParameters);
-        if( pEnv != NULL )
+        if( pEnv != nullptr )
         {
             // Toggle grid property
             pEnv->m_bShowGrid = !pEnv->m_bShowGrid;
             // Update Graph Control
 
-            if (  m_pDMGraphCtrl !=NULL )
+            if (  m_pDMGraphCtrl !=nullptr )
             {
                 CComPtr<IDMGraphAxis> spAxisX;
                 m_pDMGraphCtrl->get_Axis( HorizontalX, &spAxisX);
@@ -643,7 +643,7 @@ void CGraphBottomView::OnBtnSet()
 {
     BOOL bDataValid = TRUE;
     UpdateData();
-    if( m_pDMGraphCtrl != NULL )
+    if( m_pDMGraphCtrl != nullptr )
     {
         // Check for validity
         if( m_dRangeFrom < 0 || m_dRangeTo < 0 )
@@ -808,11 +808,11 @@ void CGraphBottomView::OnRadioAxisY()
 *******************************************************************************/
 void CGraphBottomView::vInitGraphControl()
 {
-    CGraphList* podList = NULL;
-    CGraphChildFrame* pParentWnd = NULL;
+    CGraphList* podList = nullptr;
+    CGraphChildFrame* pParentWnd = nullptr;
     pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
-    if(pParentWnd != NULL)
+    if(pParentWnd != nullptr)
     {
         podList = pParentWnd->pGetSignalListDetails();
     }
@@ -821,10 +821,10 @@ void CGraphBottomView::vInitGraphControl()
         return;
     }
 
-    if( podList != NULL )
+    if( podList != nullptr )
     {
         CGraphParameters* pEnv = &podList->m_odGraphParameters;
-        if( pEnv != NULL )
+        if( pEnv != nullptr )
         {
             // Init Active Axis
             m_nAxis = pEnv->m_nActiveAxis;
@@ -833,7 +833,7 @@ void CGraphBottomView::vInitGraphControl()
             // Set Show Grid Action
             vSetShowButtonState( pEnv->m_bShowGrid );
             // Set Graph Params
-            if( m_pDMGraphCtrl != NULL )
+            if( m_pDMGraphCtrl != nullptr )
             {
                 // Set Axis Color
                 m_pDMGraphCtrl->put_AxisColor((OLE_COLOR)pEnv->m_nAxisColor);
@@ -892,9 +892,9 @@ void CGraphBottomView::vInitGraphControl()
 *******************************************************************************/
 void CGraphBottomView::vSetShowButtonState(BOOL bShow)
 {
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     pWnd = GetDlgItem( IDC_BTN_GRID );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         if( bShow == TRUE )
         {
@@ -922,7 +922,7 @@ void CGraphBottomView::vSetShowButtonState(BOOL bShow)
 void CGraphBottomView::vSetAction()
 {
     // Update Axis Value
-    if (  m_pDMGraphCtrl == NULL )
+    if (  m_pDMGraphCtrl == nullptr )
     {
         return;
     }
@@ -1013,7 +1013,7 @@ void CGraphBottomView::OnBtnFitAll()
 *******************************************************************************/
 void CGraphBottomView::OnBtnUp()
 {
-    if( m_pDMGraphCtrl != NULL )
+    if( m_pDMGraphCtrl != nullptr )
     {
         m_pDMGraphCtrl->ShiftDisplay(0,1);
     }
@@ -1032,7 +1032,7 @@ void CGraphBottomView::OnBtnUp()
 *******************************************************************************/
 void CGraphBottomView::OnBtnLeft()
 {
-    if( m_pDMGraphCtrl != NULL )
+    if( m_pDMGraphCtrl != nullptr )
     {
         m_pDMGraphCtrl->ShiftDisplay(-1, 0);
     }
@@ -1051,7 +1051,7 @@ void CGraphBottomView::OnBtnLeft()
 *******************************************************************************/
 void CGraphBottomView::OnBtnDown()
 {
-    if( m_pDMGraphCtrl != NULL )
+    if( m_pDMGraphCtrl != nullptr )
     {
         m_pDMGraphCtrl->ShiftDisplay(0, -1);
     }
@@ -1070,7 +1070,7 @@ void CGraphBottomView::OnBtnDown()
 *******************************************************************************/
 void CGraphBottomView::OnBtnRight()
 {
-    if( m_pDMGraphCtrl != NULL )
+    if( m_pDMGraphCtrl != nullptr )
     {
         m_pDMGraphCtrl->ShiftDisplay(1, 0);
     }
@@ -1090,22 +1090,22 @@ void CGraphBottomView::OnBtnRight()
 *******************************************************************************/
 void CGraphBottomView::vEnableAxisControls(BOOL bEnable)
 {
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     // Get X Axis button
     pWnd = GetDlgItem( IDC_RADIO_AXIS_X );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
     // Get Y Axis button
     pWnd = GetDlgItem( IDC_RADIO_AXIS_Y );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
     // Get XY Button
     pWnd = GetDlgItem( IDC_RADIO_AXIS_XY );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
@@ -1124,28 +1124,28 @@ void CGraphBottomView::vEnableAxisControls(BOOL bEnable)
 *******************************************************************************/
 void CGraphBottomView::vEnableActionControls(BOOL bEnable)
 {
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     // Get Move button
     pWnd = GetDlgItem( IDC_RADIO_ACTION_MOVE );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
     // Get Zoom button
     pWnd = GetDlgItem( IDC_RADIO_ACTION_ZOOM );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
     // Get Track Button
     pWnd = GetDlgItem( IDC_RADIO_ACTION_TRACK );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
     // Get None Button
     pWnd = GetDlgItem( IDC_RADIO_ACTION_NONE );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
@@ -1172,7 +1172,7 @@ void CGraphBottomView::vHandleConnectionStatusChange(BOOL bConnectStatus)
     // Tool is going to connect state
     vEnableDisableButtons( bConnectStatus );
 
-    CGraphChildFrame* pParentWnd = NULL;
+    CGraphChildFrame* pParentWnd = nullptr;
     pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
     //Update Graph right view
     CGraphRightView* pRightView = (CGraphRightView*)pParentWnd->pomGetRightTopViewPointer();
@@ -1184,14 +1184,14 @@ void CGraphBottomView::vHandleConnectionStatusChange(BOOL bConnectStatus)
         // Go To Run Mode
         //m_podGraphControl->GoToRunMode();
 
-        CGraphList* podList = NULL;
+        CGraphList* podList = nullptr;
 
-        if(pParentWnd != NULL)
+        if(pParentWnd != nullptr)
         {
             pParentWnd->m_pomBottomView = this;
         }
 
-        if(pParentWnd != NULL)
+        if(pParentWnd != nullptr)
         {
             podList = pParentWnd->pGetSignalListDetails();
         }
@@ -1201,7 +1201,7 @@ void CGraphBottomView::vHandleConnectionStatusChange(BOOL bConnectStatus)
         }
 
         //int nTimeDelay = podList->m_odGraphParameters.m_nRefreshRate;
-        //nTimerID = SetTimer( defUPDATE_TIMER_ID , nTimeDelay, NULL );
+        //nTimerID = SetTimer( defUPDATE_TIMER_ID , nTimeDelay, nullptr );
     }
     else
     {
@@ -1236,15 +1236,15 @@ void CGraphBottomView::vEnableDisableButtons(BOOL bConnect)
     vEnableActionControls( bEnable );
     // Enable / Disable Export Section
     // Export Button
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     pWnd = GetDlgItem( IDC_BTN_EXPORT );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
     // Configure Button
     pWnd = GetDlgItem( IDC_BTN_CONFIGURE );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
@@ -1282,11 +1282,11 @@ void CGraphBottomView::OnTimer(UINT nIDEvent)
 *******************************************************************************/
 void CGraphBottomView::vSaveChangedInToConfig()
 {
-    CGraphList* podList = NULL;
-    CGraphChildFrame* pParentWnd = NULL;
+    CGraphList* podList = nullptr;
+    CGraphChildFrame* pParentWnd = nullptr;
     pParentWnd = (CGraphChildFrame*)pomGetParentWindow();
 
-    if(pParentWnd != NULL)
+    if(pParentWnd != nullptr)
     {
         podList = pParentWnd->pGetSignalListDetails();
     }
@@ -1296,7 +1296,7 @@ void CGraphBottomView::vSaveChangedInToConfig()
     }
 
     CGraphParameters* pEnv = &(podList->m_odGraphParameters);
-    if( pEnv != NULL )
+    if( pEnv != nullptr )
     {
         pEnv->m_nAction = m_nAction;
         pEnv->m_nActiveAxis = m_nAxis;

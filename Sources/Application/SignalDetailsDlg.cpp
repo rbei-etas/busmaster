@@ -59,7 +59,7 @@ CSignalDetailsDlg::CSignalDetailsDlg(const SDBPARAMS& sDbParams,
                                      CString omStrMinVal/*""*/,
                                      CString omStrOffset/*""*/,
                                      CString omStrScale/*""*/,
-                                     CWnd* pParent /*=NULL*/)
+                                     CWnd* pParent /*=nullptr*/)
     : CDialog(CSignalDetailsDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CSignalDetailsDlg)
@@ -105,10 +105,10 @@ CSignalDetailsDlg::CSignalDetailsDlg(const SDBPARAMS& sDbParams,
 /******************************************************************************/
 CSignalDetailsDlg::CSignalDetailsDlg( eMODES eMode,
                                       sSIGNALS* psSigInfo,
-                                      CWnd* pParent /*=NULL*/)
+                                      CWnd* pParent /*=nullptr*/)
     : CDialog(CSignalDetailsDlg::IDD, pParent)
 {
-    if( psSigInfo != NULL)
+    if( psSigInfo != nullptr)
     {
         if( eMode == MD_READ_ONLY )
         {
@@ -253,7 +253,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
     // Set Byte order (m_nDataFormat)
     CButton* pRadioIntel = (CButton*)GetDlgItem(IDC_RADIO_INTEL);
     CButton* pRadioMotorola = (CButton*)GetDlgItem(IDC_RADIO_MOTOROLA);
-    if ((pRadioIntel != NULL) && (pRadioMotorola != NULL))
+    if ((pRadioIntel != nullptr) && (pRadioMotorola != nullptr))
     {
         if (m_nDataFormat == DATA_FORMAT_INTEL)
         {
@@ -361,76 +361,76 @@ BOOL CSignalDetailsDlg::OnInitDialog()
         m_odMaxValue.SetReadOnly();
 
         // Use control ID if control is not defined
-        CEdit* pomEdit = NULL;
+        CEdit* pomEdit = nullptr;
         // Unit edit box
         pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_UNIT));
-        if( pomEdit != NULL )
+        if( pomEdit != nullptr )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Name
         pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_SGNAME));
-        if( pomEdit != NULL )
+        if( pomEdit != nullptr )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Length
         pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_SGLEN));
-        if( pomEdit != NULL )
+        if( pomEdit != nullptr )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Byte Index
         pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_BYINDEX));
-        if( pomEdit != NULL )
+        if( pomEdit != nullptr )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Start Bit
         pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_STBIT));
-        if( pomEdit != NULL )
+        if( pomEdit != nullptr )
         {
             pomEdit->SetReadOnly();
         }
         // Unit Signal Length
         pomEdit = static_cast<CEdit*>(GetDlgItem(IDC_EDIT_SGLEN));
-        if( pomEdit != NULL )
+        if( pomEdit != nullptr )
         {
             pomEdit->SetReadOnly();
         }
-        // Init the pointer to NULL to avoid unknown access
-        pomEdit = NULL;
+        // Init the pointer to nullptr to avoid unknown access
+        pomEdit = nullptr;
         // These controls doesn't support read only property
         // So Disable these
-        CWnd* pomWnd = NULL;
+        CWnd* pomWnd = nullptr;
         // Signal Type Combobox
         pomWnd = GetDlgItem(IDC_COMB_SGTYPE);
-        if( pomWnd != NULL )
+        if( pomWnd != nullptr )
         {
             pomWnd->EnableWindow(FALSE);
         }
         // Signal Length Spin control
         pomWnd = GetDlgItem(IDC_SPIN_SGLENGTH);
-        if( pomWnd != NULL )
+        if( pomWnd != nullptr )
         {
             pomWnd->EnableWindow(FALSE);
         }
         // Signal Byte index Spin control
         pomWnd = GetDlgItem(IDC_SPIN_BYINDEX);
-        if( pomWnd != NULL )
+        if( pomWnd != nullptr )
         {
             pomWnd->EnableWindow(FALSE);
         }
         // Signal Bit index Spin control
         pomWnd = GetDlgItem(IDC_SPIN_BIT);
-        if( pomWnd != NULL )
+        if( pomWnd != nullptr )
         {
             pomWnd->EnableWindow(FALSE);
         }
 
         // Hide Ok Button
         pomWnd = GetDlgItem(IDOK);
-        if( pomWnd != NULL )
+        if( pomWnd != nullptr )
         {
             pomWnd->ShowWindow(SW_HIDE);
         }
@@ -438,7 +438,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
         // Now rename cancel button to "Close" and center the button
         CButton* pomCancelButton;
         pomCancelButton = (CButton*)GetDlgItem(IDCANCEL);
-        if( pomCancelButton != NULL )
+        if( pomCancelButton != nullptr )
         {
             pomCancelButton->SetWindowText(_(defSTR_CLOSE_MENU_TEXT));
             // Get the rect before centering
@@ -1099,12 +1099,12 @@ void CSignalDetailsDlg::OnSelchangeCombSgtype()
     if ( !m_bIsCanceled )
     {
         SIG_VALUE minVal, maxVal;
-        CWnd* pomWnd = NULL;
-        CButton* pCancelButton1 = NULL;
-        CButton* pCancelButton2 = NULL;
+        CWnd* pomWnd = nullptr;
+        CButton* pCancelButton1 = nullptr;
+        CButton* pCancelButton2 = nullptr;
         // Get
         pomWnd = GetDlgItem(IDCANCEL);
-        if( pomWnd != NULL )
+        if( pomWnd != nullptr )
         {
             pCancelButton1 = static_cast<CButton*>(pomWnd->GetFocus());
         }
@@ -1119,12 +1119,12 @@ void CSignalDetailsDlg::OnSelchangeCombSgtype()
                     && m_omStrPrevSignalType != omStrPrevSgName )
             {
                 //---------Added by ashwin for setting the signal length---------------------------
-                CMsgSignal* pTempMsgSg = NULL;
+                CMsgSignal* pTempMsgSg = nullptr;
                 UINT  unSigLength = 0;
                 pTempMsgSg = (*(CMsgSignal**)(m_sDbParams.m_ppvActiveDB));
                 sMESSAGE* psMSG = pTempMsgSg ->psGetMessagePointerInactive(m_omStrMsgName);
-                sSIGNALS* psSignal = NULL;
-                if(psMSG != NULL)
+                sSIGNALS* psSignal = nullptr;
+                if(psMSG != nullptr)
                 {
                     psSignal = psMSG->m_psSignals;
                     while(psSignal)
@@ -1288,11 +1288,11 @@ void CSignalDetailsDlg::OnOK()
             else if(bReturnFlag == TRUE)
             {
                 // Get appropriate msg structure ptr
-                CMsgSignal* pTempMsgSg = NULL;
+                CMsgSignal* pTempMsgSg = nullptr;
 
                 pTempMsgSg = (*(CMsgSignal**)(m_sDbParams.m_ppvActiveDB));
 
-                if(pTempMsgSg != NULL)
+                if(pTempMsgSg != nullptr)
                 {
                     if ( m_bNameChanged &&
                             (pTempMsgSg->bIsDuplicateSignalName( m_omStrMsgName,
@@ -1351,7 +1351,7 @@ void CSignalDetailsDlg::OnOK()
                 {
                     sSIGNALS* pSg = new sSIGNALS;
 
-                    if ( pSg != NULL )
+                    if ( pSg != nullptr )
                     {
                         pSg->m_eFormat = (EFORMAT_DATA) m_nDataFormat;
                         CString omStrSgType = STR_EMPTY;
@@ -1428,7 +1428,7 @@ void CSignalDetailsDlg::OnOK()
                         // Now saved
                         m_bIsDataSaved = TRUE;
                         delete pSg;
-                        pSg = NULL;
+                        pSg = nullptr;
                     }
                     else
                     {
@@ -1684,11 +1684,11 @@ BOOL CSignalDetailsDlg::bIsMaximumValueValid()
     if( !strSignalType.CompareNoCase(defSIGNED_INT) )
     {
         //__int64 n64MaxVal;
-        //if(pMainFrame != NULL)
+        //if(pMainFrame != nullptr)
         //{
         //    n64 = pMainFrame->nConvertStringToInt(m_omStrMaxVal);
         //}
-        __int64 n64MaxVal = _strtoui64(m_omStrMaxVal, NULL, 10);
+        __int64 n64MaxVal = _strtoui64(m_omStrMaxVal, nullptr, 10);
         __int64 n64MinVal   = m_odMinValue.lGetValue();
         // Extend the Sign bit
         //        CUtilFunctions::s_vExtendSignBit( n64MinVal, m_unSgLen );
@@ -1727,7 +1727,7 @@ BOOL CSignalDetailsDlg::bIsMaximumValueValid()
     else // unsigned int / boolean
     {
         //        __int64 un64 = pMainFrame->nConvertStringToInt(m_omStrMaxVal);
-        unsigned __int64 un64MaxVal = _strtoui64(m_omStrMaxVal, NULL, 10);
+        unsigned __int64 un64MaxVal = _strtoui64(m_omStrMaxVal, nullptr, 10);
         __int64 un64MinVal = m_odMinValue.lGetValue();
 
         //int nLength = m_omStrMaxVal.GetLength();
@@ -1795,14 +1795,14 @@ BOOL CSignalDetailsDlg::bIsMinimumValueValid()
     if( !strSignalType.CompareNoCase(defSIGNED_INT))
     {
         //__int64 n64 = 0;
-        //if(pMainFrame != NULL)
+        //if(pMainFrame != nullptr)
         //{
         //n64 = pMainFrame->nConvertStringToInt(m_omStrMinVal);
         //    // Extend the Sign Bit
         //    CUtilFunctions::s_vExtendSignBit( n64, m_unSgLen );
         //}
 
-        __int64 n64MinVal = /*_strtoi64(m_omStrMinVal, NULL, 10);*/ m_odMinValue.lGetValue();
+        __int64 n64MinVal = /*_strtoi64(m_omStrMinVal, nullptr, 10);*/ m_odMinValue.lGetValue();
         __int64 n64MaxVal = m_odMaxValue.lGetValue();
         //        CUtilFunctions::s_vExtendSignBit( n64MaxVal, m_unSgLen );
         if ( n64MinVal > n64MaxVal )
@@ -1840,7 +1840,7 @@ BOOL CSignalDetailsDlg::bIsMinimumValueValid()
     else // unsigned int
     {
         __int64 un64MinVal = 0;
-        if(pMainFrame != NULL)
+        if(pMainFrame != nullptr)
         {
             un64MinVal = /*pMainFrame->nConvertStringToInt(m_omStrMinVal)*/m_odMinValue.lGetValue();
         }

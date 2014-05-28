@@ -46,37 +46,37 @@ TSEDITORSETXMLCONFIGDATA pfTSEditorSetXMLConfigdata;
 
 TSEditorHandler::TSEditorHandler(void)
 {
-    m_hTSEditorHandle = NULL;
+    m_hTSEditorHandle = nullptr;
 }
 
 TSEditorHandler::~TSEditorHandler(void)
 {
-    if ( m_hTSEditorHandle != NULL )
+    if ( m_hTSEditorHandle != nullptr )
     {
         FreeLibrary(m_hTSEditorHandle);
     }
 }
 void TSEditorHandler::vLoadTSEditor_DLL()
 {
-    if ( m_hTSEditorHandle != NULL )
+    if ( m_hTSEditorHandle != nullptr )
     {
         FreeLibrary(m_hTSEditorHandle);
-        m_hTSEditorHandle = NULL;
+        m_hTSEditorHandle = nullptr;
     }
     m_hTSEditorHandle = LoadLibrary(def_STR_TESTSETUPEDITORDLL);
     vloadFuncPtrAddress();
 }
 void TSEditorHandler::vInitializeFuncPtrs()
 {
-    pfShowTSEditorwindow = NULL;
-    pfSetTSDILInterfacePtr = NULL;
-    pfPostMessageToTSWnd = NULL;
-    pfTSEditorWindowShown = NULL;
-    pfTSEditorLoadTestSetupFile = NULL;
-    pfTSEditorHwnd = NULL;
-    pfTSEditorGetConfigdata = NULL;
-    pfTSEditorSetConfigdata = NULL;
-    pfTSEditorSetXMLConfigdata = NULL;
+    pfShowTSEditorwindow = nullptr;
+    pfSetTSDILInterfacePtr = nullptr;
+    pfPostMessageToTSWnd = nullptr;
+    pfTSEditorWindowShown = nullptr;
+    pfTSEditorLoadTestSetupFile = nullptr;
+    pfTSEditorHwnd = nullptr;
+    pfTSEditorGetConfigdata = nullptr;
+    pfTSEditorSetConfigdata = nullptr;
+    pfTSEditorSetXMLConfigdata = nullptr;
 }
 void TSEditorHandler::vloadFuncPtrAddress()
 {
@@ -92,14 +92,14 @@ void TSEditorHandler::vloadFuncPtrAddress()
 }
 void TSEditorHandler::vShowTSEditorWindow(void* pParentWnd)
 {
-    if(pfShowTSEditorwindow != NULL)
+    if(pfShowTSEditorwindow != nullptr)
     {
         pfShowTSEditorwindow(pParentWnd);
     }
 }
 void TSEditorHandler::vLoadTestSetupFile(CString omFilePath)
 {
-    if(pfTSEditorLoadTestSetupFile != NULL)
+    if(pfTSEditorLoadTestSetupFile != nullptr)
     {
         pfTSEditorLoadTestSetupFile(omFilePath);
     }
@@ -107,14 +107,14 @@ void TSEditorHandler::vLoadTestSetupFile(CString omFilePath)
 HWND TSEditorHandler::vGetSafeHWnd()
 {
     HWND hWnd;
-    if(pfTSEditorHwnd != NULL)
+    if(pfTSEditorHwnd != nullptr)
     {
         hWnd = pfTSEditorHwnd();
         return hWnd;
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -124,7 +124,7 @@ void TSEditorHandler::vGetConfigurationData(BYTE * & /* pDesBuffer */, UINT & /*
 
 void TSEditorHandler::vGetConfigurationData(xmlNodePtr& pxmlNodePtr)
 {
-    if(pfTSEditorLoadTestSetupFile != NULL)
+    if(pfTSEditorLoadTestSetupFile != nullptr)
     {
         pfTSEditorGetConfigdata(&pxmlNodePtr);
     }
@@ -132,14 +132,14 @@ void TSEditorHandler::vGetConfigurationData(xmlNodePtr& pxmlNodePtr)
 
 void TSEditorHandler::vSetConfigurationData(BYTE*& pSrcBuffer, UINT& unBuffSize)
 {
-    if(pfTSEditorSetConfigdata!= NULL)
+    if(pfTSEditorSetConfigdata!= nullptr)
     {
         pfTSEditorSetConfigdata(pSrcBuffer, unBuffSize);
     }
 }
 void TSEditorHandler::vSetConfigurationData(xmlDocPtr pXmlDoc)
 {
-    if(pfTSEditorSetXMLConfigdata!= NULL)
+    if(pfTSEditorSetXMLConfigdata!= nullptr)
     {
         pfTSEditorSetXMLConfigdata(pXmlDoc);
     }

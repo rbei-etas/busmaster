@@ -251,9 +251,9 @@ bool bGetSystemErrorString(HRESULT hResult, CHAR acErrStr[256])
 
     dwResult = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
                              FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                             NULL, hResult,
+                             nullptr, hResult,
                              MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),// Default language
-                             (LPTSTR) &lpMsgBuf, 0, NULL );
+                             (LPTSTR) &lpMsgBuf, 0, nullptr );
     if (dwResult <= 0)
     {
         strcpy(acErrStr, "system error message retrieval operation failed");
@@ -280,9 +280,9 @@ bool bGetSystemErrorString(HRESULT hResult, char acErrStr[256])
 
     dwResult = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
                              FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                             NULL, hResult,
+                             nullptr, hResult,
                              MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),// Default language
-                             (LPTSTR) &lpMsgBuf, 0, NULL );
+                             (LPTSTR) &lpMsgBuf, 0, nullptr );
     if (dwResult <= 0)
     {
         strcpy_s(acErrStr, 256, "system error message retrieval operation failed");
@@ -319,7 +319,7 @@ BOOL CopyTextToClipboard(LPSTR lpstrText, HWND hWnd )
     // Allocate Global Memory which is required to store the text
     hGlobal = GlobalAlloc(GMEM_ZEROINIT, (nSize + 1));
 
-    if (hGlobal == NULL)
+    if (hGlobal == nullptr)
     {
         return FALSE;
     }
@@ -340,7 +340,7 @@ BOOL CopyTextToClipboard(LPSTR lpstrText, HWND hWnd )
 }
 
 #if 0
-BOOL CopyTextToClipboard(LPCTSTR lpctstrText, HWND hWnd = NULL)
+BOOL CopyTextToClipboard(LPCTSTR lpctstrText, HWND hWnd = nullptr)
 {
     HGLOBAL hGlobal;        // Global memory handle
     LPSTR lpszData;         // Pointer to clipboard data
@@ -354,7 +354,7 @@ BOOL CopyTextToClipboard(LPCTSTR lpctstrText, HWND hWnd = NULL)
     // Allocate Global Memory which is required to store the text
     hGlobal = GlobalAlloc(GMEM_ZEROINIT, nSize+1);
 
-    if (hGlobal == NULL)
+    if (hGlobal == nullptr)
     {
         return FALSE;
     }
@@ -679,7 +679,7 @@ BOOL bConvertStringToInt64( CString omStrHexNo,
 }
 /*************************************************************************
     Function Name    : gnGetCpuClocks
-    Input(s)         : NULL
+    Input(s)         : nullptr
     Output           : 64 bit integer
     Functionality    : Gives the time elapsed
     Member of        :

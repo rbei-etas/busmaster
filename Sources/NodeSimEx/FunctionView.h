@@ -44,7 +44,7 @@ public:
     //Sets the function in edit mode in the window
     //Function to be edited is passes in as omStrFunction
     void vSetFunctionToEdit(const CString& omStrFunction);
-    // Initialise the member variable m_sStartPos to NULL;
+    // Initialise the member variable m_sStartPos to nullptr;
     void vInitPositionStruct();
     //Destructor
     virtual ~CFunctionView();

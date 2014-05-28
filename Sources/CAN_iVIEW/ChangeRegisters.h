@@ -39,7 +39,7 @@ public:
     // To Fill controller information taken from configuration module
     BOOL   bFillControllerConfig();
     // standard constructor
-    CChangeRegisters(CWnd* pParent = NULL, PSCONTROLLER_DETAILS psControllerDetails = NULL, UINT nHardwareCount = 0);
+    CChangeRegisters(CWnd* pParent = nullptr, PSCONTROLLER_DETAILS psControllerDetails = nullptr, UINT nHardwareCount = 0);
     virtual ~CChangeRegisters();
     BOOL bSetBaudRateFromCom(int nChannel,BYTE bBTR0,BYTE bBTR1);
     BOOL bGetBaudRateFromCom(int nChannel,BYTE& bBTR0,BYTE& bBTR1);

@@ -29,18 +29,18 @@
 #include "TSEditorGUI_resource.h"
 #include "Utility\MultiLanguageSupport.h"
 
-BYTE* m_pbyTEConfigData = NULL;
+BYTE* m_pbyTEConfigData = nullptr;
 UINT m_unTEConfigSize = 0;
 
-xmlNodePtr m_pTEXmlNode = NULL;
+xmlNodePtr m_pTEXmlNode = nullptr;
 BOOL m_bByXml = TRUE;
-static AFX_EXTENSION_MODULE TestSetupEditor = { NULL, NULL };
-CTSEditorChildFrame* g_pomTSEditorChildWindow = NULL;
+static AFX_EXTENSION_MODULE TestSetupEditor = { false, nullptr };
+CTSEditorChildFrame* g_pomTSEditorChildWindow = nullptr;
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
 
-    static HINSTANCE shLangInst=NULL;
+    static HINSTANCE shLangInst=nullptr;
 
     // Remove this if you use lpReserved
     UNREFERENCED_PARAMETER(lpReserved);
@@ -102,11 +102,11 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         }
 
         TRACE0("TestSetupEditor.DLL Terminating!\n");
-        if(m_pbyTEConfigData != NULL)
+        if(m_pbyTEConfigData != nullptr)
         {
             delete[] m_pbyTEConfigData;
         }
-        if(m_pTEXmlNode != NULL)
+        if(m_pTEXmlNode != nullptr)
         {
             xmlFreeNode(m_pTEXmlNode);
         }
@@ -124,18 +124,18 @@ USAGEMODE HRESULT TS_vShowTSEditorWindow(void* pParentWnd)
     HINSTANCE hInst = AfxGetResourceHandle();
     AfxSetResourceHandle(TestSetupEditor.hResource);
 
-    if( g_pomTSEditorChildWindow == NULL )
+    if( g_pomTSEditorChildWindow == nullptr )
     {
         // Create New Instance
         g_pomTSEditorChildWindow = new CTSEditorChildFrame;
-        if( g_pomTSEditorChildWindow != NULL )
+        if( g_pomTSEditorChildWindow != nullptr )
         {
             //// Register Window Class
             //TODO::ICON
             LPCTSTR strMDIClass = AfxRegisterWndClass(
                                       CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
-                                      LoadCursor(NULL, IDC_CROSS), 0,
-                                      NULL );
+                                      LoadCursor(nullptr, IDC_CROSS), 0,
+                                      nullptr );
             //TODO::Update position.
             //CRect omRect(&(sTxWndPlacement.rcNormalPosition));
             CRect omRect(63, 913, 4, 596);
@@ -185,13 +185,13 @@ USAGEMODE HRESULT TS_vShowTSEditorWindow(void* pParentWnd)
 
 USAGEMODE HWND hGetHwnd()
 {
-    if(g_pomTSEditorChildWindow != NULL)
+    if(g_pomTSEditorChildWindow != nullptr)
     {
         return g_pomTSEditorChildWindow->GetSafeHwnd();
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 }
 USAGEMODE HRESULT TS_vSetDILInterfacePtr(void* /*ptrDILIntrf*/)
@@ -228,7 +228,7 @@ USAGEMODE HRESULT TS_hLoadTestSetupFile(CString omFilePath)
 }
 //USAGEMODE HRESULT TSE_hGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize)
 //{
-//    if(g_pomTSEditorChildWindow != NULL)
+//    if(g_pomTSEditorChildWindow != nullptr)
 //    {
 //        return g_pomTSEditorChildWindow->GetConfigurationData(pDesBuffer, nBuffSize);
 //    }
@@ -243,7 +243,7 @@ USAGEMODE HRESULT TS_hLoadTestSetupFile(CString omFilePath)
 
 USAGEMODE HRESULT TSE_hGetConfigurationData(xmlNodePtr* pxmlNodePtr)
 {
-    if(g_pomTSEditorChildWindow != NULL)
+    if(g_pomTSEditorChildWindow != nullptr)
     {
         return g_pomTSEditorChildWindow->GetConfigurationData(*pxmlNodePtr);
     }
@@ -254,16 +254,16 @@ USAGEMODE HRESULT TSE_hGetConfigurationData(xmlNodePtr* pxmlNodePtr)
 }
 USAGEMODE HRESULT TSE_hSetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)
 {
-    if(m_pbyTEConfigData != NULL)
+    if(m_pbyTEConfigData != nullptr)
     {
         delete []m_pbyTEConfigData;
-        m_pbyTEConfigData = NULL;
+        m_pbyTEConfigData = nullptr;
     }
     m_unTEConfigSize = unBuffSize;
     m_pbyTEConfigData = new BYTE[m_unTEConfigSize];
     memcpy(m_pbyTEConfigData, pSrcBuffer, m_unTEConfigSize);
     m_bByXml = FALSE;
-    if(g_pomTSEditorChildWindow != NULL)
+    if(g_pomTSEditorChildWindow != nullptr)
     {
         g_pomTSEditorChildWindow->SetConfigurationData(m_pbyTEConfigData, m_unTEConfigSize);
     }
@@ -272,22 +272,22 @@ USAGEMODE HRESULT TSE_hSetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)
 USAGEMODE HRESULT TSE_hSetXmlConfigurationData(xmlDocPtr pXmlDoc)
 {
     m_bByXml = TRUE;
-    if(m_pTEXmlNode != NULL)
+    if(m_pTEXmlNode != nullptr)
     {
         xmlFreeNode(m_pTEXmlNode);
-        m_pTEXmlNode = NULL;
+        m_pTEXmlNode = nullptr;
     }
     xmlXPathObjectPtr pTempNode = xmlUtils::pGetNodes(pXmlDoc, (xmlChar*)("//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_TS_Editor"));
 
-    if(pTempNode != NULL)
+    if(pTempNode != nullptr)
     {
         m_pTEXmlNode = xmlCopyNode(pTempNode->nodesetval->nodeTab[0], 1);
     }
     else
     {
-        m_pTEXmlNode = NULL;
+        m_pTEXmlNode = nullptr;
     }
-    if(g_pomTSEditorChildWindow != NULL)
+    if(g_pomTSEditorChildWindow != nullptr)
     {
         g_pomTSEditorChildWindow->SetConfigurationData(m_pTEXmlNode);
     }

@@ -45,37 +45,37 @@ PTSSETVERSIONINFO pfTSSetVersion;
 TSExecutorHandler::TSExecutorHandler(void)
 {
     m_bConnected = FALSE;
-    m_hTSExecutorHandle = NULL;
+    m_hTSExecutorHandle = nullptr;
 }
 
 TSExecutorHandler::~TSExecutorHandler(void)
 {
-    if ( m_hTSExecutorHandle != NULL )
+    if ( m_hTSExecutorHandle != nullptr )
     {
         FreeLibrary(m_hTSExecutorHandle);
     }
 }
 void TSExecutorHandler::vLoadTSExecutor_DLL()
 {
-    if ( m_hTSExecutorHandle != NULL )
+    if ( m_hTSExecutorHandle != nullptr )
     {
         FreeLibrary(m_hTSExecutorHandle);
-        m_hTSExecutorHandle = NULL;
+        m_hTSExecutorHandle = nullptr;
     }
     m_hTSExecutorHandle = LoadLibrary(def_STR_TESTSIUTEEXECUTORDLL);
     vloadFuncPtrAddress();
 }
 void TSExecutorHandler::vInitializeFuncPtrs()
 {
-    pfShowTSExecutorwindow = NULL;
-    pfTSExecutorWindowShown = NULL;
-    pfTSExecutorGetConfigdata = NULL;
-    pfTSExecutorSetConfigdata = NULL;
-    pfTSExecutorSetXMLConfigdata = NULL;
-    pfTSStartStopReadThread = NULL;
-    pfTSDoInitialization = NULL;
-    pfTSBusConnected = NULL;
-    pfTSSetVersion = NULL;
+    pfShowTSExecutorwindow = nullptr;
+    pfTSExecutorWindowShown = nullptr;
+    pfTSExecutorGetConfigdata = nullptr;
+    pfTSExecutorSetConfigdata = nullptr;
+    pfTSExecutorSetXMLConfigdata = nullptr;
+    pfTSStartStopReadThread = nullptr;
+    pfTSDoInitialization = nullptr;
+    pfTSBusConnected = nullptr;
+    pfTSSetVersion = nullptr;
 }
 void TSExecutorHandler::vloadFuncPtrAddress()
 {
@@ -91,7 +91,7 @@ void TSExecutorHandler::vloadFuncPtrAddress()
 }
 void TSExecutorHandler::vShowTSExecutorWindow(void* pParentWnd)
 {
-    if(pfShowTSExecutorwindow != NULL)
+    if(pfShowTSExecutorwindow != nullptr)
     {
         pfShowTSExecutorwindow(pParentWnd);
         pfTSBusConnected(m_bConnected);
@@ -104,7 +104,7 @@ void TSExecutorHandler::vGetConfigurationData(BYTE * & /* pDesBuffer */, UINT & 
 
 void TSExecutorHandler::vGetConfigurationData(xmlNodePtr& pxmlNodePtr)
 {
-    if(pfTSExecutorGetConfigdata != NULL)
+    if(pfTSExecutorGetConfigdata != nullptr)
     {
         pfTSExecutorGetConfigdata(&pxmlNodePtr);
     }
@@ -112,35 +112,35 @@ void TSExecutorHandler::vGetConfigurationData(xmlNodePtr& pxmlNodePtr)
 
 void TSExecutorHandler::vSetConfigurationData(BYTE*& pSrcBuffer, UINT& unBuffSize)
 {
-    if(pfTSExecutorSetConfigdata!= NULL)
+    if(pfTSExecutorSetConfigdata!= nullptr)
     {
         pfTSExecutorSetConfigdata(pSrcBuffer, unBuffSize);
     }
 }
 void TSExecutorHandler::vSetConfigurationData(xmlDocPtr pDoc)
 {
-    if( NULL != pfTSExecutorSetXMLConfigdata )
+    if( nullptr != pfTSExecutorSetXMLConfigdata )
     {
         pfTSExecutorSetXMLConfigdata(pDoc);
     }
 }
 void TSExecutorHandler::vStartStopReadThread(ETYPE_BUS eBus, BOOL bStart)
 {
-    if(pfShowTSExecutorwindow != NULL)
+    if(pfShowTSExecutorwindow != nullptr)
     {
         pfTSStartStopReadThread(eBus, bStart);
     }
 }
 void TSExecutorHandler::vDoInitailization(ETYPE_BUS eBus)
 {
-    if(pfTSDoInitialization != NULL)
+    if(pfTSDoInitialization != nullptr)
     {
         pfTSDoInitialization(eBus);
     }
 }
 void TSExecutorHandler::vBusConnected(BOOL bConnected)
 {
-    if(pfTSBusConnected != NULL)
+    if(pfTSBusConnected != nullptr)
     {
         m_bConnected = bConnected;
         pfTSBusConnected(m_bConnected);
@@ -148,7 +148,7 @@ void TSExecutorHandler::vBusConnected(BOOL bConnected)
 }
 void TSExecutorHandler::vSetTSEVersionInfo(BYTE bytMajor, BYTE bytMinor, BYTE bytBuild)
 {
-    if(pfTSSetVersion != NULL)
+    if(pfTSSetVersion != nullptr)
     {
         pfTSSetVersion(bytMajor, bytMinor, bytBuild);
     }

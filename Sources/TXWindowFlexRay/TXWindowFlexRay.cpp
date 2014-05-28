@@ -29,15 +29,15 @@
 #include "TxWndFlexRay_Extern.h"
 #include "TxMsgChildFrame.h"
 
-CTxMsgChildFrame* g_pomTxMsgFlexChildWindow = NULL;
-CTxMsgChildFrame* g_pomTxMsgLinChildWindow = NULL;
+CTxMsgChildFrame* g_pomTxMsgFlexChildWindow = nullptr;
+CTxMsgChildFrame* g_pomTxMsgLinChildWindow = nullptr;
 
-static AFX_EXTENSION_MODULE TXFlexRayWindowDLL = { NULL, NULL };
+static AFX_EXTENSION_MODULE TXFlexRayWindowDLL = { false, nullptr };
 
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
-    static HINSTANCE shLangInst=NULL;
+    static HINSTANCE shLangInst=nullptr;
 
 
     // Remove this if you use lpReserved
@@ -93,7 +93,7 @@ void SetDefaultWindowPos(WINDOWPLACEMENT& sTxWndPlacement)
 }
 int nShowTxWindow( void* pParentWnd, ETYPE_BUS eBUS )
 {
-    CTxMsgChildFrame* pFrameWindow = NULL;
+    CTxMsgChildFrame* pFrameWindow = nullptr;
     std::string strTitle = "";       //Used for Title.
     bool bValidBus = false;
     if ( eBUS == FLEXRAY )
@@ -116,16 +116,16 @@ int nShowTxWindow( void* pParentWnd, ETYPE_BUS eBUS )
     }
 
 
-    if( pFrameWindow == NULL )
+    if( pFrameWindow == nullptr )
     {
         pFrameWindow = new CTxMsgChildFrame(eBUS);
-        if( pFrameWindow != NULL )
+        if( pFrameWindow != nullptr )
         {
             //// Register Window Class
             LPCTSTR strMDIClass = AfxRegisterWndClass(
                                       CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
-                                      LoadCursor(NULL, IDC_CROSS), 0,
-                                      ::LoadIcon(NULL, MAKEINTRESOURCE(IDI_ICO_SEND_MSG)) );
+                                      LoadCursor(nullptr, IDC_CROSS), 0,
+                                      ::LoadIcon(nullptr, MAKEINTRESOURCE(IDI_ICO_SEND_MSG)) );
 
             // Set the size got from configuration module
             WINDOWPLACEMENT sTxWndPlacement;
@@ -260,11 +260,11 @@ USAGEMODE HRESULT TXComman_vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM l
     }
 
 
-    if(g_pomTxMsgFlexChildWindow != NULL)
+    if(g_pomTxMsgFlexChildWindow != nullptr)
     {
         g_pomTxMsgFlexChildWindow->m_pTransmitMsgView->SendMessage(msg, wParam, lParam);
     }
-    if(g_pomTxMsgLinChildWindow != NULL)
+    if(g_pomTxMsgLinChildWindow != nullptr)
     {
         g_pomTxMsgLinChildWindow->m_pLinTransmitMsgView->SendMessage(msg, wParam, lParam);
     }
@@ -328,7 +328,7 @@ USAGEMODE HRESULT TX_vBusStatusChanged(ETYPE_BUS eBusType, ESTATUS_BUS eBusStatu
         {
             CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vSetBusStatus(eBusStatus);
         }
-        if(g_pomTxMsgFlexChildWindow != NULL)
+        if(g_pomTxMsgFlexChildWindow != nullptr)
         {
             g_pomTxMsgFlexChildWindow->m_pTransmitMsgView->SendMessage(WM_USER+44, 1, eBusStatus);
         }
@@ -413,7 +413,7 @@ USAGEMODE HRESULT TXComman_nSetFibexConfig(ETYPE_BUS eBus, ClusterConfig& ouFlex
     if ( eBus == FLEXRAY )
     {
         hr = CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().SetFlexRayConfig(ouFlexConfig);
-        if(g_pomTxMsgFlexChildWindow != NULL && hr == S_OK)
+        if(g_pomTxMsgFlexChildWindow != nullptr && hr == S_OK)
         {
             g_pomTxMsgFlexChildWindow->m_pTransmitMsgView->UpdateTxView(ouFlexConfig.m_nChannelsConfigured);
         }
@@ -421,7 +421,7 @@ USAGEMODE HRESULT TXComman_nSetFibexConfig(ETYPE_BUS eBus, ClusterConfig& ouFlex
     else if ( eBus == LIN )
     {
         hr = CTxLINDataStore::ouGetTxLINDataStoreObj().SetFlexRayConfig(&ouFlexConfig);
-        if(g_pomTxMsgLinChildWindow != NULL && hr == S_OK)
+        if(g_pomTxMsgLinChildWindow != nullptr && hr == S_OK)
         {
             g_pomTxMsgLinChildWindow->m_pLinTransmitMsgView->UpdateTxView(ouFlexConfig.m_nChannelsConfigured);
         }

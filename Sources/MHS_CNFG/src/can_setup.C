@@ -32,7 +32,7 @@
 
 
 
-static struct TMhsCanCfg *CanCfg = NULL;
+static struct TMhsCanCfg *CanCfg = nullptr;
 
 #define CanSpeedTabSize 9
 static const char *CanSpeedTabStr[] = {"10 kBit/s", "20 kBit/s", "50 kBit/s", "100 kBit/s",
@@ -92,7 +92,7 @@ DOUBLE dCalculateBaudRateFromBTRs(UCHAR ucBTR0, UCHAR ucBTR1)
     BYTE   byNBT        = 0;
     BYTE   byTSEG1      = 0;
     BYTE   byTSEG2      = 0;
-    char* pcStopStr     = NULL;
+    char* pcStopStr     = nullptr;
 	DOUBLE dblClock     = 16;
 
     uBTR0val.ucBTR0 = ucBTR0;

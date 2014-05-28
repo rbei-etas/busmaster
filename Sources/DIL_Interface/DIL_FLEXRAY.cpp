@@ -27,7 +27,7 @@
 typedef HRESULT (__stdcall* GETIDIL_FLEXRAY_CONTROLLER)(void** ppvInterface);
 static GETIDIL_FLEXRAY_CONTROLLER pfGetIDILFLEXRAY_Controller;
 
-#define VALIDATE_FLEX_POINTER(Ptr) if (Ptr == NULL) {return S_FALSE;}
+#define VALIDATE_FLEX_POINTER(Ptr) if (Ptr == nullptr) {return S_FALSE;}
 
 class ENTRY_DIL
 {
@@ -47,12 +47,12 @@ static ENTRY_DIL sg_ListDIL[] =
 
 CDIL_FLEXRAY::CDIL_FLEXRAY()
 {
-    m_hDriverDll                    = NULL;
-    m_hOldDriverDll                 = NULL;
+    m_hDriverDll                    = nullptr;
+    m_hOldDriverDll                 = nullptr;
     m_dwDriverID                    = FLEXRAY_DAL_NONE;
-    pfGetIDILFLEXRAY_Controller     = NULL;
-    m_pBaseDILFLEXRAY_Controller    = NULL;
-    m_pOldBaseDILFLEXRAY_Controller = NULL;
+    pfGetIDILFLEXRAY_Controller     = nullptr;
+    m_pBaseDILFLEXRAY_Controller    = nullptr;
+    m_pOldBaseDILFLEXRAY_Controller = nullptr;
 }
 
 CDIL_FLEXRAY::~CDIL_FLEXRAY()
@@ -61,13 +61,13 @@ CDIL_FLEXRAY::~CDIL_FLEXRAY()
     if ( m_hDriverDll )
     {
         FreeLibrary(m_hDriverDll);
-        m_hDriverDll = NULL;
+        m_hDriverDll = nullptr;
     }
     //Free the previosuly selected DIL library
     if ( m_hOldDriverDll )
     {
         FreeLibrary(m_hOldDriverDll);
-        m_hOldDriverDll = NULL;
+        m_hOldDriverDll = nullptr;
     }
 }
 
@@ -100,7 +100,7 @@ DWORD CDIL_FLEXRAY::DILF_GetDILList(bool /* bAvailable */, FLEXRAY_DILLIST * Lis
 {
     DWORD Result = 0;
 
-    if (List != NULL)
+    if (List != nullptr)
     {
         for (int i = 0; i < sizeof(sg_ListDIL)/sizeof(ENTRY_DIL); i++)
         {
@@ -153,7 +153,7 @@ HMODULE CDIL_FLEXRAY::vLoadEtasBoaLibrary(Base_WrapperErrorLogger* pILog)
     }
 
     pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("ETAS BOA not found in registry."));
-    return NULL;
+    return nullptr;
 }
 
 HRESULT CDIL_FLEXRAY::DILF_SelectDriver(DWORD dwDriverID, HWND hWndParent, Base_WrapperErrorLogger* pILog)
@@ -166,13 +166,13 @@ HRESULT CDIL_FLEXRAY::DILF_SelectDriver(DWORD dwDriverID, HWND hWndParent, Base_
     {
         hResult = DAL_ALREADY_SELECTED;
     }
-    else if (pILog == NULL)
+    else if (pILog == nullptr)
     {
         hResult = ERRLGR_INVALID;
     }
     else
     {
-        if (hWndParent == NULL)
+        if (hWndParent == nullptr)
         {
             /* Log a warning message informing about the invalidity of the
             owner window handle. */
@@ -182,12 +182,12 @@ HRESULT CDIL_FLEXRAY::DILF_SelectDriver(DWORD dwDriverID, HWND hWndParent, Base_
         if ( m_hDriverDll )
         {
             ::FreeLibrary(m_hDriverDll);
-            m_hDriverDll = NULL;
-            m_pBaseDILFLEXRAY_Controller = NULL;
+            m_hDriverDll = nullptr;
+            m_pBaseDILFLEXRAY_Controller = nullptr;
             //m_hOldDriverDll = m_hDriverDll;
             //m_pOldBaseDILFLEXRAY_Controller = m_pBaseDILFLEXRAY_Controller;
             //m_dwOldDriverID = m_dwDriverID;
-            //m_hDriverDll = NULL;
+            //m_hDriverDll = nullptr;
         }
 
         switch(dwDriverID)
@@ -207,7 +207,7 @@ HRESULT CDIL_FLEXRAY::DILF_SelectDriver(DWORD dwDriverID, HWND hWndParent, Base_
                 return hResult;
         }
 
-        if (m_hDriverDll == NULL)
+        if (m_hDriverDll == nullptr)
         {
             hResult = ERR_LOAD_DRIVER;
             pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Load library failed..."));
@@ -241,7 +241,7 @@ HRESULT CDIL_FLEXRAY::DILF_SelectDriver(DWORD dwDriverID, HWND hWndParent, Base_
                             m_pBaseDILFLEXRAY_Controller->FLEXRAY_UnloadDriverLibrary();
                         }
                         FreeLibrary(m_hDriverDll);
-                        m_pBaseDILFLEXRAY_Controller = NULL;
+                        m_pBaseDILFLEXRAY_Controller = nullptr;
                         if ( m_hOldDriverDll )
                         {
                             m_hDriverDll = m_hOldDriverDll;

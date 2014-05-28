@@ -61,7 +61,7 @@ CFunctionView::CFunctionView()
 {
     m_omStrFnName      = "";
     m_bIsValidFunction = FALSE;
-    m_sStartPos        = NULL;
+    m_sStartPos        = nullptr;
     m_nStartingLine    = -1;
     m_nCurrentLine     = -1;
     m_eBus             = sm_eBus;
@@ -194,11 +194,11 @@ void CFunctionView::vSetFunctionToEdit(const CString& omStrFunction)
     BOOL bGlobalVar = FALSE;
 
     m_bIsValidFunction = FALSE;
-    m_sStartPos = NULL;
-    CFunctionEditorDoc* pDoc = NULL;
+    m_sStartPos = nullptr;
+    CFunctionEditorDoc* pDoc = nullptr;
     pDoc = (CFunctionEditorDoc*)CView::GetDocument();
 
-    if ( pDoc != NULL )
+    if ( pDoc != nullptr )
     {
         SBUS_SPECIFIC_INFO sBusSpecInfo;
         pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -233,7 +233,7 @@ void CFunctionView::vSetFunctionToEdit(const CString& omStrFunction)
         POSITION sPos = pDoc->m_omSourceCodeTextList.GetHeadPosition();
         int nLineNumber = 0;
 
-        while ( sPos != NULL )
+        while ( sPos != nullptr )
         {
             //Iterate through the Source Code String-List
             CString omStrLine = pDoc->m_omSourceCodeTextList.GetNext(sPos);
@@ -248,12 +248,12 @@ void CFunctionView::vSetFunctionToEdit(const CString& omStrFunction)
                     m_nStartingLine = nLineNumber;
                     //Skip Function name and parameters line
                     omStrLine = pDoc->m_omSourceCodeTextList.GetNext(sPos);
-                    if (sPos != NULL)
+                    if (sPos != nullptr)
                     {
                         //Get Next line
                         omStrLine = pDoc->m_omSourceCodeTextList.GetNext(sPos);
 
-                        if (sPos != NULL)
+                        if (sPos != nullptr)
                         {
                             //Opening brace indicates start of function body
                             if ( omStrLine.Find('{') != -1 )
@@ -263,7 +263,7 @@ void CFunctionView::vSetFunctionToEdit(const CString& omStrFunction)
 
                                 //Loop through the function body till we encounter
                                 //the function footer
-                                while ( (sPos != NULL) && ( m_bIsValidFunction != TRUE) )
+                                while ( (sPos != nullptr) && ( m_bIsValidFunction != TRUE) )
                                 {
                                     omStrLine = pDoc->m_omSourceCodeTextList.GetNext(sPos);
                                     if ( omStrLine.Find(omStrFnFooter) >= 0 )
@@ -286,7 +286,7 @@ void CFunctionView::vSetFunctionToEdit(const CString& omStrFunction)
                     m_sStartPos = sPos;
                     m_nStartingLine = nLineNumber;
 
-                    while ( (sPos != NULL) && ( omStrLine != omStrFnFooter) )
+                    while ( (sPos != nullptr) && ( omStrLine != omStrFnFooter) )
                     {
                         omStrLine = pDoc->m_omSourceCodeTextList.GetNext(sPos);
 
@@ -347,13 +347,13 @@ void CFunctionView::vSetFunctionToEdit(const CString& omStrFunction)
 void CFunctionView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    if ( m_sStartPos != NULL ) // Display only if user has selected
+    if ( m_sStartPos != nullptr ) // Display only if user has selected
     {
         // a function or variable to edit
         CMDIFrameWnd* pMainFrame = (CMDIFrameWnd*)CWnd::FromHandle(CGlobalObj::sm_hWndMDIParentFrame);
-        CEditFrameWnd* podParentFrame   = NULL;
-        CMDIChildWnd* podActiveChildWnd = NULL;
-        if(pMainFrame != NULL )
+        CEditFrameWnd* podParentFrame   = nullptr;
+        CMDIChildWnd* podActiveChildWnd = nullptr;
+        if(pMainFrame != nullptr )
         {
             // Get the current active window.
             podActiveChildWnd =
@@ -366,7 +366,7 @@ void CFunctionView::OnContextMenu(CWnd* pWnd, CPoint point)
             {
                 if ( point == CPoint(-1, -1) )
                 {
-                    if ( pWnd != NULL )
+                    if ( pWnd != nullptr )
                     {
                         point = pWnd->GetCaretPos();
                     }
@@ -410,7 +410,7 @@ void CFunctionView::OnContextMenu(CWnd* pWnd, CPoint point)
                     }
 
 
-                    if (pomCtxMenu != NULL)
+                    if (pomCtxMenu != nullptr)
                     {
                         pomCtxMenu->TrackPopupMenu(
                             TPM_RIGHTBUTTON | TPM_LEFTALIGN,
@@ -608,11 +608,11 @@ BOOL CFunctionView::UpdateFunctionInDocument()
 {
     BOOL bRetVal    = FALSE;
     POSITION sStart = m_sStartPos;
-    if ( sStart != NULL )
+    if ( sStart != nullptr )
     {
         CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
 
-        if ( pDoc != NULL )
+        if ( pDoc != nullptr )
         {
             SBUS_SPECIFIC_INFO sBusSpecInfo;
             pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -649,9 +649,9 @@ BOOL CFunctionView::UpdateFunctionInDocument()
 
             pDoc->m_omSourceCodeTextList.GetNext(sStart);
 
-            POSITION sPos1  = NULL;
-            POSITION sPos2  = NULL;
-            for( sPos1 = sStart; ( ((sPos2 = sPos1) != NULL) && (!bDone) ); )
+            POSITION sPos1  = nullptr;
+            POSITION sPos2  = nullptr;
+            for( sPos1 = sStart; ( ((sPos2 = sPos1) != nullptr) && (!bDone) ); )
             {
                 CString omStrDel =
                     pDoc->m_omSourceCodeTextList.GetNext( sPos1 );
@@ -763,7 +763,7 @@ void CFunctionView::OnInsertSignal()
     }
     else
     {
-        od_Dlg.vSetFrameList(NULL, m_eBus);
+        od_Dlg.vSetFrameList(nullptr, m_eBus);
     }
     if ( od_Dlg.DoModal() == IDOK )
     {
@@ -814,7 +814,7 @@ void CFunctionView::OnInsertMessage()
     }
     else
     {
-        od_Dlg.vSetFrameList(NULL, m_eBus);
+        od_Dlg.vSetFrameList(nullptr, m_eBus);
     }
 
     if ( od_Dlg.DoModal() == IDOK )
@@ -929,13 +929,13 @@ void CFunctionView::UpdateFileViewAndSetModified()
     if ( UpdateFunctionInDocument())
     {
         CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
-        if ( pDoc != NULL )
+        if ( pDoc != nullptr )
         {
             //pomMainFrm->CGlobalObj::podGetFunctionEditorDoc()->Invalidate();
             CFileView* pFileView = CGlobalObj::ouGetObj(m_eBus).podGetFileViewPtr();
-            if (pFileView != NULL)
+            if (pFileView != nullptr)
             {
-                pFileView->OnUpdate( NULL, 0, NULL );
+                pFileView->OnUpdate( nullptr, 0, nullptr );
                 pFileView->vGoToLine( m_nStartingLine + m_nCurrentLine );
             }
             pDoc->SetModifiedFlag( TRUE );
@@ -963,7 +963,7 @@ void CFunctionView::OnCut()
 /*  Function Name   : vInitPositionStruct                                    */
 /*  Input(s)        : None.                                                  */
 /*  Output          : None                                                   */
-/*  Functionality   : Initialise the member variable m_sStartPos to NULL.    */
+/*  Functionality   : Initialise the member variable m_sStartPos to nullptr.    */
 /*                    This function should be called after making the view as*/
 /*                    read only.                                             */
 /*  Member of       : CFunctionView                                          */
@@ -974,6 +974,6 @@ void CFunctionView::OnCut()
 /*****************************************************************************/
 void CFunctionView::vInitPositionStruct()
 {
-    m_sStartPos = NULL;
+    m_sStartPos = nullptr;
 }
 

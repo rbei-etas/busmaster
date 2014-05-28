@@ -34,7 +34,7 @@ class CSigGrphConfigDlg : public CDialog
     DECLARE_DYNAMIC(CSigGrphConfigDlg)
 
 public:
-    CSigGrphConfigDlg(UINT nHardware = defNO_OF_CHANNELS,CWnd* pParent = NULL);   // standard constructor
+    CSigGrphConfigDlg(UINT nHardware = defNO_OF_CHANNELS,CWnd* pParent = nullptr);   // standard constructor
     virtual ~CSigGrphConfigDlg();
     // Pointer to Main Frame
     CMainFrame* m_pMainFrame;

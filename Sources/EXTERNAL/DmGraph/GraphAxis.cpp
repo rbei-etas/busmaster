@@ -24,7 +24,7 @@ static BOOL WINAPI _TmFromOleDate(DATE dtSrc, struct tm* tmDest);
 
 STDMETHODIMP CGraphAxis::get_GridNumber(short* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -69,7 +69,7 @@ STDMETHODIMP CGraphAxis::put_Label(BSTR newVal)
 
 STDMETHODIMP CGraphAxis::get_Log(VARIANT_BOOL* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -94,7 +94,7 @@ STDMETHODIMP CGraphAxis::put_Log(VARIANT_BOOL newVal)
 
 STDMETHODIMP CGraphAxis::get_Time(VARIANT_BOOL* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -139,7 +139,7 @@ STDMETHODIMP CGraphAxis::put_Format(BSTR newVal)
 
 STDMETHODIMP CGraphAxis::get_ShowGrid(VARIANT_BOOL* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -167,7 +167,7 @@ void CGraphAxis::FormatAxisLabel(double data, BSTR* pbsString)
 {
     OLECHAR buffer[128];
     ATLASSERT(pbsString);
-    *pbsString = NULL;
+    *pbsString = nullptr;
 
     DWORD dwCode;
     if(m_bLog)

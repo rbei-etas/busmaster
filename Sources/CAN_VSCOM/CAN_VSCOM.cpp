@@ -82,8 +82,8 @@ BOOL CCAN_VSCOM::InitInstance()
 static UINT sg_unClientCnt = 0;
 static UINT sg_nNoOfChannels = 0;
 
-static HANDLE sg_hEventRecv = NULL;
-static HANDLE sg_hReadThread = NULL;
+static HANDLE sg_hEventRecv = nullptr;
+static HANDLE sg_hReadThread = nullptr;
 static DWORD sg_dwReadThreadId = 0;
 static struct _VSCanCfg sg_VSCanCfg;
 
@@ -113,7 +113,7 @@ typedef struct tagClientBufMap
         memset(m_acClientName, 0, sizeof (char) * MAX_PATH);
         for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
-            m_pClientBuf[i] = NULL;
+            m_pClientBuf[i] = nullptr;
         }
     }
 } SCLIENTBUFMAP;
@@ -142,8 +142,8 @@ static CACK_MAP_LIST sg_asAckMapBuf;
 static BYTE sg_bCurrState = STATE_DRIVER_SELECTED;
 static CRITICAL_SECTION sg_DIL_CriticalSection;
 
-static HWND sg_hOwnerWnd = NULL;
-static Base_WrapperErrorLogger* sg_pIlog   = NULL;
+static HWND sg_hOwnerWnd = nullptr;
+static Base_WrapperErrorLogger* sg_pIlog   = nullptr;
 
 static SYSTEMTIME sg_CurrSysTime;
 
@@ -154,7 +154,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -180,7 +180,7 @@ public:
     HRESULT CAN_UnloadDriverLibrary(void);
 };
 
-CDIL_CAN_VSCOM* g_pouDIL_CAN_VSCOM = NULL;
+CDIL_CAN_VSCOM* g_pouDIL_CAN_VSCOM = nullptr;
 
 
 #define CALLBACK_TYPE __stdcall
@@ -234,7 +234,7 @@ char out[512];
 va_start(argptr, text);
 _vstprintf(out, text, argptr);
 va_end(argptr);
-MessageBox(NULL, out, title, MB_ICONEXCLAMATION | MB_OK);
+MessageBox(nullptr, out, title, MB_ICONEXCLAMATION | MB_OK);
 } */
 
 
@@ -247,7 +247,7 @@ HRESULT CDIL_CAN_VSCOM::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger
 {
     sg_hOwnerWnd = hWndOwner;
     sg_pIlog = pILog;
-    CAN_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
+    CAN_ManageMsgBuf(MSGBUF_CLEAR, 0, nullptr);
     return(S_OK);
 }
 
@@ -301,7 +301,7 @@ HRESULT CDIL_CAN_VSCOM::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANB
             else if (bAction == MSGBUF_CLEAR)
             {
                 // **** Clear msg buffer
-                if (pBufObj != NULL) //REmove only buffer mentioned
+                if (pBufObj != nullptr) //REmove only buffer mentioned
                 {
                     bRemoveClientBuffer(sClientObj.m_pClientBuf, sClientObj.m_unBufCount, pBufObj);
                 }
@@ -309,7 +309,7 @@ HRESULT CDIL_CAN_VSCOM::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANB
                 {
                     for (i = 0; i < sClientObj.m_unBufCount; i++)
                     {
-                        sClientObj.m_pClientBuf[i] = NULL;
+                        sClientObj.m_pClientBuf[i] = nullptr;
                     }
                     sClientObj.m_unBufCount = 0;
                 }
@@ -330,7 +330,7 @@ HRESULT CDIL_CAN_VSCOM::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANB
             // **** clear msg buffer
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].m_dwClientID, NULL);
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].m_dwClientID, nullptr);
             }
         }
         hResult = S_OK;
@@ -502,7 +502,7 @@ HRESULT CDIL_CAN_VSCOM::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& 
     (void)QueryTickCount;
     CurrSysTime = sg_CurrSysTime;
     /*TimeStamp   = sg_TimeStamp;
-    if(QueryTickCount != NULL)
+    if(QueryTickCount != nullptr)
       *QueryTickCount = sg_QueryTickCount;*/
     return(S_OK);
 }
@@ -754,12 +754,12 @@ HRESULT CDIL_CAN_VSCOM::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int L
     str += cntrl[0].m_omStrAccCodeByte3[0];
     str += cntrl[0].m_omStrAccCodeByte2[0];
     str += cntrl[0].m_omStrAccCodeByte1[0];
-    sg_VSCanCfg.codeMask.Code = strtoul(str.c_str(), NULL, 16);
+    sg_VSCanCfg.codeMask.Code = strtoul(str.c_str(), nullptr, 16);
     str = cntrl[0].m_omStrAccMaskByte4[0];
     str += cntrl[0].m_omStrAccMaskByte3[0];
     str += cntrl[0].m_omStrAccMaskByte2[0];
     str += cntrl[0].m_omStrAccMaskByte1[0];
-    sg_VSCanCfg.codeMask.Mask = strtoul(str.c_str(), NULL, 16);
+    sg_VSCanCfg.codeMask.Mask = strtoul(str.c_str(), nullptr, 16);
 
     sg_VSCanCfg.bDualFilter = cntrl[0].m_bAccFilterMode;
 
@@ -960,8 +960,8 @@ HRESULT CDIL_CAN_VSCOM::CAN_StartHardware(void)
     //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     /* If no device available, exit */
-    if (strcmp(sg_VSCanCfg.szLocation, "") == NULL ||
-            strcmp(sg_VSCanCfg.szLocation, "\\\\.\\") == NULL  )
+    if (strcmp(sg_VSCanCfg.szLocation, "") == 0 ||
+            strcmp(sg_VSCanCfg.szLocation, "\\\\.\\") == 0  )
     {
         return S_FALSE;
     }
@@ -1014,8 +1014,8 @@ HRESULT CDIL_CAN_VSCOM::CAN_StartHardware(void)
             }
         }
 
-        sg_hEventRecv = CreateEvent(NULL, FALSE, FALSE, NULL);
-        if (sg_hEventRecv == NULL)
+        sg_hEventRecv = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+        if (sg_hEventRecv == nullptr)
         {
             sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("could not create the receive event"));
             hResult = S_FALSE;
@@ -1027,8 +1027,8 @@ HRESULT CDIL_CAN_VSCOM::CAN_StartHardware(void)
             hResult = S_FALSE;
         }
 
-        sg_hReadThread = CreateThread(NULL, 0, CanRxEvent, NULL, 0, &sg_dwReadThreadId);
-        if (sg_hReadThread == NULL)
+        sg_hReadThread = CreateThread(nullptr, 0, CanRxEvent, nullptr, 0, &sg_dwReadThreadId);
+        if (sg_hReadThread == nullptr)
         {
             sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("could not create the receive thread"));
             hResult = S_FALSE;
@@ -1058,16 +1058,16 @@ HRESULT CDIL_CAN_VSCOM::CAN_StopHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
 
-    if (sg_hReadThread != NULL)
+    if (sg_hReadThread != nullptr)
     {
         TerminateThread(sg_hReadThread, 0);
-        sg_hReadThread = NULL;
+        sg_hReadThread = nullptr;
     }
 
-    if (sg_hEventRecv != NULL)
+    if (sg_hEventRecv != nullptr)
     {
         CloseHandle(sg_hEventRecv);
-        sg_hEventRecv = NULL;
+        sg_hEventRecv = nullptr;
     }
 
     if (sg_VSCanCfg.hCan > 0)
@@ -1374,7 +1374,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
             memset (sg_asClientToBufMap[unClientIndex].m_acClientName, 0, sizeof (char) * MAX_PATH);
             for (i = 0; i < MAX_BUFF_ALLOWED; i++)
             {
-                sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = NULL;
+                sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = nullptr;
             }
             sg_asClientToBufMap[unClientIndex].m_unBufCount = 0;
             if ((unClientIndex + 1) < sg_unClientCnt)

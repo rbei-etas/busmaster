@@ -20,16 +20,16 @@ CLogObjectJ1939::CLogObjectJ1939(CString omVersion):CBaseLogObject(omVersion)
 {
     // Initialise the filtering block
     m_sFilterApplied.vClear();
-    m_pasControllerDetails = NULL;
+    m_pasControllerDetails = nullptr;
     m_nNumChannels = 0;
 }
 
 CLogObjectJ1939::~CLogObjectJ1939()
 {
-    if (NULL != m_pasControllerDetails)
+    if (nullptr != m_pasControllerDetails)
     {
         delete[] m_pasControllerDetails;
-        m_pasControllerDetails = NULL;
+        m_pasControllerDetails = nullptr;
     }
 }
 
@@ -75,12 +75,12 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
     }
 
     CString omLogText = "";
-    char* pTimeData = NULL;
+    char* pTimeData = nullptr;
     char acID[16] = {'\0'};
-    char* pPGN = NULL;
-    char* pData = NULL;
-    char* psSrcNode = NULL;
-    char* psDestNode = NULL;
+    char* pPGN = nullptr;
+    char* pData = nullptr;
+    char* psSrcNode = nullptr;
+    char* psDestNode = nullptr;
 
     switch (m_sLogInfo.m_eLogTimerMode) // Time Mode
     {
@@ -196,7 +196,7 @@ BOOL CLogObjectJ1939::bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic)
         return FALSE;
     }
 
-    if (NULL == m_pLogFile)
+    if (nullptr == m_pLogFile)
     {
         ASSERT(FALSE);
         return FALSE;
@@ -340,11 +340,11 @@ void CLogObjectJ1939::Der_SetChannelBaudRateDetails
 {
     SCONTROLLER_DETAILS* pTempControllerDetails=(SCONTROLLER_DETAILS*)controllerDetails;
 
-    if (NULL != m_pasControllerDetails)
+    if (nullptr != m_pasControllerDetails)
     {
         delete[] m_pasControllerDetails;
     }
-    m_pasControllerDetails = NULL;
+    m_pasControllerDetails = nullptr;
 
     m_pasControllerDetails = new SCONTROLLER_DETAILS [nNumChannels];
     for (int nIdx = 0; nIdx < nNumChannels; nIdx++)
@@ -361,7 +361,7 @@ void CLogObjectJ1939::Der_GetChannelBaudRateDetails
 {
     SCONTROLLER_DETAILS* pTempControllerDetails=(SCONTROLLER_DETAILS*)controllerDetails;
 
-    if (NULL != m_pasControllerDetails && NULL != pTempControllerDetails )
+    if (nullptr != m_pasControllerDetails && nullptr != pTempControllerDetails )
     {
         for (int nIdx = 0; nIdx < m_nNumChannels; nIdx++)
         {

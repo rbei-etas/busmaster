@@ -718,30 +718,30 @@ void CCGCtrl::SetRange(double xmin, double xmax, double ymin, double ymax)
 {
     static BYTE parms[] =
         VTS_R8 VTS_R8 VTS_R8 VTS_R8;
-    InvokeHelper(0x35, DISPATCH_METHOD, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x35, DISPATCH_METHOD, VT_EMPTY, nullptr, parms,
                  xmin, xmax, ymin, ymax);
 }
 
 void CCGCtrl::AutoRange()
 {
-    InvokeHelper(0x36, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+    InvokeHelper(0x36, DISPATCH_METHOD, VT_EMPTY, nullptr, nullptr);
 }
 
 void CCGCtrl::CopyToClipboard()
 {
-    InvokeHelper(0x37, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+    InvokeHelper(0x37, DISPATCH_METHOD, VT_EMPTY, nullptr, nullptr);
 }
 
 void CCGCtrl::PrintGraph()
 {
-    InvokeHelper(0x38, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+    InvokeHelper(0x38, DISPATCH_METHOD, VT_EMPTY, nullptr, nullptr);
 }
 
 void CCGCtrl::AddElement(long index)
 {
     static BYTE parms[] =
         VTS_I4;
-    InvokeHelper(0x39, DISPATCH_METHOD, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x39, DISPATCH_METHOD, VT_EMPTY, nullptr, parms,
                  index);
 }
 
@@ -749,13 +749,13 @@ void CCGCtrl::DeleteElement(short ElementID)
 {
     static BYTE parms[] =
         VTS_I2;
-    InvokeHelper(0x3a, DISPATCH_METHOD, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x3a, DISPATCH_METHOD, VT_EMPTY, nullptr, parms,
                  ElementID);
 }
 
 void CCGCtrl::ClearGraph()
 {
-    InvokeHelper(0x3b, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+    InvokeHelper(0x3b, DISPATCH_METHOD, VT_EMPTY, nullptr, nullptr);
 }
 
 double CCGCtrl::GetElementXValue(long index, short ElementID)
@@ -772,7 +772,7 @@ void CCGCtrl::SetElementXValue(long index, short ElementID, double newValue)
 {
     static BYTE parms[] =
         VTS_I4 VTS_I2 VTS_R8;
-    InvokeHelper(0x47, DISPATCH_PROPERTYPUT, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x47, DISPATCH_PROPERTYPUT, VT_EMPTY, nullptr, parms,
                  index, ElementID, newValue);
 }
 
@@ -790,7 +790,7 @@ void CCGCtrl::SetElementYValue(long index, short ElementID, double newValue)
 {
     static BYTE parms[] =
         VTS_I4 VTS_I2 VTS_R8;
-    InvokeHelper(0x48, DISPATCH_PROPERTYPUT, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x48, DISPATCH_PROPERTYPUT, VT_EMPTY, nullptr, parms,
                  index, ElementID, newValue);
 }
 
@@ -798,7 +798,7 @@ void CCGCtrl::PlotXY(double X, double Y, short ElementID)
 {
     static BYTE parms[] =
         VTS_R8 VTS_R8 VTS_I2;
-    InvokeHelper(0x3c, DISPATCH_METHOD, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x3c, DISPATCH_METHOD, VT_EMPTY, nullptr, parms,
                  X, Y, ElementID);
 }
 
@@ -806,68 +806,68 @@ void CCGCtrl::PlotY(double Y, short ElementID)
 {
     static BYTE parms[] =
         VTS_R8 VTS_I2;
-    InvokeHelper(0x3d, DISPATCH_METHOD, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x3d, DISPATCH_METHOD, VT_EMPTY, nullptr, parms,
                  Y, ElementID);
 }
 
 void CCGCtrl::ShowProperties()
 {
-    InvokeHelper(0x3e, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+    InvokeHelper(0x3e, DISPATCH_METHOD, VT_EMPTY, nullptr, nullptr);
 }
 
 void CCGCtrl::SaveAs(LPCTSTR szFilename)
 {
     static BYTE parms[] =
         VTS_BSTR;
-    InvokeHelper(0x3f, DISPATCH_METHOD, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x3f, DISPATCH_METHOD, VT_EMPTY, nullptr, parms,
                  szFilename);
 }
 
 void CCGCtrl::AddAnnotation()
 {
-    InvokeHelper(0x40, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+    InvokeHelper(0x40, DISPATCH_METHOD, VT_EMPTY, nullptr, nullptr);
 }
 
 void CCGCtrl::DeleteAnnotation(short annoID)
 {
     static BYTE parms[] =
         VTS_I2;
-    InvokeHelper(0x41, DISPATCH_METHOD, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x41, DISPATCH_METHOD, VT_EMPTY, nullptr, parms,
                  annoID);
 }
 
 void CCGCtrl::AddCursor()
 {
-    InvokeHelper(0x42, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+    InvokeHelper(0x42, DISPATCH_METHOD, VT_EMPTY, nullptr, nullptr);
 }
 
 void CCGCtrl::DeleteCursor(short cursorID)
 {
     static BYTE parms[] =
         VTS_I2;
-    InvokeHelper(0x43, DISPATCH_METHOD, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x43, DISPATCH_METHOD, VT_EMPTY, nullptr, parms,
                  cursorID);
 }
 
 void CCGCtrl::UpdateDisplay()
 {
-    InvokeHelper(0x44, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+    InvokeHelper(0x44, DISPATCH_METHOD, VT_EMPTY, nullptr, nullptr);
 }
 
 void CCGCtrl::GoToRunMode()
 {
-    InvokeHelper(0x45, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+    InvokeHelper(0x45, DISPATCH_METHOD, VT_EMPTY, nullptr, nullptr);
 }
 
 void CCGCtrl::GoToNormalMode()
 {
-    InvokeHelper(0x46, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+    InvokeHelper(0x46, DISPATCH_METHOD, VT_EMPTY, nullptr, nullptr);
 }
 
 short CCGCtrl::GetZoomMode()
 {
     short result;
-    InvokeHelper(0x49, DISPATCH_PROPERTYGET, VT_I2, (void*)&result, NULL);
+    InvokeHelper(0x49, DISPATCH_PROPERTYGET, VT_I2, (void*)&result, nullptr);
     return result;
 }
 
@@ -875,7 +875,7 @@ void CCGCtrl::SetZoomMode(short nNewValue)
 {
     static BYTE parms[] =
         VTS_I2;
-    InvokeHelper(0x49, DISPATCH_PROPERTYPUT, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x49, DISPATCH_PROPERTYPUT, VT_EMPTY, nullptr, parms,
                  nNewValue);
 }
 
@@ -883,13 +883,13 @@ void CCGCtrl::SetXAxisRange(double xmin, double xmax)
 {
     static BYTE parms[] =
         VTS_R8 VTS_R8;
-    InvokeHelper(0x4a, DISPATCH_METHOD, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x4a, DISPATCH_METHOD, VT_EMPTY, nullptr, parms,
                  xmin, xmax);
 }
 
 void CCGCtrl::FitAll()
 {
-    InvokeHelper(0x4b, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+    InvokeHelper(0x4b, DISPATCH_METHOD, VT_EMPTY, nullptr, nullptr);
 }
 
 short CCGCtrl::GetElementRange(short ElementID, double* xmin, double* xmax, double* ymin, double* ymax)
@@ -906,7 +906,7 @@ void CCGCtrl::GenerateCSVReport(LPCTSTR szFilename)
 {
     static BYTE parms[] =
         VTS_BSTR;
-    InvokeHelper(0x4d, DISPATCH_METHOD, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x4d, DISPATCH_METHOD, VT_EMPTY, nullptr, parms,
                  szFilename);
 }
 
@@ -924,7 +924,7 @@ void CCGCtrl::ShiftDisplay(short xShift, short yShift)
 {
     static BYTE parms[] =
         VTS_I2 VTS_I2;
-    InvokeHelper(0x4f, DISPATCH_METHOD, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x4f, DISPATCH_METHOD, VT_EMPTY, nullptr, parms,
                  xShift, yShift);
 }
 
@@ -932,7 +932,7 @@ void CCGCtrl::SetGridLines(short xGrids, short yGrids)
 {
     static BYTE parms[] =
         VTS_I2 VTS_I2;
-    InvokeHelper(0x50, DISPATCH_METHOD, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x50, DISPATCH_METHOD, VT_EMPTY, nullptr, parms,
                  xGrids, yGrids);
 }
 
@@ -940,7 +940,7 @@ void CCGCtrl::SetElementUnit(LPCTSTR lpszUnit)
 {
     static BYTE parms[] =
         VTS_BSTR;
-    InvokeHelper(0x51, DISPATCH_METHOD, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x51, DISPATCH_METHOD, VT_EMPTY, nullptr, parms,
                  lpszUnit);
 }
 
@@ -948,17 +948,17 @@ void CCGCtrl::GetXAxisRange(double FAR* pXMin, double FAR* pXMax)
 {
     static BYTE parms[] =
         VTS_PR8 VTS_PR8;
-    InvokeHelper(0x52, DISPATCH_METHOD, VT_EMPTY, NULL, parms,
+    InvokeHelper(0x52, DISPATCH_METHOD, VT_EMPTY, nullptr, parms,
                  pXMin, pXMax);
 }
 
 void CCGCtrl::GetElementValueAtCursor(short ElementID, double dblCursorVal, double* dblElemVal)
 {
     static BYTE parms[] = VTS_I2 VTS_R8 VTS_PR8 ;
-    InvokeHelper(0x54, DISPATCH_METHOD, VT_EMPTY, NULL, parms, ElementID, dblCursorVal, dblElemVal);
+    InvokeHelper(0x54, DISPATCH_METHOD, VT_EMPTY, nullptr, parms, ElementID, dblCursorVal, dblElemVal);
 }
 
 void CCGCtrl::AboutBox()
 {
-    InvokeHelper(0xfffffdd8, DISPATCH_METHOD, VT_EMPTY, NULL, NULL);
+    InvokeHelper(0xfffffdd8, DISPATCH_METHOD, VT_EMPTY, nullptr, nullptr);
 }

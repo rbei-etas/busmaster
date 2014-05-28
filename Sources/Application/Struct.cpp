@@ -23,7 +23,7 @@
 
 sSIMSYSARRAY::sSIMSYSARRAY()
 {
-    psNextSimsys = NULL;
+    psNextSimsys = nullptr;
 }
 /*******************************************************************************
  Function Name  : operator=
@@ -38,23 +38,23 @@ sSIMSYSARRAY& sSIMSYSARRAY::operator=(const sSIMSYSARRAY& RefObj)
 {
     m_omStrSimSysPath = RefObj.m_omStrSimSysPath;
     m_omStrSimSysName = RefObj.m_omStrSimSysName;
-    if (RefObj.psNextSimsys != NULL)
+    if (RefObj.psNextSimsys != nullptr)
     {
-        if (psNextSimsys == NULL)
+        if (psNextSimsys == nullptr)
         {
             psNextSimsys = new sSIMSYSARRAY;
         }
         *(psNextSimsys) = *(RefObj.psNextSimsys);
     }
-    else if ((RefObj.psNextSimsys == NULL) && (psNextSimsys != NULL))
+    else if ((RefObj.psNextSimsys == nullptr) && (psNextSimsys != nullptr))
     {
-        sSIMSYSARRAY* psTemp = NULL;
-        while (psNextSimsys != NULL)
+        sSIMSYSARRAY* psTemp = nullptr;
+        while (psNextSimsys != nullptr)
         {
             psTemp = psNextSimsys;
             psNextSimsys = psNextSimsys->psNextSimsys;
             delete psTemp;
-            psTemp = NULL;
+            psTemp = nullptr;
         }
     }
     return *this;

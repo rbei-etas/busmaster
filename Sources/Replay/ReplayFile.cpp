@@ -224,49 +224,49 @@ BOOL CReplayFile::pbySaveConfig(xmlNodePtr pxmlNodePtr)         //replay is the 
 
 
 
-    xmlNodePtr pPath = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_LOG_PATH,BAD_CAST omcVarChar);
+    xmlNodePtr pPath = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_LOG_PATH,BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pPath);
 
     //<IsEnabled>bool</IsEnabled>
     CString     csEnabled;
     csEnabled.Format("%d",m_bEnabled);
     omcVarChar = csEnabled;
-    xmlNodePtr pEnabled = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_ENABLED,BAD_CAST omcVarChar);
+    xmlNodePtr pEnabled = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_ENABLED,BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pEnabled);
 
     //<Retain_Recored_Time>bool</Retain_Recored_Time>
     CString     csRetainTimeRec;
     csRetainTimeRec.Format("%d",m_nTimeMode);
     omcVarChar = csRetainTimeRec;
-    xmlNodePtr pRetainTimeRec = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_RETAIN_RECORD_TIME,BAD_CAST omcVarChar);
+    xmlNodePtr pRetainTimeRec = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_RETAIN_RECORD_TIME,BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pRetainTimeRec);
 
     //<Message_Delay>1</Message_Delay>
     CString     csMsgDelay;
     csMsgDelay.Format("%u",m_unMsgTimeDelay);
     omcVarChar = csMsgDelay;
-    xmlNodePtr pMsgDelay = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_MSG_DELAY,BAD_CAST omcVarChar);
+    xmlNodePtr pMsgDelay = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_MSG_DELAY,BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pMsgDelay);
 
     // <Is_Cyclic_Mode>bool</Is_Cyclic_Mode>
     CString     csCyclicMode;
     csCyclicMode.Format("%d",m_nReplayMode);
     omcVarChar = csCyclicMode;
-    xmlNodePtr pCyclicMode = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_CYCLIC_MODE,BAD_CAST omcVarChar);
+    xmlNodePtr pCyclicMode = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_CYCLIC_MODE,BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pCyclicMode);
 
     //<Cyclic_Delay>int</Cyclic_Delay>
     CString     csCyclicDelay;
     csCyclicDelay.Format("%u",m_unCycleTimeDelay);
     omcVarChar = csCyclicDelay;
-    xmlNodePtr pCyclicDelay = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_CYCLIC_DELAY,BAD_CAST omcVarChar);
+    xmlNodePtr pCyclicDelay = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_CYCLIC_DELAY,BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pCyclicDelay);
 
     //  <IsInteractive>FALSE</IsInteractive>
     CString     csIterative;
     csIterative.Format("%u",m_bInteractive);
     omcVarChar = csIterative;
-    xmlNodePtr pIterative = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_INTERACTIVE,BAD_CAST omcVarChar);
+    xmlNodePtr pIterative = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_INTERACTIVE,BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pIterative);
 
     //<Replay_Message_Direction>ALL</Replay_Message_Direction>
@@ -285,7 +285,7 @@ BOOL CReplayFile::pbySaveConfig(xmlNodePtr pxmlNodePtr)         //replay is the 
     }
 
     omcVarChar = csMsgDirection;
-    xmlNodePtr pDirection = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_REPLAY_MSG_DIRECTN,BAD_CAST omcVarChar);
+    xmlNodePtr pDirection = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_REPLAY_MSG_DIRECTN,BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pDirection);
 
     //<Filter>FILTER_NAME</Filter>
@@ -294,7 +294,7 @@ BOOL CReplayFile::pbySaveConfig(xmlNodePtr pxmlNodePtr)         //replay is the 
     {
         csFilter.Format("%s",((m_sFilterApplied.m_psFilters)+iCnt)->m_sFilterName.m_acFilterName);
         omcVarChar = csFilter;
-        xmlNodePtr pFilter = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_FILTER,BAD_CAST omcVarChar);
+        xmlNodePtr pFilter = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_FILTER,BAD_CAST omcVarChar);
         xmlAddChild(pxmlNodePtr, pFilter);
     }
 
@@ -312,9 +312,9 @@ BOOL CReplayFile::pbySaveConfig(xmlNodePtr pxmlNodePtr)         //replay is the 
 *******************************************************************************/
 BYTE* CReplayFile::pbyLoadConfig(BYTE* pSrcBuffer, INT nSectionVersion)
 {
-    if (NULL == pSrcBuffer)
+    if (nullptr == pSrcBuffer)
     {
-        return NULL;
+        return nullptr;
     }
     memcpy(&m_nTimeMode, pSrcBuffer, sizeof(m_nTimeMode));
     pSrcBuffer += sizeof(m_nTimeMode);
@@ -351,12 +351,12 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
     xmlNodePtr pTempNode = pNodePtr;
     CStringArray omStrFilters;
     std::map<std::string, int> mapFilters;
-    while( NULL != pNodePtr )
+    while( nullptr != pNodePtr )
     {
         if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Log_File_Path")))
         {
             xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 if(PathIsRelative((char*)key) == TRUE)
                 {
@@ -380,7 +380,7 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
         if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IsEnabled")))
         {
             xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 m_bEnabled = xmlUtils::bGetBooleanValue((char*)key);
                 xmlFree(key);
@@ -391,7 +391,7 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
         if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Retain_Recored_Time")))
         {
             xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 m_nTimeMode = xmlUtils::bGetBooleanValue((char*)key);
                 xmlFree(key);
@@ -400,7 +400,7 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
         if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Message_Delay")))
         {
             xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 m_unMsgTimeDelay = atoi((char*)key);
                 xmlFree(key);
@@ -410,7 +410,7 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
         if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Is_Cyclic_Mode")))
         {
             xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 m_nReplayMode = (int)xmlUtils::bGetBooleanValue((char*)key);
                 xmlFree(key);
@@ -421,7 +421,7 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
         if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Cyclic_Delay")))
         {
             xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 m_unCycleTimeDelay = atoi((char*)key);
                 xmlFree(key);
@@ -430,7 +430,7 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
         if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"IsInteractive")))
         {
             xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 m_bInteractive = (int)xmlUtils::bGetBooleanValue((char*)key);
                 xmlFree(key);
@@ -439,7 +439,7 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
         if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Replay_Message_Direction")))
         {
             xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 this->m_ouReplayMsgType = xmlUtils::bGetDirection((char*)key);
                 xmlFree(key);
@@ -466,7 +466,7 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
             }
 
             xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 mapFilters[(char*)key] = nEnabled;
                 xmlFree(key);
@@ -476,7 +476,7 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
     }
     //Filters
 
-    if( mapFilters.size() > 0 && pTempNode != NULL)
+    if( mapFilters.size() > 0 && pTempNode != nullptr)
     {
         SFILTERAPPLIED_CAN sFilterApplied;
         if( sFilterApplied.nSetXMLConfigData(pTempNode->doc, CAN) == S_OK)
@@ -531,7 +531,7 @@ void CReplayFile::GetFileName(CString& omStrFileName)
 BOOL CReplayFile::bisConfigChanged(BYTE*& pSrcBuffer)
 {
     BOOL bReturn = TRUE;
-    if (NULL != pSrcBuffer)
+    if (nullptr != pSrcBuffer)
     {
         memcpy(&m_nTimeModeTmp, pSrcBuffer, sizeof(m_nTimeModeTmp));
         pSrcBuffer += sizeof(m_nTimeModeTmp);

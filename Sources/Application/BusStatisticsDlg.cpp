@@ -386,7 +386,7 @@ BOOL CBusStatisticsDlg::OnInitDialog()
     {
         SetIcon( ::LoadIcon(hModAdvancedUILib, MAKEINTRESOURCE( IDI_ICON_NETWORKSTAT )), TRUE);
         ::FreeLibrary(hModAdvancedUILib);
-        hModAdvancedUILib = NULL;
+        hModAdvancedUILib = nullptr;
     }
     else
     {

@@ -48,7 +48,7 @@ void CProjConfig::vClearMap(void)
     for (SECTIONMAP::iterator i = m_MapOfSection.begin(); i != m_MapOfSection.end(); ++i)
     {
         delete i->second;
-        i->second = NULL;
+        i->second = nullptr;
     }
 
     m_MapOfSection.clear();
@@ -91,7 +91,7 @@ bool CProjConfig::GetSectionData(std::string SectionName, SECTIONDATA& SectionDa
     }
     else
     {
-        //MessageBox(NULL, "not found", "", MB_OK);
+        //MessageBox(nullptr, "not found", "", MB_OK);
     }
     return bResult;
 }

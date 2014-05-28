@@ -230,7 +230,7 @@ void CConfigMsgLogDlg::vEnableDisableControl(int nControlID,
         ECONTROLTYPE eCtrlType, BOOL Enable)
 {
     CWnd* pWnd = GetDlgItem(nControlID);
-    if (pWnd != NULL)
+    if (pWnd != nullptr)
     {
         pWnd->EnableWindow(Enable);
         if (Enable == FALSE)
@@ -239,7 +239,7 @@ void CConfigMsgLogDlg::vEnableDisableControl(int nControlID,
             {
                 case EDITCTRL:
                 case COMBOBOX:
-                    pWnd->SetWindowText(NULL);
+                    pWnd->SetWindowText(nullptr);
                     break;
 
                 case RADIOBUTTON:
@@ -265,7 +265,7 @@ void CConfigMsgLogDlg::vUpdateControl(int nControlID, ECONTROLTYPE eCtrlType,
                                       BYTE bAction)
 {
     CWnd* pWnd = GetDlgItem(nControlID);
-    if (NULL != pWnd)
+    if (nullptr != pWnd)
     {
         // Let's start with enable/disable flag
         pWnd->EnableWindow(CActionFlag::bCtrlToBeEnabled(bAction));
@@ -277,7 +277,7 @@ void CConfigMsgLogDlg::vUpdateControl(int nControlID, ECONTROLTYPE eCtrlType,
             {
                 case EDITCTRL:
                 case COMBOBOX:
-                    pWnd->SetWindowText(NULL);
+                    pWnd->SetWindowText(nullptr);
                     break;
 
                 case RADIOBUTTON:
@@ -717,7 +717,7 @@ void CConfigMsgLogDlg::OnBnClickedCbtnLogFilePath(void)
     CFileDialog omFileDlg(FALSE, BUSMASTER_LOG_FILE_EXTENSION, omStrLogFile,
                           OFN_HIDEREADONLY | OFN_PATHMUSTEXIST |
                           OFN_EXTENSIONDIFFERENT | OFN_OVERWRITEPROMPT,
-                          BUSMASTER_LOG_FILTER, NULL);
+                          BUSMASTER_LOG_FILTER, nullptr);
     // Set the caption
     omFileDlg.m_ofn.lpstrTitle = _(BUSMASTER_LOG_SELECTION_TITLE);
 
@@ -803,10 +803,10 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
     {
         //Load channel combo box
         m_omComboChannel.ResetContent();
-        if (NULL != GetICANDIL())
+        if (nullptr != GetICANDIL())
         {
             LPARAM lParam = 0;
-            if (S_OK == GetICANDIL()->DILC_GetControllerParams(lParam, NULL, NUMBER_HW))
+            if (S_OK == GetICANDIL()->DILC_GetControllerParams(lParam, 0, NUMBER_HW))
             {
                 m_unChannelCount = (UINT)lParam;
             }
@@ -828,10 +828,10 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
 
         //Load channel combo box
         m_omComboChannel.ResetContent();
-        if (NULL != GetILINDIL())
+        if (nullptr != GetILINDIL())
         {
             LPARAM lParam = 0;
-            if (S_OK == GetILINDIL()->DILL_GetControllerParams(lParam, NULL, NUMBER_HW))
+            if (S_OK == GetILINDIL()->DILL_GetControllerParams(lParam, 0, NUMBER_HW))
             {
                 m_unChannelCount = (UINT)lParam;
             }
@@ -931,7 +931,7 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
         // If Logging is on
         GetDlgItem(IDOK)->EnableWindow(FALSE);
 
-        m_unDispUpdateTimerId = SetTimer(600, 600, NULL);
+        m_unDispUpdateTimerId = SetTimer(600, 600, nullptr);
     }
     else
     {
@@ -994,12 +994,12 @@ void CConfigMsgLogDlg::vSetLogFileONOFF(BOOL bLogON)
 static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_CAN* psFilterConfigured,
                                  const SFILTERAPPLIED_CAN* psFilterApplied)
 {
-    ASSERT(psFilterConfigured != NULL);
+    ASSERT(psFilterConfigured != nullptr);
     DestList.RemoveAll();
 
     SMAINENTRY sMainEntry;
     sMainEntry.m_omMainEntryName = "CAN";
-    if (psFilterApplied == NULL)
+    if (psFilterApplied == nullptr)
     {
         SMAINENTRY sMainEntry;
         sMainEntry.m_omMainEntryName = "FILTER_SELECTION_CAN";
@@ -1021,7 +1021,7 @@ static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_
                                               psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
             if (SFILTERSET::psGetFilterSetPointer(psFilterApplied->m_psFilters,
                                                   psFilterApplied->m_ushTotal,
-                                                  sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH)) != NULL)
+                                                  sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH)) != nullptr)
             {
                 sMainEntry.m_odSelEntryList.AddTail(sSubEntry);
             }
@@ -1037,12 +1037,12 @@ static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_
 static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_LIN* psFilterConfigured,
                                  const SFILTERAPPLIED_LIN* psFilterApplied)
 {
-    ASSERT(psFilterConfigured != NULL);
+    ASSERT(psFilterConfigured != nullptr);
     DestList.RemoveAll();
 
     SMAINENTRY sMainEntry;
     sMainEntry.m_omMainEntryName = "LIN";
-    if (psFilterApplied == NULL)
+    if (psFilterApplied == nullptr)
     {
         SMAINENTRY sMainEntry;
         sMainEntry.m_omMainEntryName = "FILTER_SELECTION_LIN";
@@ -1064,7 +1064,7 @@ static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_
                                               psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
             if (SFILTERSET::psGetFilterSetPointer(psFilterApplied->m_psFilters,
                                                   psFilterApplied->m_ushTotal,
-                                                  sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH)) != NULL)
+                                                  sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH)) != nullptr)
             {
                 sMainEntry.m_odSelEntryList.AddTail(sSubEntry);
             }
@@ -1091,7 +1091,7 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
         SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(pos);
         const PSFILTERSET psTemp = SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters,
                                    psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
-        ASSERT (psTemp != NULL);
+        ASSERT (psTemp != nullptr);
         sFilterApplied.m_psFilters[sFilterApplied.m_ushTotal].bClone(*psTemp);
         sFilterApplied.m_ushTotal++;
     }
@@ -1110,7 +1110,7 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_LIN* psFilterConfigured,
         SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(pos);
         const PSFILTERSET psTemp = SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters,
                                    psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
-        ASSERT (psTemp != NULL);
+        ASSERT (psTemp != nullptr);
         sFilterApplied.m_psFilters[sFilterApplied.m_ushTotal].bClone(*psTemp);
         sFilterApplied.m_ushTotal++;
     }

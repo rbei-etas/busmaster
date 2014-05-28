@@ -45,12 +45,12 @@ extern CCANMonitorApp theApp;
 // CSigGrphConfigDlg dialog
 
 IMPLEMENT_DYNAMIC(CSigGrphConfigDlg, CDialog)
-CSigGrphConfigDlg::CSigGrphConfigDlg(UINT nHardware , CWnd* pParent /*=NULL*/)
+CSigGrphConfigDlg::CSigGrphConfigDlg(UINT nHardware , CWnd* pParent /*=nullptr*/)
     : CDialog(CSigGrphConfigDlg::IDD, pParent)
     , m_nSymbolType(0)
     , m_nLineType(0)
 {
-    m_pMainFrame = NULL;
+    m_pMainFrame = nullptr;
     m_nHardware  = nHardware;
     m_nSelectedIndex = -1;
 }
@@ -131,11 +131,11 @@ void CSigGrphConfigDlg::OnBnClickedBtnLineColor()
 {
     if(m_nSelectedIndex != -1)
     {
-        COLORREF objClrRef = NULL;
+        COLORREF objClrRef = 0;
 
         objClrRef = m_omLineColor.GetColourForSelectedIndex(m_nSelectedIndex);
 
-        if(objClrRef != NULL)
+        if(objClrRef != 0)
         {
             m_omSignalList.SetItemData( m_nSelectedIndex, objClrRef );
             m_omSignalList.Invalidate(TRUE);
@@ -163,11 +163,11 @@ void CSigGrphConfigDlg::OnBnClickedBtnVisible()
     if ( hSelItem != -1 )
     {
         // Get Graph List from main frame
-        CGraphList* podList = NULL;
+        CGraphList* podList = nullptr;
         podList = &(m_pMainFrame->m_odGraphList[m_omCmbBusType.GetCurSel()]);
 
         // Update Element Details
-        if( podList != NULL )
+        if( podList != nullptr )
         {
             if( hSelItem < podList->m_omElementList.GetSize() )
             {
@@ -218,11 +218,11 @@ void CSigGrphConfigDlg::OnBnClickedBtnEnable()
     if ( hSelItem != -1 )
     {
         // Get graph list from main frame
-        CGraphList* podList = NULL;
+        CGraphList* podList = nullptr;
         podList = &(m_pMainFrame->m_odGraphList[m_omCmbBusType.GetCurSel()]);
 
         // Update Element Details
-        if( podList != NULL )
+        if( podList != nullptr )
         {
             if( hSelItem < podList->m_omElementList.GetSize() )
             {
@@ -296,7 +296,7 @@ void CSigGrphConfigDlg::OnBnClickedBtnConfigure()
 void CSigGrphConfigDlg::vPopulateElementList()
 {
     // Get Element List from Main Frame
-    CGraphList* podList = NULL;
+    CGraphList* podList = nullptr;
     // Remove All items in the list
     m_omSignalList.DeleteAllItems();
     // Get List pointer
@@ -305,7 +305,7 @@ void CSigGrphConfigDlg::vPopulateElementList()
     // Get Database Pointer
     CMsgSignal* pomDatabase = theApp.m_pouMsgSignal;
     CGraphElement odTemp;
-    if( podList != NULL && pomDatabase != NULL )
+    if( podList != nullptr && pomDatabase != nullptr )
     {
         UINT unMsgID = 0;
         CString omStrName;
@@ -372,11 +372,11 @@ void CSigGrphConfigDlg::vPopulateElementList()
 *******************************************************************************/
 void CSigGrphConfigDlg::vEnableDisableControls()
 {
-    CGraphList* podList = NULL;
+    CGraphList* podList = nullptr;
     podList = &(m_pMainFrame->m_odGraphList[m_omCmbBusType.GetCurSel()]);
 
     // Update UI Elements
-    if( podList != NULL )
+    if( podList != nullptr )
     {
         if( podList->m_omElementList.GetSize() > 0 &&
                 m_omSignalList.GetSelectedCount() > 0 )
@@ -406,10 +406,10 @@ void CSigGrphConfigDlg::vEnableControls(BOOL bEnable)
     // Enable only if it is not connected
     BOOL bEnableCtrl = bEnable;
 
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     // Line Type
     pWnd = GetDlgItem( IDC_COMBO_TYPE );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnableCtrl );
     }
@@ -417,7 +417,7 @@ void CSigGrphConfigDlg::vEnableControls(BOOL bEnable)
     m_omLineColor.EnableWindow( bEnableCtrl );
     // Point Type
     pWnd = GetDlgItem( IDC_COMBO_SYMBOL );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnableCtrl );
     }
@@ -427,14 +427,14 @@ void CSigGrphConfigDlg::vEnableControls(BOOL bEnable)
     // Visible Button - Use Enable Variable directly as this is enabled
     // Irrespective of connection status
     pWnd = GetDlgItem( IDC_BTN_VISIBLE );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
     // Enable Button - Use Enable Variable directly as this is enabled
     // Irrespective of connection status
     pWnd = GetDlgItem( IDC_BTN_ENABLE );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bEnable );
     }
@@ -482,10 +482,10 @@ void CSigGrphConfigDlg::OnLvnItemchangedListSignals(NMHDR* pNMHDR, LRESULT* pRes
         if ( hSelItem != -1 )
         {
             // Update selected element deteils
-            CGraphList* podList = NULL;
+            CGraphList* podList = nullptr;
             podList = &(m_pMainFrame->m_odGraphList[m_omCmbBusType.GetCurSel()]);
             // Update Element Details
-            if( podList != NULL )
+            if( podList != nullptr )
             {
                 if( hSelItem < podList->m_omElementList.GetSize() )
                 {
@@ -524,17 +524,8 @@ void CSigGrphConfigDlg::vSetElementDetails( CGraphElement odElement )
 
     if(m_nSelectedIndex != -1)
     {
-        COLORREF objClrRef = NULL;
+        COLORREF objClrRef = 0;
 
-        /*objClrRef = m_omLineColor.GetColourForSelectedIndex(m_nSelectedIndex);
-
-        if(objClrRef != NULL)
-        {
-            m_omLineColor.SetColour(objClrRef);
-            m_omSignalList.SetItemData( m_nSelectedIndex, objClrRef );
-            m_omSignalList.Invalidate(TRUE);
-        }
-        else*/
         {
             m_omLineColor.SetColour( odElement.m_nLineColor );
         }
@@ -616,7 +607,7 @@ void CSigGrphConfigDlg::OnBnClickedButtonGrpDispConfig()
 *******************************************************************************/
 void CSigGrphConfigDlg::vUpdateLineDisplayOfElements(eDISPLAY_TYPE eCurrDisplay)
 {
-    CGraphList* podList = NULL;
+    CGraphList* podList = nullptr;
     CGraphElement odSelectedElement;
     podList = &(m_pMainFrame->m_odGraphList[m_omCmbBusType.GetCurSel()]);
     int nCounter = podList->m_omElementList.GetSize();
@@ -657,11 +648,11 @@ void CSigGrphConfigDlg::OnCbnSelchangeComboType()
 
     if ( hSelItem != -1 )
     {
-        CGraphList* podList = NULL;
+        CGraphList* podList = nullptr;
         podList = &(m_pMainFrame->m_odGraphList[m_omCmbBusType.GetCurSel()]);
 
         // Update Element Details
-        if( podList != NULL )
+        if( podList != nullptr )
         {
             if( hSelItem < podList->m_omElementList.GetSize() )
             {
@@ -698,11 +689,11 @@ void CSigGrphConfigDlg::OnCbnSelchangeComboSymbol()
 
     if ( hSelItem != -1 )
     {
-        CGraphList* podList = NULL;
+        CGraphList* podList = nullptr;
         podList = &(m_pMainFrame->m_odGraphList[m_omCmbBusType.GetCurSel()]);
 
         // Update Element Details
-        if( podList != NULL )
+        if( podList != nullptr )
         {
             odSelectedElement = podList->m_omElementList[ hSelItem ];
             odSelectedElement.m_nPointType = m_nSymbolType;
@@ -735,11 +726,11 @@ LRESULT CSigGrphConfigDlg::OnColorChange(WPARAM /*wparam*/, LPARAM lparam)
 
     if ( hSelItem != -1 )
     {
-        CGraphList* podList = NULL;
+        CGraphList* podList = nullptr;
         podList = &(m_pMainFrame->m_odGraphList[m_omCmbBusType.GetCurSel()]);
 
         // Update Element Details
-        if( podList != NULL )
+        if( podList != nullptr )
         {
             if( hSelItem < podList->m_omElementList.GetSize() )
             {

@@ -11,8 +11,8 @@ END_MESSAGE_MAP()
 
 CHexEdit::CHexEdit(void)
 {
-    m_brush = NULL;
-    m_nValidChar = NULL;
+    m_brush = nullptr;
+    m_nValidChar = nullptr;
     SetValidChar("0123456789abcdefABCDEF ");
 }
 
@@ -23,7 +23,7 @@ CHexEdit::~CHexEdit(void)
         delete [] m_nValidChar;
     }
     m_fntText.DeleteObject();
-    if (m_brush != NULL)
+    if (m_brush != nullptr)
     {
         delete m_brush;
     }
@@ -51,7 +51,7 @@ void CHexEdit::ResetColors(COLORREF newtext,COLORREF newback)
     m_textcolor = newtext;
     m_backcolor = newback;
 
-    if (m_brush!=NULL)
+    if (m_brush!=nullptr)
     {
         delete m_brush;
     }
@@ -75,8 +75,8 @@ void CHexEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
             CEdit::OnChar(nChar, nRepCnt, nFlags); // let the base class handle it
         }
     }
-    else if (((m_nValidChar != NULL)                    // do I have to check if the char is valid ?
-              &&  (_tcschr(m_nValidChar,nChar) != NULL)))
+    else if (((m_nValidChar != nullptr)                    // do I have to check if the char is valid ?
+              &&  (_tcschr(m_nValidChar,nChar) != nullptr)))
     {
         // is it a 'valid' character ?
         CEdit::OnKeyDown(nChar, nRepCnt, nFlags);
@@ -107,7 +107,7 @@ BOOL CHexEdit::PreTranslateMessage(MSG* pMsg)
 
 bool CHexEdit::InitToolTip()
 {
-    if (m_tt.m_hWnd == NULL)
+    if (m_tt.m_hWnd == nullptr)
     {
         m_tt.Create(this);
         m_tt.Activate(true);

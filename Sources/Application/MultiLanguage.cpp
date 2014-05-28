@@ -149,10 +149,10 @@ LANGID CMultiLanguage::DetectUILanguage()
     HINSTANCE hKernel32;
 
     hKernel32 = ::GetModuleHandle(_T("kernel32.dll"));
-    ASSERT(hKernel32 != NULL);
+    ASSERT(hKernel32 != nullptr);
     pfnGetUserDefaultUILanguage = (PFNGETUSERDEFAULTUILANGUAGE)::GetProcAddress(
                                       hKernel32, "GetUserDefaultUILanguage");
-    if(pfnGetUserDefaultUILanguage != NULL)
+    if(pfnGetUserDefaultUILanguage != nullptr)
     {
         // First, try the user's UI language
         langid = pfnGetUserDefaultUILanguage();
@@ -162,7 +162,7 @@ LANGID CMultiLanguage::DetectUILanguage()
         // Then, try the system's default UI language
         pfnGetSystemDefaultUILanguage = (PFNGETSYSTEMDEFAULTUILANGUAGE)::GetProcAddress(
                                             hKernel32, "GetSystemDefaultUILanguage");
-        ASSERT( pfnGetSystemDefaultUILanguage != NULL );
+        ASSERT( pfnGetSystemDefaultUILanguage != nullptr );
 
         langid = pfnGetSystemDefaultUILanguage();
         AddLangId( langid );
@@ -174,7 +174,7 @@ LANGID CMultiLanguage::DetectUILanguage()
         if (::GetVersion()&0x80000000)
         {
             // We're on Windows 9x, so look in the registry for the UI language
-            HKEY hKey = NULL;
+            HKEY hKey = nullptr;
             LONG nResult = ::RegOpenKeyEx(HKEY_CURRENT_USER,
                                           _T( "Control Panel\\Desktop\\ResourceLocale" ), 0, KEY_READ, &hKey);
             if (nResult == ERROR_SUCCESS)
@@ -182,7 +182,7 @@ LANGID CMultiLanguage::DetectUILanguage()
                 DWORD dwType;
                 TCHAR szValue[16] = {0};
                 ULONG nBytes = sizeof( szValue );
-                nResult = ::RegQueryValueEx(hKey, NULL, NULL, &dwType,
+                nResult = ::RegQueryValueEx(hKey, nullptr, nullptr, &dwType,
                                             LPBYTE( szValue ), &nBytes );
                 if ((nResult == ERROR_SUCCESS) && (dwType == REG_SZ))
                 {
@@ -204,7 +204,7 @@ LANGID CMultiLanguage::DetectUILanguage()
             // We're on NT 4.  The UI language is the same as the language of the
             // version resource in ntdll.dll
             HMODULE hNTDLL = ::GetModuleHandle( _T( "ntdll.dll" ) );
-            if (hNTDLL != NULL)
+            if (hNTDLL != nullptr)
             {
                 langid = 0;
                 ::EnumResourceLanguages( hNTDLL, RT_VERSION, MAKEINTRESOURCE( 1 ),
@@ -236,7 +236,7 @@ LANGID CMultiLanguage::DetectUILanguage()
 BOOL CALLBACK CMultiLanguage::_AfxEnumResLangProc(HMODULE /*hModule*/, LPCTSTR /*pszType*/,
         LPCTSTR /*pszName*/, WORD langid, LONG_PTR lParam)
 {
-    if(lParam == NULL)
+    if(lParam == 0)
     {
         return FALSE;
     }
@@ -250,7 +250,7 @@ BOOL CALLBACK CMultiLanguage::_AfxEnumResLangProc(HMODULE /*hModule*/, LPCTSTR /
 HINSTANCE CMultiLanguage::LoadLangResourceDLL(LPCTSTR szModuleName, LANGID langUpdateId)
 {
     TCHAR       szResDLLName[_MAX_PATH+14];
-    HINSTANCE   hLangDLL = NULL;
+    HINSTANCE   hLangDLL = nullptr;
     LCID        alcid[MAX_NUM_LCID+1];
     TCHAR       szLangCode[4];
     //LPTSTR    pszExtension;
@@ -294,7 +294,7 @@ HINSTANCE CMultiLanguage::LoadLangResourceDLL(LPCTSTR szModuleName, LANGID langU
             ASSERT( nResult == 4 );
             if ( nResult == 0 )
             {
-                return NULL;
+                return nullptr;
             }
         }
         if ( nNoExtension + 3 + 4 + 1 < _MAX_PATH+14 )
@@ -310,10 +310,10 @@ HINSTANCE CMultiLanguage::LoadLangResourceDLL(LPCTSTR szModuleName, LANGID langU
         else
         {
             ASSERT(FALSE);  // No enough space to hold language resource dll name path.
-            return NULL;
+            return nullptr;
         }
         hLangDLL = ::LoadLibrary(szResDLLName);
-        if(hLangDLL != NULL)
+        if(hLangDLL != nullptr)
         {
             return hLangDLL;    // Successful return
         }

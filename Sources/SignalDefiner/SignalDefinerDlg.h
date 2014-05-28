@@ -10,7 +10,7 @@ class CSignalDefinerDlg : public CDialog
     DECLARE_DYNAMIC(CSignalDefinerDlg)
 
 public:
-    CSignalDefinerDlg(CWnd* pParent = NULL);   // standard constructor
+    CSignalDefinerDlg(CWnd* pParent = nullptr);   // standard constructor
     virtual ~CSignalDefinerDlg();
 
     // Dialog Data

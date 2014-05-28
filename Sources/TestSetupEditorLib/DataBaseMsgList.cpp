@@ -37,7 +37,7 @@ Modifications  :
 CDataBaseMsgList::CDataBaseMsgList(void)
 {
     m_unMessageCount = 0;
-    m_psMessages = NULL;
+    m_psMessages = nullptr;
 }
 
 /******************************************************************************
@@ -158,13 +158,13 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                     }
                     // Number of messages updated here
 
-                    if ( m_psMessages != NULL )
+                    if ( m_psMessages != nullptr )
                     {
-                        // Initialise all signal stuff to NULL to
+                        // Initialise all signal stuff to nullptr to
                         // make sure application will not crash
                         for ( UINT nCount = 0; nCount < m_unMessageCount; nCount++ )
                         {
-                            m_psMessages[nCount].m_psSignals = NULL;
+                            m_psMessages[nCount].m_psSignals = nullptr;
                         }
 
                         UINT unMsgCount = 0;
@@ -324,7 +324,7 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     if ( m_psMessages[unMsgCount].m_unNumberOfSignals > 0)
                                     {
                                         sSIGNALS* pNext =
-                                            m_psMessages[unMsgCount].m_psSignals = NULL;
+                                            m_psMessages[unMsgCount].m_psSignals = nullptr;
 
                                         // start getting signal information
                                         UINT unNumberofSignalsRead = 0;
@@ -344,7 +344,7 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                 // Allocate memory for signal
                                                 sSIGNALS* sTempSg = new sSIGNALS;
 
-                                                if (sTempSg == NULL)
+                                                if (sTempSg == nullptr)
                                                 {
                                                     strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
                                                     //TODO::    vWriteTextToTrace();
@@ -353,7 +353,7 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                 }
                                                 else
                                                 {
-                                                    sTempSg->m_psNextSignalList = NULL;
+                                                    sTempSg->m_psNextSignalList = nullptr;
 
                                                     CString sMsgDet = sFirstLine;
 
@@ -599,7 +599,7 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                             sMsgDet = sMsgDet.Right(sMsgDet.GetLength() - nIndex -1 );
                                                         }
 
-                                                        CSignalDescVal* pomSgDescValNext = sTempSg->m_oSignalIDVal = NULL;
+                                                        CSignalDescVal* pomSgDescValNext = sTempSg->m_oSignalIDVal = nullptr;
 
                                                         // Get signal value descriptor and value
                                                         while ( o_File.ReadString( sFirstLine ))
@@ -637,7 +637,7 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                                     //                                                                        pomSgDescVal->m_n64SignalVal = _atoi64( (const char*) sFirstLine );
                                                                     pomSgDescVal->m_DescValue.n64Value = _atoi64( (const char*) sFirstLine );
 
-                                                                    pomSgDescVal->m_pouNextSignalSignalDescVal = NULL;
+                                                                    pomSgDescVal->m_pouNextSignalSignalDescVal = nullptr;
 
                                                                 }// end if ( finding for comma)
                                                                 else
@@ -649,9 +649,9 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                                 }
                                                                 // Attach the signal descand value to the data structure.
 
-                                                                if ( pomSgDescValNext != NULL)
+                                                                if ( pomSgDescValNext != nullptr)
                                                                 {
-                                                                    while ( pomSgDescValNext->m_pouNextSignalSignalDescVal != NULL )
+                                                                    while ( pomSgDescValNext->m_pouNextSignalSignalDescVal != nullptr )
                                                                     {
                                                                         pomSgDescValNext = pomSgDescValNext->m_pouNextSignalSignalDescVal;
                                                                     }
@@ -661,7 +661,7 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                                 {
                                                                     pomSgDescValNext = sTempSg->m_oSignalIDVal = pomSgDescVal;
 
-                                                                    pomSgDescValNext->m_pouNextSignalSignalDescVal = NULL;
+                                                                    pomSgDescValNext->m_pouNextSignalSignalDescVal = nullptr;
                                                                 }
 
                                                             }
@@ -675,9 +675,9 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                     }//
 
                                                     // allocate memory for next signal
-                                                    if ( pNext != NULL )
+                                                    if ( pNext != nullptr )
                                                     {
-                                                        while( pNext->m_psNextSignalList != NULL )
+                                                        while( pNext->m_psNextSignalList != nullptr )
                                                         {
                                                             pNext = pNext->m_psNextSignalList;
                                                         }
@@ -688,12 +688,12 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                     {
                                                         pNext = m_psMessages[unMsgCount].m_psSignals = sTempSg;
 
-                                                        pNext->m_psNextSignalList = NULL;
+                                                        pNext->m_psNextSignalList = nullptr;
                                                     }
 
                                                     unNumberofSignalsRead++;
 
-                                                }// if (!=NULL)
+                                                }// if (!=nullptr)
 
                                             }// if signal found
                                         }
@@ -705,7 +705,7 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     }
                                     else // No signals defined.
                                     {
-                                        m_psMessages[unMsgCount].m_psSignals = NULL;
+                                        m_psMessages[unMsgCount].m_psSignals = nullptr;
                                     }
 
                                     // next message index
@@ -739,7 +739,7 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
         }
         CATCH_ALL (pomE)
         {
-            if(pomE != NULL )
+            if(pomE != nullptr )
             {
                 LPTSTR lpszError = "";
                 // Get error
@@ -846,7 +846,7 @@ BOOL CDataBaseMsgList::bValidateDatabaseFile(CString strFileName)
                     }
                     CATCH_ALL (pomE)
                     {
-                        if(pomE != NULL )
+                        if(pomE != nullptr )
                         {
                             LPTSTR lpszError = "";
                             // Get error
@@ -954,7 +954,7 @@ Modifications  :
 ******************************************************************************/
 BOOL CDataBaseMsgList::bFreeMessageMemory(void)
 {
-    if(m_psMessages != NULL)
+    if(m_psMessages != nullptr)
     {
         for(UINT i = 0; i<m_unMessageCount; i++)
         {
@@ -963,7 +963,7 @@ BOOL CDataBaseMsgList::bFreeMessageMemory(void)
         delete []m_psMessages;
     }
 
-    m_psMessages = NULL;
+    m_psMessages = nullptr;
     m_unMessageCount = 0;
     return TRUE;
 }
@@ -981,7 +981,7 @@ Modifications  :
 ******************************************************************************/
 UINT CDataBaseMsgList::unGetMessageID(CString omstrMsgName)
 {
-    if( m_psMessages == NULL )
+    if( m_psMessages == nullptr )
     {
         //For W4 Removal
         return (UINT)-1;
@@ -1012,7 +1012,7 @@ Modifications  :
 INT CDataBaseMsgList::nGetMessageName(UINT unMsgId, CString& omstrMsgName)
 {
     omstrMsgName = "";
-    if( m_psMessages == NULL )
+    if( m_psMessages == nullptr )
     {
         return ERR_INVALID_DATABASE;
     }
@@ -1040,11 +1040,11 @@ Modifications  :
 ******************************************************************************/
 INT CDataBaseMsgList::nGetSignalList(CString omstrMsgName, sSIGNALS* psSignals)
 {
-    if( m_psMessages == NULL )
+    if( m_psMessages == nullptr )
     {
         return ERR_INVALID_DATABASE;
     }
-    psSignals = NULL;
+    psSignals = nullptr;
     for(UINT i = 0; i < m_unMessageCount; i++)
     {
         if(m_psMessages[i].m_omStrMessageName == omstrMsgName)
@@ -1070,7 +1070,7 @@ Modifications  :
 ******************************************************************************/
 INT CDataBaseMsgList::nGetMessageInfo(CString omstrMsgName, sMESSAGE& sMsg)
 {
-    if( m_psMessages == NULL )
+    if( m_psMessages == nullptr )
     {
         return ERR_INVALID_DATABASE;
     }
@@ -1098,9 +1098,9 @@ Modifications  :
 ******************************************************************************/
 sMESSAGE* CDataBaseMsgList::unGetMsg(UINT unMsgId)
 {
-    if( m_psMessages == NULL )
+    if( m_psMessages == nullptr )
     {
-        return NULL;
+        return nullptr;
     }
 
     for(UINT i = 0; i < m_unMessageCount; i++)
@@ -1110,5 +1110,5 @@ sMESSAGE* CDataBaseMsgList::unGetMsg(UINT unMsgId)
             return &m_psMessages[i];
         }
     }
-    return NULL;
+    return nullptr;
 }

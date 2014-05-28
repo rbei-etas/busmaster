@@ -63,18 +63,18 @@ CMsgBufVVSE::CMsgBufVVSE(void)
     m_pbyMsgBuffer = new BYTE[MIN_BUFFER_SIZE];// allocate memory first
     vClearMessageBuffer(); // Clear the message buffer
     InitializeCriticalSection(&m_CritSectionForGB);
-    m_hNotifyingEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+    m_hNotifyingEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 }
 
 //Destructor deallocates memory
 CMsgBufVVSE::~CMsgBufVVSE(void)
 {
     CloseHandle(m_hNotifyingEvent);
-    m_hNotifyingEvent = NULL;
-    if (m_pbyMsgBuffer != NULL)
+    m_hNotifyingEvent = nullptr;
+    if (m_pbyMsgBuffer != nullptr)
     {
         delete[] m_pbyMsgBuffer;
-        m_pbyMsgBuffer = NULL;
+        m_pbyMsgBuffer = nullptr;
     }
     DeleteCriticalSection(&m_CritSectionForGB);
 }
@@ -193,7 +193,7 @@ int CMsgBufVVSE::WriteIntoBuffer(INT nType, BYTE* pbyMsg, INT nSize)
     int nResult = CALL_SUCCESS;
 
 #ifdef _DEBUG
-    ASSERT(pbyMsg != NULL);
+    ASSERT(pbyMsg != nullptr);
     ASSERT(!(m_nIndexWrite > m_nBufferSize));
 #endif
 
@@ -257,13 +257,13 @@ int CMsgBufVVSE::nSetBufferSize(int& nSize)
 
     EnterCriticalSection(&m_CritSectionForGB);
 
-    if (m_pbyMsgBuffer != NULL)
+    if (m_pbyMsgBuffer != nullptr)
     {
         delete[] m_pbyMsgBuffer;
     }
     m_nBufferSize = nSize;
     m_pbyMsgBuffer = new BYTE[nSize];
-    if (m_pbyMsgBuffer == NULL)
+    if (m_pbyMsgBuffer == nullptr)
     {
         nResult = ERR_CREATE_MEMORY_FAIL;
         m_nBufferSize = 0;

@@ -70,7 +70,7 @@ private:
     // Construction
 public:
     void vClearWindowContent();
-    CMessageInterpretation(CWnd* pParent = NULL);   // standard constructor
+    CMessageInterpretation(CWnd* pParent = nullptr);   // standard constructor
 
     // Dialog Data
     //{{AFX_DATA(CMessageInterpretation)

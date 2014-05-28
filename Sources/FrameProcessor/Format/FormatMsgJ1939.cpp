@@ -36,7 +36,7 @@
 
 CFormatMsgJ1939::CFormatMsgJ1939(CRefTimeKeeper& ouRefTimeKeeper):CFormatMsgCommon(ouRefTimeKeeper)
 {
-    //m_podJ1939Rules = NULL;
+    //m_podJ1939Rules = nullptr;
 }
 CFormatMsgJ1939::~CFormatMsgJ1939(void)
 {
@@ -114,7 +114,7 @@ void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
 
 void CFormatMsgJ1939::vInit(/*CJ1939MessageMap* podMsgMap*/)
 {
-    /*ASSERT(NULL != podMsgMap);
+    /*ASSERT(nullptr != podMsgMap);
     m_podJ1939Rules = podMsgMap;*/
 }
 

@@ -76,7 +76,7 @@ END_MESSAGE_MAP()
 void COwnerDataListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 {
     CWnd* pParent = GetParent();
-    if( pParent != NULL && pParent->m_hWnd != 0 )
+    if( pParent != nullptr && pParent->m_hWnd != 0 )
     {
         ::SendMessage( pParent->m_hWnd,
                        WM_OWNER_GET_DATA,

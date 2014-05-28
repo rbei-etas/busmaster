@@ -49,7 +49,7 @@ END_MESSAGE_MAP()
  * @param [in,out]  pParent
  *  If non-null, the parent windows.
  */
-CCANSelectDlg::CCANSelectDlg(CWnd* pParent /*=NULL*/)
+CCANSelectDlg::CCANSelectDlg(CWnd* pParent /*=nullptr*/)
     : CDialog(CCANSelectDlg::IDD, pParent)
 {
 

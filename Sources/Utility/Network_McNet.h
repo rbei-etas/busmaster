@@ -109,7 +109,7 @@ private:
 
     void vInitAll(void);
     void vClearAll(void);
-    void ReadANode(BYTE bType, MSXML2::IXMLDOMNodePtr pomNode, void* pvBuf = NULL) const;
+    void ReadANode(BYTE bType, MSXML2::IXMLDOMNodePtr pomNode, void* pvBuf = nullptr) const;
     bool bReadAttribute(MSXML2::IXMLDOMNode* Node, CString& Str, _bstr_t tmp) const;
     DWORD dwGetLCN(CMcNetMessageMap& omMsgMap, CString omNode) const;
 

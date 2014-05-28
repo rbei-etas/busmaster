@@ -36,7 +36,7 @@ public:
     eTYPE_BUS m_eBusType;
 
     // standard constructor
-    CElementSelection(UINT nHardware = defNO_OF_CHANNELS, CWnd* pParent = NULL);
+    CElementSelection(UINT nHardware = defNO_OF_CHANNELS, CWnd* pParent = nullptr);
     // Dialog Data
     //{{AFX_DATA(CElementSelection)
     enum { IDD = IDD_DLG_MSG_LIST };

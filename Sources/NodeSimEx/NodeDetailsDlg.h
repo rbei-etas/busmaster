@@ -32,7 +32,7 @@ class CNodeDetailsDlg : public CDialog
 {
     // Construction
 public:
-    CNodeDetailsDlg(ETYPE_BUS eBus, PSNODEINFO pNode = NULL,CWnd* pParent = NULL);
+    CNodeDetailsDlg(ETYPE_BUS eBus, PSNODEINFO pNode = nullptr,CWnd* pParent = nullptr);
     BOOL m_bIsNodeModified;  //Track the change
 
     // Dialog Data

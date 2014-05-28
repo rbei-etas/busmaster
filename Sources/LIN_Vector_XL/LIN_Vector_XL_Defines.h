@@ -65,8 +65,8 @@ typedef std::list<SACK_MAP> CACK_MAP_LIST;
 //static CACK_MAP_LIST sg_asAckMapBuf;
 static STLINDATA sg_asLINMsg;
 
-static HWND sg_hOwnerWnd = NULL;
-static Base_WrapperErrorLogger* sg_pIlog   = NULL;
+static HWND sg_hOwnerWnd = nullptr;
+static Base_WrapperErrorLogger* sg_pIlog   = nullptr;
 std::string sg_acErrStr = "";
 
 /* Forward declarations*/
@@ -85,42 +85,42 @@ static BOOL bRemoveClientBuffer(CBaseLINBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
 static HINSTANCE               hxlDll;
 
 /* Vector XL function pointers */
-XLCLOSEDRIVER                  xlDllCloseDriver = NULL;
-XLOPENDRIVER                   xlDllOpenDriver = NULL;
-XLGETAPPLCONFIG                xlGetApplConfig = NULL;
-XLSETAPPLCONFIG                xlSetApplConfig = NULL;
-XLGETDRIVERCONFIG              xlGetDriverConfig = NULL;
-XLGETCHANNELINDEX              xlGetChannelIndex = NULL;
-XLGETCHANNELMASK               xlGetChannelMask = NULL;
-XLOPENPORT                     xlOpenPort = NULL;
-XLSETTIMERRATE                 xlSetTimerRate = NULL;
-XLRESETCLOCK                   xlResetClock = NULL;
-XLSETNOTIFICATION              xlSetNotification = NULL;
-XLFLUSHRECEIVEQUEUE            xlFlushReceiveQueue = NULL;
-XLGETRECEIVEQUEUELEVEL         xlGetReceiveQueueLevel = NULL;
-XLACTIVATECHANNEL              xlActivateChannel = NULL;
-XLRECEIVE                      xlReceive = NULL;
-XLGETEVENTSTRING               xlGetEventString = NULL;
-XLGETERRORSTRING               xlGetErrorString = NULL;
-XLGETSYNCTIME                  xlGetSyncTime = NULL;
-XLGENERATESYNCPULSE            xlGenerateSyncPulse = NULL;
-XLPOPUPHWCONFIG                xlPopupHwConfig = NULL;
-XLDEACTIVATECHANNEL            xlDeactivateChannel = NULL;
-XLCLOSEPORT                    xlClosePort = NULL;
-XLSETTIMERBASEDNOTIFY          xlSetTimerBasedNotify = NULL;
-XLSETTIMERRATEANDCHANNEL       xlSetTimerRateAndChannel = NULL;
-XLGETLICENSEINFO               xlGetLicenseInfo = NULL;
-XLSETGLOBALTIMESYNC            xlSetGlobalTimeSync = NULL;
+XLCLOSEDRIVER                  xlDllCloseDriver = nullptr;
+XLOPENDRIVER                   xlDllOpenDriver = nullptr;
+XLGETAPPLCONFIG                xlGetApplConfig = nullptr;
+XLSETAPPLCONFIG                xlSetApplConfig = nullptr;
+XLGETDRIVERCONFIG              xlGetDriverConfig = nullptr;
+XLGETCHANNELINDEX              xlGetChannelIndex = nullptr;
+XLGETCHANNELMASK               xlGetChannelMask = nullptr;
+XLOPENPORT                     xlOpenPort = nullptr;
+XLSETTIMERRATE                 xlSetTimerRate = nullptr;
+XLRESETCLOCK                   xlResetClock = nullptr;
+XLSETNOTIFICATION              xlSetNotification = nullptr;
+XLFLUSHRECEIVEQUEUE            xlFlushReceiveQueue = nullptr;
+XLGETRECEIVEQUEUELEVEL         xlGetReceiveQueueLevel = nullptr;
+XLACTIVATECHANNEL              xlActivateChannel = nullptr;
+XLRECEIVE                      xlReceive = nullptr;
+XLGETEVENTSTRING               xlGetEventString = nullptr;
+XLGETERRORSTRING               xlGetErrorString = nullptr;
+XLGETSYNCTIME                  xlGetSyncTime = nullptr;
+XLGENERATESYNCPULSE            xlGenerateSyncPulse = nullptr;
+XLPOPUPHWCONFIG                xlPopupHwConfig = nullptr;
+XLDEACTIVATECHANNEL            xlDeactivateChannel = nullptr;
+XLCLOSEPORT                    xlClosePort = nullptr;
+XLSETTIMERBASEDNOTIFY          xlSetTimerBasedNotify = nullptr;
+XLSETTIMERRATEANDCHANNEL       xlSetTimerRateAndChannel = nullptr;
+XLGETLICENSEINFO               xlGetLicenseInfo = nullptr;
+XLSETGLOBALTIMESYNC            xlSetGlobalTimeSync = nullptr;
 
 /* LIN specific functions */
-XLLINSETCHANNELPARAMS           xlLinSetChannelParams = NULL;
-XLLINSETDLC                     xlLinSetDLC = NULL;
-XLLINSETSLAVE                   xlLinSetSlave = NULL;
-XLLINSENDREQUEST                xlLinSendRequest = NULL;
-XLLINSETSLEEPMODE               xlLinSetSleepMode = NULL;
-XLLINWAKEUP                     xlLinWakeUp = NULL;
-XLLINSETCHECKSUM                xlLinSetChecksum = NULL;
-XLLINSWITCHSLAVE                xlLinSwitchSlave = NULL;
+XLLINSETCHANNELPARAMS           xlLinSetChannelParams = nullptr;
+XLLINSETDLC                     xlLinSetDLC = nullptr;
+XLLINSETSLAVE                   xlLinSetSlave = nullptr;
+XLLINSENDREQUEST                xlLinSendRequest = nullptr;
+XLLINSETSLEEPMODE               xlLinSetSleepMode = nullptr;
+XLLINWAKEUP                     xlLinWakeUp = nullptr;
+XLLINSETCHECKSUM                xlLinSetChecksum = nullptr;
+XLLINSWITCHSLAVE                xlLinSwitchSlave = nullptr;
 
 /**
  * Channel information
@@ -179,7 +179,7 @@ struct CChannel
         m_ucControllerState = defMODE_ACTIVE;
 
         // Pointer to corresponding XLchannelConfig
-        m_pXLChannelInfo = NULL;
+        m_pXLChannelInfo = nullptr;
 
         m_nMapIdChecksumType.clear();
     }

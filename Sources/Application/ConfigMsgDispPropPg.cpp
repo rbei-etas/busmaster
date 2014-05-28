@@ -135,7 +135,7 @@ void CConfigMsgDispPropPg::OnStnClickedNullframeColor()
     if (dlg.DoModal() == IDOK)
     {
         m_clrNullFrame = dlg.GetColor();
-        GetDlgItem(IDC_STAT_NULLFRAME_COLOR)->InvalidateRect(NULL);
+        GetDlgItem(IDC_STAT_NULLFRAME_COLOR)->InvalidateRect(nullptr);
     }
 }
 
@@ -146,7 +146,7 @@ void CConfigMsgDispPropPg::OnStnClickedSyncframeColor()
     if (dlg.DoModal() == IDOK)
     {
         m_clrSyncFrame = dlg.GetColor();
-        GetDlgItem(IDC_STAT_SYNCFRAME_COLOR)->InvalidateRect(NULL);
+        GetDlgItem(IDC_STAT_SYNCFRAME_COLOR)->InvalidateRect(nullptr);
     }
 }
 
@@ -157,7 +157,7 @@ void CConfigMsgDispPropPg::OnStnClickedStaticframeColor()
     if (dlg.DoModal() == IDOK)
     {
         m_clrStaticFrame = dlg.GetColor();
-        GetDlgItem(IDC_STAT_STATICFRAME_COLOR)->InvalidateRect(NULL);
+        GetDlgItem(IDC_STAT_STATICFRAME_COLOR)->InvalidateRect(nullptr);
     }
 }
 
@@ -168,6 +168,6 @@ void CConfigMsgDispPropPg::OnStnClickedDynamicframeColor()
     if (dlg.DoModal() == IDOK)
     {
         m_clrDynamicFrame = dlg.GetColor();
-        GetDlgItem(IDC_STAT_DYNAMICFRAME_COLOR)->InvalidateRect(NULL);
+        GetDlgItem(IDC_STAT_DYNAMICFRAME_COLOR)->InvalidateRect(nullptr);
     }
 }

@@ -49,7 +49,7 @@ static char THIS_FILE[] = __FILE__;
 /*  Modification on  :  28.03.2002, Review commenrs                           */
 /******************************************************************************/
 CKeyValue::CKeyValue(CFnsTreeView* pFnsTreeView, CFunctionEditorDoc* pDoc,
-                     CWnd* pParent/*=NULL*/,char* pcKeyVal )
+                     CWnd* pParent/*=nullptr*/,char* pcKeyVal )
     : CDialog(CKeyValue::IDD, pParent),m_pcKeyVal(pcKeyVal)
 {
     //{{AFX_DATA_INIT(CKeyValue)
@@ -94,7 +94,7 @@ END_MESSAGE_MAP()
 /*  Output           :                                                        */
 /*  Functionality    :  This function is called by frame work when user presse*/
 /*                      CANCEL button. The value pointer by data member is    */
-/*                      initialised to NULL                                   */
+/*                      initialised to nullptr                                   */
 /*                                                                            */
 /*  Member of        :  CKeyValue                                             */
 /*  Friend of        :      -                                                 */
@@ -105,9 +105,9 @@ END_MESSAGE_MAP()
 /******************************************************************************/
 void CKeyValue::OnCancel()
 {
-    if (NULL != m_pcKeyVal) //KSS
+    if (nullptr != m_pcKeyVal) //KSS
     {
-        *m_pcKeyVal = NULL;
+        *m_pcKeyVal = 0;
     }
     CDialog::OnCancel();
 }
@@ -197,7 +197,7 @@ void CKeyValue::OnOK()
     // Check for duplicate selection
     // Get key handler array from the document
     // Check for valid pointer
-    if ( m_pDoc != NULL )
+    if ( m_pDoc != nullptr )
     {
         CStringArray* pKeyArray = m_pDoc->omStrGetKeyHandlerPrototypes();
 
@@ -264,18 +264,18 @@ BOOL CKeyValue::OnInitDialog()
 {
     CDialog::OnInitDialog();
     CWnd* pWnd = GetDlgItem(IDOK );
-    if (pWnd != NULL)
+    if (pWnd != nullptr)
     {
         pWnd->EnableWindow(FALSE);
     }
     pWnd = GetDlgItem(IDC_CBTN_KEY_APPLY );
-    if (pWnd != NULL)
+    if (pWnd != nullptr)
     {
         pWnd->EnableWindow(FALSE);
     }
 
     pWnd = GetDlgItem(IDCANCEL);
-    if (pWnd != NULL)
+    if (pWnd != nullptr)
     {
         pWnd->SetWindowTextA("Close");
     }
@@ -302,7 +302,7 @@ void CKeyValue::OnCbtnKeyApply()
 {
     BOOL bValidateSelection = TRUE;
     //m_bDataSaved = false;
-    if(m_pDoc != NULL )
+    if(m_pDoc != nullptr )
     {
         SBUS_SPECIFIC_INFO sBusSpecInfo;
         m_pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -338,7 +338,7 @@ void CKeyValue::OnCbtnKeyApply()
             m_pDoc->m_omSourceCodeTextList.AddTail( omSelectedText );
             CString omStrPrototype = omSelectedText;
 
-            if(m_pFnsTreeView != NULL )
+            if(m_pFnsTreeView != nullptr )
             {
                 // Add the prototype to the tree view
                 CTreeCtrl& omTree = m_pFnsTreeView->GetTreeCtrl();
@@ -364,12 +364,12 @@ void CKeyValue::OnCbtnKeyApply()
 
                 CStringArray* pKeyArray =
                     m_pDoc->omStrGetKeyHandlerPrototypes();
-                if ( pKeyArray != NULL )
+                if ( pKeyArray != nullptr )
                 {
                     pKeyArray->Add( omStrPrototype );
                     m_pDoc->bAddFunctionPrototype( omStrPrototype , TRUE );
                 }
-                m_pDoc->UpdateAllViews( NULL );
+                m_pDoc->UpdateAllViews( nullptr );
                 m_pDoc->SetModifiedFlag( TRUE );
                 GetDlgItem(IDC_CBTN_KEY_APPLY)->EnableWindow(FALSE);
                 GetDlgItem(IDOK)->EnableWindow(FALSE);
@@ -403,10 +403,10 @@ BOOL CKeyValue:: bValidateDuplicateKeyHandler(CFunctionEditorDoc* pDoc)
 {
     BOOL bReturn = TRUE;
     CStringArray* pKeyArray;
-    if(pDoc != NULL )
+    if(pDoc != nullptr )
     {
         pKeyArray = pDoc->omStrGetKeyHandlerPrototypes();
-        if(pKeyArray != NULL )
+        if(pKeyArray != nullptr )
         {
             UINT unKeyCount = 0;
             unKeyCount = (COMMANUINT)pKeyArray->GetSize();

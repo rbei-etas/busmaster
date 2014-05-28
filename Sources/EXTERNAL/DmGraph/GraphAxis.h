@@ -41,7 +41,7 @@ public:
         m_bLog      = VARIANT_FALSE;
         m_bTime     = VARIANT_FALSE;
 
-        m_pCtrl     = NULL;
+        m_pCtrl     = nullptr;
         m_bsFormat  = L"%g";
         m_bShowGrid = VARIANT_TRUE;
     }

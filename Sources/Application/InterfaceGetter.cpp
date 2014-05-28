@@ -52,59 +52,59 @@ extern CCANMonitorApp theApp;
 
 CBaseFrameProcessor_CAN* GetICANLogger(void)
 {
-    CBaseFrameProcessor_CAN* Result = NULL;
+    CBaseFrameProcessor_CAN* Result = nullptr;
     if (FP_GetInterface(FRAMEPROC_CAN, (void**) &Result) == S_OK)
     {
         // Nothing to do at this moment
     }
-    ASSERT(NULL != Result);
+    ASSERT(nullptr != Result);
     return Result;
 }
 
 
 CBaseFrameProcessor_LIN* GetILINLogger(void)
 {
-    CBaseFrameProcessor_LIN* Result = NULL;
+    CBaseFrameProcessor_LIN* Result = nullptr;
     if (FP_GetInterface(FRAMEPROC_LIN, (void**) &Result) == S_OK)
     {
         // Nothing to do at this moment
     }
-    ASSERT(NULL != Result);
+    ASSERT(nullptr != Result);
     return Result;
 }
 
 
 CBaseFrameProcessor_J1939* GetIJ1939Logger(void)
 {
-    CBaseFrameProcessor_J1939* Result = NULL;
+    CBaseFrameProcessor_J1939* Result = nullptr;
     if (FP_GetInterface(FRAMEPROC_J1939, (void**) &Result) == S_OK)
     {
         // Nothing to do at this moment
     }
-    ASSERT(NULL != Result);
+    ASSERT(nullptr != Result);
     return Result;
 }
 
 CMainFrame* GetIMainFrame(void)
 {
     CMainFrame* Result = static_cast<CMainFrame*> (theApp.m_pMainWnd);
-    ASSERT(NULL != Result);
+    ASSERT(nullptr != Result);
     return Result;
 }
 
 CFlags* GetIFlags(void)
 {
     CFlags* Result = (theApp.pouGetFlagsPtr());
-    ASSERT(NULL != Result);
+    ASSERT(nullptr != Result);
     return Result;
 }
 
 CBaseDIL_LIN* GetILINDIL(void)
 {
-    CBaseDIL_LIN* Result = NULL;
+    CBaseDIL_LIN* Result = nullptr;
     if (DIL_GetInterface(LIN, (void**) &Result) == S_OK)
     {
-        ASSERT(NULL != Result);
+        ASSERT(nullptr != Result);
     }
     else
     {
@@ -117,10 +117,10 @@ CBaseDIL_LIN* GetILINDIL(void)
 
 CBaseDIL_CAN* GetICANDIL(void)
 {
-    CBaseDIL_CAN* Result = NULL;
+    CBaseDIL_CAN* Result = nullptr;
     if (DIL_GetInterface(CAN, (void**) &Result) == S_OK)
     {
-        ASSERT(NULL != Result);
+        ASSERT(nullptr != Result);
     }
     else
     {
@@ -131,10 +131,10 @@ CBaseDIL_CAN* GetICANDIL(void)
 
 CBaseDILI_J1939* GetIJ1939DIL(void)
 {
-    CBaseDILI_J1939* Result = NULL;
+    CBaseDILI_J1939* Result = nullptr;
     if (DIL_GetInterface(J1939, (void**) &Result) == S_OK)
     {
-        ASSERT(NULL != Result);
+        ASSERT(nullptr != Result);
     }
     else
     {
@@ -145,10 +145,10 @@ CBaseDILI_J1939* GetIJ1939DIL(void)
 
 CBaseBusStatisticCAN* GetICANBusStat(void)
 {
-    CBaseBusStatisticCAN* Result = NULL;
+    CBaseBusStatisticCAN* Result = nullptr;
     if (BS_GetInterface(CAN, (void**) &Result) == S_OK)
     {
-        ASSERT(NULL != Result);
+        ASSERT(nullptr != Result);
     }
     else
     {
@@ -159,10 +159,10 @@ CBaseBusStatisticCAN* GetICANBusStat(void)
 
 CBaseBusStatisticLIN* GetILINBusStat(void)
 {
-    CBaseBusStatisticLIN* Result = NULL;
+    CBaseBusStatisticLIN* Result = nullptr;
     if (BS_GetInterface(LIN, (void**) &Result) == S_OK)
     {
-        ASSERT(NULL != Result);
+        ASSERT(nullptr != Result);
     }
     else
     {
@@ -174,10 +174,10 @@ CBaseBusStatisticLIN* GetILINBusStat(void)
 
 CFlexRayNetworkStats* GetIFlexRayBusStat(void)
 {
-    CFlexRayNetworkStats* Result = NULL;
+    CFlexRayNetworkStats* Result = nullptr;
     if (BS_GetInterface(FLEXRAY, (void**) &Result) == S_OK)
     {
-        ASSERT(NULL != Result);
+        ASSERT(nullptr != Result);
     }
     else
     {
@@ -200,32 +200,32 @@ DWORD dwGetMonitorClientID(void)
 
 CBaseNodeSim* GetICANNodeSim(void)
 {
-    CBaseNodeSim* Result = NULL;
+    CBaseNodeSim* Result = nullptr;
     if (NS_GetInterface(CAN, (void**) &Result) == S_OK)
     {
         // Nothing to do at this moment
     }
-    ASSERT(NULL != Result);
+    ASSERT(nullptr != Result);
     return Result;
 }
 CBaseNodeSim* GetILINNodeSim(void)
 {
-    CBaseNodeSim* Result = NULL;
+    CBaseNodeSim* Result = nullptr;
     if (NS_GetInterface(LIN, (void**) &Result) == S_OK)
     {
         // Nothing to do at this moment
     }
-    ASSERT(NULL != Result);
+    ASSERT(nullptr != Result);
     return Result;
 }
 
 CBaseNodeSim* GetIJ1939NodeSim(void)
 {
-    CBaseNodeSim* Result = NULL;
+    CBaseNodeSim* Result = nullptr;
     if (NS_GetInterface(J1939, (void**) &Result) == S_OK)
     {
         // Nothing to do at this moment
     }
-    ASSERT(NULL != Result);
+    ASSERT(nullptr != Result);
     return Result;
 }

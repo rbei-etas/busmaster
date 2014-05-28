@@ -68,7 +68,7 @@ int CDILI_J1939::ExitInstance(void)
  */
 HRESULT CDILI_J1939::DILIJ_Initialise(Base_WrapperErrorLogger* pILog, CBaseDIL_CAN* pIDIL_CAN)
 {
-    if (pIDIL_CAN != NULL)
+    if (pIDIL_CAN != nullptr)
     {
         return DILJ_Initialise(pILog, pIDIL_CAN);
     }

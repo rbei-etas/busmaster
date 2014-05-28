@@ -46,7 +46,7 @@ END_MESSAGE_MAP()
 
 static STLINDATA sg_EVE_LINMsg;
 class CDIL_LIN_VectorXL;
-CDIL_LIN_VectorXL* g_pouDIL_LIN_Vector_XL = NULL;
+CDIL_LIN_VectorXL* g_pouDIL_LIN_Vector_XL = nullptr;
 /**
  * CLIN_Vector_XL construction
  */
@@ -82,7 +82,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT LIN_PerformInitOperations(void);
     HRESULT LIN_PerformClosureOperations(void);
-    HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
     HRESULT LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT LIN_DeselectHwInterface(void);
@@ -346,7 +346,7 @@ DWORD WINAPI CDIL_LIN_VectorXL::LINMsgReadThreadProc_LIN_Vector_XL(LPVOID pVoid)
     }
 
     /* Set the thread action event to first notification event handle */
-    if (g_hDataEvent[0] != NULL)
+    if (g_hDataEvent[0] != nullptr)
     {
         pThreadParam->m_hActionEvent = g_hDataEvent[0];
     }
@@ -377,7 +377,7 @@ DWORD WINAPI CDIL_LIN_VectorXL::LINMsgReadThreadProc_LIN_Vector_XL(LPVOID pVoid)
                     {
                         case XL_SUCCESS:
                         {
-                            if ( g_pouDIL_LIN_Vector_XL != NULL )
+                            if ( g_pouDIL_LIN_Vector_XL != nullptr )
                             {
                                 g_pouDIL_LIN_Vector_XL->ProcessLINMsg(xlEvent);
                                 bMoreDataExist = true;
@@ -416,9 +416,9 @@ DWORD WINAPI CDIL_LIN_VectorXL::LINMsgReadThreadProc_LIN_Vector_XL(LPVOID pVoid)
 
     {
         ResetEvent(g_hDataEvent[0]);
-        g_hDataEvent[0] = NULL;
+        g_hDataEvent[0] = nullptr;
     }
-    pThreadParam->m_hActionEvent = NULL;
+    pThreadParam->m_hActionEvent = nullptr;
 
 }
 
@@ -434,9 +434,9 @@ DWORD WINAPI CDIL_LIN_VectorXL::LINMsgReadThreadProc_LIN_Vector_XL(LPVOID pVoid)
 USAGEMODE HRESULT GetIDIL_LIN_Controller(void** ppvInterface)
 {
     HRESULT hResult = S_OK;
-    if ( NULL == g_pouDIL_LIN_Vector_XL )
+    if ( nullptr == g_pouDIL_LIN_Vector_XL )
     {
-        if ((g_pouDIL_LIN_Vector_XL = new CDIL_LIN_VectorXL) == NULL)
+        if ((g_pouDIL_LIN_Vector_XL = new CDIL_LIN_VectorXL) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -705,7 +705,7 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
     /* No Hardware found */
     if( nChannelCount == 0 )
     {
-        //MessageBox(NULL,sg_omErrStr, NULL, MB_OK | MB_ICONERROR);
+        //MessageBox(nullptr,sg_omErrStr, nullptr, MB_OK | MB_ICONERROR);
         nChannelCount = -1;
     }
     /* Available hardware is lesser then the supported channels */
@@ -770,7 +770,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_OK;
 
-    if (hxlDll != NULL)
+    if (hxlDll != nullptr)
     {
         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("vxlapi.dll already loaded")));
         hResult = DLL_ALREADY_LOADED;
@@ -779,7 +779,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_LoadDriverLibrary(void)
     if (hResult == S_OK)
     {
         hxlDll = LoadLibrary("vxlapi.dll");
-        if (hxlDll == NULL)
+        if (hxlDll == nullptr)
         {
             sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("vxlapi.dll loading failed")));
             hResult = ERR_LOAD_DRIVER;
@@ -853,10 +853,10 @@ HRESULT CDIL_LIN_VectorXL::LIN_LoadDriverLibrary(void)
 
 HRESULT CDIL_LIN_VectorXL::LIN_UnloadDriverLibrary(void)
 {
-    if (hxlDll != NULL)
+    if (hxlDll != nullptr)
     {
         FreeLibrary(hxlDll);
-        hxlDll = NULL;
+        hxlDll = nullptr;
     }
 
     return S_OK;
@@ -894,7 +894,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT6
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = sg_TimeStamp;
-    if(QueryTickCount != NULL)
+    if(QueryTickCount != nullptr)
     {
         *QueryTickCount = sg_QueryTickCount;
     }

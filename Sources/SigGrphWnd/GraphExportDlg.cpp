@@ -29,14 +29,14 @@
   Date Created   : 10/12/2004
   Modifications  :
 *******************************************************************************/
-CGraphExportDlg::CGraphExportDlg(CWnd* pParent /*=NULL*/)
+CGraphExportDlg::CGraphExportDlg(CWnd* pParent /*=nullptr*/)
     : CDialog(CGraphExportDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CGraphExportDlg)
     m_omStrCSVFileName = STR_EMPTY;
     m_omStrHTMLFileName = STR_EMPTY;
     m_omStrBMPFileName = STR_EMPTY;
-    m_pDMGraphCtrl = NULL;
+    m_pDMGraphCtrl = nullptr;
     //}}AFX_DATA_INIT
 }
 
@@ -86,10 +86,10 @@ void CGraphExportDlg::OnBtnBrowseCsv()
     // Create Save File Dialog with overwrite warning
     CFileDialog omSaveAsDlg( FALSE,                 // Save File dialog
                              defSTR_CSV_FORMAT,     // Default Extension,
-                             NULL,
+                             nullptr,
                              OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
                              defSTR_CSV_FORMAT_SPECIFIER,
-                             NULL );
+                             nullptr );
     // Set Title to Export
     omSaveAsDlg.m_ofn.lpstrTitle  = defSTR_EXPORT_DIALOG_CAPTION;
     // Show file save dialog
@@ -120,7 +120,7 @@ void CGraphExportDlg::OnBtnSaveCsv()
     // Check for valid entry
     if( m_omStrCSVFileName.IsEmpty() == FALSE )
     {
-        if( m_pDMGraphCtrl != NULL )
+        if( m_pDMGraphCtrl != nullptr )
         {
             // Generate the Report
             m_pDMGraphCtrl->GenerateCSVReport(T2W(m_omStrCSVFileName));
@@ -147,10 +147,10 @@ void CGraphExportDlg::OnBtnBrowseHtml()
     // Create Save File Dialog with overwrite warning
     CFileDialog omSaveAsDlg( FALSE,      // Save File dialog
                              defSTR_HTML_FORMAT,     // Default Extension,
-                             NULL,
+                             nullptr,
                              OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
                              _(defSTR_HTML_FORMAT_SPECIFIER),
-                             NULL );
+                             nullptr );
     // Set Title to Export
     omSaveAsDlg.m_ofn.lpstrTitle  = _(defSTR_REPORT_DIALOG_CAPTION);
     // Show the dialog and save the path on OK
@@ -186,7 +186,7 @@ void CGraphExportDlg::OnBtnSaveHtml()
     // Check for valid file name
     if( m_omStrHTMLFileName.IsEmpty() == FALSE )
     {
-        if( m_podGraphControl != NULL )
+        if( m_podGraphControl != nullptr )
         {
             CStringArray omParams;
             // Get The configuration File Name
@@ -197,10 +197,10 @@ void CGraphExportDlg::OnBtnSaveHtml()
             //omParams.Add( omStr );
     #if 0
             // Get the Baud Rate
-            PSCONTROLLER_DETAILS  pBaudDetails = NULL;
+            PSCONTROLLER_DETAILS  pBaudDetails = nullptr;
             // Get the Baud Rate
             theApp.bGetData( CONTROLLER_DETAILS, (void**)&pBaudDetails);
-            if( pBaudDetails != NULL )
+            if( pBaudDetails != nullptr )
             {
                 CString omStrBaudRate(STR_EMPTY);
                 // Get the actual hardware available
@@ -243,7 +243,7 @@ void CGraphExportDlg::OnBtnSaveHtml()
                 AfxMessageBox( omStrMsg );
                 // Check for Print enable option
                 CButton * pWnd = (CButton *)GetDlgItem( IDC_CHECK_PRINT_REPORT );
-                if( pWnd != NULL )
+                if( pWnd != nullptr )
                 {
                     // Get the check box status
                     int bPrintReport = pWnd->GetCheck();
@@ -251,14 +251,14 @@ void CGraphExportDlg::OnBtnSaveHtml()
                     if( bPrintReport == TRUE )
                     {
                         // Update Browser Control
-                        m_omBrowser.Navigate( m_omStrHTMLFileName, NULL, NULL,
-                                              NULL, NULL );
+                        m_omBrowser.Navigate( m_omStrHTMLFileName, nullptr, nullptr,
+                                              nullptr, nullptr );
                         // Call Page Setuo
                         m_omBrowser.ExecWB( OLECMDID_PAGESETUP,
-                                            OLECMDEXECOPT_DODEFAULT, NULL, NULL);
+                                            OLECMDEXECOPT_DODEFAULT, nullptr, nullptr);
                         // Print the document
                         m_omBrowser.ExecWB( OLECMDID_PRINT,
-                                            OLECMDEXECOPT_DODEFAULT, NULL, NULL);
+                                            OLECMDEXECOPT_DODEFAULT, nullptr, nullptr);
                     }
                 }
             }
@@ -284,10 +284,10 @@ void CGraphExportDlg::OnBtnBrowseBmp()
 {
     CFileDialog omSaveAsDlg( FALSE,      // Save File dialog
                              defSTR_BMP_FORMAT,     // Default Extension,
-                             NULL,
+                             nullptr,
                              OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
                              _(defSTR_BMP_FORMAT_SPECIFIER),
-                             NULL );
+                             nullptr );
     // Set Title
     omSaveAsDlg.m_ofn.lpstrTitle  = _(defSTR_BITMAP_DIALOG_CAPTION);
     // Show the dialog and save on OK
@@ -318,7 +318,7 @@ void CGraphExportDlg::OnBtnSaveImage()
     if( m_omStrBMPFileName.IsEmpty() == FALSE )
     {
         // Save the image to the given path
-        if( m_pDMGraphCtrl != NULL )
+        if( m_pDMGraphCtrl != nullptr )
         {
             _bstr_t bstrBMPFileName = m_omStrBMPFileName;
             m_pDMGraphCtrl->SaveAs( bstrBMPFileName.GetBSTR() );
@@ -348,6 +348,6 @@ BOOL CGraphExportDlg::OnInitDialog()
     GetClientRect(&rect);
     ClientToScreen(&rect);
     rect.bottom -= 90;
-    SetWindowPos(NULL, rect.left, rect.top, rect.Width(), rect.Height(), SWP_SHOWWINDOW);
+    SetWindowPos(nullptr, rect.left, rect.top, rect.Width(), rect.Height(), SWP_SHOWWINDOW);
     return TRUE;
 }

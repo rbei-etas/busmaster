@@ -114,7 +114,7 @@ void CLinFlexListCtrl::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
     LV_ITEM* plvItem = &pDispInfo->item;
     // Proceed only for valid item change
     if( plvItem->iItem != -1 &&  // valid item
-            plvItem->pszText != NULL)       // valid text
+            plvItem->pszText != nullptr)       // valid text
     {
         // Copy the change information. This is required to validate the
         // data from OnItemChanged.
@@ -168,7 +168,7 @@ void CLinFlexListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 {
     // Set the focus to list control. This will hide any controls that
     // are all visible at this time
-    if( pScrollBar == NULL ) // Form the (list )window
+    if( pScrollBar == nullptr ) // Form the (list )window
     {
         if( GetFocus() != this)
         {
@@ -213,10 +213,10 @@ void CLinFlexListCtrl::OnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult)
         lvDispInfo.item.mask = LVIF_TEXT;
         lvDispInfo.item.iItem = pNMListView->iItem;
         lvDispInfo.item.iSubItem = pNMListView->iSubItem;
-        lvDispInfo.item.pszText = NULL;
+        lvDispInfo.item.pszText = nullptr;
         lvDispInfo.item.cchTextMax = 0;
         CWnd* pWnd = GetParent();
-        if( pWnd != NULL )
+        if( pWnd != nullptr )
         {
             pWnd->SendMessage( WM_NOTIFY, GetDlgCtrlID(),
                                (LPARAM)&lvDispInfo );
@@ -243,7 +243,7 @@ void CLinFlexListCtrl::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 
-    if(pNMListView != NULL)
+    if(pNMListView != nullptr)
     {
         // Call Handler Function with required parameters
         m_nRow = pNMListView->iItem;
@@ -259,7 +259,7 @@ void CLinFlexListCtrl::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
                 GetSubItemRect(m_nRow, m_nColumn, LVIR_ICON, omRect);
                 if ( true == omRect.PtInRect( pNMListView->ptAction ) )
                 {
-                    if ( ouUserProg.m_pfHandler != NULL )
+                    if ( ouUserProg.m_pfHandler != nullptr )
                     {
                         ouUserProg.m_pfHandler(this, m_nRow, m_nColumn, ouUserProg.m_pUserParam);
                         return;
@@ -351,7 +351,7 @@ CAlphaCharEdit* CLinFlexListCtrl::pomAlphaNumericChar( int nItem, int nSubItem)
     // Set the item to be visible
     if(!EnsureVisible(nItem, TRUE))
     {
-        return NULL;
+        return nullptr;
     }
     // Get the item rect
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
@@ -413,13 +413,13 @@ CAlphaCharEdit* CLinFlexListCtrl::pomAlphaNumericChar( int nItem, int nSubItem)
     // Get the selected item text
     CString omStrText = GetItemText(nItem, nSubItem);
     // Create the control
-    CAlphaCharEdit* pomEdit2 = NULL;
+    CAlphaCharEdit* pomEdit2 = nullptr;
     SNUMERICINFO info;
     info.m_uMaxVal.m_n64Value = 5;
     info.m_uMaxVal.m_n64Value = 0;
     //omStrText = "";
     CAlphaCharEdit* pomEdit = new CAlphaCharEdit(nItem, nSubItem, omStrText);
-    if( pomEdit != NULL )
+    if( pomEdit != nullptr )
     {
 
         pomEdit->Create(WS_BORDER|WS_CHILD | WS_VISIBLE, omRect, this, IDC_CONTROL);
@@ -584,7 +584,7 @@ CComboItem* CLinFlexListCtrl::pomComboItem(int nItem,
     // Make sure that the item is visible
     if( !EnsureVisible(nItem, TRUE))
     {
-        return NULL;
+        return nullptr;
     }
 
     // Get the size of the list item
@@ -619,14 +619,14 @@ CComboItem* CLinFlexListCtrl::pomComboItem(int nItem,
     DWORD dwStyle =  WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
                      CBS_DROPDOWNLIST;
     // Create the non editable combobox
-    CComboItem* pomCBox = NULL;
+    CComboItem* pomCBox = nullptr;
     // Create the control
     pomCBox = new CComboItem( nItem,        // Item Index
                               nSubItem,     // Sub Item Index
                               omList,       // Lsit of strings
                               strFind,      // Selected Text
                               FALSE);       // Editing is FALSE
-    if( pomCBox != NULL )
+    if( pomCBox != nullptr )
     {
         // Create the UI
         pomCBox->Create(dwStyle, omRect, this, IDC_CONTROL);
@@ -675,7 +675,7 @@ CComboItem* CLinFlexListCtrl::pomComboList( int nItem,
     // Make sure that the item is visible
     if( !EnsureVisible(nItem, TRUE))
     {
-        return NULL;
+        return nullptr;
     }
 
     // Get the size of the list item
@@ -710,10 +710,10 @@ CComboItem* CLinFlexListCtrl::pomComboList( int nItem,
     DWORD dwStyle = WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
                     CBS_DROPDOWN;
 
-    CComboItem* pomCBox = NULL;
+    CComboItem* pomCBox = nullptr;
     pomCBox = new CComboItem(nItem, nSubItem, omList, strFind, TRUE);
 
-    if( pomCBox != NULL )
+    if( pomCBox != nullptr )
     {
         // Create the UI control
         pomCBox->Create(dwStyle, omRect, this, IDC_CONTROL);
@@ -758,7 +758,7 @@ CEdit* CLinFlexListCtrl::pomEditItem(int nItem, int nSubItem)
     // Set the item to be visible
     if(!EnsureVisible(nItem, TRUE))
     {
-        return NULL;
+        return nullptr;
     }
     // Get the item rect
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
@@ -802,9 +802,9 @@ CEdit* CLinFlexListCtrl::pomEditItem(int nItem, int nSubItem)
     // Get the item text
     CString omStrText = GetItemText(nItem, nSubItem);
     // Create the control now
-    CEdit* pomEdit = NULL;
+    CEdit* pomEdit = nullptr;
     pomEdit = new CEditItem(nItem, nSubItem, omStrText);
-    if( pomEdit != NULL )
+    if( pomEdit != nullptr )
     {
         pomEdit->Create(dwStyle, omRect, this, IDC_CONTROL);
     }
@@ -839,7 +839,7 @@ CNumEdit* CLinFlexListCtrl::pomNumItem( int nItem, int nSubItem,
     // Set the item to be visible
     if(!EnsureVisible(nItem, TRUE))
     {
-        return NULL;
+        return nullptr;
     }
     // Get the item rect
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
@@ -901,9 +901,9 @@ CNumEdit* CLinFlexListCtrl::pomNumItem( int nItem, int nSubItem,
     // Get the selected item text
     CString omStrText = GetItemText(nItem, nSubItem);
     // Create the control
-    CNumEdit* pomEdit = NULL;
+    CNumEdit* pomEdit = nullptr;
     pomEdit = new CNumEdit(nItem, nSubItem, omStrText, sInfo);
-    if( pomEdit != NULL )
+    if( pomEdit != nullptr )
     {
         pomEdit->Create(dwStyle, omRect, this, IDC_CONTROL);
     }

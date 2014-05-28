@@ -36,15 +36,15 @@ extern HWND GUI_hDisplayWindow;
 
 CSignalWatchListBox::CSignalWatchListBox()
 {
-    m_hParentWnd = NULL;
-    m_hMainWnd = NULL;
+    m_hParentWnd = nullptr;
+    m_hMainWnd = nullptr;
     m_eBus = CAN;
 }
 
 CSignalWatchListBox::CSignalWatchListBox(ETYPE_BUS eBus)
 {
-    m_hParentWnd = NULL;
-    m_hMainWnd = NULL;
+    m_hParentWnd = nullptr;
+    m_hMainWnd = nullptr;
     m_eBus = eBus;
 }
 
@@ -79,14 +79,14 @@ END_MESSAGE_MAP()
 void CSignalWatchListBox::OnRButtonDown(UINT nFlags, CPoint omPoint)
 {
     CMenu* pomContextMenu = new CMenu;
-    if (pomContextMenu != NULL)
+    if (pomContextMenu != nullptr)
     {
         /* Load the Menu from the resource */
         pomContextMenu->DestroyMenu();
         pomContextMenu->LoadMenu(IDM_MENU_SIGNAL_WATCH);
         CMenu* pomSubMenu = pomContextMenu->GetSubMenu(1);
 
-        if (pomSubMenu != NULL)
+        if (pomSubMenu != nullptr)
         {
             CPoint omSrcPt = omPoint;
             ClientToScreen(&omSrcPt);
@@ -109,10 +109,10 @@ void CSignalWatchListBox::OnRButtonDown(UINT nFlags, CPoint omPoint)
             }
             pomSubMenu->EnableMenuItem(IDM_SG_WATCH_CLEAR, unEnable);
             pomSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON,
-                                       omSrcPt.x, omSrcPt.y, this, NULL);
+                                       omSrcPt.x, omSrcPt.y, this, nullptr);
         }
         delete pomContextMenu;
-        pomContextMenu = NULL;
+        pomContextMenu = nullptr;
     }
 }
 

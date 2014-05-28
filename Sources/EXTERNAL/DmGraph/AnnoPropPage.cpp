@@ -57,7 +57,7 @@ void CAnnoPropPage::UpdateControls(IDMGraphCtrl* pGraphCtrl)
     CComPtr<IDMGraphAnnotation> spAnnotation;
     GetSelectedAnnotation(pGraphCtrl, &spAnnotation);
 
-    BOOL bEnabled = spAnnotation != NULL;
+    BOOL bEnabled = spAnnotation != nullptr;
 
     const UINT idCtrls[] = { IDC_EDIT_CAPTION, IDC_EDIT_X, IDC_EDIT_Y, IDC_LABEL_COLOR, IDC_LABEL_BGCOLOR,
                              IDC_CHECK_VISIBLE, IDC_COMBO_ORIENTATION,
@@ -92,11 +92,11 @@ void CAnnoPropPage::UpdateControls(IDMGraphCtrl* pGraphCtrl)
         OLE_COLOR color;
         COLORREF col;
         hr = spAnnotation->get_LabelColor(&color);
-        hr = OleTranslateColor(color, NULL, &col);
+        hr = OleTranslateColor(color, nullptr, &col);
         m_btnLabelTxtColPicker.SetColor(col);
 
         hr = spAnnotation->get_LabelBkColor(&color);
-        hr = OleTranslateColor(color, NULL, &col);
+        hr = OleTranslateColor(color, nullptr, &col);
         m_btnLabelBkColPicker.SetColor(col);
 
 
@@ -127,7 +127,7 @@ LRESULT CAnnoPropPage::OnColChanged(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 
     CComPtr<IDMGraphAnnotation> spAnnotation;
     GetSelectedAnnotation(spGraph, &spAnnotation);
-    if(spAnnotation == NULL)
+    if(spAnnotation == nullptr)
     {
         return 0;
     }
@@ -310,7 +310,7 @@ LRESULT CAnnoPropPage::OnChangeEdit_caption(WORD wNotifyCode, WORD wID, HWND hWn
 
     CComPtr<IDMGraphAnnotation> spAnnotation;
     GetSelectedAnnotation(spGraph, &spAnnotation);
-    if(spAnnotation == NULL)
+    if(spAnnotation == nullptr)
     {
         return 0;
     }
@@ -321,7 +321,7 @@ LRESULT CAnnoPropPage::OnChangeEdit_caption(WORD wNotifyCode, WORD wID, HWND hWn
 
     //this is the reason we use list view control and not listbox control
     //we need to update text for items in list
-    ::InvalidateRect(GetDlgItem(IDC_COLLECTION_LIST), NULL, FALSE);
+    ::InvalidateRect(GetDlgItem(IDC_COLLECTION_LIST), nullptr, FALSE);
     return 0;
 }
 
@@ -341,7 +341,7 @@ LRESULT CAnnoPropPage::OnChangeEdit_x(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 
     CComPtr<IDMGraphAnnotation> spAnnotation;
     GetSelectedAnnotation(spGraph, &spAnnotation);
-    if(spAnnotation == NULL)
+    if(spAnnotation == nullptr)
     {
         return 0;
     }
@@ -369,7 +369,7 @@ LRESULT CAnnoPropPage::OnChangeEdit_y(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 
     CComPtr<IDMGraphAnnotation> spAnnotation;
     GetSelectedAnnotation(spGraph, &spAnnotation);
-    if(spAnnotation == NULL)
+    if(spAnnotation == nullptr)
     {
         return 0;
     }
@@ -397,7 +397,7 @@ LRESULT CAnnoPropPage::OnCloseupCombo_orientation(WORD wNotifyCode, WORD wID, HW
 
     CComPtr<IDMGraphAnnotation> spAnnotation;
     GetSelectedAnnotation(spGraph, &spAnnotation);
-    if(spAnnotation == NULL)
+    if(spAnnotation == nullptr)
     {
         return 0;
     }
@@ -423,7 +423,7 @@ LRESULT CAnnoPropPage::OnClickedCheck_visible(WORD wNotifyCode, WORD wID, HWND h
 
     CComPtr<IDMGraphAnnotation> spAnnotation;
     GetSelectedAnnotation(spGraph, &spAnnotation);
-    if(spAnnotation == NULL)
+    if(spAnnotation == nullptr)
     {
         return 0;
     }
@@ -447,7 +447,7 @@ HRESULT WINAPI GetSelectedAnnotation(IDMGraphCtrl* pGraphCtrl, IDMGraphAnnotatio
     HRESULT hr;
     ATLASSERT(pGraphCtrl);
     ATLASSERT(pAnno);
-    *pAnno = NULL;
+    *pAnno = nullptr;
     CComPtr<IDMGraphCollection> spGraphCollection;
     hr = pGraphCtrl->get_Annotations(&spGraphCollection);
 

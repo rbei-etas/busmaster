@@ -42,10 +42,10 @@ public:
     // Constructor with Filter List
     CFilterConfigDlg( SFILTERAPPLIED_CAN* psSrcList,
                       const SMSGENTRY* pMsgDBDetails, UINT nHardware,
-                      CWnd* pParent = NULL);   // standard constructor
+                      CWnd* pParent = nullptr);   // standard constructor
     CFilterConfigDlg( SFILTERAPPLIED_LIN* psSrcList,
                       ClusterConfig* pMsgDBDetails, UINT nHardware,
-                      CWnd* pParent = NULL);   // standard constructor
+                      CWnd* pParent = nullptr);   // standard constructor
 
     // Dialog Data
     //{{AFX_DATA(CFilterConfigDlg)

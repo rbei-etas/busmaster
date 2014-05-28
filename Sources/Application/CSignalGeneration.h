@@ -23,31 +23,31 @@ public:
     long ShowSignalGenDialog()
     {
         long result;
-        InvokeHelper(0x1, DISPATCH_METHOD, VT_I4, (void*)&result, NULL);
+        InvokeHelper(0x1, DISPATCH_METHOD, VT_I4, (void*)&result, nullptr);
         return result;
     }
     CString GetSignalType()
     {
         CString result;
-        InvokeHelper(0x2, DISPATCH_METHOD, VT_BSTR, (void*)&result, NULL);
+        InvokeHelper(0x2, DISPATCH_METHOD, VT_BSTR, (void*)&result, nullptr);
         return result;
     }
     double GetAmplitude()
     {
         double result;
-        InvokeHelper(0x3, DISPATCH_METHOD, VT_R8, (void*)&result, NULL);
+        InvokeHelper(0x3, DISPATCH_METHOD, VT_R8, (void*)&result, nullptr);
         return result;
     }
     double GetFrequency()
     {
         double result;
-        InvokeHelper(0x4, DISPATCH_METHOD, VT_R8, (void*)&result, NULL);
+        InvokeHelper(0x4, DISPATCH_METHOD, VT_R8, (void*)&result, nullptr);
         return result;
     }
     double GetSamplingTimePeriod()
     {
         double result;
-        InvokeHelper(0x5, DISPATCH_METHOD, VT_R8, (void*)&result, NULL);
+        InvokeHelper(0x5, DISPATCH_METHOD, VT_R8, (void*)&result, nullptr);
         return result;
     }
     BOOL SetSignalType(LPCTSTR strSignalType)
@@ -81,19 +81,19 @@ public:
     BOOL RedrawChart()
     {
         BOOL result;
-        InvokeHelper(0xa, DISPATCH_METHOD, VT_BOOL, (void*)&result, NULL);
+        InvokeHelper(0xa, DISPATCH_METHOD, VT_BOOL, (void*)&result, nullptr);
         return result;
     }
     BOOL CreateChartForm()
     {
         BOOL result;
-        InvokeHelper(0xb, DISPATCH_METHOD, VT_BOOL, (void*)&result, NULL);
+        InvokeHelper(0xb, DISPATCH_METHOD, VT_BOOL, (void*)&result, nullptr);
         return result;
     }
     BOOL bIsOKPressed()
     {
         BOOL result;
-        InvokeHelper(0xc, DISPATCH_METHOD, VT_BOOL, (void*)&result, NULL);
+        InvokeHelper(0xc, DISPATCH_METHOD, VT_BOOL, (void*)&result, nullptr);
         return result;
     }
     double dblGetAmplitudeAtTimeTriangle(double dblXSamplingPoint, double dblAmplitude, double dblTimePeriod)

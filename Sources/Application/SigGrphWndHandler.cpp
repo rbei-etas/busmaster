@@ -56,7 +56,7 @@ SETWINDOWSPLITTERPOS    pfSetWindowSplitterPos;
 *******************************************************************************/
 CSigGrphHandler::CSigGrphHandler(void)
 {
-    m_hSigGrphHandle = NULL;
+    m_hSigGrphHandle = nullptr;
 }
 
 /*******************************************************************************
@@ -71,7 +71,7 @@ CSigGrphHandler::CSigGrphHandler(void)
 *******************************************************************************/
 CSigGrphHandler::~CSigGrphHandler(void)
 {
-    if ( m_hSigGrphHandle != NULL )
+    if ( m_hSigGrphHandle != nullptr )
     {
         FreeLibrary(m_hSigGrphHandle);
     }
@@ -89,10 +89,10 @@ CSigGrphHandler::~CSigGrphHandler(void)
 *******************************************************************************/
 void CSigGrphHandler::vLoadSigGrph_DLL()
 {
-    if ( m_hSigGrphHandle != NULL )
+    if ( m_hSigGrphHandle != nullptr )
     {
         FreeLibrary(m_hSigGrphHandle);
-        m_hSigGrphHandle = NULL;
+        m_hSigGrphHandle = nullptr;
     }
     m_hSigGrphHandle = LoadLibrary(_T("SigGrphWnd.dll"));
     vloadFuncPtrAddress();
@@ -110,14 +110,14 @@ void CSigGrphHandler::vLoadSigGrph_DLL()
 *******************************************************************************/
 void CSigGrphHandler::vInitializeFuncPtrs()
 {
-    pfCreateGraphWindow     = NULL;
-    pfIsWindowVisible       = NULL;
-    pfShowGraphWindow       = NULL;
-    pfSetSignalListDetails  = NULL;
-    pfPostMessageToSGWnd    = NULL;
-    pfGetGraphBuffer        = NULL;
-    pfGetWindowSplitterPos  = NULL;
-    pfSetWindowSplitterPos  = NULL;
+    pfCreateGraphWindow     = nullptr;
+    pfIsWindowVisible       = nullptr;
+    pfShowGraphWindow       = nullptr;
+    pfSetSignalListDetails  = nullptr;
+    pfPostMessageToSGWnd    = nullptr;
+    pfGetGraphBuffer        = nullptr;
+    pfGetWindowSplitterPos  = nullptr;
+    pfSetWindowSplitterPos  = nullptr;
 }
 
 /*******************************************************************************
@@ -163,7 +163,7 @@ void CSigGrphHandler::vloadFuncPtrAddress()
 *******************************************************************************/
 HRESULT CSigGrphHandler::CreateGraphWindow(CMDIFrameWnd* pParentWnd,short eBusType)
 {
-    if(pfCreateGraphWindow!=NULL)
+    if(pfCreateGraphWindow!=nullptr)
     {
         return pfCreateGraphWindow(pParentWnd, eBusType);
     }
@@ -185,7 +185,7 @@ HRESULT CSigGrphHandler::CreateGraphWindow(CMDIFrameWnd* pParentWnd,short eBusTy
 *******************************************************************************/
 BOOL CSigGrphHandler::bIsWindowVisible(short eBusType)
 {
-    if(pfIsWindowVisible!=NULL)
+    if(pfIsWindowVisible!=nullptr)
     {
         return pfIsWindowVisible(eBusType);
     }
@@ -207,7 +207,7 @@ BOOL CSigGrphHandler::bIsWindowVisible(short eBusType)
 *******************************************************************************/
 HRESULT CSigGrphHandler::ShowGraphWindow(short eBusType, BOOL bShow)
 {
-    if(pfShowGraphWindow!=NULL)
+    if(pfShowGraphWindow!=nullptr)
     {
         return pfShowGraphWindow(eBusType, bShow);
     }
@@ -229,7 +229,7 @@ HRESULT CSigGrphHandler::ShowGraphWindow(short eBusType, BOOL bShow)
 *******************************************************************************/
 HRESULT CSigGrphHandler::SetSignalListDetails(short eBusType, CGraphList* pSignalList)
 {
-    if(pfSetSignalListDetails!=NULL)
+    if(pfSetSignalListDetails!=nullptr)
     {
         return pfSetSignalListDetails(eBusType, pSignalList);
     }
@@ -252,7 +252,7 @@ HRESULT CSigGrphHandler::SetSignalListDetails(short eBusType, CGraphList* pSigna
 void CSigGrphHandler::vPostMessageToSGWnd(short eBusType, UINT msg,
         WPARAM wParam, LPARAM lParam)
 {
-    if(pfPostMessageToSGWnd != NULL)
+    if(pfPostMessageToSGWnd != nullptr)
     {
         pfPostMessageToSGWnd(eBusType, msg, wParam, lParam);
     }
@@ -270,13 +270,13 @@ void CSigGrphHandler::vPostMessageToSGWnd(short eBusType, UINT msg,
 *******************************************************************************/
 CMsgBufVSE* CSigGrphHandler::vGetGraphBuffer()
 {
-    if(pfGetGraphBuffer != NULL)
+    if(pfGetGraphBuffer != nullptr)
     {
         return pfGetGraphBuffer();
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -294,7 +294,7 @@ HRESULT CSigGrphHandler::GetWindowSplitterPos(short eBusType,
         WINDOWPLACEMENT& sWndPlacement,
         SGRAPHSPLITTERDATA& sGraphSplitter)
 {
-    if(pfGetWindowSplitterPos!=NULL)
+    if(pfGetWindowSplitterPos!=nullptr)
     {
         return pfGetWindowSplitterPos(eBusType, sWndPlacement, sGraphSplitter);
     }
@@ -318,7 +318,7 @@ HRESULT CSigGrphHandler::SetWindowSplitterPos(short eBusType,
         WINDOWPLACEMENT& sWndPlacement,
         SGRAPHSPLITTERDATA& sGraphSplitter)
 {
-    if(pfSetWindowSplitterPos!=NULL)
+    if(pfSetWindowSplitterPos!=nullptr)
     {
         return pfSetWindowSplitterPos(eBusType, sWndPlacement, sGraphSplitter);
     }

@@ -270,7 +270,7 @@ UINT CWaveformSelectionDlg::unGetSelectedMainEntryID()
     CString omMainEntryName;
 
     // Check for visible window
-    if( m_omCombMessage.GetSafeHwnd() != NULL )
+    if( m_omCombMessage.GetSafeHwnd() != nullptr )
     {
         m_omCombMessage.GetWindowText(omMainEntryName);
     }
@@ -384,7 +384,7 @@ Modification on  : K ArunKumar
 void CWaveformSelectionDlg::vInterPretSignalNameMsgID(CString strInterpretData, CString& strSigName, UINT& nMsgID)
 {
     CString omMsgId;
-    char* pcStopStr = NULL;
+    char* pcStopStr = nullptr;
     int nIndex = -1;
     nIndex = strInterpretData.Find(_T("->"));
     if(nIndex != -1)
@@ -651,7 +651,7 @@ UINT CWaveformSelectionDlg::unGetMainEntryIDFromName(CString omMainEntryName)
 {
     CString omMainEntryId;
     UINT unMainEntryID = (UINT)-1;
-    char* pcStopStr = NULL;
+    char* pcStopStr = nullptr;
     int nIndex = omMainEntryName.Find(defMSGID_EXTENDED);
     int nCloseBraceIndex = omMainEntryName.Find(defMSG_NAME_END_CHAR);
     if((nIndex != -1) && (nCloseBraceIndex != -1))

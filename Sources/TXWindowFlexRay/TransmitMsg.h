@@ -202,7 +202,7 @@ private:
     void DisplayTxBlockFromHwConfig();
     void DeleteAllMsgListColumns();
     //Methods
-    //void InitFlexList(BYTE yByteCount = 127, unsigned short* pwBuffer = NULL);
+    //void InitFlexList(BYTE yByteCount = 127, unsigned short* pwBuffer = nullptr);
     void InitFlexList(DATA_VIEW ouDataView);
     void vRefreshTxMsgWindow();
     void SwitchView(DATA_VIEW);

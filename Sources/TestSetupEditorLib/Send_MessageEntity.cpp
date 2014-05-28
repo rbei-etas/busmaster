@@ -120,7 +120,7 @@ HRESULT CSend_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     //Retriving Message ID
     bstrNodeName = def_STR_TCATTRIB_ID;
     pIDOMAttributes->getNamedItem(bstrNodeName, &pIDOMChildNode);
-    if (NULL != pIDOMChildNode)
+    if (nullptr != pIDOMChildNode)
     {
         pIDOMChildNode->get_nodeTypedValue(&NodeValue);
         omstrTemp = strCopyBSTRToCString(NodeValue);
@@ -268,9 +268,9 @@ Modifications  :
 ******************************************************************************/
 HRESULT CSend_MessageEntity::GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData)
 {
-    if(eCurrEntityType == SEND_MESSAGE && pvEntityData != NULL)
+    if(eCurrEntityType == SEND_MESSAGE && pvEntityData != nullptr)
     {
-        if (pvEntityData != NULL)
+        if (pvEntityData != nullptr)
         {
             *((CSend_MessageData*)pvEntityData) = m_ouData;
         }
@@ -314,19 +314,19 @@ HRESULT CSend_MessageEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomSendNode)
 
     MSXML2::IXMLDOMElementPtr pChildElement, pSubElement;
 
-    if (pIDOMDoc != NULL)
+    if (pIDOMDoc != nullptr)
     {
         pChildElement   =  pIDOMDoc->createElement(_bstr_t(_(def_STR_SENDMSG_NODE)));
 
         MSXML2::IXMLDOMAttributePtr pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_TCATTRIB_ID);
-        if(pIDomTSAtrrib!= NULL)
+        if(pIDomTSAtrrib!= nullptr)
         {
             pIDomTSAtrrib->value = _bstr_t(m_ouData.m_dwMessageID);
             pChildElement->setAttributeNode(pIDomTSAtrrib);
         }
 
         pIDomTSAtrrib = pIDOMDoc->createAttribute(_(def_STR_TCATTRIB_UNIT));
-        if(pIDomTSAtrrib!= NULL)
+        if(pIDomTSAtrrib!= nullptr)
         {
             switch(m_ouData.m_eSignalUnitType)
             {
@@ -343,7 +343,7 @@ HRESULT CSend_MessageEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomSendNode)
             pChildElement->setAttributeNode(pIDomTSAtrrib);
         }
         pIDomTSAtrrib = pIDOMDoc->createAttribute(_(def_STR_ATTRIIB_DEFAULT));
-        if(pIDomTSAtrrib!= NULL)
+        if(pIDomTSAtrrib!= nullptr)
         {
             switch(m_ouData.m_eSignalUnitType)
             {

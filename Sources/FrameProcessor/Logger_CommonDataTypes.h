@@ -28,7 +28,7 @@ public:
 
     CParamLoggerBUS()                   // Default constructor
     {
-        m_pILog = NULL;
+        m_pILog = nullptr;
         dwClientID = 0;
         for (int i = 0; i < MAX_PATH; i++)
         {

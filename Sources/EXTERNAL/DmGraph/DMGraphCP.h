@@ -36,13 +36,13 @@ public:
             CComPtr<IUnknown> sp = m_vec.GetAt(nConnectionIndex);
             pT->Unlock();
             IDispatch* pDispatch = reinterpret_cast<IDispatch*>(sp.p);
-            if (pDispatch != NULL)
+            if (pDispatch != nullptr)
             {
                 pvars[2] = x;
                 pvars[1] = y;
                 pvars[0] = shCursorID;
-                DISPPARAMS disp = { pvars, NULL, 3, 0 };
-                pDispatch->Invoke(0x1, IID_NULL, LOCALE_USER_DEFAULT, DISPATCH_METHOD, &disp, NULL, NULL, NULL);
+                DISPPARAMS disp = { pvars, nullptr, 3, 0 };
+                pDispatch->Invoke(0x1, IID_NULL, LOCALE_USER_DEFAULT, DISPATCH_METHOD, &disp, nullptr, nullptr, nullptr);
             }
         }
         delete[] pvars;
@@ -61,11 +61,11 @@ public:
             CComPtr<IUnknown> sp = m_vec.GetAt(nConnectionIndex);
             pT->Unlock();
             IDispatch* pDispatch = reinterpret_cast<IDispatch*>(sp.p);
-            if (pDispatch != NULL)
+            if (pDispatch != nullptr)
             {
                 pvars[0] = lNewState;
-                DISPPARAMS disp = { pvars, NULL, 1, 0 };
-                pDispatch->Invoke(0x2, IID_NULL, LOCALE_USER_DEFAULT, DISPATCH_METHOD, &disp, NULL, NULL, NULL);
+                DISPPARAMS disp = { pvars, nullptr, 1, 0 };
+                pDispatch->Invoke(0x2, IID_NULL, LOCALE_USER_DEFAULT, DISPATCH_METHOD, &disp, nullptr, nullptr, nullptr);
             }
         }
         delete[] pvars;
@@ -83,10 +83,10 @@ public:
             CComPtr<IUnknown> sp = m_vec.GetAt(nConnectionIndex);
             pT->Unlock();
             IDispatch* pDispatch = reinterpret_cast<IDispatch*>(sp.p);
-            if (pDispatch != NULL)
+            if (pDispatch != nullptr)
             {
-                DISPPARAMS disp = { NULL, NULL, 0, 0 };
-                pDispatch->Invoke(DISPID_CLICK, IID_NULL, LOCALE_USER_DEFAULT, DISPATCH_METHOD, &disp, NULL, NULL, NULL);
+                DISPPARAMS disp = { nullptr, nullptr, 0, 0 };
+                pDispatch->Invoke(DISPID_CLICK, IID_NULL, LOCALE_USER_DEFAULT, DISPATCH_METHOD, &disp, nullptr, nullptr, nullptr);
             }
         }
 

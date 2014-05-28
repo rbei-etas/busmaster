@@ -47,12 +47,12 @@ typedef struct tagClientBufMap
     tagClientBufMap()
     {
         dwClientID = 0;
-        hClientHandle = NULL;
+        hClientHandle = 0;
         unBufCount = 0;
         memset(pacClientName, 0, sizeof (char) * MAX_PATH);
         for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
-            pClientBuf[i] = NULL;
+            pClientBuf[i] = nullptr;
         }
 
     }
@@ -82,8 +82,8 @@ static  CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
 typedef std::list<SACK_MAP> CACK_MAP_LIST;
 static CACK_MAP_LIST sg_asAckMapBuf;
 
-static HWND sg_hOwnerWnd = NULL;
-static Base_WrapperErrorLogger* sg_pIlog   = NULL;
+static HWND sg_hOwnerWnd = nullptr;
+static Base_WrapperErrorLogger* sg_pIlog   = nullptr;
 std::string sg_acErrStr = "";
 
 /* Forward declarations*/

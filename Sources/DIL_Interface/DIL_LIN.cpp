@@ -34,7 +34,7 @@ typedef HRESULT (__stdcall* GETIDIL_LIN_CONTROLLER)(void** ppvInterface);
 static GETIDIL_LIN_CONTROLLER pfGetIDILLIN_Controller;
 static CDIL_LIN_DUMMY* sg_pouDIL_LIN_DUMMY = new CDIL_LIN_DUMMY;
 
-#define VALIDATE_LIN_POINTER(Ptr) if (Ptr == NULL) {return S_FALSE;}
+#define VALIDATE_LIN_POINTER(Ptr) if (Ptr == nullptr) {return S_FALSE;}
 
 class ENTRY_DIL
 {
@@ -55,12 +55,12 @@ static ENTRY_DIL sg_ListDIL[] =
 
 CDIL_LIN::CDIL_LIN()
 {
-    m_hDll = NULL;
-    m_hOldDll = NULL;
+    m_hDll = nullptr;
+    m_hOldDll = nullptr;
     m_dwDriverID = DAL_NONE;
-    pfGetIDILLIN_Controller = NULL;
-    m_pBaseDILLIN_Controller = NULL;
-    m_pOldBaseDILLIN_Controller = NULL;
+    pfGetIDILLIN_Controller = nullptr;
+    m_pBaseDILLIN_Controller = nullptr;
+    m_pOldBaseDILLIN_Controller = nullptr;
     vSelectInterface_Dummy();
 }
 
@@ -70,13 +70,13 @@ CDIL_LIN::~CDIL_LIN()
     if ( m_hDll )
     {
         FreeLibrary(m_hDll);
-        m_hDll = NULL;
+        m_hDll = nullptr;
     }
     //Free the previosuly selected DIL library
     if ( m_hOldDll )
     {
         FreeLibrary(m_hOldDll);
-        m_hOldDll = NULL;
+        m_hOldDll = nullptr;
     }
 }
 
@@ -115,13 +115,13 @@ void CDIL_LIN::vSelectInterface_Dummy(void)
  * Based on the parameter this function renders number of the driver interface
  * layers supported or available. If 'bAvailable' is true, this returns number of
  * the DILs implemented; else the list of the DILs supported by the existing
- * license will be returned. If List is NULL, only number is returned.
+ * license will be returned. If List is nullptr, only number is returned.
  */
 DWORD CDIL_LIN::DILL_GetDILList(bool /*bAvailable*/, DILLIST* List)
 {
     DWORD Result = 0;
 
-    if (List != NULL)
+    if (List != nullptr)
     {
         for (int i = 0; i < sizeof(sg_ListDIL)/sizeof(ENTRY_DIL); i++)
         {
@@ -154,13 +154,13 @@ HRESULT CDIL_LIN::DILL_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
     {
         hResult = DAL_ALREADY_SELECTED;
     }
-    else if (pILog == NULL)
+    else if (pILog == nullptr)
     {
         hResult = ERRLGR_INVALID;
     }
     else
     {
-        if (hWndOwner == NULL)
+        if (hWndOwner == nullptr)
         {
             /* Log a warning message informing about the invalidity of the
             owner window handle. */
@@ -170,11 +170,11 @@ HRESULT CDIL_LIN::DILL_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
         if ( m_hDll )
         {
             //FreeLibrary(m_hDll);
-            //m_pBaseDILLIN_Controller = NULL;
+            //m_pBaseDILLIN_Controller = nullptr;
             m_hOldDll = m_hDll;
             m_pOldBaseDILLIN_Controller = m_pBaseDILLIN_Controller;
             m_dwOldDriverID = m_dwDriverID;
-            m_hDll = NULL;
+            m_hDll = nullptr;
         }
 
         switch(dwDriverID)
@@ -185,7 +185,7 @@ HRESULT CDIL_LIN::DILL_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                 break;
 
                 /* case DRIVER_LIN_DEACTIVATE_VLIN:
-                 if (m_hDll == NULL)
+                 if (m_hDll == nullptr)
                  {
                      hResult = DAL_INVALID;
                      FreeLibrary(m_hDll);
@@ -210,7 +210,7 @@ HRESULT CDIL_LIN::DILL_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                 return hResult;
         }
 
-        if (m_hDll == NULL)
+        if (m_hDll == nullptr)
         {
             hResult = ERR_LOAD_DRIVER;
             pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Load library failed..."));
@@ -247,7 +247,7 @@ HRESULT CDIL_LIN::DILL_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                             m_pBaseDILLIN_Controller->LIN_UnloadDriverLibrary();
                         }
                         FreeLibrary(m_hDll);
-                        //m_pBaseDILLIN_Controller = NULL;
+                        //m_pBaseDILLIN_Controller = nullptr;
                         if ( m_hOldDll )
                         {
                             m_hDll = m_hOldDll;
@@ -393,7 +393,7 @@ HRESULT CDIL_LIN::DILL_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT&
             FreeLibrary(m_hOldDll);
         }
     }
-    m_hOldDll = NULL;
+    m_hOldDll = nullptr;
 
     return hr;
 }

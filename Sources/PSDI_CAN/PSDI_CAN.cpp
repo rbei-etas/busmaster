@@ -83,10 +83,10 @@ BOOL CPSDI_CANApp::InitInstance()
 
     return TRUE;
 }
-static CMsgContainerCAN* sg_pouMsgContainer_CAN = NULL;
-static CMsgContainerLIN* sg_pouMsgContainer_LIN = NULL;
-static CMsgContainerJ1939* sg_pouMsgContainer_J1939 = NULL;
-static CMsgContainerFlexRay* sg_pouMsgContainer_FlexRay = NULL;
+static CMsgContainerCAN* sg_pouMsgContainer_CAN = nullptr;
+static CMsgContainerLIN* sg_pouMsgContainer_LIN = nullptr;
+static CMsgContainerJ1939* sg_pouMsgContainer_J1939 = nullptr;
+static CMsgContainerFlexRay* sg_pouMsgContainer_FlexRay = nullptr;
 
 USAGEMODE HRESULT PSDI_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
 {
@@ -96,9 +96,9 @@ USAGEMODE HRESULT PSDI_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
     {
         case CAN:
         {
-            if (NULL == sg_pouMsgContainer_CAN)
+            if (nullptr == sg_pouMsgContainer_CAN)
             {
-                if ((sg_pouMsgContainer_CAN = new CMsgContainerCAN) == NULL)
+                if ((sg_pouMsgContainer_CAN = new CMsgContainerCAN) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;
@@ -111,9 +111,9 @@ if sg_pouMsgContainer_CAN is null */
         break;
         case LIN:
         {
-            if (NULL == sg_pouMsgContainer_LIN)
+            if (nullptr == sg_pouMsgContainer_LIN)
             {
-                if ((sg_pouMsgContainer_LIN = new CMsgContainerLIN) == NULL)
+                if ((sg_pouMsgContainer_LIN = new CMsgContainerLIN) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;
@@ -126,9 +126,9 @@ if sg_pouMsgContainer_LIN is null */
         break;
         case J1939:
         {
-            if (NULL == sg_pouMsgContainer_J1939)
+            if (nullptr == sg_pouMsgContainer_J1939)
             {
-                if ((sg_pouMsgContainer_J1939 = new CMsgContainerJ1939) == NULL)
+                if ((sg_pouMsgContainer_J1939 = new CMsgContainerJ1939) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;
@@ -141,9 +141,9 @@ if sg_pouMsgContainer_J1939 is null */
         break;
         case FLEXRAY:
         {
-            if (NULL == sg_pouMsgContainer_FlexRay)
+            if (nullptr == sg_pouMsgContainer_FlexRay)
             {
-                if ((sg_pouMsgContainer_FlexRay = new CMsgContainerFlexRay) == NULL)
+                if ((sg_pouMsgContainer_FlexRay = new CMsgContainerFlexRay) == nullptr)
                 {
                     ASSERT(FALSE);
                     hResult = S_FALSE;
@@ -154,7 +154,7 @@ if sg_pouMsgContainer_J1939 is null */
         }
         break;
         default:
-            *ppvInterface = NULL;
+            *ppvInterface = nullptr;
             hResult = S_FALSE;
             break;
     }

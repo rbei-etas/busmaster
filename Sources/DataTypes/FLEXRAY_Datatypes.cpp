@@ -29,7 +29,7 @@
 /* START OF CFlxTxMsgBuffer IMPLEMENTATION */
 CFlxTxMsgBuffer::CFlxTxMsgBuffer():
     m_dwTxMsgCount(0),
-    m_psFlxTxMsgList(NULL)
+    m_psFlxTxMsgList(nullptr)
 {
 }
 
@@ -39,10 +39,10 @@ CFlxTxMsgBuffer::~CFlxTxMsgBuffer()
 
 void CFlxTxMsgBuffer::vResetAll(void)
 {
-    if (NULL != m_psFlxTxMsgList)
+    if (nullptr != m_psFlxTxMsgList)
     {
         delete[] m_psFlxTxMsgList;
-        m_psFlxTxMsgList = NULL;
+        m_psFlxTxMsgList = nullptr;
         m_dwTxMsgCount = 0x0;
     }
 }

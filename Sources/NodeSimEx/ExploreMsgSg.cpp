@@ -56,7 +56,7 @@ CExploreMsgSg::CExploreMsgSg( CFunctionEditorDoc* pDoc,
                               BOOL bCheckRequired,
                               eMESSAGEFROM eWindow,
                               eSELTYPE eSelType,
-                              CWnd* pParent /*=NULL*/)
+                              CWnd* pParent /*=nullptr*/)
     : CDialog(CExploreMsgSg::IDD, pParent),
       m_odMsgNameCodeListDb(odMsgNameCodeListDb)            //CAPL_DB_NAME_CHANGE
 {
@@ -195,7 +195,7 @@ void CExploreMsgSg::OnSelect()
     UCHAR ucChannelId = '1';
 
     // Get Main Frame Window Pointer
-    CFunctionEditorDoc* pDoc = NULL;
+    CFunctionEditorDoc* pDoc = nullptr;
     // For global variable addition structure is required
     if( m_eSelectType == SEL_GLOBAL_MESSAGE)
     {
@@ -226,7 +226,7 @@ void CExploreMsgSg::OnSelect()
         if (m_bWantStructure == TRUE)
         {
             // Get the Initialised string from document
-            if (pDoc != NULL)
+            if (pDoc != nullptr)
             {
                 //To pass the actual name of message
                 int nIndex = m_omStrMessageName.ReverseFind(defMSGID_NAME_START_CHAR);
@@ -271,7 +271,7 @@ void CExploreMsgSg::OnSelect()
 
                 ////To pass the actual name of message
                 int nIndex = omStrMsg.ReverseFind(defMSGID_NAME_START_CHAR);
-                if( nIndex!=NULL )
+                if( nIndex!=0 )
                 {
                     omStrMsg = omStrMsg.Left(nIndex);
                 }
@@ -340,7 +340,7 @@ BOOL CExploreMsgSg::OnInitDialog()
 
 
         CWnd* pWnd = GetDlgItem(IDC_CHKB_WANT_STRUCTURE);
-        if( pWnd != NULL )
+        if( pWnd != nullptr )
         {
             // Hide want structure item
             pWnd->ShowWindow(SW_HIDE);
@@ -352,24 +352,24 @@ BOOL CExploreMsgSg::OnInitDialog()
             GetWindowRect(&omDRect);
             //Get Channel selection radio buttons
             pWnd = GetDlgItem(IDC_STAT_SELCHANNEL);
-            if (pWnd != NULL)
+            if (pWnd != nullptr)
             {
                 pWnd->ShowWindow(FALSE);
             }
             pWnd = GetDlgItem(IDC_RBTN_CHANNEL1);
-            if (pWnd != NULL)
+            if (pWnd != nullptr)
             {
                 pWnd->ShowWindow(FALSE);
             }
             pWnd = GetDlgItem(IDC_RBTN_CHANNEL2);
-            if (pWnd != NULL)
+            if (pWnd != nullptr)
             {
                 pWnd->ShowWindow(FALSE);
             }
 
             // Get list control size
             pWnd = GetDlgItem(IDC_LSTC_MSGS);
-            if( pWnd != NULL )
+            if( pWnd != nullptr )
             {
                 // Convert it in to client co ordiantes
                 pWnd->GetWindowRect(&omLRect);
@@ -380,7 +380,7 @@ BOOL CExploreMsgSg::OnInitDialog()
 
                 // Change the postion of select button
                 pWnd = GetDlgItem(IDC_CBTN_OK);
-                if( pWnd != NULL )
+                if( pWnd != nullptr )
                 {
                     pWnd->GetWindowRect(&omBRect);
                     ScreenToClient(&omBRect);
@@ -430,7 +430,7 @@ BOOL CExploreMsgSg::OnInitDialog()
                 SDB_NAME_MSG& sDbNameMsg = m_odMsgNameCodeListDb.GetAt(posMsg);
                 POSITION pos = sDbNameMsg.m_oMsgNameMsgCodeList.GetHeadPosition();
                 int nIndex = 0;
-                while (pos != NULL)
+                while (pos != nullptr)
                 {
                     SMSG_NAME_CODE& sMsgNameCode = sDbNameMsg.m_oMsgNameMsgCodeList.GetNext(pos);
                     CString omMsgWithId;
@@ -565,7 +565,7 @@ void CExploreMsgSg::OnItemchangedLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult)
 
                     POSITION pos = omSignalNames.GetHeadPosition();
 
-                    while ( pos != NULL )
+                    while ( pos != nullptr )
                     {
                         m_omSignalListBox.AddString( omSignalNames.GetNext(pos));
                     }
@@ -578,7 +578,7 @@ void CExploreMsgSg::OnItemchangedLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult)
                     CSize   sz;
                     CString omStrText;
                     CDC*  pDC = m_omSignalListBox.GetDC();
-                    if ( pDC != NULL)
+                    if ( pDC != nullptr)
                     {
                         int nDx = 0;
                         for (int nCount = 0;
@@ -606,7 +606,7 @@ void CExploreMsgSg::OnItemchangedLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult)
                     // Add signal names into the list box
                     POSITION pos = omSignalNames.GetHeadPosition();
 
-                    while ( pos != NULL )
+                    while ( pos != nullptr )
                     {
                         m_omSignalListBox.AddString( omSignalNames.GetNext(pos));
                     }
@@ -619,7 +619,7 @@ void CExploreMsgSg::OnItemchangedLstcMsgs(NMHDR* pNMHDR, LRESULT* pResult)
                     CSize   sz;
                     CString omStrText;
                     CDC*  pDC = m_omSignalListBox.GetDC();
-                    if ( pDC != NULL)
+                    if ( pDC != nullptr)
                     {
                         int nDx = 0;
                         for (int nCount = 0;
@@ -693,11 +693,11 @@ void CExploreMsgSg::vGetSigNamesFromMsgCode(DWORD dwMsgCode, CStringList& omSign
     for(int nItr =0; nItr < m_odMsgNameCodeListDb.GetCount(); nItr++)
     {
         POSITION pos = m_odMsgNameCodeListDb.FindIndex(nItr);
-        if( NULL != pos )
+        if( nullptr != pos )
         {
             SDB_NAME_MSG& sDbNameMsg = m_odMsgNameCodeListDb.GetAt(pos);
             POSITION pos1 = sDbNameMsg.m_oMsgNameMsgCodeList.Find(sMsgCodeName);
-            if (pos1 != NULL)
+            if (pos1 != nullptr)
             {
                 sMsgCodeName = sDbNameMsg.m_oMsgNameMsgCodeList.GetAt(pos1);
                 omSignalNames.AddTail(&(sMsgCodeName.m_omSignalNames));

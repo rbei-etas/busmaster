@@ -16,8 +16,8 @@ IMPLEMENT_DYNCREATE(CTxMsgChildFrame, CMDIChildBase)
 CTxMsgChildFrame::CTxMsgChildFrame()
 {
     // Initialise pointers
-    m_pTransmitMsgView = NULL;
-    m_pLinTransmitMsgView = NULL;
+    m_pTransmitMsgView = nullptr;
+    m_pLinTransmitMsgView = nullptr;
 }
 /*******************************************************************************
   Function Name  : CTxMsgChildFrame
@@ -31,8 +31,8 @@ CTxMsgChildFrame::CTxMsgChildFrame()
 CTxMsgChildFrame::CTxMsgChildFrame(ETYPE_BUS eBUS) : CMDIChildBase( eBUS )
 {
     // Initialise pointers
-    m_pTransmitMsgView = NULL;
-    m_pLinTransmitMsgView = NULL;
+    m_pTransmitMsgView = nullptr;
+    m_pLinTransmitMsgView = nullptr;
 
     m_eBUS = eBUS;
 }
@@ -103,7 +103,7 @@ BOOL CTxMsgChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
     }
 
     /*CWnd * pWnd = CreateView(pContext);
-    if(pWnd != NULL)
+    if(pWnd != nullptr)
     {
         pWnd->SetActiveWindow();
         pWnd->ShowWindow(SW_SHOW);
@@ -115,7 +115,7 @@ BOOL CTxMsgChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
     {
         SetIcon( ::LoadIcon(hModAdvancedUILib, MAKEINTRESOURCE( IDI_ICO_TX_WINDOW )), TRUE);
         ::FreeLibrary(hModAdvancedUILib);
-        hModAdvancedUILib = NULL;
+        hModAdvancedUILib = nullptr;
     }
     else
     {
@@ -150,11 +150,11 @@ void CTxMsgChildFrame::OnDestroy()
     CMDIChildBase::OnDestroy();
     if ( m_eBUS == FLEXRAY )
     {
-        g_pomTxMsgFlexChildWindow = NULL;
+        g_pomTxMsgFlexChildWindow = nullptr;
     }
     else
     {
-        g_pomTxMsgLinChildWindow = NULL;
+        g_pomTxMsgLinChildWindow = nullptr;
     }
 
 

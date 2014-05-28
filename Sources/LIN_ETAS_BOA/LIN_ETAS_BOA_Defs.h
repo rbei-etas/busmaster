@@ -110,7 +110,7 @@ public:
 
         for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
-            m_pClientBuf[i] = NULL;
+            m_pClientBuf[i] = nullptr;
         }
     }
 };
@@ -131,17 +131,17 @@ static CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
 static FLEXRAY_INTERFACE_HW sg_asInterfaceHw[MAX_HW_INTERFACE] = {'\0'};
 static int sg_nTotalHwIntf = 0;
 // Handle of the XAT library
-static HMODULE  sg_hBOALib              = NULL;
+static HMODULE  sg_hBOALib              = nullptr;
 // Handle of the driver library
-static HMODULE  sg_hBOAHWLib              = NULL;
+static HMODULE  sg_hBOAHWLib              = nullptr;
 
 /* Application buffer, logging interface and client id */
 static CPARAM_THREADPROC sg_sParmRThread;
-static Base_WrapperErrorLogger* sg_pIlog   = NULL;
+static Base_WrapperErrorLogger* sg_pIlog   = nullptr;
 
 // Buffer to store transmission message list
 //static CFlxTxMsgBuffer sg_ouFlxTxList;
-static OCI_LINTxMessage* sg_psBOA_FlxMsgList = NULL;
+static OCI_LINTxMessage* sg_psBOA_FlxMsgList = nullptr;
 
 BYTE sg_bCurrState = STATE_DRIVER_SELECTED;
 
@@ -241,7 +241,7 @@ static UINT sg_nNoOfChannels = 0;
 
 static BOOL sg_bIsDriverRunning = FALSE;
 
-static HWND sg_hOwnerWnd = NULL;
+static HWND sg_hOwnerWnd = nullptr;
 
 const BYTE CREATE_MAP_TIMESTAMP = 0x1;
 const BYTE CALC_TIMESTAMP_READY = 0x2;
@@ -251,7 +251,7 @@ const BYTE CALC_TIMESTAMP_READY = 0x2;
  */
 static BYTE sg_byCurrState = CREATE_MAP_TIMESTAMP;
 
-static HANDLE sg_hEvent = NULL;
+static HANDLE sg_hEvent = nullptr;
 
 static CRITICAL_SECTION sg_DIL_CriticalSection;
 
@@ -268,7 +268,7 @@ static LARGE_INTEGER sg_lnFrequency;
 /**
  * Required libraries
  */
-static HMODULE sg_hLibCSI = NULL;
-static HMODULE sg_hLibOCI = NULL;
+static HMODULE sg_hLibCSI = nullptr;
+static HMODULE sg_hLibOCI = nullptr;
 
 static BOOL sg_bIsConnected = FALSE;

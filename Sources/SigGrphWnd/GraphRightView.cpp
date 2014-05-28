@@ -34,10 +34,10 @@ CGraphRightView::CGraphRightView()
 {
     //{{AFX_DATA_INIT(CGraphRightView)
     //}}AFX_DATA_INIT
-    m_pGraphSink = NULL;
+    m_pGraphSink = nullptr;
     m_dwCookie = 0;
-    m_pDMGraphCtrl = NULL;
-    m_pWndGraphCtrl = NULL;
+    m_pDMGraphCtrl = nullptr;
+    m_pWndGraphCtrl = nullptr;
 }
 
 /*******************************************************************************
@@ -51,7 +51,7 @@ CGraphRightView::CGraphRightView()
 *******************************************************************************/
 CGraphRightView::~CGraphRightView()
 {
-    if (NULL != m_pDMGraphCtrl)
+    if (nullptr != m_pDMGraphCtrl)
     {
         m_pDMGraphCtrl->Release ();
     }
@@ -69,9 +69,9 @@ CGraphRightView::~CGraphRightView()
 *******************************************************************************/
 void CGraphRightView::DoDataExchange(CDataExchange* pDX)
 {
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     pWnd = GetDlgItem(IDC_DMGRAPH_CTRL);
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         CFormView::DoDataExchange(pDX);
         //{{AFX_DATA_MAP(CGraphRightView)
@@ -119,7 +119,7 @@ void CGraphRightView::Dump(CDumpContext& dc) const
 void CGraphRightView::OnSize(UINT nType, int cx, int cy)
 {
     CFormView::OnSize(nType, cx, cy);
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     pWnd = GetDlgItem(IDC_DMGRAPH_CTRL);
     if ( pWnd && IsWindow(pWnd->m_hWnd) )
     {
@@ -176,13 +176,13 @@ void CGraphRightView::OnInitialUpdate()
 
     LPUNKNOWN pUnk = m_pWndGraphCtrl->GetControlUnknown();
     pUnk->QueryInterface(IID_IDMGraphCtrl, (void**) &m_pDMGraphCtrl);
-    if (  m_pDMGraphCtrl !=NULL )
+    if (  m_pDMGraphCtrl !=nullptr )
     {
         m_pParentWnd->m_pDMGraphCtrl = m_pDMGraphCtrl;
     }
     else
     {
-        m_pParentWnd->m_pDMGraphCtrl = NULL;
+        m_pParentWnd->m_pDMGraphCtrl = nullptr;
     }
     m_pParentWnd->m_pomRightView = this;
 }
@@ -192,7 +192,7 @@ void CGraphRightView::OnInitialUpdate()
   Input(s)       : -
   Output         : CWnd * - Pointer to CGraphChildFrame
   Functionality  : This Function will return parent window pointer. That is
-                   pointer to CGraphChildFrame. This will return NULL incase of
+                   pointer to CGraphChildFrame. This will return nullptr incase of
                    failure
   Member of      : CGraphRightView
   Author(s)      : ArunKumar K
@@ -201,20 +201,20 @@ void CGraphRightView::OnInitialUpdate()
 *******************************************************************************/
 CWnd* CGraphRightView::pomGetParentWindow() const
 {
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     // Get Splitter window pointer
     pWnd = GetParent();
     // Get CGraphChildFrame pointer from Splitter window pointer
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd = pWnd->GetParent();
     }
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd = pWnd->GetParent();
     }
 
-    // Return CGraphChildFrame pointer or NULL incase of failure
+    // Return CGraphChildFrame pointer or nullptr incase of failure
     return pWnd;
 }
 BEGIN_EVENTSINK_MAP(CGraphRightView, CFormView)
@@ -236,7 +236,7 @@ void CGraphRightView::OnDestroy()
         //Get a pointer to sinks IUnknown, no AddRef.
         LPUNKNOWN pUnkSink = m_pGraphSink->GetIDispatch(FALSE);
 
-        CWnd* pWnd = NULL;
+        CWnd* pWnd = nullptr;
         pWnd = GetDlgItem(IDC_DMGRAPH_CTRL);
         LPUNKNOWN pUnk = pWnd->GetControlUnknown();
 
@@ -247,7 +247,7 @@ void CGraphRightView::OnDestroy()
 
         //Release the sink object
         delete m_pGraphSink;
-        m_pGraphSink = NULL;
+        m_pGraphSink = nullptr;
     }
     CFormView::OnDestroy();
 }
@@ -267,7 +267,7 @@ void CGraphRightView::vHandleConnectionStatusChange(BOOL bConnectStatus)
 {
     if ( bConnectStatus == TRUE )
     {
-        if ( m_pGraphSink == NULL )
+        if ( m_pGraphSink == nullptr )
         {
             //Create Sink object
             m_pGraphSink = new CGraphSink();
@@ -279,7 +279,7 @@ void CGraphRightView::vHandleConnectionStatusChange(BOOL bConnectStatus)
             //dispinterface and the IUnknown and IDispatch pointers will be same.
             LPUNKNOWN pUnkSink = m_pGraphSink->GetIDispatch(FALSE);
 
-            CWnd* pWnd = NULL;
+            CWnd* pWnd = nullptr;
             pWnd = GetDlgItem(IDC_DMGRAPH_CTRL);
             LPUNKNOWN pUnk = pWnd->GetControlUnknown();
 

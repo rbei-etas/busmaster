@@ -52,7 +52,7 @@ const BYTE BUS_STATS_DLG_VERSION = 0x1;
 
 //sLINBUSSTATTISTICSDATA CLINBusStatisticsDlg::sm_sBusSerializationData;
 
-//xmlNodePtr CLINBusStatisticsDlg::m_pxmlNodePtr = NULL;
+//xmlNodePtr CLINBusStatisticsDlg::m_pxmlNodePtr = nullptr;
 
 CLINBusStatisticsDlg::CLINBusStatisticsDlg(CBaseBusStatisticLIN * pouBSLIN, CWnd * /* pParent */, int nChannelCount)
     : CCommonStatistics(CLINBusStatisticsDlg::IDD, LIN),
@@ -261,7 +261,7 @@ BOOL CLINBusStatisticsDlg::OnInitDialog()
     {
         SetIcon( ::LoadIcon(hModAdvancedUILib, MAKEINTRESOURCE( IDI_ICON_NETWORKSTAT )), TRUE);
         ::FreeLibrary(hModAdvancedUILib);
-        hModAdvancedUILib = NULL;
+        hModAdvancedUILib = nullptr;
     }
     else
     {

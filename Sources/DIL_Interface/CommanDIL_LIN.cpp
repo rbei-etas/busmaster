@@ -113,17 +113,17 @@ BOOL CCommanDIL_LIN::bRemoveClient(DWORD dwClientId)
         if (bGetClientObj(dwClientId, unClientIndex))
         {
             /* clear the client first */
-            if (m_asClientToBufMap[unClientIndex].hClientHandle != NULL)
+            if (m_asClientToBufMap[unClientIndex].hClientHandle != 0)
             {
                 HRESULT hResult = S_OK;//(*pfCAN_RemoveClient)(sg_asClientToBufMap[unClientIndex].hClientHandle);
                 if (hResult == S_OK)
                 {
                     m_asClientToBufMap[unClientIndex].dwClientID = 0;
-                    m_asClientToBufMap[unClientIndex].hClientHandle = NULL;
+                    m_asClientToBufMap[unClientIndex].hClientHandle = 0;
                     memset (m_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                     for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                     {
-                        m_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                        m_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                     }
                     m_asClientToBufMap[unClientIndex].unBufCount = 0;
                     bResult = TRUE;
@@ -139,7 +139,7 @@ BOOL CCommanDIL_LIN::bRemoveClient(DWORD dwClientId)
                 memset (m_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                 for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                 {
-                    m_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                    m_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                 }
                 m_asClientToBufMap[unClientIndex].unBufCount = 0;
                 bResult = TRUE;
@@ -281,7 +281,7 @@ HRESULT CCommanDIL_LIN::LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& po
 HRESULT CCommanDIL_LIN::LIN_ManageMsgBuf(BYTE byAction, DWORD ClientID, CBaseLINBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
-    if (ClientID != NULL)
+    if (ClientID != 0)
     {
         UINT unClientIndex;
         if (bGetClientObj(ClientID, unClientIndex))
@@ -290,7 +290,7 @@ HRESULT CCommanDIL_LIN::LIN_ManageMsgBuf(BYTE byAction, DWORD ClientID, CBaseLIN
             if (byAction == MSGBUF_ADD)
             {
                 /* Add msg buffer */
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     if (sClientObj.unBufCount < MAX_BUFF_ALLOWED)
                     {
@@ -309,7 +309,7 @@ HRESULT CCommanDIL_LIN::LIN_ManageMsgBuf(BYTE byAction, DWORD ClientID, CBaseLIN
             else if (byAction == MSGBUF_CLEAR)
             {
                 /* clear msg buffer */
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     /* Remove only buffer mentioned */
                     bRemoveClientBuffer(sClientObj.pClientBuf, sClientObj.unBufCount, pBufObj);
@@ -319,7 +319,7 @@ HRESULT CCommanDIL_LIN::LIN_ManageMsgBuf(BYTE byAction, DWORD ClientID, CBaseLIN
                     /* Remove all */
                     for (UINT i = 0; i < sClientObj.unBufCount; i++)
                     {
-                        sClientObj.pClientBuf[i] = NULL;
+                        sClientObj.pClientBuf[i] = nullptr;
                     }
                     sClientObj.unBufCount = 0;
                 }
@@ -338,7 +338,7 @@ HRESULT CCommanDIL_LIN::LIN_ManageMsgBuf(BYTE byAction, DWORD ClientID, CBaseLIN
             /* clear msg buffer */
             for (UINT i = 0; i < m_unClientCnt; i++)
             {
-                LIN_ManageMsgBuf(MSGBUF_CLEAR, m_asClientToBufMap[i].dwClientID, NULL);
+                LIN_ManageMsgBuf(MSGBUF_CLEAR, m_asClientToBufMap[i].dwClientID, nullptr);
             }
             hResult = S_OK;
         }

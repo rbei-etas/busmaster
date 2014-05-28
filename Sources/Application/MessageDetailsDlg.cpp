@@ -39,8 +39,8 @@ extern CCANMonitorApp theApp;
   Author(s)        :  Amarnath Shastry
   Date Created     :  07-05-2002
 *****************************************************************************/
-CMessageDetailsDlg::CMessageDetailsDlg(const SDBPARAMS& sDbParams,sMESSAGE* pMsg /*=NULL*/,
-                                       CWnd* pParent /*=NULL*/)
+CMessageDetailsDlg::CMessageDetailsDlg(const SDBPARAMS& sDbParams,sMESSAGE* pMsg /*=nullptr*/,
+                                       CWnd* pParent /*=nullptr*/)
     : CDialog(CMessageDetailsDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CMessageDetailsDlg)
@@ -103,9 +103,9 @@ BOOL CMessageDetailsDlg::OnInitDialog()
     m_omSpinMsgLen.SetBase( BASE_10 );
     m_omSpinMsgLen.SetRange( 0, (SHORT)m_sDbParams.m_unMaxMsgLen );
     m_odMsgNumericEdit.SubclassDlgItem(IDC_EDIT_MSG_NAME,this);
-    // If Not NULL, mode is Edit,
+    // If Not nullptr, mode is Edit,
     // Fill the dialog with the message details
-    if (m_psMsgStuctPtr != NULL)
+    if (m_psMsgStuctPtr != nullptr)
     {
         m_omStrMessageName  = m_psMsgStuctPtr->m_omStrMessageName;
         m_omStrMessageCode.Format( "%x", m_psMsgStuctPtr->m_unMessageCode );
@@ -128,7 +128,7 @@ BOOL CMessageDetailsDlg::OnInitDialog()
     UpdateData(FALSE);
     // Update the initial values //KSS
     m_sMessage.m_omStrMessageName = m_omStrMessageName;
-    m_sMessage.m_unMessageCode = static_cast <UINT> ( strtol((LPCTSTR )m_omStrMessageCode, NULL, 16) );
+    m_sMessage.m_unMessageCode = static_cast <UINT> ( strtol((LPCTSTR )m_omStrMessageCode, nullptr, 16) );
     m_sMessage.m_unMessageLength = m_unMessageLength;
     m_sMessage.m_bMessageFrameFormat = m_nFrameFormat;
 
@@ -248,7 +248,7 @@ void CMessageDetailsDlg::OnOK()
             // rajesh: 03-03-2003: BEGIN: check range based on FrameFormat
             //CMainFrame *pMainFrame = (CMainFrame*)AfxGetMainWnd();
             UINT unTempMsgCode =
-                static_cast <UINT> (strtol((LPCTSTR )m_omStrMessageCode,NULL, 16) );
+                static_cast <UINT> (strtol((LPCTSTR )m_omStrMessageCode,nullptr, 16) );
 
             if (m_sDbParams.m_eBus == CAN)
             {
@@ -278,17 +278,17 @@ void CMessageDetailsDlg::OnOK()
 
             m_omStrMessageCode = omStrMsgCode;
 
-            CMsgSignal* pTempMsgSg = NULL;
+            CMsgSignal* pTempMsgSg = nullptr;
 
             pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
             // Check if the entered messsage name is a duplacate
             BOOL bDuplicateFound = FALSE;
 
-            if ( m_psMsgStuctPtr != NULL )
+            if ( m_psMsgStuctPtr != nullptr )
             {
                 // the following line of code is moved from the outer block to get
-                // rid of the crash when m_psMsgStuctPtr is NULL
+                // rid of the crash when m_psMsgStuctPtr is nullptr
 
                 if ( m_psMsgStuctPtr->m_omStrMessageName != m_omStrMessageName)
                 {
@@ -334,7 +334,7 @@ Select \"No\" to retain the previous message length."), MB_YESNO) == IDYES)
 
                 // if this pointer exists, it means that message with
                 // the same name exists
-                if ( pMsgPtr != NULL)
+                if ( pMsgPtr != nullptr)
                 {
                     bDuplicateFound = TRUE;
                 }
@@ -355,16 +355,16 @@ Select \"No\" to retain the previous message length."), MB_YESNO) == IDYES)
                 // Get form view pointer
                 CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
                 int nMsgCode = -1;
-                if ( pMainFrm != NULL )
+                if ( pMainFrm != nullptr )
                 {
                     nMsgCode =
                         static_cast <INT> (strtol((LPCTSTR )m_omStrMessageCode,
-                                                  NULL, 16) );
+                                                  nullptr, 16) );
                 }
 
                 // Validate message code for duplication
                 // 1. Edit mode
-                if ( m_psMsgStuctPtr != NULL )
+                if ( m_psMsgStuctPtr != nullptr )
                 {
                     bDuplicateFound =
                         pTempMsgSg->bIsDuplicateMessageCode(
@@ -399,7 +399,7 @@ Select \"No\" to retain the previous message length."), MB_YESNO) == IDYES)
 
                     // if this is add mode, allocate
                     // memory for the new message
-                    if ( m_psMsgStuctPtr == NULL )
+                    if ( m_psMsgStuctPtr == nullptr )
                     {
                         // Add message to the data structure
                         pTempMsgSg->bAddMsg();
@@ -418,15 +418,15 @@ Select \"No\" to retain the previous message length."), MB_YESNO) == IDYES)
                     od_Temp.m_bMessageFrameFormat   = m_nFrameFormat;
                     od_Temp.m_nMsgDataFormat        = DATA_FORMAT_INTEL;
                     od_Temp.m_omStrMessageName      = m_omStrMessageName;
-                    od_Temp.m_psSignals             = NULL;
+                    od_Temp.m_psSignals             = nullptr;
                     od_Temp.m_unMessageLength       = m_unMessageLength;
 
 
-                    if ( pMainFrm != NULL )
+                    if ( pMainFrm != nullptr )
                     {
                         od_Temp.m_unMessageCode         =
                             static_cast <UINT> ( strtol((LPCTSTR )m_omStrMessageCode,
-                                                        NULL,
+                                                        nullptr,
                                                         16)      );
                     }
 
@@ -572,7 +572,7 @@ void CMessageDetailsDlg::vConvertToExtended()
 
     if ( IDYES == AfxMessageBox(_(MSG_PROMPT_EXTD), MB_YESNO|MB_ICONINFORMATION))
     {
-        CMsgSignal* pTempMsgSg = NULL;
+        CMsgSignal* pTempMsgSg = nullptr;
 
         pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
@@ -622,7 +622,7 @@ void CMessageDetailsDlg::vConvertToStandard()
 
     if ( IDYES == AfxMessageBox(_(MSG_PROMPT_STD), MB_YESNO|MB_ICONINFORMATION))
     {
-        CMsgSignal* pTempMsgSg = NULL;
+        CMsgSignal* pTempMsgSg = nullptr;
 
         pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
@@ -733,7 +733,7 @@ BOOL CMessageDetailsDlg::bDeleteRedundentSignals()
     // index 5 will be deleted
 
     // Get appropriate structure pointer
-    CMsgSignal* pTempMsgSg = NULL;
+    CMsgSignal* pTempMsgSg = nullptr;
     pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
     // List has signal names to be deleted
@@ -741,7 +741,7 @@ BOOL CMessageDetailsDlg::bDeleteRedundentSignals()
     // List has signal index to be deleted
     UINT unIndexes[64];
 
-    if ( pTempMsgSg != NULL )
+    if ( pTempMsgSg != nullptr )
     {
         // Get signal names and their indexes to be deleted
         pTempMsgSg->vGetSigNamesAndIndexTobeDeleted( m_unMessageLength,
@@ -767,7 +767,7 @@ BOOL CMessageDetailsDlg::bDeleteRedundentSignals()
 BOOL CMessageDetailsDlg::bIsDataModified()
 {
     BOOL bDataChanged = FALSE;
-    UINT unMsgCode = static_cast <UINT> ( strtol((LPCTSTR )m_omStrMessageCode, NULL, 16) );
+    UINT unMsgCode = static_cast <UINT> ( strtol((LPCTSTR )m_omStrMessageCode, nullptr, 16) );
 
     if (m_sMessage.m_omStrMessageName != m_omStrMessageName ||
             m_sMessage.m_unMessageCode != unMsgCode ||

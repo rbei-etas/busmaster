@@ -126,7 +126,7 @@ BOOL CConfigData::bSetData(LPVOID lpVoid, int nStreamLength, std::string strSect
     BOOL bRetVal = TRUE;
 
     // check input param
-    if(lpVoid != NULL)
+    if(lpVoid != nullptr)
     {
         //if(m_bConfigInfoLoaded == TRUE)
         //{
@@ -160,7 +160,7 @@ BOOL CConfigData::bGetData(void*& lpData, int& nStreamLength, std::string strSec
         {
             bRetVal = FALSE;
             BYTE* pbNewDat = new BYTE[tempSecData.m_nBLOBLen];
-            if (pbNewDat != NULL)
+            if (pbNewDat != nullptr)
             {
                 memcpy(pbNewDat, tempSecData.m_bBLOB, tempSecData.m_nBLOBLen);
                 nStreamLength = tempSecData.m_nBLOBLen;

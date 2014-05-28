@@ -28,7 +28,7 @@ class CEventHandlerDlg : public CDialog
     DECLARE_DYNAMIC(CEventHandlerDlg)
 
 public:
-    CEventHandlerDlg(CTreeCtrl& omTreeCtrl, CFunctionEditorDoc* pDoc, CWnd* pParent = NULL);   // standard constructor
+    CEventHandlerDlg(CTreeCtrl& omTreeCtrl, CFunctionEditorDoc* pDoc, CWnd* pParent = nullptr);   // standard constructor
     virtual ~CEventHandlerDlg();
 
     // Dialog Data

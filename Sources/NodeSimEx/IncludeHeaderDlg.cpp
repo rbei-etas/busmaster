@@ -47,7 +47,7 @@ static char THIS_FILE[] = __FILE__;
 /*  Date Created     :  13.03.2002                                            */
 /*  Modifications    :
 /******************************************************************************/
-CIncludeHeaderDlg::CIncludeHeaderDlg(CFunctionEditorDoc* pDoc, CWnd* pParent /*=NULL*/)
+CIncludeHeaderDlg::CIncludeHeaderDlg(CFunctionEditorDoc* pDoc, CWnd* pParent /*=nullptr*/)
     : CDialog(CIncludeHeaderDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CIncludeHeaderDlg)
@@ -130,13 +130,13 @@ void CIncludeHeaderDlg::OnOk()
 
             //POSITION pos = CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate->GetFirstDocPosition();
             //CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate->GetNextDoc(pos);
-            if ( m_pDoc != NULL )
+            if ( m_pDoc != nullptr )
             {
                 // Get include header array
                 CStringArray* pArray =
                     m_pDoc->omStrGetIncudeHeaderFiles();
 
-                if (pArray != NULL)
+                if (pArray != nullptr)
                 {
                     CString omStrTemp = STR_EMPTY;
                     for (int nCount = 0;
@@ -198,12 +198,12 @@ void CIncludeHeaderDlg::OnBrowse()
     CFileDialog om_Dlg
     (
         TRUE,  //open an existing file
-        NULL,  //extension to file
+        nullptr,  //extension to file
         STR_EMPTY,  //initial file name
         OFN_FILEMUSTEXIST| OFN_HIDEREADONLY|
         OFN_PATHMUSTEXIST,
         "C Header Files(*.h)|*.h||",
-        NULL
+        nullptr
     );
     // Set caption text
     om_Dlg.m_ofn.lpstrTitle = "Select Header File";

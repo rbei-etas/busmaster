@@ -48,19 +48,19 @@ CNodeSim::~CNodeSim()
 int CNodeSim::ExitInstance(void)
 {
     //All the memory release should happen here
-    if ( CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate != NULL)
+    if ( CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate != nullptr)
     {
         delete CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate;
-        CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate = NULL;
+        CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate = nullptr;
     }
     CGlobalObj::ouGetObj(m_eBus).m_ArrAPIsList.RemoveAll();
-    CGlobalObj::sm_hWndMDIParentFrame = NULL;
+    CGlobalObj::sm_hWndMDIParentFrame = nullptr;
     CGlobalObj::ouGetObj(m_eBus).m_omStrSourceFilePathName.Empty();
 
-    if ( CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != NULL)
+    if ( CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != nullptr)
     {
         delete[] CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr;
-        CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = NULL;
+        CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = nullptr;
     }
     //remove the singleton class objects
     CSimSysManager::vClearObj(m_eBus);
@@ -71,7 +71,7 @@ int CNodeSim::ExitInstance(void)
 HRESULT CNodeSim::FE_CreateFuncEditorTemplate(HWND handle, S_EXFUNC_PTR& sExInitStruct)
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    if (CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate == NULL)
+    if (CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate == nullptr)
     {
         CEditFrameWnd::sm_eBus = m_eBus;
         CFileView::sm_eBus = m_eBus;
@@ -93,16 +93,16 @@ HRESULT CNodeSim::FE_CreateFuncEditorTemplate(HWND handle, S_EXFUNC_PTR& sExInit
         CGlobalObj::ouGetObj(m_eBus).bGetDefaultValue(SIMSYS_WND_PLACEMENT, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
     }
     // Check for window pointer
-    if( CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd == NULL )
+    if( CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd == nullptr )
     {
         // Create New Instance
         CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd = new CSimSysWnd(m_eBus);
-        if( CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd != NULL )
+        if( CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd != nullptr )
         {
             // Register Window Class
             LPCTSTR strMDIClass = AfxRegisterWndClass(
                                       CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
-                                      LoadCursor(NULL, IDC_CROSS), 0,
+                                      LoadCursor(nullptr, IDC_CROSS), 0,
                                       AfxGetApp()->LoadIcon(IDI_ICON_FN_EDITOR) );
             // Set the size got from configuration module
             CRect omRect(CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement.rcNormalPosition);
@@ -228,7 +228,7 @@ void CNodeSim::NS_SetHandlersHelpText(CStringArray* pomTextArray)
 
 void CNodeSim::NS_UpdateFuncStructsNodeSimEx(PVOID pvFuncStructs, E_UPDATE_TYPE eType)
 {
-    if (pvFuncStructs != NULL)
+    if (pvFuncStructs != nullptr)
     {
         switch (eType)
         {
@@ -335,7 +335,7 @@ void CNodeSim::NS_GetSimSysConfigData(BYTE*& pDesBuffer, int& nBuffSize)
     CSimSysManager::ouGetSimSysManager(m_eBus).vSaveSimSysWndConfig();
     if (nBuffSize < CGlobalObj::ouGetObj(m_eBus).m_nSimSysDataSize)
     {
-        if (pDesBuffer != NULL)
+        if (pDesBuffer != nullptr)
         {
             delete[] pDesBuffer;
         }
@@ -349,15 +349,15 @@ bool CNodeSim::NS_GetSimSysConfigData(xmlNodePtr& pNodePtr)
 {
     if( m_eBus == J1939 )
     {
-        pNodePtr = xmlNewNode(NULL, BAD_CAST DEF_J1939_SIM_SYS);
+        pNodePtr = xmlNewNode(nullptr, BAD_CAST DEF_J1939_SIM_SYS);
     }
     else if( m_eBus == LIN )
     {
-        pNodePtr = xmlNewNode(NULL, BAD_CAST DEF_LIN_SIM_SYS);
+        pNodePtr = xmlNewNode(nullptr, BAD_CAST DEF_LIN_SIM_SYS);
     }
     else
     {
-        pNodePtr = xmlNewNode(NULL, BAD_CAST DEF_CAN_SIM_SYS);
+        pNodePtr = xmlNewNode(nullptr, BAD_CAST DEF_CAN_SIM_SYS);
     }
 
     CSimSysManager::ouGetSimSysManager(m_eBus).bGetConfigData(pNodePtr);
@@ -365,10 +365,10 @@ bool CNodeSim::NS_GetSimSysConfigData(xmlNodePtr& pNodePtr)
 }
 void CNodeSim::NS_SetSimSysConfigData(BYTE* pSrcBuffer, int nBuffSize)
 {
-    if ( CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != NULL)
+    if ( CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != nullptr)
     {
         delete[] CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr;
-        CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = NULL;
+        CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = nullptr;
     }
     if (nBuffSize > 0)
     {
@@ -379,9 +379,9 @@ void CNodeSim::NS_SetSimSysConfigData(BYTE* pSrcBuffer, int nBuffSize)
 
     //Update Internal Data
     CSimSysManager::ouGetSimSysManager(m_eBus).vLoadSimSysWndConfig();
-    if(pSrcBuffer == NULL)
+    if(pSrcBuffer == nullptr)
     {
-        if(CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd != NULL)
+        if(CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd != nullptr)
         {
             CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->ShowWindow( SW_HIDE );
             CGlobalObj::ouGetObj(m_eBus).bCloseFunctionEditorFrame();
@@ -391,12 +391,12 @@ void CNodeSim::NS_SetSimSysConfigData(BYTE* pSrcBuffer, int nBuffSize)
 
 void CNodeSim::NS_SetSimSysConfigData(xmlDocPtr pXmlDoc)
 {
-    if ( CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != NULL)
+    if ( CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != nullptr)
     {
         delete[] CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr;
-        CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = NULL;
+        CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = nullptr;
     }
-    if (pXmlDoc != NULL)
+    if (pXmlDoc != nullptr)
     {
         /*CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = new BYTE[nBuffSize];
         memcpy(CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr, pSrcBuffer, nBuffSize);
@@ -404,7 +404,7 @@ void CNodeSim::NS_SetSimSysConfigData(xmlDocPtr pXmlDoc)
         CSimSysManager::ouGetSimSysManager(m_eBus).vLoadSimSysWndConfig(pXmlDoc, m_eBus);
 
         /* Close the previosly opened function editor view */
-        if(CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd != NULL)
+        if(CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd != nullptr)
         {
             CGlobalObj::ouGetObj(m_eBus).m_pomSimSysWnd->ShowWindow( SW_HIDE );
             CGlobalObj::ouGetObj(m_eBus).bCloseFunctionEditorFrame();
@@ -416,12 +416,12 @@ void CNodeSim::NS_SetSimSysConfigData(xmlDocPtr pXmlDoc)
 
 void CNodeSim::NS_SetSimSysConfigData(xmlNodePtr pXmlNode)
 {
-    if ( CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != NULL)
+    if ( CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr != nullptr)
     {
         delete[] CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr;
-        CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = NULL;
+        CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = nullptr;
     }
-    if (pXmlNode != NULL)
+    if (pXmlNode != nullptr)
     {
         /*CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr = new BYTE[nBuffSize];
         memcpy(CGlobalObj::ouGetObj(m_eBus).m_pSimSysDataPtr, pSrcBuffer, nBuffSize);
@@ -451,7 +451,7 @@ BOOL CNodeSim::NS_IsSimSysConfigChanged()
 
 HRESULT CNodeSim::FE_OpenFunctioneditorFile(CString omStrNewCFileName, HWND hMainFrame, S_EXFUNC_PTR& sExInitStruct)
 {
-    if (CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate == NULL)
+    if (CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate == nullptr)
     {
         CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate = new CMultiDocTemplate(IDI_ICON_FN_EDITOR,
 

@@ -77,7 +77,7 @@ COutWnd::COutWnd(ETYPE_BUS eBus): CMDIChildBase ( /*MSG_WND_PLACEMENT*/ OUT_WND_
 /******************************************************************************/
 COutWnd::~COutWnd()
 {
-    CExecuteManager::ouGetExecuteManager(m_eBus).m_pouBuildProgram->m_podOutWnd=NULL;
+    CExecuteManager::ouGetExecuteManager(m_eBus).m_pouBuildProgram->m_podOutWnd=nullptr;
 }
 
 
@@ -133,7 +133,7 @@ BOOL COutWnd::bAddString(CStringArray& omStrArray)
     TEXTMETRIC   tm;
     pDC->GetTextMetrics(&tm);
     //Check for valid dc and then set the horizontal extent
-    if( pDC != NULL)
+    if( pDC != nullptr)
     {
         //Select the new font object to calculte the extent
         //because font is set for window not for CDC
@@ -345,7 +345,7 @@ void COutWnd::OnDbClick()
         CString omStrLineNumber = "";
         INT     nIndex          = 0;
         UINT    unLineNumber    = 0;
-        char*   pcStopStr       = NULL;
+        char*   pcStopStr       = nullptr;
 
         m_omListBox.GetText(nSelectIndex,omStrSelectedItem);
         CString omStrFilePath;
@@ -364,7 +364,7 @@ void COutWnd::OnDbClick()
             if(nNameIndex != -1)
             {
                 CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(omStrFilePath);
-                if (pDoc != NULL)
+                if (pDoc != nullptr)
                 {
                     //If file is opened then get its frame and activate it
                     {
@@ -405,7 +405,7 @@ void COutWnd::OnDbClick()
                     if(unLineNumber!=0)
                     {
                         CFileView* pFileView = CGlobalObj::ouGetObj(m_eBus).podGetFileViewPtr();
-                        if(pFileView != NULL)
+                        if(pFileView != nullptr)
                         {
                             pFileView->vDisplayWarningLineNumber(OUTWND,unLineNumber);
                         }
@@ -464,13 +464,13 @@ BOOL COutWnd::bCreateOutputWindow()
     CGlobalObj::ouGetObj(m_eBus).bGetDefaultValue(OUT_WND_PLACEMENT, sWinPlacement);
     sWinPlacement.showCmd = SW_SHOW;
 
-    bReturn     = CMDIChildBase::Create( NULL,
+    bReturn     = CMDIChildBase::Create( nullptr,
                                          "Output Window",
                                          WS_CHILD   |
                                          WS_VISIBLE | WS_OVERLAPPEDWINDOW,
                                          sWinPlacement.rcNormalPosition,
-                                         NULL,
-                                         NULL);
+                                         nullptr,
+                                         nullptr);
 
     vSetWindowFont();
     SendMessage(WM_NCPAINT, 1, 0);

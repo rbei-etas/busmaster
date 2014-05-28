@@ -70,7 +70,7 @@ static char THIS_FILE[] = __FILE__;
                   Implemented code review comments
 *******************************************************************************/
 CHardwareListing::CHardwareListing( INTERFACE_HW* psIntrHw,
-                                    int nSize, int* pnSelList, CWnd* pParent /*=NULL*/)
+                                    int nSize, int* pnSelList, CWnd* pParent /*=nullptr*/)
     : CDialog(CHardwareListing::IDD, pParent),
       m_nSize( nSize ),
       m_nSelectedItem( -1)
@@ -94,7 +94,7 @@ CHardwareListing::CHardwareListing( INTERFACE_HW* psIntrHw,
                   enough arguments
 *******************************************************************************/
 CHardwareListing::CHardwareListing()
-    : CDialog(CHardwareListing::IDD, NULL)
+    : CDialog(CHardwareListing::IDD, nullptr)
 {
     // This dialog will not work with out enough constructor parameters
     // Refer previous constructor for the parameter list
@@ -446,7 +446,7 @@ void CHardwareListing::OnButtonRemove()
 {
     // Get the selected item from the list
     POSITION sPos = m_omSelectedHwList.GetFirstSelectedItemPosition();
-    if( sPos != NULL )
+    if( sPos != nullptr )
     {
         int nSelectedItem = m_omSelectedHwList.GetNextSelectedItem(sPos);
         int nArrayIndex = (INT)m_omSelectedHwList.GetItemData( nSelectedItem );
@@ -629,16 +629,16 @@ void CHardwareListing::vEnableDisableButtons()
     }
 
     // Update Window.
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     // Select Button
     pWnd = GetDlgItem( IDC_BUT_SELECT );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bSelectEnable );
     }
     // Remove Button
     pWnd = GetDlgItem( IDC_BUT_REMOVE );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bRemoveEnable );
     }
@@ -648,7 +648,7 @@ void CHardwareListing::vEnableDisableButtons()
 
     // Driver ID
     pWnd = GetDlgItem( IDC_EDIT_DRIVER_ID );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bHardwareDetailsEnable );
         // If disabled then clear the text
@@ -659,7 +659,7 @@ void CHardwareListing::vEnableDisableButtons()
     }
     // Network Name
     pWnd = GetDlgItem( IDC_EDIT_NET_NAME );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bHardwareDetailsEnable );
         // If disabled then clear the text
@@ -670,7 +670,7 @@ void CHardwareListing::vEnableDisableButtons()
     }
     // Firmware
     pWnd = GetDlgItem( IDC_EDIT_FIRMWARE );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bHardwareDetailsEnable );
         // If disabled then clear the text
@@ -681,7 +681,7 @@ void CHardwareListing::vEnableDisableButtons()
     }
     // Blink Button
     pWnd = GetDlgItem( IDC_BUT_BLINK );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( FALSE);/*Kadoor bHardwareDetailsEnable );*/
     }
@@ -846,7 +846,7 @@ void CHardwareListing::vSortHardwareItems()
     for ( m_pIter = mHardwareListMap.begin( ) ; m_pIter != mHardwareListMap.end( ) ; m_pIter++ )
     {
         delete(m_pIter->second); //release Memory
-        m_pIter->second = NULL;
+        m_pIter->second = nullptr;
     }
 
     // clear map data

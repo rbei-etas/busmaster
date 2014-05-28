@@ -77,8 +77,8 @@ CMsgFilterConfigPage::CMsgFilterConfigPage() :
     //{{AFX_DATA_INIT(CMsgFilterConfigPage)
     // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
-    m_hMsgWnd = NULL;
-    m_psFilterConfigured = NULL;
+    m_hMsgWnd = nullptr;
+    m_psFilterConfigured = nullptr;
 }
 /*******************************************************************************
   Function Name  : ~CMsgFilterConfigPage
@@ -190,7 +190,7 @@ VOID CMsgFilterConfigPage::vCreateFilterUIList()
     // Create One Colunm "Filter Name"
     m_omLstcFilterList.InsertColumn(0, _(defSTR_FILTER_NAME_COLUMN) );
     // Set Image List if list is valid
-    if(m_omImageList.m_hImageList != NULL )
+    if(m_omImageList.m_hImageList != nullptr )
     {
         m_omLstcFilterList.SetImageList( &m_omImageList, LVSIL_SMALL );
     }
@@ -277,7 +277,7 @@ VOID CMsgFilterConfigPage::vUpdateDataFromUI()
                             omFilterName.GetBuffer(MAX_PATH));
 
         // Filter Enable UI
-        if (psSet != NULL)
+        if (psSet != nullptr)
         {
             psSet->m_bEnabled = m_omLstcFilterList.GetCheck( nIndex );
         }
@@ -288,7 +288,7 @@ VOID CMsgFilterConfigPage::vUpdateDataFromUI()
 static void vPopulateMainSubList(ETYPE_BUS eBusType, CMainEntryList& DestList, const SFILTERAPPLIED_CAN* psFilterConfigured,
                                  const SFILTERAPPLIED_CAN* psFilterApplied)
 {
-    ASSERT(psFilterConfigured != NULL);
+    ASSERT(psFilterConfigured != nullptr);
     DestList.RemoveAll();
 
     SMAINENTRY sMainEntry;
@@ -301,7 +301,7 @@ static void vPopulateMainSubList(ETYPE_BUS eBusType, CMainEntryList& DestList, c
         sMainEntry.m_omMainEntryName = "LIN";
     }
 
-    if (psFilterApplied == NULL)
+    if (psFilterApplied == nullptr)
     {
         SMAINENTRY sMainEntry;
         sMainEntry.m_omMainEntryName = "FILTER_SELECTION_CAN";
@@ -323,7 +323,7 @@ static void vPopulateMainSubList(ETYPE_BUS eBusType, CMainEntryList& DestList, c
                                               psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
             if (SFILTERSET::psGetFilterSetPointer(psFilterApplied->m_psFilters,
                                                   psFilterApplied->m_ushTotal,
-                                                  sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH)) != NULL)
+                                                  sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH)) != nullptr)
             {
                 sMainEntry.m_odSelEntryList.AddTail(sSubEntry);
             }
@@ -351,7 +351,7 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
         SSUBENTRY sSubEntry = sMainEntry.m_odSelEntryList.GetNext(pos);
         const PSFILTERSET psTemp = SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters,
                                    psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
-        ASSERT (psTemp != NULL);
+        ASSERT (psTemp != nullptr);
         sFilterApplied.m_psFilters[sFilterApplied.m_ushTotal].bClone(*psTemp);
         sFilterApplied.m_ushTotal++;
     }
@@ -361,7 +361,7 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
     {
         for(int nTempFilCnt = 0; nTempFilCnt < sTempAppliedFilter.m_ushTotal; nTempFilCnt++ )
         {
-            if((&sTempAppliedFilter.m_psFilters[nTempFilCnt]) != NULL)
+            if((&sTempAppliedFilter.m_psFilters[nTempFilCnt]) != nullptr)
             {
                 if(strcmp(sFilterApplied.m_psFilters[nAppFilterCnt].m_sFilterName.m_acFilterName,sTempAppliedFilter.m_psFilters[nTempFilCnt].m_sFilterName.m_acFilterName) == 0)
                 {
@@ -416,7 +416,7 @@ void CMsgFilterConfigPage::OnOK()
     // Update configuration data
     //theApp.bSetData( MSG_DISPLAY_FILTER_DETAILS, (void *)&m_omFilterList );
     // Update Message Window about the chaneges
-    //PostThreadMessage(GUI_dwThread_MsgDisp, TM_UPDATE_FILTERLIST, NULL, NULL );
+    //PostThreadMessage(GUI_dwThread_MsgDisp, TM_UPDATE_FILTERLIST, nullptr, nullptr );
     CPropertyPage::OnOK();
 }
 

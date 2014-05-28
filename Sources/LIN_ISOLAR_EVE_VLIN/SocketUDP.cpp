@@ -136,7 +136,7 @@ int InitializeParametersUDP(enum UDPSocketType socketType)
         DWORD   status = 0;
 
         // disable new behavior using IOCTL: SIO_UDP_CONNRESET
-        status = WSAIoctl(m_socketFDData_Rx, SIO_UDP_CONNRESET, &bNewBehavior, sizeof(bNewBehavior), NULL, 0, &dwBytesReturned, NULL, NULL);
+        status = WSAIoctl(m_socketFDData_Rx, SIO_UDP_CONNRESET, &bNewBehavior, sizeof(bNewBehavior), nullptr, 0, &dwBytesReturned, nullptr, nullptr);
         if (SOCKET_ERROR == status)
         {
             DWORD dwErr = WSAGetLastError();
@@ -175,7 +175,7 @@ int InitializeParametersUDP(enum UDPSocketType socketType)
         DWORD   status = 0;
 
         // disable new behavior using IOCTL: SIO_UDP_CONNRESET
-        status = WSAIoctl(m_socketFDData_Tx, SIO_UDP_CONNRESET, &bNewBehavior, sizeof(bNewBehavior), NULL, 0, &dwBytesReturned, NULL, NULL);
+        status = WSAIoctl(m_socketFDData_Tx, SIO_UDP_CONNRESET, &bNewBehavior, sizeof(bNewBehavior), nullptr, 0, &dwBytesReturned, nullptr, nullptr);
         if (SOCKET_ERROR == status)
         {
             DWORD dwErr = WSAGetLastError();
@@ -214,7 +214,7 @@ int InitializeParametersUDP(enum UDPSocketType socketType)
         DWORD   status = 0;
 
         // disable new behavior using IOCTL: SIO_UDP_CONNRESET
-        status = WSAIoctl(m_socketFDData_LoopBack, SIO_UDP_CONNRESET, &bNewBehavior, sizeof(bNewBehavior), NULL, 0, &dwBytesReturned, NULL, NULL);
+        status = WSAIoctl(m_socketFDData_LoopBack, SIO_UDP_CONNRESET, &bNewBehavior, sizeof(bNewBehavior), nullptr, 0, &dwBytesReturned, nullptr, nullptr);
         if (SOCKET_ERROR == status)
         {
             DWORD dwErr = WSAGetLastError();
@@ -246,7 +246,7 @@ int ReadUDPData(char* buffer, unsigned int bufferLength)
     fd_set readSet;
     int rval = 0;
 
-    if (buffer == NULL)
+    if (buffer == nullptr)
     {
         fprintf(stderr, "ReadUDPData: No memory for buffer allocated \n");
         return -1;
@@ -257,7 +257,7 @@ int ReadUDPData(char* buffer, unsigned int bufferLength)
         FD_ZERO(&readSet);
         FD_SET(m_socketFDData_Rx, &readSet);
 
-        rval = select(m_socketFDData_Rx + 1, &readSet, NULL, NULL, &tv);
+        rval = select(m_socketFDData_Rx + 1, &readSet, nullptr, nullptr, &tv);
     }
     while(rval == -1 && WSAGetLastError() == WSAEINTR); // errno == EINTR
 
@@ -315,7 +315,7 @@ int ReadUDPLoopBack(char* buffer, unsigned int bufferLength)
     fd_set readSet;
     int rval = 0;
 
-    if (buffer == NULL)
+    if (buffer == nullptr)
     {
         fprintf(stderr, "ReadUDPData: No memory for buffer allocated \n");
         return -1;
@@ -326,7 +326,7 @@ int ReadUDPLoopBack(char* buffer, unsigned int bufferLength)
         FD_ZERO(&readSet);
         FD_SET(m_socketFDData_LoopBack, &readSet);
 
-        rval = select(m_socketFDData_LoopBack + 1, &readSet, NULL, NULL, &tv);
+        rval = select(m_socketFDData_LoopBack + 1, &readSet, nullptr, nullptr, &tv);
     }
     while(rval == -1 && WSAGetLastError() == WSAEINTR); // errno == EINTR
 

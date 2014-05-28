@@ -34,7 +34,7 @@
  */
 CAppServices_Impl::CAppServices_Impl()
 {
-    m_podUIThread = NULL;
+    m_podUIThread = nullptr;
 }
 
 
@@ -43,7 +43,7 @@ CAppServices_Impl::CAppServices_Impl()
  */
 CAppServices_Impl::~CAppServices_Impl()
 {
-    m_podUIThread = NULL;
+    m_podUIThread = nullptr;
 }
 
 
@@ -57,7 +57,7 @@ BOOL CAppServices_Impl::bWriteToTrace(char* pcTraceStr)
 {
     BOOL Result = FALSE;
 
-    if (NULL != m_podUIThread)
+    if (nullptr != m_podUIThread)
     {
         CString omStr(pcTraceStr);
         m_podUIThread->vAddString(omStr);

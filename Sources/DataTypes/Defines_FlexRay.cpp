@@ -94,13 +94,13 @@ bool CCompuMethodEx::omGetEnggValue(DWORD dwRawValue, CString& omEnggValue)
         }
 
         /*PTEXT_CODE_VAR_EX tempTextCode = m_uMethod.m_pTextCode;
-        while (tempTextCode != NULL)
+        while (tempTextCode != nullptr)
         {
             if (tempTextCode->m_sRange.bIsWithinRange(dwRawValue))
             {
                 omEnggValue = tempTextCode->m_aTextName;
                 bResult = true;
-                tempTextCode->m_pNextTextCodeType = NULL;
+                tempTextCode->m_pNextTextCodeType = nullptr;
             }
             tempTextCode = tempTextCode->m_pNextTextCodeType;
         }*/
@@ -119,13 +119,13 @@ bool CCompuMethodEx::omGetEnggValue(DWORD dwRawValue, CString& omEnggValue)
         }
 
         /*PTAB_CODE_VAR_EX tempTabCode = m_uMethod.m_pTabCode;
-        while (tempTabCode != NULL)
+        while (tempTabCode != nullptr)
         {
             if (tempTabCode->m_sRange.bIsWithinRange(dwRawValue))
             {
                 omEnggValue.Format("%lf", tempTabCode->m_dPhysVal);
                 bResult = true;
-                tempTabCode->m_pNextTabCodeType = NULL;
+                tempTabCode->m_pNextTabCodeType = nullptr;
             }
             tempTabCode = tempTabCode->m_pNextTabCodeType;
         }*/
@@ -153,7 +153,7 @@ bool CCompuMethodEx::omGetEnggValue(DWORD dwRawValue, CString& omEnggValue)
             itr++;
         }
         /*PSCALE_LINEAR_CODE_VAR_EX tempScaleLinear = m_uMethod.m_pScaleLinear;
-        while (tempScaleLinear != NULL)
+        while (tempScaleLinear != nullptr)
         {
             LINEAR_CODE_VAR_EX tempLinear = tempScaleLinear->m_sLinearType;
             if (tempLinear.m_sRange.bIsWithinRange(dwRawValue))
@@ -162,7 +162,7 @@ bool CCompuMethodEx::omGetEnggValue(DWORD dwRawValue, CString& omEnggValue)
                                    / tempLinear.m_dD0;
                 omEnggValue.Format("%lf", ApplValue);
                 bResult = true;
-                tempScaleLinear->m_pNextLinearType = NULL;
+                tempScaleLinear->m_pNextLinearType = nullptr;
             }
             tempScaleLinear = tempScaleLinear->m_pNextLinearType;
         }*/
@@ -248,20 +248,20 @@ bool CCompuMethodEx::omGetRawValue(CString& omRawValue, double dwEnggValue)
 
 tagCompuMethodEx::~tagCompuMethodEx()
 {
-    /* if (m_pScaleLinear != NULL)
+    /* if (m_pScaleLinear != nullptr)
      {
          delete m_pScaleLinear;
-         m_pScaleLinear = NULL;
+         m_pScaleLinear = nullptr;
      }*/
-    /*if (m_pTextCode != NULL)
+    /*if (m_pTextCode != nullptr)
     {
         delete m_pTextCode;
-        m_pTextCode = NULL;
+        m_pTextCode = nullptr;
     }*/
-    /*if (m_pTabCode != NULL)
+    /*if (m_pTabCode != nullptr)
     {
         delete m_pTabCode;
-        m_pTabCode = NULL;
+        m_pTabCode = nullptr;
     }*/
 }
 
@@ -758,7 +758,7 @@ void vCopyFrameData(CFrameMap& ouFrameTarget, const CFrameMap& ouFrameSource)
 {
     vCleanFrameDataSet(ouFrameTarget); // First clean the target
     POSITION pos = ouFrameSource.GetStartPosition();
-    while (pos != NULL)
+    while (pos != nullptr)
     {
         UINT m_unKey = 0x0;
         static CFrameDef ouTempFrameDef;
@@ -873,12 +873,12 @@ tagTabCodeVarEx& tagTabCodeVarEx::operator=(const tagTabCodeVarEx& RefObj)
     m_sRange    = RefObj.m_sRange;
     m_dPhysVal  = RefObj.m_dPhysVal;
 
-    /*if (NULL != RefObj.m_pNextTabCodeType)
+    /*if (nullptr != RefObj.m_pNextTabCodeType)
     {
-        if (NULL == m_pNextTabCodeType)
+        if (nullptr == m_pNextTabCodeType)
         {
             m_pNextTabCodeType = new tagTabCodeVarEx;
-            ASSERT(NULL != m_pNextTabCodeType);
+            ASSERT(nullptr != m_pNextTabCodeType);
         }
         *(m_pNextTabCodeType) = *(RefObj.m_pNextTabCodeType);
     }*/
@@ -887,16 +887,16 @@ tagTabCodeVarEx& tagTabCodeVarEx::operator=(const tagTabCodeVarEx& RefObj)
 
 tagTabCodeVarEx::~tagTabCodeVarEx()
 {
-    /* if (NULL != m_pNextTabCodeType)
+    /* if (nullptr != m_pNextTabCodeType)
      {
          delete m_pNextTabCodeType;
-         m_pNextTabCodeType = NULL;
+         m_pNextTabCodeType = nullptr;
      }*/
 }
 
 tagOperands::tagOperands()
 {
-    m_pNextOpearnd = NULL;
+    m_pNextOpearnd = nullptr;
 }
 
 tagOperands& tagOperands::operator=(const tagOperands& RefObj)
@@ -904,12 +904,12 @@ tagOperands& tagOperands::operator=(const tagOperands& RefObj)
     m_cOpredandName = RefObj.m_cOpredandName;
     m_fOperandValue = RefObj.m_fOperandValue;
 
-    if (NULL != RefObj.m_pNextOpearnd)
+    if (nullptr != RefObj.m_pNextOpearnd)
     {
-        if (NULL == m_pNextOpearnd)
+        if (nullptr == m_pNextOpearnd)
         {
             m_pNextOpearnd = new tagOperands;
-            ASSERT(NULL != m_pNextOpearnd);
+            ASSERT(nullptr != m_pNextOpearnd);
         }
         *m_pNextOpearnd = *(RefObj.m_pNextOpearnd);
     }
@@ -918,28 +918,28 @@ tagOperands& tagOperands::operator=(const tagOperands& RefObj)
 
 tagOperands::~tagOperands()
 {
-    if (NULL != m_pNextOpearnd)
+    if (nullptr != m_pNextOpearnd)
     {
         delete m_pNextOpearnd;
-        m_pNextOpearnd = NULL;
+        m_pNextOpearnd = nullptr;
     }
 }
 //
 tagFormulaCodeVarEx::tagFormulaCodeVarEx()
 {
-    m_pFirstOperand = NULL;
+    m_pFirstOperand = nullptr;
 }
 
 tagFormulaCodeVarEx& tagFormulaCodeVarEx::operator=(const tagFormulaCodeVarEx& RefObj)
 {
     m_sRange    = RefObj.m_sRange;
     m_omFormula = RefObj.m_omFormula;
-    if (NULL != RefObj.m_pFirstOperand)
+    if (nullptr != RefObj.m_pFirstOperand)
     {
-        if (NULL == m_pFirstOperand)
+        if (nullptr == m_pFirstOperand)
         {
             m_pFirstOperand = new OPERANDS;
-            ASSERT(NULL != m_pFirstOperand);
+            ASSERT(nullptr != m_pFirstOperand);
         }
         *m_pFirstOperand = *(RefObj.m_pFirstOperand);
     }
@@ -948,10 +948,10 @@ tagFormulaCodeVarEx& tagFormulaCodeVarEx::operator=(const tagFormulaCodeVarEx& R
 
 tagFormulaCodeVarEx::~tagFormulaCodeVarEx()
 {
-    if (NULL != m_pFirstOperand)
+    if (nullptr != m_pFirstOperand)
     {
         delete m_pFirstOperand;
-        m_pFirstOperand = NULL;
+        m_pFirstOperand = nullptr;
     }
 }
 

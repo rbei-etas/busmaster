@@ -99,7 +99,7 @@ INT CUtilFunctions::nGetBaseFolder(const char * omConfigFileName, std::string & 
     }
     else
     {
-        int nChars = GetCurrentDirectory(0, NULL);
+        int nChars = GetCurrentDirectory(0, nullptr);
         char* pchFilePath = new char [nChars];
         GetCurrentDirectory(nChars, pchFilePath);
         omStrConfigFolder = pchFilePath;

@@ -154,7 +154,7 @@ void CFlickerFreeListCtrl::OnSize(UINT nType, int cx, int cy)
     CHeaderCtrl* pHC;
     // Get the Header Control
     pHC = GetHeaderCtrl();
-    if (pHC != NULL)
+    if (pHC != nullptr)
     {
         CRect rectHeader;
 
@@ -172,7 +172,7 @@ void CFlickerFreeListCtrl::OnSize(UINT nType, int cx, int cy)
 void CFlickerFreeListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 {
     CWnd* pParent = GetParent();
-    if( pParent != NULL && pParent->m_hWnd != 0 )
+    if( pParent != nullptr && pParent->m_hWnd != 0 )
     {
         ::SendMessage( pParent->m_hWnd,
                        WM_OWNER_DATA_NOTIFICATION,

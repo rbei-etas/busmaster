@@ -38,7 +38,7 @@
 #include "include/CAN_Error_Defs.h"         // For Errors
 #include "Utility_Replay.h"
 
-CBaseDIL_CAN* CReplayProcess::s_pouDIL_CAN_Interface = NULL;
+CBaseDIL_CAN* CReplayProcess::s_pouDIL_CAN_Interface = nullptr;
 DWORD CReplayProcess::s_dwClientID = 0;
 
 /*******************************************************************************
@@ -52,9 +52,9 @@ DWORD CReplayProcess::s_dwClientID = 0;
 *******************************************************************************/
 CReplayProcess::CReplayProcess(const CReplayFile& ouReplayFile) :
     m_ouReplayFile( ouReplayFile ),
-    m_pReplayWndPtr( NULL ),
+    m_pReplayWndPtr( nullptr ),
     m_omBreakPoints( defBREAK_POINT_MAP_SIZE ),
-    m_hThread( NULL ),
+    m_hThread( nullptr ),
     m_bReplayHexON( TRUE ),
     m_wLogReplayTimeMode(0 ),
     m_nCurrentIndex( 0 ),
@@ -102,14 +102,14 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
 {
     CReplayProcess* pReplayDetails = (CReplayProcess*)pParam;
 
-    if( pReplayDetails != NULL )
+    if( pReplayDetails != nullptr )
     {
         CMsgReplayWnd* pWnd = (CMsgReplayWnd*)pReplayDetails->m_pReplayWndPtr;
         // Reset the event
         pReplayDetails->m_omThreadEvent.ResetEvent();
         // Disable List control
         // To avoid flickering avoid disabling for a step action
-        if( pWnd != NULL && pReplayDetails->m_nNoOfMessagesToPlay > 1)
+        if( pWnd != nullptr && pReplayDetails->m_nNoOfMessagesToPlay > 1)
         {
             pWnd->m_omMessageList.EnableWindow( FALSE );
         }
@@ -147,7 +147,7 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
         }
 
         // Create the event object to wait for
-        HANDLE hEventReplayWait = CreateEvent(NULL, FALSE, FALSE, NULL);
+        HANDLE hEventReplayWait = CreateEvent(nullptr, FALSE, FALSE, nullptr);
         // Assign the message delay time
         int nDelay = pReplayDetails->m_ouReplayFile.m_unMsgTimeDelay;
         // main loop for message transmission.
@@ -165,7 +165,7 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
                 }
 
                 timeSetEvent( nDelay, time.wPeriodMin,
-                              (LPTIMECALLBACK) hEventReplayWait, NULL,
+                              (LPTIMECALLBACK) hEventReplayWait, 0,
                               TIME_CALLBACK_EVENT_SET | TIME_ONESHOT);
             }
             // Send message in CAN bus if the message ID is valid
@@ -210,7 +210,7 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
         }
         CloseHandle(hEventReplayWait);
 
-        if( pWnd != NULL )
+        if( pWnd != nullptr )
         {
             pWnd->m_omMessageList.EnableWindow( );
             pWnd->m_eReplayState = REPLAY_TO_START;
@@ -242,13 +242,13 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
 {
     CReplayProcess* pReplayDetails = (CReplayProcess*)pParam;
 
-    if( pReplayDetails != NULL )
+    if( pReplayDetails != nullptr )
     {
         CMsgReplayWnd* pWnd = (CMsgReplayWnd*)pReplayDetails->m_pReplayWndPtr;
         // Reset the event
         pReplayDetails->m_omThreadEvent.ResetEvent();
         // Disable List control
-        if( pWnd != NULL )
+        if( pWnd != nullptr )
         {
             pWnd->m_omMessageList.EnableWindow( FALSE );
         }
@@ -308,7 +308,7 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
         }
 
         // Create the event object to wait for
-        HANDLE hEventReplayWait = CreateEvent(NULL, FALSE, FALSE, NULL);
+        HANDLE hEventReplayWait = CreateEvent(nullptr, FALSE, FALSE, nullptr);
         // main loop for message transmission.
         nIndex = 0;
         while( pReplayDetails->m_bStopReplayThread == FALSE )
@@ -316,7 +316,7 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
             int nCurrentIndex = pReplayDetails->m_omSelectedIndex[ nIndex ];
             // Set the event to wait
             timeSetEvent( omTimeDelay[ nIndex ], time.wPeriodMin,
-                          (LPTIMECALLBACK) hEventReplayWait, NULL,
+                          (LPTIMECALLBACK) hEventReplayWait, 0,
                           TIME_CALLBACK_EVENT_SET | TIME_ONESHOT);
 
             // Send message in CAN bus if the message ID is valid
@@ -356,7 +356,7 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
         }
         CloseHandle(hEventReplayWait);
 
-        if( pWnd != NULL )
+        if( pWnd != nullptr )
         {
             // Update the window
             pWnd->m_omMessageList.EnableWindow( );
@@ -420,7 +420,7 @@ BOOL CReplayProcess::bOpenReplayFile()
     BOOL bModeMismatch              = FALSE;
     CString     omStrLine           = STR_EMPTY;
     CString     omStrTemp           = STR_EMPTY;
-    CHAR        Line[500]           = { NULL };
+    CHAR        Line[500]           = { 0 };
     CString     omStrMsgType        = " ";
     std::ifstream    omInReplayFile;
     int nBlockCounter = 0;
@@ -588,7 +588,7 @@ BOOL CReplayProcess::bOpenReplayFile()
     }
     CATCH_ALL(pomException)
     {
-        if(pomException != NULL )
+        if(pomException != nullptr )
         {
             CHAR scErrorMsg[255];
             // Get the exception error message
@@ -629,7 +629,7 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
 {
     CReplayProcess* pReplayDetails = (CReplayProcess*)pParam;
 
-    if( pReplayDetails != NULL )
+    if( pReplayDetails != nullptr )
     {
         // Reset the event
         pReplayDetails->m_omThreadEvent.ResetEvent();
@@ -687,14 +687,14 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
         }
 
         // Create the event object to wait for
-        HANDLE hEventReplayWait = CreateEvent(NULL, FALSE, FALSE, NULL);
+        HANDLE hEventReplayWait = CreateEvent(nullptr, FALSE, FALSE, nullptr);
         // main loop for message transmission.
         nIndex = 0;
         while( pReplayDetails->m_bStopReplayThread == FALSE )
         {
             // Set the event to wait
             timeSetEvent( omTimeDelay[ nIndex ], time.wPeriodMin,
-                          (LPTIMECALLBACK) hEventReplayWait, NULL,
+                          (LPTIMECALLBACK) hEventReplayWait, 0,
                           TIME_CALLBACK_EVENT_SET | TIME_ONESHOT);
 
             // Send message in CAN bus if the message ID is valid
@@ -779,7 +779,7 @@ BOOL CReplayProcess::bStartNIReplay()
         CWinThread* pThread =
             AfxBeginThread( CReplayProcess::sunNIReplayThreadFunc,
                             this );
-        if( pThread != NULL )
+        if( pThread != nullptr )
         {
             m_hThread = pThread->m_hThread;
             m_bStopReplayThread = FALSE;
@@ -801,7 +801,7 @@ BOOL CReplayProcess::bStartNIReplay()
 BOOL CReplayProcess::bSetThreadStopSignal()
 {
     BOOL bIsValid = FALSE;
-    if( m_hThread != NULL )
+    if( m_hThread != nullptr )
     {
         m_bStopReplayThread = TRUE;
         bIsValid = TRUE;
@@ -829,7 +829,7 @@ BOOL CReplayProcess::bStopReplayThread()
     {
         TerminateThread( m_hThread, 0 );
         bIsThreadKilled = TRUE;
-        m_hThread = NULL;
+        m_hThread = nullptr;
     }
     return bIsThreadKilled;
 }

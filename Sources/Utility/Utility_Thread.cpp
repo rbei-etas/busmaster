@@ -30,33 +30,33 @@
 {
     vInitialise();
 
-    m_hNotifyExit = CreateEvent(NULL, FALSE, FALSE, NULL);
-    ASSERT(NULL != m_hNotifyExit);
+    m_hNotifyExit = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+    ASSERT(nullptr != m_hNotifyExit);
 
-    m_hThread2Owner = CreateEvent(NULL, FALSE, FALSE, NULL);
-    ASSERT(NULL != m_hThread2Owner);
+    m_hThread2Owner = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+    ASSERT(nullptr != m_hThread2Owner);
 
-    m_hOwner2Thread = CreateEvent(NULL, FALSE, FALSE, NULL);
-    ASSERT(NULL != m_hOwner2Thread);
+    m_hOwner2Thread = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+    ASSERT(nullptr != m_hOwner2Thread);
 }
 
 CPARAM_THREADPROC::~CPARAM_THREADPROC(void)
 {
     CloseHandle(m_hNotifyExit);
-    m_hNotifyExit = NULL;
+    m_hNotifyExit = nullptr;
 
     CloseHandle(m_hThread2Owner);
-    m_hThread2Owner = NULL;
+    m_hThread2Owner = nullptr;
 
     CloseHandle(m_hOwner2Thread);
-    m_hOwner2Thread = NULL;
+    m_hOwner2Thread = nullptr;
 }*/
 
 void CPARAM_THREADPROC::vInitialise(void)
 {
-    m_hActionEvent  = NULL;
-    m_hThread       = NULL;
-    m_pBuffer       = NULL;
+    m_hActionEvent  = nullptr;
+    m_hThread       = nullptr;
+    m_pBuffer       = nullptr;
     m_unActionCode  = IDLE;
     m_unPrevActionCode = IDLE;
 }
@@ -70,7 +70,7 @@ BOOL CPARAM_THREADPROC::bStartThreadEx(LPTHREAD_START_ROUTINE NewThreadProc,
                                        HANDLE hActionEvent, LPVOID pvBuffer)
 {
     // First check if the thread exists
-    if (NULL != m_hThread)  // The thread exists.
+    if (nullptr != m_hThread)  // The thread exists.
     {
         if (bTerminateThread() == FALSE) // So terminate it first
         {
@@ -88,14 +88,14 @@ BOOL CPARAM_THREADPROC::bStartThread(LPTHREAD_START_ROUTINE NewThreadProc)
     BOOL bResult = FALSE;
 
     // First check if the thread exists
-    if (NULL == m_hThread)  // The thread exists.
+    if (nullptr == m_hThread)  // The thread exists.
     {
         DWORD dwThreadID = 0x0;
-        m_hThread = CreateThread(NULL, 0, NewThreadProc, this, 0, &dwThreadID);
+        m_hThread = CreateThread(nullptr, 0, NewThreadProc, this, 0, &dwThreadID);
         Sleep(0);
     }
 
-    if (m_hThread != NULL)
+    if (m_hThread != nullptr)
     {
         bResult = TRUE;
     }
@@ -106,7 +106,7 @@ BOOL CPARAM_THREADPROC::bTerminateThread(void)
 {
     BOOL bResult = FALSE;
 
-    if ((m_hActionEvent != NULL) && (m_hThread != NULL))
+    if ((m_hActionEvent != nullptr) && (m_hThread != nullptr))
     {
         m_unActionCode = EXIT_THREAD;
         SetEvent(m_hActionEvent);
@@ -143,8 +143,8 @@ BOOL CPARAM_THREADPROC::bTransitToInaction(void)
     /* The intention is to bring the thread into a state of inaction. One way
     of achieving this is to signal the thread to wait for an indefinite period
     of time until the owner decides the retransition of the same. */
-    if ((NULL != m_hThread2Owner) && (NULL != m_hOwner2Thread)
-            && (NULL != m_hThread))
+    if ((nullptr != m_hThread2Owner) && (nullptr != m_hOwner2Thread)
+            && (nullptr != m_hThread))
     {
         m_unPrevActionCode = m_unActionCode;
         m_unActionCode = INACTION; // New instruction
@@ -160,7 +160,7 @@ BOOL CPARAM_THREADPROC::bTransitToInaction(void)
 BOOL CPARAM_THREADPROC::bForceTerminateThread()
 {
     BOOL bResult = FALSE;
-    if( NULL != m_hThread )
+    if( nullptr != m_hThread )
     {
         TerminateThread(m_hThread, EXIT_CODE_ABNORMAL);
     }
@@ -177,8 +177,8 @@ BOOL CPARAM_THREADPROC::bTransitToActiveState(void)
     /* The intention is to bring the thread back into the state of action. At
     present the thread is waiting for the event m_hOwner2Thread to get
     signalled. */
-    if ((NULL != m_hThread2Owner) && (NULL != m_hOwner2Thread)
-            && (NULL != m_hThread))
+    if ((nullptr != m_hThread2Owner) && (nullptr != m_hOwner2Thread)
+            && (nullptr != m_hThread))
     {
         m_unActionCode = m_unPrevActionCode; /* Resume whatever the thread
         was doing prior to transiting into inaction. */
@@ -196,7 +196,7 @@ BOOL CPARAM_THREADPROC::bTransitToActiveState(void)
 DWORD WINAPI The_Worker_Thread(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam != NULL)
+    if (pThreadParam != nullptr)
     {
         bool bLoopON = true;
         while (bLoopON) // Continue so long as the loop is ON.

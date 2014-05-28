@@ -130,7 +130,7 @@ void CMessageAttrib::vSetMessageAttribData(PSMESSAGE_ATTRIB pMsgAttributes)
     vClearAllEntries();
 
     UINT unMsgID;
-    if (pMsgAttributes != NULL)
+    if (pMsgAttributes != nullptr)
     {
         int nMsgCount = pMsgAttributes->m_usMsgCount;
         PSMESSAGEATTR pNext = pMsgAttributes->m_psMsgAttribDetails;
@@ -147,7 +147,7 @@ void CMessageAttrib::vSetMessageAttribData(PSMESSAGE_ATTRIB pMsgAttributes)
             //store Msg IDs
             m_omIDList.AddTail(unMsgID);
         }
-        pMsgAttributes = NULL;
+        pMsgAttributes = nullptr;
     }
 
     vMapCopy(m_omMsgIDMapTmp, m_omMsgIDMap);
@@ -176,7 +176,7 @@ void CMessageAttrib::vIDCopy(CList <UINT, UINT&>& omDestMap,
 
 
     POSITION psCurrPos = omSrcMap.GetHeadPosition();
-    while (psCurrPos != NULL)
+    while (psCurrPos != nullptr)
     {
         unMsgID = omSrcMap.GetNext(psCurrPos);
         omDestMap.AddTail(unMsgID);
@@ -210,14 +210,14 @@ void CMessageAttrib::vSaveMessageAttribData()
 
     // store info into the structure
     sMsgAttribDetails.m_usMsgCount = static_cast<USHORT>(unMsgCount);
-    sMsgAttribDetails.m_psMsgAttribDetails = NULL;
+    sMsgAttribDetails.m_psMsgAttribDetails = nullptr;
 
     if (unMsgCount != 0)
     {
         // allocate the array
         PSMESSAGEATTR pMsgAttributes = new SMESSAGEATTR [unMsgCount];
 
-        if (pMsgAttributes != NULL)
+        if (pMsgAttributes != nullptr)
         {
             sMsgAttribDetails.m_psMsgAttribDetails = pMsgAttributes;
             PSMESSAGEATTR pNext = pMsgAttributes;
@@ -236,13 +236,13 @@ void CMessageAttrib::vSaveMessageAttribData()
 
                 pNext++;
             }
-        }// end of if(pMsgAttributes != NULL)
+        }// end of if(pMsgAttributes != nullptr)
     }// end of if(unMsgCount != 0)
 
     //theApp.bSetData(MSG_ATTRIBUTES, &sMsgAttribDetails);
 
     // release memory..
-    if (sMsgAttribDetails.m_psMsgAttribDetails != NULL)
+    if (sMsgAttribDetails.m_psMsgAttribDetails != nullptr)
     {
         delete[] sMsgAttribDetails.m_psMsgAttribDetails;
         sMsgAttribDetails.m_usMsgCount = 0;
@@ -259,14 +259,14 @@ void CMessageAttrib::vGetMessageAttribData(SMESSAGE_ATTRIB& sMsgAttribDetails)
 
     // store info into the structure
     sMsgAttribDetails.m_usMsgCount = static_cast<USHORT>(unMsgCount);
-    sMsgAttribDetails.m_psMsgAttribDetails = NULL;
+    sMsgAttribDetails.m_psMsgAttribDetails = nullptr;
 
     if (unMsgCount != 0)
     {
         // allocate the array
         PSMESSAGEATTR pMsgAttributes = new SMESSAGEATTR [unMsgCount];
 
-        if (pMsgAttributes != NULL)
+        if (pMsgAttributes != nullptr)
         {
             sMsgAttribDetails.m_psMsgAttribDetails = pMsgAttributes;
             PSMESSAGEATTR pNext = pMsgAttributes;
@@ -285,7 +285,7 @@ void CMessageAttrib::vGetMessageAttribData(SMESSAGE_ATTRIB& sMsgAttribDetails)
 
                 pNext++;
             }
-        }// end of if(pMsgAttributes != NULL)
+        }// end of if(pMsgAttributes != nullptr)
     }// end of if(unMsgCount != 0)
 
     m_omCritSec.Unlock();
@@ -499,7 +499,7 @@ void CMessageAttrib::vMapCopy(CMap <UINT, UINT, SMsgIDAttr, SMsgIDAttr>&
     omDestMap.RemoveAll();
 
     POSITION psCurrPos = omSrcMap.GetStartPosition();
-    while (psCurrPos != NULL)
+    while (psCurrPos != nullptr)
     {
         omSrcMap.GetNextAssoc(psCurrPos, unMsgID, m_sIDAttrTmp);
         omDestMap.SetAt(unMsgID, m_sIDAttrTmp);
@@ -565,12 +565,12 @@ int CMessageAttrib::nValidateNewID(unsigned int unMsgID)
 int CMessageAttrib::nGetMsgAttribs(SCanIDList* psMsgIDList)
 {
     int nResult = 0, nCount = 0;
-    SCanIDList* psMsgIDListTmp = NULL;
+    SCanIDList* psMsgIDListTmp = nullptr;
     UINT unMsgID;
 
     POSITION psCurrPos = m_omMsgIDMap.GetStartPosition();
 
-    while ((psCurrPos != NULL) && (nResult == 0))
+    while ((psCurrPos != nullptr) && (nResult == 0))
     {
         // Traverse through the map and save current key and associated entry
         // in unMsgID and m_sIDAttrTmp respectively.
@@ -579,7 +579,7 @@ int CMessageAttrib::nGetMsgAttribs(SCanIDList* psMsgIDList)
         // Indirect way to initialise destination message attribute list. The
         // current destination is (psMsgIDList + nCount)
         psMsgIDListTmp = psMsgIDList + nCount;
-        if (psMsgIDListTmp != NULL)
+        if (psMsgIDListTmp != nullptr)
         {
             psMsgIDListTmp->nCANID = unMsgID;
             psMsgIDListTmp->Colour = m_sIDAttrTmp.Colour;
@@ -646,7 +646,7 @@ BOOL CMessageAttrib::bMsgIDFromMsgName(const CString& omMsgName, UINT& unMsgID
     BOOL bFound = FALSE;
 
     POSITION psCurrPos = m_omMsgIDMap.GetStartPosition();
-    while ((psCurrPos != NULL) && (bFound == FALSE))
+    while ((psCurrPos != nullptr) && (bFound == FALSE))
     {
         m_omMsgIDMap.GetNextAssoc(psCurrPos, unMsgID, m_sIDAttrTmp);
         if (m_sIDAttrTmp.omMsgIDName == omMsgName)

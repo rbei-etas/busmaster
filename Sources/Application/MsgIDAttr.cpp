@@ -50,7 +50,7 @@
  Author(s)      :   Ratnadip Choudhury
  Date Created   :   18-03-2002
 ******************************************************************************/
-CMsgIDAttr::CMsgIDAttr(ETYPE_BUS eBusType, CWnd* pParent /*=NULL*/)
+CMsgIDAttr::CMsgIDAttr(ETYPE_BUS eBusType, CWnd* pParent /*=nullptr*/)
     : CDialog(CMsgIDAttr::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CMsgIDAttr)
@@ -59,7 +59,7 @@ CMsgIDAttr::CMsgIDAttr(ETYPE_BUS eBusType, CWnd* pParent /*=NULL*/)
     m_nID = 0x0;
     m_bForEdit = false;
     m_bDBMessage = FALSE;
-    m_hClrBtn = NULL;
+    m_hClrBtn = nullptr;
     //}}AFX_DATA_INIT
     m_eBusType = eBusType;
 }
@@ -207,7 +207,7 @@ BOOL CMsgIDAttr::OnInitDialog()
     if (m_bDBMessage == TRUE)
     {
         CEdit* pomEdit = (CEdit*) GetDlgItem(IDC_EDIT_CANID_STRING);
-        if (pomEdit != NULL)
+        if (pomEdit != nullptr)
         {
             pomEdit->SetReadOnly(TRUE);
         }
@@ -252,7 +252,7 @@ void CMsgIDAttr::OnPbtnColour()
     if (omColourDlg.DoModal() == IDOK)
     {
         m_sColour = omColourDlg.GetColor();
-        m_omColourBox.InvalidateRect(NULL);
+        m_omColourBox.InvalidateRect(nullptr);
     }
 }
 
@@ -299,11 +299,11 @@ HBRUSH CMsgIDAttr::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
     // TODO: Change any attributes of the DC here
     if (pWnd->GetDlgCtrlID() == IDC_PBTN_COLOUR)
     {
-        if (m_hClrBtn != NULL)
+        if (m_hClrBtn != nullptr)
         {
             ::DeleteObject((HBRUSH) m_hClrBtn);
         }
-        if ((m_hClrBtn = ::CreateSolidBrush(m_sColour)) != NULL)
+        if ((m_hClrBtn = ::CreateSolidBrush(m_sColour)) != nullptr)
         {
             hbr = m_hClrBtn;
         }

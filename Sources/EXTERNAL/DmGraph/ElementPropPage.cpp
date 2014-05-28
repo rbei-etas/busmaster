@@ -100,7 +100,7 @@ void CElementPropPage::UpdateControls(IDMGraphCtrl* pGraphCtrl)
 
     CComPtr<IDMGraphElement> spElement;
     hr = GetCurrentElement(pGraphCtrl, &spElement);
-    BOOL bEnabled = spElement != NULL;
+    BOOL bEnabled = spElement != nullptr;
 
     const UINT idCtrls[] = { IDC_LINE_COLOR, IDC_POINT_COLOR, IDC_LINE_WIDTH, IDC_POINT_WIDTH, IDC_COMBO_TYPE, IDC_COMBO_SYMBOL,
                              IDC_CHECK_VISIBLE, IDC_CHECK_SOLID, IDC_EDIT_NAME, IDC_DELBUTTON,
@@ -116,11 +116,11 @@ void CElementPropPage::UpdateControls(IDMGraphCtrl* pGraphCtrl)
     OLE_COLOR color;
     COLORREF col;
     hr = spElement->get_LineColor(&color);
-    hr = OleTranslateColor(color, NULL, &col);
+    hr = OleTranslateColor(color, nullptr, &col);
     m_btnLineColPicker.SetColor(col);
 
     hr = spElement->get_PointColor(&color);
-    hr = OleTranslateColor(color, NULL, &col);
+    hr = OleTranslateColor(color, nullptr, &col);
     m_btnPointColPicker.SetColor(col);
 
     long width;
@@ -168,7 +168,7 @@ LRESULT CElementPropPage::OnColChanged(UINT uMsg, WPARAM wParam, LPARAM lParam, 
     }
     CComPtr<IDMGraphElement> spElement;
     hr = GetCurrentElement(spGraph, &spElement);
-    if(FAILED(hr) || spElement == NULL)
+    if(FAILED(hr) || spElement == nullptr)
     {
         return 0;
     }
@@ -358,7 +358,7 @@ LRESULT CElementPropPage::OnChangeLine_width(WORD wNotifyCode, WORD wID, HWND hW
     }
     CComPtr<IDMGraphElement> spElement;
     hr = GetCurrentElement(spGraph, &spElement);
-    if(FAILED(hr) || spElement == NULL)
+    if(FAILED(hr) || spElement == nullptr)
     {
         return 0;
     }
@@ -370,7 +370,7 @@ LRESULT CElementPropPage::OnChangeLine_width(WORD wNotifyCode, WORD wID, HWND hW
 
 LRESULT CElementPropPage::OnDeltaposSpin_line_width(int idCtrl, LPNMHDR pnmh, BOOL& bHandled)
 {
-    OnChangeLine_width(0, 0, NULL, bHandled);
+    OnChangeLine_width(0, 0, nullptr, bHandled);
     return 0;
 }
 
@@ -389,7 +389,7 @@ LRESULT CElementPropPage::OnChangePoint_width(WORD wNotifyCode, WORD wID, HWND h
     }
     CComPtr<IDMGraphElement> spElement;
     hr = GetCurrentElement(spGraph, &spElement);
-    if(FAILED(hr) || spElement == NULL)
+    if(FAILED(hr) || spElement == nullptr)
     {
         return 0;
     }
@@ -401,7 +401,7 @@ LRESULT CElementPropPage::OnChangePoint_width(WORD wNotifyCode, WORD wID, HWND h
 
 LRESULT CElementPropPage::OnDeltaposSpin_point_width(int idCtrl, LPNMHDR pnmh, BOOL& bHandled)
 {
-    OnChangePoint_width(0, 0, NULL, bHandled);
+    OnChangePoint_width(0, 0, nullptr, bHandled);
     return 0;
 }
 
@@ -420,7 +420,7 @@ LRESULT CElementPropPage::OnClickedCheck_solid(WORD wNotifyCode, WORD wID, HWND 
     }
     CComPtr<IDMGraphElement> spElement;
     hr = GetCurrentElement(spGraph, &spElement);
-    if(FAILED(hr) || spElement == NULL)
+    if(FAILED(hr) || spElement == nullptr)
     {
         return 0;
     }
@@ -445,7 +445,7 @@ LRESULT CElementPropPage::OnClickedCheck_visible(WORD wNotifyCode, WORD wID, HWN
     }
     CComPtr<IDMGraphElement> spElement;
     hr = GetCurrentElement(spGraph, &spElement);
-    if(FAILED(hr) || spElement == NULL)
+    if(FAILED(hr) || spElement == nullptr)
     {
         return 0;
     }
@@ -470,7 +470,7 @@ LRESULT CElementPropPage::OnCloseupCombo_symbol(WORD wNotifyCode, WORD wID, HWND
     }
     CComPtr<IDMGraphElement> spElement;
     hr = GetCurrentElement(spGraph, &spElement);
-    if(FAILED(hr) || spElement == NULL)
+    if(FAILED(hr) || spElement == nullptr)
     {
         return 0;
     }
@@ -495,7 +495,7 @@ LRESULT CElementPropPage::OnCloseupCombo_type(WORD wNotifyCode, WORD wID, HWND h
     }
     CComPtr<IDMGraphElement> spElement;
     hr = GetCurrentElement(spGraph, &spElement);
-    if(FAILED(hr) || spElement == NULL)
+    if(FAILED(hr) || spElement == nullptr)
     {
         return 0;
     }
@@ -520,7 +520,7 @@ LRESULT CElementPropPage::OnChangeEdit_name(WORD wNotifyCode, WORD wID, HWND hWn
     }
     CComPtr<IDMGraphElement> spElement;
     hr = GetCurrentElement(spGraph, &spElement);
-    if(FAILED(hr) || spElement == NULL)
+    if(FAILED(hr) || spElement == nullptr)
     {
         return 0;
     }
@@ -531,7 +531,7 @@ LRESULT CElementPropPage::OnChangeEdit_name(WORD wNotifyCode, WORD wID, HWND hWn
 
     //this is the reason we use list view control and not listbox control
     //we need to update text for items in list
-    ::InvalidateRect(GetDlgItem(IDC_COLLECTION_LIST), NULL, FALSE);
+    ::InvalidateRect(GetDlgItem(IDC_COLLECTION_LIST), nullptr, FALSE);
     return 0;
 }
 

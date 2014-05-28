@@ -128,7 +128,7 @@ BOOL CNotificWnd::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
     // Set the window icon
     SetIcon(theApp.LoadIcon(IDI_ICO_WRITE), TRUE);
 
-    m_unTimer = SetTimer(0x50, 100, NULL);
+    m_unTimer = SetTimer(0x50, 100, nullptr);
 
     return CMDIChildBase::OnCreateClient(lpcs, pContext);
 }
@@ -212,8 +212,8 @@ BOOL CNotificWnd::bCreateNotificWindow(CMDIFrameWnd* pomParentWnd)
 {
     LPCTSTR strMDIClass = AfxRegisterWndClass(
                               CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
-                              LoadCursor(NULL, IDC_ARROW), 0,
-                              LoadIcon(NULL, IDI_WINLOGO));
+                              LoadCursor(nullptr, IDC_ARROW), 0,
+                              LoadIcon(nullptr, IDI_WINLOGO));
 
     BOOL bResult = FALSE;
     // If the co-ordiantes are not correct, calculate the default value
@@ -303,7 +303,7 @@ void CNotificWnd::vAddString(CString omStr)
         // so that user can scroll
         CSize   sz(0,0);
         CDC*  pDC = m_omListBox.GetDC();
-        if (pDC != NULL)
+        if (pDC != nullptr)
         {
             static INT s_nDx = 0;
             sz = pDC->GetTextExtent(omStr);
@@ -339,7 +339,7 @@ void CNotificWnd::vSaveNotificWndConfig()
 {
     //UINT unBufferSize = unGetStoreNFBufferSize(); //Get the required size
     //BYTE *SectionBuffer = new BYTE[unBufferSize];
-    //if (SectionBuffer != NULL)
+    //if (SectionBuffer != nullptr)
     //{
     //  SaveNFDataIntoBuffer(SectionBuffer);// save the config into buffer
     //  /* Add into a different section NOTIFIC_WND_CONFIG_SECTION_NAME*/
@@ -450,16 +450,16 @@ void CNotificWnd :: vLoadNotificWndConfig()
 {
 #if 0
     int nBufferCount = 0;
-    BYTE* SrcBuffer = NULL;
+    BYTE* SrcBuffer = nullptr;
     /* Retrieve the section NOTIFIC_WND_CONFIG_SECTION_NAME*/
     CConfigDetails::ouGetConfigDetailsObject().bGetData((void*&)(SrcBuffer),
             nBufferCount,NOTIFIC_WND_CONFIG_SECTION_NAME);
-    if (SrcBuffer != NULL)
+    if (SrcBuffer != nullptr)
     {
         /* Copy the retrieved config data into member variables and apply*/
         CopyNFDataFromBuffer(SrcBuffer);
         delete[] SrcBuffer;
-        SrcBuffer = NULL;
+        SrcBuffer = nullptr;
     }
     else //new file : load default values TBD
 #endif
@@ -513,7 +513,7 @@ void CNotificWnd::OnDestroy()
     // TODO: Add your message handler code here;
     if (TIMER_INVALID != m_unTimer)
     {
-        ::KillTimer(NULL, m_unTimer);
+        ::KillTimer(nullptr, m_unTimer);
         m_unTimer = TIMER_INVALID;
     }
 }

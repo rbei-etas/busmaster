@@ -105,7 +105,7 @@ BOOL CFunctionEditorDoc::bCreateNewDocument(CString& omStrFileName )
     // To get the application version
     CString omstrAppVersion = GetApplicationVersion();
 
-    if( pCFile != NULL )
+    if( pCFile != nullptr )
     {
         bSuccess = TRUE;
 
@@ -201,7 +201,7 @@ BOOL CFunctionEditorDoc::bCreateNewDocument(CString& omStrFileName )
         int nLength = (COMMANINT)strlen(buffer);
         fwrite( buffer, sizeof( char ), nLength, pCFile );
         fclose(pCFile);
-        pCFile = NULL;
+        pCFile = nullptr;
     }
     else
     {
@@ -257,7 +257,7 @@ BOOL CFunctionEditorDoc::OnNewDocument()
             strFilePath += "\\"+ omStrCFileName ;
             if (!CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).pGetDocPtrOfFile(strFilePath))
             {
-                //If returned doc pointer is NULL means a file with same
+                //If returned doc pointer is nullptr means a file with same
                 //name is not opened for editing
                 bStop = TRUE;
             }
@@ -346,7 +346,7 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
         BYTE pbyFileLine[1024] = {'\0'};
         POSITION pos = m_omSourceCodeTextList.GetHeadPosition();
         int nIndex = 0;
-        while ( pos != NULL )
+        while ( pos != nullptr )
         {
             omStrLine = m_omSourceCodeTextList.GetNext( pos );
             UINT LineLength = omStrLine.GetLength();
@@ -356,7 +356,7 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
             pbyFileData[nIndex++] = '\n';
         }
         CFile* pFile = ar.GetFile();
-        if (pFile != NULL)
+        if (pFile != nullptr)
         {
             pFile->Write(pbyFileData, nIndex);
         }
@@ -369,7 +369,7 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
         TRY
         {
             CFile* pFile = ar.GetFile();
-            if (pFile != NULL)
+            if (pFile != nullptr)
             {
                 ULONGLONG FileLength = pFile->GetLength();
                 BYTE* pbyFileData = new BYTE[(size_t)FileLength];       //Warning
@@ -537,13 +537,13 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
         }
         CATCH_ALL(pomE)
         {
-            if(pomE != NULL)
+            if(pomE != nullptr)
             {
                 char acError[1024];
                 // Get error
                 pomE->GetErrorMessage( acError, sizeof(acError));
 
-                MessageBox( NULL, acError, NULL, MB_OK );
+                MessageBox( nullptr, acError, nullptr, MB_OK );
 
                 pomE->Delete();
             }
@@ -1025,13 +1025,13 @@ void CFunctionEditorDoc::vUpdateDEFFile(CString omStrFileName)
         }
         CATCH_ALL(pomE)
         {
-            if(pomE != NULL)
+            if(pomE != nullptr)
             {
                 char acError[1024];
                 // Get error
                 pomE->GetErrorMessage( acError, sizeof(acError));
 
-                MessageBox( NULL, acError, NULL, MB_OK );
+                MessageBox( nullptr, acError, nullptr, MB_OK );
 
                 pomE->Delete();
             }
@@ -1074,7 +1074,7 @@ BOOL CFunctionEditorDoc::OnSaveDocument(LPCTSTR lpszPathName)
     CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_omStrSourceFilePathName = lpszPathName;
     // Changes in the file name should get
     // reflected to the root of the tree item
-    UpdateAllViews(NULL);
+    UpdateAllViews(nullptr);
     // Saved
     SetModifiedFlag( FALSE );
 
@@ -1121,7 +1121,7 @@ BOOL CFunctionEditorDoc::OnSaveDocument(LPCTSTR lpszPathName)
 
         POSITION pCopyWritePos = m_omSourceCodeTextList.Find( omstrCopyWriteInformation );
 
-        if(pCopyWritePos == NULL)
+        if(pCopyWritePos == nullptr)
         {
             m_omSourceCodeTextList.AddHead(omstrProtocol);
             m_omSourceCodeTextList.AddHead(omstrBusMasterVersion);
@@ -1132,7 +1132,7 @@ BOOL CFunctionEditorDoc::OnSaveDocument(LPCTSTR lpszPathName)
     omTemp.Replace("PLACE_HODLER_FOR_BUSNAME", m_sBusSpecInfo.m_omBusName);
     POSITION posStartGvar = m_omSourceCodeTextList.Find( omTemp  );
 
-    if (NULL != posStartGvar)
+    if (nullptr != posStartGvar)
     {
         omTemp = BUS_VAR_FOOTER;
         omTemp.Replace("PLACE_HODLER_FOR_BUSNAME", m_sBusSpecInfo.m_omBusName);
@@ -1142,7 +1142,7 @@ BOOL CFunctionEditorDoc::OnSaveDocument(LPCTSTR lpszPathName)
         m_omGlobalVariableArray.RemoveAll();
         CString omStr;
         // Copy the function to be deleted to a temp list
-        while ( posStartGvar != NULL && posEndGvar != NULL && posStartGvar != posEndGvar)
+        while ( posStartGvar != nullptr && posEndGvar != nullptr && posStartGvar != posEndGvar)
         {
             omStr = m_omSourceCodeTextList.GetNext( posStartGvar );
             //Any initialization
@@ -1183,7 +1183,7 @@ int CFunctionEditorDoc::nGetMaxLineLength()
     CString omStrLine   = STR_EMPTY;
     int nLineLength     = 0;
 
-    while ( pos != NULL )
+    while ( pos != nullptr )
     {
         // Get each line
         omStrLine =
@@ -1231,9 +1231,9 @@ int CFunctionEditorDoc::ReadString(const LPSTR lpBuffer, UINT unSize, LPSTR lpsz
 {
     int nReturn = 0;
     UINT unStop = unSize - nIndex;
-    if(lpsz == NULL)
+    if(lpsz == nullptr)
     {
-        return NULL;
+        return 0;
     }
     CHAR ch;
     UINT unRead = 0;
@@ -1277,7 +1277,7 @@ void CFunctionEditorDoc::OnCloseDocument()
 {
     // Set filename to empty
     /* CMainFrame* pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
-     if ( pMainFrame != NULL )
+     if ( pMainFrame != nullptr )
      {
          pMainFrame->CGlobalObj::m_omStrSourceFilePathName = STR_EMPTY;
      }*/
@@ -1291,21 +1291,21 @@ void CFunctionEditorDoc::OnCloseDocument()
     // Get first document template position
     //POSITION pos = theApp.GetFirstDocTemplatePosition();
 
-    //while ( pos != NULL )
+    //while ( pos != nullptr )
     //{
     //    // Get Next doc template
     //    CDocTemplate* pDocTemplate =
     //        theApp.GetNextDocTemplate( pos );
 
-    //    if ( pDocTemplate != NULL )
+    //    if ( pDocTemplate != nullptr )
     //    {
     //        // Get postion to first document
     //        POSITION pos2 = pDocTemplate->GetFirstDocPosition();
 
-    //        if ( pos2 == NULL )
+    //        if ( pos2 == nullptr )
     //        {
     //            // All doc's are closed
-    //            pos = NULL;
+    //            pos = nullptr;
     //        }
     //    }
     //
@@ -1411,7 +1411,7 @@ CString CFunctionEditorDoc::omStrGetInitialisedMessage(UINT unMsgID,
     }
     // Get the message from Active database
     SMSG_NAME_CODE sMsgNameCode;
-    POSITION pos = NULL;
+    POSITION pos = nullptr;
     BOOL bIsMsgFound = FALSE;
     if( bInitByUser == FALSE)
     {
@@ -1448,12 +1448,12 @@ CString CFunctionEditorDoc::omStrGetInitialisedMessage(UINT unMsgID,
         {
             POSITION        MainPos;
             MainPos =  CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_odMsgNameMsgCodeListDb.GetHeadPosition();
-            while(MainPos != NULL)
+            while(MainPos != nullptr)
             {
                 SDB_NAME_MSG&  sDbNameMsg = CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).
                                             m_odMsgNameMsgCodeListDb.GetNext(MainPos);
                 pos = sDbNameMsg.m_oMsgNameMsgCodeList.Find(sMsgNameCode);
-                if(pos != NULL)         //if present stop searching
+                if(pos != nullptr)         //if present stop searching
                 {
                     sMsgNameCode = sDbNameMsg.m_oMsgNameMsgCodeList.GetAt(pos);
                     break;
@@ -1462,7 +1462,7 @@ CString CFunctionEditorDoc::omStrGetInitialisedMessage(UINT unMsgID,
         }
     }
     // If message found
-    if(pos != NULL || (bIsMsgFound == TRUE && m_sBusSpecInfo.m_eBus == LIN))
+    if(pos != nullptr || (bIsMsgFound == TRUE && m_sBusSpecInfo.m_eBus == LIN))
     {
         //sMsgNameCode = CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_odMsgNameMsgCodeList.GetAt(pos);
         CString omStrTemp;
@@ -1686,7 +1686,7 @@ BOOL CFunctionEditorDoc::bAddFunctionPrototype(CString omStrFuntion, BOOL bGCCEx
         omTemp.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
         POSITION pos = m_omSourceCodeTextList.Find( omTemp );
 
-        if ( pos != NULL )
+        if ( pos != nullptr )
         {
             CString omStrReplace = _T("");
             omStrReplace  = omStrFuntion;

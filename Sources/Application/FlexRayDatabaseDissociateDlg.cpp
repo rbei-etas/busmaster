@@ -31,7 +31,7 @@ extern CCANMonitorApp theApp;
 // CFlexRayDatabaseDissociateDlg dialog
 
 IMPLEMENT_DYNAMIC(CFlexRayDatabaseDissociateDlg, CDialog)
-CFlexRayDatabaseDissociateDlg::CFlexRayDatabaseDissociateDlg(FLEXRAY_CONFIG_FILES& sFibexParams, CWnd* pParent /*=NULL*/)
+CFlexRayDatabaseDissociateDlg::CFlexRayDatabaseDissociateDlg(FLEXRAY_CONFIG_FILES& sFibexParams, CWnd* pParent /*=nullptr*/)
     : CDialog(CFlexRayDatabaseDissociateDlg::IDD, pParent),
       m_sFibexParams(sFibexParams)
 {
@@ -205,7 +205,7 @@ void CFlexRayDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
         //Set the new file name array
         //(*(CMsgSignal**)(m_sDbParams.m_ppvImportedDBs))->vSetDataBaseNames(&aomstrDBFiles);
         //// Send a message to Tx Window about database change
-        //if( pMainFrame != NULL)
+        //if( pMainFrame != nullptr)
         //{
         //    eUSERSELCTION eUserSel = eDATABASEIMPORTCMD;
         //    pMainFrame->m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
@@ -214,7 +214,7 @@ void CFlexRayDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
         ////// Check for Signal Watch & DLL load Condition
         ////
         //BOOL bUserOption = FALSE;
-        //if(pMainFrame->m_psSignalWatchList != NULL)
+        //if(pMainFrame->m_psSignalWatchList != nullptr)
         //{
         //    if(theApp.m_bFromAutomation == FALSE)
         //        bUserOption = AfxMessageBox(_(defIMPORT_WARNING),
@@ -259,7 +259,7 @@ void CFlexRayDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
         //            }
 
         //            // Send the Message to the Left View to Update List for all buses
-        //            if( pMainFrame != NULL )
+        //            if( pMainFrame != nullptr )
         //            {
         //                pMainFrame->vPostConfigChangeCmdToSigGrphWnds(FALSE);
         //            }

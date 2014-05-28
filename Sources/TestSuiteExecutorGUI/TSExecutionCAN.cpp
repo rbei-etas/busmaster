@@ -40,7 +40,7 @@ Modifications  :
 ******************************************************************************/
 int ReadTSXDataBuffer(CTSExecutionCAN* pTSXCan)
 {
-    ASSERT(pTSXCan != NULL);
+    ASSERT(pTSXCan != nullptr);
     while (pTSXCan->m_ouCanBufFSE.GetMsgCount() > 0)
     {
         static STCANDATA sCanData;
@@ -69,7 +69,7 @@ HRESULT VerifyCurrentMessage(STCANDATA& sCanData, CTSExecutionCAN* pTSXCan)
     EnterCriticalSection(&(pTSXCan->m_omCritSecTS));
     AfxTrace(_("In VERIFY - After Enter\n"));
 
-    if(pTSXCan->m_bTimeOver == TRUE || pTSXCan->m_pCurrentVerify == NULL)
+    if(pTSXCan->m_bTimeOver == TRUE || pTSXCan->m_pCurrentVerify == nullptr)
     {
         LeaveCriticalSection(&(pTSXCan->m_omCritSecTS));
         return S_FALSE;
@@ -83,7 +83,7 @@ HRESULT VerifyCurrentMessage(STCANDATA& sCanData, CTSExecutionCAN* pTSXCan)
 
         if(pTSXCan->m_pCurrentVerify->GetMessageFromId(sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID, &ouMsgData) == S_OK)
         {
-            if (pTSXCan->m_MsgVerifiedList.Find(sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID) == NULL)
+            if (pTSXCan->m_MsgVerifiedList.Find(sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID) == nullptr)
             {
                 UCHAR pucData[8] = {0};
                 memcpy(pucData, &sCanData.m_uDataInfo.m_sCANMsg.m_ucData, sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen);
@@ -94,7 +94,7 @@ HRESULT VerifyCurrentMessage(STCANDATA& sCanData, CTSExecutionCAN* pTSXCan)
                 SMSGENTRY* sMsgEntry = new SMSGENTRY;
                 pTSXCan->m_pCurrentVerify->m_ouDataBaseManager.nGetMessageInfo(ouMsgData.m_omMessageName, sMsg);
                 sMsgEntry->m_psMsg = &sMsg;
-                sMsgEntry->m_psNext = NULL;
+                sMsgEntry->m_psNext = nullptr;
                 pTSXCan->m_ouMsgInterpret.vSetMessageList(sMsgEntry);
                 pTSXCan->m_ouMsgInterpret.bInterpretMsgs(ouMsgData.m_dwMessageID, pucData, ouSignalInfo);
                 CMessageResult ouMsgResult;
@@ -102,7 +102,7 @@ HRESULT VerifyCurrentMessage(STCANDATA& sCanData, CTSExecutionCAN* pTSXCan)
                 {
                     //pTSXCan->m_nVerifyCount++;
 
-                    if(pTSXCan->m_ouVerifyResult != NULL && pTSXCan->m_bTimeOver == FALSE)
+                    if(pTSXCan->m_ouVerifyResult != nullptr && pTSXCan->m_bTimeOver == FALSE)
                     {
                         //pTSXCan->TSX_DisplayMessage(ouMsgData.m_omMessageName);
                         //pTSXCan->TSX_DisplayResult(CString("SUCCESS"));
@@ -116,7 +116,7 @@ HRESULT VerifyCurrentMessage(STCANDATA& sCanData, CTSExecutionCAN* pTSXCan)
     if(pTSXCan->m_MsgVerifiedList.GetCount() == (INT)unCount)
     {
         //pTSXCan->m_nVerifyCount = 0;
-        pTSXCan->m_pCurrentVerify = NULL;
+        pTSXCan->m_pCurrentVerify = nullptr;
         pTSXCan->m_ouVerifyEvent.SetEvent();
         //pTSXCan->m_ouReadThread.m_unActionCode = INVOKE_FUNC;
     }
@@ -125,7 +125,7 @@ HRESULT VerifyCurrentMessage(STCANDATA& sCanData, CTSExecutionCAN* pTSXCan)
 }
 int ReadVerifyTSXDataBuffer(CTSExecutionCAN* pTSXCan)
 {
-    ASSERT(pTSXCan != NULL);
+    ASSERT(pTSXCan != nullptr);
     while (pTSXCan->m_ouCanBufFSE.GetMsgCount() > 0)
     {
         static STCANDATA sCanData;
@@ -170,12 +170,12 @@ DWORD WINAPI TSDataReadThreadProc(LPVOID pVoid)
     USES_CONVERSION;
 
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         return ((DWORD)-1);
     }
     CTSExecutionCAN* pTSXExecutionCAN = (CTSExecutionCAN*)pThreadParam->m_pBuffer;
-    if (pTSXExecutionCAN == NULL)
+    if (pTSXExecutionCAN == nullptr)
     {
         return ((DWORD)-1);
     }
@@ -233,10 +233,10 @@ CTSExecutionCAN::CTSExecutionCAN(void)
 {
     m_ouReadThread.m_hActionEvent = m_ouCanBufFSE.hGetNotifyingEvent();
     InitializeCriticalSection(&m_omCritSecTS);
-    m_pCurrentVerify= NULL;
+    m_pCurrentVerify= nullptr;
     m_ouVerifyEvent.ResetEvent();
     m_nVerifyCount = 0;
-    m_ouVerifyResult = NULL;
+    m_ouVerifyResult = nullptr;
     QueryPerformanceFrequency(&m_QueryFrequency);
 }
 
@@ -293,7 +293,7 @@ Modifications  :
 HRESULT CTSExecutionCAN::TSX_bStartStopReadThread(BOOL bStart)
 {
     m_ouReadThread.bTerminateThread();
-    m_ouReadThread.m_hActionEvent = NULL;
+    m_ouReadThread.m_hActionEvent = nullptr;
     m_ouReadThread.m_unActionCode = IDLE;
     if(bStart == TRUE)
     {
@@ -441,7 +441,7 @@ HRESULT CTSExecutionCAN::TSX_VerifyMessage(CBaseEntityTA* pEntity, CResultVerify
         SMSGENTRY* sMsgEntry = new SMSGENTRY;
         pEntity->m_ouDataBaseManager.nGetMessageInfo(ouVerifyData.m_omMessageName, sMsg);
         sMsgEntry->m_psMsg = &sMsg;
-        sMsgEntry->m_psNext = NULL;
+        sMsgEntry->m_psNext = nullptr;
         m_ouMsgInterpret.vSetMessageList(sMsgEntry);
         m_ouMsgInterpret.bInterpretMsgs(ouVerifyData.m_dwMessageID, pucData, ouSignalInfo);
 
@@ -566,14 +566,14 @@ BOOL CTSExecutionCAN::bMakeCanMessage(sMESSAGE*& pMsg, CSend_MessageData& ouSend
                                       UCHAR aucData[8], STCAN_MSG& stCanMsg)
 {
     UNREFERENCED_PARAMETER(aucData[0]);
-    if(pMsg == NULL)
+    if(pMsg == nullptr)
     {
         return FALSE;
     }
     INT nIndex = 0;
     sSIGNALS* psCurrSignal = pMsg->m_psSignals;
     memset(&stCanMsg.m_ucData, 0, 8*sizeof(UCHAR));
-    while (NULL != psCurrSignal)
+    while (nullptr != psCurrSignal)
     {
         POSITION pos = ouSendData.m_odSignalDataList.FindIndex(nIndex++);
         CSignalData& ouSignalData =  ouSendData.m_odSignalDataList.GetAt(pos);

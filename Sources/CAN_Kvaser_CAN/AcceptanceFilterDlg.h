@@ -34,8 +34,8 @@ class CAcceptanceFilterDlg : public CDialog//CPropertyPage
     // Construction
 public:
     // standard constructor
-    CAcceptanceFilterDlg(CWnd* pParent = NULL,
-                         PSCONTROLLER_DETAILS psAccFilterInfo = NULL);
+    CAcceptanceFilterDlg(CWnd* pParent = nullptr,
+                         PSCONTROLLER_DETAILS psAccFilterInfo = nullptr);
     virtual ~CAcceptanceFilterDlg();
     // Dialog Data
     //{{AFX_DATA(CAcceptanceFilterDlg)

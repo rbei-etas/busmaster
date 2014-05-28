@@ -176,7 +176,7 @@ Code Tag       :  CS042
 HRESULT CResultGenerator::GenerateReport(void)
 {
     CStdioFile omReportFile;
-    if(omReportFile.Open(m_ouHeaderInfo.m_sReportFile.m_omPath, CFile::modeCreate|CFile::modeReadWrite)!=NULL)
+    if(omReportFile.Open(m_ouHeaderInfo.m_sReportFile.m_omPath, CFile::modeCreate|CFile::modeReadWrite)!=false)
     {
         if(m_ouHeaderInfo.m_sReportFile.m_eType == TXT)
         {

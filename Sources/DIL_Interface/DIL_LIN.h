@@ -63,7 +63,7 @@ public:
      * Based on the parameter this function renders number of the driver interface
      * layers supported or available. If 'bAvailable' is true, this returns number of
      * the DILs implemented; else the list of the DILs supported by the existing
-     * license will be returned. If List is NULL, only number is returned.
+     * license will be returned. If List is nullptr, only number is returned.
      */
     DWORD DILL_GetDILList(bool bAvailable, DILLIST* List);
 
@@ -117,7 +117,7 @@ public:
     /**
      * Call this function to get a system time and the time stamp associated with it
      */
-    HRESULT DILL_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT DILL_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
 
     /**
      * Call this function to list the hardware interfaces available and receive

@@ -40,8 +40,8 @@ typedef struct tagSCALCEXECTIMETHREAD
     tagSCALCEXECTIMETHREAD()
     {
         m_bThreadStop  = FALSE;
-        m_pomThreadPtr = NULL;
-        m_pTransmitMsg = NULL;
+        m_pomThreadPtr = nullptr;
+        m_pTransmitMsg = nullptr;
         m_eBus = CAN;
     }
 
@@ -54,7 +54,7 @@ class CSetResetTimer : public CDialog
 {
     // Construction
 public:
-    CSetResetTimer(ETYPE_BUS eBus, CWnd* pParent = NULL); // standard constructor
+    CSetResetTimer(ETYPE_BUS eBus, CWnd* pParent = nullptr); // standard constructor
     void vSetResetAllTimers(CString om_StrNode,BOOL bEnable);
     void vTimerStatusChanged();
     PSTIMERHANDLER GetPointerOfHandler(PSTIMERHANDLERLIST psTimerHandl,

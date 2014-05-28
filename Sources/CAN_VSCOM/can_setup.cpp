@@ -81,8 +81,8 @@ typedef struct
 } VSCAN_DEVICE;
 
 typedef VSCAN_DEVICE* VSCAN_DEVICE_LIST;
-static struct _VSCanCfg* CanCfg = NULL;
-static HWND g_hDlg = NULL;
+static struct _VSCanCfg* CanCfg = nullptr;
+static HWND g_hDlg = nullptr;
 static VSCAN_DEVICE_LIST g_list[MAX_DEVICES];
 static DWORD g_dwListCnt = 0;
 
@@ -272,21 +272,21 @@ static void SaveDeviceData(void)
     // BTR Register
     if (GetDlgItemText(g_hDlg, IDC_BTR0, temp, sizeof(temp)) <= 2)
     {
-        CanCfg->btr.Btr0 = (UCHAR)strtoul(temp, NULL, 16);
+        CanCfg->btr.Btr0 = (UCHAR)strtoul(temp, nullptr, 16);
     }
     if (GetDlgItemText(g_hDlg, IDC_BTR1, temp, sizeof(temp)) <= 2)
     {
-        CanCfg->btr.Btr1 = (UCHAR)strtoul(temp, NULL, 16);
+        CanCfg->btr.Btr1 = (UCHAR)strtoul(temp, nullptr, 16);
     }
 
     // Acceptance Code and Mask
     if (GetDlgItemText(g_hDlg, IDC_ACC_CODE, temp, sizeof(temp)))
     {
-        CanCfg->codeMask.Code = (UINT32)strtoul(temp, NULL, 16);
+        CanCfg->codeMask.Code = (UINT32)strtoul(temp, nullptr, 16);
     }
     if (GetDlgItemText(g_hDlg, IDC_ACC_MASK, temp, sizeof(temp)))
     {
-        CanCfg->codeMask.Mask = (UINT32)strtoul(temp, NULL, 16);
+        CanCfg->codeMask.Mask = (UINT32)strtoul(temp, nullptr, 16);
     }
     if (IsDlgButtonChecked(g_hDlg, IDC_FILTER_DUAL) == BST_CHECKED)
     {

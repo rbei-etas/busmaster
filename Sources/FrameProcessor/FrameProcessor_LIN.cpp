@@ -35,8 +35,8 @@ CFrameProcessor_LIN::CFrameProcessor_LIN():m_ouFormatMsgLIN(m_ouRefTimer)
 {
     DIL_GetInterface(LIN, (void**)&m_pouDilLINInterface);
 
-    m_sLINProcParams.m_pILog = NULL;
-    m_sLINProcParams.m_pouLINBuffer = NULL;
+    m_sLINProcParams.m_pILog = nullptr;
+    m_sLINProcParams.m_pouLINBuffer = nullptr;
     m_bIsLINDataLogged = FALSE;
 
     m_sDataCopyThread.m_hActionEvent = m_ouFSEBufLIN.hGetNotifyingEvent();
@@ -69,7 +69,7 @@ int CFrameProcessor_LIN::ExitInstance(void)
 
 CBaseLogObject* CFrameProcessor_LIN::CreateNewLogObj(const CString& omStrVersion)
 {
-    CLogObjectLIN* pLogObj = NULL;
+    CLogObjectLIN* pLogObj = nullptr;
     CString strVersion = CString(m_sLINProcParams.m_acVersion);
     if (strVersion.IsEmpty())
     {
@@ -82,10 +82,10 @@ CBaseLogObject* CFrameProcessor_LIN::CreateNewLogObj(const CString& omStrVersion
 void CFrameProcessor_LIN::DeleteLogObj(CBaseLogObject*& pouLogObj)
 {
     CLogObjectLIN* pLogObj = static_cast<CLogObjectLIN*> (pouLogObj);
-    if (NULL != pLogObj)
+    if (nullptr != pLogObj)
     {
         delete pLogObj;
-        pouLogObj = NULL;
+        pouLogObj = nullptr;
     }
     else
     {
@@ -96,7 +96,7 @@ void CFrameProcessor_LIN::DeleteLogObj(CBaseLogObject*& pouLogObj)
 void CFrameProcessor_LIN::CreateTimeModeMapping(SYSTEMTIME& CurrSysTime,
         UINT64& unAbsTime)
 {
-    if (m_pouDilLINInterface != NULL)
+    if (m_pouDilLINInterface != nullptr)
     {
         m_pouDilLINInterface->DILL_GetTimeModeMapping(CurrSysTime, unAbsTime);
     }
@@ -176,17 +176,17 @@ HRESULT CFrameProcessor_LIN::FPL_DoInitialisation(SLINPROC_PARAMS* psInitParams)
 {
     HRESULT hResult = S_FALSE;
 
-    if (psInitParams != NULL)
+    if (psInitParams != nullptr)
     {
         m_sLINProcParams = *psInitParams;
-        ASSERT(NULL != m_sLINProcParams.m_pouLINBuffer);
-        ASSERT(NULL != m_sLINProcParams.m_pILog);
+        ASSERT(nullptr != m_sLINProcParams.m_pouLINBuffer);
+        ASSERT(nullptr != m_sLINProcParams.m_pILog);
 
         m_ouFSEBufLIN.vClearMessageBuffer();
         //m_sDataCopyThread.m_hActionEvent = m_ouFSEBufLIN.hGetNotifyingEvent();
         if (this->CFrameProcessor_Common::DoInitialisation() == S_OK)
         {
-            if (m_pouDilLINInterface != NULL)
+            if (m_pouDilLINInterface != nullptr)
             {
                 if (m_pouDilLINInterface->DILL_ManageMsgBuf(MSGBUF_ADD, m_sLINProcParams.dwClientID, &m_ouFSEBufLIN) != S_OK)
                 {
@@ -213,7 +213,7 @@ HRESULT CFrameProcessor_LIN::FPL_DoInitialisation(SLINPROC_PARAMS* psInitParams)
 const SFILTERAPPLIED_LIN& sFilterObj)
 {
 HRESULT hResult = S_FALSE;
-CLogObjectLIN* pLogObj = NULL;
+CLogObjectLIN* pLogObj = nullptr;
 
 if (bIsEditingON())
 {
@@ -233,7 +233,7 @@ pLogObj = static_cast<CLogObjectLIN*> (pouBaseLogObj);
 }
 
 //update the filters
-if (NULL != pLogObj)
+if (nullptr != pLogObj)
 {
 pLogObj->SetFilterInfo(sFilterObj);
 hResult = S_OK;
@@ -255,7 +255,7 @@ HRESULT hResult = S_FALSE;
 CBaseLogObject* pouBaseLogObj = FindLoggingBlock(ushLogBlk);
 CLogObjectLIN* pouLogObj = static_cast<CLogObjectLIN*> (pouBaseLogObj);
 
-if (NULL != pouLogObj)
+if (nullptr != pouLogObj)
 {
 pouLogObj->GetFilterInfo(sFilterObj);
 hResult = S_OK;
@@ -278,7 +278,7 @@ HRESULT CFrameProcessor_LIN::FPL_GetFilteringScheme(USHORT ushLogBlk,
     CBaseLogObject* pouBaseLogObj = FindLoggingBlock(ushLogBlk);
     CLogObjectLIN* pouLogObj = static_cast<CLogObjectLIN*> (pouBaseLogObj);
 
-    if (NULL != pouLogObj)
+    if (nullptr != pouLogObj)
     {
         pouLogObj->GetFilterInfo(sFilterObj);
         hResult = S_OK;
@@ -296,7 +296,7 @@ HRESULT CFrameProcessor_LIN::FPL_ApplyFilteringScheme(USHORT ushLogBlkID,
         const SFILTERAPPLIED_LIN& sFilterObj)
 {
     HRESULT hResult = S_FALSE;
-    CLogObjectLIN* pLogObj = NULL;
+    CLogObjectLIN* pLogObj = nullptr;
 
     if (bIsEditingON())
     {
@@ -316,7 +316,7 @@ HRESULT CFrameProcessor_LIN::FPL_ApplyFilteringScheme(USHORT ushLogBlkID,
     }
 
     //update the filters
-    if (NULL != pLogObj)
+    if (nullptr != pLogObj)
     {
         pLogObj->SetFilterInfo(sFilterObj);
         hResult = S_OK;
@@ -335,7 +335,7 @@ HRESULT CFrameProcessor_LIN::FPL_SetClientLINBufON(BOOL bEnable)
 
     /* There is only one erroneous situation likely to occur: the client buffer
     doesn't exist and the updation of the same is to be enabled. */
-    if ((bEnable == TRUE) && (NULL == m_sLINProcParams.m_pouLINBuffer))
+    if ((bEnable == TRUE) && (nullptr == m_sLINProcParams.m_pouLINBuffer))
     {
         ;
     }
@@ -375,12 +375,12 @@ void CFrameProcessor_LIN::FPL_vCloseLogFile()
 {
     USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
 
-    CBaseLogObject* pouCurrLogObj  = NULL;
+    CBaseLogObject* pouCurrLogObj  = nullptr;
     for (USHORT i = 0; i < ushBlocks; i++)
     {
         pouCurrLogObj = m_omLogObjectArray.GetAt(i);
 
-        if (pouCurrLogObj != NULL)
+        if (pouCurrLogObj != nullptr)
         {
             pouCurrLogObj->bStopOnlyLogging();
             //pouCurrLogObj->vCloseLogFile();

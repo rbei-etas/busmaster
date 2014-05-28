@@ -88,11 +88,7 @@ void CColorSelector::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 void CColorSelector::OnBnClicked()
 {
-    COLORREF clrRefObj = NULL;
-    /*if(m_nSelIndex != -1)
-    {
-        m_MapMsgIdToClr.Lookup(m_nSelIndex, clrRefObj);
-    }*/
+    COLORREF clrRefObj = 0;
 
     // TODO: Add your control notification handler code here
     CColorDialog omColorDialog(m_omColorBkg);
@@ -113,7 +109,7 @@ void CColorSelector::SetColour(COLORREF omColor)
     if (TRUE == IsWindow(m_hWnd))
     {
         CWnd* pParent = GetParent();
-        if( NULL != pParent )
+        if( nullptr != pParent )
         {
             pParent->SendMessage(WM_CPN_COLORSELECTED, (WPARAM)m_omColorBkg, GetDlgCtrlID());
         }
@@ -135,7 +131,7 @@ void CColorSelector::SetSelectedIndex(INT nSelIndex)
 
 COLORREF CColorSelector::GetColourForSelectedIndex(INT nSelectedIndex)
 {
-    COLORREF objClrRef = NULL;
+    COLORREF objClrRef = 0;
     m_MapMsgIdToClr.Lookup(nSelectedIndex, objClrRef);
 
     return objClrRef;

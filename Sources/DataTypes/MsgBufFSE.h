@@ -85,7 +85,7 @@ CMsgBufFSE<SMSGBUFFER>::CMsgBufFSE()
     m_nMsgSize = sizeof(SMSGBUFFER);
     vClearMessageBuffer();
     InitializeCriticalSection(&m_CritSectionForGB);
-    m_hNotifyingEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+    m_hNotifyingEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 }
 
 /******************************************************************************
@@ -104,7 +104,7 @@ template <typename SMSGBUFFER>
 CMsgBufFSE<SMSGBUFFER>::~CMsgBufFSE()
 {
     CloseHandle(m_hNotifyingEvent);
-    m_hNotifyingEvent = NULL;
+    m_hNotifyingEvent = nullptr;
     DeleteCriticalSection(&m_CritSectionForGB);
 }
 
@@ -149,7 +149,7 @@ template <typename SMSGBUFFER> HRESULT CMsgBufFSE<SMSGBUFFER>::ReadFromBuffer(
     int nResult = CALL_SUCCESS;
 
 #ifdef _DEBUG
-    ASSERT(psMsg != NULL);
+    ASSERT(psMsg != nullptr);
     ASSERT(!(m_nIndexRead > SIZE_APP_BUFFER));
 #endif
 
@@ -194,7 +194,7 @@ template <typename SMSGBUFFER> HRESULT CMsgBufFSE<SMSGBUFFER>::WriteIntoBuffer(
     int nResult = CALL_SUCCESS;
 
 #ifdef _DEBUG
-    ASSERT(psMsg != NULL);
+    ASSERT(psMsg != nullptr);
     ASSERT(!(m_nIndexWrite > SIZE_APP_BUFFER));
 #endif
 

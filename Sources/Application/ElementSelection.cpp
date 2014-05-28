@@ -95,14 +95,14 @@ COLORREF g_dColorTable[] =
   Date Created   : 10/12/2004
   Modifications  :
 *******************************************************************************/
-CElementSelection::CElementSelection(UINT nHardware, CWnd* pParent /*=NULL*/)
+CElementSelection::CElementSelection(UINT nHardware, CWnd* pParent /*=nullptr*/)
     : CDialog(CElementSelection::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CElementSelection)
     // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
-    m_pMainFrame = NULL;
-    m_hMessageRoot = m_hStatRoot = NULL;
+    m_pMainFrame = nullptr;
+    m_hMessageRoot = m_hStatRoot = nullptr;
     m_eBusType = CAN;
     m_nHardware  = nHardware;
 }
@@ -157,7 +157,7 @@ END_MESSAGE_MAP()
 void CElementSelection::OnOK()
 {
     // Update List
-    if( m_pMainFrame != NULL )
+    if( m_pMainFrame != nullptr )
     {
         m_pMainFrame->m_odGraphList[m_eBusType].m_omElementList.Copy( m_odElementList );
     }
@@ -216,7 +216,7 @@ BOOL CElementSelection::OnInitDialog()
 
         //SGW Code commented by Arun 21-10-2010
         // Populate List Control
-        if( m_pMainFrame != NULL )
+        if( m_pMainFrame != nullptr )
         {
             // Init List Control
             m_omElementList.SetImageList( &m_omImageList, LVSIL_SMALL );
@@ -287,9 +287,9 @@ void CElementSelection::vPopulateDBTree( CTreeCtrl& omTree,
         int nRawImgIndex, int nPhyImgIndex )
 {
     // Get Database Pointer
-    CMsgSignal* pomDatabase = NULL;
+    CMsgSignal* pomDatabase = nullptr;
     pomDatabase = theApp.m_pouMsgSignal;
-    if(pomDatabase != NULL)
+    if(pomDatabase != nullptr)
     {
         CString omStr;
         UINT unNoOfMsgs = pomDatabase->unGetNumerOfMessages();
@@ -298,16 +298,16 @@ void CElementSelection::vPopulateDBTree( CTreeCtrl& omTree,
         //// Get List of database Messages
         //CStringList omMsgList;
         //pomDatabase->omStrListGetMessageNames( omMsgList );
-        if (pIDArray != NULL )
+        if (pIDArray != nullptr )
         {
             pomDatabase->unListGetMessageIDs( pIDArray );
             // Get the list iterator
-            /*POSITION psPos = NULL;
+            /*POSITION psPos = nullptr;
             psPos = omMsgList.GetHeadPosition();*/
-            sMESSAGE* pMessage = NULL;
-            sSIGNALS* pSignals = NULL;
+            sMESSAGE* pMessage = nullptr;
+            sSIGNALS* pSignals = nullptr;
             // Init helping variables
-            HTREEITEM hMessage = NULL;
+            HTREEITEM hMessage = nullptr;
             int nElementCount = 0;
             // Get the element list size
             nElementCount = odElementList.GetSize();
@@ -317,12 +317,12 @@ void CElementSelection::vPopulateDBTree( CTreeCtrl& omTree,
             for(UINT nCount=0 ; nCount<unNoOfMsgs ; nCount++)
             {
                 // Init both pointers at the begining of each iteration
-                pMessage = NULL;
-                pSignals = NULL;
+                pMessage = nullptr;
+                pSignals = nullptr;
                 // Get next message
                 /*omStr = omMsgList.GetNext( psPos );*/
                 pMessage = pomDatabase->psGetMessagePointer( pIDArray[nCount] );
-                if(pMessage != NULL)
+                if(pMessage != nullptr)
                 {
                     omStr = pMessage->m_omStrMessageName;
                     //omStr += defUNDERSCORE;
@@ -340,7 +340,7 @@ void CElementSelection::vPopulateDBTree( CTreeCtrl& omTree,
                     pSignals = pMessage->m_psSignals;
                 }
                 // Insert Signals of this message
-                while( pSignals != NULL )
+                while( pSignals != nullptr )
                 {
                     // This will be set if found in the element list
                     // Values
@@ -394,7 +394,7 @@ void CElementSelection::vPopulateDBTree( CTreeCtrl& omTree,
                 }
             }
             delete [] pIDArray;
-            pIDArray = NULL;
+            pIDArray = nullptr;
         }
     }
 }
@@ -423,7 +423,7 @@ void CElementSelection::vPopulateStatTree(
     // Get the List of Strings from the global stat parameter array
     int nStatParamCount = defSTAT_PARAMETERS_COUNT;
     int nListItemCount = odElementList.GetSize();
-    HTREEITEM hItem = NULL;
+    HTREEITEM hItem = nullptr;
     CString omStrEntry;
     BOOL bSkip;
     // Iterate through list of Stat params
@@ -477,7 +477,7 @@ void CElementSelection::vPopulateElementList(
     int nRawValImgIndex, int nPhyValImgIndex)
 {
     // Get the Database Pointer to get Message Name
-    CMsgSignal* pomDatabase = NULL;
+    CMsgSignal* pomDatabase = nullptr;
     pomDatabase = theApp.m_pouMsgSignal;
     // Get element list
     int nCount = odElementList.GetSize();
@@ -513,7 +513,7 @@ void CElementSelection::vPopulateElementList(
         else
         {
             // Get Message Name from the database
-            if( pomDatabase != NULL )
+            if( pomDatabase != nullptr )
             {
                 // Find the image index
                 int nImageIndex = odTemp.m_nValueType == eRAW_VALUE ?
@@ -600,7 +600,7 @@ void CElementSelection::vAddSelectedItem()
 {
     // Get selected item handle
     HTREEITEM hValType = m_omTreeEntries.GetSelectedItem();
-    if( hValType != NULL )
+    if( hValType != nullptr )
     {
         // Check whether user has clocked only on value type or Stat param
         switch( m_omTreeEntries.GetItemData( hValType ) )
@@ -623,14 +623,14 @@ void CElementSelection::vAddSelectedItem()
                 if( m_omElementList.GetItemCount() < defMAX_ELEMENTS_COUNT )
                 {
                     // Get Catogory, Element Name
-                    HTREEITEM hCatogory = NULL, hElement = NULL;
+                    HTREEITEM hCatogory = nullptr, hElement = nullptr;
                     hElement = m_omTreeEntries.GetParentItem( hValType );
-                    if( hElement != NULL )
+                    if( hElement != nullptr )
                     {
                         hCatogory =
                             m_omTreeEntries.GetParentItem( hElement );
                     }
-                    if( hElement != NULL && hCatogory != NULL )
+                    if( hElement != nullptr && hCatogory != nullptr )
                     {
                         int nIndex = m_omElementList.GetItemCount();
                         CString omStrMsg, omStrSig;
@@ -669,14 +669,14 @@ void CElementSelection::vAddSelectedItem()
                 if( m_omElementList.GetItemCount() < defMAX_ELEMENTS_COUNT )
                 {
                     // Get Catogory, Element Name
-                    HTREEITEM hCatogory = NULL, hElement = NULL;
+                    HTREEITEM hCatogory = nullptr, hElement = nullptr;
                     hElement = m_omTreeEntries.GetParentItem( hValType );
-                    if( hElement != NULL )
+                    if( hElement != nullptr )
                     {
                         hCatogory =
                             m_omTreeEntries.GetParentItem( hElement );
                     }
-                    if( hElement != NULL && hCatogory != NULL )
+                    if( hElement != nullptr && hCatogory != nullptr )
                     {
                         int nIndex = m_omElementList.GetItemCount();
                         CString omStrMsg, omStrSig;
@@ -714,17 +714,17 @@ void CElementSelection::vAddSelectedItem()
                 if( m_omElementList.GetItemCount() < defMAX_ELEMENTS_COUNT )
                 {
                     // Get Catogory, Element Name
-                    HTREEITEM hCatogory = NULL;
-                    HTREEITEM hChannel = NULL;
+                    HTREEITEM hCatogory = nullptr;
+                    HTREEITEM hChannel = nullptr;
                     // Get channel Index
                     hChannel = m_omTreeEntries.GetParentItem( hValType );
-                    if( hChannel != NULL )
+                    if( hChannel != nullptr )
                     {
                         // Get catogory
                         hCatogory =
                             m_omTreeEntries.GetParentItem( hChannel );
                     }
-                    if( hChannel != NULL && hCatogory != NULL )
+                    if( hChannel != nullptr && hCatogory != nullptr )
                     {
                         int nIndex = m_omElementList.GetItemCount();
                         // Insert Statistics parameter
@@ -784,10 +784,10 @@ void CElementSelection::vAddToElementList( CString omStrMsgName,
         int nValType )
 {
     // Get Database Pointer
-    CMsgSignal* pomDatabase = NULL;
+    CMsgSignal* pomDatabase = nullptr;
     pomDatabase = theApp.m_pouMsgSignal;
     // Add Element to the list
-    if( pomDatabase != NULL )
+    if( pomDatabase != nullptr )
     {
         CGraphElement odNewElement;
         int nMsgID = unGetMsgIDFromName( omStrMsgName );
@@ -930,7 +930,7 @@ void CElementSelection::OnBtnDelete()
                 BOOL bDeleteListItem = TRUE;
                 // Now Insert the new item in to the stat tree
                 HTREEITEM hChannel = hGetChannelHandle( omStrChannel );
-                if( hChannel != NULL )
+                if( hChannel != nullptr )
                 {
                     // Insert the new item
                     HTREEITEM hItem = m_omTreeEntries.InsertItem( omStrParam,
@@ -983,7 +983,7 @@ void CElementSelection::OnBtnDelete()
                 // message found and signal not found
                 HTREEITEM hSignal =
                     hGetElementHandle( omStrMsg, omStrSig, TRUE );
-                if( hSignal != NULL )
+                if( hSignal != nullptr )
                 {
                     // Now Insert the new item in to the stat tree
                     HTREEITEM hRawVal = m_omTreeEntries.InsertItem(
@@ -1024,7 +1024,7 @@ void CElementSelection::OnBtnDelete()
                 // message found and signal not found
                 HTREEITEM hSignal =
                     hGetElementHandle( omStrMsg, omStrSig, TRUE );
-                if( hSignal != NULL )
+                if( hSignal != nullptr )
                 {
                     // Now Insert the new item in to the stat tree
                     HTREEITEM hPhyVal = m_omTreeEntries.InsertItem(
@@ -1078,8 +1078,8 @@ HTREEITEM CElementSelection::hGetElementHandle( const CString& omStrMsg,
     // Get First Child node of Message
     HTREEITEM hCurrent =
         m_omTreeEntries.GetNextItem( m_hMessageRoot, TVGN_CHILD);
-    HTREEITEM hMessage = NULL;
-    while( hCurrent != NULL )
+    HTREEITEM hMessage = nullptr;
+    while( hCurrent != nullptr )
     {
         CString omStrEntry = m_omTreeEntries.GetItemText( hCurrent );
 
@@ -1094,7 +1094,7 @@ HTREEITEM CElementSelection::hGetElementHandle( const CString& omStrMsg,
             hMessage = hCurrent;
             // Find for signal
             hCurrent = m_omTreeEntries.GetNextItem( hCurrent, TVGN_CHILD);
-            while ( hCurrent != NULL )
+            while ( hCurrent != nullptr )
             {
                 omStrEntry = m_omTreeEntries.GetItemText( hCurrent );
                 // Found signal and return the same
@@ -1120,8 +1120,8 @@ HTREEITEM CElementSelection::hGetElementHandle( const CString& omStrMsg,
             hCurrent = m_omTreeEntries.GetNextItem( hCurrent, TVGN_NEXT);
         }
     }
-    // Return NULL to indicate Failure
-    return NULL;
+    // Return nullptr to indicate Failure
+    return nullptr;
 }
 
 /*******************************************************************************
@@ -1200,7 +1200,7 @@ void CElementSelection::OnDblclkLstcGraphElements(NMHDR* /*pNMHDR*/, LRESULT* pR
 
                 // Get Signal Pointer from the database module
                 CMsgSignal* pomDatabase = theApp.m_pouMsgSignal;
-                if( pomDatabase != NULL )
+                if( pomDatabase != nullptr )
                 {
                     //To find out the ID from the displayed name
                     UINT unMsgID = unGetMsgIDFromName(omStrMsg);
@@ -1211,11 +1211,11 @@ void CElementSelection::OnDblclkLstcGraphElements(NMHDR* /*pNMHDR*/, LRESULT* pR
 
                     sMESSAGE* psMsg =
                         pomDatabase->psGetMessagePointer( unMsgID );
-                    if( psMsg != NULL )
+                    if( psMsg != nullptr )
                     {
                         // Get the Signal Details
                         sSIGNALS* psSig = psMsg->m_psSignals;
-                        while( psSig != NULL )
+                        while( psSig != nullptr )
                         {
                             if( psSig->m_omStrSignalName == omStrSig )
                             {
@@ -1225,7 +1225,7 @@ void CElementSelection::OnDblclkLstcGraphElements(NMHDR* /*pNMHDR*/, LRESULT* pR
                                 // Show Details
                                 omDetails.DoModal();
                                 // Break the loop
-                                psSig = NULL;
+                                psSig = nullptr;
                             }
                             else
                             {
@@ -1263,14 +1263,14 @@ void CElementSelection::OnDblclkLstcGraphElements(NMHDR* /*pNMHDR*/, LRESULT* pR
 *******************************************************************************/
 void CElementSelection::vEnableDisableButtons()
 {
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     BOOL bAddEnable, bDeleteEnable, bDeleteAllEnable;
     bAddEnable = bDeleteEnable = bDeleteAllEnable = FALSE;
 
     // Get Add Enable condition
     HTREEITEM hValType = m_omTreeEntries.GetSelectedItem();
 
-    if( hValType != NULL )
+    if( hValType != nullptr )
     {
         // Check whether user has clocked only on value type or Stat param
         switch( m_omTreeEntries.GetItemData( hValType ) )
@@ -1302,19 +1302,19 @@ void CElementSelection::vEnableDisableButtons()
     // Update Buttons
     // Enable Disable Add Button
     pWnd = GetDlgItem( IDC_BTN_ADD );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bAddEnable );
     }
     // Enable Disable Delete Button
     pWnd = GetDlgItem( IDC_BTN_DELETE );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bDeleteEnable );
     }
     // Enable Delete Delete All
     pWnd = GetDlgItem( IDC_BTN_DELETE_ALL );
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bDeleteAllEnable );
     }
@@ -1417,7 +1417,7 @@ void CElementSelection::vCreateChannelTree(HTREEITEM hStatRoot)
   Output         : Handle of the statistics channel
   Functionality  : This function searches the tree control to find the entry of
                    the statistics channel. If the element found this will return
-                   the handle otherwise NULL.
+                   the handle otherwise nullptr.
   Member of      : CElementSelection
   Author(s)      : Raja N
   Date Created   : 10/12/2004
@@ -1425,12 +1425,12 @@ void CElementSelection::vCreateChannelTree(HTREEITEM hStatRoot)
 *******************************************************************************/
 HTREEITEM CElementSelection::hGetChannelHandle(const CString& omStrChannel)
 {
-    HTREEITEM hChannel = NULL;
+    HTREEITEM hChannel = nullptr;
     // Get First Child node of Message
     HTREEITEM hCurrent =
         m_omTreeEntries.GetNextItem( m_hStatRoot, TVGN_CHILD);
     // If it is a valid root handle
-    while( hCurrent != NULL )
+    while( hCurrent != nullptr )
     {
         // Get next item in the tree
         CString omStrEntry = m_omTreeEntries.GetItemText( hCurrent );
@@ -1439,14 +1439,14 @@ HTREEITEM CElementSelection::hGetChannelHandle(const CString& omStrChannel)
         {
             hChannel = hCurrent;
             // Break the loop
-            hCurrent = NULL;
+            hCurrent = nullptr;
         }
         else
         {
             hCurrent = m_omTreeEntries.GetNextItem( hCurrent, TVGN_NEXT);
         }
     }
-    // Return the searched handle if found otherwise the initial value NULL
+    // Return the searched handle if found otherwise the initial value nullptr
     return hChannel;
 }
 /*******************************************************************************

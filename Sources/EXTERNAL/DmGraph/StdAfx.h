@@ -36,7 +36,7 @@ extern CComModule _Module;
 #include <HtmlHelp.h>
 #include <stdio.h>
 
-//these macros work with NULL pointers
+//these macros work with nullptr pointers
 #define wcscmp(x, y) wcscmp(x ? x : L"", y ? y : L"")
 #define _wcsicmp(x, y) _wcsicmp(x ? x : L"", y ? y : L"")
 

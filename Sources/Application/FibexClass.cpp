@@ -41,7 +41,7 @@
 extern MSXML2::IXMLDOMDocument2Ptr gpXMLDom;
 
 static std::string sg_omActiveVersion = VERSION_NONE;
-static HMODULE sg_HMODULE = NULL;
+static HMODULE sg_HMODULE = nullptr;
 
 
 typedef int (WINAPIV* PF_LOADFIBEXFILE)(std::string);
@@ -51,13 +51,13 @@ typedef int (WINAPIV* PF_RESETFIBEXENTITY)(eENTITY_FIBEX, PVOID);
 typedef int (WINAPIV* PF_RETREIVECONNECTORINFO)(PVOID odConnectorList, AbsConnectorInfoList& omConnectorsInECUInfo);
 
 
-static PF_LOADFIBEXFILE         sg_FunLoadFibexFile = NULL;
-static PF_WRITRFIBEXFILE        sg_FunWriteFibexFile = NULL;
+static PF_LOADFIBEXFILE         sg_FunLoadFibexFile = nullptr;
+static PF_WRITRFIBEXFILE        sg_FunWriteFibexFile = nullptr;
 static PF_TRANSLATE             sg_FunTranslate ;
-static PF_RESETFIBEXENTITY      sg_FunResetFibexEntity = NULL;
-static PF_RETREIVECONNECTORINFO sg_FunRetreiveConnectorInfo = NULL;
+static PF_RESETFIBEXENTITY      sg_FunResetFibexEntity = nullptr;
+static PF_RETREIVECONNECTORINFO sg_FunRetreiveConnectorInfo = nullptr;
 
-CPARSER_FIBEX* g_pouPARSER_FIBEX = NULL;
+CPARSER_FIBEX* g_pouPARSER_FIBEX = nullptr;
 
 /******************************* CPARSER_FIBEX ******************************************/
 
@@ -69,19 +69,19 @@ std::string CPARSER_FIBEX::GetVersionInfo(const std::string& omFibexFilePath)
     std::string strVersion = "";
     std::string strTempXMLPath = omFibexFilePath;
 
-    xmlDocPtr objXMLConfigFiledoc = NULL;
+    xmlDocPtr objXMLConfigFiledoc = nullptr;
 
     /* Open XML File */
-    objXMLConfigFiledoc = xmlReadFile(strTempXMLPath.c_str(), NULL, 0);
+    objXMLConfigFiledoc = xmlReadFile(strTempXMLPath.c_str(), nullptr, 0);
 
     xmlNodePtr pRootNode = xmlDocGetRootElement(objXMLConfigFiledoc);
 
     // Get the Fibex version
-    if(pRootNode != NULL)
+    if(pRootNode != nullptr)
     {
         _xmlAttr* pRootNodeAttr = pRootNode->properties;
 
-        while (pRootNodeAttr != NULL)
+        while (pRootNodeAttr != nullptr)
         {
             //VERSION
             if ((!xmlStrcmp(pRootNodeAttr->name, (const xmlChar*)"VERSION")))
@@ -99,7 +99,7 @@ std::string CPARSER_FIBEX::GetVersionInfo(const std::string& omFibexFilePath)
 
     /* Free the Doc Pointer to XML */
     xmlFreeDoc(objXMLConfigFiledoc);
-    objXMLConfigFiledoc = NULL;
+    objXMLConfigFiledoc = nullptr;
 
     return strVersion;
 }
@@ -179,7 +179,7 @@ int CPARSER_FIBEX::LoadFibexFile(std::string omFibexFilePath,
         }
     }
 
-    if (sg_FunLoadFibexFile != NULL)
+    if (sg_FunLoadFibexFile != nullptr)
     {
         if ((nResult = (*sg_FunLoadFibexFile)(omFibexFilePath)) == FCLASS_SUCCESS)
         {
@@ -438,7 +438,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                                 objSignal.m_strSignalName = objBaseSig.m_omShortName;
 
                                 POSITION posCoding = mapCodingPosition[objBaseSig.m_omCodingRef];
-                                if(posCoding != NULL)
+                                if(posCoding != nullptr)
                                 {
                                     CCODING_v2& objCoding = lstCoding.GetAt(posCoding);
 
@@ -724,7 +724,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                             objSignal.m_strSignalName = objBaseSig.m_omShortName;
 
                             POSITION posCoding = mapCodingPosition[objBaseSig.m_omCodingRef];
-                            if(posCoding != NULL)
+                            if(posCoding != nullptr)
                             {
                                 CCODING_v2& objCoding = lstCoding.GetAt(posCoding);
 
@@ -1139,7 +1139,7 @@ void CPARSER_FIBEX::GetSignalStruct(std::map<std::string, CSigInstance> mapSigIn
         objSignal.m_strSignalName = objBaseSig.m_omShortName;
 
         POSITION posCoding = mapCodingPosition[objBaseSig.m_omCodingRef];
-        if(posCoding != NULL)
+        if(posCoding != nullptr)
         {
             CCODING_v2& objCoding = lstCoding.GetAt(posCoding);
 
@@ -1215,7 +1215,7 @@ void CPARSER_FIBEX::sCopyCompuMethod(CCompuMethodEx& ouCompuMethodEx, SCOMPU_INT
     {
         case IDENTICAL_ENUM:
         {
-            while (pos != NULL)
+            while (pos != nullptr)
             {
                 SCOMPU_SCALE_v2& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
                 ouCompuMethodEx.m_uMethod.m_IdenticalCode.m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
@@ -1225,13 +1225,13 @@ void CPARSER_FIBEX::sCopyCompuMethod(CCompuMethodEx& ouCompuMethodEx, SCOMPU_INT
         }
         case LINEAR_ENUM:
         {
-            while (pos != NULL)
+            while (pos != nullptr)
             {
                 SCOMPU_SCALE_v2& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
                 ouCompuMethodEx.m_uMethod.m_LinearCode.m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
                 ouCompuMethodEx.m_uMethod.m_LinearCode.m_sRange.m_dwUpperLimit = tempAbsCompuScale.m_sUpper.m_fValue;
                 POSITION pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetHeadPosition();
-                if (pos1 != NULL)
+                if (pos1 != nullptr)
                 {
                     ouCompuMethodEx.m_uMethod.m_LinearCode.m_dD0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetNext(pos1);
                 }
@@ -1240,7 +1240,7 @@ void CPARSER_FIBEX::sCopyCompuMethod(CCompuMethodEx& ouCompuMethodEx, SCOMPU_INT
                     ouCompuMethodEx.m_uMethod.m_LinearCode.m_dD0 = 1;
                 }
                 pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetHeadPosition();
-                if (pos1 != NULL)
+                if (pos1 != nullptr)
                 {
                     ouCompuMethodEx.m_uMethod.m_LinearCode.m_dN0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
                     float fCheck = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetAt(pos1);
@@ -1255,7 +1255,7 @@ void CPARSER_FIBEX::sCopyCompuMethod(CCompuMethodEx& ouCompuMethodEx, SCOMPU_INT
         }
         case SCALE_LINEAR_ENUM:
         {
-            while (pos != NULL)
+            while (pos != nullptr)
             {
                 SCOMPU_SCALE_v2& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
 
@@ -1266,13 +1266,13 @@ void CPARSER_FIBEX::sCopyCompuMethod(CCompuMethodEx& ouCompuMethodEx, SCOMPU_INT
 
 
                 POSITION pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetHeadPosition();
-                if (pos1 != NULL)
+                if (pos1 != nullptr)
                 {
                     objLinearCode.m_dD0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetNext(pos1);
                 }
 
                 pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetHeadPosition();
-                if (pos1 != NULL)
+                if (pos1 != nullptr)
                 {
                     objLinearCode.m_dN0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
 
@@ -1285,7 +1285,7 @@ void CPARSER_FIBEX::sCopyCompuMethod(CCompuMethodEx& ouCompuMethodEx, SCOMPU_INT
         }
         case TEXTTABLE_ENUM:
         {
-            while (pos != NULL)
+            while (pos != nullptr)
             {
                 SCOMPU_SCALE_v2& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
 
@@ -1301,7 +1301,7 @@ void CPARSER_FIBEX::sCopyCompuMethod(CCompuMethodEx& ouCompuMethodEx, SCOMPU_INT
         }
         case TAB_NOINTP_ENUM:
         {
-            while (pos != NULL)
+            while (pos != nullptr)
             {
                 SCOMPU_SCALE_v2& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
 
@@ -1317,11 +1317,11 @@ void CPARSER_FIBEX::sCopyCompuMethod(CCompuMethodEx& ouCompuMethodEx, SCOMPU_INT
         }
         case FORMULA_ENUM:
         {
-            while (pos != NULL)
+            while (pos != nullptr)
             {
                 SCOMPU_SCALE_v2& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
                 PFORMULA_CODE_VAR_EX tempFormula = new FORMULA_CODE_VAR_EX;
-                tempFormula->m_pFirstOperand = NULL;
+                tempFormula->m_pFirstOperand = nullptr;
 
                 tempFormula->m_omFormula = tempAbsCompuScale.m_sCompuConst.m_omVT.c_str();
             }
@@ -1392,9 +1392,9 @@ HRESULT CPARSER_FIBEX::LoadFibexFile_v2_0(std::string omFibexFilePath)
     std::string ErrorString = "";
     HRESULT hr = S_FALSE;
     MSXML2::IXMLDOMDocument2Ptr pXMLDoc;
-    MSXML2::IXMLDOMNamedNodeMapPtr pIXMLDOMNamedNodeMapPtr = NULL;
-    LPVOID pfg = NULL;
-    CoInitialize(NULL);
+    MSXML2::IXMLDOMNamedNodeMapPtr pIXMLDOMNamedNodeMapPtr = nullptr;
+    LPVOID pfg = nullptr;
+    CoInitialize(nullptr);
     //pXMLDoc = (IXMLDOMDocument2Ptr)(pfg);
 
     //hr = pXMLDoc.CreateInstance(__uuidof(MSXML2::DOMDocument));
@@ -1421,7 +1421,7 @@ HRESULT CPARSER_FIBEX::LoadFibexFile_v2_0(std::string omFibexFilePath)
         {
 
             //Get the root element
-            MSXML2::IXMLDOMElementPtr m_pRooterElm = NULL;
+            MSXML2::IXMLDOMElementPtr m_pRooterElm = nullptr;
 
 
             hr = pXMLDoc->get_documentElement(&m_pRooterElm);
@@ -1430,7 +1430,7 @@ HRESULT CPARSER_FIBEX::LoadFibexFile_v2_0(std::string omFibexFilePath)
 
             _variant_t varValue;
             // Get the Fibex version
-            if(pXMLDoc != NULL)
+            if(pXMLDoc != nullptr)
             {
                 varValue = m_pRooterElm->getAttribute("VERSION");
             }
@@ -1465,7 +1465,7 @@ HRESULT CPARSER_FIBEX::LoadFibexFile_v2_0(std::string omFibexFilePath)
                 return VERSION_NOT_SUPPORTED;
             }
 
-            if (FAILED(hr) || (m_pRooterElm == NULL))
+            if (FAILED(hr) || (m_pRooterElm == nullptr))
             {
                 ErrorString = "Empty document";
                 nError = 1;
@@ -1476,7 +1476,7 @@ HRESULT CPARSER_FIBEX::LoadFibexFile_v2_0(std::string omFibexFilePath)
                 std::string strTemp, TempNodeName;
                 LONG lIdCount = 0, lChild = 0;
                 CComPtr<MSXML2::IXMLDOMNodeList> NodeListPtr;
-                MSXML2::IXMLDOMNodePtr iNode = NULL;
+                MSXML2::IXMLDOMNodePtr iNode = nullptr;
 
                 pIXMLDOMNamedNodeMapPtr = m_pRooterElm->Getattributes();
                 if (pIXMLDOMNamedNodeMapPtr->Getlength() >= 1)
@@ -1484,14 +1484,14 @@ HRESULT CPARSER_FIBEX::LoadFibexFile_v2_0(std::string omFibexFilePath)
                     iNode = pIXMLDOMNamedNodeMapPtr->getNamedItem(_bstr_t("VERSION"));
                 }
                 /* READ THE CHILDS OF THE ROOT ELEMENT */
-                MSXML2::IXMLDOMNodeListPtr NodesListPtr = NULL;
+                MSXML2::IXMLDOMNodeListPtr NodesListPtr = nullptr;
                 m_pRooterElm->get_childNodes(&NodesListPtr);
                 long lCount = 0;
                 NodesListPtr->get_length(&lCount);
                 for(int i=0; i < lCount; i++)
                 {
                     iNode = NodesListPtr->Getitem(i);
-                    if (iNode != NULL)
+                    if (iNode != nullptr)
                     {
                         BSTR bstr = iNode->GetnodeName().GetBSTR();
                         strTemp = _com_util::ConvertBSTRToString(bstr);
@@ -1528,8 +1528,8 @@ void CPARSER_FIBEX::LoadCodings(MSXML2::IXMLDOMNodePtr pIDomNode)
 {
     HRESULT hResult = S_FALSE;
 
-    //MSXML2::IXMLDOMNodeList* pChildList = NULL;
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    //MSXML2::IXMLDOMNodeList* pChildList = nullptr;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pIDomNode->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -1566,7 +1566,7 @@ void CPARSER_FIBEX::LoadCodingsUnit(MSXML2::IXMLDOMNodePtr pIDomNode)
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pIDomNode->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -1593,7 +1593,7 @@ void CPARSER_FIBEX::CollectUnits(MSXML2::IXMLDOMNodePtr pParent)
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -1610,7 +1610,7 @@ void CPARSER_FIBEX::LoadElementsv2(MSXML2::IXMLDOMNodePtr pIDomNode)
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pIDomNode->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -1657,7 +1657,7 @@ void CPARSER_FIBEX::CollectCodings(MSXML2::IXMLDOMNodePtr pParent)
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -1730,7 +1730,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr pCurrDOMNode, UNIT_EX
     }
     else if(omModNodeName == NAME_ELEMENT_SHORT)
     {
-        if(pNodeParent != NULL)
+        if(pNodeParent != nullptr)
         {
             BSTR bstr = pCurrDOMNode->GetnodeName().GetBSTR();
             std::string strNode =_com_util::ConvertBSTRToString(bstr);
@@ -1765,7 +1765,7 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, UNIT_E
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -1784,7 +1784,7 @@ void CPARSER_FIBEX::CollectClusterinfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
 {
     std::string strTemp;
     long lTotal = 0;
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
 
     pIDomNode->get_childNodes(&pChildList);
     pChildList->get_length(&lTotal);
@@ -1826,7 +1826,7 @@ void CPARSER_FIBEX::CollectECUInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
 {
     std::string strTemp;
     long lTotal = 0;
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
 
     pIDomNode->get_childNodes(&pChildList);
     pChildList->get_length(&lTotal);
@@ -1877,7 +1877,7 @@ void CPARSER_FIBEX::CollectFrameTrigInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
 {
     std::string strTemp;
     long lTotal = 0;
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
 
     pIDomNode->get_childNodes(&pChildList);
     pChildList->get_length(&lTotal);
@@ -1923,7 +1923,7 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CFrame
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -2017,7 +2017,7 @@ void CPARSER_FIBEX::CollectFrameInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
 {
     std::string strTemp;
     long lTotal = 0;
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
 
     pIDomNode->get_childNodes(&pChildList);
     pChildList->get_length(&lTotal);
@@ -2085,7 +2085,7 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CClust
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -2121,7 +2121,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CClust
     {
         std::string strShortName = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
         MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
-        if(pNodeParent != NULL)
+        if(pNodeParent != nullptr)
         {
             std::string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
             CNodeUtil::bRemoveTag(strNode, strNode);
@@ -2324,7 +2324,7 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CECU& 
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -2356,7 +2356,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CECU& 
     if (omModNodeName == SHORT_NAME_NODE  )
     {
         strTemp = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
-        if(pNodeParent != NULL)
+        if(pNodeParent != nullptr)
         {
             std::string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
             CNodeUtil::bRemoveTag(strNode, strNode);
@@ -2444,7 +2444,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CECU& 
 
         std::string strReference = strRef;
 
-        if(pNodeParent != NULL)
+        if(pNodeParent != nullptr)
         {
             std::string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
             CNodeUtil::bRemoveTag(strNode, strNode);
@@ -2685,7 +2685,7 @@ void CPARSER_FIBEX::CollectSignalInfov2(MSXML2::IXMLDOMNodePtr pIDomNode)
 {
     std::string strTemp;
     long lTotal = 0;
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
 
     pIDomNode->get_childNodes(&pChildList);
     pChildList->get_length(&lTotal);
@@ -2727,7 +2727,7 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CFrame
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -2751,7 +2751,7 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CPdu& 
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -2774,7 +2774,7 @@ HRESULT CPARSER_FIBEX::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent, CSigna
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -2806,7 +2806,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CPdu& 
 
     std::string strNode = "";
     MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
-    if(pNodeParent != NULL)
+    if(pNodeParent != nullptr)
     {
         strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
         CNodeUtil::bRemoveTag(strNode, strNode);
@@ -3100,7 +3100,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
 
     std::string strNode = "";
     MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
-    if(pNodeParent != NULL)
+    if(pNodeParent != nullptr)
     {
         strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
         CNodeUtil::bRemoveTag(strNode, strNode);
@@ -3134,7 +3134,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
         std::string strShortName  = _com_util::ConvertBSTRToString(pCurrDOMNode->text.GetBSTR());
 
         MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
-        if(pNodeParent != NULL)
+        if(pNodeParent != nullptr)
         {
             std::string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
             CNodeUtil::bRemoveTag(strNode, strNode);
@@ -3212,7 +3212,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
 
         MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
 
-        if(pNodeParent != NULL)
+        if(pNodeParent != nullptr)
         {
             std::string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
             CNodeUtil::bRemoveTag(strNode, strNode);
@@ -3247,7 +3247,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
 
         MSXML2::IXMLDOMNodePtr pNodeParent = pCurrDOMNode->GetparentNode();
 
-        if(pNodeParent != NULL)
+        if(pNodeParent != nullptr)
         {
             std::string strNode = _com_util::ConvertBSTRToString(pNodeParent->GetnodeName().GetBSTR());
             CNodeUtil::bRemoveTag(strNode, strNode);
@@ -3421,7 +3421,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CSigna
 int CPARSER_FIBEX::ResetFibexEntity(eENTITY_FIBEX eEntity, PVOID pFibexEntity)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    if (sg_FunResetFibexEntity != NULL)
+    if (sg_FunResetFibexEntity != nullptr)
     {
         (*sg_FunResetFibexEntity)(eEntity, pFibexEntity);
     }
@@ -3444,7 +3444,7 @@ BOOL CPARSER_FIBEX::WriteFibexFile(std::string omFibexFilePath,
                                    PABS_FIBEX_CONTAINER pAbsFibexContainer)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    if (sg_FunWriteFibexFile != NULL)
+    if (sg_FunWriteFibexFile != nullptr)
     {
         bTranslate(TYPE_CFIBEXCONTAINER, "",
                    (BYTE*) pAbsFibexContainer, FALSE);
@@ -3466,7 +3466,7 @@ int CPARSER_FIBEX::bTranslate(eENTITY_FIBEX eEntity, std::string omID, BYTE* Buf
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-    if (sg_FunTranslate != NULL)
+    if (sg_FunTranslate != nullptr)
     {
         int nCheck = (*sg_FunTranslate)(eEntity, omID, (BYTE*)Buffer, bToAbstract);
     }
@@ -3487,7 +3487,7 @@ HRESULT CPARSER_FIBEX::hGetFLEXRAYClustersInfo(PABS_FIBEX_CONTAINER pAbsFibexCon
         /* Retreive the cluster information */
         POSITION pos = pAbsFibexContainer->m_omElement.m_omClusterList.GetHeadPosition();
         int nIndex = 0;
-        while (pos != NULL)
+        while (pos != nullptr)
         {
             ABS_CLUSTER& sClusterDetails = pAbsFibexContainer->m_omElement.m_omClusterList.GetNext(pos);
             /* Add the cluster information */
@@ -3506,7 +3506,7 @@ HRESULT CPARSER_FIBEX::hGetFLEXRAYClustersInfo(PABS_FIBEX_CONTAINER pAbsFibexCon
 
                 POSITION posECU = pAbsFibexContainer->m_omElement.m_omECUList.GetHeadPosition();
 
-                while (posECU != NULL)
+                while (posECU != nullptr)
                 {
                     ABS_ECU& sECUInfo = pAbsFibexContainer->m_omElement.m_omECUList.GetNext(posECU);
 
@@ -3536,15 +3536,15 @@ int CPARSER_FIBEX::UnloadLibrary(void)
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     int Result = FCLASS_FAILURE;
 
-    if (NULL != sg_HMODULE)
+    if (nullptr != sg_HMODULE)
     {
         FreeLibrary(sg_HMODULE);
-        sg_HMODULE = NULL;
+        sg_HMODULE = nullptr;
 
-        sg_FunLoadFibexFile     = NULL;
-        sg_FunWriteFibexFile    = NULL;
-        sg_FunTranslate         = NULL;
-        sg_FunResetFibexEntity  = NULL;
+        sg_FunLoadFibexFile     = nullptr;
+        sg_FunWriteFibexFile    = nullptr;
+        sg_FunTranslate         = nullptr;
+        sg_FunResetFibexEntity  = nullptr;
 
         Result = FCLASS_SUCCESS;
     }
@@ -3870,7 +3870,7 @@ HRESULT SCODED_TYPE_v2::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrChild)
         SMIN_MAX_LEN_v2 sMinMaxLen;
         std::string omTmp = _com_util::ConvertBSTRToString(pCurrChild->text.GetBSTR());
         sMinMaxLen.m_unMinLen = atoi(omTmp.c_str());
-        MSXML2::IXMLDOMNodePtr pNextSibling = NULL;
+        MSXML2::IXMLDOMNodePtr pNextSibling = nullptr;
         if ((pCurrChild->get_nextSibling(&pNextSibling)) == S_OK)
         {
             std::string omTmp = _com_util::ConvertBSTRToString(pNextSibling->GetnodeName().GetBSTR());
@@ -4598,7 +4598,7 @@ HRESULT CCODING_v2::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent)
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -4618,7 +4618,7 @@ HRESULT SCODED_TYPE_v2::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent)
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -4638,7 +4638,7 @@ HRESULT SCOMPANY_REV_INFO_v2::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent)
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -4659,7 +4659,7 @@ HRESULT SCOMPU_CONST_v2::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent)
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -4680,7 +4680,7 @@ HRESULT SCOMPU_INTERNAL_TO_PHYS_v2::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pP
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -4699,7 +4699,7 @@ HRESULT SCOMPU_METHOD_v2::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent)
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -4718,7 +4718,7 @@ HRESULT SCOMPU_RATIONAL_COEFFS_v2::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pPa
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -4738,7 +4738,7 @@ HRESULT SCOMPU_SCALE_v2::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent)
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -4758,7 +4758,7 @@ HRESULT SCONSTRS_v2::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent)
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -4777,7 +4777,7 @@ HRESULT SELEMENT_REVISION_v2::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent)
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -4795,7 +4795,7 @@ HRESULT SMODIFICATION_v2::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent)
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);
@@ -4815,7 +4815,7 @@ HRESULT SPHYSICAL_TYPE_v2::DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent)
 {
     HRESULT hResult = S_FALSE;
 
-    MSXML2::IXMLDOMNodeListPtr pChildList = NULL;
+    MSXML2::IXMLDOMNodeListPtr pChildList = nullptr;
     pParent->get_childNodes(&pChildList);
     long lTotal = 0;
     pChildList->get_length(&lTotal);

@@ -96,7 +96,7 @@ void CMsgContainerCAN::InitTimeParams(void)
     UINT64 unAbsTime;
     //Kadoor HANDLE hReadHandle = m_ouCanBufFSE.hGetNotifyingEvent();
     //Kadoor WaitForSingleObject(hReadHandle, INFINITE);
-    if (NULL != m_pouDIL_CAN_Interface)
+    if (nullptr != m_pouDIL_CAN_Interface)
     {
         m_pouDIL_CAN_Interface->DILC_GetTimeModeMapping(CurrSysTime, unAbsTime);
         m_ouFormatCAN.vSetTimeParams(CurrSysTime, unAbsTime);
@@ -279,7 +279,7 @@ void CMsgContainerCAN::vProcessNewData(STCANDATA& sCanData)
         if (!bTobeBlocked(sCanData))
         {
             m_ouAppendCanBuf.WriteIntoBuffer(&m_sCANReadDataSpl);
-            if (NULL != m_pRxMsgCallBack)
+            if (nullptr != m_pRxMsgCallBack)
             {
                 m_pRxMsgCallBack((void*)&sCanData, CAN);
             }
@@ -303,7 +303,7 @@ void CMsgContainerCAN::vProcessNewData(STCANDATA& sCanData)
         {
             m_ouAppendCanBuf.WriteIntoBuffer(&m_sCANReadDataSpl);
 
-            if (NULL != m_pRxMsgCallBack)
+            if (nullptr != m_pRxMsgCallBack)
             {
                 m_pRxMsgCallBack((void*)&sCanData, CAN);
             }
@@ -369,7 +369,7 @@ BOOL CMsgContainerCAN:: bStartReadThread()
 {
     int bResult = TRUE;
     HRESULT hResult;
-    if (NULL != m_pouDIL_CAN_Interface)
+    if (nullptr != m_pouDIL_CAN_Interface)
     {
         //if (m_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, m_dwClientId, L"PSDI_CAN") == S_OK)
         {
@@ -402,7 +402,7 @@ BOOL CMsgContainerCAN:: bStartReadThread()
 HRESULT CMsgContainerCAN:: hToggleDILBufferRead(BOOL bRead)
 {
     HRESULT hResult = S_FALSE;
-    if (NULL != m_pouDIL_CAN_Interface)
+    if (nullptr != m_pouDIL_CAN_Interface)
     {
         if(bRead)
         {
@@ -429,7 +429,7 @@ HRESULT CMsgContainerCAN:: hToggleDILBufferRead(BOOL bRead)
 BOOL CMsgContainerCAN:: bStopReadThread()
 {
     BOOL bReturn = CMsgContainerBase::bStopReadThread();
-    if (NULL != m_pouDIL_CAN_Interface)
+    if (nullptr != m_pouDIL_CAN_Interface)
     {
         m_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_CLEAR, m_dwClientId, &m_ouMCCanBufFSE);
     }
@@ -549,7 +549,7 @@ HRESULT CMsgContainerCAN::ApplyFilterScheme(void* pvFilterApplied)
 {
     HRESULT hResult = S_FALSE;
     SFILTERAPPLIED_CAN* psFilterCAN = (SFILTERAPPLIED_CAN*)pvFilterApplied;
-    if (psFilterCAN != NULL)
+    if (psFilterCAN != nullptr)
     {
         EnterCriticalSection(&m_omCritSecFilter);
         //        if (m_sFilterCAN.bClone(*psFilterCAN) == TRUE)
@@ -566,7 +566,7 @@ HRESULT CMsgContainerCAN::GetFilterScheme(void* pvFilterApplied)
 {
     HRESULT hResult = S_FALSE;
     SFILTERAPPLIED_CAN* psFilterCAN = (SFILTERAPPLIED_CAN*)pvFilterApplied;
-    if (psFilterCAN != NULL)
+    if (psFilterCAN != nullptr)
     {
         //        if (psFilterCAN->bClone(m_sFilterCAN) == TRUE)
         if (psFilterCAN->bClone(m_sFilterCAN) == true)
@@ -811,7 +811,7 @@ BOOL CMsgContainerCAN::bGetDilInterFace()
 {
     BOOL bFound = FALSE;;
     DIL_GetInterface(CAN, (void**)&m_pouDIL_CAN_Interface);
-    if (NULL != m_pouDIL_CAN_Interface)
+    if (nullptr != m_pouDIL_CAN_Interface)
     {
         bFound = TRUE;
     }

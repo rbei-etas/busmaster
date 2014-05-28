@@ -61,7 +61,7 @@ static char THIS_FILE[] = __FILE__;
 /*                      and will not directly modify the configuration module */
 /******************************************************************************/
 //IMPLEMENT_DYNAMIC(CAcceptanceFilterDlg, CPropertyPage)
-CAcceptanceFilterDlg::CAcceptanceFilterDlg(CWnd* pParent /*=NULL*/,
+CAcceptanceFilterDlg::CAcceptanceFilterDlg(CWnd* pParent /*=nullptr*/,
         PSCONTROLLER_DETAILS psControllerInfo)
     : CDialog(CAcceptanceFilterDlg::IDD, pParent)
     //: CPropertyPage(CAcceptanceFilterDlg::IDD, IDS_PPAGE_ACCEPTANCE_FILTER)
@@ -220,7 +220,7 @@ BOOL CAcceptanceFilterDlg::OnInitDialog()
 
     PSCONTROLLER_DETAILS  psControllerDetails = m_psControllerInfo;
 
-    if(psControllerDetails != NULL)
+    if(psControllerDetails != nullptr)
     {
         m_bAccFilterMode    = psControllerDetails->m_bAccFilterMode;
         if(m_bAccFilterMode == 0)
@@ -303,13 +303,13 @@ BOOL CAcceptanceFilterDlg::OnInitDialog()
 
     // Change the text in case of USB Mode
     CWnd* pWnd = GetDlgItem(IDC_RBTN_SINGLE_FILTER_MODE);
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         // Set the text to Standard
         pWnd->SetWindowText( defSTR_MSG_ID_STANDARD );
     }
     pWnd = GetDlgItem(IDC_RBTN_DUAL_FILTER_MODE);
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         // Set the text to Extended
         pWnd->SetWindowText( defSTR_MSG_ID_EXTENDED );

@@ -49,7 +49,7 @@ class CCANSelectDlg : public CDialog
     DECLARE_DYNAMIC(CCANSelectDlg)
 
 public:
-    CCANSelectDlg(CWnd* pParent = NULL);   // standard constructor
+    CCANSelectDlg(CWnd* pParent = nullptr);   // standard constructor
     virtual ~CCANSelectDlg();
 
     // Dialog Data

@@ -32,7 +32,7 @@ extern "C" HRESULT NS_GetInterface(ETYPE_BUS eBus,void** ppvInterface);
 BOOL gbEnableDisableLog(BOOL bEnable)
 {
     BOOL Result = FALSE;
-    if (CGlobalObj::sm_hWndMDIParentFrame != NULL)
+    if (CGlobalObj::sm_hWndMDIParentFrame != nullptr)
     {
         ::PostMessage(CGlobalObj::sm_hWndMDIParentFrame, WM_FROM_USER_DLL, (WPARAM)LOG_ENABLE_DISABLE,(LPARAM)bEnable);
         Result = TRUE;
@@ -42,7 +42,7 @@ BOOL gbEnableDisableLog(BOOL bEnable)
 BOOL gbWriteToLog(char* pcString)
 {
     BOOL Result = FALSE;
-    if (CGlobalObj::sm_hWndMDIParentFrame != NULL)
+    if (CGlobalObj::sm_hWndMDIParentFrame != nullptr)
     {
         ::SendMessage(CGlobalObj::sm_hWndMDIParentFrame, WM_FROM_USER_DLL, (WPARAM)WRITE_TO_LOGFILE,(LPARAM)pcString);
         Result = TRUE;
@@ -118,7 +118,7 @@ BOOL gbSetResetTimer(CHAR* pcTimerFunctionName, int type, BOOL bStart,
                 CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
 
             //If handler is found
-            if (pmCEexecuteFunc != NULL)
+            if (pmCEexecuteFunc != nullptr)
             {
                 CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).vManageTimerThreads();
                 Result = pmCEexecuteFunc->bResetTimer(pcTimerFunctionName, !type, bStart);
@@ -155,7 +155,7 @@ BOOL gbSetTimerVal(CHAR* pcTimerFunctionName, UINT unTimeVal,HMODULE hModule)
                     CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
 
                 //If handler is found
-                if (pmCEexecuteFunc != NULL)
+                if (pmCEexecuteFunc != nullptr)
                 {
                     Result = pmCEexecuteFunc->bResetTimerVal(pcTimerFunctionName, unTimeVal);
                     i = BUS_TOTAL; //break the loop
@@ -189,7 +189,7 @@ BOOL gbEnableDisableMsgHandlers(BOOL bEnable, HMODULE hModule)
                 CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
 
             //If handler is found
-            if(pmCEexecuteFunc!=NULL)
+            if(pmCEexecuteFunc!=nullptr)
             {
                 Result = pmCEexecuteFunc->bEnableDisableMsgHandlers(bEnable);
                 CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).vUpdateHandlerDetailsInDetView();
@@ -224,7 +224,7 @@ BOOL gbEnableDisableKeyHandlers(BOOL bEnable, HMODULE hModule)
                 CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
 
             //If handler is found
-            if (pmCEexecuteFunc != NULL)
+            if (pmCEexecuteFunc != nullptr)
             {
                 Result = pmCEexecuteFunc->bEnableDisableKeyHandlers(bEnable);
                 CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).vUpdateHandlerDetailsInDetView();
@@ -258,7 +258,7 @@ BOOL gbEnableDisableErrorHandlers(BOOL bEnable, HMODULE hModule)
                 CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
 
             //If handler is found
-            if (pmCEexecuteFunc != NULL)
+            if (pmCEexecuteFunc != nullptr)
             {
                 Result = pmCEexecuteFunc->bEnableDisableErrorHandlers(bEnable);
                 CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).vUpdateHandlerDetailsInDetView();
@@ -293,7 +293,7 @@ BOOL gbMsgTransmissionOnOff(BOOL bOnOff, HMODULE hModule)
                 CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
 
             //If handler is found
-            if (pmCEexecuteFunc != NULL)
+            if (pmCEexecuteFunc != nullptr)
             {
                 pmCEexecuteFunc->vSetMsgTxFlag(bOnOff);
                 Result = TRUE;
@@ -320,14 +320,14 @@ BOOL gbMsgTransmissionOnOff(BOOL bOnOff, HMODULE hModule)
 ******************************************************************************/
 HMODULE ghGetNodeDllHandler(char* pcNodeName)
 {
-    HMODULE hModule = NULL;
+    HMODULE hModule = nullptr;
     CString omNode(pcNodeName);
     for (UINT i = 0; i < BUS_TOTAL; i++)
     {
         if (CExecuteManager::bIsExist((ETYPE_BUS)i) == TRUE)
         {
             hModule = CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).hReturnDllHandle(omNode);
-            if (hModule != NULL)
+            if (hModule != nullptr)
             {
                 i = BUS_TOTAL;
             }
@@ -357,7 +357,7 @@ BOOL gbGetProgramVersion(int* /*pnMajorVersion*/, int* /*pnMinorVersion*/)
 ******************************************************************************/
 BOOL gbSendStrToTrace(char* pcOutStrTrace)
 {
-    if (NULL != CGlobalObj::sm_pouITraceWndPtr)
+    if (nullptr != CGlobalObj::sm_pouITraceWndPtr)
     {
         return CGlobalObj::sm_pouITraceWndPtr->bWriteToTrace(pcOutStrTrace);
     }
@@ -629,17 +629,17 @@ int sg_GetMessageName(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize)
         return 0;
     }
 
-    POSITION        MainPos = NULL, pos = NULL;
+    POSITION        MainPos = nullptr, pos = nullptr;
     //CAPL_DB_NAME_CHANGE
     //loop through the DB list to search in all the DB whether the message is present.
     MainPos =  CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.GetHeadPosition();
 
-    while(MainPos != NULL)
+    while(MainPos != nullptr)
     {
         SDB_NAME_MSG&  sDbNameMsg = CGlobalObj::ouGetObj(m_eBus).
                                     m_odMsgNameMsgCodeListDb.GetNext(MainPos);
         pos = sDbNameMsg.m_oMsgNameMsgCodeList.GetHeadPosition();
-        while(pos != NULL)          //if present stop searching
+        while(pos != nullptr)          //if present stop searching
         {
             SMSG_NAME_CODE& sMsgNameCode =  sDbNameMsg.m_oMsgNameMsgCodeList.GetNext(pos);
             //Compare the IDs and send the message name  if it matches
@@ -669,7 +669,7 @@ int sg_GetMessageName(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize)
 
 
     //POSITION pos = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.GetHeadPosition();
-    //   while (pos != NULL)
+    //   while (pos != nullptr)
     //   {
     //  //Get the individual message structure
     //       SMSG_NAME_CODE& sMsgNameCode = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.
@@ -695,7 +695,7 @@ long sg_TimeNow()
 {
     long        lAbsoluteTime = 0, lSysTime;
 
-    if (CGlobalObj::sm_hWndMDIParentFrame != NULL)          //check for mainframe
+    if (CGlobalObj::sm_hWndMDIParentFrame != nullptr)          //check for mainframe
     {
         __int64                 nCurrentTime =0, nTimeElapsed =0;
         LARGE_INTEGER           f1;
@@ -704,7 +704,7 @@ long sg_TimeNow()
         QueryPerformanceFrequency(&f1);
 
         nCurrentTime = gnGetCpuClocks();
-        CNodeSim* Result = NULL;
+        CNodeSim* Result = nullptr;
 
 
         if (NS_GetInterface(CAN, (void**) &Result) == S_OK)                 //get the interface of NodeSim to get the connection time

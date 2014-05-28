@@ -51,8 +51,8 @@ CRxMsgList::CRxMsgList()
 {
     m_bConnected = FALSE;
     m_nSortedColumn = 1;
-    m_pbSortableColumn = NULL;
-    m_pbAscendingOrder = NULL;
+    m_pbSortableColumn = nullptr;
+    m_pbAscendingOrder = nullptr;
     m_lClkPoint = CPoint(0,0);
     m_omNewFont.CreateFont(10, 0,
                            DEFAULT_FONT_ESCAPEMENT,
@@ -141,7 +141,7 @@ void CRxMsgList::OnLvnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
     {
         //SetItemData(iItemIndx,lst.m_ColourCode);
 
-        if ((pItem->mask & LVIF_TEXT) && (pItem->iSubItem!= 0 && (NULL != m_pomDataPtrArr[pItem->iSubItem-1] ))) //valid text buffer?
+        if ((pItem->mask & LVIF_TEXT) && (pItem->iSubItem!= 0 && (nullptr != m_pomDataPtrArr[pItem->iSubItem-1] ))) //valid text buffer?
         {
             //pItem->pszText can not display more than 260 chars
             //when copied more than 260 chars the application was getting closed abruptly
@@ -318,7 +318,7 @@ void CRxMsgList::vDoInitialization()
     m_nIconBlank  = m_ImageList.Add((AfxGetApp()->LoadIcon(IDI_ICON_BLANK)));
     SetImageList(&m_ImageList, LVSIL_SMALL);
     CWnd* pWnd = GetParent();
-    if (NULL != pWnd)
+    if (nullptr != pWnd)
     {
         m_hParent = pWnd->m_hWnd;
     }
@@ -1099,7 +1099,7 @@ void CRxMsgList::vSetSortableMsgColumns(SMSGWNDHDRCOL& sHdrColStruct, ETYPE_BUS 
     nColCount--;    //Reduce the size by 1 for the Blank column.
     m_pbSortableColumn = (bool*)malloc(sizeof(bool) * nColCount);
     m_pbAscendingOrder = (bool*)malloc(sizeof(bool) * nColCount);
-    if( m_pbSortableColumn == NULL || m_pbAscendingOrder == NULL)
+    if( m_pbSortableColumn == nullptr || m_pbAscendingOrder == nullptr)
     {
         AfxMessageBox(_("Failed to create Memory for Sortable Column."));
         return;

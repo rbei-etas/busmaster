@@ -11,7 +11,7 @@
 
 IMPLEMENT_DYNAMIC(CBusEventHandlerDlg, CDialog)
 
-CBusEventHandlerDlg::CBusEventHandlerDlg(CFunctionEditorDoc* pDoc, CWnd* pParent /*=NULL*/, BOOL bIsDelete /*FALSE*/)
+CBusEventHandlerDlg::CBusEventHandlerDlg(CFunctionEditorDoc* pDoc, CWnd* pParent /*=nullptr*/, BOOL bIsDelete /*FALSE*/)
     : CDialog(CBusEventHandlerDlg::IDD, pParent)
     , m_bChkBusEventConnect(FALSE)
     ,m_bChkBusEventPreConnect(FALSE)
@@ -44,18 +44,18 @@ BOOL CBusEventHandlerDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
-    CStringArray* pomStrArrayHandlerName = NULL;
+    CStringArray* pomStrArrayHandlerName = nullptr;
     CDialog::OnInitDialog();
 
-    if( m_pDoc != NULL )
+    if( m_pDoc != nullptr )
     {
-        CButton* pomButton       = NULL;
+        CButton* pomButton       = nullptr;
         CString omStrHandlerName = STR_EMPTY ;
         CString omStrControl     = STR_EMPTY ;
         INT nCheck               = 0;
         // get the pointer to CStringArray of error handlers prototypes
         pomStrArrayHandlerName = m_pDoc->pomStrGetBusEventHandlerPrototypes();
-        if(pomStrArrayHandlerName != NULL )
+        if(pomStrArrayHandlerName != nullptr )
         {
             // Check for the handlers already added.
             for(INT  i = 0; i<defBUSEV_HANDLER_NUMBER; i++)
@@ -63,7 +63,7 @@ BOOL CBusEventHandlerDlg::OnInitDialog()
                 for(INT j =0; j<pomStrArrayHandlerName->GetSize(); j++)
                 {
                     pomButton = (CButton*)GetDlgItem(IDC_CHKB_BUSEV_CONNECT_HANDLER+i);
-                    if(pomButton != NULL )
+                    if(pomButton != nullptr )
                     {
                         omStrHandlerName = pomStrArrayHandlerName->GetAt(j);
                         pomButton->GetWindowText(omStrControl);
@@ -96,7 +96,7 @@ BOOL CBusEventHandlerDlg::OnInitDialog()
             for(INT i = 0; i<defBUSEV_HANDLER_NUMBER; i++)
             {
                 pomButton = (CButton*)GetDlgItem(IDC_CHKB_BUSEV_CONNECT_HANDLER+i);
-                if(pomButton != NULL )
+                if(pomButton != nullptr )
                 {
                     nCheck = pomButton->GetCheck();
                     if(nCheck == 0 )
@@ -122,7 +122,7 @@ BOOL CBusEventHandlerDlg::OnInitDialog()
 
 void CBusEventHandlerDlg::OnBnClickedOk()
 {
-    CButton* pomButton       = NULL;
+    CButton* pomButton       = nullptr;
     CString omStrHandlerName = STR_EMPTY ;
     CString omStrControl     = STR_EMPTY ;
     INT nCheck               = 0;
@@ -132,7 +132,7 @@ void CBusEventHandlerDlg::OnBnClickedOk()
     for(int j=0; j<defBUSEV_HANDLER_NUMBER; j++)
     {
         pomButton = (CButton*)GetDlgItem(IDC_CHKB_BUSEV_CONNECT_HANDLER + j);
-        if(pomButton != NULL )
+        if(pomButton != nullptr )
         {
             nCheck      = pomButton->GetCheck();
             bIsEnable   = pomButton->IsWindowEnabled();

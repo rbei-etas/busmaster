@@ -30,7 +30,7 @@ class CGraphExportDlg : public CDialog
 {
     // Construction
 public:
-    CGraphExportDlg(CWnd* pParent = NULL);   // standard constructor
+    CGraphExportDlg(CWnd* pParent = nullptr);   // standard constructor
     // Dialog Data
     //{{AFX_DATA(CGraphExportDlg)
     enum { IDD = IDD_DLG_GRAPH_EXPORT };

@@ -106,7 +106,7 @@ Modifications  :
 ******************************************************************************/
 HRESULT CSendEntity::AddSubEntry(CBaseEntityTA* pouSubEntryObj)
 {
-    if(pouSubEntryObj != NULL)
+    if(pouSubEntryObj != nullptr)
     {
         CSend_MessageEntity& odSend_MessageEntity = *((CSend_MessageEntity*)(pouSubEntryObj));
         m_ouData.m_odSend_MessageDataList.AddTail(odSend_MessageEntity);
@@ -134,7 +134,7 @@ Codetag        :  CS016
 HRESULT CSendEntity::DeleteSubEntry(CBaseEntityTA* pouSubEntryObj)
 {
     HRESULT hResult = S_FALSE;
-    if(pouSubEntryObj != NULL)
+    if(pouSubEntryObj != nullptr)
     {
         INT nCount = (INT)m_ouData.m_odSend_MessageDataList.GetCount();
         for(INT i = 0; i < nCount; i++)
@@ -166,7 +166,7 @@ Modifications  :
 HRESULT CSendEntity::DeleteSubEntry(INT nIndex)
 {
     POSITION pos = m_ouData.m_odSend_MessageDataList.FindIndex(nIndex);
-    if( pos != NULL)
+    if( pos != nullptr)
     {
         m_ouData.m_odSend_MessageDataList.RemoveAt(pos);
         return S_OK;
@@ -189,7 +189,7 @@ Modifications  :
 const HRESULT CSendEntity::GetSubEntityObj(UINT unIndex, CBaseEntityTA**  pouSubEntity)
 {
     POSITION pos = m_ouData.m_odSend_MessageDataList.FindIndex(unIndex);
-    if(pos != NULL)
+    if(pos != nullptr)
     {
         CSend_MessageEntity& SendMsgentity = m_ouData.m_odSend_MessageDataList.GetAt(pos);
         *pouSubEntity = &SendMsgentity;
@@ -270,8 +270,8 @@ HRESULT CSendEntity::RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBaseEn
             break;
         }
     }
-    POSITION posNew = NULL;
-    if(pouCurrSubEntity == NULL)        //Insert At First Index;
+    POSITION posNew = nullptr;
+    if(pouCurrSubEntity == nullptr)        //Insert At First Index;
     {
         posNew =  m_ouData.m_odSend_MessageDataList.AddHead(ouSendEntity);
     }
@@ -288,7 +288,7 @@ HRESULT CSendEntity::RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CBaseEn
             }
         }
     }
-    if(posNew != NULL)
+    if(posNew != nullptr)
     {
         CSend_MessageEntity& odSendMsgData = m_ouData.m_odSend_MessageDataList.GetAt(posNew);
         return odSendMsgData.GetID();
@@ -374,7 +374,7 @@ Modifications  :
 ******************************************************************************/
 HRESULT CSendEntity::GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData)
 {
-    if(eCurrEntityType == SEND && pvEntityData != NULL)
+    if(eCurrEntityType == SEND && pvEntityData != nullptr)
     {
         *((CSendData*)pvEntityData) = m_ouData;
     }
@@ -396,7 +396,7 @@ Codetag        :  CS013
 ******************************************************************************/
 HRESULT CSendEntity::SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData)
 {
-    if(eCurrEntityType == SEND && pvEntityData != NULL)
+    if(eCurrEntityType == SEND && pvEntityData != nullptr)
     {
         m_ouData = *((CSendData*)pvEntityData);
     }

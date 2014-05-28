@@ -44,7 +44,7 @@
 extern BOOL g_bStopSelectedMsgTx;
 
 ////DIL Interface
-static CBaseDIL_LIN* g_pouDIL_LIN_Interface = NULL;
+static CBaseDIL_LIN* g_pouDIL_LIN_Interface = nullptr;
 
 IMPLEMENT_DYNCREATE(CTxMsgListView, CFormView)
 
@@ -155,7 +155,7 @@ void CTxMsgListView::OnInitialUpdate()
     CTxMsgChildFrame* pomChildFrame =
         (CTxMsgChildFrame* )pomGetParentWindow();
     // Update View Pointer
-    if( pomChildFrame != NULL )
+    if( pomChildFrame != nullptr )
     {
         pomChildFrame->vSetTxMsgViewPointers( eTxMsgMessageListView, this );
     }
@@ -217,7 +217,7 @@ void CTxMsgListView::OnInitialUpdate()
 
     // Associate image list to the list item
     // Create only onece
-    if( m_omImageList.m_hImageList == NULL )
+    if( m_omImageList.m_hImageList == nullptr )
     {
         m_omImageList.Create( IDR_BMP_MSGSGDB,
                               defSIGNAL_ICON_SIZE,
@@ -226,12 +226,12 @@ void CTxMsgListView::OnInitialUpdate()
     }
     // Set the Image List
     // Only if it is sucessfully created
-    if( m_omImageList.m_hImageList != NULL )
+    if( m_omImageList.m_hImageList != nullptr )
     {
         m_omLctrMsgList.SetImageList( &m_omImageList, LVSIL_SMALL);
     }
     // Associate Header control Image List
-    if( m_omHeaderImageList.m_hImageList == NULL )
+    if( m_omHeaderImageList.m_hImageList == nullptr )
     {
         m_omHeaderImageList.Create( IDR_BMP_CHECKBOX,
                                     defSIGNAL_ICON_SIZE,
@@ -240,10 +240,10 @@ void CTxMsgListView::OnInitialUpdate()
     }
     // Set the Image List
     // Only if it is sucessfully created
-    if( m_omHeaderImageList.m_hImageList != NULL )
+    if( m_omHeaderImageList.m_hImageList != nullptr )
     {
         CHeaderCtrl* pHeader = m_omLctrMsgList.GetHeaderCtrl();
-        if( pHeader != NULL )
+        if( pHeader != nullptr )
         {
             pHeader->SetImageList( &m_omHeaderImageList );
             HDITEM hditem;
@@ -293,7 +293,7 @@ void CTxMsgListView::OnColumnclickLstcMsgDetails(NMHDR* pNMHDR, LRESULT* pResult
         BOOL bToBeChecked = FALSE;
         // Change header Control Image Index
         CHeaderCtrl* pHeader = m_omLctrMsgList.GetHeaderCtrl();
-        if( pHeader != NULL )
+        if( pHeader != nullptr )
         {
             // Get Current Image Index
             HDITEM hditem;
@@ -319,7 +319,7 @@ void CTxMsgListView::OnColumnclickLstcMsgDetails(NMHDR* pNMHDR, LRESULT* pResult
                 CTxFunctionsView* pView = (CTxFunctionsView*)
                                           pomGetFunctionsViewPointer();
 
-                if( pView != NULL )
+                if( pView != nullptr )
                 {
                     if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
                     {
@@ -350,22 +350,22 @@ void CTxMsgListView::vSetMessageCheckValue(BOOL bCheck)
 {
     // Get Other View Pointers
     // Blocks View
-    CTxMsgBlocksView* pomBlocksView = NULL;
+    CTxMsgBlocksView* pomBlocksView = nullptr;
     pomBlocksView = ( CTxMsgBlocksView*)pomGetBlocksViewPointer();
     // Message Details View
-    CTxMsgDetailsView* pomDetailsView = NULL;
+    CTxMsgDetailsView* pomDetailsView = nullptr;
     pomDetailsView = (CTxMsgDetailsView*)pomGetDetailsViewPointer();
     // Functions view
-    CTxFunctionsView* pomFunctionsView = NULL;
+    CTxFunctionsView* pomFunctionsView = nullptr;
     pomFunctionsView = (CTxFunctionsView*)pomGetFunctionsViewPointer();
     // If all pointers are valid
-    if( pomBlocksView != NULL && pomDetailsView != NULL &&
-            pomFunctionsView != NULL )
+    if( pomBlocksView != nullptr && pomDetailsView != nullptr &&
+            pomFunctionsView != nullptr )
     {
         // If selected message block index is valid
         if(pomBlocksView->m_nSelectedMsgBlockIndex != -1 )
         {
-            PSMSGBLOCKLIST psCurrentMsgBlock = NULL;
+            PSMSGBLOCKLIST psCurrentMsgBlock = nullptr;
             // Get current block pointer
             psCurrentMsgBlock = pomBlocksView->psGetMsgBlockPointer(
                                     pomBlocksView->m_nSelectedMsgBlockIndex,
@@ -379,7 +379,7 @@ void CTxMsgListView::vSetMessageCheckValue(BOOL bCheck)
             m_bInitDlg = TRUE;
 
             // Update check box status of all messages in this list
-            while(psMsgList != NULL )
+            while(psMsgList != nullptr )
             {
                 if( psMsgList->m_sTxMsgDetails.m_bEnabled != bCheck )
                 {
@@ -442,9 +442,9 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 
-    CTxMsgBlocksView* pomBlocksView = NULL;
+    CTxMsgBlocksView* pomBlocksView = nullptr;
     pomBlocksView = ( CTxMsgBlocksView*)pomGetBlocksViewPointer();
-    if( pomBlocksView != NULL && m_bInitDlg == FALSE )
+    if( pomBlocksView != nullptr && m_bInitDlg == FALSE )
     {
         // Get new state of the list control items
         // and check for if it is selected and focused.
@@ -480,8 +480,8 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
         }
         if( pNMListView->uChanged  == LVIF_STATE )
         {
-            PSTXLINMSGLIST   psTxMsgList = NULL ;
-            PSMSGBLOCKLIST    psMsgBlock = NULL ;
+            PSTXLINMSGLIST   psTxMsgList = nullptr ;
+            PSMSGBLOCKLIST    psMsgBlock = nullptr ;
             // check if the item is focused and selected.
             unCurrentState =
                 pNMListView->uNewState &(LVIS_FOCUSED |LVIS_SELECTED);
@@ -494,7 +494,7 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
                 psTxMsgList = psGetMsgDetailPointer( pNMListView->iItem,
                                                      psMsgBlock );
                 m_nSelectedMsgIndex = pNMListView->iItem;
-                if(psTxMsgList != NULL )
+                if(psTxMsgList != nullptr )
                 {
 
                     /* Update to DIL if in connect state */
@@ -506,7 +506,7 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
 
                     CTxMsgDetailsView* pView = (CTxMsgDetailsView*)
                                                pomGetDetailsViewPointer();
-                    if( pView != NULL )
+                    if( pView != nullptr )
                     {
                         pView->vSetValues(&(psTxMsgList->m_sTxMsgDetails));
                         // Insert Signal List Update Code Here
@@ -526,8 +526,8 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
         }
         if( pNMListView->uNewState & defMASK_CHECK_UNCHECK )
         {
-            PSTXLINMSGLIST   psTxMsgList = NULL ;
-            PSMSGBLOCKLIST    psMsgBlock = NULL ;
+            PSTXLINMSGLIST   psTxMsgList = nullptr ;
+            PSMSGBLOCKLIST    psMsgBlock = nullptr ;
 
             psMsgBlock = pomBlocksView->psGetMsgBlockPointer(
                              pomBlocksView->m_nSelectedMsgBlockIndex,
@@ -562,13 +562,13 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
             }
             m_omLctrMsgList.SetItemState(pNMListView->iItem, LVIS_SELECTED, LVIS_SELECTED);//LVIS_SELECTED
 
-            if(psTxMsgList != NULL )
+            if(psTxMsgList != nullptr )
             {
                 int nCurrentState =
                     m_omLctrMsgList.GetCheck(pNMListView->iItem);
                 CTxFunctionsView* pView = (CTxFunctionsView*)
                                           pomGetFunctionsViewPointer();
-                if( pView != NULL )
+                if( pView != nullptr )
                 {
                     if( nCurrentState !=
                             psTxMsgList->m_sTxMsgDetails.m_bEnabled )
@@ -596,7 +596,7 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
                                               psTxMsgList->m_sTxMsgDetails.m_bEnabled );
                 }
 
-                if( pView != NULL )
+                if( pView != nullptr )
                 {
                     if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
                     {
@@ -614,7 +614,7 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
 void  CTxMsgListView::vCheckHeaderCtrl(bool bCheck)
 {
     CHeaderCtrl* pHeader = m_omLctrMsgList.GetHeaderCtrl();
-    if( pHeader != NULL )
+    if( pHeader != nullptr )
     {
         // Get Current Image Index
         HDITEM hditem;
@@ -634,7 +634,7 @@ void  CTxMsgListView::vCheckHeaderCtrl(bool bCheck)
   Input(s)       : -
   Output         : CWnd * - Pointer to CTxMsgChildFrame
   Functionality  : This Function will return parent window pointer. That is
-                   pointer to CTxMsgChildFrame. This will return NULL incase of
+                   pointer to CTxMsgChildFrame. This will return nullptr incase of
                    failure
   Member of      : CTxMsgListView
   Author(s)      : Raja N
@@ -643,27 +643,27 @@ void  CTxMsgListView::vCheckHeaderCtrl(bool bCheck)
 *******************************************************************************/
 CWnd* CTxMsgListView::pomGetParentWindow() const
 {
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     // Get Splitter window pointer
     pWnd = GetParent();
     // Get Tx Msg Child Window pointer from Splitter window pointer
     // At fourth Level
     // Splitter 3 -> Splitter 2 -> Splitter 1 -> Child Frame
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd = pWnd->GetParent();
     }
-    if( pWnd != NULL )
-    {
-        pWnd = pWnd->GetParent();
-    }
-
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd = pWnd->GetParent();
     }
 
-    // Return Tx Msg Child window pointer or NULL incase of failure
+    if( pWnd != nullptr )
+    {
+        pWnd = pWnd->GetParent();
+    }
+
+    // Return Tx Msg Child window pointer or nullptr incase of failure
     return pWnd;
 }
 
@@ -671,7 +671,7 @@ CWnd* CTxMsgListView::pomGetParentWindow() const
 /*******************************************************************************
   Function Name  : pomGetBlocksViewPointer
   Input(s)       : -
-  Output         : CWnd * - Pointer to CTxMsgBlocksView or NULL incase of
+  Output         : CWnd * - Pointer to CTxMsgBlocksView or nullptr incase of
                    failure
   Functionality  : This function will return CTxMsgBlocksView pointer. This will
                    get child window pointer to get view pointer.
@@ -682,12 +682,12 @@ CWnd* CTxMsgListView::pomGetParentWindow() const
 *******************************************************************************/
 CWnd* CTxMsgListView::pomGetBlocksViewPointer() const
 {
-    CWnd* pView = NULL;
+    CWnd* pView = nullptr;
     // Get Child Frame Pointer
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     pWnd = pomGetParentWindow();
     // Get View Pointer
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pView = ((CTxMsgChildFrame*)pWnd)->pomGetTxMsgViewPointers(
                     eTxMsgBlocksView );
@@ -699,7 +699,7 @@ CWnd* CTxMsgListView::pomGetBlocksViewPointer() const
 /*******************************************************************************
   Function Name  : pomGetDetailsViewPointer
   Input(s)       : -
-  Output         : CWnd * - Pointer to CTxMsgDetailsView or NULL incase of
+  Output         : CWnd * - Pointer to CTxMsgDetailsView or nullptr incase of
                    failure
   Functionality  : This function will return CTxMsgDetailsView pointer. This
                    will get child window pointer to get view pointer.
@@ -710,12 +710,12 @@ CWnd* CTxMsgListView::pomGetBlocksViewPointer() const
 *******************************************************************************/
 CWnd* CTxMsgListView::pomGetDetailsViewPointer() const
 {
-    CWnd* pView = NULL;
+    CWnd* pView = nullptr;
     // Get Child Frame Pointer
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     pWnd = pomGetParentWindow();
     // Get View Pointer
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pView = ((CTxMsgChildFrame*)pWnd)->pomGetTxMsgViewPointers(
                     eTxMsgMessageDetailsView );
@@ -727,7 +727,7 @@ CWnd* CTxMsgListView::pomGetDetailsViewPointer() const
 /*******************************************************************************
   Function Name  : pomGetFunctionsViewPointer
   Input(s)       : -
-  Output         : CWnd * - Pointer to CTxFunctionsView or NULL incase of
+  Output         : CWnd * - Pointer to CTxFunctionsView or nullptr incase of
                    failure
   Functionality  : This function will return CTxFunctionsView pointer. This
                    will get child window pointer to get view pointer.
@@ -738,12 +738,12 @@ CWnd* CTxMsgListView::pomGetDetailsViewPointer() const
 *******************************************************************************/
 CWnd* CTxMsgListView::pomGetFunctionsViewPointer() const
 {
-    CWnd* pView = NULL;
+    CWnd* pView = nullptr;
     // Get Child Frame Pointer
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     pWnd = pomGetParentWindow();
     // Get View Pointer
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pView = ((CTxMsgChildFrame*)pWnd)->pomGetTxMsgViewPointers(
                     eTxMsgFunctionsView );
@@ -771,14 +771,14 @@ CWnd* CTxMsgListView::pomGetFunctionsViewPointer() const
 PSTXLINMSGLIST CTxMsgListView::psGetMsgDetailPointer(INT nIndex,
         SMSGBLOCKLIST* psCurrentMsgBlockList)
 {
-    PSTXLINMSGLIST psTxMsgList = NULL;
-    if(nIndex != -1 && psCurrentMsgBlockList != NULL )
+    PSTXLINMSGLIST psTxMsgList = nullptr;
+    if(nIndex != -1 && psCurrentMsgBlockList != nullptr )
     {
         INT nCurrentIndex = 0;
         psTxMsgList = psCurrentMsgBlockList->m_psTxLINMsgList;
         while(nIndex != nCurrentIndex)
         {
-            if(psTxMsgList != NULL )
+            if(psTxMsgList != nullptr )
             {
                 psTxMsgList = psTxMsgList->m_psNextMsgDetails;
             }
@@ -804,34 +804,34 @@ PSTXLINMSGLIST CTxMsgListView::psGetMsgDetailPointer(INT nIndex,
 /******************************************************************************/
 void CTxMsgListView::OnSendSelectedMsg()
 {
-    PSTXSELMSGDATA psTxLinMsg = NULL;
+    PSTXSELMSGDATA psTxLinMsg = nullptr;
     UINT unTotalSelection = m_omLctrMsgList.GetSelectedCount();
 
-    CTxMsgBlocksView* pomBlocksView = NULL;
+    CTxMsgBlocksView* pomBlocksView = nullptr;
     pomBlocksView = ( CTxMsgBlocksView*)pomGetBlocksViewPointer();
-    if( pomBlocksView != NULL )
+    if( pomBlocksView != nullptr )
     {
         // Get the total selected count.
         if(unTotalSelection > 0 )
         {
             // create the pointer and check if it has created successfully.
             psTxLinMsg  = new STXSELMSGDATA;
-            if(psTxLinMsg != NULL )
+            if(psTxLinMsg != nullptr )
             {
                 // Fill the structure and create memory for array of message
                 // frame to be transmitted.
                 psTxLinMsg->m_unCount = unTotalSelection;
                 psTxLinMsg->m_psTxMsgLin = new STLIN_MSG[unTotalSelection];
-                if(psTxLinMsg->m_psTxMsgLin != NULL )
+                if(psTxLinMsg->m_psTxMsgLin != nullptr )
                 {
                     // get the current message block
-                    PSMSGBLOCKLIST psMsgBlock = NULL;
+                    PSMSGBLOCKLIST psMsgBlock = nullptr;
                     psMsgBlock = pomBlocksView->psGetMsgBlockPointer(
                                      pomBlocksView->m_nSelectedMsgBlockIndex,
                                      pomBlocksView->m_psMsgBlockList );
-                    if(psMsgBlock != NULL )
+                    if(psMsgBlock != nullptr )
                     {
-                        PSTXLINMSGLIST  psTxMsgList = NULL;
+                        PSTXLINMSGLIST  psTxMsgList = nullptr;
                         INT nCurrentIndex           = -1;
                         // Get the message which is selected for transmission
                         // Since selection may be random so get the selection
@@ -849,7 +849,7 @@ void CTxMsgListView::OnSendSelectedMsg()
                                 psTxMsgList = psGetMsgDetailPointer (
                                                   nCurrentIndex,
                                                   psMsgBlock );
-                                if(psTxMsgList != NULL )
+                                if(psTxMsgList != nullptr )
                                 {
                                     memcpy( &(psTxLinMsg->m_psTxMsgLin[i]),
                                             &(psTxMsgList->m_sTxMsgDetails.m_sTxMsg),
@@ -871,13 +871,13 @@ void CTxMsgListView::OnSendSelectedMsg()
                         // Get handle of thread and assign it to pulic data
                         // member in app class. This will be used to terminate
                         // the thread.
-                        CWinThread* pomThread = NULL ;
+                        CWinThread* pomThread = nullptr ;
                         pomThread =
                             AfxBeginThread( CTxMsgManager::s_unSendSelectedMsg,
                                             psTxLinMsg );
-                        if(pomThread != NULL  &&
+                        if(pomThread != nullptr  &&
                                 CTxMsgManager::s_sUtilThread.m_hThread
-                                == NULL )
+                                == nullptr )
                         {
                             CTxMsgManager::s_sUtilThread.m_hThread
                                 = pomThread->m_hThread;
@@ -956,17 +956,17 @@ void CTxMsgListView::OnSendSleepFrameMsg()
 /******************************************************************************/
 void CTxMsgListView::OnDeleteSelectedMsg()
 {
-    CTxMsgBlocksView* pomBlocksView = NULL;
+    CTxMsgBlocksView* pomBlocksView = nullptr;
     pomBlocksView = ( CTxMsgBlocksView*)pomGetBlocksViewPointer();
 
-    CTxMsgDetailsView* pomDetailsView = NULL;
+    CTxMsgDetailsView* pomDetailsView = nullptr;
     pomDetailsView = (CTxMsgDetailsView*)pomGetDetailsViewPointer();
 
-    CTxFunctionsView* pomFunctionsView = NULL;
+    CTxFunctionsView* pomFunctionsView = nullptr;
     pomFunctionsView = (CTxFunctionsView*)pomGetFunctionsViewPointer();
 
-    if( pomBlocksView != NULL && pomDetailsView != NULL &&
-            pomFunctionsView != NULL )
+    if( pomBlocksView != nullptr && pomDetailsView != nullptr &&
+            pomFunctionsView != nullptr )
     {
         if ( AfxMessageBox( _(defDEL_SEL_MSG_FRAME),
                             MB_YESNO|MB_ICONQUESTION) == IDYES)
@@ -975,12 +975,12 @@ void CTxMsgListView::OnDeleteSelectedMsg()
             {
                 if(pomBlocksView->m_nSelectedMsgBlockIndex != -1 )
                 {
-                    PSMSGBLOCKLIST psCurrentMsgBlock = NULL;
+                    PSMSGBLOCKLIST psCurrentMsgBlock = nullptr;
                     psCurrentMsgBlock = pomBlocksView->psGetMsgBlockPointer(
                                             pomBlocksView->m_nSelectedMsgBlockIndex,
                                             pomBlocksView->m_psMsgBlockList);
 
-                    if(psCurrentMsgBlock != NULL )
+                    if(psCurrentMsgBlock != nullptr )
                     {
                         BOOL bReturn = FALSE;
                         bReturn = bDeleteMsgFromBlock(psCurrentMsgBlock);
@@ -1009,7 +1009,7 @@ void CTxMsgListView::OnDeleteSelectedMsg()
                         //changes added to update the Global in case of autoupdate
                         CTxFunctionsView* pView =
                             ( CTxFunctionsView* )pomGetFunctionsViewPointer();
-                        if( pView != NULL )
+                        if( pView != nullptr )
                         {
                             if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
                             {
@@ -1047,10 +1047,10 @@ BOOL CTxMsgListView::bDeleteMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock)
 {
     BOOL bReturn = FALSE;
     // Check for current message block pointer to be valid.
-    if(psMsgCurrentBlock != NULL )
+    if(psMsgCurrentBlock != nullptr )
     {
-        PSTXLINMSGLIST psDelTxLINMsgList = NULL;
-        PSTXLINMSGLIST psTxLINMsgList = NULL;
+        PSTXLINMSGLIST psDelTxLINMsgList = nullptr;
+        PSTXLINMSGLIST psTxLINMsgList = nullptr;
         // Get the total selected items in message details list control.
         UINT  unSelectedCount = m_omLctrMsgList.GetSelectedCount();
         // If there is selection then delete it one by one.
@@ -1076,13 +1076,13 @@ BOOL CTxMsgListView::bDeleteMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock)
                     // in between the list.
                     //  If psTxLINMsgList is null then the node is at the start
                     // and if the both are null it is invalid pointers.
-                    if(psDelTxLINMsgList != NULL && psTxLINMsgList != NULL )
+                    if(psDelTxLINMsgList != nullptr && psTxLINMsgList != nullptr )
                     {
                         psTxLINMsgList->m_psNextMsgDetails =
                             psDelTxLINMsgList->m_psNextMsgDetails;
                         bReturn = TRUE;
                     }
-                    else if(psDelTxLINMsgList != NULL &&
+                    else if(psDelTxLINMsgList != nullptr &&
                             psDelTxLINMsgList ==
                             psMsgCurrentBlock->m_psTxLINMsgList )
                     {
@@ -1102,7 +1102,7 @@ BOOL CTxMsgListView::bDeleteMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock)
                         }
                         delete psDelTxLINMsgList;
 
-                        psDelTxLINMsgList = NULL;
+                        psDelTxLINMsgList = nullptr;
                         m_omLctrMsgList.DeleteItem(nItem);
                         //Decrement Message Count
                         psMsgCurrentBlock->m_unMsgCount--;
@@ -1144,17 +1144,17 @@ BOOL CTxMsgListView::bDeleteMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock)
 /******************************************************************************/
 void CTxMsgListView::OnDeleteAllMsg()
 {
-    CTxMsgBlocksView* pomBlocksView = NULL;
+    CTxMsgBlocksView* pomBlocksView = nullptr;
     pomBlocksView = ( CTxMsgBlocksView*)pomGetBlocksViewPointer();
 
-    CTxMsgDetailsView* pomDetailsView = NULL;
+    CTxMsgDetailsView* pomDetailsView = nullptr;
     pomDetailsView = (CTxMsgDetailsView*)pomGetDetailsViewPointer();
 
-    CTxFunctionsView* pomFunctionsView = NULL;
+    CTxFunctionsView* pomFunctionsView = nullptr;
     pomFunctionsView = (CTxFunctionsView*)pomGetFunctionsViewPointer();
 
-    if( pomBlocksView != NULL && pomDetailsView != NULL &&
-            pomFunctionsView != NULL )
+    if( pomBlocksView != nullptr && pomDetailsView != nullptr &&
+            pomFunctionsView != nullptr )
     {
         // give a warning message before deleting it.
         if ( AfxMessageBox( _(defDEL_ALL_MSG_FRAME),
@@ -1164,12 +1164,12 @@ void CTxMsgListView::OnDeleteAllMsg()
             if( pomBlocksView->m_nSelectedMsgBlockIndex != -1)
             {
                 BOOL bDeleted = FALSE;
-                PSMSGBLOCKLIST psMsgCurrentBlock = NULL;
+                PSMSGBLOCKLIST psMsgCurrentBlock = nullptr;
                 // Get the current message block pointer.
                 psMsgCurrentBlock = pomBlocksView->psGetMsgBlockPointer(
                                         pomBlocksView->m_nSelectedMsgBlockIndex,
                                         pomBlocksView->m_psMsgBlockList );
-                if(psMsgCurrentBlock != NULL )
+                if(psMsgCurrentBlock != nullptr )
                 {
                     // Call function to delete all message and clear the list
                     // control if the delete is successfull.
@@ -1195,7 +1195,7 @@ void CTxMsgListView::OnDeleteAllMsg()
                     //changes added to update the Global in case of autoupdate
                     CTxFunctionsView* pView =
                         ( CTxFunctionsView* )pomGetFunctionsViewPointer();
-                    if( pView != NULL )
+                    if( pView != nullptr )
                     {
                         if(pView->m_CheckBoxAutoUpdate.GetCheck() == BST_CHECKED)
                         {
@@ -1227,12 +1227,12 @@ void CTxMsgListView::OnDeleteAllMsg()
 BOOL CTxMsgListView::bDeleteAllMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock)
 {
     BOOL bReturn = TRUE;
-    if(psMsgCurrentBlock != NULL )
+    if(psMsgCurrentBlock != nullptr )
     {
-        PSTXLINMSGLIST psTxLINMsgList = NULL;
-        PSTXLINMSGLIST psTxLINMsgListDel = NULL;
+        PSTXLINMSGLIST psTxLINMsgList = nullptr;
+        PSTXLINMSGLIST psTxLINMsgListDel = nullptr;
         psTxLINMsgList = psMsgCurrentBlock->m_psTxLINMsgList;
-        while(psTxLINMsgList != NULL )
+        while(psTxLINMsgList != nullptr )
         {
             psTxLINMsgListDel = psTxLINMsgList;
 
@@ -1245,11 +1245,11 @@ BOOL CTxMsgListView::bDeleteAllMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock)
 
             psTxLINMsgList    = psTxLINMsgList->m_psNextMsgDetails;
             delete psTxLINMsgListDel;
-            psTxLINMsgListDel = NULL;
+            psTxLINMsgListDel = nullptr;
 
 
         }
-        psMsgCurrentBlock->m_psTxLINMsgList = NULL;
+        psMsgCurrentBlock->m_psTxLINMsgList = nullptr;
         psMsgCurrentBlock->m_unMsgCount = 0;
         // Set index to Invalid
         m_nSelectedMsgIndex = -1;
@@ -1308,17 +1308,17 @@ VOID CTxMsgListView::vUpdateMsgListDisplay(sTXLINMSGDETAILS sMsgDetail,
                            sMsgDetail.m_sTxMsg.m_ucMsgID );
         omStrFormat = defFORMAT_DATA_DECIMAL;
     }    // Message Details View
-    CTxMsgDetailsView* pomDetailsView = NULL;
-    CMsgSignal* pDBptr = NULL;
+    CTxMsgDetailsView* pomDetailsView = nullptr;
+    CMsgSignal* pDBptr = nullptr;
     pomDetailsView = (CTxMsgDetailsView*)pomGetDetailsViewPointer();
-    if (NULL != pomDetailsView)
+    if (nullptr != pomDetailsView)
     {
         pDBptr =  pomDetailsView->m_pouDBPtr;
     }
     CString omStrUpdatedMsgLength = "";
     // See if the msg ID is in the database
     // If yes load appropriate image
-    if (NULL != pDBptr)
+    if (nullptr != pDBptr)
     {
         omStrMsgName =
             pDBptr->omStrGetMessageNameFromMsgCode(sMsgDetail.m_sTxMsg.m_ucMsgID);
@@ -1473,7 +1473,7 @@ BOOL CTxMsgListView::bDisplayPopMenu(CListCtrl& omList,UINT nIDResource )
     // create menu
     CMenu* pMainMenu = new CMenu;
     // Assert
-    if ( pMainMenu != NULL )
+    if ( pMainMenu != nullptr )
     {
         // Load menu
         if ( pMainMenu->LoadMenu( nIDResource ))
@@ -1481,7 +1481,7 @@ BOOL CTxMsgListView::bDisplayPopMenu(CListCtrl& omList,UINT nIDResource )
             // Get submenu
             CMenu* pSubMenu = pMainMenu->GetSubMenu( 0 );
             // Assert
-            if ( pSubMenu != NULL )
+            if ( pSubMenu != nullptr )
             {
                 POINT point;
                 // Get cursor position wrt screen co-ord
@@ -1536,12 +1536,12 @@ BOOL CTxMsgListView::bDisplayPopMenu(CListCtrl& omList,UINT nIDResource )
                     point.x,
                     point.y,
                     this,
-                    NULL);
+                    nullptr);
                 // Clean up
                 pMainMenu->Detach();
                 pMainMenu->DestroyMenu();
                 delete pMainMenu;
-                pMainMenu = NULL;
+                pMainMenu = nullptr;
                 bReturn = TRUE;
             }
         }

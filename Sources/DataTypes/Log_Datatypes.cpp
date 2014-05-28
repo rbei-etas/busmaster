@@ -232,22 +232,22 @@ BOOL tagLogInfo::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
     const char* omcStpId = omstrStpId;
 
     // Is log enabled
-    xmlNodePtr pLogEnbldPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_IsEnabled, BAD_CAST omstrIsLogEnabled);
+    xmlNodePtr pLogEnbldPtr = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_IsEnabled, BAD_CAST omstrIsLogEnabled);
     xmlAddChild(pxmlNodePtr, pLogEnbldPtr);
 
-    xmlNodePtr pTimerMdePtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_TIME_MODE, BAD_CAST omstrTimerMode);
+    xmlNodePtr pTimerMdePtr = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_TIME_MODE, BAD_CAST omstrTimerMode);
     xmlAddChild(pxmlNodePtr, pTimerMdePtr);
 
-    xmlNodePtr pNumMdPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_NUMERIC_MODE, BAD_CAST omstrNumMode);
+    xmlNodePtr pNumMdPtr = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_NUMERIC_MODE, BAD_CAST omstrNumMode);
     xmlAddChild(pxmlNodePtr, pNumMdPtr);
 
-    xmlNodePtr pAppEnbldPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_IS_APPEND_ENABLED, BAD_CAST omstrFileMode);
+    xmlNodePtr pAppEnbldPtr = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_IS_APPEND_ENABLED, BAD_CAST omstrFileMode);
     xmlAddChild(pxmlNodePtr, pAppEnbldPtr);
 
-    xmlNodePtr pAbsMdPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_RESET_ABS_TIME, BAD_CAST omstrAbsMode);
+    xmlNodePtr pAbsMdPtr = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_RESET_ABS_TIME, BAD_CAST omstrAbsMode);
     xmlAddChild(pxmlNodePtr, pAbsMdPtr);
 
-    xmlNodePtr pChnlPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_CHANNEL, BAD_CAST omChannel);
+    xmlNodePtr pChnlPtr = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_CHANNEL, BAD_CAST omChannel);
     xmlAddChild(pxmlNodePtr, pChnlPtr);
 
     std::string omPath;
@@ -256,13 +256,13 @@ BOOL tagLogInfo::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
     AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
     CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
     CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)m_sLogFileName, omPath);
-    xmlNodePtr pLogFilePtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_FILE_PATH, BAD_CAST omPath.c_str());
+    xmlNodePtr pLogFilePtr = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_FILE_PATH, BAD_CAST omPath.c_str());
     xmlAddChild(pxmlNodePtr, pLogFilePtr);
 
-    xmlNodePtr pStrtIdPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_TRGR_STRT_ID, BAD_CAST omcStartId);
+    xmlNodePtr pStrtIdPtr = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_TRGR_STRT_ID, BAD_CAST omcStartId);
     xmlAddChild(pxmlNodePtr, pStrtIdPtr);
 
-    xmlNodePtr pStpIdPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_TRGR_STP_ID, BAD_CAST omcStpId);
+    xmlNodePtr pStpIdPtr = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_TRGR_STP_ID, BAD_CAST omcStpId);
     xmlAddChild(pxmlNodePtr, pStpIdPtr);
 
     return TRUE;
@@ -315,14 +315,14 @@ INT tagLogInfo::nSetConfigData(xmlNodePtr pNodePtr)
     m_sLogTrigger.m_unStartID = -1;
     m_sLogTrigger.m_unStopID = -1;
 
-    while (pNodePtr != NULL)
+    while (pNodePtr != nullptr)
     {
-        if ( pNodePtr->xmlChildrenNode != NULL )
+        if ( pNodePtr->xmlChildrenNode != nullptr )
         {
             if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"IsEnabled")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     m_bEnabled = xmlUtils::bGetBooleanValue((char*)key);
                     xmlFree(key);
@@ -331,7 +331,7 @@ INT tagLogInfo::nSetConfigData(xmlNodePtr pNodePtr)
             else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"Time_Mode")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     m_eLogTimerMode =  xmlUtils::eGetTimerMode((char*)key);
                     xmlFree(key);
@@ -340,7 +340,7 @@ INT tagLogInfo::nSetConfigData(xmlNodePtr pNodePtr)
             else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"Numeric_Mode")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     m_eNumFormat = xmlUtils::eGetNumericMode((char*)key);
                     xmlFree(key);
@@ -350,7 +350,7 @@ INT tagLogInfo::nSetConfigData(xmlNodePtr pNodePtr)
             else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"IsAppendLog_Enabled")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     BOOL bValue = xmlUtils::bGetBooleanValue((char*)key);
                     m_eFileMode = OVERWRITE_MODE;
@@ -366,7 +366,7 @@ INT tagLogInfo::nSetConfigData(xmlNodePtr pNodePtr)
             else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"Reset_Absolute_Time")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     m_bResetAbsTimeStamp = xmlUtils::bGetBooleanValue((char*)key);
                     xmlFree(key);
@@ -378,7 +378,7 @@ INT tagLogInfo::nSetConfigData(xmlNodePtr pNodePtr)
             else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"Channel")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     m_ChannelSelected = atoi((char*)key);
                     if(m_ChannelSelected < 0 || m_ChannelSelected > CHANNEL_ALLOWED )
@@ -392,7 +392,7 @@ INT tagLogInfo::nSetConfigData(xmlNodePtr pNodePtr)
             else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"File_Path")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     if(PathIsRelative((char*)key) == TRUE)
                     {
@@ -421,7 +421,7 @@ INT tagLogInfo::nSetConfigData(xmlNodePtr pNodePtr)
             else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"Trigger_Start_ID")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     m_sLogTrigger.m_unStartID = atoi((char*)key);
                     xmlFree(key);
@@ -430,7 +430,7 @@ INT tagLogInfo::nSetConfigData(xmlNodePtr pNodePtr)
             else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"Trigger_Stop_ID")))
             {
                 xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != key)
+                if(nullptr != key)
                 {
                     m_sLogTrigger.m_unStopID = atoi((char*)key);
                     xmlFree(key);

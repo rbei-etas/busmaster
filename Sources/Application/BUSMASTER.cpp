@@ -58,14 +58,14 @@ extern void gvStopMessageHandlerThreads();
 static LONG GetEntitlementID(CString& omEntitlementId)
 {
     char SubKey[] = "SOFTWARE\\Classes\\BoschIndia\\BUSMASTER tool\\ES581";
-    HKEY hCurrKey = NULL;
+    HKEY hCurrKey = nullptr;
     LONG Result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
                                (LPCTSTR) SubKey, 0, KEY_READ, &hCurrKey);
     char ValueName[32] = "Identifier";
     char Data[128] = {'\0'};
     DWORD Size = 128;
     Result = RegQueryValueEx(hCurrKey, (LPCTSTR) ValueName,
-                             NULL, (LPDWORD) NULL, (LPBYTE) Data,
+                             nullptr, (LPDWORD) nullptr, (LPBYTE) Data,
                              &Size);
     omEntitlementId = Data;
     return Result;
@@ -152,9 +152,9 @@ END_MESSAGE_MAP()
 CCANMonitorApp::CCANMonitorApp()
 {
     // TODO: add construction code here,
-    m_pouFlags = NULL;
+    m_pouFlags = nullptr;
     m_bIsMRU_CreatedInOpen = FALSE;
-    //m_pDocTemplate = NULL;
+    //m_pDocTemplate = nullptr;
     m_bFromAutomation = FALSE;
     GetCurrentDirectory(MAX_PATH, m_acApplicationDirectory);
     m_bIsConfigFileLoaded = false;
@@ -175,7 +175,7 @@ const WORD _wVerMajor = 1;
 const WORD _wVerMinor = 0;
 
 
-static HINSTANCE ghLangInst=NULL;
+static HINSTANCE ghLangInst=nullptr;
 
 BOOL CCANMonitorApp::InitInstance()
 {
@@ -213,7 +213,7 @@ BOOL CCANMonitorApp::InitInstance()
         AfxMessageBox(_("Fail to Intilaize OLE"));
         return FALSE;
     }
-    //CoInitializeEx(NULL, COINIT_MULTITHREADED );
+    //CoInitializeEx(nullptr, COINIT_MULTITHREADED );
 
     CBusmasterDump dump(_("BUSMASTER"));
     // END CHANGES MADE FOR AUTOMATION
@@ -291,7 +291,7 @@ BOOL CCANMonitorApp::InitInstance()
     // create main MDI Frame window
     CMainFrame* pMainFrame = new CMainFrame;
 
-    if ( pMainFrame == NULL )
+    if ( pMainFrame == nullptr )
     {
         ::PostQuitMessage(0);
     }
@@ -318,10 +318,10 @@ BOOL CCANMonitorApp::InitInstance()
     // In-Active Database
     m_pouMsgSgInactive  = new CMsgSignal(sg_asDbParams[CAN], m_bFromAutomation);
 
-    if(m_pouMsgSgInactive == NULL )
+    if(m_pouMsgSgInactive == nullptr )
     {
         if(m_bFromAutomation==FALSE)
-            MessageBox(NULL,_(MSG_MEMORY_CONSTRAINT),
+            MessageBox(nullptr,_(MSG_MEMORY_CONSTRAINT),
                        _("BUSMASTER"), MB_OK|MB_ICONINFORMATION);
 
         ::PostQuitMessage(0);
@@ -358,7 +358,7 @@ BOOL CCANMonitorApp::InitInstance()
         if (dwErr == ERROR_PATH_NOT_FOUND)
         {
             bValidDir = FALSE;
-            FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, dwErr, 0, strMsg.GetBuffer(1024), 1024, NULL);
+            FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, dwErr, 0, strMsg.GetBuffer(1024), 1024, nullptr);
             AfxMessageBox(strMsg);
         }
     }
@@ -409,7 +409,7 @@ BOOL CCANMonitorApp::InitInstance()
     // Filter list is initialised before msg wnd creation. So update display
     // filter here
     // Update Message Display Filter List
-    //::PostThreadMessage(GUI_dwThread_MsgDisp, TM_UPDATE_FILTERLIST, NULL, NULL );
+    //::PostThreadMessage(GUI_dwThread_MsgDisp, TM_UPDATE_FILTERLIST, nullptr, nullptr );
     // ********  Filter workaround  ********
     pMainFrame->bUpdatePopupMenuDIL();
     pMainFrame->bUpdatePopupMenuFLEXRAYDIL();
@@ -418,7 +418,7 @@ BOOL CCANMonitorApp::InitInstance()
     // Get the Flag Pointer
     CFlags* pomFlag =  pouGetFlagsPtr();
 
-    if( pomFlag != NULL )
+    if( pomFlag != nullptr )
     {
         // Get the Logging Status
         BOOL bLogON = pomFlag->nGetFlagStatus(LOGTOFILE);
@@ -488,21 +488,21 @@ int CCANMonitorApp::ExitInstance()
     }
 
 
-    if (m_pouMsgSignal != NULL )
+    if (m_pouMsgSignal != nullptr )
     {
         m_pouMsgSignal->bDeAllocateMemory(STR_EMPTY);
         delete m_pouMsgSignal;
-        m_pouMsgSignal = NULL;
+        m_pouMsgSignal = nullptr;
     }
 
     // if the user directly closes the appln when the database
     // is opened,
     // Delete memory associated with the in-active data structure.
-    if ( m_pouMsgSgInactive != NULL )
+    if ( m_pouMsgSgInactive != nullptr )
     {
         m_pouMsgSgInactive->bDeAllocateMemoryInactive();
         delete m_pouMsgSgInactive;
-        m_pouMsgSgInactive = NULL;
+        m_pouMsgSgInactive = nullptr;
     }
 
     DWORD dwResult = WaitForSingleObject(m_aomState[UI_THREAD], MAX_TIME_LIMIT);
@@ -570,7 +570,7 @@ void CCANMonitorApp::vPopulateCANIDList()
 {
     CMessageAttrib& ouMsgAttr = CMessageAttrib::ouGetHandle(CAN);
 
-    if ( m_pouMsgSignal != NULL )
+    if ( m_pouMsgSignal != nullptr )
     {
         CStringList omStrMsgNameList;
         UINT unNoOfMsgs =
@@ -578,7 +578,7 @@ void CCANMonitorApp::vPopulateCANIDList()
         UINT* pIDArray = new UINT[unNoOfMsgs];
         m_pouMsgSignal->omStrListGetMessageNames(omStrMsgNameList);
 
-        if (pIDArray != NULL )
+        if (pIDArray != nullptr )
         {
             m_pouMsgSignal->unListGetMessageIDs( pIDArray );
             SCanIDList sList;
@@ -587,7 +587,7 @@ void CCANMonitorApp::vPopulateCANIDList()
             POSITION pos1 = pos;
 
             for ( pos1 = pos, unCount = (unNoOfMsgs - 1);
-                    ((pos1 != NULL) && (unCount >= 0));
+                    ((pos1 != nullptr) && (unCount >= 0));
                     unCount--)
             {
                 sList.nCANID        = pIDArray[unCount];
@@ -607,7 +607,7 @@ void CCANMonitorApp::vPopulateCANIDList()
 
             ouMsgAttr.vDoCommit();
             delete [] pIDArray;
-            pIDArray = NULL;
+            pIDArray = nullptr;
         }
     }
 }
@@ -692,7 +692,7 @@ void CCANMonitorApp::vSetFileStorageInfo(CString oCfgFilename)
     CConfigData::ouGetConfigDetailsObject().vSetCurrProjName(_(DEFAULT_PROJECT_NAME));
     CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
 
-    if (pMainFrame != NULL)
+    if (pMainFrame != nullptr)
     {
         pMainFrame->vPushConfigFilenameDown(oCfgFilename);
     }
@@ -723,7 +723,7 @@ void CCANMonitorApp::OnFileOpen()
                          m_omMRU_C_FileName,
                          OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
                          _("C File(s)(*.c)|*.c||"),
-                         NULL );
+                         nullptr );
     // Set Title
     fileDlg.m_ofn.lpstrTitle  = _("Select BUSMASTER Source Filename...");
 
@@ -748,7 +748,7 @@ void CCANMonitorApp::OnFileOpen()
         {
             // Now open the selected file
             CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
-            if(pMainFrame != NULL)
+            if(pMainFrame != nullptr)
             {
                 GetICANNodeSim()->FE_OpenFunctioneditorFile(omStrNewCFileName, pMainFrame->GetSafeHwnd(),
                         pMainFrame->m_sExFuncPtr[CAN]);
@@ -762,7 +762,7 @@ void CCANMonitorApp::OnFileOpen()
             // would have destroyed. So create
             // the same.
             // And this should be created only once.
-            if ( pMainFrame != NULL && m_bIsMRU_CreatedInOpen == FALSE )
+            if ( pMainFrame != nullptr && m_bIsMRU_CreatedInOpen == FALSE )
             {
                 pMainFrame->vCreateMRU_Menus();
                 m_bIsMRU_CreatedInOpen = TRUE;
@@ -770,7 +770,7 @@ void CCANMonitorApp::OnFileOpen()
         }
         else
         {
-            MessageBox(NULL,_("Specified filename not found!"),
+            MessageBox(nullptr,_("Specified filename not found!"),
                        _("BUSMASTER"),MB_OK|MB_ICONINFORMATION);
         }
     }
@@ -896,7 +896,7 @@ Corrupt configuration file found");
     if(m_bFromAutomation==FALSE)
     {
         bWriteIntoTraceWnd(m_omConfigErr.GetBuffer(MAX_PATH));
-        //MessageBox(NULL, m_omConfigErr, _T("BUSMASTER"), unMsgboxType);
+        //MessageBox(nullptr, m_omConfigErr, _T("BUSMASTER"), unMsgboxType);
     }
 }
 
@@ -968,7 +968,7 @@ void CCANMonitorApp::OnFileNew()
         }
 
         CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
-        if(pMainFrame != NULL)
+        if(pMainFrame != nullptr)
         {
             GetICANNodeSim()->FE_OpenFunctioneditorFile(strFilePath, pMainFrame->GetSafeHwnd(),
                     pMainFrame->m_sExFuncPtr[CAN]);
@@ -981,7 +981,7 @@ void CCANMonitorApp::OnFileNew()
         // the same.
         // And this should be created only once.
 
-        if ( pMainFrame != NULL &&
+        if ( pMainFrame != nullptr &&
                 m_bIsMRU_CreatedInOpen == FALSE )
         {
             pMainFrame->vCreateMRU_Menus();
@@ -1021,7 +1021,7 @@ VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
 
     // if thread for tx selected message exists
     if ( bySelectThread != 0 &&
-            m_asUtilThread[defTX_SEL_MSG_THREAD].m_hThread != NULL)
+            m_asUtilThread[defTX_SEL_MSG_THREAD].m_hThread != nullptr)
     {
         // Set the flag to exit from thread.
         g_bStopSelectedMsgTx = TRUE;
@@ -1036,18 +1036,18 @@ VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
         if( dwResult == WAIT_TIMEOUT )
         {
             TerminateThread(m_asUtilThread[defTX_SEL_MSG_THREAD].m_hThread, 0);
-            // Set the thread handle to NULL
-            m_asUtilThread[defTX_SEL_MSG_THREAD].m_hThread = NULL;
+            // Set the thread handle to nullptr
+            m_asUtilThread[defTX_SEL_MSG_THREAD].m_hThread = nullptr;
 
-            if( m_asUtilThread[defTX_SEL_MSG_THREAD].m_pvThread !=NULL )
+            if( m_asUtilThread[defTX_SEL_MSG_THREAD].m_pvThread !=nullptr )
             {
                 PSTXSELMSGDATA psTxCanMsg = static_cast <PSTXSELMSGDATA>
                                             (m_asUtilThread[defTX_SEL_MSG_THREAD].m_pvThread);
                 delete [](psTxCanMsg->m_psTxMsg);
                 delete psTxCanMsg;
-                psTxCanMsg->m_psTxMsg = NULL;
-                psTxCanMsg = NULL;
-                m_asUtilThread[defTX_SEL_MSG_THREAD].m_pvThread = NULL;
+                psTxCanMsg->m_psTxMsg = nullptr;
+                psTxCanMsg = nullptr;
+                m_asUtilThread[defTX_SEL_MSG_THREAD].m_pvThread = nullptr;
             }
         }
     }
@@ -1064,19 +1064,19 @@ VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
         DWORD   dwTimerThreadStatus = WAIT_ABANDONED;
         DWORD   dwKeyThreadStatus = WAIT_ABANDONED;
 
-        while(psTxMsg != NULL )
+        while(psTxMsg != nullptr )
         {
             // Set the event for thread waiting for key event to set.
             // This is only if a block is trigger on key and so
             // the m_pomKeyEvent will not be null.
-            if( psTxMsg->m_sKeyThreadInfo.m_hThread != NULL)
+            if( psTxMsg->m_sKeyThreadInfo.m_hThread != nullptr)
             {
                 // Set the Key Event so that it will terminate by iteself
                 psTxMsg->m_omKeyEvent.SetEvent();
             }
 
             // If timer tharead is active then wait for a while
-            if(psTxMsg->m_sTimerThreadInfo.m_hThread != NULL )
+            if(psTxMsg->m_sTimerThreadInfo.m_hThread != nullptr )
             {
                 // Wait for thread to exit.
                 dwTimerThreadStatus =
@@ -1085,7 +1085,7 @@ VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
             }
 
             // If key thread is active then wait for key thread termination
-            if(psTxMsg->m_sKeyThreadInfo.m_hThread != NULL )
+            if(psTxMsg->m_sKeyThreadInfo.m_hThread != nullptr )
             {
                 // Wait for thread to exit.
                 dwKeyThreadStatus =
@@ -1097,38 +1097,38 @@ VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
             // if it is allocated inside the thread function and not
             // deleted
             if( dwTimerThreadStatus == WAIT_TIMEOUT &&
-                    psTxMsg->m_sTimerThreadInfo.m_hThread != NULL)
+                    psTxMsg->m_sTimerThreadInfo.m_hThread != nullptr)
             {
                 TerminateThread(psTxMsg->m_sTimerThreadInfo.m_hThread, 0);
                 // Invalidate the handle
-                psTxMsg->m_sTimerThreadInfo.m_hThread = NULL;
+                psTxMsg->m_sTimerThreadInfo.m_hThread = nullptr;
                 // Delete if any memory is allocated for this thread.
                 // Currently there are all global data so not required
                 // to be deleted here.
                 /***********************************************************/
                 // Right now Tx timer thread isn't using any dynamic memory
                 // So this is commented
-                /*if( psTxMsg->m_sTimerThreadInfo.m_pvThread !=NULL )
+                /*if( psTxMsg->m_sTimerThreadInfo.m_pvThread !=nullptr )
                 {
-                    m_asUtilThread[defTX_SEL_MSG_THREAD].m_pvThread = NULL;
+                    m_asUtilThread[defTX_SEL_MSG_THREAD].m_pvThread = nullptr;
                 }*/
                 /***********************************************************/
             }
 
             // If the key handler is not terminated yet then kill the thread
             if( dwKeyThreadStatus == WAIT_TIMEOUT &&
-                    psTxMsg->m_sKeyThreadInfo.m_hThread != NULL)
+                    psTxMsg->m_sKeyThreadInfo.m_hThread != nullptr)
             {
                 TerminateThread(psTxMsg->m_sKeyThreadInfo.m_hThread, 0);
                 // Invalidate the handle
-                psTxMsg->m_sKeyThreadInfo.m_hThread = NULL;
+                psTxMsg->m_sKeyThreadInfo.m_hThread = nullptr;
                 /***********************************************************/
                 // Delete if any memory is allocated for this thread.
                 // Currently there are all global data so not required
                 // to be deleted here.
-                /*if( psTxMsg->m_sThreadInfo1.m_pvThread !=NULL )
+                /*if( psTxMsg->m_sThreadInfo1.m_pvThread !=nullptr )
                 {
-                    m_asUtilThread[defTX_SEL_MSG_THREAD].m_pvThread = NULL;
+                    m_asUtilThread[defTX_SEL_MSG_THREAD].m_pvThread = nullptr;
                 }*/
                 /***********************************************************/
             }
@@ -1151,11 +1151,11 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
     BOOL bReturn = TRUE;
     CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
 
-    if(pMainFrame != NULL )
+    if(pMainFrame != nullptr )
     {
         BOOL bIsDatabaseFoundInConfigFile = FALSE;
 
-        if(m_pouMsgSignal != NULL)
+        if(m_pouMsgSignal != nullptr)
         {
             m_pouMsgSignal->bDeAllocateMemory(STR_EMPTY);
         }
@@ -1164,7 +1164,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
             m_pouMsgSignal = new CMsgSignal(sg_asDbParams[CAN], m_bFromAutomation);
         }
 
-        if ( m_pouMsgSignal != NULL )
+        if ( m_pouMsgSignal != nullptr )
         {
             //Get the Database names
             CStringArray aomOldDatabases;
@@ -1210,7 +1210,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
 
                             if(bFromCom==FALSE)
                             {
-                                MessageBox(NULL,omStrMsg,_("BUSMASTER"),MB_OK|MB_ICONERROR);
+                                MessageBox(nullptr,omStrMsg,_("BUSMASTER"),MB_OK|MB_ICONERROR);
                             }
 
                             // Remove the file name from configuration file.
@@ -1237,7 +1237,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
 
                 if(nDatabaseNotFound > 0)
                 {
-                    BYTE* pbyConfigData = NULL;
+                    BYTE* pbyConfigData = nullptr;
                     UINT unSize = 0;
                     unSize += (sizeof (UINT) + ((sizeof(char) *MAX_PATH) * aomNewDatabases.GetSize()));
                     pbyConfigData = new BYTE[unSize];
@@ -1255,7 +1255,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
 
                     CConfigData::ouGetConfigDetailsObject().bSetData(pbyTemp, unSize, SectionName[DATABASE_SECTION_ID]);
                     delete[] pbyConfigData;
-                    pbyConfigData = NULL;
+                    pbyConfigData = nullptr;
                 }
 
                 if(aomNewDatabases.GetSize()== 0)
@@ -1269,7 +1269,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
         {
             if(bFromCom==FALSE)
                 // Display a message and quit the application
-                MessageBox(NULL,
+                MessageBox(nullptr,
                            _(MSG_MEMORY_CONSTRAINT),
                            _("BUSMASTER"),
                            MB_OK|MB_ICONINFORMATION);
@@ -1293,7 +1293,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
  */
 PSMSGBLOCKLIST CCANMonitorApp::psReturnMsgBlockPointer()
 {
-    return NULL;//m_oConfigDetails.psReturnMsgBlockPointer();
+    return nullptr;//m_oConfigDetails.psReturnMsgBlockPointer();
 }
 
 
@@ -1326,13 +1326,13 @@ BOOL CCANMonitorApp::bWriteIntoTraceWnd(char* omText)
     BOOL bResult = FALSE;
     CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
 
-    if (pMainFrame != NULL)
+    if (pMainFrame != nullptr)
     {
         pMainFrame->SendMessage(IDM_TRACE_WND);
 
-        if (pMainFrame->m_podUIThread != NULL)
+        if (pMainFrame->m_podUIThread != nullptr)
         {
-            pMainFrame->m_podUIThread->PostThreadMessage(WM_WRITE_TO_TRACE, NULL, (LPARAM)omText);
+            pMainFrame->m_podUIThread->PostThreadMessage(WM_WRITE_TO_TRACE, 0, (LPARAM)omText);
             bResult = TRUE;
         }
     }

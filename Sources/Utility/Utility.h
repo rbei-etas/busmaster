@@ -44,7 +44,7 @@ void vExtendSignBit( __int64& n64Val, int nSize);
 bool bGetSystemErrorString(HRESULT hResult, char acErrStr[256]);
 
 // To copy the text into the clipboard
-BOOL CopyTextToClipboard(LPSTR lpstrText, HWND hWND = NULL);
+BOOL CopyTextToClipboard(LPSTR lpstrText, HWND hWND = nullptr);
 
 __int64 nConvertStringToInt(LPCTSTR omStrHexNo);
 

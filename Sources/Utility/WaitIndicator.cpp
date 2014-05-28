@@ -89,7 +89,7 @@ BOOL CWaitIndicator::DisplayWindow(CString strTitle, CWnd* pParentWnd, UINT nID 
     //Setting window properties.
     DWORD dwStyle = WS_CHILD | SS_CENTER | WS_VISIBLE;
     //Create window with zero size.
-    CWnd::Create(INDICATOR_CLASSNAME, "", dwStyle, CRect(0,0,0,0), pParentWnd, nID, NULL);
+    CWnd::Create(INDICATOR_CLASSNAME, "", dwStyle, CRect(0,0,0,0), pParentWnd, nID, nullptr);
     Redraw();
     return TRUE;
 }
@@ -168,7 +168,7 @@ void CWaitIndicator::MoveToCenter(void)
 
     MainWindow = GetParent();
 
-    if (MainWindow != NULL)
+    if (MainWindow != nullptr)
     {
         MainWindow->GetWindowRect(ParentRect);
     }
@@ -214,10 +214,10 @@ BOOL CWaitIndicator::RegisterWindowClass(void)
         wndcls.lpfnWndProc      = ::DefWindowProc;
         wndcls.cbClsExtra       = wndcls.cbWndExtra = 0;
         wndcls.hInstance        = hInst;
-        wndcls.hIcon            = NULL;
+        wndcls.hIcon            = nullptr;
         wndcls.hCursor          = AfxGetApp()->LoadStandardCursor(IDC_ARROW);
         wndcls.hbrBackground    = (HBRUSH) (COLOR_ACTIVEBORDER + 1);
-        wndcls.lpszMenuName     = NULL;
+        wndcls.lpszMenuName     = nullptr;
         wndcls.lpszClassName    = INDICATOR_CLASSNAME;
 
         if (!AfxRegisterClass(&wndcls))

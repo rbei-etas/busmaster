@@ -133,7 +133,7 @@ VOID CFFListCtrl::vInitMemDCRect()
     CHeaderCtrl* pHC;
     // Get the Header Control
     pHC = GetHeaderCtrl();
-    if (pHC != NULL)
+    if (pHC != nullptr)
     {
         CRect rectHeader;
         // Get the size of Header

@@ -35,7 +35,7 @@ private:
 public:
     CString m_omSelectedFunctionPrototype;
     CString m_omStrSelectedText;
-    CSelectFunctions(ETYPE_BUS eBus, CWnd* pParent = NULL);   // standard constructor
+    CSelectFunctions(ETYPE_BUS eBus, CWnd* pParent = nullptr);   // standard constructor
 
     // Dialog Data
     //{{AFX_DATA(CSelectFunctions)

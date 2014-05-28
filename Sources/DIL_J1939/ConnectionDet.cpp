@@ -53,11 +53,11 @@ CConnectionDet::CConnectionDet(BYTE bySrcAddress,
     m_byDestAddress = byDestAddress;
 
     //Create Event
-    m_hDataAckWait = CreateEvent(NULL, FALSE, FALSE, NULL);
-    m_hBCDataRXWait = CreateEvent(NULL, FALSE, FALSE, NULL);
-    m_hDataRxWait = CreateEvent(NULL, FALSE, FALSE, NULL);
-    m_hClear2SendWait = CreateEvent(NULL, FALSE, FALSE, NULL);
-    m_hDataDelayWait = CreateEvent(NULL, FALSE, FALSE, NULL);
+    m_hDataAckWait = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+    m_hBCDataRXWait = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+    m_hDataRxWait = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+    m_hClear2SendWait = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+    m_hDataDelayWait = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 }
 
 CConnectionDet::~CConnectionDet(void)

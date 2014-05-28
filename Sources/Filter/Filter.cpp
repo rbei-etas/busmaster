@@ -31,13 +31,13 @@
 #define USAGE_EXPORT
 #include "Filter_extern.h"
 
-static AFX_EXTENSION_MODULE FilterDLL = { NULL, NULL };
+static AFX_EXTENSION_MODULE FilterDLL = { false, nullptr };
 
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
 
-    static HINSTANCE shLangInst=NULL;
+    static HINSTANCE shLangInst=nullptr;
 
 
     // Remove this if you use lpReserved
@@ -121,7 +121,7 @@ USAGEMODE HRESULT Filter_ShowConfigDlg(void* pExistingFilter, const void* psMsgE
     {
         case CAN:
         {
-            if (pExistingFilter != NULL)
+            if (pExistingFilter != nullptr)
             {
                 SFILTERAPPLIED_CAN* pAppliedFilterCan = (SFILTERAPPLIED_CAN*)pExistingFilter;
                 SFILTERAPPLIED_CAN sTempObj;
@@ -138,7 +138,7 @@ USAGEMODE HRESULT Filter_ShowConfigDlg(void* pExistingFilter, const void* psMsgE
         }
         break;
         case LIN:
-            if (pExistingFilter != NULL)
+            if (pExistingFilter != nullptr)
             {
                 SFILTERAPPLIED_LIN* pAppliedFilterLin = (SFILTERAPPLIED_LIN*)pExistingFilter;
                 SFILTERAPPLIED_LIN sTempObj;
@@ -286,7 +286,7 @@ USAGEMODE HRESULT Filter_ReUpdateAppliedFilter(void* pvFilterApplied,
         const void* pvFilterConfigured, ETYPE_BUS eType)
 {
     HRESULT hResult = S_OK;
-    if ((pvFilterApplied != NULL) && (pvFilterConfigured != NULL))
+    if ((pvFilterApplied != nullptr) && (pvFilterConfigured != nullptr))
     {
         switch (eType)
         {

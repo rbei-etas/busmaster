@@ -54,15 +54,15 @@ extern VOID vConvStrtoByteArray(
  Author(s)      :   Ratnadip Choudhury
  Date Created   :   03-04-2002
 ******************************************************************************/
-CSigWatchDlg::CSigWatchDlg(CWnd* pParent /*=NULL*/, ETYPE_BUS eBus /*=CAN*/)
-    : CDialog(CSigWatchDlg::IDD, NULL)
+CSigWatchDlg::CSigWatchDlg(CWnd* pParent /*=nullptr*/, ETYPE_BUS eBus /*=CAN*/)
+    : CDialog(CSigWatchDlg::IDD, nullptr)
 {
     //{{AFX_DATA_INIT(CSigWatchDlg)
     // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
     m_eBus = eBus;
     m_pParent = pParent;
-    m_hMainWnd = NULL;
+    m_hMainWnd = nullptr;
     m_bEscape = false;
 }
 
@@ -248,13 +248,13 @@ void CSigWatchDlg::vAddMsgSigIntoList(   const CString& omStrMsgName,
         {
             CString omStrSignalInfo;
             CString omListStr = omSASignals.GetAt(index);
-            POSITION pos = NULL;
+            POSITION pos = nullptr;
             sSIGENTRY sEntry;
             sEntry.m_omMsgName = omStrMsgName;
             sEntry.m_omSigName = omListStr;
             sEntry.m_omPhyValue = omSAPhysical.GetAt(index);
             sEntry.m_omRawValue = omSARaw.GetAt(index);
-            if (NULL != (pos = m_odSigEntryList.Find(sEntry)))
+            if (nullptr != (pos = m_odSigEntryList.Find(sEntry)))
             {
                 sSIGENTRY& sTemp = m_odSigEntryList.GetAt(pos);
                 sTemp.m_omPhyValue = sEntry.m_omPhyValue;
@@ -301,13 +301,13 @@ void CSigWatchDlg::vAddMsgToWnd(SSignalInfoArray* sSingnalinfo, BOOL bIntptrDone
                 if(strcmpi(sTempSignal.m_omSigName,(*itrselSignals).c_str())==0)
                 {
 
-                    POSITION pos = NULL;
+                    POSITION pos = nullptr;
                     sSIGENTRY sEntry;
                     sEntry.m_omMsgName = sTempSignal.m_msgName;
                     sEntry.m_omSigName = sTempSignal.m_omSigName;
                     sEntry.m_omPhyValue = sTempSignal.m_omEnggValue;
                     sEntry.m_omRawValue = sTempSignal.m_omRawValue;
-                    if (NULL != (pos = m_odSigEntryList.Find(sEntry)))
+                    if (nullptr != (pos = m_odSigEntryList.Find(sEntry)))
                     {
                         sSIGENTRY& sTemp = m_odSigEntryList.GetAt(pos);
                         sTemp.m_omPhyValue = sEntry.m_omPhyValue;
@@ -416,7 +416,7 @@ LRESULT CSigWatchDlg::vRemoveSignalFromMap(WPARAM /* wParam */, LPARAM lParam)
 {
     // remove all entry from the map
     m_omCSDispEntry.Lock();
-    if(lParam != NULL) // remove only specified msg entry from the signal watch list
+    if(lParam != 0) // remove only specified msg entry from the signal watch list
     {
         CString* pMsgString = (CString*)lParam;
         CString strMsgName = *pMsgString;
@@ -589,14 +589,14 @@ BOOL CSigWatchDlg::OnInitDialog()
     {
         SetIcon( ::LoadIcon(hModAdvancedUILib, MAKEINTRESOURCE( IDI_ICON_SIGNALWATCH )), TRUE);
         ::FreeLibrary(hModAdvancedUILib);
-        hModAdvancedUILib = NULL;
+        hModAdvancedUILib = nullptr;
     }
     else
     {
         SetIcon( AfxGetApp()->LoadIcon(IDI_ICON_SIGNALWATCH), TRUE);
     }
     vInitSignalWatchList();
-    m_unTimerId = (UINT)SetTimer(0x123, 50, NULL);
+    m_unTimerId = (UINT)SetTimer(0x123, 50, nullptr);
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -633,7 +633,7 @@ void CSigWatchDlg::vInitSignalWatchList()
 
     // Create Image List First time
     // Only One time creation
-    if( m_omSigImageList.m_hImageList == NULL )
+    if( m_omSigImageList.m_hImageList == nullptr )
     {
         m_omSigImageList.Create(IDR_BMP_MSG_SIG_WATCH,
                                 16,
@@ -716,7 +716,7 @@ void CSigWatchDlg::OnTimer(UINT nIDEvent)
 
 LRESULT CSigWatchDlg::OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam)
 {
-    if (NULL != m_pParent)
+    if (nullptr != m_pParent)
     {
         m_pParent->SendMessage(WM_KEYBOARD_CHAR, wParam, lParam);
     }
@@ -725,7 +725,7 @@ LRESULT CSigWatchDlg::OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam)
 
 LRESULT CSigWatchDlg::OnReceiveKeyDown(WPARAM wParam, LPARAM lParam)
 {
-    if (NULL != m_pParent)
+    if (nullptr != m_pParent)
     {
         m_pParent->SendMessage(WM_KEYBOARD_KEYDOWN, wParam, lParam);
     }
@@ -734,7 +734,7 @@ LRESULT CSigWatchDlg::OnReceiveKeyDown(WPARAM wParam, LPARAM lParam)
 
 LRESULT CSigWatchDlg::vConfigureSignals(WPARAM /* wParam */, LPARAM /* lParam */)
 {
-    if (NULL != m_hMainWnd)
+    if (nullptr != m_hMainWnd)
     {
         ::PostMessage(m_hMainWnd, WM_CONFIGURE_SIGNAL_WATCH, m_eBus, 0);
     }

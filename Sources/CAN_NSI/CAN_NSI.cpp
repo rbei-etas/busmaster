@@ -113,7 +113,7 @@ CCAN_NSI theApp;
 /**
  * CCAN_NSI initialization
  */
-static HINSTANCE ghLangInst=NULL;
+static HINSTANCE ghLangInst=nullptr;
 
 BOOL CCAN_NSI::InitInstance()
 {
@@ -204,7 +204,7 @@ typedef struct tagAckMap
         return ((m_MsgID == RefObj.m_MsgID) && (m_Channel == RefObj.m_Channel));
     }
 } SACK_MAP;
-static HANDLE hEvent = NULL;
+static HANDLE hEvent = nullptr;
 static CRITICAL_SECTION sg_DIL_CriticalSection;
 
 static  CRITICAL_SECTION sg_CritSectForAckBuf;       // To make it thread safe
@@ -325,12 +325,12 @@ typedef struct tagClientBufMap
     tagClientBufMap()
     {
         dwClientID = 0;
-        hClientHandle = NULL;
+        hClientHandle = 0;
         unBufCount = 0;
         memset(pacClientName, 0, sizeof (char) * MAX_PATH);
         for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
-            pClientBuf[i] = NULL;
+            pClientBuf[i] = nullptr;
         }
 
     }
@@ -372,8 +372,8 @@ static UINT sg_unClientCnt = 0;
 static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
 static UINT m_unDevChannelMap[defNO_OF_CHANNELS] = {(UINT)-1};
 
-static HWND sg_hOwnerWnd = NULL;
-static Base_WrapperErrorLogger* sg_pIlog   = NULL;
+static HWND sg_hOwnerWnd = nullptr;
+static Base_WrapperErrorLogger* sg_pIlog   = nullptr;
 
 // state variables
 static BOOL sg_bIsConnected = FALSE;
@@ -393,7 +393,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -417,7 +417,7 @@ public:
     HRESULT CAN_UnloadDriverLibrary(void);
 };
 
-CDIL_CAN_NSI* sg_pouDIL_CAN_NSI = NULL;
+CDIL_CAN_NSI* sg_pouDIL_CAN_NSI = nullptr;
 HANDLE g_hDataEvent[defNO_OF_CHANNELS]  = {0};
 
 
@@ -431,9 +431,9 @@ HANDLE g_hDataEvent[defNO_OF_CHANNELS]  = {0};
 USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 {
     HRESULT hResult = S_OK;
-    if ( NULL == sg_pouDIL_CAN_NSI )
+    if ( nullptr == sg_pouDIL_CAN_NSI )
     {
-        if ((sg_pouDIL_CAN_NSI = new CDIL_CAN_NSI) == NULL)
+        if ((sg_pouDIL_CAN_NSI = new CDIL_CAN_NSI) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -544,7 +544,7 @@ void GetEventString(t_CANevent* pEvent, UINT unDrvChannel)
     char* pchPCI;
     pchPCMCIA = strstr(sg_aodChannels[unDrvChannel].m_strName, "CANPCMCIA");
     pchPCI = strstr(sg_aodChannels[unDrvChannel].m_strName, "CANPCI");
-    if((pchPCMCIA != NULL) || (pchPCI != NULL))
+    if((pchPCMCIA != nullptr) || (pchPCI != nullptr))
     {
         if(sg_byCurrState[unDrvChannel] == CREATE_MAP_TIMESTAMP)
         {
@@ -662,7 +662,7 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_NSI(LPVOID pVoid)
     }
     //Apply filters for read handles
     //nSetFilter(false);
-    if (g_hDataEvent[0] != NULL)
+    if (g_hDataEvent[0] != nullptr)
     {
         pThreadParam->m_hActionEvent = g_hDataEvent[0];
     }
@@ -695,9 +695,9 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_NSI(LPVOID pVoid)
     for (UINT i = 0; i < sg_nNoOfChannels+1; i++)
     {
         ResetEvent(g_hDataEvent[i]);
-        g_hDataEvent[i] = NULL;
+        g_hDataEvent[i] = nullptr;
     }
-    pThreadParam->m_hActionEvent = NULL;
+    pThreadParam->m_hActionEvent = nullptr;
 
     return 0;
 }
@@ -949,17 +949,17 @@ static BOOL bRemoveClient(DWORD dwClientId)
         if (bGetClientObj(dwClientId, unClientIndex))
         {
             /* clear the client first */
-            if (sg_asClientToBufMap[unClientIndex].hClientHandle != NULL)
+            if (sg_asClientToBufMap[unClientIndex].hClientHandle != 0)
             {
                 HRESULT hResult = S_OK;//(*pfCAN_RemoveClient)(sg_asClientToBufMap[unClientIndex].hClientHandle);
                 if (hResult == S_OK)
                 {
                     sg_asClientToBufMap[unClientIndex].dwClientID = 0;
-                    sg_asClientToBufMap[unClientIndex].hClientHandle = NULL;
+                    sg_asClientToBufMap[unClientIndex].hClientHandle = 0;
                     memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                     for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                     {
-                        sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                        sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                     }
                     sg_asClientToBufMap[unClientIndex].unBufCount = 0;
                     bResult = TRUE;
@@ -975,7 +975,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
                 memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                 for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                 {
-                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                 }
                 sg_asClientToBufMap[unClientIndex].unBufCount = 0;
                 bResult = TRUE;
@@ -1069,11 +1069,11 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
 {
     BOOL bReturn = FALSE;
     // If successful
-    if (pControllerDetails != NULL)
+    if (pControllerDetails != nullptr)
     {
         for( UINT nIndex = 0; nIndex < sg_nNoOfChannels ; nIndex++ )
         {
-            char* pcStopStr = NULL;
+            char* pcStopStr = nullptr;
             CChannel& odChannel = sg_aodChannels[nIndex];
 
             // Baudrate in BTR0BTR1 format
@@ -1712,7 +1712,7 @@ static int nSetApplyConfiguration()
         pchMuxy2010 = strstr(sg_aodChannels[unIndex].m_strName, "MUXYv2-CAN CH2");
         pchMuxyBox = strstr(sg_aodChannels[unIndex].m_strName, "MUXy box CH");
         // pchPCMCIA = strstr(sg_aodChannels[unIndex].m_strName, "CANPCMCIA /LS");
-        if(pchMuxyBox2 != NULL)
+        if(pchMuxyBox2 != nullptr)
         {
             if(sg_aodChannels[unIndex].m_nLowSpeed == BST_CHECKED)
             {
@@ -1723,7 +1723,7 @@ static int nSetApplyConfiguration()
                 nReturn = nInitLineDriver((UINT)sg_aodChannels[unIndex].m_nChannel, _CAN_HIGH_SPEED);
             }
         }
-        if(pchMuxy2010 != NULL)
+        if(pchMuxy2010 != nullptr)
         {
             if(sg_aodChannels[unIndex].m_nLowSpeed == BST_CHECKED)
             {
@@ -1734,7 +1734,7 @@ static int nSetApplyConfiguration()
                 nReturn = nInitLineDriver((UINT)sg_aodChannels[unIndex].m_nChannel, _CAN_HIGH_SPEED);
             }
         }
-        if(pchMuxyBox != NULL)
+        if(pchMuxyBox != nullptr)
         {
             if(sg_aodChannels[unIndex].m_nLowSpeed == BST_CHECKED)
             {
@@ -1745,7 +1745,7 @@ static int nSetApplyConfiguration()
                 nReturn = nInitLineDriver((UINT)sg_aodChannels[unIndex].m_nChannel, _CAN_HIGH_SPEED);
             }
         }
-        /*if(pchPCMCIA != NULL)
+        /*if(pchPCMCIA != nullptr)
         {
             nReturn = nInitLineDriver((UINT)sg_aodChannels[unIndex].m_nChannel, _CAN_LOW_SPEED);
         }*/
@@ -1970,7 +1970,7 @@ HRESULT CDIL_CAN_NSI::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* 
     /* Query Tick Count */
     sg_QueryTickCount.QuadPart = 0;
 
-    CAN_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
+    CAN_ManageMsgBuf(MSGBUF_CLEAR, 0, nullptr);
 
     return S_OK;
 }
@@ -1987,7 +1987,7 @@ HRESULT CDIL_CAN_NSI::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* 
 HRESULT CDIL_CAN_NSI::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
-    if (ClientID != NULL)
+    if (ClientID != 0)
     {
         UINT unClientIndex;
         if (bGetClientObj(ClientID, unClientIndex))
@@ -1996,7 +1996,7 @@ HRESULT CDIL_CAN_NSI::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBuf
             if (bAction == MSGBUF_ADD)
             {
                 //Add msg buffer
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     if (sClientObj.unBufCount < MAX_BUFF_ALLOWED)
                     {
@@ -2015,7 +2015,7 @@ HRESULT CDIL_CAN_NSI::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBuf
             else if (bAction == MSGBUF_CLEAR)
             {
                 //clear msg buffer
-                if (pBufObj != NULL) //REmove only buffer mentioned
+                if (pBufObj != nullptr) //REmove only buffer mentioned
                 {
                     bRemoveClientBuffer(sClientObj.pClientBuf, sClientObj.unBufCount, pBufObj);
                 }
@@ -2023,7 +2023,7 @@ HRESULT CDIL_CAN_NSI::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBuf
                 {
                     for (UINT i = 0; i < sClientObj.unBufCount; i++)
                     {
-                        sClientObj.pClientBuf[i] = NULL;
+                        sClientObj.pClientBuf[i] = nullptr;
                     }
                     sClientObj.unBufCount = 0;
                 }
@@ -2042,7 +2042,7 @@ HRESULT CDIL_CAN_NSI::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBuf
             //clear msg buffer
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, nullptr);
             }
             hResult = S_OK;
         }
@@ -2225,7 +2225,7 @@ HRESULT CDIL_CAN_NSI::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& Ti
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     //TimeStamp   = sg_TimeStamp;
     TimeStamp  = 0;
-    if(QueryTickCount != NULL)
+    if(QueryTickCount != nullptr)
     {
         *QueryTickCount = sg_QueryTickCount;
     }
@@ -2439,7 +2439,7 @@ HRESULT CDIL_CAN_NSI::CAN_StartHardware(void)
     flagConnect = TRUE;
 
     //Connect to the channels
-    hResult = nConnect(TRUE, NULL);
+    hResult = nConnect(TRUE, 0);
     if (hResult == defERR_OK)
     {
         hResult = S_OK;
@@ -2491,7 +2491,7 @@ HRESULT CDIL_CAN_NSI::CAN_StopHardware(void)
 
     flagConnect = FALSE;
 
-    hResult = nConnect(FALSE, NULL);
+    hResult = nConnect(FALSE, 0);
     if (hResult == defERR_OK)
     {
         hResult = S_OK;

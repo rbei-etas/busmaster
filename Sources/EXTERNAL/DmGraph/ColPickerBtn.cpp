@@ -105,7 +105,7 @@ LRESULT CColPickerBtn::OnDrawItem(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&
     DrawEdge(lpDrawItemStruct->hDC, &rcCol, lpDrawItemStruct->itemState & ODS_SELECTED ? EDGE_SUNKEN : EDGE_RAISED, BF_RECT);
     COLORREF oldCol = ::SetBkColor(lpDrawItemStruct->hDC, m_col);
     InflateRect(&rcCol, -offsetText.cx*2, -offsetText.cy*2);
-    ::ExtTextOut(lpDrawItemStruct->hDC, 0, 0, ETO_OPAQUE, &rcCol, NULL, 0, NULL);
+    ::ExtTextOut(lpDrawItemStruct->hDC, 0, 0, ETO_OPAQUE, &rcCol, nullptr, 0, nullptr);
     ::SetBkColor(lpDrawItemStruct->hDC, oldCol);
 
     DrawEdge(lpDrawItemStruct->hDC, &rcBtn, lpDrawItemStruct->itemState & ODS_SELECTED ? EDGE_SUNKEN : EDGE_RAISED, BF_RECT);

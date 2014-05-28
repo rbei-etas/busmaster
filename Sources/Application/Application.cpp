@@ -109,7 +109,7 @@ CApplication::CApplication(void)
 
     if ( !g_bInitCOMThread )
     {
-        g_ouCOMReadThread.m_hActionEvent = NULL;
+        g_ouCOMReadThread.m_hActionEvent = nullptr;
         g_ouCOMReadThread.m_unActionCode = IDLE;
 
         bStartCOMReadThread();
@@ -121,14 +121,14 @@ CApplication::CApplication(void)
 DWORD WINAPI COMReadThreadProc(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         return (DWORD)-1;
     }
 
     CApplication* pouApp = static_cast<CApplication*> (pThreadParam->m_pBuffer);
 
-    if (pouApp == NULL)
+    if (pouApp == nullptr)
     {
         return (DWORD)-1;
     }
@@ -195,7 +195,7 @@ void CApplication::ReadCOMDataBuffer()
             {
                 if ( g_shUniqueID[i]!= -1 )
                 {
-                    bRet = WriteFile(g_hndPIPE[i], (BYTE*)&sMsg, sizeof(sMsg), &dwCount, NULL);
+                    bRet = WriteFile(g_hndPIPE[i], (BYTE*)&sMsg, sizeof(sMsg), &dwCount, nullptr);
                     /* Inform clients about data availability */
                     SetEvent(g_hndEvent[i]);
                 }
@@ -222,7 +222,7 @@ BOOL CApplication::bStopCOMReadThread()
 {
     BOOL bReturn = FALSE;
     bReturn = g_ouCOMReadThread.bTerminateThread();
-    g_ouCOMReadThread.m_hActionEvent = NULL;
+    g_ouCOMReadThread.m_hActionEvent = nullptr;
     g_ouCOMReadThread.m_unActionCode = IDLE;
     return bReturn;
 }
@@ -230,7 +230,7 @@ BOOL CApplication::bStopCOMReadThread()
 void CApplication::vInitializeCOMReadBuffer()
 {
     CBaseDIL_CAN* pDIL_CAN = GetICANDIL();
-    if (pDIL_CAN != NULL)
+    if (pDIL_CAN != nullptr)
     {
         DWORD dwClientId = 0;
         pDIL_CAN->DILC_RegisterClient(TRUE, dwClientId, CAN_MONITOR_NODE);
@@ -284,7 +284,7 @@ STDMETHODIMP CApplication::XLocalClass::GetTypeInfoCount(
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     LPDISPATCH lpDispatch = pThis->GetIDispatch(FALSE);
-    ASSERT(lpDispatch != NULL);
+    ASSERT(lpDispatch != nullptr);
     return lpDispatch->GetTypeInfoCount(pctinfo);
 }
 STDMETHODIMP CApplication::XLocalClass::GetTypeInfo(
@@ -292,7 +292,7 @@ STDMETHODIMP CApplication::XLocalClass::GetTypeInfo(
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     LPDISPATCH lpDispatch = pThis->GetIDispatch(FALSE);
-    ASSERT(lpDispatch != NULL);
+    ASSERT(lpDispatch != nullptr);
     return lpDispatch->GetTypeInfo(itinfo, lcid, pptinfo);
 }
 STDMETHODIMP CApplication::XLocalClass::GetIDsOfNames(
@@ -301,7 +301,7 @@ STDMETHODIMP CApplication::XLocalClass::GetIDsOfNames(
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     LPDISPATCH lpDispatch = pThis->GetIDispatch(FALSE);
-    ASSERT(lpDispatch != NULL);
+    ASSERT(lpDispatch != nullptr);
     return lpDispatch->GetIDsOfNames(riid, rgszNames, cNames,
                                      lcid, rgdispid);
 }
@@ -312,7 +312,7 @@ STDMETHODIMP CApplication::XLocalClass::Invoke(
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     LPDISPATCH lpDispatch = pThis->GetIDispatch(FALSE);
-    ASSERT(lpDispatch != NULL);
+    ASSERT(lpDispatch != nullptr);
     return lpDispatch->Invoke(dispidMember, riid, lcid,
                               wFlags, pdispparams, pvarResult,
                               pexcepinfo, puArgErr);

@@ -34,7 +34,7 @@ struct tagSignalWatchList
     tagSignalWatchList()
     {
         unMsgID = 0;
-        psNextMessageNode = NULL;
+        psNextMessageNode = nullptr;
     }
 };
 

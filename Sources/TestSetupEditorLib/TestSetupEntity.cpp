@@ -35,7 +35,7 @@ Modifications  :
 ******************************************************************************/
 CTestSetupEntity::CTestSetupEntity()
 {
-    ::CoInitialize(NULL);
+    ::CoInitialize(nullptr);
     m_eType = TEST_SETUP;
     m_omstrCurrentTSFile = def_EMPTYFILENAME;
 }
@@ -127,7 +127,7 @@ HRESULT CTestSetupEntity::DeleteSubEntry(CBaseEntityTA* pouSubEntryObj)
     for(int i = 0; i < nCount; i++)
     {
         POSITION pos = m_odTestCaseEntityList.FindIndex(i);
-        if(pos != NULL)
+        if(pos != nullptr)
         {
             CTestCaseEntity& pEntity = m_odTestCaseEntityList.GetAt(pos);
             if(pEntity.GetID() == pouSubEntryObj->GetID())
@@ -175,7 +175,7 @@ Modifications  :
 const HRESULT CTestSetupEntity::GetSubEntityObj(UINT unIndex, CBaseEntityTA**  pouSubEntity)
 {
     POSITION pos =  m_odTestCaseEntityList.FindIndex(unIndex);
-    if(pos != NULL)
+    if(pos != nullptr)
     {
         CTestCaseEntity& ob = m_odTestCaseEntityList.GetAt(pos);
         *pouSubEntity = &ob;
@@ -305,8 +305,8 @@ HRESULT CTestSetupEntity::RepositionSubEntity(CBaseEntityTA* pouRefSubEntity, CB
             break;
         }
     }
-    POSITION posNew = NULL;
-    if(pouCurrSubEntity == NULL)        //Insert At First Index;
+    POSITION posNew = nullptr;
+    if(pouCurrSubEntity == nullptr)        //Insert At First Index;
     {
         posNew =  m_odTestCaseEntityList.AddHead(ouTCEntity);
     }
@@ -409,7 +409,7 @@ HRESULT CTestSetupEntity::SaveFileAs(CString omFilePath)
     VARIANT_BOOL b = TRUE;
     pIDOMDoc->put_preserveWhiteSpace(b);
 
-    if (pIDomPi != NULL)
+    if (pIDomPi != nullptr)
     {
         pIDOMDoc->appendChild(pIDomPi);
     }
@@ -420,7 +420,7 @@ HRESULT CTestSetupEntity::SaveFileAs(CString omFilePath)
 
     //Title Attribute <testsetup title = "">
     MSXML2::IXMLDOMAttributePtr pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_TSATTRIB_TITLE);
-    if(pIDomTSAtrrib!= NULL)
+    if(pIDomTSAtrrib!= nullptr)
     {
         pIDomTSAtrrib->value = _bstr_t(m_omstrTestSetupTitle);
         pIDomTSNode->setAttributeNode(pIDomTSAtrrib);
@@ -555,7 +555,7 @@ void CTestSetupEntity::vDeleteAllSubMessages()
         {
             CBaseEntityTA* pEntity;
             odTestCaseEntity.GetSubEntityObj(j, &pEntity);
-            if( NULL != pEntity )
+            if( nullptr != pEntity )
             {
                 UINT nSubChildCount = 0;
                 pEntity->GetSubEntryCount(nSubChildCount);
@@ -651,7 +651,7 @@ Modifications  :
 BOOL CTestSetupEntity::FormatDOMDocument(MSXML2::IXMLDOMDocumentPtr pDoc, CString& omstrFilePath)
 {
     //Referance Taken From Msdn
-    MSXML2::ISAXXMLReaderPtr pSaxXmlReader = NULL;
+    MSXML2::ISAXXMLReaderPtr pSaxXmlReader = nullptr;
 
     pSaxXmlReader.CreateInstance(L"Msxml2.SAXXMLReader");
 
@@ -940,7 +940,7 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
     CString omstrTemp;
     //Module Info
     pInfoElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_INFO_NODE));
-    if (pInfoElement != NULL)
+    if (pInfoElement != nullptr)
     {
         bAddChildToNode(pInfoElement, def_STR_CATEGORY_NODE, m_ouTestSetupHeader.m_sModuleName.m_omCategory);
         bAddChildToNode(pInfoElement, def_STR_VALUE_NODE, m_ouTestSetupHeader.m_sModuleName.m_omValue);
@@ -949,7 +949,7 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
 
     //Version
     pInfoElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_INFO_NODE));
-    if (pInfoElement != NULL)
+    if (pInfoElement != nullptr)
     {
         bAddChildToNode(pInfoElement, def_STR_CATEGORY_NODE, m_ouTestSetupHeader.m_sVersion.m_omCategory);
         bAddChildToNode(pInfoElement, def_STR_VALUE_NODE, m_ouTestSetupHeader.m_sVersion.m_omValue);
@@ -958,7 +958,7 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
 
     //Engineer Name
     pInfoElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_INFO_NODE));
-    if (pInfoElement != NULL)
+    if (pInfoElement != nullptr)
     {
         bAddChildToNode(pInfoElement, def_STR_CATEGORY_NODE, m_ouTestSetupHeader.m_sEngineerInfo1.m_omCategory);
         bAddChildToNode(pInfoElement, def_STR_VALUE_NODE, m_ouTestSetupHeader.m_sEngineerInfo1.m_omValue);
@@ -967,7 +967,7 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
 
     //Engineer Role
     pInfoElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_INFO_NODE));
-    if (pInfoElement != NULL)
+    if (pInfoElement != nullptr)
     {
         bAddChildToNode(pInfoElement, def_STR_CATEGORY_NODE, m_ouTestSetupHeader.m_sEngineerInfo2.m_omCategory);
         bAddChildToNode(pInfoElement, def_STR_VALUE_NODE, m_ouTestSetupHeader.m_sEngineerInfo2.m_omValue);
@@ -995,7 +995,7 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
 
 
 
-    if (pInfoElement != NULL)
+    if (pInfoElement != nullptr)
     {
         switch(m_ouTestSetupHeader.m_sReportFile.m_eType)
         {
@@ -1063,10 +1063,10 @@ BOOL CTestSetupEntity::bAddChildToNode(MSXML2::IXMLDOMElementPtr& pNodeElement,
     MSXML2::IXMLDOMElementPtr pChildElement;
     MSXML2::IXMLDOMDocumentPtr m_pXMLDom;
     m_pXMLDom.CreateInstance(L"Msxml2.DOMDocument");
-    if (pNodeElement != NULL)
+    if (pNodeElement != nullptr)
     {
         pChildElement   =  m_pXMLDom->createElement(_bstr_t(omNodeName));
-        if (pChildElement != NULL)
+        if (pChildElement != nullptr)
         {
             pChildElement->Puttext((_bstr_t)omNodeval);
             pNodeElement->appendChild(pChildElement);

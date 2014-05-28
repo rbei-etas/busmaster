@@ -34,7 +34,7 @@ class CDefineTimerHandler : public CDialog
     // Construction
 public:
     CString m_omStrTimerFunctionName;
-    CDefineTimerHandler(CFunctionEditorDoc* pDoc, CWnd* pParent = NULL);   // standard constructor
+    CDefineTimerHandler(CFunctionEditorDoc* pDoc, CWnd* pParent = nullptr);   // standard constructor
 
     // Dialog Data
     //{{AFX_DATA(CDefineTimerHandler)

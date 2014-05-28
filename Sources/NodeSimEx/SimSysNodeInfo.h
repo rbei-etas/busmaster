@@ -79,7 +79,7 @@ struct sNODELIST
     {
         m_eBus = eBus;
         m_sNodeInfo.m_eBus = m_eBus;
-        m_psNextNode = NULL;
+        m_psNextNode = nullptr;
     }
     ~sNODELIST()
     {
@@ -100,17 +100,17 @@ struct sSIMSYSINFO
     {
         m_omStrSimSysName = "";
         m_unNumberOfNodesAdded = 0;
-        m_psNodesList = NULL;
+        m_psNodesList = nullptr;
         m_bIsSimSysModified = FALSE;
-        m_psSimsysNext = NULL;
+        m_psSimsysNext = nullptr;
     }
 
     void vAddNodeToList(PSNODELIST pNode)
     {
-        if (pNode != NULL)
+        if (pNode != nullptr)
         {
-            pNode->m_psNextNode = NULL;
-            if(m_psNodesList == NULL)
+            pNode->m_psNextNode = nullptr;
+            if(m_psNodesList == nullptr)
             {
                 //If list is empty add to the first node
                 m_psNodesList = pNode;
@@ -119,7 +119,7 @@ struct sSIMSYSINFO
             {
                 //Else add to the last
                 PSNODELIST pTempNode = m_psNodesList;
-                while (pTempNode->m_psNextNode != NULL)
+                while (pTempNode->m_psNextNode != nullptr)
                 {
                     pTempNode = pTempNode->m_psNextNode;
                 }

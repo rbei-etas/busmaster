@@ -28,7 +28,7 @@ void WINAPI FillCombo(HWND hWndCombo, UINT id, int idx)
     LPOLESTR ptr;
     ATLASSERT(::IsWindow(hWndCombo));
     int j;
-    for(ptr = wcstok(bsItems, L"\n"); ptr; ptr = wcstok(NULL, L"\n"))
+    for(ptr = wcstok(bsItems, L"\n"); ptr; ptr = wcstok(nullptr, L"\n"))
     {
         j = ::SendMessageW(hWndCombo, CB_ADDSTRING, 0, (LPARAM)ptr);
         if(j == idx)
@@ -74,7 +74,7 @@ void CCursorPropPage::UpdateControls(IDMGraphCtrl* pGraphCtrl)
     CComPtr<IDMGraphCursor> spCursor;
     GetSelectedCursor(pGraphCtrl, &spCursor);
 
-    BOOL bEnabled = spCursor != NULL;
+    BOOL bEnabled = spCursor != nullptr;
 
     const UINT idCtrls[] = { IDC_COMBO_STYLE, IDC_EDIT_X, IDC_EDIT_Y, IDC_COMBO_SNAP, IDC_CURSOR_COLOR, IDC_EDIT_NAME,
                              IDC_CHECK_VISIBLE,
@@ -104,7 +104,7 @@ void CCursorPropPage::UpdateControls(IDMGraphCtrl* pGraphCtrl)
     OLE_COLOR color;
     COLORREF col;
     hr = spCursor->get_Color(&color);
-    hr = OleTranslateColor(color, NULL, &col);
+    hr = OleTranslateColor(color, nullptr, &col);
     m_btnColPicker.SetColor(col);
 
     Crosshair style;
@@ -150,7 +150,7 @@ LRESULT CCursorPropPage::OnColChanged(UINT uMsg, WPARAM wParam, LPARAM lParam, B
 
     CComPtr<IDMGraphCursor> spCursor;
     GetSelectedCursor(spGraph, &spCursor);
-    if(spCursor == NULL)
+    if(spCursor == nullptr)
     {
         return 0;
     }
@@ -324,7 +324,7 @@ LRESULT CCursorPropPage::OnChangeEdit_x(WORD wNotifyCode, WORD wID, HWND hWndCtl
 
     CComPtr<IDMGraphCursor> spCursor;
     GetSelectedCursor(spGraph, &spCursor);
-    if(spCursor == NULL)
+    if(spCursor == nullptr)
     {
         return 0;
     }
@@ -352,7 +352,7 @@ LRESULT CCursorPropPage::OnChangeEdit_y(WORD wNotifyCode, WORD wID, HWND hWndCtl
 
     CComPtr<IDMGraphCursor> spCursor;
     GetSelectedCursor(spGraph, &spCursor);
-    if(spCursor == NULL)
+    if(spCursor == nullptr)
     {
         return 0;
     }
@@ -380,7 +380,7 @@ LRESULT CCursorPropPage::OnChangeEdit_name(WORD wNotifyCode, WORD wID, HWND hWnd
 
     CComPtr<IDMGraphCursor> spCursor;
     GetSelectedCursor(spGraph, &spCursor);
-    if(spCursor == NULL)
+    if(spCursor == nullptr)
     {
         return 0;
     }
@@ -392,7 +392,7 @@ LRESULT CCursorPropPage::OnChangeEdit_name(WORD wNotifyCode, WORD wID, HWND hWnd
 
     //this is the reason we use list view control and not listbox control
     //we need to update text for items in list
-    ::InvalidateRect(GetDlgItem(IDC_COLLECTION_LIST), NULL, FALSE);
+    ::InvalidateRect(GetDlgItem(IDC_COLLECTION_LIST), nullptr, FALSE);
     return 0;
 }
 
@@ -412,7 +412,7 @@ LRESULT CCursorPropPage::OnClickedCheck_visible(WORD wNotifyCode, WORD wID, HWND
 
     CComPtr<IDMGraphCursor> spCursor;
     GetSelectedCursor(spGraph, &spCursor);
-    if(spCursor == NULL)
+    if(spCursor == nullptr)
     {
         return 0;
     }
@@ -438,7 +438,7 @@ LRESULT CCursorPropPage::OnCloseupCombo_style(WORD wNotifyCode, WORD wID, HWND h
 
     CComPtr<IDMGraphCursor> spCursor;
     GetSelectedCursor(spGraph, &spCursor);
-    if(spCursor == NULL)
+    if(spCursor == nullptr)
     {
         return 0;
     }
@@ -464,7 +464,7 @@ LRESULT CCursorPropPage::OnCloseupCombo_snap(WORD wNotifyCode, WORD wID, HWND hW
 
     CComPtr<IDMGraphCursor> spCursor;
     GetSelectedCursor(spGraph, &spCursor);
-    if(spCursor == NULL)
+    if(spCursor == nullptr)
     {
         return 0;
     }
@@ -488,7 +488,7 @@ HRESULT WINAPI GetSelectedCursor(IDMGraphCtrl* pGraphCtrl, IDMGraphCursor** pCur
     HRESULT hr;
     ATLASSERT(pGraphCtrl);
     ATLASSERT(pCursor);
-    *pCursor = NULL;
+    *pCursor = nullptr;
     CComPtr<IDMGraphCollection> spGraphCollection;
     hr = pGraphCtrl->get_Cursors(&spGraphCollection);
 

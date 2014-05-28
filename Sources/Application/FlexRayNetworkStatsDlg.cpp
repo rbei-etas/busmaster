@@ -29,7 +29,7 @@ IMPLEMENT_DYNAMIC(CFlexRayNetworkStatsDlg, CDialog)
 CFlexRayNetworkStatsDlg::CFlexRayNetworkStatsDlg(CFlexRayNetworkStats* pouNetworkStat,
         CWnd* pParent) : CDialog(CFlexRayNetworkStatsDlg::IDD, pParent)
 {
-    ASSERT(NULL != pouNetworkStat);
+    ASSERT(nullptr != pouNetworkStat);
     m_pouNetworkStat = pouNetworkStat;
     m_hParent = pParent->m_hWnd;
 }
@@ -242,7 +242,7 @@ LRESULT CFlexRayNetworkStatsDlg::OnUpdateNetworkStat(WPARAM, LPARAM)
     DWORD lTotal = 0;
 
     SSUBFLEXRAYBUSSTATISTICS*       psTxBusStats = m_pouNetworkStat->nGetChannelStats();
-    if(psTxBusStats == NULL)
+    if(psTxBusStats == nullptr)
     {
         return FALSE;
     }
@@ -270,12 +270,12 @@ void CFlexRayNetworkStatsDlg::vFillTxRxContent()
     SSUBFLEXRAYBUSSTATISTICS*       psRxBusStats;
 
     psTxBusStats = m_pouNetworkStat->nGetTxStats();
-    if(psTxBusStats != NULL)
+    if(psTxBusStats != nullptr)
     {
         vDisplayStats(psTxBusStats,13);
     }
     psRxBusStats = m_pouNetworkStat->nGetRxStats();
-    if(psRxBusStats != NULL)
+    if(psRxBusStats != nullptr)
     {
         vDisplayStats(psTxBusStats,22);
     }
@@ -301,11 +301,11 @@ void CFlexRayNetworkStatsDlg::vDisplayStats(SSUBFLEXRAYBUSSTATISTICS* psBusStats
     sprintf(szDataValue,_T("%ld"),psBusStats->m_SyncFrameChA);
     m_lstNetWorkStat.SetItemText(nStartIndex + 3,SECOND_COL,szDataValue);
 
-    //NULL Frame count per Sec
+    //nullptr Frame count per Sec
     sprintf(szDataValue,_T("%ld"),psBusStats->m_NullFramePerSecChA);
     m_lstNetWorkStat.SetItemText(nStartIndex + 4,SECOND_COL,szDataValue);
 
-    //NULL Frame count
+    //nullptr Frame count
     sprintf(szDataValue,_T("%ld"),psBusStats->m_NullFrameChA);
     m_lstNetWorkStat.SetItemText(nStartIndex + 5,SECOND_COL,szDataValue);
 
@@ -326,11 +326,11 @@ void CFlexRayNetworkStatsDlg::vDisplayStats(SSUBFLEXRAYBUSSTATISTICS* psBusStats
     sprintf(szDataValue,_T("%ld"),psBusStats->m_SyncFrameChB);
     m_lstNetWorkStat.SetItemText(nStartIndex + 3,THIRD_COL,szDataValue);
 
-    //NULL Frame count per Sec
+    //nullptr Frame count per Sec
     sprintf(szDataValue,_T("%ld"),psBusStats->m_NullFramePerSecChB);
     m_lstNetWorkStat.SetItemText(nStartIndex + 4,THIRD_COL,szDataValue);
 
-    //NULL Frame count
+    //nullptr Frame count
     sprintf(szDataValue,_T("%ld"),psBusStats->m_NullFrameChB);
     m_lstNetWorkStat.SetItemText(nStartIndex + 5,THIRD_COL,szDataValue);
 
@@ -392,7 +392,7 @@ BOOL CFlexRayNetworkStatsDlg::PreTranslateMessage(MSG* pMsg)
     {
         if (pMsg->wParam == VK_ESCAPE)
         {
-            pMsg->wParam = NULL;
+            pMsg->wParam = 0;
         }
     }
 

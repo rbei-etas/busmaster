@@ -32,7 +32,7 @@ public:
     // Local instance of View Style parameter
     CGraphParameters m_omGraphParams;
     // standard constructor
-    CGraphConfiguration(CWnd* pParent = NULL);
+    CGraphConfiguration(CWnd* pParent = nullptr);
 
     CGraphList* m_pGraphList;
     // To have reference of Graph Control interface

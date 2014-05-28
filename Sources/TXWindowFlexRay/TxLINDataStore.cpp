@@ -41,15 +41,15 @@ CTxLINDataStore::CTxLINDataStore(void)
     m_bValidTxWndSize = false;
     m_eBusStatus = BUS_DISCONNECTED;
     m_bHexMode = false;
-    m_ouClusterConfig = NULL;
+    m_ouClusterConfig = nullptr;
     SetDefaultWindowPos();
 
     m_ouTransmitThread.m_pBuffer = this;
-    m_ouTransmitThread.m_hActionEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+    m_ouTransmitThread.m_hActionEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
     InitializeCriticalSection(&m_ouCSMsgList);
     InitializeCriticalSection(&m_ouCSKeyMap);
 
-    m_pouDIL_LIN_Interface = NULL;
+    m_pouDIL_LIN_Interface = nullptr;
     m_ouMapIndexToKey.clear();
 }
 
@@ -94,10 +94,10 @@ CTxLINDataStore& CTxLINDataStore::ouGetTxLINDataStoreObj()
 //UINT CalcTxTimersExecTime(LPVOID pParam)
 //{
 //    PSCALCEXECTIMETHREAD psThreadInfo = (PSCALCEXECTIMETHREAD) pParam;
-//    if (psThreadInfo != NULL)
+//    if (psThreadInfo != nullptr)
 //    {
 //        CTxLINDataStore* pDataStoreObj = psThreadInfo->m_pTxLINDataStore;
-//        if (pDataStoreObj != NULL)
+//        if (pDataStoreObj != nullptr)
 //        {
 //            while (!psThreadInfo->m_bThreadStop)
 //            {
@@ -107,7 +107,7 @@ CTxLINDataStore& CTxLINDataStore::ouGetTxLINDataStoreObj()
 //                    pDataStoreObj->vManageTimerExecution();
 //                }
 //            }
-//            psThreadInfo->m_pomThreadPtr = NULL;
+//            psThreadInfo->m_pomThreadPtr = nullptr;
 //            psThreadInfo->m_omExitThreadEvent.SetEvent();
 //        }
 //        else
@@ -167,10 +167,10 @@ bool CTxLINDataStore::bSetChannelConfig(xmlNodePtr pNode)
 
     xmlChar* pchPathMsg = (xmlChar*)"Message";
     xmlXPathObjectPtr pObjectPath = xmlUtils::pGetChildNodes(pNode, pchPathMsg);
-    if  (pObjectPath != NULL )
+    if  (pObjectPath != nullptr )
     {
         xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-        if( NULL != pNodeSet )
+        if( nullptr != pNodeSet )
         {
             m_ouLIN_Frame_Data.clear();
             for ( int i =0 ; i < pNodeSet->nodeNr; i++ )
@@ -198,7 +198,7 @@ bool CTxLINDataStore::bAddToChannelList(LIN_FRAME_DATA & /* ouData */)
 
 bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData)
 {
-    if ( ptrNode == NULL)
+    if ( ptrNode == nullptr)
     {
         return false;
     }
@@ -207,10 +207,10 @@ bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData
         //Name
         xmlChar* pchPathMsg = (xmlChar*)DEF_NAME;
         xmlXPathObjectPtr pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -221,10 +221,10 @@ bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData
         //Channel
         pchPathMsg = (xmlChar*)DEF_CHANNEL;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -236,10 +236,10 @@ bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData
         //Message ID
         pchPathMsg = (xmlChar*)DEF_MESSAGE_ID;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -250,10 +250,10 @@ bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData
         //Message Type
         pchPathMsg = (xmlChar*)DEF_MESSAGE_TYPE;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -264,10 +264,10 @@ bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData
         //ChecksumType
         pchPathMsg = (xmlChar*)DEF_LIN_MESSAGE_CHECKSUM;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -278,10 +278,10 @@ bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData
         //DLC
         pchPathMsg = (xmlChar*)DEF_DLC;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -292,10 +292,10 @@ bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData
         //DataBytes
         pchPathMsg = (xmlChar*)DEF_DATABYTES;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -303,10 +303,10 @@ bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData
                 char* pch;
                 pch = strtok ((char*)key," ,.-");
                 int i =0;
-                while (pch != NULL)
+                while (pch != nullptr)
                 {
                     ouData.m_ouLinMessage.m_ucData[i] = atoi(pch);
-                    pch = strtok (NULL, " ,.-");
+                    pch = strtok (nullptr, " ,.-");
                     i++;
                 }
             }
@@ -315,10 +315,10 @@ bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData
         //Repetition
         pchPathMsg = (xmlChar*)DEF_REPETION;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -330,10 +330,10 @@ bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData
         //Repetition Enabled
         pchPathMsg = (xmlChar*)DEF_REPETITION_ENABLED;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -348,10 +348,10 @@ bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData
         //Key Value
         pchPathMsg = (xmlChar*)DEF_KEY_VAL;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -362,10 +362,10 @@ bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData
         //Key Value Enabled
         pchPathMsg = (xmlChar*)DEF_KEY_ENABLED;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -380,10 +380,10 @@ bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData
         //Enabled
         pchPathMsg = (xmlChar*)DEF_ENABLED;
         pObjectPath = xmlUtils::pGetChildNodes(ptrNode, pchPathMsg);
-        if  (pObjectPath != NULL )
+        if  (pObjectPath != nullptr )
         {
             xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-            if( NULL != pNodeSet )
+            if( nullptr != pNodeSet )
             {
                 xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
                 xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode , 1);
@@ -402,7 +402,7 @@ bool CTxLINDataStore::parseForMessage(xmlNodePtr ptrNode, LIN_FRAME_DATA& ouData
 
 bool CTxLINDataStore::bSetConfigData(xmlDocPtr pDoc)
 {
-    if(pDoc == NULL)
+    if(pDoc == nullptr)
     {
         m_sTxWndPlacement.rcNormalPosition.top = -1;
         m_sTxWndPlacement.length = 0;
@@ -419,10 +419,10 @@ bool CTxLINDataStore::bSetConfigData(xmlDocPtr pDoc)
     xmlChar* pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Tx_Window/Window_Position";
 
     xmlXPathObjectPtr pObjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
-    if  (pObjectPath != NULL )
+    if  (pObjectPath != nullptr )
     {
         xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-        if( NULL != pNodeSet )
+        if( nullptr != pNodeSet )
         {
             xmlNodePtr pNode = pNodeSet->nodeTab[0];       //Take First One only
             WINDOWPLACEMENT WndPlacement;
@@ -438,10 +438,10 @@ bool CTxLINDataStore::bSetConfigData(xmlDocPtr pDoc)
 
     xmlChar* pXpathChannel = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Tx_Window/Channel_Msg_List";
     pObjectPath = xmlUtils::pGetNodes(pDoc, pXpathChannel);
-    if  (pObjectPath != NULL )
+    if  (pObjectPath != nullptr )
     {
         xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-        if( NULL != pNodeSet )
+        if( nullptr != pNodeSet )
         {
             for ( int i = 0 ; i < pNodeSet->nodeNr; i++)
             {
@@ -458,13 +458,13 @@ bool CTxLINDataStore::bSetConfigData(xmlDocPtr pDoc)
 BOOL CTxLINDataStore::bGetConfigData(xmlNodePtr pxmlNodePtr)
 {
     //windows position
-    xmlNodePtr pNodeWndPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
+    xmlNodePtr pNodeWndPos = xmlNewNode(nullptr, BAD_CAST DEF_WND_POS);
     xmlAddChild(pxmlNodePtr, pNodeWndPos);
 
     xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWndPos,m_sTxWndPlacement);
 
     //Channel Messages;
-    pNodeWndPos = xmlNewNode(NULL, BAD_CAST DEF_CHANNEL_MSG_NAME);
+    pNodeWndPos = xmlNewNode(nullptr, BAD_CAST DEF_CHANNEL_MSG_NAME);
     if ( bGetMessageListConfig( pNodeWndPos) == TRUE )
     {
         xmlAddChild(pxmlNodePtr, pNodeWndPos);
@@ -480,31 +480,31 @@ BOOL CTxLINDataStore::bGetMessageListConfig( xmlNodePtr pNode)
     std::list<LIN_FRAME_DATA>::iterator itrFrameData = m_ouLIN_Frame_Data.begin();
     for (; itrFrameData != m_ouLIN_Frame_Data.end(); itrFrameData++ )
     {
-        xmlNodePtr pMsgNode = xmlNewNode(NULL, BAD_CAST DEF_MESSAGE );
-        if ( NULL != pMsgNode )
+        xmlNodePtr pMsgNode = xmlNewNode(nullptr, BAD_CAST DEF_MESSAGE );
+        if ( nullptr != pMsgNode )
         {
             //Name
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_NAME, BAD_CAST itrFrameData->m_strFrameName.c_str());
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_NAME, BAD_CAST itrFrameData->m_strFrameName.c_str());
 
             //Channel
             sprintf(pchData, "%d", itrFrameData->m_ouLinMessage.m_ucChannel);
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_CHANNEL, BAD_CAST pchData);
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_CHANNEL, BAD_CAST pchData);
 
             //Message Id
             sprintf(pchData, "%d", itrFrameData->m_ouLinMessage.m_ucMsgID);
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_MSG_ID, BAD_CAST pchData);
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_MSG_ID, BAD_CAST pchData);
 
             //Checksum Type
             sprintf(pchData, "%d", itrFrameData->m_ouLinMessage.m_ucChksumTyp);
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_LIN_MESSAGE_CHECKSUM, BAD_CAST pchData);
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_LIN_MESSAGE_CHECKSUM, BAD_CAST pchData);
 
             //Message Type
             sprintf(pchData, "%d", itrFrameData->m_ouLinMessage.m_ucMsgTyp);
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_MESSAGE_TYPE, BAD_CAST pchData);
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_MESSAGE_TYPE, BAD_CAST pchData);
 
             //DLC
             sprintf(pchData, "%d", itrFrameData->m_ouLinMessage.m_ucDataLen);
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_DLC, BAD_CAST pchData);
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_DLC, BAD_CAST pchData);
 
             //Data Bytes
             std::string strDatabytes;
@@ -516,44 +516,44 @@ BOOL CTxLINDataStore::bGetMessageListConfig( xmlNodePtr pNode)
                 strDatabytes.append(pchData);
             }
 
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_DATABYTES, BAD_CAST strDatabytes.c_str());
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_DATABYTES, BAD_CAST strDatabytes.c_str());
 
             //Repetition
             sprintf(pchData, "%d", itrFrameData->nActualTimer);
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_REPETION, BAD_CAST pchData);
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_REPETION, BAD_CAST pchData);
 
             //Repetition Enabled
             if ( itrFrameData->m_bTimerEnabled == true )
             {
-                xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_REPETITION_ENABLED, BAD_CAST "TRUE");
+                xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_REPETITION_ENABLED, BAD_CAST "TRUE");
             }
             else
             {
-                xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_REPETITION_ENABLED, BAD_CAST "FALSE");
+                xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_REPETITION_ENABLED, BAD_CAST "FALSE");
             }
 
             //Key
             sprintf(pchData, "%c", itrFrameData->m_chKeyVal);
-            xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_KEY_VAL, BAD_CAST pchData);
+            xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_KEY_VAL, BAD_CAST pchData);
 
             //Key Enabled
             if ( itrFrameData->bKeyEnabled == true )
             {
-                xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_KEY_ENABLED, BAD_CAST "TRUE");
+                xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_KEY_ENABLED, BAD_CAST "TRUE");
             }
             else
             {
-                xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_KEY_ENABLED, BAD_CAST "FALSE");
+                xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_KEY_ENABLED, BAD_CAST "FALSE");
             }
 
             //Key Enabled
             if ( itrFrameData->bSelected == true )
             {
-                xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_IsEnabled, BAD_CAST "TRUE");
+                xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_IsEnabled, BAD_CAST "TRUE");
             }
             else
             {
-                xmlNewChild(pMsgNode, NULL, BAD_CAST DEF_IsEnabled, BAD_CAST "FALSE");
+                xmlNewChild(pMsgNode, nullptr, BAD_CAST DEF_IsEnabled, BAD_CAST "FALSE");
             }
         }
         xmlAddChild(pNode, pMsgNode);
@@ -626,7 +626,7 @@ BOOL CTxLINDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
 BOOL CTxLINDataStore::bSetDILInterfacePtr(CBaseDIL_LIN * /* pLinDIL */)
 {
     HRESULT hResult = S_OK;
-    if (m_pouDIL_LIN_Interface == NULL)
+    if (m_pouDIL_LIN_Interface == nullptr)
     {
         hResult = DIL_GetInterface(LIN, (void**)&m_pouDIL_LIN_Interface);
     }
@@ -635,7 +635,7 @@ BOOL CTxLINDataStore::bSetDILInterfacePtr(CBaseDIL_LIN * /* pLinDIL */)
 
 HRESULT CTxLINDataStore::GetMessageIDNames(int nChannelIndex, std::map<int, std::string>& ouMsgIDNamesMap)
 {
-    if ( NULL != m_ouClusterConfig )
+    if ( nullptr != m_ouClusterConfig )
     {
         std::map<ECU_ID, ECU_Struct>::iterator itrEcu = m_ouClusterConfig->m_ouFlexChannelConfig[nChannelIndex].m_ouClusterInfo.m_ouEcuList.begin();
         while ( itrEcu != m_ouClusterConfig->m_ouFlexChannelConfig[nChannelIndex].m_ouClusterInfo.m_ouEcuList.end() )
@@ -695,7 +695,7 @@ void CTxLINDataStore::vUpdateTxList(int nChannel)
             itrFrameData = m_ouLIN_Frame_Data.erase (itrFrameData);
 
             DIL_GetInterface(LIN, (void**)&m_pouDIL_LIN_Interface);
-            if ( m_pouDIL_LIN_Interface != NULL )
+            if ( m_pouDIL_LIN_Interface != nullptr )
             {
                 //g_pouDIL_LIN_Interface->DILL_SendMsg(
             }
@@ -808,7 +808,7 @@ int CTxLINDataStore::nPreMessageTransmission()
 int CTxLINDataStore::nStopTransmissionAt(int nIndex)
 {
     HRESULT hResult = S_FALSE;
-    if (  m_pouDIL_LIN_Interface == NULL )
+    if (  m_pouDIL_LIN_Interface == nullptr )
     {
         return hResult;
     }
@@ -826,7 +826,7 @@ int CTxLINDataStore::nStopTransmissionAt(int nIndex)
 int CTxLINDataStore::nTransmitMsgAt(int nIndex)
 {
     HRESULT hResult = S_FALSE;
-    if (  m_pouDIL_LIN_Interface == NULL )
+    if (  m_pouDIL_LIN_Interface == nullptr )
     {
         return hResult;
     }
@@ -844,7 +844,7 @@ int CTxLINDataStore::nTransmitMsgAt(int nIndex)
 int CTxLINDataStore::nHandleKeyEvent(char chKey)
 {
     HRESULT hResult = S_FALSE;
-    if (  m_pouDIL_LIN_Interface == NULL )
+    if (  m_pouDIL_LIN_Interface == nullptr )
     {
         return hResult;
     }
@@ -874,7 +874,7 @@ int CTxLINDataStore::nHandleKeyEvent(char chKey)
 
 INT CTxLINDataStore::nTransmitMessages()
 {
-    if ( m_pouDIL_LIN_Interface == NULL )
+    if ( m_pouDIL_LIN_Interface == nullptr )
     {
         return 0;
     }
@@ -922,13 +922,13 @@ int CTxLINDataStore::ouGetLinFrame(int nIndex,  LIN_FRAME_DATA& ouLinFramData)
 DWORD WINAPI CTxLINDataStore::LINTxWndTransmitThread(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         return (DWORD)-1;
     }
     CTxLINDataStore* pouData = (CTxLINDataStore*)pThreadParam->m_pBuffer;
 
-    if (pouData == NULL)
+    if (pouData == nullptr)
     {
         return (DWORD)-1;
     }

@@ -284,7 +284,7 @@ char* CFormatMsgFlexRay::vFormatCurrErrorEntry(USHORT usErrorID)
           nCount++;
       }*/
 
-    return NULL;
+    return nullptr;
 }
 
 /*******************************************************************************
@@ -318,7 +318,7 @@ void CFormatMsgFlexRay::vFormatFlexRayDataMsg(s_FLXMSG* pMsgFlexRay,
     // Find out the type of the frame
     if (dwIFlags & RBIN_FLXHDRINFO_NULLFRAME)
     {
-        // NULL frame
+        // nullptr frame
         CurrDataFlexRay->m_ColourCode = RGB(0,0,0);//m_MsgColorProp.m_sMsgProp.m_clrNullFrame;
     }
     else if (dwIFlags & RBIN_FLXHDRINFO_SYNCFRAME)

@@ -49,7 +49,7 @@ static char THIS_FILE[] = __FILE__;
 /*  Modifications    :
 /******************************************************************************/
 
-CSelectFunctions::CSelectFunctions(ETYPE_BUS eBus, CWnd* pParent /*=NULL*/)
+CSelectFunctions::CSelectFunctions(ETYPE_BUS eBus, CWnd* pParent /*=nullptr*/)
     : CDialog(CSelectFunctions::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CSelectFunctions)

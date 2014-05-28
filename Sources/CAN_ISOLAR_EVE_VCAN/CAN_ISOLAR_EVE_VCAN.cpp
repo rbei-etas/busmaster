@@ -76,7 +76,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -243,12 +243,12 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ISolar_Eve(LPVOID pVoid)
 
     }
     SetEvent(pThreadParam->hGetExitNotifyEvent());
-    pThreadParam->m_hActionEvent = NULL;
+    pThreadParam->m_hActionEvent = nullptr;
 
     return 0;
 }
 
-CDIL_ISOLAR_EVE_VCAN* g_pouDIL_ISOLAR_EVE_VCAN = NULL;
+CDIL_ISOLAR_EVE_VCAN* g_pouDIL_ISOLAR_EVE_VCAN = nullptr;
 
 /**
 * \brief         Returns the CDIL_ISOLAR_EVE_VCAN object
@@ -260,9 +260,9 @@ CDIL_ISOLAR_EVE_VCAN* g_pouDIL_ISOLAR_EVE_VCAN = NULL;
 USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 {
     HRESULT hResult = S_OK;
-    if ( NULL == g_pouDIL_ISOLAR_EVE_VCAN )
+    if ( nullptr == g_pouDIL_ISOLAR_EVE_VCAN )
     {
-        if ((g_pouDIL_ISOLAR_EVE_VCAN = new CDIL_ISOLAR_EVE_VCAN) == NULL)
+        if ((g_pouDIL_ISOLAR_EVE_VCAN = new CDIL_ISOLAR_EVE_VCAN) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -336,17 +336,17 @@ static BOOL bRemoveClient(DWORD dwClientId)
         if (bGetClientObj(dwClientId, unClientIndex))
         {
             /* clear the client first */
-            if (sg_asClientToBufMap[unClientIndex].hClientHandle != NULL)
+            if (sg_asClientToBufMap[unClientIndex].hClientHandle != 0)
             {
                 HRESULT hResult = S_OK;//(*pfCAN_RemoveClient)(sg_asClientToBufMap[unClientIndex].hClientHandle);
                 if (hResult == S_OK)
                 {
                     sg_asClientToBufMap[unClientIndex].dwClientID = 0;
-                    sg_asClientToBufMap[unClientIndex].hClientHandle = NULL;
+                    sg_asClientToBufMap[unClientIndex].hClientHandle = 0;
                     memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                     for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                     {
-                        sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                        sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                     }
                     sg_asClientToBufMap[unClientIndex].unBufCount = 0;
                     bResult = TRUE;
@@ -362,7 +362,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
                 memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                 for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                 {
-                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                 }
                 sg_asClientToBufMap[unClientIndex].unBufCount = 0;
                 bResult = TRUE;
@@ -511,7 +511,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_LoadDriverLibrary(void)
     /***************************************** Receive Controller **********************************************************************/
 
     m_dllHandle = LoadLibrary("Controller_1.dll");
-    if (m_dllHandle != NULL)
+    if (m_dllHandle != nullptr)
     {
         Initialize = (LPFNDLLFUNC_Initialize)GetProcAddress(m_dllHandle, "Initialize");
         if(Initialize)
@@ -607,7 +607,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_LoadDriverLibrary(void)
 
     HRESULT hResult_tx = S_FALSE;
     m_dllHandle_tx = LoadLibrary("Controller_0.dll");
-    if (m_dllHandle_tx != NULL)
+    if (m_dllHandle_tx != nullptr)
     {
         Initialize_tx = (LPFNDLLFUNC_Initialize_tx)GetProcAddress(m_dllHandle_tx, "Initialize");
         if(Initialize)
@@ -1064,7 +1064,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID
 HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
-    if (ClientID != NULL)
+    if (ClientID != 0)
     {
         UINT unClientIndex;
         if (bGetClientObj(ClientID, unClientIndex))
@@ -1073,7 +1073,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBa
             if (bAction == MSGBUF_ADD)
             {
                 /* Add msg buffer */
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     if (sClientObj.unBufCount < MAX_BUFF_ALLOWED)
                     {
@@ -1092,7 +1092,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBa
             else if (bAction == MSGBUF_CLEAR)
             {
                 /* clear msg buffer */
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     /* Remove only buffer mentioned */
                     bRemoveClientBuffer(sClientObj.pClientBuf, sClientObj.unBufCount, pBufObj);
@@ -1102,7 +1102,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBa
                     /* Remove all */
                     for (UINT i = 0; i < sClientObj.unBufCount; i++)
                     {
-                        sClientObj.pClientBuf[i] = NULL;
+                        sClientObj.pClientBuf[i] = nullptr;
                     }
                     sClientObj.unBufCount = 0;
                 }
@@ -1121,7 +1121,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBa
             /* clear msg buffer */
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, nullptr);
             }
             hResult = S_OK;
         }

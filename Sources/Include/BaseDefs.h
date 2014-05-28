@@ -52,7 +52,7 @@ typedef enum eBUSEVEHANDLER
 #define defLINETYPE_DOT "DOT"
 #define defLINETYPE_DASHDOT "DASHDOT"
 #define defLINETYPE_DASHDOTDOT "DASHDOTDOT"
-#define defLINETYPE_NULL "NULL"
+#define defLINETYPE_NULL "nullptr"
 #define defLINETYPE_XYSTEP "XYSTEP"
 #define defLINETYPE_YXSTEP "YXSTEP"
 #define defLINETYPE_BARS "BARS"
@@ -353,7 +353,7 @@ typedef struct tagFlexMsgData
     char m_acDataLen[4]; // 1 - 127, always in decimal format -> 4 B
     char m_acMsgDesc[256];
     char m_acSlotType[32]; //Static, Dynamic,
-    char m_acFrameType[32]; //NULL, Sync
+    char m_acFrameType[32]; //nullptr, Sync
     char m_acMsgIDHex[32];
     char m_acMsgIDDec[32];
     char m_acDataHex[1024];

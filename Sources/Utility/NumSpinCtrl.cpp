@@ -61,7 +61,7 @@ CNumSpinCtrl::CNumSpinCtrl()
     m_nDataLength = defMAX_BITS;    // Default is 64 bits
     m_bSigned = TRUE;
     m_bFloatingNumber = FALSE;
-    vSetFormatString(NULL);
+    vSetFormatString(nullptr);
 }
 
 /******************************************************************************
@@ -109,7 +109,7 @@ void CNumSpinCtrl::vSetValueForBuddy (double dVal)
     // Get the Text window
     CWnd* pomEdit = GetBuddy();
     // If it is valid
-    if ( pomEdit != NULL )
+    if ( pomEdit != nullptr )
     {
         CString omStr;
         // Check for user defined format string
@@ -154,7 +154,7 @@ void CNumSpinCtrl::vSetValueForBuddy (__int64 n64Val)
     // Get the Text window
     CWnd* pomEdit = GetBuddy();
     // If it is valid
-    if ( pomEdit != NULL )
+    if ( pomEdit != nullptr )
     {
         CString omStr;
         // Check for user defined format string
@@ -197,7 +197,7 @@ void CNumSpinCtrl::vSetValueForBuddy (UINT64 n64Val)
     // Get the Text window
     CWnd* pomEdit = GetBuddy();
     // If it is valid
-    if ( pomEdit != NULL )
+    if ( pomEdit != nullptr )
     {
         CString omStr;
         // Check for user defined format string
@@ -275,7 +275,7 @@ double CNumSpinCtrl::dGetPos()
 {
     // Get the text control first to get the value
     CWnd* pomEdit = GetBuddy();
-    char* pDummy = NULL;
+    char* pDummy = nullptr;
     double dVal = 0.0;
     // If the buddy is set then proceed
     if (pomEdit)
@@ -318,7 +318,7 @@ __int64 CNumSpinCtrl::n64GetPos()
     // Get the text control first to get the value
     CWnd* pomEdit = GetBuddy();
     // If the buddy is set then proceed
-    if (pomEdit != NULL )
+    if (pomEdit != nullptr )
     {
         CString omStrText;
         // Get the text
@@ -1010,10 +1010,10 @@ void CNumSpinCtrl::vInitSpinCtrl()
  Author(s)        : Raja N
  Date Created     : 22.07.2004
 *******************************************************************************/
-void CNumSpinCtrl::vSetFormatString (LPCTSTR lpszFormatString /*= NULL*/)
+void CNumSpinCtrl::vSetFormatString (LPCTSTR lpszFormatString /*= nullptr*/)
 {
     // Clear the format specifier string
-    if (lpszFormatString == NULL)
+    if (lpszFormatString == nullptr)
     {
         m_omStrFormat.Empty ();
     }

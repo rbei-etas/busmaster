@@ -52,7 +52,7 @@ static char THIS_FILE[] = __FILE__;
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modifications on :  07.04.2003, review comment incorporated               */
 /******************************************************************************/
-CMsgHandlerDlg::CMsgHandlerDlg(ETYPE_BUS eBus, CWnd* pParent /*=NULL*/)
+CMsgHandlerDlg::CMsgHandlerDlg(ETYPE_BUS eBus, CWnd* pParent /*=nullptr*/)
     : CDialog(CMsgHandlerDlg::IDD, pParent),
       m_omStrMsgID(""),
       m_omStrMsgIDFrom(""),
@@ -168,7 +168,7 @@ void CMsgHandlerDlg::OnCbtnMsgHandlerApply()
     m_omButtonOK.EnableWindow(FALSE);
     // Get document pointer
     CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).podGetFunctionEditorDoc();
-    if (NULL != pDoc)
+    if (nullptr != pDoc)
     {
         SBUS_SPECIFIC_INFO sBusSpecInfo;
         pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -238,7 +238,7 @@ void CMsgHandlerDlg::OnCbtnMsgHandlerApply()
             CString omStrPrototype = omSelectedText;
             // Add to tree view
             CFnsTreeView* pomTreeView = CGlobalObj::ouGetObj(m_eBus).podGetFuncsTreeViewPtr();
-            if(pomTreeView != NULL )
+            if(pomTreeView != nullptr )
             {
                 // Add the prototype to the tree view
                 CTreeCtrl& omTree = pomTreeView->GetTreeCtrl();
@@ -267,11 +267,11 @@ void CMsgHandlerDlg::OnCbtnMsgHandlerApply()
 
                 CStringArray* pMsgArray =
                     pDoc->omStrGetMessageHandlerPrototypes();
-                if ( pMsgArray != NULL )
+                if ( pMsgArray != nullptr )
                 {
                     pMsgArray->Add( omStrPrototype );
                 }
-                pDoc->UpdateAllViews( NULL );
+                pDoc->UpdateAllViews( nullptr );
                 pDoc->SetModifiedFlag( TRUE );
             }
         }
@@ -360,7 +360,7 @@ void CMsgHandlerDlg::OnRbtnMsgName()
         ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL))->GetWindowTextA(strChnlNum);
         std::list<FRAME_STRUCT> lstMsgNames;
         CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->m_ouFlexChannelConfig[atoi(strChnlNum)].m_ouClusterInfo.GetFrames(lstMsgNames);
-        CStringArray* pomStrArray = NULL;
+        CStringArray* pomStrArray = nullptr;
         std::list<FRAME_STRUCT>::iterator itrLstMsg;
         for(itrLstMsg = lstMsgNames.begin(); itrLstMsg != lstMsgNames.end(); itrLstMsg++)
         {
@@ -455,23 +455,23 @@ BOOL CMsgHandlerDlg::OnInitDialog()
     // Get all the message names of active DB
 
     CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).podGetFunctionEditorDoc();
-    CStringArray* pomStrArray = NULL;
-    if (pDoc != NULL)
+    CStringArray* pomStrArray = nullptr;
+    if (pDoc != nullptr)
     {
         pomStrArray = pDoc->omStrGetMessageHandlerPrototypes();
     }
 
     if(m_eBus != LIN)
     {
-        if(pomStrArray != NULL )
+        if(pomStrArray != nullptr )
         {
             POSITION pos = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.GetHeadPosition();
             //UINT unNoOfMessages = ouGetMsgSignal().unGetNumerOfMessages();
-            while (pos != NULL)
+            while (pos != nullptr)
             {
                 SDB_NAME_MSG&  oDbNameMsg = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeListDb.GetNext(pos);
                 POSITION posMess = oDbNameMsg.m_oMsgNameMsgCodeList.GetHeadPosition();
-                while (posMess != NULL)
+                while (posMess != nullptr)
                 {
                     SMSG_NAME_CODE& sMsgNameCode = oDbNameMsg.m_oMsgNameMsgCodeList.GetNext(posMess);
                     bAddMessageNameInListBox(pomStrArray, sMsgNameCode.m_omMsgName);
@@ -568,7 +568,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
     CString omStrMsgNameForID = "";
     CString omStrMsgIDForName = "";
     CList<UINT, UINT&> omMsgList;
-    if(pDoc != NULL )
+    if(pDoc != nullptr )
     {
         CString omStrText = "";
         CString omStrHandlerType = "";
@@ -624,7 +624,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                 {
                     m_omStrSelectedItemText = defMSG_ID_HANDLER;
                     POSITION pos = omMsgList.FindIndex(0);
-                    if(pos != NULL)
+                    if(pos != nullptr)
                     {
                         UINT unVal = omMsgList.GetAt(pos);
                         m_omStrMsgID.Format("%x", unVal);
@@ -725,7 +725,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                             {
                                 CHAR* pchTemp;
                                 UINT unMsgId = strtoul(omStrTemp, &pchTemp, 16);
-                                if (omMsgList.Find(unMsgId, 0) != NULL)
+                                if (omMsgList.Find(unMsgId, 0) != nullptr)
                                 {
                                     omStrMsgPro = _(defMSG_DUPL_MSG_HANDLER);
                                     omStrMsgPro.Replace( _T(_("TYPE")),
@@ -880,7 +880,7 @@ BOOL CMsgHandlerDlg::bAddMessageNameInListBox(const CStringArray* pomStrArray,
 {
     //return true;
     BOOL bReturn = TRUE;
-    if(pomStrArray != NULL )
+    if(pomStrArray != nullptr )
     {
         UINT nCount = 0;
         nCount = (COMMANUINT)pomStrArray->GetSize();
@@ -906,7 +906,7 @@ BOOL CMsgHandlerDlg::bAddMessageNameInListBox(const CStringArray* pomStrArray,
                 nIndex = omStrFunction.Find(omStrTemp);
                 if(nIndex != -1 )
                 {
-                    CHAR* pcStopStr = NULL;
+                    CHAR* pcStopStr = nullptr;
                     UINT unMsgID = 0;
                     omStrTemp = omStrFunction.Left(omStrFunction.Find('('));
                     omStrTemp.TrimLeft();
@@ -933,7 +933,7 @@ BOOL CMsgHandlerDlg::bAddMessageNameInListBox(const CStringArray* pomStrArray,
             m_omListMsgName.AddString(omStrMessageName);
         }
     }
-    else // if pomStrArray is NULL
+    else // if pomStrArray is nullptr
     {
         bReturn = FALSE;
     }
@@ -966,7 +966,7 @@ BOOL CMsgHandlerDlg::bValidateMessageNameAndID(const CStringArray* pomStrArray,
 {
     BOOL bReturn = TRUE;
     CString omStrMakeHandler = "";
-    if(pomStrArray != NULL )
+    if(pomStrArray != nullptr )
     {
         omStrMakeHandler = CGlobalObj::omGetBusSpecMsgHndlrName(m_eBus);
         // compare if the handler written is message name or message ID.

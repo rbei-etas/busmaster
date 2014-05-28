@@ -96,14 +96,14 @@ void CNotificListbox::OnRButtonDown(UINT nFlags, CPoint point)
     if (GetCount() > 0)
     {
         CMenu* pomContextMenu = new CMenu;
-        if (pomContextMenu != NULL)
+        if (pomContextMenu != nullptr)
         {
             // Load the Menu from the resource
             pomContextMenu->DestroyMenu();
             pomContextMenu->LoadMenu(IDM_OPERATION_LIST);
             CMenu* pomSubMenu = pomContextMenu->GetSubMenu(0);
 
-            if (pomSubMenu != NULL)
+            if (pomSubMenu != nullptr)
             {
                 CPoint omSrcPt = point;
                 ClientToScreen(&omSrcPt);
@@ -124,10 +124,10 @@ void CNotificListbox::OnRButtonDown(UINT nFlags, CPoint point)
                 pomSubMenu->EnableMenuItem(ID_NOTIFICWND_COPYTOCLIPBOARD, unEnable);
 
                 pomSubMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON,
-                                           omSrcPt.x, omSrcPt.y, this, NULL);
+                                           omSrcPt.x, omSrcPt.y, this, nullptr);
             }
             delete pomContextMenu;
-            pomContextMenu = NULL;
+            pomContextMenu = nullptr;
         }
     }
 
@@ -184,7 +184,7 @@ void CNotificListbox::OnNotificwndCopytoclipboard()
         }
     }
 
-    CopyTextToClipboard(omFullText.GetBuffer(MAX_PATH), NULL);
+    CopyTextToClipboard(omFullText.GetBuffer(MAX_PATH), nullptr);
 }
 
 /******************************************************************************

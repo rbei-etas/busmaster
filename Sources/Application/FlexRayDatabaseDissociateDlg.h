@@ -31,7 +31,7 @@ class CFlexRayDatabaseDissociateDlg : public CDialog
     DECLARE_DYNAMIC(CFlexRayDatabaseDissociateDlg)
 
 public:
-    CFlexRayDatabaseDissociateDlg(FLEXRAY_CONFIG_FILES& sFibexParams, CWnd* pParent = NULL);
+    CFlexRayDatabaseDissociateDlg(FLEXRAY_CONFIG_FILES& sFibexParams, CWnd* pParent = nullptr);
     virtual ~CFlexRayDatabaseDissociateDlg();
 
     // Dialog Data

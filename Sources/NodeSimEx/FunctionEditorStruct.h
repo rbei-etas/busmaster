@@ -43,20 +43,20 @@ struct tagBusSpecificInfo
     tagBusSpecificInfo()
     {
         m_eBus = CAN;
-        m_pvErrorEventList = NULL;
-        m_pvDefinedMsgsList = NULL;
+        m_pvErrorEventList = nullptr;
+        m_pvDefinedMsgsList = nullptr;
     }
     ~tagBusSpecificInfo()
     {
-        if (m_pvErrorEventList != NULL)
+        if (m_pvErrorEventList != nullptr)
         {
             delete m_pvErrorEventList;
-            m_pvErrorEventList = NULL;
+            m_pvErrorEventList = nullptr;
         }
-        if (m_pvDefinedMsgsList != NULL)
+        if (m_pvDefinedMsgsList != nullptr)
         {
             delete m_pvDefinedMsgsList;
-            m_pvDefinedMsgsList = NULL;
+            m_pvDefinedMsgsList = nullptr;
         }
     }
 };

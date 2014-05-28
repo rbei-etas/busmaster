@@ -381,9 +381,9 @@ typedef struct tagCompuMethodEx
 
     tagCompuMethodEx()
     {
-        // m_pScaleLinear = NULL;
-        //m_pTextCode    = NULL;
-        //m_pTabCode     = NULL;
+        // m_pScaleLinear = nullptr;
+        //m_pTextCode    = nullptr;
+        //m_pTabCode     = nullptr;
     }
     ~tagCompuMethodEx();
     tagCompuMethodEx& operator =(const tagCompuMethodEx& RefObj);

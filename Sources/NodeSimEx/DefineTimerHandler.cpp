@@ -48,7 +48,7 @@ static char THIS_FILE[] = __FILE__;
 /*  Modification By  :  Amitesh Bharti                                        */
 /*  Modification on  :  28.03.2002, Review comments                           */
 /******************************************************************************/
-CDefineTimerHandler::CDefineTimerHandler(CFunctionEditorDoc* pDoc, CWnd* pParent /*=NULL*/)
+CDefineTimerHandler::CDefineTimerHandler(CFunctionEditorDoc* pDoc, CWnd* pParent /*=nullptr*/)
     : CDialog(CDefineTimerHandler::IDD, pParent),
       m_omStrTimerFunctionName(STR_EMPTY)
 
@@ -166,13 +166,13 @@ void CDefineTimerHandler::OnOK()
             // has array of timer functions defined
 
             // Get document class object
-            if ( m_pDoc != NULL )
+            if ( m_pDoc != nullptr )
             {
                 // Get timer array pointer
                 CStringArray* pTimerArray =
                     m_pDoc->omStrGetTimerHandlerPrototypes();
 
-                if ( pTimerArray != NULL )
+                if ( pTimerArray != nullptr )
                 {
                     // Check if the handler name already
                     // exists!

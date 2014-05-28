@@ -53,7 +53,7 @@ Author(s)        :  Ravikumar Patil
 Date Created     :  06.03.2003
 Modifications    :  Ratnadip Choudhury, 27/05/2009. Updated function header.
 ******************************************************************************/
-CDLLHandlerDlg::CDLLHandlerDlg(BYTE byType, CFunctionEditorDoc* pDoc, CWnd* pParent /*=NULL*/, BOOL bIsDelete /*FALSE*/)
+CDLLHandlerDlg::CDLLHandlerDlg(BYTE byType, CFunctionEditorDoc* pDoc, CWnd* pParent /*=nullptr*/, BOOL bIsDelete /*FALSE*/)
     : CDialog(CDLLHandlerDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CDLLHandlerDlg)
@@ -112,7 +112,7 @@ Modifications    :
 ******************************************************************************/
 void CDLLHandlerDlg::OnBnClickedOk()
 {
-    CButton* pomButton       = NULL;
+    CButton* pomButton       = nullptr;
     CString omStrHandlerName = STR_EMPTY ;
     CString omStrControl     = STR_EMPTY ;
     INT nCheck               = 0;
@@ -122,7 +122,7 @@ void CDLLHandlerDlg::OnBnClickedOk()
     for(int j=0; j<defDLL_HANDLER_NUMBER; j++)
     {
         pomButton = (CButton*)GetDlgItem(IDC_CHKB_DLL_LOAD_HANDLER + j);
-        if(pomButton != NULL )
+        if(pomButton != nullptr )
         {
             nCheck      = pomButton->GetCheck();
             bIsEnable   = pomButton->IsWindowEnabled();
@@ -155,29 +155,29 @@ Modifications    :
 ******************************************************************************/
 BOOL CDLLHandlerDlg::OnInitDialog()
 {
-    CStringArray* pomStrArrayHandlerName = NULL;
+    CStringArray* pomStrArrayHandlerName = nullptr;
     CDialog::OnInitDialog();
 
     CButton* pButton = (CButton*)GetDlgItem(IDC_CHKB_DLL_LOAD_HANDLER);
 
-    if (pButton != NULL)
+    if (pButton != nullptr)
     {
         pButton->SetWindowText(m_byType == 0? "Load": "Data Confirm Event");
     }
     pButton = (CButton*)GetDlgItem(IDC_CHKB_DLL_LOAD_HANDLER + 1);
 
-    if (pButton != NULL)
+    if (pButton != nullptr)
     {
         pButton->SetWindowText(m_byType == 0? "Unload": "Address Change Event");
     }
-    if( m_pDoc != NULL )
+    if( m_pDoc != nullptr )
     {
-        CButton* pomButton       = NULL;
+        CButton* pomButton       = nullptr;
         CString omStrHandlerName = STR_EMPTY ;
         CString omStrControl     = STR_EMPTY ;
         // get the pointer to CStringArray of error handlers prototypes
         pomStrArrayHandlerName = m_byType == 0? m_pDoc->pomStrGetDLLHandlerPrototypes(): m_pDoc->omStrGetEventIndPrototypes();
-        if(pomStrArrayHandlerName != NULL )
+        if(pomStrArrayHandlerName != nullptr )
         {
             // Check for the handlers already added.
             for(INT  i = 0; i<defDLL_HANDLER_NUMBER; i++)
@@ -185,7 +185,7 @@ BOOL CDLLHandlerDlg::OnInitDialog()
                 for(INT j =0; j<pomStrArrayHandlerName->GetSize(); j++)
                 {
                     pomButton = (CButton*)GetDlgItem(IDC_CHKB_DLL_LOAD_HANDLER+i);
-                    if(pomButton != NULL )
+                    if(pomButton != nullptr )
                     {
                         omStrHandlerName = pomStrArrayHandlerName->GetAt(j);
                         pomButton->GetWindowText(omStrControl);
@@ -217,7 +217,7 @@ BOOL CDLLHandlerDlg::OnInitDialog()
             for(INT i = 0; i<defDLL_HANDLER_NUMBER; i++)
             {
                 pomButton = (CButton*)GetDlgItem(IDC_CHKB_DLL_LOAD_HANDLER+i);
-                if(pomButton != NULL )
+                if(pomButton != nullptr )
                 {
                     INT nCheck = pomButton->GetCheck();
                     if(nCheck == 0 )

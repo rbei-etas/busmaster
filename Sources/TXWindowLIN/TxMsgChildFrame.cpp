@@ -80,10 +80,10 @@ IMPLEMENT_DYNCREATE(CTxMsgChildFrame, CMDIChildBase)
 CTxMsgChildFrame::CTxMsgChildFrame() : CMDIChildBase( TX_WND_PLACEMENT )
 {
     // Initialise pointers
-    m_pomTxMsgBlocksView = NULL;
-    m_pomTxMsgListView = NULL;
-    m_pomTxMsgDetailsView = NULL;
-    m_pomFunctionsView = NULL;
+    m_pomTxMsgBlocksView = nullptr;
+    m_pomTxMsgListView = nullptr;
+    m_pomTxMsgDetailsView = nullptr;
+    m_pomFunctionsView = nullptr;
     m_sSplitterPosition.m_nRootSplitterData[0][0] = -1;
     m_bInit = TRUE;
 }
@@ -230,7 +230,7 @@ BOOL CTxMsgChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
     {
         SetIcon( ::LoadIcon(hModAdvancedUILib, MAKEINTRESOURCE( IDI_ICO_TX_WINDOW )), TRUE);
         ::FreeLibrary(hModAdvancedUILib);
-        hModAdvancedUILib = NULL;
+        hModAdvancedUILib = nullptr;
     }
     else
     {
@@ -243,7 +243,7 @@ BOOL CTxMsgChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
 
 void CTxMsgChildFrame::OnClose()
 {
-    if(NULL != m_pomFunctionsView)
+    if(nullptr != m_pomFunctionsView)
     {
         m_pomFunctionsView->OnInvokeClose();
         CMDIChildBase::OnClose();
@@ -469,7 +469,7 @@ void CTxMsgChildFrame::OnDestroy()
     vSaveSplitterPostion();
     // Call parent function to do clean up
     CMDIChildBase::OnDestroy();
-    g_pomTxMsgChildWindow = NULL;
+    g_pomTxMsgChildWindow = nullptr;
 }
 
 /*******************************************************************************
@@ -543,7 +543,7 @@ void CTxMsgChildFrame::vSetMsgDBPtrInDetailsView(void* pMsgDB)
 CWnd* CTxMsgChildFrame::pomGetTxMsgViewPointers( ETXMSGVIEWTYPE eViewIdentity)
 const
 {
-    CWnd* pomWnd = NULL;
+    CWnd* pomWnd = nullptr;
     switch( eViewIdentity )
     {
         case eTxMsgBlocksView: // Message Blocks View
@@ -574,7 +574,7 @@ const
 
 void CTxMsgChildFrame::vCallAutoUpdate()
 {
-    if(m_pomTxMsgBlocksView != NULL)
+    if(m_pomTxMsgBlocksView != nullptr)
     {
         m_pomTxMsgBlocksView->AutoUpdateChanges();
     }
@@ -609,16 +609,16 @@ void CTxMsgChildFrame::vCallAutoUpdate()
 LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
 {
 
-    if( m_pomTxMsgBlocksView != NULL &&
-            m_pomTxMsgDetailsView != NULL &&
-            m_pomTxMsgListView != NULL &&
-            m_pomFunctionsView != NULL )
+    if( m_pomTxMsgBlocksView != nullptr &&
+            m_pomTxMsgDetailsView != nullptr &&
+            m_pomTxMsgListView != nullptr &&
+            m_pomFunctionsView != nullptr )
     {
         INT nBase              = 0;
         BOOL bTxON             = FALSE;
         BOOL bConnect          = FALSE;
         eUSERSELCTION eUserSel = eDATABASEIMPORTCMD;
-        //CFlags * pouFlag       = NULL;
+        //CFlags * pouFlag       = nullptr;
 
         eUserSel               = static_cast <eUSERSELCTION>(wParam);
         switch(eUserSel)
@@ -626,7 +626,7 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
             case eHEXDECCMD:
                 //// Get the flag status.
                 //pouFlag = pouGetFlagsPtr();
-                //if ( pouFlag != NULL )
+                //if ( pouFlag != nullptr )
                 //{
                 //    nBase    = pouFlag->nGetFlagStatus( HEX );
                 //}
@@ -639,13 +639,13 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                     // Hide any edit controls if it is visible
                     m_pomTxMsgDetailsView->m_omLctrSigList.SetFocus();
 
-                    if ( m_pomTxMsgBlocksView->m_psMsgBlockList != NULL )
+                    if ( m_pomTxMsgBlocksView->m_psMsgBlockList != nullptr )
                     {
                         PSMSGBLOCKLIST psMsgBlock =
                             m_pomTxMsgBlocksView->psGetMsgBlockPointer(
                                 m_pomTxMsgBlocksView->m_nSelectedMsgBlockIndex,
                                 m_pomTxMsgBlocksView->m_psMsgBlockList );
-                        if(psMsgBlock != NULL)
+                        if(psMsgBlock != nullptr)
                         {
                             m_pomTxMsgListView->
                             m_omLctrMsgList.DeleteAllItems();
@@ -656,7 +656,7 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                     m_pomTxMsgBlocksView->vSetControlProperties();
                     m_pomTxMsgDetailsView->vSetControlProperties();
                     // Clear the controls after changing the properties.
-                    m_pomTxMsgDetailsView->vSetValues(NULL);
+                    m_pomTxMsgDetailsView->vSetValues(nullptr);
                     // Remove all entries in the list and disable
                     m_pomTxMsgDetailsView->vDisableSignalComponents();
                     // Disable Delete Button & Send Button as the focus is lost
@@ -670,7 +670,7 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                                         _(defSTR_HEX_MODE) : _(defSTR_DEC_MODE);
                     CWnd* pomLabel =
                         m_pomTxMsgDetailsView->GetDlgItem(IDC_STAT_HEADER2);
-                    if( pomLabel != NULL )
+                    if( pomLabel != nullptr )
                     {
                         // Set the text with Hex/Dec mode
                         pomLabel->SetWindowText(omStrText);
@@ -680,7 +680,7 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
             case eTXMSGCMD:
                 // Get the flag status.
                 /*pouFlag = pouGetFlagsPtr();
-                if(pouFlag != NULL )
+                if(pouFlag != nullptr )
                 {
                     bTxON    =
                         static_cast<BOOL> (pouFlag->nGetFlagStatus( SENDMESG ));
@@ -694,14 +694,14 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                     // Get the message count and disable if
                     // there is some message list in the currently
                     // selected block.
-                    if ( m_pomTxMsgBlocksView->m_psMsgBlockList != NULL )
+                    if ( m_pomTxMsgBlocksView->m_psMsgBlockList != nullptr )
                     {
                         PSMSGBLOCKLIST psMsgBlock =
                             m_pomTxMsgBlocksView->psGetMsgBlockPointer(
                                 m_pomTxMsgBlocksView->m_nSelectedMsgBlockIndex,
                                 m_pomTxMsgBlocksView->m_psMsgBlockList );
 
-                        if(psMsgBlock != NULL)
+                        if(psMsgBlock != nullptr)
                         {
                             if( psMsgBlock->m_unMsgCount > 0 )
                             {
@@ -761,7 +761,7 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                         EnableWindow(!bTxON);
                         CButton* pRadioMonoshot = (CButton*)m_pomTxMsgBlocksView->GetDlgItem(IDC_RADIOMONOSHOT);
                         CButton* pRadioCyclic = (CButton*)m_pomTxMsgBlocksView->GetDlgItem(IDC_RADIOCYCLIC);
-                        if ((pRadioMonoshot != NULL) && (pRadioCyclic != NULL))
+                        if ((pRadioMonoshot != nullptr) && (pRadioCyclic != nullptr))
                         {
                             pRadioMonoshot->EnableWindow(!bTxON);
                             pRadioCyclic->EnableWindow(!bTxON);
@@ -795,7 +795,7 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
             case eCONNECTCMD:
                 // Get the flag status.
                 /*pouFlag = pouGetFlagsPtr();
-                if(pouFlag != NULL )
+                if(pouFlag != nullptr )
                 {
                     bConnect = static_cast<BOOL>
                                   (pouFlag->nGetFlagStatus( CONNECTED ));
@@ -834,13 +834,13 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
 
                 // The icon for database message may change to change the
                 // display.
-                if ( m_pomTxMsgBlocksView->m_psMsgBlockList != NULL )
+                if ( m_pomTxMsgBlocksView->m_psMsgBlockList != nullptr )
                 {
                     PSMSGBLOCKLIST psMsgBlock =
                         m_pomTxMsgBlocksView->psGetMsgBlockPointer(
                             m_pomTxMsgBlocksView->m_nSelectedMsgBlockIndex,
                             m_pomTxMsgBlocksView->m_psMsgBlockList );
-                    if(psMsgBlock != NULL)
+                    if(psMsgBlock != nullptr)
                     {
                         m_pomTxMsgListView->m_omLctrMsgList.DeleteAllItems();
                         m_pomTxMsgBlocksView->
@@ -849,7 +849,7 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                         m_pomTxMsgBlocksView->AutoUpdateChanges();
                     }
                 }
-                m_pomTxMsgDetailsView->vSetValues(NULL);
+                m_pomTxMsgDetailsView->vSetValues(nullptr);
                 // Clear Signal Components
                 m_pomTxMsgDetailsView->vDisableSignalComponents();
                 // Disable Delete Button & Send Button as the focus is lost

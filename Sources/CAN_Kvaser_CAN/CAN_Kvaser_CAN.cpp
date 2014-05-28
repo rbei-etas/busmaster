@@ -67,7 +67,7 @@ CCAN_Kvaser_CAN theApp;
 /**
  * CCAN_Kvaser_CAN initialization
  */
-static HINSTANCE ghLangInst=NULL;
+static HINSTANCE ghLangInst=nullptr;
 
 BOOL CCAN_Kvaser_CAN::InitInstance()
 {
@@ -275,12 +275,12 @@ typedef struct tagClientBufMap
     tagClientBufMap()
     {
         dwClientID = 0;
-        hClientHandle = NULL;
+        hClientHandle = 0;
         unBufCount = 0;
         memset(pacClientName, 0, sizeof (char) * MAX_PATH);
         for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
-            pClientBuf[i] = NULL;
+            pClientBuf[i] = nullptr;
         }
 
     }
@@ -294,8 +294,8 @@ static UINT sg_unClientCnt = 0;
 static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
 static UINT m_unDevChannelMap[defNO_OF_CHANNELS] = {(UINT)-1};
 
-static HWND sg_hOwnerWnd = NULL;
-static Base_WrapperErrorLogger* sg_pIlog   = NULL;
+static HWND sg_hOwnerWnd = nullptr;
+static Base_WrapperErrorLogger* sg_pIlog   = nullptr;
 
 /* Forward declarations*/
 static int nInitHwNetwork(UINT unDefaultChannelCnt = 0);
@@ -331,7 +331,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -355,7 +355,7 @@ public:
     HRESULT CAN_UnloadDriverLibrary(void);
 };
 
-CDIL_CAN_Kvaser* sg_pouDIL_CAN_Kvaser = NULL;
+CDIL_CAN_Kvaser* sg_pouDIL_CAN_Kvaser = nullptr;
 HANDLE g_hDataEvent[defNO_OF_CHANNELS]  = {0};
 
 
@@ -373,9 +373,9 @@ canHandle sg_arrReadHandles[CHANNEL_ALLOWED];
 USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 {
     HRESULT hResult = S_OK;
-    if ( NULL == sg_pouDIL_CAN_Kvaser )
+    if ( nullptr == sg_pouDIL_CAN_Kvaser )
     {
-        if ((sg_pouDIL_CAN_Kvaser = new CDIL_CAN_Kvaser) == NULL)
+        if ((sg_pouDIL_CAN_Kvaser = new CDIL_CAN_Kvaser) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -422,7 +422,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogge
 
     /* INITIALISE_ARRAY(sg_acErrStr); */
     sg_acErrStr = "";
-    CAN_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
+    CAN_ManageMsgBuf(MSGBUF_CLEAR, 0, nullptr);
 
     return S_OK;
 }
@@ -439,7 +439,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogge
 HRESULT CDIL_CAN_Kvaser::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
-    if (ClientID != NULL)
+    if (ClientID != 0)
     {
         UINT unClientIndex;
         if (bGetClientObj(ClientID, unClientIndex))
@@ -448,7 +448,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCAN
             if (bAction == MSGBUF_ADD)
             {
                 /* Add msg buffer */
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     if (sClientObj.unBufCount < MAX_BUFF_ALLOWED)
                     {
@@ -467,7 +467,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCAN
             else if (bAction == MSGBUF_CLEAR)
             {
                 /* clear msg buffer */
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     /* Remove only buffer mentioned */
                     bRemoveClientBuffer(sClientObj.pClientBuf, sClientObj.unBufCount, pBufObj);
@@ -477,7 +477,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCAN
                     /* Remove all */
                     for (UINT i = 0; i < sClientObj.unBufCount; i++)
                     {
-                        sClientObj.pClientBuf[i] = NULL;
+                        sClientObj.pClientBuf[i] = nullptr;
                     }
                     sClientObj.unBufCount = 0;
                 }
@@ -496,7 +496,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCAN
             /* clear msg buffer */
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, nullptr);
             }
             hResult = S_OK;
         }
@@ -646,11 +646,11 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
 {
     BOOL bReturn = FALSE;
     // If successful
-    if (pControllerDetails != NULL)
+    if (pControllerDetails != nullptr)
     {
         for( UINT nIndex = 0; nIndex < sg_nNoOfChannels ; nIndex++ )
         {
-            char* pcStopStr = NULL;
+            char* pcStopStr = nullptr;
             CChannel& odChannel = sg_aodChannels[ nIndex ];
 
             // Baudrate in BTR0BTR1 format
@@ -786,7 +786,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64&
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = sg_TimeStamp;
     //TimeStamp = 0;
-    if(QueryTickCount != NULL)
+    if(QueryTickCount != nullptr)
     {
         *QueryTickCount = sg_QueryTickCount;
     }
@@ -1484,7 +1484,7 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
     //Apply filters for read handles
     nSetFilter(false);
 
-    if (g_hDataEvent[0] != NULL)
+    if (g_hDataEvent[0] != nullptr)
     {
         pThreadParam->m_hActionEvent = g_hDataEvent[0];
     }
@@ -1564,9 +1564,9 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
     for (UINT i = 0; i < sg_nNoOfChannels+1; i++)
     {
         ResetEvent(g_hDataEvent[i]);
-        g_hDataEvent[i] = NULL;
+        g_hDataEvent[i] = nullptr;
     }
-    pThreadParam->m_hActionEvent = NULL;
+    pThreadParam->m_hActionEvent = nullptr;
 
     return 0;
 }
@@ -1586,7 +1586,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_StartHardware(void)
     HRESULT hResult = S_OK;
 
     //Connect to the channels
-    hResult = nConnect(TRUE, NULL);
+    hResult = nConnect(TRUE, 0);
     if (hResult == defERR_OK)
     {
         hResult = S_OK;
@@ -1634,7 +1634,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_StopHardware(void)
     //Terminate the read thread
     sg_sParmRThread.bTerminateThread();
 
-    hResult = nConnect(FALSE, NULL);
+    hResult = nConnect(FALSE, 0);
     if (hResult == defERR_OK)
     {
         hResult = S_OK;
@@ -2043,7 +2043,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
             if (hnd >= 0)
             {
                 sg_aodChannels[i].m_hnd = hnd;
-                canIoCtl(sg_aodChannels[i].m_hnd, canIOCTL_FLUSH_TX_BUFFER, NULL, NULL);
+                canIoCtl(sg_aodChannels[i].m_hnd, canIOCTL_FLUSH_TX_BUFFER, nullptr, 0);
                 //go on bus (every channel)
                 nStatus = canBusOn(sg_aodChannels[i].m_hnd);
 
@@ -2340,17 +2340,17 @@ static BOOL bRemoveClient(DWORD dwClientId)
         if (bGetClientObj(dwClientId, unClientIndex))
         {
             /* clear the client first */
-            if (sg_asClientToBufMap[unClientIndex].hClientHandle != NULL)
+            if (sg_asClientToBufMap[unClientIndex].hClientHandle != 0)
             {
                 HRESULT hResult = S_OK;//(*pfCAN_RemoveClient)(sg_asClientToBufMap[unClientIndex].hClientHandle);
                 if (hResult == S_OK)
                 {
                     sg_asClientToBufMap[unClientIndex].dwClientID = 0;
-                    sg_asClientToBufMap[unClientIndex].hClientHandle = NULL;
+                    sg_asClientToBufMap[unClientIndex].hClientHandle = 0;
                     memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                     for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                     {
-                        sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                        sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                     }
                     sg_asClientToBufMap[unClientIndex].unBufCount = 0;
                     bResult = TRUE;
@@ -2366,7 +2366,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
                 memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                 for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                 {
-                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                 }
                 sg_asClientToBufMap[unClientIndex].unBufCount = 0;
                 bResult = TRUE;

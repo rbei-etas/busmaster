@@ -103,7 +103,7 @@ BOOL CGraphElement::FindPoint(double x, double y, CElementPoint* pResult)
 
 STDMETHODIMP CGraphElement::get_LineColor(OLE_COLOR* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -116,7 +116,7 @@ STDMETHODIMP CGraphElement::put_LineColor(OLE_COLOR newVal)
 {
     HRESULT hr;
     COLORREF col;
-    hr = OleTranslateColor(newVal, NULL, &col);
+    hr = OleTranslateColor(newVal, nullptr, &col);
 
     if(m_LineColor == col)
     {
@@ -135,7 +135,7 @@ STDMETHODIMP CGraphElement::put_LineColor(OLE_COLOR newVal)
 
 STDMETHODIMP CGraphElement::get_PointColor(OLE_COLOR* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -149,7 +149,7 @@ STDMETHODIMP CGraphElement::put_PointColor(OLE_COLOR newVal)
 
     HRESULT hr;
     COLORREF col;
-    hr = OleTranslateColor(newVal, NULL, &col);
+    hr = OleTranslateColor(newVal, nullptr, &col);
 
     if(m_PointColor == col)
     {
@@ -167,7 +167,7 @@ STDMETHODIMP CGraphElement::put_PointColor(OLE_COLOR newVal)
 
 STDMETHODIMP CGraphElement::get_Linetype(LineType* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -194,7 +194,7 @@ STDMETHODIMP CGraphElement::put_Linetype(LineType newVal)
 
 STDMETHODIMP CGraphElement::get_LineWidth(long* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -230,7 +230,7 @@ STDMETHODIMP CGraphElement::put_LineWidth(long newVal)
 
 STDMETHODIMP CGraphElement::get_PointSymbol(SymbolType* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -257,7 +257,7 @@ STDMETHODIMP CGraphElement::put_PointSymbol(SymbolType newVal)
 
 STDMETHODIMP CGraphElement::get_SolidPoint(VARIANT_BOOL* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -284,7 +284,7 @@ STDMETHODIMP CGraphElement::put_SolidPoint(VARIANT_BOOL newVal)
 
 STDMETHODIMP CGraphElement::get_PointSize(long* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -320,7 +320,7 @@ STDMETHODIMP CGraphElement::put_PointSize(long newVal)
 
 STDMETHODIMP CGraphElement::get_Show(VARIANT_BOOL* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -369,7 +369,7 @@ STDMETHODIMP CGraphElement::put_Name(BSTR newVal)
 
 STDMETHODIMP CGraphElement::get_Count(/*[out, retval]*/ long* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -385,7 +385,7 @@ STDMETHODIMP CGraphElement::get_XValue(/*[in]*/ long index, /*[out, retval]*/ do
     {
         return AtlReportError(CLSID_NULL, L"Point not found!", IID_NULL, E_INVALIDARG);
     }
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -416,7 +416,7 @@ STDMETHODIMP CGraphElement::get_YValue(/*[in]*/ long index, /*[out, retval]*/ do
     {
         return AtlReportError(CLSID_NULL, L"Point not found!", IID_NULL, E_INVALIDARG);
     }
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -605,10 +605,10 @@ static HRESULT WINAPI GetArrayFromVariant(VARIANT* pVar, SAFEARRAY** pparray)
     ATLASSERT(pVar);
     ATLASSERT(pparray);
 
-    *pparray = NULL;
+    *pparray = nullptr;
     VARIANT* pVarTmp;
     pVarTmp = pVar->vt == (VT_VARIANT|VT_BYREF) ? pVar->pvarVal : pVar; //typical for script clients
-    if(pVarTmp == NULL)
+    if(pVarTmp == nullptr)
     {
         return E_INVALIDARG;
     }
@@ -619,7 +619,7 @@ static HRESULT WINAPI GetArrayFromVariant(VARIANT* pVar, SAFEARRAY** pparray)
     }
 
     *pparray = (pVarTmp->vt & VT_BYREF) ? *(pVarTmp->pparray) : pVarTmp->parray;
-    if(*pparray == NULL)
+    if(*pparray == nullptr)
     {
         return E_POINTER;
     }

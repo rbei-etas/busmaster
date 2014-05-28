@@ -14,7 +14,7 @@ IMPLEMENT_DYNAMIC(CGraphSink, CCmdTarget)
 CGraphSink::CGraphSink()
 {
     EnableAutomation();
-    m_pParentWnd = NULL;
+    m_pParentWnd = nullptr;
 }
 
 CGraphSink::~CGraphSink()

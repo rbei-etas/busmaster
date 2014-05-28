@@ -77,7 +77,7 @@ const BYTE QUEUE_DESTROY = 0x02;
  * CCAN_Vector_XL initialization
  */
 
-static HINSTANCE ghLangInst=NULL;
+static HINSTANCE ghLangInst=nullptr;
 
 BOOL CFLEXRAY_ETAS_BOA::InitInstance()
 {
@@ -132,17 +132,17 @@ BOOL bGetBOAInstallationPath(std::string& pcPath)
 HRESULT GetCSI_API_Pointers(HMODULE hLibCSI)
 {
     HRESULT hResult = S_OK;
-    if (hLibCSI != NULL)
+    if (hLibCSI != nullptr)
     {
-        if ((sBOA_PTRS.m_sCSI.createProtocolTree        = (PROC1)GetProcAddress(hLibCSI, "CSI_CreateProtocolTree")) == NULL)
+        if ((sBOA_PTRS.m_sCSI.createProtocolTree        = (PROC1)GetProcAddress(hLibCSI, "CSI_CreateProtocolTree")) == nullptr)
         {
             hResult = S_FALSE;
         }
-        else if ((sBOA_PTRS.m_sCSI.destroyProtocolTree  = (PROC2)GetProcAddress(hLibCSI, "CSI_DestroyProtocolTree")) == NULL)
+        else if ((sBOA_PTRS.m_sCSI.destroyProtocolTree  = (PROC2)GetProcAddress(hLibCSI, "CSI_DestroyProtocolTree")) == nullptr)
         {
             hResult = S_FALSE;
         }
-        else if ((sBOA_PTRS.m_sCSI.getUriForUuid        = (PROC3)GetProcAddress(hLibCSI, "CSI_GetUriForUuid")) == NULL)
+        else if ((sBOA_PTRS.m_sCSI.getUriForUuid        = (PROC3)GetProcAddress(hLibCSI, "CSI_GetUriForUuid")) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -156,169 +156,169 @@ HRESULT GetCSI_API_Pointers(HMODULE hLibCSI)
 HRESULT GetOCI_API_Pointers(HMODULE hLibOCI)
 {
     HRESULT hResult = S_OK;
-    if (hLibOCI != NULL)
+    if (hLibOCI != nullptr)
     {
 #if BOA_VERSION >= BOA_VERSION_2_0
         if ((sBOA_PTRS.createFlexRayController  = (PF_OCI_CreateFlexRayControllerVersion)
-                GetProcAddress(hLibOCI, "OCI_CreateFlexRayControllerVersion")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_CreateFlexRayControllerVersion")) == nullptr)
         {
             hResult = S_FALSE;
         }
 #else
         if ((sBOA_PTRS.m_sOCI.createFlexRayController = (PF_OCI_CreateFlexRayController)
-                GetProcAddress(hLibOCI, "OCI_CreateFlexRayController")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_CreateFlexRayController")) == nullptr)
         {
             hResult = S_FALSE;
         }
 #endif
         if ((sBOA_PTRS.m_sOCI.destroyFlexRayController = (PF_OCI_DestroyFlexRayController )
-                GetProcAddress(hLibOCI, "OCI_DestroyFlexRayController")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_DestroyFlexRayController")) == nullptr)
         {
             hResult = S_FALSE;
         }
         if ((sBOA_PTRS.m_sOCI.openFlexRayControllerEx = (PF_OCI_OpenFlexRayControllerEx)
-                GetProcAddress(hLibOCI, "OCI_OpenFlexRayControllerEx")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_OpenFlexRayControllerEx")) == nullptr)
         {
             hResult = S_FALSE;
         }
 
         if ((sBOA_PTRS.m_sOCI.closeFlexRayController = (PF_OCI_CloseFlexRayController)
-                GetProcAddress(hLibOCI, "OCI_CloseFlexRayController")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_CloseFlexRayController")) == nullptr)
         {
             hResult = S_FALSE;
         }
         if ((sBOA_PTRS.m_sOCI.getFlexRayConfiguration = (PF_OCI_GetFlexRayConfiguration)
-                GetProcAddress(hLibOCI, "OCI_GetFlexRayConfiguration")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_GetFlexRayConfiguration")) == nullptr)
         {
             hResult = S_FALSE;
         }
 
         if ((sBOA_PTRS.m_sOCI.getFlexRayControllerProperties = (PF_OCI_GetFlexRayControllerProperties)
-                GetProcAddress(hLibOCI, "OCI_GetFlexRayControllerProperties")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_GetFlexRayControllerProperties")) == nullptr)
         {
             hResult = S_FALSE;
         }
         if ((sBOA_PTRS.m_sOCI.setFlexRayControllerProperties = (PF_OCI_SetFlexRayControllerProperties)
-                GetProcAddress(hLibOCI, "OCI_SetFlexRayControllerProperties")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_SetFlexRayControllerProperties")) == nullptr)
         {
             hResult = S_FALSE;
         }
 
         if ((sBOA_PTRS.m_sOCI.flexRayIOVTable.getFlexRayControllerCapabilities = (PF_OCI_GetFlexRayControllerCapabilities)
-                GetProcAddress(hLibOCI, "OCI_GetFlexRayControllerCapabilities")) == NULL)
+                GetProcAddress(hLibOCI, "OCI_GetFlexRayControllerCapabilities")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.flexRayIOVTable.getFlexRayControllerStatus = (PF_OCI_GetFlexRayControllerStatus)
-                  GetProcAddress(hLibOCI, "OCI_GetCANControllerStatus")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetCANControllerStatus")) == nullptr)
         {
             hResult = S_FALSE;
         }
 
         else if ((sBOA_PTRS.m_sOCI.flexRayIOVTable.createFlexRayTxQueue = (PF_OCI_CreateFlexRayTxQueue)
-                  GetProcAddress(hLibOCI, "OCI_CreateFlexRayTxQueue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_CreateFlexRayTxQueue")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.flexRayIOVTable.writeFlexRayData = (PF_OCI_WriteFlexRayData)
-                  GetProcAddress(hLibOCI, "OCI_WriteFlexRayData")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_WriteFlexRayData")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.flexRayIOVTable.destroyFlexRayTxQueue = (PF_OCI_DestroyFlexRayTxQueue)
-                  GetProcAddress(hLibOCI, "OCI_DestroyFlexRayTxQueue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_DestroyFlexRayTxQueue")) == nullptr)
         {
             hResult = S_FALSE;
         }
 
         else if ((sBOA_PTRS.m_sOCI.flexRayIOVTable.createFlexRayRxQueue = (PF_OCI_CreateFlexRayRxQueue)
-                  GetProcAddress(hLibOCI, "OCI_CreateFlexRayRxQueue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_CreateFlexRayRxQueue")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.flexRayIOVTable.readFlexRayData = (PF_OCI_ReadFlexRayData)
-                  GetProcAddress(hLibOCI, "OCI_ReadFlexRayData")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_ReadFlexRayData")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.flexRayIOVTable.destroyFlexRayRxQueue= (PF_OCI_DestroyFlexRayRxQueue)
-                  GetProcAddress(hLibOCI, "OCI_DestroyFlexRayRxQueue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_DestroyFlexRayRxQueue")) == nullptr)
         {
             hResult = S_FALSE;
         }
 
         else if ((sBOA_PTRS.m_sOCI.flexRayIOVTable.addFlexRayFrameFilter = (PF_OCI_AddFlexRayFrameFilter)
-                  GetProcAddress(hLibOCI, "OCI_AddFlexRayFrameFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_AddFlexRayFrameFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.flexRayIOVTable.removeFlexRayFrameFilter = (PF_OCI_RemoveFlexRayFrameFilter)
-                  GetProcAddress(hLibOCI, "OCI_RemoveFlexRayFrameFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_RemoveFlexRayFrameFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.flexRayIOVTable.addFlexRayEventFilter = (PF_OCI_AddFlexRayEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_AddFlexRayEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_AddFlexRayEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.flexRayIOVTable.removeFlexRayEventFilter = (PF_OCI_RemoveFlexRayEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_RemoveCANBusEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_RemoveCANBusEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         //else if ((sBOA_PTRS.m_sOCI.flexRayIOVTable.addFlexRaye = (PF_OCI_AddCANErrorFrameFilter)
-        //          GetProcAddress(hLibOCI, "OCI_AddCANErrorFrameFilter")) == NULL)
+        //          GetProcAddress(hLibOCI, "OCI_AddCANErrorFrameFilter")) == nullptr)
         //{
         //    hResult = S_FALSE;
         //}
         //else if ((sBOA_PTRS.m_sOCI.flexRayIOVTable.removeCANErrorFrameFilter = (PF_OCI_RemoveCANErrorFrameFilter)
-        //          GetProcAddress(hLibOCI, "OCI_RemoveCANErrorFrameFilter")) == NULL)
+        //          GetProcAddress(hLibOCI, "OCI_RemoveCANErrorFrameFilter")) == nullptr)
         //{
         //    hResult = S_FALSE;
         //}
         else if ((sBOA_PTRS.m_sOCI.timeVTable.getTimerStatus = (PF_OCI_GetTimerStatus)
-                  GetProcAddress(hLibOCI, "OCI_GetTimerStatus")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetTimerStatus")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.getTimerStatus = (PF_OCI_GetTimerStatus)
-                  GetProcAddress(hLibOCI, "OCI_GetTimerStatus")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetTimerStatus")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.getTimerCapabilities = (PF_OCI_GetTimerCapabilities)
-                  GetProcAddress(hLibOCI, "OCI_GetTimerCapabilities")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetTimerCapabilities")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.getTimerValue = (PF_OCI_GetTimerValue)
-                  GetProcAddress(hLibOCI, "OCI_GetTimerValue")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetTimerValue")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.addTimerEventFilter = (PF_OCI_AddTimerEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_AddTimerEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_AddTimerEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.timeVTable.removeTimerEventFilter = (PF_OCI_RemoveTimerEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_RemoveTimerEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_RemoveTimerEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.errorVTable.getError = (PF_OCI_GetError)
-                  GetProcAddress(hLibOCI, "OCI_GetError")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_GetError")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.errorVTable.addInternalErrorEventFilter = (PF_OCI_AddInternalErrorEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_AddInternalErrorEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_AddInternalErrorEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
         else if ((sBOA_PTRS.m_sOCI.errorVTable.removeInternalErrorEventFilter = (PF_OCI_RemoveInternalErrorEventFilter)
-                  GetProcAddress(hLibOCI, "OCI_RemoveInternalErrorEventFilter")) == NULL)
+                  GetProcAddress(hLibOCI, "OCI_RemoveInternalErrorEventFilter")) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -347,7 +347,7 @@ void findFlxNodes( CSI_Tree* sfsTree, OCI_URIName uriPrefix, OCI_URIName uriName
     if ( !sfsTree || !uriNames || !uriPrefix || !position )
     {
         return;
-        //exitWithMessage( "ERROR: parameter is NULL", OCI_ERR_UNEXPECTED_NULL );
+        //exitWithMessage( "ERROR: parameter is nullptr", OCI_ERR_UNEXPECTED_NULL );
     }
 
     /* Does the current tree node have the URI name which begins with "FLX:"?
@@ -394,7 +394,7 @@ BOA_ResultCode OCI_FindFlexRayController(OCI_URIName uriNames[], INT nSize, uint
     //OCI_ErrorCode ec;
 
     ///* Container for search results */
-    //CSI_Tree* sfsTree = NULL;
+    //CSI_Tree* sfsTree = nullptr;
     ///* Specify that we want to search for nodes which implement v1.1.0.0 of OCI_FLX. */
     //static const BOA_UuidVersion ociFlexRayUuid = { UUID_OCIFLX, {1,1,0,0} };
 
@@ -418,7 +418,7 @@ BOA_ResultCode OCI_FindFlexRayController(OCI_URIName uriNames[], INT nSize, uint
     OCI_ErrorCode   ec;
 
     /* Container for search results */
-    CSI_Tree* sfsTree = NULL;
+    CSI_Tree* sfsTree = nullptr;
 
     /* Specify that we want to search for physical hardware nodes */
     const CSI_NodeRange nodeRange = {CSI_NODE_MIN_PHYSICAL_NODE , CSI_NODE_MAX_PHYSICAL_NODE };
@@ -429,7 +429,7 @@ BOA_ResultCode OCI_FindFlexRayController(OCI_URIName uriNames[], INT nSize, uint
     if ( !nFound )
     {
         return OCI_ERR_UNEXPECTED_NULL;
-        //exitWithMessage( "ERROR: parameter \'found\' is NULL", OCI_ERR_UNEXPECTED_NULL );
+        //exitWithMessage( "ERROR: parameter \'found\' is nullptr", OCI_ERR_UNEXPECTED_NULL );
     }
 
     /* Search for all connected hardware and latch the result for further processing */
@@ -1099,7 +1099,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
 
             for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
             {
-                sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = NULL;
+                sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = nullptr;
             }
             sg_asClientToBufMap[unClientIndex].m_unBufCount = 0;
             if ((unClientIndex + 1) < sg_unClientCnt)
@@ -1376,7 +1376,7 @@ private:
 
 };
 //CClientList   CDIL_FLEXRAY_ETAS_BOA::m_ClientList;
-CDIL_FLEXRAY_ETAS_BOA* g_pouDIL_FLEXRAY_BOA = NULL;
+CDIL_FLEXRAY_ETAS_BOA* g_pouDIL_FLEXRAY_BOA = nullptr;
 /**
  * This function writes the message to the corresponding clients buffer
  */
@@ -1457,7 +1457,7 @@ void vProcessRxMsg(void* userData, struct OCI_FlexRayMessage* msg)
     }
 
     //Write the msg into registered client's buffer
-    if ( NULL != g_pouDIL_FLEXRAY_BOA )
+    if ( nullptr != g_pouDIL_FLEXRAY_BOA )
     {
         g_pouDIL_FLEXRAY_BOA->vWriteIntoClientsBuffer(FlexData);
     }
@@ -1540,9 +1540,9 @@ void vInitializeQueueConfig(UINT nChannel)
 {
     /* configure Rx Queue*/
     sg_asChannel[nChannel].m_OCI_RxQueueCfg.onFrame.function = ProcessFlexRayData;
-    sg_asChannel[nChannel].m_OCI_RxQueueCfg.onFrame.userData = NULL;
+    sg_asChannel[nChannel].m_OCI_RxQueueCfg.onFrame.userData = nullptr;
     sg_asChannel[nChannel].m_OCI_RxQueueCfg.onEvent.function = EventCallback;
-    sg_asChannel[nChannel].m_OCI_RxQueueCfg.onEvent.userData = NULL;
+    sg_asChannel[nChannel].m_OCI_RxQueueCfg.onEvent.userData = nullptr;
 
     sg_asChannel[nChannel].m_OCI_RxQueueCfg.selfReceptionMode = OCI_SELF_RECEPTION_OFF;
     if ( sg_asChannel[nChannel].m_ControllerCapabilities.supportedBusMode & OCI_FLEXRAY_BUSMODE_SELFRECEPTION )
@@ -1637,9 +1637,9 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_RegisterClient(BOOL bRegister, DWORD& Cli
 USAGEMODE HRESULT GetIDIL_FLEXRAY_Controller(void** ppvInterface)
 {
     HRESULT hResult = S_OK;
-    if ( NULL == g_pouDIL_FLEXRAY_BOA )
+    if ( nullptr == g_pouDIL_FLEXRAY_BOA )
     {
-        if ((g_pouDIL_FLEXRAY_BOA = new CDIL_FLEXRAY_ETAS_BOA) == NULL)
+        if ((g_pouDIL_FLEXRAY_BOA = new CDIL_FLEXRAY_ETAS_BOA) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -1661,7 +1661,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_SetAppParams(HWND hWndOwner, Base_Wrapper
 {
     HRESULT hResult = S_FALSE;
 
-    bool bResult = (pILog != NULL);
+    bool bResult = (pILog != nullptr);
 
     if (bResult)
     {
@@ -1708,7 +1708,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_SetAppParams(HWND hWndOwner, Base_Wrapper
             }
             else if (byAction == MSGBUF_CLEAR)
             {
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     hResult = pClientBuf->RemoveMsgBuf(pBufObj);
                 }
@@ -1746,9 +1746,9 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_LoadDriverLibrary(void)
     acLIB_CSL.append("\\");
     acLIB_CSL.append(LIB_CSL_NAME);
     /* LoadLibraryEx instead of LoadLibrary seems to be necessary under Windows 7 when the library is not in DLL search path (system32) */
-    sg_hLibCSI = LoadLibraryEx(acLIB_CSL.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+    sg_hLibCSI = LoadLibraryEx(acLIB_CSL.c_str(), nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
 
-    if (sg_hLibCSI != NULL)
+    if (sg_hLibCSI != nullptr)
     {
         hResult = GetCSI_API_Pointers(sg_hLibCSI);
 
@@ -1759,9 +1759,9 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_LoadDriverLibrary(void)
             acLIB_OCI.append(acPath);
             acLIB_OCI.append("\\");
             acLIB_OCI.append(LIB_OCI_NAME);
-            sg_hLibOCI = LoadLibraryEx(acLIB_OCI.c_str(), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+            sg_hLibOCI = LoadLibraryEx(acLIB_OCI.c_str(), nullptr, LOAD_WITH_ALTERED_SEARCH_PATH);
 
-            if (sg_hLibOCI != NULL)
+            if (sg_hLibOCI != nullptr)
             {
                 hResult = GetOCI_API_Pointers(sg_hLibOCI);
                 if (hResult != S_OK)
@@ -1802,12 +1802,12 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_LoadDriverLibrary(void)
 HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_UnloadDriverLibrary(void)
 {
     /* Unload OCI library */
-    if (sg_hLibOCI != NULL)
+    if (sg_hLibOCI != nullptr)
     {
         FreeLibrary(sg_hLibOCI);
     }
     /* Unload CSI library */
-    if (sg_hLibCSI != NULL)
+    if (sg_hLibCSI != nullptr)
     {
         FreeLibrary(sg_hLibCSI);
     }
@@ -1824,7 +1824,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_PerformInitOperations(void)
        safeness of read message function */
     InitializeCriticalSection(&sg_DIL_CriticalSection);
     /* Create an event for timestamp calculations*/
-    sg_hEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+    sg_hEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
     /*Initial Channel info with default values.
       1. Controller configuration
       2. Queue configuration
@@ -1917,13 +1917,13 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ListHwInterfaces(FLEXRAY_INTERFACE_HW & s
 
 #if BOA_VERSION >= BOA_VERSION_2_0
                     if ((sBOA_PTRS.createFlexRayController  = (PF_OCI_CreateFlexRayControllerVersion)
-                            GetProcAddress(sg_hLibOCI, "OCI_CreateFlexRayControllerVersion")) == NULL)
+                            GetProcAddress(sg_hLibOCI, "OCI_CreateFlexRayControllerVersion")) == nullptr)
                     {
                         hResult = S_FALSE;
                     }
 #else
                     if ((sBOA_PTRS.m_sOCI.createFlexRayController = (PF_OCI_CreateFlexRayController)
-                            GetProcAddress(sg_hLibOCI, "OCI_CreateFlexRayController")) == NULL)
+                            GetProcAddress(sg_hLibOCI, "OCI_CreateFlexRayController")) == nullptr)
                     {
                         hResult = S_FALSE;
                     }
@@ -1977,7 +1977,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ListHwInterfaces(FLEXRAY_INTERFACE_HW & s
                         }
                         nCount  = unDefaultChannelCnt;
                     }
-                    else if ( ListHardwareInterfaces(NULL, FLEXRAY_DRIVER_ETAS_BOA, psHWInterface, sg_anSelectedItems, nCount) != 0 )
+                    else if ( ListHardwareInterfaces(nullptr, FLEXRAY_DRIVER_ETAS_BOA, psHWInterface, sg_anSelectedItems, nCount) != 0 )
                     {
                         /* return if user cancels hardware selection */
                         return HW_INTERFACE_NO_SEL;
@@ -2206,9 +2206,9 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_StartHardware(void)
                 {
                     //Start Write Thread
                     sg_asChannel[i].m_ouDataTransmitThread.m_unActionCode = INACTION;
-                    if ( sg_asChannel[i].m_ouDataTransmitThread.m_hActionEvent == NULL )
+                    if ( sg_asChannel[i].m_ouDataTransmitThread.m_hActionEvent == nullptr )
                     {
-                        sg_asChannel[i].m_ouDataTransmitThread.m_hActionEvent = CreateEvent(NULL, FALSE, TRUE, NULL);
+                        sg_asChannel[i].m_ouDataTransmitThread.m_hActionEvent = CreateEvent(nullptr, FALSE, TRUE, nullptr);
                     }
                     sg_asChannel[i].m_ouDataTransmitThread.m_pBuffer = &sg_asChannel[i];
 
@@ -2293,7 +2293,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_StopHardware(void)
 
                     //Stop Write Thread
                     sg_asChannel[i].m_ouDataTransmitThread.m_unActionCode = SUSPEND;
-                    if ( sg_asChannel[i].m_ouDataTransmitThread.m_hActionEvent == NULL )
+                    if ( sg_asChannel[i].m_ouDataTransmitThread.m_hActionEvent == nullptr )
                     {
                         SetEvent(sg_asChannel[i].m_ouDataTransmitThread.m_hActionEvent);
                     }
@@ -2507,7 +2507,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ConfigMsgBuf(s_MSGBUF /* sMsgBuf */, UINT
 DWORD WINAPI DataTransmitThread(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         return ((DWORD)-1);
     }
@@ -2546,7 +2546,7 @@ DWORD WINAPI DataTransmitThread(LPVOID pVoid)
                 BOA_ResultCode ErrCode;
                 uint32 nRemaining = 0;
                 EnterCriticalSection(&sg_asChannel[0].m_ouCriticalSection);
-                if ( NULL != g_pouDIL_FLEXRAY_BOA )
+                if ( nullptr != g_pouDIL_FLEXRAY_BOA )
                 {
                     //g_pouDIL_FLEXRAY_BOA->nCreateTxQueue();
                 }

@@ -26,7 +26,7 @@ void* CFlexRayNetworkStats::sm_pouBSFlexRay;
  */
 int ReadBSDataBuffer(CFlexRayNetworkStats* pBSFlexRay)
 {
-    ASSERT(pBSCan != NULL);
+    ASSERT(pBSCan != nullptr);
     while (pBSFlexRay->m_ouFlexRayBufFSE.GetMsgCount() > 0)
     {
         static s_FLXMSG sFlexRayData;
@@ -57,14 +57,14 @@ int ReadBSDataBuffer(CFlexRayNetworkStats* pBSFlexRay)
 DWORD WINAPI BSFlexRayDataReadThreadProc(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         return ((DWORD)-1);
     }
 
     CFlexRayNetworkStats* pBusStatistics = static_cast<CFlexRayNetworkStats*> (pThreadParam->m_pBuffer);
 
-    if (pBusStatistics == NULL)
+    if (pBusStatistics == nullptr)
     {
         return ((DWORD)-1);
     }

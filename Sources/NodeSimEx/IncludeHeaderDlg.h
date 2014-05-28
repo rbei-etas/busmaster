@@ -32,7 +32,7 @@ private:
     CFunctionEditorDoc* m_pDoc;
     // Construction
 public:
-    CIncludeHeaderDlg(CFunctionEditorDoc* pDoc, CWnd* pParent = NULL);   // standard constructor
+    CIncludeHeaderDlg(CFunctionEditorDoc* pDoc, CWnd* pParent = nullptr);   // standard constructor
 
     // Dialog Data
     //{{AFX_DATA(CIncludeHeaderDlg)

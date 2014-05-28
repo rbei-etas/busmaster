@@ -37,7 +37,7 @@ SGUIPARAMS::SGUIPARAMS()
     _tcsset(m_acUnSelListName, _T('\0'));
     _tcsset(m_acSelListName, _T('\0'));
 
-    m_pomImageList      = NULL;
+    m_pomImageList      = nullptr;
     m_unUnSelIconIndex  = 0;
     m_unSelIconIndex    = 0;
     m_bCombine          = TRUE;

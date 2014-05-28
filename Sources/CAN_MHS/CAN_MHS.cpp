@@ -69,7 +69,7 @@ CCAN_MHS theApp;
 /**
  * CCAN_MHS initialization
  */
-static HINSTANCE ghLangInst=NULL;
+static HINSTANCE ghLangInst=nullptr;
 
 BOOL CCAN_MHS::InitInstance()
 {
@@ -141,7 +141,7 @@ typedef struct tagClientBufMap
         memset(m_acClientName, 0, sizeof (char) * MAX_PATH);
         for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
-            m_pClientBuf[i] = NULL;
+            m_pClientBuf[i] = nullptr;
         }
     }
 } SCLIENTBUFMAP;
@@ -170,8 +170,8 @@ static CACK_MAP_LIST sg_asAckMapBuf;
 static BYTE sg_bCurrState = STATE_DRIVER_SELECTED;
 static CRITICAL_SECTION sg_DIL_CriticalSection;
 
-static HWND sg_hOwnerWnd = NULL;
-static Base_WrapperErrorLogger* sg_pIlog   = NULL;
+static HWND sg_hOwnerWnd = nullptr;
+static Base_WrapperErrorLogger* sg_pIlog   = nullptr;
 static struct TMhsCanCfg sg_MhsCanCfg;
 
 static SYSTEMTIME sg_CurrSysTime;
@@ -186,7 +186,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -210,7 +210,7 @@ public:
     HRESULT CAN_UnloadDriverLibrary(void);
 };
 
-CDIL_CAN_MHS* g_pouDIL_CAN_MHS = NULL;
+CDIL_CAN_MHS* g_pouDIL_CAN_MHS = nullptr;
 
 
 #define CALLBACK_TYPE __stdcall
@@ -264,7 +264,7 @@ char out[512];
 va_start(argptr, text);
 _vstprintf(out, text, argptr);
 va_end(argptr);
-MessageBox(NULL, out, title, MB_ICONEXCLAMATION | MB_OK);
+MessageBox(nullptr, out, title, MB_ICONEXCLAMATION | MB_OK);
 } */
 
 
@@ -285,7 +285,7 @@ HRESULT CDIL_CAN_MHS::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* 
     //Query Tick Count
     sg_QueryTickCount.QuadPart = 0;
 
-    CAN_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
+    CAN_ManageMsgBuf(MSGBUF_CLEAR, 0, nullptr);
     return(S_OK);
 }
 
@@ -339,7 +339,7 @@ HRESULT CDIL_CAN_MHS::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBuf
             else if (bAction == MSGBUF_CLEAR)
             {
                 // **** Clear msg buffer
-                if (pBufObj != NULL) //REmove only buffer mentioned
+                if (pBufObj != nullptr) //REmove only buffer mentioned
                 {
                     bRemoveClientBuffer(sClientObj.m_pClientBuf, sClientObj.m_unBufCount, pBufObj);
                 }
@@ -347,7 +347,7 @@ HRESULT CDIL_CAN_MHS::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBuf
                 {
                     for (i = 0; i < sClientObj.m_unBufCount; i++)
                     {
-                        sClientObj.m_pClientBuf[i] = NULL;
+                        sClientObj.m_pClientBuf[i] = nullptr;
                     }
                     sClientObj.m_unBufCount = 0;
                 }
@@ -368,7 +368,7 @@ HRESULT CDIL_CAN_MHS::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBuf
             // **** clear msg buffer
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].m_dwClientID, NULL);
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].m_dwClientID, nullptr);
             }
         }
         hResult = S_OK;
@@ -561,7 +561,7 @@ HRESULT CDIL_CAN_MHS::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& Ti
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = sg_TimeStamp;
-    if(QueryTickCount != NULL)
+    if(QueryTickCount != nullptr)
     {
         *QueryTickCount = sg_QueryTickCount;
     }
@@ -1223,7 +1223,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
             memset (sg_asClientToBufMap[unClientIndex].m_acClientName, 0, sizeof (char) * MAX_PATH);
             for (i = 0; i < MAX_BUFF_ALLOWED; i++)
             {
-                sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = NULL;
+                sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = nullptr;
             }
             sg_asClientToBufMap[unClientIndex].m_unBufCount = 0;
             if ((unClientIndex + 1) < sg_unClientCnt)

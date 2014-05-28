@@ -40,7 +40,7 @@ private:
 public:
     CString m_omStrSelectedItemText;
     CString m_omStrFunctionAdded;
-    CMsgHandlerDlg(ETYPE_BUS eBus, CWnd* pParent = NULL);   // standard constructor
+    CMsgHandlerDlg(ETYPE_BUS eBus, CWnd* pParent = nullptr);   // standard constructor
 private:
     void vInitDlgWithBusSpecNames(void);
     void vTokenize(CString strInput, CString strToken, CString& strOutput, int& nStart);

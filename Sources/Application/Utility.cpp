@@ -69,7 +69,7 @@ BOOL bGetMsgData(UINT unMsgIndex,
                  PSENDMULTIMSGINFO psSendMultipleMsgInfo)
 {
     BOOL bReturn = FALSE;
-    if ( psSendMultipleMsgInfo != NULL)
+    if ( psSendMultipleMsgInfo != nullptr)
     {
         for ( INT nCount = 0;
                 nCount < psSendMultipleMsgInfo->pSendMsgInfo[unMsgIndex].nDLC;
@@ -241,7 +241,7 @@ UINT unGetMsgIDFromName(CString omMsgName)
 {
     CString omStrMsgID;
     UINT unMsgID = (UINT)-1;
-    CHAR* pcStopStr = NULL;
+    CHAR* pcStopStr = nullptr;
     int nIndex = omMsgName.ReverseFind(defMSGID_EXTENDED);
     if(nIndex != -1)
     {

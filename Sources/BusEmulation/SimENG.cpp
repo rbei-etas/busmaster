@@ -79,12 +79,12 @@ static std::string sg_acErrStr;
 
 static CRITICAL_SECTION sg_CriticalSection;
 
-static BYTE* sg_pbEntry = NULL; // This is used as a temporary placeholder for
+static BYTE* sg_pbEntry = nullptr; // This is used as a temporary placeholder for
 static INT sg_nEntryLen = 0;    // a frame for the transmitting threads.
 static CRITICAL_SECTION sg_CSMsgEntry; // This critical section is to guard the
 // aforementioned resource.
 
-static BYTE* sg_pbEntry2 = NULL; // This is used as a temporary placeholder for
+static BYTE* sg_pbEntry2 = nullptr; // This is used as a temporary placeholder for
 static INT sg_nEntryLen2 = 0;    // a frame for the delegating threads.
 
 static void GetSystemErrorString()
@@ -96,12 +96,12 @@ static void GetSystemErrorString()
                    FORMAT_MESSAGE_ALLOCATE_BUFFER |
                    FORMAT_MESSAGE_FROM_SYSTEM |
                    FORMAT_MESSAGE_IGNORE_INSERTS,
-                   NULL,
+                   nullptr,
                    GetLastError(),
                    MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
                    (LPTSTR) &lpMsgBuf,
                    0,
-                   NULL );
+                   nullptr );
     if (dwResult <= 0)
     {
         sg_acErrStr = "system error message retrieval operation failed";
@@ -190,8 +190,8 @@ DWORD WINAPI MsgDelegatingThread(LPVOID pParam)
                             }
                             DWORD Count = 0;
                             Result = WriteFile(itr->second.m_hWrite, pbCurrEntry,
-                                               itr->second.m_dwDataSize, &Count, NULL);
-                            //&CurrMsgDat, SIZE_ENTRY, &Count, NULL);
+                                               itr->second.m_dwDataSize, &Count, nullptr);
+                            //&CurrMsgDat, SIZE_ENTRY, &Count, nullptr);
                             SetEvent(itr->second.m_hEvent);
                             FlushFileBuffers(itr->second.m_hWrite);
                             if (itr->first == wSenderID)
@@ -266,7 +266,7 @@ CSimENG::CSimENG()
 {
     InitializeCriticalSection(&sg_CriticalSection);
     InitializeCriticalSection(&sg_CSMsgEntry);
-    //MessageBox(NULL, "in CSimENG()", "Member function", MB_OK);
+    //MessageBox(nullptr, "in CSimENG()", "Member function", MB_OK);
     // First save the current system time
     GetLocalTime(&sg_CurrSysTime);
 
@@ -278,7 +278,7 @@ CSimENG::CSimENG()
 HRESULT CSimENG::FinalConstruct()
 {
     // Initialise the random number generator
-    srand((unsigned) time(NULL));
+    srand((unsigned) time(nullptr));
 
     // To create the worker thread that relays messages to other nodes
     // First initialise the parameters
@@ -289,7 +289,7 @@ HRESULT CSimENG::FinalConstruct()
     // Now start the thread
     sg_sThreadCtrlObj.bStartThread(MsgDelegatingThread);
 
-    //MessageBox(NULL, "in FinalConstruct()", "Member function", MB_OK);
+    //MessageBox(nullptr, "in FinalConstruct()", "Member function", MB_OK);
     return S_OK;
 }
 
@@ -301,17 +301,17 @@ void CSimENG::FinalRelease()
     DeleteCriticalSection(&sg_CriticalSection);
     DeleteCriticalSection(&sg_CSMsgEntry);
 
-    if (NULL != sg_pbEntry)
+    if (nullptr != sg_pbEntry)
     {
         delete[] sg_pbEntry;
-        sg_pbEntry = NULL;
+        sg_pbEntry = nullptr;
         sg_nEntryLen = 0;
     }
 
-    if (NULL != sg_pbEntry2)
+    if (nullptr != sg_pbEntry2)
     {
         delete[] sg_pbEntry2;
-        sg_pbEntry2 = NULL;
+        sg_pbEntry2 = nullptr;
         sg_nEntryLen2 = 0;
     }
 }
@@ -403,7 +403,7 @@ STDMETHODIMP CSimENG::RegisterClient(USHORT Bus, USHORT MaxLenFrame,
     // Mutex name; convert from ASCII string to BSTR
     BSTR bstrEvent = A2BSTR(EventName);
 
-    bool bProceed = ((bstrPipe != NULL) && (bstrEvent != NULL));
+    bool bProceed = ((bstrPipe != nullptr) && (bstrEvent != nullptr));
 
     if (bProceed)
     {
@@ -427,20 +427,20 @@ STDMETHODIMP CSimENG::RegisterClient(USHORT Bus, USHORT MaxLenFrame,
                                sParams.m_dwDataSize,     // output buffer size
                                sParams.m_dwDataSize,     // input buffer size
                                PIPE_TIMEOUT,             // client time-out
-                               NULL);                    // no security attribute
+                               nullptr);                    // no security attribute
         if (sParams.m_hWrite == INVALID_HANDLE_VALUE)
         {
             bProceed = false;
             GetSystemErrorString();
-            MessageBox(NULL, sg_acErrStr.c_str(), "Error", MB_OK);
+            MessageBox(nullptr, sg_acErrStr.c_str(), "Error", MB_OK);
         }
 
         if (bProceed)
         {
-            ConnectNamedPipe(sParams.m_hWrite, NULL);
+            ConnectNamedPipe(sParams.m_hWrite, nullptr);
             // Generate the communication event
             bProceed = bProceed && ((sParams.m_hEvent
-                                     = CreateEvent(NULL, FALSE, FALSE, EventName)) != NULL);
+                                     = CreateEvent(nullptr, FALSE, FALSE, EventName)) != nullptr);
         }
 
         if (bProceed)
@@ -501,10 +501,10 @@ STDMETHODIMP CSimENG::UnregisterClient(USHORT ClientID)
     {
         // Close the handle of the communication conduit
         CloseHandle(itr->second.m_hEvent);
-        itr->second.m_hEvent = NULL;
+        itr->second.m_hEvent = nullptr;
         DisconnectNamedPipe(itr->second.m_hWrite);
         CloseHandle(itr->second.m_hWrite);
-        itr->second.m_hWrite = NULL;
+        itr->second.m_hWrite = nullptr;
         sg_ClientMap.erase(itr);
 
         Result = S_OK;

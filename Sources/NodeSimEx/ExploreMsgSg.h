@@ -43,7 +43,7 @@ public:
                   BOOL bCheckRequired,
                   eMESSAGEFROM,
                   eSELTYPE,
-                  CWnd* pParent = NULL);
+                  CWnd* pParent = nullptr);
 
     // Dialog Data
     //{{AFX_DATA(CExploreMsgSg)

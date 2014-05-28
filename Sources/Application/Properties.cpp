@@ -48,7 +48,7 @@ extern CCANMonitorApp theApp;
 /*                      of each type                                          */
 /******************************************************************************/
 CProperties::CProperties(const SPROPERTIESLIST& sProperties)
-    : CDialog(CProperties::IDD, NULL)
+    : CDialog(CProperties::IDD, nullptr)
 {
     //{{AFX_DATA_INIT(CProperties)
     //}}AFX_DATA_INIT

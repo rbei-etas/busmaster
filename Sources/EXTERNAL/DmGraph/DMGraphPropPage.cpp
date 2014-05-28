@@ -59,23 +59,23 @@ void CDMGraphPropPage::UpdateControls(IDMGraphCtrl* pGraphCtrl)
     COLORREF col;
 
     hr = pGraphCtrl->get_AxisColor(&color);
-    hr = OleTranslateColor(color, NULL, &col);
+    hr = OleTranslateColor(color, nullptr, &col);
     m_btnAxisColPicker.SetColor(color);
 
     hr = pGraphCtrl->get_ControlFrameColor(&color);
-    hr = OleTranslateColor(color, NULL, &col);
+    hr = OleTranslateColor(color, nullptr, &col);
     m_btnFrameColPicker.SetColor(color);
 
     hr = pGraphCtrl->get_GridColor(&color);
-    hr = OleTranslateColor(color, NULL, &col);
+    hr = OleTranslateColor(color, nullptr, &col);
     m_btnGridColPicker.SetColor(color);
 
     hr = pGraphCtrl->get_PlotAreaColor(&color);
-    hr = OleTranslateColor(color, NULL, &col);
+    hr = OleTranslateColor(color, nullptr, &col);
     m_btnPlotColPicker.SetColor(color);
 
     hr = pGraphCtrl->get_LabelColor(&color);
-    hr = OleTranslateColor(color, NULL, &col);
+    hr = OleTranslateColor(color, nullptr, &col);
     m_btnLabelColPicker.SetColor(color);
 
     FrameStyle frame;

@@ -74,12 +74,12 @@ static ENTRY_DIL sg_ListDIL[] =
 
 CDIL_CAN::CDIL_CAN()
 {
-    m_hDll = NULL;
-    m_hOldDll = NULL;
+    m_hDll = nullptr;
+    m_hOldDll = nullptr;
     m_dwDriverID = DAL_NONE;
-    pfGetIDILCAN_Controller = NULL;
-    m_pBaseDILCAN_Controller = NULL;
-    m_pOldBaseDILCAN_Controller = NULL;
+    pfGetIDILCAN_Controller = nullptr;
+    m_pBaseDILCAN_Controller = nullptr;
+    m_pOldBaseDILCAN_Controller = nullptr;
     vSelectInterface_Dummy();
 }
 
@@ -89,13 +89,13 @@ CDIL_CAN::~CDIL_CAN()
     if ( m_hDll )
     {
         FreeLibrary(m_hDll);
-        m_hDll = NULL;
+        m_hDll = nullptr;
     }
     //Free the previosuly selected DIL library
     if ( m_hOldDll )
     {
         FreeLibrary(m_hOldDll);
-        m_hOldDll = NULL;
+        m_hOldDll = nullptr;
     }
 }
 
@@ -134,13 +134,13 @@ void CDIL_CAN::vSelectInterface_Dummy(void)
  * Based on the parameter this function renders number of the driver interface
  * layers supported or available. If 'bAvailable' is true, this returns number of
  * the DILs implemented; else the list of the DILs supported by the existing
- * license will be returned. If List is NULL, only number is returned.
+ * license will be returned. If List is nullptr, only number is returned.
  */
 DWORD CDIL_CAN::DILC_GetDILList(bool /*bAvailable*/, DILLIST* List)
 {
     DWORD Result = 0;
 
-    if (List != NULL)
+    if (List != nullptr)
     {
         for (int i = 0; i < sizeof(sg_ListDIL)/sizeof(ENTRY_DIL); i++)
         {
@@ -193,7 +193,7 @@ HMODULE CDIL_CAN::vLoadEtasBoaLibrary(Base_WrapperErrorLogger* pILog)
     }
 
     pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("ETAS BOA not found in registry."));
-    return NULL;
+    return nullptr;
 }
 
 /**
@@ -215,13 +215,13 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
     {
         hResult = DAL_ALREADY_SELECTED;
     }
-    else if (pILog == NULL)
+    else if (pILog == nullptr)
     {
         hResult = ERRLGR_INVALID;
     }
     else
     {
-        if (hWndOwner == NULL)
+        if (hWndOwner == nullptr)
         {
             /* Log a warning message informing about the invalidity of the
             owner window handle. */
@@ -234,7 +234,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             m_hOldDll = m_hDll;
             m_pOldBaseDILCAN_Controller = m_pBaseDILCAN_Controller;
             m_dwOldDriverID = m_dwDriverID;
-            m_hDll = NULL;
+            m_hDll = nullptr;
         }
 
         switch(dwDriverID)
@@ -298,7 +298,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                 return hResult;
         }
 
-        if (m_hDll == NULL)
+        if (m_hDll == nullptr)
         {
             hResult = ERR_LOAD_DRIVER;
             pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Load library failed..."));
@@ -476,7 +476,7 @@ HRESULT CDIL_CAN::DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT&
             FreeLibrary(m_hOldDll);
         }
     }
-    m_hOldDll = NULL;
+    m_hOldDll = nullptr;
 
     return hr;
 }

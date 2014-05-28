@@ -82,7 +82,7 @@ CGraphElement::~CGraphElement()
 BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData, BYTE byVersion)
 {
     BYTE* pbyTemp = pbyTrgData;
-    if (pbyTemp != NULL)
+    if (pbyTemp != nullptr)
     {
         // Save properties one after another
         // Message ID
@@ -124,18 +124,18 @@ BYTE* CGraphElement::pbyGetConfigData(BYTE* pbyTrgData, BYTE byVersion)
 void CGraphElement::pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion)
 {
     // Writing Graph element in to xml
-    xmlNodePtr pGrphElmntPtr = xmlNewNode(NULL, BAD_CAST DEF_Graph_Element);
+    xmlNodePtr pGrphElmntPtr = xmlNewNode(nullptr, BAD_CAST DEF_Graph_Element);
     xmlAddChild(pNodePtr, pGrphElmntPtr);
 
     // Writing Message Id in to xml
     CString strMsgId = "";
     strMsgId.Format("%d", m_nMsgID);
 
-    xmlNodePtr pMsgIdPtr = xmlNewChild(pGrphElmntPtr, NULL, BAD_CAST DEF_MESSAGE_ID, BAD_CAST strMsgId.GetBuffer(strMsgId.GetLength()));
+    xmlNodePtr pMsgIdPtr = xmlNewChild(pGrphElmntPtr, nullptr, BAD_CAST DEF_MESSAGE_ID, BAD_CAST strMsgId.GetBuffer(strMsgId.GetLength()));
     xmlAddChild(pGrphElmntPtr, pMsgIdPtr);
 
     // Writing Message Name in to xml
-    xmlNodePtr pMsgNamePtr = xmlNewChild(pGrphElmntPtr, NULL, BAD_CAST DEF_MESSAGE_NAME, BAD_CAST m_strMsgName.GetBuffer(m_strMsgName.GetLength()));
+    xmlNodePtr pMsgNamePtr = xmlNewChild(pGrphElmntPtr, nullptr, BAD_CAST DEF_MESSAGE_NAME, BAD_CAST m_strMsgName.GetBuffer(m_strMsgName.GetLength()));
     xmlAddChild(pGrphElmntPtr, pMsgNamePtr);
 
     // Writing Frame Format in to xml
@@ -150,11 +150,11 @@ void CGraphElement::pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion)
         strFrmeFormat = "EXTENDED";
     }
 
-    xmlNodePtr pFrmFormatPtr = xmlNewChild(pGrphElmntPtr, NULL, BAD_CAST DEF_FRAME_FORMAT, BAD_CAST strFrmeFormat.GetBuffer(strFrmeFormat.GetLength()));
+    xmlNodePtr pFrmFormatPtr = xmlNewChild(pGrphElmntPtr, nullptr, BAD_CAST DEF_FRAME_FORMAT, BAD_CAST strFrmeFormat.GetBuffer(strFrmeFormat.GetLength()));
     xmlAddChild(pGrphElmntPtr, pFrmFormatPtr);
 
     // Writing Element name in to xml
-    xmlNodePtr pElmntNamePtr = xmlNewChild(pGrphElmntPtr, NULL, BAD_CAST DEF_ELEMENT_NAME, BAD_CAST m_omStrElementName.GetBuffer(m_omStrElementName.GetLength()));
+    xmlNodePtr pElmntNamePtr = xmlNewChild(pGrphElmntPtr, nullptr, BAD_CAST DEF_ELEMENT_NAME, BAD_CAST m_omStrElementName.GetBuffer(m_omStrElementName.GetLength()));
     xmlAddChild(pGrphElmntPtr, pElmntNamePtr);
 
     // Writing Value type in to xml
@@ -173,7 +173,7 @@ void CGraphElement::pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion)
         strValueType = defSTR_PHY_VALUE;
     }
 
-    xmlNodePtr pValueType = xmlNewChild(pGrphElmntPtr, NULL, BAD_CAST DEF_VALUE_TYPE,BAD_CAST  strValueType.GetBuffer(strValueType.GetLength()));
+    xmlNodePtr pValueType = xmlNewChild(pGrphElmntPtr, nullptr, BAD_CAST DEF_VALUE_TYPE,BAD_CAST  strValueType.GetBuffer(strValueType.GetLength()));
     xmlAddChild(pGrphElmntPtr, pValueType);
 
     // Writing Line Type in to xml
@@ -181,7 +181,7 @@ void CGraphElement::pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion)
 
     strLineType = xmlUtils::nGetLineTypeForGraph(m_nLineType);
 
-    xmlNodePtr pLineType = xmlNewChild(pGrphElmntPtr, NULL, BAD_CAST DEF_LINE_TYPE,BAD_CAST  strLineType.GetBuffer(strLineType.GetLength()));
+    xmlNodePtr pLineType = xmlNewChild(pGrphElmntPtr, nullptr, BAD_CAST DEF_LINE_TYPE,BAD_CAST  strLineType.GetBuffer(strLineType.GetLength()));
     xmlAddChild(pGrphElmntPtr, pLineType);
 
     // Writing Line color in to xml
@@ -189,21 +189,21 @@ void CGraphElement::pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion)
 
     strLineColor.Format("%d", m_nLineColor);
 
-    xmlNodePtr pLineColor = xmlNewChild(pGrphElmntPtr, NULL, BAD_CAST DEF_LINE_COLOR,BAD_CAST  strLineColor.GetBuffer(strLineColor.GetLength()));
+    xmlNodePtr pLineColor = xmlNewChild(pGrphElmntPtr, nullptr, BAD_CAST DEF_LINE_COLOR,BAD_CAST  strLineColor.GetBuffer(strLineColor.GetLength()));
     xmlAddChild(pGrphElmntPtr, pLineColor);
 
     // Writing Point Type in to xml
     CString strPointType = "";
     strPointType.Format("%d", m_nPointType);
 
-    xmlNodePtr pPointType = xmlNewChild(pGrphElmntPtr, NULL, BAD_CAST DEF_POINT_TYPE, BAD_CAST strPointType.GetBuffer(strPointType.GetLength()));
+    xmlNodePtr pPointType = xmlNewChild(pGrphElmntPtr, nullptr, BAD_CAST DEF_POINT_TYPE, BAD_CAST strPointType.GetBuffer(strPointType.GetLength()));
     xmlAddChild(pGrphElmntPtr, pPointType);
 
     // Writing Point Color in to xml
     CString strPointColor = "";
     strPointColor.Format("%d", m_nPointColor);
 
-    xmlNodePtr pPointColor = xmlNewChild(pGrphElmntPtr, NULL,BAD_CAST DEF_POINT_COLOR, BAD_CAST strPointColor.GetBuffer(strPointColor.GetLength()));
+    xmlNodePtr pPointColor = xmlNewChild(pGrphElmntPtr, nullptr,BAD_CAST DEF_POINT_COLOR, BAD_CAST strPointColor.GetBuffer(strPointColor.GetLength()));
     xmlAddChild(pGrphElmntPtr, pPointColor);
 
     // Writing visibility in to xml
@@ -218,7 +218,7 @@ void CGraphElement::pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion)
         strVisibility = "FALSE";
     }
 
-    xmlNodePtr pVisibility = xmlNewChild(pGrphElmntPtr, NULL, BAD_CAST DEF_VISIBILITY, BAD_CAST strVisibility.GetBuffer(strVisibility.GetLength()));
+    xmlNodePtr pVisibility = xmlNewChild(pGrphElmntPtr, nullptr, BAD_CAST DEF_VISIBILITY, BAD_CAST strVisibility.GetBuffer(strVisibility.GetLength()));
     xmlAddChild(pGrphElmntPtr, pVisibility);
 
     // Writing Enabled in to xml
@@ -232,7 +232,7 @@ void CGraphElement::pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion)
         strEnabled = "FALSE";
     }
 
-    xmlNodePtr pEnabledPtr = xmlNewChild(pGrphElmntPtr, NULL, BAD_CAST DEF_ENABLE, BAD_CAST strEnabled.GetBuffer(strEnabled.GetLength()));
+    xmlNodePtr pEnabledPtr = xmlNewChild(pGrphElmntPtr, nullptr, BAD_CAST DEF_ENABLE, BAD_CAST strEnabled.GetBuffer(strEnabled.GetLength()));
     xmlAddChild(pGrphElmntPtr, pEnabledPtr);
 
     // Writing Display type in to xml
@@ -253,23 +253,23 @@ void CGraphElement::pbyGetConfigData(xmlNodePtr pNodePtr, BYTE byVersion)
             strDisplayType = "STEPMODE_YX";
         }
 
-        xmlNodePtr pDisplayTypePtr = xmlNewChild(pGrphElmntPtr, NULL, BAD_CAST DEF_DISPLAY_TYPE, BAD_CAST strDisplayType.GetBuffer(strDisplayType.GetLength()));
+        xmlNodePtr pDisplayTypePtr = xmlNewChild(pGrphElmntPtr, nullptr, BAD_CAST DEF_DISPLAY_TYPE, BAD_CAST strDisplayType.GetBuffer(strDisplayType.GetLength()));
         xmlAddChild(pGrphElmntPtr, pDisplayTypePtr);
     }
 }
 
 void CGraphElement::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFiledoc)
 {
-    if(xmlConfigFiledoc != NULL)
+    if(xmlConfigFiledoc != nullptr)
     {
         pNodePtr = pNodePtr->xmlChildrenNode;
 
-        while(pNodePtr != NULL)
+        while(pNodePtr != nullptr)
         {
             if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Message_ID")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     CString strMsgId = "";
                     strMsgId = ptext;
@@ -281,7 +281,7 @@ void CGraphElement::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFil
             else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Message_Name")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     CString strMsgName = ptext;
                     m_strMsgName = strMsgName;
@@ -291,7 +291,7 @@ void CGraphElement::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFil
             else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Frame_Format")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     CString strFrmeFormat = ptext;
 
@@ -310,7 +310,7 @@ void CGraphElement::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFil
             else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Element_Name")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     m_omStrElementName = (CString)ptext;
                     xmlFree(ptext);
@@ -319,7 +319,7 @@ void CGraphElement::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFil
             else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Value_Type")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     CString strValueType = ptext;
 
@@ -343,7 +343,7 @@ void CGraphElement::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFil
             else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Line_Type")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     // Writing Line Type in to xml
                     CString strLineType = ptext;
@@ -357,7 +357,7 @@ void CGraphElement::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFil
             else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Line_Color")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     CString strLineColor = ptext;
                     m_nLineColor = atoi(strLineColor);
@@ -369,7 +369,7 @@ void CGraphElement::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFil
             else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Point_Type")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     CString strPointType = ptext;
                     m_nPointType = atoi(strPointType);
@@ -381,7 +381,7 @@ void CGraphElement::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFil
             else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Point_Color")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     CString strPointColor = ptext;
                     m_nPointColor = atoi(strPointColor);
@@ -393,7 +393,7 @@ void CGraphElement::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFil
             else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"VIsibility")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     CString strVisibility = ptext;
 
@@ -412,7 +412,7 @@ void CGraphElement::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFil
             else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Enable")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     CString strEnable = ptext;
 
@@ -432,7 +432,7 @@ void CGraphElement::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFil
             else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Display_Type")))
             {
                 xmlChar* ptext = xmlNodeListGetString(xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
-                if(NULL != ptext)
+                if(nullptr != ptext)
                 {
                     CString strDisplayType = ptext;
 
@@ -460,7 +460,7 @@ void CGraphElement::pbySetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFil
 BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData, BYTE byVersion)
 {
     BYTE* pbyTemp = pbyTrgData;
-    if (pbyTemp != NULL)
+    if (pbyTemp != nullptr)
     {
         // Save properties one after another
         // Message ID

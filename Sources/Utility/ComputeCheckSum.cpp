@@ -77,7 +77,7 @@ BOOL CComputeCheckSum::bComputeCheckSum(UCHAR* pucBuff,
 {
     BOOL  bReturn     = FALSE;
     // check for pointer and size to be more then zero.
-    if(pucBuff != NULL && dwSize >0)
+    if(pucBuff != nullptr && dwSize >0)
     {
         UCHAR ucTempByte  = 0;
         for(UINT unIndex = 0; unIndex < dwSize; unIndex++)
@@ -86,9 +86,9 @@ BOOL CComputeCheckSum::bComputeCheckSum(UCHAR* pucBuff,
             // the result will be zero and XOR will return the byte itself.
             ucTempByte =  static_cast<UCHAR>(ucTempByte^ pucBuff[unIndex]);
         }
-        // check for the pointer to be NULL. If not NULL  assign the
+        // check for the pointer to be nullptr. If not nullptr  assign the
         // computed checksum
-        if(pucCheckSum != NULL)
+        if(pucCheckSum != nullptr)
         {
             *pucCheckSum = ucTempByte;
             bReturn = TRUE;
@@ -131,13 +131,13 @@ BOOL CComputeCheckSum::bGetCheckSum(CString& omStrConfigFileName,
         CFile::modeRead | CFile::typeBinary, &omException);
         if(bFileOpen!=FALSE)
         {
-            UCHAR* pucBuff   = NULL;
+            UCHAR* pucBuff   = nullptr;
             // Get the size of file
             dwSize = (DWORD)omStdiofile.GetLength();
             if( dwSize > 0)
             {
                 pucBuff = static_cast<UCHAR*> (new UCHAR[dwSize]);
-                if(pucBuff!=NULL)
+                if(pucBuff!=nullptr)
                 {
                     // Read the whole file and put the content to pucBuff;
                     dwRead = omStdiofile.Read(pucBuff,dwSize);
@@ -147,7 +147,7 @@ BOOL CComputeCheckSum::bGetCheckSum(CString& omStrConfigFileName,
                     // Get the check sum stored in file ( Last byte )
                     *pucCheckSumInFile  = pucBuff[dwSize-1];
                     delete [] pucBuff;
-                    pucBuff = NULL;
+                    pucBuff = nullptr;
                 }
             }
             omStdiofile.Close();
@@ -160,7 +160,7 @@ BOOL CComputeCheckSum::bGetCheckSum(CString& omStrConfigFileName,
             omException.GetErrorMessage(acErrorMsg,sizeof(acErrorMsg));
             // configuration file  open error notification
             //AfxMessageBox(acErrorMsg ,MB_ICONERROR| MB_SYSTEMMODAL|MB_OK,nZERO);
-            MessageBox(NULL,acErrorMsg,
+            MessageBox(nullptr,acErrorMsg,
             defPROJECT_NAME,MB_OK|MB_ICONERROR|MB_TOPMOST);
 
         }
@@ -168,13 +168,13 @@ BOOL CComputeCheckSum::bGetCheckSum(CString& omStrConfigFileName,
     }
     CATCH_ALL(pomE)
     {
-        if(pomE != NULL )
+        if(pomE != nullptr )
         {
             // Get the exception error message
             pomE->GetErrorMessage(acErrorMsg,sizeof(acErrorMsg));
             //Display the error
             //AfxMessageBox(acErrorMsg ,MB_ICONERROR| MB_SYSTEMMODAL|MB_OK,nZERO);
-            MessageBox(NULL,acErrorMsg,
+            MessageBox(nullptr,acErrorMsg,
                        defPROJECT_NAME,MB_OK|MB_ICONERROR|MB_TOPMOST);
         }
     }
@@ -216,12 +216,12 @@ BOOL CComputeCheckSum::bSetCheckSum(CString& omStrConfigFileName,
         &omException);
         if(bFileOpen!=FALSE)
         {
-            UCHAR* pucBuff   = NULL;
+            UCHAR* pucBuff   = nullptr;
             UCHAR  ucCheckSum = 0;
             // Get the size of file
             dwSize = (DWORD)omStdiofile.GetLength();
             pucBuff = static_cast<UCHAR*> (new UCHAR[dwSize]);
-            if(pucBuff!=NULL)
+            if(pucBuff!=nullptr)
             {
                 // Read the whole file and put the content to pucBuff;
                 dwRead = omStdiofile.Read(pucBuff,dwSize);
@@ -234,7 +234,7 @@ BOOL CComputeCheckSum::bSetCheckSum(CString& omStrConfigFileName,
                     // Write one byte checksum
                     omStdiofile.Write(&ucCheckSum,1);
                     // return the checksum
-                    if(pucCheckSum!= NULL )
+                    if(pucCheckSum!= nullptr )
                     {
                         *pucCheckSum = ucCheckSum;
                     }
@@ -244,7 +244,7 @@ BOOL CComputeCheckSum::bSetCheckSum(CString& omStrConfigFileName,
                     }
                 }
                 delete [] pucBuff;
-                pucBuff = NULL;
+                pucBuff = nullptr;
             }
             omStdiofile.Close();
         }
@@ -253,7 +253,7 @@ BOOL CComputeCheckSum::bSetCheckSum(CString& omStrConfigFileName,
             // Get the exception error message
             omException.GetErrorMessage(acErrorMsg,sizeof(acErrorMsg));
             // configuration file open error notification
-            MessageBox(NULL, acErrorMsg,
+            MessageBox(nullptr, acErrorMsg,
             defPROJECT_NAME, MB_OK | MB_ICONERROR | MB_SYSTEMMODAL);
             //AfxMessageBox(acErrorMsg ,MB_ICONERROR| MB_SYSTEMMODAL|MB_OK,0);
 
@@ -262,12 +262,12 @@ BOOL CComputeCheckSum::bSetCheckSum(CString& omStrConfigFileName,
     }
     CATCH_ALL(pomE)
     {
-        if(pomE != NULL )
+        if(pomE != nullptr )
         {
             // Get the exception error message
             pomE->GetErrorMessage(acErrorMsg,sizeof(acErrorMsg));
             //Display the error
-            MessageBox(NULL, acErrorMsg,
+            MessageBox(nullptr, acErrorMsg,
                        defPROJECT_NAME, MB_OK | MB_ICONERROR | MB_SYSTEMMODAL);
             //AfxMessageBox(acErrorMsg ,MB_ICONERROR| MB_SYSTEMMODAL|MB_OK,0);
             pomE->Delete();
@@ -313,12 +313,12 @@ BOOL CComputeCheckSum::COM_bSetCheckSum(CString& omStrConfigFileName,
         &omException);
         if(bFileOpen!=FALSE)
         {
-            UCHAR* pucBuff   = NULL;
+            UCHAR* pucBuff   = nullptr;
             UCHAR  ucCheckSum = 0;
             // Get the size of file
             dwSize = (DWORD)omStdiofile.GetLength();
             pucBuff = static_cast<UCHAR*> (new UCHAR[dwSize]);
-            if(pucBuff!=NULL)
+            if(pucBuff!=nullptr)
             {
                 // Read the whole file and put the content to pucBuff;
                 dwRead = omStdiofile.Read(pucBuff,dwSize);
@@ -331,7 +331,7 @@ BOOL CComputeCheckSum::COM_bSetCheckSum(CString& omStrConfigFileName,
                     // Write one byte checksum
                     omStdiofile.Write(&ucCheckSum,1);
                     // return the checksum
-                    if(pucCheckSum!= NULL )
+                    if(pucCheckSum!= nullptr )
                     {
                         *pucCheckSum = ucCheckSum;
                     }
@@ -341,7 +341,7 @@ BOOL CComputeCheckSum::COM_bSetCheckSum(CString& omStrConfigFileName,
                     }
                 }
                 delete [] pucBuff;
-                pucBuff = NULL;
+                pucBuff = nullptr;
             }
             omStdiofile.Close();
         }
@@ -355,7 +355,7 @@ BOOL CComputeCheckSum::COM_bSetCheckSum(CString& omStrConfigFileName,
     }
     CATCH_ALL(pomE)
     {
-        if(pomE != NULL )
+        if(pomE != nullptr )
         {
             // Get the exception error message
             pomE->GetErrorMessage(acErrorMsg,sizeof(acErrorMsg));

@@ -198,15 +198,15 @@ BOOL CRectTracker::SetCursor( HWND hWnd, UINT nHitTest ) const
     switch (HitTest(&point))
     {
         case hitBegin:
-            ::SetCursor( LoadCursor(NULL, IDC_SIZEWE ) );
+            ::SetCursor( LoadCursor(nullptr, IDC_SIZEWE ) );
             break;
 
         case hitEnd:
-            ::SetCursor( LoadCursor(NULL, IDC_SIZEWE ) );
+            ::SetCursor( LoadCursor(nullptr, IDC_SIZEWE ) );
             break;
 
         case hitMiddle:
-            ::SetCursor( LoadCursor(NULL, IDC_SIZEALL ) );
+            ::SetCursor( LoadCursor(nullptr, IDC_SIZEALL ) );
             break;
 
         default:
@@ -310,7 +310,7 @@ BOOL CRectTracker::TrackHandle( HWND hWnd, const LPPOINT point, int HitTest )
     while (!bExit)
     {
         MSG msg;
-        BOOL b = ::GetMessage(&msg, NULL, 0, 0);
+        BOOL b = ::GetMessage(&msg, nullptr, 0, 0);
         ATLASSERT(b);
 
         if (GetCapture() != hWnd)
@@ -390,7 +390,7 @@ BOOL CRectTracker::TrackHandle( HWND hWnd, const LPPOINT point, int HitTest )
         }
     };
 
-    ClipCursor(NULL);
+    ClipCursor(nullptr);
     ReleaseCapture();
 
     if (bCanceled)

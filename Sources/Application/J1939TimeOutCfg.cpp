@@ -43,7 +43,7 @@
 // CJ1939TimeOutCfg dialog
 
 IMPLEMENT_DYNAMIC(CJ1939TimeOutCfg, CDialog)
-CJ1939TimeOutCfg::CJ1939TimeOutCfg(CWnd* pParent /*=NULL*/)
+CJ1939TimeOutCfg::CJ1939TimeOutCfg(CWnd* pParent /*=nullptr*/)
     : CDialog(CJ1939TimeOutCfg::IDD, pParent)
 {
 }
@@ -88,7 +88,7 @@ BOOL CJ1939TimeOutCfg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
-    CButton* pButton = NULL;
+    CButton* pButton = nullptr;
     UINT unTimeOutVal = 0;
     pButton = (CButton*)GetDlgItem(IDC_CHECK_BROADCAST);
     pButton->SetCheck(BST_UNCHECKED);
@@ -276,7 +276,7 @@ BOOL CJ1939TimeOutCfg::bVerifyTimeoutValue(UINT nValue)
 }
 void CJ1939TimeOutCfg::OnBnClickedOk()
 {
-    CButton* pButton = NULL;
+    CButton* pButton = nullptr;
     pButton = (CButton*)GetDlgItem(IDC_CHECK_BROADCAST);
     if (pButton->GetCheck() == BST_CHECKED && bVerifyTimeoutValue((UINT)m_omBroadcast.lGetValue()) )
     {

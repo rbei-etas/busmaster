@@ -28,21 +28,21 @@
 #include "Utility\MultiLanguageSupport.h"
 
 #include <afxdllx.h>
-static AFX_EXTENSION_MODULE TestSuiteExecutor = { NULL, NULL };
+static AFX_EXTENSION_MODULE TestSuiteExecutor = { false, nullptr };
 
 
-CTSExecutorChildFrame* g_pomTSExecutorChildWindow = NULL;
-CTSExecutorBase* g_podTSExecutor = NULL;
-BYTE* m_pbyConfigData = NULL;
+CTSExecutorChildFrame* g_pomTSExecutorChildWindow = nullptr;
+CTSExecutorBase* g_podTSExecutor = nullptr;
+BYTE* m_pbyConfigData = nullptr;
 UINT m_unConfigSize = 0;
 
-xmlNodePtr m_pXmlConfigNode = NULL;
+xmlNodePtr m_pXmlConfigNode = nullptr;
 BOOL m_bByXmlConfig = TRUE;
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
 
-    static HINSTANCE shLangInst=NULL;
+    static HINSTANCE shLangInst=nullptr;
 
 
     // Remove this if you use lpReserved
@@ -104,11 +104,11 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         }
 
         TRACE0("TestSuiteExecutor.DLL Terminating!\n");
-        if(m_pbyConfigData != NULL)
+        if(m_pbyConfigData != nullptr)
         {
             delete[] m_pbyConfigData;
         }
-        if( NULL != m_pXmlConfigNode )
+        if( nullptr != m_pXmlConfigNode )
         {
             xmlFreeNode(m_pXmlConfigNode);
         }
@@ -126,18 +126,18 @@ USAGEMODE HRESULT TS_vShowTSExecutorWindow(void* pParentWnd)
     HINSTANCE hInst = AfxGetResourceHandle();
     AfxSetResourceHandle(TestSuiteExecutor.hResource);
 
-    if( g_pomTSExecutorChildWindow == NULL )
+    if( g_pomTSExecutorChildWindow == nullptr )
     {
         // Create New Instance
         g_pomTSExecutorChildWindow = new CTSExecutorChildFrame;
-        if( g_pomTSExecutorChildWindow != NULL )
+        if( g_pomTSExecutorChildWindow != nullptr )
         {
             //// Register Window Class
             //TODO::ICON
             LPCTSTR strMDIClass = AfxRegisterWndClass(
                                       CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
-                                      LoadCursor(NULL, IDC_CROSS), 0,
-                                      NULL );
+                                      LoadCursor(nullptr, IDC_CROSS), 0,
+                                      nullptr );
 
             CRect omRect(63, 913, 4, 596);
             if( g_pomTSExecutorChildWindow->Create( strMDIClass,
@@ -209,7 +209,7 @@ USAGEMODE HRESULT TS_hTSEexecutorWindowShown()
 //USAGEMODE HRESULT TS_hGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize)
 USAGEMODE HRESULT TS_hGetConfigurationData(xmlNodePtr* pxmlNodePtr)
 {
-    if(g_pomTSExecutorChildWindow != NULL)
+    if(g_pomTSExecutorChildWindow != nullptr)
     {
         return g_pomTSExecutorChildWindow->GetConfigurationData(*pxmlNodePtr);
     }
@@ -221,16 +221,16 @@ USAGEMODE HRESULT TS_hGetConfigurationData(xmlNodePtr* pxmlNodePtr)
 }
 USAGEMODE HRESULT TS_hSetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)
 {
-    if(m_pbyConfigData != NULL)
+    if(m_pbyConfigData != nullptr)
     {
         delete []m_pbyConfigData;
-        m_pbyConfigData = NULL;
+        m_pbyConfigData = nullptr;
     }
     m_bByXmlConfig = FALSE;
     m_unConfigSize = unBuffSize;
     m_pbyConfigData = new BYTE[m_unConfigSize];
     memcpy(m_pbyConfigData, pSrcBuffer, m_unConfigSize);
-    if(g_pomTSExecutorChildWindow != NULL)
+    if(g_pomTSExecutorChildWindow != nullptr)
     {
         g_pomTSExecutorChildWindow->SetConfigurationData(m_pbyConfigData, m_unConfigSize);
     }
@@ -240,20 +240,20 @@ USAGEMODE HRESULT TS_hSetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)
 USAGEMODE HRESULT TS_hSetXMLConfigurationData(xmlDocPtr pDoc)
 {
     m_bByXmlConfig = TRUE;
-    if ( NULL != m_pXmlConfigNode )
+    if ( nullptr != m_pXmlConfigNode )
     {
         xmlFreeNode(m_pXmlConfigNode);
-        m_pXmlConfigNode = NULL;
+        m_pXmlConfigNode = nullptr;
     }
     xmlXPathObjectPtr pTempPathNode = xmlUtils::pGetNodes(pDoc, (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_TS_Executor");
-    if( NULL == pTempPathNode )
+    if( nullptr == pTempPathNode )
     {
         return S_FALSE;
     }
 
     m_pXmlConfigNode = xmlCopyNode(pTempPathNode->nodesetval->nodeTab[0], 1);
 
-    if(g_pomTSExecutorChildWindow != NULL)
+    if(g_pomTSExecutorChildWindow != nullptr)
     {
         g_pomTSExecutorChildWindow->SetConfigurationData(m_pXmlConfigNode);
     }
@@ -268,7 +268,7 @@ USAGEMODE HRESULT TS_DoInitialization(ETYPE_BUS /*eBus*/)
     HINSTANCE hInst = AfxGetResourceHandle();
     AfxSetResourceHandle(TestSuiteExecutor.hResource);
 
-    if(g_podTSExecutor == NULL)
+    if(g_podTSExecutor == nullptr)
     {
         g_podTSExecutor = new CTSExecutionCAN();
     }
@@ -279,7 +279,7 @@ USAGEMODE HRESULT TS_DoInitialization(ETYPE_BUS /*eBus*/)
 }
 USAGEMODE HRESULT TS_StartStopReadThread(ETYPE_BUS /*eBus*/, BOOL bStart)
 {
-    if(g_podTSExecutor != NULL)
+    if(g_podTSExecutor != nullptr)
     {
         return g_podTSExecutor->TSX_bStartStopReadThread(bStart);
     }
@@ -290,7 +290,7 @@ USAGEMODE HRESULT TS_StartStopReadThread(ETYPE_BUS /*eBus*/, BOOL bStart)
 }
 USAGEMODE HRESULT TS_BUSConnected(BOOL bConnected)
 {
-    if(g_pomTSExecutorChildWindow != NULL)
+    if(g_pomTSExecutorChildWindow != nullptr)
     {
         g_pomTSExecutorChildWindow->vSetBusStatus(bConnected);
         return S_OK;

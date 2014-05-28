@@ -73,9 +73,9 @@ CListCtrlEx::CListCtrlEx() : m_bSingleClickActivate(FALSE)
     m_colRow2 =     def_COLOR_SECONDROW;
     m_colRow1 =     def_COLOR_FIRSTROW;
 
-    m_pomDBRowButton = NULL;
+    m_pomDBRowButton = nullptr;
 
-    m_pomDBRowEdit = NULL;
+    m_pomDBRowEdit = nullptr;
 
 }
 
@@ -128,7 +128,7 @@ void CListCtrlEx::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
     LV_ITEM* plvItem = &pDispInfo->item;
     // Proceed only for valid item change
     if( plvItem->iItem != -1 &&  // valid item
-            plvItem->pszText != NULL)       // valid text
+            plvItem->pszText != nullptr)       // valid text
     {
         // Copy the change information. This is required to validate the
         // data from OnItemChanged.
@@ -184,7 +184,7 @@ void CListCtrlEx::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
     // Set the focus to list control. This will hide any controls that
     // are all visible at this time
-    if( pScrollBar == NULL ) // Form the (list )window
+    if( pScrollBar == nullptr ) // Form the (list )window
     {
         if( GetFocus() != this)
         {
@@ -229,10 +229,10 @@ void CListCtrlEx::OnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult)
         lvDispInfo.item.mask = LVIF_TEXT;
         lvDispInfo.item.iItem = pNMListView->iItem;
         lvDispInfo.item.iSubItem = pNMListView->iSubItem;
-        lvDispInfo.item.pszText = NULL;
+        lvDispInfo.item.pszText = nullptr;
         lvDispInfo.item.cchTextMax = 0;
         CWnd* pWnd = GetParent();
-        if( pWnd != NULL )
+        if( pWnd != nullptr )
         {
             pWnd->SendMessage( WM_NOTIFY, GetDlgCtrlID(),
                                (LPARAM)&lvDispInfo );
@@ -483,7 +483,7 @@ CComboItem* CListCtrlEx::pomComboItem(int nItem,
     // Make sure that the item is visible
     if( !EnsureVisible(nItem, TRUE))
     {
-        return NULL;
+        return nullptr;
     }
 
     // Get the size of the list item
@@ -518,14 +518,14 @@ CComboItem* CListCtrlEx::pomComboItem(int nItem,
     DWORD dwStyle =  WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
                      CBS_DROPDOWNLIST;
     // Create the non editable combobox
-    CComboItem* pomCBox = NULL;
+    CComboItem* pomCBox = nullptr;
     // Create the control
     pomCBox = new CComboItem( nItem,        // Item Index
                               nSubItem,     // Sub Item Index
                               omList,       // Lsit of strings
                               strFind,      // Selected Text
                               FALSE);       // Editing is FALSE
-    if( pomCBox != NULL )
+    if( pomCBox != nullptr )
     {
         // Create the UI
         pomCBox->Create(dwStyle, omRect, this, IDC_CONTROL);
@@ -574,7 +574,7 @@ CComboItem* CListCtrlEx::pomComboList( int nItem,
     // Make sure that the item is visible
     if( !EnsureVisible(nItem, TRUE))
     {
-        return NULL;
+        return nullptr;
     }
 
     // Get the size of the list item
@@ -609,10 +609,10 @@ CComboItem* CListCtrlEx::pomComboList( int nItem,
     DWORD dwStyle = WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
                     CBS_DROPDOWN;
 
-    CComboItem* pomCBox = NULL;
+    CComboItem* pomCBox = nullptr;
     pomCBox = new CComboItem(nItem, nSubItem, omList, strFind, TRUE);
 
-    if( pomCBox != NULL )
+    if( pomCBox != nullptr )
     {
         // Create the UI control
         pomCBox->Create(dwStyle, omRect, this, IDC_CONTROL);
@@ -657,7 +657,7 @@ CEdit* CListCtrlEx::pomEditItem(int nItem, int nSubItem)
     // Set the item to be visible
     if(!EnsureVisible(nItem, TRUE))
     {
-        return NULL;
+        return nullptr;
     }
     // Get the item rect
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
@@ -701,9 +701,9 @@ CEdit* CListCtrlEx::pomEditItem(int nItem, int nSubItem)
     // Get the item text
     CString omStrText = GetItemText(nItem, nSubItem);
     // Create the control now
-    CEdit* pomEdit = NULL;
+    CEdit* pomEdit = nullptr;
     pomEdit = new CEditItem(nItem, nSubItem, omStrText);
-    if( pomEdit != NULL )
+    if( pomEdit != nullptr )
     {
         pomEdit->Create(dwStyle, omRect, this, IDC_CONTROL);
     }
@@ -738,7 +738,7 @@ CNumEdit* CListCtrlEx::pomNumItem( int nItem, int nSubItem,
     // Set the item to be visible
     if(!EnsureVisible(nItem, TRUE))
     {
-        return NULL;
+        return nullptr;
     }
     // Get the item rect
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
@@ -780,9 +780,9 @@ CNumEdit* CListCtrlEx::pomNumItem( int nItem, int nSubItem,
     // Get the selected item text
     CString omStrText = GetItemText(nItem, nSubItem);
     // Create the control
-    CNumEdit* pomEdit = NULL;
+    CNumEdit* pomEdit = nullptr;
     pomEdit = new CNumEdit(nItem, nSubItem, omStrText, sInfo);
-    if( pomEdit != NULL )
+    if( pomEdit != nullptr )
     {
         pomEdit->Create(dwStyle, omRect, this, IDC_CONTROL);
     }
@@ -923,7 +923,7 @@ CWnd* CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
     // Set the item to be visible
     if(!EnsureVisible(nItem, TRUE))
     {
-        return NULL;
+        return nullptr;
     }
     // Get the item rect
     GetSubItemRect(nItem, nSubItem, LVIR_BOUNDS, omRect);
@@ -974,25 +974,25 @@ CWnd* CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
     omEditRect.right = omRect.right - def_HEIGHT_BUTTON;
 
     //delete the previous pointers
-    /*if(m_pomDBRowButton != NULL)
+    /*if(m_pomDBRowButton != nullptr)
     {
-        if(m_pomDBRowButton->m_pomEditItem != NULL)
+        if(m_pomDBRowButton->m_pomEditItem != nullptr)
         {
             delete m_pomDBRowButton->m_pomEditItem;
-            m_pomDBRowButton->m_pomEditItem = NULL;
+            m_pomDBRowButton->m_pomEditItem = nullptr;
         }
       delete m_pomDBRowButton;
-      m_pomDBRowButton = NULL;
+      m_pomDBRowButton = nullptr;
     }*/
-    if(m_pomDBRowEdit != NULL)
+    if(m_pomDBRowEdit != nullptr)
     {
-        if(m_pomDBRowEdit->m_pomButton!= NULL)
+        if(m_pomDBRowEdit->m_pomButton!= nullptr)
         {
             delete m_pomDBRowEdit->m_pomButton;
-            m_pomDBRowEdit->m_pomButton = NULL;
+            m_pomDBRowEdit->m_pomButton = nullptr;
         }
         delete m_pomDBRowEdit;
-        m_pomDBRowEdit = NULL;
+        m_pomDBRowEdit = nullptr;
     }
 
     if(omList.GetSize() >=2)
@@ -1001,11 +1001,11 @@ CWnd* CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
         m_pomDBRowEdit = new CBrowseEditItem(nItem, nSubItem, omStrText, m_pomDBRowButton);
         m_pomDBRowButton->vSetEditItem(m_pomDBRowEdit);
 
-        if( m_pomDBRowEdit != NULL )
+        if( m_pomDBRowEdit != nullptr )
         {
             m_pomDBRowEdit->Create(dwStyle, omEditRect, this, IDC_CONTROL);
         }
-        if(m_pomDBRowButton != NULL)
+        if(m_pomDBRowButton != nullptr)
         {
             dwStyle = WS_CHILD|WS_VISIBLE|BS_TEXT|BS_BOTTOM;
             //ID is not required
@@ -1015,7 +1015,7 @@ CWnd* CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
         m_pomDBRowEdit->SetFocus();
     }
 
-    return NULL;
+    return nullptr;
 }
 /******************************************************************************
 Function Name  :  OnEraseBkgnd

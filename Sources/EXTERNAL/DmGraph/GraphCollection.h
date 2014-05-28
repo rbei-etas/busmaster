@@ -65,7 +65,7 @@ public:
 
     STDMETHOD(get_Count)(/*[out, retval]*/ long* pVal)
     {
-        if(pVal == NULL)
+        if(pVal == nullptr)
         {
             return E_POINTER;
         }
@@ -74,11 +74,11 @@ public:
     }
     STDMETHOD(get_Item)(/*[in]*/ long index, /*[out, retval]*/ IDispatch* *pVal)
     {
-        if(pVal == NULL)
+        if(pVal == nullptr)
         {
             return E_POINTER;
         }
-        *pVal = NULL;
+        *pVal = nullptr;
         if(index < 0 || index >= GetSize())
         {
             return E_INVALIDARG;
@@ -88,7 +88,7 @@ public:
     }
     STDMETHOD(get_Selected)(/*[out, retval]*/ long* pVal)
     {
-        if(pVal == NULL)
+        if(pVal == nullptr)
         {
             return E_POINTER;
         }
@@ -106,14 +106,14 @@ public:
     }
     STDMETHOD(Add)(/*[out, retval]*/ IDispatch* *pVal)
     {
-        if(pVal == NULL)
+        if(pVal == nullptr)
         {
             return E_POINTER;
         }
-        *pVal = NULL;
+        *pVal = nullptr;
         CComObject<T>* newItem;
         HRESULT hr = CComObject<T>::CreateInstance(&newItem);
-        if(newItem == NULL)
+        if(newItem == nullptr)
         {
             return E_OUTOFMEMORY;
         }

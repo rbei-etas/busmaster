@@ -54,7 +54,7 @@ CTSExecutorLIB::CTSExecutorLIB(void)
     m_omstrTestSuiteName = def_STR_TESTSUITENAME;
     m_ouTestSetupEntityList.RemoveAll();
     m_bTestSuiteStatus = FALSE;
-    m_ompResultDisplayWnd = NULL;
+    m_ompResultDisplayWnd = nullptr;
 }
 
 /******************************************************************************
@@ -73,7 +73,7 @@ HRESULT CTSExecutorLIB::SetResultDisplayWnd(CListCtrl* pWnd)
 {
     m_ompResultDisplayWnd = pWnd;
     m_ompResultDisplayWnd->DeleteAllItems();
-    if(g_podTSExecutor != NULL)
+    if(g_podTSExecutor != nullptr)
     {
         g_podTSExecutor->TSX_SetDisplayWnd(m_ompResultDisplayWnd);
     }
@@ -492,7 +492,7 @@ HRESULT CTSExecutorLIB::GetTestcaseCount( INT nIndex, UINT& unTotal)
     BOOL bValidID = FALSE;
     unTotal = (UINT)-1;
     POSITION pos = m_ouTestSetupEntityList.FindIndex(nIndex);
-    if(pos != NULL)
+    if(pos != nullptr)
     {
         CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
         unTotal = ouTempTestSetup.GetSubEntryCount();
@@ -614,7 +614,7 @@ Code Tag       :
 HRESULT CTSExecutorLIB::GetTestSetupInfo(INT nIndex, STestSetupInfo& sTSInfo)
 {
     POSITION pos = m_ouTestSetupEntityList.FindIndex(nIndex);
-    if(pos != NULL)
+    if(pos != nullptr)
     {
         CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
         sTSInfo.m_dwID = ouTestSetupEntity.GetID();
@@ -653,7 +653,7 @@ HRESULT CTSExecutorLIB::GetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize
 
     pDesBuffer = new BYTE[unBuffSize];
 
-    if (pDesBuffer != NULL)
+    if (pDesBuffer != nullptr)
     {
         BYTE* pbyTemp = pDesBuffer;
         //TestSuite name
@@ -691,7 +691,7 @@ HRESULT CTSExecutorLIB::GetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize
                 CBaseEntityTA* pTCEntity;
                 ouTestSetupEntity.GetSubEntityObj(j, &pTCEntity);
                 bStatus = FALSE;
-                if(pTCEntity != NULL)
+                if(pTCEntity != nullptr)
                 {
                     bStatus = pTCEntity->bGetEnableStatus();
                 }
@@ -711,14 +711,14 @@ HRESULT CTSExecutorLIB::GetConfigurationData(xmlNodePtr pxmlNodePtr)
 
     omcVarChar = m_omstrTestSuiteName.GetBuffer(MAX_PATH);
 
-    xmlNodePtr pTSName = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_TS_NAME, BAD_CAST omcVarChar);
+    xmlNodePtr pTSName = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_TS_NAME, BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pTSName);
 
     // <IsEnable />
     CString csIsEnabled;
     csIsEnabled.Format("%d", m_bTestSuiteStatus);
     omcVarChar = csIsEnabled;
-    xmlNodePtr pIsEnabled = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_IS_ENABLE, BAD_CAST omcVarChar);
+    xmlNodePtr pIsEnabled = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_IS_ENABLE, BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pIsEnabled);
 
     INT nFileCount = (INT)m_ouTestSetupEntityList.GetCount();
@@ -726,7 +726,7 @@ HRESULT CTSExecutorLIB::GetConfigurationData(xmlNodePtr pxmlNodePtr)
     for(int iCnt = 0; iCnt < nFileCount; iCnt++)
     {
         //<TEST_SUITE>
-        xmlNodePtr pTestSuite = xmlNewNode(NULL, BAD_CAST DEF_TEST_SUITE);
+        xmlNodePtr pTestSuite = xmlNewNode(nullptr, BAD_CAST DEF_TEST_SUITE);
         xmlAddChild(pxmlNodePtr, pTestSuite);
 
         //<Test_Suite_Name />
@@ -740,18 +740,18 @@ HRESULT CTSExecutorLIB::GetConfigurationData(xmlNodePtr pxmlNodePtr)
         CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)ouTestSetupEntity.m_omstrCurrentTSFile.GetBuffer(MAX_PATH), omPath);
         omcVarChar = omPath.c_str();
 
-        xmlNodePtr pFilePath = xmlNewChild(pTestSuite, NULL, BAD_CAST DEF_FILE_PATH, BAD_CAST omcVarChar);
+        xmlNodePtr pFilePath = xmlNewChild(pTestSuite, nullptr, BAD_CAST DEF_FILE_PATH, BAD_CAST omcVarChar);
         xmlAddChild(pTestSuite, pFilePath);
 
         //<IsEnable />
         CString csIsEnabled;
         csIsEnabled.Format("%d", ouTestSetupEntity.bGetEnableStatus());
         omcVarChar = csIsEnabled;
-        xmlNodePtr pIsEnabled = xmlNewChild(pTestSuite, NULL, BAD_CAST DEF_IS_ENABLE, BAD_CAST omcVarChar);
+        xmlNodePtr pIsEnabled = xmlNewChild(pTestSuite, nullptr, BAD_CAST DEF_IS_ENABLE, BAD_CAST omcVarChar);
         xmlAddChild(pTestSuite, pIsEnabled);
 
         //<Testcases_Selected>
-        xmlNodePtr pTestCasesSel = xmlNewNode(NULL, BAD_CAST DEF_TEST_CASES_SEL);
+        xmlNodePtr pTestCasesSel = xmlNewNode(nullptr, BAD_CAST DEF_TEST_CASES_SEL);
         xmlAddChild(pTestSuite, pTestCasesSel);
 
         // <Index>1</Index>
@@ -764,7 +764,7 @@ HRESULT CTSExecutorLIB::GetConfigurationData(xmlNodePtr pxmlNodePtr)
             CBaseEntityTA* pTCEntity;
             ouTestSetupEntity.GetSubEntityObj(j, &pTCEntity);
             bStatus = FALSE;
-            if(pTCEntity != NULL)
+            if(pTCEntity != nullptr)
             {
                 bStatus = pTCEntity->bGetEnableStatus();
             }
@@ -772,7 +772,7 @@ HRESULT CTSExecutorLIB::GetConfigurationData(xmlNodePtr pxmlNodePtr)
             {
                 csIndex.Format("%d", j);
                 omcVarChar = csIndex;
-                xmlNodePtr pIndex = xmlNewChild(pTestCasesSel, NULL, BAD_CAST DEF_INDEX, BAD_CAST omcVarChar);
+                xmlNodePtr pIndex = xmlNewChild(pTestCasesSel, nullptr, BAD_CAST DEF_INDEX, BAD_CAST omcVarChar);
                 xmlAddChild(pTestCasesSel, pIndex);
             }
         }
@@ -796,7 +796,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
 
     INT nFileCount = (INT)m_ouTestSetupEntityList.GetCount();
 
-    if (pSrcBuffer != NULL)
+    if (pSrcBuffer != nullptr)
     {
         BYTE* pbyTemp = pSrcBuffer;
         //File Path
@@ -826,7 +826,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
                 BOOL bStatus;
                 COPY_DATA_2(&bStatus, pbyTemp, sizeof(BOOL));
                 POSITION pos = m_ouTestSetupEntityList.FindIndex(nFileIndex++);
-                if(pos != NULL)
+                if(pos != nullptr)
                 {
                     CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
                     ouTestSetupEntity.vEnableEntity(bStatus);
@@ -845,7 +845,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
                         CBaseEntityTA* pTCEntity;
                         COPY_DATA_2(&bStatus, pbyTemp, sizeof(BOOL));
                         ouTestSetupEntity.GetSubEntityObj(j, &pTCEntity);
-                        if(pTCEntity != NULL)
+                        if(pTCEntity != nullptr)
                         {
                             pTCEntity->vEnableEntity(bStatus);
                         }
@@ -870,41 +870,41 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
 
 HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
 {
-    xmlXPathObjectPtr pObjectPtr = NULL;
+    xmlXPathObjectPtr pObjectPtr = nullptr;
     xmlNodePtr pTempNode;
     //Test Suite Name
     m_omstrTestSuiteName = def_STR_TESTSUITENAME;
 
     pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"Test_Suite_Name");
-    if( NULL != pObjectPtr)
+    if( nullptr != pObjectPtr)
     {
         pTempNode = pObjectPtr->nodesetval->nodeTab[0];
         m_omstrTestSuiteName = (char*)xmlNodeListGetString(pTempNode->doc, pTempNode->children, 1);
 
         xmlXPathFreeObject(pObjectPtr);
-        pObjectPtr = NULL;
+        pObjectPtr = nullptr;
     }
     //Test Suite Enable
     pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"IsEnable");
     m_bTestSuiteStatus = TRUE;
-    if( NULL != pObjectPtr)
+    if( nullptr != pObjectPtr)
     {
         pTempNode = pObjectPtr->nodesetval->nodeTab[0];
         char* pchKey = (char*)xmlNodeListGetString(pTempNode->doc, pTempNode->children, 1);
-        if(pchKey != NULL)
+        if(pchKey != nullptr)
         {
             m_bTestSuiteStatus = xmlUtils::bGetBooleanValue(pchKey);
             xmlFree(pchKey);
         }
         xmlXPathFreeObject(pObjectPtr);
-        pObjectPtr = NULL;
+        pObjectPtr = nullptr;
     }
 
     //Test Suite FileCount
     int nFileCount = 0;
     pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"TEST_SUITE");
 
-    if( NULL != pObjectPtr)
+    if( nullptr != pObjectPtr)
     {
         nFileCount = pObjectPtr->nodesetval->nodeNr;
         INT nFileIndex = 0;
@@ -920,7 +920,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
                     //Selection Status
                     BOOL bStatus;
                     POSITION pos = m_ouTestSetupEntityList.FindIndex(nFileIndex++);
-                    if(pos != NULL)
+                    if(pos != nullptr)
                     {
                         CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
                         ouTestSetupEntity.vEnableEntity(sConfigInfo.m_bEnable);
@@ -935,7 +935,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
                             {
                                 CBaseEntityTA* pTCEntity;
                                 ouTestSetupEntity.GetSubEntityObj(j, &pTCEntity);
-                                if(pTCEntity != NULL)
+                                if(pTCEntity != nullptr)
                                 {
                                     pTCEntity->vEnableEntity(FALSE);
                                 }
@@ -949,10 +949,10 @@ HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
                             for(listIterator = sConfigInfo.m_nListSelctedCases.begin();
                                     listIterator != sConfigInfo.m_nListSelctedCases.end(); listIterator++)
                             {
-                                CBaseEntityTA* pTCEntity = NULL;
+                                CBaseEntityTA* pTCEntity = nullptr;
                                 int nIndex = *listIterator;
                                 HRESULT hValue = ouTestSetupEntity.GetSubEntityObj(nIndex, &pTCEntity);
-                                if(pTCEntity != NULL && hValue == S_OK)
+                                if(pTCEntity != nullptr && hValue == S_OK)
                                 {
                                     pTCEntity->vEnableEntity(TRUE);
                                 }
@@ -968,18 +968,18 @@ HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
 
 int CTSExecutorLIB::nParseTestSuite(xmlNodePtr pXmlNode, sTestSuiteConfigInfo& sConfigInfo)
 {
-    xmlXPathObjectPtr pObjectPtr = NULL;
+    xmlXPathObjectPtr pObjectPtr = nullptr;
     xmlNodePtr pTempNode;
     int nRetValue = S_OK;
 
     //Test Setup File Path
     pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"File_Path");
-    if( NULL != pObjectPtr)
+    if( nullptr != pObjectPtr)
     {
         pTempNode = pObjectPtr->nodesetval->nodeTab[0];
         char* key = (char*)xmlNodeListGetString(pTempNode->doc, pTempNode->children, 1);
 
-        if( NULL != key)
+        if( nullptr != key)
         {
             if(PathIsRelative((char*)key) == TRUE)
             {
@@ -1000,7 +1000,7 @@ int CTSExecutorLIB::nParseTestSuite(xmlNodePtr pXmlNode, sTestSuiteConfigInfo& s
         }
 
         xmlXPathFreeObject(pObjectPtr);
-        pObjectPtr = NULL;
+        pObjectPtr = nullptr;
     }
     else
     {
@@ -1012,27 +1012,27 @@ int CTSExecutorLIB::nParseTestSuite(xmlNodePtr pXmlNode, sTestSuiteConfigInfo& s
     {
         pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"IsEnable");
         sConfigInfo.m_bEnable = TRUE;
-        if( NULL != pObjectPtr)
+        if( nullptr != pObjectPtr)
         {
             pTempNode = pObjectPtr->nodesetval->nodeTab[0];
             sConfigInfo.m_bEnable = xmlUtils::bGetBooleanValue((char*)xmlNodeListGetString(pTempNode->doc, pTempNode->children, 1));
             xmlXPathFreeObject(pObjectPtr);
-            pObjectPtr = NULL;
+            pObjectPtr = nullptr;
         }
 
         pObjectPtr = xmlUtils::pGetChildNodes(pXmlNode, (xmlChar*)"Testcases_Selected/Index");
-        if( NULL != pObjectPtr)
+        if( nullptr != pObjectPtr)
         {
             int nSelectedCount = pObjectPtr->nodesetval->nodeNr;
             for( int i =0; i < nSelectedCount; i++ )
             {
                 char* pchKey = (char*)xmlNodeListGetString( pXmlNode->doc, pObjectPtr->nodesetval->nodeTab[i]->children, 1);
-                int nValue = strtol(pchKey, NULL, 10);
+                int nValue = strtol(pchKey, nullptr, 10);
                 xmlFree(pchKey);
                 sConfigInfo.m_nListSelctedCases.push_back(nValue);
             }
             xmlXPathFreeObject(pObjectPtr);
-            pObjectPtr = NULL;
+            pObjectPtr = nullptr;
         }
 
     }
@@ -1067,7 +1067,7 @@ HRESULT CTSExecutorLIB::EnableItem(DWORD dwID, BOOL& bEnable)
             CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
             CBaseEntityTA* pEntity;
             ouTempTestSetup.SearchEntityObject(dwID, &pEntity);
-            if(pEntity != NULL)
+            if(pEntity != nullptr)
             {
                 pEntity->vEnableEntity(bEnable);
                 hResult= S_OK;
@@ -1197,9 +1197,9 @@ Code Tag       :  CS041
 ******************************************************************************/
 BOOL CTSExecutorLIB::bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTestCaseResult)
 {
-    if(g_podTSExecutor == NULL)
+    if(g_podTSExecutor == nullptr)
     {
-        return NULL;
+        return false;
     }
     CBaseEntityTA* pEntity;
     CString omStrTilte;

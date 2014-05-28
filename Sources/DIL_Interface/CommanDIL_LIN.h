@@ -40,12 +40,12 @@ typedef struct tagClientBufMap
     tagClientBufMap()
     {
         dwClientID = 0;
-        hClientHandle = NULL;
+        hClientHandle = 0;
         unBufCount = 0;
         memset(pacClientName, 0, sizeof (char) * MAX_PATH);
         for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
-            pClientBuf[i] = NULL;
+            pClientBuf[i] = nullptr;
         }
 
     }
@@ -64,7 +64,7 @@ public:
     ~CCommanDIL_LIN();
     virtual HRESULT LIN_PerformInitOperations(void) = 0;
     virtual HRESULT LIN_PerformClosureOperations(void) = 0;
-    virtual HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL) = 0;
+    virtual HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr) = 0;
     virtual HRESULT LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount) = 0;
     virtual HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount) = 0;
     virtual HRESULT LIN_DeselectHwInterface(void) = 0;

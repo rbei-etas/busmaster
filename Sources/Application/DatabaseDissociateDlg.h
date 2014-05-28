@@ -31,7 +31,7 @@ class CDatabaseDissociateDlg : public CDialog
     DECLARE_DYNAMIC(CDatabaseDissociateDlg)
 
 public:
-    CDatabaseDissociateDlg(const SDBPARAMS& sDbParams, CWnd* pParent = NULL);
+    CDatabaseDissociateDlg(const SDBPARAMS& sDbParams, CWnd* pParent = nullptr);
     virtual ~CDatabaseDissociateDlg();
 
     // Dialog Data

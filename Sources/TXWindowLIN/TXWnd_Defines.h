@@ -60,7 +60,7 @@ struct sTXLINMSGLIST
     {
         m_bModified         = false;
         m_unIndex           = 0;
-        m_psNextMsgDetails = NULL;
+        m_psNextMsgDetails = nullptr;
     }
 };
 typedef sTXLINMSGLIST STXLINMSGLIST;
@@ -111,17 +111,17 @@ struct sMSGBLOCKLIST
     sMSGBLOCKLIST()
     {
         m_bModified           = false;
-        m_psNextMsgBlocksList = NULL;
+        m_psNextMsgBlocksList = nullptr;
         m_unMsgCount          = 0;
         m_bActive             = TRUE;
         m_bType               = TRUE;
         m_bTxAllFrame         = FALSE;
         m_ucTrigger           = defTIME_TRIGGER;
-        m_psTxLINMsgList      = NULL;
+        m_psTxLINMsgList      = nullptr;
         m_ucKeyValue          = 0;
         m_unIndex             = 0;
         m_unTimeInterval      = defDEFAULT_TIME_VAL;
-        m_psTxLINMsgList      = NULL;
+        m_psTxLINMsgList      = nullptr;
         strcpy_s(m_acStrBlockName, defBLOCKNAME_SIZE, defDEFAULT_MSG_BLOCK_NAME);
         /* By default, every Block is Slave */
         m_bIsBlockTypeMaster  = FALSE;
@@ -165,7 +165,7 @@ public:
     {
         int nCount = 0;
         PSTXLINMSGLIST psLinTemp = m_psTxLINMsgList;
-        while (NULL != psLinTemp)
+        while (nullptr != psLinTemp)
         {
             ++nCount;
             psLinTemp = psLinTemp->m_psNextMsgDetails;
@@ -177,13 +177,13 @@ public:
     sTXMSGINFO()
     {
         m_bMonoShotDone = false;
-        m_sTimerThreadInfo.m_hThread = NULL;
-        m_sTimerThreadInfo.m_pvThread = NULL;
-        m_sKeyThreadInfo.m_hThread = NULL;
-        m_sKeyThreadInfo.m_pvThread = NULL;
-        m_hSemaphore = NULL;
-        m_psTxLINMsgList = NULL;
-        m_psNextTxMsgInfo = NULL;
+        m_sTimerThreadInfo.m_hThread = nullptr;
+        m_sTimerThreadInfo.m_pvThread = nullptr;
+        m_sKeyThreadInfo.m_hThread = nullptr;
+        m_sKeyThreadInfo.m_pvThread = nullptr;
+        m_hSemaphore = nullptr;
+        m_psTxLINMsgList = nullptr;
+        m_psNextTxMsgInfo = nullptr;
         m_unIndex             = 0;
     }
     int nGetConfigSize()
@@ -212,7 +212,7 @@ public:
         memcpy(pDesBuffer, &nMsgCnt, sizeof(nMsgCnt));
         pDesBuffer += sizeof(nMsgCnt);
         PSTXLINMSGLIST psLinTemp = m_psTxLINMsgList;
-        while (NULL != psLinTemp)
+        while (nullptr != psLinTemp)
         {
             memcpy(pDesBuffer, &psLinTemp->m_sTxMsgDetails, sizeof(psLinTemp->m_sTxMsgDetails));
             pDesBuffer += sizeof(psLinTemp->m_sTxMsgDetails);
@@ -232,14 +232,14 @@ public:
         int nMsgCnt;
         memcpy(&nMsgCnt, pSrcBuffer, sizeof(nMsgCnt));
         pSrcBuffer += sizeof(nMsgCnt);
-        PSTXLINMSGLIST psLinTemp = NULL, psLinPrev = NULL;
-        m_psTxLINMsgList = NULL;
+        PSTXLINMSGLIST psLinTemp = nullptr, psLinPrev = nullptr;
+        m_psTxLINMsgList = nullptr;
         for (int i = 0; i < nMsgCnt; i++)
         {
             psLinTemp = new STXLINMSGLIST;
             memcpy(&psLinTemp->m_sTxMsgDetails, pSrcBuffer, sizeof(psLinTemp->m_sTxMsgDetails));
             pSrcBuffer += sizeof(psLinTemp->m_sTxMsgDetails);
-            if (NULL == m_psTxLINMsgList)
+            if (nullptr == m_psTxLINMsgList)
             {
                 m_psTxLINMsgList = psLinTemp;
                 psLinPrev = psLinTemp;
@@ -264,8 +264,8 @@ struct sCOMPLETEMSGINFO
 public:
     sCOMPLETEMSGINFO()
     {
-        m_psMsgBlockList = NULL;
-        m_psTxMsgLin        = NULL;
+        m_psMsgBlockList = nullptr;
+        m_psTxMsgLin        = nullptr;
     }
 };
 typedef sCOMPLETEMSGINFO    SCOMPLETEMSGINFO;

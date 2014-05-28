@@ -315,7 +315,7 @@ void CMsgSgDetView::vDisplayMsgSgInformation(sMESSAGE* pMsg)
 
     m_omListCtrlSgIdVal.DeleteAllItems();
 
-    if (pMsg != NULL)
+    if (pMsg != nullptr)
     {
         // Get message name
         m_omStrMessageName = pMsg->m_omStrMessageName;
@@ -368,7 +368,7 @@ void CMsgSgDetView::vDisplayMsgSgInformation(sMESSAGE* pMsg)
 
             UINT nSgCount = 0;
 
-            while (pSg != NULL)
+            while (pSg != nullptr)
             {
                 // Add signal details to the signal list
                 vAddItemToSignalList( nSgCount, pMsg, pSg );
@@ -485,7 +485,7 @@ void CMsgSgDetView::OnRclickLstSignalDetails(NMHDR* /*pNMHDR*/, LRESULT* pResult
 {
     CPoint point(0,0);
 
-    CMsgSignal* pTempMsgSg = NULL;
+    CMsgSignal* pTempMsgSg = nullptr;
 
     // Get appropriate message ptr
     pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
@@ -498,9 +498,9 @@ void CMsgSgDetView::OnRclickLstSignalDetails(NMHDR* /*pNMHDR*/, LRESULT* pResult
     int nIndex = m_omListCtrlSignal.GetNextItem(-1, LVNI_SELECTED);
 
     //
-    OnClickListSignal(NULL, 0);
+    OnClickListSignal(nullptr, 0);
 
-    if ( m_pomContextMenu != NULL && m_unMessageLength > 0)
+    if ( m_pomContextMenu != nullptr && m_unMessageLength > 0)
     {
         m_pomContextMenu->LoadMenu(IDM_SG_OPN_MENU);
 
@@ -547,7 +547,7 @@ void CMsgSgDetView::OnRclickLstSignalDetails(NMHDR* /*pNMHDR*/, LRESULT* pResult
         {
             sMESSAGE* pMsg =
                 pTempMsgSg->psGetMessagePointerInactive(m_omStrMessageName);
-            if(pMsg != NULL)
+            if(pMsg != nullptr)
             {
                 m_unNoOfSgs = pMsg->m_unNumberOfSignals;
             }
@@ -598,18 +598,18 @@ void CMsgSgDetView::OnRclickLstSignalDetails(NMHDR* /*pNMHDR*/, LRESULT* pResult
                                     point.x,
                                     point.y,
                                     this,
-                                    NULL);
+                                    nullptr);
 
         // Destroyd the Menu from the resource
         m_pomContextMenu->Detach();
 
         m_pomContextMenu->DestroyMenu();
 
-        if (m_pomContextMenu != NULL )
+        if (m_pomContextMenu != nullptr )
         {
             delete m_pomContextMenu;
 
-            m_pomContextMenu = NULL;
+            m_pomContextMenu = nullptr;
         }
     }
     else
@@ -645,7 +645,7 @@ void CMsgSgDetView::OnRclickLstSignalDetails(NMHDR* /*pNMHDR*/, LRESULT* pResult
 /******************************************************************************/
 void CMsgSgDetView::OnDeleteSignal()
 {
-    CMsgSignal* pTempMsgSg = NULL;
+    CMsgSignal* pTempMsgSg = nullptr;
 
     pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
@@ -679,7 +679,7 @@ void CMsgSgDetView::OnDeleteSignal()
                     // update the form view
                     sMESSAGE* pMsg =
                         pTempMsgSg->psGetMessagePointerInactive(m_omStrMessageName);
-                    if(pMsg != NULL)
+                    if(pMsg != nullptr)
                     {
                         m_unNoOfSgs = pMsg->m_unNumberOfSignals;
                     }
@@ -725,11 +725,11 @@ void CMsgSgDetView::OnDeleteSignal()
                     CMainFrame* pMainFrm =
                         static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
-                    if(pMainFrm != NULL )
+                    if(pMainFrm != nullptr )
                     {
                         CMsgSgTreeView* pTreeViewPtr =
                             pMainFrm->podGetMsgSgTreeView(m_sDbParams.m_eBus);
-                        if(pTreeViewPtr != NULL )
+                        if(pTreeViewPtr != nullptr )
                         {
                             pTreeViewPtr->vSetTextBold();
                         }
@@ -776,16 +776,16 @@ void CMsgSgDetView::OnKillfocusEditMsgName()
         // get tree view ptr
         CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
-        if(pMainFrm != NULL )
+        if(pMainFrm != nullptr )
         {
             CMsgSgTreeView* podTreeViewPtr = pMainFrm->podGetMsgSgTreeView(m_sDbParams.m_eBus);
-            if (podTreeViewPtr != NULL)
+            if (podTreeViewPtr != nullptr)
             {
                 CString omStrPrevMsgName;// = STR_EMPTY;
                 CString omStrPvMsgName;
                 int nMsgId = -1;
 
-                CMsgSignal* pTempMsgSg = NULL;
+                CMsgSignal* pTempMsgSg = nullptr;
 
                 pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
@@ -802,7 +802,7 @@ void CMsgSgDetView::OnKillfocusEditMsgName()
                     sMESSAGE* pMsg =
                         pTempMsgSg->psGetMessagePointerInactive(omStrPrevMsgName );
 
-                    if ( pMsg != NULL)
+                    if ( pMsg != nullptr)
                     {
                         nMsgId = pMsg->m_unMessageCode;
                     }
@@ -857,7 +857,7 @@ void CMsgSgDetView::OnKillfocusEditMsgName()
 
                             delete pMsg;
 
-                            pMsg = NULL;
+                            pMsg = nullptr;
 
                             UpdateData(FALSE);
 
@@ -896,7 +896,7 @@ void CMsgSgDetView::OnChangeEditMsgName()
         vEnableControls(omStr);
         CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
-        if (pMainFrm != NULL )
+        if (pMainFrm != nullptr )
         {
             pMainFrm->podGetMsgSgTreeView(m_sDbParams.m_eBus)->vSetMessageName(omStr);
 
@@ -953,7 +953,7 @@ void CMsgSgDetView::OnKillfocusEditMsgcode()
                     unMsgCode == "0")
             {
                 // Get message pointer
-                CMsgSignal* pTempMsgSg = NULL;
+                CMsgSignal* pTempMsgSg = nullptr;
                 pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
                 INT nMsgCode = atoi(m_omStrMessageCode);
@@ -1008,11 +1008,11 @@ void CMsgSgDetView::OnKillfocusEditMsgcode()
                         CMainFrame* pMainFrame =
                             static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
-                        if(pMainFrame != NULL )
+                        if(pMainFrame != nullptr )
                         {
-                            CMsgSgTreeView* pTreeViewPtr = NULL;
+                            CMsgSgTreeView* pTreeViewPtr = nullptr;
                             pTreeViewPtr = pMainFrame->podGetMsgSgTreeView(m_sDbParams.m_eBus);
-                            if(pTreeViewPtr != NULL )
+                            if(pTreeViewPtr != nullptr )
                             {
                                 pTreeViewPtr->vSetTextBold();
                             }
@@ -1020,7 +1020,7 @@ void CMsgSgDetView::OnKillfocusEditMsgcode()
                     }
 
                     delete pMsg;
-                    pMsg = NULL;
+                    pMsg = nullptr;
                 }
             }
         }
@@ -1056,7 +1056,7 @@ void CMsgSgDetView::OnKillfocusEditMsgLength()
         // update if changed
         if ( unMsgLength != m_unMessageLength )
         {
-            CMsgSignal* pTempMsgSg = NULL;
+            CMsgSignal* pTempMsgSg = nullptr;
 
             pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
@@ -1072,7 +1072,7 @@ void CMsgSgDetView::OnKillfocusEditMsgLength()
 
             delete pMsg;
 
-            pMsg = NULL;
+            pMsg = nullptr;
         }
     }
 }
@@ -1257,14 +1257,14 @@ void CMsgSgDetView::OnSignalNew()
 
     if ( odSignalDetDlg.DoModal() == IDOK )
     {
-        CMsgSignal* pTempMsgSg = NULL;
+        CMsgSignal* pTempMsgSg = nullptr;
 
         pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
         // Get "no of signals" info from the message and update the form view
         sMESSAGE* pMsg =
             pTempMsgSg->psGetMessagePointerInactive(m_omStrMessageName);
-        if(pMsg != NULL)
+        if(pMsg != nullptr)
         {
 
             m_unNoOfSgs = pMsg->m_unNumberOfSignals;
@@ -1273,7 +1273,7 @@ void CMsgSgDetView::OnSignalNew()
 
             BOOL bShudILoop = TRUE;
 
-            while ( pSg != NULL && bShudILoop)
+            while ( pSg != nullptr && bShudILoop)
             {
                 if ( pSg->m_omStrSignalName == odSignalDetDlg.m_omStrSignalName )
                 {
@@ -1284,12 +1284,12 @@ void CMsgSgDetView::OnSignalNew()
                     // indicating it has changed
                     CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
-                    if(pMainFrm != NULL )
+                    if(pMainFrm != nullptr )
                     {
                         CMsgSgTreeView* pTreeViewPtr =
                             pMainFrm->podGetMsgSgTreeView(m_sDbParams.m_eBus);
 
-                        if(pTreeViewPtr != NULL)
+                        if(pTreeViewPtr != nullptr)
                         {
                             pTreeViewPtr->vSetTextBold();
                         }
@@ -1342,7 +1342,7 @@ void CMsgSgDetView::OnSignalNew()
 UINT CMsgSgDetView::nCheckTotalBitsUsed(sSIGNALS* pSg)
 {
     UINT nTotalBitsUsed = 0;
-    while (pSg != NULL)
+    while (pSg != nullptr)
     {
         // store signal bits
         nTotalBitsUsed += pSg->m_unSignalLength;
@@ -1435,24 +1435,24 @@ void CMsgSgDetView::OnSignalEdit()
         // try deleteing the matrix allocated for the edited signal
         // Get message pointer for the message
         // Get appropriate msg structure ptr
-        CMsgSignal* pTempMsgSg = NULL;
+        CMsgSignal* pTempMsgSg = nullptr;
         BOOL bActive = FALSE;
 
         pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
-        sSIGNALS* pSgTemp = NULL;
-        sMESSAGE* pMsg = NULL;
-        if(pTempMsgSg != NULL)
+        sSIGNALS* pSgTemp = nullptr;
+        sMESSAGE* pMsg = nullptr;
+        if(pTempMsgSg != nullptr)
         {
             pMsg = pTempMsgSg->psGetMessagePointerInactive( m_omStrMessageName );
         }
-        if ( pMsg != NULL)
+        if ( pMsg != nullptr)
         {
             // Get signal pointer
             pSgTemp = pMsg->m_psSignals;
 
             // Get the signal pointer to be deleted
-            while ( pSgTemp != NULL )
+            while ( pSgTemp != nullptr )
             {
                 // found
                 if ( pSgTemp->m_omStrSignalName == odSignalDetDlg.m_omStrSignalName )
@@ -1481,7 +1481,7 @@ void CMsgSgDetView::OnSignalEdit()
 
         if ( odSignalDetDlg.DoModal() == IDOK )
         {
-            CMsgSignal* pTempMsgSg = NULL;
+            CMsgSignal* pTempMsgSg = nullptr;
 
             pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
@@ -1489,11 +1489,11 @@ void CMsgSgDetView::OnSignalEdit()
             // update the form view
             sMESSAGE* pMsg =
                 pTempMsgSg->psGetMessagePointerInactive(m_omStrMessageName);
-            if(pMsg != NULL)
+            if(pMsg != nullptr)
             {
                 sSIGNALS* pSg = pMsg->m_psSignals;
 
-                while ( pSg != NULL)
+                while ( pSg != nullptr)
                 {
                     if (pSg->m_omStrSignalName == odSignalDetDlg.m_omStrSignalName)
                     {
@@ -1566,12 +1566,12 @@ Do you want to continue?"), MB_YESNO);
 
                             // set the message in the tree view to bold
                             // indicating it has changed
-                            if(pMainFrm != NULL )
+                            if(pMainFrm != nullptr )
                             {
                                 CMsgSgTreeView* pTreeViewPtr =
                                     pMainFrm->podGetMsgSgTreeView(m_sDbParams.m_eBus);
 
-                                if(pTreeViewPtr != NULL)
+                                if(pTreeViewPtr != nullptr)
                                 {
                                     pTreeViewPtr->vSetTextBold();
                                 }
@@ -1621,9 +1621,9 @@ Do you want to continue?"), MB_YESNO);
         }
         else // Cancelled
         {
-            if ( pTempMsgSg != NULL &&
-                    pMsg       != NULL &&
-                    pSgTemp    != NULL)
+            if ( pTempMsgSg != nullptr &&
+                    pMsg       != nullptr &&
+                    pSgTemp    != nullptr)
             {
                 // Mode is edit
                 // Restore matrix info for this signal
@@ -1654,8 +1654,8 @@ void CMsgSgDetView::vDeleteRedundentSignalDesc(int nRow,  sSIGNALS* pSg)
 {
     CString  StrDescName = m_omListCtrlSgIdVal.GetItemText( nRow, 0);
     // Temporary list
-    CSignalDescVal* pCurr = NULL;
-    CSignalDescVal* pPrev = NULL;
+    CSignalDescVal* pCurr = nullptr;
+    CSignalDescVal* pPrev = nullptr;
 
     // Iniatialize
     pCurr = pSg->m_oSignalIDVal;
@@ -1674,7 +1674,7 @@ void CMsgSgDetView::vDeleteRedundentSignalDesc(int nRow,  sSIGNALS* pSg)
             }
 
             delete pCurr;
-            pCurr = NULL;
+            pCurr = nullptr;
             break;
         }
         pPrev = pCurr;
@@ -1704,8 +1704,8 @@ void CMsgSgDetView::vDeleteRedundentSignalDesc(int nRow,  sSIGNALS* pSg)
 void CMsgSgDetView::vAddItemToSignalList(int nRow,  sMESSAGE* pMsg,
         sSIGNALS* pSg)
 {
-    if ( pSg != NULL &&
-            pMsg != NULL)
+    if ( pSg != nullptr &&
+            pMsg != nullptr)
     {
         // Signal name
         m_omListCtrlSignal.InsertItem( nRow,pSg->m_omStrSignalName);
@@ -1844,7 +1844,7 @@ void CMsgSgDetView::OnRclickListSignal_Desc_Val(NMHDR* /*pNMHDR*/, LRESULT* pRes
     if ( m_omListCtrlSgIdVal.GetItemCount() )
     {
 
-        CMsgSignal* pTempMsgSg = NULL;
+        CMsgSignal* pTempMsgSg = nullptr;
 
         // Get appropriate message ptr
         pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
@@ -1860,7 +1860,7 @@ void CMsgSgDetView::OnRclickListSignal_Desc_Val(NMHDR* /*pNMHDR*/, LRESULT* pRes
 
             CMenu* m_pomContextMenu = new CMenu;
 
-            if ( m_pomContextMenu != NULL )
+            if ( m_pomContextMenu != nullptr )
             {
                 m_pomContextMenu->Detach();
 
@@ -1915,9 +1915,9 @@ void CMsgSgDetView::OnRclickListSignal_Desc_Val(NMHDR* /*pNMHDR*/, LRESULT* pRes
                                             point.x,
                                             point.y ,
                                             this,
-                                            NULL);
+                                            nullptr);
 
-                if (m_pomContextMenu != NULL )
+                if (m_pomContextMenu != nullptr )
                 {
                     delete m_pomContextMenu;
                 }
@@ -1970,7 +1970,7 @@ void CMsgSgDetView::OnSignal_Desc_Delete()
                 CString omStrSgName =
                     m_omListCtrlSignal.GetItemText( m_nSelectedSignalIndex, 0 );
 
-                CMsgSignal* pTempMsgSg = NULL;
+                CMsgSignal* pTempMsgSg = nullptr;
 
                 // Get appropriate message pointer
                 pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
@@ -2000,11 +2000,11 @@ void CMsgSgDetView::OnSignal_Desc_Delete()
                     // indicating it has changed
                     CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
-                    if(pMainFrm != NULL )
+                    if(pMainFrm != nullptr )
                     {
                         CMsgSgTreeView* pTreeViewPtr =
                             pMainFrm->podGetMsgSgTreeView(m_sDbParams.m_eBus);
-                        if(pTreeViewPtr != NULL)
+                        if(pTreeViewPtr != nullptr)
                         {
                             pTreeViewPtr->vSetTextBold();
                         }
@@ -2071,7 +2071,7 @@ void CMsgSgDetView::OnSignal_Desc_Edit()
             CString strSignalType = m_omListCtrlSignal.GetItemText(nIndex, 4 );
             od_Dlg.bSignalType = strSignalType;
             CString  StrDescVal = "";
-            if(pMainFrm != NULL )
+            if(pMainFrm != nullptr )
             {
                 StrDescVal = m_omListCtrlSgIdVal.GetItemText( nItemIndex, 1);
 
@@ -2107,27 +2107,27 @@ void CMsgSgDetView::OnSignal_Desc_Edit()
                                                 od_Dlg.m_omStrDescriptor);
 
                 // Format the min value
-                //__int64 unVal = _strtoi64(od_Dlg.m_omStrValue, NULL, 10 );
+                //__int64 unVal = _strtoi64(od_Dlg.m_omStrValue, nullptr, 10 );
 
                 if(strSignalType.CompareNoCase(defSIGNED_INT) == 0 )
                 {
-                    __int64 nDescVal = _strtoi64(od_Dlg.m_omStrValue, NULL, 10 );
+                    __int64 nDescVal = _strtoi64(od_Dlg.m_omStrValue, nullptr, 10 );
                     CUtilFunctions::s_vRemoveUnwantedBits(nDescVal, atoi(strSignalLen));
                     StrDescVal.Format(defFORMAT_INT64_HEX, nDescVal);
                 }
                 else //for unsigned value no need to remove unwanted bit
                 {
-                    unsigned __int64 unDescVal = _strtoui64(od_Dlg.m_omStrValue, NULL, 10 );
+                    unsigned __int64 unDescVal = _strtoui64(od_Dlg.m_omStrValue, nullptr, 10 );
                     StrDescVal.Format(defFORMAT_INT64_HEX, unDescVal);
                 }
                 m_omListCtrlSgIdVal.SetItemText( nItemIndex, 1, StrDescVal);
 
                 // make the message name bold to indicate the change
-                if(pMainFrm != NULL )
+                if(pMainFrm != nullptr )
                 {
                     CMsgSgTreeView* pTreeViewPtr =
                         pMainFrm->podGetMsgSgTreeView(m_sDbParams.m_eBus);
-                    if(pTreeViewPtr != NULL)
+                    if(pTreeViewPtr != nullptr)
                     {
                         pTreeViewPtr->vSetTextBold();
                     }
@@ -2208,13 +2208,13 @@ void CMsgSgDetView::OnSignal_Desc_New()
             CString  StrDescVal = "";
             if(od_Dlg.bSignalType.CompareNoCase(defSIGNED_INT) == 0 )
             {
-                __int64 nDescVal = _strtoi64(od_Dlg.m_omStrValue, NULL, 10 );
+                __int64 nDescVal = _strtoi64(od_Dlg.m_omStrValue, nullptr, 10 );
                 CUtilFunctions::s_vRemoveUnwantedBits(nDescVal, atoi(strSignalLen));
                 StrDescVal.Format(defFORMAT_INT64_HEX, nDescVal);
             }
             else //for unsigned value no need to remove unwanted bit
             {
-                unsigned __int64 unDescVal = _strtoui64(od_Dlg.m_omStrValue, NULL, 10 );
+                unsigned __int64 unDescVal = _strtoui64(od_Dlg.m_omStrValue, nullptr, 10 );
                 StrDescVal.Format(defFORMAT_INT64_HEX, unDescVal);
             }
             m_omListCtrlSgIdVal.SetItemText( nCount, 1, StrDescVal);
@@ -2226,11 +2226,11 @@ void CMsgSgDetView::OnSignal_Desc_New()
             // the change
             CMainFrame* pMainFrm = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
-            if(pMainFrm != NULL )
+            if(pMainFrm != nullptr )
             {
                 CMsgSgTreeView* pTreeViewPtr =
                     pMainFrm->podGetMsgSgTreeView(m_sDbParams.m_eBus);
-                if(pTreeViewPtr != NULL)
+                if(pTreeViewPtr != nullptr)
                 {
                     pTreeViewPtr->vSetTextBold();
                 }
@@ -2340,7 +2340,7 @@ void CMsgSgDetView::OnChangeEditMsgLength()
             }
         }
 
-        CMsgSignal* pTempMsgSg = NULL;
+        CMsgSignal* pTempMsgSg = nullptr;
         pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
         sMESSAGE* pMsg = new sMESSAGE;
@@ -2351,7 +2351,7 @@ void CMsgSgDetView::OnChangeEditMsgLength()
         }
 
         delete pMsg;
-        pMsg = NULL;
+        pMsg = nullptr;
     }
 }
 
@@ -2526,7 +2526,7 @@ void CMsgSgDetView::vEnableButtons(BOOL bEnable)
 /*****************************************************************************/
 void CMsgSgDetView::vEnableNewDescButton(CString omStrSgName)
 {
-    CMsgSignal* pTempMsgSg = NULL;
+    CMsgSignal* pTempMsgSg = nullptr;
 
     pTempMsgSg = *((CMsgSignal**)m_sDbParams.m_ppvActiveDB);
 
@@ -2606,7 +2606,7 @@ void CMsgSgDetView::OnClickSignalDescVal(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 void CMsgSgDetView::vUpDownArrowKeySelection(int nSel)
 {
 
-    CMsgSignal* pTempMsgSg = NULL;
+    CMsgSignal* pTempMsgSg = nullptr;
 
     pTempMsgSg = *((CMsgSignal**)(m_sDbParams.m_ppvActiveDB));
 
@@ -2629,7 +2629,7 @@ void CMsgSgDetView::vUpDownArrowKeySelection(int nSel)
             sMESSAGE* pMsg =
                 pTempMsgSg->psGetMessagePointerInactive(m_omStrMessageName);
 
-            if ( pMsg != NULL )
+            if ( pMsg != nullptr )
             {
                 // Get signal pointer
                 sSIGNALS* pSg = pMsg->m_psSignals;
@@ -2637,7 +2637,7 @@ void CMsgSgDetView::vUpDownArrowKeySelection(int nSel)
                 //CMainFrame* pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
 
                 // Get the signal pointer to be deleted
-                while ( pSg != NULL )
+                while ( pSg != nullptr )
                 {
                     // found
                     if ( pSg->m_omStrSignalName == omStrSel )
@@ -2646,7 +2646,7 @@ void CMsgSgDetView::vUpDownArrowKeySelection(int nSel)
 
                         UINT nCount = 0;
 
-                        while ( pDescVal != NULL )
+                        while ( pDescVal != nullptr )
                         {
                             m_omListCtrlSgIdVal.
                             InsertItem( nCount,
@@ -2738,12 +2738,12 @@ void CMsgSgDetView::OnItemchangedLstcSignalDetails(NMHDR* pNMHDR, LRESULT* pResu
 /******************************************************************************/
 void CMsgSgDetView::PostNcDestroy()
 {
-    // Update this pointer to mainframe to initialise it to NULL.
+    // Update this pointer to mainframe to initialise it to nullptr.
     CMainFrame* pMainFrame = static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
     if (pMainFrame)
     {
-        pMainFrame->podSetMsgSgDetView( NULL, m_sDbParams.m_eBus );
+        pMainFrame->podSetMsgSgDetView( nullptr, m_sDbParams.m_eBus );
     }
 
     CFormView::PostNcDestroy();

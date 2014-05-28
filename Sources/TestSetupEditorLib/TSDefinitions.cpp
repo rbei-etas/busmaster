@@ -170,7 +170,7 @@ Codetag        :
 CString strCopyBSTRToCString(CComVariant& varSrc)
 {
     CString strDest ;
-    char tChar = NULL;
+    char tChar = 0;
     _bstr_t bstrNodeValue(varSrc.bstrVal);
     ULONG ulLen = bstrNodeValue.length();
 
@@ -180,7 +180,7 @@ CString strCopyBSTRToCString(CComVariant& varSrc)
         strDest.Insert(i/2, tChar);
     }
 
-    tChar = NULL;
+    tChar = 0;
     strDest.Insert(ulLen, tChar);
     return strDest;
 }

@@ -31,7 +31,7 @@ class CDriverInfoDlg : public CDialog
 {
     // Construction
 public:
-    CDriverInfoDlg(CWnd* pParent = NULL);   // standard constructor
+    CDriverInfoDlg(CWnd* pParent = nullptr);   // standard constructor
 
     // Dialog Data
     //{{AFX_DATA(CDriverInfoDlg)

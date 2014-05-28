@@ -37,7 +37,7 @@
 static CHAR s_acTraceStr[1024] = {""};
 
 //Trace window ptr
-CUIThread* CMsgSignal::m_pUIThread = NULL;
+CUIThread* CMsgSignal::m_pUIThread = nullptr;
 
 extern CCANMonitorApp theApp;       // Application object
 extern "C" int  nParseLDFFile(std::string fpInputFile, CHANNEL_CONFIG& ouCluster);
@@ -146,10 +146,10 @@ CMsgSignal::CMsgSignal(const SDBPARAMS& sDbParams, BOOL bInAutoSrvMode)
     m_sDbParams                 = sDbParams;
     m_strActiveDBFileName       = STR_EMPTY;
     m_unMessageCount            = 0;
-    m_psMessages                = NULL;
+    m_psMessages                = nullptr;
     m_bIsDatabaseSaved          = TRUE;
     m_bIsDatabaseActive         = FALSE;
-    m_psDatbaseStructList       = NULL;
+    m_psDatbaseStructList       = nullptr;
     // Initialise the hash table. For best performance, the hash table size
     // should be a prime number. To minimize collisions the size should be
     // roughly 20 percent larger than the largest anticipated data set.
@@ -228,7 +228,7 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
             // call for MessageBox is used.
             if (m_bAutoServerMode == FALSE)
             {
-                ::MessageBox(NULL,acErrorMsg,_("BUSMASTER") ,MB_ICONERROR|MB_OK);
+                ::MessageBox(nullptr,acErrorMsg,_("BUSMASTER") ,MB_ICONERROR|MB_OK);
             }
         }
         else
@@ -270,7 +270,7 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
                 unSigCount = 0;
 
                 sSIGNALS* pSg = m_psMessages[unMsgIndex].m_psSignals;
-                while  ( pSg != NULL )
+                while  ( pSg != nullptr )
                 {
                     UINT nSize = omStrArraySigName.GetSize();
                     aunSigStartBit[unSigCount] =
@@ -357,7 +357,7 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
     }
     CATCH_ALL(pomE)
     {
-        if(pomE != NULL )
+        if(pomE != nullptr )
         {
             pomE->GetErrorMessage(acErrorMsg ,sizeof(acErrorMsg) );
             bRetVal = FALSE;
@@ -365,7 +365,7 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
             // union.h file  open error notification
             if (m_bAutoServerMode == FALSE)
             {
-                ::MessageBox(NULL,acErrorMsg,_("BUSMASTER") ,MB_ICONERROR|MB_OK);
+                ::MessageBox(nullptr,acErrorMsg,_("BUSMASTER") ,MB_ICONERROR|MB_OK);
             }
         }
         // Close opened file
@@ -466,7 +466,7 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
                     }
                     CATCH_ALL (pomE)
                     {
-                        if(pomE != NULL )
+                        if(pomE != nullptr )
                         {
                             LPTSTR lpszError = "";
                             // Get error
@@ -521,7 +521,7 @@ BOOL CMsgSignal::bAllocateMemory(BOOL nMode)
     // Create a temp array of object with new count
     sMESSAGE* pNewMsgArray = new sMESSAGE[unCount];
 
-    if (pNewMsgArray == NULL)
+    if (pNewMsgArray == nullptr)
     {
         if (!m_bAutoServerMode)
         {
@@ -551,12 +551,12 @@ BOOL CMsgSignal::bAllocateMemory(BOOL nMode)
         // delete the global msg pointer
         delete [] m_psMessages;
 
-        m_psMessages = NULL;
+        m_psMessages = nullptr;
 
         // reallocate the global pointer to hold new msg info
         m_psMessages = new sMESSAGE[unCount];
 
-        if (m_psMessages != NULL)
+        if (m_psMessages != nullptr)
         {
             // copy back all the data from the temp obj
             for ( UINT i = 0; i < unCount; i++)
@@ -566,7 +566,7 @@ BOOL CMsgSignal::bAllocateMemory(BOOL nMode)
 
             // delete the temp obj
             delete [] pNewMsgArray;
-            pNewMsgArray = NULL;
+            pNewMsgArray = nullptr;
 
             // allocate memory to hold new message and
             // assign defaults
@@ -574,7 +574,7 @@ BOOL CMsgSignal::bAllocateMemory(BOOL nMode)
             {
                 m_psMessages[unCount - 1].m_omStrMessageName.Empty();
 
-                m_psMessages[unCount - 1].m_psSignals = NULL;
+                m_psMessages[unCount - 1].m_psSignals = nullptr;
 
                 m_psMessages[unCount - 1].m_unMessageCode = 0;
 
@@ -628,20 +628,20 @@ BOOL CMsgSignal::bDeAllocateMemory(CString strDBName)
 {
     m_omDBMapCritSec.Lock();
     BOOL bReturn = FALSE;
-    if(m_psDatbaseStructList != NULL)
+    if(m_psDatbaseStructList != nullptr)
     {
         BOOL bFileEmpty = strDBName.IsEmpty();
         // If it is Empty delete all the database structures
         if( bFileEmpty == TRUE )
         {
             sDBFileStruct* psTempDatbaseStructList;
-            while( m_psDatbaseStructList != NULL )
+            while( m_psDatbaseStructList != nullptr )
             {
                 psTempDatbaseStructList = m_psDatbaseStructList;
                 m_psDatbaseStructList = m_psDatbaseStructList->m_psNextDBFileStruct;
                 bReturn = bDeAllocateDBMemory(psTempDatbaseStructList);
                 delete psTempDatbaseStructList;
-                psTempDatbaseStructList = NULL;
+                psTempDatbaseStructList = nullptr;
             }
         }
         else
@@ -656,12 +656,12 @@ BOOL CMsgSignal::bDeAllocateMemory(CString strDBName)
                 m_psDatbaseStructList = m_psDatbaseStructList->m_psNextDBFileStruct;
                 bReturn = bDeAllocateDBMemory(psCurrDatbaseStructList);
                 delete psCurrDatbaseStructList;
-                psCurrDatbaseStructList = NULL;
+                psCurrDatbaseStructList = nullptr;
             }
             //Search the Database struct for the particular DB path
             else
             {
-                while(psCurrDatbaseStructList != NULL)
+                while(psCurrDatbaseStructList != nullptr)
                 {
                     if(!(psCurrDatbaseStructList->m_omStrDatabasePath.Compare(strDBName)))
                     {
@@ -670,7 +670,7 @@ BOOL CMsgSignal::bDeAllocateMemory(CString strDBName)
 
                         bReturn = bDeAllocateDBMemory(psCurrDatbaseStructList);
                         delete psCurrDatbaseStructList;
-                        psCurrDatbaseStructList = NULL;
+                        psCurrDatbaseStructList = nullptr;
                     }
                     else
                     {
@@ -687,7 +687,7 @@ BOOL CMsgSignal::bDeAllocateMemory(CString strDBName)
     //Reset Message attrib contents
     CMessageAttrib::ouGetHandle(m_sDbParams.m_eBus).vSaveMessageAttribData();
     //If it is the last database
-    if(m_psDatbaseStructList == NULL)
+    if(m_psDatbaseStructList == nullptr)
     {
         /*CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;*/
         //No database selected
@@ -724,15 +724,15 @@ BOOL CMsgSignal::bDeAllocateMemory(CString strDBName)
 ******************************************************************************/
 BOOL CMsgSignal::bDeAllocateDBMemory(sDBFileStruct* psDatbaseStructList)
 {
-    if(psDatbaseStructList != NULL)
+    if(psDatbaseStructList != nullptr)
     {
         UINT unMessageCount = psDatbaseStructList->m_unMessageCount;
         sMESSAGE* psMessages = psDatbaseStructList->m_psMessages;
         for ( UINT nMsgIndex = 0; nMsgIndex < unMessageCount; nMsgIndex++ )
         {
-            if ( &psMessages[nMsgIndex] != NULL )
+            if ( &psMessages[nMsgIndex] != nullptr )
             {
-                if ( psMessages[nMsgIndex].m_psSignals != NULL )
+                if ( psMessages[nMsgIndex].m_psSignals != nullptr )
                 {
                     sSIGNALS* pDelSg;
                     sSIGNALS* pTemSg;
@@ -741,11 +741,11 @@ BOOL CMsgSignal::bDeAllocateDBMemory(sDBFileStruct* psDatbaseStructList)
                                  psMessages[nMsgIndex].m_psSignals;
 
                     // Delete all signals associated with the message
-                    while ( pTemSg != NULL )
+                    while ( pTemSg != nullptr )
                     {
                         pDelSg = pTemSg;
 
-                        if ( pTemSg->m_oSignalIDVal != NULL )
+                        if ( pTemSg->m_oSignalIDVal != nullptr )
                         {
                             CSignalDescVal* pDelIDVal;
                             CSignalDescVal* pTemIDVal;
@@ -753,52 +753,52 @@ BOOL CMsgSignal::bDeAllocateDBMemory(sDBFileStruct* psDatbaseStructList)
                             pTemIDVal = pDelIDVal = pTemSg->m_oSignalIDVal;
 
                             // Delete all associated signal ID's and Val
-                            while ( pTemIDVal != NULL )
+                            while ( pTemIDVal != nullptr )
                             {
                                 pDelIDVal=pTemIDVal;
 
                                 // Traverse to next ID-Val
-                                if ( pTemIDVal != NULL )
+                                if ( pTemIDVal != nullptr )
                                 {
                                     pTemIDVal = pDelIDVal->m_pouNextSignalSignalDescVal;
 
                                     delete pDelIDVal;
 
-                                    pDelIDVal = NULL;
+                                    pDelIDVal = nullptr;
                                 }
 
                             }
 
-                            pTemSg->m_oSignalIDVal = NULL;
+                            pTemSg->m_oSignalIDVal = nullptr;
 
                         }// if
 
                         // Traverse to next signal
-                        if ( pTemSg != NULL )
+                        if ( pTemSg != nullptr )
                         {
                             pTemSg = pDelSg->m_psNextSignalList;
 
                             delete pDelSg;
 
-                            pDelSg = NULL;
+                            pDelSg = nullptr;
 
                         }
 
                     }// while
 
-                    psMessages[nMsgIndex].m_psSignals = NULL;
+                    psMessages[nMsgIndex].m_psSignals = nullptr;
 
                 }// if
             }
         }
 
-        if ( psMessages != NULL )
+        if ( psMessages != nullptr )
         {
             delete [] psMessages;
 
             unMessageCount = 0;
 
-            psMessages = NULL;
+            psMessages = nullptr;
         }
     }
 
@@ -827,9 +827,9 @@ BOOL CMsgSignal::bDeAllocateMemoryInactive()
     m_omMsgDetailsIDMap.RemoveAll();
     for ( UINT nMsgIndex = 0; nMsgIndex < m_unMessageCount; nMsgIndex++ )
     {
-        if ( &m_psMessages[nMsgIndex] != NULL )
+        if ( &m_psMessages[nMsgIndex] != nullptr )
         {
-            if ( m_psMessages[nMsgIndex].m_psSignals != NULL )
+            if ( m_psMessages[nMsgIndex].m_psSignals != nullptr )
             {
                 sSIGNALS* pDelSg;
                 sSIGNALS* pTemSg;
@@ -838,11 +838,11 @@ BOOL CMsgSignal::bDeAllocateMemoryInactive()
                              m_psMessages[nMsgIndex].m_psSignals;
 
                 // Delete all signals associated with the message
-                while ( pTemSg != NULL )
+                while ( pTemSg != nullptr )
                 {
                     pDelSg = pTemSg;
 
-                    if ( pTemSg->m_oSignalIDVal != NULL )
+                    if ( pTemSg->m_oSignalIDVal != nullptr )
                     {
                         CSignalDescVal* pDelIDVal;
                         CSignalDescVal* pTemIDVal;
@@ -850,56 +850,56 @@ BOOL CMsgSignal::bDeAllocateMemoryInactive()
                         pTemIDVal = pDelIDVal = pTemSg->m_oSignalIDVal;
 
                         // Delete all associated signal ID's and Val
-                        while ( pTemIDVal != NULL )
+                        while ( pTemIDVal != nullptr )
                         {
                             pDelIDVal=pTemIDVal;
 
                             // Traverse to next ID-Val
-                            if ( pTemIDVal != NULL )
+                            if ( pTemIDVal != nullptr )
                             {
                                 pTemIDVal = pDelIDVal->m_pouNextSignalSignalDescVal;
 
                                 delete pDelIDVal;
 
-                                pDelIDVal = NULL;
+                                pDelIDVal = nullptr;
                             }
 
                         }
 
-                        pTemSg->m_oSignalIDVal = NULL;
+                        pTemSg->m_oSignalIDVal = nullptr;
 
                     }// if
 
                     // Traverse to next signal
-                    if ( pTemSg != NULL )
+                    if ( pTemSg != nullptr )
                     {
                         pTemSg = pDelSg->m_psNextSignalList;
 
                         delete pDelSg;
 
-                        pDelSg = NULL;
+                        pDelSg = nullptr;
 
                     }
 
                 }// while
 
-                m_psMessages[nMsgIndex].m_psSignals = NULL;
+                m_psMessages[nMsgIndex].m_psSignals = nullptr;
 
             }// if
         }
     }
 
-    if ( m_psMessages != NULL )
+    if ( m_psMessages != nullptr )
     {
         delete [] m_psMessages;
 
         m_unMessageCount = 0;
 
-        m_psMessages = NULL;
+        m_psMessages = nullptr;
 
         delete m_psDatbaseStructList;
 
-        m_psDatbaseStructList = NULL;
+        m_psDatbaseStructList = nullptr;
 
     }
 
@@ -924,10 +924,10 @@ int CMsgSignal::nGetMessageCode( CString strMsgName)
 {
     int nMsgCode = -1;
     POSITION pos = m_omMsgDetailsIDMap.GetStartPosition();
-    sMESSAGE* psMsgStruct = NULL;
+    sMESSAGE* psMsgStruct = nullptr;
     BOOL bFound = FALSE;
     UINT unKey;
-    while (pos != NULL && bFound != TRUE)
+    while (pos != nullptr && bFound != TRUE)
     {
         m_omMsgDetailsIDMap.GetNextAssoc( pos, unKey,psMsgStruct );
         if(!(psMsgStruct->m_omStrMessageName.Compare(strMsgName)))
@@ -953,7 +953,7 @@ int CMsgSignal::nGetMessageCode( CString strMsgName)
 ******************************************************************************/
 void CMsgSignal::vGetDataBaseNames(CStringArray* pastrDBnames)
 {
-    if(pastrDBnames != NULL)
+    if(pastrDBnames != nullptr)
     {
         pastrDBnames->RemoveAll();
         pastrDBnames->Append(m_omDatabaseNames);
@@ -961,7 +961,7 @@ void CMsgSignal::vGetDataBaseNames(CStringArray* pastrDBnames)
 }
 void CMsgSignal::vGetRelativeDataBaseNames(std::string & omStrBasePath, CStringArray* pastrDBnames)
 {
-    if(pastrDBnames != NULL)
+    if(pastrDBnames != nullptr)
     {
         pastrDBnames->RemoveAll();
         for ( int i = 0, n = m_omDatabaseNames.GetSize(); i < n; i++)
@@ -975,7 +975,7 @@ void CMsgSignal::vGetRelativeDataBaseNames(std::string & omStrBasePath, CStringA
 }
 void CMsgSignal::vSetDataBaseNames(const CStringArray* pastrDBnames)
 {
-    if(pastrDBnames != NULL)
+    if(pastrDBnames != nullptr)
     {
         m_omDatabaseNames.RemoveAll();
         m_omDatabaseNames.Append(*pastrDBnames);
@@ -1005,9 +1005,9 @@ CString CMsgSignal::omStrGetMessageNameFromMsgCode( UINT unMsgCode)
     CString strMsgName = STR_EMPTY;
     if (unMsgCode >= 0)
     {
-        sMESSAGE* psMsgStruct = NULL;
+        sMESSAGE* psMsgStruct = nullptr;
         m_omMsgDetailsIDMap.Lookup(unMsgCode,psMsgStruct);
-        if(psMsgStruct != NULL)
+        if(psMsgStruct != nullptr)
         {
             strMsgName = psMsgStruct->m_omStrMessageName;
         }
@@ -1081,9 +1081,9 @@ BOOL CMsgSignal::bMessageNameFromMsgCode(UINT unMsgCode, CString& omMsgName)
     }
     else if (unMsgCode >= 0)
     {
-        sMESSAGE* psMsgStruct = NULL;
+        sMESSAGE* psMsgStruct = nullptr;
         m_omMsgDetailsIDMap.Lookup(unMsgCode,psMsgStruct);
-        if(psMsgStruct != NULL)
+        if(psMsgStruct != nullptr)
         {
             omMsgName = psMsgStruct->m_omStrMessageName;
             bResult = TRUE;
@@ -1097,9 +1097,9 @@ BOOL CMsgSignal::bMessageLengthFromMsgCode(UINT unMsgCode, CString& omMsgLength)
     BOOL bResult = FALSE;
     if (unMsgCode >= 0)
     {
-        sMESSAGE* psMsgStruct = NULL;
+        sMESSAGE* psMsgStruct = nullptr;
         m_omMsgDetailsIDMap.Lookup(unMsgCode,psMsgStruct);
-        if(psMsgStruct != NULL)
+        if(psMsgStruct != nullptr)
         {
             CString omstrMsgLength = "";
 
@@ -1202,7 +1202,7 @@ BOOL CMsgSignal::bCreateDataBase(CString omStrFilename)
     }
     CATCH_ALL (pomE)
     {
-        if(pomE != NULL )
+        if(pomE != nullptr )
         {
             LPTSTR lpszError = "";;
             // Get error
@@ -1278,11 +1278,11 @@ void CMsgSignal::vGetSignalNames( UINT unMsgID,
 
     sMESSAGE* p_Msg = psGetMessagePointer( unMsgID );
 
-    if (p_Msg != NULL)
+    if (p_Msg != nullptr)
     {
         sSIGNALS* p_Sgs = p_Msg->m_psSignals;
 
-        while ( p_Sgs != NULL )
+        while ( p_Sgs != nullptr )
         {
             strSignalList.AddHead( p_Sgs->m_omStrSignalName);
 
@@ -1326,7 +1326,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
     bReturnValue = bValidateDatabaseFile(strFileName);
     if ( bReturnValue )
     {
-        char* charArray = NULL;
+        char* charArray = nullptr;
         char szSep;
         GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SDECIMAL, &szSep, 1);
 
@@ -1482,13 +1482,13 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                     // create message signal structure using no of message
                     m_psMessages = new sMESSAGE[m_unMessageCount];
 
-                    if ( m_psMessages != NULL )
+                    if ( m_psMessages != nullptr )
                     {
-                        // Initialise all signal stuff to NULL to
+                        // Initialise all signal stuff to nullptr to
                         // make sure application will not crash
                         for ( UINT nCount = 0; nCount < m_unMessageCount; nCount++ )
                         {
-                            m_psMessages[nCount].m_psSignals = NULL;
+                            m_psMessages[nCount].m_psSignals = nullptr;
                         }
 
                         UINT unMsgCount = 0;
@@ -1552,7 +1552,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                         strTmp = sMsgDet.Left(nIndex);
 
                                         // Msg Code
-                                        m_psMessages[unMsgCount].m_unMessageCode = strtoul(strTmp.GetBuffer(MAX_PATH), NULL, 10);
+                                        m_psMessages[unMsgCount].m_unMessageCode = strtoul(strTmp.GetBuffer(MAX_PATH), nullptr, 10);
                                         sMsgDet = sMsgDet.Right(sMsgDet.GetLength() - nIndex - 1);
                                     }
                                     else
@@ -1682,7 +1682,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                     if ( m_psMessages[unMsgCount].m_unNumberOfSignals > 0)
                                     {
                                         sSIGNALS* pNext =
-                                            m_psMessages[unMsgCount].m_psSignals = NULL;
+                                            m_psMessages[unMsgCount].m_psSignals = nullptr;
 
                                         // start getting signal information
                                         UINT unNumberofSignalsRead = 0;
@@ -1702,7 +1702,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                 // Allocate memory for signal
                                                 sSIGNALS* sTempSg = new sSIGNALS;
 
-                                                if (sTempSg == NULL)
+                                                if (sTempSg == nullptr)
                                                 {
                                                     if (!m_bAutoServerMode)
                                                     {
@@ -1715,7 +1715,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                 }
                                                 else
                                                 {
-                                                    sTempSg->m_psNextSignalList = NULL;
+                                                    sTempSg->m_psNextSignalList = nullptr;
                                                     CString sMsgDet = sFirstLine;
                                                     nIndex = sMsgDet.Find( SPACE );
 
@@ -1989,7 +1989,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                         }
                                                         /*else
                                                         {
-                                                            MessageBox( NULL,"Database file corrupted", NULL, MB_ICONINFORMATION|MB_OK );
+                                                            MessageBox( nullptr,"Database file corrupted", nullptr, MB_ICONINFORMATION|MB_OK );
                                                             bReturnValue = FALSE;
                                                             break;
                                                         }*/
@@ -2011,7 +2011,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                                             SET);
 
 
-                                                        CSignalDescVal* pomSgDescValNext = sTempSg->m_oSignalIDVal = NULL;
+                                                        CSignalDescVal* pomSgDescValNext = sTempSg->m_oSignalIDVal = nullptr;
 
                                                         // Get signal value descriptor and value
                                                         while ( o_File.ReadString( sFirstLine ))
@@ -2049,7 +2049,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                                     //                                                                        pomSgDescVal->m_n64SignalVal = _atoi64( (const char*) sFirstLine );
                                                                     pomSgDescVal->m_DescValue.n64Value = _atoi64( (const char*) sFirstLine );
 
-                                                                    pomSgDescVal->m_pouNextSignalSignalDescVal = NULL;
+                                                                    pomSgDescVal->m_pouNextSignalSignalDescVal = nullptr;
 
                                                                 }// end if ( finding for comma)
                                                                 else
@@ -2064,9 +2064,9 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                                 }
                                                                 // Attach the signal descand value to the data structure.
 
-                                                                if ( pomSgDescValNext != NULL)
+                                                                if ( pomSgDescValNext != nullptr)
                                                                 {
-                                                                    while ( pomSgDescValNext->m_pouNextSignalSignalDescVal != NULL )
+                                                                    while ( pomSgDescValNext->m_pouNextSignalSignalDescVal != nullptr )
                                                                     {
                                                                         pomSgDescValNext = pomSgDescValNext->m_pouNextSignalSignalDescVal;
                                                                     }
@@ -2076,7 +2076,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                                 {
                                                                     pomSgDescValNext = sTempSg->m_oSignalIDVal = pomSgDescVal;
 
-                                                                    pomSgDescValNext->m_pouNextSignalSignalDescVal = NULL;
+                                                                    pomSgDescValNext->m_pouNextSignalSignalDescVal = nullptr;
                                                                 }
 
                                                             }
@@ -2090,9 +2090,9 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                     }//
 
                                                     // allocate memory for next signal
-                                                    if ( pNext != NULL )
+                                                    if ( pNext != nullptr )
                                                     {
-                                                        while( pNext->m_psNextSignalList != NULL )
+                                                        while( pNext->m_psNextSignalList != nullptr )
                                                         {
                                                             pNext = pNext->m_psNextSignalList;
                                                         }
@@ -2103,12 +2103,12 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                                     {
                                                         pNext = m_psMessages[unMsgCount].m_psSignals = sTempSg;
 
-                                                        pNext->m_psNextSignalList = NULL;
+                                                        pNext->m_psNextSignalList = nullptr;
                                                     }
 
                                                     unNumberofSignalsRead++;
 
-                                                }// if (!=NULL)
+                                                }// if (!=nullptr)
 
                                             }// if signal found
                                         }
@@ -2120,7 +2120,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                     }
                                     else // No signals defined.
                                     {
-                                        m_psMessages[unMsgCount].m_psSignals = NULL;
+                                        m_psMessages[unMsgCount].m_psSignals = nullptr;
                                     }
 
                                     // next message index
@@ -2134,7 +2134,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                         {
                             //Create one DB structure and add it to the list
                             sDBFileStruct* psDBStruct = new sDBFileStruct;
-                            if(psDBStruct != NULL)
+                            if(psDBStruct != nullptr)
                             {
                                 psDBStruct->m_omStrDatabasePath = strFileName;
                                 psDBStruct->m_unMessageCount = m_unMessageCount;
@@ -2184,7 +2184,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
         }
         CATCH_ALL (pomE)
         {
-            if(pomE != NULL )
+            if(pomE != nullptr )
             {
                 LPTSTR lpszError = "";
                 // Get error
@@ -2242,7 +2242,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
 */
 void vReplaceChar(char str[], char chOld, char chNew)
 {
-    char* ptrOccured = NULL;
+    char* ptrOccured = nullptr;
     ptrOccured = strchr(str, chOld);
     if ( ptrOccured != 0)
     {
@@ -2340,7 +2340,7 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
             strBuffer += "]";
             strBuffer += " ";
 
-            if ( m_psMessages != NULL )
+            if ( m_psMessages != nullptr )
             {
                 char buff[256];
 
@@ -2402,12 +2402,12 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
                 //
                 o_File.WriteString( sMsgDetails );
 
-                if ( m_psMessages[nMsgIndex].m_psSignals != NULL )
+                if ( m_psMessages[nMsgIndex].m_psSignals != nullptr )
                 {
                     sSIGNALS* pTempSg =
                         m_psMessages[nMsgIndex].m_psSignals;
 
-                    while( pTempSg != NULL &&
+                    while( pTempSg != nullptr &&
                             m_psMessages[nMsgIndex].m_unNumberOfSignals > 0)
                     {
                         strTempBuf = STR_EMPTY;
@@ -2517,7 +2517,7 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
 
                         CSignalDescVal* pTempIDVal = pTempSg->m_oSignalIDVal;
 
-                        while ( pTempIDVal != NULL )
+                        while ( pTempIDVal != nullptr )
                         {
                             strTempBuf = STR_EMPTY;
 
@@ -2543,13 +2543,13 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
 
                             pTempIDVal = pTempIDVal->m_pouNextSignalSignalDescVal;
 
-                        }// while ( pTempIDVal != NULL )
+                        }// while ( pTempIDVal != nullptr )
 
                         pTempSg = pTempSg->m_psNextSignalList;
 
-                    }// while ( pTempSg != NULL )
+                    }// while ( pTempSg != nullptr )
 
-                }// if ( o_pgMsgArray[nMsgIndex].m_sMessage->m_psSignal != NULL )
+                }// if ( o_pgMsgArray[nMsgIndex].m_sMessage->m_psSignal != nullptr )
 
                 strTempBuf = STR_EMPTY;
 
@@ -2589,7 +2589,7 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
         }
 
         // Get error
-        if(pomE != NULL )
+        if(pomE != nullptr )
         {
             LPTSTR lpszError = "";
             pomE->GetErrorMessage( lpszError, defSIZE_OF_ERROR_BUFFER);
@@ -2613,7 +2613,7 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
         }
 #if 0
         CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;
-        if(pMainFrm != NULL )
+        if(pMainFrm != nullptr )
         {
             // If it is active database and tx message dialog is open
             // update the message details list.
@@ -2691,7 +2691,7 @@ BOOL CMsgSignal::bUpdateMsg( eMSG_CHANGES_IN eNum,
     sMESSAGE* pCurrMsg =
         psGetMessagePointerInactive(omStrPreviousMsgName);
 
-    if ( pCurrMsg != NULL )
+    if ( pCurrMsg != nullptr )
     {
         if ( eNum == MSG_NAME )
         {
@@ -2869,7 +2869,7 @@ BOOL CMsgSignal::bIsDuplicateSignalName( CString strMsgName, CString strSgName)
                 {
                     sSIGNALS* p_Sg = m_psMessages[unMsgCount].m_psSignals;
 
-                    while ( p_Sg != NULL )
+                    while ( p_Sg != nullptr )
                     {
                         if ( p_Sg->m_omStrSignalName != strSgName )
                         {
@@ -2976,7 +2976,7 @@ BOOL CMsgSignal::bIsDuplicateSignalStartBitValue(CString omStrMsgName,
     // Get message pointer corresponding the message "omStrMsgName"
     sMESSAGE* pMsg = psGetMessagePointerInactive(omStrMsgName);
     //Get the signal matrix, at the given byte
-    if ( pMsg != NULL )
+    if ( pMsg != nullptr )
     {
         BYTE abyMaskByte[DATA_LENGTH_MAX] = {0x0};
         bCalcBitMaskForSig(abyMaskByte, DATA_LENGTH_MAX, unByteNum, unStartBitValue, unSignalLength, (EFORMAT_DATA) bDataFormat);
@@ -3012,19 +3012,19 @@ BOOL CMsgSignal::bAddSignalToMsg( CString omStrMsgName )
         // Get message pointer corresponding the message "omStrMsgName"
         sMESSAGE* pMsg = psGetMessagePointerInactive(omStrMsgName);
 
-        if ( pMsg != NULL )
+        if ( pMsg != nullptr )
         {
             // Get signal pointer
             sSIGNALS* pSg = pMsg->m_psSignals;
 
-            if ( pSg != NULL )
+            if ( pSg != nullptr )
             {
                 // Get last signal pointer
-                while ( pSg != NULL )
+                while ( pSg != nullptr )
                 {
                     sSIGNALS* pSgTemp = pSg->m_psNextSignalList;
 
-                    if ( pSg->m_psNextSignalList != NULL )
+                    if ( pSg->m_psNextSignalList != nullptr )
                     {
                         pSg = pSgTemp;
                     }
@@ -3033,11 +3033,11 @@ BOOL CMsgSignal::bAddSignalToMsg( CString omStrMsgName )
                         // create new signal and append the data
                         sSIGNALS* pNewSignal = new sSIGNALS;
 
-                        if ( pNewSignal != NULL )
+                        if ( pNewSignal != nullptr )
                         {
-                            pNewSignal->m_oSignalIDVal = NULL;
+                            pNewSignal->m_oSignalIDVal = nullptr;
 
-                            pNewSignal->m_psNextSignalList = NULL;
+                            pNewSignal->m_psNextSignalList = nullptr;
 
                             // attach the new signal to the data structure
                             pSg->m_psNextSignalList = pNewSignal;
@@ -3064,11 +3064,11 @@ BOOL CMsgSignal::bAddSignalToMsg( CString omStrMsgName )
             {
                 pMsg->m_psSignals = new sSIGNALS;
 
-                if ( pMsg->m_psSignals != NULL )
+                if ( pMsg->m_psSignals != nullptr )
                 {
-                    pMsg->m_psSignals->m_oSignalIDVal = NULL;
+                    pMsg->m_psSignals->m_oSignalIDVal = nullptr;
 
-                    pMsg->m_psSignals->m_psNextSignalList = NULL;
+                    pMsg->m_psSignals->m_psNextSignalList = nullptr;
 
                     // Increment no of signals by 1
                     pMsg->m_unNumberOfSignals++;
@@ -3127,21 +3127,21 @@ BOOL CMsgSignal::bDeleteSignalFromMsg( int nIndexOfWhichItem,
     BOOL bReturnValue = FALSE;
 
     // Temporary list
-    sSIGNALS* pCurr = NULL; //
-    sSIGNALS* pPrev = NULL; // previous list
+    sSIGNALS* pCurr = nullptr; //
+    sSIGNALS* pPrev = nullptr; // previous list
 
     if ( !omStrMsgName.IsEmpty() && !omStrSignalName.IsEmpty())
     {
         // Get message pointer corresponding the message "omStrMsgName"
         sMESSAGE* pMsg = psGetMessagePointerInactive(omStrMsgName);
 
-        if ( pMsg != NULL )
+        if ( pMsg != nullptr )
         {
             // Get signal pointer
             sSIGNALS* pSg = pMsg->m_psSignals;
 
             // Get the signal pointer to be deleted
-            while ( pSg != NULL )
+            while ( pSg != nullptr )
             {
                 // found
                 if ( pSg->m_omStrSignalName == omStrSignalName )
@@ -3169,7 +3169,7 @@ BOOL CMsgSignal::bDeleteSignalFromMsg( int nIndexOfWhichItem,
                         pCurr = pMsg->m_psSignals;
 
                         // Delete all Signal IDs and Vals associated with a signal
-                        if ( pCurr->m_oSignalIDVal != NULL )
+                        if ( pCurr->m_oSignalIDVal != nullptr )
                         {
                             CSignalDescVal* pTmp = new CSignalDescVal;
 
@@ -3177,26 +3177,26 @@ BOOL CMsgSignal::bDeleteSignalFromMsg( int nIndexOfWhichItem,
 
                             delete  pTmp;
 
-                            pTmp = NULL;
+                            pTmp = nullptr;
                         }
                         delete pCurr;
 
-                        pCurr = NULL;
+                        pCurr = nullptr;
 
                         pMsg->m_unNumberOfSignals = 0;
 
-                        pCurr = pMsg->m_psSignals = NULL;
+                        pCurr = pMsg->m_psSignals = nullptr;
                     }
 
                     // case 2 : deletion for any item,
                     // pPrev comes into the picture
 
                     // Seek to the edited Prm Values in the data structure
-                    while ( pCurr != NULL )
+                    while ( pCurr != nullptr )
                     {
                         if ( pCurr->m_omStrSignalName == omStrSignalName ) // found
                         {
-                            sSIGNALS* pDelete = NULL;
+                            sSIGNALS* pDelete = nullptr;
 
                             // Get the pointer to be deleted
                             pDelete = pCurr;
@@ -3212,11 +3212,11 @@ BOOL CMsgSignal::bDeleteSignalFromMsg( int nIndexOfWhichItem,
                             }
 
                             // Delete all Sig ID's and Val if any
-                            if ( pDelete->m_oSignalIDVal != NULL )
+                            if ( pDelete->m_oSignalIDVal != nullptr )
                             {
                                 delete pDelete->m_oSignalIDVal;
 
-                                pDelete->m_oSignalIDVal = NULL;
+                                pDelete->m_oSignalIDVal = nullptr;
                             }
 
                             // Decrement the Signal count index
@@ -3224,7 +3224,7 @@ BOOL CMsgSignal::bDeleteSignalFromMsg( int nIndexOfWhichItem,
 
                             delete pDelete;
 
-                            pDelete = NULL;
+                            pDelete = nullptr;
 
                             // job is done!
                             break;
@@ -3238,7 +3238,7 @@ BOOL CMsgSignal::bDeleteSignalFromMsg( int nIndexOfWhichItem,
                         {
                             pCurr = tmp;
                         }
-                    }// while ( pCurr != NULL )
+                    }// while ( pCurr != nullptr )
 
                     bReturnValue = TRUE;
 
@@ -3251,7 +3251,7 @@ BOOL CMsgSignal::bDeleteSignalFromMsg( int nIndexOfWhichItem,
                 {
                     break;
                 }
-            }// while ( pSg != NULL )
+            }// while ( pSg != nullptr )
         }
     }
 
@@ -3283,12 +3283,12 @@ void CMsgSignal::vUpdateSignalDetails( CString omStrMsgName,
     {
         // Get message pointer corresponding the message "omStrMsgName"
         sMESSAGE* pMsg = psGetMessagePointerInactive(omStrMsgName);
-        if ( pMsg != NULL )
+        if ( pMsg != nullptr )
         {
             // Get signal pointer
             sSIGNALS* pSg = pMsg->m_psSignals;
             // Get the signal pointer to be deleted
-            while ( pSg != NULL )
+            while ( pSg != nullptr )
             {
                 // found
                 if ( pSg->m_omStrSignalName == omStrSignalName ||
@@ -3340,7 +3340,7 @@ void CMsgSignal::vUpdateSignalDetails( CString omStrMsgName,
                     pSg = pSg->m_psNextSignalList;
                 }
             }
-        }// if (pMsg != NULL)
+        }// if (pMsg != nullptr)
 
     }// message name is empty
     else
@@ -3372,17 +3372,17 @@ BOOL CMsgSignal::bAddSgDescVal( CString omStrMessageCode,
 
     if ( !omStrMessageCode.IsEmpty() && !omStrSignalName.IsEmpty())
     {
-        UINT unMsgID = strtol(omStrMessageCode,NULL,16);
+        UINT unMsgID = strtol(omStrMessageCode,nullptr,16);
         // Get message pointer corresponding the message "omStrMsgName"
         sMESSAGE* pMsg = psGetMessagePointerInactive(unMsgID);
 
-        if ( pMsg != NULL )
+        if ( pMsg != nullptr )
         {
             // Get signal pointer
             sSIGNALS* pSg = pMsg->m_psSignals;
 
             // Get the signal pointer to be deleted
-            while ( pSg != NULL )
+            while ( pSg != nullptr )
             {
                 // found
                 if ( pSg->m_omStrSignalName == omStrSignalName )
@@ -3392,12 +3392,12 @@ BOOL CMsgSignal::bAddSgDescVal( CString omStrMessageCode,
                     pCurr = pSg->m_oSignalIDVal;
 
                     // if this is the first option
-                    if (pCurr == NULL)
+                    if (pCurr == nullptr)
                     {
                         // allocate memory to new ID and Val
                         CSignalDescVal* pSgNewIDVal = new CSignalDescVal;
 
-                        pSgNewIDVal->m_pouNextSignalSignalDescVal= NULL;
+                        pSgNewIDVal->m_pouNextSignalSignalDescVal= nullptr;
 
                         pSg->m_oSignalIDVal = pSgNewIDVal;
 
@@ -3406,7 +3406,7 @@ BOOL CMsgSignal::bAddSgDescVal( CString omStrMessageCode,
                     }
 
                     // Seek to end of the Param Val list
-                    while ( pCurr != NULL )
+                    while ( pCurr != nullptr )
                     {
                         CSignalDescVal* tmp = pCurr->m_pouNextSignalSignalDescVal;
 
@@ -3419,7 +3419,7 @@ BOOL CMsgSignal::bAddSgDescVal( CString omStrMessageCode,
                             CSignalDescVal* pNext = new CSignalDescVal;
 
                             // Update the data structure
-                            pNext->m_pouNextSignalSignalDescVal = NULL;
+                            pNext->m_pouNextSignalSignalDescVal = nullptr;
 
                             // attach the link
                             pCurr->m_pouNextSignalSignalDescVal = pNext;
@@ -3427,7 +3427,7 @@ BOOL CMsgSignal::bAddSgDescVal( CString omStrMessageCode,
                             break;
                         }// if ( pCurr->m_poNextSignalTypeList )
 
-                    }// while ( pCurr != NULL )
+                    }// while ( pCurr != nullptr )
 
                     break;// ur done!
                 }
@@ -3436,7 +3436,7 @@ BOOL CMsgSignal::bAddSgDescVal( CString omStrMessageCode,
                     pSg = pSg->m_psNextSignalList;
                 }
             }
-        }// if (pMsg != NULL)
+        }// if (pMsg != nullptr)
 
     }// message name is empty
     else
@@ -3479,17 +3479,17 @@ BOOL CMsgSignal::bUpdateSgDescVal( CString omStrMessageCode,
 
     if ( !omStrMessageCode.IsEmpty() && !omStrSignalName.IsEmpty())
     {
-        UINT unMsgID = strtol(omStrMessageCode,NULL,16);
+        UINT unMsgID = strtol(omStrMessageCode,nullptr,16);
         // Get message pointer corresponding the message "omStrMsgName"
         sMESSAGE* pMsg = psGetMessagePointerInactive(unMsgID);
 
-        if ( pMsg != NULL )
+        if ( pMsg != nullptr )
         {
             // Get signal pointer
             sSIGNALS* pSg = pMsg->m_psSignals;
 
             // Get the signal pointer
-            while ( pSg != NULL )
+            while ( pSg != nullptr )
             {
                 // found
                 if ( pSg->m_omStrSignalName == omStrSignalName )
@@ -3497,7 +3497,7 @@ BOOL CMsgSignal::bUpdateSgDescVal( CString omStrMessageCode,
                     CSignalDescVal* pTempSgDescVal =
                         pSg->m_oSignalIDVal;
 
-                    while ( pTempSgDescVal != NULL )
+                    while ( pTempSgDescVal != nullptr )
                     {
                         if ( pTempSgDescVal->m_omStrSignalDescriptor ==
                                 omStrPrevDesc)
@@ -3532,7 +3532,7 @@ BOOL CMsgSignal::bUpdateSgDescVal( CString omStrMessageCode,
                     pSg = pSg->m_psNextSignalList;
                 }
             }
-        }// if (pMsg != NULL)
+        }// if (pMsg != nullptr)
 
     }// message name is empty
     else
@@ -3579,31 +3579,31 @@ BOOL CMsgSignal::bDeleteSgDescVal( int nIndexOfItem,
         // Get message pointer corresponding the message "omStrMsgName"
         sMESSAGE* pMsg = psGetMessagePointerInactive(omStrMsgName);
 
-        if ( pMsg != NULL )
+        if ( pMsg != nullptr )
         {
             // Get signal pointer
             sSIGNALS* pSg = pMsg->m_psSignals;
 
             // Get the signal pointer to be deleted
-            while ( pSg != NULL )
+            while ( pSg != nullptr )
             {
                 // found
                 if ( pSg->m_omStrSignalName == omStrSignalName )
                 {
                     // Temporary list
-                    CSignalDescVal* pCurr = NULL,  *pPrev = NULL;
+                    CSignalDescVal* pCurr = nullptr,  *pPrev = nullptr;
 
                     // Iniatialize
                     pPrev = pCurr = pSg->m_oSignalIDVal;
 
                     // case 1: only one item exists
-                    if ( pCurr->m_pouNextSignalSignalDescVal == NULL )
+                    if ( pCurr->m_pouNextSignalSignalDescVal == nullptr )
                     {
                         pCurr = pSg->m_oSignalIDVal;
 
                         delete pCurr;
 
-                        pCurr = pSg->m_oSignalIDVal = NULL;
+                        pCurr = pSg->m_oSignalIDVal = nullptr;
 
                         break;
                     }
@@ -3612,13 +3612,13 @@ BOOL CMsgSignal::bDeleteSgDescVal( int nIndexOfItem,
 
                     CSignalDescVal* tmp;
 
-                    if ( pCurr != NULL )
+                    if ( pCurr != nullptr )
                     {
                         tmp = pCurr->m_pouNextSignalSignalDescVal;
                     }
 
                     // Seek to the edited Prm Values in the data structure
-                    while ( pCurr != NULL )
+                    while ( pCurr != nullptr )
                     {
                         if ( pCurr->m_omStrSignalDescriptor ==
                                 omStrDesc) // found
@@ -3654,7 +3654,7 @@ BOOL CMsgSignal::bDeleteSgDescVal( int nIndexOfItem,
                         {
                             pCurr = tmp;
                         }
-                    }// while ( pCurr != NULL )
+                    }// while ( pCurr != nullptr )
 
                     break;
                 }
@@ -3663,7 +3663,7 @@ BOOL CMsgSignal::bDeleteSgDescVal( int nIndexOfItem,
                     pSg = pSg->m_psNextSignalList;
                 }
             }
-        }// if (pMsg != NULL)
+        }// if (pMsg != nullptr)
 
     }// message name is empty
     else
@@ -3753,7 +3753,7 @@ void CMsgSignal::vConvertExtendedToStandardFrameFormat(int& nMsgCode)
   Input(s)         :  CString strMsgName
   Output           :  sMESSAGE*
   Functionality    :  Returns associted message pointer if found, otherwise
-                      NULL.
+                      nullptr.
   Member of        :  CMsgSignal
   Friend of        :      -
   Author(s)        :  Amarnath Shastry
@@ -3765,25 +3765,25 @@ sMESSAGE* CMsgSignal::psGetMessagePointer( CString strMsgName)
 {
     m_omDBMapCritSec.Lock();
     POSITION pos = m_omMsgDetailsIDMap.GetStartPosition();
-    sMESSAGE* psMsgStruct = NULL;
+    sMESSAGE* psMsgStruct = nullptr;
     UINT unKey;
-    while (pos != NULL )
+    while (pos != nullptr )
     {
         m_omMsgDetailsIDMap.GetNextAssoc( pos, unKey,psMsgStruct );
-        if((NULL != psMsgStruct) && (!(psMsgStruct->m_omStrMessageName.Compare(strMsgName))))
+        if((nullptr != psMsgStruct) && (!(psMsgStruct->m_omStrMessageName.Compare(strMsgName))))
         {
             return psMsgStruct;
         }
     }
     m_omDBMapCritSec.Unlock();
-    return NULL;
+    return nullptr;
 }
 /******************************************************************************
   Function Name    :  psGetMessagePointerInactive
   Input(s)         :  UINT unMsgID
   Output           :  sMESSAGE*
   Functionality    :  Returns associted message pointer if found, otherwise
-                      NULL.Called when dealing with inactive DB
+                      nullptr.Called when dealing with inactive DB
   Member of        :  CMsgSignal
   Friend of        :      -
   Author(s)        :  Amitesh Bharti
@@ -3801,14 +3801,14 @@ sMESSAGE* CMsgSignal::psGetMessagePointerInactive( UINT unMsgID)
             return &m_psMessages[unMsgCount];
         }
     }
-    return NULL;
+    return nullptr;
 }
 /******************************************************************************
   Function Name    :  psGetMessagePointerInactive
   Input(s)         :  CString strMsgName
   Output           :  sMESSAGE*
   Functionality    :  Returns associted message pointer if found, otherwise
-                      NULL.Called if working with Inactive Database
+                      nullptr.Called if working with Inactive Database
   Member of        :  CMsgSignal
   Friend of        :      -
   Author(s)        :  Amarnath Shastry
@@ -3827,14 +3827,14 @@ sMESSAGE* CMsgSignal::psGetMessagePointerInactive(CString strMsgName)
             return &m_psMessages[unMsgCount];
         }
     }
-    return NULL;
+    return nullptr;
 }
 /******************************************************************************
   Function Name    :  psGetMessagePointer
   Input(s)         :  UINT unMsgID
   Output           :  sMESSAGE*
   Functionality    :  Returns associted message pointer if found, otherwise
-                      NULL.
+                      nullptr.
   Member of        :  CMsgSignal
   Friend of        :      -
   Author(s)        :  Amitesh Bharti
@@ -3844,7 +3844,7 @@ sMESSAGE* CMsgSignal::psGetMessagePointerInactive(CString strMsgName)
 ******************************************************************************/
 sMESSAGE* CMsgSignal::psGetMessagePointer( UINT unMsgID)
 {
-    sMESSAGE* psMsgStruct = NULL;
+    sMESSAGE* psMsgStruct = nullptr;
     m_omMsgDetailsIDMap.Lookup(unMsgID,psMsgStruct);
     return psMsgStruct;
 }
@@ -3899,7 +3899,7 @@ void CMsgSignal::omStrListGetMessageNames(CStringList& omStrListMsgs)
     POSITION pos = m_omMsgDetailsIDMap.GetStartPosition( );
     sMESSAGE* psTempMsgStruct;
     UINT unMsgKey;
-    for (int nMsgIndex = 0; nMsgIndex < nTotalMsgCount && pos != NULL; nMsgIndex++ )
+    for (int nMsgIndex = 0; nMsgIndex < nTotalMsgCount && pos != nullptr; nMsgIndex++ )
     {
         m_omMsgDetailsIDMap.GetNextAssoc(pos,unMsgKey,psTempMsgStruct);
         omStrListMsgs.AddHead( psTempMsgStruct->m_omStrMessageName);
@@ -3924,7 +3924,7 @@ void CMsgSignal::omStrListGetMessageNamesInactive(CStringList& omStrListMsgs)
 
     for (UINT unMsgIndex = 0; unMsgIndex < m_unMessageCount; unMsgIndex++ )
     {
-        if (m_psMessages != NULL )
+        if (m_psMessages != nullptr )
         {
             omStrListMsgs.AddHead( m_psMessages[unMsgIndex].m_omStrMessageName );
         }
@@ -4039,7 +4039,7 @@ BOOL CMsgSignal::bItemCanHaveSignalDesc(CString omStrMsgName,
                 {
                     sSIGNALS* p_Sg = m_psMessages[unMsgCount].m_psSignals;
 
-                    while ( p_Sg != NULL && bRetVal == FALSE )
+                    while ( p_Sg != nullptr && bRetVal == FALSE )
                     {
                         if ( p_Sg->m_omStrSignalName != omStrSgName )
                         {
@@ -4081,11 +4081,11 @@ BOOL CMsgSignal::bItemCanHaveSignalDesc(CString omStrMsgName,
 
                             }
 
-                            p_Sg = NULL;
+                            p_Sg = nullptr;
 
                             unMsgCount = m_unMessageCount;
                         }
-                    }// while ( p_Sg != NULL )
+                    }// while ( p_Sg != nullptr )
 
                 }// if (m_psMessages[unMsgCount].m_unNumberOfSignals > 0 )
             }// message not found
@@ -4115,7 +4115,7 @@ void CMsgSignal::unListGetMessageIDs(UINT* omListId)
     POSITION pos = m_omMsgDetailsIDMap.GetStartPosition( );
     sMESSAGE* psTempMsgStruct;
     UINT unMsgKey;
-    for (int unMsgIndex = 0; unMsgIndex < nTotalMsgCount && pos != NULL; unMsgIndex++ )
+    for (int unMsgIndex = 0; unMsgIndex < nTotalMsgCount && pos != nullptr; unMsgIndex++ )
     {
         m_omMsgDetailsIDMap.GetNextAssoc(pos,unMsgKey,psTempMsgStruct);
         omListId[unMsgIndex] = psTempMsgStruct->m_unMessageCode;
@@ -4149,7 +4149,7 @@ void CMsgSignal::vGetSigNamesAndIndexTobeDeleted( UINT unMessageLength,
         // Get message pointer
         sMESSAGE* pMsg = psGetMessagePointerInactive( omStrMsgName );
 
-        if ( pMsg != NULL)
+        if ( pMsg != nullptr)
         {
             sSIGNALS* pSignal = pMsg->m_psSignals;
 
@@ -4158,7 +4158,7 @@ void CMsgSignal::vGetSigNamesAndIndexTobeDeleted( UINT unMessageLength,
             // Signal Count
             USHORT usSgCount = 0;
 
-            while ( pSignal != NULL )
+            while ( pSignal != nullptr )
             {
                 //get minimum message length for this signal in bits
                 int nSignalMsgLen = (pSignal->m_unStartByte -1 ) * defBITS_IN_BYTE;
@@ -4222,18 +4222,18 @@ BOOL CMsgSignal::bIsDuplicateValueDescription( CString omStrMessageCode,
             !omStrSignalValue.IsEmpty() &&
             !omStrDescription.IsEmpty())
     {
-        UINT unMsgID = strtol(omStrMessageCode,NULL,16);
+        UINT unMsgID = strtol(omStrMessageCode,nullptr,16);
         // Get message pointer
         sMESSAGE* pMsg = psGetMessagePointerInactive( unMsgID );
 
         BOOL bInLoop = TRUE;
 
-        if ( pMsg != NULL)
+        if ( pMsg != nullptr)
         {
             // Get signal pointer
             sSIGNALS* p_Sg = pMsg->m_psSignals;
             // Get description
-            while ( p_Sg != NULL &&
+            while ( p_Sg != nullptr &&
                     bInLoop == TRUE )
             {
                 if ( p_Sg->m_omStrSignalName != omStrSgName )
@@ -4246,7 +4246,7 @@ BOOL CMsgSignal::bIsDuplicateValueDescription( CString omStrMessageCode,
                         p_Sg->m_oSignalIDVal;
                     INT nCount = 0;
                     // Get corrrect description
-                    while ( pSgDesc != NULL &&
+                    while ( pSgDesc != nullptr &&
                             bInLoop == TRUE  )
                     {
                         if ( bMode == MD_EDIT )
@@ -4327,7 +4327,7 @@ BOOL CMsgSignal::bIsDuplicateSignalValue( CString omStrMessageCode,
             !omStrSignalValue.IsEmpty() &&
             !omStrDescription.IsEmpty())
     {
-        UINT unMsgID = strtol(omStrMessageCode,NULL,16);
+        UINT unMsgID = strtol(omStrMessageCode,nullptr,16);
         // Get message pointer
         sMESSAGE* pMsg = psGetMessagePointerInactive( unMsgID );
         /*CMainFrame* pMainFrame =
@@ -4335,15 +4335,15 @@ BOOL CMsgSignal::bIsDuplicateSignalValue( CString omStrMessageCode,
 
         BOOL bInLoop = TRUE;
 
-        if ( pMsg       != NULL /*&&
-             pMainFrame != NULL*/)
+        if ( pMsg       != nullptr /*&&
+             pMainFrame != nullptr*/)
         {
             //__int64  n64SgVal = /*pMainFrame->*/nConvertStringToInt( omStrSignalValue );
 
             // Get signal pointer
             sSIGNALS* p_Sg = pMsg->m_psSignals;
             // Get description
-            while ( p_Sg != NULL &&
+            while ( p_Sg != nullptr &&
                     bInLoop == TRUE )
             {
                 if ( p_Sg->m_omStrSignalName != omStrSgName )
@@ -4356,17 +4356,17 @@ BOOL CMsgSignal::bIsDuplicateSignalValue( CString omStrMessageCode,
                     unsigned __int64  un64SgVal = 0;
                     if(p_Sg->m_bySignalType == CHAR_INT) // signed type
                     {
-                        n64SgVal = _strtoi64( omStrSignalValue, NULL, 10 );
+                        n64SgVal = _strtoi64( omStrSignalValue, nullptr, 10 );
                     }
                     else //unsigned / bool type
                     {
-                        un64SgVal = _strtoui64( omStrSignalValue, NULL, 10 );
+                        un64SgVal = _strtoui64( omStrSignalValue, nullptr, 10 );
                     }
 
                     CSignalDescVal* pSgDesc = p_Sg->m_oSignalIDVal;
                     INT nCount = 0;
                     // Get corrrect description
-                    while ( pSgDesc != NULL && bInLoop == TRUE )
+                    while ( pSgDesc != nullptr && bInLoop == TRUE )
                     {
                         if(p_Sg->m_bySignalType == CHAR_INT) // signed type
                         {
@@ -4458,7 +4458,7 @@ BOOL CMsgSignal::bIsSignalValueOutofRange( CString omStrMessageCode,
             !omStrSgName.IsEmpty()      &&
             !omStrSignalValue.IsEmpty())
     {
-        UINT unMsgID = strtol(omStrMessageCode,NULL,16);
+        UINT unMsgID = strtol(omStrMessageCode,nullptr,16);
         // Get message pointer
         sMESSAGE* pMsg = psGetMessagePointerInactive( unMsgID );
         /*CMainFrame* pMainFrame =
@@ -4466,13 +4466,13 @@ BOOL CMsgSignal::bIsSignalValueOutofRange( CString omStrMessageCode,
 
         BOOL bInLoop = TRUE;
 
-        if ( pMsg       != NULL /*&&
-             pMainFrame != NULL*/)
+        if ( pMsg       != nullptr /*&&
+             pMainFrame != nullptr*/)
         {
             // Get signal pointer
             sSIGNALS* p_Sg = pMsg->m_psSignals;
             // Get description
-            while ( p_Sg != NULL &&
+            while ( p_Sg != nullptr &&
                     bInLoop == TRUE )
             {
                 if ( p_Sg->m_omStrSignalName != omStrSgName )
@@ -4485,7 +4485,7 @@ BOOL CMsgSignal::bIsSignalValueOutofRange( CString omStrMessageCode,
                     if(p_Sg->m_bySignalType == CHAR_INT) // signed type
                     {
                         //                        __int64 n64SgVal = /*pMainFrame->*/nConvertStringToInt( omStrSignalValue );
-                        __int64 n64SgVal = _strtoi64( omStrSignalValue, NULL, 10 );
+                        __int64 n64SgVal = _strtoi64( omStrSignalValue, nullptr, 10 );
                         // now check validity range
                         if( (n64SgVal > p_Sg->m_SignalMaxValue.n64Value) ||
                                 (n64SgVal < p_Sg->m_SignalMinValue.n64Value) )
@@ -4496,7 +4496,7 @@ BOOL CMsgSignal::bIsSignalValueOutofRange( CString omStrMessageCode,
                     else
                     {
                         //                        __int64 un64SgVal = /*pMainFrame->*/nConvertStringToInt( omStrSignalValue );
-                        __int64 un64SgVal = _strtoui64( omStrSignalValue, NULL, 10 );
+                        __int64 un64SgVal = _strtoui64( omStrSignalValue, nullptr, 10 );
                         // now check validity range
                         if( ( un64SgVal > p_Sg->m_SignalMaxValue.un64Value ) ||
                                 ( un64SgVal < p_Sg->m_SignalMinValue.un64Value )    )
@@ -4534,7 +4534,7 @@ BOOL CMsgSignal::bSortSignalStartBitAscend(UINT* punSigStartBit, UINT unCount)
 {
     BOOL bReturn = FALSE;
 
-    if(unCount >0 && punSigStartBit != NULL )
+    if(unCount >0 && punSigStartBit != nullptr )
     {
         for(UINT i = 0 ; i< unCount ; i++ )
         {
@@ -4600,7 +4600,7 @@ BOOL CMsgSignal::bSortSignalStartBitAscend(UINT* punSigStartBit, UINT unCount)
     p = (UINT*)(std::unique(punStartBit, punStartBit+unSigCount));
     unSigCount = (p-punStartBit);
 
-    if( pSg != NULL && punLength != NULL && punStartBit != NULL )
+    if( pSg != nullptr && punLength != nullptr && punStartBit != nullptr )
     {
        // UINT unSigCount = m_psMessages[nIndex].m_unNumberOfSignals;
         UINT unStartBit = 0;
@@ -4609,7 +4609,7 @@ BOOL CMsgSignal::bSortSignalStartBitAscend(UINT* punSigStartBit, UINT unCount)
         CString omFormatString;
         for(UINT i = 0 ; i <unSigCount ; i++ )
         {
-            while(pSg != NULL )
+            while(pSg != nullptr )
             {
                 unStartBit  = pSg->m_unStartByte - 1;
                 unStartBit  = unStartBit * defBITS_IN_BYTE ;
@@ -4770,7 +4770,7 @@ static sSIGNALS* psGetSigPtr(UINT unStartBitSrc, sSIGNALS* psSigRoot)
 {
     sSIGNALS* psTemSig = psSigRoot;
     UINT unStartBit = 0;
-    while (psTemSig != NULL)
+    while (psTemSig != nullptr)
     {
         unStartBit  = psTemSig->m_unStartByte - 1;
         unStartBit  = unStartBit * defBITS_IN_BYTE ;
@@ -4798,7 +4798,7 @@ BOOL CMsgSignal::bFormSigNameAndLength(UINT* punLength,
     //rmdup(punStartBit, unSigCount);
     UINT* p = (UINT*)std::unique(punStartBit, punStartBit+unSigCount);
     unSigCount = (p-punStartBit);
-    if( pSg != NULL && punLength != NULL && punStartBit != NULL )
+    if( pSg != nullptr && punLength != nullptr && punStartBit != nullptr )
     {
         //unSigCount = m_psMessages[nIndex].m_unNumberOfSignals;
         CString omFormatString;
@@ -4806,7 +4806,7 @@ BOOL CMsgSignal::bFormSigNameAndLength(UINT* punLength,
         {
             sSIGNALS* pSg = psGetSigPtr(punStartBit[i],
                                         m_psMessages[nIndex].m_psSignals);
-            if(pSg != NULL)
+            if(pSg != nullptr)
             {
                 // if first signal is not defined from first bit in first
                 // byte
@@ -4964,7 +4964,7 @@ BOOL CMsgSignal::bFormSigNameAndLengthJ1939(const UINT* punStartBit,
 {
     BOOL bReturn    = FALSE;
 
-    if(punStartBit != NULL )
+    if(punStartBit != nullptr )
     {
         UINT unSigCount = m_psMessages[nIndex].m_unNumberOfSignals;
         CString omFormatString;
@@ -4972,7 +4972,7 @@ BOOL CMsgSignal::bFormSigNameAndLengthJ1939(const UINT* punStartBit,
         {
             sSIGNALS* pSg = psGetSigPtr(punStartBit[i],
                                         m_psMessages[nIndex].m_psSignals);
-            if(pSg != NULL)
+            if(pSg != nullptr)
             {
                 // if first signal is not defined from first bit in first
                 // byte
@@ -5109,16 +5109,16 @@ void CMsgSignal::vResetMsgMapContent()
 {
     //Remove all the elements and create fresh map
     m_omMsgDetailsIDMap.RemoveAll();
-    if(m_psDatbaseStructList != NULL)
+    if(m_psDatbaseStructList != nullptr)
     {
         sDBFileStruct* psTempDatbaseStructList = m_psDatbaseStructList;
-        while(psTempDatbaseStructList != NULL)
+        while(psTempDatbaseStructList != nullptr)
         {
             UINT unMessageCount = psTempDatbaseStructList->m_unMessageCount;
             sMESSAGE* psMessages = psTempDatbaseStructList->m_psMessages;
             for ( UINT nMsgIndex = 0; nMsgIndex < unMessageCount; nMsgIndex++ )
             {
-                if ( &psMessages[nMsgIndex] != NULL )
+                if ( &psMessages[nMsgIndex] != nullptr )
                 {
                     m_omMsgDetailsIDMap.SetAt(psMessages[nMsgIndex].m_unMessageCode,
                                               &psMessages[nMsgIndex]);
@@ -5134,7 +5134,7 @@ void CMsgSignal::vSetTraceWndObj(CUIThread* pUIThread)
 }
 void CMsgSignal::vWriteTextToTrace()
 {
-    //if (m_pUIThread != NULL)
+    //if (m_pUIThread != nullptr)
     {
         /*m_pUIThread->PostThreadMessage(WM_WRITE_TO_TRACE, 0, (LPARAM)s_acTraceStr);*/
         theApp.bWriteIntoTraceWnd(s_acTraceStr);
@@ -5293,16 +5293,16 @@ void CMsgSignal::vGetSignalValidRange(CString omStrMessageCode,
 
     if ( !omStrMessageCode.IsEmpty() && !omStrSgName.IsEmpty())
     {
-        UINT unMsgID = strtol(omStrMessageCode,NULL,16);
+        UINT unMsgID = strtol(omStrMessageCode,nullptr,16);
         // Get message pointer
         sMESSAGE* pMsg = psGetMessagePointerInactive( unMsgID );
 
-        if ( pMsg != NULL)
+        if ( pMsg != nullptr)
         {
             // Get signal pointer
             sSIGNALS* p_Sg = pMsg->m_psSignals;
             // Get description
-            while ( p_Sg != NULL)
+            while ( p_Sg != nullptr)
             {
                 if ( p_Sg->m_omStrSignalName == omStrSgName )
                 {
@@ -5331,13 +5331,13 @@ void CMsgSignal::vGetSignalValidRange(CString omStrMessageCode,
 //CAPL_DB_NAME_CHANGE
 BOOL CMsgSignal::bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB)
 {
-    if(m_psDatbaseStructList != NULL)
+    if(m_psDatbaseStructList != nullptr)
     {
         //get the database list and message structure
         sDBFileStruct* psTempDatbaseStructList = m_psDatbaseStructList;
         odMsgNameMsgCodeListDB.RemoveAll();
         //loop through the linked list to get all the DB name ans details
-        while(psTempDatbaseStructList != NULL)
+        while(psTempDatbaseStructList != nullptr)
         {
             SDB_NAME_MSG                    osDbNameMess;                   //DB name and details
             UINT    unMessageCount = psTempDatbaseStructList->m_unMessageCount;
@@ -5345,14 +5345,14 @@ BOOL CMsgSignal::bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeL
 
             for ( UINT nMsgIndex = 0; nMsgIndex < unMessageCount; nMsgIndex++ )
             {
-                if ( &psMessages[nMsgIndex] != NULL )
+                if ( &psMessages[nMsgIndex] != nullptr )
                 {
                     SMSG_NAME_CODE sMsgNameCode;                        //structure to store mess info in output list
                     sMsgNameCode.m_omMsgName = psMessages[nMsgIndex].m_omStrMessageName;
                     sMsgNameCode.m_dwMsgCode = (DWORD)psMessages[nMsgIndex].m_unMessageCode;
                     sMsgNameCode.m_unMsgLen  = psMessages[nMsgIndex].m_unMessageLength;
                     sSIGNALS* psSignal = psMessages[nMsgIndex].m_psSignals;
-                    while (psSignal != NULL)                            //loop through signal pointer of message
+                    while (psSignal != nullptr)                            //loop through signal pointer of message
                     {
                         //and get the details
                         sMsgNameCode.m_omSignalNames.AddTail(psSignal->m_omStrSignalName);
@@ -5366,9 +5366,9 @@ BOOL CMsgSignal::bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeL
             psTempDatbaseStructList = psTempDatbaseStructList->m_psNextDBFileStruct; //get nxt DB
         }
     }
-    else        //if the last DB is removed then m_psDatbaseStructList will be NULL, clear DB list as well
+    else        //if the last DB is removed then m_psDatbaseStructList will be nullptr, clear DB list as well
     {
-        if(odMsgNameMsgCodeListDB.GetCount() != NULL)
+        if(odMsgNameMsgCodeListDB.GetCount() != 0)
         {
             odMsgNameMsgCodeListDB.RemoveAll();
         }
@@ -5576,7 +5576,7 @@ void CMsgSignal::vClearFIBEXContainers()
 //void CMsgSignal::vGetSIgnalDetails( CSignalDefArray& ouSignalDefArray, AbsCSigInstanceList& odSignalInstList)
 //{
 //    POSITION pos = odSignalInstList.GetHeadPosition();
-//    while (pos != NULL)
+//    while (pos != nullptr)
 //    {
 //        CSignalDef ouTempSignalDef; // Temporary placeholder for Signal details
 //        ABS_SIGNAL_INSTANCE& ouTempSigInst = odSignalInstList.GetNext(pos);
@@ -5585,25 +5585,25 @@ void CMsgSignal::vClearFIBEXContainers()
 //        ouTempSignalDef.m_bIsBigEndian = ouTempSigInst.m_uStartPos.m_sSigStartPos.m_bIS_HIGH_LOW_BYTE_ORDER;
 //
 //        POSITION pos1 = m_AbsFibexContainer.m_omElement.m_omSignalList.GetHeadPosition();
-//        while (pos1 != NULL)
+//        while (pos1 != nullptr)
 //        {
 //            ABS_SIGNAL& ouTempAbsSignal = m_AbsFibexContainer.m_omElement.m_omSignalList.GetNext(pos1);
 //            if (ouTempSigInst.m_omSigRef == ouTempAbsSignal.m_omSignalID)
 //            {
 //                ouTempSignalDef.m_omNameSignal = ouTempAbsSignal.m_omSignalName;
 //                POSITION pos2 = m_AbsFibexContainer.m_omProcInfo.m_omCodingList.GetHeadPosition();
-//                while (pos2 != NULL)
+//                while (pos2 != nullptr)
 //                {
 //                    ABS_CODING& ouTempAbsCoding = m_AbsFibexContainer.m_omProcInfo.m_omCodingList.GetNext(pos2);
 //                    if (ouTempAbsSignal.m_omCoding == ouTempAbsCoding.m_omCodingID)
 //                    {
 //                        ouTempSignalDef.m_unLength = ouTempAbsCoding.m_sCodedType.m_sLength.m_unLength;
 //                        POSITION pos3 = ouTempAbsCoding.m_odCompuMethodList.GetHeadPosition();
-//                        while (pos3 != NULL)
+//                        while (pos3 != nullptr)
 //                        {
 //                            ABS_COMPU_METHOD& tempAbsCompuMethod = ouTempAbsCoding.m_odCompuMethodList.GetNext(pos3);
 //                            POSITION pos4 = tempAbsCompuMethod.m_odInternalConstrs.GetHeadPosition();
-//                            while (pos4 != NULL)
+//                            while (pos4 != nullptr)
 //                            {
 //                                SIG_INT_CONSTRAINT_EX tempConsts;
 //                                ABS_CONSTRS tempInterConstr = tempAbsCompuMethod.m_odInternalConstrs.GetNext(pos4);
@@ -5614,7 +5614,7 @@ void CMsgSignal::vClearFIBEXContainers()
 //                            }
 //
 //                            pos4 = tempAbsCompuMethod.m_odPhysConstrs.GetHeadPosition();
-//                            while (pos4 != NULL)
+//                            while (pos4 != nullptr)
 //                            {
 //                                SIG_INT_CONSTRAINT_EX tempConsts;
 //                                ABS_CONSTRS tempPhylConstr = tempAbsCompuMethod.m_odInternalConstrs.GetNext(pos4);
@@ -5632,20 +5632,20 @@ void CMsgSignal::vClearFIBEXContainers()
 //
 //
 //                            pos4 = m_AbsFibexContainer.m_omProcInfo.m_ouUnitSpec.m_odUnitList.GetHeadPosition();
-//                            while (pos4 != NULL)
+//                            while (pos4 != nullptr)
 //                            {
 //                                ABS_UNIT& tempAbsUnit = m_AbsFibexContainer.m_omProcInfo.m_ouUnitSpec.m_odUnitList.GetNext(pos4);
 //                                if (tempAbsCompuMethod.m_omUnitRef == tempAbsUnit.m_omID)
 //                                {
 //                                    ouTempSignalDef.m_omUnit = tempAbsUnit.m_omDisplayName;
-//                                    pos4 = NULL;
+//                                    pos4 = nullptr;
 //                                }
 //                            }
 //                        }
-//                        pos2 = NULL;
+//                        pos2 = nullptr;
 //                    }
 //                }
-//                pos1 = NULL;
+//                pos1 = nullptr;
 //            }
 //        }
 //        ouSignalDefArray.Add(ouTempSignalDef);
@@ -5660,7 +5660,7 @@ void CMsgSignal::vClearFIBEXContainers()
 //    {
 //        case IDENTICAL_ENUM:
 //        {
-//            while (pos != NULL)
+//            while (pos != nullptr)
 //            {
 //                ABS_COMPU_SCALE& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
 //                ouReturnCompuMethod.m_IdenticalCode.m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
@@ -5671,18 +5671,18 @@ void CMsgSignal::vClearFIBEXContainers()
 //        }
 //        case LINEAR_ENUM:
 //        {
-//            while (pos != NULL)
+//            while (pos != nullptr)
 //            {
 //                ABS_COMPU_SCALE& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
 //                ouReturnCompuMethod.m_LinearCode.m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
 //                ouReturnCompuMethod.m_LinearCode.m_sRange.m_dwUpperLimit = tempAbsCompuScale.m_sUpper.m_fValue;
 //                POSITION pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetHeadPosition();
-//                if (pos1 != NULL)
+//                if (pos1 != nullptr)
 //                {
 //                    ouReturnCompuMethod.m_LinearCode.m_dD0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetNext(pos1);
 //                }
 //                pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetHeadPosition();
-//                if (pos1 != NULL)
+//                if (pos1 != nullptr)
 //                {
 //                    ouReturnCompuMethod.m_LinearCode.m_dN0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
 //                    float fCheck = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetAt(pos1);
@@ -5697,7 +5697,7 @@ void CMsgSignal::vClearFIBEXContainers()
 //        }
 //        case SCALE_LINEAR_ENUM:
 //        {
-//            while (pos != NULL)
+//            while (pos != nullptr)
 //            {
 //                ABS_COMPU_SCALE& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
 //
@@ -5708,13 +5708,13 @@ void CMsgSignal::vClearFIBEXContainers()
 //
 //
 //                POSITION pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetHeadPosition();
-//                if (pos1 != NULL)
+//                if (pos1 != nullptr)
 //                {
 //                   objLinearCode.m_dD0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetNext(pos1);
 //                }
 //
 //                pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetHeadPosition();
-//                if (pos1 != NULL)
+//                if (pos1 != nullptr)
 //                {
 //                    objLinearCode.m_dN0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
 //
@@ -5729,20 +5729,20 @@ void CMsgSignal::vClearFIBEXContainers()
 //
 //
 //    //            PSCALE_LINEAR_CODE_VAR_EX tempScaleLinear = new SCALE_LINEAR_CODE_VAR_EX;
-//    //            tempScaleLinear->m_pNextLinearType = NULL;
+//    //            tempScaleLinear->m_pNextLinearType = nullptr;
 //              ////LINEAR_CODE
 //    //            tempScaleLinear->m_sLinearType.m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
 //    //            tempScaleLinear->m_sLinearType.m_sRange.m_dwUpperLimit = tempAbsCompuScale.m_sUpper.m_fValue;
 //
 //
 //    //            POSITION pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetHeadPosition();
-//    //            if (pos1 != NULL)
+//    //            if (pos1 != nullptr)
 //    //            {
 //    //                tempScaleLinear->m_sLinearType.m_dD0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuDeno.GetNext(pos1);
 //    //            }
 //
 //    //            pos1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetHeadPosition();
-//    //            if (pos1 != NULL)
+//    //            if (pos1 != nullptr)
 //    //            {
 //    //                tempScaleLinear->m_sLinearType.m_dN0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
 //
@@ -5756,7 +5756,7 @@ void CMsgSignal::vClearFIBEXContainers()
 //        }
 //        case TEXTTABLE_ENUM:
 //        {
-//            while (pos != NULL)
+//            while (pos != nullptr)
 //            {
 //                ABS_COMPU_SCALE& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
 //
@@ -5768,7 +5768,7 @@ void CMsgSignal::vClearFIBEXContainers()
 //
 //              ouReturnCompuMethod.m_objTextCode.push_back(objTextCdeVar);
 //               /* PTEXT_CODE_VAR_EX tempTextCode = new TEXT_CODE_VAR_EX;
-//                tempTextCode->m_pNextTextCodeType = NULL;
+//                tempTextCode->m_pNextTextCodeType = nullptr;
 //
 //                tempTextCode->m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
 //                tempTextCode->m_sRange.m_dwUpperLimit = tempAbsCompuScale.m_sUpper.m_fValue;
@@ -5782,7 +5782,7 @@ void CMsgSignal::vClearFIBEXContainers()
 //        }
 //        case TAB_NOINTP_ENUM:
 //        {
-//            while (pos != NULL)
+//            while (pos != nullptr)
 //            {
 //                ABS_COMPU_SCALE& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
 //
@@ -5795,7 +5795,7 @@ void CMsgSignal::vClearFIBEXContainers()
 //              ouReturnCompuMethod.m_objTabCode.push_back(objTab);
 //
 //                /*PTAB_CODE_VAR_EX tempTabCode = new TAB_CODE_VAR_EX;
-//                tempTabCode->m_pNextTabCodeType = NULL;
+//                tempTabCode->m_pNextTabCodeType = nullptr;
 //
 //                tempTabCode->m_sRange.m_dwLowerLimit = tempAbsCompuScale.m_sLower.m_fValue;
 //                tempTabCode->m_sRange.m_dwUpperLimit = tempAbsCompuScale.m_sUpper.m_fValue;
@@ -5809,11 +5809,11 @@ void CMsgSignal::vClearFIBEXContainers()
 //        }
 //        case FORMULA_ENUM:
 //        {
-//            while (pos != NULL)
+//            while (pos != nullptr)
 //            {
 //                ABS_COMPU_SCALE& tempAbsCompuScale = ouCompuInToPhys.m_odCompuScaleList.GetNext(pos);
 //                PFORMULA_CODE_VAR_EX tempFormula = new FORMULA_CODE_VAR_EX;
-//                tempFormula->m_pFirstOperand = NULL;
+//                tempFormula->m_pFirstOperand = nullptr;
 //
 //                tempFormula->m_omFormula = tempAbsCompuScale.m_sCompuConst.m_omVT;
 //                /*tempFormula->m_pFirstOperand = tempAbsCompuScale.m_sUpper.m_fValue;*/

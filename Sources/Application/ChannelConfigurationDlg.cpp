@@ -36,7 +36,7 @@ static LinProcolBaudRate sg_LINPROTOCOL_BAUD[] =
 
 
 IMPLEMENT_DYNAMIC(CChannelConfigurationDlg, CDialog)
-CChannelConfigurationDlg::CChannelConfigurationDlg(CMsgSignal*& pMsgSignal ,CHANNEL_CONFIG ouFlexrayChannelConfig[], INT& nChannelConfigured, ETYPE_BUS eBusType, CWnd* pParent /*=NULL*/)
+CChannelConfigurationDlg::CChannelConfigurationDlg(CMsgSignal*& pMsgSignal ,CHANNEL_CONFIG ouFlexrayChannelConfig[], INT& nChannelConfigured, ETYPE_BUS eBusType, CWnd* pParent /*=nullptr*/)
     : CDialog(CChannelConfigurationDlg::IDD, pParent)
 {
     m_eBusType = eBusType;
@@ -82,19 +82,19 @@ void CChannelConfigurationDlg::OnOverwriteCheckBoxClick()
 {
     CButton* pTempBtn = (CButton*)GetDlgItem(IDC_CHECK_OVERWRITE_SETTINGS);
     bool bCheck = false;
-    if ( NULL != pTempBtn )
+    if ( nullptr != pTempBtn )
     {
         bCheck = pTempBtn->GetCheck();
     }
 
     CWnd* pTempChild = GetDlgItem(IDC_COMBO_LIN_PROTOCOL);
-    if ( NULL != pTempChild )
+    if ( nullptr != pTempChild )
     {
         pTempChild->EnableWindow(bCheck);
     }
 
     pTempChild = GetDlgItem(IDC_EDIT_LIN_BAUDRATE);
-    if ( NULL != pTempChild )
+    if ( nullptr != pTempChild )
     {
         pTempChild->EnableWindow(bCheck);
     }
@@ -147,7 +147,7 @@ int CChannelConfigurationDlg::nUpdateLinSettings()
 {
     CComboBox* pomCombo = (CComboBox*)GetDlgItem(IDC_COMBO_LIN_PROTOCOL);
 
-    if ( pomCombo != NULL )
+    if ( pomCombo != nullptr )
     {
         for ( int i = 0 ; i < ( sizeof(sg_LINPROTOCOL_BAUD)/ sizeof(sg_LINPROTOCOL_BAUD[0])); i++ )
         {
@@ -166,59 +166,59 @@ int CChannelConfigurationDlg::nUpdateLinSettings()
 
 int CChannelConfigurationDlg::nEnableControls( ETYPE_BUS eBusType)
 {
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     if ( eBusType == FLEXRAY )
     {
         pWnd = GetDlgItem(IDC_STATIC_DATABASE_INFO);
-        if ( pWnd != NULL )
+        if ( pWnd != nullptr )
         {
             pWnd->SetWindowText("Import Flexray Database (FIBEX)");
         }
 
         pWnd = GetDlgItem(IDC_STATIC_CLUSTER_INFO);
-        if ( pWnd != NULL )
+        if ( pWnd != nullptr )
         {
             pWnd->SetWindowText("Select Flexray Cluster:");
         }
 
         pWnd = GetDlgItem(IDC_STATIC_EXTRA_CONFIG);
-        if ( pWnd != NULL )
+        if ( pWnd != nullptr )
         {
             pWnd->SetWindowText("Key Slot Configuration");
         }
 
         pWnd = GetDlgItem(IDC_STATIC_DBNAME);
-        if ( pWnd != NULL )
+        if ( pWnd != nullptr )
         {
             pWnd->SetWindowText("Fibex:");
         }
 
         pWnd = GetDlgItem(IDC_COMBO_LIN_PROTOCOL);
-        if ( pWnd != NULL )
+        if ( pWnd != nullptr )
         {
             pWnd->ShowWindow(FALSE);
         }
 
         pWnd = GetDlgItem(IDC_STATIC_LIN_PROTOCOL);
-        if ( pWnd != NULL )
+        if ( pWnd != nullptr )
         {
             pWnd->ShowWindow(FALSE);
         }
 
         pWnd = GetDlgItem(IDC_STATIC_LIN_BAUDRATE);
-        if ( pWnd != NULL )
+        if ( pWnd != nullptr )
         {
             pWnd->ShowWindow(FALSE);
         }
 
         pWnd = GetDlgItem(IDC_EDIT_LIN_BAUDRATE);
-        if ( pWnd != NULL )
+        if ( pWnd != nullptr )
         {
             pWnd->ShowWindow(FALSE);
         }
 
         pWnd = GetDlgItem(IDC_CHECK_OVERWRITE_SETTINGS);
-        if ( pWnd != NULL )
+        if ( pWnd != nullptr )
         {
             pWnd->ShowWindow(FALSE);
         }
@@ -226,31 +226,31 @@ int CChannelConfigurationDlg::nEnableControls( ETYPE_BUS eBusType)
     else if ( eBusType == LIN )
     {
         pWnd = GetDlgItem(IDC_STATIC_DATABASE_INFO);
-        if ( pWnd != NULL )
+        if ( pWnd != nullptr )
         {
             pWnd->SetWindowText("Import LIN Database (LDF)");
         }
 
         pWnd = GetDlgItem(IDC_STATIC_CLUSTER_INFO);
-        if ( pWnd != NULL )
+        if ( pWnd != nullptr )
         {
             pWnd->SetWindowText("Select LIN Cluster:");
         }
 
         pWnd = GetDlgItem(IDC_STATIC_EXTRA_CONFIG);
-        if ( pWnd != NULL )
+        if ( pWnd != nullptr )
         {
             pWnd->SetWindowText("LIN Network Settings");
         }
 
         pWnd = GetDlgItem(IDC_STATIC_DBNAME);
-        if ( pWnd != NULL )
+        if ( pWnd != nullptr )
         {
             pWnd->SetWindowText("LDF:");
         }
 
         pWnd = GetDlgItem(IDC_COMBO_CLUSTER);
-        if ( pWnd != NULL )
+        if ( pWnd != nullptr )
         {
             pWnd->EnableWindow(FALSE);
         }
@@ -261,7 +261,7 @@ int CChannelConfigurationDlg::nEnableControls( ETYPE_BUS eBusType)
 
 void CChannelConfigurationDlg::OnBnClickedButtonFibexpath()
 {
-    CFileDialog* pomFibexDlg = NULL;
+    CFileDialog* pomFibexDlg = nullptr;
     std::string strWaitText;
     if ( m_eBusType == FLEXRAY )
     {
@@ -276,7 +276,7 @@ void CChannelConfigurationDlg::OnBnClickedButtonFibexpath()
         strWaitText = "Parsing LDF File. Please Wait...";
     }
 
-    if ( ( pomFibexDlg != NULL ) && ( pomFibexDlg->DoModal() == IDOK ) )
+    if ( ( pomFibexDlg != nullptr ) && ( pomFibexDlg->DoModal() == IDOK ) )
     {
         CString strPath = pomFibexDlg->GetPathName();
         std::list<Cluster> ouClusterList;

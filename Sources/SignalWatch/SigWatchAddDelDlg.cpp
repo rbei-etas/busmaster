@@ -43,7 +43,7 @@ CSigWatchAddDelDlg::CSigWatchAddDelDlg(CWnd* pParent, CMainEntryList* psMainFram
     // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
     m_podMainCallerList = psMainFrameSignalWatchList;
-    if (m_podMainCallerList != NULL)
+    if (m_podMainCallerList != nullptr)
     {
         m_podTempCallerList = new CMainEntryList;
         m_podTempCallerList->AddTail(psMainFrameSignalWatchList);
@@ -112,7 +112,7 @@ BOOL CSigWatchAddDelDlg::OnInitDialog()
                          16,
                          1,
                          defCOLOR_WHITE);
-    if (m_podTempCallerList != NULL)
+    if (m_podTempCallerList != nullptr)
     {
         UINT unNoOfMainEntries = (UINT)m_podTempCallerList->GetCount();
 
@@ -120,7 +120,7 @@ BOOL CSigWatchAddDelDlg::OnInitDialog()
         {
             // Add every message name into the message list
             POSITION pos = m_podTempCallerList->GetHeadPosition();
-            while (pos != NULL)
+            while (pos != nullptr)
             {
                 SMAINENTRY& sMainEntry = m_podTempCallerList->GetNext(pos);
                 CString omMainEntryName = sMainEntry.m_omMainEntryName;
@@ -179,18 +179,18 @@ void CSigWatchAddDelDlg::vPopulateUnSelSubEntryList(UINT unMainEntryID)
 {
     //CMainEntryList* psTemp = m_podTempCallerList;
     m_omListCtrlSignal.DeleteAllItems();
-    if (m_podTempCallerList != NULL)
+    if (m_podTempCallerList != nullptr)
     {
         SMAINENTRY sMainEntry;
         sMainEntry.m_unMainEntryID = unMainEntryID;
         POSITION pos = m_podTempCallerList->Find(sMainEntry);
-        if ( pos != NULL)
+        if ( pos != nullptr)
         {
             sMainEntry = m_podTempCallerList->GetAt(pos);
             POSITION SubPos = sMainEntry.m_odUnSelEntryList.GetHeadPosition();
             UINT unCountItem = 0;
             UINT unMaxLen = 0;
-            while (SubPos != NULL)
+            while (SubPos != nullptr)
             {
                 SSUBENTRY& sSubEntry = sMainEntry.m_odUnSelEntryList.GetNext(SubPos);
                 UINT unLen = m_omListCtrlSignal.GetStringWidth(sSubEntry.m_omSubEntryName);
@@ -227,11 +227,11 @@ Modification on  :
 *******************************************************************************/
 void CSigWatchAddDelDlg::OnDestroy()
 {
-    if (m_podTempCallerList != NULL)
+    if (m_podTempCallerList != nullptr)
     {
         m_podTempCallerList->RemoveAll();
         delete m_podTempCallerList;
-        m_podTempCallerList = NULL;
+        m_podTempCallerList = nullptr;
     }
     CDialog::OnDestroy();
 }
@@ -278,13 +278,13 @@ void CSigWatchAddDelDlg::vAddSelSubEntries(BOOL bAllSignals)
 
     // Get the selected message list
     vUpdateUnSelSubEntryList(bAllSignals);
-    if( (m_omCSAData.GetSize() > 0) && (m_podTempCallerList != NULL))
+    if( (m_omCSAData.GetSize() > 0) && (m_podTempCallerList != nullptr))
     {
         UINT unMainEntryId = unGetSelectedMainEntryID();
         SMAINENTRY sMainEntry;
         sMainEntry.m_unMainEntryID = unMainEntryId;
         POSITION pos = m_podTempCallerList->Find(sMainEntry);
-        if (pos != NULL)
+        if (pos != nullptr)
         {
             SMAINENTRY& sPointEntry = m_podTempCallerList->GetAt(pos);
             for (int i = 0; i < m_omCSAData.GetSize(); i++)
@@ -293,7 +293,7 @@ void CSigWatchAddDelDlg::vAddSelSubEntries(BOOL bAllSignals)
                 SSUBENTRY sSubEntry;
                 sSubEntry.m_omSubEntryName = omSubEntryName;
                 POSITION SubPos = sPointEntry.m_odUnSelEntryList.Find(sSubEntry);
-                if (SubPos != NULL)
+                if (SubPos != nullptr)
                 {
                     sSubEntry = sPointEntry.m_odUnSelEntryList.GetAt(SubPos);
                     sPointEntry.m_odUnSelEntryList.RemoveAt(SubPos);
@@ -354,14 +354,14 @@ void CSigWatchAddDelDlg::vDelSelSubEntries(BOOL bAllEntries)
     }
     else
     {
-        if (m_podTempCallerList != NULL)
+        if (m_podTempCallerList != nullptr)
         {
             POSITION pos = m_podTempCallerList->GetHeadPosition();
             while (pos)
             {
                 SMAINENTRY& sMainEntry = m_podTempCallerList->GetNext(pos);
                 POSITION SubPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
-                while (SubPos != NULL)
+                while (SubPos != nullptr)
                 {
                     POSITION TempPos = SubPos;
                     SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SubPos);
@@ -396,7 +396,7 @@ UINT CSigWatchAddDelDlg::unGetSelectedMainEntryID()
     CString omMainEntryName;
 
     // Check for visible window
-    if( m_omCombMessage.GetSafeHwnd() != NULL )
+    if( m_omCombMessage.GetSafeHwnd() != nullptr )
     {
         m_omCombMessage.GetWindowText(omMainEntryName);
     }
@@ -555,18 +555,18 @@ Modifications    : Raja N
 BOOL CSigWatchAddDelDlg::bDeleteSubEntry(UINT unMainEntryID, const CString& omSubEntry)
 {
     BOOL bSuccess = FALSE;
-    if (m_podTempCallerList != NULL)
+    if (m_podTempCallerList != nullptr)
     {
         SMAINENTRY sMainEntry;
         sMainEntry.m_unMainEntryID = unMainEntryID;
         POSITION pos = m_podTempCallerList->Find(sMainEntry);
-        if (pos != NULL)
+        if (pos != nullptr)
         {
             SMAINENTRY& sPointEntry = m_podTempCallerList->GetAt(pos);
             SSUBENTRY sSubEntry;
             sSubEntry.m_omSubEntryName = omSubEntry;
             POSITION SubPos = sPointEntry.m_odSelEntryList.Find(sSubEntry);
-            if (SubPos != NULL)
+            if (SubPos != nullptr)
             {
                 bSuccess = TRUE;
                 sSubEntry = sPointEntry.m_odSelEntryList.GetAt(SubPos);
@@ -755,7 +755,7 @@ void CSigWatchAddDelDlg::vUpdateUnSelSubEntryList(BOOL bAllEntries)
         // Assume this is the greatest value
         INT unMaxSize = unCurrentSize;
 
-        while(pos != NULL)
+        while(pos != nullptr)
         {
             int nSelIndex;
             CString omSelSubEntry;
@@ -860,7 +860,7 @@ void CSigWatchAddDelDlg::vUpdateSelSubEntryList(BOOL bAllEntries)
         // Get the initial position
         POSITION pos = m_omListCtrlSignalWatch.GetFirstSelectedItemPosition();
 
-        while(pos != NULL)
+        while(pos != nullptr)
         {
             int nSelIndex;
             CString omSelMainSub;
@@ -944,7 +944,7 @@ void CSigWatchAddDelDlg::OnRClickUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* p
         {
             CMenu* pomCtxMenu = omCtxMenu.GetSubMenu(2);
 
-            if (pomCtxMenu != NULL)
+            if (pomCtxMenu != nullptr)
             {
                 UINT unSelCount;
                 unSelCount = m_omListCtrlSignal.GetSelectedCount();
@@ -1026,7 +1026,7 @@ void CSigWatchAddDelDlg::OnRClickSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pRe
         {
             CMenu* pomCtxMenu = omCtxMenu.GetSubMenu(2);
 
-            if (pomCtxMenu != NULL)
+            if (pomCtxMenu != nullptr)
             {
                 UINT unSelCount;
                 unSelCount = m_omListCtrlSignalWatch.GetSelectedCount();
@@ -1099,7 +1099,7 @@ Modification on  :
 *******************************************************************************/
 void CSigWatchAddDelDlg::OnOK()
 {
-    if (m_podMainCallerList != NULL)
+    if (m_podMainCallerList != nullptr)
     {
         m_podMainCallerList->RemoveAll();
         m_podMainCallerList->AddTail(m_podTempCallerList);
@@ -1125,7 +1125,7 @@ void CSigWatchAddDelDlg::vPopulateSelSubEntryList()
     // To store the Col Width
     UINT unMaxSize = 0;
     // Get the items and add
-    if ( m_podTempCallerList != NULL)
+    if ( m_podTempCallerList != nullptr)
     {
         POSITION pos = m_podTempCallerList->GetHeadPosition();
         while (pos)
@@ -1138,7 +1138,7 @@ void CSigWatchAddDelDlg::vPopulateSelSubEntryList()
                 omNameWithId = omNameWithId + sMainEntry.m_omMainEntryName;// + omNameWithId;
                 CString omStrEntry;
                 POSITION SubPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
-                while (SubPos != NULL)
+                while (SubPos != nullptr)
                 {
                     SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SubPos);
                     // Use format instead of multiple operator '+' call
@@ -1190,7 +1190,7 @@ UINT CSigWatchAddDelDlg::unGetMainEntryIDFromName(CString omMainEntryName)
 {
     CString omMainEntryId;
     UINT unMainEntryID = (UINT)-1;
-    char* pcStopStr = NULL;
+    char* pcStopStr = nullptr;
     int nIndex = omMainEntryName.Find(defMSGID_EXTENDED);
     int nCloseBraceIndex = omMainEntryName.Find(defMSG_NAME_END_CHAR);
     if((nIndex != -1) && (nCloseBraceIndex != -1))

@@ -73,7 +73,7 @@
 CMsgInterpretation::CMsgInterpretation()
 {
     m_eNumFormat    = HEXADECIMAL;
-    m_psMsgRoot     = NULL;
+    m_psMsgRoot     = nullptr;
 }
 /******************************************************************************/
 /*  Function Name    :  ~CMsgInterpretation                                   */
@@ -90,7 +90,7 @@ CMsgInterpretation::CMsgInterpretation()
 /******************************************************************************/
 CMsgInterpretation::~CMsgInterpretation()
 {
-    m_psMsgRoot = NULL;
+    m_psMsgRoot = nullptr;
 }
 
 void CMsgInterpretation::vSetMessageList(SMSGENTRY* psCurrMsgEntry)
@@ -106,15 +106,15 @@ int CMsgInterpretation::nGetSignalCount(CString strMsgName)
 {
     int iSignalCount = 0;
     SMSGENTRY*  m_psMsgTemp = m_psMsgRoot;
-    while(m_psMsgTemp != NULL)
+    while(m_psMsgTemp != nullptr)
     {
-        if(m_psMsgTemp->m_psMsg != NULL)
+        if(m_psMsgTemp->m_psMsg != nullptr)
         {
             //check for same message name
             if(strMsgName.CompareNoCase(m_psMsgTemp->m_psMsg->m_omStrMessageName)==0 )
             {
                 sSIGNALS* m_psSignalTemp = m_psMsgTemp->m_psMsg->m_psSignals;
-                while(m_psSignalTemp != NULL)
+                while(m_psSignalTemp != nullptr)
                 {
                     iSignalCount++; //increment the signal count
                     m_psSignalTemp = m_psSignalTemp->m_psNextSignalList;
@@ -135,15 +135,15 @@ int CMsgInterpretationLIN::nGetSignalCount(CString strMsgName)
 {
     int iSignalCount = 0;
     SMSGENTRY*  m_psMsgTemp = m_psMsgRoot;
-    while(m_psMsgTemp != NULL)
+    while(m_psMsgTemp != nullptr)
     {
-        if(m_psMsgTemp->m_psMsg != NULL)
+        if(m_psMsgTemp->m_psMsg != nullptr)
         {
             //check for same message name
             if(strMsgName.CompareNoCase(m_psMsgTemp->m_psMsg->m_omStrMessageName)==0 )
             {
                 sSIGNALS* m_psSignalTemp = m_psMsgTemp->m_psMsg->m_psSignals;
-                while(m_psSignalTemp != NULL)
+                while(m_psSignalTemp != nullptr)
                 {
                     iSignalCount++; //increment the signal count
                     m_psSignalTemp = m_psSignalTemp->m_psNextSignalList;
@@ -220,7 +220,7 @@ __int64 static n64GetSignalValueInBits(register CByteArray* pMsgArray,
 {
     __int64 nSigValueInBits = 0;
 
-    if(unLength !=0 && pMsgArray != NULL)
+    if(unLength !=0 && pMsgArray != nullptr)
     {
         UINT nBytesToRead = 0;
         /* Find out how many data bytes the signal consumes */
@@ -348,7 +348,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
     omStrPhyValues.RemoveAll();
     omStrSigNames.RemoveAll();
 
-    sMESSAGE* pMsgs = NULL;
+    sMESSAGE* pMsgs = nullptr;
     if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgRoot, unMsgCode, pMsgs))
     {
         omStrMsgName = pMsgs->m_omStrMessageName;
@@ -383,7 +383,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
                 pMsgs->m_psSignals;
             // Get corresponding Signal List pointer
             BOOL bSignalFound = FALSE;
-            while (psSignal != NULL && bSignalFound == FALSE)
+            while (psSignal != nullptr && bSignalFound == FALSE)
             {
                 if ((psSignal->m_byStartBit == unBitNumber) &&
                         (psSignal->m_unStartByte == unByteNo))
@@ -397,7 +397,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
             }
 
             // If Signal found at Bit position
-            if (psSignal != NULL)
+            if (psSignal != nullptr)
             {
                 __int64 n64SigVal = 0;
                 CString omSignalValue(STR_EMPTY), omStrTemp(STR_EMPTY);
@@ -436,7 +436,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
                 // descriptor is defined
                 CSignalDescVal* pouCurrSignalDesc =
                     psSignal->m_oSignalIDVal;
-                while ( pouCurrSignalDesc != NULL &&
+                while ( pouCurrSignalDesc != nullptr &&
                         bFoundSignalDesc == FALSE )
                 {
                     //                    if (pouCurrSignalDesc->m_n64SignalVal == n64SigVal )
@@ -556,7 +556,7 @@ BOOL CMsgInterpretation::bInterpretMsgSigList(UINT unMsgCode,
 
     // Get message name from msg code
 
-    sMESSAGE* pMsgs = NULL;
+    sMESSAGE* pMsgs = nullptr;
     if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgRoot, unMsgCode, pMsgs))
     {
         omStrMsgName = pMsgs->m_omStrMessageName;
@@ -573,14 +573,14 @@ BOOL CMsgInterpretation::bInterpretMsgSigList(UINT unMsgCode,
         register sSIGNALS* psSignal = pMsgs->m_psSignals;
 
         // Get corresponding Signal List pointer
-        if(psSignal != NULL)
+        if(psSignal != nullptr)
         {
             bSuccess = TRUE;
             __int64 n64Vaule = 0;
 
             register sSIGNALS* psCurrentSignal = psSignal;
 
-            while(psCurrentSignal != NULL)
+            while(psCurrentSignal != nullptr)
             {
                 __int64 n64SigVal = 0;
                 CString omSignalValue(STR_EMPTY);
@@ -622,7 +622,7 @@ BOOL CMsgInterpretation::bInterpretMsgSigList(UINT unMsgCode,
                 register CSignalDescVal* pouCurrSignalDesc =
                     psCurrentSignal->m_oSignalIDVal;
                 // Calculate Phy Value
-                while ( pouCurrSignalDesc != NULL &&
+                while ( pouCurrSignalDesc != nullptr &&
                         bFound == FALSE )
                 {
                     //                        if (pouCurrSignalDesc->m_n64SignalVal ==
@@ -715,7 +715,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
     BOOL bSuccess = FALSE;
 
     // Get message name from msg code
-    sMESSAGE* pMsgs = NULL;
+    sMESSAGE* pMsgs = nullptr;
     omSignalInfo.RemoveAll();
     if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgRoot, unMsgCode, pMsgs))
     {
@@ -752,7 +752,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
                 pMsgs->m_psSignals;
             // Get corresponding Signal List pointer
             BOOL bSignalFound = FALSE;
-            while (psSignal != NULL && bSignalFound == FALSE )
+            while (psSignal != nullptr && bSignalFound == FALSE )
             {
                 if ((psSignal->m_byStartBit == unBitNumber) &&
                         (psSignal->m_unStartByte == unByteNo))
@@ -766,7 +766,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
             }
 
             // If Signal found at Bit position
-            if (psSignal != NULL)
+            if (psSignal != nullptr)
             {
                 __int64 n64SigVal = 0;
                 CString omSignalValue;
@@ -790,7 +790,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
                 // descriptor is defined
                 CSignalDescVal* pouCurrSignalDesc =
                     psSignal->m_oSignalIDVal;
-                while (pouCurrSignalDesc != NULL && bFoundSignalDesc == FALSE)
+                while (pouCurrSignalDesc != nullptr && bFoundSignalDesc == FALSE)
                 {
                     //                        if (pouCurrSignalDesc->m_n64SignalVal ==
                     //                                              n64SigVal )
@@ -897,9 +897,9 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
     omStrPhyValues.RemoveAll();
     omStrSigNames.RemoveAll();
 
-    sMESSAGE* pMsgs = NULL;
+    sMESSAGE* pMsgs = nullptr;
 
-    for (SMSGENTRY* psTmp = m_psMsgRoot; NULL != psTmp; psTmp = psTmp->m_psNext)
+    for (SMSGENTRY* psTmp = m_psMsgRoot; nullptr != psTmp; psTmp = psTmp->m_psNext)
     {
         if (psTmp->m_psMsg->m_unMessageCode == unMsgCode)
         {
@@ -908,7 +908,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
         }
     }
 
-    if (NULL == pMsgs)
+    if (nullptr == pMsgs)
     {
         return FALSE; // Return if the message entry isn't found
     }
@@ -930,7 +930,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
 
     sSIGNALS* psCurrSignal = pMsgs->m_psSignals;
 
-    while (NULL != psCurrSignal)
+    while (nullptr != psCurrSignal)
     {
         // Add the Signal Name First
         omStrSigNames.Add(psCurrSignal->m_omStrSignalName);
@@ -958,7 +958,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
         CSignalDescVal* pouCurrSigDesc = psCurrSignal->m_oSignalIDVal;
         BOOL bFoundDesc = FALSE;
         CString omStrTemp;
-        while ((NULL != pouCurrSigDesc) && !bFoundDesc)
+        while ((nullptr != pouCurrSigDesc) && !bFoundDesc)
         {
             //            if (pouCurrSigDesc->m_n64SignalVal == n64SigVal)
             if (pouCurrSigDesc->m_DescValue.n64Value == n64SigVal)
@@ -1005,9 +1005,9 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
     // Remove all elements in the target array
     SigInfoArray.RemoveAll();
 
-    sMESSAGE* pMsgs = NULL;
+    sMESSAGE* pMsgs = nullptr;
 
-    for (SMSGENTRY* psTmp = psMsgRoot; NULL != psTmp; psTmp = psTmp->m_psNext)
+    for (SMSGENTRY* psTmp = psMsgRoot; nullptr != psTmp; psTmp = psTmp->m_psNext)
     {
         if (psTmp->m_psMsg->m_unMessageCode == unMsgCode)
         {
@@ -1016,7 +1016,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
         }
     }
 
-    if (NULL == pMsgs)
+    if (nullptr == pMsgs)
     {
         return FALSE; // Return if the message entry isn't found
     }
@@ -1034,7 +1034,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/,
 {
     BOOL bReturn = FALSE;
     omSigInfoArray.RemoveAll();
-    if ((pMsg != NULL) && (ucData != NULL))
+    if ((pMsg != nullptr) && (ucData != nullptr))
     {
         CByteArray omMsgByte;
         /*Whether it is |Intel or motorola format, Data is fed from\
@@ -1052,7 +1052,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/,
 
         sSIGNALS* psCurrSignal = pMsg->m_psSignals;
 
-        while (NULL != psCurrSignal)
+        while (nullptr != psCurrSignal)
         {
             // Add the Signal Name First
             sInterSigInfo.m_omStrSignalName = psCurrSignal->m_omStrSignalName;
@@ -1080,7 +1080,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT /*eNumFormat*/,
 
             CSignalDescVal* pouCurrSigDesc = psCurrSignal->m_oSignalIDVal;
             BOOL bFoundDesc = FALSE;
-            while ((NULL != pouCurrSigDesc) && !bFoundDesc)
+            while ((nullptr != pouCurrSigDesc) && !bFoundDesc)
             {
                 //                if (pouCurrSigDesc->m_n64SignalVal == n64SigVal)
                 if (pouCurrSigDesc->m_DescValue.n64Value == n64SigVal)
@@ -1119,7 +1119,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
 {
     BOOL bReturn = FALSE;
     SigInfoArray.RemoveAll();
-    if ((pMsg != NULL) && (ucData != NULL))
+    if ((pMsg != nullptr) && (ucData != nullptr))
     {
         CByteArray omMsgByte;
         /*Whether it is |Intel or motorola format, Data is fed from\
@@ -1137,7 +1137,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
 
         sSIGNALS* psCurrSignal = pMsg->m_psSignals;
 
-        while (NULL != psCurrSignal)
+        while (nullptr != psCurrSignal)
         {
             // Add the Signal Name First
             sSigInfoTmp.m_omSigName = psCurrSignal->m_omStrSignalName;
@@ -1176,7 +1176,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
             // Replace signal value if any related signal descriptor is defined
             CSignalDescVal* pouCurrSigDesc = psCurrSignal->m_oSignalIDVal;
             BOOL bFoundDesc = FALSE;
-            while ((NULL != pouCurrSigDesc) && !bFoundDesc)
+            while ((nullptr != pouCurrSigDesc) && !bFoundDesc)
             {
                 //                if (pouCurrSigDesc->m_n64SignalVal == n64SigVal)
                 if (pouCurrSigDesc->m_DescValue.n64Value == n64SigVal)
@@ -1212,7 +1212,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(EFORMAT eNumFormat,
 
 void CMsgInterpretation::vClear()
 {
-    if(NULL != m_psMsgRoot)
+    if(nullptr != m_psMsgRoot)
     {
         SMSGENTRY::vClearMsgList(m_psMsgRoot);
     }
@@ -1220,14 +1220,14 @@ void CMsgInterpretation::vClear()
 
 void CMsgInterpretation::vCopy(CMsgInterpretation* pDest) const
 {
-    if ( pDest != NULL)
+    if ( pDest != nullptr)
     {
         pDest->vClear();
         pDest->m_eNumFormat = m_eNumFormat;
         //Update the Msg list
-        SMSGENTRY* pDestRoot = NULL;
+        SMSGENTRY* pDestRoot = nullptr;
         SMSGENTRY* pTempSrc = m_psMsgRoot;
-        while (pTempSrc != NULL)
+        while (pTempSrc != nullptr)
         {
             SMSGENTRY::bUpdateMsgList(pDestRoot, pTempSrc->m_psMsg);
             pTempSrc = pTempSrc->m_psNext;
@@ -1240,12 +1240,12 @@ void CMsgInterpretation::vCopy(CMsgInterpretation* pDest) const
 
 CMsgInterpretationJ1939::CMsgInterpretationJ1939()
 {
-    m_psMsgRoot = NULL;
+    m_psMsgRoot = nullptr;
 }
 
 CMsgInterpretationJ1939::~CMsgInterpretationJ1939()
 {
-    if(NULL != m_psMsgRoot)
+    if(nullptr != m_psMsgRoot)
     {
         SMSGENTRY::vClearMsgList(m_psMsgRoot);
     }
@@ -1260,10 +1260,10 @@ BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
     SSignalInfoArray& odSigInfoArray)
 {
     BOOL bReturn = FALSE;
-    sMESSAGE* pMsg = NULL;
+    sMESSAGE* pMsg = nullptr;
     odSigInfoArray.RemoveAll();
     SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgRoot, unPGN, pMsg);
-    if ((pMsg != NULL) && (pbyData != NULL))
+    if ((pMsg != nullptr) && (pbyData != nullptr))
     {
         omMsgName = pMsg->m_omStrMessageName;
         CByteArray omMsgByte;
@@ -1282,7 +1282,7 @@ BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
 
         sSIGNALS* psCurrSignal = pMsg->m_psSignals;
 
-        while (NULL != psCurrSignal)
+        while (nullptr != psCurrSignal)
         {
             // Add the Signal Name First
             sSigInfoTmp.m_omSigName = psCurrSignal->m_omStrSignalName;
@@ -1327,7 +1327,7 @@ BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
             // Replace signal value if any related signal descriptor is defined
             CSignalDescVal* pouCurrSigDesc = psCurrSignal->m_oSignalIDVal;
             BOOL bFoundDesc = FALSE;
-            while ((NULL != pouCurrSigDesc) && !bFoundDesc)
+            while ((nullptr != pouCurrSigDesc) && !bFoundDesc)
             {
                 //                if (pouCurrSigDesc->m_n64SignalVal == n64SigVal)
                 if (pouCurrSigDesc->m_DescValue.n64Value == n64SigVal)
@@ -1364,15 +1364,15 @@ BOOL CMsgInterpretationJ1939::bInterPretJ1939_MSGS(
 void CMsgInterpretationJ1939::vSetJ1939Database(const SMSGENTRY* psCurrMsgEntry)
 {
     //go for updated message configuration.
-    while (m_psMsgRoot != NULL)
+    while (m_psMsgRoot != nullptr)
     {
         m_psMsgRoot = m_psMsgRoot->m_psNext;
     }
-    if (psCurrMsgEntry != NULL)
+    if (psCurrMsgEntry != nullptr)
     {
         const SMSGENTRY* psMsgEntry = psCurrMsgEntry;
 
-        while (psMsgEntry != NULL)
+        while (psMsgEntry != nullptr)
         {
             SMSGENTRY::bUpdateMsgList(m_psMsgRoot, psMsgEntry->m_psMsg);
             psMsgEntry = psMsgEntry->m_psNext;
@@ -1423,15 +1423,15 @@ int CMsgInterpretationJ1939::nGetJ1939SignalCount(CString strMsgName)
 {
     int iSignalCount = 0;
     SMSGENTRY*  m_psMsgTemp = m_psMsgRoot;
-    while(m_psMsgTemp != NULL)
+    while(m_psMsgTemp != nullptr)
     {
-        if(m_psMsgTemp->m_psMsg != NULL)
+        if(m_psMsgTemp->m_psMsg != nullptr)
         {
             //check for same message name
             if(strMsgName.CompareNoCase(m_psMsgTemp->m_psMsg->m_omStrMessageName)==0 )
             {
                 sSIGNALS* m_psSignalTemp = m_psMsgTemp->m_psMsg->m_psSignals;
-                while(m_psSignalTemp != NULL)
+                while(m_psSignalTemp != nullptr)
                 {
                     iSignalCount++; //increment the signal count
                     m_psSignalTemp = m_psSignalTemp->m_psNextSignalList;
@@ -1462,7 +1462,7 @@ Modifications  :
 ******************************************************************************/
 void CMsgInterpretationJ1939::vClear()
 {
-    if(NULL != m_psMsgRoot)
+    if(nullptr != m_psMsgRoot)
     {
         SMSGENTRY::vClearMsgList(m_psMsgRoot);
     }
@@ -1480,14 +1480,14 @@ Modifications  :
 ******************************************************************************/
 void CMsgInterpretationJ1939::vCopy(CMsgInterpretationJ1939* pDest) const
 {
-    if ( pDest != NULL)
+    if ( pDest != nullptr)
     {
         pDest->vClear();
         pDest->m_eNumFormat = m_eNumFormat;
         //Update the Msg list
-        SMSGENTRY* pDestRoot = NULL;
+        SMSGENTRY* pDestRoot = nullptr;
         SMSGENTRY* pTempSrc = m_psMsgRoot;
-        while (pTempSrc != NULL)
+        while (pTempSrc != nullptr)
         {
             SMSGENTRY::bUpdateMsgList(pDestRoot, pTempSrc->m_psMsg);
             pTempSrc = pTempSrc->m_psNext;
@@ -1505,7 +1505,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
     BOOL bSuccess = FALSE;
 
     // Get message name from msg code
-    sMESSAGE* pMsgs = NULL;
+    sMESSAGE* pMsgs = nullptr;
     omSignalInfo.RemoveAll();
     if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgRoot, unMsgCode, pMsgs))
     {
@@ -1531,9 +1531,9 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
         // Get signal details in a byte
         register sSIGNALS* psSignal = pMsgs->m_psSignals;
         // If Signal found at Bit position
-        while (psSignal!= NULL)
+        while (psSignal!= nullptr)
         {
-            //if (psSignal != NULL)
+            //if (psSignal != nullptr)
             //{
             __int64 n64SigVal = 0;
             CString omSignalValue;
@@ -1557,7 +1557,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
             // descriptor is defined
             CSignalDescVal* pouCurrSignalDesc =
                 psSignal->m_oSignalIDVal;
-            while (pouCurrSignalDesc != NULL && bFoundSignalDesc == FALSE)
+            while (pouCurrSignalDesc != nullptr && bFoundSignalDesc == FALSE)
             {
                 //                    if (pouCurrSignalDesc->m_n64SignalVal ==
                 //                                          n64SigVal )
@@ -1663,14 +1663,14 @@ for(auto ouSignalInfo : ouFlexSignalInfo)   //Only C++11;
 
 void CMsgInterpretationLIN::vCopy(CMsgInterpretationLIN* pDest) const
 {
-    if ( pDest != NULL)
+    if ( pDest != nullptr)
     {
         //pDest->vClear();
         pDest->m_eNumFormat = m_eNumFormat;
         //Update the Msg list
-        SMSGENTRY* pDestRoot = NULL;
+        SMSGENTRY* pDestRoot = nullptr;
         SMSGENTRY* pTempSrc = m_psMsgRoot;
-        while (pTempSrc != NULL)
+        while (pTempSrc != nullptr)
         {
             SMSGENTRY::bUpdateMsgList(pDestRoot, pTempSrc->m_psMsg);
             pTempSrc = pTempSrc->m_psNext;
@@ -1720,7 +1720,7 @@ for(auto ouSignalInfo : ouFlexSignalInfo)   //Only C++11;
 
 CMsgInterpretationLIN::CMsgInterpretationLIN()
 {
-    m_ouLINConfig = NULL;
+    m_ouLINConfig = nullptr;
 }
 
 CMsgInterpretationLIN::~CMsgInterpretationLIN()

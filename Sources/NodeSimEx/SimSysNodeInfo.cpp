@@ -160,16 +160,16 @@ void vProcessCurrErrorEntry(const SERROR_INFO& sErrInfo, DWORD dwClientId)
         }
     }
 }
-PSTCAN_TIME_MSG sCanTimeData=NULL;
-STCANDATA sCanData;//=NULL;
+PSTCAN_TIME_MSG sCanTimeData=nullptr;
+STCANDATA sCanData;//=nullptr;
 
-PSTLIN_TIME_MSG sLinTimeData=NULL;
+PSTLIN_TIME_MSG sLinTimeData=nullptr;
 STLINDATA sLinData;
 int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
 {
-    ASSERT(psNodeInfo != NULL);
+    ASSERT(psNodeInfo != nullptr);
 
-    if(psNodeInfo != NULL)
+    if(psNodeInfo != nullptr)
     {
         switch (psNodeInfo->m_eBus)
         {
@@ -179,7 +179,7 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                 {
                     sCanData.m_ucDataType = RX_FLAG;
 
-                    if(psNodeInfo != NULL)
+                    if(psNodeInfo != nullptr)
                     {
                         INT Result = psNodeInfo->m_ouCanBufFSE.ReadFromBuffer(&sCanData);
                         if (Result == ERR_READ_MEMORY_SHORT)
@@ -193,7 +193,7 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                         // Give the msg to NodeSimx for simulation
                         if (sCanData.m_ucDataType == RX_FLAG)
                         {
-                            if ( sCanTimeData == NULL )
+                            if ( sCanTimeData == nullptr )
                             {
                                 sCanTimeData = new STCAN_TIME_MSG;
                             }
@@ -248,7 +248,7 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                         sJ1939Msg.vSetDataStream(m_byTempData);
                         CExecuteFunc* pExecFunc = CExecuteManager::ouGetExecuteManager(psNodeInfo->m_eBus).
                                                   pouGetExecuteFunc(psNodeInfo->m_dwClientId);
-                        if ((pExecFunc != NULL) && (pExecFunc->bGetFlagStatus(EXMSG_HANDLER) == TRUE))
+                        if ((pExecFunc != nullptr) && (pExecFunc->bGetFlagStatus(EXMSG_HANDLER) == TRUE))
                         {
                             pExecFunc->vExecuteOnPGNHandler(&sJ1939Msg);
                         }
@@ -263,7 +263,7 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                 {
                     sLinData.m_ucDataType = RX_FLAG;
 
-                    if(psNodeInfo != NULL)
+                    if(psNodeInfo != nullptr)
                     {
                         INT Result = psNodeInfo->m_ouLinBufSE.ReadFromBuffer(&sLinData);
                         if (Result == ERR_READ_MEMORY_SHORT)
@@ -277,7 +277,7 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                         if ( sLinData.m_eLinMsgType == LIN_MSG && sLinData.m_ucDataType == RX_FLAG )
                         {
                             // Give the msg to NodeSimx for simulation
-                            if ( sLinTimeData == NULL )
+                            if ( sLinTimeData == nullptr )
                             {
                                 sLinTimeData = new STLIN_TIME_MSG;
                             }
@@ -304,10 +304,10 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
             break;
         }
     }
-    if (NULL != sCanTimeData)
+    if (nullptr != sCanTimeData)
     {
         //delete sCanTimeData;
-        //sCanTimeData = NULL;
+        //sCanTimeData = nullptr;
     }
     return 0;
 }
@@ -315,12 +315,12 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
 DWORD WINAPI NodeDataReadThreadProc(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         return (DWORD)-1;
     }
     PSNODEINFO psNodeInfo = (PSNODEINFO)pThreadParam->m_pBuffer;
-    if (psNodeInfo == NULL)
+    if (psNodeInfo == nullptr)
     {
         return (DWORD)-1;
     }
@@ -480,7 +480,7 @@ Function Name    :  CSimSysNodeInfo
 CSimSysNodeInfo::CSimSysNodeInfo(ETYPE_BUS eBus)
 {
     m_eBus          = eBus;
-    m_psSimSysInfo  = NULL;
+    m_psSimSysInfo  = nullptr;
 
 }
 /******************************************************************************
@@ -534,10 +534,10 @@ void CSimSysNodeInfo::vGetActiveNodeNames( CString omStrSimSysName,
         CStringArray& omStrActiveNodeList)
 {
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != NULL)
+    if (pTempSimsys != nullptr)
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
             {
@@ -565,10 +565,10 @@ BOOL CSimSysNodeInfo::bIsDuplicateDllName( CString omStrDllName)
     if (!omStrDllName.IsEmpty())
     {
         PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-        while((pTempSimsys != NULL)  && (!bDllPresent))
+        while((pTempSimsys != nullptr)  && (!bDllPresent))
         {
             PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while((pTempNode != NULL) && (!bDllPresent))
+            while((pTempNode != nullptr) && (!bDllPresent))
             {
                 if( (pTempNode->m_sNodeInfo.m_omStrDllName.CompareNoCase(omStrDllName) == 0 ))
                 {
@@ -602,10 +602,10 @@ BOOL CSimSysNodeInfo::bIsDuplicateCFile(CString& omStrCfile)
     if (!omStrCfile.IsEmpty())
     {
         PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-        while((pTempSimsys != NULL)  && (!bCFilePresent))
+        while((pTempSimsys != nullptr)  && (!bCFilePresent))
         {
             PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while((pTempNode != NULL) && (!bCFilePresent))
+            while((pTempNode != nullptr) && (!bCFilePresent))
             {
                 if( (pTempNode->m_sNodeInfo.m_omStrFileName.CompareNoCase(omStrCfile) == 0 ))
                 {
@@ -636,10 +636,10 @@ BOOL CSimSysNodeInfo::bIsDuplicateNode( CString omStrNodeName)
     if (!omStrNodeName.IsEmpty())
     {
         PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-        while((pTempSimsys != NULL)  && (!bNodePresent))
+        while((pTempSimsys != nullptr)  && (!bNodePresent))
         {
             PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while((pTempNode != NULL) && (!bNodePresent))
+            while((pTempNode != nullptr) && (!bNodePresent))
             {
                 if( (pTempNode->m_sNodeInfo.m_omStrNodeName.CompareNoCase(omStrNodeName) == 0 ))
                 {
@@ -669,10 +669,10 @@ BOOL CSimSysNodeInfo::bIsDuplicateEcuName( UINT64 un64EcuName)
 {
     BOOL bNodePresent = FALSE;
     PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    while((pTempSimsys != NULL)  && (!bNodePresent))
+    while((pTempSimsys != nullptr)  && (!bNodePresent))
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while((pTempNode != NULL) && (!bNodePresent))
+        while((pTempNode != nullptr) && (!bNodePresent))
         {
             if(pTempNode->m_sNodeInfo.m_unEcuName == un64EcuName)
             {
@@ -699,10 +699,10 @@ BOOL CSimSysNodeInfo::bIsDuplicateAddress( BYTE byAddress)
 {
     BOOL bNodePresent = FALSE;
     PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    while((pTempSimsys != NULL)  && (!bNodePresent))
+    while((pTempSimsys != nullptr)  && (!bNodePresent))
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while((pTempNode != NULL) && (!bNodePresent))
+        while((pTempNode != nullptr) && (!bNodePresent))
         {
             if(pTempNode->m_sNodeInfo.m_byPrefAddress == byAddress)
             {
@@ -734,13 +734,13 @@ BOOL CSimSysNodeInfo::bIsBuildAllValid(CString omStrSimSysName)
     PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
     // when any sim sys name is specified.  or
     // when no sim sys name is specified , check for all the sim sys
-    while(pTempSimsys != NULL)
+    while(pTempSimsys != nullptr)
     {
         if((pTempSimsys->m_omStrSimSysName == omStrSimSysName)
                 || (omStrSimSysName == STR_EMPTY ))
         {
             PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != NULL)
+            while(pTempNode != nullptr)
             {
                 if((pTempNode->m_sNodeInfo.m_omStrFileName != STR_EMPTY) &&
                         (!bIsBuildValid))
@@ -778,13 +778,13 @@ BOOL CSimSysNodeInfo::bIsLoadAllValid(CString omStrSimSysName)
     PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
     // when any sim sys name is specified.  or
     // when no sim sys name is specified , check for all the sim sys
-    while(pTempSimsys != NULL)
+    while(pTempSimsys != nullptr)
     {
         if((pTempSimsys->m_omStrSimSysName == omStrSimSysName) ||
                 (omStrSimSysName == STR_EMPTY ))
         {
             PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != NULL)
+            while(pTempNode != nullptr)
             {
                 if((pTempNode->m_sNodeInfo.m_omStrDllName != STR_EMPTY) &&
                         (!bIsLoadValid))// if any dll is present
@@ -822,13 +822,13 @@ BOOL CSimSysNodeInfo::bIsUnLoadAllValid(CString omStrSimSysName)
     BOOL bIsUnLoadValid = FALSE;
     PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
 
-    while(pTempSimsys != NULL)
+    while(pTempSimsys != nullptr)
     {
         if((pTempSimsys->m_omStrSimSysName == omStrSimSysName)
                 || (omStrSimSysName == STR_EMPTY ))
         {
             PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != NULL)
+            while(pTempNode != nullptr)
             {
                 if((pTempNode->m_sNodeInfo.m_omStrDllName != STR_EMPTY) &&
                         (!bIsUnLoadValid)) // if any dll is present
@@ -856,7 +856,7 @@ Function Name    :  psGetSimSysPointer
 Input(s)         :  CString omStrSimSysName
 Output           :  PSSIMSYSINFO
 Functionality    :  Returns associted sim sys pointer if found, otherwise
-NULL.
+nullptr.
 Member of        :  CSimSysNodeInfo
 Friend of        :      -
 Author(s)        :  Harika M
@@ -866,11 +866,11 @@ Modifications    :
 
 PSSIMSYSINFO CSimSysNodeInfo::psGetSimSysPointer( CString omStrSimSysName)
 {
-    PSSIMSYSINFO psSelectedSimSys = NULL;
+    PSSIMSYSINFO psSelectedSimSys = nullptr;
 
     psSelectedSimSys = m_psSimSysInfo;
 
-    while(psSelectedSimSys != NULL)
+    while(psSelectedSimSys != nullptr)
     {
         if(psSelectedSimSys->m_omStrSimSysName == omStrSimSysName)
         {
@@ -879,7 +879,7 @@ PSSIMSYSINFO CSimSysNodeInfo::psGetSimSysPointer( CString omStrSimSysName)
         psSelectedSimSys = psSelectedSimSys->m_psSimsysNext;
     }
 
-    return NULL;   // if the simsys is not present.
+    return nullptr;   // if the simsys is not present.
 }
 
 
@@ -889,7 +889,7 @@ Input(s)         :  CString& omStrSimsysName, CString& omStrNodeName
 Output           :  PSSIMSYSINFO
 Functionality    :  Returns node ptr for the given simulated system name
 if found, otherwise
-NULL.
+nullptr.
 Member of        :  CSimSysNodeInfo
 Friend of        :      -
 Author(s)        :  Anish Kr
@@ -899,17 +899,17 @@ Modifications    :
 PSNODEINFO CSimSysNodeInfo::psGetSimSysNodePointer(CString omStrSimsysName,
         CString omStrNodeName)
 {
-    PSNODEINFO psNodeInfo = NULL;
+    PSNODEINFO psNodeInfo = nullptr;
     if ( !omStrNodeName.IsEmpty() )
     {
         //If simsys name is provided then searcch from through that
         if ( !omStrSimsysName.IsEmpty())
         {
             PSSIMSYSINFO pTempSimsysInfo = psGetSimSysPointer(omStrSimsysName);
-            if(pTempSimsysInfo != NULL)
+            if(pTempSimsysInfo != nullptr)
             {
                 PSNODELIST pTempNode = pTempSimsysInfo->m_psNodesList;
-                while(pTempNode != NULL)
+                while(pTempNode != nullptr)
                 {
                     if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
                     {
@@ -925,10 +925,10 @@ PSNODEINFO CSimSysNodeInfo::psGetSimSysNodePointer(CString omStrSimsysName,
             //This is for execute func object calls where simsys name is not known
             BOOL bFound = FALSE;
             PSSIMSYSINFO pTempSimsysInfo = m_psSimSysInfo;
-            while((pTempSimsysInfo != NULL) && (!bFound))
+            while((pTempSimsysInfo != nullptr) && (!bFound))
             {
                 PSNODELIST pTempNode = pTempSimsysInfo->m_psNodesList;
-                while((pTempNode != NULL) && (!bFound))
+                while((pTempNode != nullptr) && (!bFound))
                 {
                     if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
                     {
@@ -949,7 +949,7 @@ PSNODEINFO CSimSysNodeInfo::psGetSimSysNodePointer(CString omStrSimsysName,
 Function Name    :  bDeleteSimsysFromInfo
 Input(s)         :
 Output           :  CString omStrSimSysname
-Functionality    :  Deletes Simulated system from the datastructure if input is NULL
+Functionality    :  Deletes Simulated system from the datastructure if input is nullptr
                     then deletes all the simulated systems
 Member of        :  CSimSysNodeInfo
 Friend of        :      -
@@ -965,10 +965,10 @@ BOOL CSimSysNodeInfo::bDeleteSimsysFromInfo( CString omStrSimSysname )
         // to delete all the Simulated systems
 
         // Temporary list
-        PSSIMSYSINFO pNext = NULL; //
-        PSSIMSYSINFO pPrev = NULL; // previous list
+        PSSIMSYSINFO pNext = nullptr; //
+        PSSIMSYSINFO pPrev = nullptr; // previous list
         pPrev = m_psSimSysInfo;
-        while(pPrev != NULL)
+        while(pPrev != nullptr)
         {
             // First delete all the nodes under each sim sys
             bDeleteNodeFromSimSys(pPrev->m_omStrSimSysName , STR_EMPTY );
@@ -976,7 +976,7 @@ BOOL CSimSysNodeInfo::bDeleteSimsysFromInfo( CString omStrSimSysname )
         }
         //Now dalete all the simsysinfo pointers
         pPrev = m_psSimSysInfo;
-        while(pPrev != NULL)
+        while(pPrev != nullptr)
         {
             pNext = pPrev->m_psSimsysNext;
             CExecuteManager::ouGetExecuteManager(m_eBus).vDeleteAllNode();
@@ -984,15 +984,15 @@ BOOL CSimSysNodeInfo::bDeleteSimsysFromInfo( CString omStrSimSysname )
             pPrev = pNext;
         }
         //  return;
-        m_psSimSysInfo = pPrev = NULL;
+        m_psSimSysInfo = pPrev = nullptr;
     }
 
     else
     {
         bReturnValue = FALSE;
         // Temporary list
-        PSSIMSYSINFO pCurr = NULL; //
-        PSSIMSYSINFO pPrev = NULL; // previous list
+        PSSIMSYSINFO pCurr = nullptr; //
+        PSSIMSYSINFO pPrev = nullptr; // previous list
         pCurr = m_psSimSysInfo;
         //If first node
         if( pCurr->m_omStrSimSysName == omStrSimSysname)
@@ -1006,7 +1006,7 @@ BOOL CSimSysNodeInfo::bDeleteSimsysFromInfo( CString omStrSimSysname )
         {
             //If other node go through the list
             pPrev = pCurr;
-            while((pCurr != NULL) && (!bReturnValue))
+            while((pCurr != nullptr) && (!bReturnValue))
             {
                 if(pCurr->m_omStrSimSysName == omStrSimSysname)
                 {
@@ -1041,7 +1041,7 @@ BOOL CSimSysNodeInfo::bDeleteNodeFromSimSys(CString& omStrSimsysName,
     BOOL bReturnValue = FALSE;
     PSSIMSYSINFO pTempSimSys = psGetSimSysPointer(omStrSimsysName);
     //if simsys is present
-    if(pTempSimSys != NULL)
+    if(pTempSimSys != nullptr)
     {
         //If the simsys is found get the nodelist pointer
         PSNODELIST pTempNodeList = pTempSimSys->m_psNodesList;
@@ -1049,7 +1049,7 @@ BOOL CSimSysNodeInfo::bDeleteNodeFromSimSys(CString& omStrSimsysName,
         if (omStrNodeToBeDeleted== STR_EMPTY)
         {
             PSNODELIST pTemp;
-            while(pTempNodeList != NULL )
+            while(pTempNodeList != nullptr )
             {
                 pTemp = pTempNodeList;
                 pTempNodeList = pTempNodeList->m_psNextNode;
@@ -1058,7 +1058,7 @@ BOOL CSimSysNodeInfo::bDeleteNodeFromSimSys(CString& omStrSimsysName,
             }
             bReturnValue = TRUE;
             //If all nodes are deleted initialize it
-            pTempSimSys->m_psNodesList = NULL;
+            pTempSimSys->m_psNodesList = nullptr;
             pTempSimSys->m_unNumberOfNodesAdded = 0;
         }
         else
@@ -1079,7 +1079,7 @@ BOOL CSimSysNodeInfo::bDeleteNodeFromSimSys(CString& omStrSimsysName,
             else
             {
                 BOOL bFound = FALSE;
-                while( pCurr != NULL && bFound == FALSE)
+                while( pCurr != nullptr && bFound == FALSE)
                 {
                     if(pCurr->m_sNodeInfo.m_omStrNodeName == omStrNodeToBeDeleted)
                     {
@@ -1133,7 +1133,7 @@ BOOL CSimSysNodeInfo::bAddNewSimSysInfo(CString omStrPathname)
         //Now save the file with new simsysinfo detail
         CSimSysConfigDetails* pSimsysConfig =
             CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysConfig();
-        if (pSimsysConfig != NULL)
+        if (pSimsysConfig != nullptr)
         {
             pSimsysConfig->nSaveConfiguration(omStrPathname, psNewSimsys);
         }
@@ -1161,7 +1161,7 @@ UINT CSimSysNodeInfo::unGetNumberOfSimSys()
 {
     UINT unSimSysCount = 0;
     PSSIMSYSINFO pTempSimSys = m_psSimSysInfo;
-    while (pTempSimSys != NULL)
+    while (pTempSimSys != nullptr)
     {
         unSimSysCount++;
         pTempSimSys = pTempSimSys->m_psSimsysNext;
@@ -1189,10 +1189,10 @@ UINT CSimSysNodeInfo::unGetNumberOfSimSys()
 void CSimSysNodeInfo::vSetEnableAllSimSysHandlers(CString omStrSimSysName, BOOL bIsEnabled )
 {
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if(pTempSimsys != NULL)
+    if(pTempSimsys != nullptr)
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
             {
@@ -1235,12 +1235,12 @@ BOOL CSimSysNodeInfo::bReturnAllHandlersStatus(CString& omStrSimSysName)
 {
     BOOL bIsEnabled = FALSE;
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if(pTempSimsys != NULL )
+    if(pTempSimsys != nullptr )
     {
         UINT nActiveNodeCount = 0;
         UINT nNoOfEnabledHan = 0;
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_bIsAllHandlersEnabled == TRUE)
             {
@@ -1282,10 +1282,10 @@ void CSimSysNodeInfo::vSetEnableAllSimSysKeyHandlers(CString& omStrSimSysName
         , BOOL bIsEnabled)
 {
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if(pTempSimsys != NULL)
+    if(pTempSimsys != nullptr)
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
             {
@@ -1316,12 +1316,12 @@ BOOL CSimSysNodeInfo::bReturnAllKeyHandlersStatus(CString& omStrSimSysName)
 {
     BOOL bIsEnabled = FALSE;
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if(pTempSimsys != NULL )
+    if(pTempSimsys != nullptr )
     {
         UINT nNoOfEnabledHan = 0;
         UINT nActiveNodeCount = 0;
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled == TRUE)
             {
@@ -1362,10 +1362,10 @@ void CSimSysNodeInfo::vSetEnableAllSimSysMsgHandlers(CString& omStrSimSysName
         , BOOL bIsEnabled)
 {
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != NULL)
+    if (pTempSimsys != nullptr)
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
 
             // Set all handlers are enbled in all the nodes under the sim sys
@@ -1397,12 +1397,12 @@ BOOL CSimSysNodeInfo::bReturnAllMsgHandlersStatus(CString& omStrSimSysName)
 {
     BOOL bIsEnabled = FALSE;
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != NULL )
+    if (pTempSimsys != nullptr )
     {
         UINT nNoOfEnabledHan = 0;
         UINT nActiveNodeCount = 0;
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled == TRUE)
             {
@@ -1442,10 +1442,10 @@ void CSimSysNodeInfo::vSetEnableAllSimSysErrorHandlers(CString& omStrSimSysName
         , BOOL bIsEnabled)
 {
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != NULL)
+    if (pTempSimsys != nullptr)
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
 
             // Set all handlers are enbled in all the nodes under the sim sys
@@ -1473,10 +1473,10 @@ void CSimSysNodeInfo::vSetEnableAllSimSysEventHandlers(CString& omStrSimSysName
         , BOOL bIsEnabled)
 {
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != NULL)
+    if (pTempSimsys != nullptr)
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
 
             // Set all handlers are enbled in all the nodes under the sim sys
@@ -1511,12 +1511,12 @@ BOOL CSimSysNodeInfo::bReturnAllErrorHandlersStatus(CString& omStrSimSysName)
     BOOL bIsEnabled = FALSE;
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
 
-    if (pTempSimsys != NULL )
+    if (pTempSimsys != nullptr )
     {
         UINT nNoOfEnabledHan = 0;
         UINT nActiveNodeCount = 0;
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled == TRUE)
             {
@@ -1549,12 +1549,12 @@ BOOL CSimSysNodeInfo::bReturnAllEventHandlersStatus(CString& omStrSimSysName)
     BOOL bIsEnabled = FALSE;
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
 
-    if (pTempSimsys != NULL )
+    if (pTempSimsys != nullptr )
     {
         UINT nNoOfEnabledHan = 0;
         UINT nActiveNodeCount = 0;
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_bEventHandlersEnabled == TRUE)
             {
@@ -1602,10 +1602,10 @@ void CSimSysNodeInfo::vSetEnableAllSimSysTimerHandlers(CString omStrSimSysName)
     //Above code is commented because now the timer dialog box is not
 
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != NULL)
+    if (pTempSimsys != nullptr)
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             CExecuteManager::ouGetExecuteManager(m_eBus).vEnableNodeTimerHandler(
                 &pTempNode->m_sNodeInfo , TRUE);
@@ -1635,10 +1635,10 @@ void CSimSysNodeInfo::vSetEnableAllSimSysTimerHandlers(CString omStrSimSysName)
 void CSimSysNodeInfo::vSetDisableAllSimSysTimerHandlers(CString omStrSimSysName)
 {
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != NULL)
+    if (pTempSimsys != nullptr)
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             CExecuteManager::ouGetExecuteManager(m_eBus).vEnableNodeTimerHandler(
                 &pTempNode->m_sNodeInfo , FALSE);
@@ -1666,12 +1666,12 @@ BOOL CSimSysNodeInfo::bReturnAllTimerHandlersStatus(CString& omStrSimSysName)
     BOOL bIsEnabled = FALSE;
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
 
-    if (pTempSimsys != NULL )
+    if (pTempSimsys != nullptr )
     {
         UINT nNoOfEnabledHan = 0;
         UINT nActiveNodeCount = 0;
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled == TRUE)
             {
@@ -1716,13 +1716,13 @@ void CSimSysNodeInfo::vSetEnableNodeAllHandlers(CString omStrSimSysName ,
         BOOL bIsEnabled)
 {
     PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    while(pTempSimsys != NULL)
+    while(pTempSimsys != nullptr)
     {
         if((pTempSimsys->m_omStrSimSysName == omStrSimSysName)||
                 ( omStrSimSysName == STR_EMPTY))
         {
             PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != NULL)
+            while(pTempNode != nullptr)
             {
                 if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
                 {
@@ -1771,10 +1771,10 @@ BOOL CSimSysNodeInfo::bReturnNodeAllHandlersStatus(CString& omStrSimSysName ,
 {
     BOOL bIsEnabled = FALSE;
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != NULL )
+    if (pTempSimsys != nullptr )
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
             {
@@ -1804,13 +1804,13 @@ void CSimSysNodeInfo::vSetEnableNodeKeyHandlers(CString omStrSimSysName ,
         CString& omStrNodeName  , BOOL bIsEnabled)
 {
     PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    while(pTempSimsys != NULL)
+    while(pTempSimsys != nullptr)
     {
         if((pTempSimsys->m_omStrSimSysName == omStrSimSysName) ||
                 ( omStrSimSysName == STR_EMPTY))
         {
             PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != NULL)
+            while(pTempNode != nullptr)
             {
                 if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
                 {
@@ -1849,10 +1849,10 @@ BOOL CSimSysNodeInfo::bReturnNodeKeyHandlersStatus(CString& omStrSimSysName ,
 {
     BOOL bIsEnabled = FALSE;
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != NULL )
+    if (pTempSimsys != nullptr )
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
             {
@@ -1884,13 +1884,13 @@ void CSimSysNodeInfo::vSetEnableNodeMsgHandlers(CString omStrSimSysName ,
         CString& omStrNodeName , BOOL bIsEnabled)
 {
     PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    while(pTempSimsys != NULL)
+    while(pTempSimsys != nullptr)
     {
         if((pTempSimsys->m_omStrSimSysName == omStrSimSysName) ||
                 ( omStrSimSysName == STR_EMPTY))
         {
             PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != NULL)
+            while(pTempNode != nullptr)
             {
                 if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
                 {
@@ -1929,10 +1929,10 @@ BOOL CSimSysNodeInfo::bReturnNodeMsgHandlersStatus(CString& omStrSimSysName ,
 {
     BOOL bIsEnabled = FALSE;
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != NULL  )
+    if (pTempSimsys != nullptr  )
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
             {
@@ -1963,13 +1963,13 @@ void CSimSysNodeInfo::vSetEnableNodeErrorHandlers(CString omStrSimSysName ,
         CString& omStrNodeName , BOOL bIsEnabled)
 {
     PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    while(pTempSimsys != NULL)
+    while(pTempSimsys != nullptr)
     {
         if((pTempSimsys->m_omStrSimSysName == omStrSimSysName) ||
                 ( omStrSimSysName == STR_EMPTY))
         {
             PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != NULL)
+            while(pTempNode != nullptr)
             {
                 if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
                 {
@@ -2004,13 +2004,13 @@ void CSimSysNodeInfo::vSetEnableNodeEventHandlers(CString omStrSimSysName ,
         CString& omStrNodeName , BOOL bIsEnabled)
 {
     PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    while(pTempSimsys != NULL)
+    while(pTempSimsys != nullptr)
     {
         if((pTempSimsys->m_omStrSimSysName == omStrSimSysName) ||
                 ( omStrSimSysName == STR_EMPTY))
         {
             PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != NULL)
+            while(pTempNode != nullptr)
             {
                 if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
                 {
@@ -2046,10 +2046,10 @@ BOOL CSimSysNodeInfo::bReturnNodeErrorHandlersStatus(CString& omStrSimSysName ,
 {
     BOOL bIsEnabled = FALSE;
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != NULL  )
+    if (pTempSimsys != nullptr  )
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
             {
@@ -2076,10 +2076,10 @@ BOOL CSimSysNodeInfo::bReturnNodeEventHandlersStatus(CString& omStrSimSysName ,
 {
     BOOL bIsEnabled = FALSE;
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != NULL  )
+    if (pTempSimsys != nullptr  )
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
             {
@@ -2113,13 +2113,13 @@ void CSimSysNodeInfo::vSetEnableNodeTimerHandlers(CString omStrSimSysName ,
     CStringArray omStrNodeList;
     PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
     BOOL bFound = FALSE;
-    while((pTempSimsys != NULL) && (TRUE != bFound))
+    while((pTempSimsys != nullptr) && (TRUE != bFound))
     {
         if((pTempSimsys->m_omStrSimSysName == omStrSimSysName) ||
                 ( omStrSimSysName == STR_EMPTY))
         {
             PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while((pTempNode != NULL) && (TRUE != bFound))
+            while((pTempNode != nullptr) && (TRUE != bFound))
             {
                 if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
                 {
@@ -2164,10 +2164,10 @@ BOOL CSimSysNodeInfo::bReturnNodeTimerHandlersStatus(CString& omStrSimSysName ,
 {
     BOOL bIsEnabled = FALSE;
     PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != NULL  )
+    if (pTempSimsys != nullptr  )
     {
         PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != NULL)
+        while(pTempNode != nullptr)
         {
             if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
             {
@@ -2199,12 +2199,12 @@ BOOL CSimSysNodeInfo::bReturnNodeTimerHandlersStatus(CString& omStrSimSysName ,
 /******************************************************************************/
 void CSimSysNodeInfo::vReleaseSimSysInfo()
 {
-    PSSIMSYSINFO psNextSimSysInfo    = NULL;
-    PSNODELIST psNextNodeList    = NULL;
-    PSSIMSYSINFO psCurrentSimSysInfo = NULL;
-    PSNODELIST psCurrentNodeList = NULL;
+    PSSIMSYSINFO psNextSimSysInfo    = nullptr;
+    PSNODELIST psNextNodeList    = nullptr;
+    PSSIMSYSINFO psCurrentSimSysInfo = nullptr;
+    PSNODELIST psCurrentNodeList = nullptr;
     PSSIMSYSINFO psTempSimSysInfo = m_psSimSysInfo;
-    if(psTempSimSysInfo != NULL )
+    if(psTempSimSysInfo != nullptr )
     {
         psCurrentSimSysInfo = psTempSimSysInfo;
         do
@@ -2219,17 +2219,17 @@ void CSimSysNodeInfo::vReleaseSimSysInfo()
                     delete psCurrentNodeList;
                     psCurrentNodeList = psNextNodeList;
                 }
-                while(psNextNodeList != NULL );
+                while(psNextNodeList != nullptr );
 
             }
             psNextSimSysInfo = psCurrentSimSysInfo->m_psSimsysNext;
             delete psCurrentSimSysInfo;
             psCurrentSimSysInfo = psNextSimSysInfo;
         }
-        while(psNextSimSysInfo != NULL );
+        while(psNextSimSysInfo != nullptr );
     }
-    psTempSimSysInfo = NULL;
-    m_psSimSysInfo = NULL;
+    psTempSimSysInfo = nullptr;
+    m_psSimSysInfo = nullptr;
 
 }
 
@@ -2237,7 +2237,7 @@ BOOL CSimSysNodeInfo::bIsSimSysPresent(CString omStrSimsysPath)
 {
     BOOL bReturn = FALSE;
     PSSIMSYSINFO psSimSys = m_psSimSysInfo;
-    while(psSimSys != NULL)
+    while(psSimSys != nullptr)
     {
         if(psSimSys->m_omStrSimSysName == omStrSimsysPath)
         {
@@ -2251,19 +2251,19 @@ BOOL CSimSysNodeInfo::bIsSimSysPresent(CString omStrSimsysPath)
 
 void CSimSysNodeInfo::vAddSimSys(PSSIMSYSINFO psSimSys)
 {
-    if (psSimSys != NULL)
+    if (psSimSys != nullptr)
     {
-        if (m_psSimSysInfo == NULL)
+        if (m_psSimSysInfo == nullptr)
         {
             //If the list is empty add to the start
             m_psSimSysInfo = psSimSys;
-            m_psSimSysInfo->m_psSimsysNext = NULL;
+            m_psSimSysInfo->m_psSimsysNext = nullptr;
         }
         else
         {
             //Else add to the end of the list
             PSSIMSYSINFO psTempSimSys = m_psSimSysInfo;
-            while (psTempSimSys->m_psSimsysNext != NULL)
+            while (psTempSimSys->m_psSimsysNext != nullptr)
             {
                 psTempSimSys = psTempSimSys->m_psSimsysNext;
             }
@@ -2289,11 +2289,11 @@ void CSimSysNodeInfo::vAddSimSys(PSSIMSYSINFO psSimSys)
 BOOL CSimSysNodeInfo::bIsAnyInfoInSimsysPreExist(sSIMSYSINFO* pSimsys)
 {
     BOOL bDuplicate = FALSE;
-    if (pSimsys != NULL)
+    if (pSimsys != nullptr)
     {
         CString omError = "";
         PSNODELIST psTempNode =  pSimsys->m_psNodesList;
-        while ((psTempNode != NULL) && (!bDuplicate) )
+        while ((psTempNode != nullptr) && (!bDuplicate) )
         {
             // Checks if the node name is a duplicate
             bDuplicate = bIsDuplicateNode( psTempNode->m_sNodeInfo.m_omStrNodeName);
@@ -2346,7 +2346,7 @@ BOOL CSimSysNodeInfo::bIsAnySimSysModified()
 {
     BOOL bModified = FALSE;
     PSSIMSYSINFO psTempSimSys = m_psSimSysInfo;
-    while ((psTempSimSys != NULL) && (!bModified))
+    while ((psTempSimSys != nullptr) && (!bModified))
     {
         if (psTempSimSys->m_bIsSimSysModified)
         {

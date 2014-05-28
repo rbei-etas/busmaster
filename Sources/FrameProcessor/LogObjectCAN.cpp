@@ -47,16 +47,16 @@ CLogObjectCAN::CLogObjectCAN(CString omVersion):CBaseLogObject(omVersion)
 {
     // Initialise the filtering block
     m_sFilterApplied.vClear();
-    m_pasControllerDetails = NULL;
+    m_pasControllerDetails = nullptr;
     m_nNumChannels = 0;
 }
 
 CLogObjectCAN::~CLogObjectCAN()
 {
-    if (NULL != m_pasControllerDetails)
+    if (nullptr != m_pasControllerDetails)
     {
         delete[] m_pasControllerDetails;
-        m_pasControllerDetails = NULL;
+        m_pasControllerDetails = nullptr;
     }
 }
 
@@ -84,9 +84,9 @@ BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
     }
 
     CString omLogText = "";
-    char* pTimeData = NULL;
-    char* pId = NULL;
-    char* pData = NULL;
+    char* pTimeData = nullptr;
+    char* pId = nullptr;
+    char* pData = nullptr;
 
     switch (m_sLogInfo.m_eLogTimerMode) // Time Mode
     {
@@ -208,7 +208,7 @@ BOOL CLogObjectCAN::bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic)
         return FALSE;
     }
 
-    if (NULL == m_pLogFile)
+    if (nullptr == m_pLogFile)
     {
         ASSERT(FALSE);
         return FALSE;
@@ -306,9 +306,9 @@ int CLogObjectCAN::Der_SetConfigData(xmlNodePtr pNodePtr)
     std::map<std::string, int> mapFilters;
     if (S_OK == sFilterApplied.nSetXMLConfigData(pNodePtr->doc, CAN))
     {
-        while(pNodePtr != NULL) //TODO:Move To Utils
+        while(pNodePtr != nullptr) //TODO:Move To Utils
         {
-            if ( pNodePtr->xmlChildrenNode != NULL )
+            if ( pNodePtr->xmlChildrenNode != nullptr )
             {
                 if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Filter")))
                 {
@@ -330,7 +330,7 @@ int CLogObjectCAN::Der_SetConfigData(xmlNodePtr pNodePtr)
                     }
 
                     xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-                    if(NULL != key)
+                    if(nullptr != key)
                     {
                         mapFilters[(char*)key] = nEnabled;
                         xmlFree(key);
@@ -400,11 +400,11 @@ void CLogObjectCAN::Der_SetChannelBaudRateDetails
 {
     SCONTROLLER_DETAILS* pTempControllerDetails=(SCONTROLLER_DETAILS*)controllerDetails;
 
-    if (NULL != m_pasControllerDetails)
+    if (nullptr != m_pasControllerDetails)
     {
         delete[] m_pasControllerDetails;
     }
-    m_pasControllerDetails = NULL;
+    m_pasControllerDetails = nullptr;
 
     m_pasControllerDetails = new SCONTROLLER_DETAILS [nNumChannels];
     for (int nIdx = 0; nIdx < nNumChannels; nIdx++)
@@ -421,7 +421,7 @@ void CLogObjectCAN::Der_GetChannelBaudRateDetails
 {
     SCONTROLLER_DETAILS* pTempControllerDetails=(SCONTROLLER_DETAILS*)controllerDetails;
 
-    if (NULL != m_pasControllerDetails && NULL != pTempControllerDetails)
+    if (nullptr != m_pasControllerDetails && nullptr != pTempControllerDetails)
     {
         for (int nIdx = 0; nIdx < m_nNumChannels; nIdx++)
         {

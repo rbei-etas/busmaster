@@ -191,7 +191,7 @@ INT  CSimSysConfigDetails::nSaveConfiguration(CString omStrCfgFilename,
 
 {
     UINT unErrorCode = defCONFIG_FILE_ERROR;
-    if (psSimSys != NULL)
+    if (psSimSys != nullptr)
     {
         unErrorCode = defCONFIG_FILE_SUCCESS;
         // first check if the file exists
@@ -338,7 +338,7 @@ int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode ,
 
                 //If loading create new simsysinfo and add it to the list later
                 psCurrSimSys = new sSIMSYSINFO;
-                if ( psCurrSimSys != NULL)
+                if ( psCurrSimSys != nullptr)
                 {
                     psCurrSimSys->m_omStrSimSysName = omStrSimSysPath;
                 }
@@ -383,7 +383,7 @@ int CSimSysConfigDetails::nLoadStoreData(UINT unArchiveMode ,
                 oSimCfgArchive << strVersion;
             }
 
-            if( psCurrSimSys != NULL )
+            if( psCurrSimSys != nullptr )
             {
                 // Load Sim Sys details
                 if( (bLoadStoreSimSysInfo(oSimCfgArchive,psCurrSimSys) != TRUE))
@@ -429,7 +429,7 @@ BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
 {
     BOOL bRetVal = FALSE;
 #ifndef _DEBUG
-    if (psSimsysInfo != NULL)
+    if (psSimsysInfo != nullptr)
     {
         bRetVal = TRUE;
         // loading the data
@@ -447,7 +447,7 @@ BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
                 for( UINT i = 0; i < psSimsysInfo-> m_unNumberOfNodesAdded; i++ )
                 {
                     PSNODELIST  psCurrentNodeList = new SNODELIST(m_eBus);
-                    if(psCurrentNodeList  != NULL )
+                    if(psCurrentNodeList  != nullptr )
                     {
                         roSimCfgArchive >> psCurrentNodeList->m_sNodeInfo.m_omStrDllName;
                         roSimCfgArchive >> psCurrentNodeList->m_sNodeInfo .m_omStrFileName;
@@ -488,7 +488,7 @@ BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
             else
             {
                 //Initialize the node list
-                psSimsysInfo->m_psNodesList = NULL;
+                psSimsysInfo->m_psNodesList = nullptr;
             }
         }
         // store the data
@@ -497,9 +497,9 @@ BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
             roSimCfgArchive << psSimsysInfo->m_unNumberOfNodesAdded;
             if(psSimsysInfo->m_unNumberOfNodesAdded > 0)
             {
-                PSNODELIST psCurrentNodeList  = NULL;
+                PSNODELIST psCurrentNodeList  = nullptr;
                 psCurrentNodeList  = psSimsysInfo->m_psNodesList;
-                while(psCurrentNodeList != NULL)
+                while(psCurrentNodeList != nullptr)
                 {
                     /* Get base path based on simulation file location */
                     std::string omStrBasePath;

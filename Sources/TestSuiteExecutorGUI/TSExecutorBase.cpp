@@ -35,7 +35,7 @@ Code Tag       :
 ******************************************************************************/
 CTSExecutorBase::CTSExecutorBase(void)
 {
-    m_pomResultDispaly = NULL;
+    m_pomResultDispaly = nullptr;
 }
 
 /******************************************************************************
@@ -68,7 +68,7 @@ Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorBase::TSX_SetDisplayWnd(CListCtrl* pomResultDispaly)
 {
-    if(pomResultDispaly != NULL)
+    if(pomResultDispaly != nullptr)
     {
         m_pomResultDispaly = pomResultDispaly;
         return S_OK;
@@ -90,7 +90,7 @@ Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorBase::TSX_DisplayMessage(CString& omStrMsg)
 {
-    if(m_pomResultDispaly != NULL)
+    if(m_pomResultDispaly != nullptr)
     {
         int nCount = m_pomResultDispaly->GetItemCount();
         m_pomResultDispaly->InsertItem(nCount, "");
@@ -115,7 +115,7 @@ Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorBase::TSX_DisplayResult(CString& omStrResult)
 {
-    if(m_pomResultDispaly != NULL)
+    if(m_pomResultDispaly != nullptr)
     {
         int nCount = m_pomResultDispaly->GetItemCount();
         m_pomResultDispaly->SetItemText(nCount-1, 2, omStrResult);

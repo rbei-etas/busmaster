@@ -44,7 +44,7 @@ static char THIS_FILE[] = __FILE__;
 /*  Date Created     :  19.02.2003                                            */
 /*  Modifications    :                                                        */
 /******************************************************************************/
-CErrHandlerDlgLIN::CErrHandlerDlgLIN(CFunctionEditorDoc* pDoc, CWnd* pParent /*=NULL*/,BOOL bIsDelete /*FALSE*/)
+CErrHandlerDlgLIN::CErrHandlerDlgLIN(CFunctionEditorDoc* pDoc, CWnd* pParent /*=nullptr*/,BOOL bIsDelete /*FALSE*/)
     : CDialog(CErrHandlerDlgLIN::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CErrHandlerDlg)
@@ -105,16 +105,16 @@ END_MESSAGE_MAP()
 /******************************************************************************/
 BOOL CErrHandlerDlgLIN::OnInitDialog()
 {
-    CStringArray* pomStrArrayHandlerName = NULL;
+    CStringArray* pomStrArrayHandlerName = nullptr;
 
     CDialog::OnInitDialog();
     // remove all the element previously added, if any.
     m_omStrArrayErrorHandler.RemoveAll();
     // Get the pointer to document
 
-    if( m_pDoc != NULL )
+    if( m_pDoc != nullptr )
     {
-        CButton* pomButton = NULL;
+        CButton* pomButton = nullptr;
         CString omStrHandlerName = STR_EMPTY ;
         CString omStrControl     = STR_EMPTY ;
         INT nCheck               = 0;
@@ -130,7 +130,7 @@ BOOL CErrHandlerDlgLIN::OnInitDialog()
             {
                 pomButton = (CButton*)
                             GetDlgItem(IDC_CHK_ERR_CHECKSUM_LIN + nIndex);
-                if(pomButton != NULL )
+                if(pomButton != nullptr )
                 {
                     omStrHandlerName = pomStrArrayHandlerName->GetAt(j);
                     pomButton->GetWindowText(omStrControl);
@@ -218,7 +218,7 @@ void CErrHandlerDlgLIN::OnCbtnErrorCancel()
 /******************************************************************************/
 void CErrHandlerDlgLIN::OnCbtnErrorOk()
 {
-    CButton* pomButton       = NULL;
+    CButton* pomButton       = nullptr;
     CString omStrHandlerName = STR_EMPTY ;
     CString omStrControl     = STR_EMPTY ;
     INT nCheck               = 0;
@@ -229,7 +229,7 @@ void CErrHandlerDlgLIN::OnCbtnErrorOk()
     {
         pomButton =
             (CButton*)GetDlgItem(IDC_CHK_ERR_CHECKSUM_LIN + j);
-        if(pomButton != NULL )
+        if(pomButton != nullptr )
         {
             nCheck      = pomButton->GetCheck();
             bIsEnable   = pomButton->IsWindowEnabled();

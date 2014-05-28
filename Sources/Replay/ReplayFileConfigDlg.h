@@ -33,7 +33,7 @@ public:
     // Constructor
     CReplayFileConfigDlg( CReplayManager& rouManager,
                           const SFILTERAPPLIED_CAN* psFilterConfigured,
-                          CWnd* pParent = NULL);
+                          CWnd* pParent = nullptr);
 
     // Dialog Data
     //{{AFX_DATA(CReplayFileConfigDlg)

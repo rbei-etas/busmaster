@@ -85,7 +85,7 @@ typedef struct
 } VSCAN_API_VERSION;
 
 
-#define VSCAN_FIRST_FOUND               NULL
+#define VSCAN_FIRST_FOUND               nullptr
 
 // Debug Mode
 #define VSCAN_DEBUG_MODE_CONSOLE        (void*)1

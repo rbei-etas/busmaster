@@ -63,12 +63,12 @@ GETTXSTOPFLAG               pfGetTxStopFlag;
 
 CTxHandler::CTxHandler(void)
 {
-    m_hTxHandle = NULL;
+    m_hTxHandle = nullptr;
 }
 
 CTxHandler::~CTxHandler(void)
 {
-    if ( m_hTxHandle != NULL )
+    if ( m_hTxHandle != nullptr )
     {
         FreeLibrary(m_hTxHandle);
     }
@@ -86,10 +86,10 @@ CTxHandler::~CTxHandler(void)
 *******************************************************************************/
 void CTxHandler::vLoadTx_DLL()
 {
-    if ( m_hTxHandle != NULL )
+    if ( m_hTxHandle != nullptr )
     {
         FreeLibrary(m_hTxHandle);
-        m_hTxHandle = NULL;
+        m_hTxHandle = nullptr;
     }
     m_hTxHandle = LoadLibrary("TXWindow.dll");
     vloadFuncPtrAddress();
@@ -107,22 +107,22 @@ void CTxHandler::vLoadTx_DLL()
 *******************************************************************************/
 void CTxHandler::vInitializeFuncPtrs()
 {
-    pfSetMsgDBPtrInDetailsView      = NULL;
-    pfShowConfigureMsgWindow        = NULL;
-    pfSetClientId                   = NULL;
-    pfSetDILInterfacePtr            = NULL;
-    pfPostMessageToTxWnd            = NULL;
-    pfConfigWindowShown             = NULL;
-    pfStartTransmission             = NULL;
-    pfAllocateMemoryForGlobalTxList = NULL;
-    pfAssignMsgBlockList            = NULL;
-    pfDeleteTxBlockMemory           = NULL;
-    pfStopTransmission              = NULL;
-    pfGetTxWndConfigData            = NULL;
-    pfSetTxWndConfigData            = NULL;
-    //pfIsTxWndConfigChanged            = NULL;
-    pfSetTxStopFlag                 = NULL;
-    pfGetTxStopFlag                 = NULL;
+    pfSetMsgDBPtrInDetailsView      = nullptr;
+    pfShowConfigureMsgWindow        = nullptr;
+    pfSetClientId                   = nullptr;
+    pfSetDILInterfacePtr            = nullptr;
+    pfPostMessageToTxWnd            = nullptr;
+    pfConfigWindowShown             = nullptr;
+    pfStartTransmission             = nullptr;
+    pfAllocateMemoryForGlobalTxList = nullptr;
+    pfAssignMsgBlockList            = nullptr;
+    pfDeleteTxBlockMemory           = nullptr;
+    pfStopTransmission              = nullptr;
+    pfGetTxWndConfigData            = nullptr;
+    pfSetTxWndConfigData            = nullptr;
+    //pfIsTxWndConfigChanged            = nullptr;
+    pfSetTxStopFlag                 = nullptr;
+    pfGetTxStopFlag                 = nullptr;
 }
 
 /*******************************************************************************
@@ -170,7 +170,7 @@ void CTxHandler::vloadFuncPtrAddress()
 *******************************************************************************/
 void CTxHandler::vSetMsgDBPtrInDetailsView(void* pMsgDB)
 {
-    if(pfSetMsgDBPtrInDetailsView != NULL)
+    if(pfSetMsgDBPtrInDetailsView != nullptr)
     {
         pfSetMsgDBPtrInDetailsView(pMsgDB);
     }
@@ -188,7 +188,7 @@ void CTxHandler::vSetMsgDBPtrInDetailsView(void* pMsgDB)
 *******************************************************************************/
 void CTxHandler::vShowConfigureMsgWindow(void* pParentWnd)
 {
-    if(pfShowConfigureMsgWindow != NULL)
+    if(pfShowConfigureMsgWindow != nullptr)
     {
         pfShowConfigureMsgWindow(pParentWnd);
     }
@@ -206,7 +206,7 @@ void CTxHandler::vShowConfigureMsgWindow(void* pParentWnd)
 *******************************************************************************/
 void CTxHandler::vSetClientID(DWORD dwClientID)
 {
-    if(pfSetClientId != NULL)
+    if(pfSetClientId != nullptr)
     {
         pfSetClientId(dwClientID);
     }
@@ -224,7 +224,7 @@ void CTxHandler::vSetClientID(DWORD dwClientID)
 *******************************************************************************/
 void CTxHandler::vSetDILInterfacePtr(void* ptrDILIntrf)
 {
-    if(pfSetDILInterfacePtr != NULL)
+    if(pfSetDILInterfacePtr != nullptr)
     {
         pfSetDILInterfacePtr(ptrDILIntrf);
     }
@@ -242,7 +242,7 @@ void CTxHandler::vSetDILInterfacePtr(void* ptrDILIntrf)
 *******************************************************************************/
 void CTxHandler::vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    if(pfPostMessageToTxWnd != NULL)
+    if(pfPostMessageToTxWnd != nullptr)
     {
         pfPostMessageToTxWnd(msg, wParam, lParam);
     }
@@ -262,7 +262,7 @@ HRESULT CTxHandler::hConfigWindowShown()
 {
     HRESULT hResult = S_FALSE;
 
-    if(pfConfigWindowShown != NULL)
+    if(pfConfigWindowShown != nullptr)
     {
         hResult = pfConfigWindowShown();
     }
@@ -282,7 +282,7 @@ HRESULT CTxHandler::hConfigWindowShown()
 *******************************************************************************/
 void CTxHandler::vStartTransmission(UCHAR ucKeyVal)
 {
-    if(pfStartTransmission != NULL)
+    if(pfStartTransmission != nullptr)
     {
         pfStartTransmission(ucKeyVal);
     }
@@ -302,7 +302,7 @@ HRESULT CTxHandler::hAllocateMemoryForGlobalTxList()
 {
     HRESULT hResult = S_OK;
 
-    if(pfAllocateMemoryForGlobalTxList != NULL)
+    if(pfAllocateMemoryForGlobalTxList != nullptr)
     {
         hResult = pfAllocateMemoryForGlobalTxList();
     }
@@ -322,7 +322,7 @@ HRESULT CTxHandler::hAllocateMemoryForGlobalTxList()
 *******************************************************************************/
 void CTxHandler::vAssignMsgBlockList()
 {
-    if(pfAssignMsgBlockList != NULL)
+    if(pfAssignMsgBlockList != nullptr)
     {
         pfAssignMsgBlockList();
     }
@@ -340,7 +340,7 @@ void CTxHandler::vAssignMsgBlockList()
 *******************************************************************************/
 void CTxHandler::vDeleteTxBlockMemory()
 {
-    if(pfDeleteTxBlockMemory != NULL)
+    if(pfDeleteTxBlockMemory != nullptr)
     {
         pfDeleteTxBlockMemory();
     }
@@ -358,7 +358,7 @@ void CTxHandler::vDeleteTxBlockMemory()
 *******************************************************************************/
 void CTxHandler::vStopTransmission(UINT unMaxWaitTime)
 {
-    if(pfStopTransmission != NULL)
+    if(pfStopTransmission != nullptr)
     {
         pfStopTransmission(unMaxWaitTime);
     }
@@ -375,7 +375,7 @@ void CTxHandler::vStopTransmission(UINT unMaxWaitTime)
 *******************************************************************************/
 void CTxHandler::vGetTxWndConfigData(xmlNodePtr pxmlNodePtr)
 {
-    if(pfGetTxWndConfigData != NULL)
+    if(pfGetTxWndConfigData != nullptr)
     {
         pfGetTxWndConfigData(pxmlNodePtr);
     }
@@ -400,14 +400,14 @@ void CTxHandler::vGetTxWndConfigData(BYTE * & /* pDesBuffer */, int & /* nBuffSi
 *******************************************************************************/
 void CTxHandler::vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize)
 {
-    if(pfSetTxWndConfigData != NULL)
+    if(pfSetTxWndConfigData != nullptr)
     {
         pfSetTxWndConfigData(pSrcBuffer,nBuffSize);
     }
 }
 void CTxHandler::vSetTxWndConfigData(xmlDocPtr pDoc)
 {
-    if(pfSetTxWndConfigDataXML != NULL)
+    if(pfSetTxWndConfigDataXML != nullptr)
     {
         pfSetTxWndConfigDataXML(pDoc);
     }
@@ -426,7 +426,7 @@ void CTxHandler::vSetTxWndConfigData(xmlDocPtr pDoc)
 HRESULT CTxHandler::hIsTxWndConfigChanged()
 {
     HRESULT hResult = S_OK;
-    //if(pfIsTxWndConfigChanged != NULL)
+    //if(pfIsTxWndConfigChanged != nullptr)
     //  hResult = pfIsTxWndConfigChanged();
     return hResult;
 }
@@ -435,7 +435,7 @@ UINT CTxHandler::unGetTxBlockCount(void)
 {
     UINT Result = 0;
 
-    if (NULL != pfGetTxBlockCount)
+    if (nullptr != pfGetTxBlockCount)
     {
         Result = pfGetTxBlockCount();
     }
@@ -454,7 +454,7 @@ UINT CTxHandler::unGetTxBlockCount(void)
 *******************************************************************************/
 void CTxHandler::vSetTxStopFlag(BOOL bStartStop)
 {
-    if (NULL != pfSetTxStopFlag)
+    if (nullptr != pfSetTxStopFlag)
     {
         pfSetTxStopFlag(bStartStop);
     }
@@ -474,7 +474,7 @@ BOOL CTxHandler::bGetTxStopFlag(void)
 {
     BOOL bResult = TRUE;
 
-    if (NULL != pfGetTxStopFlag)
+    if (nullptr != pfGetTxStopFlag)
     {
         bResult = pfGetTxStopFlag();
     }

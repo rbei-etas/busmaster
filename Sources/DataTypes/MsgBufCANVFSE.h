@@ -88,7 +88,7 @@ CMsgBufCANVFSE<SMSGBUFFER>::CMsgBufCANVFSE()
     m_nMsgSize = sizeof(SMSGBUFFER);
     vClearMessageBuffer();
     InitializeCriticalSection(&m_CritSectionForGB);
-    m_hNotifyingEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+    m_hNotifyingEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 }
 
 /******************************************************************************
@@ -107,7 +107,7 @@ template <typename SMSGBUFFER>
 CMsgBufCANVFSE<SMSGBUFFER>::~CMsgBufCANVFSE()
 {
     CloseHandle(m_hNotifyingEvent);
-    m_hNotifyingEvent = NULL;
+    m_hNotifyingEvent = nullptr;
     DeleteCriticalSection(&m_CritSectionForGB);
 }
 
@@ -153,7 +153,7 @@ int CMsgBufCANVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, int nIndex)
     HRESULT nResult = S_OK;
 
 #ifdef _DEBUG
-    ASSERT(psMsg != NULL);
+    ASSERT(psMsg != nullptr);
     ASSERT(!(m_nIndexRead > SIZE_APP_CAN_BUFFER));
 #endif
 
@@ -191,7 +191,7 @@ int CMsgBufCANVFSE<SMSGBUFFER>::ReadFromBuffer(SMSGBUFFER* psMsg, __int64 nSlotI
     int nIndex;
 
 #ifdef _DEBUG
-    ASSERT(psMsg != NULL);
+    ASSERT(psMsg != nullptr);
     ASSERT(!(m_nIndexRead > SIZE_APP_CAN_BUFFER));
 #endif
 
@@ -241,7 +241,7 @@ int CMsgBufCANVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg,
     int nResult = CALL_SUCCESS;
 
 #ifdef _DEBUG
-    ASSERT(psMsg != NULL);
+    ASSERT(psMsg != nullptr);
     ASSERT(!(m_nIndexWrite > SIZE_APP_CAN_BUFFER));
 #endif
 
@@ -278,7 +278,7 @@ int CMsgBufCANVFSE<SMSGBUFFER>::WriteIntoBuffer(const SMSGBUFFER* psMsg)
     int nResult = CALL_SUCCESS;
 
 #ifdef _DEBUG
-    ASSERT(psMsg != NULL);
+    ASSERT(psMsg != nullptr);
     ASSERT(!(m_nIndexWrite > SIZE_APP_CAN_BUFFER));
 #endif
 
@@ -413,7 +413,7 @@ nGetMapIndexAtID(int nIndex,__int64& nMapIndex)
     POSITION pos = m_omIdIndexMap.GetStartPosition();
     int nLocalIndex=0;
     __int64 nSlotID;
-    while( pos != NULL )
+    while( pos != nullptr )
     {
         m_omIdIndexMap.GetNextAssoc(pos, nSlotID, nLocalIndex);
         if(nIndex == nLocalIndex)

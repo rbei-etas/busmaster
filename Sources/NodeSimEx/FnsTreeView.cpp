@@ -175,7 +175,7 @@ BOOL CFnsTreeView::bPopulateTree()
     // Get document pointer
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)GetDocument();
 
-    if (pDoc != NULL)
+    if (pDoc != nullptr)
     {
         // Set heading text to Black, bold
         omTree.SetTextColor( BLACK_COLOR );
@@ -192,12 +192,12 @@ BOOL CFnsTreeView::bPopulateTree()
         HTREEITEM hMsg = omTree.InsertItem( MESSAGE_HANDLERS, hItem );
         HTREEITEM hTmr = omTree.InsertItem( TIMER_HANDLERS, hItem );
         HTREEITEM hKey = omTree.InsertItem( KEY_HANDLERS, hItem );
-        HTREEITEM hErr = NULL;
+        HTREEITEM hErr = nullptr;
         if (m_eBus != J1939)
         {
             hErr = omTree.InsertItem( ERROR_HANDLERS, hItem );
         }
-        HTREEITEM hEvenInd = NULL;
+        HTREEITEM hEvenInd = nullptr;
         if (m_eBus != CAN && m_eBus != LIN)
         {
             hEvenInd = omTree.InsertItem( EVENTIND_HANDLERS, hItem );
@@ -212,7 +212,7 @@ BOOL CFnsTreeView::bPopulateTree()
         HTREEITEM hChild = omTree.GetChildItem(hItem);
 
         // Set all the child items to bold
-        while (hChild != NULL)
+        while (hChild != nullptr)
         {
             omTree.SetItemState(hChild, TVIS_BOLD, TVIS_BOLD);
             hChild = omTree.GetNextSiblingItem(hChild);
@@ -222,7 +222,7 @@ BOOL CFnsTreeView::bPopulateTree()
         CStringArray* pIncArray =
             pDoc->omStrGetIncudeHeaderFiles();
 
-        if(pIncArray != NULL )
+        if(pIncArray != nullptr )
         {
             // Add all the include headers
             for ( UINT unCount = 0;
@@ -244,7 +244,7 @@ BOOL CFnsTreeView::bPopulateTree()
         CStringArray* pMsgArray =
             pDoc->omStrGetMessageHandlerPrototypes();
 
-        if(pMsgArray != NULL )
+        if(pMsgArray != nullptr )
         {
             // Add all the message handlers under the message handler
             // header
@@ -265,7 +265,7 @@ BOOL CFnsTreeView::bPopulateTree()
         CStringArray* pTmrArray =
             pDoc->omStrGetTimerHandlerPrototypes();
 
-        if(pTmrArray != NULL )
+        if(pTmrArray != nullptr )
         {
             // Add all the timer handlers under the timer handler
             // header
@@ -285,7 +285,7 @@ BOOL CFnsTreeView::bPopulateTree()
         // Get Key handler array from the doc
         CStringArray* pKeyArray =
             pDoc->omStrGetKeyHandlerPrototypes();
-        if(pKeyArray != NULL )
+        if(pKeyArray != nullptr )
         {
             // Add all the key handlers under the key handler
             // header
@@ -303,10 +303,10 @@ BOOL CFnsTreeView::bPopulateTree()
         omTree.Expand( hKey, TVE_EXPAND );
 
         // Get Error handler array from the doc
-        if (hErr != NULL)
+        if (hErr != nullptr)
         {
             CStringArray* pomErrorArray = pDoc->pomStrGetErrorHandlerPrototypes();
-            if(pomErrorArray != NULL )
+            if(pomErrorArray != nullptr )
             {
                 // Add all the Error handlers under the key handler
                 // header
@@ -323,10 +323,10 @@ BOOL CFnsTreeView::bPopulateTree()
         }
 
         // Get Event indication handler array from the doc
-        if (hEvenInd != NULL)
+        if (hEvenInd != nullptr)
         {
             CStringArray* pEventIndArray = pDoc->omStrGetEventIndPrototypes();
-            if(pEventIndArray != NULL )
+            if(pEventIndArray != nullptr )
             {
                 // Add all the Event indication handlers under
                 //the Event indication handler header
@@ -346,7 +346,7 @@ BOOL CFnsTreeView::bPopulateTree()
         // Get DLL handler array from the doc
         CStringArray* pomDLLArray =
             pDoc->pomStrGetDLLHandlerPrototypes();
-        if(pomDLLArray != NULL )
+        if(pomDLLArray != nullptr )
         {
             // Add all the DLL handlers under the key handler
             // header
@@ -365,7 +365,7 @@ BOOL CFnsTreeView::bPopulateTree()
         //Get Bus Event Handlers
         CStringArray* pomBusEvArray =
             pDoc->pomStrGetBusEventHandlerPrototypes();
-        if(pomBusEvArray != NULL )
+        if(pomBusEvArray != nullptr )
         {
             // Add all the DLL handlers under the key handler
             // header
@@ -385,7 +385,7 @@ BOOL CFnsTreeView::bPopulateTree()
         // Get Utility func array from the doc
         CStringArray* pUtilArray =
             pDoc->omStrGetUtilityFunctionPrototypes();
-        if(pUtilArray != NULL )
+        if(pUtilArray != nullptr )
         {
             // Add all the utility functions under the utility
             // header
@@ -496,16 +496,16 @@ void CFnsTreeView::vEditSelectedFunction()
 
     HTREEITEM hSelectedItem = omTree.GetSelectedItem();
 
-    if ( hSelectedItem != NULL )
+    if ( hSelectedItem != nullptr )
     {
         // check if the selected item is
         // function name or global variable
         HTREEITEM hParent = omTree.GetParentItem( hSelectedItem );
 
-        if ( hParent != NULL )
+        if ( hParent != nullptr )
         {
             HTREEITEM hGrandParent = omTree.GetParentItem( hParent );
-            if ( hGrandParent != NULL )
+            if ( hGrandParent != nullptr )
             {
                 // Selected item is function or global variable
                 // or may be the include header, Get the text
@@ -516,7 +516,7 @@ void CFnsTreeView::vEditSelectedFunction()
                 CFunctionEditorDoc* pDoc =
                     (CFunctionEditorDoc*)GetDocument();
 
-                if (pDoc != NULL)
+                if (pDoc != nullptr)
                 {
                     // if selected item is function prototype,
                     // get the function name only. else
@@ -545,8 +545,8 @@ void CFnsTreeView::vEditSelectedFunction()
                         pView->SetActiveWindow();
                         pView->vSetFunctionToEdit(omStrSelectedText);
                     }
-                }// if (pDoc != NULL)
-            }//if ( hGrandParent != NULL )
+                }// if (pDoc != nullptr)
+            }//if ( hGrandParent != nullptr )
             else
             {
                 CString omStrSelectedText =  omTree.GetItemText(hSelectedItem);
@@ -555,7 +555,7 @@ void CFnsTreeView::vEditSelectedFunction()
                     CGlobalObj::ouGetObj(m_eBus).podGetFunctionViewPtr()->vSetFunctionToEdit( omStrSelectedText );
                 }
             }
-        }//if ( hParent != NULL )
+        }//if ( hParent != nullptr )
     }
     //GetParentFrame()->Invalidate();
     //  *pResult = 0;
@@ -580,19 +580,19 @@ void CFnsTreeView::OnItemLeftClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     CFunctionEditorDoc* pDoc =
         (CFunctionEditorDoc*)GetDocument();
 
-    if ( pDoc != NULL)
+    if ( pDoc != nullptr)
     {
         CTreeCtrl& omTree = GetTreeCtrl();
 
         UINT* punFlag = new UINT;
 
-        if ( punFlag != NULL )
+        if ( punFlag != nullptr )
         {
             HTREEITEM hSelItem = omTree.HitTest(m_omLeftClickPoint,punFlag);
 
             if(!(*punFlag & TVHT_ONITEM ))
             {
-                hSelItem = NULL;
+                hSelItem = nullptr;
             }
             else
             {
@@ -609,7 +609,7 @@ void CFnsTreeView::OnItemLeftClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                 POSITION pos = pDoc->SetPosToFirstLine();
                 UINT unLineCount = 0;
 
-                while ( pos != NULL )
+                while ( pos != nullptr )
                 {
                     CString omStrLine = pDoc->pcGetLine(pos);
                     BOOL bSkipFlag = FALSE;
@@ -649,10 +649,10 @@ void CFnsTreeView::OnItemLeftClick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
         }
 
         // Clean up
-        if ( punFlag != NULL )
+        if ( punFlag != nullptr )
         {
             delete punFlag;
-            punFlag = NULL;
+            punFlag = nullptr;
         }
     }
 
@@ -695,7 +695,7 @@ void CFnsTreeView::OnTreeViewRightclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
         (CFunctionEditorDoc*)GetDocument();
     BOOL bHide = FALSE;
 
-    if ( pDoc != NULL)
+    if ( pDoc != nullptr)
     {
         CTreeCtrl& omTree = GetTreeCtrl();
 
@@ -705,7 +705,7 @@ void CFnsTreeView::OnTreeViewRightclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 
         if(!(*punFlag & TVHT_ONITEM ))
         {
-            hSelItem = NULL;
+            hSelItem = nullptr;
         }
         else
         {
@@ -713,7 +713,7 @@ void CFnsTreeView::OnTreeViewRightclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 
             CMenu* pomContextMenu = new CMenu;
             CMenu myMenu;
-            if ( pomContextMenu != NULL )
+            if ( pomContextMenu != nullptr )
             {
                 HINSTANCE hInst = AfxGetInstanceHandle();
                 // Load the Menu from the resource
@@ -729,12 +729,12 @@ void CFnsTreeView::OnTreeViewRightclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                         FORMAT_MESSAGE_ALLOCATE_BUFFER |
                         FORMAT_MESSAGE_FROM_SYSTEM |
                         FORMAT_MESSAGE_IGNORE_INSERTS,
-                        NULL,
+                        nullptr,
                         dw,
                         0, // Default language
                         (LPTSTR) &lpMsgBuf,
                         0,
-                        NULL
+                        nullptr
                     );
                     // Process any inserts in lpMsgBuf.
                     // ...
@@ -753,7 +753,7 @@ void CFnsTreeView::OnTreeViewRightclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                 // Get the parent item
                 HTREEITEM hParentItem =  omTree.GetParentItem( hSelItem );
 
-                if ( hParentItem != NULL && pomSubMenu != NULL)
+                if ( hParentItem != nullptr && pomSubMenu != nullptr)
                 {
                     //Disable save option
                     pomSubMenu->EnableMenuItem(ID_FUNCTIONEDITOR_SAVE,
@@ -762,7 +762,7 @@ void CFnsTreeView::OnTreeViewRightclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                     HTREEITEM hGrandParentItem =
                         omTree.GetParentItem( hParentItem );
 
-                    if ( hGrandParentItem != NULL )
+                    if ( hGrandParentItem != nullptr )
                     {
                         // Menu option "Edit" to be displayed
                         // only for items under global variables or
@@ -802,7 +802,7 @@ void CFnsTreeView::OnTreeViewRightclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                             CStringArray* pArray =
                                 pDoc->omStrGetTimerHandlerPrototypes();
                             // Check the size of the array
-                            if ( pArray != NULL )
+                            if ( pArray != nullptr )
                             {
                                 if ( pArray->GetSize() >= defNUMBER_OF_TIMER)
                                 {
@@ -836,7 +836,7 @@ void CFnsTreeView::OnTreeViewRightclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                             m_omRightClickPoint.x,
                             m_omRightClickPoint.y,
                             this,
-                            NULL);
+                            nullptr);
                     }
                 }
                 else
@@ -858,17 +858,17 @@ void CFnsTreeView::OnTreeViewRightclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                             m_omRightClickPoint.x,
                             m_omRightClickPoint.y,
                             this,
-                            NULL);
+                            nullptr);
                     }
                 }
                 delete pomContextMenu;
-                pomContextMenu = NULL;
-            } // if (pomContextMenu != NULL )
+                pomContextMenu = nullptr;
+            } // if (pomContextMenu != nullptr )
         }
 
         delete punFlag;
 
-        punFlag = NULL;
+        punFlag = nullptr;
     }
     *pResult = 0;
 }
@@ -912,7 +912,7 @@ void CFnsTreeView::OnDeleteHandle()
     // Get document
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)GetDocument();
 
-    if ( pDoc != NULL)
+    if ( pDoc != nullptr)
     {
         SBUS_SPECIFIC_INFO sBusSpecInfo;
         pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -923,7 +923,7 @@ void CFnsTreeView::OnDeleteHandle()
         CString omStrFnName = STR_EMPTY;
         CString omStrSelectedText = omTree.GetItemText( hSelItem );
         int nYesNo = IDYES;
-        if(hSelItemChild == NULL)
+        if(hSelItemChild == nullptr)
         {
 
             // Find type of the handler, or if it is a global variable
@@ -971,7 +971,7 @@ void CFnsTreeView::OnDeleteHandle()
             {
                 HTREEITEM hParItem = omTree.GetParentItem( hSelItem );
 
-                if (hParItem != NULL )
+                if (hParItem != nullptr )
                 {
                     if (omTree.GetItemText( hParItem) == GLOBAL_VARIABLES )
                     {
@@ -1004,7 +1004,7 @@ void CFnsTreeView::OnDeleteHandle()
         else if(omStrSelectedText == ERROR_HANDLERS )
         {
             // Invoke Error Handler dialog for deleting Handler
-            CErrHandlerDlg od_Dlg(pDoc, NULL,TRUE);
+            CErrHandlerDlg od_Dlg(pDoc, nullptr,TRUE);
             int nUserOption = (COMMANINT)od_Dlg.DoModal();
             // If user selects OK.
             if(nUserOption == IDOK)
@@ -1028,7 +1028,7 @@ void CFnsTreeView::OnDeleteHandle()
         else if(omStrSelectedText == DLL_HANDLERS)
         {
             // Invoke Dialog to delete DLL handlers
-            CDLLHandlerDlg od_Dlg(0, pDoc, NULL,TRUE);
+            CDLLHandlerDlg od_Dlg(0, pDoc, nullptr,TRUE);
             int nUserOption = (COMMANINT)od_Dlg.DoModal();
             if(nUserOption == IDOK)
             {
@@ -1049,7 +1049,7 @@ void CFnsTreeView::OnDeleteHandle()
         else if(omStrSelectedText == BUSEVENT_HANDLERS)
         {
             // Invoke Dialog to delete DLL handlers
-            CBusEventHandlerDlg od_Dlg(pDoc, NULL, TRUE);
+            CBusEventHandlerDlg od_Dlg(pDoc, nullptr, TRUE);
             int nUserOption = (COMMANINT)od_Dlg.DoModal();
             if(nUserOption == IDOK)
             {
@@ -1070,7 +1070,7 @@ void CFnsTreeView::OnDeleteHandle()
         if ( bReturnVal != FALSE)
         {
             // Update all views
-            pDoc->UpdateAllViews( NULL );
+            pDoc->UpdateAllViews( nullptr );
             pDoc->SetModifiedFlag( TRUE );
 
             // Delete the selected item from the tree
@@ -1082,7 +1082,7 @@ void CFnsTreeView::OnDeleteHandle()
             // Get function view pointer
             CFunctionView* podFnView = CGlobalObj::ouGetObj(m_eBus).podGetFunctionViewPtr();
 
-            if ( podFnView != NULL)
+            if ( podFnView != nullptr)
             {
                 // Get ref to rich edit control
                 CRichEditCtrl& omRichEdit =
@@ -1092,7 +1092,7 @@ void CFnsTreeView::OnDeleteHandle()
                 // Read only view
                 omRichEdit.SetReadOnly( TRUE );
                 // Set the structure m_sStartPos, a private member variable
-                // of CFunctionView to NULL to avoind poping up context menu
+                // of CFunctionView to nullptr to avoind poping up context menu
                 // when view is read only.
                 podFnView->vInitPositionStruct();
             }
@@ -1183,7 +1183,7 @@ BOOL CFnsTreeView::bDeleteHandler( CString omStrFuncName,
                                    CFunctionEditorDoc* pDoc)
 {
     BOOL bReturn = FALSE;
-    if (pDoc != NULL)
+    if (pDoc != nullptr)
     {
         SBUS_SPECIFIC_INFO sBusSpecInfo;
         pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -1207,7 +1207,7 @@ BOOL CFnsTreeView::bDeleteHandler( CString omStrFuncName,
         POSITION firstPos = pos;
 
         // Copy the function to be deleted to a temp list
-        while ( pos != NULL && bFlag )
+        while ( pos != nullptr && bFlag )
         {
             omStr = pDoc->m_omSourceCodeTextList.GetNext( pos );
             omStrListTemp.AddHead(omStr);
@@ -1225,7 +1225,7 @@ BOOL CFnsTreeView::bDeleteHandler( CString omStrFuncName,
         // Compare every item in the temp list
         // with the source code list, if found
         // delete the item from the source list
-        while ( pos2 != NULL )
+        while ( pos2 != nullptr )
         {
             omTemp = omStrListTemp.GetNext( pos2 );
 
@@ -1244,7 +1244,7 @@ BOOL CFnsTreeView::bDeleteHandler( CString omStrFuncName,
         }
 
         // Delete the function prototype from corresponding handler array
-        CStringArray* pArray = NULL;
+        CStringArray* pArray = nullptr;
         if ( omStrFuncName.Find(CGlobalObj::omGetBusSpecMsgHndlrName(m_eBus) ) != -1 )
         {
             // Message handler
@@ -1289,7 +1289,7 @@ BOOL CFnsTreeView::bDeleteHandler( CString omStrFuncName,
             pArray = pDoc->omStrGetUtilityFunctionPrototypes();
         }
 
-        if ( pArray != NULL )
+        if ( pArray != nullptr )
         {
             CString omStr = STR_EMPTY;
 
@@ -1326,14 +1326,14 @@ BOOL CFnsTreeView::bDeleteALineFromHeader(CString omStrHeader,
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
     SBUS_SPECIFIC_INFO sBusSpecInfo;
     pDoc->bGetBusSpecificInfo(sBusSpecInfo);
-    if (pDoc != NULL)
+    if (pDoc != nullptr)
     {
         // Seek to the start of global variable definition
         POSITION pos =
             pDoc->m_omSourceCodeTextList.Find( omStrHeader );
 
         // Find the required variable
-        while ( pos != NULL )
+        while ( pos != nullptr )
         {
             POSITION posTobeDeleted = pos;
 
@@ -1343,12 +1343,12 @@ BOOL CFnsTreeView::bDeleteALineFromHeader(CString omStrHeader,
             if ( omStrLine.Find( omSearchStr ) != -1 )
             {
                 pDoc->m_omSourceCodeTextList.RemoveAt( posTobeDeleted );
-                pos = NULL;
+                pos = nullptr;
             }
         }
         // Now remove the entry from the Global/Include array if the deleted
         // Line is a global variable or a include statement
-        CStringArray* pArray = NULL;
+        CStringArray* pArray = nullptr;
         // Delete corresponding variable from the array
         CString omTemp = BUS_VAR_HDR;
         omTemp.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
@@ -1363,7 +1363,7 @@ BOOL CFnsTreeView::bDeleteALineFromHeader(CString omStrHeader,
             pArray = pDoc->omStrGetIncudeHeaderFiles();
         }
 
-        if ( pArray != NULL )
+        if ( pArray != nullptr )
         {
             CString omStr = STR_EMPTY;
 
@@ -1447,7 +1447,7 @@ void CFnsTreeView::vOnNewTimerHandler()
         od_Dlg.vSetTimerEdited(FALSE); //New timer is created //KSS
         od_Dlg.m_omStrCurrentTimerName = ""; //KSS
 
-        if ( pDoc != NULL )
+        if ( pDoc != nullptr )
         {
             SBUS_SPECIFIC_INFO sBusSpecInfo;
             pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -1479,11 +1479,11 @@ void CFnsTreeView::vOnNewTimerHandler()
             CStringArray* pTmrArray =
                 pDoc->omStrGetTimerHandlerPrototypes();
 
-            if ( pTmrArray != NULL )
+            if ( pTmrArray != nullptr )
             {
                 pTmrArray->Add(omStrFuncPrototype);
             }
-            pDoc->UpdateAllViews( NULL );
+            pDoc->UpdateAllViews( nullptr );
             pDoc->SetModifiedFlag( TRUE );
         }
     }
@@ -1560,7 +1560,7 @@ void CFnsTreeView::vEditTimerHandler(HTREEITEM hItem)
 
 
 
-            if ( pDoc != NULL )
+            if ( pDoc != nullptr )
             {
                 SBUS_SPECIFIC_INFO sBusSpecInfo;
                 pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -1581,26 +1581,26 @@ void CFnsTreeView::vEditTimerHandler(HTREEITEM hItem)
 
                 //Find the previous header and replace it
                 POSITION pos = pDoc->m_omSourceCodeTextList.Find(omStrHdrOld );
-                if( pos != NULL )
+                if( pos != nullptr )
                 {
                     // Add header
                     pDoc->m_omSourceCodeTextList.SetAt( pos,omStrHdr );
                 }
                 pos = pDoc->m_omSourceCodeTextList.Find(omStrFuncPrototypeOld );
-                if( pos != NULL )
+                if( pos != nullptr )
                 {
                     // Add fn definition
                     pDoc->m_omSourceCodeTextList.SetAt(pos,omStrFuncPrototype );
                 }
                 pos = pDoc->m_omSourceCodeTextList.Find(omStrFooterOld );
-                if( pos != NULL )
+                if( pos != nullptr )
                 {
                     // Add footer
                     pDoc->m_omSourceCodeTextList.SetAt( pos,omStrFooter );
                 }
                 omStrOldFuncDecl += _(";");
                 pos = pDoc->m_omSourceCodeTextList.Find(omStrOldFuncDecl );
-                if( pos != NULL )
+                if( pos != nullptr )
                 {
                     omStrNewFuncDecl += _(";");
                     pDoc->m_omSourceCodeTextList.SetAt( pos,omStrNewFuncDecl );
@@ -1620,7 +1620,7 @@ void CFnsTreeView::vEditTimerHandler(HTREEITEM hItem)
                 CStringArray* pTmrArray =
                     pDoc->omStrGetTimerHandlerPrototypes();
 
-                if ( pTmrArray != NULL )
+                if ( pTmrArray != nullptr )
                 {
                     BOOL bFound = FALSE;
                     int nTotalCount = (COMMANINT)pTmrArray->GetSize();
@@ -1640,7 +1640,7 @@ void CFnsTreeView::vEditTimerHandler(HTREEITEM hItem)
                     }
                     // pTmrArray->Add(omStrFuncPrototype);
                 }
-                pDoc->UpdateAllViews( NULL );
+                pDoc->UpdateAllViews( nullptr );
                 pDoc->SetModifiedFlag( TRUE );
             }
         }
@@ -1668,12 +1668,12 @@ void CFnsTreeView::vOnNewKeyHandler()
 
     char* pcCharacter = new char[2];
 
-    if ( pcCharacter != NULL )
+    if ( pcCharacter != nullptr )
     {
         pcCharacter[1] = '\0';
         CFunctionEditorDoc* pDoc   = (CFunctionEditorDoc*)CView::GetDocument();
         CFnsTreeView* pFnsTreeView = CGlobalObj::ouGetObj(m_eBus).podGetFuncsTreeViewPtr();
-        CKeyValue od_Dlg(pFnsTreeView, pDoc, NULL, pcCharacter);
+        CKeyValue od_Dlg(pFnsTreeView, pDoc, nullptr, pcCharacter);
 
         if ( od_Dlg.DoModal() == IDOK )
         {
@@ -1705,7 +1705,7 @@ void CFnsTreeView::vOnNewKeyHandler()
 
 
 
-            if ( pDoc != NULL )
+            if ( pDoc != nullptr )
             {
                 SBUS_SPECIFIC_INFO sBusSpecInfo;
                 pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -1738,22 +1738,22 @@ void CFnsTreeView::vOnNewKeyHandler()
                 CStringArray* pKeyArray =
                     pDoc->omStrGetKeyHandlerPrototypes();
 
-                if ( pKeyArray != NULL )
+                if ( pKeyArray != nullptr )
                 {
                     pKeyArray->Add(omStrFuncPrototype);
                 }
-                pDoc->UpdateAllViews( NULL );
+                pDoc->UpdateAllViews( nullptr );
                 pDoc->SetModifiedFlag( TRUE );
             }
         }
     }
     delete [] pcCharacter; //KSS
-    pcCharacter = NULL;
+    pcCharacter = nullptr;
 }
 void CFnsTreeView::vOnNewEventHandler()
 {
     CFunctionEditorDoc* pDoc   = (CFunctionEditorDoc*)CView::GetDocument();
-    if (pDoc != NULL)
+    if (pDoc != nullptr)
     {
         CTreeCtrl& omTreeCtrl = GetTreeCtrl();
         CEventHandlerDlg omDlg(omTreeCtrl, pDoc);
@@ -1779,7 +1779,7 @@ void CFnsTreeView::vOnNewErrorHandler()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
-    if ( pDoc != NULL )
+    if ( pDoc != nullptr )
     {
         SBUS_SPECIFIC_INFO sBusSpecInfo;
         pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -1789,11 +1789,11 @@ void CFnsTreeView::vOnNewErrorHandler()
             // Update key handler array
             CStringArray* pErrorArray =
                 pDoc->pomStrGetErrorHandlerPrototypes();
-            if ( pErrorArray != NULL )
+            if ( pErrorArray != nullptr )
             {
                 if(pErrorArray->GetSize()< 5 )
                 {
-                    CErrHandlerDlg od_Dlg(NULL, FALSE);
+                    CErrHandlerDlg od_Dlg(nullptr, FALSE);
 
                     if ( od_Dlg.DoModal() == IDOK )
                     {
@@ -1850,7 +1850,7 @@ void CFnsTreeView::vOnNewErrorHandler()
                         }
                         if(nCount >0)
                         {
-                            pDoc->UpdateAllViews( NULL );
+                            pDoc->UpdateAllViews( nullptr );
                             pDoc->SetModifiedFlag( TRUE );
                         }
                     }
@@ -1862,7 +1862,7 @@ void CFnsTreeView::vOnNewErrorHandler()
             // Update key handler array
             CStringArray* pErrorArray =
                 pDoc->pomStrGetErrorHandlerPrototypes();
-            if ( pErrorArray != NULL )
+            if ( pErrorArray != nullptr )
             {
                 if(pErrorArray->GetSize()< defERROR_HANDLER_NUMBER_LIN )
                 {
@@ -1934,7 +1934,7 @@ void CFnsTreeView::vOnNewErrorHandler()
                         }
                         if(nCount >0)
                         {
-                            pDoc->UpdateAllViews( NULL );
+                            pDoc->UpdateAllViews( nullptr );
                             pDoc->SetModifiedFlag( TRUE );
                         }
                     }
@@ -1973,11 +1973,11 @@ INT CFnsTreeView::nGetLinEventTypeFromName(CString strName, std::string & strEve
 void CFnsTreeView::vAddDeleteDllHandler(BOOL bDllLoad, BOOL bToAdd)
 {
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*) CView::GetDocument();
-    ASSERT(NULL != pDoc);
+    ASSERT(nullptr != pDoc);
     SBUS_SPECIFIC_INFO sBusSpecInfo;
     pDoc->bGetBusSpecificInfo(sBusSpecInfo);
     CStringArray* pDLLArray = pDoc->pomStrGetDLLHandlerPrototypes();
-    ASSERT(NULL != pDLLArray);
+    ASSERT(nullptr != pDLLArray);
 
     // Construct Function name
     CString omStrFuncName = HANDLER_PRFX_DLL;
@@ -2033,13 +2033,13 @@ void CFnsTreeView::vOnNewDLLHandler()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
-    if ( pDoc != NULL )
+    if ( pDoc != nullptr )
     {
         SBUS_SPECIFIC_INFO sBusSpecInfo;
         pDoc->bGetBusSpecificInfo(sBusSpecInfo);
         // Update key handler array
         CStringArray* pDLLArray = pDoc->pomStrGetDLLHandlerPrototypes();
-        if ( pDLLArray != NULL )
+        if ( pDLLArray != nullptr )
         {
             if(pDLLArray->GetSize()< 2 )
             {
@@ -2098,7 +2098,7 @@ void CFnsTreeView::vOnNewDLLHandler()
                     }
                     if(nCount >0)
                     {
-                        pDoc->UpdateAllViews( NULL );
+                        pDoc->UpdateAllViews( nullptr );
                         pDoc->SetModifiedFlag( TRUE );
                     }
                 }
@@ -2115,13 +2115,13 @@ void CFnsTreeView::vOnNewBusEventHandler()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
-    if ( pDoc != NULL )
+    if ( pDoc != nullptr )
     {
         SBUS_SPECIFIC_INFO sBusSpecInfo;
         pDoc->bGetBusSpecificInfo(sBusSpecInfo);
         // Update key handler array
         CStringArray* pDLLArray = pDoc->pomStrGetBusEventHandlerPrototypes();
-        if ( pDLLArray != NULL )
+        if ( pDLLArray != nullptr )
         {
             if(pDLLArray->GetSize()< defBUSEV_HANDLER_NUMBER )
             {
@@ -2181,7 +2181,7 @@ void CFnsTreeView::vOnNewBusEventHandler()
                     }
                     if(nCount >0)
                     {
-                        pDoc->UpdateAllViews( NULL );
+                        pDoc->UpdateAllViews( nullptr );
                         pDoc->SetModifiedFlag( TRUE );
                     }
                 }
@@ -2217,7 +2217,7 @@ void CFnsTreeView::vOnNewUtilityFunction()
 
         if ( !omSelectedText.IsEmpty() )
         {
-            if ( pDoc != NULL )
+            if ( pDoc != nullptr )
             {
                 SBUS_SPECIFIC_INFO sBusSpecInfo;
                 pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -2242,7 +2242,7 @@ void CFnsTreeView::vOnNewUtilityFunction()
                 POSITION pos = pDoc->m_omSourceCodeTextList.Find(
                                    omTemp );
 
-                if ( pos != NULL )
+                if ( pos != nullptr )
                 {
                     CString omStrReplace = "";
                     omStrReplace  = od_Dlg.m_omStrFunPrototype;
@@ -2277,12 +2277,12 @@ void CFnsTreeView::vOnNewUtilityFunction()
                 CStringArray* pUtilArray =
                     pDoc->omStrGetUtilityFunctionPrototypes();
 
-                if ( pUtilArray != NULL )
+                if ( pUtilArray != nullptr )
                 {
                     pUtilArray->Add( od_Dlg.m_omStrFunPrototype );
                 }
 
-                pDoc->UpdateAllViews( NULL );
+                pDoc->UpdateAllViews( nullptr );
                 pDoc->SetModifiedFlag( TRUE );
             }
         }
@@ -2327,7 +2327,7 @@ void CFnsTreeView::vSetItemName(CString omStrName)
 
         HTREEITEM hItem = om_tree.GetSelectedItem();
 
-        if ( hItem != NULL )
+        if ( hItem != nullptr )
         {
             // for new message, insert the new message name under root
             if ( hItem == om_tree.GetRootItem() )
@@ -2389,7 +2389,7 @@ void CFnsTreeView::vEditIncludeHeader(HTREEITEM hItem)
 
             SBUS_SPECIFIC_INFO sBusSpecInfo;
             pDoc->bGetBusSpecificInfo(sBusSpecInfo);
-            if ( pDoc != NULL )
+            if ( pDoc != nullptr )
             {
                 CString omTemp = BUS_INCLUDE_HDR;
                 omTemp.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
@@ -2404,7 +2404,7 @@ void CFnsTreeView::vEditIncludeHeader(HTREEITEM hItem)
 
                 int nIndex = -1;
 
-                if ( pArray != NULL )
+                if ( pArray != nullptr )
                 {
                     // Seek to the required array element
                     for ( int nCount = 0;
@@ -2422,9 +2422,9 @@ void CFnsTreeView::vEditIncludeHeader(HTREEITEM hItem)
                 }
 
                 CString omStrGlobalVar = STR_EMPTY;
-                POSITION prevPos = NULL;
+                POSITION prevPos = nullptr;
 
-                while ( pos != NULL )
+                while ( pos != nullptr )
                 {
                     prevPos = pos;
 
@@ -2451,10 +2451,10 @@ void CFnsTreeView::vEditIncludeHeader(HTREEITEM hItem)
                             pArray->SetAt( nIndex,
                                            od_Dlg.m_omStrIncludeFilename );
 
-                        pDoc->UpdateAllViews(NULL);
+                        pDoc->UpdateAllViews(nullptr);
                         pDoc->SetModifiedFlag( TRUE );
 
-                        pos = NULL;// break from loop
+                        pos = nullptr;// break from loop
                     }// Find
                 }// while
             }// if ( pDoc
@@ -2504,7 +2504,7 @@ void CFnsTreeView::vEditUtilityFunc(HTREEITEM hItem)
             {
 
 
-                if ( pDoc != NULL )
+                if ( pDoc != nullptr )
                 {
                     SBUS_SPECIFIC_INFO sBusSpecInfo;
                     pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -2524,7 +2524,7 @@ void CFnsTreeView::vEditUtilityFunc(HTREEITEM hItem)
                                             omStrFunctionName );
                     POSITION pos = pDoc->m_omSourceCodeTextList.Find(
                                        omPreviousText );
-                    if(pos != NULL)
+                    if(pos != nullptr)
                     {
                         pDoc->m_omSourceCodeTextList.SetAt( pos,omSelectedText );
                     }
@@ -2532,7 +2532,7 @@ void CFnsTreeView::vEditUtilityFunc(HTREEITEM hItem)
                     // Add the function prototype
                     pos = pDoc->m_omSourceCodeTextList.Find(
                               omStrVariable );
-                    if(pos != NULL)
+                    if(pos != nullptr)
                     {
                         pDoc->m_omSourceCodeTextList.SetAt(pos,
                                                            od_Dlg.m_omStrFunPrototype );
@@ -2543,7 +2543,7 @@ void CFnsTreeView::vEditUtilityFunc(HTREEITEM hItem)
                     pos = pDoc->m_omSourceCodeTextList.Find(
                               omStrVariable + SEMI_COLON);
 
-                    if ( pos != NULL )
+                    if ( pos != nullptr )
                     {
                         CString omStrReplace = "";
                         omStrReplace  = od_Dlg.m_omStrFunPrototype;
@@ -2572,7 +2572,7 @@ void CFnsTreeView::vEditUtilityFunc(HTREEITEM hItem)
 
                     pos = pDoc->m_omSourceCodeTextList.Find(
                               omPreviousText );
-                    if(pos != NULL)
+                    if(pos != nullptr)
                     {
                         pDoc->m_omSourceCodeTextList.SetAt( pos,omSelectedText );
                     }
@@ -2580,7 +2580,7 @@ void CFnsTreeView::vEditUtilityFunc(HTREEITEM hItem)
                     CStringArray* pUtilArray =
                         pDoc->omStrGetUtilityFunctionPrototypes();
 
-                    if ( pUtilArray != NULL )
+                    if ( pUtilArray != nullptr )
                     {
                         BOOL bFound = FALSE;
                         int nTotalCount = (COMMANINT)pUtilArray->GetSize();
@@ -2600,7 +2600,7 @@ void CFnsTreeView::vEditUtilityFunc(HTREEITEM hItem)
                         }
                     }
 
-                    pDoc->UpdateAllViews( NULL );
+                    pDoc->UpdateAllViews( nullptr );
                     pDoc->SetModifiedFlag( TRUE );
                 }
             }
@@ -2633,7 +2633,7 @@ void CFnsTreeView::vOnNewIncludeHeader()
         // Get the document
 
 
-        if ( pDoc != NULL )
+        if ( pDoc != nullptr )
         {
             SBUS_SPECIFIC_INFO sBusSpecInfo;
             pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -2642,7 +2642,7 @@ void CFnsTreeView::vOnNewIncludeHeader()
             POSITION pos =
                 pDoc->m_omSourceCodeTextList.Find( omTemp );
 
-            if ( pos != NULL )
+            if ( pos != nullptr )
             {
                 CString omStrTemp = defHASHINCLUDE;
                 omStrTemp += od_Dlg.m_omStrIncludeFilename;
@@ -2654,7 +2654,7 @@ void CFnsTreeView::vOnNewIncludeHeader()
                 CTreeCtrl& omTree = GetTreeCtrl();
                 HTREEITEM hItem = omTree.GetSelectedItem();
 
-                if ( hItem != NULL )
+                if ( hItem != nullptr )
                 {
                     omTree.InsertItem( omStrTemp, 5, 5, hItem  );
                 }
@@ -2664,12 +2664,12 @@ void CFnsTreeView::vOnNewIncludeHeader()
                     pDoc->omStrGetIncudeHeaderFiles();
 
                 // Update array
-                if ( pArray != NULL)
+                if ( pArray != nullptr)
                 {
                     pArray->Add( omStrTemp );
                 }
 
-                pDoc->UpdateAllViews(NULL);
+                pDoc->UpdateAllViews(nullptr);
                 pDoc->SetModifiedFlag( TRUE );
 
             }// if ( pDoc
@@ -2698,7 +2698,7 @@ void CFnsTreeView::OnKeydown(NMHDR* pNMHDR, LRESULT* pResult)
     CFunctionEditorDoc* pDoc =
         (CFunctionEditorDoc*)GetDocument();
 
-    if ( pDoc != NULL)
+    if ( pDoc != nullptr)
     {
         CTreeCtrl& omTree = GetTreeCtrl();
 
@@ -2707,7 +2707,7 @@ void CFnsTreeView::OnKeydown(NMHDR* pNMHDR, LRESULT* pResult)
         // Get the selected text
         CString omStrText = omTree.GetItemText( hSelItem );
 
-        if (hSelItem != NULL)
+        if (hSelItem != nullptr)
         {
             // Correction required here since the tree item
             // does not return correct focused item
@@ -2720,7 +2720,7 @@ void CFnsTreeView::OnKeydown(NMHDR* pNMHDR, LRESULT* pResult)
                 hSelItem = omTree.GetNextItem( hSelItem, TVGN_PREVIOUSVISIBLE );
             }
 
-            if (hSelItem != NULL)
+            if (hSelItem != nullptr)
             {
                 // Get the selected text
                 //CString
@@ -2729,7 +2729,7 @@ void CFnsTreeView::OnKeydown(NMHDR* pNMHDR, LRESULT* pResult)
 
                 UINT unLineCount = 0;
 
-                while ( pos != NULL )
+                while ( pos != nullptr )
                 {
                     CString omStrLine = pDoc->pcGetLine(pos);
                     unLineCount++;
@@ -2743,7 +2743,7 @@ void CFnsTreeView::OnKeydown(NMHDR* pNMHDR, LRESULT* pResult)
                         // go to the definition
                         // of selected function
                         POSITION pos = pDoc->GetFirstViewPosition();
-                        CView* pView = NULL;
+                        CView* pView = nullptr;
                         while(pos)
                         {
                             pView = pDoc->GetNextView(pos);
@@ -2812,7 +2812,7 @@ BOOL CFnsTreeView::bDeleteHandlerInArray(const CStringArray& omStrArray,
         CFunctionEditorDoc* pDoc )
 {
     BOOL bReturn = FALSE;
-    if(pDoc != NULL )
+    if(pDoc != nullptr )
     {
         INT nCount = (COMMANINT)omStrArray.GetSize();
         CString omStrFunctionName = "";
@@ -2840,11 +2840,11 @@ void CFnsTreeView::OnEditFunctionHeader()
     CTreeCtrl& om_tree = GetTreeCtrl();
     HTREEITEM hItem = om_tree.GetSelectedItem();
 
-    if ( hItem != NULL )
+    if ( hItem != nullptr )
     {
         // Get parent and decide which dialog to invoke
         HTREEITEM hParItem = om_tree.GetParentItem( hItem );
-        if ( hParItem != NULL )
+        if ( hParItem != nullptr )
         {
             CString omStrTempHeader = om_tree.GetItemText( hParItem );
             // Get parent text
@@ -2868,7 +2868,7 @@ void CFnsTreeView::OnFunctionEditorSave()
 {
     // TODO: Add your command handler code here
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)GetDocument();
-    if (pDoc != NULL)
+    if (pDoc != nullptr)
     {
         pDoc->OnSaveDocument(pDoc->GetPathName());
     }

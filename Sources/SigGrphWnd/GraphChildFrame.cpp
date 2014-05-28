@@ -53,12 +53,12 @@ END_MESSAGE_MAP()
 CGraphChildFrame::CGraphChildFrame() : CMDIChildBase( GRAPH_WND_PLACEMENT )
 {
     // Init Pointers
-    m_pomBottomView = NULL;
-    m_pomLeftView = NULL;
-    m_pomRightView = NULL;
+    m_pomBottomView = nullptr;
+    m_pomLeftView = nullptr;
+    m_pomRightView = nullptr;
     m_sSplitterPostion.m_nRootSplitterData[0][0] = -1;
-    m_pGraphList = NULL;
-    m_pDMGraphCtrl = NULL;
+    m_pGraphList = nullptr;
+    m_pDMGraphCtrl = nullptr;
     m_bIsPrevConnected = FALSE;
 }
 
@@ -73,7 +73,7 @@ CGraphChildFrame::CGraphChildFrame() : CMDIChildBase( GRAPH_WND_PLACEMENT )
 *******************************************************************************/
 CGraphChildFrame::~CGraphChildFrame()
 {
-    m_pDMGraphCtrl = NULL;
+    m_pDMGraphCtrl = nullptr;
 }
 
 /*******************************************************************************
@@ -141,7 +141,7 @@ BOOL CGraphChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
         omSize.cx = (LONG)(omRect.Width() * defLEFT_VIEW_PROPOTION);
         omSize.cy = omRect.Height();
 
-        /*if( pMainFrame != NULL )
+        /*if( pMainFrame != nullptr )
         {
             pMainFrame->m_pomGraphChild = this;
         }*/
@@ -187,9 +187,9 @@ BOOL CGraphChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* p
     }
 
     // Check for graph control creation
-    //if( bReturn == TRUE && pMainFrame != NULL )
+    //if( bReturn == TRUE && pMainFrame != nullptr )
     {
-        //if( pMainFrame->m_podGraphControl == NULL ||
+        //if( pMainFrame->m_podGraphControl == nullptr ||
         //    IsWindow( pMainFrame->m_podGraphControl->m_hWnd) == FALSE )
         //{
         //    // Show control register message
@@ -327,7 +327,7 @@ void CGraphChildFrame::OnClose()
 *******************************************************************************/
 CView* CGraphChildFrame::pomGetLeftViewPointer()
 {
-    // Return the pointer. Calling function should handle NULL values
+    // Return the pointer. Calling function should handle nullptr values
     return m_pomLeftView;
 }
 
@@ -345,7 +345,7 @@ CView* CGraphChildFrame::pomGetLeftViewPointer()
 *******************************************************************************/
 CView* CGraphChildFrame::pomGetRightTopViewPointer()
 {
-    // Return the pointer. Calling function should handle NULL values
+    // Return the pointer. Calling function should handle nullptr values
     return m_pomRightView;
 }
 
@@ -363,7 +363,7 @@ CView* CGraphChildFrame::pomGetRightTopViewPointer()
 *******************************************************************************/
 CView* CGraphChildFrame::pomGetRightBottomViewPointer()
 {
-    // Return the pointer. Calling function should handle NULL values
+    // Return the pointer. Calling function should handle nullptr values
     return m_pomBottomView;
 }
 
@@ -621,7 +621,7 @@ void CGraphChildFrame::vGetSplitterConfig(SGRAPHSPLITTERDATA& sSplitterPostion)
 *******************************************************************************/
 void CGraphChildFrame::vSetSignalListDetails(CGraphList* pGraphList)
 {
-    if(pGraphList!=NULL)
+    if(pGraphList!=nullptr)
     {
         m_pGraphList = pGraphList;
     }
@@ -639,10 +639,10 @@ void CGraphChildFrame::vSetSignalListDetails(CGraphList* pGraphList)
 *******************************************************************************/
 CGraphList* CGraphChildFrame::pGetSignalListDetails()
 {
-    if(m_pGraphList!=NULL)
+    if(m_pGraphList!=nullptr)
     {
         return m_pGraphList;
     }
 
-    return NULL;
+    return nullptr;
 }

@@ -79,7 +79,7 @@ CCAN_Vector_XL theApp;
  * CCAN_Vector_XL initialization
  */
 
-static HINSTANCE ghLangInst=NULL;
+static HINSTANCE ghLangInst=nullptr;
 
 BOOL CCAN_Vector_XL::InitInstance()
 {
@@ -111,46 +111,46 @@ BOOL CCAN_Vector_XL::InitInstance()
 }
 
 /* function pointers */
-XLGETAPPLCONFIG                xlGetApplConfig = NULL;
-XLSETAPPLCONFIG                xlSetApplConfig = NULL;
-XLGETDRIVERCONFIG              xlGetDriverConfig = NULL;
-XLGETCHANNELINDEX              xlGetChannelIndex = NULL;
-XLGETCHANNELMASK               xlGetChannelMask = NULL;
-XLOPENPORT                     xlOpenPort = NULL;
-XLSETTIMERRATE                 xlSetTimerRate = NULL;
-XLRESETCLOCK                   xlResetClock = NULL;
-XLSETNOTIFICATION              xlSetNotification = NULL;
-XLFLUSHRECEIVEQUEUE            xlFlushReceiveQueue = NULL;
-XLGETRECEIVEQUEUELEVEL         xlGetReceiveQueueLevel = NULL;
-XLACTIVATECHANNEL              xlActivateChannel = NULL;
-XLRECEIVE                      xlReceive = NULL;
-XLGETEVENTSTRING               xlGetEventString = NULL;
-XLGETERRORSTRING               xlGetErrorString = NULL;
-XLGETSYNCTIME                  xlGetSyncTime = NULL;
-XLGENERATESYNCPULSE            xlGenerateSyncPulse = NULL;
-XLPOPUPHWCONFIG                xlPopupHwConfig = NULL;
-XLDEACTIVATECHANNEL            xlDeactivateChannel = NULL;
-XLCLOSEPORT                    xlClosePort = NULL;
-XLSETTIMERBASEDNOTIFY          xlSetTimerBasedNotify = NULL;
-XLSETTIMERRATEANDCHANNEL       xlSetTimerRateAndChannel = NULL;
-XLGETLICENSEINFO               xlGetLicenseInfo = NULL;
-XLSETGLOBALTIMESYNC            xlSetGlobalTimeSync = NULL;
+XLGETAPPLCONFIG                xlGetApplConfig = nullptr;
+XLSETAPPLCONFIG                xlSetApplConfig = nullptr;
+XLGETDRIVERCONFIG              xlGetDriverConfig = nullptr;
+XLGETCHANNELINDEX              xlGetChannelIndex = nullptr;
+XLGETCHANNELMASK               xlGetChannelMask = nullptr;
+XLOPENPORT                     xlOpenPort = nullptr;
+XLSETTIMERRATE                 xlSetTimerRate = nullptr;
+XLRESETCLOCK                   xlResetClock = nullptr;
+XLSETNOTIFICATION              xlSetNotification = nullptr;
+XLFLUSHRECEIVEQUEUE            xlFlushReceiveQueue = nullptr;
+XLGETRECEIVEQUEUELEVEL         xlGetReceiveQueueLevel = nullptr;
+XLACTIVATECHANNEL              xlActivateChannel = nullptr;
+XLRECEIVE                      xlReceive = nullptr;
+XLGETEVENTSTRING               xlGetEventString = nullptr;
+XLGETERRORSTRING               xlGetErrorString = nullptr;
+XLGETSYNCTIME                  xlGetSyncTime = nullptr;
+XLGENERATESYNCPULSE            xlGenerateSyncPulse = nullptr;
+XLPOPUPHWCONFIG                xlPopupHwConfig = nullptr;
+XLDEACTIVATECHANNEL            xlDeactivateChannel = nullptr;
+XLCLOSEPORT                    xlClosePort = nullptr;
+XLSETTIMERBASEDNOTIFY          xlSetTimerBasedNotify = nullptr;
+XLSETTIMERRATEANDCHANNEL       xlSetTimerRateAndChannel = nullptr;
+XLGETLICENSEINFO               xlGetLicenseInfo = nullptr;
+XLSETGLOBALTIMESYNC            xlSetGlobalTimeSync = nullptr;
 
 /* CAN specific functions */
-XLCANSETCHANNELOUTPUT          xlCanSetChannelOutput = NULL;
-XLCANSETCHANNELMODE            xlCanSetChannelMode = NULL;
-XLCANSETRECEIVEMODE            xlCanSetReceiveMode = NULL;
-XLCANSETCHANNELTRANSCEIVER     xlCanSetChannelTransceiver = NULL;
-XLCANSETCHANNELPARAMS          xlCanSetChannelParams = NULL;
-XLCANSETCHANNELPARAMSC200      xlCanSetChannelParamsC200 = NULL;
-XLCANSETCHANNELBITRATE         xlCanSetChannelBitrate = NULL;
-XLCANSETCHANNELACCEPTANCE      xlCanSetChannelAcceptance = NULL;
-XLCANADDACCEPTANCERANGE        xlCanAddAcceptanceRange = NULL;
-XLCANREMOVEACCEPTANCERANGE     xlCanRemoveAcceptanceRange = NULL;
-XLCANRESETACCEPTANCE           xlCanResetAcceptance = NULL;
-XLCANREQUESTCHIPSTATE          xlCanRequestChipState = NULL;
-XLCANFLUSHTRANSMITQUEUE        xlCanFlushTransmitQueue = NULL;
-XLCANTRANSMIT                  xlCanTransmit = NULL;
+XLCANSETCHANNELOUTPUT          xlCanSetChannelOutput = nullptr;
+XLCANSETCHANNELMODE            xlCanSetChannelMode = nullptr;
+XLCANSETRECEIVEMODE            xlCanSetReceiveMode = nullptr;
+XLCANSETCHANNELTRANSCEIVER     xlCanSetChannelTransceiver = nullptr;
+XLCANSETCHANNELPARAMS          xlCanSetChannelParams = nullptr;
+XLCANSETCHANNELPARAMSC200      xlCanSetChannelParamsC200 = nullptr;
+XLCANSETCHANNELBITRATE         xlCanSetChannelBitrate = nullptr;
+XLCANSETCHANNELACCEPTANCE      xlCanSetChannelAcceptance = nullptr;
+XLCANADDACCEPTANCERANGE        xlCanAddAcceptanceRange = nullptr;
+XLCANREMOVEACCEPTANCERANGE     xlCanRemoveAcceptanceRange = nullptr;
+XLCANRESETACCEPTANCE           xlCanResetAcceptance = nullptr;
+XLCANREQUESTCHIPSTATE          xlCanRequestChipState = nullptr;
+XLCANFLUSHTRANSMITQUEUE        xlCanFlushTransmitQueue = nullptr;
+XLCANTRANSMIT                  xlCanTransmit = nullptr;
 
 static  CRITICAL_SECTION sg_CritSectForWrite;       // To make it thread safe
 
@@ -182,20 +182,20 @@ typedef struct tagClientBufMap
     tagClientBufMap()
     {
         dwClientID = 0;
-        hClientHandle = NULL;
+        hClientHandle = 0;
         unBufCount = 0;
         memset(pacClientName, 0, sizeof (char) * MAX_PATH);
         for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
-            pClientBuf[i] = NULL;
+            pClientBuf[i] = nullptr;
         }
 
     }
 } SCLIENTBUFMAP;
 
 /* Local variables */
-static XLCLOSEDRIVER           xlDllCloseDriver = NULL;
-static XLOPENDRIVER            xlDllOpenDriver = NULL;
+static XLCLOSEDRIVER           xlDllCloseDriver = nullptr;
+static XLOPENDRIVER            xlDllOpenDriver = nullptr;
 
 /* Forward declarations*/
 static int nInitHwNetwork(UINT unDefaultChannelCnt = 0);
@@ -234,8 +234,8 @@ static UINT sg_unDevChannelMap[defNO_OF_CHANNELS] = {(UINT)-1};
 
 static HINSTANCE               hxlDll;
 
-static HWND sg_hOwnerWnd = NULL;
-static Base_WrapperErrorLogger* sg_pIlog   = NULL;
+static HWND sg_hOwnerWnd = nullptr;
+static Base_WrapperErrorLogger* sg_pIlog   = nullptr;
 
 /////////////////////////////////////////////////////////////////////////////
 // globals
@@ -259,7 +259,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -283,7 +283,7 @@ public:
     HRESULT CAN_UnloadDriverLibrary(void);
 };
 
-CDIL_CAN_VectorXL* g_pouDIL_CAN_VectorXL = NULL;
+CDIL_CAN_VectorXL* g_pouDIL_CAN_VectorXL = nullptr;
 
 /**
 * \brief         Returns the CDIL_CAN_VectorXL object
@@ -295,9 +295,9 @@ CDIL_CAN_VectorXL* g_pouDIL_CAN_VectorXL = NULL;
 USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 {
     HRESULT hResult = S_OK;
-    if ( NULL == g_pouDIL_CAN_VectorXL )
+    if ( nullptr == g_pouDIL_CAN_VectorXL )
     {
-        if ((g_pouDIL_CAN_VectorXL = new CDIL_CAN_VectorXL) == NULL)
+        if ((g_pouDIL_CAN_VectorXL = new CDIL_CAN_VectorXL) == nullptr)
         {
             hResult = S_FALSE;
         }
@@ -403,7 +403,7 @@ struct CChannel
         m_ucControllerState = defMODE_ACTIVE;
 
         // Pointer to corresponding XLchannelConfig
-        m_pXLChannelInfo = NULL;
+        m_pXLChannelInfo = nullptr;
 
         // Programmed warning limit of this channel
         m_ucWarningLimit = defWARNING_LIMIT_INT;
@@ -459,7 +459,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLog
 
     /* INITIALISE_ARRAY(sg_acErrStr); */
     sg_acErrStr = "";
-    CAN_ManageMsgBuf(MSGBUF_CLEAR, NULL, NULL);
+    CAN_ManageMsgBuf(MSGBUF_CLEAR, 0, nullptr);
 
     return S_OK;
 }
@@ -474,10 +474,10 @@ HRESULT CDIL_CAN_VectorXL::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLog
 */
 HRESULT CDIL_CAN_VectorXL::CAN_UnloadDriverLibrary(void)
 {
-    if (hxlDll != NULL)
+    if (hxlDll != nullptr)
     {
         FreeLibrary(hxlDll);
-        hxlDll = NULL;
+        hxlDll = nullptr;
     }
 
     return S_OK;
@@ -495,7 +495,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_UnloadDriverLibrary(void)
 HRESULT CDIL_CAN_VectorXL::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
     HRESULT hResult = S_FALSE;
-    if (ClientID != NULL)
+    if (ClientID != 0)
     {
         UINT unClientIndex;
         if (bGetClientObj(ClientID, unClientIndex))
@@ -504,7 +504,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
             if (bAction == MSGBUF_ADD)
             {
                 /* Add msg buffer */
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     if (sClientObj.unBufCount < MAX_BUFF_ALLOWED)
                     {
@@ -523,7 +523,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
             else if (bAction == MSGBUF_CLEAR)
             {
                 /* clear msg buffer */
-                if (pBufObj != NULL)
+                if (pBufObj != nullptr)
                 {
                     /* Remove only buffer mentioned */
                     bRemoveClientBuffer(sClientObj.pClientBuf, sClientObj.unBufCount, pBufObj);
@@ -533,7 +533,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
                     /* Remove all */
                     for (UINT i = 0; i < sClientObj.unBufCount; i++)
                     {
-                        sClientObj.pClientBuf[i] = NULL;
+                        sClientObj.pClientBuf[i] = nullptr;
                     }
                     sClientObj.unBufCount = 0;
                 }
@@ -552,7 +552,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
             /* clear msg buffer */
             for (UINT i = 0; i < sg_unClientCnt; i++)
             {
-                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, NULL);
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, nullptr);
             }
             hResult = S_OK;
         }
@@ -673,7 +673,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_OK;
 
-    if (hxlDll != NULL)
+    if (hxlDll != nullptr)
     {
         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("vxlapi.dll already loaded")));
         hResult = DLL_ALREADY_LOADED;
@@ -682,7 +682,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_LoadDriverLibrary(void)
     if (hResult == S_OK)
     {
         hxlDll = LoadLibrary("vxlapi.dll");
-        if (hxlDll == NULL)
+        if (hxlDll == nullptr)
         {
             sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("vxlapi.dll loading failed")));
             hResult = ERR_LOAD_DRIVER;
@@ -822,7 +822,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_PerformClosureOperations(void)
         // ------------------------------------
         // Close the driver
         // ------------------------------------
-        if (NULL != xlDllCloseDriver)
+        if (nullptr != xlDllCloseDriver)
         {
             xlDllCloseDriver();
         }
@@ -857,7 +857,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT6
 {
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = sg_TimeStamp;
-    if(QueryTickCount != NULL)
+    if(QueryTickCount != nullptr)
     {
         *QueryTickCount = sg_QueryTickCount;
     }
@@ -962,11 +962,11 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
 {
     BOOL bReturn = FALSE;
     // If successful
-    if (pControllerDetails != NULL)
+    if (pControllerDetails != nullptr)
     {
         for( UINT nIndex = 0; nIndex < sg_nNoOfChannels ; nIndex++ )
         {
-            char* pcStopStr = NULL;
+            char* pcStopStr = nullptr;
             CChannel& odChannel = sg_aodChannels[ nIndex ];
 
             // Baudrate in BTR0BTR1 format
@@ -1572,7 +1572,7 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Vector_XL(LPVOID pVoid)
     }
 
     /* Set the thread action event to first notification event handle */
-    if (g_hDataEvent[0] != NULL)
+    if (g_hDataEvent[0] != nullptr)
     {
         pThreadParam->m_hActionEvent = g_hDataEvent[0];
     }
@@ -1644,9 +1644,9 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Vector_XL(LPVOID pVoid)
     for (UINT i = 0; i < sg_unClientCnt; i++)
     {
         ResetEvent(g_hDataEvent[i]);
-        g_hDataEvent[i] = NULL;
+        g_hDataEvent[i] = nullptr;
     }
-    pThreadParam->m_hActionEvent = NULL;
+    pThreadParam->m_hActionEvent = nullptr;
 
     return 0;
 }
@@ -2431,7 +2431,7 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
     /* No Hardware found */
     if( nChannelCount == 0 )
     {
-        //MessageBox(NULL,sg_omErrStr, NULL, MB_OK | MB_ICONERROR);
+        //MessageBox(nullptr,sg_omErrStr, nullptr, MB_OK | MB_ICONERROR);
         nChannelCount = -1;
     }
     /* Available hardware is lesser then the supported channels */
@@ -2515,17 +2515,17 @@ static BOOL bRemoveClient(DWORD dwClientId)
         if (bGetClientObj(dwClientId, unClientIndex))
         {
             /* clear the client first */
-            if (sg_asClientToBufMap[unClientIndex].hClientHandle != NULL)
+            if (sg_asClientToBufMap[unClientIndex].hClientHandle != 0)
             {
                 HRESULT hResult = S_OK;//(*pfCAN_RemoveClient)(sg_asClientToBufMap[unClientIndex].hClientHandle);
                 if (hResult == S_OK)
                 {
                     sg_asClientToBufMap[unClientIndex].dwClientID = 0;
-                    sg_asClientToBufMap[unClientIndex].hClientHandle = NULL;
+                    sg_asClientToBufMap[unClientIndex].hClientHandle = 0;
                     memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                     for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                     {
-                        sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                        sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                     }
                     sg_asClientToBufMap[unClientIndex].unBufCount = 0;
                     bResult = TRUE;
@@ -2541,7 +2541,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
                 memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
                 for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
                 {
-                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = NULL;
+                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
                 }
                 sg_asClientToBufMap[unClientIndex].unBufCount = 0;
                 bResult = TRUE;

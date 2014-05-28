@@ -374,7 +374,7 @@ VOID CMsgReplayWnd::vCmdGo()
                 CWinThread* pThread =
                     AfxBeginThread( CReplayProcess::sunReplayMonoshotThreadFunc,
                                     &m_ouReplayDetails );
-                if( pThread != NULL )
+                if( pThread != nullptr )
                 {
                     m_ouReplayDetails.m_hThread = pThread->m_hThread;
                     m_eReplayState = REPLAY_RUNNING;
@@ -393,7 +393,7 @@ VOID CMsgReplayWnd::vCmdGo()
                 CWinThread* pThread =
                     AfxBeginThread( CReplayProcess::sunReplayCyclicThreadFunc,
                                     &m_ouReplayDetails );
-                if( pThread != NULL )
+                if( pThread != nullptr )
                 {
                     m_ouReplayDetails.m_hThread = pThread->m_hThread;
                     m_eReplayState = REPLAY_RUNNING;
@@ -468,7 +468,7 @@ VOID CMsgReplayWnd::vCmdStep()
                 CWinThread* pThread =
                     AfxBeginThread( CReplayProcess::sunReplayMonoshotThreadFunc,
                                     &m_ouReplayDetails );
-                if( pThread != NULL )
+                if( pThread != nullptr )
                 {
                     m_ouReplayDetails.m_hThread = pThread->m_hThread;
 
@@ -616,13 +616,13 @@ BOOL CMsgReplayWnd::bCreateReplayWindow()
     }
     CString omStrTitle = _(defSTR_REPLAY_WINDOW_TITLE) +
                          m_ouReplayDetails.m_ouReplayFile.m_omStrFileName;
-    nReturn     = Create( NULL,
+    nReturn     = Create( nullptr,
                           omStrTitle,
                           WS_CHILD   |
                           WS_VISIBLE | WS_OVERLAPPEDWINDOW,
                           m_sWndPlacement.rcNormalPosition,
-                          NULL,
-                          NULL );
+                          nullptr,
+                          nullptr );
     SetWindowFont();
     SendMessage(WM_NCPAINT, 1, 0);
     // Update Window Pointer in the Replay information object
@@ -654,7 +654,7 @@ void CMsgReplayWnd::OnMDIActivate( BOOL bActivate,
     CMDIChildWnd::OnMDIActivate(bActivate, pActivateWnd, pDeactivateWnd);
     // Set the pointer in the replay mamager class
     CReplayManager::ouGetReplayManager().vSetActiveReplayWindow( bActivate ?
-            this : NULL );
+            this : nullptr );
 }
 
 /*******************************************************************************
@@ -862,7 +862,7 @@ BOOL CMsgReplayWnd::bStopReplayThread()
                                  defINTERACTIVE_THREAD_WAIT_TIME ) != WAIT_OBJECT_0 )
         {
             TerminateThread(m_ouReplayDetails.m_hThread, 0 );
-            m_ouReplayDetails.m_hThread = NULL;
+            m_ouReplayDetails.m_hThread = nullptr;
             bIsThreadKilled = TRUE;
             m_eReplayState = REPLAY_INVALID;
         }
@@ -887,7 +887,7 @@ VOID CMsgReplayWnd::vGetSelectedIndeces( CArray<int,int>& omIndexList )
     // Get the position first
     POSITION pos = m_omMessageList.GetFirstSelectedItemPosition();
     // Get the list
-    while( pos != NULL )
+    while( pos != nullptr )
     {
         int nIndex = m_omMessageList.GetNextSelectedItem( pos );
         omIndexList.Add( nIndex );

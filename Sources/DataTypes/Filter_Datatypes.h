@@ -397,7 +397,7 @@ SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::SFILTERAPPLIED()
 {
     m_ushTotal = 0;
     m_bEnabled = FALSE;
-    m_psFilters = NULL;
+    m_psFilters = nullptr;
 }
 
 template <typename SFRAMEINFO_BASIC_BUS>
@@ -433,7 +433,7 @@ bool SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::bClone(
     if (Source.m_ushTotal > 0)
     {
         m_psFilters = new SFILTERSET[Source.m_ushTotal];
-        if (NULL != m_psFilters)
+        if (nullptr != m_psFilters)
         {
             bResult = true;
             for (int i = 0; (i < Source.m_ushTotal) && bResult; i++)
@@ -479,10 +479,10 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::vClear(void)
     m_ushTotal = 0;
     m_bEnabled = FALSE;
 
-    if (NULL != m_psFilters)
+    if (nullptr != m_psFilters)
     {
         delete[] m_psFilters;
-        m_psFilters = NULL;
+        m_psFilters = nullptr;
     }
 }
 
@@ -626,7 +626,7 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbGetConfigFilterData(xmlNodePtr pNod
     {
         CString strFilterName = m_psFilters[i].m_sFilterName.m_acFilterName;
 
-        xmlNodePtr pFilterPtr = xmlNewChild(pNodePtr, NULL, BAD_CAST DEF_FILTER, BAD_CAST strFilterName.GetBufferSetLength(strFilterName.GetLength()));
+        xmlNodePtr pFilterPtr = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_FILTER, BAD_CAST strFilterName.GetBufferSetLength(strFilterName.GetLength()));
         xmlAddChild(pNodePtr, pFilterPtr);
     }
 
@@ -639,24 +639,24 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbGetConfigData(xmlNodePtr pNodePtr) 
 
     xmlNodePtr pFilterTag;
 
-    xmlNodePtr pNodeCanFilterPtr = NULL;
-    xmlNodePtr pNodeMCNEtFilterPtr = NULL;
-    xmlNodePtr pNodeJ1939FilterPtr = NULL;
-    xmlNodePtr pNodeFLEXRAYFilterPtr = NULL;
-    xmlNodePtr pNodeLINFilterPtr = NULL;
-    xmlNodePtr pNodeMOSTFilterPtr = NULL;
+    xmlNodePtr pNodeCanFilterPtr = nullptr;
+    xmlNodePtr pNodeMCNEtFilterPtr = nullptr;
+    xmlNodePtr pNodeJ1939FilterPtr = nullptr;
+    xmlNodePtr pNodeFLEXRAYFilterPtr = nullptr;
+    xmlNodePtr pNodeLINFilterPtr = nullptr;
+    xmlNodePtr pNodeMOSTFilterPtr = nullptr;
 
     for (USHORT i = 0; i < m_ushTotal; i++)
     {
         //// Adding Filter to the xml
-        //xmlNodePtr pNodeFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_FILTER);
+        //xmlNodePtr pNodeFilterPtr = xmlNewNode(nullptr, BAD_CAST  DEF_FILTER);
         //xmlAddChild(pNodePtr, pNodeFilterPtr);
 
         if(m_psFilters[i].m_eCurrBus == MCNET)
         {
-            if(pNodeMCNEtFilterPtr == NULL)
+            if(pNodeMCNEtFilterPtr == nullptr)
             {
-                pNodeMCNEtFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_MCNETFILTERS);
+                pNodeMCNEtFilterPtr = xmlNewNode(nullptr, BAD_CAST  DEF_MCNETFILTERS);
                 xmlAddChild(pNodePtr, pNodeMCNEtFilterPtr);
             }
 
@@ -665,9 +665,9 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbGetConfigData(xmlNodePtr pNodePtr) 
 
         if(m_psFilters[i].m_eCurrBus == J1939)
         {
-            if(pNodeJ1939FilterPtr == NULL)
+            if(pNodeJ1939FilterPtr == nullptr)
             {
-                pNodeJ1939FilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_J1939FILTERS);
+                pNodeJ1939FilterPtr = xmlNewNode(nullptr, BAD_CAST  DEF_J1939FILTERS);
                 xmlAddChild(pNodePtr, pNodeJ1939FilterPtr);
             }
 
@@ -676,9 +676,9 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbGetConfigData(xmlNodePtr pNodePtr) 
 
         if(m_psFilters[i].m_eCurrBus == FLEXRAY)
         {
-            if(pNodeFLEXRAYFilterPtr == NULL)
+            if(pNodeFLEXRAYFilterPtr == nullptr)
             {
-                pNodeFLEXRAYFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_FLEXRAYFILTERS);
+                pNodeFLEXRAYFilterPtr = xmlNewNode(nullptr, BAD_CAST  DEF_FLEXRAYFILTERS);
                 xmlAddChild(pNodePtr, pNodeFLEXRAYFilterPtr);
             }
 
@@ -687,9 +687,9 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbGetConfigData(xmlNodePtr pNodePtr) 
 
         if(m_psFilters[i].m_eCurrBus == LIN)
         {
-            if(pNodeLINFilterPtr == NULL)
+            if(pNodeLINFilterPtr == nullptr)
             {
-                pNodeLINFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_LINFILTERS);
+                pNodeLINFilterPtr = xmlNewNode(nullptr, BAD_CAST  DEF_LINFILTERS);
                 xmlAddChild(pNodePtr, pNodeLINFilterPtr);
             }
 
@@ -698,9 +698,9 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbGetConfigData(xmlNodePtr pNodePtr) 
 
         if(m_psFilters[i].m_eCurrBus == MOST)
         {
-            if(pNodeMOSTFilterPtr == NULL)
+            if(pNodeMOSTFilterPtr == nullptr)
             {
-                pNodeMOSTFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_MOSTFILTERS);
+                pNodeMOSTFilterPtr = xmlNewNode(nullptr, BAD_CAST  DEF_MOSTFILTERS);
                 xmlAddChild(pNodePtr, pNodeMOSTFilterPtr);
             }
 
@@ -709,9 +709,9 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbGetConfigData(xmlNodePtr pNodePtr) 
 
         if(m_psFilters[i].m_eCurrBus == CAN)
         {
-            if(pNodeCanFilterPtr == NULL)
+            if(pNodeCanFilterPtr == nullptr)
             {
-                pNodeCanFilterPtr = xmlNewNode(NULL, BAD_CAST  DEF_CANFILTERS);
+                pNodeCanFilterPtr = xmlNewNode(nullptr, BAD_CAST  DEF_CANFILTERS);
                 xmlAddChild(pNodePtr, pNodeCanFilterPtr);
             }
 
@@ -751,7 +751,7 @@ BYTE* SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(BYTE* pbSource, bool
     if (m_ushTotal > 0)
     {
         m_psFilters = new SFILTERSET[m_ushTotal];
-        if (NULL != m_psFilters)
+        if (nullptr != m_psFilters)
         {
             for (USHORT i = 0; (i < m_ushTotal) && Result; i++)
             {
@@ -807,7 +807,7 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(SFILTERAPPLIED& pFilt
             }
 
             xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
-            if(NULL != key)
+            if(nullptr != key)
             {
                 mapFilters[(char*)key] = nEnabled;
                 xmlFree(key);
@@ -815,7 +815,7 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(SFILTERAPPLIED& pFilt
         }
     }
 
-    if( mapFilters.size() > 0 && pdocptr != NULL)
+    if( mapFilters.size() > 0 && pdocptr != nullptr)
     {
         SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS> sFilterApplied;
         if( sFilterApplied.nSetXMLConfigData(pdocptr, eBusType) == S_OK)
@@ -838,7 +838,7 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(SFILTERAPPLIED& pFilt
     if (m_ushTotal > 0)
     {
         m_psFilters = new SFILTERSET[m_ushTotal];
-        if (NULL != m_psFilters)
+        if (nullptr != m_psFilters)
         {
             for (USHORT i = 0; (i < m_ushTotal) && Result; i++)
             {
@@ -933,16 +933,16 @@ int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::nSetXMLConfigData(xmlDocPtr& pDocPtr, 
         vClear();
         xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Filters/Filter";
         pPathObject = xmlUtils:: pGetNodes(pDocPtr, pchPath);
-        if( NULL != pPathObject )
+        if( nullptr != pPathObject )
         {
             pNodeSet = pPathObject->nodesetval;
-            if(NULL != pNodeSet)
+            if(nullptr != pNodeSet)
             {
                 m_ushTotal = pNodeSet->nodeNr;
                 if (m_ushTotal > 0)
                 {
                     m_psFilters = new SFILTERSET[m_ushTotal];
-                    if (NULL != m_psFilters)
+                    if (nullptr != m_psFilters)
                     {
                         for (USHORT i = 0; i < m_ushTotal; i++)
                         {
@@ -976,16 +976,16 @@ int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::nSetXMLConfigData(xmlDocPtr& pDocPtr, 
         vClear();
         xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Filters/Filter";
         pPathObject = xmlUtils:: pGetNodes(pDocPtr, pchPath);
-        if( NULL != pPathObject )
+        if( nullptr != pPathObject )
         {
             pNodeSet = pPathObject->nodesetval;
-            if(NULL != pNodeSet)
+            if(nullptr != pNodeSet)
             {
                 m_ushTotal = pNodeSet->nodeNr;
                 if (m_ushTotal > 0)
                 {
                     m_psFilters = new SFILTERSET[m_ushTotal];
-                    if (NULL != m_psFilters)
+                    if (nullptr != m_psFilters)
                     {
                         for (USHORT i = 0; i < m_ushTotal; i++)
                         {

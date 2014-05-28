@@ -50,7 +50,7 @@ CValueDescriptionDlg::CValueDescriptionDlg(const SDBPARAMS& sDbParams,
         CString omStrMessageCode,
         CString omStrSgName,
         INT nIndex,
-        CWnd* pParent /*=NULL*/)
+        CWnd* pParent /*=nullptr*/)
     : CDialog(CValueDescriptionDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CValueDescriptionDlg)
@@ -137,10 +137,10 @@ void CValueDescriptionDlg::OnClickedOk()
         if ( bRetValue == TRUE )
         {
             // Get appropriate msg structure ptr
-            CMsgSignal* pTempMsgSg = NULL;
+            CMsgSignal* pTempMsgSg = nullptr;
             pTempMsgSg = *((CMsgSignal**)(m_sDbParams.m_ppvActiveDB));
 
-            if ( pTempMsgSg != NULL )
+            if ( pTempMsgSg != nullptr )
             {
                 // Check if description is duplicate
                 if ( m_omStrPrevDesc != m_omStrDescriptor )
@@ -198,7 +198,7 @@ void CValueDescriptionDlg::OnClickedOk()
                         //                      CMainFrame* pMainFrame =
                         //                          static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
-                        if (pNew != NULL)
+                        if (pNew != nullptr)
                         {
                             CString omStrPrevDesc = STR_EMPTY;
                             if ( MD_ADD == m_bMode )
@@ -207,14 +207,14 @@ void CValueDescriptionDlg::OnClickedOk()
                                 pTempMsgSg->bAddSgDescVal( m_omStrMessageCode,
                                                            m_omStrSgName );
                             }
-                            //                              pNew->m_n64SignalVal = _strtoi64( m_omStrValue, NULL, 10);
+                            //                              pNew->m_n64SignalVal = _strtoi64( m_omStrValue, nullptr, 10);
                             if(bSignalType.CompareNoCase(defSIGNED_INT) == 0)
                             {
-                                pNew->m_DescValue.n64Value = _strtoi64( m_omStrValue, NULL, 10);
+                                pNew->m_DescValue.n64Value = _strtoi64( m_omStrValue, nullptr, 10);
                             }
                             else
                             {
-                                pNew->m_DescValue.un64Value = _strtoui64( m_omStrValue, NULL, 10);
+                                pNew->m_DescValue.un64Value = _strtoui64( m_omStrValue, nullptr, 10);
                             }
 
                             //                              // convert string to int
@@ -237,7 +237,7 @@ void CValueDescriptionDlg::OnClickedOk()
                             }
                             // clean up
                             delete pNew;
-                            pNew = NULL;
+                            pNew = nullptr;
                         }
                     }
                 }
@@ -293,13 +293,13 @@ BOOL CValueDescriptionDlg::OnInitDialog()
     CDialog::OnInitDialog();
     m_ounSigValue.vSetBase(BASE_DECIMAL);
     // Get appropriate msg structure ptr
-    CMsgSignal* pTempMsgSg = NULL;
+    CMsgSignal* pTempMsgSg = nullptr;
     pTempMsgSg = *((CMsgSignal**)(m_sDbParams.m_ppvActiveDB));
 
     CString strMinVal = STR_EMPTY;
     CString strMaxVal = STR_EMPTY ;
     BYTE bSignalType;
-    if ( pTempMsgSg != NULL )
+    if ( pTempMsgSg != nullptr )
     {
         pTempMsgSg->vGetSignalValidRange(m_omStrMessageCode,
                                          m_omStrSgName, strMinVal, strMaxVal);

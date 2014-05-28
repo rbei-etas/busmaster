@@ -30,8 +30,8 @@ CReadCanMsg::CReadCanMsg(void)
 {
     m_omHandleToNodeMgrMap.RemoveAll();
     // First create a default event.
-    m_ahActionEvent[0] = CreateEvent(NULL, FALSE, FALSE, NULL);
-    if (NULL != m_ahActionEvent[0])
+    m_ahActionEvent[0] = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+    if (nullptr != m_ahActionEvent[0])
     {
         m_nEvents = 1;
     }
@@ -44,10 +44,10 @@ CReadCanMsg::CReadCanMsg(void)
 
 CReadCanMsg::~CReadCanMsg(void)
 {
-    if (NULL != m_ahActionEvent[0])
+    if (nullptr != m_ahActionEvent[0])
     {
         CloseHandle(m_ahActionEvent[0]);
-        m_ahActionEvent[0] = NULL;
+        m_ahActionEvent[0] = nullptr;
         m_nEvents = 0;
     }
 }
@@ -57,7 +57,7 @@ void CReadCanMsg::vReset(void)
     // Initialise to null all the events but the first one.
     for (int i = 1; i < m_nEvents; i++)
     {
-        m_ahActionEvent[i] = NULL;
+        m_ahActionEvent[i] = nullptr;
     }
     m_nEvents = 1;
 }
@@ -72,7 +72,7 @@ HRESULT CReadCanMsg::AddEventHandle(HANDLE hHandle, BYTE byNodeMgrIndex)
 
     if (bInaction)
     {
-        if ((NULL != hHandle) && (m_nEvents < DEF_MAX_SIMULATED_NODE))
+        if ((nullptr != hHandle) && (m_nEvents < DEF_MAX_SIMULATED_NODE))
         {
             m_ahActionEvent[m_nEvents++] = hHandle;
             m_omHandleToNodeMgrMap.SetAt(hHandle, byNodeMgrIndex);
@@ -98,7 +98,7 @@ BOOL CReadCanMsg::bDeleteEventHandle(HANDLE handle)
         /* Go ahead iff there is at least one client handle.*/
         if (m_nEvents > 1)
         {
-            ASSERT(handle != NULL); // Not expected to be null
+            ASSERT(handle != nullptr); // Not expected to be null
             //Find the index of the handle
             int Index = 0;
             BOOL bFound = FALSE;
@@ -124,7 +124,7 @@ BOOL CReadCanMsg::bDeleteEventHandle(HANDLE handle)
                 // means the last event handle can be directly copied onto the
                 // hole and the last entry can be removed.
                 m_ahActionEvent[Index] = m_ahActionEvent[m_nEvents - 1];
-                m_ahActionEvent[m_nEvents - 1] = NULL;
+                m_ahActionEvent[m_nEvents - 1] = nullptr;
 
                 m_nEvents--;
                 bResult = TRUE;
@@ -139,10 +139,10 @@ BOOL CReadCanMsg::bDeleteEventHandle(HANDLE handle)
 DWORD WINAPI ReadDILCANMsg(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam != NULL)
+    if (pThreadParam != nullptr)
     {
         CReadCanMsg* pCurrObj = (CReadCanMsg*) pThreadParam->m_pBuffer;
-        if (pCurrObj != NULL)
+        if (pCurrObj != nullptr)
         {
             pThreadParam->m_unActionCode = INVOKE_FUNCTION; // Set default action
             // Create the action event. In this case this will be used solely for
@@ -229,7 +229,7 @@ void CReadCanMsg::vRetrieveDataFromBuffer(BYTE byIndex)
     //Get the node manager and indicate to read data
     CNodeConManager* pouNodeManager =
         CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrObj(byIndex);
-    if (pouNodeManager != NULL)
+    if (pouNodeManager != nullptr)
     {
         pouNodeManager->vReadCANdataBuffer();
     }

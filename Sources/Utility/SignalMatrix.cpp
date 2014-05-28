@@ -102,27 +102,27 @@ CSignalMatrix::~CSignalMatrix()
 {
     // Clear GDI Objects and Memory associated with that
     // Highlight brush
-    if( m_pHighlightBrush != NULL )
+    if( m_pHighlightBrush != nullptr )
     {
         m_pHighlightBrush->DeleteObject();
         delete m_pHighlightBrush;
-        m_pHighlightBrush = NULL;
+        m_pHighlightBrush = nullptr;
     }
 
     // Normal brush
-    if( m_pNoHighlightBrush != NULL )
+    if( m_pNoHighlightBrush != nullptr )
     {
         m_pNoHighlightBrush->DeleteObject();
         delete m_pNoHighlightBrush;
-        m_pNoHighlightBrush = NULL;
+        m_pNoHighlightBrush = nullptr;
     }
 
     // Disabled brush
-    if( m_pDisabledBrush != NULL )
+    if( m_pDisabledBrush != nullptr )
     {
         m_pDisabledBrush->DeleteObject();
         delete m_pDisabledBrush;
-        m_pDisabledBrush = NULL;
+        m_pDisabledBrush = nullptr;
     }
 }
 
@@ -327,7 +327,7 @@ void CSignalMatrix::vResetValues()
 void CSignalMatrix::vSetValue(UINT* punValues)
 {
     // If it is valid pointer
-    if ( punValues != NULL )
+    if ( punValues != nullptr )
     {
         for ( UINT unIndex = 0;
                 unIndex < m_unMessageLength * defBITS_IN_BYTE;
@@ -375,7 +375,7 @@ void CSignalMatrix::vSetMessageLength(UINT unMsgLength)
 void CSignalMatrix::vSetByteValue(UCHAR* punValues)
 {
     // If the pointer is valid
-    if ( punValues != NULL )
+    if ( punValues != nullptr )
     {
         int nByte, nBit;
         UINT unValue;

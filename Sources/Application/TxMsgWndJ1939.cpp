@@ -58,8 +58,8 @@
 #include ".\txmsgwndj1939.h"
 #include "Utility\MultiLanguageSupport.h"
 
-HANDLE sg_hMsgSent = NULL;
-HANDLE sg_hMsgStopped = NULL;
+HANDLE sg_hMsgSent = nullptr;
+HANDLE sg_hMsgStopped = nullptr;
 typedef struct
 {
     EJ1939_MSG_TYPE m_eType;
@@ -95,7 +95,7 @@ static UINT unGetMsgIDFromName(CString omMsgName)
 {
     CString omStrMsgID;
     UINT unMsgID = (UINT)-1;
-    CHAR* pcStopStr = NULL;
+    CHAR* pcStopStr = nullptr;
     int nIndex = omMsgName.ReverseFind(defMSGID_EXTENDED);
     if(nIndex != -1)
     {
@@ -125,9 +125,9 @@ void CTxMsgWndJ1939::vPopulatePGNComboBox(void)
 
     m_omComboPGN.ResetContent();
     const SMSGENTRY* psTemp = m_psMsgRoot;
-    while (psTemp != NULL)
+    while (psTemp != nullptr)
     {
-        if (psTemp->m_psMsg != NULL)
+        if (psTemp->m_psMsg != nullptr)
         {
             CString omMsgIdWithName;
             omMsgIdWithName.Format(defSTR_MSG_ID_IN_HEX,
@@ -233,14 +233,14 @@ static void CallBackMsgSent(UINT32 /*unPGN*/, BYTE /*bySrc*/,
 DWORD WINAPI Cyclic_Transmission_Thread(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         return (DWORD)-1;
     }
 
     CTxMsgWndJ1939* pTxMsgWndJ1939 = static_cast<CTxMsgWndJ1939*> (pThreadParam->m_pBuffer);
 
-    if (pTxMsgWndJ1939 == NULL)
+    if (pTxMsgWndJ1939 == nullptr)
     {
         return (DWORD)-1;
     }
@@ -256,7 +256,7 @@ DWORD WINAPI Cyclic_Transmission_Thread(LPVOID pVoid)
         if ((eTransState == TRANS_TO_BE_STOPPED)
                 || (eTransState == TRANS_STOPPED))
         {
-            if (NULL != pTxMsgWndJ1939 && IsWindow(pTxMsgWndJ1939->m_hWnd))
+            if (nullptr != pTxMsgWndJ1939 && IsWindow(pTxMsgWndJ1939->m_hWnd))
             {
                 pTxMsgWndJ1939->vProcessTransmission(FALSE);
                 dwMiliSecs = INFINITE;
@@ -300,7 +300,7 @@ DWORD WINAPI Cyclic_Transmission_Thread(LPVOID pVoid)
 // CTxMsgWndJ1939 dialog
 
 IMPLEMENT_DYNAMIC(CTxMsgWndJ1939, CDialog)
-CTxMsgWndJ1939::CTxMsgWndJ1939(CWnd* pParent /*=NULL*/, SJ1939CLIENTPARAM& sClientParam)
+CTxMsgWndJ1939::CTxMsgWndJ1939(CWnd* pParent /*=nullptr*/, SJ1939CLIENTPARAM& sClientParam)
     : CDialog(CTxMsgWndJ1939::IDD, pParent)
     , m_omMsgDataEditVal("")
     , m_unDataLength(0)
@@ -309,10 +309,10 @@ CTxMsgWndJ1939::CTxMsgWndJ1939(CWnd* pParent /*=NULL*/, SJ1939CLIENTPARAM& sClie
     , m_bNM(TRUE)
 {
     m_eTransState = TRANS_STOPPED;
-    m_sCyclicThread.m_hActionEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+    m_sCyclicThread.m_hActionEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
     m_bThreadStarted = FALSE;
-    sg_hMsgSent = CreateEvent(NULL, FALSE, FALSE, NULL);
-    sg_hMsgStopped = CreateEvent(NULL, FALSE, FALSE, NULL);
+    sg_hMsgSent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+    sg_hMsgStopped = CreateEvent(nullptr, FALSE, FALSE, nullptr);
     GetIJ1939DIL()->DILIJ_SetCallBckFuncPtr(m_sClientParams.m_dwClientId, CLBCK_FN_LDATA_CONF, (void*)CallBackMsgSent);
     GetIJ1939DIL()->DILIJ_SetCallBckFuncPtr(m_sClientParams.m_dwClientId, CLBCK_FN_BC_LDATA_CONF, (void*)CallBackMsgSent);
 }
@@ -321,20 +321,20 @@ CTxMsgWndJ1939::~CTxMsgWndJ1939()
 {
     m_sCyclicThread.bTerminateThread();
 
-    if (m_sCyclicThread.m_hActionEvent != NULL)
+    if (m_sCyclicThread.m_hActionEvent != nullptr)
     {
         CloseHandle(m_sCyclicThread.m_hActionEvent);
-        m_sCyclicThread.m_hActionEvent = NULL;
+        m_sCyclicThread.m_hActionEvent = nullptr;
     }
-    if (sg_hMsgSent != NULL)
+    if (sg_hMsgSent != nullptr)
     {
         CloseHandle(sg_hMsgSent);
-        sg_hMsgSent = NULL;
+        sg_hMsgSent = nullptr;
     }
-    if (sg_hMsgStopped != NULL)
+    if (sg_hMsgStopped != nullptr)
     {
         CloseHandle(sg_hMsgStopped);
-        sg_hMsgStopped = NULL;
+        sg_hMsgStopped = nullptr;
     }
 }
 
@@ -411,7 +411,7 @@ static BYTE byExtractAddress(CString& omText)
 {
     BYTE byAddress = ADDRESS_NULL;
     CString omTemp;
-    char* pcStopStr = NULL;
+    char* pcStopStr = nullptr;
     int nIndex = omText.Find(defMSGID_EXTENDED);
     int nCloseBraceIndex = omText.Find(defMSG_NAME_END_CHAR);
     if((nIndex != -1) && (nCloseBraceIndex != -1))
@@ -590,33 +590,21 @@ HRESULT CTxMsgWndJ1939::SendSavedMessage(void)
 void CTxMsgWndJ1939::OnBnClickedOk()
 {
     ShowWindow(SW_HIDE);
-    AfxGetMainWnd()->SendMessage(WM_J1939_TX_CLOSE_MSG, NULL, NULL);
+    AfxGetMainWnd()->SendMessage(WM_J1939_TX_CLOSE_MSG, 0, 0);
 }
 
 void CTxMsgWndJ1939::OnBnClickedCancel()
 {
     ShowWindow(SW_HIDE);
-    AfxGetMainWnd()->SendMessage(WM_J1939_TX_CLOSE_MSG, NULL, NULL);
+    AfxGetMainWnd()->SendMessage(WM_J1939_TX_CLOSE_MSG, 0, 0);
 }
 
 void CTxMsgWndJ1939::OnEnChangeEditDlc()
 {
-    // TODO:  If this is a RICHEDIT control, the control will not
-    // send this notification unless you override the CDialog::OnInitDialog()
-    // function and call CRichEditCtrl().SetEventMask()
-    // with the ENM_CHANGE flag ORed into the mask.
-
-    // TODO:  Add your control notification handler code here
 }
 
 void CTxMsgWndJ1939::OnEnChangeEditMsg()
 {
-    // TODO:  If this is a RICHEDIT control, the control will not
-    // send this notification unless you override the CDialog::OnInitDialog()
-    // function and call CRichEditCtrl().SetEventMask()
-    // with the ENM_CHANGE flag ORed into the mask.
-
-    // TODO:  Add your control notification handler code here
 }
 
 void CTxMsgWndJ1939::OnShowWindow(BOOL bShow, UINT nStatus)
@@ -704,7 +692,7 @@ void CTxMsgWndJ1939::vInitializeTpfFields(void)
     }
     m_omComboChannel.SetCurSel(0);
     //Populate PGN combo box
-    if ((m_psMsgRoot != NULL) && (m_psMsgRoot->m_psMsg != NULL))
+    if ((m_psMsgRoot != nullptr) && (m_psMsgRoot->m_psMsg != nullptr))
     {
         // If atleast one database message is present
         m_CS_ConfigData.Lock();
@@ -809,7 +797,7 @@ void CTxMsgWndJ1939::vInitializeNmFields(void)
 void CTxMsgWndJ1939::OnClose()
 {
     ShowWindow(SW_HIDE);
-    AfxGetMainWnd()->SendMessage(WM_J1939_TX_CLOSE_MSG, NULL, NULL);
+    AfxGetMainWnd()->SendMessage(WM_J1939_TX_CLOSE_MSG, 0, 0);
 }
 
 void CTxMsgWndJ1939::OnBnClickedClaimAddress()
@@ -1027,7 +1015,7 @@ void CTxMsgWndJ1939::vSetDatabaseInfo(const SMSGENTRY* psMsgEntry)
 
     SMSGENTRY::vClearMsgList(m_psMsgRoot);
     const SMSGENTRY* psTemp = psMsgEntry;
-    while (psTemp != NULL)
+    while (psTemp != nullptr)
     {
         SMSGENTRY::bUpdateMsgList(m_psMsgRoot, psTemp->m_psMsg);
         psTemp = psTemp->m_psNext;
@@ -1058,7 +1046,7 @@ void CTxMsgWndJ1939::vUpdateDataStore(const SMSGENTRY* psMsgEntry)
     // Clearing the message entries
     vClearDataStore();
     const SMSGENTRY* psTemp = psMsgEntry;
-    while (psTemp != NULL)
+    while (psTemp != nullptr)
     {
         SMSGENTRY::bUpdateMsgList(m_psMsgRoot, psTemp->m_psMsg);
         psTemp = psTemp->m_psNext;
@@ -1080,10 +1068,10 @@ void CTxMsgWndJ1939::OnCbnSelchangeComboPgn()
 
         vVerifyPDUFormatInPGN(unPGN);
 
-        sMESSAGE* psMsg = NULL;
+        sMESSAGE* psMsg = nullptr;
         if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgRoot, unPGN, psMsg) == TRUE)
         {
-            if (psMsg != NULL)
+            if (psMsg != nullptr)
             {
                 m_omDLCEdit.vSetValue(psMsg->m_unMessageLength);
                 m_omTOEdit.vSetValue((BYTE)unPGN);

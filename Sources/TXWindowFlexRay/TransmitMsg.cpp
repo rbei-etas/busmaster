@@ -44,7 +44,7 @@ const BYTE COLUMN_DATABYTE  = 0x40;
 #define defSTR_FORMAT_DISPLAY_DEC    _T("%-60s   [%16I64d]")
 #define defSTR_FORMAT_DISPLAY_HEX    _T("%-60s   [%16I64X]")
 
-HWND CTransmitMsg::m_hTransmitWnd = NULL;
+HWND CTransmitMsg::m_hTransmitWnd = nullptr;
 
 #define TX_MSG_WND_CONFIG_SECTION_NAME                  "TXWndProperty"
 
@@ -99,7 +99,7 @@ CTransmitMsg::CTransmitMsg()
     m_bDisplayColumns = COLUMN_MSGID | COLUMN_DESCR | COLUMN_CYCLE |
                         COLUMN_CHANNEL | COLUMN_DATALEN | COLUMN_DATABYTE;
     //m_omMsgBlockMan.RemoveAll();
-    m_pouFlxTxMsgBuffer = NULL;
+    m_pouFlxTxMsgBuffer = nullptr;
     m_bModified = FALSE;
     m_ouCurrentView = BYTE_VIEW;
     m_bDataModified  = false;
@@ -162,7 +162,7 @@ LRESULT CTransmitMsg::vUserCommand(WPARAM wParam, LPARAM lParam)
 void CTransmitMsg::vChangeDelButtonStatus(bool /* bStatus */)
 {
     CWnd* omBtWnd = (CWnd*)GetDlgItem(IDC_DEL_FRAME);
-    if ( omBtWnd != NULL )
+    if ( omBtWnd != nullptr )
     {
         if( CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_eBusStatus == BUS_DISCONNECTED && m_lstMsg.GetItemCount() > 0 )
         {
@@ -176,7 +176,7 @@ void CTransmitMsg::vChangeDelButtonStatus(bool /* bStatus */)
     }
 
     omBtWnd = (CWnd*)GetDlgItem(IDC_BT_DEL_ALL);
-    if ( omBtWnd != NULL )
+    if ( omBtWnd != nullptr )
     {
         if( CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_eBusStatus == BUS_DISCONNECTED && m_lstMsg.GetItemCount() > 0 )
         {
@@ -190,7 +190,7 @@ void CTransmitMsg::vChangeDelButtonStatus(bool /* bStatus */)
     }
 
     omBtWnd = (CWnd*)GetDlgItem(IDC_CBTN_ADDNEW);
-    if ( omBtWnd != NULL )
+    if ( omBtWnd != nullptr )
     {
         int nChannel = m_wndComboChannel.GetCurSel();
         if ( (nChannel < 0 || nChannel > CHANNEL_ALLOWED) || CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_ouFrameList[nChannel].size() <= 0  )
@@ -249,11 +249,11 @@ void CTransmitMsg::OnInitialUpdate()
 
     CFormView::OnInitialUpdate();
 
-    CWnd* pParentWnd = NULL;
+    CWnd* pParentWnd = nullptr;
     // Get Parent window pointer
     pParentWnd = pomGetParentWindow();
     // Update view pointer
-    if( pParentWnd != NULL )
+    if( pParentWnd != nullptr )
     {
         // Register this view pointer
         ((CTxMsgChildFrame*)pParentWnd)->m_pTransmitMsgView = this;
@@ -295,7 +295,7 @@ void CTransmitMsg::OnInitialUpdate()
     m_lstMsg.SetExtendedStyle(LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVS_EX_CHECKBOXES);
 
     CWnd* pWnd = m_lstMsg.GetWindow(GW_CHILD);
-    ASSERT(pWnd != NULL);
+    ASSERT(pWnd != nullptr);
 
 
     //m_lstMsg.SetEditable();
@@ -333,7 +333,7 @@ void CTransmitMsg::OnInitialUpdate()
         lvcolumn.pszText = acColData[i];
         lvcolumn.cchTextMax = (int)strlen(acColData[i]);
         lvcolumn.iSubItem = i;
-        lvcolumn.cx = (acColData[i + 1] == NULL) ? nColWidth - total_cx - 2 : (nColWidth * colwidths[i]) / 64;
+        lvcolumn.cx = (acColData[i + 1] == nullptr) ? nColWidth - total_cx - 2 : (nColWidth * colwidths[i]) / 64;
         total_cx += lvcolumn.cx;
         m_lstMsg.InsertColumn(i, &lvcolumn, ouProp);
     }
@@ -356,7 +356,7 @@ void CTransmitMsg::OnInitialUpdate()
     m_wndComboChannel.SetCurSel(0);
 
     CButton* pBtWnd = (CButton*)GetDlgItem(IDC_RADIO_BYTE_VIEW);
-    if ( pBtWnd != NULL)
+    if ( pBtWnd != nullptr)
     {
         pBtWnd->SetCheck(TRUE);
     }
@@ -382,7 +382,7 @@ void CTransmitMsg::OnInitialUpdate()
   Input(s)       : -
   Output         : CWnd * - Pointer to CTxMsgChildFrame
   Functionality  : This Function will return parent window pointer. That is
-                   pointer to CTxMsgChildFrame. This will return NULL incase of
+                   pointer to CTxMsgChildFrame. This will return nullptr incase of
                    failure
   Member of      : CTxFunctionsView
   Author(s)      : Raja N
@@ -391,15 +391,15 @@ void CTransmitMsg::OnInitialUpdate()
 *******************************************************************************/
 CWnd* CTransmitMsg::pomGetParentWindow() const
 {
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     // Get Splitter window pointer
     pWnd = GetParent();
     // Get Tx Msg Child Window pointer from Splitter window pointer
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         pWnd = pWnd->GetParent();
     }
-    // Return Tx Msg Child window pointer or NULL incase of failure
+    // Return Tx Msg Child window pointer or nullptr incase of failure
     return pWnd;
 }
 
@@ -727,7 +727,7 @@ void CTransmitMsg::InitFlexList(DATA_VIEW ouDataView)
         sNumInfo.m_byFlag = SIGNED_VAL;
 
         CButton* omBtnWindow = (CButton*)GetDlgItem(IDC_RADIO_BYTE_VIEW);
-        if ( NULL != omBtnWindow )
+        if ( nullptr != omBtnWindow )
         {
             if ( CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_bHexMode == false)
             {
@@ -937,7 +937,7 @@ void CTransmitMsg::OnClose()
 
 void CTransmitMsg::vLoadTxMsgConfig()
 {
-    BYTE* SectionBuffer = NULL;
+    BYTE* SectionBuffer = nullptr;
     int nBufferLength = 0;
     //Remove all the TX msg block before copying from config file
     //  CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vRemoveAllBlock(m_omMsgBlockMan);
@@ -946,7 +946,7 @@ void CTransmitMsg::vLoadTxMsgConfig()
 
     CConfigDetails::ouGetConfigDetailsObject().bGetData((void*&) SectionBuffer,
             nBufferLength,TX_MSG_WND_CONFIG_SECTION_NAME);
-    if (SectionBuffer != NULL)
+    if (SectionBuffer != nullptr)
     {
         delete [] SectionBuffer;
     }
@@ -1028,10 +1028,10 @@ void CTransmitMsg::OnDestroy()
 void CTransmitMsg::OnBtnClose()
 {
     // Get Child Frame Pointer
-    CWnd* pWnd = NULL;
+    CWnd* pWnd = nullptr;
     pWnd = pomGetParentWindow();
     // Post close message
-    if( pWnd != NULL )
+    if( pWnd != nullptr )
     {
         // This will invoked the InvokeClose function
         ((CTxMsgChildFrame*)pWnd)->PostMessage( WM_CLOSE );
@@ -1045,7 +1045,7 @@ HRESULT CTransmitMsg::UpdateTxView(int& m_nChannelsConfigured)
     int nChannel = m_wndComboChannel.GetCurSel();
 
     CButton* omBtnWindow = (CButton*)GetDlgItem(IDC_RADIO_BYTE_VIEW);
-    if ( NULL != omBtnWindow )
+    if ( nullptr != omBtnWindow )
     {
         if ( CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_bHexMode == false)
         {
@@ -1213,13 +1213,13 @@ void CTransmitMsg::OnNMTransmitMessagesClick(NMHDR* pNMHDR, LRESULT* pResult)
         int nSelBaseCycle = -1;
         if ( CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_bHexMode == true )
         {
-            nSelectedId = strtoul(chText, NULL, 16);
-            nSelBaseCycle = strtoul(chTextBase, NULL, 16);
+            nSelectedId = strtoul(chText, nullptr, 16);
+            nSelBaseCycle = strtoul(chTextBase, nullptr, 16);
         }
         else
         {
-            nSelectedId = strtoul(chText, NULL, 10);
-            nSelBaseCycle = strtoul(chTextBase, NULL, 10);
+            nSelectedId = strtoul(chText, nullptr, 10);
+            nSelBaseCycle = strtoul(chTextBase, nullptr, 10);
         }
 
 
@@ -1233,13 +1233,13 @@ void CTransmitMsg::OnNMTransmitMessagesClick(NMHDR* pNMHDR, LRESULT* pResult)
             int nCurrentBaseCycle = -1;
             if ( CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_bHexMode == true )
             {
-                nCurrentId = strtoul(chText, NULL, 16);
-                nCurrentBaseCycle = strtoul(chTextBase, NULL, 16);
+                nCurrentId = strtoul(chText, nullptr, 16);
+                nCurrentBaseCycle = strtoul(chTextBase, nullptr, 16);
             }
             else
             {
-                nCurrentId = strtoul(chText, NULL, 10);
-                nCurrentBaseCycle = strtoul(chTextBase, NULL, 10);
+                nCurrentId = strtoul(chText, nullptr, 10);
+                nCurrentBaseCycle = strtoul(chTextBase, nullptr, 10);
             }
 
             if ( nCurrentId == nSelectedId && nCurrentBaseCycle == nSelBaseCycle && nItem != i )
@@ -1439,11 +1439,11 @@ void CTransmitMsg::vStoreDataBytes()
             m_oFlexListCtrl.GetItemText(i, j, chText, MAX_PATH );
             if (  CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_bHexMode == true )
             {
-                m_ouCurrentMsg.m_ouData[n] = strtoul(chText, NULL, 16);
+                m_ouCurrentMsg.m_ouData[n] = strtoul(chText, nullptr, 16);
             }
             else
             {
-                m_ouCurrentMsg.m_ouData[n] = strtoul(chText, NULL, 10);
+                m_ouCurrentMsg.m_ouData[n] = strtoul(chText, nullptr, 10);
             }
 
             n++;

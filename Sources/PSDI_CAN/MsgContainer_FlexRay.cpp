@@ -59,7 +59,7 @@ CMsgContainerFlexRay::CMsgContainerFlexRay(void)
     InitializeCriticalSection(&m_sCritSecDataSync);
     InitializeCriticalSection(&m_omCritSecFilter);
 
-    m_pouDIL_FlexRay_Interface = NULL;
+    m_pouDIL_FlexRay_Interface = nullptr;
 }
 
 /******************************************************************************
@@ -93,7 +93,7 @@ void CMsgContainerFlexRay::InitTimeParams(void)
 {
     SYSTEMTIME CurrSysTime;
     UINT64 unAbsTime;
-    if (NULL != m_pouDIL_FlexRay_Interface)
+    if (nullptr != m_pouDIL_FlexRay_Interface)
     {
         m_pouDIL_FlexRay_Interface->DILF_GetTimeModeMapping(CurrSysTime, unAbsTime);
         m_ouFormatFlexRay.vSetTimeParams(CurrSysTime, unAbsTime);
@@ -192,7 +192,7 @@ static void vFormatFlexRayDataMsg(s_FLXMSG* pMsgFlexRay,
     //// Find out the type of the frame
     //if (dwIFlags & RBIN_FLXHDRINFO_NULLFRAME)
     //{
-    //  // NULL frame
+    //  // nullptr frame
     //  CurrDataFlexRay->m_ColourCode = RGB(0,0,0);//m_MsgColorProp.m_sMsgProp.m_clrNullFrame;
     //}
     //else if (dwIFlags & RBIN_FLXHDRINFO_SYNCFRAME)
@@ -322,7 +322,7 @@ void CMsgContainerFlexRay::vProcessNewData(s_FLXMSG& sFlexRayData)
                 m_ouAppendFlexRayBuf.WriteIntoBuffer(&m_sFlexRayReadDataSpl);
 
                 // Invoke the callback function
-                if (NULL != m_pRxMsgCallBack)
+                if (nullptr != m_pRxMsgCallBack)
                 {
                     m_pRxMsgCallBack((void*)&sFlexRayData, FLEXRAY);
                 }
@@ -331,7 +331,7 @@ void CMsgContainerFlexRay::vProcessNewData(s_FLXMSG& sFlexRayData)
         break;
         case FLXMSGTYPE_STATUS:
         {
-            /*if (NULL != m_pRxMsgCallBack)
+            /*if (nullptr != m_pRxMsgCallBack)
             {
                 m_pRxMsgCallBack((void*)&sFlexRayData, FLEXRAY);
             }*/
@@ -409,7 +409,7 @@ BOOL CMsgContainerFlexRay:: bStartReadThread()
 {
     int bResult = TRUE;
     HRESULT hResult;
-    if (NULL != m_pouDIL_FlexRay_Interface)
+    if (nullptr != m_pouDIL_FlexRay_Interface)
     {
         hResult = m_pouDIL_FlexRay_Interface->DILF_ManageMsgBuf(MSGBUF_ADD, m_dwClientId, &m_ouVSEBufFlexRay);
     }
@@ -431,7 +431,7 @@ BOOL CMsgContainerFlexRay:: bStartReadThread()
 HRESULT CMsgContainerFlexRay:: hToggleDILBufferRead(BOOL bRead)
 {
     HRESULT hResult = S_FALSE;
-    if (NULL != m_pouDIL_FlexRay_Interface)
+    if (nullptr != m_pouDIL_FlexRay_Interface)
     {
         if(bRead)
         {
@@ -458,7 +458,7 @@ HRESULT CMsgContainerFlexRay:: hToggleDILBufferRead(BOOL bRead)
 BOOL CMsgContainerFlexRay:: bStopReadThread()
 {
     BOOL bReturn = CMsgContainerBase::bStopReadThread();
-    if (NULL != m_pouDIL_FlexRay_Interface)
+    if (nullptr != m_pouDIL_FlexRay_Interface)
     {
         m_pouDIL_FlexRay_Interface->DILF_ManageMsgBuf(MSGBUF_CLEAR, m_dwClientId, &m_ouVSEBufFlexRay);
     }
@@ -580,7 +580,7 @@ HRESULT CMsgContainerFlexRay::ApplyFilterScheme(void* pvFilterApplied)
 {
     HRESULT hResult = S_FALSE;
     //SFILTERAPPLIED_CAN* psFilterCAN = (SFILTERAPPLIED_CAN*)pvFilterApplied;
-    //if (psFilterCAN != NULL)
+    //if (psFilterCAN != nullptr)
     //{
     //    EnterCriticalSection(&m_omCritSecFilter);
     //    //        if (m_sFilterCAN.bClone(*psFilterCAN) == TRUE)
@@ -597,7 +597,7 @@ HRESULT CMsgContainerFlexRay::GetFilterScheme(void* pvFilterApplied)
 {
     HRESULT hResult = S_FALSE;
     //SFILTERAPPLIED_CAN* psFilterCAN = (SFILTERAPPLIED_CAN*)pvFilterApplied;
-    //if (psFilterCAN != NULL)
+    //if (psFilterCAN != nullptr)
     //{
     //    //        if (psFilterCAN->bClone(m_sFilterCAN) == TRUE)
     //    if (psFilterCAN->bClone(m_sFilterCAN) == true)
@@ -848,7 +848,7 @@ BOOL CMsgContainerFlexRay::bGetDilInterFace()
 {
     BOOL bFound = FALSE;;
     DIL_GetInterface(FLEXRAY, (void**)&m_pouDIL_FlexRay_Interface);
-    if (NULL != m_pouDIL_FlexRay_Interface)
+    if (nullptr != m_pouDIL_FlexRay_Interface)
     {
         bFound = TRUE;
     }

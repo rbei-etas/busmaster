@@ -31,7 +31,7 @@ class CMessageDetailsDlg : public CDialog
 {
     // Construction
 public:
-    CMessageDetailsDlg(const SDBPARAMS& sDbParams, sMESSAGE* pMsg = NULL,CWnd* pParent = NULL );   // standard constructor
+    CMessageDetailsDlg(const SDBPARAMS& sDbParams, sMESSAGE* pMsg = nullptr,CWnd* pParent = nullptr );   // standard constructor
 
     // Dialog Data
     //{{AFX_DATA(CMessageDetailsDlg)

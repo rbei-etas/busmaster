@@ -194,7 +194,7 @@ void CListComboBox::OnKillFocus(CWnd* pNewWnd)
     CComboBox::OnKillFocus(pNewWnd);
 
     int nIndex = GetCurSel();
-    if( m_bIsEditable == FALSE && pNewWnd // NULL condition
+    if( m_bIsEditable == FALSE && pNewWnd // nullptr condition
             && pNewWnd != GetParent()->GetParent() )//For Dialog Close using X Button
     {
         CString omStr;

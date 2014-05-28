@@ -43,7 +43,7 @@ public:
 
     }
     // standard constructor
-    CBusStatisticsDlg(CBaseBusStatisticCAN*, CWnd* pParent = NULL, int nChannelCount = defNO_OF_CHANNELS);
+    CBusStatisticsDlg(CBaseBusStatisticCAN*, CWnd* pParent = nullptr, int nChannelCount = defNO_OF_CHANNELS);
     CBusStatisticsDlg(CBaseBusStatisticCAN*, int nChannelCount = defNO_OF_CHANNELS);
 
 protected:

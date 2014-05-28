@@ -239,10 +239,10 @@ void CMsgSignalDBWnd::OnClose()
     CMainFrame* pFrame =
         static_cast<CMainFrame*> (AfxGetApp()->m_pMainWnd);
 
-    if (pFrame != NULL)
+    if (pFrame != nullptr)
     {
         // Get appropriate data structure
-        CMsgSignal** ppTempMsgSg = NULL;
+        CMsgSignal** ppTempMsgSg = nullptr;
 
         ppTempMsgSg = (CMsgSignal**)(m_sDbParams.m_ppvActiveDB);
 
@@ -296,7 +296,7 @@ void CMsgSignalDBWnd::OnClose()
         if (m_sDbParams.m_eBus == CAN)
         {
             CFlags* pFlags = theApp.pouGetFlagsPtr();
-            if ( pFlags != NULL )
+            if ( pFlags != nullptr )
             {
                 pFlags->vSetFlagStatus( DBOPEN, FALSE );
             }
@@ -305,7 +305,7 @@ void CMsgSignalDBWnd::OnClose()
         {
             CMsgSignalDBWnd::sm_bValidJ1939Wnd = FALSE;
             CFlags* pFlags = theApp.pouGetFlagsPtr();
-            if ( pFlags != NULL )
+            if ( pFlags != nullptr )
             {
                 pFlags->vSetFlagStatus( DBOPEN_J1939, FALSE );
             }
@@ -318,10 +318,10 @@ LRESULT CMsgSignalDBWnd::OnSaveDBJ1939(WPARAM /* wParam */, LPARAM /*lParam*/)
 {
     // Get active frame
     CMainFrame* pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
-    if (pFrame != NULL)
+    if (pFrame != nullptr)
     {
         // Get appropriate data structure
-        CMsgSignal** ppTempMsgSg = NULL;
+        CMsgSignal** ppTempMsgSg = nullptr;
         ppTempMsgSg = (CMsgSignal**)(m_sDbParams.m_ppvActiveDB);
         pFrame->podGetMsgSgDetView(m_sDbParams.m_eBus);
         if ((*ppTempMsgSg)->bGetModifiedFlag() == FALSE)
@@ -361,7 +361,7 @@ void CMsgSignalDBWnd::vSaveModifiedDBs(CMsgSignal**& ppTempMsgSg)
     CStringArray omImportedDBNames;
     CMsgSignal** m_ppsMSTemp = (CMsgSignal**)(m_sDbParams.m_ppvImportedDBs);
 
-    if ((*m_ppsMSTemp) != NULL)
+    if ((*m_ppsMSTemp) != nullptr)
     {
         (*m_ppsMSTemp)->vGetDataBaseNames(&omImportedDBNames);
         for (INT nDBCount = 0; nDBCount < omImportedDBNames.GetSize();
@@ -394,7 +394,7 @@ void CMsgSignalDBWnd::vSaveModifiedDBs(CMsgSignal**& ppTempMsgSg)
     }
     //Checking ends
     // Set the modified flag as saved
-    if (NULL != (*ppTempMsgSg))
+    if (nullptr != (*ppTempMsgSg))
     {
         (*ppTempMsgSg)->vSetModifiedFlag(TRUE);
     }

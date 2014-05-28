@@ -240,7 +240,7 @@ char* CFormatMsgLIN::vFormatCurrErrorEntry(USHORT usErrorID)
         nCount++;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 /*******************************************************************************

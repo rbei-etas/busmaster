@@ -35,7 +35,7 @@ public:
     CGraphParameters m_omGraphParams;
     eTYPE_BUS m_eBusType;
     // standard constructor
-    CGraphConfiguration(CWnd* pParent = NULL);
+    CGraphConfiguration(CWnd* pParent = nullptr);
 
     // Dialog Data
     //{{AFX_DATA(CGraphConfiguration)

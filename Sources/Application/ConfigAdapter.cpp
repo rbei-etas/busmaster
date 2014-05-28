@@ -151,7 +151,7 @@ static UINT unGetFilterSize(CModuleFilterArray* pouModuleFilterArray, SFILTERAPP
     UINT unSize = sizeof(BYTE);//Configuration version
     unSize += sizeof (BOOL); //Enable or not
     unSize += sizeof (USHORT);// Total filter set
-    if ((pouModuleFilterArray != NULL) && (psFilterConfigured != NULL))
+    if ((pouModuleFilterArray != nullptr) && (psFilterConfigured != nullptr))
     {
         for (INT_PTR i = 0; i < pouModuleFilterArray->GetSize(); i++)
         {
@@ -160,7 +160,7 @@ static UINT unGetFilterSize(CModuleFilterArray* pouModuleFilterArray, SFILTERAPP
                                                   psFilterConfigured->m_ushTotal,
                                                   pouModuleFilterArray->GetAt(i).m_omFilterName);
 
-            if (psFilterSet != NULL)
+            if (psFilterSet != nullptr)
             {
                 unSize += psFilterSet->unGetSize();
             }
@@ -174,7 +174,7 @@ BYTE* pbyGetFilterConfig(BYTE* pbyTrgBuffer,
 {
     BYTE* pbyTemp = pbyTrgBuffer;
     USHORT ushFilterCount = 0;
-    if (pouModuleFilterArray != NULL && (SrcFilter != NULL))
+    if (pouModuleFilterArray != nullptr && (SrcFilter != nullptr))
     {
         ushFilterCount = (USHORT)pouModuleFilterArray->GetSize();
     }
@@ -193,7 +193,7 @@ BYTE* pbyGetFilterConfig(BYTE* pbyTrgBuffer,
             SFILTERSET::psGetFilterSetPointer(SrcFilter->m_psFilters,
                                               SrcFilter->m_ushTotal,
                                               sModuleFilter.m_omFilterName);
-        if (psFilterSet != NULL)
+        if (psFilterSet != nullptr)
         {
             sFilterApplied.m_psFilters[i].bClone(*psFilterSet);
         }
@@ -212,7 +212,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
         case MAINFRAME_SECTION_ID:
         {
             UINT unSize = 0;
-            BYTE* pbyConfigData = NULL;
+            BYTE* pbyConfigData = nullptr;
             //FIRST CALC SIZE REQUIRED
             unSize += sizeof(BYTE); //Configuration version
             unSize += (sizeof(char) * MAX_PATH);
@@ -226,16 +226,16 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             BYTE byVersion = 0x1;
             COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
 
-            CString* pomMRU_C_FILE_NAME = NULL;
+            CString* pomMRU_C_FILE_NAME = nullptr;
             m_ouConfigDetails.bGetData(MRU_C_FILE_NAME, (void**)(&pomMRU_C_FILE_NAME));
             char acName[MAX_PATH] = {_T('0')};
-            ASSERT(pomMRU_C_FILE_NAME != NULL);
+            ASSERT(pomMRU_C_FILE_NAME != nullptr);
             strcpy_s(acName, MAX_PATH, pomMRU_C_FILE_NAME->GetBuffer(MAX_PATH));
             delete pomMRU_C_FILE_NAME;
             COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
-            PSTOOLBARINFO psToolBarInfo = NULL;
+            PSTOOLBARINFO psToolBarInfo = nullptr;
             m_ouConfigDetails.bGetData(TOOLBAR_DETAILS, (void**)(&psToolBarInfo));
-            ASSERT(psToolBarInfo != NULL);
+            ASSERT(psToolBarInfo != nullptr);
             COPY_DATA(pbyTemp, psToolBarInfo, sizeof(STOOLBARINFO));
             delete psToolBarInfo;
 
@@ -246,18 +246,18 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
         case LOG_SECTION_ID:
         {
             UINT unSize = 0;
-            BYTE* pbyConfigData = NULL;
-            SLOGCONFIGDETS* psLogConfigDets = NULL;
+            BYTE* pbyConfigData = nullptr;
+            SLOGCONFIGDETS* psLogConfigDets = nullptr;
 
             m_ouConfigDetails.bGetData(LOG_CONFIG_DETS, (void**)(&psLogConfigDets));
 
             //FIRST CALCULATE SIZE REQUIRED
             unSize += sizeof(BYTE);//Configuration version
-            if (psLogConfigDets != NULL)
+            if (psLogConfigDets != nullptr)
             {
 
                 //Filter info size
-                SFILTERAPPLIED_CAN* psFilterConfigured = NULL;
+                SFILTERAPPLIED_CAN* psFilterConfigured = nullptr;
                 m_ouConfigDetails.bGetData(FILTER_CONFIG_DETS, (void**)(&psFilterConfigured));
 
                 unSize += sizeof (USHORT); // Log file count
@@ -303,18 +303,18 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
         case LOG_SECTION_LIN_ID:
         {
             UINT unSize = 0;
-            BYTE* pbyConfigData = NULL;
-            SLOGCONFIGDETS* psLogConfigDets = NULL;
+            BYTE* pbyConfigData = nullptr;
+            SLOGCONFIGDETS* psLogConfigDets = nullptr;
 
             m_ouConfigDetails.bGetData(LOG_CONFIG_DETS, (void**)(&psLogConfigDets));
 
             //FIRST CALCULATE SIZE REQUIRED
             unSize += sizeof(BYTE);//Configuration version
-            if (psLogConfigDets != NULL)
+            if (psLogConfigDets != nullptr)
             {
 
                 //Filter info size
-                SFILTERAPPLIED_LIN* psFilterConfigured = NULL;
+                SFILTERAPPLIED_LIN* psFilterConfigured = nullptr;
                 m_ouConfigDetails.bGetData(FILTER_CONFIG_DETS, (void**)(&psFilterConfigured));
 
                 unSize += sizeof (USHORT); // Log file count
@@ -377,7 +377,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
 
             unSize += sizeof(UINT); // To store count
 
-            while (psTemp != NULL)
+            while (psTemp != nullptr)
             {
                 nCount++;
                 unSize += (sizeof (char) * MAX_PATH);//File Path
@@ -400,7 +400,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             //Update Simsys file path
             psTemp = psSimSysArray;
             COPY_DATA(pbyTemp, &nCount, sizeof(UINT));
-            while (psTemp != NULL)
+            while (psTemp != nullptr)
             {
                 char acFilePath[MAX_PATH] = {'\0'};
                 strcpy_s(acFilePath, MAX_PATH, psTemp->m_omStrSimSysPath.GetBuffer(MAX_PATH));
@@ -423,15 +423,15 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
         case REPLAY_SECTION_ID:
         {
             UINT unSize = 0;
-            BYTE* pbyConfigData = NULL;
-            SREPLAYDETS* psRepConfigDets = NULL;
+            BYTE* pbyConfigData = nullptr;
+            SREPLAYDETS* psRepConfigDets = nullptr;
 
             unSize += sizeof(BYTE);//Configuration version
             m_ouConfigDetails.bGetData(REPLAY_CONFIG_DETS, (void**)(&psRepConfigDets));
-            if (psRepConfigDets != NULL)
+            if (psRepConfigDets != nullptr)
             {
                 //FIRST CALCULATE SIZE REQUIRED
-                SFILTERAPPLIED_CAN* psFilterConfigured = NULL;
+                SFILTERAPPLIED_CAN* psFilterConfigured = nullptr;
                 m_ouConfigDetails.bGetData(FILTER_CONFIG_DETS, (void**)(&psFilterConfigured));
 
                 unSize += sizeof (INT); //
@@ -477,18 +477,18 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
         case MSGWND_SECTION_ID:
         {
             UINT unSize = 0;
-            BYTE* pbyConfigData = NULL;
+            BYTE* pbyConfigData = nullptr;
 
 
             //FIRST CALC SIZE
             unSize += sizeof(BYTE);//Configuration version
 
-            PSMESSAGE_ATTRIB psMsgAttrib = NULL;
+            PSMESSAGE_ATTRIB psMsgAttrib = nullptr;
             m_ouConfigDetails.bGetData(MSG_ATTRIBUTES, (void**)(&psMsgAttrib));
 
             unSize += sizeof (UINT);// To store count of MsgAttribs
 
-            if (psMsgAttrib != NULL)
+            if (psMsgAttrib != nullptr)
             {
                 UINT nCount = psMsgAttrib->m_usMsgCount;
                 //Count             To store Msg Name         MsgId        Msg Color
@@ -503,7 +503,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             CModuleFilterArray ouModuleFilterArray;
             CModuleFilterArray* pouModuleFilterArray = &ouModuleFilterArray;
             m_ouConfigDetails.bGetData(MSG_DISPLAY_FILTER_DETAILS, (void**)(&pouModuleFilterArray));
-            SFILTERAPPLIED_CAN* psFilterConfigured = NULL;
+            SFILTERAPPLIED_CAN* psFilterConfigured = nullptr;
             m_ouConfigDetails.bGetData(FILTER_CONFIG_DETS, (void**)(&psFilterConfigured));
             //Filter size
             unSize += unGetFilterSize(&ouModuleFilterArray, psFilterConfigured);
@@ -521,7 +521,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             BYTE byVersion = 0x1;
             COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
             //Attributes
-            if (psMsgAttrib != NULL)
+            if (psMsgAttrib != nullptr)
             {
                 COPY_DATA(pbyTemp, &(psMsgAttrib->m_usMsgCount), sizeof(UINT));
                 for (INT i = 0; i < psMsgAttrib->m_usMsgCount; i++)
@@ -553,15 +553,15 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
         case SIGWATCH_SECTION_ID:
         {
             UINT unSize = 0;
-            BYTE* pbyConfigData = NULL;
-            PSSIGNALWATCHLIST psSigWatchList = NULL;
+            BYTE* pbyConfigData = nullptr;
+            PSSIGNALWATCHLIST psSigWatchList = nullptr;
             m_ouConfigDetails.bGetData(SIGNAL_WATCH_LIST, (void**)(&psSigWatchList));
             //Find the Size
             unSize += sizeof(BYTE);//Configuration version
             UINT unMsgcount = 0;
             unSize += sizeof (UINT); // To store Msg Count
             PSSIGNALWATCHLIST psTemp = psSigWatchList;
-            while (psTemp != NULL)
+            while (psTemp != nullptr)
             {
                 unMsgcount++;
                 unSize += sizeof (UINT); // To store Msg ID
@@ -589,7 +589,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             COPY_DATA(pbyTemp, &unMsgcount, sizeof (UINT));
 
             psTemp = psSigWatchList;
-            while (psTemp != NULL)
+            while (psTemp != nullptr)
             {
                 COPY_DATA(pbyTemp, &(psTemp->unMsgID), sizeof (UINT));
                 char acName[MAX_PATH] = {_T('\0')};
@@ -621,7 +621,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
         case DIL_SECTION_ID:
         {
             PSCONTROLLER_DETAILS psContrlDets;
-            BYTE* pbyConfigData = NULL;
+            BYTE* pbyConfigData = nullptr;
             UINT unSize = 0;
             unSize += sizeof(BYTE);//Configuration version
             unSize += sizeof(DWORD);
@@ -665,13 +665,13 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
         case GRAPH_SECTION_ID:
         {
             BYTE byVersion = 0x1;
-            BYTE* pbyConfigData = NULL;
+            BYTE* pbyConfigData = nullptr;
             UINT unSize = 0;
             CGraphList* podGraphList;
             m_ouConfigDetails.bGetData(SIGNAL_GRAPH_LIST, (void**)(&podGraphList));
             //FIRST CALCULATE THE SIZE
             unSize += sizeof(BYTE); //Configuration version
-            if (podGraphList != NULL)
+            if (podGraphList != nullptr)
             {
                 unSize += podGraphList->unGetConfigSize(byVersion);
             }
@@ -686,7 +686,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             //UPDATE THE DATA
             COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
 
-            if (podGraphList != NULL)
+            if (podGraphList != nullptr)
             {
                 pbyTemp = podGraphList->pbyGetConfigData(pbyTemp, byVersion);
             }
@@ -709,7 +709,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
         break;
         case TXWND_SECTION_ID:
         {
-            BYTE* pbyCfgData = NULL;
+            BYTE* pbyCfgData = nullptr;
             UINT unSize = 0;
 
             //FIRST CALCULATE THE SIZE
@@ -720,12 +720,12 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             m_ouConfigDetails.bGetData(MSG_BLOCK_COUNT, (void**)(&punBlockCount));
             unSize += sizeof (UINT); //block count
 
-            PSMSGBLOCKLIST psMsgBlockList = NULL;
+            PSMSGBLOCKLIST psMsgBlockList = nullptr;
             if (m_ouConfigDetails.bGetData(SEND_MULTI_MSGS, (void**)(&psMsgBlockList)))
             {
                 PSMSGBLOCKLIST psTemp = psMsgBlockList;
 
-                while (psTemp != NULL)
+                while (psTemp != nullptr)
                 {
                     unSize += (sizeof(char) * MAX_PATH); // To store the block name
                     unSize += sizeof(UCHAR); // To store the trigger
@@ -754,7 +754,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             COPY_DATA(pbyTemp, &unBlockCount, sizeof(UINT));
 
             PSMSGBLOCKLIST psTempBlock = psMsgBlockList;
-            while (psTempBlock != NULL)
+            while (psTempBlock != nullptr)
             {
                 CString m_omStrBlockName;
                 char acName[MAX_PATH] = {'\0'};
@@ -770,7 +770,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
                 COPY_DATA(pbyTemp, &(psTempBlock->m_unMsgCount), sizeof(UINT));
 
                 PSTXCANMSGLIST psTempCanList = psTempBlock->m_psTxCANMsgList;
-                while (psTempCanList != NULL)
+                while (psTempCanList != nullptr)
                 {
                     COPY_DATA(pbyTemp, &(psTempCanList->m_sTxMsgDetails), sizeof (STXCANMSGDETAILS));
                     psTempCanList = psTempCanList->m_psNextMsgDetails;
@@ -797,16 +797,16 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
         break;
         case DATABASE_SECTION_ID:
         {
-            BYTE* pbyCfgData = NULL;
+            BYTE* pbyCfgData = nullptr;
             UINT unSize = 0;
-            CStringArray* pomStrDBArray = NULL;
+            CStringArray* pomStrDBArray = nullptr;
             m_ouConfigDetails.bGetData(DATABASE_FILE_NAME, (void**)(&pomStrDBArray));
 
             //FIRST CALC SIZE
             unSize += sizeof(BYTE); //Configuration version
 
             unSize += sizeof (UINT); // To store the count
-            if (pomStrDBArray != NULL)
+            if (pomStrDBArray != nullptr)
             {
                 //To store the stringd
                 unSize += (pomStrDBArray->GetSize()) * (sizeof(char) * MAX_PATH);
@@ -821,7 +821,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
             COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
 
             UINT unCount = 0;
-            if (pomStrDBArray != NULL)
+            if (pomStrDBArray != nullptr)
             {
                 unCount = pomStrDBArray->GetSize();
             }
@@ -844,12 +844,12 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
         break;
         case FILTER_SECTION_ID:
         {
-            BYTE* pbyCfgData = NULL;
+            BYTE* pbyCfgData = nullptr;
             UINT unSize = 0;
-            SFILTERAPPLIED_CAN* psFilterConfigured = NULL;
+            SFILTERAPPLIED_CAN* psFilterConfigured = nullptr;
             m_ouConfigDetails.bGetData(FILTER_CONFIG_DETS, (void**)(&psFilterConfigured));
 
-            if (psFilterConfigured != NULL)
+            if (psFilterConfigured != nullptr)
             {
                 unSize += psFilterConfigured->unGetSize();
             }

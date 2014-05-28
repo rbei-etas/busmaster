@@ -31,12 +31,12 @@
 #include "TxMsgChildFrame.h"
 #include "Utility\MultiLanguageSupport.h"
 
-static AFX_EXTENSION_MODULE TXWindowDLL = { NULL, NULL };
+static AFX_EXTENSION_MODULE TXWindowDLL = { false, nullptr };
 
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
-    static HINSTANCE shLangInst=NULL;
+    static HINSTANCE shLangInst=nullptr;
 
 
     // Remove this if you use lpReserved
@@ -109,7 +109,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 }
 
 //CTxMsgManager g_txMsgManager;
-CTxMsgChildFrame* g_pomTxMsgChildWindow = NULL;
+CTxMsgChildFrame* g_pomTxMsgChildWindow = nullptr;
 
 //Export Function Definitions.
 
@@ -138,17 +138,17 @@ USAGEMODE HRESULT TX_vShowConfigureMsgWindow(void* pParentWnd)
     HINSTANCE hInst = AfxGetResourceHandle();
     AfxSetResourceHandle(TXWindowDLL.hResource);
 
-    if( g_pomTxMsgChildWindow == NULL )
+    if( g_pomTxMsgChildWindow == nullptr )
     {
         // Create New Instance
         g_pomTxMsgChildWindow = new CTxMsgChildFrame;
-        if( g_pomTxMsgChildWindow != NULL )
+        if( g_pomTxMsgChildWindow != nullptr )
         {
             //// Register Window Class
             LPCTSTR strMDIClass = AfxRegisterWndClass(
                                       CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
-                                      LoadCursor(NULL, IDC_CROSS), 0,
-                                      ::LoadIcon(NULL, MAKEINTRESOURCE(IDI_ICO_SEND_MSG)) );
+                                      LoadCursor(nullptr, IDC_CROSS), 0,
+                                      ::LoadIcon(nullptr, MAKEINTRESOURCE(IDI_ICO_SEND_MSG)) );
 
             //// Set the size got from configuration module
             WINDOWPLACEMENT sTxWndPlacement;
@@ -235,11 +235,11 @@ USAGEMODE HRESULT TX_hConfigWindowShown()
 
 USAGEMODE HRESULT TX_vStartTransmission(UCHAR ucKeyVal)
 {
-    if(g_pomTxMsgChildWindow != NULL)
+    if(g_pomTxMsgChildWindow != nullptr)
     {
         g_pomTxMsgChildWindow->vCallAutoUpdate();
     }
-    if(CTxMsgManager::s_podGetTxMsgManager() != NULL)
+    if(CTxMsgManager::s_podGetTxMsgManager() != nullptr)
     {
         CTxMsgManager::s_podGetTxMsgManager()->vStartTransmission(ucKeyVal);
     }

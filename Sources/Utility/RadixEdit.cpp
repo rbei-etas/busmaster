@@ -317,7 +317,7 @@ void CRadixEdit::OnChange()
                 }
                 else
                 {
-                    m_un64Value = _strtoui64(strBuffer.GetBuffer(0), NULL, 10);
+                    m_un64Value = _strtoui64(strBuffer.GetBuffer(0), nullptr, 10);
                     m_n64Value = m_un64Value;
                 }
             }
@@ -364,7 +364,7 @@ void CRadixEdit::OnChange()
             }
         }
         //delete []acBuffer;
-        //acBuffer = NULL;
+        //acBuffer = nullptr;
     }
 }
 
@@ -418,7 +418,7 @@ void CRadixEdit::vSetValue(__int64 n64NewVal)
     // rajesh: 05.03.2003: BEGIN: formating changed slightly to accomodate
     // full 32 bits for signed and unsigned numbers
     // if the number is having negative value
-    char acFormat[8] = {NULL};
+    char acFormat[8] = {0};
 
     if (m_nBase == BASE_DECIMAL)
     {

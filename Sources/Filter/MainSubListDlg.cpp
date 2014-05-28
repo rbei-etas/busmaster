@@ -44,7 +44,7 @@ CMainSubListDlg::CMainSubListDlg(CWnd* pParent, CMainEntryList* psMainFrameSigna
     // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
     m_podMainCallerList = psMainFrameSignalWatchList;
-    if (m_podMainCallerList != NULL)
+    if (m_podMainCallerList != nullptr)
     {
         m_podTempCallerList = new CMainEntryList;
         m_podTempCallerList->AddTail(psMainFrameSignalWatchList);
@@ -109,26 +109,26 @@ BOOL CMainSubListDlg::OnInitDialog()
     SetWindowText((LPCTSTR)m_sGuiParams.m_acTitleName);
     //Dislay Main List name
     CWnd* pWnd = GetDlgItem(IDC_EDIT_MAINLIST_NAME);
-    if (pWnd != NULL)
+    if (pWnd != nullptr)
     {
         pWnd->SetWindowText((LPCTSTR)m_sGuiParams.m_acMainListName);
     }
     //Dislay Unselected List name
     pWnd = GetDlgItem(IDC_EDIT_UNSELLIST_NAME);
-    if (pWnd != NULL)
+    if (pWnd != nullptr)
     {
         pWnd->SetWindowText((LPCTSTR)m_sGuiParams.m_acUnSelListName);
     }
     //Dislay Selected List name
     pWnd = GetDlgItem(IDC_EDIT_SELLIST_NAME);
-    if (pWnd != NULL)
+    if (pWnd != nullptr)
     {
         pWnd->SetWindowText((LPCTSTR)m_sGuiParams.m_acSelListName);
     }
     // Populate the message name combo
     // Clear the content if any
     m_omCombMessage.ResetContent();
-    if (m_podTempCallerList != NULL)
+    if (m_podTempCallerList != nullptr)
     {
         UINT unNoOfMainEntries = (UINT)m_podTempCallerList->GetCount();
 
@@ -136,7 +136,7 @@ BOOL CMainSubListDlg::OnInitDialog()
         {
             // Add every message name into the message list
             POSITION pos = m_podTempCallerList->GetHeadPosition();
-            while (pos != NULL)
+            while (pos != nullptr)
             {
                 SMAINENTRY& sMainEntry = m_podTempCallerList->GetNext(pos);
                 CString omMainEntryName = sMainEntry.m_omMainEntryName;
@@ -180,7 +180,7 @@ BOOL CMainSubListDlg::OnInitDialog()
     vEnableDisableButtons();
     m_omCombMessage.ShowWindow(SW_HIDE);
     pWnd = GetDlgItem(IDC_EDIT_MAINLIST_NAME);
-    if (pWnd != NULL)
+    if (pWnd != nullptr)
     {
         pWnd->ShowWindow(SW_HIDE);
     }
@@ -205,23 +205,23 @@ void CMainSubListDlg::vPopulateUnSelSubEntryList(UINT unMainEntryID)
 {
     //CMainEntryList* psTemp = m_podTempCallerList;
     m_omListCtrlSignal.DeleteAllItems();
-    if (m_podTempCallerList != NULL)
+    if (m_podTempCallerList != nullptr)
     {
         SMAINENTRY sMainEntry;
         // Check for visible window
-        if( m_omCombMessage.GetSafeHwnd() != NULL )
+        if( m_omCombMessage.GetSafeHwnd() != nullptr )
         {
             m_omCombMessage.GetWindowText(sMainEntry.m_omMainEntryName);
         }
         sMainEntry.m_unMainEntryID = unMainEntryID;
         POSITION pos = m_podTempCallerList->Find(sMainEntry);
-        if ( pos != NULL)
+        if ( pos != nullptr)
         {
             sMainEntry = m_podTempCallerList->GetAt(pos);
             POSITION SubPos = sMainEntry.m_odUnSelEntryList.GetHeadPosition();
             UINT unCountItem = 0;
             UINT unMaxLen = 0;
-            while (SubPos != NULL)
+            while (SubPos != nullptr)
             {
                 SSUBENTRY& sSubEntry = sMainEntry.m_odUnSelEntryList.GetNext(SubPos);
                 UINT unLen = m_omListCtrlSignal.GetStringWidth(sSubEntry.m_omSubEntryName);
@@ -256,11 +256,11 @@ Modification on  :
 *******************************************************************************/
 void CMainSubListDlg::OnDestroy()
 {
-    if (m_podTempCallerList != NULL)
+    if (m_podTempCallerList != nullptr)
     {
         m_podTempCallerList->RemoveAll();
         delete m_podTempCallerList;
-        m_podTempCallerList = NULL;
+        m_podTempCallerList = nullptr;
     }
     CDialog::OnDestroy();
 }
@@ -307,14 +307,14 @@ void CMainSubListDlg::vAddSelSubEntries(BOOL bAllSignals)
 
     // Get the selected message list
     vUpdateUnSelSubEntryList(bAllSignals);
-    if( (m_omCSAData.GetSize() > 0) && (m_podTempCallerList != NULL))
+    if( (m_omCSAData.GetSize() > 0) && (m_podTempCallerList != nullptr))
     {
 
         SMAINENTRY sMainEntry;
         UINT unMainEntryId = unGetSelectedMainEntryID(&(sMainEntry.m_omMainEntryName));
         sMainEntry.m_unMainEntryID = unMainEntryId;
         POSITION pos = m_podTempCallerList->Find(sMainEntry);
-        if (pos != NULL)
+        if (pos != nullptr)
         {
             SMAINENTRY& sPointEntry = m_podTempCallerList->GetAt(pos);
             for (int i = 0; i < m_omCSAData.GetSize(); i++)
@@ -323,7 +323,7 @@ void CMainSubListDlg::vAddSelSubEntries(BOOL bAllSignals)
                 SSUBENTRY sSubEntry;
                 sSubEntry.m_omSubEntryName = omSubEntryName;
                 POSITION SubPos = sPointEntry.m_odUnSelEntryList.Find(sSubEntry);
-                if (SubPos != NULL)
+                if (SubPos != nullptr)
                 {
                     sSubEntry = sPointEntry.m_odUnSelEntryList.GetAt(SubPos);
                     sPointEntry.m_odUnSelEntryList.RemoveAt(SubPos);
@@ -378,14 +378,14 @@ void CMainSubListDlg::vDelSelSubEntries(BOOL bAllEntries)
     }
     else
     {
-        if (m_podTempCallerList != NULL)
+        if (m_podTempCallerList != nullptr)
         {
             POSITION pos = m_podTempCallerList->GetHeadPosition();
             while (pos)
             {
                 SMAINENTRY& sMainEntry = m_podTempCallerList->GetNext(pos);
                 POSITION SubPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
-                while (SubPos != NULL)
+                while (SubPos != nullptr)
                 {
                     POSITION TempPos = SubPos;
                     SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SubPos);
@@ -420,13 +420,13 @@ UINT CMainSubListDlg::unGetSelectedMainEntryID(CString* pomMainEntryName)
     CString omMainEntryName;
 
     // Check for visible window
-    if( m_omCombMessage.GetSafeHwnd() != NULL )
+    if( m_omCombMessage.GetSafeHwnd() != nullptr )
     {
         m_omCombMessage.GetWindowText(omMainEntryName);
     }
     // Get the selected message name
     unMainEntryId = unGetMainEntryIDFromName(omMainEntryName);
-    if (pomMainEntryName != NULL)
+    if (pomMainEntryName != nullptr)
     {
         *pomMainEntryName = omMainEntryName;
     }
@@ -586,19 +586,19 @@ BOOL CMainSubListDlg::bDeleteSubEntry(UINT unMainEntryID,const CString& omMainEn
                                       const CString& omSubEntry)
 {
     BOOL bSuccess = FALSE;
-    if (m_podTempCallerList != NULL)
+    if (m_podTempCallerList != nullptr)
     {
         SMAINENTRY sMainEntry;
         sMainEntry.m_unMainEntryID = unMainEntryID;
         sMainEntry.m_omMainEntryName = omMainEntryName;
         POSITION pos = m_podTempCallerList->Find(sMainEntry);
-        if (pos != NULL)
+        if (pos != nullptr)
         {
             SMAINENTRY& sPointEntry = m_podTempCallerList->GetAt(pos);
             SSUBENTRY sSubEntry;
             sSubEntry.m_omSubEntryName = omSubEntry;
             POSITION SubPos = sPointEntry.m_odSelEntryList.Find(sSubEntry);
-            if (SubPos != NULL)
+            if (SubPos != nullptr)
             {
                 bSuccess = TRUE;
                 sSubEntry = sPointEntry.m_odSelEntryList.GetAt(SubPos);
@@ -787,7 +787,7 @@ void CMainSubListDlg::vUpdateUnSelSubEntryList(BOOL bAllEntries)
         // Assume this is the greatest value
         INT unMaxSize = unCurrentSize;
 
-        while(pos != NULL)
+        while(pos != nullptr)
         {
             int nSelIndex;
             CString omSelSubEntry;
@@ -890,7 +890,7 @@ void CMainSubListDlg::vUpdateSelSubEntryList(BOOL bAllEntries)
         // Get the initial position
         POSITION pos = m_omListCtrlSignalWatch.GetFirstSelectedItemPosition();
 
-        while(pos != NULL)
+        while(pos != nullptr)
         {
             int nSelIndex;
             CString omSelMainSub;
@@ -967,7 +967,7 @@ void CMainSubListDlg::OnRClickUnSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pRes
         {
             CMenu* pomCtxMenu = omCtxMenu.GetSubMenu(2);
 
-            if (pomCtxMenu != NULL)
+            if (pomCtxMenu != nullptr)
             {
                 UINT unSelCount;
                 unSelCount = m_omListCtrlSignal.GetSelectedCount();
@@ -1049,7 +1049,7 @@ void CMainSubListDlg::OnRClickSelSubEntryList(NMHDR* /*pNMHDR*/, LRESULT* pResul
         {
             CMenu* pomCtxMenu = omCtxMenu.GetSubMenu(2);
 
-            if (pomCtxMenu != NULL)
+            if (pomCtxMenu != nullptr)
             {
                 UINT unSelCount;
                 unSelCount = m_omListCtrlSignalWatch.GetSelectedCount();
@@ -1122,7 +1122,7 @@ Modification on  :
 *******************************************************************************/
 void CMainSubListDlg::OnOK()
 {
-    if (m_podMainCallerList != NULL)
+    if (m_podMainCallerList != nullptr)
     {
         m_podMainCallerList->RemoveAll();
         m_podMainCallerList->AddTail(m_podTempCallerList);
@@ -1148,7 +1148,7 @@ void CMainSubListDlg::vPopulateSelSubEntryList()
     // To store the Col Width
     UINT unMaxSize = 0;
     // Get the items and add
-    if ( m_podTempCallerList != NULL)
+    if ( m_podTempCallerList != nullptr)
     {
         POSITION pos = m_podTempCallerList->GetHeadPosition();
         while (pos)
@@ -1165,7 +1165,7 @@ void CMainSubListDlg::vPopulateSelSubEntryList()
                 omNameWithId = omNameWithId + sMainEntry.m_omMainEntryName;// + omNameWithId;
                 CString omStrEntry;
                 POSITION SubPos = sMainEntry.m_odSelEntryList.GetHeadPosition();
-                while (SubPos != NULL)
+                while (SubPos != nullptr)
                 {
                     SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SubPos);
                     // Use format instead of multiple operator '+' call
@@ -1219,7 +1219,7 @@ UINT CMainSubListDlg::unGetMainEntryIDFromName(CString omMainEntryName)
 {
     CString omMainEntryId;
     UINT unMainEntryID = (UINT)-1;
-    char* pcStopStr = NULL;
+    char* pcStopStr = nullptr;
     int nIndex = omMainEntryName.Find(defMSGID_EXTENDED);
     int nCloseBraceIndex = omMainEntryName.Find(defMSG_NAME_END_CHAR);
     if((nIndex != -1) && (nCloseBraceIndex != -1))

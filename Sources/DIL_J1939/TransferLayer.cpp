@@ -39,7 +39,7 @@ const int nSIZE_OF_BYTE = sizeof(BYTE);
  ************************************************************** */
 CTransferLayer::CTransferLayer()
 {
-    m_pIDIL_CAN = NULL;
+    m_pIDIL_CAN = nullptr;
 }
 
 /**************************************************************
@@ -72,7 +72,7 @@ LONG CTransferLayer::lTConnectReq(short /*sConNumber*/, char /*cBlockSize*/, eCO
 //        CNetworkMgmt::ouGetNWManagementObj().pouGetConDetObj(sConNumber);
 //    CNodeConManager* pManager =
 //        CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrFromConnection(sConNumber);
-//    if (pConDetObj != NULL)
+//    if (pConDetObj != nullptr)
 //    {
 //         lError = pManager->unSendConnectionReq(cBlockSize, eSMmode, pConDetObj);
 //    }
@@ -93,11 +93,11 @@ void CTransferLayer::vTConnectCon(short /*sConNumber*/, eCON_STATUS /*ConStatus*
 //        CNetworkMgmt::ouGetNWManagementObj().pouGetConDetObj(sConNumber);
 //    CNodeConManager* pConManager =
 //        CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrFromConnection(sConNumber);
-//    if ((pConDet != NULL) && (pConManager != NULL))
+//    if ((pConDet != nullptr) && (pConManager != nullptr))
 //    {
 //        const CNetwork_McNet* pouNetwork
 //                        = CNetworkMgmt::ouGetNWManagementObj().pouGetNetwork();
-//        ASSERT(pouNetwork != NULL);
+//        ASSERT(pouNetwork != nullptr);
 //        DWORD dwLocalLCN, dwRemoteLCN;
 //        pouNetwork->bGetLCNValues(pConDet->m_unRemoteCANid, dwLocalLCN, dwRemoteLCN);
 //        CNetworkMgmt::ouGetNWManagementObj().vMConnectionCon((short) dwLocalLCN,
@@ -116,11 +116,11 @@ void CTransferLayer::vTConnectInd(short /*sConNumber*/,char /*cBlockSize*/, BOOL
 //        CNetworkMgmt::ouGetNWManagementObj().pouGetConDetObj(sConNumber);
 //    CNodeConManager* pConManager =
 //        CNetworkMgmt::ouGetNWManagementObj().pouGetConMagrFromConnection(sConNumber);
-//    if ((pConDet != NULL) && (pConManager != NULL))
+//    if ((pConDet != nullptr) && (pConManager != nullptr))
 //    {
 //        const CNetwork_McNet* pouNetwork
 //                        = CNetworkMgmt::ouGetNWManagementObj().pouGetNetwork();
-//        ASSERT(pouNetwork != NULL);
+//        ASSERT(pouNetwork != nullptr);
 //        DWORD dwLocalLCN, dwRemoteLCN;
 //        pouNetwork->bGetLCNValues(pConDet->m_unRemoteCANid, dwLocalLCN, dwRemoteLCN);
 //        CNetworkMgmt::ouGetNWManagementObj().vMConnectionInd((short) dwLocalLCN,
@@ -140,12 +140,12 @@ void CTransferLayer::vTDisconnectInd(short /*sConNumber*/,eREASON /*eReason*/)
 //    CConnectionDet* pConDet =
 //        CNetworkMgmt::ouGetNWManagementObj().pouGetConDetObj(sConNumber);
 //
-//    if ((pConDet != NULL))
+//    if ((pConDet != nullptr))
 //    {
 //        pConDet->m_eConStatus = T_DISCONNECTED;
 //        const CNetwork_McNet* pouNetwork
 //                        = CNetworkMgmt::ouGetNWManagementObj().pouGetNetwork();
-//        ASSERT(pouNetwork != NULL);
+//        ASSERT(pouNetwork != nullptr);
 //        DWORD dwLocalLCN, dwRemoteLCN;
 //        pouNetwork->bGetLCNValues(pConDet->m_unRemoteCANid, dwLocalLCN, dwRemoteLCN);
 //        //CNetworkMgmt::ouGetNWManagementObj().vMConnectionInd((short) dwLocalLCN,

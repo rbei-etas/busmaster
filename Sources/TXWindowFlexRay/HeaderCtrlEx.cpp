@@ -349,7 +349,7 @@ void CHeaderCtrlEx::DrawDragDivider()
 {
     CWnd* pParent = GetParent();
 
-    CDC* pDC = pParent->GetDCEx(NULL, DCX_WINDOW | DCX_CACHE | DCX_LOCKWINDOWUPDATE);
+    CDC* pDC = pParent->GetDCEx(nullptr, DCX_WINDOW | DCX_CACHE | DCX_LOCKWINDOWUPDATE);
     int nROP2 = pDC->SetROP2(R2_NOT);
 
     CPen pen;
@@ -408,7 +408,7 @@ DWORD_PTR CHeaderCtrlEx::GetItemData(int index)
     {
         return (DWORD_PTR)hdi.lParam;
     }
-    return NULL;
+    return 0;
 }
 
 BOOL CHeaderCtrlEx::SetItemData(int index, DWORD_PTR dwData)
@@ -464,7 +464,7 @@ void CHeaderCtrlEx::OnDestroy()
     for (int i = 0; i < GetItemCount(); i++)
     {
         delete (CItemData*)GetItemData(i);
-        SetItemData(i, NULL);
+        SetItemData(i, 0);
     }
 
     CHeaderCtrl::OnDestroy();
@@ -485,7 +485,7 @@ BOOL CHeaderCtrlEx::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
     //return CHeaderCtrl::OnSetCursor(pWnd, nHitTest, message);
 
-    HCURSOR hCursor = NULL;
+    HCURSOR hCursor = nullptr;
 
     HDHITTESTINFO ht;
     ::GetCursorPos(&ht.pt);
@@ -496,7 +496,7 @@ BOOL CHeaderCtrlEx::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
         if (ht.flags == HHT_ONDIVIDER)
         {
             hCursor = AfxGetApp()->LoadCursor(IDC_HEADER_SIZE);
-            ASSERT(hCursor != NULL);
+            ASSERT(hCursor != nullptr);
         }
         else if (ht.flags == HHT_ONDIVOPEN)
         {
@@ -511,7 +511,7 @@ BOOL CHeaderCtrlEx::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
         }
     }
 
-    if (hCursor == NULL)
+    if (hCursor == nullptr)
         hCursor = AfxGetApp()->LoadStandardCursor(IDC_ARROW);
 
     ::SetCursor(hCursor);
@@ -545,7 +545,7 @@ void CHeaderCtrlEx::OnLButtonDblClk(UINT nFlags, CPoint point)
                     nm.hdr.idFrom = GetDlgCtrlID();
                     nm.iButton = 0;
                     nm.iItem = nItem;
-                    nm.pitem = NULL;    // not used for HDN_DIVIDERDBLCLICK
+                    nm.pitem = nullptr;    // not used for HDN_DIVIDERDBLCLICK
                     GetParent()->SendMessage(WM_NOTIFY, (WPARAM)nm.hdr.idFrom, (LPARAM)&nm);
                 }
             }

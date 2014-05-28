@@ -33,7 +33,7 @@ public:
     // Build the DLL from the source file and call function to display the output
     BOOL bBuildProgram(PSNODEINFO psNodeInfo,BOOL bLoadDLL);
     // Default contructor
-    CBuildProgram(ETYPE_BUS eBus, HMODULE hModuleHandle =NULL);
+    CBuildProgram(ETYPE_BUS eBus, HMODULE hModuleHandle =nullptr);
     // Default destructor
     virtual ~CBuildProgram();
     // Pointer to output window

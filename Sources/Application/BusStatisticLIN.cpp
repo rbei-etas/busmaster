@@ -38,7 +38,7 @@ void* CBusStatisticLIN:: sm_pouBSLin;
  */
 int ReadBSDataBuffer(CBusStatisticLIN* pBSLin)
 {
-    ASSERT(pBSLin != NULL);
+    ASSERT(pBSLin != nullptr);
     while (pBSLin->m_ouLinBufFSE.GetMsgCount() > 0)
     {
         static STLINDATA sLinData;
@@ -70,14 +70,14 @@ int ReadBSDataBuffer(CBusStatisticLIN* pBSLin)
 DWORD WINAPI BSDataReadThreadProc_LIN(LPVOID pVoid)
 {
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-    if (pThreadParam == NULL)
+    if (pThreadParam == nullptr)
     {
         return ((DWORD)-1);
     }
 
     CBusStatisticLIN* pBusStatistics_LIN = static_cast<CBusStatisticLIN*> (pThreadParam->m_pBuffer);
 
-    if (pBusStatistics_LIN == NULL)
+    if (pBusStatistics_LIN == nullptr)
     {
         return ((DWORD)-1);
     }
@@ -127,11 +127,8 @@ CBusStatisticLIN::CBusStatisticLIN(void)
 {
     InitializeCriticalSection(&m_omCritSecBS);
     m_ouReadThread.m_hActionEvent = m_ouLinBufFSE.hGetNotifyingEvent();
-    m_nTimerHandle = NULL;
+    m_nTimerHandle = 0;
     //Initialise Number of Bits in Standard LIN Messages
-    //  UINT unBitsStdMsg[] = {44, 54, 64, 74, 84, 94, 104, 114, 124,134};
-    // UINT unBitsStdMsg[] = {50, 61, 71, 82, 92, 103, 113, 124, 134};
-    //   UINT unBitsStdMsg[] = {52, 63, 73, 84, 94, 105, 115, 126, 136};
     UINT unBitsStdMsg[] = {34, 54, 64, 74, 84, 94, 104, 114, 124};
     memcpy(m_unBitsStdMsg, unBitsStdMsg, 9*sizeof(UINT));
 
@@ -151,9 +148,9 @@ CBusStatisticLIN::~CBusStatisticLIN(void)
     m_ouReadThread.bTerminateThread();      // Terminate read thread
     m_ouLinBufFSE.vClearMessageBuffer();    // clear can buffer
     DeleteCriticalSection(&m_omCritSecBS);  // delete critical section
-    if( m_nTimerHandle != NULL )
+    if( m_nTimerHandle != 0 )
     {
-        KillTimer(NULL, m_nTimerHandle);
+        KillTimer(nullptr, m_nTimerHandle);
     }
 }
 
@@ -189,15 +186,15 @@ BOOL CBusStatisticLIN::BSL_bStartUpdation(BOOL bStart)
 {
     if(bStart == TRUE)
     {
-        if(m_nTimerHandle == NULL)
+        if(m_nTimerHandle == 0)
         {
-            m_nTimerHandle = ::SetTimer(NULL, 0, 1000, OnTimeWrapper);
+            m_nTimerHandle = ::SetTimer(nullptr, 0, 1000, OnTimeWrapper);
         }
     }
     else
     {
-        KillTimer(NULL, m_nTimerHandle);
-        m_nTimerHandle = NULL;
+        KillTimer(nullptr, m_nTimerHandle);
+        m_nTimerHandle = 0;
     }
     return 0;
 }

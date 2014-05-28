@@ -37,28 +37,28 @@ CFrameProcessor_J1939::CFrameProcessor_J1939():m_ouFormatMsgJ1939(m_ouRefTimer)
     // Get hold of J1939 DIL interface
     HRESULT Result = DIL_GetInterface(J1939, (void**) &m_pouDIL_J1939);
     ASSERT(S_OK == Result);
-    ASSERT(NULL != m_pouDIL_J1939);
+    ASSERT(nullptr != m_pouDIL_J1939);
 
-    m_sJ1939ProcParams.m_pILog = NULL;
+    m_sJ1939ProcParams.m_pILog = nullptr;
     m_sJ1939ProcParams.dwClientID = 0x0;
 
     // Allocate necessary amount of memory.
 
     m_sJ1939Data.m_unDLC = MAX_DATA_LEN_J1939;
     m_sJ1939Data.m_pbyData = new BYTE[m_sJ1939Data.m_unDLC];// For basic data object
-    ASSERT(NULL != m_sJ1939Data.m_pbyData);
+    ASSERT(nullptr != m_sJ1939Data.m_pbyData);
 
     // For raw data bytes. It should be equal to the size of m_sJ1939Data
     m_pbyJ1939Data = new BYTE[m_sJ1939Data.unGetSize()];
-    ASSERT(NULL != m_pbyJ1939Data);
+    ASSERT(nullptr != m_pbyJ1939Data);
 
     USHORT Length = ushCalculateStrLen(true, MAX_DATA_LEN_J1939);
     m_sCurrFormatDat.m_pcDataHex = new char[Length];
-    ASSERT(NULL != m_sCurrFormatDat.m_pcDataHex);
+    ASSERT(nullptr != m_sCurrFormatDat.m_pcDataHex);
     memset(m_sCurrFormatDat.m_pcDataHex, '\0', Length * sizeof(char));
     Length = ushCalculateStrLen(false, MAX_DATA_LEN_J1939);
     m_sCurrFormatDat.m_pcDataDec = new char[Length];
-    ASSERT(NULL != m_sCurrFormatDat.m_pcDataDec);
+    ASSERT(nullptr != m_sCurrFormatDat.m_pcDataDec);
     memset(m_sCurrFormatDat.m_pcDataDec, '\0', Length * sizeof(char));
     m_sDataCopyThread.m_hActionEvent = m_ouVSEBufJ1939.hGetNotifyingEvent();
     m_bIsJ1939DataLogged = FALSE;
@@ -90,7 +90,7 @@ int CFrameProcessor_J1939::ExitInstance(void)
 
 CBaseLogObject* CFrameProcessor_J1939::CreateNewLogObj(const CString & /* omStrVersion */)
 {
-    CLogObjectJ1939* pLogObj = NULL;
+    CLogObjectJ1939* pLogObj = nullptr;
     CString strVersion = CString(m_sJ1939ProcParams.m_acVersion);
     if (strVersion.IsEmpty())
     {
@@ -104,10 +104,10 @@ CBaseLogObject* CFrameProcessor_J1939::CreateNewLogObj(const CString & /* omStrV
 void CFrameProcessor_J1939::DeleteLogObj(CBaseLogObject*& pouLogObj)
 {
     CLogObjectJ1939* pLogObj = static_cast<CLogObjectJ1939*> (pouLogObj);
-    if (NULL != pLogObj)
+    if (nullptr != pLogObj)
     {
         delete pLogObj;
-        pouLogObj = NULL;
+        pouLogObj = nullptr;
     }
     else
     {
@@ -118,7 +118,7 @@ void CFrameProcessor_J1939::DeleteLogObj(CBaseLogObject*& pouLogObj)
 void CFrameProcessor_J1939::CreateTimeModeMapping(SYSTEMTIME & CurrSysTime,
         UINT64 & unAbsTime)
 {
-    if (NULL != m_pouDIL_J1939)
+    if (nullptr != m_pouDIL_J1939)
     {
         m_pouDIL_J1939->DILIJ_GetTimeModeMapping(CurrSysTime, unAbsTime);
     }
@@ -185,17 +185,17 @@ HRESULT CFrameProcessor_J1939::FPJ1_DoInitialisation(CParamLoggerJ1939* psInitPa
 {
     HRESULT hResult = S_FALSE;
 
-    if (psInitParams != NULL)
+    if (psInitParams != nullptr)
     {
         m_sJ1939ProcParams = *psInitParams;
-        ASSERT(NULL != m_sJ1939ProcParams.m_pILog);
+        ASSERT(nullptr != m_sJ1939ProcParams.m_pILog);
 
         m_ouVSEBufJ1939.vClearMessageBuffer();
         //m_sDataCopyThread.m_hActionEvent = m_ouVSEBufJ1939.hGetNotifyingEvent();
 
         if (this->CFrameProcessor_Common::DoInitialisation() == S_OK)
         {
-            if (NULL != m_pouDIL_J1939)
+            if (nullptr != m_pouDIL_J1939)
             {
                 hResult = m_pouDIL_J1939->DILIJ_ManageMsgBuf(MSGBUF_ADD,
                           m_sJ1939ProcParams.dwClientID, &m_ouVSEBufJ1939);
@@ -231,7 +231,7 @@ HRESULT CFrameProcessor_J1939::FPJ1_ApplyFilteringScheme(USHORT ushLogBlkID,
             CBaseLogObject* pouBaseLogObj = m_omLogListTmp.GetAt(ushLogBlkID);
             CLogObjectJ1939* pLogObj = static_cast<CLogObjectJ1939*> (pouBaseLogObj);
 
-            if (NULL != pLogObj)
+            if (nullptr != pLogObj)
             {
                 pLogObj->SetFilterInfo(sFilterObj);
                 hResult = S_OK;
@@ -255,7 +255,7 @@ HRESULT CFrameProcessor_J1939::FPJ1_GetFilteringScheme(USHORT ushLogBlk,
     CBaseLogObject* pouBaseLogObj = FindLoggingBlock(ushLogBlk);
     CLogObjectJ1939* pouLogObj = static_cast<CLogObjectJ1939*> (pouBaseLogObj);
 
-    if (NULL != pouLogObj)
+    if (nullptr != pouLogObj)
     {
         pouLogObj->GetFilterInfo(sFilterObj);
         hResult = S_OK;
@@ -289,12 +289,12 @@ void CFrameProcessor_J1939::FPJ1_vCloseLogFile(void)
 {
     USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
 
-    CBaseLogObject* pouCurrLogObj = NULL;
+    CBaseLogObject* pouCurrLogObj = nullptr;
     for (USHORT i = 0; i < ushBlocks; i++)
     {
         pouCurrLogObj = m_omLogObjectArray.GetAt(i);
 
-        if (pouCurrLogObj != NULL)
+        if (pouCurrLogObj != nullptr)
         {
             pouCurrLogObj->bStopOnlyLogging();
         }

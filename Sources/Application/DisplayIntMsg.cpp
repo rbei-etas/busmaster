@@ -43,7 +43,7 @@
 /*                                                                            */
 /******************************************************************************/
 CDisplayIntMsg::CDisplayIntMsg(CONST CStringArray& omStrStringArray)
-    : CDialog(CDisplayIntMsg::IDD, NULL)
+    : CDialog(CDisplayIntMsg::IDD, nullptr)
 {
     m_omInterpretedMsg.RemoveAll();
     m_omInterpretedMsg.Copy(omStrStringArray);

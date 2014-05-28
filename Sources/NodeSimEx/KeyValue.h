@@ -35,7 +35,7 @@ private:
 public:
     // standard constructor
     CKeyValue(CFnsTreeView* pFnsTreeView, CFunctionEditorDoc* pDoc,
-              CWnd* pParent = NULL,char* pcKeyVal = (char*)NULL);
+              CWnd* pParent = nullptr,char* pcKeyVal = (char*)nullptr);
 
     // Dialog Data
     //{{AFX_DATA(CKeyValue)

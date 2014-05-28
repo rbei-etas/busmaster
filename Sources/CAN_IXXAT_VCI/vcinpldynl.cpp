@@ -22,10 +22,10 @@
 *****************************************************************************/
 
 //*** DLL access Macros
-#define DECLARE_FUNCTION_POINTER(FUNC)  PF_NPL_##FUNC DYNFUNC(FUNC)=NULL;
+#define DECLARE_FUNCTION_POINTER(FUNC)  PF_NPL_##FUNC DYNFUNC(FUNC)=nullptr;
 #define LOAD_FUNCTION_POINTER(DLL,FUNC) DYNFUNC(FUNC) = (PF_NPL_##FUNC)GetProcAddress(DLL, #FUNC);\
-    lProcAddr &= DYNFUNC(FUNC)!= NULL?1:0;
-#define UNLOAD_FUNCTION_POINTER(FUNC)   DYNFUNC(FUNC) = NULL;
+    lProcAddr &= DYNFUNC(FUNC)!= nullptr?1:0;
+#define UNLOAD_FUNCTION_POINTER(FUNC)   DYNFUNC(FUNC) = nullptr;
 
 //*** Expected Major Version Number
 #define VCI_V3_NPL_MAJOR_VERION 3
@@ -154,7 +154,7 @@ DECLARE_FUNCTION_POINTER(linMonitorReadMessage);
 /*****************************************************************************
 * module global variables
 *****************************************************************************/
-static HINSTANCE g_hInstVciNplLib     = NULL;
+static HINSTANCE g_hInstVciNplLib     = nullptr;
 static DWORD     g_dwInstanceCounter  = 0;
 
 
@@ -229,10 +229,10 @@ HRESULT LoadVciNplLib(void)
     }
 
     //*** Unload DLL on error, if loaded
-    if((hResult != S_OK) && (g_hInstVciNplLib != NULL))
+    if((hResult != S_OK) && (g_hInstVciNplLib != nullptr))
     {
         FreeLibrary( g_hInstVciNplLib );
-        g_hInstVciNplLib = NULL;
+        g_hInstVciNplLib = nullptr;
     }
 
     return hResult;
@@ -271,10 +271,10 @@ HRESULT FreeVciNplLib(void)
         UnmapLINMessageMonitorFunctions();
 
         //*** Free Library
-        if(g_hInstVciNplLib != NULL)
+        if(g_hInstVciNplLib != nullptr)
         {
             FreeLibrary(g_hInstVciNplLib);
-            g_hInstVciNplLib = NULL;
+            g_hInstVciNplLib = nullptr;
         }
     }
 
@@ -308,7 +308,7 @@ HRESULT MapGeneralVciFunctions(void)
     long    lProcAddr = 0x1;
 
     //*** Check if DLL is loaded
-    if(g_hInstVciNplLib != NULL)
+    if(g_hInstVciNplLib != nullptr)
     {
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, vciInitialize);
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, vciFormatError);
@@ -390,7 +390,7 @@ HRESULT MapEventFunctions(void)
     long    lProcAddr = 0x1;
 
     //*** Check if DLL is loaded
-    if(g_hInstVciNplLib != NULL)
+    if(g_hInstVciNplLib != nullptr)
     {
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, vciEventCreate);
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, vciEventDelete);
@@ -467,7 +467,7 @@ HRESULT MapDeviceManagerFunctions(void)
     long    lProcAddr = 0x1;
 
     //*** Check if DLL is loaded
-    if(g_hInstVciNplLib != NULL)
+    if(g_hInstVciNplLib != nullptr)
     {
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, vciEnumDeviceOpen);
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, vciEnumDeviceClose );
@@ -550,7 +550,7 @@ HRESULT MapDeviceFunctions(void)
     long    lProcAddr = 0x1;
 
     //*** Check if DLL is loaded
-    if(g_hInstVciNplLib != NULL)
+    if(g_hInstVciNplLib != nullptr)
     {
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, vciDeviceOpen);
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, vciDeviceOpenDlg);
@@ -627,7 +627,7 @@ HRESULT MapCANControllerFunctions(void)
     long    lProcAddr = 0x1;
 
     //*** Check if DLL is loaded
-    if(g_hInstVciNplLib != NULL)
+    if(g_hInstVciNplLib != nullptr)
     {
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, canControlOpen);
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, canControlClose);
@@ -717,7 +717,7 @@ HRESULT MapCANMessageChannelFunctions(void)
     long    lProcAddr = 0x1;
 
     //*** Check if DLL is loaded
-    if(g_hInstVciNplLib != NULL)
+    if(g_hInstVciNplLib != nullptr)
     {
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, canChannelOpen);
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, canChannelClose);
@@ -811,7 +811,7 @@ HRESULT MapCANMsgSchedulerFunctions(void)
     long    lProcAddr = 0x1;
 
     //*** Check if DLL is loaded
-    if(g_hInstVciNplLib != NULL)
+    if(g_hInstVciNplLib != nullptr)
     {
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, canSchedulerOpen);
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, canSchedulerClose);
@@ -899,7 +899,7 @@ HRESULT MapLINControllerFunctions(void)
     long    lProcAddr = 0x1;
 
     //*** Check if DLL is loaded
-    if(g_hInstVciNplLib != NULL)
+    if(g_hInstVciNplLib != nullptr)
     {
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, linControlOpen);
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, linControlClose);
@@ -983,7 +983,7 @@ HRESULT MapLINMessageMonitorFunctions(void)
     long    lProcAddr = 0x1;
 
     //*** Check if DLL is loaded
-    if(g_hInstVciNplLib != NULL)
+    if(g_hInstVciNplLib != nullptr)
     {
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, linMonitorOpen);
         LOAD_FUNCTION_POINTER(g_hInstVciNplLib, linMonitorClose);

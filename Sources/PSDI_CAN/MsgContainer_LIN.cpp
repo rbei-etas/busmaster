@@ -97,7 +97,7 @@ void CMsgContainerLIN::InitTimeParams(void)
     UINT64 unAbsTime;
     //Kadoor HANDLE hReadHandle = m_ouLinBufFSE.hGetNotifyingEvent();
     //Kadoor WaitForSingleObject(hReadHandle, INFINITE);
-    if (NULL != m_pouDIL_LIN_Interface)
+    if (nullptr != m_pouDIL_LIN_Interface)
     {
         m_pouDIL_LIN_Interface->DILL_GetTimeModeMapping(CurrSysTime, unAbsTime);
         m_ouFormatLIN.vSetTimeParams(CurrSysTime, unAbsTime);
@@ -251,7 +251,7 @@ void CMsgContainerLIN::vProcessNewData(STLINDATA& sLinData)
         {
             m_ouAppendLinBuf.WriteIntoBuffer(&m_sLINReadDataSpl);
 
-            if (NULL != m_pRxMsgCallBack)
+            if (nullptr != m_pRxMsgCallBack)
             {
                 m_pRxMsgCallBack((void*)&sLinData, LIN);
             }
@@ -275,7 +275,7 @@ void CMsgContainerLIN::vProcessNewData(STLINDATA& sLinData)
         {
             m_ouAppendLinBuf.WriteIntoBuffer(&m_sLINReadDataSpl);
 
-            if (NULL != m_pRxMsgCallBack)
+            if (nullptr != m_pRxMsgCallBack)
             {
                 m_pRxMsgCallBack((void*)&sLinData, LIN);
             }
@@ -341,7 +341,7 @@ BOOL CMsgContainerLIN:: bStartReadThread()
 {
     int bResult = TRUE;
     HRESULT hResult;
-    if (NULL != m_pouDIL_LIN_Interface)
+    if (nullptr != m_pouDIL_LIN_Interface)
     {
         //if (m_pouDIL_LIN_Interface->DILL_RegisterClient(TRUE, m_dwClientId, L"PSDI_LIN") == S_OK)
         {
@@ -374,7 +374,7 @@ BOOL CMsgContainerLIN:: bStartReadThread()
 HRESULT CMsgContainerLIN:: hToggleDILBufferRead(BOOL bRead)
 {
     HRESULT hResult = S_FALSE;
-    if (NULL != m_pouDIL_LIN_Interface)
+    if (nullptr != m_pouDIL_LIN_Interface)
     {
         if(bRead)
         {
@@ -401,7 +401,7 @@ HRESULT CMsgContainerLIN:: hToggleDILBufferRead(BOOL bRead)
 BOOL CMsgContainerLIN:: bStopReadThread()
 {
     BOOL bReturn = CMsgContainerBase::bStopReadThread();
-    if (NULL != m_pouDIL_LIN_Interface)
+    if (nullptr != m_pouDIL_LIN_Interface)
     {
         m_pouDIL_LIN_Interface->DILL_ManageMsgBuf(MSGBUF_CLEAR, m_dwClientId, &m_ouMCLinBufFSE);
     }
@@ -521,7 +521,7 @@ HRESULT CMsgContainerLIN::ApplyFilterScheme(void* pvFilterApplied)
 {
     HRESULT hResult = S_FALSE;
     SFILTERAPPLIED_LIN* psFilterLIN = (SFILTERAPPLIED_LIN*)pvFilterApplied;
-    if (psFilterLIN != NULL)
+    if (psFilterLIN != nullptr)
     {
         EnterCriticalSection(&m_omCritSecFilter);
         //        if (m_sFilterLIN.bClone(*psFilterLIN) == TRUE)
@@ -538,7 +538,7 @@ HRESULT CMsgContainerLIN::GetFilterScheme(void* pvFilterApplied)
 {
     HRESULT hResult = S_FALSE;
     SFILTERAPPLIED_LIN* psFilterLIN = (SFILTERAPPLIED_LIN*)pvFilterApplied;
-    if (psFilterLIN != NULL)
+    if (psFilterLIN != nullptr)
     {
         //        if (psFilterLIN->bClone(m_sFilterLIN) == TRUE)
         if (psFilterLIN->bClone(m_sFilterLIN) == true)
@@ -688,7 +688,7 @@ USHORT CMsgContainerLIN::usProcessCurrErrorEntry(SERROR_INFO_LIN& sErrInfo)
 
 __int64 CMsgContainerLIN::n64CreateMapIDForLinEvevnt(STLINDATA* psLinData)
 {
-    if ( psLinData == NULL )
+    if ( psLinData == nullptr )
     {
         return -1;
     }
@@ -795,7 +795,7 @@ BOOL CMsgContainerLIN::bGetDilInterFace()
 {
     BOOL bFound = FALSE;;
     DIL_GetInterface(LIN, (void**)&m_pouDIL_LIN_Interface);
-    if (NULL != m_pouDIL_LIN_Interface)
+    if (nullptr != m_pouDIL_LIN_Interface)
     {
         bFound = TRUE;
     }

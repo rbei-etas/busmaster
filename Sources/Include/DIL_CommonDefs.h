@@ -26,9 +26,9 @@
 
 #define LOG_ERR_MSG() sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, A2T((LPSTR) (sg_acErrStr.c_str())))
 
-#define VALIDATE_POINTER_RETURN_VAL(Ptr, RetVal)        if (Ptr == NULL) {return RetVal;}
+#define VALIDATE_POINTER_RETURN_VAL(Ptr, RetVal)        if (Ptr == nullptr) {return RetVal;}
 #define VALIDATE_VALUE_RETURN_VAL(Val1, Val2, RetVal)   if (Val1 != Val2) {return RetVal;}
-#define VALIDATE_POINTER_RETURN_VOID(Ptr)               if (Ptr == NULL) {return;}
-#define VALIDATE_POINTER_NO_RETURN_LOG(Ptr)             if (Ptr == NULL) {LOG_ERR_MSG();}
-#define VALIDATE_POINTER_RETURN_VOID_LOG(Ptr)           if (Ptr == NULL) {LOG_ERR_MSG(); return;}
-#define VALIDATE_POINTER_RETURN_VALUE_LOG(Ptr, RetVal)  if (Ptr == NULL) {LOG_ERR_MSG(); return RetVal;}
+#define VALIDATE_POINTER_RETURN_VOID(Ptr)               if (Ptr == nullptr) {return;}
+#define VALIDATE_POINTER_NO_RETURN_LOG(Ptr)             if (Ptr == nullptr) {LOG_ERR_MSG();}
+#define VALIDATE_POINTER_RETURN_VOID_LOG(Ptr)           if (Ptr == nullptr) {LOG_ERR_MSG(); return;}
+#define VALIDATE_POINTER_RETURN_VALUE_LOG(Ptr, RetVal)  if (Ptr == nullptr) {LOG_ERR_MSG(); return RetVal;}

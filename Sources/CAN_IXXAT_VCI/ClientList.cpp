@@ -73,7 +73,7 @@ void CClientList::DeleteAllEntries()
     for (iter = m_ClientBufferMap.begin(); iter != m_ClientBufferMap.end(); ++iter)
     {
         delete iter->second;
-        iter->second= NULL;
+        iter->second= nullptr;
     }
     m_ClientBufferMap.clear();
 }
@@ -104,7 +104,7 @@ HRESULT CClientList::RegisterClient(DWORD& pdwClientID, std::string pacClientNam
             pdwClientID = m_dwUniqueClientID;
 
             // do not forget to delete this object later, we are the creator so we delete it!
-            CClientBuffer* pNewClient = new CClientBuffer(m_dwUniqueClientID, NULL, NULL,  pacClientName);
+            CClientBuffer* pNewClient = new CClientBuffer(m_dwUniqueClientID, nullptr, nullptr,  pacClientName);
             m_ClientBufferMap[m_dwUniqueClientID] = pNewClient;
             m_dwUniqueClientID++;
             hResult = S_OK;
@@ -144,7 +144,7 @@ HRESULT CClientList::RemoveClient(DWORD dwClientID)
     if (iter != m_ClientBufferMap.end())
     {
         delete iter->second;
-        iter->second = NULL;
+        iter->second = nullptr;
         m_ClientBufferMap.erase(iter);
         hResult = S_OK;
     }
@@ -159,11 +159,11 @@ HRESULT CClientList::RemoveClient(DWORD dwClientID)
  *  Identifier for the client.
  *
  * @return
- *  NULL if it fails, else the client.
+ *  nullptr if it fails, else the client.
  */
 CClientBuffer* CClientList::GetClientByID(DWORD dwClientID)
 {
-    CClientBuffer* pReturnClientObj = NULL;
+    CClientBuffer* pReturnClientObj = nullptr;
     if (m_ClientBufferMap.find(dwClientID) != m_ClientBufferMap.end())
     {
         pReturnClientObj = m_ClientBufferMap[dwClientID];
@@ -184,7 +184,7 @@ CClientBuffer* CClientList::GetClientByID(DWORD dwClientID)
  */
 CClientBuffer* CClientList::GetClientByIndex(int iIndexInList)
 {
-    CClientBuffer* pReturnClientObj = NULL;
+    CClientBuffer* pReturnClientObj = nullptr;
     ClientBufferMap::iterator iter;
     int iCurIndex = 0;
     for (iter = m_ClientBufferMap.begin(); iter != m_ClientBufferMap.end(); ++iter)
@@ -212,7 +212,7 @@ CClientBuffer* CClientList::GetClientByIndex(int iIndexInList)
  */
 CClientBuffer* CClientList::GetClient(std::string pacClientName)
 {
-    CClientBuffer* pReturnClientObj = NULL;
+    CClientBuffer* pReturnClientObj = nullptr;
     ClientBufferMap::iterator iter;
     for (iter = m_ClientBufferMap.begin(); iter != m_ClientBufferMap.end(); ++iter)
     {

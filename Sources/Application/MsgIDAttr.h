@@ -35,7 +35,7 @@ public:
     UINT m_nID;
     UINT m_nPreviousID;
     COLORREF m_sColour;
-    CMsgIDAttr(ETYPE_BUS eBusType, CWnd* pParent = NULL);   // standard constructor
+    CMsgIDAttr(ETYPE_BUS eBusType, CWnd* pParent = nullptr);   // standard constructor
 
     // Dialog Data
     //{{AFX_DATA(CMsgIDAttr)

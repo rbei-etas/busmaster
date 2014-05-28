@@ -82,7 +82,7 @@ CGraphParameters::~CGraphParameters()
 BYTE* CGraphParameters::pbyGetConfigData(BYTE* pbyTrgtData)
 {
     BYTE* pbyTemp = pbyTrgtData;
-    if (pbyTemp != NULL)
+    if (pbyTemp != nullptr)
     {
         // Set the def
         COPY_DATA(pbyTemp, &m_nBufferSize, sizeof(int));
@@ -117,7 +117,7 @@ BYTE* CGraphParameters::pbyGetConfigData(BYTE* pbyTrgtData)
 BYTE* CGraphParameters::pbySetConfigData(BYTE* pbyTrgtData)
 {
     BYTE* pbyTemp = pbyTrgtData;
-    if (pbyTemp != NULL)
+    if (pbyTemp != nullptr)
     {
         // Set the def
         COPY_DATA_2(&m_nBufferSize, pbyTemp, sizeof(int));

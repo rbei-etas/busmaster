@@ -46,7 +46,7 @@ public:
 
     }
 
-    CLINBusStatisticsDlg(CBaseBusStatisticLIN* pouBSLIN,CWnd* pParent = NULL,int nChannelCount = defNO_OF_LIN_CHANNELS);
+    CLINBusStatisticsDlg(CBaseBusStatisticLIN* pouBSLIN,CWnd* pParent = nullptr,int nChannelCount = defNO_OF_LIN_CHANNELS);
 
     // Overrides
     // ClassWizard generated virtual function overrides

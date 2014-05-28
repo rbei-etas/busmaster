@@ -30,7 +30,7 @@ private:
 
 public:
     // standard constructor
-    CFlexRayNetworkStatsDlg(CFlexRayNetworkStats* pNetworkStat, CWnd* pParent = NULL);
+    CFlexRayNetworkStatsDlg(CFlexRayNetworkStats* pNetworkStat, CWnd* pParent = nullptr);
     virtual ~CFlexRayNetworkStatsDlg();
 
     void GetConfigData(BYTE** ppvConfigData, UINT& unLength);

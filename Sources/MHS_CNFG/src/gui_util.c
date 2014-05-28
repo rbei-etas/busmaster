@@ -44,7 +44,7 @@ char out[512];
 va_start(argptr, text);
 _vstprintf(out, text, argptr);
 va_end(argptr);
-MessageBox(NULL, out, title, MB_ICONEXCLAMATION | MB_OK);
+MessageBox(nullptr, out, title, MB_ICONEXCLAMATION | MB_OK);
 }
 
 
@@ -53,17 +53,17 @@ char *GetWidgetTextDup(HWND ctrl_wnd)
 char *str;
 DWORD len;
 
-str = NULL;
+str = nullptr;
 if ((len = SendMessage(ctrl_wnd, WM_GETTEXTLENGTH, 0, 0)) <= 0)
-  return(NULL);
+  return(nullptr);
 len++;
 str = (char *)mhs_malloc(len);
 if (!str)
-  return(NULL);
+  return(nullptr);
 if (SendMessage(ctrl_wnd, WM_GETTEXT, (WPARAM)len, (LPARAM)str) <= 0)
   {
   mhs_free(str);
-  return(NULL);
+  return(nullptr);
   }
 return(str);
 }

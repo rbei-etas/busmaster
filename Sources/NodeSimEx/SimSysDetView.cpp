@@ -65,7 +65,7 @@ IMPLEMENT_DYNCREATE(CSimSysDetView, CFormView)
 CSimSysDetView::CSimSysDetView(): CFormView(CSimSysDetView::IDD)
 {
     m_eBus = CSimSysDetView::sm_eBus;
-    m_psNodeInfo = NULL;
+    m_psNodeInfo = nullptr;
     m_bIsDllLoadSuccess = FALSE;
     bConnected = FALSE;
     m_omSourceCodeTextList.RemoveAll();
@@ -170,7 +170,7 @@ void CSimSysDetView::OnButtonBuild()
     BOOL bSuccess = FALSE;
 
     CExecuteManager::ouGetExecuteManager(m_eBus).vClearOutputWnd();
-    if( m_psNodeInfo != NULL )
+    if( m_psNodeInfo != nullptr )
     {
         //If file is opened get its doc pointer and save it before building
         CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(m_psNodeInfo->m_omStrFileName);
@@ -247,7 +247,7 @@ void CSimSysDetView::OnButtonBuildandload()
     }
     BOOL bSuccess = FALSE;
     CExecuteManager::ouGetExecuteManager(m_eBus).vClearOutputWnd();
-    if(( m_psNodeInfo != NULL) && (m_psNodeInfo->m_omStrFileName != STR_EMPTY ))
+    if(( m_psNodeInfo != nullptr) && (m_psNodeInfo->m_omStrFileName != STR_EMPTY ))
 
     {
         //If file is opened get its doc pointer and save it before building
@@ -320,7 +320,7 @@ void CSimSysDetView::OnButtonLoadUnload()
     {
         //If file is opened get its doc pointer
         CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(m_psNodeInfo->m_omStrFileName);
-        if ( pDoc != NULL)
+        if ( pDoc != nullptr)
         {
             if(pDoc->IsModified())
             {
@@ -334,7 +334,7 @@ void CSimSysDetView::OnButtonLoadUnload()
         if( nReturnVal == IDNO )
         {
             BOOL bSuccess = FALSE;
-            if(( m_psNodeInfo != NULL) && (m_psNodeInfo->m_omStrDllName != STR_EMPTY ) )
+            if(( m_psNodeInfo != nullptr) && (m_psNodeInfo->m_omStrDllName != STR_EMPTY ) )
             {
                 bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).
                            bExecuteDllLoad( m_psNodeInfo );
@@ -380,7 +380,7 @@ void CSimSysDetView::OnButtonLoadUnload()
         else if( nReturnVal == IDYES )  // Build and load
         {
             BOOL bSuccess = FALSE;
-            if(( m_psNodeInfo != NULL) && (m_psNodeInfo->m_omStrFileName != STR_EMPTY ) )
+            if(( m_psNodeInfo != nullptr) && (m_psNodeInfo->m_omStrFileName != STR_EMPTY ) )
             {
                 if (pDoc)
                 {
@@ -411,7 +411,7 @@ void CSimSysDetView::OnButtonLoadUnload()
     else if(omStrButtonText == "UnLoad")  // when user wants to unload
     {
         BOOL bSuccess = FALSE;
-        if(( m_psNodeInfo != NULL) && (m_psNodeInfo->m_omStrDllName != STR_EMPTY ) )
+        if(( m_psNodeInfo != nullptr) && (m_psNodeInfo->m_omStrDllName != STR_EMPTY ) )
         {
             bSuccess = CExecuteManager::ouGetExecuteManager(m_eBus).
                        bExecuteDllUnload(m_psNodeInfo);
@@ -475,7 +475,7 @@ void CSimSysDetView::OnButtonEditfile()
         }
     }
     CFunctionEditorDoc* pDoc = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(m_omStrCFile);
-    if (pDoc != NULL)
+    if (pDoc != nullptr)
     {
         //If file is opened then get its frame and activate it
         {
@@ -601,10 +601,10 @@ void CSimSysDetView::OnButtonOpenfile()
             //CHAR szFilters[] = _T("C Files (*.c)|*.c |C++ Files (*.cpp)|*.cpp||");
             CFileDialog fileDlg( TRUE,      // Open File dialog
                                  "cpp",        // Default Extension,
-                                 NULL,
+                                 nullptr,
                                  OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
                                  szFilters,
-                                 NULL );
+                                 nullptr );
 
             // Set Title
             fileDlg.m_ofn.lpstrTitle  = "Select BUSMASTER Source Filename...";
@@ -842,7 +842,7 @@ void CSimSysDetView::OnButtonOpenfile()
 //    FILE * pCFile = _tfopen( omStrFileName, _T("at"));
 //    CString omStrCFileName = STR_EMPTY;
 //    CString omStr = STR_EMPTY;
-//    if( pCFile != NULL )
+//    if( pCFile != nullptr )
 //    {
 //        bSuccess = TRUE;
 //
@@ -888,7 +888,7 @@ void CSimSysDetView::OnButtonOpenfile()
 //       int numwritten = fwrite( buffer, sizeof( TCHAR ), tcsLength, pCFile );
 //
 //       fclose(pCFile);
-//        pCFile = NULL;
+//        pCFile = nullptr;
 //    }
 //    else
 //        AfxMessageBox(_T("Error in creating c file"));
@@ -923,7 +923,7 @@ BOOL CSimSysDetView::bUpdateNodeInfoFile(CString omStrCFile)
 
     CSimSysConfigDetails* pSimSysConfig =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysConfig();
-    if (pSimSysTreeView == NULL || pSimSysNodeInf == NULL || pSimSysConfig == NULL)
+    if (pSimSysTreeView == nullptr || pSimSysNodeInf == nullptr || pSimSysConfig == nullptr)
     {
         return false;
     }
@@ -978,7 +978,7 @@ BOOL CSimSysDetView::bUpdateNodeInfoFile(CString omStrCFile)
         }
         //Set the modification flag as file is changed
         PSSIMSYSINFO psSimSys = pSimSysTreeView->psGetCurrentSimSysInfo();
-        if (psSimSys != NULL)
+        if (psSimSys != nullptr)
         {
             psSimSys->m_bIsSimSysModified = TRUE;
         }
@@ -1168,7 +1168,7 @@ void CSimSysDetView::OnInitialUpdate()
 void CSimSysDetView::vDisplayNodeInformation(PSNODEINFO pNodeInfo)
 
 {
-    if (pNodeInfo != NULL)
+    if (pNodeInfo != nullptr)
     {
         m_psNodeInfo = pNodeInfo;
         // Get node name
@@ -1277,7 +1277,7 @@ void CSimSysDetView::vEnableHandlerDetails(BOOL bIsEnabled)
 /******************************************************************************/
 void CSimSysDetView::vEnableHandlerButtons( BOOL bIsEnabled )
 {
-    if( bIsEnabled == TRUE && m_psNodeInfo != NULL )
+    if( bIsEnabled == TRUE && m_psNodeInfo != nullptr )
     {
         if(m_psNodeInfo->m_bIsDllLoaded == FALSE)
         {
@@ -1373,7 +1373,7 @@ void CSimSysDetView::vChangeLUButtonText(BOOL bIsLoaded)
 }
 void CSimSysDetView::vSetNodeAddress(BYTE byAddress)
 {
-    if (m_psNodeInfo != NULL)
+    if (m_psNodeInfo != nullptr)
     {
         m_psNodeInfo->m_byPrefAddress = byAddress;
         m_omPrefAdres.vSetValue(byAddress);
@@ -1736,7 +1736,7 @@ Modifications    :
 /******************************************************************************/
 void CSimSysDetView::PostNcDestroy()
 {
-    CSimSysManager::ouGetSimSysManager(m_eBus).podSetSimSysDetView( NULL );
+    CSimSysManager::ouGetSimSysManager(m_eBus).podSetSimSysDetView( nullptr );
     CFormView::PostNcDestroy();
 }
 
@@ -1763,7 +1763,7 @@ void CSimSysDetView::vAddItemToHanDetList( sNODEINFO* pNode )
     // with the no. of handlers present for each type n status.
     // by default the first handler " Message handlers" has to be selected.
 
-    if( pNode != NULL )
+    if( pNode != nullptr )
     {
         // for Msg handlers
         vSetHandlerDetailRowText(0,
@@ -1842,7 +1842,7 @@ DWORD CSimSysDetView::vGetNodeClientId()
 
 void CSimSysDetView::vUpdateHandlerList()
 {
-    if (NULL != m_psNodeInfo)
+    if (nullptr != m_psNodeInfo)
     {
         vAddItemToHanDetList( m_psNodeInfo );
     }

@@ -15,7 +15,7 @@ const float SINE_COEFF = (8 / (M_PI* M_PI));
 
 IMPLEMENT_DYNAMIC(CSignalDefinerDlg, CDialog)
 
-CSignalDefinerDlg::CSignalDefinerDlg(CWnd* pParent /*=NULL*/)
+CSignalDefinerDlg::CSignalDefinerDlg(CWnd* pParent /*=nullptr*/)
     : CDialog(CSignalDefinerDlg::IDD, pParent)
     , m_fAmplitude(10)
     , m_fFrequency(1)
@@ -25,7 +25,7 @@ CSignalDefinerDlg::CSignalDefinerDlg(CWnd* pParent /*=NULL*/)
     ,m_bAutoCorrect(true)
 {
     AfxEnableControlContainer();
-    m_poDMGraphCtrl = NULL;
+    m_poDMGraphCtrl = nullptr;
     m_strSignalName = _T("");
 }
 
@@ -76,13 +76,13 @@ BOOL CSignalDefinerDlg::OnInitDialog()
     m_poDMGraphCtrl = GetDlgItem(IDC_DMGRAPHCTRL);
 
     /*Set Graph properties*/
-    if( m_poDMGraphCtrl->m_hWnd != NULL )
+    if( m_poDMGraphCtrl->m_hWnd != nullptr )
     {
         LPUNKNOWN pUnk = m_poDMGraphCtrl->GetControlUnknown();
-        IDMGraphCtrl* pDMGraphCtrl = NULL;
+        IDMGraphCtrl* pDMGraphCtrl = nullptr;
 
         pUnk->QueryInterface(IID_IDMGraphCtrl, (void**) &pDMGraphCtrl);
-        if (  pDMGraphCtrl ==NULL )
+        if (  pDMGraphCtrl ==nullptr )
         {
             return TRUE;
         }
@@ -114,10 +114,10 @@ BOOL CSignalDefinerDlg::OnInitDialog()
             m_btnAutoCorrect.SetCheck(BST_UNCHECKED);
         }
 
-        if (NULL != pDMGraphCtrl)
+        if (nullptr != pDMGraphCtrl)
         {
             pDMGraphCtrl->Release();
-            pDMGraphCtrl = NULL;
+            pDMGraphCtrl = nullptr;
         }
     }
 
@@ -157,7 +157,7 @@ void CSignalDefinerDlg::OnEnChangeEditSignalSamplingTime()
 void CSignalDefinerDlg::OnEnUpdateEditSignalSamplingTime()
 {
     CWnd* pEdit = GetDlgItem(IDC_EDIT_SIGNAL_SAMPLING_TIME);
-    if(pEdit != NULL)
+    if(pEdit != nullptr)
     {
         CString strTime = L"";
         pEdit->GetWindowText(strTime);
@@ -181,13 +181,13 @@ void CSignalDefinerDlg::OnKillFocus(UINT nID)
 void CSignalDefinerDlg::OnBnClickedOk()
 {
     long lCount = 0;
-    if(spElements != NULL)
+    if(spElements != nullptr)
     {
         spElements->get_Count(&lCount);
         for (long lIdx = 0; lIdx < lCount; lIdx++)
         {
             spElements->Delete(lIdx);
-            spElements = NULL;
+            spElements = nullptr;
         }
     }
     OnOK();
@@ -338,14 +338,14 @@ void CSignalDefinerDlg::vGenerateWave()
     /*For variant packing purpose*/
     CComVariant varrX, varrY;
     varrX.parray = SafeArrayCreateVector(VT_R8, 0, nPointCount);
-    if(varrX.parray == NULL)
+    if(varrX.parray == nullptr)
     {
         return;
     }
     varrX.vt = VT_ARRAY|VT_R8;
 
     varrY.parray = SafeArrayCreateVector(VT_R8, 0, nPointCount);
-    if(varrY.parray == NULL)
+    if(varrY.parray == nullptr)
     {
         return;
     }
@@ -429,18 +429,18 @@ void CSignalDefinerDlg::SetGraphData(VARIANT* pvarrX, VARIANT* pvarrY)
 {
     CComBSTR bsName("Signal");
 
-    IDMGraphCtrl* pDMGraphCtrl = NULL;
+    IDMGraphCtrl* pDMGraphCtrl = nullptr;
 
     /*CComPtr<IDMGraphCollection> spElements;*/
 
     CComPtr<IDMGraphElement> spGraphElement;
 
-    if( m_poDMGraphCtrl->m_hWnd != NULL )
+    if( m_poDMGraphCtrl->m_hWnd != nullptr )
     {
         LPUNKNOWN pUnk = m_poDMGraphCtrl->GetControlUnknown();
 
         pUnk->QueryInterface(IID_IDMGraphCtrl, (void**) &pDMGraphCtrl);
-        if (  pDMGraphCtrl ==NULL )
+        if (  pDMGraphCtrl ==nullptr )
         {
             return;
         }
@@ -471,14 +471,14 @@ void CSignalDefinerDlg::SetGraphData(VARIANT* pvarrX, VARIANT* pvarrY)
         }
         else
         {
-            spGraphElement = NULL;
+            spGraphElement = nullptr;
         }
     }
-    if(bReplace == FALSE || spGraphElement == NULL)
+    if(bReplace == FALSE || spGraphElement == nullptr)
     {
         CComPtr<IDispatch> spDispatch;
         hr = spElements->Add(&spDispatch);
-        spGraphElement = NULL;
+        spGraphElement = nullptr;
         hr = spDispatch.QueryInterface(&spGraphElement);
     }
 
@@ -491,10 +491,10 @@ void CSignalDefinerDlg::SetGraphData(VARIANT* pvarrX, VARIANT* pvarrY)
 
     hr = pDMGraphCtrl->AutoRange();
 
-    if (NULL != pDMGraphCtrl)
+    if (nullptr != pDMGraphCtrl)
     {
         pDMGraphCtrl->Release();
-        pDMGraphCtrl = NULL;
+        pDMGraphCtrl = nullptr;
     }
 
     SysFreeString(bsName);
@@ -502,13 +502,13 @@ void CSignalDefinerDlg::SetGraphData(VARIANT* pvarrX, VARIANT* pvarrY)
 void CSignalDefinerDlg::OnClose()
 {
     long lCount = 0;
-    if(spElements != NULL)
+    if(spElements != nullptr)
     {
         spElements->get_Count(&lCount);
         for (long lIdx = 0; lIdx < lCount; lIdx++)
         {
             spElements->Delete(lIdx);
-            spElements = NULL;
+            spElements = nullptr;
         }
     }
     CDialog::OnClose();
@@ -516,13 +516,13 @@ void CSignalDefinerDlg::OnClose()
 void CSignalDefinerDlg::OnBnClickedCancel()
 {
     long lCount = 0;
-    if(spElements != NULL)
+    if(spElements != nullptr)
     {
         spElements->get_Count(&lCount);
         for (long lIdx = 0; lIdx < lCount; lIdx++)
         {
             spElements->Delete(lIdx);
-            spElements = NULL;
+            spElements = nullptr;
         }
     }
     CDialog::OnCancel();

@@ -259,15 +259,15 @@ Modifications  :
 CTSEditorChildFrame* CPropertyView::GetEditorWindow()
 {
     CWnd* wndParent;
-    if((wndParent = GetParent())!= NULL)
+    if((wndParent = GetParent())!= nullptr)
     {
         wndParent = wndParent->GetParent();
-        if(wndParent != NULL)
+        if(wndParent != nullptr)
         {
             return ((CTSEditorChildFrame*)wndParent);
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 /******************************************************************************

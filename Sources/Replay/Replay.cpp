@@ -31,12 +31,12 @@
 
 #include "ReplayManager.h"
 
-static AFX_EXTENSION_MODULE ReplayDLL = { NULL, NULL };
+static AFX_EXTENSION_MODULE ReplayDLL = { false, nullptr };
 
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
-    static HINSTANCE shLangInst=NULL;
+    static HINSTANCE shLangInst=nullptr;
     // Remove this if you use lpReserved
     UNREFERENCED_PARAMETER(lpReserved);
 
@@ -172,7 +172,7 @@ USAGEMODE void vREP_SetXMLReplayConfigData(xmlDocPtr pDoc)
 }
 USAGEMODE void vREP_InitReplay(PVOID pvObjects, eREPLAY_INIT eUpdateType)
 {
-    if (pvObjects != NULL)
+    if (pvObjects != nullptr)
     {
         switch (eUpdateType)
         {

@@ -50,7 +50,7 @@ extern CBaseDIL_CAN* g_pouDIL_CAN_Interface;
  Modifications    :  Modified this function to refer HI layer to get information
                      about the driver based on the device selection.
 *******************************************************************************/
-CDriverInfoDlg::CDriverInfoDlg(CWnd* pParent /*=NULL*/)
+CDriverInfoDlg::CDriverInfoDlg(CWnd* pParent /*=nullptr*/)
     : CDialog(CDriverInfoDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CDriverInfoDlg)
@@ -108,15 +108,15 @@ BOOL CDriverInfoDlg::OnInitDialog()
 
     // Resize the dialog in USB build
     // Pointer to components
-    CWnd* pomWnd = NULL;
+    CWnd* pomWnd = nullptr;
     // Hide Copywright message
     pomWnd = GetDlgItem(IDC_STAT_COPYRIGHT);
-    if( pomWnd != NULL )
+    if( pomWnd != nullptr )
     {
         //pomWnd->SetWindowText("USB driver from Peak Systems");
         pomWnd->ShowWindow ( SW_HIDE );
         // Invalidate
-        pomWnd = NULL;
+        pomWnd = nullptr;
     }
     // Store current control rect and dialog rect
     CRect omRect, omWndRect;
@@ -124,7 +124,7 @@ BOOL CDriverInfoDlg::OnInitDialog()
     GetWindowRect( &omWndRect );
     // Get the Bottom line object
     pomWnd = GetDlgItem( IDC_STAT_LINE3 );
-    if( pomWnd != NULL )
+    if( pomWnd != nullptr )
     {
         // Get the position
         pomWnd->GetWindowRect(&omRect);
@@ -135,13 +135,13 @@ BOOL CDriverInfoDlg::OnInitDialog()
         // Update dialog size
         GetWindowRect( &omWndRect );
         // Invalidate
-        pomWnd = NULL;
+        pomWnd = nullptr;
     }
     // Offset is 1/4th of dialog size
     int nOffset = omWndRect.Height() / 4;
     // Center the Version Label
     pomWnd = GetDlgItem( IDC_STAT_DRIVER_VERSION );
-    if( pomWnd != NULL )
+    if( pomWnd != nullptr )
     {
         int nWidth = 0, nHeight = 0;
         pomWnd->CenterWindow();
@@ -154,12 +154,12 @@ BOOL CDriverInfoDlg::OnInitDialog()
         omRect.top =  nOffset - nHeight / 2;
         // Move the window to the new position
         pomWnd->MoveWindow( omRect.left, omRect.top, nWidth, nHeight );
-        pomWnd = NULL;
+        pomWnd = nullptr;
     }
 
     // Change the position of OK Button
     pomWnd = GetDlgItem ( IDOK );
-    if( pomWnd != NULL )
+    if( pomWnd != nullptr )
     {
         // Move the button to the center of the dialog
         pomWnd->CenterWindow();
@@ -173,7 +173,7 @@ BOOL CDriverInfoDlg::OnInitDialog()
         omRect.top = nOffset * 2 - nHeight / 2;
         // Move the window to its new location
         pomWnd->MoveWindow( omRect.left, omRect.top, nWidth, nHeight, TRUE );
-        pomWnd = NULL;
+        pomWnd = nullptr;
     }
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE

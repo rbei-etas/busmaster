@@ -32,7 +32,7 @@ void CGraphCursor::AttachToGraph(CDMGraphCtrl* pCtrl, int id)
 
 STDMETHODIMP CGraphCursor::get_Color(OLE_COLOR* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -44,7 +44,7 @@ STDMETHODIMP CGraphCursor::put_Color(OLE_COLOR newVal)
 {
     HRESULT hr;
     COLORREF col;
-    hr = OleTranslateColor(newVal, NULL, &col);
+    hr = OleTranslateColor(newVal, nullptr, &col);
 
     if(m_Color == col)
     {
@@ -62,7 +62,7 @@ STDMETHODIMP CGraphCursor::put_Color(OLE_COLOR newVal)
 
 STDMETHODIMP CGraphCursor::get_X(double* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -88,7 +88,7 @@ STDMETHODIMP CGraphCursor::put_X(double newVal)
 
 STDMETHODIMP CGraphCursor::get_Y(double* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -114,7 +114,7 @@ STDMETHODIMP CGraphCursor::put_Y(double newVal)
 
 STDMETHODIMP CGraphCursor::get_Style(Crosshair* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -140,7 +140,7 @@ STDMETHODIMP CGraphCursor::put_Style(Crosshair newVal)
 
 STDMETHODIMP CGraphCursor::get_Visible(VARIANT_BOOL* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -166,7 +166,7 @@ STDMETHODIMP CGraphCursor::put_Visible(VARIANT_BOOL newVal)
 
 STDMETHODIMP CGraphCursor::get_Mode(CursorMode* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
@@ -221,7 +221,7 @@ STDMETHODIMP CGraphCursor::put_Name(BSTR newVal)
 }
 STDMETHODIMP CGraphCursor::get_CursorID(SHORT* pVal)
 {
-    if(pVal == NULL)
+    if(pVal == nullptr)
     {
         return E_POINTER;
     }
