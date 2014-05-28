@@ -437,12 +437,8 @@ void CFlexTxHandler::vGetTxWndConfigData(ETYPE_BUS eBusType, xmlNodePtr pxmlNode
   Date Created   : 30.07.2010
   Modifications  :
 *******************************************************************************/
-void CFlexTxHandler::vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize)
+void CFlexTxHandler::vGetTxWndConfigData(BYTE * & /* pDesBuffer */, int & /* nBuffSize */)
 {
-    if(pfFlexGetTxWndConfigData != NULL)
-    {
-        // pfFlexGetTxWndConfigData(pDesBuffer, nBuffSize);
-    }
 }
 
 /*******************************************************************************

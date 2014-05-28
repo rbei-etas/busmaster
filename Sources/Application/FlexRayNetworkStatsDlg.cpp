@@ -408,10 +408,10 @@ void CFlexRayNetworkStatsDlg::OnDestroy()
     //    (WPARAM) eWINID_NETWORK_STATISTICS, (LPARAM) WM_CLOSE);
 }
 
-void CFlexRayNetworkStatsDlg::GetConfigData(BYTE** ppvConfigData, UINT& unLength)
+void CFlexRayNetworkStatsDlg::GetConfigData(BYTE ** /* ppvConfigData */, UINT & /* unLength */)
 {
 }
 
-void CFlexRayNetworkStatsDlg::SetConfigData(BYTE* pvDataStream)
+void CFlexRayNetworkStatsDlg::SetConfigData(BYTE * /* pvDataStream */)
 {
 }

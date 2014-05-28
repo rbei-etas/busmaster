@@ -2308,7 +2308,7 @@ static BOOL Callback_DILBOA(BYTE /*Argument*/, PSCONTROLLER_DETAILS pDatStream, 
  *
  * @return S_OK for success, S_FALSE for failure
  */
-static int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/,
+static int DisplayConfigurationDlg(HWND /* hParent */, DILCALLBACK /*ProcDIL*/,
                             PSCONTROLLER_DETAILS pControllerDetails, UINT nCount)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());

@@ -158,7 +158,7 @@ CFunctionEditorDoc* CGlobalObj::podGetFunctionEditorDoc()
 * \authors       Arunkumar Karri
 * \date          14.02.2013 Created
 */
-BOOL CALLBACK EnumChildProc( HWND hwnd, LPARAM lParam )
+BOOL CALLBACK EnumChildProc(HWND hwnd, LPARAM /* lParam */)
 {
     if ( hwnd )
     {

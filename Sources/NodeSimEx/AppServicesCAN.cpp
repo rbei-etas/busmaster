@@ -110,7 +110,7 @@ BOOL gbStartStopHardware_CAN(BOOL bState)
     Author(s)        :  Ashwin. R. Uchil
     Date Created     :  9-5-2012
 ******************************************************************************/
-DWORD gdGetFirstCANdbName(char* cBuffer, DWORD size)
+DWORD gdGetFirstCANdbName(char* cBuffer, DWORD /* size */)
 {
     strcpy(cBuffer,"");
     //cBuffer = NULL;

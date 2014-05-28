@@ -72,24 +72,8 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
     return 1;   // ok
 }
 
-
-//Export Function Definitions.
-
-USAGEMODE HRESULT TXFlexRay_vSetMsgDBPtrInDetailsView(void* pMsgDB)
+USAGEMODE HRESULT TXFlexRay_vSetMsgDBPtrInDetailsView(void * /* pMsgDB */)
 {
-    //Place this code at the beginning of the export function.
-    //Save previous resource handle and switch to current one.
-    //HINSTANCE hInst = AfxGetResourceHandle();
-    //AfxSetResourceHandle(TXWindowDLL.hResource);
-
-    //if(g_pomTxMsgChildWindow)
-    //{
-    //    g_pomTxMsgChildWindow->vSetMsgDBPtrInDetailsView(pMsgDB);
-    //}
-
-    ////Place this at the end of the export function.
-    ////switch back to previous resource handle.
-    //AfxSetResourceHandle(hInst);
     return S_OK;
 }
 
@@ -242,12 +226,10 @@ USAGEMODE HRESULT TXFlexRay_vShowConfigureMsgWindow(void* pParentWnd, ETYPE_BUS 
     return nRes;
 }
 
-
 USAGEMODE HRESULT TXComman_vSetClientID(ETYPE_BUS eBusType, DWORD dwClientID)
 {
     if ( eBusType == FLEXRAY )
     {
-        //CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().bSetDILInterfacePtr();
     }
     else if ( eBusType == LIN )
     {
@@ -255,6 +237,7 @@ USAGEMODE HRESULT TXComman_vSetClientID(ETYPE_BUS eBusType, DWORD dwClientID)
     }
     return S_OK;
 }
+
 USAGEMODE HRESULT TXComman_vSetDILInterfacePtr(ETYPE_BUS eBusType, void* pDilPointer)
 {
     if ( eBusType == FLEXRAY )
@@ -265,17 +248,11 @@ USAGEMODE HRESULT TXComman_vSetDILInterfacePtr(ETYPE_BUS eBusType, void* pDilPoi
     {
         CTxLINDataStore::ouGetTxLINDataStoreObj().bSetDILInterfacePtr((CBaseDIL_LIN*)pDilPointer);
     }
-
-    // CTxMsgManager::s_podGetTxMsgManager()->vSetDILInterfacePtr(ptrDILIntrf);
     return S_OK;
 }
 
 USAGEMODE HRESULT TXComman_vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    /*if(g_pomTxMsgChildWindow)
-    {
-        g_pomTxMsgChildWindow->PostMessage(msg, wParam, lParam);
-    }*/
     if ( wParam == 0 )  //eHEXDECCMD = 0;
     {
         CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_bHexMode = (bool)lParam;
@@ -324,9 +301,8 @@ USAGEMODE HRESULT TXComman_hConfigWindowShown(ETYPE_BUS eBusType)
     return S_OK;
 }
 
-USAGEMODE HRESULT TXFlexRay_vStartTransmission(UCHAR ucKeyVal)
+USAGEMODE HRESULT TXFlexRay_vStartTransmission(UCHAR /* ucKeyVal */)
 {
-
     return S_OK;
 }
 
@@ -337,15 +313,11 @@ USAGEMODE HRESULT TXFlexRay_bAllocateMemoryForGlobalTxList()
 
 USAGEMODE HRESULT TXFlexRay_vAssignMsgBlockList()
 {
-    //CTxMsgManager::s_podGetTxMsgManager()->vAssignMsgBlockList();
     return S_OK;
 }
 
 USAGEMODE HRESULT TXFlexRay_vDeleteTxBlockMemory()
 {
-    /* CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vRemoveAllBlock(
-         CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_omTxMsgBlockMan);*/
-    // CTxMsgManager::s_podGetTxMsgManager()->vDeleteTxBlockMemory();
     return S_OK;
 }
 
@@ -353,8 +325,6 @@ USAGEMODE HRESULT TX_vBusStatusChanged(ETYPE_BUS eBusType, ESTATUS_BUS eBusStatu
 {
     if ( eBusType == FLEXRAY )
     {
-        //  CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vStopTxTimer();
-        //if(g_pomTxMsgFlexChildWindow != NULL)
         {
             CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vSetBusStatus(eBusStatus);
         }
@@ -416,49 +386,29 @@ USAGEMODE HRESULT TXComman_vSetTxWndConfigDataXML( ETYPE_BUS eBusType, xmlDocPtr
     }
     return S_OK;
 }
-/*USAGEMODE HRESULT TX_bIsTxWndConfigChanged()
-{
-    if(CTxMsgManager::s_podGetTxMsgManager()->bIsTxWndConfigChanged())
-        return S_OK;
-    else
-        return S_FALSE;
-}*/
 
-USAGEMODE HRESULT TXFlexRay_vSetTxStopFlag(BOOL bStartStop)
+USAGEMODE HRESULT TXFlexRay_vSetTxStopFlag(BOOL /* bStartStop */)
 {
-    //CTxMsgManager::s_podGetTxMsgManager()->vSetTxStopFlag(bStartStop);
     return S_OK;
 }
 
 USAGEMODE BOOL TXFlexRay_bGetTxStopFlag()
 {
-    //return CTxMsgManager::s_podGetTxMsgManager()->bGetTxStopFlag();
     return S_OK;
 }
 
 USAGEMODE UINT TXFlexRay_unGetTxBlockCount()
 {
     return 0;
-    //return CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().nGetBlockCount();
-    //return CTxMsgManager::s_podGetTxMsgManager()->nGetBlockCount();
 }
 
 USAGEMODE HRESULT TXFlexRay_vFlexFileChanged()
 {
-    //CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vRemoveAllBlock(
-    //    CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_omTxMsgBlockMan);
-    //if(g_pomTxMsgFlexChildWindow != NULL)
-    //{
-    //    //g_pomTxMsgFlexChildWindow->m_pTransmitMsgView->vClearInitialisationFileContents();
-    //}
-
     return S_OK;
 }
 
 USAGEMODE HRESULT TXComman_nSetFibexConfig(ETYPE_BUS eBus, ClusterConfig& ouFlexConfig)
 {
-    /* CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().vRemoveAllBlock(
-         CTxFlexRayDataStore::ouGetTxFlexRayDataStoreObj().m_omTxMsgBlockMan);*/
     HRESULT hr = S_FALSE;
     if ( eBus == FLEXRAY )
     {

@@ -96,7 +96,7 @@ void CDIL_FLEXRAY::vSelectInterface_Dummy(void)
 
 /* ROUTER CODE FINISHES */
 
-DWORD CDIL_FLEXRAY::DILF_GetDILList(bool bAvailable, FLEXRAY_DILLIST* List)
+DWORD CDIL_FLEXRAY::DILF_GetDILList(bool /* bAvailable */, FLEXRAY_DILLIST * List)
 {
     DWORD Result = 0;
 
@@ -437,13 +437,8 @@ HRESULT CDIL_FLEXRAY::DILF_ConfigMsgBuf(s_MSGBUF sMsgBuf, UINT* punAddress)
     return m_pBaseDILFLEXRAY_Controller->FLEXRAY_ConfigMsgBuf( sMsgBuf, punAddress);
 }
 
-HRESULT CDIL_FLEXRAY::DILF_GetControllerCapabilities(s_FLXControllerCapabilities& ouFlexRayCapabilities)
+HRESULT CDIL_FLEXRAY::DILF_GetControllerCapabilities(s_FLXControllerCapabilities & /* ouFlexRayCapabilities */)
 {
-    if ( m_pBaseDILFLEXRAY_Controller != NULL)
-    {
-        return S_OK;
-    }
-
+    VALIDATE_FLEX_POINTER(m_pBaseDILFLEXRAY_Controller);
+    return S_OK;
 }
-
-

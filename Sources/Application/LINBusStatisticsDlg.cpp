@@ -54,7 +54,7 @@ const BYTE BUS_STATS_DLG_VERSION = 0x1;
 
 //xmlNodePtr CLINBusStatisticsDlg::m_pxmlNodePtr = NULL;
 
-CLINBusStatisticsDlg::CLINBusStatisticsDlg(CBaseBusStatisticLIN* pouBSLIN,CWnd* pParent,int nChannelCount)
+CLINBusStatisticsDlg::CLINBusStatisticsDlg(CBaseBusStatisticLIN * pouBSLIN, CWnd * /* pParent */, int nChannelCount)
     : CCommonStatistics(CLINBusStatisticsDlg::IDD, LIN),
       m_pouBSLIN(pouBSLIN),
       m_omStrBusLoad(STR_EMPTY),
@@ -89,7 +89,7 @@ BEGIN_MESSAGE_MAP(CLINBusStatisticsDlg, CCommonStatistics)
     ON_WM_SIZE()
 END_MESSAGE_MAP()
 
-LRESULT CLINBusStatisticsDlg::vUpdateFields(WPARAM wParam, LPARAM lParam)
+LRESULT CLINBusStatisticsDlg::vUpdateFields(WPARAM /* wParam */, LPARAM lParam)
 {
     // Update the list control only if the dialog is visible
     BOOL bUpdateSpecific = (BOOL)lParam;

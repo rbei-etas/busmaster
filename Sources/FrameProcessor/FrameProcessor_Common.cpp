@@ -886,14 +886,12 @@ HRESULT CFrameProcessor_Common::SetDatabaseFiles(const CStringArray& omList)
     return hResult;
 }
 
-void CFrameProcessor_Common::GetDatabaseFiles(CStringArray& omList)
+void CFrameProcessor_Common::GetDatabaseFiles(CStringArray & /* omList */)
 {
-    //return m_omListDBFiles;
 }
 
-void CFrameProcessor_Common::SetChannelBaudRateDetails
-(void* controllerDetails,
- int nNumChannels,ETYPE_BUS eBus)
+void CFrameProcessor_Common::SetChannelBaudRateDetails(void* controllerDetails,
+    int nNumChannels, ETYPE_BUS /* eBus */)
 {
     CLogObjArray* pomCurrArray = GetActiveLogObjArray();
     if (NULL != pomCurrArray)

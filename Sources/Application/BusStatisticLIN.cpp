@@ -276,21 +276,19 @@ HRESULT CBusStatisticLIN::BSL_GetTotalErrCount(UINT unChannelIndex, eDirection e
  * Returns average number of msgs per second (Msg/s)
  */
 HRESULT CBusStatisticLIN::BSL_GetAvgMsgCountPerSec(UINT unChannelIndex,
-        eDirection eDir, BYTE byIdType, double& dMsgRate)
+        eDirection eDir, BYTE /* byIdType */, double & dMsgRate)
 {
-
     EnterCriticalSection(&m_omCritSecBS);
 
     if( eDir == DIR_RX )
     {
-
         dMsgRate = m_sBusStatistics_LIN[unChannelIndex].m_dTotalRxMsgRate;
     }
     else
     {
         dMsgRate = m_sBusStatistics_LIN[unChannelIndex].m_dTotalTxMsgRate;
     }
-    // dMsgRate = (double)(dMsgRate / m_dDiffTime);
+
     LeaveCriticalSection(&m_omCritSecBS);
     return 0L;
 }

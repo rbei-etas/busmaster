@@ -530,12 +530,12 @@ BOOL CMessageList::OnHeaderBeginResize(UINT, NMHDR* /*pNMHDR*/, LRESULT* pResult
     return TRUE;        // Block event
 }
 
-void CMessageList::OnChar(UINT nChar, UINT nRepeatCount, UINT nflags)
+void CMessageList::OnChar(UINT nChar, UINT /* nRepeatCount */, UINT /* nflags */)
 {
     GetParent()->GetParent()->SendMessage(WM_KEYBOARD_CHAR, nChar, 0);
 }
 
-void CMessageList::OnKeyDown(UINT nChar, UINT nRepeatCount, UINT nflags)
+void CMessageList::OnKeyDown(UINT nChar, UINT /* nRepeatCount */, UINT /* nflags */)
 {
     GetParent()->GetParent()->SendMessage(WM_KEYBOARD_KEYDOWN, nChar, 0);
 }

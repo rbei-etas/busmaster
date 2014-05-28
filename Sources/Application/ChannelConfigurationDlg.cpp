@@ -492,7 +492,7 @@ bool CChannelConfigurationDlg::bIsEcuSlected(std::list<std::string>& ouEcuList, 
     return bFound;
 }
 
-INT CChannelConfigurationDlg::nUpdateLinParams( INT nChannelIndex, INT nClusterIndex)
+INT CChannelConfigurationDlg::nUpdateLinParams(INT /* nChannelIndex */, INT nClusterIndex)
 {
     std::list<LinChannelParam>::iterator itrCluster =  m_ouLinChannelParams.begin();
     advance(itrCluster, nClusterIndex);
@@ -511,7 +511,7 @@ INT CChannelConfigurationDlg::nUpdateLinParams( INT nChannelIndex, INT nClusterI
     return 0;
 }
 
-INT CChannelConfigurationDlg::nUpdateEcuList( INT nChannelIndex, INT nClusterIndex )
+INT CChannelConfigurationDlg::nUpdateEcuList(INT /* nChannelIndex */, INT nClusterIndex)
 {
     std::list<Cluster>::iterator itrCluster =  m_ouCurrentChannelCluster.begin();
     advance(itrCluster, nClusterIndex);
@@ -544,7 +544,7 @@ INT CChannelConfigurationDlg::nUpdateEcuList( Cluster& ouCluster )
     return 0;
 }
 
-int CChannelConfigurationDlg::nSaveProtocolSettings(int nIndex)
+int CChannelConfigurationDlg::nSaveProtocolSettings(int /* nIndex */)
 {
     UpdateData(TRUE);
     if ( m_eBusType == LIN )

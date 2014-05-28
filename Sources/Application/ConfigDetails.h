@@ -44,13 +44,16 @@ struct SLOGFILEDETS
     SLOGTRIGGER                           m_sLogTrigger;
     CModuleFilterArray                    m_omFilter;
 };
+
 const int MAX_FILE_COUNT = 0x100;
+
 struct SLOGCONFIGDETS
 {
     UINT m_unCount;
     SLOGFILEDETS m_asLogFileDets[MAX_FILE_COUNT];
     BOOL m_bEnableDuringConnect;
 };
+
 struct SREPLAYFILE
 {
     CString m_omStrFileName;// Replay File Name
@@ -62,6 +65,7 @@ struct SREPLAYFILE
     BOOL    m_bInteractive; // 0 - Non Interactive, 1 - interactive
     CModuleFilterArray m_omFilter;
 };
+
 struct SREPLAYDETS
 {
     UINT m_unCount;
@@ -88,8 +92,8 @@ struct SMSG_FRMT_WND
         m_bInterpretStatus = FALSE;
         m_shTimeDisplay = 0x0;
     }
-
 };
+
 class CConfigDetails : public CComputeCheckSum
 {
     // Public Members

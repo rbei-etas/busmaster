@@ -5734,7 +5734,7 @@ void CMainFrame::OnClose()
 * \authors       Arunkumar Karri
 * \date          07.09.2013 Created
 */
-bool CMainFrame::bWriteIntoRegistry(HKEY hRootKey, CString strSubKey, CString strName,  BYTE bytType, CString strValue , DWORD dwValue)
+bool CMainFrame::bWriteIntoRegistry(HKEY /* hRootKey */, CString strSubKey, CString strName,  BYTE bytType, CString strValue , DWORD dwValue)
 {
     HKEY hKey;
     DWORD dwDisp = 0;
@@ -6447,11 +6447,9 @@ void CMainFrame::OnMessageFilterButtonLin()
 * \authors       Arunkumar Karri
 * \date          28.02.2013 Created
 */
-LRESULT CMainFrame::onJ1939TxWndClose(WPARAM wParam, LPARAM lParam)
+LRESULT CMainFrame::onJ1939TxWndClose(WPARAM /* wParam */, LPARAM /* lParam */)
 {
-    /* Modify filter icon accordingly in J1939 toolbar*/
-    /*BYTE bytTbrItemIndex = 4;
-    vSetToolBarIcon( m_wndToolbarJ1939, bytTbrItemIndex, IDI_ICON_J1939_TRANSMIT_OFF, IDI_ICON_J1939_TRANSMIT_OFF, IDI_ICON_J1939_TRANSMIT_DISABLED );*/
+    /* Modify filter icon accordingly in J1939 toolbar */
     return S_OK;
 }
 
@@ -14292,8 +14290,7 @@ INT CMainFrame::vSaveXMLConfiguration(const char* filename)
     return nRetValue;
 }
 
-
-void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData, UINT& nSize, xmlNodePtr pNodePtr)
+void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE * & /* pbyConfigData */, UINT & nSize, xmlNodePtr pNodePtr)
 {
     switch (eSecId)
     {
@@ -15973,7 +15970,7 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
     }
 }
 
-void CMainFrame::vSetWindowPositionForGraph(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr)
+void CMainFrame::vSetWindowPositionForGraph(xmlNodePtr pNodePtr, xmlDocPtr /* pDocPtr */)
 {
     pNodePtr = pNodePtr->xmlChildrenNode;
 
@@ -18110,7 +18107,7 @@ INT CMainFrame::nGetControllerID(std::string strDriverName)
     return nDriverID;
 }
 
-CString CMainFrame::vGetControllerName(UINT nDriverId)
+CString CMainFrame::vGetControllerName(UINT /* nDriverId */)
 {
     for (int i = 0 ; i < m_nDILCount ; i++)
     {
@@ -19281,11 +19278,8 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
     }
 }
 
-void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData, UINT& nSize)
+void CMainFrame::vGetCurrentSessionData(eSECTION_ID /* eSecId */, BYTE * & /* pbyConfigData */, UINT & /* nSize */)
 {
-    switch (eSecId)
-    {
-    }
 }
 
 void CMainFrame::OnSelectFLEXRAYDriver(UINT nID)
@@ -19960,7 +19954,7 @@ LRESULT CMainFrame::OnMessageFromUserDll(WPARAM wParam, LPARAM lParam)
     return hRetVal;
 }
 
-LRESULT CMainFrame::OnAddSignalFromSignalWatch(WPARAM wParam, LPARAM lParam)
+LRESULT CMainFrame::OnAddSignalFromSignalWatch(WPARAM wParam, LPARAM /* lParam */)
 {
     LRESULT hRetVal = S_OK;
     ETYPE_BUS eBus = (ETYPE_BUS)wParam;
@@ -21494,7 +21488,7 @@ LRESULT CMainFrame::OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam)
 }
 
 
-LRESULT CMainFrame::onGetConfigPath(WPARAM wParam, LPARAM lParam)
+LRESULT CMainFrame::onGetConfigPath(WPARAM wParam, LPARAM /* lParam */)
 {
     char* pchPath = (char*)wParam;
     if(pchPath != NULL)
@@ -21505,6 +21499,7 @@ LRESULT CMainFrame::onGetConfigPath(WPARAM wParam, LPARAM lParam)
     }
     return S_OK;
 }
+
 LRESULT CMainFrame::OnReceiveKeyDown(WPARAM wParam, LPARAM lParam)
 {
     MSG msg;

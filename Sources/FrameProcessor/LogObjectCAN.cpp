@@ -170,7 +170,7 @@ BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
 }
 
 // To format the header
-void CLogObjectCAN::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
+void CLogObjectCAN::vFormatHeader(CString& omHeader, ETYPE_BUS /* eBus */)
 {
     CBaseLogObject::vFormatHeader(omHeader, CAN);
     omHeader += CAN_LOG_COLUMNS;

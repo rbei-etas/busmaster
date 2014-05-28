@@ -223,7 +223,7 @@ bool CTxFlexRayDataStore::bAddToChannelList(int nChannel, FLEXRAY_CONFIG_DATA ou
     return true;
 }
 
-bool bIsValidMessage(int nChannelIndex, FLEXRAY_CONFIG_DATA& ouConfigFrame)
+bool bIsValidMessage(int /* nChannelIndex */, FLEXRAY_CONFIG_DATA & /* ouConfigFrame */)
 {
     return true;
 }

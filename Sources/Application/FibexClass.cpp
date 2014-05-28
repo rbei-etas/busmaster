@@ -3433,7 +3433,7 @@ int CPARSER_FIBEX::ResetFibexEntity(eENTITY_FIBEX eEntity, PVOID pFibexEntity)
 }
 
 // To delete the Fibex Entity
-int CPARSER_FIBEX::Remove(eENTITY_FIBEX eEntity, std::string omID)
+int CPARSER_FIBEX::Remove(eENTITY_FIBEX /* eEntity */, std::string /* omID */)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     return TRUE;

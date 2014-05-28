@@ -834,7 +834,7 @@ void CTreeViewEx::OnTvnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
     m_bEditing = FALSE;
 }
 
-void CTreeViewEx::OnTvnKeyPress(NMHDR* pNMHDR, LRESULT* pResult)
+void CTreeViewEx::OnTvnKeyPress(NMHDR * pNMHDR, LRESULT * /* pResult */)
 {
     TV_KEYDOWN* pTVKeyDown = (TV_KEYDOWN*)pNMHDR;
 

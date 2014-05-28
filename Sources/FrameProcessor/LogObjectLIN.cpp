@@ -198,7 +198,7 @@ BOOL CLogObjectLIN::bLogData(const SFORMATTEDDATA_LIN& sDataLIN)
 }
 
 // To format the header
-void CLogObjectLIN::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
+void CLogObjectLIN::vFormatHeader(CString& omHeader, ETYPE_BUS /* eBus */)
 {
     CBaseLogObject::vFormatHeader(omHeader, LIN);
     omHeader += LIN_LOG_COLUMNS;

@@ -962,7 +962,7 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
     *pResult = 0;
 }
 
-void CTxMsgBlocksView::UpdateList(NM_LISTVIEW* pNMListView)
+void CTxMsgBlocksView::UpdateList(NM_LISTVIEW * /* pNMListView */)
 {
     //AUC
     PSMSGBLOCKLIST psMsgBlock = NULL ;

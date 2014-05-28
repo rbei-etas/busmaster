@@ -12,10 +12,8 @@ extern "C" int yyparse(void);
 extern "C" char* yytext;
 
 CParserHelper *g_obParserHelper = NULL;
-void yyerror(const char *str)
+void yyerror(const char * /* str */)
 {
-	
-	//fprintf(stderr,"error: %s\n", yytext);
 }
 extern "C" int yywrap()
 {

@@ -381,22 +381,11 @@ void CTxHandler::vGetTxWndConfigData(xmlNodePtr pxmlNodePtr)
     }
 }
 
-/*******************************************************************************
-  Function Name  : vGetTxWndConfigData
-  Input(s)       : pDesBuffer, nBuffSize
-  Output         : -
-  Functionality  : Gets the configuration data of Tx Window.
-  Member of      : CTxHandler
-  Author(s)      : ArunKumar K
-  Date Created   : 30.07.2010
-  Modifications  :
-*******************************************************************************/
-void CTxHandler::vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize)
+/**
+ * Gets the configuration data of Tx Window.
+ */
+void CTxHandler::vGetTxWndConfigData(BYTE * & /* pDesBuffer */, int & /* nBuffSize */)
 {
-    if(pfGetTxWndConfigData != NULL)
-    {
-        // pfGetTxWndConfigData(pDesBuffer, nBuffSize);
-    }
 }
 
 /*******************************************************************************

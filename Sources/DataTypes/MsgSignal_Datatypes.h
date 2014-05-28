@@ -60,6 +60,7 @@ enum eWAVEFORMTYPE
     eWave_COS,
     eWave_SAWTOOTH
 };
+
 enum {UNDEFINED_TIMING = 0, CYCLIC_TIMING, EVENT_CONTROLLED_TIMING, REQUEST_CONTROLLED_TIMING, RELATIVELY_SCHEDULED_TIMING, ABSOLUTELY_SCHEDULED_TIMING, IDENTIFIER};
 
 struct sINTERPRETSIGNALINFO
@@ -84,8 +85,8 @@ struct sINTERPRETSIGNALINFO
 
 typedef sINTERPRETSIGNALINFO SINTERPRETSIGNALINFO;
 typedef SINTERPRETSIGNALINFO* PINTERPRETSIGNALINFO;
-typedef CArray<SINTERPRETSIGNALINFO,SINTERPRETSIGNALINFO> CSignalInfoArray;
 
+typedef CArray<SINTERPRETSIGNALINFO,SINTERPRETSIGNALINFO> CSignalInfoArray;
 
 typedef union _SIG_VALUE
 {
@@ -177,7 +178,6 @@ struct sSIGNALS
     static UINT64 un64GetBitMask(sSIGNALS* pouCurrSignal);
 };
 
-
 struct sMESSAGE
 {
     CString m_omStrMessageName; // Message Name
@@ -209,8 +209,6 @@ struct Flexray_SSIGNALINFO
     std::string m_omUnit;
 };
 
-//typedef list<SSIGNALINFO> signalInfoList;
-
 typedef struct tagSMSGENTRY
 {
     sMESSAGE*  m_psMsg;
@@ -231,13 +229,16 @@ typedef struct tagSMSGENTRY
 
 
 } SMSGENTRY;
+
 #ifndef _FLEXRAY_
 #define _FLEXRAY_
+
 #define MAX_TEXT_NAME_ID        128
 #define MAX_FRAME_NAME_ID       256
 #define MAX_SCALE_LINEAR_RNG    10
 #define MAX_OPERANDS_RNG        20
 #define EMPTY_VALUE             -1
+
 typedef enum
 {
     IDENTICAL_ENUM = 0,              //No change
@@ -275,10 +276,7 @@ typedef struct tagLinearCodeVarEx
     tagLinearCodeVarEx()
     {
     }
-    BOOL operator==(const tagLinearCodeVarEx& RefObj) const
-    {
-        return false;
-    }
+
     tagLinearCodeVarEx& operator=(const tagLinearCodeVarEx& RefObj)
     {
         m_sRange.m_dwLowerLimit =  RefObj.m_sRange.m_dwLowerLimit;
@@ -365,8 +363,6 @@ typedef struct tagFormulaCodeVarEx
     BOOL bGetEnggValue(DWORD dwRawValue, CString& omEnggVal) const;
 
 } FORMULA_CODE_VAR_EX, *PFORMULA_CODE_VAR_EX;
-
-
 
 //Only one of the above struct will be assigned to each element
 
@@ -500,7 +496,6 @@ typedef CMap<UINT, UINT, CFrameDef, CFrameDef&> CFrameMap;
 // A signal entry = start bit, length, signal name, endianness, unit, constraint list, computation method list
 // A computation method = compu. type, compu method, range
 
-
 /* UTILITY FUNCTION */
 // Given the frame map object, frame id and data byte array, this returns the
 // signal info array along with the frame name
@@ -524,12 +519,10 @@ void vCleanFrameDataSet(CFrameMap& ouDataSet);
 struct SIGNAL_STRUCT;
 struct FRAME_STRUCT;
 
-
 CString omSearchValueFromCompuBlks(SIGNAL_STRUCT& ouSignal, DWORD dwRawValue);
 std::string omGetEnggValue( SIGNAL_STRUCT& ouSignal, DWORD dwRawValue);
 UINT64 un64GetRawValue( SIGNAL_STRUCT& ouStruct, CByteArray& pwData);
 bool bGetSignalInfo(FRAME_STRUCT& ouFrame, unsigned char uchBytes[], int nByteSize, std::list<Flexray_SSIGNALINFO>& ouSignalInfoList, BOOL bIsHex = FALSE);
 void GetSignalNames(std::list<Flexray_SSIGNALINFO> lstSignalInfo, CStringList& lstSignalNames);
-
 
 #endif

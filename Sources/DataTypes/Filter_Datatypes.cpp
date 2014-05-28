@@ -26,11 +26,8 @@
 #include "Filter_Datatypes.h"
 #include "Utility\MultiLanguageSupport.h"
 #include "Filter/Filter_defines.h"
-//#include "../Application/GettextBusmaster.h"
 
 const int SIZE_CHAR = sizeof(char);
-
-/* Starts SFILTERNAME / tagFilterName */
 
 /******************************************************************************
   Function Name    :  tagFilterName
@@ -770,7 +767,7 @@ void SFILTER_LIN::pbGetConfigData(xmlNodePtr pNodePtr) const
     xmlAddChild(pFltrMsgPtr, pChnlPtr);
 }
 
-void SFILTER_LIN::pbSetConfigData(xmlNodePtr xmlNodePtr)
+void SFILTER_LIN::pbSetConfigData(xmlNodePtr /* xmlNodePtr */)
 {
     vClear();
 }
@@ -1122,25 +1119,11 @@ void SFILTER_CAN::pbGetConfigData(xmlNodePtr pNodePtr) const
 
     xmlNodePtr pChnlPtr = xmlNewChild(pFltrMsgPtr, NULL, BAD_CAST DEF_CHANNEL, BAD_CAST omStrChannel.GetBuffer(omStrChannel.GetLength()));
     xmlAddChild(pFltrMsgPtr, pChnlPtr);
-
-    /* COPY_DATA(pbTStream, &m_byIDType, sizeof(m_byIDType));
-     COPY_DATA(pbTStream, &m_byMsgType, sizeof(m_byMsgType));
-     COPY_DATA(pbTStream, &m_eChannel, sizeof(m_eChannel));*/
-
-    //return pbTStream;
 }
-void SFILTER_CAN::pbSetConfigData(xmlNodePtr xmlNodePtr)
+
+void SFILTER_CAN::pbSetConfigData(xmlNodePtr /* xmlNodePtr */)
 {
     vClear();
-
-    /*BYTE* pbTStream = pbTarget;
-
-    pbTStream = this->SFILTER::pbSetConfigData(pbTStream);
-    COPY_DATA_2(&m_byIDType, pbTStream, sizeof(m_byIDType));
-    COPY_DATA_2(&m_byMsgType, pbTStream, sizeof(m_byMsgType));
-    COPY_DATA_2(&m_eChannel, pbTStream, sizeof(m_eChannel));*/
-
-    /*  return pbTStream;*/
 }
 
 /******************************************************************************
@@ -1172,6 +1155,7 @@ BYTE* SFILTER_CAN::pbSetConfigData(BYTE* pbTarget)
 
     return pbTStream;
 }
+
 INT SFILTER_CAN::nGetIDType(std::string strIDType)
 {
     int nId = TYPE_ID_CAN_ALL;
@@ -1185,6 +1169,7 @@ INT SFILTER_CAN::nGetIDType(std::string strIDType)
     }
     return nId;
 }
+
 INT SFILTER_CAN::nGetMsgType(std::string strMsgType)
 {
     int nId = TYPE_MSG_CAN_ALL;
@@ -1245,9 +1230,6 @@ INT SFILTER_CAN::nSetXMLConfigData(xmlNodePtr pNodePtr)
     }
     return nRetValue;
 }
-/* Ends SFILTER_CAN */
-
-/* Starts SFILTER_FLEXRAY */
 
 /******************************************************************************
   Function Name    :  SFILTER_FLEXRAY

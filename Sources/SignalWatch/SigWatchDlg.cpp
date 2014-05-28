@@ -412,7 +412,7 @@ void CSigWatchDlg::OnClose()
  Modifications  :   Raja N on 05/04/2004, Clear will empty the map. It will not
                     manipulate the data structure
 *******************************************************************************/
-LRESULT CSigWatchDlg::vRemoveSignalFromMap(WPARAM wParam, LPARAM lParam)
+LRESULT CSigWatchDlg::vRemoveSignalFromMap(WPARAM /* wParam */, LPARAM lParam)
 {
     // remove all entry from the map
     m_omCSDispEntry.Lock();
@@ -732,7 +732,7 @@ LRESULT CSigWatchDlg::OnReceiveKeyDown(WPARAM wParam, LPARAM lParam)
     return S_OK;
 }
 
-LRESULT CSigWatchDlg::vConfigureSignals(WPARAM wParam, LPARAM lParam)
+LRESULT CSigWatchDlg::vConfigureSignals(WPARAM /* wParam */, LPARAM /* lParam */)
 {
     if (NULL != m_hMainWnd)
     {

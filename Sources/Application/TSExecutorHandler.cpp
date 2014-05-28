@@ -97,12 +97,9 @@ void TSExecutorHandler::vShowTSExecutorWindow(void* pParentWnd)
         pfTSBusConnected(m_bConnected);
     }
 }
-void TSExecutorHandler::vGetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize)
+
+void TSExecutorHandler::vGetConfigurationData(BYTE * & /* pDesBuffer */, UINT & /* unBuffSize */)
 {
-    if(pfShowTSExecutorwindow != NULL)
-    {
-        // pfTSExecutorGetConfigdata(pDesBuffer, unBuffSize);
-    }
 }
 
 void TSExecutorHandler::vGetConfigurationData(xmlNodePtr& pxmlNodePtr)

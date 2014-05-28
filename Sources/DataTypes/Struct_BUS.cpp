@@ -117,24 +117,21 @@ __int64 sTCANDATA::GetSlotID(sTCANDATA& pDatCAN)
 };
 
 /*----------------------------- FlexRay Implementation -----------------------------*/
-void s_FLXMSG::vSetSortField(int nField)
+
+void s_FLXMSG::vSetSortField(int /* nField */)
 {
-    //m_nSortField = nField;
 }
 
-void s_FLXMSG::vSetSortAscending(bool bAscending)
+void s_FLXMSG::vSetSortAscending(bool /* bAscending */)
 {
-    //m_nMFactor = bAscending ? 1 : -1;
 };
 
-int s_FLXMSG::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
+int s_FLXMSG::DoCompareIndiv(const void * /* pEntry1 */, const void * /* pEntry2 */)
 {
-    int Result = 0;
-    //}
-    return Result;
+    return 0;
 };
 
-__int64 s_FLXMSG::GetSlotID(struct_UCI_FLXMSG& pDatFLEX)
+__int64 s_FLXMSG::GetSlotID(struct_UCI_FLXMSG & /* pDatFLEX */)
 {
     return 0;
 };

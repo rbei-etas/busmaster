@@ -132,16 +132,18 @@ static BYTE* pbGetReplayFileConfig(SREPLAYFILE& sReplayFile, BYTE* pbTarget)
     return pbTemp;
 }
 
-static UINT unGetReplayFileSize(SREPLAYFILE& sReplayFile)
+static UINT unGetReplayFileSize(SREPLAYFILE & sReplayFile)
 {
     UINT nSize = 0;
-    nSize += sizeof (sReplayFile.m_bEnabled);
-    nSize += sizeof (sReplayFile.m_bInteractive);
-    nSize += sizeof (sReplayFile.m_nReplayMode);
-    nSize += sizeof (sReplayFile.m_nTimeMode);
-    nSize += sizeof (sReplayFile.m_unCycleTimeDelay);
-    nSize += sizeof (sReplayFile.m_unMsgTimeDelay);
+
+    nSize += sizeof(sReplayFile.m_bEnabled);
+    nSize += sizeof(sReplayFile.m_bInteractive);
+    nSize += sizeof(sReplayFile.m_nReplayMode);
+    nSize += sizeof(sReplayFile.m_nTimeMode);
+    nSize += sizeof(sReplayFile.m_unCycleTimeDelay);
+    nSize += sizeof(sReplayFile.m_unMsgTimeDelay);
     nSize += (sizeof(char) * MAX_PATH);
+
     return nSize;
 }
 static UINT unGetFilterSize(CModuleFilterArray* pouModuleFilterArray, SFILTERAPPLIED_CAN* psFilterConfigured)

@@ -105,18 +105,6 @@ CTransmitMsg::CTransmitMsg()
     m_bDataModified  = false;
 }
 
-///**********************************************************************************
-//Function Name :   ~CTransmitMsg
-//Input(s)      :   -
-//Output            :   -
-//Functionality :   Destructor
-//Member of     :   CTransmitMsg
-//Friend of     :   -
-//Authors           :   Ravi D
-//Date Created  :   24/10/2006
-//Modifications :   -
-//************************************************************************************/
-
 CTransmitMsg::~CTransmitMsg()
 {
 }
@@ -146,7 +134,7 @@ void CTransmitMsg::DoDataExchange(CDataExchange* pDX)
 }
 
 
-LRESULT CTransmitMsg::vOnDataBytesUpdated(WPARAM wParam, LPARAM lParam)
+LRESULT CTransmitMsg::vOnDataBytesUpdated(WPARAM /* wParam */, LPARAM /* lParam */)
 {
     GetDlgItem(IDC_BT_UPDATE)->EnableWindow(TRUE);
     GetDlgItem(IDC_BT_UPDATE)->EnableWindow(TRUE);
@@ -171,7 +159,7 @@ LRESULT CTransmitMsg::vUserCommand(WPARAM wParam, LPARAM lParam)
 
 }
 
-void CTransmitMsg::vChangeDelButtonStatus(bool bStatus)
+void CTransmitMsg::vChangeDelButtonStatus(bool /* bStatus */)
 {
     CWnd* omBtWnd = (CWnd*)GetDlgItem(IDC_DEL_FRAME);
     if ( omBtWnd != NULL )

@@ -471,7 +471,7 @@ HRESULT CCommonStatistics::hSetConfigData(xmlNodePtr pDocPtr)
     return S_OK;
 }
 
-void CCommonStatistics::vLoadDataFromStore(xmlNodePtr pNodePtr)
+void CCommonStatistics::vLoadDataFromStore(xmlNodePtr /* pNodePtr */)
 {
     if(sm_sBusSerializationData.m_bIsDirty)
     {

@@ -314,7 +314,7 @@ void CMsgSignalDBWnd::OnClose()
     }
 }
 
-LRESULT CMsgSignalDBWnd::OnSaveDBJ1939(WPARAM wParam, LPARAM /*lParam*/)
+LRESULT CMsgSignalDBWnd::OnSaveDBJ1939(WPARAM /* wParam */, LPARAM /*lParam*/)
 {
     // Get active frame
     CMainFrame* pFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
@@ -328,9 +328,6 @@ LRESULT CMsgSignalDBWnd::OnSaveDBJ1939(WPARAM wParam, LPARAM /*lParam*/)
         {
             vSaveModifiedDBs(ppTempMsgSg);
         }
-        // delete previously allocated memory if any
-        // After save need not deallocate memory
-        //(*ppTempMsgSg)->bDeAllocateMemoryInactive();
     }
 
     return 0;

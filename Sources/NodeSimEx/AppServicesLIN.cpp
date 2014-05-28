@@ -113,7 +113,7 @@ BOOL gbStartStopHardware_LIN(BOOL bState)
     Author(s)        :  Ashwin. R. Uchil
     Date Created     :  9-5-2012
 ******************************************************************************/
-DWORD gdGetFirstLINdbName(char* cBuffer, DWORD size)
+DWORD gdGetFirstLINdbName(char* cBuffer, DWORD /* size */)
 {
     strcpy(cBuffer,"");
     //cBuffer = NULL;

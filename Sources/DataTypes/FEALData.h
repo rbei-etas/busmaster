@@ -794,14 +794,6 @@ typedef struct tagAbsSElement
     POSITION GetSignalPos(CString omID);
     POSITION GetPDUPos(CString omID);
     POSITION GetFunctionPos(CString omID);
-    INT GetEcuList(CString omStrCluster, AbsCECUList& ouEcuList)
-    {
-        return S_OK;
-    }
-    INT GetTxFrameList(CString omStrEcuName, AbsCFrameList& ouFrameList)
-    {
-        return S_OK;
-    }
 } ABS_ELEMENT, *PABS_ELEMENT;
 
 

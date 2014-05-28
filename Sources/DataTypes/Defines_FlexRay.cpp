@@ -700,9 +700,7 @@ CString CSignalDef::omGetEnggValue(DWORD dwRawValue)
 
     return RetStr;
 }
-/* ENDS DEFINITION OF CSignalDef */
 
-/* STARTS DEFINITION OF CFrameDef */
 CFrameDef::CFrameDef ()
 {
 }
@@ -755,8 +753,6 @@ BOOL CFrameDef::bGetSignalInfoSet(WORD* pwData, SSignalInfoArray& sSignalInfoSet
 
     return bReturn;
 }
-
-/* ENDS DEFINITION OF CFrameDef */
 
 void vCopyFrameData(CFrameMap& ouFrameTarget, const CFrameMap& ouFrameSource)
 {
@@ -814,6 +810,7 @@ void vCleanFrameDataSet(CFrameMap& ouDataSet)
 {
     ouDataSet.RemoveAll();
 }
+
 //// SRange Functions
 BOOL tagSRange::bIsWithinRange(DWORD dwValue)
 {
@@ -828,75 +825,47 @@ BOOL tagSRange::bIsWithinRange(DWORD dwValue)
     }
     return bReturn;
 }
+
 tagSRange::tagSRange()
 {
     m_dwLowerLimit = EMPTY_VALUE;
     m_dwUpperLimit = EMPTY_VALUE;
 }
+
 // tagScaleLinearCodeVarEx scale linear
 tagScaleLinearCodeVarEx::tagScaleLinearCodeVarEx()
 {
-    //m_pNextLinearType = NULL;
 }
-tagScaleLinearCodeVarEx& tagScaleLinearCodeVarEx::operator=(const tagScaleLinearCodeVarEx& RefObj)
-{
-    // m_sLinearType = RefObj.m_sLinearType;
 
-    /* if (NULL != RefObj.m_pNextLinearType)
-     {
-         if (NULL == m_pNextLinearType)
-         {
-             m_pNextLinearType = new tagScaleLinearCodeVarEx;
-             ASSERT(NULL != m_pNextLinearType);
-         }
-         *m_pNextLinearType = *(RefObj.m_pNextLinearType);
-     }*/
+tagScaleLinearCodeVarEx & tagScaleLinearCodeVarEx::operator=(const tagScaleLinearCodeVarEx & /* RefObj */)
+{
     return *this;
 }
+
 tagScaleLinearCodeVarEx::~tagScaleLinearCodeVarEx()
 {
-    /*if (m_pNextLinearType != NULL)
-    {
-        delete m_pNextLinearType;
-        m_pNextLinearType = NULL;
-    }*/
 }
+
 // tagTextCodeVarEx functions
 tagTextCodeVarEx::tagTextCodeVarEx()
 {
-    //m_pNextTextCodeType = NULL;
     m_aTextName = "";
-    //memset(m_aTextName, '\0', SIZE_CHAR * MAX_TEXT_NAME_ID);
 }
 
-tagTextCodeVarEx& tagTextCodeVarEx::operator=(const tagTextCodeVarEx& RefObj)
+tagTextCodeVarEx & tagTextCodeVarEx::operator=(const tagTextCodeVarEx & RefObj)
 {
     m_sRange = RefObj.m_sRange;
     m_aTextName = RefObj.m_aTextName;
-    //memcpy(m_aTextName, RefObj.m_aTextName, MAX_TEXT_NAME_ID);
-    /*if (NULL != RefObj.m_pNextTextCodeType)
-    {
-        if (NULL == m_pNextTextCodeType)
-        {
-            m_pNextTextCodeType = new tagTextCodeVarEx;
-            ASSERT(NULL != m_pNextTextCodeType);
-        }
-        *m_pNextTextCodeType = *(RefObj.m_pNextTextCodeType);
-    }*/
     return *this;
 }
+
 tagTextCodeVarEx::~tagTextCodeVarEx()
 {
-    /*if (m_pNextTextCodeType != NULL)
-    {
-        delete m_pNextTextCodeType;
-        m_pNextTextCodeType = NULL;
-    }*/
 }
+
 //tagTabCodeVarEx functions
 tagTabCodeVarEx::tagTabCodeVarEx()
 {
-    //m_pNextTabCodeType = NULL;
 }
 
 tagTabCodeVarEx& tagTabCodeVarEx::operator=(const tagTabCodeVarEx& RefObj)

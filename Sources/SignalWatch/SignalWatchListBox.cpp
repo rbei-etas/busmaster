@@ -14,14 +14,12 @@
  */
 
 /**
- * \file      SignalWatchListBox.cpp
- * \brief     Implementation file for CSignalWatchListBox class
- * \authors   RBIN/EMC2 - Ratnadip Choudhury, Amarnath Shastri
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Implementation file for CSignalWatchListBox class
+ * @authors Ratnadip Choudhury, Amarnath Shastri
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CSignalWatchListBox class
  */
-
 
 // For all standard header file include
 #include "SignalWatch_stdafx.h"
@@ -35,18 +33,7 @@
 #include "SigWatchDlg.h"
 
 extern HWND GUI_hDisplayWindow;
-/////////////////////////////////////////////////////////////////////////////
-// CSignalWatchListBox
 
-/******************************************************************************
- Function Name  :   CSignalWatchListBox
-
- Description    :   Standard default constructor for list box
- Member of      :   CSignalWatchListBox
-
- Author(s)      :   Ratnadip Choudhury
- Date Created   :   03-04-2002
-******************************************************************************/
 CSignalWatchListBox::CSignalWatchListBox()
 {
     m_hParentWnd = NULL;
@@ -61,7 +48,6 @@ CSignalWatchListBox::CSignalWatchListBox(ETYPE_BUS eBus)
     m_eBus = eBus;
 }
 
-//
 void CSignalWatchListBox::vUpdateParentWnd(HWND hParentWnd)
 {
     m_hParentWnd = hParentWnd;
@@ -72,58 +58,30 @@ void CSignalWatchListBox::vUpdateMainWnd(HWND hMainWnd)
     m_hMainWnd = hMainWnd;
 }
 
-//
-/******************************************************************************
- Function Name  :   ~CSignalWatchListBox
-
- Description    :   Standard destructor
- Member of      :   CSignalWatchListBox
-
- Author(s)      :   Ratnadip Choudhury
- Date Created   :   03-04-2002
-******************************************************************************/
 CSignalWatchListBox::~CSignalWatchListBox()
 {
 }
 
-
 BEGIN_MESSAGE_MAP(CSignalWatchListBox, CFFListCtrl)
-    //{{AFX_MSG_MAP(CSignalWatchListBox)
     ON_WM_RBUTTONDOWN()
     ON_COMMAND(IDM_SG_WATCH_CLEAR, OnSgWatchClear)
     ON_COMMAND(IDD_DLG_SIGNAL_WATCH_LIN,OnConfigure)
     ON_WM_CHAR()
     ON_WM_KEYDOWN()
-    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-/////////////////////////////////////////////////////////////////////////////
-// CSignalWatchListBox message handlers
-
-/******************************************************************************
- Function Name  :   OnRButtonDown
-
- Description    :   The framework calls this member function when the user
-                    right clicks on the list box
- Input(s)       :   nFlags -
-                    point -
- Output         :   -
- Functionality  :   Shows a popup menu to remove an entry or to clear entries
- Member of      :   CSignalWatchListBox
-
- Author(s)      :   Ratnadip Choudhury, Amarnath Shastri
- Date Created   :   03-04-2002
- Modified by    :   Ratnadip Choudhury
- Modified on    :   26-04-2002
- Modified by    :   Raja N
- Modified on    :   22.07.2004, Modified the function call to refer ListCtrl
-******************************************************************************/
+/**
+ * The framework calls this member function when the user
+ * right clicks on the list box.
+ *
+ * Shows a popup menu to remove an entry or to clear entries.
+ */
 void CSignalWatchListBox::OnRButtonDown(UINT nFlags, CPoint omPoint)
 {
     CMenu* pomContextMenu = new CMenu;
     if (pomContextMenu != NULL)
     {
-        // Load the Menu from the resource
+        /* Load the Menu from the resource */
         pomContextMenu->DestroyMenu();
         pomContextMenu->LoadMenu(IDM_MENU_SIGNAL_WATCH);
         CMenu* pomSubMenu = pomContextMenu->GetSubMenu(1);
@@ -133,7 +91,8 @@ void CSignalWatchListBox::OnRButtonDown(UINT nFlags, CPoint omPoint)
             CPoint omSrcPt = omPoint;
             ClientToScreen(&omSrcPt);
             UINT unEnable = MF_BYCOMMAND | MF_ENABLED;
-            // If no item is selected, make "Delete" menu item disabled
+
+            /* If no item is selected, make "Delete" menu item disabled */
             if (GetSelectedCount() == -1)
             {
                 unEnable = MF_BYCOMMAND | MF_DISABLED | MF_GRAYED;
@@ -143,7 +102,7 @@ void CSignalWatchListBox::OnRButtonDown(UINT nFlags, CPoint omPoint)
                 unEnable = MF_BYCOMMAND | MF_ENABLED;
             }
 
-            // Clear menu to be disabled if no signals are displayed in the list window
+            /* Clear menu to be disabled if no signals are displayed in the list window */
             if (GetItemCount() <= 0)
             {
                 unEnable = MF_BYCOMMAND | MF_DISABLED | MF_GRAYED;
@@ -155,39 +114,22 @@ void CSignalWatchListBox::OnRButtonDown(UINT nFlags, CPoint omPoint)
         delete pomContextMenu;
         pomContextMenu = NULL;
     }
-
-    //CFFListCtrl::OnRButtonDown(nFlags, omPoint);
 }
 
-/******************************************************************************
- Function Name  :   OnSgWatchClear
-
- Input(s)       :   -
- Output         :   -
- Functionality  :   Handler to remove all the signal entries in the list box
- Member of      :   CSignalWatchListBox
-
- Author(s)      :   Ratnadip Choudhury
- Date Created   :   03-04-2002
- Modified by    :   Ratnadip Choudbhury
- Modified on    :   26-04-2002
- Modified by    :   Amitesh Bharti
- Modified on    :   20-05-2003, Clear the content of the list box and post a
-                                message to delete all entry in CMap of signal
- Modified by    :   Raja N
- Modified on    :   22.07.2004, Modified the function call to refer ListCtrl
-******************************************************************************/
+/**
+ * Handler to remove all the signal entries in the list box
+ */
 void CSignalWatchListBox::OnSgWatchClear()
 {
     ::PostMessage(m_hParentWnd,WM_REMOVE_SIGNAL,0,0);
 }
 
-void CSignalWatchListBox::OnChar(UINT nChar, UINT nRepeatCount, UINT nflags)
+void CSignalWatchListBox::OnChar(UINT nChar, UINT /* nRepeatCount */, UINT /* nflags */)
 {
     GetParent()->SendMessage(WM_KEYBOARD_CHAR, nChar, 0);
 }
 
-void CSignalWatchListBox::OnKeyDown(UINT nChar, UINT nRepeatCount, UINT nflags)
+void CSignalWatchListBox::OnKeyDown(UINT nChar, UINT /* nRepeatCount */, UINT /* nflags */)
 {
     GetParent()->SendMessage(WM_KEYBOARD_KEYDOWN, nChar, 0);
 }

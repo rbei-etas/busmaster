@@ -27,49 +27,18 @@
 
 void tagAbsSWAKEUP::DoCleanup()
 {
-    /*m_shWAKE_UP_SYMBOL_RX_IDLE      = EMPTY_VALUE;
-    m_shWAKE_UP_SYMBOL_RX_LOW       = EMPTY_VALUE;
-    m_shWAKE_UP_SYMBOL_RX_WINDOW    = EMPTY_VALUE;
-    m_shWAKE_UP_SYMBOL_TX_IDLE      = EMPTY_VALUE;
-    m_shWAKE_UP_SYMBOL_TX_LOW       = EMPTY_VALUE;*/
 }
 
 void tagAbsSFlexrayCluster::DoCleanup()
 {
     memset(this, 0, sizeof(tagAbsSFlexrayCluster));
-    /*m_shCOLD_START_ATTEMPTS = EMPTY_VALUE;
-    m_shACTION_POINT_OFFSET = EMPTY_VALUE;
-    m_shDYNAMIC_SLOT_IDLE_PHASE = EMPTY_VALUE;
-    m_shMINISLOT = EMPTY_VALUE;
-    m_shMINISLOT_ACTION_POINT_OFFSET = EMPTY_VALUE;
-    m_shNIT = EMPTY_VALUE;
-    m_fSAMPLE_CLOCK_PERIOD = EMPTY_VALUE;
-    m_shSTATIC_SLOT = EMPTY_VALUE;
-    m_shSYMBOL_WINDOW = EMPTY_VALUE;
-    m_shTSS_TRANSMITTER = EMPTY_VALUE;
-    m_shLISTEN_NOISE = EMPTY_VALUE;
-    m_shMACRO_PER_CYCLE = EMPTY_VALUE;
-    m_fMACROTICK = EMPTY_VALUE;
-    m_fMAX_INITIALIZATION_ERROR = EMPTY_VALUE;
-    m_shMAX_WITHOUT_CLOCK_CORRECTION_FATAL = EMPTY_VALUE;
-    m_shMAX_WITHOUT_CLOCK_CORRECTION_PASSIVE = EMPTY_VALUE;
-    m_shNETWORK_MANAGEMENT_VECTOR_LENGTH = EMPTY_VALUE;
-    m_shNUMBER_OF_MINISLOTS = EMPTY_VALUE;
-    m_shNUMBER_OF_STATIC_SLOTS = EMPTY_VALUE;
-    m_shOFFSET_CORRECTION_START = EMPTY_VALUE;
-    m_shPAYLOAD_LENGTH_STATIC = EMPTY_VALUE;
-    m_shSYNC_NODE_MAX = EMPTY_VALUE;
-    m_shCAS_RX_LOW_MAX = EMPTY_VALUE;
-    m_fBIT = EMPTY_VALUE;
-    m_shCYCLE = EMPTY_VALUE;
-    m_shCLUSTER_DRIFT_DAMPING = EMPTY_VALUE;
-    m_ouWAKEUP.DoCleanup();*/
 }
 
 tagAbsSCluster::tagAbsSCluster()
 {
     m_ouBusInfo.m_pouFlexRayCluster = new ABS_FLEXRAY_CLUSTER;
 }
+
 tagAbsSCluster::~tagAbsSCluster()
 {
     if (m_ouBusInfo.m_pouFlexRayCluster != NULL)
@@ -78,6 +47,7 @@ tagAbsSCluster::~tagAbsSCluster()
         m_ouBusInfo.m_pouFlexRayCluster = NULL;
     }
 }
+
 tagAbsSCluster& tagAbsSCluster::operator=(tagAbsSCluster& RefObj)
 {
     m_omClusterID = RefObj.m_omClusterID;
@@ -95,6 +65,7 @@ tagAbsSCluster& tagAbsSCluster::operator=(tagAbsSCluster& RefObj)
     }
     return *this;
 }
+
 void tagAbsSCluster::DoCleanup()
 {
     m_omClusterID  = EMPTY_STRING;
@@ -321,16 +292,12 @@ void tagAbsSECU::DoCleanUp()
 
 tagAbsSFrame::tagAbsSFrame()
 {
-    //m_podPduInstList = NULL;
 }
+
 tagAbsSFrame::~tagAbsSFrame()
 {
-    /*if (m_podPduInstList != NULL)
-    {
-        m_podPduInstList->RemoveAll();
-        m_podPduInstList = NULL;
-    }*/
 }
+
 tagAbsSFrame& tagAbsSFrame::operator=(tagAbsSFrame& RefObj)
 {
     m_omFrameID     = RefObj.m_omFrameID;
@@ -343,29 +310,9 @@ tagAbsSFrame& tagAbsSFrame::operator=(tagAbsSFrame& RefObj)
     m_podPduInstList.RemoveAll();
     m_podPduInstList.AddTail(&(RefObj.m_podPduInstList));
 
-    /* if (m_podPduInstList != NULL)
-     {
-         m_podPduInstList->RemoveAll();
-         if (RefObj->m_podPduInstList != NULL)
-         {
-             m_podPduInstList->AddTail(RefObj.m_podPduInstList);
-         }
-         else
-         {
-             delete m_podPduInstList;
-             m_podPduInstList = NULL;
-         }
-     }
-     else
-     {
-         if (RefObj.m_podPduInstList != NULL)
-         {
-             m_podPduInstList = new AbsCPduInstanceList;
-             m_podPduInstList->AddTail(RefObj.m_podPduInstList);
-         }
-     }*/
     return *this;
 }
+
 void tagAbsSFrame::DoCleanup()
 {
     m_omFrameID  = EMPTY_STRING;
@@ -374,13 +321,8 @@ void tagAbsSFrame::DoCleanup()
     m_omFrameType  = EMPTY_STRING;
     m_odSigInstList.RemoveAll();
     m_podPduInstList.RemoveAll();
-
-    /*  if (m_podPduInstList != NULL)
-      {
-          m_podPduInstList->RemoveAll();
-      }*/
-
 }
+
 void tagAbsSSignal::DoCleanup()
 {
     m_omSignalID  = EMPTY_STRING;
@@ -403,6 +345,7 @@ tagAbsSCODED_TYPE& tagAbsSCODED_TYPE::operator=(tagAbsSCODED_TYPE& RefObj)
     m_sLength.m_unLength = RefObj.m_sLength.m_unLength;
     return *this;
 }
+
 void tagAbsSCODED_TYPE::DoCleanup()
 {
     m_omDataType = EMPTY_STRING;
@@ -459,6 +402,7 @@ tagAbsSCoding& tagAbsSCoding::operator=(tagAbsSCoding& RefObj)
 
     return *this;
 }
+
 void tagAbsSCoding::DoCleanup()
 {
     m_omCodingID = EMPTY_STRING;
@@ -482,6 +426,7 @@ tagAbsSFunction& tagAbsSFunction::operator=(tagAbsSFunction& RefObj)
 
     return *this;
 }
+
 void tagAbsSFunction::DoCleanup()
 {
     m_omFunctionID  = EMPTY_STRING;
@@ -501,6 +446,7 @@ tagAbsSComposite& tagAbsSComposite::operator=(tagAbsSComposite& RefObj)
 
     return *this;
 }
+
 void tagAbsSComposite::Docleanup()
 {
     m_omCompositeID  = EMPTY_STRING;
@@ -521,6 +467,7 @@ tagAbsSPdu& tagAbsSPdu::operator=(tagAbsSPdu& RefObj)
     m_odSigInstList.AddTail(&(RefObj.m_odSigInstList));
     return *this;
 }
+
 void tagAbsSPdu::DoCleanup()
 {
     m_omPduID  = EMPTY_STRING;
@@ -529,6 +476,7 @@ void tagAbsSPdu::DoCleanup()
     m_omPduType  = EMPTY_STRING;
     m_odSigInstList.RemoveAll();
 }
+
 void tagAbsSElement::DoCleanup()
 {
     m_omClusterList.RemoveAll();
@@ -539,9 +487,9 @@ void tagAbsSElement::DoCleanup()
     m_omFunctionList.RemoveAll();
     m_omCompositeList.RemoveAll();
     m_omPDUList.RemoveAll();
-
 }
-BOOL tagAbsSElement::RemoveSignal(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP Category)
+
+BOOL tagAbsSElement::RemoveSignal(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP /* Category */)
 {
     BOOL bResult = FALSE;
     switch (eEntity)
@@ -566,7 +514,7 @@ BOOL tagAbsSElement::RemoveSignal(eENTITY_FIBEX eEntity, CString omID, CATEGORY_
     return bResult;
 }
 
-BOOL tagAbsSElement::RemoveCluster(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP Category)
+BOOL tagAbsSElement::RemoveCluster(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP /* Category */)
 {
     BOOL bResult = FALSE;
     switch (eEntity)
@@ -590,7 +538,8 @@ BOOL tagAbsSElement::RemoveCluster(eENTITY_FIBEX eEntity, CString omID, CATEGORY
     }
     return bResult;
 }
-BOOL tagAbsSElement::RemoveChannel(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP Category)
+
+BOOL tagAbsSElement::RemoveChannel(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP /* Category */)
 {
     BOOL bResult = FALSE;
     switch (eEntity)
@@ -614,7 +563,8 @@ BOOL tagAbsSElement::RemoveChannel(eENTITY_FIBEX eEntity, CString omID, CATEGORY
     }
     return bResult;
 }
-BOOL tagAbsSElement::RemoveECU(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP Category)
+
+BOOL tagAbsSElement::RemoveECU(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP /* Category */)
 {
     BOOL bResult = FALSE;
     switch (eEntity)
@@ -638,7 +588,8 @@ BOOL tagAbsSElement::RemoveECU(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GRO
     }
     return bResult;
 }
-BOOL tagAbsSElement::RemoveFrame(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP Category)
+
+BOOL tagAbsSElement::RemoveFrame(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP /* Category */)
 {
     BOOL bResult = FALSE;
     switch (eEntity)
@@ -662,7 +613,8 @@ BOOL tagAbsSElement::RemoveFrame(eENTITY_FIBEX eEntity, CString omID, CATEGORY_G
     }
     return bResult;
 }
-BOOL tagAbsSElement::RemoveFunction(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP Category)
+
+BOOL tagAbsSElement::RemoveFunction(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP /* Category */)
 {
     BOOL bResult = FALSE;
     switch (eEntity)
@@ -686,7 +638,8 @@ BOOL tagAbsSElement::RemoveFunction(eENTITY_FIBEX eEntity, CString omID, CATEGOR
     }
     return bResult;
 }
-BOOL tagAbsSElement::RemoveComposite(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP Category)
+
+BOOL tagAbsSElement::RemoveComposite(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP /* Category */)
 {
     BOOL bResult = FALSE;
     switch (eEntity)
@@ -710,7 +663,8 @@ BOOL tagAbsSElement::RemoveComposite(eENTITY_FIBEX eEntity, CString omID, CATEGO
     }
     return bResult;
 }
-BOOL tagAbsSElement::RemovePDU(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP Category)
+
+BOOL tagAbsSElement::RemovePDU(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GROUP /* Category */)
 {
     BOOL bResult = FALSE;
     switch (eEntity)
@@ -734,6 +688,7 @@ BOOL tagAbsSElement::RemovePDU(eENTITY_FIBEX eEntity, CString omID, CATEGORY_GRO
     }
     return bResult;
 }
+
 POSITION tagAbsSElement::GetFramePos(CString omID)
 {
     POSITION pos = NULL;

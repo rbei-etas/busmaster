@@ -471,7 +471,7 @@ BOOL CFnsTreeView::PreCreateWindow(CREATESTRUCT& cs)
     return CTreeView::PreCreateWindow(cs);
 }
 
-void CFnsTreeView::OnTreeItemSelectionChanged(NMHDR* /*pNMHDR*/, LRESULT* pResult)
+void CFnsTreeView::OnTreeItemSelectionChanged(NMHDR * /* pNMHDR */, LRESULT * /* pResult */)
 {
     vEditSelectedFunction();
 }

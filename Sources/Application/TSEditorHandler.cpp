@@ -117,13 +117,11 @@ HWND TSEditorHandler::vGetSafeHWnd()
         return NULL;
     }
 }
-void TSEditorHandler::vGetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize)
+
+void TSEditorHandler::vGetConfigurationData(BYTE * & /* pDesBuffer */, UINT & /* unBuffSize */)
 {
-    if(pfTSEditorLoadTestSetupFile != NULL)
-    {
-        // pfTSEditorGetConfigdata(pDesBuffer, unBuffSize);
-    }
 }
+
 void TSEditorHandler::vGetConfigurationData(xmlNodePtr& pxmlNodePtr)
 {
     if(pfTSEditorLoadTestSetupFile != NULL)

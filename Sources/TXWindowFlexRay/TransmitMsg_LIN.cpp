@@ -129,10 +129,9 @@ CTransmitMsgLIN::CTransmitMsgLIN()
     m_bFromEvent = false;
     vInitialiseDataBytes();
 }
-void CTransmitMsgLIN::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
+
+void CTransmitMsgLIN::OnClick(NMHDR * /* pNMHDR */, LRESULT * /* pResult */)
 {
-    int a = 0;
-    return ;
 }
 
 
@@ -229,7 +228,7 @@ LRESULT CTransmitMsgLIN::vUserCommand(WPARAM wParam, LPARAM lParam)
 
 }
 
-void CTransmitMsgLIN::vChangeDelButtonStatus(bool bStatus)
+void CTransmitMsgLIN::vChangeDelButtonStatus(bool /* bStatus */)
 {
     CWnd* omBtWnd = (CWnd*)GetDlgItem(IDC_DEL_FRAME);
     if ( omBtWnd != NULL )

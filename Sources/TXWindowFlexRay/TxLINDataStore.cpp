@@ -153,27 +153,8 @@ void CTxLINDataStore::vSetBusStatus(ESTATUS_BUS eBusStatus)
     }
 }
 
-int CTxLINDataStore::UpdateMessagetoDIL(LIN_FRAME_DATA& ouFlexData,  bool bDelete)
+int CTxLINDataStore::UpdateMessagetoDIL(LIN_FRAME_DATA & /* ouFlexData */,  bool /* bDelete */)
 {
-    if ( m_pouDIL_LIN_Interface != NULL && m_eBusStatus == BUS_CONNECTED)
-    {
-        //s_FLXTXMSG ouFlxMsg;
-        //ouFlxMsg.m_sFlxMsg.m_nSlotID = ouFlexData.m_ouFlexFrame.m_nSlotId;
-        //ouFlxMsg.m_sFlxMsg.m_nBaseCycle = ouFlexData.m_ouFlexFrame.m_nBaseCycle;
-        //ouFlxMsg.m_sFlxMsg.m_nDLC = ouFlexData.m_ouFlexFrame.m_nLength;
-        //ouFlxMsg.m_sFlxMsg.m_eChannel = ouFlexData.m_ouFlexFrame.m_ouChannel;
-
-        //memcpy(ouFlxMsg.m_sFlxMsg.m_ucData, ouFlexData.m_ouData, ouFlexData.m_ouFlexFrame.m_nLength);
-
-        //if ( bDelete == false )
-        //{
-        //    g_pouDIL_LIN_Interface->DILL_SendMsg(0, &ouFlxMsg);
-        //}
-        //else
-        //{
-        //   // g_pouDIL_LIN_Interface->DILF_DeleteFlxMsg(0, &ouFlxMsg);
-        //}
-    }
     return 0;
 }
 
@@ -206,21 +187,10 @@ bool CTxLINDataStore::bSetChannelConfig(xmlNodePtr pNode)
     }
     return true;
 }
-bool CTxLINDataStore::bAddToChannelList(LIN_FRAME_DATA& ouData)
+
+bool CTxLINDataStore::bAddToChannelList(LIN_FRAME_DATA & /* ouData */)
 {
     std::list<LIN_FRAME_DATA>::iterator itrFramList = m_ouLIN_Frame_Data.begin();
-
-    /* for( ; itrFramList != m_ouFrameList[nChannel].end(); itrFramList++ )
-     {
-         if ( (itrFramList->m_strFrameName == ouData.m_strMessageName) && (itrFramList->m_nSlotId == ouData.m_nSlotId) )
-         {
-            LIN_FRAME_DATA ouFrameData;
-             ouFrameData.m_ouFlexFrame = *itrFramList;
-             ouFrameData.bSelected = ouData.m_bEnable;
-             memcpy( ouFrameData.m_ouData, ouData.m_ucData, ouData.m_nDLC);
-             m_ouFlexray_Frame_Data[nChannel].push_back(ouFrameData);
-         }
-     }*/
     return true;
 }
 
@@ -652,7 +622,8 @@ BOOL CTxLINDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
     }
     return !m_bValidTxWndSize;
 }
-BOOL CTxLINDataStore::bSetDILInterfacePtr(CBaseDIL_LIN* pLinDIL)
+
+BOOL CTxLINDataStore::bSetDILInterfacePtr(CBaseDIL_LIN * /* pLinDIL */)
 {
     HRESULT hResult = S_OK;
     if (m_pouDIL_LIN_Interface == NULL)
@@ -735,18 +706,9 @@ void CTxLINDataStore::vUpdateTxList(int nChannel)
         }
     }
 }
-bool CTxLINDataStore::bExistInTxList(int nChannel, LIN_FRAME_DATA& ouData)
+
+bool CTxLINDataStore::bExistInTxList(int /* nChannel */, LIN_FRAME_DATA & /* ouData */)
 {
-    /*list<FRAME_STRUCT>::iterator itrFrameData = m_ouFrameList[nChannel].begin();
-    for ( ; itrFrameData != m_ouFrameList[nChannel].end(); itrFrameData++)
-    {
-        if ( itrFrameData->m_strFrameName == ouData.m_ouFlexFrame.m_strFrameName &&
-                itrFrameData->m_nSlotId == ouData.m_ouFlexFrame.m_nSlotId &&
-                itrFrameData->m_nBaseCycle == ouData.m_ouFlexFrame.m_nBaseCycle )
-        {
-            return true;
-        }
-    }*/
     return false;
 }
 

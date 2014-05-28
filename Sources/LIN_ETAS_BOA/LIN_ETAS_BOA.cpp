@@ -24,8 +24,6 @@
 // CLIN_ETAS_BOA.cpp : Defines the initialization routines for the DLL.
 //
 
-/* C++ includes */
-
 #include "LIN_ETAS_BOA_stdafx.h"
 #include "LIN_ETAS_BOA_Defs.h"
 #include "include/Error.h"
@@ -1030,7 +1028,7 @@ public:
     HRESULT LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT LIN_DeselectHwInterface(void);
-    HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN InitData, int& Length)
+    HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN /* InitData */, int & /* Length */)
     {
         return S_OK;
     }
@@ -1047,23 +1045,27 @@ public:
     {
         return S_OK;
     }
-    HRESULT LIN_GetCurrStatus(s_STATUSMSG& StatusData)
+
+    HRESULT LIN_GetCurrStatus(s_STATUSMSG & /* StatusData */)
     {
         return S_OK;
     }
+
     HRESULT LIN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT LIN_Send(STLIN_MSG& sCanTxMsg);
     HRESULT LIN_InitializeBuffers();
 
-    HRESULT LIN_SetSlaveRespData(const STLIN_MSG stRespMsg)
+    HRESULT LIN_SetSlaveRespData(const STLIN_MSG /* stRespMsg */)
     {
         return S_OK;
     };
+
     HRESULT LIN_ResetSlaveRespData(void)
     {
         return S_OK;
     };
-    HRESULT LIN_DisableSlave(STLIN_MSG& sMessage)
+
+    HRESULT LIN_DisableSlave(STLIN_MSG & /* sMessage */)
     {
         return S_OK;
     }
@@ -1582,24 +1584,18 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_PerformClosureOperations(void)
     return S_OK;
 }
 
-HRESULT CDIL_LIN_ETAS_BOA::LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp,LARGE_INTEGER* QueryTickCount)
+HRESULT CDIL_LIN_ETAS_BOA::LIN_GetTimeModeMapping(SYSTEMTIME & CurrSysTime, UINT64 & TimeStamp, LARGE_INTEGER * /* QueryTickCount */)
 {
-
     memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
     TimeStamp = sg_TimeStamp;
 
     return S_OK;
 }
 
-HRESULT CDIL_LIN_ETAS_BOA::LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& sAvailableConfigFiles)
+HRESULT CDIL_LIN_ETAS_BOA::LIN_ListHwInterfaces(INTERFACE_HW_LIST & sSelHwInterface, INT & /* sAvailableConfigFiles */)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_DRIVER_SELECTED, ERR_IMPROPER_STATE);
 
-    /*if(sAvailableConfigFiles.m_nFilesCount == 0)
-    {
-        AfxMessageBox("Load a FIBEX file and then select the hardware");
-    }
-    else*/
     {
         int nCount = CHANNEL_ALLOWED;
         USES_CONVERSION;
@@ -1701,7 +1697,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterfa
     }
 }
 
-HRESULT CDIL_LIN_ETAS_BOA::LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount)
+HRESULT CDIL_LIN_ETAS_BOA::LIN_SelectHwInterface(const INTERFACE_HW_LIST & sSelHwInterface, INT /* nCount */)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_LISTED, ERR_IMPROPER_STATE);
 
