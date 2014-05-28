@@ -1469,7 +1469,7 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
         sg_arrReadHandles[i] = canOpenChannel(sg_aodChannels[i].m_nChannel, canOPEN_ACCEPT_VIRTUAL);
-        nStatus = canBusOn(sg_arrReadHandles[i]);
+        (void) canBusOn(sg_arrReadHandles[i]);
 
         HANDLE tmp;
         nStatus = canIoCtl(sg_arrReadHandles[i],
@@ -1556,9 +1556,9 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_Kvaser_CAN(LPVOID pVoid)
     for ( UINT i =0 ; i < sg_nNoOfChannels; i++ )
     {
         //Get Off the bus
-        nStatus = canBusOff(sg_arrReadHandles[i]);
+        (void) canBusOff(sg_arrReadHandles[i]);
         //Close the channel connection
-        nStatus = canClose(sg_arrReadHandles[i]);
+        (void) canClose(sg_arrReadHandles[i]);
         sg_arrReadHandles[i] = canERR_NOTINITIALIZED;
     }
     for (UINT i = 0; i < sg_nNoOfChannels+1; i++)
@@ -1672,10 +1672,6 @@ HRESULT CDIL_CAN_Kvaser::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 static int nWriteMessage(STCAN_MSG sMessage, DWORD /*dwClientID*/)
 {
     int nReturn = -1;
-    UINT unClientIndex = (UINT)-1;
-
-    /* Return when in disconnected state */
-    //if (!sg_bIsConnected) return nReturn;
 
     if ((sMessage.m_ucChannel > 0) &&
             (sMessage.m_ucChannel <= sg_nNoOfChannels))
@@ -1900,7 +1896,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_SetControllerParams(int nValue, ECONTR_PARAM eContr
                 {
                     for( UINT i = 0; i < sg_nNoOfChannels; i++)
                     {
-                        canStatus s = canSetBusOutputControl(sg_aodChannels[i].m_hnd, canDRIVER_NORMAL);
+                        (void) canSetBusOutputControl(sg_aodChannels[i].m_hnd, canDRIVER_NORMAL);
                     }
                 }
                 break;
@@ -1909,9 +1905,9 @@ HRESULT CDIL_CAN_Kvaser::CAN_SetControllerParams(int nValue, ECONTR_PARAM eContr
                     for( UINT i = 0; i < sg_nNoOfChannels;)
                     {
                         UINT nstatus;
-                        canStatus s = canGetBusOutputControl(sg_aodChannels[i].m_hnd, &nstatus);
-                        s = canSetBusOutputControl(sg_aodChannels[i].m_hnd, canDRIVER_SILENT);
-                        s = canGetBusOutputControl(sg_aodChannels[i].m_hnd, &nstatus);
+                        (void) canGetBusOutputControl(sg_aodChannels[i].m_hnd, &nstatus);
+                        (void) canSetBusOutputControl(sg_aodChannels[i].m_hnd, canDRIVER_SILENT);
+                        (void) canGetBusOutputControl(sg_aodChannels[i].m_hnd, &nstatus);
                         i++;
                     }
                 }
@@ -2450,11 +2446,6 @@ static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
     /* Get the error text for the corresponding error code */
     sg_pIlog->vLogAMessage(A2T(File), Line, A2T(acErrText));
 
-    size_t nStrLen = strlen(acErrText);
-    if (nStrLen > CAN_MAX_ERRSTR)
-    {
-        nStrLen = CAN_MAX_ERRSTR;
-    }
     sg_acErrStr = acErrText;
 }
 

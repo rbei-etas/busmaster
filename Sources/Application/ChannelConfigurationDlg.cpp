@@ -18,7 +18,6 @@
 #include "FibexClass_extern.h"
 #include "Utility\WaitIndicator.h"
 
-
 struct LinProcolBaudRate
 {
     std::string m_strProtocol;
@@ -67,12 +66,10 @@ void CChannelConfigurationDlg::DoDataExchange(CDataExchange* pDX)
     DDV_MinMaxInt(pDX, m_nLinBaudRate, 200, 30000);
 }
 
-
 BEGIN_MESSAGE_MAP(CChannelConfigurationDlg, CDialog)
     ON_WM_SYSCOMMAND()
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
-    //}}AFX_MSG_MAP
     ON_BN_CLICKED(IDC_BUTTON_FIBEXPATH, OnBnClickedButtonFibexpath)
     ON_CBN_SELCHANGE(IDC_COMBO_CLUSTER, OnCbnSelchangeComboCluster)
     ON_CBN_SELCHANGE(IDC_COMBO_CHANNEL, OnCbnSelchangeComboChannel)
@@ -105,17 +102,13 @@ void CChannelConfigurationDlg::OnOverwriteCheckBoxClick()
 
 BOOL CChannelConfigurationDlg::OnInitDialog()
 {
-
-
     CDialog::OnInitDialog();
-
 
     //Validate The Bus Type - FLEXRAY, LIN
     if ( m_eBusType != FLEXRAY && m_eBusType != LIN )
     {
         return S_FALSE;
     }
-
 
     //Controls Initialisation
     m_omEcuList.SetExtendedStyle(LVS_EX_CHECKBOXES | LVS_REPORT );
@@ -128,7 +121,6 @@ BOOL CChannelConfigurationDlg::OnInitDialog()
     // Set Col Width
     m_omEcuList.SetColumnWidth(0, nWidth);
 
-
     char chTemp[MAX_PATH];
     //INT nChannelCount = m_ouFlexrayChannelConfig.size();
     m_ComboChannelSelect.Clear();
@@ -137,7 +129,6 @@ BOOL CChannelConfigurationDlg::OnInitDialog()
         sprintf_s(chTemp, "Channel %d", i+1);
         m_ComboChannelSelect.AddString( chTemp);
     }
-
 
     //Update for 1st Channel
     m_nCurrentChannel = -1;
@@ -149,29 +140,11 @@ BOOL CChannelConfigurationDlg::OnInitDialog()
     nDisplayProtocolSettings(0);
     nEnableControls(m_eBusType);
 
-
-
-    /*list<CHANNEL_CONFIG>::iterator itrFlexrayChannelConfig = m_ouFlexrayChannelConfig.begin();
-    if ( itrFlexrayChannelConfig != m_ouFlexrayChannelConfig.end() )
-    {
-        list<Cluster> ouClusterList;
-        if ( itrFlexrayChannelConfig->m_strDataBasePath.c_str() != "")
-        {
-            m_pMsgSignal->hLoadFibexDBFile(itrFlexrayChannelConfig->m_strDataBasePath.c_str(), ouClusterList);
-            m_ouCurrentChannelCluster = ouClusterList;
-        }
-
-    }*/
-
-
     return TRUE;
 }
 
-
-
 int CChannelConfigurationDlg::nUpdateLinSettings()
 {
-    char chString[MAX_PATH];
     CComboBox* pomCombo = (CComboBox*)GetDlgItem(IDC_COMBO_LIN_PROTOCOL);
 
     if ( pomCombo != NULL )
@@ -179,7 +152,6 @@ int CChannelConfigurationDlg::nUpdateLinSettings()
         for ( int i = 0 ; i < ( sizeof(sg_LINPROTOCOL_BAUD)/ sizeof(sg_LINPROTOCOL_BAUD[0])); i++ )
         {
             pomCombo->InsertString(i, sg_LINPROTOCOL_BAUD[i].m_strProtocol.c_str());
-            sprintf_s(chString, "%d", sg_LINPROTOCOL_BAUD[i].m_nBaudRate );
         }
         pomCombo->SetCurSel(0);
     }
@@ -327,7 +299,7 @@ void CChannelConfigurationDlg::OnBnClickedButtonFibexpath()
         ouWaitIndicator.CloseWindow();
         m_nCurrentChannel = m_ComboChannelSelect.GetCurSel();
 
-        if ( nResult == FCLASS_SUCCESS && ouClusterList.size() > 0 )
+        if ((nResult == FCLASS_SUCCESS) && (!ouClusterList.empty()))
         {
             m_omComboCluster.ResetContent();
             //list<CHANNEL_CONFIG>::iterator itrChannelConfig = m_ouFlexrayChannelConfig.begin();
@@ -339,7 +311,7 @@ void CChannelConfigurationDlg::OnBnClickedButtonFibexpath()
                 std::list<Cluster>::iterator itrCluster = ouClusterList.begin();
                 //itrChannelConfig->m_ouClusterInfo = *itrCluster;
 
-                for ( ; itrCluster != ouClusterList.end(); itrCluster++)
+                for ( ; itrCluster != ouClusterList.end(); ++itrCluster)
                 {
                     m_omComboCluster.AddString(itrCluster->m_strName.c_str());
                 }
@@ -374,10 +346,8 @@ void CChannelConfigurationDlg::OnBnClickedButtonFibexpath()
 
 void CChannelConfigurationDlg::OnCbnSelchangeComboCluster()
 {
-    // TODO: Add your control notification handler code here
-
-    //  nUpdateEcuList(0, 0);
 }
+
 void CChannelConfigurationDlg::OnCbnSelchangeComboProtocol()
 {
     int nSel = m_omComboLinProtocol.GetCurSel();
@@ -438,8 +408,6 @@ void CChannelConfigurationDlg::OnCbnSelchangeComboChannel()
         }
     }
 
-
-
     //Update the selected channel Information
 
     INT nSelcetedIndex = m_ComboChannelSelect.GetCurSel();
@@ -453,21 +421,13 @@ void CChannelConfigurationDlg::OnCbnSelchangeComboChannel()
         m_ouCurrentChannelCluster.push_back(m_ouFlexrayChannelConfig[nSelcetedIndex].m_ouClusterInfo);
 
         m_omComboCluster.Clear();
-        /*CWaitIndicator ouWaitIndicator;
-        ouWaitIndicator.DisplayWindow("Parsing Fibex File. Please Wait...", AfxGetMainWnd());
-
-        m_pMsgSignal->hLoadFibexDBFile(m_strFibexFilePath, m_ouCurrentChannelCluster);
-
-        ouWaitIndicator.CloseWindow();*/
-
-
         m_omComboCluster.AddString( m_ouFlexrayChannelConfig[nSelcetedIndex].m_ouClusterInfo.m_strName.c_str());
         m_omComboCluster.SetCurSel(0);
         std::list<ECU_Struct> ouEcuList;
         m_ouFlexrayChannelConfig[nSelcetedIndex].m_ouClusterInfo.GetECUList(ouEcuList);
 
         INT nIndex = 0;
-        for (std::list<ECU_Struct>::iterator itrEcu = ouEcuList.begin(); itrEcu!= ouEcuList.end(); itrEcu++ )
+        for (std::list<ECU_Struct>::iterator itrEcu = ouEcuList.begin(); itrEcu!= ouEcuList.end(); ++itrEcu)
         {
             m_omEcuList.InsertItem(nIndex, itrEcu->m_strECUName.c_str() );
 
@@ -494,7 +454,6 @@ int CChannelConfigurationDlg::nDisplayProtocolSettings(int nChannelIndex)
         pomCombo->EnableWindow(bOverrite);
 
         GetDlgItem(IDC_EDIT_LIN_BAUDRATE)->EnableWindow(bOverrite);
-        char chBaudText[MAX_PATH];
 
         m_nLinBaudRate = 19200;
         pomCombo->SetCurSel(0);
@@ -520,12 +479,10 @@ int CChannelConfigurationDlg::nDisplayProtocolSettings(int nChannelIndex)
     return 0;
 }
 
-
 bool CChannelConfigurationDlg::bIsEcuSlected(std::list<std::string>& ouEcuList, std::string strEcuName)
 {
     bool bFound = false;
-    std::list<std::string>::iterator itrEcu = ouEcuList.begin();
-    for ( ; itrEcu!= ouEcuList.end(); itrEcu++)
+    for (std::list<std::string>::iterator itrEcu = ouEcuList.begin() ; itrEcu!= ouEcuList.end(); ++itrEcu)
     {
         if ( strEcuName == *itrEcu )
         {
@@ -537,8 +494,6 @@ bool CChannelConfigurationDlg::bIsEcuSlected(std::list<std::string>& ouEcuList, 
 
 INT CChannelConfigurationDlg::nUpdateLinParams( INT nChannelIndex, INT nClusterIndex)
 {
-    INT nResult = S_OK;
-    //todo::
     std::list<LinChannelParam>::iterator itrCluster =  m_ouLinChannelParams.begin();
     advance(itrCluster, nClusterIndex);
     if ( itrCluster != m_ouLinChannelParams.end() )
@@ -558,44 +513,37 @@ INT CChannelConfigurationDlg::nUpdateLinParams( INT nChannelIndex, INT nClusterI
 
 INT CChannelConfigurationDlg::nUpdateEcuList( INT nChannelIndex, INT nClusterIndex )
 {
-    INT nResult = S_OK;
-    //todo::
     std::list<Cluster>::iterator itrCluster =  m_ouCurrentChannelCluster.begin();
     advance(itrCluster, nClusterIndex);
     if ( itrCluster != m_ouCurrentChannelCluster.end() )
     {
-        std::map<ECU_ID, ECU_Struct>::iterator itrECU = itrCluster->m_ouEcuList.begin();
         m_omEcuList.DeleteAllItems();
         int i = 0;
-        for ( ; itrECU != itrCluster->m_ouEcuList.end(); itrECU++ )
+        for (std::map<ECU_ID, ECU_Struct>::iterator itrECU = itrCluster->m_ouEcuList.begin(); itrECU != itrCluster->m_ouEcuList.end(); ++itrECU)
         {
             m_omEcuList.InsertItem(i, itrECU->second.m_strECUName.c_str());
-            //m_omEcuList.SetItemText( i , 0,itrECU->second.m_strECUName.c_str());
-            //m_omEcuList.SetItemText( i , 1,itrECU->second.m_strECUName.c_str());
-            i++;
+            ++i;
         }
     }
 
-
-    return nResult;
+    return 0;
 }
 
 INT CChannelConfigurationDlg::nUpdateEcuList( Cluster& ouCluster )
 {
-    INT nResult = S_OK;
-
     std::list<ECU_Struct> ouEcuList;
     ouCluster.GetECUList(ouEcuList);
     INT nIndex = 0;
-    for (std::list<ECU_Struct>::iterator itrEcu; itrEcu!= ouEcuList.end(); itrEcu++ )
+    for (std::list<ECU_Struct>::iterator itrEcu; itrEcu!= ouEcuList.end(); ++itrEcu)
     {
         m_omEcuList.InsertItem(nIndex, itrEcu->m_strECUName.c_str() );
         m_omEcuList.SetCheck(nIndex);
         nIndex++;
     }
 
-    return nResult;
+    return 0;
 }
+
 int CChannelConfigurationDlg::nSaveProtocolSettings(int nIndex)
 {
     UpdateData(TRUE);
@@ -611,16 +559,10 @@ int CChannelConfigurationDlg::nSaveProtocolSettings(int nIndex)
 
 
         m_ouFlexrayChannelConfig[m_nCurrentChannel].m_strDataBasePath = m_strFibexFilePath;
-
-
     }
-    else
-    {
 
-    }
     return 0;
 }
-
 
 void CChannelConfigurationDlg::onBtnOk()
 {

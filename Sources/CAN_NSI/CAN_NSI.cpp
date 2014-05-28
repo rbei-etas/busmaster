@@ -640,7 +640,6 @@ void GetEventString(t_CANevent* pEvent, UINT unDrvChannel)
 DWORD WINAPI CanMsgReadThreadProc_CAN_NSI(LPVOID pVoid)
 {
     USES_CONVERSION;
-    int nStatus = 0;
 
     CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
 
@@ -908,11 +907,6 @@ static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
     /* Get the error text for the corresponding error code */
     sg_pIlog->vLogAMessage(A2T(File), Line, A2T(acErrText));
 
-    size_t nStrLen = strlen(acErrText);
-    if (nStrLen > CAN_MAX_ERRSTR)
-    {
-        nStrLen = CAN_MAX_ERRSTR;
-    }
     sg_acErrStr = acErrText;
 }
 
@@ -1425,7 +1419,6 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
      * Take action based on number of Hardware Available
      */
     char acNo_Of_Hw[MAX_STRING] = {0};
-    //_stprintf(acNo_Of_Hw, _T("Number of NSI hardwares Available: %d"), nChannelCount);
     sprintf_s(acNo_Of_Hw, _T("Number of NSI hardwares Available: %d"), nChannelCount);
 
     /* No Hardware found */
@@ -1433,7 +1426,6 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
     {
         //_stprintf(sg_omErrStr, _T("No NSI hardwares Available.\nPlease check if NSI drivers are installed."));
         sprintf_s(sg_omErrStr, _T("No NSI hardwares Available.\nPlease check if NSI drivers are installed."));
-        nChannelCount = -1;
     }
     /* Available hardware is lesser then the supported channels */
     else
@@ -1719,7 +1711,7 @@ static int nSetApplyConfiguration()
         pchMuxyBox2 = strstr(sg_aodChannels[unIndex].m_strName, "MuxyBox2-CAN CH2");
         pchMuxy2010 = strstr(sg_aodChannels[unIndex].m_strName, "MUXYv2-CAN CH2");
         pchMuxyBox = strstr(sg_aodChannels[unIndex].m_strName, "MUXy box CH");
-        pchPCMCIA = strstr(sg_aodChannels[unIndex].m_strName, "CANPCMCIA /LS");
+        // pchPCMCIA = strstr(sg_aodChannels[unIndex].m_strName, "CANPCMCIA /LS");
         if(pchMuxyBox2 != NULL)
         {
             if(sg_aodChannels[unIndex].m_nLowSpeed == BST_CHECKED)
@@ -1852,7 +1844,6 @@ static int WriteMessageIntoNSIDevice(STCAN_MSG sMessage)
     int nReturn = 0;
     if ((sMessage.m_ucChannel > 0) && (sMessage.m_ucChannel <= sg_nNoOfChannels))
     {
-        unsigned int   nUsedFlags = 0;
         NSI_canObj.ident = (unsigned long)sMessage.m_unMsgID;
         NSI_canObj.identType = _CAN_STD;
         /* if it is an extended frame */
@@ -1899,9 +1890,7 @@ static int nTransmitMessage(STCAN_MSG sMessage, DWORD /*dwClientID*/)
 {
     STCAN_MSG newMsg = sMessage;
     int nReturn = -1;
-    UINT unClientIndex = (UINT)-1;
     static bool flagTxFailed = 0;
-    int ret=0;
 
     unsigned int   nUsedFlags = 1;
 
@@ -1912,8 +1901,8 @@ static int nTransmitMessage(STCAN_MSG sMessage, DWORD /*dwClientID*/)
     {
         if (cr == _UNKNOWN_ID)
         {
-            ret = WriteMessageIntoNSIDevice(newMsg);
-            ret = nTransmitMessage(newMsg, 0);
+            (void) WriteMessageIntoNSIDevice(newMsg);
+            (void) nTransmitMessage(newMsg, 0);
         }
         else
         {

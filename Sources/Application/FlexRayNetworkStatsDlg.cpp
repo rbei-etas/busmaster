@@ -238,10 +238,8 @@ Modifications   :
 ************************************************************************************/
 LRESULT CFlexRayNetworkStatsDlg::OnUpdateNetworkStat(WPARAM, LPARAM)
 {
-    DWORD lDataValue = 0;
     TCHAR szDataValue[52];
     DWORD lTotal = 0;
-    DWORD lTotalB = 0;
 
     SSUBFLEXRAYBUSSTATISTICS*       psTxBusStats = m_pouNetworkStat->nGetChannelStats();
     if(psTxBusStats == NULL)

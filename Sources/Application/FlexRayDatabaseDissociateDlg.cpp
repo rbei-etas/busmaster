@@ -146,7 +146,6 @@ void CFlexRayDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
 
         for(int nTempCnt = 0 ; nTempCnt < nCount ; nTempCnt++)
         {
-            BOOL bDBDeleted = FALSE;
             CString omstrDBPath ;
             //Selected file's index
             int nSelectedPos = aomListBoxSel.GetAt(nTempCnt);

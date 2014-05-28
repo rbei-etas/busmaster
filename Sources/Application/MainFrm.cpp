@@ -18353,41 +18353,8 @@ BOOL CMainFrame::bIsConfigurationModified(void)
     }
 
     return bResult;
-
-
-    //for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
-    //{
-    //    BYTE* pbyCurrData   = NULL;
-    //    UINT  nCurrSize     = 0;
-    //    BYTE* pbyConfigData = NULL;
-    //    INT  nCfgSize      = 0;
-
-    //    //Get current data
-    //    vGetCurrentSessionData(eSecId, pbyCurrData, nCurrSize);
-    //    // Get Config data
-    //    CConfigData::ouGetConfigDetailsObject().bGetData((void*&)pbyConfigData, nCfgSize, SectionName[eSecId]);
-    //    //comparison part
-    //    bResult = !(nCurrSize == (UINT)nCfgSize);
-    //    if (!bResult) // If config is still same compare the whole memory
-    //    {
-    //        bResult = !(memcmp(pbyCurrData, pbyConfigData, nCfgSize) == 0);
-    //    }
-    //    if (pbyCurrData != NULL)
-    //    {
-    //        delete[] pbyCurrData;
-    //    }
-    //    if (pbyConfigData != NULL)
-    //    {
-    //        delete[] pbyConfigData;
-    //    }
-    //    if (bResult == TRUE)
-    //    {
-    //        break;
-    //    }
-    //    eSecId = static_cast<eSECTION_ID>(eSecId + 1);
-    //}
-    //return bResult;
 }
+
 void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData, UINT nSize)
 {
     CString omVerStr("");
@@ -18418,7 +18385,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 }
                 if (byVersion == 0x2)//LogOnConnet option is introduced
                 {
-                    COPY_DATA_2(m_abLogOnConnect, pbyTemp, sizeof(BOOL) * BUS_TOTAL);
+                    COPY_DATA_2(&m_abLogOnConnect, pbyTemp, sizeof(m_abLogOnConnect));
                 }
             }
             else

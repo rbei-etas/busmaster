@@ -526,7 +526,6 @@ HRESULT CCommonStatistics::hSetConfigData()
 
                                     if(itr != ColumnMap.end())
                                     {
-                                        INT nOrder = itr->second.nOrder;
                                         pnOrder[i] = itr->second.nOrder;
                                         m_omStatList.MakeColumnVisible(i, itr->second.isVisble);
                                         m_omStatList.SetColumnWidth(i, itr->second.nWidth);
@@ -607,7 +606,6 @@ void CNetworkStatistics::vGetConfigData(xmlNodePtr& pxmlNodePtr)
     pxmlNodePtr = xmlNewNode(NULL, BAD_CAST DEF_BUS_STATS);
 
     xmlNodePtr pxmlBusStats = NULL;
-    BOOL bIsStatCreated = FALSE;
     for(UINT unIndex = 0; unIndex < BUS_TOTAL; unIndex++)
     {
         if(m_omStatistics[unIndex] != NULL)

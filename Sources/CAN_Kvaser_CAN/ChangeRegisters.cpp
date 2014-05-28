@@ -785,7 +785,6 @@ void CChangeRegisters:: vUpdateBTRsBRPEditWindow(INT /*nColumnCount*/, INT nItem
 
     DOUBLE  dBaudRate       = 0;
     UINT    unBrp           = 0;
-    UINT    unClockFreq     = 0;
     UINT    unNbt           = 0;
     uBTR0   uBtr0;
     // Get the values of subitems having item index as nItem.
@@ -804,7 +803,6 @@ void CChangeRegisters:: vUpdateBTRsBRPEditWindow(INT /*nColumnCount*/, INT nItem
     m_omCombClock.GetWindowText(omStrClockFreq);
 
     dBaudRate  = (FLOAT) _tstof(omStrBaudRate);
-    unClockFreq= _tstoi(omStrClockFreq.GetBuffer(MAX_PATH));
 
     unNbt      = _tstoi(omStrItems[defNBT_COLUNM_POS-1].GetBuffer(MAX_PATH));
     if(unNbt>0)
@@ -1087,7 +1085,6 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
             m_omCombSampling.SetCurSel(sBtr1Reg.sBTR1Bit.ucSAMbit);
             vChangeListBoxValues(-1);
         }
-        INT nColumnCount = m_omListCtrlBitTime.GetHeaderCtrl()->GetItemCount();
         INT nItemCount   = m_omListCtrlBitTime.GetItemCount();
         sBtr0Reg.sBTR0Bit.ucBRPbit = unBrp - 1;
         sBtr0Reg.sBTR0Bit.ucSJWbit = 1;
@@ -1766,7 +1763,6 @@ void CChangeRegisters::vFillControllerConfigDetails()
     {
         pWnd->SetWindowText(m_pControllerDetails[nIndex].m_omHardwareDesc.c_str());
     }
-    char* pcStopStr     = NULL;
 
     m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate.c_str();
     m_omStrEditBTR0         = m_pControllerDetails[ nIndex ].m_omStrBTR0.c_str();

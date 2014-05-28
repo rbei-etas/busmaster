@@ -617,7 +617,7 @@ void CHardwareListing::OnNMClickLstcSelectedHwList(NMHDR* pNMHDR, LRESULT* pResu
 void CHardwareListing::vSortHardwareItems()
 {
     /* clear map data */
-    if(mHardwareListMap.size() > 0 )
+    if(!mHardwareListMap.empty())
         mHardwareListMap.clear();
 
     int nItemCount = m_omHardwareList.GetItemCount();

@@ -448,7 +448,6 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
                 pbyConfigData = new BYTE[unSize];
                 BYTE* pbyTemp = pbyConfigData;
 
-
                 BYTE byVersion = 0x1;
                 COPY_DATA(pbyTemp, &byVersion, sizeof(BYTE));
 
@@ -467,7 +466,6 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
                 WINDOWPLACEMENT* pWndPlacement = &WndPlacement;
                 m_ouConfigDetails.bGetData(REPLAY_WND_PLACEMENT, (void**)(&pWndPlacement));
                 memcpy(pbyTemp, &WndPlacement, sizeof(WINDOWPLACEMENT));
-                pbyTemp += sizeof(WINDOWPLACEMENT);
                 //Now update the parameter out pointer
                 lpData = pbyConfigData;
                 nStreamLength = unSize;

@@ -17,7 +17,6 @@ CBusmasterDump::CBusmasterDump( std::string strAppName )
 LONG CBusmasterDump::ExceptionFilter( struct _EXCEPTION_POINTERS* pExceptionInfo )
 {
     LONG lRetval = EXCEPTION_CONTINUE_SEARCH;
-    HWND hParent = NULL;                        // find a better value for your app
 
     HMODULE hDll = NULL;
     char szDbgHelpPath[_MAX_PATH];
@@ -48,7 +47,6 @@ LONG CBusmasterDump::ExceptionFilter( struct _EXCEPTION_POINTERS* pExceptionInfo
         if (pDump)
         {
             char szDumpPath[_MAX_PATH];
-            char szScratch [_MAX_PATH];
             std::string strDumpPath;
             std::string strDumpMsg;
 

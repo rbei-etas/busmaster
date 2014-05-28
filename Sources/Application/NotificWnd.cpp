@@ -294,7 +294,6 @@ void CNotificWnd::vAddString(CString omStr)
 {
     if (! omStr.IsEmpty())
     {
-        LPLONG lpPreviousCount = NULL;
         if ( m_omListBox.GetCount() > def_MAXIMUM_TRACE_LINES )
         {
             m_omListBox.DeleteString(0);
@@ -303,10 +302,10 @@ void CNotificWnd::vAddString(CString omStr)
         // Set horizontal extent of the list box to max string available
         // so that user can scroll
         CSize   sz(0,0);
-        static INT s_nDx             = 0;
         CDC*  pDC = m_omListBox.GetDC();
         if (pDC != NULL)
         {
+            static INT s_nDx = 0;
             sz = pDC->GetTextExtent(omStr);
             if (sz.cx > s_nDx)
             {
@@ -369,23 +368,15 @@ UINT CNotificWnd::unGetStoreNFBufferSize()
     return unTotalSize;
 }
 
-/******************************************************************************
-    Function Name    :  SaveNFDataIntoBuffer
-    Input(s)         :  Poiter to the buffer of BYTES
-    Output           :  -
-    Functionality    :  Saves Notification window params into buffer
-    Member of        :  CNotificWnd
-    Friend of        :
-    Author(s)        :  Pradeep Kadoor
-    Date Created     :  19.01.2009
-    Modification     :
-/*****************************************************************************/
+/**
+ * Saves Notification window params into buffer
+ *
+ * @param[in] DesBuffer Poiter to the buffer of BYTES
+ */
 void CNotificWnd::SaveNFDataIntoBuffer(BYTE* DesBuffer)
 {
-    BYTE* tempBuffAddress = DesBuffer;
     GetWindowPlacement(&m_sNotificWndParams.m_sWndPlacement);
-    memcpy(tempBuffAddress, &m_sNotificWndParams, sizeof(NOTIFICWNDPARAMS));
-    tempBuffAddress += sizeof(NOTIFICWNDPARAMS);
+    memcpy(DesBuffer, &m_sNotificWndParams, sizeof(NOTIFICWNDPARAMS));
 }
 
 /******************************************************************************
@@ -482,24 +473,15 @@ void CNotificWnd :: vLoadNotificWndConfig()
     }
 }
 
-/******************************************************************************
-    Function Name    :  CopyNFDataFromBuffer
-    Input(s)         :  -
-    Output           :  -
-    Functionality    :  Copies Notification window params into buffer
-    Member of        :  CNotificWnd
-    Friend of        :
-    Author(s)        :  Pradeep Kadoor
-    Date Created     :  19.01.2009
-    Modification     :
-/*****************************************************************************/
+/**
+ * Copies Notification window params into buffer
+ */
 void CNotificWnd::CopyNFDataFromBuffer(BYTE* SrcBuffer)
 {
-    BYTE* tempBuffAddress = SrcBuffer;
     NOTIFICWNDPARAMS TempParam;
-    memcpy(&TempParam, tempBuffAddress, sizeof (NOTIFICWNDPARAMS));
-    tempBuffAddress += sizeof (NOTIFICWNDPARAMS);
-    // Save the data
+    memcpy(&TempParam, SrcBuffer, sizeof (NOTIFICWNDPARAMS));
+
+    /* Save the data */
     m_sNotificWndParams.m_bSetFlag_Disp = TempParam.m_bSetFlag_Disp;
     m_sNotificWndParams.m_bSetFlag_Log = TempParam.m_bSetFlag_Log;
     m_sNotificWndParams.m_sWndPlacement = TempParam.m_sWndPlacement;

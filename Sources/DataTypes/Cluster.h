@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 #include <list>
 #include <map>
@@ -83,7 +84,6 @@ public:
     HRESULT GetSignalList ( std::list<SIGNAL_STRUCT>& ouSignalList );
     ~PDU_STRUCT()
     {
-        int i = 0;
     }
 
 };

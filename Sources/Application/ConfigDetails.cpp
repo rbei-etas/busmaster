@@ -1705,7 +1705,6 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
     //It will be used in other functions called from here
     //m_pSimSysNodeInfo = theApp.pomGetSimSysNodeInfo();
     int nRetVal = defCONFIG_FILE_SUCCESS;
-    BOOL bIsLoading = FALSE;
 
     // associate the file handle with an archive object.
     // Set the operation of the archive object to load
@@ -1739,7 +1738,6 @@ int CConfigDetails::nLoadStoreData(UINT nMode)
 
             if (oCfgArchive.IsLoading())
             {
-                bIsLoading = TRUE;
                 // extract the header information
                 oCfgArchive >> m_fAppVersion;
                 oCfgArchive >> m_omStrCopyright;

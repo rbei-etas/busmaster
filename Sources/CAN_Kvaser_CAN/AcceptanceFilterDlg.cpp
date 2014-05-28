@@ -167,8 +167,6 @@ END_MESSAGE_MAP()
 /******************************************************************************/
 void CAcceptanceFilterDlg::OnCbtnAccetanceOk()
 {
-    BOOL bButtonChecked = TRUE;
-
     UpdateData(TRUE);
 
     vSaveFilterDetails(!m_bAccFilterMode);

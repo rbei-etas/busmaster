@@ -179,9 +179,6 @@ void CElementSelection::OnOK()
 *******************************************************************************/
 BOOL CElementSelection::OnInitDialog()
 {
-    // Create Result flag
-    BOOL m_bCreateSuccess = TRUE;
-
     CDialog::OnInitDialog();
 
     // Copy Element List Locally
@@ -191,7 +188,6 @@ BOOL CElementSelection::OnInitDialog()
     if( m_omImageList.Create( IDB_BMP_GRAPH_ELEMENTS,
                               defSIGNAL_ICON_SIZE, 1, WHITE_COLOR) == FALSE )
     {
-        m_bCreateSuccess = FALSE;
     }
     else
     {

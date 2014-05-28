@@ -155,8 +155,6 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
 {
     //Write into the client's buffer and Increment message Count
     static SACK_MAP sAckMap;
-    UINT ClientId = 0;
-    static UINT Index = (UINT)-1;
     sAckMap.m_Channel = sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel;
     sAckMap.m_MsgID = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
 
@@ -450,11 +448,6 @@ static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
     /* Get the error text for the corresponding error code */
     sg_pIlog->vLogAMessage(A2T(File), Line, A2T(acErrText));
 
-    size_t nStrLen = strlen(acErrText);
-    if (nStrLen > CAN_MAX_ERRSTR)
-    {
-        nStrLen = CAN_MAX_ERRSTR;
-    }
     sg_acErrStr = acErrText;
 }
 
@@ -826,7 +819,6 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCa
 {
     HRESULT ret_result = S_FALSE;
     STCAN_MSG sCanTxMsg1;
-    static SACK_MAP sAckMap;
 
     sCanTxMsg1.m_bCANFD     = sCanTxMsg.m_bCANFD;
     sCanTxMsg1.m_ucChannel  = sCanTxMsg.m_ucChannel;

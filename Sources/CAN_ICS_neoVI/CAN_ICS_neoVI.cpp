@@ -1029,7 +1029,7 @@ static int nReadMultiMessage(PSTCANDATA psCanDataArray,
             //sCanData.m_lTickCount.QuadPart = (LONGLONG)(CurrSpyMsg.TimeSystem * 10);
 
             DOUBLE dTimestamp = 0;
-            nReturn = (*icsneoGetTimeStampForMsg)(m_anhObject[nChannelIndex][0], &CurrSpyMsg, &dTimestamp);
+            (void) (*icsneoGetTimeStampForMsg)(m_anhObject[nChannelIndex][0], &CurrSpyMsg, &dTimestamp);
             sCanData.m_lTickCount.QuadPart = (dTimestamp*10000); //+ sg_TimeStamp// + (CurrSpyMsg.TimeHardware2* 0.1048576 + CurrSpyMsg.TimeHardware2 * 0.0000016);
             bClassifyMsgType(CurrSpyMsg, sCanData, sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel);
 
@@ -1488,7 +1488,7 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
                 if (nResult == NEOVI_OK && hObject!=NULL)
                 {
                     stAPIFirmwareInfo objstFWInfo;
-                    nResult = (*icsneoGetHWFirmwareInfo)(hObject, &objstFWInfo);
+                    (void) (*icsneoGetHWFirmwareInfo)(hObject, &objstFWInfo);
 
                     int nHardwareLic = 0;
                     int nErrors = 0;
@@ -3089,28 +3089,26 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetControllerParams(int nValue, ECONTR_PARAM eCon
                 case defMODE_ACTIVE:
                 {
                     char SetFireParms[100];
-                    int iRetVal;
                     int iErrorIndex;
                     unsigned short NetworkEnables = 0xFFFF;
 
                     sprintf(SetFireParms, "can1/Mode=0", NetworkEnables);
                     for (UINT i = 0; i < sg_podActiveNetwork->m_nNoOfChannels; i++)
                     {
-                        iRetVal = icsneoSetDeviceParameters(m_anhObject[0][0], SetFireParms, &iErrorIndex, 1);
+                        (void) icsneoSetDeviceParameters(m_anhObject[0][0], SetFireParms, &iErrorIndex, 1);
                     }
                 }
                 break;
                 case defMODE_PASSIVE:
                 {
                     char SetFireParms[100];
-                    int iRetVal;
                     int iErrorIndex;
                     unsigned short NetworkEnables = 0xFFFF;
 
                     sprintf(SetFireParms, "can1/Mode=3", NetworkEnables);
                     for (UINT i = 0; i < sg_podActiveNetwork->m_nNoOfChannels; i++)
                     {
-                        iRetVal = icsneoSetDeviceParameters(m_anhObject[0][0], SetFireParms, &iErrorIndex, 1);
+                        (void) icsneoSetDeviceParameters(m_anhObject[0][0], SetFireParms, &iErrorIndex, 1);
                     }
                 }
                 break;
@@ -3181,8 +3179,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetControllerParams(LONG& lParam, UINT nChannel, 
             {
                 char pGetFireParms[] = "can1/Mode";
                 char Values[500];
-                int iRetVal;
-                iRetVal = icsneoGetDeviceParameters(m_anhObject[nChannel][0], pGetFireParms, Values, 499);
+                (void) icsneoGetDeviceParameters(m_anhObject[nChannel][0], pGetFireParms, Values, 499);
                 INT nMode = atoi(Values);
                 if(nMode == 3)
                 {
