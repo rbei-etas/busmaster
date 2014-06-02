@@ -14,33 +14,22 @@
  */
 
 /**
- * \file      HashDefines.h
- * \author    Amarnath Shastry, Amitesh Bharti
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @file      HashDefines.h
+ * @author    Amarnath Shastry, Amitesh Bharti
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#ifndef _HASH_DEFINES_H
-#define _HASH_DEFINES_H
+
+#pragma once
 
 #define DATA_FMT_INTEL          1
 
 #include "Include/BaseDefs.h"
 
-typedef enum eDLLHANDLER
+enum eDLLHANDLER
 {
     DLL_LOAD = 0,
     DLL_UNLOAD
 };
-
-//// This enumeration defines current error state
-//enum eERROR_STATE
-//{
-//    ERROR_ACTIVE  =   0,
-//    ERROR_WARNING_LIMIT,
-//    ERROR_PASSIVE,
-//    ERROR_BUS_OFF,
-//    ERROR_FRAME
-//};
-
 
 //The structure to store message and hmodule for the messages
 //transmitted from a DLL
@@ -57,7 +46,6 @@ struct sTHREAD_INFO
     HANDLE m_hThread;
     VOID*  m_pvThread;
 };
-
 typedef sTHREAD_INFO  STHREADINFO;
 typedef sTHREAD_INFO* PTHREADINFO;
 
@@ -247,6 +235,7 @@ enum eSELTYPE
     SEL_SIGNAL,
     SEL_GLOBAL_MESSAGE
 };
+
 #define defNUMBER_OF_TIMER           100
 #define defFNS_INIT_SIG_FORMAT              _T("%s\n\n%s.%s")
 #define defHASHINCLUDE                      _T("#include ")
@@ -298,7 +287,7 @@ unsigned int uMsg, unsigned long dwUser, unsigned long dw1, unsigned long dw2)")
 #define defERROR_OPEN_REGISTRY_FN    _T("The registry value is corrupted. The interface function is not available.\nPlease re-install.")
 #define defIMPORT_DLLLOAD_WARNNING   _T("Please Unload all the Dlls and try again")
 
-typedef struct sTCAN_TIME_MSG   //added so da typedefine below can use it
+struct sTCAN_TIME_MSG
 {
     UINT  m_unMsgID;     // 11/29 Bit-
     UCHAR m_ucEXTENDED; // true, for (29 Bit) Frame
@@ -310,10 +299,9 @@ typedef struct sTCAN_TIME_MSG   //added so da typedefine below can use it
     bool  m_bCANFD;     // bool indicates CAN FD message or not
 };
 typedef sTCAN_TIME_MSG STCAN_TIME_MSG;
-typedef sTCAN_TIME_MSG* PSTCAN_TIME_MSG;
+typedef sTCAN_TIME_MSG * PSTCAN_TIME_MSG;
 
-
-typedef struct sTLIN_TIME_MSG   //added so da typedefine below can use it
+struct sTLIN_TIME_MSG
 {
     unsigned char m_ucMsgTyp;       // Message Type (0 - Header / 1 - Response)
     unsigned char m_ucChksumTyp;    // Checksum Type (0 - Classical / 1 - Enhanced)
@@ -325,7 +313,7 @@ typedef struct sTLIN_TIME_MSG   //added so da typedefine below can use it
     ULONG m_ulTimeStamp;
 };
 typedef sTLIN_TIME_MSG STLIN_TIME_MSG;
-typedef STLIN_TIME_MSG* PSTLIN_TIME_MSG;
+typedef STLIN_TIME_MSG * PSTLIN_TIME_MSG;
 
 // All function prototype is used in function editor.
 typedef VOID (__cdecl* PFMSG_HANDLER_CAN)(STCAN_TIME_MSG Rx_Msg);
@@ -340,7 +328,6 @@ typedef VOID (__cdecl* PFBUSEV_HANDLER)();
 typedef BOOL (__cdecl* PFGET_PRG_VER)(int*,int*,HMODULE);
 // Used is application call back function
 typedef VOID (CALLBACK* APPTIMERPOINTER)(UINT,UINT,DWORD,DWORD,DWORD);
-
 
 // This structure definition is for storing all information about a timer handler
 // defined by user.
@@ -364,8 +351,8 @@ struct sTIMERHANDLER
     HANDLE          hDllHandle;
     CWinThread*     pomThreadHandle;
 };
-typedef sTIMERHANDLER  STIMERHANDLER;
-typedef STIMERHANDLER* PSTIMERHANDLER;
+typedef sTIMERHANDLER STIMERHANDLER;
+typedef STIMERHANDLER * PSTIMERHANDLER;
 
 
 //this structure store STIMERHANDLER and pointer to make a list
@@ -374,8 +361,8 @@ struct sTIMERHANDLERLIST
     STIMERHANDLER sTimerHandler;
     sTIMERHANDLERLIST* psNextTimer;
 };
-typedef sTIMERHANDLERLIST  STIMERHANDLERLIST;
-typedef STIMERHANDLERLIST*  PSTIMERHANDLERLIST;
+typedef sTIMERHANDLERLIST STIMERHANDLERLIST;
+typedef STIMERHANDLERLIST * PSTIMERHANDLERLIST;
 
 //This structure stores node name and pointer to the list of timer of
 //the node
@@ -385,10 +372,11 @@ struct sNODETIMERLIST
     CString omNodeName;
     sNODETIMERLIST* psNextTimerListPtr;
 };
-typedef sNODETIMERLIST  SNODETIMERLIST;
-typedef SNODETIMERLIST*  PSNODETIMERLIST;
+typedef sNODETIMERLIST SNODETIMERLIST;
+typedef SNODETIMERLIST * PSNODETIMERLIST;
 
 class CExecuteFunc;
+
 //New data structure to store  node name and the "CExecuteFunc" pointer associated to that node:
 struct sNODEOBJECT
 {
@@ -396,8 +384,8 @@ struct sNODEOBJECT
     CExecuteFunc* m_psExecuteFunc;
     sNODEOBJECT* m_psNextNode;
 };
-typedef  sNODEOBJECT SNODEOBJECT;
-typedef  SNODEOBJECT* PSNODEOBJECT;
+typedef sNODEOBJECT SNODEOBJECT;
+typedef SNODEOBJECT * PSNODEOBJECT;
 
 // This structure stores the DLL Handler and pointer to its corresponding function
 // to be executed on press of the key.
@@ -407,15 +395,16 @@ struct sDLLHANDLER
     PFDLL_HANDLER  m_pFDLLHandlers;       // Long pointer to the function to be
     // executed on DLL Load\Unload
 };
-typedef sDLLHANDLER  SDLLHANDLER;
-typedef sDLLHANDLER* PSDLLHANDLER;
+typedef sDLLHANDLER SDLLHANDLER;
+typedef sDLLHANDLER * PSDLLHANDLER;
+
 struct sBUSEVHANDLER
 {
     eBUSEVEHANDLER  m_eBusEvHandler;           // Bus Event Handler
     PFBUSEV_HANDLER m_pFBusEvHandlers;       // Long pointer to the function to be
 };
-typedef sBUSEVHANDLER  SBUSEVHANDLER;
-typedef sBUSEVHANDLER* PSBUSEVHANDLER;
+typedef sBUSEVHANDLER SBUSEVHANDLER;
+typedef sBUSEVHANDLER * PSBUSEVHANDLER;
 
 // This structure stores the error code and pointer to its corresponding function
 // to be executed on press of the key.
@@ -426,8 +415,8 @@ struct sERRORHANDLER
     SCAN_ERR sErrorVal;                   // parameter to be passed to the error handler
     CExecuteFunc* m_pCExecuteFunc;        //to pass this pointer to access its variable
 };
-typedef sERRORHANDLER  SERRORHANDLER;
-typedef sERRORHANDLER* PSERRORHANDLER;
+typedef sERRORHANDLER SERRORHANDLER;
+typedef sERRORHANDLER * PSERRORHANDLER;
 
 
 struct sEVENTHANDLERLIN
@@ -437,9 +426,8 @@ struct sEVENTHANDLERLIN
     CExecuteFunc* m_pCExecuteFunc;        //to pass this pointer to access its variable
     sERROR_INFO_LIN m_ouLinEventInfo;
 };
-typedef sEVENTHANDLERLIN  SEVENTHANDLERLIN;
-typedef sEVENTHANDLERLIN* PSEVENTHANDLERLIN;
-
+typedef sEVENTHANDLERLIN SEVENTHANDLERLIN;
+typedef sEVENTHANDLERLIN * PSEVENTHANDLERLIN;
 
 // This structure stores the event handler info and pointer to its corresponding function
 // to be executed.
@@ -454,8 +442,8 @@ struct sEVENTHANDLER
     PFEVENT_HANDLER m_pFEventHandlers;
     CExecuteFunc* m_pCExecuteFunc;        //to pass this pointer to access its variable
 };
-typedef sEVENTHANDLER  SEVENTHANDLER;
-typedef sEVENTHANDLER* PSEVENTHANDLER;
+typedef sEVENTHANDLER SEVENTHANDLER;
+typedef sEVENTHANDLER * PSEVENTHANDLER;
 
 // This structure stores the key value and pointer to its corresponding function
 // to be executed on press of the key.
@@ -466,19 +454,16 @@ struct sKEYHANDLER
     // executed on press of corresponding
     // key
 };
-typedef sKEYHANDLER  SKEYHANDLER;
-typedef SKEYHANDLER* PSKEYHANDLER;
-
-
+typedef sKEYHANDLER SKEYHANDLER;
+typedef SKEYHANDLER * PSKEYHANDLER;
 
 struct sMSG_RANGE
 {
     UINT    m_unFrom;
     UINT    m_unTo;
 };
-
 typedef sMSG_RANGE SMSG_RANGE;
-typedef sMSG_RANGE* PSMSG_RANGE;
+typedef sMSG_RANGE * PSMSG_RANGE;
 
 
 struct sMSGINFO_FOR_HANDLER
@@ -491,16 +476,15 @@ struct sMSGINFO_FOR_HANDLER
     BOOL    m_bGenericHandlerON;
 };
 typedef sMSGINFO_FOR_HANDLER SMSGINFO_FOR_HANDLER;
-typedef sMSGINFO_FOR_HANDLER* PSMSGINFO_FOR_HANDLER;
+typedef sMSGINFO_FOR_HANDLER * PSMSGINFO_FOR_HANDLER;
 
 struct sMSGID_HANDLER_CAN
 {
     UINT    m_unMsgID;
     PFMSG_HANDLER_CAN m_pFMsgHandler;
 };
-
 typedef sMSGID_HANDLER_CAN SMSGID_HANDLER_CAN;
-typedef sMSGID_HANDLER_CAN* PSMSGID_HANDLER_CAN;
+typedef sMSGID_HANDLER_CAN * PSMSGID_HANDLER_CAN;
 
 //This is used for all the buses except CAN
 struct sMSGID_HANDLER
@@ -508,28 +492,24 @@ struct sMSGID_HANDLER
     UINT    m_unMsgID;
     PFMSG_HANDLER m_pFMsgHandler;
 };
-
 typedef sMSGID_HANDLER SMSGID_HANDLER;
-typedef sMSGID_HANDLER* PSMSGID_HANDLER;
+typedef sMSGID_HANDLER * PSMSGID_HANDLER;
 
 struct sMSGID_RANGE_HANDLER_CAN
 {
     SMSG_RANGE m_sMsgIDRange;
     PFMSG_HANDLER_CAN m_pFMsgHandler;
 };
-
 typedef sMSGID_RANGE_HANDLER_CAN SMSGID_RANGE_HANDLER_CAN;
-typedef sMSGID_RANGE_HANDLER_CAN* PSMSGID_RANGE_HANDLER_CAN;
-//VENKATNARAYANA
+typedef sMSGID_RANGE_HANDLER_CAN * PSMSGID_RANGE_HANDLER_CAN;
 
 struct sMSGID_RANGE_HANDLER_LIN
 {
     SMSG_RANGE m_sMsgIDRange;
     PFMSG_HANDLER_LIN m_pFMsgHandler;
 };
-
 typedef sMSGID_RANGE_HANDLER_LIN SMSGID_RANGE_HANDLER_LIN;
-typedef SMSGID_RANGE_HANDLER_LIN* PSMSGID_RANGE_HANDLER_LIN;
+typedef SMSGID_RANGE_HANDLER_LIN * PSMSGID_RANGE_HANDLER_LIN;
 
 struct sMSGID_LIST_HANDLER_CAN
 {
@@ -537,7 +517,7 @@ struct sMSGID_LIST_HANDLER_CAN
     PFMSG_HANDLER_CAN m_pFMsgHandler;
 };
 typedef sMSGID_LIST_HANDLER_CAN SMSGID_LIST_HANDLER_CAN;
-typedef sMSGID_LIST_HANDLER_CAN* PSMSGID_LIST_HANDLER_CAN;
+typedef sMSGID_LIST_HANDLER_CAN * PSMSGID_LIST_HANDLER_CAN;
 
 struct sMSGID_LIST_HANDLER_LIN
 {
@@ -545,7 +525,7 @@ struct sMSGID_LIST_HANDLER_LIN
     PFMSG_HANDLER_LIN m_pFMsgHandler;
 };
 typedef sMSGID_LIST_HANDLER_LIN SMSGID_LIST_HANDLER_LIN;
-typedef SMSGID_LIST_HANDLER_LIN* PSMSGID_LIST_HANDLER_LIN;
+typedef SMSGID_LIST_HANDLER_LIN * PSMSGID_LIST_HANDLER_LIN;
 
 //This is used for all the buses except CAN
 struct sMSGID_RANGE_HANDLER
@@ -553,9 +533,8 @@ struct sMSGID_RANGE_HANDLER
     SMSG_RANGE m_sMsgIDRange;
     PFMSG_HANDLER m_pFMsgHandler;
 };
-
 typedef sMSGID_RANGE_HANDLER SMSGID_RANGE_HANDLER;
-typedef sMSGID_RANGE_HANDLER* PSMSGID_RANGE_HANDLER;
+typedef sMSGID_RANGE_HANDLER * PSMSGID_RANGE_HANDLER;
 
 struct sEXECUTE_MSG_HANDLER_CAN
 {
@@ -564,7 +543,7 @@ struct sEXECUTE_MSG_HANDLER_CAN
     CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_MSG_HANDLER_CAN SEXECUTE_MSG_HANDLER_CAN;
-typedef sEXECUTE_MSG_HANDLER_CAN* PSEXECUTE_MSG_HANDLER_CAN;
+typedef sEXECUTE_MSG_HANDLER_CAN * PSEXECUTE_MSG_HANDLER_CAN;
 
 struct sEXECUTE_MSG_HANDLER_LIN
 {
@@ -573,7 +552,7 @@ struct sEXECUTE_MSG_HANDLER_LIN
     CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_MSG_HANDLER_LIN SEXECUTE_MSG_HANDLER_LIN;
-typedef sEXECUTE_MSG_HANDLER_LIN* PSEXECUTE_MSG_HANDLER_LIN;
+typedef sEXECUTE_MSG_HANDLER_LIN * PSEXECUTE_MSG_HANDLER_LIN;
 
 //This is used for all the buses except CAN
 struct sEXECUTE_MSG_HANDLER
@@ -583,7 +562,7 @@ struct sEXECUTE_MSG_HANDLER
     CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_MSG_HANDLER SEXECUTE_MSG_HANDLER;
-typedef sEXECUTE_MSG_HANDLER* PSEXECUTE_MSG_HANDLER;
+typedef sEXECUTE_MSG_HANDLER * PSEXECUTE_MSG_HANDLER;
 
 struct sEXECUTE_KEY_HANDLER
 {
@@ -592,7 +571,7 @@ struct sEXECUTE_KEY_HANDLER
     CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_KEY_HANDLER SEXECUTE_KEY_HANDLER;
-typedef sEXECUTE_KEY_HANDLER* PSEXECUTE_KEY_HANDLER;
+typedef sEXECUTE_KEY_HANDLER * PSEXECUTE_KEY_HANDLER;
 
 struct sMsgHandlerDataCan
 {
@@ -618,9 +597,8 @@ struct sMsgHandlerDataCan
     }
 
 };
-// typedef for sMsgHandlerData and pointer to sMsgHandlerData
 typedef sMsgHandlerDataCan SMSGHANDLERDATA_CAN;
-typedef SMSGHANDLERDATA_CAN* PSMSGHANDLERDATA_CAN;
+typedef sMsgHandlerDataCan * PSMSGHANDLERDATA_CAN;
 
 struct sMsgHandlerDataLin
 {
@@ -646,9 +624,8 @@ struct sMsgHandlerDataLin
     }
 
 };
-// typedef for sMsgHandlerData and pointer to sMsgHandlerData
 typedef sMsgHandlerDataLin SMSGHANDLERDATA_LIN;
-typedef SMSGHANDLERDATA_LIN* PSMSGHANDLERDATA_LIN;
+typedef sMsgHandlerDataLin * PSMSGHANDLERDATA_LIN;
 
 struct sMsgHandlerData
 {
@@ -674,9 +651,8 @@ struct sMsgHandlerData
     }
 
 };
-// typedef for sMsgHandlerData and pointer to sMsgHandlerData
 typedef sMsgHandlerData SMSGHANDLERDATA;
-typedef SMSGHANDLERDATA* PSMSGHANDLERDATA;
+typedef sMsgHandlerData * PSMSGHANDLERDATA;
 
 // error defines for CConfigDetails class..
 #define defCONFIG_FILE_ERROR                1000
@@ -746,7 +722,7 @@ struct sSIMSYSARRAY
 
 };
 typedef sSIMSYSARRAY SSIMSYSARRAY;
-typedef SSIMSYSARRAY* PSSIMSYSARRAY;
+typedef SSIMSYSARRAY * PSSIMSYSARRAY;
 
 #define defMASK_CHECK_UNCHECK    0x00003000
 #define defMASK_LIST_CTRL        0x00003003
@@ -792,12 +768,14 @@ enum eMESSAGEFROM
     FNVIEW,
     SENDMESGBUTTON
 };
+
 // enumerators for obtaining information from the configuration file
 enum eACONFIGDETAILS
 {
     OUT_WND_PLACEMENT = 0,
     SIMSYS_WND_PLACEMENT
 };
+
 //The structure pass to thread function for load Fn execution
 struct sEXECUTE_LOAD_HANDLER
 {
@@ -805,7 +783,8 @@ struct sEXECUTE_LOAD_HANDLER
     CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_LOAD_HANDLER SEXECUTE_LOAD_HANDLER;
-typedef sEXECUTE_LOAD_HANDLER* PSEXECUTE_LOAD_HANDLER;
+typedef sEXECUTE_LOAD_HANDLER * PSEXECUTE_LOAD_HANDLER;
+
 //The structure pass to thread function for load Fn execution
 struct sEXECUTE_BUSEVENT_HANDLER
 {
@@ -813,7 +792,7 @@ struct sEXECUTE_BUSEVENT_HANDLER
     CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_BUSEVENT_HANDLER SEXECUTE_BUSEVENT_HANDLER;
-typedef sEXECUTE_BUSEVENT_HANDLER* PSEXECUTE_BUSEVENT_HANDLER;
+typedef sEXECUTE_BUSEVENT_HANDLER * PSEXECUTE_BUSEVENT_HANDLER;
 
 #define BLUE_COLOR              RGB(0,0,255)
 #define DEFAULT_FONT            _T("Courier")
@@ -862,7 +841,6 @@ typedef sEXECUTE_BUSEVENT_HANDLER* PSEXECUTE_BUSEVENT_HANDLER;
 #define SPACE_BET_LINE_IN_FILE_VIEW 5
 #define IDC_LSTB_OUTPUT             300
 
-
 #define GET_CONTEXT_WND_CHAR_HEIGHT() \
     ((::GetDeviceCaps(hDeviceContext,LOGPIXELSY) * 10) / 72)
 #define GET_CONTEXT_WND_CHAR_WIDTH() \
@@ -871,6 +849,3 @@ typedef sEXECUTE_BUSEVENT_HANDLER* PSEXECUTE_BUSEVENT_HANDLER;
     ((omDeviceContext.GetDeviceCaps (LOGPIXELSY) * 10) / 72)
 #define GET_FILE_VIEW_CHAR_WIDTH() \
     ((omDeviceContext.GetDeviceCaps (LOGPIXELSX) * 6) / 72)
-
-
-#endif                  //_HASH_DEFINES_H

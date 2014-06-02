@@ -14,10 +14,10 @@
  */
 
 /**
- * \file      BaseDefs.h
- * \brief     This contains various basic definitions.
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @file      BaseDefs.h
+ * @brief     This contains various basic definitions.
+ * @author    Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This contains various basic definitions.
  */
@@ -26,7 +26,6 @@
 
 #include "Struct_CAN.h"
 #include "Struct_LIN.h"
-
 
 /*Maximum possible length of a CAN*/
 #define MAX_DATA_LEN_CAN 8
@@ -57,14 +56,15 @@ typedef enum eBUSEVEHANDLER
 #define defLINETYPE_YXSTEP "YXSTEP"
 #define defLINETYPE_BARS "BARS"
 #define defLINETYPE_STICK "STICK"
-typedef enum eProtocol
+
+enum eProtocol
 {
     PROTOCOL_CAN    = 0,
     PROTOCOL_J1939,
     PROTOCOL_UNKNOWN
 };
 
-typedef enum eTYPE_BUS
+enum eTYPE_BUS
 {
     CAN     = 0,
     MCNET,
@@ -74,9 +74,10 @@ typedef enum eTYPE_BUS
     MOST,
     BUS_TOTAL,
     BUS_INVALID
-} ETYPE_BUS;
+};
+typedef eTYPE_BUS ETYPE_BUS;
 
-typedef enum ESTATUS_BUS
+enum ESTATUS_BUS
 {
     BUS_PRECONNECT,
     BUS_CONNECTED,
@@ -89,49 +90,53 @@ enum eNetworkStatSheet
     CAN_STAT_PAGE,
     LIN_STAT_PAGE
 };
-typedef enum eDirection
+
+enum eDirection
 {
     DIR_RX = 'R',
     DIR_TX = 'T',
     DIR_ALL
-} EDIRECTION;
+};
+typedef eDirection EDIRECTION;
 
-typedef enum eFrameType
+enum eFrameType
 {
     FLX_FRAMETYPE_STATIC    = 0,
     FLX_FRAMETYPE_DYNAMIC   = 1,
     FLX_FRAMETYPE_SYNC      = 2,
     FLX_FRAMETYPE_NULL      = 3,
     FLX_FRAMETYPE_STATUS    = 4,
-} EFRAMETYPE;
+};
+typedef eFrameType EFRAMETYPE;
 
-typedef enum eFORMAT_DATA
+enum eFORMAT_DATA
 {
     DATA_FORMAT_MOTOROLA = 0,
     DATA_FORMAT_INTEL
-} EFORMAT_DATA;
+};
+typedef eFORMAT_DATA EFORMAT_DATA;
 
-
-
-typedef enum eMSG_WND_PROPERTY
+enum eMSG_WND_PROPERTY
 {
     NUMERIC = 0x1,
     TIME_MODE = 0x2,
     DISPLAY_MODE = 0x4
 };
 
-typedef enum eTimerMode
+enum eTimerMode
 {
     TIME_MODE_RELATIVE = 0,
     TIME_MODE_SYSTEM,
     TIME_MODE_ABSOLUTE
-} ETIMERMODE;
+};
+typedef eTimerMode ETIMERMODE;
 
-typedef enum eFormat
+enum eFormat
 {
     HEXADECIMAL = 0,
     DEC
-} EFORMAT;
+};
+typedef eFormat EFORMAT;
 
 enum eMode
 {
@@ -146,11 +151,11 @@ enum eScroll
     FREEZE
 };
 
-enum eTreeItemStates { TREESTATE_TOGGLE,
-                       TREESTATE_EXPAND,
-                       TREESTATE_COLLAPSE
-                     };
-
+enum eTreeItemStates {
+    TREESTATE_TOGGLE,
+    TREESTATE_EXPAND,
+    TREESTATE_COLLAPSE
+};
 
 typedef UINT TYPE_CHANNEL;
 
@@ -208,7 +213,7 @@ const BYTE TYPE_MSG_LIN_FD          = 0x4;
 #define LENGTH_STR_DIRECTION_LIN        4
 #define LENGTH_STR_TYPE_LIN             8
 
-typedef struct tagFormattedData_CAN
+struct tagFormattedData_CAN
 {
     UINT64          m_u64TimeStamp;                 // Time stamp
     DWORD           m_dwMsgID;                      // Message identifier
@@ -240,18 +245,18 @@ typedef struct tagFormattedData_CAN
     __int64         m_n64MapId;                     // Map id of the message
     COLORREF        m_ColourCode;                   // Colour code associated
 };
+typedef tagFormattedData_CAN SFORMATTEDDATA_CAN;
 
-typedef enum eMSG_INTERPRETATION_PROPERTY
+enum eMSG_INTERPRETATION_PROPERTY
 {
     NON_INTERPRETABLE = 0,
     INTERPRETABLE,
     INTERPRETING,
     MODE_NONE
-} EINTERPRET_MODE;
+};
+typedef eMSG_INTERPRETATION_PROPERTY EINTERPRET_MODE;
 
-typedef tagFormattedData_CAN SFORMATTEDDATA_CAN;
-
-typedef struct tagFormattedData_LIN
+struct tagFormattedData_LIN
 {
     UINT64          m_u64TimeStamp;                 // Time stamp
     DWORD           m_dwMsgID;                      // Message identifier
@@ -286,19 +291,20 @@ typedef struct tagFormattedData_LIN
     __int64         m_n64MapId;                     // Map id of the message
     COLORREF        m_ColourCode;                   // Colour code associated
 };
-
 typedef tagFormattedData_LIN SFORMATTEDDATA_LIN;
 
-typedef struct sWMUpdatePtrPara
+struct sWMUpdatePtrPara
 {
     int              m_nListIndex;
     EINTERPRET_MODE  m_eInPretMode;
     BOOL             m_bResult;
-} SWMUPDATEPTRPARA, *PSWMUPDATEPTRPARA;
+};
+typedef sWMUpdatePtrPara SWMUPDATEPTRPARA;
+typedef sWMUpdatePtrPara * PSWMUPDATEPTRPARA;
 
 #define MAX_MSG_WND_COL_CNT              12
 
-typedef struct sMsgWndHdrCol
+struct sMsgWndHdrCol
 {
     BYTE m_byTimePos;
     BYTE m_byCodeNamePos;
@@ -336,16 +342,19 @@ typedef struct sMsgWndHdrCol
         m_byCycleNoPos  = (BYTE) -1;
         m_byChecksumPos = (BYTE) -1;
     }
-} SMSGWNDHDRCOL;
-typedef enum eChannel
+};
+typedef sMsgWndHdrCol SMSGWNDHDRCOL;
+
+enum eChannel
 {
     CHANNEL_A       = 'A',
     CHANNEL_B       = 'B',
     CHANNEL_AB      = 'X',
     UNSPECIFIED
-} ECHANNEL;
+};
+typedef eChannel ECHANNEL;
 
-typedef struct tagFlexMsgData
+struct tagFlexMsgData
 {
     char m_acMsgType[4]; // "Tx" or "Rx" -> 3 B
     char m_acChannel[4]; // "A" or "B" or "AB" -> 3 B
@@ -374,4 +383,5 @@ typedef struct tagFlexMsgData
     EFRAMETYPE m_eFrameType;
     int m_nBaseCycle;
     unsigned char m_ucCycleRepetetion;
-} FLXMSGDATA;
+};
+typedef tagFlexMsgData FLXMSGDATA;

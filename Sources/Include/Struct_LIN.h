@@ -14,10 +14,10 @@
  */
 
 /**
- * \file      Struct_LIN.h
- * \brief     This contains definitions of various LIN related structures.
- * \authors   Ratnadip Choudhury, Anish Kumar, Pradeep Kadoor
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @file      Struct_LIN.h
+ * @brief     This contains definitions of various LIN related structures.
+ * @authors   Ratnadip Choudhury, Anish Kumar, Pradeep Kadoor
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This contains definitions of various LIN related structures.
  */
@@ -36,14 +36,16 @@
 /**
  * This structure is used for sending/reciving messages to/from the LIN network
  */
-typedef struct sTLIN_FRAME
+struct sTLIN_FRAME
 {
     unsigned char m_ucMsgID;        // Protected Identifier
     unsigned char m_ucData[8];      // Databytes 0..8
     unsigned char m_ucChksum;       // Checksum
-} STLIN_FRAME, *PSTLIN_FRAME;
+};
+typedef sTLIN_FRAME STLIN_FRAME;
+typedef sTLIN_FRAME * PSTLIN_FRAME;
 
-typedef struct sTLIN_MSG
+struct sTLIN_MSG
 {
     unsigned char m_ucMsgTyp;       // Message Type (0 - Header / 1 - Response)
     unsigned char m_ucChksumTyp;    // Checksum Type (0 - Classical / 1 - Enhanced)
@@ -53,8 +55,9 @@ typedef struct sTLIN_MSG
     unsigned long m_ulTimeStamp;
     unsigned char m_ucChannel;      // Channel Number
     unsigned char m_ucChksum;       // Checksum
-} STLIN_MSG, *PSTLIN_MSG;
-//typedef sTLIN_MSG* PSTLIN_MSG;
+};
+typedef sTLIN_MSG STLIN_MSG;
+typedef sTLIN_MSG * PSTLIN_MSG;
 
 enum eLinBusEventType
 {
@@ -116,14 +119,15 @@ struct SEVENT_SLAVE_NORESP_LIN
 
 };
 
-typedef struct SEVENT_SYNC_LIN
+struct SEVENT_SYNC_LIN
 {
     unsigned char m_ucChannel;
     unsigned int  m_ulTime;
-
 };
 
-// This structure holds Error info
+/**
+ * This structure holds Error info
+ */
 struct sERROR_INFO_LIN
 {
     unsigned char m_ucId;       // Msg Id - Useful in case of NoAns
@@ -146,16 +150,20 @@ struct sERROR_INFO_LIN
     int           m_nSubError;   //added for providing Error bit details
 };
 typedef sERROR_INFO_LIN SERROR_INFO_LIN;
-typedef sERROR_INFO_LIN* PSERROR_INFO_LIN;
+typedef sERROR_INFO_LIN * PSERROR_INFO_LIN;
 
-// This structure holds the error and the channel number
-typedef struct sLIN_ERR
+/**
+ * This structure holds the error and the channel number
+ */
+struct sLIN_ERR
 {
     unsigned char m_ucTxError;
     unsigned char m_ucRxError;
     unsigned char m_ucChannel;
 
-} SLIN_ERR, *SPLIN_ERR;
+};
+typedef sLIN_ERR SLIN_ERR;
+typedef sLIN_ERR * SPLIN_ERR;
 
 // To copy the data and advance the pointer of the target data stream
 #define COPY_DATA(TgtStream, SrcStream, TotBytes) { memcpy(TgtStream, SrcStream, TotBytes); TgtStream += TotBytes; }
@@ -294,8 +302,8 @@ public:
     std::string  m_omStrLocation;                // location (serial port, ip-address, ...)
     int     m_bHWTimestamps;                     // timestamps from the controllers hardware
 };
-typedef sCONTROLLERDETAILSLIN   SCONTROLLER_DETAILS_LIN;
-typedef sCONTROLLERDETAILSLIN*  PSCONTROLLER_DETAILS_LIN;
+typedef sCONTROLLERDETAILSLIN SCONTROLLER_DETAILS_LIN;
+typedef sCONTROLLERDETAILSLIN * PSCONTROLLER_DETAILS_LIN;
 
 /**
  * This structure is used for communicating between Driver and LIN Application
@@ -308,13 +316,13 @@ struct sTLINDATAINFO
     SERROR_INFO_LIN   m_sErrInfo;
 };
 typedef sTLINDATAINFO STLINDATAINFO;
-typedef sTLINDATAINFO* PSTLINDATAINFO;
+typedef sTLINDATAINFO * PSTLINDATAINFO;
 
 
 /**
  * This structure is used for communicating between Driver and LIN Application
  */
-typedef struct sTLINDATA
+struct sTLINDATA
 {
 private:
     static int  m_nSortField;
@@ -337,7 +345,9 @@ public:
     static void vSetSortAscending(bool bAscending);
     static int DoCompareIndiv(const void* pEntry1, const void* pEntry2);
     static __int64 GetSlotID(sTLINDATA& pDatLIN);
-} STLINDATA, *PSTLINDATA;
+};
+typedef sTLINDATA STLINDATA;
+typedef sTLINDATA * PSTLINDATA;
 
 enum eLIN_MSG_TYPE
 {
@@ -387,7 +397,7 @@ struct sSUBBUSSTATISTICS_LIN
     unsigned int m_unTotalWakeUpsCount;
 };
 typedef sSUBBUSSTATISTICS_LIN SSUBBUSSTATISTICS_LIN;
-typedef sSUBBUSSTATISTICS_LIN* PSSUBBUSSTATISTICS_LIN;
+typedef sSUBBUSSTATISTICS_LIN * PSSUBBUSSTATISTICS_LIN;
 
 /**
  * Bus statistics structure
@@ -445,7 +455,7 @@ struct sBUSSTATISTICS_LIN
     }
 };
 typedef sBUSSTATISTICS_LIN SBUSSTATISTICS_LIN;
-typedef sBUSSTATISTICS_LIN* PBUSSTATISTICS_LIN;
+typedef sBUSSTATISTICS_LIN * PBUSSTATISTICS_LIN;
 
 #define TX_FLAG                 0x01
 #define RX_FLAG                 0x02
