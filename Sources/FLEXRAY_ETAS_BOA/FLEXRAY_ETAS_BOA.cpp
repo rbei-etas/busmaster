@@ -2267,7 +2267,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_StopHardware(void)
             if (sg_asChannel[i].m_OCI_CntrlProp.mode == OCI_CONTROLLER_MODE_RUNNING)
             {
                 sg_asChannel[i].m_OCI_CntrlProp.mode = OCI_CONTROLLER_MODE_SUSPENDED;
-                ociErrorCode == (*(sBOA_PTRS.m_sOCI.setFlexRayControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
+                ociErrorCode = (*(sBOA_PTRS.m_sOCI.setFlexRayControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
                         &(sg_asChannel[i].m_OCI_CntrlProp));
                 if (ociErrorCode == OCI_SUCCESS)
                 {

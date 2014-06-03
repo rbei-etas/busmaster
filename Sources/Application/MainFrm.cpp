@@ -568,8 +568,8 @@ CMainFrame::CMainFrame()
     // Send toolbar button is not enabled.
     //m_bEnableSendToolbarButton = FALSE;
     m_bIsStatWndCreated = FALSE;
-    m_bIsFlexRayStatWndCreated == FALSE;
-    m_bNotificWndVisible         = FALSE;
+    m_bIsFlexRayStatWndCreated = FALSE;
+    m_bNotificWndVisible       = FALSE;
     // Initially the controller will be in error active mode.
     for( UINT unIndex = 0; unIndex < defNO_OF_CHANNELS; unIndex++)
     {
@@ -5543,7 +5543,7 @@ void CMainFrame::OnClose()
     }*/
     //SGW Code commented by Arun 21-10-2010
     m_bIsStatWndCreated = FALSE;
-    m_bIsFlexRayStatWndCreated == FALSE;
+    m_bIsFlexRayStatWndCreated = FALSE;
     // Get appropriate data structure
     // Call Close Database to take app. action
     CFlags* pFlags = nullptr;
