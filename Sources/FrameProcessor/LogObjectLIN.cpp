@@ -120,8 +120,6 @@ BOOL CLogObjectLIN::bLogData(const SFORMATTEDDATA_LIN& sDataLIN)
             break;
     }
 
-
-    char cChecksum;
     switch (m_sLogInfo.m_eNumFormat)
     {
         case HEXADECIMAL:

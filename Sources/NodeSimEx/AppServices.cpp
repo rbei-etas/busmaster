@@ -657,7 +657,7 @@ int sg_GetMessageName(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize)
                     {
                         strcpy(pBuffer, sMsgNameCode.m_omMsgName.GetBuffer(0));
                     }
-                    catch(CException* e)
+                    catch(CException * /* e */)
                     {
                         return 0;
                     }
@@ -693,7 +693,7 @@ int sg_GetMessageName(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize)
 ******************************************************************************/
 long sg_TimeNow()
 {
-    long        lAbsoluteTime = 0, lSysTime;
+    long        lAbsoluteTime = 0;
 
     if (CGlobalObj::sm_hWndMDIParentFrame != nullptr)          //check for mainframe
     {

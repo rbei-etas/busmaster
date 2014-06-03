@@ -918,7 +918,6 @@ HRESULT CTSExecutorLIB::SetConfigurationData(xmlNodePtr pXmlNode)
                 if(AddTestSetup(sConfigInfo.m_strFileName.c_str(), dwID) == S_OK)
                 {
                     //Selection Status
-                    BOOL bStatus;
                     POSITION pos = m_ouTestSetupEntityList.FindIndex(nFileIndex++);
                     if(pos != nullptr)
                     {

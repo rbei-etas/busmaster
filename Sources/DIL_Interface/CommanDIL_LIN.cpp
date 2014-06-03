@@ -260,7 +260,6 @@ HRESULT CCommanDIL_LIN::LIN_SendMsg(DWORD dwClientID, STLIN_MSG& pouFlxTxMsg)
 HRESULT CCommanDIL_LIN::LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& pouFlxTxMsg)
 {
     EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
-    SACK_MAP sAckMap;
     HRESULT hResult = S_FALSE;
     if (bClientIdExist(dwClientID))
     {

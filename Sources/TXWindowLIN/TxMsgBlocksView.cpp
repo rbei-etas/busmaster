@@ -962,11 +962,9 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
     *pResult = 0;
 }
 
-void CTxMsgBlocksView::UpdateList(NM_LISTVIEW* pNMListView)
+void CTxMsgBlocksView::UpdateList(NM_LISTVIEW * /* pNMListView */)
 {
-    //AUC
     PSMSGBLOCKLIST psMsgBlock = nullptr ;
-    //int nRowNum = m_omLctrMsgBlockName.GetSelectionMark();
     for(int nItem =0 ; nItem < m_omLctrMsgBlockName.GetItemCount(); nItem++)
     {
         CString        csName = m_omLctrMsgBlockName.GetItemText(nItem, 0);
@@ -981,6 +979,7 @@ void CTxMsgBlocksView::UpdateList(NM_LISTVIEW* pNMListView)
         }
     }
 }
+
 /******************************************************************************/
 /*  Function Name    :  vDisplayMsgBlockDetails                               */
 /*  Input(s)         :  PSMSGBLOCKLIST psMsgBlock: current msg block pointer  */

@@ -156,7 +156,6 @@ void CSignalWatch_LIN::vDisplayInSigWatchWnd(STLINDATA& sLinData)
         sLinData.m_uDataInfo.m_sLINMsg.m_ucData,omMsgName, omSigNames, omRawValues, omPhyValues, m_bHex))*/
         SSignalInfoArray sSingnalinfo;
         std::string msgName;
-        EFORMAT d;
 
         int mID=m_mapMsgIDtoSignallst->find(sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID)->first;
 
@@ -512,7 +511,6 @@ HRESULT CSignalWatch_LIN::SW_SetConfigData(const void* pbyConfigData)
 HRESULT CSignalWatch_LIN::SW_SetConfigData(xmlNodePtr pNode)
 {
     m_pouSigWnd->ShowWindow(SW_HIDE);
-    int id;
     INT nRetValue  = S_OK;
     if ((pNode != nullptr) && (m_pouSigWnd != nullptr))
     {
@@ -541,7 +539,6 @@ HRESULT CSignalWatch_LIN::SW_SetConfigData(xmlNodePtr pNode)
 
                     if((!xmlStrcmp(child->name, (const xmlChar*)"Signal")))
                     {
-                        int id;
                         xmlChar* key = xmlNodeListGetString(child->doc, child->xmlChildrenNode, 1);
                         if(nullptr != key)
                         {

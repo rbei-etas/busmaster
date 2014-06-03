@@ -640,10 +640,6 @@ void CTransmitMsg::InitFlexList(DATA_VIEW ouDataView)
         m_oFlexListCtrl.SetExtendedStyle( LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
         SNUMERICINFO    sNumInfo;
         SLISTINFO       sListInfo;
-        SUSERPROGINFO   sProgInfo;
-
-
-
 
         sListInfo.m_eType = eNoControl;
         m_oFlexListCtrl.vSetColumnInfo(0, 1, sListInfo);
@@ -717,8 +713,6 @@ void CTransmitMsg::InitFlexList(DATA_VIEW ouDataView)
         m_oFlexListCtrl.SetExtendedStyle( LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
         SNUMERICINFO    sNumInfo;
         SLISTINFO       sListInfo;
-        SUSERPROGINFO   sProgInfo;
-
 
         sListInfo.m_eType = eBuddy;
 

@@ -83,10 +83,9 @@ BOOL bIsTransitionInState( UINT unChannel, BYTE byRxError, BYTE byTxError, eERRO
 
     return bIsTransition;
 }
+
 void vProcessCurrErrorEntryLin(  const SERROR_INFO_LIN& EventInfo, DWORD dwClientId )
 {
-    // Get the Error code
-    USHORT usErrorID;
     // Get the channel number
     CHAR nChannel = EventInfo.m_ucChannel - 1;
     if( nChannel < 0 || nChannel >= defNO_OF_CHANNELS )
@@ -97,7 +96,6 @@ void vProcessCurrErrorEntryLin(  const SERROR_INFO_LIN& EventInfo, DWORD dwClien
     }
 
     CExecuteManager::ouGetExecuteManager(LIN).vManageOnErrorHandlerLIN(EventInfo, dwClientId);
-
 }
 
 void vProcessCurrErrorEntry(const SERROR_INFO& sErrInfo, DWORD dwClientId)

@@ -243,8 +243,6 @@ BOOL CSignalDetailsDlg::OnInitDialog()
     m_odMaxValue.vSetBase(BASE_DECIMAL);
     m_odMinValue.vSetBase(BASE_DECIMAL);
     m_odNumericEdit.SubclassDlgItem(IDC_EDIT_SGNAME,this);
-    SIG_VALUE minVal;
-    SIG_VALUE maxVal;
 
     // Add options to the combo
     m_omComboSgType.AddString( defBOOLEAN );

@@ -393,38 +393,8 @@ void CSimSysManager::vLoadSimSysWndConfig(xmlDocPtr pDoc, ETYPE_BUS eBus)
         }
     }
 }
-void CSimSysManager::CopySIMDataFromBuffer(xmlNodePtr pDoc, ETYPE_BUS eBus)
+void CSimSysManager::CopySIMDataFromBuffer(xmlNodePtr pDoc, ETYPE_BUS /* eBus */)
 {
-    /*xmlChar* pXpath = nullptr;
-    xmlXPathObjectPtr pObjectPath = nullptr;
-
-    if(eBus == CAN)
-    {
-        pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Simulated_Systems";
-        pObjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
-    }
-    else if(eBus == J1939)
-    {
-        pXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Simulated_Systems";
-        pObjectPath = xmlUtils::pGetNodes(pDoc, pXpath);
-    }
-
-    if(m_CopyJ1939SimNode != nullptr && (eBus == J1939))
-    {
-        xmlFreeNode(m_CopyJ1939SimNode);
-        m_CopyJ1939SimNode = nullptr;
-    }
-
-    else if(pObjectPath != nullptr && (eBus == J1939))
-    {
-        m_CopyJ1939SimNode = xmlCopyNode(pObjectPath->nodesetval->nodeTab[0], 1);
-    }
-    else
-    {
-        xmlFreeNode(m_CopyJ1939SimNode);
-        m_CopyJ1939SimNode = nullptr;
-    }*/
-
     xmlNodePtr pNode = pDoc;
     //if( nullptr != pObjectPath )
     {

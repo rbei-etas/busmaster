@@ -670,9 +670,7 @@ void CTransmitMsgLIN::vInitSignalListCtrl()
 
     // Set the extended style
     m_omLctrSigList.SetExtendedStyle( LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
-    // SNUMERICINFO    sNumInfo;
     SLISTINFO       sListInfo;
-    SUSERPROGINFO   sProgInfo;
 
     // Init Signal Name column
     // Column 0 : User Function call
@@ -1067,7 +1065,6 @@ void CTransmitMsgLIN::OnBnClickedBtDelAll()
 
 void CTransmitMsgLIN::OnAddMessageClick()
 {
-    INT nItem, nSubItem;
     LVITEM lvitem = {0};
     lvitem.mask =  LVIF_DI_SETITEM;
 

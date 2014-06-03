@@ -637,8 +637,6 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbGetConfigData(xmlNodePtr pNodePtr) 
 {
     BYTE byVersion = 0x1;
 
-    xmlNodePtr pFilterTag;
-
     xmlNodePtr pNodeCanFilterPtr = nullptr;
     xmlNodePtr pNodeMCNEtFilterPtr = nullptr;
     xmlNodePtr pNodeJ1939FilterPtr = nullptr;

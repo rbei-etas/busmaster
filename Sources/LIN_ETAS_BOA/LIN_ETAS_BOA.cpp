@@ -1712,7 +1712,6 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_SelectHwInterface(const INTERFACE_HW_LIST & sSelH
     // Create the controller instance.
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
-        OCI_ControllerHandle        m_OCIHandle;
         BOA_ResultCode err = OCI_FAILURE;
 
         OCI_LIN_VTable          sOCI;

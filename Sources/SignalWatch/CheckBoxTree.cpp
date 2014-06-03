@@ -64,13 +64,11 @@ void CCheckBoxTree::OnLButtonDown(UINT nFlags, CPoint point)
         if(bCheck)
         {
 
-            HTREEITEM root,parent,child;
+            HTREEITEM root;
+            HTREEITEM child;
             root=GetRootItem();
             SetCheck(root,0);
 
-            /*parent=GetParentItem(hItem);
-
-            SetCheck(parent,0);*/
             while(ItemHasChildren(root))
             {
                 //MessageBox("wHILE1", "WHILE1", MB_OK);

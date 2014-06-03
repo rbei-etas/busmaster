@@ -76,7 +76,7 @@ END_MESSAGE_MAP()
  *
  * Shows a popup menu to remove an entry or to clear entries.
  */
-void CSignalWatchListBox::OnRButtonDown(UINT nFlags, CPoint omPoint)
+void CSignalWatchListBox::OnRButtonDown(UINT /* nFlags */, CPoint omPoint)
 {
     CMenu* pomContextMenu = new CMenu;
     if (pomContextMenu != nullptr)

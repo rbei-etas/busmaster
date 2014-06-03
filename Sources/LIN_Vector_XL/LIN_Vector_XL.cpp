@@ -477,10 +477,6 @@ static int nGetNoOfConnectedHardware(void)
 {
     int nResult = 0;
     XLstatus xlStatus = XL_SUCCESS;
-    unsigned int    hwType;
-    unsigned int    hwIndex;
-    unsigned int    hwChannel;
-    int             channelIndex;
 
     // ------------------------------------
     // get the hardware configuration
@@ -497,28 +493,6 @@ static int nGetNoOfConnectedHardware(void)
         // ------------------------------------
         for (UINT i=0; i < g_xlDrvConfig.channelCount; i++)
         {
-            /*xlStatus = xlGetApplConfig(g_AppName, i, &hwType, &hwIndex, &hwChannel, XL_BUS_TYPE_LIN);
-
-            if (xlStatus != XL_SUCCESS)
-            {
-                hwChannel = i;
-                // check PC for hardware with LINCabs or LINPiggy's
-                if (g_xlDrvConfig.channel[i].channelBusCapabilities & XL_BUS_ACTIVE_CAP_LIN)
-                {
-                    hwType = g_xlDrvConfig.channel[i].hwType;
-
-                    xlStatus = xlSetApplConfig(                 // Registration of Application with default settings
-                        g_AppName, // Application Name
-                        i,     // Application channel 0 or 1
-                        hwType,         // hwType  (CANcardXL...)
-                        hwIndex,        // Index of hardware (slot) (0,1,...)
-                        hwChannel,      // Index of channel (connector) (0,1,...)
-                        XL_BUS_TYPE_LIN);       // the application is for LIN.
-                }
-            }
-
-            channelIndex = xlGetChannelIndex(hwType, hwIndex, hwChannel);*/
-
             // check if we have a valid LIN cab/piggy
             if (g_xlDrvConfig.channel[i].channelBusCapabilities & XL_BUS_ACTIVE_CAP_LIN)
             {

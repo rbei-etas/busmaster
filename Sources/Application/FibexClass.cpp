@@ -1947,7 +1947,6 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CFrame
 {
     HRESULT hResult = S_OK;
     std::string strTemp;
-    char* stopstring;
     std::string omNodeName = _com_util::ConvertBSTRToString(pCurrDOMNode->GetnodeName().GetBSTR());
     std::string omModNodeName = "";
     CNodeUtil::bRemoveTag(omNodeName, omModNodeName);

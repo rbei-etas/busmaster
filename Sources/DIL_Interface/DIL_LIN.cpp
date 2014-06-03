@@ -450,7 +450,6 @@ HRESULT CDIL_LIN::DILL_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN InitData, int& 
  */
 HRESULT CDIL_LIN::DILL_SetConfigData( ClusterConfig& ouConfig)
 {
-    PSCONTROLLER_DETAILS pInitData;
     VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
     return m_pBaseDILLIN_Controller->LIN_SetConfigData(ouConfig);
 }

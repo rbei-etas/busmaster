@@ -437,7 +437,6 @@ BOOL CCANMonitorApp::InitInstance()
 
 bool CCANMonitorApp::bReadFromRegistry(HKEY hRootKey, CString strSubKey, CString strName,  DWORD dwType, CString& strValue , DWORD& dwValue)
 {
-    DWORD dwRet;
     DWORD cbData;
     LONG lError = 0;
     HKEY hKey;

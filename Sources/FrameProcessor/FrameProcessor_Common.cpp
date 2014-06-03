@@ -625,7 +625,6 @@ HRESULT CFrameProcessor_Common::SetConfigData( xmlDocPtr pDoc, ETYPE_BUS eBus)
         pchXpath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Log/Log_Block";
     }
     pXpathPtr = xmlUtils::pGetNodes(pDoc, pchXpath);
-    xmlNodePtr pNodePtr;
 
     if ( pXpathPtr != nullptr)
     {

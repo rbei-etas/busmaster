@@ -1913,8 +1913,6 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ListHwInterfaces(FLEXRAY_INTERFACE_HW & s
                     psHWInterface[i].m_acNameInterface = acURI[i];
                     psHWInterface[i].m_acDescription = acURI[i];
 
-                    OCI_FLEXRAY_VTable          sOCI;
-
 #if BOA_VERSION >= BOA_VERSION_2_0
                     if ((sBOA_PTRS.createFlexRayController  = (PF_OCI_CreateFlexRayControllerVersion)
                             GetProcAddress(sg_hLibOCI, "OCI_CreateFlexRayControllerVersion")) == nullptr)
@@ -2027,12 +2025,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_SelectHwInterface(const FLEXRAY_INTERFACE
     // Create the controller instance.
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
-        /*BOA_ResultCode err =  (*(sBOA_PTRS.m_sOCI.createFlexRayController))(sg_asChannel[i].m_acURI,
-        &(sg_asChannel[i].m_OCI_HwHandle));*/
-        OCI_ControllerHandle        m_OCIHandle;
         BOA_ResultCode err = OCI_FAILURE;
-
-        OCI_FLEXRAY_VTable          sOCI;
 
         BOA_Version version = {1,3,0,0};
         BOA_Version version1 = {1,1,0,0};

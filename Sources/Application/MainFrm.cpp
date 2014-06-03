@@ -4422,7 +4422,6 @@ void CMainFrame::OnStatisticsLIN()
 /******************************************************************************/
 void CMainFrame::OnStatistics(ETYPE_BUS ebus)
 {
-    ETYPE_BUS bus;
     BOOL bRet = FALSE;
     if(m_bIsStatWndCreated == FALSE )
     {
@@ -7194,8 +7193,6 @@ USHORT CMainFrame::vCheckValidLogFiles(USHORT LogBlocks)
         for (USHORT i = 0; i < LogBlocks; i++)
         {
             SLOGINFO sLogObject;
-            HANDLE hFind;
-            WIN32_FIND_DATA FindData;
             CStdioFile omStdiofile;
 
             sg_pouFrameProcCAN->FPC_GetLoggingBlock(i, sLogObject);
@@ -7222,8 +7219,6 @@ USHORT CMainFrame::vCheckValidLogFiles_LIN(USHORT LogBlocks)
         for (USHORT i = 0; i < LogBlocks; i++)
         {
             SLOGINFO sLogObject;
-            HANDLE hFind;
-            WIN32_FIND_DATA FindData;
             CStdioFile omStdiofile;
 
             sg_pouFrameProcLIN->FPL_GetLoggingBlock(i, sLogObject);
@@ -15128,8 +15123,6 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE * & /* pbyConfi
                         if(pCntrlSettngsPtr != nullptr)
                         {
                             INT nCount = 0;
-                            HRESULT hResult;
-
                             LONG lParam = 0;
 
                             if(g_pouDIL_CAN_Interface != nullptr)

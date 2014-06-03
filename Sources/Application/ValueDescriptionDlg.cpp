@@ -298,7 +298,6 @@ BOOL CValueDescriptionDlg::OnInitDialog()
 
     CString strMinVal = "";
     CString strMaxVal = "" ;
-    BYTE bSignalType;
     if ( pTempMsgSg != nullptr )
     {
         pTempMsgSg->vGetSignalValidRange(m_omStrMessageCode,

@@ -151,141 +151,29 @@ __int64 CMsgContainerFlexRay::nCreateMapIndexKey( LPVOID pMsgData )
 
 
     __int64 n64MapIndex = MAKE_CHANNEL_SPECIFIC_MESSAGE(nMsgID, nFlag );
-    /*unsigned int unChannel = 0;
-    if (dwIFlags & RBIN_FLXHDRINFO_BOTHCHANNELS)
-    {
-        unChannel = CHANNEL_AB;
-    }
-    else
-    {
-        if (dwIFlags & RBIN_FLXHDRINFO_CHANNELID)
-        {
-            unChannel = CHANNEL_B;
-        }
-        else
-        {
-            unChannel = CHANNEL_A;
-        }
-    }
 
-    if (pouFLEXData->wMessageType == 1)
-    {
-        n64MapIndex = MAKE_CHANNEL_SPECIFIC_MESSAGE( nMsgID, unChannel );
-    }
-    else if (pouFLEXData->wMessageType == 2)
-    {
-        n64MapIndex = MAKE_CHANNEL_SPECIFIC_MESSAGE( nMsgID, unChannel );
-    }
-    */
     return (n64MapIndex);
 }
 
 //converts STCANDATA into SFRAMEINFO_BASIC_CAN
-static void vFormatFlexRayDataMsg(s_FLXMSG* pMsgFlexRay,
-                                  tagSFRAMEINFO_BASIC_FLEXRAY* CurrDataFlexRay)
-
+static void vFormatFlexRayDataMsg(s_FLXMSG */* pMsgFlexRay */,
+                                  tagSFRAMEINFO_BASIC_FLEXRAY * /* CurrDataFlexRay */)
 {
-    //DWORD dwIFlags = pMsgFlexRay->stcDataMsg.dwHeaderInfoFlags;
-
-    //   CurrDataFlexRay->m_acMsgType[0] = (dwIFlags & RBIN_FLXHDRINFO_SELFRECEPTION) ? 'T' : 'R';
-    //
-    //// Find out the type of the frame
-    //if (dwIFlags & RBIN_FLXHDRINFO_NULLFRAME)
-    //{
-    //  // nullptr frame
-    //  CurrDataFlexRay->m_ColourCode = RGB(0,0,0);//m_MsgColorProp.m_sMsgProp.m_clrNullFrame;
-    //}
-    //else if (dwIFlags & RBIN_FLXHDRINFO_SYNCFRAME)
-    //{
-    //  // Sync frame
-    //  CurrDataFlexRay->m_ColourCode = RGB(0,0,0);//m_MsgColorProp.m_sMsgProp.m_clrSyncFrame;
-    //}
-    //else if (dwIFlags & RBIN_FLXHDRINFO_FRAMETYPE_DYNAMIC)
-    //{
-    //  // Dynamic frame
-    //  CurrDataFlexRay->m_ColourCode =RGB(0,0,0);// m_MsgColorProp.m_sMsgProp.m_clrDynamicFrame;
-    //}
-    //else
-    //{
-    //  // Static frame
-    //  CurrDataFlexRay->m_ColourCode = RGB(0,0,0);//m_MsgColorProp.m_sMsgProp.m_clrStaticFrame;
-    //}
-
-    //   if (dwIFlags & RBIN_FLXHDRINFO_BOTHCHANNELS)
-    //   {
-    //       //Indicates that the message is transmitted on Channel A or B
-    //       CurrDataFlexRay->m_Channel = CHANNEL_AB;
-    //       strcpy(CurrDataFlexRay->m_acChannel, "AB");
-    //   }
-    //   else
-    //   {
-    //       CurrDataFlexRay->m_acChannel[1] = '\0';
-    //       if (dwIFlags & RBIN_FLXHDRINFO_CHANNELID)
-    //       {
-    //           CurrDataFlexRay->m_Channel = CHANNEL_B;
-    //           CurrDataFlexRay->m_acChannel[0] = 'B';
-    //       }
-    //       else
-    //       {
-    //           CurrDataFlexRay->m_Channel = CHANNEL_A;
-    //           CurrDataFlexRay->m_acChannel[0] = 'A';
-    //       }
-    //   }
 }
 
-BOOL CMsgContainerFlexRay::bTobeBlocked(s_FLXMSG& sFlexRayData)
+BOOL CMsgContainerFlexRay::bTobeBlocked(s_FLXMSG & /* sFlexRayData */)
 {
-    //   static SFRAMEINFO_BASIC_CAN sBasicCanInfo;
-    //   vFormatFlexRayDataMsg(&sFlexRayData, &sBasicCanInfo);
-
-    //   EnterCriticalSection(&m_omCritSecFilter);
-    //   //BOOL bBlock = m_sFilterCAN.bToBeBlocked(sBasicCanInfo); <to do flexray>
-    BOOL bBlock = FALSE;
-    //   LeaveCriticalSection(&m_omCritSecFilter);
-    return bBlock;
+    return FALSE;
 }
 
-BOOL CMsgContainerFlexRay::bIsTransitionInState( UINT unChannel,
-        BYTE byRxError,
-        BYTE byTxError )
+BOOL CMsgContainerFlexRay::bIsTransitionInState(UINT /* unChannel */,
+        BYTE /* byRxError */,
+        BYTE /* byTxError */)
 {
-    BOOL bIsTransition = FALSE;
-    // Based on the value of transmit and receive error counter decide
-    // the current error state
-
-    //if ((byTxError <= 127) && (byRxError <= 127))
-    //{
-    //    // Error Active Mode
-    //    if (m_eCurrErrorState[ unChannel ] != ERROR_ACTIVE)
-    //    {
-    //        bIsTransition = TRUE;
-    //        m_eCurrErrorState[ unChannel ] = ERROR_ACTIVE;
-    //    }
-    //}
-    //else if (byTxError == 255)
-    //    // The sudden shift to the third state is to avoid
-    //    // "else if ((byTxError > 127) || (byRxError > 127))"
-    //{
-    //    // Bus off
-    //    if (m_eCurrErrorState[ unChannel ] != ERROR_BUS_OFF)
-    //    {
-    //        bIsTransition = TRUE;
-    //        m_eCurrErrorState[ unChannel ] = ERROR_BUS_OFF;
-    //    }
-    //}
-    //else
-    //{
-    //    // Error passive
-    //    if (m_eCurrErrorState[ unChannel ] != ERROR_PASSIVE)
-    //    {
-    //        bIsTransition = TRUE;
-    //        m_eCurrErrorState[ unChannel ] = ERROR_PASSIVE;
-    //    }
-    //}
-
-    return bIsTransition;
+    return FALSE;
 }
-void CMsgContainerFlexRay::vProcessCurrErrorEntry(const SERROR_INFO& /*sErrInfo*/)
+
+void CMsgContainerFlexRay::vProcessCurrErrorEntry(const SERROR_INFO & /* sErrInfo */)
 {
 }
 
@@ -576,39 +464,17 @@ void CMsgContainerFlexRay::vSaveOWandGetDetails( void* pMsg,
     m_ouOWFlexRayBuf.WriteIntoBuffer(pouFLEXData, dwMapIndex, nBufferIndex);
 }
 
-HRESULT CMsgContainerFlexRay::ApplyFilterScheme(void* pvFilterApplied)
+HRESULT CMsgContainerFlexRay::ApplyFilterScheme(void * /* pvFilterApplied */)
 {
-    HRESULT hResult = S_FALSE;
-    //SFILTERAPPLIED_CAN* psFilterCAN = (SFILTERAPPLIED_CAN*)pvFilterApplied;
-    //if (psFilterCAN != nullptr)
-    //{
-    //    EnterCriticalSection(&m_omCritSecFilter);
-    //    //        if (m_sFilterCAN.bClone(*psFilterCAN) == TRUE)
-    //    if (m_sFilterCAN.bClone(*psFilterCAN) == true)
-    //    {
-    //        //            hResult = TRUE;
-    //        hResult = S_OK;
-    //    }
-    //    LeaveCriticalSection(&m_omCritSecFilter);
-    //}
-    return hResult;
+    return S_FALSE;
 }
-HRESULT CMsgContainerFlexRay::GetFilterScheme(void* pvFilterApplied)
+
+HRESULT CMsgContainerFlexRay::GetFilterScheme(void * /* pvFilterApplied */)
 {
-    HRESULT hResult = S_FALSE;
-    //SFILTERAPPLIED_CAN* psFilterCAN = (SFILTERAPPLIED_CAN*)pvFilterApplied;
-    //if (psFilterCAN != nullptr)
-    //{
-    //    //        if (psFilterCAN->bClone(m_sFilterCAN) == TRUE)
-    //    if (psFilterCAN->bClone(m_sFilterCAN) == true)
-    //    {
-    //        //hResult = TRUE;
-    //        hResult = S_OK;
-    //    }
-    //}
-    return hResult;
+    return S_FALSE;
 }
-HRESULT CMsgContainerFlexRay::EnableFilterApplied(BOOL bEnable)
+
+HRESULT CMsgContainerFlexRay::EnableFilterApplied(BOOL /* bEnable */)
 {
     EnterCriticalSection(&m_omCritSecFilter);
     //m_sFilterCAN.m_bEnabled = bEnable;
@@ -725,47 +591,9 @@ void CMsgContainerFlexRay::vSetMsgLength(CString strsgLength)
   Date Created   : 14-04-2011
   Modifications  :
 *******************************************************************************/
-USHORT CMsgContainerFlexRay::usProcessCurrErrorEntry(SERROR_INFO& sErrInfo)
+USHORT CMsgContainerFlexRay::usProcessCurrErrorEntry(SERROR_INFO & /* sErrInfo */)
 {
-    // Get the Error code
-    USHORT usErrorID = 0;
-    //// Get the channel number
-    //CHAR nChannel = sErrInfo.m_ucChannel - 1;
-    //if( nChannel < 0 || nChannel >= defNO_OF_CHANNELS )
-    //{
-    //    ASSERT( FALSE );
-    //    // Take prevension
-    //    nChannel = 0;
-    //}
-
-    //// Decide which module(s) to notify by analysing the error code
-    //// Accordingly notify the modules by sending/posting message
-    //if (sErrInfo.m_ucErrType == ERROR_BUS)
-    //{
-    //    usErrorID = sErrInfo.m_ucReg_ErrCap /*& 0xE0*/;
-    //}
-    //else if (sErrInfo.m_ucErrType == ERROR_WARNING_LIMIT_REACHED)
-    //{
-    //    // Reaching warning limit isn't considered as an error.
-    //    // In case of this interrupt there is no need for display to
-    //    // be updated.
-    //    // Use Channel ID as High Byte of WPARAM
-    //    usErrorID = ERROR_UNKNOWN;
-    //}
-    //// Handle interrupts. This is not error message and assign error code
-    //// to unknown
-    //// Interrupts are state transition indicators but not real error message
-    //else if (sErrInfo.m_ucErrType == ERROR_INTERRUPT)
-    //{
-    //    // Use Channel ID as High Byte of WPARAM
-    //    usErrorID = ERROR_UNKNOWN;
-    //}
-    //else
-    //{
-    //    usErrorID = sErrInfo.m_ucErrType;
-    //}
-
-    return usErrorID;
+    return 0;
 }
 
 /******************************************************************************

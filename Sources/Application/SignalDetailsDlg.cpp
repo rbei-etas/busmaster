@@ -1457,7 +1457,8 @@ BOOL CSignalDetailsDlg::ValidateSignalShortName(CString omStrSignalShortName)
     BOOL bValid = FALSE;
     TCHAR buffer[256];
 
-    int nChar,nlen,nChar1;
+    int nChar;
+    int nlen;
 
     _tcscpy(buffer,omStrSignalShortName);
 

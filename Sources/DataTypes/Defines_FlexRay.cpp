@@ -355,7 +355,8 @@ int nGetTypeOfSymbol(int index, CString omString, CString& NumValue )
     NumValue.Format("%d",nResult);
     return index;
 }
-CString tagFormulaCodeVarEx::omGetEnggValue(DWORD dwRawValue)
+
+CString tagFormulaCodeVarEx::omGetEnggValue(DWORD /* dwRawValue */)
 {
     CString omEnggValue = _T("");
     int nLenght = m_omFormula.GetLength();

@@ -1168,22 +1168,10 @@ int CTxMsgManager::nGetSizeOfTxWndConfigData()
     return nTotalByteCount;
 }
 
-void CTxMsgManager::vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize)
+void CTxMsgManager::vGetTxWndConfigData(BYTE * & /* pDesBuffer */, int & /* nBuffSize */)
 {
-    //CTxWndDataStore::ouGetTxWndDataStoreObj().pbyGetConfigData(pDesBuffer, nBuffSize);
-    /*nBuffSize = nGetSizeOfTxWndConfigData();
-    pDesBuffer = new BYTE[nBuffSize];
-    BYTE* pDesBufferTemp = pDesBuffer;
-    int nBlockCount = nGetBlockCount();
-    memcpy(pDesBufferTemp, &nBlockCount, sizeof(nBlockCount));
-    pDesBufferTemp += sizeof(nBlockCount);
-    PSTXMSG psTxMsg     = m_psTxMsgBlockList;
-    while (nullptr != psTxMsg)
-    {
-        pDesBufferTemp = psTxMsg->pbGetBlockConfigData(pDesBufferTemp);
-        psTxMsg = psTxMsg->m_psNextTxMsgInfo;
-    }*/
 }
+
 void CTxMsgManager::vGetTxWndConfigData(xmlNodePtr pxmlNodePtr)
 {
     CTxWndDataStore::ouGetTxWndDataStoreObj().pbyGetConfigData(pxmlNodePtr);
