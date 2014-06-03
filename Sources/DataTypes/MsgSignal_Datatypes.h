@@ -510,8 +510,8 @@ int nGetFrameDataSet(CFrameMap& ouDataSet);
 // Clear the repository
 void vCleanFrameDataSet(CFrameMap& ouDataSet);
 
-struct SIGNAL_STRUCT;
-struct FRAME_STRUCT;
+class SIGNAL_STRUCT;
+class FRAME_STRUCT;
 
 CString omSearchValueFromCompuBlks(SIGNAL_STRUCT& ouSignal, DWORD dwRawValue);
 std::string omGetEnggValue( SIGNAL_STRUCT& ouSignal, DWORD dwRawValue);

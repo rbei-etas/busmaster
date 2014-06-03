@@ -31,7 +31,6 @@ enum ESYNC
     NONE_TYPE
 };
 
-
 class SIGNAL_STRUCT
 {
 public:
