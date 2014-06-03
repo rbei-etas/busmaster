@@ -67,7 +67,7 @@ public:
     //CExecutefunc
     STHREADINFO m_asUtilThread[defEVENT_TOTAL-defOFFSET_TXMSG];
     CEvent m_aomState[defEVENT_TOTAL];
-    VOID vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode);
+    void vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode);
     void GetLoadedConfigFilename(CString& roStrCfgFile);
     bool bReadFromRegistry(HKEY hRootKey, CString strSubKey, CString strName,  DWORD dwType, CString& strValue , DWORD& dwValue);
     //INT nNewConfiguration(CString omStrFilename);

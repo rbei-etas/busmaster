@@ -65,9 +65,9 @@ public:
     HRESULT ValidateEntity(CString& omStrResult);
     HRESULT UpdateTestSetup();
     UINT GetSubEntryCount();
-    VOID vInitialise(void);
+    void vInitialise(void);
     BOOL FormatDOMDocument(MSXML2::IXMLDOMDocumentPtr pDoc, CString& omstrFilePath);
-    VOID SetHeaderData(const CTestSetupHeader& ouHeaderTS);
+    void SetHeaderData(const CTestSetupHeader& ouHeaderTS);
     void vDeleteAllSubMessages();
     virtual ~CTestSetupEntity(void);
 protected:

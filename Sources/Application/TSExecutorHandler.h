@@ -32,7 +32,7 @@ public:
     TSExecutorHandler(void);
     virtual ~TSExecutorHandler(void);
     void vLoadTSExecutor_DLL();
-    void vShowTSExecutorWindow(VOID* pParentWnd);
+    void vShowTSExecutorWindow(void* pParentWnd);
     void vGetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize);
     void vGetConfigurationData(xmlNodePtr& pxmlNodePtr);
     void vSetConfigurationData(BYTE*& pSrcBuffer, UINT& nBuffSize);

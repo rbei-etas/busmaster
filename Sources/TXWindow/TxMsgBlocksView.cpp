@@ -1000,7 +1000,7 @@ void CTxMsgBlocksView::UpdateList(NM_LISTVIEW * /* pNMListView */)
 /*                      and key trigger value editboxs. Moved the code in to  */
 /*                      vSetControlProperties function                        */
 /******************************************************************************/
-VOID CTxMsgBlocksView::vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock)
+void CTxMsgBlocksView::vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock)
 {
     if(psMsgBlock != nullptr )
     {
@@ -1181,7 +1181,7 @@ VOID CTxMsgBlocksView::vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock)
 /*  Modification By  :  Raja N                                                */
 /*  Modification on  :  02.08.2004, Removed Hardcoded values                  */
 /******************************************************************************/
-VOID CTxMsgBlocksView::vUpdateMsgBlockDetials(SMSGBLOCKLIST* psCurrentMsgBlock)
+void CTxMsgBlocksView::vUpdateMsgBlockDetials(SMSGBLOCKLIST* psCurrentMsgBlock)
 {
     UpdateData(TRUE);
     if(psCurrentMsgBlock != nullptr )

@@ -127,7 +127,7 @@ public:
 
     afx_msg void OnTvnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
     virtual BOOL CreateEx(DWORD dwExStyle, LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, LPVOID lpParam = nullptr);
-    VOID vSetTreeCtrlColor(COLORREF omBkColor, COLORREF omTextColor);
-    VOID vGetTreeCtrlColor(COLORREF& omBkColor, COLORREF& omTextColor);
-    VOID vSetDefaultColors();
+    void vSetTreeCtrlColor(COLORREF omBkColor, COLORREF omTextColor);
+    void vGetTreeCtrlColor(COLORREF& omBkColor, COLORREF& omTextColor);
+    void vSetDefaultColors();
 };

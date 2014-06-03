@@ -4742,7 +4742,7 @@ HMODULE CMainFrame::hGetModuleHandle()
                         07.08.2002, changed the prototype of function to set
                         the DLL name which will be use
 ******************************************************************************/
-VOID CMainFrame::vSetModuleHandleAndDLLName(HMODULE hModuleHandle, CString& omStrDLLName)
+void CMainFrame::vSetModuleHandleAndDLLName(HMODULE hModuleHandle, CString& omStrDLLName)
 {
     m_hModuleHandle      = hModuleHandle;
     //   m_omStrPrevLoadedDll = omStrDLLName;
@@ -9996,7 +9996,7 @@ void CMainFrame::OnFilePropeties()
 
          }*/
 
-        /*  theApp.bGetData( MRU_DLL_FILE_NAME, (VOID**)&pomStrFileName );
+        /*  theApp.bGetData( MRU_DLL_FILE_NAME, (void**)&pomStrFileName );
           // IF success
           if( pomStrFileName != nullptr )
           {
@@ -10007,7 +10007,7 @@ void CMainFrame::OnFilePropeties()
                   omStrFomat = *pomStrFileName;
               }
               // Clear the memory allocated to get DLL file name
-              theApp.vRelease(MRU_DLL_FILE_NAME,(VOID**)&pomStrFileName);
+              theApp.vRelease(MRU_DLL_FILE_NAME,(void**)&pomStrFileName);
           }*/
         /*else
          {
@@ -11451,7 +11451,7 @@ void CMainFrame::OnEnableTimeStampButton()
  Modifications  :   Raja N on 26.04.2005, Modified code refer new Tx window
                     pointer to post database import message
 ******************************************************************************/
-VOID CMainFrame::vPostMsgToSendMsgDlg(ETYPE_BUS eBus)
+void CMainFrame::vPostMsgToSendMsgDlg(ETYPE_BUS eBus)
 {
     // Send a message to Tx Window to update the database messages.
     switch (eBus)
@@ -11501,7 +11501,7 @@ VOID CMainFrame::vPostMsgToSendMsgDlg(ETYPE_BUS eBus)
                     26.04.2005, Modified to refer CTxMsgManager class for
                     clearing global Tx list memory
 ******************************************************************************/
-VOID CMainFrame::vDeleteGlobalTxMemory()
+void CMainFrame::vDeleteGlobalTxMemory()
 {
     // Delete global memory alloted for Tx List
     //m_podTxMsgManager->vDeleteGlobalTxMemory();
@@ -11525,7 +11525,7 @@ VOID CMainFrame::vDeleteGlobalTxMemory()
                     26.04.2005, Modified to refer CTxMsgManager class for
                     assigning global Tx list memory
 ******************************************************************************/
-VOID CMainFrame::vAssignMsgBlockList()
+void CMainFrame::vAssignMsgBlockList()
 {
     //m_podTxMsgManager->vAssignMsgBlockList();
     m_objTxHandler.vAssignMsgBlockList();

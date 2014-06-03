@@ -126,7 +126,7 @@ void CFFListCtrl::OnPaint()
  Date Created   :   23.06.2004
  Modification   :
 ******************************************************************************/
-VOID CFFListCtrl::vInitMemDCRect()
+void CFFListCtrl::vInitMemDCRect()
 {
     // Get the screen rectangle
     GetClientRect(&m_rectClient);

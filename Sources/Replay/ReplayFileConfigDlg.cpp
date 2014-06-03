@@ -151,7 +151,7 @@ BOOL CReplayFileConfigDlg::bCreateImageList()
 /**
  * To create replay file list control with required columns
  */
-VOID CReplayFileConfigDlg::vCreateReplayFileList()
+void CReplayFileConfigDlg::vCreateReplayFileList()
 {
     // Insert Log File Name Column
     m_omLstcReplayFiles.InsertColumn(0, _(defSTR_REPLAY_FILE_COL_NAME) );
@@ -176,7 +176,7 @@ VOID CReplayFileConfigDlg::vCreateReplayFileList()
  * Create replay components. There is no component now which
  * requires creation. For future usage.
  */
-VOID CReplayFileConfigDlg::vCreateReplayCopms()
+void CReplayFileConfigDlg::vCreateReplayCopms()
 {
     // To do any creation
 }
@@ -184,7 +184,7 @@ VOID CReplayFileConfigDlg::vCreateReplayCopms()
 /**
  * To initialise replay details UI components
  */
-VOID CReplayFileConfigDlg::vInitReplayCopms()
+void CReplayFileConfigDlg::vInitReplayCopms()
 {
     // Update Message Delay Edit box
     m_omEditMsgDelay.vSetSigned( FALSE );
@@ -198,7 +198,7 @@ VOID CReplayFileConfigDlg::vInitReplayCopms()
 /**
  * To initialise replay list UI control with the list of replay files
  */
-VOID CReplayFileConfigDlg::vInitReplayFileList()
+void CReplayFileConfigDlg::vInitReplayFileList()
 {
     // Get the list of files and populate the list control
     // Switch off update
@@ -228,7 +228,7 @@ VOID CReplayFileConfigDlg::vInitReplayFileList()
  * To update UI controls with respection to selection and other
  * related conditions
  */
-VOID CReplayFileConfigDlg::vEnableDisableButtons()
+void CReplayFileConfigDlg::vEnableDisableButtons()
 {
     // Get the list item count
     int nSize = m_omLstcReplayFiles.GetItemCount();
@@ -242,10 +242,12 @@ VOID CReplayFileConfigDlg::vEnableDisableButtons()
         pWnd->EnableWindow( bEnable );
     }
 }
-VOID CReplayFileConfigDlg::vUpdateReplayMsgType()
+
+void CReplayFileConfigDlg::vUpdateReplayMsgType()
 {
     //switch(m_ouRepl
 }
+
 /**
  * This function will be called wher user clicks the list
  * control. This will update the selection will set the
@@ -338,7 +340,7 @@ void CReplayFileConfigDlg::OnItemchangedListRepalyFiles( NMHDR* pNMHDR,
  * Update the replay information in the UI with the replay file
  * pointed by the index
  */
-VOID CReplayFileConfigDlg::vUpdateReplayFileDetails( int nSelectedIndex )
+void CReplayFileConfigDlg::vUpdateReplayFileDetails( int nSelectedIndex )
 {
     // Check for valid index
     if( nSelectedIndex != -1 &&
@@ -357,7 +359,7 @@ VOID CReplayFileConfigDlg::vUpdateReplayFileDetails( int nSelectedIndex )
  *
  * Updates UI with the information given by rouFile.
  */
-VOID CReplayFileConfigDlg::vUpdateReplayFileComps( const CReplayFile& rouFile )
+void CReplayFileConfigDlg::vUpdateReplayFileComps( const CReplayFile& rouFile )
 {
     // File Path
     m_omEditReplayFileName.SetWindowText( rouFile.m_omStrFileName );
@@ -706,7 +708,7 @@ void CReplayFileConfigDlg::OnBtnDeleteFile()
  *
  * To enable/disable replay UI components
  */
-VOID CReplayFileConfigDlg::vEnableReplayComps( BOOL bEnable )
+void CReplayFileConfigDlg::vEnableReplayComps( BOOL bEnable )
 {
     // File Name
     m_omEditReplayFileName.EnableWindow( bEnable );

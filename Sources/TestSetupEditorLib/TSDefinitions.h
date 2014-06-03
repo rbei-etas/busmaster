@@ -147,7 +147,7 @@ public:
 
     SInfo();
     virtual ~SInfo();
-    VOID vInitialise(CString omCategory = CString(""), CString omValue=CString(""));
+    void vInitialise(CString omCategory = CString(""), CString omValue=CString(""));
 };
 
 
@@ -159,5 +159,5 @@ public:
     eTIME_MODE m_eTimeMode;
     SReportFile();
     virtual ~SReportFile();
-    VOID vInitialise(eTYPE_REPORT eType = TXT, CString omPath = CString(""), eTIME_MODE eTimeMode = ABS);
+    void vInitialise(eTYPE_REPORT eType = TXT, CString omPath = CString(""), eTIME_MODE eTimeMode = ABS);
 };

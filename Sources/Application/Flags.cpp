@@ -285,7 +285,7 @@ CFlags::~CFlags()
 /*  Modification By  :  Raja N                                                */
 /*  Modifications on :  03.08.2004,Added default case statement               */
 /******************************************************************************/
-VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
+void CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
 {
     m_omCriticalSec.Lock();
 
@@ -513,7 +513,7 @@ VOID CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
     }
     m_omCriticalSec.Unlock();
 }
-VOID CFlags::vSetFlagStatus(eFLEXRAYMONITORFLAG eWhichFlag, INT nValue)
+void CFlags::vSetFlagStatus(eFLEXRAYMONITORFLAG eWhichFlag, INT nValue)
 {
     m_omCriticalSecFlex.Lock();
     switch( eWhichFlag )

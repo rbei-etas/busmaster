@@ -28,7 +28,7 @@ BOOL bGetMsgInfoFromMsgStr(CONST CString& omSendMsgLine,
                            PSTCANDATA  psReplayData,
                            BOOL bHexON);
 // convert a string into bytearray data after replacing spaces between the bytes
-VOID vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
+void vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
                          CHAR* pctempBuf,
                          BOOL bHexON);
 

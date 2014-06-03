@@ -36,7 +36,7 @@ public:
     void vLoadTx_DLL();
     void vBusStatusChanged(ETYPE_BUS eBusType, ESTATUS_BUS eBusStatus);
     void vSetMsgDBPtrInDetailsView(void* pMsgDB);
-    void vShowConfigureMsgWindow(VOID* pParentWnd, ETYPE_BUS eBUS);
+    void vShowConfigureMsgWindow(void* pParentWnd, ETYPE_BUS eBUS);
     void vSetClientID(ETYPE_BUS eBusType, DWORD dwClientID);
     void vSetDILInterfacePtr(ETYPE_BUS eBusType, void*);
     void vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam);

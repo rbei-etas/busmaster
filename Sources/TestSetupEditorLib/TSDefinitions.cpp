@@ -69,7 +69,7 @@ SInfo::~SInfo()
 /******************************************************************************
 Function Name  :  vInitialise
 Input(s)       :
-Output         :  VOID
+Output         :  void
 Functionality  :
 Member of      :  SInfo
 Friend of      :  -
@@ -78,7 +78,7 @@ Date Created   :  14/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-VOID SInfo::vInitialise(CString omCategory, CString omValue)
+void SInfo::vInitialise(CString omCategory, CString omValue)
 {
     m_omCategory = omCategory;
     m_omValue = omValue;
@@ -139,7 +139,7 @@ SReportFile::~SReportFile()
 /******************************************************************************
 Function Name  :  vInitialise
 Input(s)       :
-Output         :  VOID
+Output         :  void
 Functionality  :
 Member of      :  SReportFile
 Friend of      :  -
@@ -148,7 +148,7 @@ Date Created   :  14/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-VOID SReportFile::vInitialise(eTYPE_REPORT eType, CString omPath, eTIME_MODE eTimeMode)
+void SReportFile::vInitialise(eTYPE_REPORT eType, CString omPath, eTIME_MODE eTimeMode)
 {
     m_eType = eType;
     m_eTimeMode = eTimeMode;

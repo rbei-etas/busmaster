@@ -20,7 +20,7 @@
 #include <windows.h>
 #else
 #include <semaphore.h>
-typedef void VOID;
+typedef void void;
 typedef char CHAR;
 typedef unsigned long DWORD;
 typedef unsigned char UCHAR;
@@ -191,7 +191,7 @@ extern "C" {
     // The return value is one of VSCAN_STATUS
     VSCAN_STATUS VSCAN_Close(VSCAN_HANDLE Handle);
     // The return value is one of VSCAN_STATUS
-    VSCAN_STATUS VSCAN_Ioctl(VSCAN_HANDLE Handle, DWORD Ioctl, VOID* Param);
+    VSCAN_STATUS VSCAN_Ioctl(VSCAN_HANDLE Handle, DWORD Ioctl, void* Param);
     // The return value is one of VSCAN_STATUS
     VSCAN_STATUS VSCAN_Flush(VSCAN_HANDLE Handle);
     // The return value is one of VSCAN_STATUS
@@ -205,7 +205,7 @@ extern "C" {
     VSCAN_STATUS VSCAN_SetRcvEvent(VSCAN_HANDLE Handle, sem_t* Event);
 #endif
     // No return value for this function
-    VOID VSCAN_GetErrorString(VSCAN_STATUS Status, CHAR* String, DWORD MaxLen);
+    void VSCAN_GetErrorString(VSCAN_STATUS Status, CHAR* String, DWORD MaxLen);
 
 #ifdef __cplusplus
 }

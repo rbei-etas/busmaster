@@ -68,7 +68,7 @@ BOOL bGetMsgData(UINT unMsgIndex,
                  PSENDMULTIMSGINFO psSendMultipleMsgInfo);
 
 
-VOID vProcessTimerCallBack(UINT unIndex, APPTIMERPOINTER pFTimerCallback);
+void vProcessTimerCallBack(UINT unIndex, APPTIMERPOINTER pFTimerCallback);
 // protoype of the Key Handler thread function
 UINT unKeyHandlerProc(LPVOID pParam);
 

@@ -36,7 +36,7 @@ public:
     void vLoadTx_DLL();
 
     void vSetMsgDBPtrInDetailsView(void* pMsgDB);
-    void vShowConfigureMsgWindow(VOID* pParentWnd);
+    void vShowConfigureMsgWindow(void* pParentWnd);
     void vSetClientID(DWORD dwClientID);
     void vSetDILInterfacePtr(void* ptrDILIntrf);
     void vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam);

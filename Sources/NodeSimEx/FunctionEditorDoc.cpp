@@ -1264,7 +1264,7 @@ int CFunctionEditorDoc::ReadString(const LPSTR lpBuffer, UINT unSize, LPSTR lpsz
 /*  Function Name    :  OnCloseDocument                                       */
 /*                                                                            */
 /*  Input(s)         :
-/*  Output           :  VOID                                                  */
+/*  Output           :  void                                                  */
 /*  Functionality    :  Initialises the filename to CMainFrame mem var
                         Deletes Unions.h file if found
 /*  Member of        :  CFunctionEditorDoc

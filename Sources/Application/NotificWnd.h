@@ -84,7 +84,7 @@ private:
     // Set the content of list box.
     void vSaveWinStatus(WINDOWPLACEMENT sWinCurrStatus);
     void vGetWinStatus(WINDOWPLACEMENT& sWinCurrStatus);
-    VOID vSetWindowFont();
+    void vSetWindowFont();
     CFont m_omNewFont;
     CSize m_omSizeMaxTxtExtent;
     CNotificListbox m_omListBox;

@@ -357,7 +357,7 @@ BOOL CExecuteFunc::bInitStruct(CStringArray& omErrorArray)
 /*  Date Created     :  28.02.2002                                            */
 /******************************************************************************/
 
-VOID CExecuteFunc::vExecuteOnPGNHandler(void* pRxMsg)
+void CExecuteFunc::vExecuteOnPGNHandler(void* pRxMsg)
 {
     VALIDATE_POINTER_RETURN_VOID(pRxMsg);
 
@@ -443,7 +443,7 @@ VOID CExecuteFunc::vExecuteOnPGNHandler(void* pRxMsg)
 /*  Date Created     :  28.02.2002                                            */
 /******************************************************************************/
 
-VOID CExecuteFunc::vExecuteOnMessageHandlerCAN(STCAN_TIME_MSG sRxMsgInfo)
+void CExecuteFunc::vExecuteOnMessageHandlerCAN(STCAN_TIME_MSG sRxMsgInfo)
 {
     SEXECUTE_MSG_HANDLER_CAN sExecuteMsgHandler;
     memcpy(&sExecuteMsgHandler.m_sRxMsg, &sRxMsgInfo, sizeof (sRxMsgInfo));
@@ -539,7 +539,7 @@ VOID CExecuteFunc::vExecuteOnMessageHandlerCAN(STCAN_TIME_MSG sRxMsgInfo)
 /*  Date Created     :  28.10.2013                                            */
 /******************************************************************************/
 
-VOID CExecuteFunc::vExecuteOnMessageHandlerLIN(STLIN_TIME_MSG sRxMsgInfo)
+void CExecuteFunc::vExecuteOnMessageHandlerLIN(STLIN_TIME_MSG sRxMsgInfo)
 {
     sEXECUTE_MSG_HANDLER_LIN sExecuteMsgHandler;
     memcpy(&sExecuteMsgHandler.m_sRxMsg, &sRxMsgInfo, sizeof (sRxMsgInfo));
@@ -643,7 +643,7 @@ VOID CExecuteFunc::vExecuteOnMessageHandlerLIN(STLIN_TIME_MSG sRxMsgInfo)
 /*  Modification on  :  03.01.2003,Key hadler count unKeyHandlerCount was not */
 /*                      initialised to number of key handlers. Corrected.     */
 /******************************************************************************/
-VOID CExecuteFunc::vExecuteOnKeyHandler(UCHAR ucKey)
+void CExecuteFunc::vExecuteOnKeyHandler(UCHAR ucKey)
 {
     UINT unKeyHandlerCount   = 0;
     BOOL bKeyHandlerExecuted = FALSE;
@@ -738,7 +738,7 @@ VOID CExecuteFunc::vExecuteOnKeyHandler(UCHAR ucKey)
 /*  Modification By  :                                                        */
 /*  Modification on  :                                                        */
 /******************************************************************************/
-VOID CExecuteFunc::vExecuteOnErrorHandler(eERROR_STATE eErrorCode,SCAN_ERR sErrorVal)
+void CExecuteFunc::vExecuteOnErrorHandler(eERROR_STATE eErrorCode,SCAN_ERR sErrorVal)
 {
     UINT unErrorHandlerCount   = 0;
     BOOL bErrorHandlerExecuted = FALSE;
@@ -875,16 +875,17 @@ void CExecuteFunc::vExecuteOnErrorHandlerLIN( SERROR_INFO_LIN ouLinEventInfo )
 
 }
 
-VOID CExecuteFunc::vExecuteOnDataConfHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess)
+void CExecuteFunc::vExecuteOnDataConfHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess)
 {
     vExecuteOnEventHandlerJ1939(unPGN, bySrc, byDest, bSuccess, 0x0);
 }
 
 /* Executes address claim event */
-VOID CExecuteFunc::vExecuteOnAddressClaimHandlerJ1939(BYTE byAddress)
+void CExecuteFunc::vExecuteOnAddressClaimHandlerJ1939(BYTE byAddress)
 {
     vExecuteOnEventHandlerJ1939(0, byAddress, 0, 0, 0x1);
 }
+
 /******************************************************************************/
 /*  Function Name    :  vExecuteOnDLLHandler                                  */
 /*  Input(s)         :  DLL Handler                                           */
@@ -902,7 +903,7 @@ VOID CExecuteFunc::vExecuteOnAddressClaimHandlerJ1939(BYTE byAddress)
 /*                     the thread for executing unload handler so that  it    */
 /*                     will be executed at the time of closing the application*/
 /******************************************************************************/
-VOID CExecuteFunc::vExecuteOnDLLHandler(eDLLHANDLER eDLLHandler)
+void CExecuteFunc::vExecuteOnDLLHandler(eDLLHANDLER eDLLHandler)
 {
     UINT unDLLHandlerCount     = 0;
     BOOL bDLLHandlerExecuted   = FALSE;
@@ -985,7 +986,7 @@ VOID CExecuteFunc::vExecuteOnDLLHandler(eDLLHANDLER eDLLHandler)
     }
 }
 
-VOID CExecuteFunc::vExecuteOnBusEventHandler(eBUSEVEHANDLER eBusEventHandler)
+void CExecuteFunc::vExecuteOnBusEventHandler(eBUSEVEHANDLER eBusEventHandler)
 {
     UINT unDLLHandlerCount = 0;
     UINT unBusEventCount = 0;
@@ -3294,7 +3295,7 @@ BOOL CExecuteFunc::bGetFlagStatus(eNODEFLAG eWhichFlag)
     Date Created     :  16.12.05
 ****************************************************************************************/
 
-VOID CExecuteFunc::vDestroyUtilityThreads(UINT unMaxWaitTime, BYTE byThreadCode)
+void CExecuteFunc::vDestroyUtilityThreads(UINT unMaxWaitTime, BYTE byThreadCode)
 {
     DWORD dwResult = WAIT_ABANDONED;
 

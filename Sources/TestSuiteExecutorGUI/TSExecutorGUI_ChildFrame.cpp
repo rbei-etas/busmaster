@@ -311,7 +311,7 @@ HRESULT CTSExecutorChildFrame::OnAddTestSetup(WPARAM wparam, LPARAM lparam)
 Function Name  :  vEnableItem
 Input(s)       :  DWORD dwID - ID of Item
                   BOOL& bEnable - Enable Flag
-Output         :  VOID
+Output         :  void
 Functionality  :  Enables or Disables the entity execution according to bEnable
 Member of      :  CTSExecutorChildFrame
 Friend of      :  -
@@ -656,7 +656,7 @@ HRESULT CTSExecutorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
 /******************************************************************************
 Function Name  :  vInitialise
 Input(s)       :  -
-Output         :  VOID
+Output         :  void
 Functionality  :  Initialises the Executor
 Member of      :  CTSExecutorChildFrame
 Friend of      :  -
@@ -665,7 +665,7 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :  CS043
 ******************************************************************************/
-VOID CTSExecutorChildFrame::vInitialise(void)
+void CTSExecutorChildFrame::vInitialise(void)
 {
     m_odTreeView->GetTreeCtrl().DeleteAllItems();
     m_ouTSExecutor.RemoveAllItems();
@@ -681,7 +681,7 @@ VOID CTSExecutorChildFrame::vInitialise(void)
 /******************************************************************************
 Function Name  :  vSetBusStatus
 Input(s)       :  BOOL bConnected
-Output         :  VOID
+Output         :  void
 Functionality  :  Sets The Bus Status
 Member of      :  CTSExecutorChildFrame
 Friend of      :  -
@@ -698,7 +698,7 @@ void CTSExecutorChildFrame::vSetBusStatus(bool bConnected)
 /******************************************************************************
 Function Name  :  vSetBUSMASTERVersionInfo
 Input(s)       :  CString strVersion
-Output         :  VOID
+Output         :  void
 Functionality  :  Sets The Bus Status
 Member of      :  CTSExecutorChildFrame
 Friend of      :  -
@@ -707,7 +707,7 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-VOID CTSExecutorChildFrame::vSetBUSMASTERVersionInfo(CString strVersion)
+void CTSExecutorChildFrame::vSetBUSMASTERVersionInfo(CString strVersion)
 {
     m_strVersionInfo = strVersion;
 }
@@ -761,7 +761,7 @@ UINT CTSExecutorChildFrame::unRepisitonEntry(DWORD dwRepositionItemID, DWORD dwI
 /******************************************************************************
 Function Name  :  vUpdateTreeView
 Input(s)       :
-Output         :  VOID
+Output         :  void
 Functionality  :
 Member of      :  CTSExecutorChildFrame
 Friend of      :  -
@@ -770,7 +770,7 @@ Date Created   :  11/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-VOID CTSExecutorChildFrame::vUpdateTreeView(void)
+void CTSExecutorChildFrame::vUpdateTreeView(void)
 {
 
     INT nCount;

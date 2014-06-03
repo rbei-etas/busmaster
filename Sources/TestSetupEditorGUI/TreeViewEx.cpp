@@ -452,7 +452,7 @@ Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
 Modifications  :
 ******************************************************************************/
-void CTreeViewEx::DragEnd(VOID)
+void CTreeViewEx::DragEnd(void)
 {
     eTYPE_DROPPING eDropping;
     HTREEITEM hDroppingItem = GetDropItem(eDropping);
@@ -1443,7 +1443,7 @@ void CTreeViewEx::vOnDeleteItem()
 /******************************************************************************
 Function Name  :  vSetTreeCtrlColor
 Input(s)       :
-Output         :  VOID
+Output         :  void
 Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
@@ -1451,7 +1451,7 @@ Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
 Modifications  :
 ******************************************************************************/
-VOID CTreeViewEx::vSetTreeCtrlColor(COLORREF omBkColor, COLORREF omTextColor)
+void CTreeViewEx::vSetTreeCtrlColor(COLORREF omBkColor, COLORREF omTextColor)
 {
     m_omBkColor = omBkColor;
     m_omTextColor = omTextColor;
@@ -1464,7 +1464,7 @@ VOID CTreeViewEx::vSetTreeCtrlColor(COLORREF omBkColor, COLORREF omTextColor)
 /******************************************************************************
 Function Name  :  vGetTreeCtrlColor
 Input(s)       :
-Output         :  VOID
+Output         :  void
 Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
@@ -1472,7 +1472,7 @@ Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
 Modifications  :
 ******************************************************************************/
-VOID CTreeViewEx::vGetTreeCtrlColor(COLORREF& omBkColor, COLORREF& omTextColor)
+void CTreeViewEx::vGetTreeCtrlColor(COLORREF& omBkColor, COLORREF& omTextColor)
 {
     omBkColor = m_omBkColor;
     omTextColor = m_omTextColor;
@@ -1481,7 +1481,7 @@ VOID CTreeViewEx::vGetTreeCtrlColor(COLORREF& omBkColor, COLORREF& omTextColor)
 /******************************************************************************
 Function Name  :  vSetDefaultColors
 Input(s)       :
-Output         :  VOID
+Output         :  void
 Functionality  :
 Member of      :  CTreeViewEx
 Friend of      :  -
@@ -1489,7 +1489,7 @@ Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
 Modifications  :
 ******************************************************************************/
-VOID CTreeViewEx::vSetDefaultColors()
+void CTreeViewEx::vSetDefaultColors()
 {
     m_omBkColor = def_COLOR_TREE_BKG;
     m_omTextColor = def_COLOR_TREE_TEXT;

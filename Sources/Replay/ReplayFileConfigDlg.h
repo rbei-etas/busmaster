@@ -82,24 +82,23 @@ private:
     // To Create Image Lists used in this dialog
     BOOL bCreateImageList();
     // To create Replay UI List
-    VOID vCreateReplayFileList();
+    void vCreateReplayFileList();
     // To create Replay UI Components
-    VOID vCreateReplayCopms();
+    void vCreateReplayCopms();
     // To Initialise Replay UI Components
-    VOID vInitReplayCopms();
+    void vInitReplayCopms();
     // To Initialise Replay UI List
-    VOID vInitReplayFileList();
+    void vInitReplayFileList();
     // To Update Buttons Status
-    VOID vEnableDisableButtons();
+    void vEnableDisableButtons();
     // To update selected filter details
-    VOID vUpdateReplayFileDetails( int nSelectedItem );
+    void vUpdateReplayFileDetails( int nSelectedItem );
     // To update Replay Components withthe passed replay file details
-    VOID vUpdateReplayFileComps( const CReplayFile& rouFile );
+    void vUpdateReplayFileComps( const CReplayFile& rouFile );
     // Enable/Disable Replay File Components
-    VOID vEnableReplayComps( BOOL bEnable );
+    void vEnableReplayComps( BOOL bEnable );
     //Update Replay Msg Type
-    VOID vUpdateReplayMsgType();
-
+    void vUpdateReplayMsgType();
 
 private:
     // Members

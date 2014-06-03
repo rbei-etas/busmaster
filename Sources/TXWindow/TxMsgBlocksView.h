@@ -86,11 +86,11 @@ public:
     SMSGBLOCKLIST* psGetMsgBlockPointer(INT nIndexCurBlock,
                                         SMSGBLOCKLIST* psMsgBlockList);
     // To update given block information in the UI
-    VOID vUpdateMsgBlockDetials(SMSGBLOCKLIST* psCurrentMsgBlock);
+    void vUpdateMsgBlockDetials(SMSGBLOCKLIST* psCurrentMsgBlock);
     // To enable or disable list of controls
     void vEnableControls(BOOL bEnable);
     // To display given message block information in UI
-    VOID vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock);
+    void vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock);
     // To set control properties like limit text, base etc.
     void vSetControlProperties();
     //Updates the contents of listview to list

@@ -181,8 +181,8 @@ void newFuncName( )\n{\n\n}"
 #define defMAX_TEXT_ACCEPTANCE  2
 #define EXPORTS     "EXPORTS"
 
-typedef VOID (*MSGFNPTR)(unsigned short, unsigned char, unsigned char*);
-typedef VOID (*TIMERFNPTR)();
+typedef void (*MSGFNPTR)(unsigned short, unsigned char, unsigned char*);
+typedef void (*TIMERFNPTR)();
 //For an integer list
 typedef CList<int,int>      defomIntegerList;
 

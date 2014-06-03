@@ -241,9 +241,9 @@ public:
     void vEmptySimsysList();
 
     BOOL bAllocateMemoryForGlobalTxList();
-    VOID vAssignMsgBlockList();
-    VOID vDeleteGlobalTxMemory();
-    VOID vPostMsgToSendMsgDlg(ETYPE_BUS eBus);
+    void vAssignMsgBlockList();
+    void vDeleteGlobalTxMemory();
+    void vPostMsgToSendMsgDlg(ETYPE_BUS eBus);
     void vCreateMRU_Menus();
 
     bool bWriteIntoRegistry(HKEY hRootKey, CString strSubKey, CString strName,  BYTE bytType, CString strValue = "" , DWORD dwValue = 0);
@@ -254,7 +254,7 @@ public:
     sSIGNALS* poGetSignalPointer( BOOL, const UINT& unMsgID,
                                   const CString& omStrSignalName);
 
-    VOID vSetMessageData(BYTE*  pbMessageData);
+    void vSetMessageData(BYTE*  pbMessageData);
     // Creates message window
     BOOL bCreateMsgWindow(void);
     BOOL bCreateFlexRayMsgWindow();
@@ -281,7 +281,7 @@ public:
     // Return module handle
     HMODULE hGetModuleHandle();
     // Set module handle
-    VOID vSetModuleHandleAndDLLName(HMODULE hModuleHandle, CString& omStrDLLName);
+    void vSetModuleHandleAndDLLName(HMODULE hModuleHandle, CString& omStrDLLName);
     // Convert string in hex to integer
     __int64 nConvertStringToInt( CString omStrHexNo);
     // Set pointer to CMsgSgDetView class
@@ -646,7 +646,7 @@ private:
 
     BOOL m_bMsgHandlerRxDataByte;
     BOOL m_bAbortMsgHandler;
-    //   VOID vInitialiseInterfaceFunctionPointers();
+    //   void vInitialiseInterfaceFunctionPointers();
     // To apply window postion from configuration module
     void vRestoreWindowPostion();
     // To find state transtition

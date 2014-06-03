@@ -185,7 +185,7 @@ BOOL CMsgFilterConfigPage::bCreateImageList()
   Date Created   : 8.7.2005
   Modifications  :
 *******************************************************************************/
-VOID CMsgFilterConfigPage::vCreateFilterUIList()
+void CMsgFilterConfigPage::vCreateFilterUIList()
 {
     // Create One Colunm "Filter Name"
     m_omLstcFilterList.InsertColumn(0, _(defSTR_FILTER_NAME_COLUMN) );
@@ -214,7 +214,7 @@ VOID CMsgFilterConfigPage::vCreateFilterUIList()
   Date Created   : 8.7.2005
   Modifications  :
 *******************************************************************************/
-VOID CMsgFilterConfigPage::vInitFilterDataList()
+void CMsgFilterConfigPage::vInitFilterDataList()
 {
 #if 0
     // Get the data from config module and update local list
@@ -234,7 +234,7 @@ VOID CMsgFilterConfigPage::vInitFilterDataList()
   Date Created   : 8.7.2005
   Modifications  :
 *******************************************************************************/
-VOID CMsgFilterConfigPage::vInitFilterUIList()
+void CMsgFilterConfigPage::vInitFilterUIList()
 {
     // Insert items in to the list
     UINT nSize = m_sFilterAppliedCan.m_ushTotal;
@@ -263,7 +263,7 @@ VOID CMsgFilterConfigPage::vInitFilterUIList()
   Date Created   : 8.7.2005
   Modifications  :
 *******************************************************************************/
-VOID CMsgFilterConfigPage::vUpdateDataFromUI()
+void CMsgFilterConfigPage::vUpdateDataFromUI()
 {
     // Update List from UI
     int nSize = m_omLstcFilterList.GetItemCount();

@@ -48,7 +48,7 @@ private:
     DWORD dwConvertShortPathName(CONST CString& omStrToConvert,
                                  char* pcStrShortPath);
     // Create output window
-    VOID vCreateOutputWindow();
+    void vCreateOutputWindow();
     // Get strings from file and add it to string array
     BOOL bAddStrToArrayFromFile (CString& omStrTextFileName,
                                  CStringArray& omStrArray );

@@ -820,7 +820,7 @@ BOOL CBuildProgram::bAddString(CStringArray& omStrArray)
 /*  Modified On      :  18.04.2003, new member function  bCreateOutputWindow  */
 /*                                  of COutWnd class is called to create it.  */
 /******************************************************************************/
-VOID CBuildProgram::vCreateOutputWindow()
+void CBuildProgram::vCreateOutputWindow()
 {
     m_podOutWnd = new COutWnd(m_eBus);
     // check pointer is not nullptr.
@@ -829,6 +829,7 @@ VOID CBuildProgram::vCreateOutputWindow()
         m_podOutWnd->bCreateOutputWindow();
     }
 }
+
 /******************************************************************************/
 /*  Function Name    :  dwConvertShortPathName                                */
 /*  Input(s)         :  String to be converted,String buffer to store         */

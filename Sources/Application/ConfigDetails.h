@@ -235,8 +235,8 @@ private:
 
     // To Initialise graph parameters after configuration load/create
     void vInitGraphParamenters();
-    VOID vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails);
-    VOID vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList);
+    void vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails);
+    void vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList);
 
 
     /*    // compute the check for a buffer pass as parameter

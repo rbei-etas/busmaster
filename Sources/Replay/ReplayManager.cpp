@@ -160,7 +160,7 @@ DWORD CReplayManager::dShowReplayConfigurationDlg(const SFILTERAPPLIED_CAN* psFi
   Date Created   : 16.7.2005
   Modifications  :
 *******************************************************************************/
-VOID CReplayManager::vInitReplayManager()
+void CReplayManager::vInitReplayManager()
 {
     // Clear all entries in the list
     m_omReplayFiles.RemoveAll();
@@ -184,7 +184,7 @@ VOID CReplayManager::vInitReplayManager()
   Date Created   : 16.7.2005
   Modifications  :
 *******************************************************************************/
-VOID CReplayManager::vShowInteractiveReplayWindows()
+void CReplayManager::vShowInteractiveReplayWindows()
 {
     // Get the number of replay files in the list
     int nSize = (int)m_omReplayFiles.GetSize();
@@ -218,7 +218,7 @@ VOID CReplayManager::vShowInteractiveReplayWindows()
   Date Created   : 16.7.2005
   Modifications  :
 *******************************************************************************/
-VOID CReplayManager::vStartNonInteractiveReplays()
+void CReplayManager::vStartNonInteractiveReplays()
 {
     // Get the replay list size
     int nSize = (int)m_omReplayFiles.GetSize();
@@ -296,7 +296,7 @@ VOID CReplayManager::vStartNonInteractiveReplays()
   Date Created   : 16.7.2005
   Modifications  :
 *******************************************************************************/
-VOID CReplayManager::vSetActiveReplayWindow(CMsgReplayWnd* pomWindow)
+void CReplayManager::vSetActiveReplayWindow(CMsgReplayWnd* pomWindow)
 {
     m_pomActiveWindow = pomWindow;
 }
@@ -311,7 +311,7 @@ VOID CReplayManager::vSetActiveReplayWindow(CMsgReplayWnd* pomWindow)
   Date Created   : 16.7.2005
   Modifications  :
 *******************************************************************************/
-VOID CReplayManager::vCmdStep()
+void CReplayManager::vCmdStep()
 {
     // Pass it to the active window
     if( m_pomActiveWindow != nullptr )
@@ -330,7 +330,7 @@ VOID CReplayManager::vCmdStep()
   Date Created   : 16.7.2005
   Modifications  :
 *******************************************************************************/
-VOID CReplayManager::vCmdSkip()
+void CReplayManager::vCmdSkip()
 {
     // Pass it to the active window
     if( m_pomActiveWindow != nullptr )
@@ -338,6 +338,7 @@ VOID CReplayManager::vCmdSkip()
         m_pomActiveWindow->vCmdSkip();
     }
 }
+
 /*******************************************************************************
   Function Name  : vCmdSkip
   Input(s)       : -
@@ -348,7 +349,7 @@ VOID CReplayManager::vCmdSkip()
   Date Created   : 3.1.2013
   Modifications  :
 *******************************************************************************/
-VOID CReplayManager::vEnableFilters(BOOL bEnabled)
+void CReplayManager::vEnableFilters(BOOL bEnabled)
 {
     UINT nCount = (UINT)m_omReplayProcess.GetSize();
 
@@ -391,7 +392,7 @@ VOID CReplayManager::vEnableFilters(BOOL bEnabled)
   Date Created   : 16.7.2005
   Modifications  :
 *******************************************************************************/
-VOID CReplayManager::vCmdGo()
+void CReplayManager::vCmdGo()
 {
     // Pass it to the active window
     if( m_pomActiveWindow != nullptr )
@@ -410,7 +411,7 @@ VOID CReplayManager::vCmdGo()
   Date Created   : 16.7.2005
   Modifications  :
 *******************************************************************************/
-VOID CReplayManager::vCmdStop()
+void CReplayManager::vCmdStop()
 {
     // Pass it to the active window
     if( m_pomActiveWindow != nullptr )

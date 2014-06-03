@@ -66,13 +66,13 @@ private:
     // To create image list
     BOOL bCreateImageList();
     // To create filter list UI
-    VOID vCreateFilterUIList();
+    void vCreateFilterUIList();
     // To init filter list UI
-    VOID vInitFilterUIList();
+    void vInitFilterUIList();
     // To craete filter data structures
-    VOID vInitFilterDataList();
+    void vInitFilterDataList();
     // To update the filter list with UI changes
-    VOID vUpdateDataFromUI();
+    void vUpdateDataFromUI();
 private:
     // Image list for the filter items
     CImageList m_omImageList;

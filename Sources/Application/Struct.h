@@ -32,14 +32,14 @@
 #include "DataTypes/Filter_DataTypes.h"
 
 // All function prototype is used in function editor.
-typedef VOID (*PFMSG_HANDLER)(STCAN_MSG Rx_Msg);
-typedef VOID (*PFTIMER_HANDLER)();
-typedef VOID (*PFKEY_HANDLER)(UCHAR ucKeyVal);
-typedef VOID (*PFERROR_HANDLER)(SCAN_ERR ErrorMsg);
-typedef VOID (*PFDLL_HANDLER)();
+typedef void (*PFMSG_HANDLER)(STCAN_MSG Rx_Msg);
+typedef void (*PFTIMER_HANDLER)();
+typedef void (*PFKEY_HANDLER)(UCHAR ucKeyVal);
+typedef void (*PFERROR_HANDLER)(SCAN_ERR ErrorMsg);
+typedef void (*PFDLL_HANDLER)();
 typedef BOOL (*PFGET_PRG_VER)(int*,int*,HMODULE);
 // Used is application call back function
-typedef VOID (CALLBACK* APPTIMERPOINTER)(UINT,UINT,DWORD,DWORD,DWORD);
+typedef void (CALLBACK* APPTIMERPOINTER)(UINT,UINT,DWORD,DWORD,DWORD);
 
 // This structure definition is to store a list of simulated systems whose paths have
 // to be stored in the main configuration file.
@@ -188,7 +188,7 @@ typedef SSENDMULTIMSGINFO* PSENDMULTIMSGINFO;
 struct sTHREAD_INFO
 {
     HANDLE m_hThread;
-    VOID*  m_pvThread;
+    void*  m_pvThread;
 };
 
 typedef sTHREAD_INFO  STHREADINFO;

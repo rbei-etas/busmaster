@@ -210,7 +210,7 @@ BOOL CTxMsgManager::s_bDeleteTxMsgManager()
 /*                      and added a CMap search to avoid thread creation again*/
 /*                      for monoshot key block                                */
 /******************************************************************************/
-VOID CTxMsgManager::vStartTransmission(UCHAR ucKeyVal)
+void CTxMsgManager::vStartTransmission(UCHAR ucKeyVal)
 {
     if(m_psTxMsgBlockList != nullptr )
     {
@@ -341,7 +341,7 @@ VOID CTxMsgManager::vStartTransmission(UCHAR ucKeyVal)
     }
 }
 
-VOID CTxMsgManager::vStopTransmission(UINT unMaxWaitTime)
+void CTxMsgManager::vStopTransmission(UINT unMaxWaitTime)
 {
     vSetTxStopFlag(TRUE);
     PSTXMSG psTxMsg = m_psTxMsgBlockList;
@@ -530,7 +530,7 @@ BOOL CTxMsgManager::bAllocateMemoryForGlobalTxList()
 /*  Modification By  :                                                        */
 /*  Modification on  :                                                        */
 /******************************************************************************/
-VOID CTxMsgManager::vAssignMsgBlockList()
+void CTxMsgManager::vAssignMsgBlockList()
 {
     PSMSGBLOCKLIST psMsgBlock = CTxWndDataStore::ouGetTxWndDataStoreObj().psReturnMsgBlockPointer();
     PSTXMSG psTxMsg           = m_psTxMsgBlockList;
@@ -581,7 +581,7 @@ VOID CTxMsgManager::vAssignMsgBlockList()
 /*  Modification on  :  22.07.2004, Removed deletion of CEvent object pointer */
 /*                      as it is changed as member object                     */
 /******************************************************************************/
-VOID CTxMsgManager::vDeleteTxBlockMemory()
+void CTxMsgManager::vDeleteTxBlockMemory()
 {
     if(m_psTxMsgBlockList != nullptr )
     {
@@ -630,7 +630,7 @@ UINT CTxMsgManager::s_unSendSelectedMsg(LPVOID pParam )
     PSTXSELMSGDATA psTxCanMsg = static_cast <PSTXSELMSGDATA> (pParam);
     if(psTxCanMsg != nullptr)
     {
-        s_sUtilThread.m_pvThread = (VOID*)psTxCanMsg;
+        s_sUtilThread.m_pvThread = (void*)psTxCanMsg;
         UINT unIndex = 0;
         while(unIndex < psTxCanMsg->m_unCount && g_bStopSelectedMsgTx == FALSE)
         {

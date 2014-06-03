@@ -85,7 +85,7 @@ CFlags::~CFlags()
 /*  Author(s)        :
 /*  Date Created     :
 /******************************************************************************/
-VOID CFlags::vSetFlagStatus(eSIMSYSFLAG eWhichFlag, INT nValue)
+void CFlags::vSetFlagStatus(eSIMSYSFLAG eWhichFlag, INT nValue)
 {
     m_omCriticalSec.Lock();
 

@@ -1277,7 +1277,7 @@ BOOL CTxMsgListView::bDeleteAllMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock)
 /*  Modification By  :  Raja N                                                */
 /*  Modification on  :  22.07.2004, Updated list with DB message name         */
 /******************************************************************************/
-VOID CTxMsgListView::vUpdateMsgListDisplay(sTXLINMSGDETAILS sMsgDetail,
+void CTxMsgListView::vUpdateMsgListDisplay(sTXLINMSGDETAILS sMsgDetail,
         INT nCurrentIndex)
 {
 

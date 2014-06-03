@@ -4541,7 +4541,7 @@ PSSIMSYSARRAY CConfigDetails::psReturnSimsysArrayPtr()
 /*  Modifications on :  22.07.2004, Added init of mew members                 */
 /******************************************************************************/
 
-VOID CConfigDetails::vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList)
+void CConfigDetails::vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList)
 {
     if (psMsgBlockList != nullptr)
     {
@@ -4570,7 +4570,7 @@ VOID CConfigDetails::vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList)
 /*  Modifications on :                                                        */
 /******************************************************************************/
 
-VOID CConfigDetails::vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails)
+void CConfigDetails::vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails)
 {
     if (psMsgDetails != nullptr)
     {

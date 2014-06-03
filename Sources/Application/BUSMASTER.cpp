@@ -1003,7 +1003,7 @@ void CCANMonitorApp::OnFileNew()
  * function. Any dynamically allocated memory inside thread function
  * is deleted here in case it is not deleted in that function
  */
-VOID CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
+void CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
 {
     DWORD dwResult = WAIT_ABANDONED;
     BYTE bySelectThread = 0;

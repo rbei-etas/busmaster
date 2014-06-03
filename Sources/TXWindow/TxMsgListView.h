@@ -62,7 +62,7 @@ public:
     PSTXCANMSGLIST psGetMsgDetailPointer( INT nIndex,
                                           SMSGBLOCKLIST* psCurrentMsgBlockList);
     // To update list with given details
-    VOID vUpdateMsgListDisplay(sTXCANMSGDETAILS sMsgDetail, INT nCurrentIndex);
+    void vUpdateMsgListDisplay(sTXCANMSGDETAILS sMsgDetail, INT nCurrentIndex);
 
     // Overrides
     // ClassWizard generated virtual function overrides

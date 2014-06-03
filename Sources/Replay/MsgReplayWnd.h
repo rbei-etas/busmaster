@@ -48,10 +48,10 @@ public:
     // Operations
 public:
     // Replay Operations
-    VOID vCmdSkip();
-    VOID vCmdStop();
-    VOID vCmdStep();
-    VOID vCmdGo();
+    void vCmdSkip();
+    void vCmdStop();
+    void vCmdStep();
+    void vCmdGo();
     // UI Update Functions
     BOOL bGetUIStateCmdStep();
     BOOL bGetUIStateCmdSkip();
@@ -96,9 +96,9 @@ protected:
     DECLARE_MESSAGE_MAP()
 private:
     // To set list control font
-    VOID SetWindowFont();
+    void SetWindowFont();
     // To get selected messages indeces
-    VOID vGetSelectedIndeces( CArray<int,int>& omIndexList );
+    void vGetSelectedIndeces( CArray<int,int>& omIndexList );
     // Font for list control
     CFont m_omNewFont;
     // Lixt control with owner data support

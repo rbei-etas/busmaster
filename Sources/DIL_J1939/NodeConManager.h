@@ -82,7 +82,7 @@ private:
     void vTransmitLongData(short sDataLength, BYTE* pbData, CConnectionDet* pConDet);
     INT nIsMsgSentSuccess(UINT32 unExtId, BYTE* pbyData, UINT unNoOfPackets,
                           UINT unLastFrameLen, CConnectionDet* pConDet, UINT unChannel);
-    VOID vSendMsgWithoutAckReq(UCHAR ucFrameLen, BYTE* pFrameData,
+    void vSendMsgWithoutAckReq(UCHAR ucFrameLen, BYTE* pFrameData,
                                UINT unID, UINT unChannel);
     HRESULT SendPackets(UINT32 unExtId, BYTE* pbyData, UINT unActualPackets, UINT nLastFrameLen,
                         CConnectionDet* pConDet, UINT unChannel);

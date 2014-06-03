@@ -73,7 +73,7 @@ CFlags::~CFlags()
 /*  Author(s)        :
 /*  Date Created     :
 /******************************************************************************/
-VOID CFlags::vSetFlagStatus(eTXWNDFLAG eWhichFlag, INT nValue)
+void CFlags::vSetFlagStatus(eTXWNDFLAG eWhichFlag, INT nValue)
 {
     m_omFlagCritSec.Lock();
 

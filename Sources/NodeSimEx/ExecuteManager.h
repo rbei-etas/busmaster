@@ -84,7 +84,7 @@ public:
     void vDestroyTimerDialog();
 
     //On clicking timer handler
-    VOID vSetResetOnTimerHandler(const CStringArray& omSysNode,BOOL bFromSimSys);
+    void vSetResetOnTimerHandler(const CStringArray& omSysNode,BOOL bFromSimSys);
     //deleting all node application is closed
     void vDeleteAllNode();
     //Copy the timer informations from each node to the local memory of

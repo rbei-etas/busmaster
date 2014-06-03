@@ -1558,7 +1558,7 @@ Author(s)      :  Pradeep Kadoor
 Date Created   :  23/11/2010
 Modifications  :
 ******************************************************************************/
-VOID CNodeConManager::vSendMsgWithoutAckReq(UCHAR ucFrameLen, BYTE* pFrameData,
+void CNodeConManager::vSendMsgWithoutAckReq(UCHAR ucFrameLen, BYTE* pFrameData,
         UINT unID, UINT unChannel)
 {
     //BOOL bReturn = FALSE;

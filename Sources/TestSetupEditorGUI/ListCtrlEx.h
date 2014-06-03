@@ -87,9 +87,9 @@ public:
     void vSetUserProgInfo( int nRow, int nColunm,
                            const SUSERPROGINFO& sUSerProgInfo);
 
-    VOID vSetRowColors(COLORREF omcrRow1, COLORREF omcrRow2);
-    VOID vGetRowColors(COLORREF& crRow1, COLORREF& crRow2);
-    VOID vSetDefaultColors();
+    void vSetRowColors(COLORREF omcrRow1, COLORREF omcrRow2);
+    void vGetRowColors(COLORREF& crRow1, COLORREF& crRow2);
+    void vSetDefaultColors();
     // Destructor
     virtual ~CListCtrlEx();
 

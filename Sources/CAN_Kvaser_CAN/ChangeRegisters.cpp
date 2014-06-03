@@ -1600,7 +1600,7 @@ CChangeRegisters::~CChangeRegisters()
     // Clear memory used for getting controller information
     if( m_pControllerDetails != nullptr )
     {
-        //        theApp.vRelease( CONTROLLER_DETAILS, (VOID**)&m_pControllerDetails);
+        //        theApp.vRelease( CONTROLLER_DETAILS, (void**)&m_pControllerDetails);
     }
 }
 

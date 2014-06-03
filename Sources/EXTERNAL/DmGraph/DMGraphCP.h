@@ -23,7 +23,7 @@ class CProxy_IDMGraphCtrlEvents : public IConnectionPointImpl<T, &DIID__IDMGraph
 {
     //Warning this class may be recreated by the wizard.
 public:
-    VOID Fire_CursorPosition(DOUBLE x, DOUBLE y, short shCursorID)
+    void Fire_CursorPosition(DOUBLE x, DOUBLE y, short shCursorID)
     {
         T* pT = static_cast<T*>(this);
         int nConnectionIndex;
@@ -48,7 +48,7 @@ public:
         delete[] pvars;
 
     }
-    VOID Fire_TrackModeChanged(TrackModeState lNewState)
+    void Fire_TrackModeChanged(TrackModeState lNewState)
     {
         T* pT = static_cast<T*>(this);
         int nConnectionIndex;
@@ -71,7 +71,7 @@ public:
         delete[] pvars;
 
     }
-    VOID Fire_Click()
+    void Fire_Click()
     {
         T* pT = static_cast<T*>(this);
         int nConnectionIndex;

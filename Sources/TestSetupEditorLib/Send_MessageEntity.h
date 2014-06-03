@@ -86,7 +86,7 @@ public:
     eTYPE_ENTITY GetEntityType(void);
     virtual ~CSend_MessageEntity(void);
 private:
-    VOID vRetrieveSignalValue(IXMLDOMNode* pIDOMSChildSignal, CSignalData& m_ouSignal);
+    void vRetrieveSignalValue(IXMLDOMNode* pIDOMSChildSignal, CSignalData& m_ouSignal);
     INT nUpdateSignals(CSend_MessageData& ouData);
 
     //Attributes

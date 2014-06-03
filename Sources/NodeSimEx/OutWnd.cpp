@@ -179,7 +179,7 @@ BOOL COutWnd::bAddString(CStringArray& omStrArray)
 /*  Modifications    :  Amitesh Bharti                                        */
 /*                      19.04.2003, set the font same as replay window        */
 /******************************************************************************/
-VOID COutWnd::vSetWindowFont()
+void COutWnd::vSetWindowFont()
 {
     // Set the font of replay window list box
     LOGFONT LF;
@@ -219,10 +219,11 @@ VOID COutWnd::vSetWindowFont()
 /*  Modifications    :                                                        */
 /*                                                                            */
 /******************************************************************************/
-VOID COutWnd::vResetContent()
+void COutWnd::vResetContent()
 {
     m_omListBox.ResetContent();
 }
+
 /******************************************************************************/
 /*  Function Name    :  OnCreateClient                                        */
 /*  Input(s)         :                                                        */

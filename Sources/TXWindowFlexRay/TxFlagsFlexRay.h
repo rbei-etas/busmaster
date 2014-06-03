@@ -38,7 +38,7 @@ class CFlags
 {
 public:
     int nGetFlagStatus(eTXWNDFLAG WhichFlag);
-    VOID vSetFlagStatus(eTXWNDFLAG WhichFlag, int nValue);
+    void vSetFlagStatus(eTXWNDFLAG WhichFlag, int nValue);
     CFlags();
     virtual ~CFlags();
 

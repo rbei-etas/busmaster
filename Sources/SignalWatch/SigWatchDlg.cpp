@@ -37,7 +37,7 @@
 static const int LSB_MOTOROLA = 0x7; // 7th bit is the LSB for motorola
 
 extern HWND GUI_hDisplayWindow;
-extern VOID vConvStrtoByteArray(
+extern void vConvStrtoByteArray(
     CByteArray* pomByteArrayBufTx,
     CHAR* pctempBuf,BOOL bHexON);
 /////////////////////////////////////////////////////////////////////////////

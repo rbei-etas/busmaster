@@ -1507,7 +1507,7 @@ void CExecuteManager::vManageDllMessageHandler(SDLL_MSG sDllMessages)
 /*  Author(s)        :  Anish Kumar                                           */
 /*  Date Created     :  14.01.2006                                            */
 /******************************************************************************/
-VOID CExecuteManager::vSetResetOnTimerHandler(const CStringArray& omSysNode,
+void CExecuteManager::vSetResetOnTimerHandler(const CStringArray& omSysNode,
         BOOL bFromSimSys)
 {
     m_odSetResetTimer.vSetSimSysNodeArray(omSysNode,bFromSimSys);

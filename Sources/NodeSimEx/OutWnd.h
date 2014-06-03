@@ -40,7 +40,7 @@ public:
     // Add string items to the list box of output window
     BOOL bAddString(CStringArray& omStrArray);
     // Set the content of list box.
-    VOID vResetContent();
+    void vResetContent();
     // Set the content of list box.
 
     // Overrides
@@ -71,5 +71,5 @@ private:
     CFont m_omNewFont;
     CListBox m_omListBox;
     // Set the font of window
-    VOID vSetWindowFont();
+    void vSetWindowFont();
 };

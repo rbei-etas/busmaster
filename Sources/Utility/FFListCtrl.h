@@ -34,7 +34,7 @@ class CFFListCtrl : public CListCtrl
     // Construction
 public:
     CFFListCtrl();
-    VOID vInitMemDCRect();
+    void vInitMemDCRect();
     // Attributes
 public:
 

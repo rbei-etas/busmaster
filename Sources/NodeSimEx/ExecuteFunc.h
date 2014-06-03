@@ -50,19 +50,19 @@ public:
     BOOL bInitEventStructJ1939(CStringArray& omErrorArray);
 
     // Execute key handlers
-    VOID vExecuteOnKeyHandler(UCHAR ucKey);
+    void vExecuteOnKeyHandler(UCHAR ucKey);
     // Execute message handlers
-    VOID vExecuteOnMessageHandlerCAN(STCAN_TIME_MSG sRxMsgInfo);
-    VOID vExecuteOnPGNHandler(void* pRxMsg);
-    VOID vExecuteOnErrorHandler(eERROR_STATE eErrorCode, SCAN_ERR sErrorVal );
-    VOID vExecuteOnErrorHandlerLIN( SERROR_INFO_LIN ouLinEventInfo );
-    VOID vExecuteOnDataConfHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess);
-    VOID vExecuteOnAddressClaimHandlerJ1939(BYTE byAddress);
-    VOID vExecuteOnDLLHandler(eDLLHANDLER eDLLHandler);
-    VOID vExecuteOnBusEventHandler(eBUSEVEHANDLER eBusEventHandler);
+    void vExecuteOnMessageHandlerCAN(STCAN_TIME_MSG sRxMsgInfo);
+    void vExecuteOnPGNHandler(void* pRxMsg);
+    void vExecuteOnErrorHandler(eERROR_STATE eErrorCode, SCAN_ERR sErrorVal );
+    void vExecuteOnErrorHandlerLIN( SERROR_INFO_LIN ouLinEventInfo );
+    void vExecuteOnDataConfHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE byDest, BOOL bSuccess);
+    void vExecuteOnAddressClaimHandlerJ1939(BYTE byAddress);
+    void vExecuteOnDLLHandler(eDLLHANDLER eDLLHandler);
+    void vExecuteOnBusEventHandler(eBUSEVEHANDLER eBusEventHandler);
 
     // LIN handlers
-    VOID vExecuteOnMessageHandlerLIN(STLIN_TIME_MSG sRxMsgInfo);
+    void vExecuteOnMessageHandlerLIN(STLIN_TIME_MSG sRxMsgInfo);
 
     // Initialise all structure
     BOOL bInitStruct(CStringArray& omErrorArray);
@@ -88,7 +88,7 @@ public:
     BOOL bUnloadDll();//it is called from BL & UL  to stop handler execution
     CString omGetPrevFileName();
     void vSetDllHandle(HMODULE hModuleHandle);
-    VOID vDestroyUtilityThreads(UINT unMaxWaitTime, BYTE byThreadCode);
+    void vDestroyUtilityThreads(UINT unMaxWaitTime, BYTE byThreadCode);
     STHREADINFO m_asUtilThread[defEVENT_EXFUNC_TOTAL];
     CEvent  m_aomState[defEVENT_EXFUNC_TOTAL];
     //associated to handler thread

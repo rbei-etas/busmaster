@@ -37,7 +37,7 @@ class CFlags
 {
 public:
     int nGetFlagStatus(eSIMSYSFLAG WhichFlag);
-    VOID vSetFlagStatus(eSIMSYSFLAG WhichFlag, int nValue);
+    void vSetFlagStatus(eSIMSYSFLAG WhichFlag, int nValue);
     CFlags();
     virtual ~CFlags();
 

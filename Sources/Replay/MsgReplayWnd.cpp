@@ -327,7 +327,7 @@ BOOL CMsgReplayWnd::bOpenReplayFile()
 /*                      Modifications due to interactive and noninteractive   */
 /*                      replay                                                */
 /******************************************************************************/
-VOID CMsgReplayWnd::vCmdGo()
+void CMsgReplayWnd::vCmdGo()
 {
     if( m_eReplayState == REPLAY_TO_START )
     {
@@ -441,7 +441,7 @@ VOID CMsgReplayWnd::vCmdGo()
 /*                      introduced m_eReplayState variable status check       */
 /*                      before setting it to REPLAY_RUNNING                   */
 /******************************************************************************/
-VOID CMsgReplayWnd::vCmdStep()
+void CMsgReplayWnd::vCmdStep()
 {
     if( m_eReplayState == REPLAY_TO_START )
     {
@@ -497,10 +497,11 @@ VOID CMsgReplayWnd::vCmdStep()
 /*  Modifications    :  Raja N on 20.07.2005, Changes due to new replay       */
 /*                      architecture                                          */
 /******************************************************************************/
-VOID CMsgReplayWnd::vCmdStop()
+void CMsgReplayWnd::vCmdStop()
 {
     m_ouReplayDetails.m_bStopReplayThread = TRUE;
 }
+
 /******************************************************************************/
 /*  Function Name    :  vCmdSkip                                              */
 /*  Input(s)         :                                                        */
@@ -515,7 +516,7 @@ VOID CMsgReplayWnd::vCmdStop()
 /*  Modifications    :  Raja N on 20.07.2005, Changes due to new replay       */
 /*                      architecture                                          */
 /******************************************************************************/
-VOID CMsgReplayWnd::vCmdSkip()
+void CMsgReplayWnd::vCmdSkip()
 {
     // Get the current selection
     INT nItem = m_omMessageList.GetNextItem(-1, LVNI_SELECTED);
@@ -529,6 +530,7 @@ VOID CMsgReplayWnd::vCmdSkip()
         m_omMessageList.EnsureVisible( nItem, FALSE );
     }
 }
+
 /******************************************************************************/
 /*  Function Name    :  SetWindowFont                                         */
 /*  Input(s)         :                                                        */
@@ -880,7 +882,7 @@ BOOL CMsgReplayWnd::bStopReplayThread()
   Date Created   : 16.7.2005
   Modifications  :
 *******************************************************************************/
-VOID CMsgReplayWnd::vGetSelectedIndeces( CArray<int,int>& omIndexList )
+void CMsgReplayWnd::vGetSelectedIndeces( CArray<int,int>& omIndexList )
 {
     // Remove all elements from the array
     omIndexList.RemoveAll();

@@ -75,7 +75,7 @@ END_MESSAGE_MAP()
 /*  Modifications    :  Amitesh Bharti                                        */
 /*                      19.04.2003, set the font same as replay window        */
 /******************************************************************************/
-VOID CNotificWnd::vSetWindowFont()
+void CNotificWnd::vSetWindowFont()
 {
     // Set the font of replay window list box
     LOGFONT LF;

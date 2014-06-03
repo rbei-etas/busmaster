@@ -43,15 +43,15 @@ public:
     // Thread proc for Key Block Transmission
     static UINT s_unSendMsgBlockOnKey(LPVOID pParam );
     // To handle message transmission
-    VOID vStartTransmission(UCHAR ucKeyVal);
+    void vStartTransmission(UCHAR ucKeyVal);
     // To allocate memory for global Tx Message structure
     BOOL bAllocateMemoryForGlobalTxList();
     // To assign message blocks from configuration module
-    VOID vAssignMsgBlockList();
+    void vAssignMsgBlockList();
     // To clear global memory
-    VOID vDeleteTxBlockMemory();
+    void vDeleteTxBlockMemory();
     //Return the database pointer
-    VOID vStopTransmission(UINT unMaxWaitTime);
+    void vStopTransmission(UINT unMaxWaitTime);
     void vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize);
     void vGetTxWndConfigData(xmlNodePtr pxmlNodePtr);
     void vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize);

@@ -41,13 +41,13 @@ public:
     // To show Replay configuration dialog
     DWORD dShowReplayConfigurationDlg(const SFILTERAPPLIED_CAN* psFilterConfigured);
     // Initialize to default
-    VOID vInitReplayManager();
+    void vInitReplayManager();
     // To show all interactive replay windows
-    VOID vShowInteractiveReplayWindows();
+    void vShowInteractiveReplayWindows();
     // To start hidden replay threads
-    VOID vStartNonInteractiveReplays();
+    void vStartNonInteractiveReplays();
     // To set the active replay window
-    VOID vSetActiveReplayWindow(CMsgReplayWnd* pomWindow);
+    void vSetActiveReplayWindow(CMsgReplayWnd* pomWindow);
     // To delete window pointer from the list
     BOOL bRemovePointerFromList(CWnd* pWnd);
     // To indicate stop signal to running threads
@@ -64,13 +64,13 @@ public:
     // Declare Dialog class as Friend
     friend class CReplayFileConfigDlg;
     //Enable/Disable replay filters
-    VOID vEnableFilters(BOOL bEnabled);
+    void vEnableFilters(BOOL bEnabled);
 
     // Replay Operations
-    VOID vCmdStep();
-    VOID vCmdSkip();
-    VOID vCmdStop();
-    VOID vCmdGo();
+    void vCmdStep();
+    void vCmdSkip();
+    void vCmdStop();
+    void vCmdGo();
     // UI Update Functions
     BOOL bGetUIStateCmdStep();
     BOOL bGetUIStateCmdSkip();

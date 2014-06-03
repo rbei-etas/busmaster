@@ -64,7 +64,7 @@ public:
     PSTXLINMSGLIST psGetMsgDetailPointer( INT nIndex,
                                           SMSGBLOCKLIST* psCurrentMsgBlockList);
     // To update list with given details
-    VOID vUpdateMsgListDisplay(sTXLINMSGDETAILS sMsgDetail, INT nCurrentIndex);
+    void vUpdateMsgListDisplay(sTXLINMSGDETAILS sMsgDetail, INT nCurrentIndex);
 
     // Overrides
     // ClassWizard generated virtual function overrides

@@ -31,7 +31,7 @@ public:
     TSEditorHandler(void);
     virtual ~TSEditorHandler(void);
     void vLoadTSEditor_DLL();
-    void vShowTSEditorWindow(VOID* pParentWnd);
+    void vShowTSEditorWindow(void* pParentWnd);
     void vLoadTestSetupFile(CString omFilePath);
     void vGetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize);
     void vGetConfigurationData(xmlNodePtr& pxmlNodePtr);

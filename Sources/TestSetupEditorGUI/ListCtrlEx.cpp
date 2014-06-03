@@ -1108,7 +1108,7 @@ Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
 Modifications  :
 ******************************************************************************/
-VOID CListCtrlEx::vSetRowColors(COLORREF crRow1, COLORREF crRow2)
+void CListCtrlEx::vSetRowColors(COLORREF crRow1, COLORREF crRow2)
 {
     m_colRow1 =  crRow1;
     m_colRow2 = crRow2;
@@ -1127,7 +1127,7 @@ Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
 Modifications  :
 ******************************************************************************/
-VOID CListCtrlEx::vGetRowColors(COLORREF& colRow1, COLORREF& colRow2)
+void CListCtrlEx::vGetRowColors(COLORREF& colRow1, COLORREF& colRow2)
 {
     colRow1 = m_colRow1;
     colRow2 = m_colRow2;
@@ -1144,7 +1144,7 @@ Author(s)      :  Venkatanarayana Makam
 Date Created   :  30/03/2011
 Modifications  :
 ******************************************************************************/
-VOID CListCtrlEx::vSetDefaultColors(void)
+void CListCtrlEx::vSetDefaultColors(void)
 {
     m_colRow2 =     def_COLOR_SECONDROW;
     m_colRow1 =     def_COLOR_FIRSTROW;

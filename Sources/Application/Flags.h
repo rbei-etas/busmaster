@@ -89,7 +89,7 @@ public:
     void vSetToolbarButtonStatus(  PSTOOLBARINFO psToolBarInfo );
     void vGetToolbarButtonStatus( PSTOOLBARINFO psToolBarInfo );
     int nGetFlagStatus(eCANMONITORFLAG WhichFlag);
-    VOID vSetFlagStatus(eCANMONITORFLAG WhichFlag, int nValue);
+    void vSetFlagStatus(eCANMONITORFLAG WhichFlag, int nValue);
     int nGetFlagStatus(eFLEXRAYMONITORFLAG WhichFlag);
     void vSetFlagStatus(eFLEXRAYMONITORFLAG WhichFlag, int nValue);
     void vInitializeFlags();
