@@ -16,7 +16,7 @@
 /**
  * \file      HashDefines.h
  * \brief     This header file contains the hash define
- * \authors   Amarnath Shastry, Amitesh Bharti, Krishnaswamy B.N
+ * \authors   Amarnath Shastry, Amitesh Bharti, Krishnaswamy B.N, GT-Derka
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This header file contains the hash define
@@ -402,6 +402,7 @@ This operation will convert the message code from 11 to 29 bits.\nDo you want to
 #define defFORMAT_DATA_DECIMAL  "%03d"
 #define defFORMAT_DATA_HEX      "%02X"
 #define defFORMAT_MSGID_DECIMAL "%d"
+#define defFORMAT_CHANNEL_DECIMAL "%d"
 #define defFORMAT_INT64_DECIMAL "%I64d"
 #define defFORMAT_UINT64_DEC    "%I64u"
 #define defFORMAT_INT64_HEX     "%I64X"
@@ -1037,7 +1038,7 @@ and then restart the application."
 #define defSTR_DEFAULT_MRU_ITEM "Empty"
 #define defSTR_FILE_MENU_TEXT   "&File"
 #define defSTR_RECENT_MENU_TEXT "&Recent Configurations"
-#define defSTR_CONF_SAVE_CONFIRM    "Configuration File is modified \n Do you want to save this configuration?"
+#define defSTR_CONF_SAVE_CONFIRM    "Configuration File is modified \nDo you want to save this configuration?"
 #define defSTR_ERROR_IN_MSG_PROG   "Exception occured in Message Handler ID : 0x%X"
 #define defSTR_ERROR_IN_KEY_PROG   "Exception occured in Key Handler of '%c'"
 #define defSTR_ERROR_IN_ERR_PROG   "Exception occured in Error Handler"

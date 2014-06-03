@@ -558,7 +558,7 @@ Output         :  BOOL
 Functionality  :
 Member of      :  CTSExecutionCAN
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  01/04/2011
 Modifications  :
 ******************************************************************************/
@@ -617,7 +617,7 @@ BOOL CTSExecutionCAN::bMakeCanMessage(sMESSAGE*& pMsg, CSend_MessageData& ouSend
         psCurrSignal = psCurrSignal->m_psNextSignalList;
     }
     //Make CAN Message
-    stCanMsg.m_ucChannel = 1;
+    stCanMsg.m_ucChannel = ouSendData.m_byChannelNumber;    // Get Channel-Number
     stCanMsg.m_ucDataLen = (UCHAR)pMsg->m_unMessageLength;
     stCanMsg.m_ucEXTENDED = (UCHAR)pMsg->m_bMessageFrameFormat;
     stCanMsg.m_ucRTR = (pMsg->m_unNumberOfSignals>0)? 0 : 1;        //TODO:CheckThis

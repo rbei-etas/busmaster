@@ -16,6 +16,7 @@
 /**
  * \file      TSEditorGUI_ChildFrame.cpp
  * \author    Venkatanarayana makam
+ * \author    GT-Derka
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 #include "TSEditorGUI_stdafx.h"
@@ -31,6 +32,7 @@
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
 #include "Utility\MultiLanguageSupport.h"
+#include "TSEditorGUI_PropertyView.h"   /* derka */
 //#include "../Application/GettextBusmaster.h"
 #include "Utility\UtilFunctions.h"
 #include <htmlhelp.h>
@@ -44,6 +46,7 @@
 
 const UINT g_unMinWindowWidth  = 850;
 const UINT g_unMinWindowHeight = 675;
+//INT g_iNumberOfActiveChannels = 0; /* derka */
 
 IMPLEMENT_DYNCREATE(CTSEditorChildFrame, CMDIChildWnd)
 extern CTSEditorChildFrame* g_pomTSEditorChildWindow;
@@ -54,7 +57,7 @@ Output         :  -
 Functionality  :  Constructor for CTSEditorChildFrame class
 Member of      :  CBusStatisticCAN
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  04/03/2011
 Modifications  :
 ******************************************************************************/
@@ -68,6 +71,7 @@ CTSEditorChildFrame::CTSEditorChildFrame()
     m_bQueryConfirm = TRUE;
     m_pomImageList = nullptr;
     m_bInit = TRUE;
+    m_iNumberOfActiveChannels = 0;
     vInitialise();
 
     CWnd* pMain = AfxGetMainWnd();
@@ -664,7 +668,7 @@ Output         :
 Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  04/03/2011
 Modifications  :
 Codetag        :
@@ -674,6 +678,7 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
 
     omTempListCtrl.DeleteAllItems();
+    m_odPropertyView->vSetChannelColumn(HIDE);
 
     //Get Header Info.
     CTestSetupHeader ouHeaderInfo;
@@ -806,7 +811,7 @@ Output         :
 Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  04/03/2011
 Modifications  :
 Codetag        :
@@ -824,6 +829,8 @@ void CTSEditorChildFrame::vDisplayTestcaseInfo(CBaseEntityTA* pTCEntity)
     SLISTINFO sListInfo;
     sListInfo.m_eType = eText;
     CString omstrTemp;
+
+    m_odPropertyView->vSetChannelColumn(HIDE);  // Hide Channel-Column
 
     //Display Title on first row
     omTempListCtrl.InsertItem(def_TC_ROWNUM_TCID, _("Test Case ID"));
@@ -861,7 +868,7 @@ Output         :
 Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  04/03/2011
 Modifications  :
 Codetag        :
@@ -875,6 +882,7 @@ void CTSEditorChildFrame::vDisplaySendInfo(CBaseEntityTA* pEntity)
     m_omSendEntity = *((CSendEntity*)pEntity);
 
     omTempListCtrl.DeleteAllItems();
+    m_odPropertyView->vSetChannelColumn(SHOW);  // Show Channel-Column
     UINT unCount;
     CBaseEntityTA* pSubEntity;  //send_message entity
     CSend_MessageData odData;
@@ -891,7 +899,8 @@ void CTSEditorChildFrame::vDisplaySendInfo(CBaseEntityTA* pEntity)
     sListInfo.m_eType = eComboItem;
     m_ouTSEntity.m_ouDataBaseManager.nFillMessageList(sListInfo.m_omEntries, TRUE);
     UINT i = 0;
-    for( i=0; i<unCount; i++)
+
+    for( i=0; i<unCount; i++)   // Show all messages belonging to the test case
     {
         pEntity->GetSubEntityObj(i, &pSubEntity);
         pSubEntity->GetEntityData(SEND_MESSAGE, &odData);
@@ -899,6 +908,9 @@ void CTSEditorChildFrame::vDisplaySendInfo(CBaseEntityTA* pEntity)
         omTempListCtrl.InsertItem(i+1, omstrTemp);
         omTempListCtrl.SetItemText(i+1, def_COLUMN_VALUE, odData.m_omMessageName);
         omTempListCtrl.vSetColumnInfo(i+1, 1, sListInfo);
+
+        vCreateChannelDropdown(omTempListCtrl, odData.m_byChannelNumber, m_iNumberOfActiveChannels, i); // Create channel-drop-down
+
     }
     omTempListCtrl.InsertItem(i+1, "");
     omTempListCtrl.SetItemText(i+1, def_COLUMN_VALUE, _("[Add Message]")); //Extra Line
@@ -912,7 +924,7 @@ Output         :
 Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  04/03/2011
 Modifications  :
 Codetag        :
@@ -926,6 +938,7 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA* pEntity, int nVerify
     m_ouVerifyEntity = *((CVerifyEntity*)pEntity);
     CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     CBaseEntityTA* pSubEntity;  //Verify_message entity
+    m_odPropertyView->vSetChannelColumn(SHOW);      // Show Channel-Column
 
     pEntity->GetSubEntryCount(unCount); //Send_Message Count
     omstrTemp.Format("%d", unCount);
@@ -981,6 +994,8 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA* pEntity, int nVerify
 
         omTempListCtrl.SetItemText(i+nVerifyRowIndex, def_COLUMN_VALUE, odData.m_omMessageName);
         omTempListCtrl.vSetColumnInfo(i+nVerifyRowIndex, def_COLUMN_VALUE, sListInfo);
+
+        vCreateChannelDropdown(omTempListCtrl, odData.m_byChannelNumber, m_iNumberOfActiveChannels, i+1);   // Create channel-drop-down
     }
     omTempListCtrl.InsertItem(i+nVerifyRowIndex, "");
     omTempListCtrl.SetItemText(i+nVerifyRowIndex, def_COLUMN_VALUE, _("[Add Message]"));
@@ -1033,6 +1048,7 @@ void CTSEditorChildFrame::vDisplayWaitInfo(CBaseEntityTA* pEntity)
 
     CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     omTempListCtrl.DeleteAllItems();
+    m_odPropertyView->vSetChannelColumn(HIDE);  // Hide Channel-Column
 
     CString omstrTemp;
 
@@ -1082,13 +1098,41 @@ void CTSEditorChildFrame::vDisplayReplayInfo(CBaseEntityTA* pEntity)
 }
 
 /******************************************************************************
+Function Name  :  vCreateChannelDropdown
+Input(s)       :
+Output         :
+Functionality  :
+Member of      :  CBusStatisticCAN
+Friend of      :  -
+Author(s)      :  GT-Derka
+Date Created   :  06/05/2014
+Modifications  :
+Codetag        :
+******************************************************************************/
+void CTSEditorChildFrame::vCreateChannelDropdown(CListCtrlEx& omTempListCtrl, BYTE byChannelnumber, INT iNumberOfActiveChannels, INT iTestCaseNumber)
+{
+    CString omstrTemp;
+    SLISTINFO sListInfoChannel;
+    omstrTemp.Format("%d", byChannelnumber);    // Get current channelnumber
+    omTempListCtrl.SetItemText(def_SMSG_ROWNUM_SDEFVALUE+iTestCaseNumber, def_COLUMN_CHANNEL, omstrTemp);   // Show current channelnumber
+    sListInfoChannel.m_eType = eComboItem;  // Configure as DropDown
+
+    for (INT i = 1; i <= iNumberOfActiveChannels; i++ ) // Insert all available channels
+    {
+        omstrTemp.Format(defFORMAT_MSGID_DECIMAL, i);
+        sListInfoChannel.m_omEntries.Add(omstrTemp);
+    }
+    omTempListCtrl.vSetColumnInfo(def_SMSG_ROWNUM_SDEFVALUE+iTestCaseNumber, def_COLUMN_CHANNEL, sListInfoChannel);
+}
+
+/******************************************************************************
 Function Name  :  vDisplaySendMessageInfo
 Input(s)       :
 Output         :
 Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  04/03/2011
 Modifications  :
 Codetag        :
@@ -1100,6 +1144,7 @@ void CTSEditorChildFrame::vDisplaySendMessageInfo(CBaseEntityTA* pBaseEntity)
 
     CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     omTempListCtrl.DeleteAllItems();
+    m_odPropertyView->vSetChannelColumn(HIDE);  // Hide Channel-Column
 
     CString omstrTemp;
     INT nSignalCount;
@@ -1121,7 +1166,7 @@ void CTSEditorChildFrame::vDisplaySendMessageInfo(CBaseEntityTA* pBaseEntity)
         omstrTemp = _("ENG");
     }
 
-    //Failure ClassiFication Information
+    //Failure Classification Information
     omTempListCtrl.InsertItem(def_SMSG_ROWNUM_SUINT, _("Signal Unit Type"));
     omTempListCtrl.SetItemText(def_SMSG_ROWNUM_SUINT, def_COLUMN_VALUE, omstrTemp);
     sListInfo.m_eType = eComboItem;
@@ -1181,7 +1226,7 @@ Output         :
 Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  04/03/2011
 Modifications  :
 Codetag        :
@@ -1192,6 +1237,7 @@ void CTSEditorChildFrame::vDisplayVerifyMessageInfo(CBaseEntityTA* pBaseEntity)
 
     CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     omTempListCtrl.DeleteAllItems();
+    m_odPropertyView->vSetChannelColumn(HIDE);  // Hide Channel-Column
 
     CString omstrTemp;
     INT nSignalCount;
@@ -1429,7 +1475,7 @@ Output         :
 Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  04/03/2011
 Modifications  :
 ******************************************************************************/
@@ -1445,6 +1491,14 @@ void CTSEditorChildFrame::vSaveSendInfo(CBaseEntityTA* pEntity)
     unCount = atoi(omstrTemp);
     CSendData odSendData;
     m_omSendEntity.GetEntityData(SEND, &odSendData);
+
+    for(UINT i = 0; i < unCount; i++)   // Store Channel-Data
+    {
+        omstrTemp = omTempListCtrl.GetItemText(def_SEND_ROWNUM_MSGLIST+i, def_COLUMN_CHANNEL);
+        BYTE byChannel = BYTE(atoi(omstrTemp));
+        odSendData.SetChannel(i, byChannel);
+    }
+
     pEntity->SetEntityData(SEND, &odSendData);
     parseSendEntity(pEntity, m_hCurrentTreeItem);
 }
@@ -1456,7 +1510,7 @@ Output         :
 Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  04/03/2011
 Modifications  :
 ******************************************************************************/
@@ -1464,12 +1518,15 @@ void CTSEditorChildFrame::vSaveVerifyInfo(CBaseEntityTA* pEntity)
 {
     CHECKENTITY(pEntity);
 
+    UINT unCount;
     CVerifyData odVerifyData;
 
     CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
 
+    CString omstrTemp = omTempListCtrl.GetItemText(def_VERIFY_ROWNUM_MSGCNT, 1);    // Get number of messages
+    unCount = atoi(omstrTemp);
 
-    CString omstrTemp = omTempListCtrl.GetItemText(def_VERIFY_ROWNUM_FAILURE, 1);
+    omstrTemp = omTempListCtrl.GetItemText(def_VERIFY_ROWNUM_FAILURE, 1);
 
 
     m_ouVerifyEntity.GetEntityData(VERIFY, &odVerifyData);
@@ -1486,6 +1543,13 @@ void CTSEditorChildFrame::vSaveVerifyInfo(CBaseEntityTA* pEntity)
     else
     {
         odVerifyData.m_eAttributeError = FATAL;
+    }
+
+    for(UINT i = 0; i < unCount; i++)   // Save all Channel-numbers
+    {
+        omstrTemp = omTempListCtrl.GetItemText(def_VERIFY_ROWNUM_MSGLIST+i, def_COLUMN_CHANNEL);
+        BYTE byChannel = BYTE(atoi(omstrTemp));
+        odVerifyData.SetChannel(i, byChannel);
     }
 
     pEntity->SetEntityData(VERIFY, &odVerifyData);
@@ -1532,7 +1596,7 @@ Output         :
 Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  04/03/2011
 Modifications  :
 ******************************************************************************/
@@ -1557,6 +1621,8 @@ void CTSEditorChildFrame::vSaveSendMessageInfo(CBaseEntityTA* pEntity)
     {
         ouSendMsgEntity.m_eSignalUnitType = RAW;
     }
+
+    ouSendMsgEntity.m_byChannelNumber = BYTE(atoi(omTempListCtrl.GetItemText(def_SMSG_ROWNUM_SUINT, def_COLUMN_CHANNEL)));  // store Channel-Number
 
     /*//Default Signal Vlaue
     omstrTemp = omTempListCtrl.GetItemText(def_SMSG_ROWNUM_SVALUE, def_COLUMN_VALUE);
@@ -1719,6 +1785,23 @@ void CTSEditorChildFrame::vSetFileSavedFlag(BOOL isModified)
 }
 
 /******************************************************************************
+Function Name  :  vSetNumberOfActiveChannels
+Input(s)       :
+Output         :
+Functionality  :
+Member of      :  CBusStatisticCAN
+Friend of      :  -
+Author(s)      :  GT-Derka
+Date Created   :  05/05/2014
+Modifications  :
+******************************************************************************/
+void CTSEditorChildFrame::vSetNumberOfActiveChannels(INT number)
+{
+    m_iNumberOfActiveChannels = number;
+}
+
+
+/******************************************************************************
 Function Name  :  vListCtrlItemChanged
 Input(s)       :
 Output         :
@@ -1821,7 +1904,7 @@ Output         :  void
 Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :
@@ -1830,15 +1913,16 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
 {
     //CTreeCtrl &omTempTreeCtrl = m_odTreeView->GetTreeCtrl();
     SLISTINFO sListInfo;
+    SLISTINFO sListInfoChannel;
     CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
     CString omstrTemp;
     if(m_pCurrentEntity->GetEntityType() == SEND)
     {
         int item = pNMLV->iItem;
-        if(item >= defLIST_SEND_ST_ROW)      //item is with in message list
+        if(item >= defLIST_SEND_ST_ROW)      //item is with in message list     /* derka-comment: Presumably: Get Item that was updated */
         {
-            omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_VALUE);
-            if(omstrTemp == _(defDELETE_MSG_SYMBOL))
+            omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_VALUE);    /* derka-comment: Get value (=message-name) of entry... */
+            if(omstrTemp == _(defDELETE_MSG_SYMBOL))                            /* derka-comment: ... and check if Item should become deleted */
             {
                 if(item != omTempListCtrl.GetItemCount()-1) // Last Item Check.Still This
                 {
@@ -1851,13 +1935,12 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
                     omTempListCtrl.SetItemText(item, def_COLUMN_VALUE, _("[Add Message]"));
                 }
             }
-            else
+            else    // if item should not become deleted
             {
-                //CSend_MessageData odSendMsgData;
                 sListInfo.m_eType = eComboItem;
                 m_ouTSEntity.m_ouDataBaseManager.nFillMessageList(sListInfo.m_omEntries, TRUE);
                 CSend_MessageData odSendMsgData;
-                if(item == omTempListCtrl.GetItemCount()-1) //Last Row
+                if(item == omTempListCtrl.GetItemCount()-1) //Last Row - ("[Add Message]" was selected)
                 {
                     CSend_MessageEntity odNewSendEnity;
                     odSendMsgData.m_omMessageName = omstrTemp;
@@ -1865,11 +1948,13 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
                     odNewSendEnity.SetEntityData(SEND_MESSAGE, &odSendMsgData);
                     m_omSendEntity.AddSubEntry((CBaseEntityTA*)&odNewSendEnity);
 
+                    vCreateChannelDropdown(omTempListCtrl, odSendMsgData.m_byChannelNumber, m_iNumberOfActiveChannels, item-1); // Create Channel-Dropdown
+
                     omTempListCtrl.InsertItem(item+1, "");
                     omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, _("[Add Message]"));
                     omTempListCtrl.vSetColumnInfo(item+1, def_COLUMN_VALUE, sListInfo);
                 }
-                else
+                else    // message selected
                 {
                     CBaseEntityTA* pEntity;
 
@@ -1882,13 +1967,22 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
                     {
                         pEntity->SetEntityData(SEND_MESSAGE, &odSendMsgData);
                     }
+
+                    omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_CHANNEL);  // Read selected Channel-Number
+                    odSendMsgData.m_byChannelNumber = BYTE(atoi( omstrTemp ));  //  Save Channel-Number
                 }
                 omstrTemp.Format("%d", odSendMsgData.m_dwMessageID);
                 omTempListCtrl.DeleteItem(item);
                 omTempListCtrl.InsertItem(item, omstrTemp);
                 omTempListCtrl.SetItemText(item, def_COLUMN_VALUE, odSendMsgData.m_omMessageName);
                 omTempListCtrl.vSetColumnInfo(item, def_COLUMN_VALUE, sListInfo);
+
+                omstrTemp.Format("%d", odSendMsgData.m_byChannelNumber);
+                omTempListCtrl.SetItemText(item, def_COLUMN_CHANNEL, omstrTemp);    // Show Channel-Number
+
+
             }
+            omTempListCtrl.RedrawWindow();  // Redraw window to avoid wrong line coloring, Issue #698
             INT nCount = omTempListCtrl.GetItemCount();
             omstrTemp.Format("%d", nCount-2);
             omTempListCtrl.SetItemText(0, def_COLUMN_VALUE, omstrTemp);
@@ -1904,7 +1998,7 @@ Output         :
 Functionality  :
 Member of      :  CBusStatisticCAN
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  04/03/2011
 Modifications  :
 ******************************************************************************/
@@ -1946,13 +2040,15 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
                 odNewVerifyEnity.SetEntityData(VERIFY_MESSAGE, &odVerifyMsgData);
                 m_ouVerifyEntity.AddSubEntry((CBaseEntityTA*)&odNewVerifyEnity);
 
+                vCreateChannelDropdown(omTempListCtrl, odVerifyMsgData.m_byChannelNumber, m_iNumberOfActiveChannels, item-1);   // Create Channel-Dropdown
+
                 omTempListCtrl.InsertItem(item+1, "");
                 omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, _("[Add Message]"));
                 omTempListCtrl.vSetColumnInfo(item+1, def_COLUMN_VALUE, sListInfo);
             }
             else
             {
-                CBaseEntityTA* pEntity;
+                CBaseEntityTA* pEntity; // A message was selected
 
                 CVerify_MessageData odOrgMsgData;
                 m_ouVerifyEntity.GetSubEntityObj(item-def_VERIFY_ROWNUM_MSGLIST, &pEntity);
@@ -1963,15 +2059,21 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
                 {
                     pEntity->SetEntityData(VERIFY_MESSAGE, &odVerifyMsgData);
                 }
+                omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_CHANNEL);  // Read selected Channel-Number
+                odVerifyMsgData.m_byChannelNumber = BYTE(atoi( omstrTemp ));    // Save Channel-Number
             }
             omstrTemp.Format("%d", odVerifyMsgData.m_dwMessageID);
             omTempListCtrl.DeleteItem(item);
             omTempListCtrl.InsertItem(item, omstrTemp);
             omTempListCtrl.SetItemText(item, def_COLUMN_VALUE, odVerifyMsgData.m_omMessageName);
             omTempListCtrl.vSetColumnInfo(item, def_COLUMN_VALUE, sListInfo);
+
+            omstrTemp.Format("%d", odVerifyMsgData.m_byChannelNumber);
+            omTempListCtrl.SetItemText(item, def_COLUMN_CHANNEL, omstrTemp);    // Show Channel-Number
         }
         UINT unCount;
-        m_ouVerifyEntity.GetSubEntryCount(unCount);//omTempListCtrl.GetItemCount();
+        omTempListCtrl.RedrawWindow();  // Redraw window to avoid wrong line coloring, Issue #698
+        m_ouVerifyEntity.GetSubEntryCount(unCount);
         omstrTemp.Format("%d", unCount);
         omTempListCtrl.SetItemText(0, def_COLUMN_VALUE, omstrTemp);
     }
@@ -1985,7 +2087,7 @@ Output         :  void
 Functionality  :
 Member of      :  CTSEditorChildFrame
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  21/04/2011
 Modifications  :
 Code Tag       :
@@ -2053,6 +2155,7 @@ void CTSEditorChildFrame::vHandleVerifyResponseEntity(LPNMLISTVIEW pNMLV)
             omTempListCtrl.vSetColumnInfo(item, def_COLUMN_VALUE, sListInfo);
         }
         UINT unCount;
+        omTempListCtrl.RedrawWindow();  // Redraw window to avoid wrong line coloring, Issue #698
         m_ouVerifyEntity.GetSubEntryCount(unCount);//omTempListCtrl.GetItemCount();
         omstrTemp.Format("%d", unCount);
         omTempListCtrl.SetItemText(0, def_COLUMN_VALUE, omstrTemp);

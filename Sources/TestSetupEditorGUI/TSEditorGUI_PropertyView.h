@@ -16,6 +16,7 @@
 /**
  * \file      TSEditorGUI_PropertyView.h
  * \author    Venkatanarayana makam
+ * \author    GT-Derka
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
@@ -24,6 +25,8 @@
 #include "TSEditorGUI_resource.h"
 #include "afxcmn.h"
 #include "ListCtrlEx.h"
+
+enum Visibility { HIDE, SHOW };
 
 // CPropertyView form view
 class CTSEditorChildFrame;
@@ -51,6 +54,7 @@ public:
 #endif
 
     virtual void OnInitialUpdate();
+    virtual void vSetChannelColumn(Visibility visibility);
     afx_msg void OnSize(UINT nType, int cx, int cy);
     afx_msg void OnBnClickedCancel();
     afx_msg void OnBnClickedConfirm();

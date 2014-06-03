@@ -86,6 +86,8 @@
 #include "TSEditorHandler.h"
 #include "Utility/XMLUtils.h"
 
+#include "ConfigDetails.h"
+
 #define WM_SAVE_DBJ1939        (WM_USER + 108)
 
 // Forward reference to Message Child Window

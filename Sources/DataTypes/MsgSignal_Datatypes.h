@@ -17,6 +17,7 @@
  * \file      MsgSignal_Datatypes.h
  * \brief     Definition file for signal watch data types.
  * \author    Pradeep Kadoor
+ * \author    GT-Derka
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition file for signal watch data types.
@@ -182,6 +183,7 @@ struct sMESSAGE
 {
     CString m_omStrMessageName; // Message Name
     UINT m_unMessageCode;       // Message Code
+    BYTE m_byMessageChannel;    // Channel on which message is transported
     UINT m_unNumberOfSignals;   // Number Of Signals a Message has
     UINT m_unMessageLength;     // Message Length
     BOOL m_bMessageFrameFormat; // Message Frame Format

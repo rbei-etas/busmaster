@@ -16,6 +16,7 @@
 /**
  * \file      TSEditorGUI_ChildFrame.h
  * \author    Venkatanarayana Makam
+ * \author    GT-Derka
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
@@ -25,6 +26,7 @@
 #include "TestSetupEditorLib/TestSetupEntity.h"
 #include "TestSetupEditorLib/DataBaseMsgList.h"
 #include "TreeViewEx.h"
+#include "FrameProcessor/LogObjectCAN.h" /* derka */
 
 // CTSEditorChildFrame frame with splitter
 #define szFilter    "TestSetup Files (*.xml)|*.xml||"
@@ -61,6 +63,7 @@ protected:
 
     CSplitterWnd m_omSplitterWnd;
     CImageList*  m_pomImageList;
+    INT m_iNumberOfActiveChannels;
 protected:
     virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
 
@@ -71,6 +74,7 @@ public:
     void vSetModifiedFlag(BOOL isModified);
     void vSetFileSavedFlag(BOOL isModified);
     void vListCtrlItemChanged(LPNMLISTVIEW pNMLV);
+    void vSetNumberOfActiveChannels(INT number);
     UINT unRepisitonEntry(DWORD dwRepositionItemID, DWORD dwInsertAfterItemID, DWORD dwParentID);
     INT nCancelCurrentChanges();
     INT nConfirmCurrentChanges();
@@ -97,6 +101,8 @@ private:
     void parseWaitEntity(CBaseEntityTA* pEntity, HTREEITEM hTCTreeitem);
     void parseReplayEntity(CBaseEntityTA* pEntity, HTREEITEM hTCTreeitem);
     void parseTestCaseEntiy(CBaseEntityTA* pEntity, HTREEITEM hSubParent);
+
+    void vCreateChannelDropdown(CListCtrlEx& omTempListCtrl, BYTE byChannelnumber /*CSend_MessageData* pSubEntity*/, INT iNumberOfActiveChannels, INT iTestCaseNumber);
 
     void vDisplayHeaderInfo(INT /*nTestSetupIndex*/);
     void vDisplaySendInfo(CBaseEntityTA* pEntity);

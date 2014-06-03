@@ -972,7 +972,7 @@ BOOL CDataBaseMsgList::bFreeMessageMemory(void)
 Function Name  :  unGetMessageID
 Input(s)       :  CString omstrMsgName - Message Name
 Output         :  UINT
-Functionality  :  Retrives the Message ID
+Functionality  :  Retrieves the Message ID
 Member of      :  CDataBaseMsgList
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
@@ -991,6 +991,35 @@ UINT CDataBaseMsgList::unGetMessageID(CString omstrMsgName)
         if(m_psMessages[i].m_omStrMessageName == omstrMsgName)
         {
             return m_psMessages[i].m_unMessageCode;
+        }
+    }
+    //For W4 Removal
+    return (UINT)ERR_WRONG_ID;
+}
+
+/******************************************************************************
+Function Name  :  unGetMessageChannel
+Input(s)       :  CString omstrMsgName - Message Name
+Output         :  UINT
+Functionality  :  Retrieves the Message Channel
+Member of      :  CDataBaseMsgList
+Friend of      :  -
+Author(s)      :  GT-Derka
+Date Created   :  07/05/2014
+Modifications  :
+******************************************************************************/
+UINT CDataBaseMsgList::unGetMessageChannel(CString omstrMsgName)
+{
+    if( m_psMessages == NULL )
+    {
+        //For W4 Removal
+        return (UINT)-1;
+    }
+    for(UINT i = 0; i < m_unMessageCount; i++)
+    {
+        if(m_psMessages[i].m_omStrMessageName == omstrMsgName)
+        {
+            return m_psMessages[i].m_byMessageChannel;
         }
     }
     //For W4 Removal

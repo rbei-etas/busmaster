@@ -17,6 +17,7 @@
  * \file      TSDefinitions.h
  * \brief     Definition of the Class SInfo
  * \author    Venkatanarayana makam
+ * \author    GT-Derka
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition of the Class SInfo
@@ -32,9 +33,11 @@
 #define defDELETE_MSG_SYMBOL    "[Delete Message]"
 #define defFIRSTCOLUMN_NAME     "Category"
 #define defSECONDCOLUMN_NAME    "Value"
+#define defTHIRDCOLUMN_NAME     "Channel"
 #define defCOLCATEGORY_INDEX    0
 #define defCOLVALUE_INDEX       1
-#define defPROPERTYCOLUMN_NUM   2
+#define defCOLCHANNEL_INDEX     2
+#define defPROPERTYCOLUMN_NUM   3
 
 
 //xml File Elements Definitions
@@ -72,6 +75,7 @@
 #define def_STR_TCATTRIB_H_EXP  "exp_handler"
 #define def_STR_SENDMSG_NODE    "send_message"
 #define def_STR_TCATTRIB_UNIT   "unit"
+#define def_STR_TCATTRIB_CHANNEL "channel"
 #define def_STR_ATTRIIB_DEFAULT "default"
 #define def_STR_SIGNAL_NODE     "signal"
 #define def_NAME_NODE           "name"

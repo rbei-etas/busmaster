@@ -644,7 +644,7 @@ Output         :  bool
 Functionality  :  Formats the pDoc Pointer into File omStrFilePath
 Member of      :  CTestSetupEntity
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
@@ -665,6 +665,7 @@ BOOL CTestSetupEntity::FormatDOMDocument(MSXML2::IXMLDOMDocumentPtr pDoc, CStrin
         MSXML2::IMXWriterPtr pImxWriter;
 
         pImxWriter.CreateInstance (L"Msxml2.MXXMLWriter");
+        pImxWriter->put_encoding(L"UTF-8"); // Create UTF-8-encoded XML-File instead of UTF-16 */
         pImxWriter->put_output (CComVariant(pStream));
 
         pSaxXmlReader->putContentHandler((MSXML2::ISAXContentHandlerPtr)pImxWriter);
@@ -781,7 +782,7 @@ INT CTestSetupEntity::nParseTSFile(CString omstrTSFile)
 Function Name  :  nLoadHeader
 Input(s)       :  MSXML2::IXMLDOMNodePtr& pHeaderDOMNode
 Output         :  INT
-Functionality  :  Retrives the Header info
+Functionality  :  Retrieves the Header info
 Member of      :  CTestSetupEntity
 Friend of      :  -
 Author(s)      :  Venkatanarayana Makam
@@ -1083,13 +1084,14 @@ Output         :  INT
 Functionality  :
 Member of      :  CTestSetupEntity
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  06/04/2011
 Modifications  :
-Codetag        : CS004
+Codetag        :  CS004
 ******************************************************************************/
 INT CTestSetupEntity::nLoadTestCases(MSXML2::IXMLDOMNodePtr& pTSDOM)
 {
+    LONG lDefaultChannelUsed = 0;
     LONG lCount;
     _bstr_t bstrNodeName(def_STR_TESTCASE_NODE);
 
@@ -1100,9 +1102,21 @@ INT CTestSetupEntity::nLoadTestCases(MSXML2::IXMLDOMNodePtr& pTSDOM)
     for(int i=0; i<lCount; i++)
     {
         CTestCaseEntity odTestCaseEntity;
+        
         pIXMLDOMTestCase = pDOMTCNodeList->Getitem(i);
         odTestCaseEntity.GetData(pIXMLDOMTestCase);
         m_odTestCaseEntityList.AddTail(odTestCaseEntity);
+        lDefaultChannelUsed += odTestCaseEntity.m_lDefaultChannelUsed;
+    }
+    if(lDefaultChannelUsed == 1)
+    {
+        AfxMessageBox(_T("1 entity without channel-information loaded.\nCAN-Channel 1 selected."), MB_OK | MB_ICONINFORMATION );
+    }
+    else if(lDefaultChannelUsed > 1)
+    {
+        CString str;
+        str.Format("%d", lDefaultChannelUsed);
+        AfxMessageBox(str + _T(" entities without channel-information loaded.\nCAN-Channel 1 selected in each case."), MB_OK | MB_ICONINFORMATION );
     }
     return S_OK;
 

@@ -35,13 +35,14 @@ Output         :  -
 Functionality  :  Constructor
 Member of      :  CSendEntity
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
 CSendEntity::CSendEntity(void)
 {
     m_eType = SEND;
+    m_lDefaultChannelUsed = 0;
 }
 
 /******************************************************************************
@@ -304,7 +305,7 @@ Output         :  HRESULT
 Functionality  :  Reads the XML node and constructs the data structure
 Member of      :  CSendEntity
 Friend of      :  -
-Author(s)      :  Venkatanarayana Makam
+Author(s)      :  Venkatanarayana Makam, GT-Derka
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
@@ -325,6 +326,7 @@ HRESULT CSendEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
         if(odSend_MessageEntity.GetData(pIXMLDOMSendMsgEntity)==S_OK)
         {
             m_ouData.m_odSend_MessageDataList.AddTail(odSend_MessageEntity);
+            m_lDefaultChannelUsed += odSend_MessageEntity.m_lDefaultChannelUsed;    // Add number of entities, where the default-channel is set
         }
     }
 
