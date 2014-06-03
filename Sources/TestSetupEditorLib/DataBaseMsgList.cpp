@@ -89,8 +89,8 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
             {
                 float fDBVerNum = 0;
                 float fCurrDBVer = 0;
-                CString sFirstLine  = STR_EMPTY;
-                CString omDBVerLine  = STR_EMPTY;
+                CString sFirstLine  = "";
+                CString omDBVerLine  = "";
                 // read subsequent info from the file
                 /* Read Database version number*/
                 int nIndex = -1;
@@ -819,7 +819,7 @@ BOOL CDataBaseMsgList::bValidateDatabaseFile(CString strFileName)
                         // Open File
                         o_File.Open( strFileName, CFile::modeRead|CFile::typeText );
 
-                        CString sFirstLine = STR_EMPTY;
+                        CString sFirstLine = "";
 
                         // Read file line
                         o_File.ReadString( sFirstLine );

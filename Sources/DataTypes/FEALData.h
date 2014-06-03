@@ -26,6 +26,7 @@
 
 #include <afxtempl.h>
 #include "Typecode_fbx_entities.h"
+
 /* C++ includes */
 #include <string>
 #include <vector>
@@ -33,8 +34,9 @@
 
 #define MAX_VAL_OF_BYTE         256
 #define EMPTY_VALUE -1
-#define EMPTY_STRING ""
+
 enum CATEGORY_GROUP { CATERGORY_NONE = 0};
+
 typedef struct tagAbsSWAKEUP
 {
     short m_shWAKE_UP_SYMBOL_RX_IDLE;   // 14 to 59 inclusive

@@ -56,9 +56,9 @@ CTxMsgBlocksView::CTxMsgBlocksView()
     : CFormView(CTxMsgBlocksView::IDD)
 {
     //{{AFX_DATA_INIT(CTxMsgBlocksView)
-    m_omStrMsgBlockName = STR_EMPTY;
-    m_omStrTimeIntervalVal = STR_EMPTY;
-    m_omStrKeyVal = STR_EMPTY;
+    m_omStrMsgBlockName = "";
+    m_omStrTimeIntervalVal = "";
+    m_omStrKeyVal = "";
     //m_bIsMonoshot = FALSE;
     //m_bTriggerType = FALSE;
     //}}AFX_DATA_INIT
@@ -278,7 +278,7 @@ void CTxMsgBlocksView::OnInitialUpdate()
     }
 
     PSMSGBLOCKLIST psCurrentMsgBlock = nullptr;
-    CString omStr = STR_EMPTY;
+    CString omStr = "";
     psCurrentMsgBlock = m_psMsgBlockList;
 
     // Disable AllTxMessage check box
@@ -1586,7 +1586,7 @@ void CTxMsgBlocksView::OnChkbOnKeyTrigger()
 void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
 {
     UINT unTimeInterVal        = 0;
-    CString omStrCurrent       = STR_EMPTY;
+    CString omStrCurrent       = "";
     CHAR* pcChar               = nullptr;
     m_omEditTrgTimeIntervalVal.GetWindowText(omStrCurrent);
     // Get the time value
@@ -1621,7 +1621,7 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
 
         // Check whether it is enabled and then
         // Add Unit to the time value
-        omStrCurrent = STR_EMPTY;
+        omStrCurrent = "";
         if( IS_TIME_TRIGGERED ( psMsgCurrentBlock->m_ucTrigger ) )
         {
             omStrCurrent = m_omStrTimeIntervalVal + defMESSAGE_TRIG_MS;
@@ -1721,7 +1721,7 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
 void CTxMsgBlocksView::OnUpdateEditTrgKeyVal()
 {
     UINT unTextLength = 0;
-    CString omStrCurrent = STR_EMPTY;
+    CString omStrCurrent = "";
     // Get the Key Value
     m_omEditTrgKeyVal.GetWindowText(omStrCurrent);
     unTextLength = omStrCurrent.GetLength();
@@ -1750,7 +1750,7 @@ void CTxMsgBlocksView::OnUpdateEditTrgKeyVal()
 
         // Check whether it is enabled and then
         // Add Unit to the time value
-        omStrCurrent = STR_EMPTY;
+        omStrCurrent = "";
         if( IS_TIME_TRIGGERED ( psMsgBlock->m_ucTrigger ) )
         {
             if(CTxMsgManager::s_bDelayBetweenBlocksOnly)

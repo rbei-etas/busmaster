@@ -89,7 +89,7 @@ CSimSysTreeView::CSimSysTreeView()
     m_omSimsysCount         = 0;
     m_hRootItem = nullptr;
     m_bIsNewNode            = FALSE;
-    m_omSelectedItemText    = STR_EMPTY;
+    m_omSelectedItemText    = "";
     m_hTreeItem             = nullptr;
     // Clean the list
     m_omSimsysNames.RemoveAll();
@@ -241,7 +241,7 @@ BOOL CSimSysTreeView::bPopulateTree()
             {
                 CString omStrNodeName = pNodeInfo->m_sNodeInfo.m_omStrNodeName;
                 HTREEITEM hNode = om_tree.InsertItem(omStrNodeName, hSimsys);
-                if(pNodeInfo->m_sNodeInfo.m_omStrDllName != STR_EMPTY)
+                if(pNodeInfo->m_sNodeInfo.m_omStrDllName != "")
                 {
                     CString omStrDllPath = pNodeInfo->m_sNodeInfo.m_omStrDllName;
                     HTREEITEM hDll = om_tree.InsertItem(omStrDllPath, hNode);
@@ -302,9 +302,9 @@ void CSimSysTreeView::vPopulateAddedSimSysInfo(CString omStrSimSysPath)
             {
                 CString omStrNodeName = pNodeInfo->m_sNodeInfo.m_omStrNodeName;
                 HTREEITEM hNode = om_tree.InsertItem(omStrNodeName, hSimsys);
-                if(pNodeInfo->m_sNodeInfo.m_omStrDllName != STR_EMPTY)
+                if(pNodeInfo->m_sNodeInfo.m_omStrDllName != "")
                 {
-                    CString omStrDllPath = STR_EMPTY;
+                    CString omStrDllPath = "";
                     omStrDllPath = pNodeInfo->m_sNodeInfo.m_omStrDllName;
                     om_tree.InsertItem(omStrDllPath, hNode);
                 }
@@ -811,7 +811,7 @@ void CSimSysTreeView::vDisplaySimSysMenu()
 void CSimSysTreeView::vDisplayNodeMenu()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    CString omStrSimSysName = STR_EMPTY;
+    CString omStrSimSysName = "";
     // Get reference to the tree control
     CTreeCtrl& om_tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_tree.GetSelectedItem();
@@ -1220,7 +1220,7 @@ void CSimSysTreeView::OnInitialUpdate()
 void CSimSysTreeView::OnAddSimsys()
 {
     //AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    CString oCfgFilename = STR_EMPTY;
+    CString oCfgFilename = "";
 
     CSplFileDlg oCfgFileDlg(TRUE,       // Open dialog as Open File dlg
                             defSIMSYSCONFEXT,  // default extension
@@ -1307,8 +1307,8 @@ void CSimSysTreeView::OnAllNodeHandlers()
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
-    CString omStrNodeName = STR_EMPTY;
-    CString omStrSimSysName = STR_EMPTY;
+    CString omStrNodeName = "";
+    CString omStrSimSysName = "";
     sSIMSYSINFO* pSimsys = nullptr;
     sNODEINFO* pNode = nullptr;
 
@@ -1316,7 +1316,7 @@ void CSimSysTreeView::OnAllNodeHandlers()
     omStrSimSysName = om_Tree.GetItemText(hParent);
 
     omStrNodeName = om_Tree.GetItemText(hSelectedItem);
-    CString omStrMenuText = STR_EMPTY;
+    CString omStrMenuText = "";
 
     CSimSysDetView* pSimsysDetView = nullptr;
     pSimsysDetView =
@@ -1380,7 +1380,7 @@ void CSimSysTreeView::OnDeleteAllSimsys()
 {
     CSimSysNodeInfo* pSimSysNodeInfo =
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-    BOOL bIsDllsLoaded = pSimSysNodeInfo->bIsUnLoadAllValid(STR_EMPTY);
+    BOOL bIsDllsLoaded = pSimSysNodeInfo->bIsUnLoadAllValid("");
     if ((!bIsDllsLoaded) && (pSimSysNodeInfo != nullptr))
     {
         CTreeCtrl& om_tree = GetTreeCtrl();
@@ -1398,7 +1398,7 @@ void CSimSysTreeView::OnDeleteAllSimsys()
                         CSimSysManager::ouGetSimSysManager(m_eBus).vSaveAllSimSys();
                     }
                 }
-                pSimSysNodeInfo->bDeleteSimsysFromInfo( STR_EMPTY );
+                pSimSysNodeInfo->bDeleteSimsysFromInfo( "" );
                 om_tree.DeleteAllItems();
                 om_tree.SetTextColor( BLUE_COLOR );
                 om_tree.InsertItem( CGlobalObj::omGetBusName(m_eBus) );
@@ -1864,14 +1864,14 @@ void CSimSysTreeView::OnNodeMessagehandlers()
     CSimSysNodeInfo* pSimSysNodeInfo = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
-    CString omStrNodeName = STR_EMPTY;
-    CString omStrSimSysName = STR_EMPTY;
+    CString omStrNodeName = "";
+    CString omStrSimSysName = "";
 
     HTREEITEM hParent = om_Tree.GetParentItem(hSelectedItem);
     omStrSimSysName = om_Tree.GetItemText(hParent);
 
     omStrNodeName = om_Tree.GetItemText(hSelectedItem);
-    CString omStrMenuText = STR_EMPTY;
+    CString omStrMenuText = "";
 
     sSIMSYSINFO* pSimsys = nullptr;
     sNODEINFO* pNode = nullptr;
@@ -1936,14 +1936,14 @@ void CSimSysTreeView::OnNodeTimerhandlers()
         CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
-    CString omStrNodeName = STR_EMPTY;
-    CString omStrSimSysName = STR_EMPTY;
+    CString omStrNodeName = "";
+    CString omStrSimSysName = "";
 
     HTREEITEM hParent = om_Tree.GetParentItem(hSelectedItem);
     omStrSimSysName = om_Tree.GetItemText(hParent);
 
     omStrNodeName = om_Tree.GetItemText(hSelectedItem);
-    CString omStrMenuText = STR_EMPTY;
+    CString omStrMenuText = "";
 
     sSIMSYSINFO* pSimsys = nullptr;
     sNODEINFO* pNode = nullptr;
@@ -2028,7 +2028,7 @@ void CSimSysTreeView::OnSimsysAllErrorhandlers()
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
-    CString omStrMenuText = STR_EMPTY;
+    CString omStrMenuText = "";
 
 
     m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLERRORHANDLERS , omStrMenuText
@@ -2075,7 +2075,7 @@ void CSimSysTreeView::OnSimsysAllhandlers()
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
-    CString omStrMenuText = STR_EMPTY;
+    CString omStrMenuText = "";
 
 
     m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLHANDLERS , omStrMenuText , MF_BYCOMMAND);
@@ -2128,7 +2128,7 @@ void CSimSysTreeView::OnSimsysAllKeyhandlers()
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
-    CString omStrMenuText = STR_EMPTY;
+    CString omStrMenuText = "";
 
 
     m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLKEYHANDLERS , omStrMenuText
@@ -2176,7 +2176,7 @@ void CSimSysTreeView::OnSimsysAllMsghandlers()
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
-    CString omStrMenuText = STR_EMPTY;
+    CString omStrMenuText = "";
 
 
     m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLMSGHANDLERS , omStrMenuText
@@ -2220,7 +2220,7 @@ void CSimSysTreeView::OnSimsysAllTimerhandlers()
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
-    CString omStrMenuText = STR_EMPTY;
+    CString omStrMenuText = "";
 
 
     m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLTIMERHANDLERS , omStrMenuText
@@ -2258,7 +2258,7 @@ void CSimSysTreeView::OnSimsysAllEventhandlers()
         CTreeCtrl& om_Tree = GetTreeCtrl();
         HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
         CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
-        CString omStrMenuText = STR_EMPTY;
+        CString omStrMenuText = "";
         m_pomSubMenu->GetMenuString(IDM_SIMSYS_ALLEVENTHANDLERS , omStrMenuText
                                     , MF_BYCOMMAND);
         if(omStrMenuText == "Enable All Event Handlers" )
@@ -2294,7 +2294,7 @@ void CSimSysTreeView::OnSimsysBuildall()
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
-    CString omStrFileName = STR_EMPTY;
+    CString omStrFileName = "";
     int nNodeCount = 0;
     int nFailure = 0;
     BOOL bSuccess = FALSE;
@@ -2362,7 +2362,7 @@ void CSimSysTreeView::OnSimsysBuildall()
                     }
                     else  // if the build is successfull
                     {
-                        CString omStrPrevDllName = STR_EMPTY;
+                        CString omStrPrevDllName = "";
                         omStrPrevDllName = pTempNode->m_sNodeInfo.m_omStrDllName;
                         omStrFileName = pTempNode->m_sNodeInfo.m_omStrFileName;
                         //omStrFileName.Replace( defDOT_SMALL_C , defDOT_DLL );
@@ -2431,7 +2431,7 @@ void CSimSysTreeView::OnDeleteAllNodes()
     BOOL bDataSet = FALSE;
     CTreeCtrl& om_tree = GetTreeCtrl();
     HTREEITEM hSimSysItem = om_tree.GetSelectedItem();
-    CString omStrSimSysName = STR_EMPTY;
+    CString omStrSimSysName = "";
     omStrSimSysName = om_tree. GetItemText(hSimSysItem);
     // First check if the nodes can be deleted or not.
     // only if the dlls are not loaded it can be deleted.
@@ -2445,7 +2445,7 @@ void CSimSysTreeView::OnDeleteAllNodes()
         int nReturnVal = AfxMessageBox(ALL_SIMSYS_DELETE_CONFMN, MB_YESNO|MB_ICONQUESTION);
         if ( nReturnVal == IDYES )
         {
-            bSuccess = pSimSysNodeInfo->bDeleteNodeFromSimSys(omStrSimSysName , STR_EMPTY);
+            bSuccess = pSimSysNodeInfo->bDeleteNodeFromSimSys(omStrSimSysName , "");
             if(bSuccess)
             {
                 while(om_tree.ItemHasChildren(hSimSysItem))
@@ -2607,7 +2607,7 @@ void CSimSysTreeView::OnSimsysLoadall()
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
-    CString omStrFileName = STR_EMPTY;
+    CString omStrFileName = "";
 
     int nNodeCount = 0;
     CStringArray omStrLoadFiles;
@@ -2736,7 +2736,7 @@ void CSimSysTreeView::OnSimsysSaveAs()
     CTreeCtrl& omTree = GetTreeCtrl();
 
     HTREEITEM hItem = omTree.GetSelectedItem();
-    CString oCfgFilename = STR_EMPTY;
+    CString oCfgFilename = "";
 
     // get the name of the loaded config file only if no filename has
     // been specified until now..
@@ -2799,7 +2799,7 @@ void CSimSysTreeView::OnSimsysUnloadall()
     CTreeCtrl& om_Tree = GetTreeCtrl();
     HTREEITEM hSelectedItem = om_Tree.GetSelectedItem();
     CString omStrSimSysName = om_Tree.GetItemText(hSelectedItem);
-    CString omStrFileName = STR_EMPTY;
+    CString omStrFileName = "";
 
     int nNodeCount = 0;
 

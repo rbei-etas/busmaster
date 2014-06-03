@@ -67,7 +67,7 @@ CExploreMsgSg::CExploreMsgSg( CFunctionEditorDoc* pDoc,
     m_bWantStructure    = FALSE;
     m_bCheckRequired    = bCheckRequired;
     m_eWindow           = eWindow;
-    m_omStrMessageName  = STR_EMPTY;
+    m_omStrMessageName  = "";
     m_pDoc              = pDoc;
 }
 
@@ -262,7 +262,7 @@ void CExploreMsgSg::OnSelect()
         if ( nSgIndex != -1 )
         {
             // Get selected signal text
-            CString omStrSgName = STR_EMPTY;
+            CString omStrSgName = "";
             m_omSignalListBox.GetText( nSgIndex, omStrSgName );
 
             if ( m_bWantStructure )
@@ -414,7 +414,7 @@ BOOL CExploreMsgSg::OnInitDialog()
     ScreenToClient(&rRect);
 
     // Insert a column to the list control
-    m_omMsgList.InsertColumn( 0, STR_EMPTY, LVCFMT_LEFT, rRect.bottom );
+    m_omMsgList.InsertColumn( 0, "", LVCFMT_LEFT, rRect.bottom );
 
     m_omMsgList.DeleteAllItems();
 

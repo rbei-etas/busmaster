@@ -789,7 +789,7 @@ void CExecuteFunc::vExecuteOnEventHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE by
     PSNODEINFO psNodeInfo = nullptr;
     if( pNodeInfo != nullptr )
     {
-        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(STR_EMPTY
+        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(""
                      , m_sNodeInfo.m_omStrNodeName);
         if(psNodeInfo != nullptr)
         {
@@ -2900,7 +2900,7 @@ void CExecuteFunc::vEnableDisableAllTimers(BOOL bEnable)
     PSNODEINFO psNodeInfo = nullptr;
     if( pNodeInfo != nullptr )
     {
-        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(STR_EMPTY ,
+        psNodeInfo = pNodeInfo->psGetSimSysNodePointer("" ,
                      m_sNodeInfo.m_omStrNodeName);
         if(psNodeInfo != nullptr)
         {
@@ -2979,7 +2979,7 @@ BOOL CExecuteFunc::bActivateDeactivateHandlers(BOOL bCurrStatus)
     PSNODEINFO psNodeInfo = nullptr;
     if( pNodeInfo != nullptr )
     {
-        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(STR_EMPTY
+        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(""
                      , m_sNodeInfo.m_omStrNodeName);
         if(psNodeInfo != nullptr)
         {
@@ -3061,7 +3061,7 @@ BOOL CExecuteFunc::bEnableDisableKeyHandlers(BOOL bEnable)
     PSNODEINFO psNodeInfo = nullptr;
     if( pNodeInfo != nullptr )
     {
-        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(STR_EMPTY
+        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(""
                      , m_sNodeInfo.m_omStrNodeName);
         if(psNodeInfo != nullptr)
         {
@@ -3098,7 +3098,7 @@ BOOL CExecuteFunc::bEnableDisableErrorHandlers(BOOL bEnable)
     PSNODEINFO psNodeInfo = nullptr;
     if( pNodeInfo != nullptr )
     {
-        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(STR_EMPTY
+        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(""
                      , m_sNodeInfo.m_omStrNodeName);
         if(psNodeInfo != nullptr)
         {
@@ -3138,7 +3138,7 @@ BOOL CExecuteFunc::bEnableDisableEventHandlers(BOOL bEnable)
     PSNODEINFO psNodeInfo = nullptr;
     if( pNodeInfo != nullptr )
     {
-        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(STR_EMPTY
+        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(""
                      , m_sNodeInfo.m_omStrNodeName);
         if(psNodeInfo != nullptr)
         {
@@ -3170,7 +3170,7 @@ BOOL CExecuteFunc::bEnableDisableMsgHandlers(BOOL bEnable)
     PSNODEINFO psNodeInfo = nullptr;
     if( pNodeInfo != nullptr )
     {
-        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(STR_EMPTY
+        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(""
                      , m_sNodeInfo.m_omStrNodeName);
         if(psNodeInfo != nullptr)
         {

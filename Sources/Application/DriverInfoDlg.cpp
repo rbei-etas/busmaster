@@ -54,7 +54,7 @@ CDriverInfoDlg::CDriverInfoDlg(CWnd* pParent /*=nullptr*/)
     : CDialog(CDriverInfoDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CDriverInfoDlg)
-    m_omStrDriverInfo = STR_EMPTY;
+    m_omStrDriverInfo = "";
     //}}AFX_DATA_INIT
     CString omStrFormatDriverInfo;
     m_omStrDriverInfo = "";

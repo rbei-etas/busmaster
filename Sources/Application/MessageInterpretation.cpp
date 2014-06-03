@@ -57,8 +57,8 @@ CMessageInterpretation::CMessageInterpretation(CWnd* pParent /*=nullptr*/)
     , m_strCaption("  Message")
 {
     //{{AFX_DATA_INIT(CMessageInterpretation)
-    m_omMsgName = STR_EMPTY;
-    m_omMsgID = STR_EMPTY;
+    m_omMsgName = "";
+    m_omMsgID = "";
     //}}AFX_DATA_INIT
 
     m_hBrushStatic = CreateSolidBrush(RGB(30, 60, 150));
@@ -673,9 +673,9 @@ void CMessageInterpretation::vClearWindowContent()
     // Remove elements in the List
     m_ctrlSignal.DeleteAllItems();
     // Clear Message ID
-    m_omMsgID = STR_EMPTY;
+    m_omMsgID = "";
     // Clear Message Name
-    m_omMsgName = STR_EMPTY;
+    m_omMsgName = "";
     // Update Values
     UpdateData(FALSE);
 }

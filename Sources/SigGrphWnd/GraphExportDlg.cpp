@@ -33,9 +33,9 @@ CGraphExportDlg::CGraphExportDlg(CWnd* pParent /*=nullptr*/)
     : CDialog(CGraphExportDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CGraphExportDlg)
-    m_omStrCSVFileName = STR_EMPTY;
-    m_omStrHTMLFileName = STR_EMPTY;
-    m_omStrBMPFileName = STR_EMPTY;
+    m_omStrCSVFileName = "";
+    m_omStrHTMLFileName = "";
+    m_omStrBMPFileName = "";
     m_pDMGraphCtrl = nullptr;
     //}}AFX_DATA_INIT
 }
@@ -190,7 +190,7 @@ void CGraphExportDlg::OnBtnSaveHtml()
         {
             CStringArray omParams;
             // Get The configuration File Name
-            CString omStr = STR_EMPTY;
+            CString omStr = "";
             // Get the Name from the app module
             //theApp.GetLoadedConfigFilename( omStr );
             // Add Config File
@@ -202,7 +202,7 @@ void CGraphExportDlg::OnBtnSaveHtml()
             theApp.bGetData( CONTROLLER_DETAILS, (void**)&pBaudDetails);
             if( pBaudDetails != nullptr )
             {
-                CString omStrBaudRate(STR_EMPTY);
+                CString omStrBaudRate("");
                 // Get the actual hardware available
                 UINT unActualHw = 0;
                 LONG lParam = 0;

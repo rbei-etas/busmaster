@@ -920,7 +920,7 @@ void CFnsTreeView::OnDeleteHandle()
         // Get slected item handle from the tree
         HTREEITEM hSelItem      = omTree.GetSelectedItem();
         HTREEITEM hSelItemChild = omTree.GetChildItem(hSelItem);
-        CString omStrFnName = STR_EMPTY;
+        CString omStrFnName = "";
         CString omStrSelectedText = omTree.GetItemText( hSelItem );
         int nYesNo = IDYES;
         if(hSelItemChild == nullptr)
@@ -1088,7 +1088,7 @@ void CFnsTreeView::OnDeleteHandle()
                 CRichEditCtrl& omRichEdit =
                     podFnView->GetRichEditCtrl();
                 // Set view to empty
-                omRichEdit.SetWindowText( STR_EMPTY );
+                omRichEdit.SetWindowText( "" );
                 // Read only view
                 omRichEdit.SetReadOnly( TRUE );
                 // Set the structure m_sStartPos, a private member variable
@@ -1120,7 +1120,7 @@ void CFnsTreeView::OnAddHandle()
     CTreeCtrl& omTree = GetTreeCtrl();
     // Get slected item handle from the tree
     HTREEITEM hSelItem = omTree.GetSelectedItem();
-    CString omStrFnName = STR_EMPTY;
+    CString omStrFnName = "";
 
     CString omStrSelectedText =
         omTree.GetItemText( hSelItem );
@@ -1219,7 +1219,7 @@ BOOL CFnsTreeView::bDeleteHandler( CString omStrFuncName,
 
         POSITION pos2 = omStrListTemp.GetHeadPosition();
 
-        CString omTemp = STR_EMPTY;
+        CString omTemp = "";
         POSITION pos1;
 
         // Compare every item in the temp list
@@ -1291,7 +1291,7 @@ BOOL CFnsTreeView::bDeleteHandler( CString omStrFuncName,
 
         if ( pArray != nullptr )
         {
-            CString omStr = STR_EMPTY;
+            CString omStr = "";
 
             for ( int nCount = 0; nCount < pArray->GetSize(); nCount++ )
             {
@@ -1322,7 +1322,7 @@ BOOL CFnsTreeView::bDeleteHandler( CString omStrFuncName,
 BOOL CFnsTreeView::bDeleteALineFromHeader(CString omStrHeader,
         CString omSearchStr)
 {
-    CString omStrLine = STR_EMPTY;
+    CString omStrLine = "";
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
     SBUS_SPECIFIC_INFO sBusSpecInfo;
     pDoc->bGetBusSpecificInfo(sBusSpecInfo);
@@ -1365,7 +1365,7 @@ BOOL CFnsTreeView::bDeleteALineFromHeader(CString omStrHeader,
 
         if ( pArray != nullptr )
         {
-            CString omStr = STR_EMPTY;
+            CString omStr = "";
 
             for ( int nCount = 0; nCount < pArray->GetSize(); nCount++ )
             {
@@ -1455,7 +1455,7 @@ void CFnsTreeView::vOnNewTimerHandler()
             omStrHdr.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
             omStrFooter.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
             // Add empty line
-            //pDoc->m_omSourceCodeTextList.AddTail( STR_EMPTY );
+            //pDoc->m_omSourceCodeTextList.AddTail( "" );
             // Add header
             pDoc->m_omSourceCodeTextList.AddTail( omStrHdr );
             // Add fn definition
@@ -1713,7 +1713,7 @@ void CFnsTreeView::vOnNewKeyHandler()
                 omStrHdr.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
                 omStrFooter.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
                 // Add empty line
-                //pDoc->m_omSourceCodeTextList.AddTail( STR_EMPTY );
+                //pDoc->m_omSourceCodeTextList.AddTail( "" );
                 // Add header
                 pDoc->m_omSourceCodeTextList.AddTail( omStrHdr );
                 // Add fn definition
@@ -2225,7 +2225,7 @@ void CFnsTreeView::vOnNewUtilityFunction()
                     pDoc->omStrExtractFunctionNameFromPrototype(
                         od_Dlg.m_omStrFunPrototype );
 
-                //pDoc->m_omSourceCodeTextList.AddTail( STR_EMPTY );
+                //pDoc->m_omSourceCodeTextList.AddTail( "" );
                 omSelectedText.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
                 omSelectedText.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
                                         omFuncName );
@@ -2421,7 +2421,7 @@ void CFnsTreeView::vEditIncludeHeader(HTREEITEM hItem)
                     }
                 }
 
-                CString omStrGlobalVar = STR_EMPTY;
+                CString omStrGlobalVar = "";
                 POSITION prevPos = nullptr;
 
                 while ( pos != nullptr )
@@ -2515,7 +2515,7 @@ void CFnsTreeView::vEditUtilityFunc(HTREEITEM hItem)
                         pDoc->omStrExtractFunctionNameFromPrototype(
                             od_Dlg.m_omStrFunPrototype );
 
-                    //pDoc->m_omSourceCodeTextList.AddTail( STR_EMPTY );
+                    //pDoc->m_omSourceCodeTextList.AddTail( "" );
                     omSelectedText.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
                     omSelectedText.Replace( "PLACE_HODLER_FOR_FUNCTIONNAME",
                                             omFuncName );

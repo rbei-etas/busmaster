@@ -40,7 +40,6 @@
 #define defMSG_MONOSHOT             _T("MONOSHOT")
 #define defMESSAGE_TRIG_MS          _T("ms")
 #define defDEFAULT_TIMER_VAL        _T("100")
-#define STR_EMPTY                   _T("")
 #define defDEFAULT_KEY_VAL          'A'
 #define defSTR_INVALID_MESSAGE_ID   "Invalid Message ID or Name"
 #define defSTR_INVALID_DLC          "Invalid DLC value."
@@ -110,7 +109,6 @@ typedef std::basic_string<TCHAR> TString;
 #define defMESSAGE_TRIG_MS          _T("ms")
 #define defDEFAULT_MSG_BLOCK_NAME   _T("OnTime")
 #define defDEFAULT_TIMER_VAL        _T("100")
-#define STR_EMPTY                   _T("")
 #define defDEFAULT_KEY_VAL          'A'
 
 typedef struct tagSBYTE

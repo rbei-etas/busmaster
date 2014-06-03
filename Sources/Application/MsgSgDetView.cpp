@@ -781,7 +781,7 @@ void CMsgSgDetView::OnKillfocusEditMsgName()
             CMsgSgTreeView* podTreeViewPtr = pMainFrm->podGetMsgSgTreeView(m_sDbParams.m_eBus);
             if (podTreeViewPtr != nullptr)
             {
-                CString omStrPrevMsgName;// = STR_EMPTY;
+                CString omStrPrevMsgName;// = "";
                 CString omStrPvMsgName;
                 int nMsgId = -1;
 
@@ -791,8 +791,8 @@ void CMsgSgDetView::OnKillfocusEditMsgName()
 
                 if ( TRUE == podTreeViewPtr->m_bIsNewMessage )
                 {
-                    omStrPrevMsgName = STR_EMPTY;
-                    omStrPvMsgName   = STR_EMPTY;
+                    omStrPrevMsgName = "";
+                    omStrPvMsgName   = "";
                     nMsgId = -1;
                 }
                 else
@@ -1094,7 +1094,7 @@ void CMsgSgDetView::vSetDefaultValues()
 {
     m_omStrMessageName = "NewMesg";
 
-    m_omStrMessageCode = STR_EMPTY;
+    m_omStrMessageCode = "";
 
     m_unMessageLength = 8;
 
@@ -1379,7 +1379,7 @@ void CMsgSgDetView::OnSignalEdit()
     int nItemCount = m_omListCtrlSignal.GetItemCount();
     if ( nSelItem != -1 )
     {
-        CString omStrSelItemText = STR_EMPTY;
+        CString omStrSelItemText = "";
         // Get the byte order
         BYTE byByteOrder = DATA_FORMAT_MOTOROLA;
         omStrSelItemText =
@@ -1711,7 +1711,7 @@ void CMsgSgDetView::vAddItemToSignalList(int nRow,  sMESSAGE* pMsg,
         m_omListCtrlSignal.InsertItem( nRow,pSg->m_omStrSignalName);
 
         // Signal byte index
-        CString omStrTemp = STR_EMPTY;
+        CString omStrTemp = "";
 
         omStrTemp.Format( "%d", pSg->m_unStartByte -1 );
 
@@ -2652,7 +2652,7 @@ void CMsgSgDetView::vUpDownArrowKeySelection(int nSel)
                             InsertItem( nCount,
                                         pDescVal->m_omStrSignalDescriptor);
 
-                            CString StrDescVal = STR_EMPTY;
+                            CString StrDescVal = "";
                             //                            __int64 n64SignalDesVal = pDescVal->m_n64SignalVal;
                             __int64 n64SignalDesVal = pDescVal->m_DescValue.n64Value;
                             //if(n64SignalDesVal>=0)

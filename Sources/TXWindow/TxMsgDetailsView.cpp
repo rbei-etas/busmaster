@@ -596,7 +596,7 @@ void CTxMsgDetailsView::OnEditchangeCombMsgIdName()
         // Update Message List Information
         STCAN_MSG sCanInfo;
         // Reset the status text
-        bSetStatusText( STR_EMPTY );
+        bSetStatusText( "" );
         // Update the message details from the UI
         bUpdateMessageDetail(&sCanInfo);
         // Set the message length
@@ -608,7 +608,7 @@ void CTxMsgDetailsView::OnEditchangeCombMsgIdName()
         // Update signal List
         if( psMsg != nullptr )
         {
-            CString omStrMsgName = STR_EMPTY;
+            CString omStrMsgName = "";
             // Update DLC Field
             omStrMsgName.Format( defFORMAT_MSGID_DECIMAL,
                                  psMsg->m_unMessageLength );
@@ -904,7 +904,7 @@ BOOL CTxMsgDetailsView::bUpdateSignalList(STCAN_MSG sMsg)
 /******************************************************************************/
 INT CTxMsgDetailsView::nGetMessageID()
 {
-    CString omStrMsgName( STR_EMPTY );
+    CString omStrMsgName( "" );
     INT nMsgID = -1;
     m_omComboMsgIDorName.GetWindowText(omStrMsgName);
     // Get message Id from database in case user has selected a message name.
@@ -1167,7 +1167,7 @@ void CTxMsgDetailsView::vShowSignalValues(const CSignalInfoArray& romSigInfo)
             {
                 for(int index = nExistingItems; index < nItems; index++)
                 {
-                    m_omLctrSigList.InsertItem( index, STR_EMPTY);
+                    m_omLctrSigList.InsertItem( index, "");
                 }
             }
             // Remove extra entries
@@ -1721,7 +1721,7 @@ BOOL CTxMsgDetailsView::bCheckIfValueIsMoreThan255(
     UINT unIDValue = IDC_EDIT_DB1;
     USHORT usTempCount = 0;
 
-    CString omStrValue(STR_EMPTY);
+    CString omStrValue("");
     UINT unValue;
     CRadixEdit* pRadixEdit = nullptr;
 
@@ -1880,7 +1880,7 @@ void CTxMsgDetailsView::OnSelchangeCombMsgIdName()
 
     if( pomBlockView != nullptr && pomListView != nullptr )
     {
-        CString omStrMsgName = STR_EMPTY;
+        CString omStrMsgName = "";
         sMESSAGE* psMsg = nullptr;
         BOOL bValidMsgID = TRUE;
 
@@ -1927,7 +1927,7 @@ void CTxMsgDetailsView::OnSelchangeCombMsgIdName()
                 STCAN_MSG sCanInfo;
                 bUpdateMessageDetail(&sCanInfo);
                 // Clear Status message
-                bSetStatusText( STR_EMPTY );
+                bSetStatusText( "" );
                 // Due to selection use the selected message name / ID
                 // nGetMessage ID function uses GetWindowText and that will be
                 // Updated only after the selection is done
@@ -2058,7 +2058,7 @@ void CTxMsgDetailsView::OnUpdateEditDLC()
             // Clear Error Text
             if( bEntryValid )
             {
-                bSetStatusText(STR_EMPTY);
+                bSetStatusText("");
             }
         }
     }
@@ -2163,7 +2163,7 @@ void CTxMsgDetailsView::OnUpdateEditDataBytes()
             // Clear Error Text
             if( bEntryValid )
             {
-                bSetStatusText(STR_EMPTY);
+                bSetStatusText("");
             }
         }
     }
@@ -2230,7 +2230,7 @@ void CTxMsgDetailsView::OnRbtnMsgtypeStd()
     }
     if( bEntryValid )
     {
-        bSetStatusText(STR_EMPTY);
+        bSetStatusText("");
     }
 }
 
@@ -2326,7 +2326,7 @@ void CTxMsgDetailsView::OnChkbMsgtypeRtr()
     }
     if( bEntryValid )
     {
-        bSetStatusText( STR_EMPTY );
+        bSetStatusText( "" );
     }
 }
 
@@ -3195,7 +3195,7 @@ void CTxMsgDetailsView::vUpdateDataBytes()
         {
             if(i >= m_psSelectedMsgDetails->m_unMessageLength)
             {
-                omStr = STR_EMPTY;
+                omStr = "";
             }
             else
             {
@@ -3436,7 +3436,7 @@ void CTxMsgDetailsView::OnSelchangeCombChannelId()
     // Clear Error Text
     if( bEntryValid )
     {
-        bSetStatusText(STR_EMPTY);
+        bSetStatusText("");
     }
 }
 
@@ -3453,7 +3453,7 @@ void CTxMsgDetailsView::OnSelchangeCombChannelId()
 void CTxMsgDetailsView::vSetDefaultValues()
 {
     // Set Message ID/Name
-    m_omComboMsgIDorName.SetWindowText(STR_EMPTY);
+    m_omComboMsgIDorName.SetWindowText("");
     // Set Databytes
     CString omStrDataBytesValue;
     // Two digits in case of Hex mode

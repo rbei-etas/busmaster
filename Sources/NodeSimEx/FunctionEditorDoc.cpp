@@ -100,8 +100,8 @@ BOOL CFunctionEditorDoc::bCreateNewDocument(CString& omStrFileName )
 {
     BOOL bSuccess = FALSE;
     FILE* pCFile = fopen( /*T2A*/(omStrFileName.GetBuffer(MAX_PATH)), "at");
-    CString omStrCFileName = STR_EMPTY;
-    CString omStr = STR_EMPTY;
+    CString omStrCFileName = "";
+    CString omStr = "";
     // To get the application version
     CString omstrAppVersion = GetApplicationVersion();
 
@@ -230,8 +230,8 @@ BOOL CFunctionEditorDoc::OnNewDocument()
 
     UINT unCount  = 1;
     BOOL bStop    = FALSE;
-    CString omStrCFileName = STR_EMPTY;
-    CString omStr = STR_EMPTY;
+    CString omStrCFileName = "";
+    CString omStr = "";
     CString strFilePath;
     // Get current working directory, and title
     // and form the file path
@@ -245,7 +245,7 @@ BOOL CFunctionEditorDoc::OnNewDocument()
     while (bStop == FALSE)
     {
         omStrCFileName = "NewEd";
-        omStr = STR_EMPTY;
+        omStr = "";
         omStr.Format( "%d", unCount);
         omStr += ".c";
         omStrCFileName += omStr;
@@ -307,16 +307,16 @@ BOOL CFunctionEditorDoc::OnNewDocument()
         }
     }
     m_omSourceCodeTextList.AddTail( BUS_INCLUDE_FOOTER );
-    m_omSourceCodeTextList.AddTail(  STR_EMPTY );
-    m_omSourceCodeTextList.AddTail(  STR_EMPTY );
+    m_omSourceCodeTextList.AddTail(  "" );
+    m_omSourceCodeTextList.AddTail(  "" );
     m_omSourceCodeTextList.AddTail( BUS_VAR_HDR );
-    m_omSourceCodeTextList.AddTail(  STR_EMPTY );
+    m_omSourceCodeTextList.AddTail(  "" );
     m_omSourceCodeTextList.AddTail( BUS_VAR_FOOTER );
-    m_omSourceCodeTextList.AddTail(  STR_EMPTY );
-    m_omSourceCodeTextList.AddTail(  STR_EMPTY );
+    m_omSourceCodeTextList.AddTail(  "" );
+    m_omSourceCodeTextList.AddTail(  "" );
     m_omSourceCodeTextList.AddTail( BUS_FN_PROTOTYPE_HDR );
     m_omSourceCodeTextList.AddTail( BUS_FN_PROTOTYPE_FOOTER );
-    m_omSourceCodeTextList.AddTail(  STR_EMPTY );
+    m_omSourceCodeTextList.AddTail(  "" );
 
     return TRUE;
 }
@@ -340,7 +340,7 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
     //UINT fileSize;
     if (ar.IsStoring())
     {
-        CString omStrLine = STR_EMPTY;
+        CString omStrLine = "";
         BYTE* pbyFileData = new BYTE[m_nMaxLineLength * m_omSourceCodeTextList.GetCount()];
         memset(pbyFileData, 0, m_nMaxLineLength * m_omSourceCodeTextList.GetCount());
         BYTE pbyFileLine[1024] = {'\0'};
@@ -364,7 +364,7 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
     }
     else // Loading
     {
-        CString omTextLine = STR_EMPTY;
+        CString omTextLine = "";
         int nLineLength = 0;
         TRY
         {
@@ -784,7 +784,7 @@ CStringArray* CFunctionEditorDoc::omStrGetFunctionNamesForDEF()
 CString CFunctionEditorDoc::
 omStrExtractFunctionNameFromPrototype(CString omStrPrototype)
 {
-    CString omStrFuncName = STR_EMPTY;
+    CString omStrFuncName = "";
 
     if ( !omStrPrototype.IsEmpty())
     {
@@ -1180,7 +1180,7 @@ int CFunctionEditorDoc::nGetMaxLineLength()
 {
     POSITION pos = m_omSourceCodeTextList.GetHeadPosition();
 
-    CString omStrLine   = STR_EMPTY;
+    CString omStrLine   = "";
     int nLineLength     = 0;
 
     while ( pos != nullptr )
@@ -1279,7 +1279,7 @@ void CFunctionEditorDoc::OnCloseDocument()
     /* CMainFrame* pMainFrame = (CMainFrame*)AfxGetApp()->m_pMainWnd;
      if ( pMainFrame != nullptr )
      {
-         pMainFrame->CGlobalObj::m_omStrSourceFilePathName = STR_EMPTY;
+         pMainFrame->CGlobalObj::m_omStrSourceFilePathName = "";
      }*/
 
     CDocument::OnCloseDocument();

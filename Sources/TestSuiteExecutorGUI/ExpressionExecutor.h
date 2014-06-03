@@ -25,12 +25,6 @@
 
 const int SIZE_CHAR = sizeof(CHAR);
 
-#define MAX_TEXT_NAME_ID        512
-#define MAX_FRAME_NAME_ID       256
-#define MAX_SCALE_LINEAR_RNG    10
-#define MAX_OPERANDS_RNG        20
-#define EMPTY_VALUE             -1
-
 class CExpressionExecutor
 {
     //Member Variables

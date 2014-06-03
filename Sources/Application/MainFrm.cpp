@@ -554,10 +554,10 @@ CMainFrame::CMainFrame()
     m_bNoHardwareFound              = true;
     // Clear all MRU strings
     m_omStrMRU_ConfigurationFiles[0]    = _(defSTR_DEFAULT_MRU_ITEM);
-    m_omStrMRU_ConfigurationFiles[1]    = STR_EMPTY;
-    m_omStrMRU_ConfigurationFiles[2]    = STR_EMPTY;
-    m_omStrMRU_ConfigurationFiles[3]    = STR_EMPTY;
-    m_omStrMRU_ConfigurationFiles[4]    = STR_EMPTY;
+    m_omStrMRU_ConfigurationFiles[1]    = "";
+    m_omStrMRU_ConfigurationFiles[2]    = "";
+    m_omStrMRU_ConfigurationFiles[3]    = "";
+    m_omStrMRU_ConfigurationFiles[4]    = "";
 
     // Config menu option - default
     m_bCfgNewMenuOption     = TRUE;
@@ -578,7 +578,7 @@ CMainFrame::CMainFrame()
 
     m_unWarningLimit  = 96;
     m_podUIThread = nullptr;
-    m_omStrSavedConfigFile = STR_EMPTY;
+    m_omStrSavedConfigFile = "";
     m_unTimerSBLog = 0;
 
     m_unJ1939TimerSBLog = 0;
@@ -713,7 +713,7 @@ CMainFrame::~CMainFrame()
     DELETE_PTR(m_podMsgWndThread);
     if (m_pouMsgSigJ1939 != nullptr)
     {
-        m_pouMsgSigJ1939->bDeAllocateMemory(STR_EMPTY);
+        m_pouMsgSigJ1939->bDeAllocateMemory("");
     }
     DELETE_PTR(m_pouMsgSigJ1939);
 
@@ -2234,7 +2234,7 @@ void CMainFrame::OnNewDatabase()
     {
         CString omStrDbName = NEW_DATABASE_NAME;
 
-        CString omStr = STR_EMPTY;
+        CString omStr = "";
 
         omStr.Format( "%d", unCount);
 
@@ -3139,7 +3139,7 @@ BOOL CMainFrame::bDLLBuild(CStringArray* /*omStrBuildFiles*/)
     //int nFailure = 0;
     /* CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys =
              theApp.psReturnSimsysInfoPtr();*/
-    //CString omStrFileName = STR_EMPTY;
+    //CString omStrFileName = "";
     //int nNodeCount = 0;
     //omStrBuildFiles->RemoveAll();
 
@@ -5164,7 +5164,7 @@ BOOL CMainFrame::bIsTransitionInState( UINT unChannel,
 /******************************************************************************/
 CString CMainFrame::omStrConvertIntegerToHex(CString omStrInt)
 {
-    CString omStrHexNo = STR_EMPTY;
+    CString omStrHexNo = "";
     int nCount = omStrInt.GetLength();
 
     int nIndex = omStrInt.Find('-');
@@ -7919,8 +7919,8 @@ void CMainFrame::OnUpdateConfigurationFileName(CCmdUI* pCmdUI)
     pCmdUI->Enable();
     CString omStrPage;
 
-    CString omStrConfigurationFilename = STR_EMPTY;
-    CString omStrDBName = STR_EMPTY;
+    CString omStrConfigurationFilename = "";
+    CString omStrDBName = "";
 
     vGetLoadedCfgFileName(omStrConfigurationFilename);
 
@@ -8004,7 +8004,7 @@ void CMainFrame::vWriteNewLogFilenameInRegistry( CString omLogFilename )
     }
     else// There is no alpha character
     {
-        omStrTemp = STR_EMPTY;
+        omStrTemp = "";
     }
 
     //"10" - 10
@@ -9550,7 +9550,7 @@ void CMainFrame::OnClickMruList (UINT unID)
             if ( pMenu != nullptr)
             {
                 // Get the string associated with the selected menu item
-                CString omStrName(STR_EMPTY);
+                CString omStrName("");
                 pMenu->GetMenuString( unID, omStrName, MF_BYCOMMAND);
                 // Let the selected filename be the first file name in the MRU
                 if (!omStrName.IsEmpty() && omStrName != _(defSTR_DEFAULT_MRU_ITEM) )
@@ -9689,7 +9689,7 @@ void CMainFrame::vPushConfigFilenameDown(CString omStrConfigFilename )
     // If the filename is new then, the last element in the
     // list will be lost
     // Perform only for valid config file
-    if ( omStrConfigFilename != STR_EMPTY )
+    if ( omStrConfigFilename != "" )
     {
         if (m_omStrMRU_ConfigurationFiles[0] == defSTR_DEFAULT_MRU_ITEM)
         {
@@ -9749,7 +9749,7 @@ void CMainFrame::vPushConfigFilenameDown(CString omStrConfigFilename )
                         // set the text appropriatly
                         UINT unMenuID = IDM_REC_CFG_FILE1;
                         pMenu->AppendMenu( MF_STRING | MF_ENABLED,
-                                           unMenuID + nMenuCount, STR_EMPTY);
+                                           unMenuID + nMenuCount, "");
                     }
                 }
             }
@@ -9896,7 +9896,7 @@ void CMainFrame::OnFilePropeties()
 {
     CStringArray omStrArray;
     SPROPERTIESLIST sProperties;
-    CString omStrFomat( STR_EMPTY );
+    CString omStrFomat( "" );
     BOOL bDLLLoaded = FALSE;
     CFlags* pouFlag = nullptr;
 
@@ -10057,7 +10057,7 @@ void CMainFrame::vCreateMRU_Menus()
     if ( pMenu != nullptr )// Verify
     {
         // if the first MRU file is empty then, "Empty" text shud be displayed
-        if ( m_omStrMRU_ConfigurationFiles[0] != STR_EMPTY &&
+        if ( m_omStrMRU_ConfigurationFiles[0] != "" &&
                 m_omStrMRU_ConfigurationFiles[0] != _(defSTR_DEFAULT_MRU_ITEM) )
         {
             // Remove the static item
@@ -10066,7 +10066,7 @@ void CMainFrame::vCreateMRU_Menus()
             for (UINT unCount = 0; unCount < 5; unCount++ )
             {
                 // Create menu only if string is not empty
-                if ( m_omStrMRU_ConfigurationFiles[unCount] != STR_EMPTY )
+                if ( m_omStrMRU_ConfigurationFiles[unCount] != "" )
                 {
                     pMenu->RemoveMenu( unMenuID + unCount, MF_BYCOMMAND);
                     pMenu->AppendMenu(MF_STRING, unMenuID + unCount,
@@ -12413,7 +12413,7 @@ void CMainFrame::vSetAssociatedDatabaseFiles(ETYPE_BUS eBus)
             for(int i = 0; i < defNO_OF_LIN_CHANNELS; i++)
             {
                 sLDFPath=m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_strDataBasePath;
-                if((sLDFPath !=STR_EMPTY))
+                if((sLDFPath !=""))
                 {
                     m_saLDFPaths.Add(sLDFPath.c_str());
                 }
@@ -13788,7 +13788,7 @@ BOOL CMainFrame::COM_bDLLBuild(CStringArray* omStrBuildFiles)
     BOOL bReturn            = FALSE;
     //BOOL bSuccess           = FALSE;
     int nFailure            = 0;
-    CString omStrFileName   = STR_EMPTY;
+    CString omStrFileName   = "";
     //int nNodeCount          = 0;
 
     //CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys = theApp.psReturnSimsysInfoPtr();
@@ -18194,7 +18194,7 @@ void CMainFrame::vClearDbInfo(ETYPE_BUS eBus)
             {
                 OnCloseDatabase();
             }
-            theApp.m_pouMsgSignal->bDeAllocateMemory(STR_EMPTY);
+            theApp.m_pouMsgSignal->bDeAllocateMemory("");
             CStringArray omDatabase;
             omDatabase.RemoveAll();
             theApp.m_pouMsgSignal->vSetDataBaseNames(&omDatabase);
@@ -18208,7 +18208,7 @@ void CMainFrame::vClearDbInfo(ETYPE_BUS eBus)
             }
             if (m_pouMsgSigJ1939 != nullptr)
             {
-                m_pouMsgSigJ1939->bDeAllocateMemory(STR_EMPTY);
+                m_pouMsgSigJ1939->bDeAllocateMemory("");
                 CStringArray omDatabase;
                 omDatabase.RemoveAll();
                 m_pouMsgSigJ1939->vSetDataBaseNames(&omDatabase);
@@ -20665,7 +20665,7 @@ static void vGetNewJ1939DBName(CString& omString)
     while (bContinue == TRUE)
     {
         CString omStrDbName = NEW_DATABASE_NAME_J1939;
-        CString omStr = STR_EMPTY;
+        CString omStr = "";
         omStr.Format( "%d", unCount++);
         omStr += ".";
         omStr += DATABASE_EXTN;

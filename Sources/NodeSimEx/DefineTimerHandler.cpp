@@ -50,7 +50,7 @@ static char THIS_FILE[] = __FILE__;
 /******************************************************************************/
 CDefineTimerHandler::CDefineTimerHandler(CFunctionEditorDoc* pDoc, CWnd* pParent /*=nullptr*/)
     : CDialog(CDefineTimerHandler::IDD, pParent),
-      m_omStrTimerFunctionName(STR_EMPTY)
+      m_omStrTimerFunctionName("")
 
 {
     //{{AFX_DATA_INIT(CDefineTimerHandler)
@@ -135,8 +135,8 @@ BOOL CDefineTimerHandler::OnHelpInfo(HELPINFO* pHelpInfo)
 void CDefineTimerHandler::OnOK()
 {
     BOOL bNoMoreTimer               = FALSE;
-    CString omStrTimerHandlerName(STR_EMPTY);
-    CString omStrTimerValue(STR_EMPTY);
+    CString omStrTimerHandlerName("");
+    CString omStrTimerValue("");
     m_omEditTimerFuncName.GetWindowText(omStrTimerHandlerName);
     // No special characters allowed
     if  ( omStrTimerHandlerName.FindOneOf( "~!@#$%^&*-+={}[]/\"\\<>`,.? ()" )

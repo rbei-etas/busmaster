@@ -3035,7 +3035,7 @@ static BOOL bLoadFilterDets(CArchive& romArchive, SFILTERAPPLIED_CAN& sFilterCon
     for( int nIndex = 0; nIndex < nSize; nIndex++ )
     {
         // Get Filter Name
-        CString omStrFilterName = STR_EMPTY;
+        CString omStrFilterName = "";
         romArchive >> omStrFilterName;
         strcpy_s(sFilterConfigured.m_psFilters[nIndex].m_sFilterName.m_acFilterName, LENGTH_FILTERNAME,
                  omStrFilterName.GetBuffer(LENGTH_FILTERNAME));

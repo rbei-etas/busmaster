@@ -28,11 +28,11 @@ CGraphElement::CGraphElement()
     // Message ID
     m_nMsgID = -1;
     // Message Name
-    m_strMsgName = STR_EMPTY;
+    m_strMsgName = "";
     // Format - Standard or Extended
     m_nFrameFormat = -1;
     // Element Name
-    m_omStrElementName = STR_EMPTY;
+    m_omStrElementName = "";
     // Value Type
     m_nValueType = -1;
     // Graph Type

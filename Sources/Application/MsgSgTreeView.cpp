@@ -46,7 +46,7 @@ CMsgSgTreeView::CMsgSgTreeView()
     m_sDbParams             = sm_sDbParams;
     m_omCurrDbName          = m_sDbParams.m_omDBPath;
     m_bIsNewMessage         = FALSE;
-    m_omSelectedItemText    = STR_EMPTY;
+    m_omSelectedItemText    = "";
     m_hTreeItem             = nullptr;
 }
 

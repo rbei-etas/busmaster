@@ -115,8 +115,8 @@ BOOL CErrHandlerDlg::OnInitDialog()
     if( m_pDoc != nullptr )
     {
         CButton* pomButton = nullptr;
-        CString omStrHandlerName = STR_EMPTY ;
-        CString omStrControl     = STR_EMPTY ;
+        CString omStrHandlerName = "" ;
+        CString omStrControl     = "" ;
         INT nCheck               = 0;
 
         // get the pointer to CStringArray of error handlers prototypes
@@ -219,8 +219,8 @@ void CErrHandlerDlg::OnCbtnErrorCancel()
 void CErrHandlerDlg::OnCbtnErrorOk()
 {
     CButton* pomButton       = nullptr;
-    CString omStrHandlerName = STR_EMPTY ;
-    CString omStrControl     = STR_EMPTY ;
+    CString omStrHandlerName = "" ;
+    CString omStrControl     = "" ;
     INT nCheck               = 0;
     BOOL bIsEnable           = TRUE;
     // Get the selected handlers either for deleteting or adding and

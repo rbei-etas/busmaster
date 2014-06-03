@@ -299,7 +299,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
             GetDlgItem(IDC_EDIT_SGLEN)->EnableWindow(TRUE);
 
         }
-        else if (m_omStrSgType == STR_EMPTY)
+        else if (m_omStrSgType == "")
         {
             m_omComboSgType.SetCurSel( -1 );
         }
@@ -866,7 +866,7 @@ BOOL CSignalDetailsDlg::SaveSigLength()
         {
             // Validate signal length
             // depending on the type
-            CString omStrPrevSgName = STR_EMPTY;
+            CString omStrPrevSgName = "";
 
             m_omComboSgType.GetWindowText(omStrPrevSgName);
             if ( !omStrPrevSgName.IsEmpty() )
@@ -1111,7 +1111,7 @@ void CSignalDetailsDlg::OnSelchangeCombSgtype()
         pCancelButton2 = static_cast<CButton*>(GetDlgItem(IDCANCEL));
         if ( pCancelButton1 != pCancelButton2 )
         {
-            CString omStrPrevSgName = STR_EMPTY;
+            CString omStrPrevSgName = "";
 
             m_omComboSgType.GetWindowText(omStrPrevSgName);
 
@@ -1354,7 +1354,7 @@ void CSignalDetailsDlg::OnOK()
                     if ( pSg != nullptr )
                     {
                         pSg->m_eFormat = (EFORMAT_DATA) m_nDataFormat;
-                        CString omStrSgType = STR_EMPTY;
+                        CString omStrSgType = "";
                         m_omComboSgType.GetLBText(
                             m_omComboSgType.GetCurSel(), omStrSgType );
                         if ( omStrSgType == defBOOLEAN )
@@ -1418,7 +1418,7 @@ void CSignalDetailsDlg::OnOK()
 
                         if ( m_unMode == MD_ADD )
                         {
-                            m_omStrPrevSignalName = STR_EMPTY;
+                            m_omStrPrevSignalName = "";
                         }
 
                         // Fill the matrix for edited signal
@@ -1535,7 +1535,7 @@ void CSignalDetailsDlg::vCalculateMaxMinValues(SIG_VALUE& rMinVal,
         SIG_VALUE& rMaxVal)
 {
     // Get signal type
-    CString omStrSgType = STR_EMPTY;
+    CString omStrSgType = "";
 
     m_omComboSgType.GetWindowText(omStrSgType );
 

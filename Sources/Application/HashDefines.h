@@ -24,7 +24,6 @@
 
 #pragma once
 
-//#define defNO_OF_CHANNELS           2
 #define MAX_PROTOCOL               20
 #define AVAILABLE_PROTOCOLS         5
 
@@ -287,7 +286,6 @@ typedef CList<int,int>      defomIntegerList;
 
 
 
-#define STR_EMPTY               ""
 //Initializer constants
 #define INT_INIT                (INT)0
 #define LONG_INIT               (LONG)0

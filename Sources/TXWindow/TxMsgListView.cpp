@@ -491,7 +491,7 @@ void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
                             psTxMsgList->m_sTxMsgDetails.m_sTxMsg );
                         pView->vEnableAddButton( TRUE );
                         // Clear error message if any
-                        pView->bSetStatusText(STR_EMPTY);
+                        pView->bSetStatusText("");
                         psMsgBlock->m_bModified = true;
                     }
                 }
@@ -1189,15 +1189,15 @@ VOID CTxMsgListView::vUpdateMsgListDisplay(sTXCANMSGDETAILS sMsgDetail,
         INT nCurrentIndex)
 {
 
-    CString omStrMsgID( STR_EMPTY );
-    CString omStrMsgData( STR_EMPTY );
-    CString omStrMsgType( STR_EMPTY );
-    CString omStrDLC( STR_EMPTY );
-    CString omStrChannel( STR_EMPTY );
+    CString omStrMsgID( "" );
+    CString omStrMsgData( "" );
+    CString omStrMsgType( "" );
+    CString omStrDLC( "" );
+    CString omStrChannel( "" );
     INT nIndex           = -1;
     UINT unImageID       = 0;
-    CString omStrFormat( STR_EMPTY );
-    CString omStrMsgName( STR_EMPTY );
+    CString omStrFormat( "" );
+    CString omStrMsgName( "" );
     // Set Edit flag to TRUE
     m_bInitDlg = TRUE;
 

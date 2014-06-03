@@ -50,8 +50,8 @@ BOOL CBusEventHandlerDlg::OnInitDialog()
     if( m_pDoc != nullptr )
     {
         CButton* pomButton       = nullptr;
-        CString omStrHandlerName = STR_EMPTY ;
-        CString omStrControl     = STR_EMPTY ;
+        CString omStrHandlerName = "" ;
+        CString omStrControl     = "" ;
         INT nCheck               = 0;
         // get the pointer to CStringArray of error handlers prototypes
         pomStrArrayHandlerName = m_pDoc->pomStrGetBusEventHandlerPrototypes();
@@ -123,8 +123,8 @@ BOOL CBusEventHandlerDlg::OnInitDialog()
 void CBusEventHandlerDlg::OnBnClickedOk()
 {
     CButton* pomButton       = nullptr;
-    CString omStrHandlerName = STR_EMPTY ;
-    CString omStrControl     = STR_EMPTY ;
+    CString omStrHandlerName = "" ;
+    CString omStrControl     = "" ;
     INT nCheck               = 0;
     BOOL bIsEnable           = TRUE;
     // Get the selected handlers either for deleteting or adding and

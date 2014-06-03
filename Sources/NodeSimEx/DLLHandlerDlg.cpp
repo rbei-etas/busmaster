@@ -113,8 +113,8 @@ Modifications    :
 void CDLLHandlerDlg::OnBnClickedOk()
 {
     CButton* pomButton       = nullptr;
-    CString omStrHandlerName = STR_EMPTY ;
-    CString omStrControl     = STR_EMPTY ;
+    CString omStrHandlerName = "" ;
+    CString omStrControl     = "" ;
     INT nCheck               = 0;
     BOOL bIsEnable           = TRUE;
     // Get the selected handlers either for deleteting or adding and
@@ -173,8 +173,8 @@ BOOL CDLLHandlerDlg::OnInitDialog()
     if( m_pDoc != nullptr )
     {
         CButton* pomButton       = nullptr;
-        CString omStrHandlerName = STR_EMPTY ;
-        CString omStrControl     = STR_EMPTY ;
+        CString omStrHandlerName = "" ;
+        CString omStrControl     = "" ;
         // get the pointer to CStringArray of error handlers prototypes
         pomStrArrayHandlerName = m_byType == 0? m_pDoc->pomStrGetDLLHandlerPrototypes(): m_pDoc->omStrGetEventIndPrototypes();
         if(pomStrArrayHandlerName != nullptr )

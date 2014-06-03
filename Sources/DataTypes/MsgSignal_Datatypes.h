@@ -235,12 +235,6 @@ typedef struct tagSMSGENTRY
 #ifndef _FLEXRAY_
 #define _FLEXRAY_
 
-#define MAX_TEXT_NAME_ID        128
-#define MAX_FRAME_NAME_ID       256
-#define MAX_SCALE_LINEAR_RNG    10
-#define MAX_OPERANDS_RNG        20
-#define EMPTY_VALUE             -1
-
 typedef enum
 {
     IDENTICAL_ENUM = 0,              //No change
@@ -312,9 +306,7 @@ typedef struct tagScaleLinearCodeVarEx
 typedef struct tagTextCodeVarEx
 {
     SRange   m_sRange;
-    //CHAR     m_aTextName[MAX_TEXT_NAME_ID];
     std::string  m_aTextName;
-    //tagTextCodeVarEx* m_pNextTextCodeType;
 
     tagTextCodeVarEx();
     tagTextCodeVarEx& operator=(const tagTextCodeVarEx& RefObj);

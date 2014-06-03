@@ -24,7 +24,6 @@
 
 #pragma once
 
-#define STR_EMPTY ""
 #define MAX_PROTOCOLS 20
 #define AVAILABLE_PROTOCOLS         5
 
@@ -53,10 +52,14 @@
 #define defSTR_DEFAULT_BROWSE_LOCATION  _T("about:blank")
 
 // To copy the data and advance the pointer of the target data stream
+#ifndef COPY_DATA
 #define COPY_DATA(TgtStream, SrcStream, TotBytes) {memcpy(TgtStream, SrcStream, TotBytes); TgtStream += TotBytes;}
+#endif
 
 // To copy the data and advance the pointer of the source data stream
+#ifndef COPY_DATA_2
 #define COPY_DATA_2(TgtStream, SrcStream, TotBytes) {memcpy(TgtStream, SrcStream, TotBytes); SrcStream += TotBytes;}
+#endif
 
 // Configuration
 #define defIMPORT_WARNING_GRAPH   _T("Dissociation will clear Graph element List for all buses.\nDo you want to Clear the List?")

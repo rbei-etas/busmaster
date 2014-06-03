@@ -467,7 +467,7 @@ static int nCreateAndSetReadIndicationEvent(HANDLE& hReadEvent)
     m_hDataEvent = CreateEvent( nullptr,           // lpEventAttributes
                                 FALSE,          // bManualReset
                                 FALSE,          // bInitialState
-                                STR_EMPTY);     // Name
+                                "");     // Name
     if (m_hDataEvent != nullptr)
     {
         s_DatIndThread.m_hHandle = m_hDataEvent;

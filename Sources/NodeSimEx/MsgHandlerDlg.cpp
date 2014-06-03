@@ -698,7 +698,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
         {
             if (pMsgArray)
             {
-                CString omStrMsgPro = STR_EMPTY;
+                CString omStrMsgPro = "";
                 CString omStrMsgCommon = CGlobalObj::omGetBusSpecMsgHndlrName(m_eBus);
                 for (int nCount = 0; nCount<pMsgArray->GetSize(); nCount++ )
                 {

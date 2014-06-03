@@ -144,7 +144,7 @@ CMsgSignal::CMsgSignal(const SDBPARAMS& sDbParams, BOOL bInAutoSrvMode)
 {
     m_bAutoServerMode           = bInAutoSrvMode;
     m_sDbParams                 = sDbParams;
-    m_strActiveDBFileName       = STR_EMPTY;
+    m_strActiveDBFileName       = "";
     m_unMessageCount            = 0;
     m_psMessages                = nullptr;
     m_bIsDatabaseSaved          = TRUE;
@@ -203,9 +203,9 @@ CMsgSignal::~CMsgSignal()
 CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
 {
     BOOL bRetVal                = TRUE;
-    CString omStrPath           = STR_EMPTY;
+    CString omStrPath           = "";
     //Add header for ifndef condition
-    CString omStrHeaderString   = STR_EMPTY;
+    CString omStrHeaderString   = "";
     CString omStrHeaderFileName = defHEADER_FILE_NAME;
     char  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
     CFileException   omException  ;
@@ -250,16 +250,16 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
             omStrTemp.Format(H_FILE_HEADER_PRAGMA_PACK,omStrHeaderString,omStrHeaderString);
             omHeaderFile.WriteString(omStrTemp);
 
-            CString omStrDLC = STR_EMPTY;
+            CString omStrDLC = "";
             UINT aunSigStartBit[defMAX_SIGNALS] ;
             UINT aunLength[defMAX_SIGNALS] ;
             CStringArray omStrArraySigName;
             omStrArraySigName.RemoveAll();
             BOOL bReturn = FALSE;
             UINT unSigCount = 0;
-            CString omStrcommandLine = STR_EMPTY;
-            CString omStrSigName = STR_EMPTY;
-            CString omStrdelimiter = STR_EMPTY;
+            CString omStrcommandLine = "";
+            CString omStrSigName = "";
+            CString omStrdelimiter = "";
             for ( UINT unMsgIndex = 0;
             unMsgIndex < m_unMessageCount;
             unMsgIndex++)
@@ -319,7 +319,7 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
                     {
                         omFormatString.Format(defUNION_FORMAT_STRING,
                                               defUNSIGNED_INT,
-                                              STR_EMPTY,
+                                              "",
                                               defUINT_LENGTH);
                         omStrArraySigName.Add(omFormatString);
                         unSigCount++;
@@ -330,7 +330,7 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
                                     - ( unSigCount * defUINT_LENGTH );
                     omFormatString.Format(defUNION_FORMAT_STRING,
                                           defUNSIGNED_INTEGER,
-                                          STR_EMPTY,
+                                          "",
                                           unLength);
                     omStrArraySigName.Add(omFormatString);
 
@@ -449,7 +449,7 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
                         // Open File
                         o_File.Open( strFileName, CFile::modeRead|CFile::typeText );
 
-                        CString sFirstLine = STR_EMPTY;
+                        CString sFirstLine = "";
 
                         // Read file line
                         o_File.ReadString( sFirstLine );
@@ -1002,7 +1002,7 @@ void CMsgSignal::bAddDbNameEntry(const CString& omDbFileName)
 ******************************************************************************/
 CString CMsgSignal::omStrGetMessageNameFromMsgCode( UINT unMsgCode)
 {
-    CString strMsgName = STR_EMPTY;
+    CString strMsgName = "";
     if (unMsgCode >= 0)
     {
         sMESSAGE* psMsgStruct = nullptr;
@@ -1031,7 +1031,7 @@ CString CMsgSignal::omStrGetMessageNameFromMsgCode( UINT unMsgCode)
 ******************************************************************************/
 CString CMsgSignal::omStrGetMessageNameFromMsgCodeInactive( UINT unMsgCode)
 {
-    CString strMsgName = STR_EMPTY;
+    CString strMsgName = "";
 
     // validate message code
     if (unMsgCode >= 0)
@@ -1342,9 +1342,9 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                 strFileName, CFile::modeRead|CFile::typeText );
             if(bIsFileOpen != FALSE )
             {
-                CString sFirstLine  = STR_EMPTY;
-                CString omDBVerLine  = STR_EMPTY;
-                CString omstrDBVersion = STR_EMPTY;
+                CString sFirstLine  = "";
+                CString omDBVerLine  = "";
+                CString omstrDBVersion = "";
                 // read subsequent info from the file
                 /* Read Database version number*/
                 int nIndex = -1;
@@ -2274,7 +2274,7 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
     // For File I/O
     CStdioFile o_File;
 
-    CString sFirstLine = STR_EMPTY;
+    CString sFirstLine = "";
 
     TRY
     {
@@ -2410,7 +2410,7 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
                     while( pTempSg != nullptr &&
                             m_psMessages[nMsgIndex].m_unNumberOfSignals > 0)
                     {
-                        strTempBuf = STR_EMPTY;
+                        strTempBuf = "";
 
                         strTempBuf = NEW_LINE;
 
@@ -2519,7 +2519,7 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
 
                         while ( pTempIDVal != nullptr )
                         {
-                            strTempBuf = STR_EMPTY;
+                            strTempBuf = "";
 
                             strTempBuf = NEW_LINE;
 
@@ -2551,7 +2551,7 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
 
                 }// if ( o_pgMsgArray[nMsgIndex].m_sMessage->m_psSignal != nullptr )
 
-                strTempBuf = STR_EMPTY;
+                strTempBuf = "";
 
                 strTempBuf = NEW_LINE;
 
@@ -3698,7 +3698,7 @@ void CMsgSignal::vConvertStandardToExtendedFrameFormat(int& nMsgCode)
 {
     if ( nMsgCode < MAX_LMT_FOR_STD_MSG_ID )
     {
-        CString omStrMsgCode = STR_EMPTY;
+        CString omStrMsgCode = "";
 
         omStrMsgCode.Format( "%d", nMsgCode);
 
@@ -3728,7 +3728,7 @@ void CMsgSignal::vConvertExtendedToStandardFrameFormat(int& nMsgCode)
 {
     if ( nMsgCode >= MAX_LMT_FOR_STD_MSG_ID )
     {
-        CString omStrMsgCode = STR_EMPTY;
+        CString omStrMsgCode = "";
 
         omStrMsgCode.Format( "%d", nMsgCode);
 
@@ -4628,7 +4628,7 @@ BOOL CMsgSignal::bSortSignalStartBitAscend(UINT* punSigStartBit, UINT unCount)
                         {
                             omFormatString.Format(defUNION_FORMAT_STRING,
                                                   defUNSIGNED_INT,
-                                                  STR_EMPTY,
+                                                  "",
                                                   defUINT_LENGTH);
                             omStrArraySigName.Add(omFormatString);
                             // Start bit is zero index
@@ -4642,7 +4642,7 @@ BOOL CMsgSignal::bSortSignalStartBitAscend(UINT* punSigStartBit, UINT unCount)
 
                         omFormatString.Format(defUNION_FORMAT_STRING,
                                               defUNSIGNED_INT,
-                                              STR_EMPTY,
+                                              "",
                                               punLength[i + unUnused]);
                         omStrArraySigName.Add(omFormatString);
                         unUnused++;
@@ -4696,7 +4696,7 @@ BOOL CMsgSignal::bSortSignalStartBitAscend(UINT* punSigStartBit, UINT unCount)
 
                             omFormatString.Format(defUNION_FORMAT_STRING,
                                                   defUNSIGNED_INT,
-                                                  STR_EMPTY,
+                                                  "",
                                                   defUINT_LENGTH);
                             omStrArraySigName.Add(omFormatString);
                             unCount++;
@@ -4707,7 +4707,7 @@ BOOL CMsgSignal::bSortSignalStartBitAscend(UINT* punSigStartBit, UINT unCount)
 
                         omFormatString.Format(defUNION_FORMAT_STRING,
                                               defUNSIGNED_INT,
-                                              STR_EMPTY,
+                                              "",
                                               punLength[i + unUnused]);
                         omStrArraySigName.Add(omFormatString);
                         unCount = 0 ;
@@ -4736,7 +4736,7 @@ BOOL CMsgSignal::bSortSignalStartBitAscend(UINT* punSigStartBit, UINT unCount)
 
                                 omFormatString.Format(defUNION_FORMAT_STRING,
                                                       defUNSIGNED_INT,
-                                                      STR_EMPTY,
+                                                      "",
                                                       defUINT_LENGTH);
                                 omStrArraySigName.Add(omFormatString);
                                 unCount++;
@@ -4748,7 +4748,7 @@ BOOL CMsgSignal::bSortSignalStartBitAscend(UINT* punSigStartBit, UINT unCount)
 
                             omFormatString.Format(defUNION_FORMAT_STRING,
                                                   defUNSIGNED_INT,
-                                                  STR_EMPTY,
+                                                  "",
                                                   punLength[i + unUnused]);
                             omStrArraySigName.Add(omFormatString);
 
@@ -4821,7 +4821,7 @@ BOOL CMsgSignal::bFormSigNameAndLength(UINT* punLength,
                     {
                         omFormatString.Format(defUNION_FORMAT_STRING,
                                               defUNSIGNED_INT,
-                                              STR_EMPTY,
+                                              "",
                                               defUINT_LENGTH);
                         omStrArraySigName.Add(omFormatString);
                         nTempBitLen -= defBITS_IN_FOUR_BYTE;
@@ -4830,7 +4830,7 @@ BOOL CMsgSignal::bFormSigNameAndLength(UINT* punLength,
 
                     omFormatString.Format(defUNION_FORMAT_STRING,
                                           defUNSIGNED_INT,
-                                          STR_EMPTY,
+                                          "",
                                           nTempBitLen);
                     omStrArraySigName.Add(omFormatString);
                 }
@@ -4877,14 +4877,14 @@ BOOL CMsgSignal::bFormSigNameAndLength(UINT* punLength,
                     {
                         omFormatString.Format(defUNION_FORMAT_STRING,
                                               defUNSIGNED_INT,
-                                              STR_EMPTY,
+                                              "",
                                               defUINT_LENGTH);
                         omStrArraySigName.Add(omFormatString);
                         nLengthTemp -= defBITS_IN_FOUR_BYTE;
                     }
                     omFormatString.Format(defUNION_FORMAT_STRING,
                                           defUNSIGNED_INT,
-                                          STR_EMPTY,
+                                          "",
                                           nLengthTemp);
                     omStrArraySigName.Add(omFormatString);
                 }
@@ -4910,14 +4910,14 @@ BOOL CMsgSignal::bFormSigNameAndLength(UINT* punLength,
                         {
                             omFormatString.Format(defUNION_FORMAT_STRING,
                                                   defUNSIGNED_INT,
-                                                  STR_EMPTY,
+                                                  "",
                                                   defUINT_LENGTH);
                             omStrArraySigName.Add(omFormatString);
                             nTempLastBitLen -= defBITS_IN_FOUR_BYTE;
                         }
                         omFormatString.Format(defUNION_FORMAT_STRING,
                                               defUNSIGNED_INT,
-                                              STR_EMPTY,
+                                              "",
                                               nTempLastBitLen);
                         omStrArraySigName.Add(omFormatString);
                     }
@@ -4987,7 +4987,7 @@ BOOL CMsgSignal::bFormSigNameAndLengthJ1939(const UINT* punStartBit,
                     {
                         omFormatString.Format(defUNION_FORMAT_STRING,
                                               defUNSIGNED_INT,
-                                              STR_EMPTY,
+                                              "",
                                               defUINT_LENGTH);
                         omStrArraySigName.Add(omFormatString);
                         nTempBitLen -= defBITS_IN_FOUR_BYTE;
@@ -4996,7 +4996,7 @@ BOOL CMsgSignal::bFormSigNameAndLengthJ1939(const UINT* punStartBit,
 
                     omFormatString.Format(defUNION_FORMAT_STRING,
                                           defUNSIGNED_INT,
-                                          STR_EMPTY,
+                                          "",
                                           nTempBitLen);
                     omStrArraySigName.Add(omFormatString);
                 }
@@ -5043,14 +5043,14 @@ BOOL CMsgSignal::bFormSigNameAndLengthJ1939(const UINT* punStartBit,
                     {
                         omFormatString.Format(defUNION_FORMAT_STRING,
                                               defUNSIGNED_INT,
-                                              STR_EMPTY,
+                                              "",
                                               defUINT_LENGTH);
                         omStrArraySigName.Add(omFormatString);
                         nLengthTemp -= defBITS_IN_FOUR_BYTE;
                     }
                     omFormatString.Format(defUNION_FORMAT_STRING,
                                           defUNSIGNED_INT,
-                                          STR_EMPTY,
+                                          "",
                                           nLengthTemp);
                     omStrArraySigName.Add(omFormatString);
                 }
@@ -5075,14 +5075,14 @@ BOOL CMsgSignal::bFormSigNameAndLengthJ1939(const UINT* punStartBit,
                         {
                             omFormatString.Format(defUNION_FORMAT_STRING,
                                                   defUNSIGNED_INT,
-                                                  STR_EMPTY,
+                                                  "",
                                                   defUINT_LENGTH);
                             omStrArraySigName.Add(omFormatString);
                             nTempLastBitLen -= defBITS_IN_FOUR_BYTE;
                         }
                         omFormatString.Format(defUNION_FORMAT_STRING,
                                               defUNSIGNED_INT,
-                                              STR_EMPTY,
+                                              "",
                                               nTempLastBitLen);
                         omStrArraySigName.Add(omFormatString);
                     }
@@ -5145,9 +5145,9 @@ BOOL CMsgSignal::bInsertBusSpecStructures(CStdioFile& omHeaderFile,
         CStringArray& omStrArraySigName,
         sMESSAGE* pMsg)
 {
-    CString omStrSigName     = STR_EMPTY;
+    CString omStrSigName     = "";
     //    INT nIndex           = 0;
-    CString omStrdelimiter   = STR_EMPTY;
+    CString omStrdelimiter   = "";
 
     /* Add New lines */
     omHeaderFile.WriteString(NEW_LINE);

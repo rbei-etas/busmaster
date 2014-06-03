@@ -49,7 +49,7 @@ CSimSysManager::CSimSysManager(ETYPE_BUS eBus) : m_ouSimSysNodeInfo(eBus),
 
 CSimSysManager::~CSimSysManager(void)
 {
-    m_ouSimSysNodeInfo.bDeleteSimsysFromInfo(STR_EMPTY);
+    m_ouSimSysNodeInfo.bDeleteSimsysFromInfo("");
 }
 
 void CSimSysManager::vApplicationClosing(bool bSave)
@@ -59,7 +59,7 @@ void CSimSysManager::vApplicationClosing(bool bSave)
         vSaveAllSimSys();
     }
 
-    m_ouSimSysNodeInfo.bDeleteSimsysFromInfo(STR_EMPTY);
+    m_ouSimSysNodeInfo.bDeleteSimsysFromInfo("");
 }
 void CSimSysManager::vSaveAllSimSys()
 {
@@ -663,7 +663,7 @@ void CSimSysManager ::vInitailizeSimSysInfo()
     }
     //if(m_CopyJ1939SimNode == nullptr)
     {
-        m_ouSimSysNodeInfo.bDeleteSimsysFromInfo(STR_EMPTY);
+        m_ouSimSysNodeInfo.bDeleteSimsysFromInfo("");
     }
     //Now Populate the tree view if it is present
     //SSH + commneted to resolve issue #392 'Duplicate simulated systems'

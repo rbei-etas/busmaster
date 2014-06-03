@@ -395,7 +395,7 @@ Select \"No\" to retain the previous message length."), MB_YESNO) == IDYES)
                 else
                 {
 
-                    CString omStrPrevMsg = STR_EMPTY;
+                    CString omStrPrevMsg = "";
 
                     // if this is add mode, allocate
                     // memory for the new message

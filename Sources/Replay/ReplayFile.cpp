@@ -40,7 +40,7 @@
   Modifications  :
 *******************************************************************************/
 CReplayFile::CReplayFile()
-    : m_omStrFileName( STR_EMPTY ),
+    : m_omStrFileName( "" ),
       m_nTimeMode( 0 ),
       m_unMsgTimeDelay( 1 ),
       m_nReplayMode( 0 ),

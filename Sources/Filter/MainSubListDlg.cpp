@@ -156,7 +156,7 @@ BOOL CMainSubListDlg::OnInitDialog()
 
             // Create the first column. But this will not be shown
             m_omListCtrlSignal.InsertColumn( 0,
-                                             STR_EMPTY,
+                                             "",
                                              LVCFMT_LEFT,
                                              0); //Width is zero as this will
             //be updated in vUpdateUnSelSubEntryList
@@ -172,7 +172,7 @@ BOOL CMainSubListDlg::OnInitDialog()
     m_omListCtrlSignalWatch.SetImageList(m_sGuiParams.m_pomImageList,LVSIL_SMALL);
     // Create Column for Signal Watch Lsit
     m_omListCtrlSignalWatch.InsertColumn( 0,
-                                          STR_EMPTY,
+                                          "",
                                           LVCFMT_LEFT,
                                           0);//Width is zero as this will
     //be updated in vPopulateSelSubEntryList
@@ -1154,7 +1154,7 @@ void CMainSubListDlg::vPopulateSelSubEntryList()
         while (pos)
         {
             SMAINENTRY& sMainEntry = m_podTempCallerList->GetNext(pos);
-            if( sMainEntry.m_omMainEntryName != STR_EMPTY)
+            if( sMainEntry.m_omMainEntryName != "")
             {
                 CString omNameWithId = "";
 

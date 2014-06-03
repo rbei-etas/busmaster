@@ -404,8 +404,8 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                 CString omStrDLLFile = "";
                 if(bSuccess == TRUE)
                 {
-                    CString omStrFileNameInSDLLFile=STR_EMPTY;
-                    CString omStrFileNameInLongFileName=STR_EMPTY;
+                    CString omStrFileNameInSDLLFile="";
+                    CString omStrFileNameInLongFileName="";
                     CString omStrDLLFile   = "";
                     char acStrShortPath[1000];
                     dwConvertShortPathName(omFileName,acStrShortPath);

@@ -978,7 +978,6 @@
 #define IDM_EDIT_MSG                    32885
 #define ID_SEND_MULTI_MSGS              32887
 #define IDM_NEW_UDEFNED_MSG             32888
-#define IDM_DELETE                      32889
 #define IDR_TOOL_STOPSENDMSG            32890
 #define IDM_CFGN_SEND_MSGS              32891
 #define IDM_DELETE_SEL_MSG              32892

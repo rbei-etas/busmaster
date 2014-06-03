@@ -340,7 +340,7 @@ BOOL CCANMonitorApp::InitInstance()
     if(cmdInfo.m_strFileName.IsEmpty() == TRUE)
     {
         //ostrCfgFilename =
-        //    GetProfileString(_(SECTION), defCONFIGFILENAME, STR_EMPTY);
+        //    GetProfileString(_(SECTION), defCONFIGFILENAME, "");
         DWORD dwVal;
         bReadFromRegistry(HKEY_CURRENT_USER, _(SECTION), defCONFIGFILENAME, REG_SZ, ostrCfgFilename, dwVal);
     }
@@ -370,7 +370,7 @@ BOOL CCANMonitorApp::InitInstance()
         if(pMainFrame->nLoadConfigFile(ostrCfgFilename) != defCONFIG_FILE_SUCCESS)
         {
             //m_oConfigDetails.vInitDefaultValues();
-            m_ostrConfigFilename = STR_EMPTY;
+            m_ostrConfigFilename = "";
         }
         else
         {
@@ -490,7 +490,7 @@ int CCANMonitorApp::ExitInstance()
 
     if (m_pouMsgSignal != nullptr )
     {
-        m_pouMsgSignal->bDeAllocateMemory(STR_EMPTY);
+        m_pouMsgSignal->bDeAllocateMemory("");
         delete m_pouMsgSignal;
         m_pouMsgSignal = nullptr;
     }
@@ -785,7 +785,7 @@ void CCANMonitorApp::OnFileOpen()
 void CCANMonitorApp::vDisplayConfigErrMsgbox(UINT unErrorCode,
         BOOL bOperation)
 {
-    CString omStrSuffixMessage(STR_EMPTY);
+    CString omStrSuffixMessage("");
 
     if ( bOperation == defCONFIG_FILE_LOADING )
     {
@@ -1157,7 +1157,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
 
         if(m_pouMsgSignal != nullptr)
         {
-            m_pouMsgSignal->bDeAllocateMemory(STR_EMPTY);
+            m_pouMsgSignal->bDeAllocateMemory("");
         }
         else
         {

@@ -167,7 +167,7 @@ void CHardwareListing::vSetHardwareList(INTERFACE_HW* /*psHwIntr*/, int nSize)
 
     // Insert First Columns
     // The style is Icon. So insert Empty column
-    m_omHardwareList.InsertColumn(0, STR_EMPTY);
+    m_omHardwareList.InsertColumn(0, "");
 
     // Create selelected list columns
     m_omSelectedHwList.InsertColumn( defCHANNEL_COL ,
@@ -180,7 +180,7 @@ void CHardwareListing::vSetHardwareList(INTERFACE_HW* /*psHwIntr*/, int nSize)
                                        defSTR_HARDWARE_COL_WIDTH );
 
     int nImageIndex = 0;
-    CString omStrFormat(STR_EMPTY);
+    CString omStrFormat("");
     // Add List of unselected Hw in to the CListCtrl
     int index = 0;
     bool bSelItem;
@@ -392,7 +392,7 @@ void CHardwareListing::OnButtonSelect()
     int nSelected = m_nSelectedItem;
     // Insert the selected item in to the selected list
     int nItem = m_omSelectedHwList.GetItemCount();
-    CString omStrChannel;//(STR_EMPTY);
+    CString omStrChannel;//("");
     CString omStrHardware;
     int nArrayIndex = -1;
     // Get the data
@@ -653,7 +653,7 @@ void CHardwareListing::vEnableDisableButtons()
         // If disabled then clear the text
         if( bHardwareDetailsEnable == FALSE )
         {
-            pWnd->SetWindowText( STR_EMPTY );
+            pWnd->SetWindowText( "" );
         }
     }
     // Network Name
@@ -664,7 +664,7 @@ void CHardwareListing::vEnableDisableButtons()
         // If disabled then clear the text
         if( bHardwareDetailsEnable == FALSE )
         {
-            pWnd->SetWindowText( STR_EMPTY );
+            pWnd->SetWindowText( "" );
         }
     }
     // Firmware
@@ -675,7 +675,7 @@ void CHardwareListing::vEnableDisableButtons()
         // If disabled then clear the text
         if( bHardwareDetailsEnable == FALSE )
         {
-            pWnd->SetWindowText( STR_EMPTY );
+            pWnd->SetWindowText( "" );
         }
     }
     // Blink Button
@@ -743,7 +743,7 @@ void CHardwareListing::vSetSelectedList()
     int nSelected = m_nSelectedItem;
     // Insert the selected item in to the selected list
     int nItem;
-    CString omStrChannel;//(STR_EMPTY);
+    CString omStrChannel;//("");
     CString omStrHardware;
     int nArrayIndex = -1;
 

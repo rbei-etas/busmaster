@@ -130,11 +130,12 @@
 #define DEF_LogOnConnect_For_CAN        "LogOnConnect_CAN"
 #define DEF_LogOnConnect_For_J1939      "LogOnConnect_J1939"
 #define DEF_LogOnConnect_For_LIN      "LogOnConnect_LIN"
+
 //Common defines
 #define DEF_FILTER                  "Filter"
 #define DEF_MSG_ID                  "ID"
-
 #define DEF_MSGID                   "Id"
+
 //TX window
 #define DEF_CAN_TX_WINDOW           "CAN_Tx_Window"
 #define DEF_LIN_TX_WINDOW           "LIN_Tx_Window"
@@ -226,7 +227,6 @@
 #define DEF_TS_NAME                 "Test_Suite_Name"
 #define DEF_IS_ENABLE               "IsEnable"
 #define DEF_TEST_SUITE              "TEST_SUITE"
-#define DEF_FILE_PATH               "File_Path"
 #define DEF_TEST_CASES_SEL          "Testcases_Selected"
 #define DEF_INDEX                   "Index"
 

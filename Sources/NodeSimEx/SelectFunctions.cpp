@@ -55,7 +55,7 @@ CSelectFunctions::CSelectFunctions(ETYPE_BUS eBus, CWnd* pParent /*=nullptr*/)
     //{{AFX_DATA_INIT(CSelectFunctions)
     // NOTE: the ClassWizard will add member initialization here
     //}}AFX_DATA_INIT
-    m_omSelectedFunctionPrototype = STR_EMPTY;
+    m_omSelectedFunctionPrototype = "";
     m_eBus = eBus;
 }
 

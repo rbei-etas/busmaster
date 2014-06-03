@@ -516,9 +516,9 @@ SIGNAL_STRUCT& SIGNAL_STRUCT::operator=(const SIGNAL_STRUCT& objRef)
 CString Cluster::bWriteDBHeader(CString omStrActiveDataBase, ETYPE_BUS eBus)
 {
     BOOL bRetVal                = TRUE;
-    CString omStrPath           = EMPTY_STRING;
+    CString omStrPath           = "";
     //Add header for ifndef condition
-    CString omStrHeaderString   = EMPTY_STRING;
+    CString omStrHeaderString   = "";
     CString omStrHeaderFileName = defHEADER_FILE_NAME;
     char  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
     CFileException   omException  ;
@@ -563,16 +563,16 @@ CString Cluster::bWriteDBHeader(CString omStrActiveDataBase, ETYPE_BUS eBus)
             omStrTemp.Format(H_FILE_HEADER_PRAGMA_PACK,omStrHeaderString,omStrHeaderString);
             omHeaderFile.WriteString(omStrTemp);
 
-            CString omStrDLC = STR_EMPTY;
+            CString omStrDLC = "";
             UINT aunSigStartBit[defMAX_SIGNALS] ;
             UINT aunLength[defMAX_SIGNALS] ;
             CStringArray omStrArraySigName;
             omStrArraySigName.RemoveAll();
             BOOL bReturn = FALSE;
             UINT unSigCount = 0;
-            CString omStrcommandLine = STR_EMPTY;
-            CString omStrSigName = STR_EMPTY;
-            CString omStrdelimiter = STR_EMPTY;
+            CString omStrcommandLine = "";
+            CString omStrSigName = "";
+            CString omStrdelimiter = "";
 
             std::list<FRAME_STRUCT> ouFrameList;
             GetFrames(ouFrameList );
@@ -638,7 +638,7 @@ CString Cluster::bWriteDBHeader(CString omStrActiveDataBase, ETYPE_BUS eBus)
                     {
                         omFormatString.Format(defUNION_FORMAT_STRING,
                                               defUNSIGNED_INT,
-                                              STR_EMPTY,
+                                              "",
                                               defUINT_LENGTH);
                         omStrArraySigName.Add(omFormatString);
                         unSigCount++;
@@ -649,7 +649,7 @@ CString Cluster::bWriteDBHeader(CString omStrActiveDataBase, ETYPE_BUS eBus)
                                     - ( unSigCount * defUINT_LENGTH );
                     omFormatString.Format(defUNION_FORMAT_STRING,
                                           defUNSIGNED_INTEGER,
-                                          STR_EMPTY,
+                                          "",
                                           unLength);
                     omStrArraySigName.Add(omFormatString);
 
@@ -711,9 +711,9 @@ BOOL Cluster::bInsertBusSpecStructures(CStdioFile& omHeaderFile,
                                        CStringArray& omStrArraySigName,
                                        std::list<FRAME_STRUCT>::iterator itrFrame, ETYPE_BUS eBUS)
 {
-    CString omStrSigName     = STR_EMPTY;
+    CString omStrSigName     = "";
     //    INT nIndex           = 0;
-    CString omStrdelimiter   = STR_EMPTY;
+    CString omStrdelimiter   = "";
 
     /* Add New lines */
     omHeaderFile.WriteString(NEW_LINE);
@@ -911,7 +911,7 @@ BOOL Cluster::bFormSigNameAndLength(UINT* punLength,
                     {
                         omFormatString.Format(defUNION_FORMAT_STRING,
                                               defUNSIGNED_INT,
-                                              STR_EMPTY,
+                                              "",
                                               defUINT_LENGTH);
                         omStrArraySigName.Add(omFormatString);
                         nTempBitLen -= defBITS_IN_FOUR_BYTE;
@@ -920,7 +920,7 @@ BOOL Cluster::bFormSigNameAndLength(UINT* punLength,
 
                     omFormatString.Format(defUNION_FORMAT_STRING,
                                           defUNSIGNED_INT,
-                                          STR_EMPTY,
+                                          "",
                                           nTempBitLen);
                     omStrArraySigName.Add(omFormatString);
                 }
@@ -967,14 +967,14 @@ BOOL Cluster::bFormSigNameAndLength(UINT* punLength,
                     {
                         omFormatString.Format(defUNION_FORMAT_STRING,
                                               defUNSIGNED_INT,
-                                              STR_EMPTY,
+                                              "",
                                               defUINT_LENGTH);
                         omStrArraySigName.Add(omFormatString);
                         nLengthTemp -= defBITS_IN_FOUR_BYTE;
                     }
                     omFormatString.Format(defUNION_FORMAT_STRING,
                                           defUNSIGNED_INT,
-                                          STR_EMPTY,
+                                          "",
                                           nLengthTemp);
                     omStrArraySigName.Add(omFormatString);
                 }
@@ -1001,14 +1001,14 @@ BOOL Cluster::bFormSigNameAndLength(UINT* punLength,
                         {
                             omFormatString.Format(defUNION_FORMAT_STRING,
                                                   defUNSIGNED_INT,
-                                                  STR_EMPTY,
+                                                  "",
                                                   defUINT_LENGTH);
                             omStrArraySigName.Add(omFormatString);
                             nTempLastBitLen -= defBITS_IN_FOUR_BYTE;
                         }
                         omFormatString.Format(defUNION_FORMAT_STRING,
                                               defUNSIGNED_INT,
-                                              STR_EMPTY,
+                                              "",
                                               nTempLastBitLen);
                         omStrArraySigName.Add(omFormatString);
                     }

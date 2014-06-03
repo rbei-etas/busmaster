@@ -63,8 +63,8 @@ CValueDescriptionDlg::CValueDescriptionDlg(const SDBPARAMS& sDbParams,
     m_nIndex = nIndex;
     //}}AFX_DATA_INIT
     bSignalType = "B";
-    m_omStrPrevDesc         = STR_EMPTY;
-    m_omStrPrevSignalVal    = STR_EMPTY;
+    m_omStrPrevDesc         = "";
+    m_omStrPrevSignalVal    = "";
     m_sDbParams             = sDbParams;
 }
 
@@ -200,7 +200,7 @@ void CValueDescriptionDlg::OnClickedOk()
 
                         if (pNew != nullptr)
                         {
-                            CString omStrPrevDesc = STR_EMPTY;
+                            CString omStrPrevDesc = "";
                             if ( MD_ADD == m_bMode )
                             {
                                 // new desc and val hence allocate memory
@@ -296,8 +296,8 @@ BOOL CValueDescriptionDlg::OnInitDialog()
     CMsgSignal* pTempMsgSg = nullptr;
     pTempMsgSg = *((CMsgSignal**)(m_sDbParams.m_ppvActiveDB));
 
-    CString strMinVal = STR_EMPTY;
-    CString strMaxVal = STR_EMPTY ;
+    CString strMinVal = "";
+    CString strMaxVal = "" ;
     BYTE bSignalType;
     if ( pTempMsgSg != nullptr )
     {

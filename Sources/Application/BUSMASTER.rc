@@ -2035,7 +2035,6 @@ BEGIN
     IDM_FILE_EDITOR         "Open new function editor or exisiting one\nOpen new function editor or exisiting one"
     IDM_CFGN_LOGREPLAY      "Configure Logging and/or Replay\nConfigure Logging and/or Replay"
     IDM_NEW_UDEFNED_MSG     "Add new message that is not defined in the database."
-    IDM_DELETE              "Deletes current message"
     IDR_TOOL_STOPSENDMSG    "Stop sending mutilple messages\nStop sending mutilple messages"
     IDM_CFGN_SEND_MSGS      "Configure  messages to transmit over CAN-bus\nConfigure  messages to transmit over CAN-bus"
     ID_TRANSMIT_CONFIGURE_LIN   "Configure  messages to transmit over LIN-bus\nConfigure  messages to transmit over LIN-bus"

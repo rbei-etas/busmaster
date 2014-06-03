@@ -602,7 +602,7 @@ void CTxFunctionsView::vReloadData()
         }
 
         PSMSGBLOCKLIST psCurrentMsgBlock = nullptr;
-        CString omStr = STR_EMPTY;
+        CString omStr = "";
         psCurrentMsgBlock = pomBlockView->m_psMsgBlockList;
 
         // Disable AllTxMessage check box
@@ -614,7 +614,7 @@ void CTxFunctionsView::vReloadData()
 
         for(UINT i = 0; i< pomBlockView->m_unMsgBlockCount; i++)
         {
-            omStr = STR_EMPTY;
+            omStr = "";
             if(psCurrentMsgBlock != nullptr )
             {
                 pomBlockView->m_omLctrMsgBlockName.InsertItem( i,

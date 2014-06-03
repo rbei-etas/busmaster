@@ -76,7 +76,7 @@ CFilterConfigDlg::CFilterConfigDlg( SFILTERAPPLIED_CAN* psSrcList,
     m_bUpdating = FALSE;
 
     m_nSelecetedNamedFilterIndex = -1;
-    m_omStrSelectedFilterNameBeforeEdit = STR_EMPTY;
+    m_omStrSelectedFilterNameBeforeEdit = "";
 
     m_nSelecetedFilterIndex = -1;
 
@@ -104,7 +104,7 @@ CFilterConfigDlg::CFilterConfigDlg( SFILTERAPPLIED_LIN* psSrcList,
     m_bUpdating = FALSE;
 
     m_nSelecetedNamedFilterIndex = -1;
-    m_omStrSelectedFilterNameBeforeEdit = STR_EMPTY;
+    m_omStrSelectedFilterNameBeforeEdit = "";
 
     m_nSelecetedFilterIndex = -1;
 
@@ -564,7 +564,7 @@ BOOL CFilterConfigDlg::bPopulateNamedFilterList()
             // Pointers to retrieve data from map
             PSFILTERSET psFilterSet = m_psFilterApplied->m_psFilters + nIndex;
             // Filter Name
-            CString omStrFilterName = STR_EMPTY;
+            CString omStrFilterName = "";
             if( psFilterSet != nullptr )
             {
                 omStrFilterName.Format("%s", psFilterSet->m_sFilterName.m_acFilterName);
@@ -611,7 +611,7 @@ BOOL CFilterConfigDlg::bPopulateNamedFilterList()
             // Pointers to retrieve data from map
             PSFILTERSET psFilterSet = m_psFilterAppliedLin->m_psFilters + nIndex;
             // Filter Name
-            CString omStrFilterName = STR_EMPTY;
+            CString omStrFilterName = "";
             if( psFilterSet != nullptr )
             {
                 omStrFilterName.Format("%s", psFilterSet->m_sFilterName.m_acFilterName);
@@ -784,13 +784,13 @@ void CFilterConfigDlg::vFormatDisplayString(
     // Set the default image index
     sFilterDisplyInfo.m_nImageIndex = defFILTER_IMAGE_INDEX_NDB;
     // Clear ID From and To String
-    sFilterDisplyInfo.m_omStrMsgIDFrom = STR_EMPTY;
-    sFilterDisplyInfo.m_omStrMsgIDTo = STR_EMPTY;
+    sFilterDisplyInfo.m_omStrMsgIDFrom = "";
+    sFilterDisplyInfo.m_omStrMsgIDTo = "";
     // If database is valid
     if( sFilter.m_ucFilterType == defFILTER_TYPE_SINGLE_ID )
     {
         // Get the database name for ID From
-        CString omStr = STR_EMPTY;
+        CString omStr = "";
         sMESSAGE* pMsg = nullptr;
         if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgSignal, sFilter.m_dwMsgIDFrom, pMsg)
                 == TRUE)
@@ -798,7 +798,7 @@ void CFilterConfigDlg::vFormatDisplayString(
             omStr = pMsg->m_omStrMessageName;
         }
 
-        if( omStr != STR_EMPTY )
+        if( omStr != "" )
         {
             std::ostringstream oss;
             oss << std::hex << sFilter.m_dwMsgIDFrom;
@@ -849,7 +849,7 @@ void CFilterConfigDlg::vFormatDisplayString(
     }
     else
     {
-        sFilterDisplyInfo.m_omStrMsgIDType = STR_EMPTY;
+        sFilterDisplyInfo.m_omStrMsgIDType = "";
     }
 
 
@@ -868,13 +868,13 @@ void CFilterConfigDlg::vFormatDisplayString(
     }
     else
     {
-        sFilterDisplyInfo.m_omStrMsgType = STR_EMPTY;
+        sFilterDisplyInfo.m_omStrMsgType = "";
     }
 
     if( sFilter.m_ucFilterType == defFILTER_TYPE_EVENT )
     {
-        sFilterDisplyInfo.m_omStrMsgIDType = STR_EMPTY;
-        sFilterDisplyInfo.m_omStrMsgType = STR_EMPTY;
+        sFilterDisplyInfo.m_omStrMsgIDType = "";
+        sFilterDisplyInfo.m_omStrMsgType = "";
     }
 
 
@@ -892,7 +892,7 @@ void CFilterConfigDlg::vFormatDisplayString(
             break;
         default:
             ASSERT( FALSE );
-            sFilterDisplyInfo.m_omStrMsgDirection = STR_EMPTY;
+            sFilterDisplyInfo.m_omStrMsgDirection = "";
             break;
     }
 
@@ -985,7 +985,7 @@ void CFilterConfigDlg::vUpdateFilterDetails( const PSFILTERSET psFilterSet )
                 vFormatDisplayString( *psFilter, sDisplayInfo );
                 // Insert in to the list
                 m_omLstcFilterDetails.InsertItem( nIndex,
-                                                  STR_EMPTY,
+                                                  "",
                                                   sDisplayInfo.m_nImageIndex );
                 // Update Fileds
                 vUpdateFilterListDetails( nIndex, sDisplayInfo);
@@ -1011,7 +1011,7 @@ void CFilterConfigDlg::vUpdateFilterDetails( const PSFILTERSET psFilterSet )
                     vFormatDisplayString( *psFilter, sDisplayInfo );
                     // Insert in to the list
                     m_omLstcFilterDetails.InsertItem( nIndex,
-                                                      STR_EMPTY,
+                                                      "",
                                                       sDisplayInfo.m_nImageIndex );
                     // Update Fileds
                     vUpdateFilterListDetails( nIndex, sDisplayInfo);
@@ -1222,7 +1222,7 @@ void CFilterConfigDlg::vUpdateFilterComponents(const SFILTER_CAN& sFilter)
         // Update Text
         if( m_psMsgSignal != nullptr )
         {
-            CString omStrIDFrom = STR_EMPTY;
+            CString omStrIDFrom = "";
             sMESSAGE* pMsg;
             if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgSignal, sFilter.m_dwMsgIDFrom, pMsg)
                     == TRUE)
@@ -1383,7 +1383,7 @@ void CFilterConfigDlg::vUpdateFilterComponents(const SFILTER_LIN& sFilter)
         if(m_pClusterConfig != nullptr)
         {
             FRAME_STRUCT ouFrameStrct;
-            CString omStrIDFrom = STR_EMPTY;
+            CString omStrIDFrom = "";
             if(S_OK == hGetFrameFromId(sFilter.m_dwMsgIDFrom, ouFrameStrct))
             {
                 omStrIDFrom = ouFrameStrct.m_strFrameName.c_str();
@@ -1499,7 +1499,7 @@ void CFilterConfigDlg::vUpdateFilterComponents(const SFILTER_LIN& sFilter)
  */
 int CFilterConfigDlg::nGetMsgIDFromCombo( const CComboBox& omCombo )
 {
-    CString omStrMsgName( STR_EMPTY );
+    CString omStrMsgName( "" );
     INT nMsgID = -1;
     omCombo.GetWindowText(omStrMsgName);
     // Get message Id from database in case user has selected a message name.
@@ -1536,7 +1536,7 @@ void CFilterConfigDlg::OnSelchangeCombMsgIdFrom()
 {
     if( m_bDisableFilterCompUpdate == FALSE )
     {
-        CString omStrMsgName = STR_EMPTY;
+        CString omStrMsgName = "";
         // Update the Combox->Edit control
         int nSelectedIndex = m_omMsgIDFrom.GetCurSel();
         if( nSelectedIndex != -1 )
@@ -1586,7 +1586,7 @@ void CFilterConfigDlg::OnRadioEvent()
                                         (psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
                 psFilter->m_ucFilterType = defFILTER_TYPE_EVENT;// Update the UI
                 //CMsgSignal * pomDatabase = theApp.m_pouMsgSignal;
-                CString omStrIDFrom = STR_EMPTY;
+                CString omStrIDFrom = "";
                 omStrIDFrom = psFilter->m_omEventName.c_str();
                 // Apply the text
                 m_omEventType.SetWindowText( omStrIDFrom );
@@ -1621,7 +1621,7 @@ void CFilterConfigDlg::OnRadioEvent()
                                         (psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
                 psFilter->m_ucFilterType = defFILTER_TYPE_EVENT;// Update the UI
 
-                CString omStrIDFrom = STR_EMPTY;
+                CString omStrIDFrom = "";
 
                 omStrIDFrom = psFilter->m_omEventName.c_str();
                 // Apply the text
@@ -1685,7 +1685,7 @@ void CFilterConfigDlg::OnRadioMessageId()
                 //CMsgSignal * pomDatabase = theApp.m_pouMsgSignal;
                 if( m_psMsgSignal != nullptr )
                 {
-                    CString omStrIDFrom = STR_EMPTY;
+                    CString omStrIDFrom = "";
                     sMESSAGE* pMsg;
                     if (SMSGENTRY::bGetMsgPtrFromMsgId(m_psMsgSignal, psFilter->m_dwMsgIDFrom, pMsg)
                             == TRUE)
@@ -1699,7 +1699,7 @@ void CFilterConfigDlg::OnRadioMessageId()
                     }
                     else
                     {
-                        if( omStrIDFrom != STR_EMPTY )
+                        if( omStrIDFrom != "" )
                         {
                             CString omIdWithMsg = _("");
                             omIdWithMsg.Format(_(defSTR_MSG_ID_IN_HEX), psFilter->m_dwMsgIDFrom);
@@ -1745,7 +1745,7 @@ void CFilterConfigDlg::OnRadioMessageId()
                                         (psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
                 psFilter->m_ucFilterType = defFILTER_TYPE_SINGLE_ID;// Update the UI
 
-                CString omStrIDFrom = STR_EMPTY;
+                CString omStrIDFrom = "";
                 FRAME_STRUCT ouFrameStrct;
                 if(m_pClusterConfig != nullptr)
                 {
@@ -1760,7 +1760,7 @@ void CFilterConfigDlg::OnRadioMessageId()
                     }
                     else
                     {
-                        if( omStrIDFrom != STR_EMPTY )
+                        if( omStrIDFrom != "" )
                         {
                             CString omIdWithMsg = _("");
                             omIdWithMsg.Format(_(defSTR_MSG_ID_IN_HEX), psFilter->m_dwMsgIDFrom);
@@ -2093,7 +2093,7 @@ void CFilterConfigDlg::vPopulateChannelDBMessages()
         }
         else
         {
-            CString omStr = STR_EMPTY;
+            CString omStr = "";
             std::ostringstream oss;
             oss << std::hex << unMsgId;
             std::string strMsgId = oss.str();
@@ -2398,7 +2398,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
     }
     else if(bEventType == TRUE)
     {
-        CString omStrEventName( STR_EMPTY );
+        CString omStrEventName( "" );
 
         m_omEventType.GetWindowText(omStrEventName);
 
@@ -2435,7 +2435,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_CAN& sFilter)
     // IF valid data then clear status message
     if( bDataValid == TRUE )
     {
-        vSetStatusText( STR_EMPTY );
+        vSetStatusText( "" );
     }
     return bDataValid;
 }
@@ -2612,7 +2612,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_LIN& sFilter)
     }
     else if(bEventType == TRUE)
     {
-        CString omStrEventName( STR_EMPTY );
+        CString omStrEventName( "" );
 
         m_omEventType.GetWindowText(omStrEventName);
 
@@ -2648,7 +2648,7 @@ BOOL CFilterConfigDlg::bGetFilterData(SFILTER_LIN& sFilter)
     // IF valid data then clear status message
     if( bDataValid == TRUE )
     {
-        vSetStatusText( STR_EMPTY );
+        vSetStatusText( "" );
     }
     return bDataValid;
 }
@@ -2705,14 +2705,14 @@ void CFilterConfigDlg::vFormatDisplayString(
     // Set the default image index
     sFilterDisplyInfo.m_nImageIndex = defFILTER_IMAGE_INDEX_NDB;
     // Clear ID From and To String
-    sFilterDisplyInfo.m_omStrMsgIDFrom = STR_EMPTY;
-    sFilterDisplyInfo.m_omStrMsgIDTo = STR_EMPTY;
+    sFilterDisplyInfo.m_omStrMsgIDFrom = "";
+    sFilterDisplyInfo.m_omStrMsgIDTo = "";
     // If database is valid
     if( sFilter.m_ucFilterType == defFILTER_TYPE_SINGLE_ID )
     {
         m_omMsgDirection.EnableWindow( TRUE );
         // Get the database name for ID From
-        CString omStr = STR_EMPTY;
+        CString omStr = "";
 
         FRAME_STRUCT ouFrameStrct;
         if(S_OK == hGetFrameFromId(sFilter.m_dwMsgIDFrom, ouFrameStrct))
@@ -2720,7 +2720,7 @@ void CFilterConfigDlg::vFormatDisplayString(
             omStr = ouFrameStrct.m_strFrameName.c_str();
         }
 
-        if( omStr != STR_EMPTY )
+        if( omStr != "" )
         {
             std::ostringstream oss;
             oss << std::hex << sFilter.m_dwMsgIDFrom;
@@ -2772,7 +2772,7 @@ void CFilterConfigDlg::vFormatDisplayString(
             break;
         default:
             ASSERT( FALSE );
-            sFilterDisplyInfo.m_omStrMsgDirection = STR_EMPTY;
+            sFilterDisplyInfo.m_omStrMsgDirection = "";
             break;
     }
 
@@ -2865,7 +2865,7 @@ BOOL CFilterConfigDlg::bAddNewItem(SFILTER_CAN& sFilter)
         // Insert in to the list at the end
         int nIndex = m_omLstcFilterDetails.GetItemCount();
         m_omLstcFilterDetails.InsertItem( nIndex,
-                                          STR_EMPTY,
+                                          "",
                                           sDisplayInfo.m_nImageIndex );
         // Update Display Text
         vUpdateFilterListDetails( nIndex,
@@ -2914,7 +2914,7 @@ BOOL CFilterConfigDlg::bAddNewItem(SFILTER_LIN& sFilter)
         // Insert in to the list at the end
         int nIndex = m_omLstcFilterDetails.GetItemCount();
         m_omLstcFilterDetails.InsertItem( nIndex,
-                                          STR_EMPTY,
+                                          "",
                                           sDisplayInfo.m_nImageIndex );
         // Update Display Text
         vUpdateFilterListDetails( nIndex,

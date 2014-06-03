@@ -1522,7 +1522,7 @@ void CTransmitMsgLIN::OnEditchangeCombMsgIdName()
         // Update Message List Information
         LIN_FRAME_DATA ouLinData;
         // Reset the status text
-        bSetStatusText( STR_EMPTY );
+        bSetStatusText( "" );
         nShowListOfCurrentSignls();
         vUpdateViews(TRUE);
 
@@ -1636,7 +1636,7 @@ void CTransmitMsgLIN::OnSelchangeCombMsgIdName()
 
 void CTransmitMsgLIN::vUpdateViews(BOOL bIsUpdate)
 {
-    CString omStrMsgName = STR_EMPTY;
+    CString omStrMsgName = "";
 
     int nChannel = m_wndComboChannel.GetCurSel();
     if ( nChannel < 0 || nChannel > CHANNEL_ALLOWED )
@@ -1660,7 +1660,7 @@ void CTransmitMsgLIN::vUpdateViews(BOOL bIsUpdate)
         if ( pTemConfig != nullptr )
         {
             FRAME_STRUCT ouFrameStruct;
-            CString omStrMsgName = STR_EMPTY;
+            CString omStrMsgName = "";
             HRESULT hr = pTemConfig->m_ouFlexChannelConfig[nChannel].GetFrame(nMsgID, 0, UNSPECIFIED, ouFrameStruct);
             if ( hr != S_OK )
             {
@@ -1671,7 +1671,7 @@ void CTransmitMsgLIN::vUpdateViews(BOOL bIsUpdate)
                 //m_ouCurrentMsg.m_ouFlexFrame = ouFrameStruct;
                 omStrMsgName.Format("%d", ouFrameStruct.m_nLength);
                 m_odDLC.SetWindowText( omStrMsgName);
-                bSetStatusText( STR_EMPTY );
+                bSetStatusText( "" );
                 vUpdateStateDataBytes();
                 nShowListOfCurrentSignls();
 
@@ -1799,7 +1799,7 @@ BOOL CTransmitMsgLIN::bCheckIfValueIsMoreThan255(USHORT usNoOfEditCtrlsToCheck, 
     UINT unIDValue = IDC_EDIT_DB1;
     USHORT usTempCount = 0;
 
-    CString omStrValue(STR_EMPTY);
+    CString omStrValue("");
     UINT unValue;
     CRadixEdit* pRadixEdit = nullptr;
 
@@ -2041,7 +2041,7 @@ BOOL CTransmitMsgLIN::bValidateData(LIN_FRAME_DATA& ouFrameData)
 
 INT CTransmitMsgLIN::nGetMessageID()
 {
-    CString omStrMsgName( STR_EMPTY );
+    CString omStrMsgName( "" );
     INT nMsgID = -1;
     m_omComboMsgIDorName.GetWindowText(omStrMsgName);
     // Get message Id from database in case user has selected a message name.
@@ -2106,7 +2106,7 @@ void CTransmitMsgLIN::vSetDefaultValues()
     if ( nConfigChannel > 0 )
     {
         // Set Message ID/Name
-        m_omComboMsgIDorName.SetWindowText(STR_EMPTY);
+        m_omComboMsgIDorName.SetWindowText("");
         // Set Databytes
         CString omStrDataBytesValue;
         // Two digits in case of Hex mode
@@ -2682,7 +2682,7 @@ void CTransmitMsgLIN::vUpdateDataBytes()
             {
                 if(i >= m_odDLC.lGetValue())
                 {
-                    omStr = STR_EMPTY;
+                    omStr = "";
                 }
                 else
                 {
@@ -2719,7 +2719,7 @@ void CTransmitMsgLIN::vUpdateDataBytes(LIN_FRAME_DATA& ouData)
         {
             if(i >= ouData.m_ouLinMessage.m_ucDataLen)
             {
-                omStr = STR_EMPTY;
+                omStr = "";
             }
             else
             {
@@ -3143,7 +3143,7 @@ void CTransmitMsgLIN::vGetSelSignalFromFrame(UINT unMsgId, std::list<SIGNAL_STRU
     if ( pTemConfig != nullptr )
     {
         FRAME_STRUCT ouFrameStruct;
-        CString omStrMsgName = STR_EMPTY;
+        CString omStrMsgName = "";
         HRESULT hr = pTemConfig->m_ouFlexChannelConfig[nChannel].GetFrame(unMsgId, 0, UNSPECIFIED, ouFrameStruct);
 
         BOOL bStop = FALSE;
@@ -3421,7 +3421,7 @@ char CTransmitMsgLIN::chGetKeyVal(int nItem)
 void CTransmitMsgLIN::OnUpdateEditDLC()
 {
     CWnd* pomWnd = GetFocus();
-    bSetStatusText(STR_EMPTY);
+    bSetStatusText("");
     // Avoid processing the data if the dialog is canceled
     if( pomWnd != nullptr)
     {

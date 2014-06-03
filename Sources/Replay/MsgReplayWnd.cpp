@@ -139,7 +139,7 @@ BOOL CMsgReplayWnd::OnCreateClient(LPCREATESTRUCT lpcs,
         m_omMessageList.SetImageList( &m_omImageList, LVSIL_SMALL );
     }
     // Insert invisible column
-    m_omMessageList.InsertColumn( 0, STR_EMPTY );
+    m_omMessageList.InsertColumn( 0, "" );
     // Set the window icon
     SetIcon( AfxGetApp()->LoadIcon(IDI_ICO_REPLAY), TRUE);
 

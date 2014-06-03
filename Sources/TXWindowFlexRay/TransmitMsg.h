@@ -38,7 +38,6 @@
 #define defMSG_MONOSHOT             _T("MONOSHOT")
 #define defMESSAGE_TRIG_MS          _T("ms")
 #define defDEFAULT_TIMER_VAL        _T("100")
-#define STR_EMPTY                   _T("")
 #define defDEFAULT_KEY_VAL          'A'
 
 #define defDEL_MSG_BLOCK            _T("You are about to delete a message block.\n\n\
@@ -94,7 +93,6 @@ enum DATA_VIEW
 #define defMESSAGE_TRIG_MS          _T("ms")
 #define defDEFAULT_MSG_BLOCK_NAME   _T("OnTime")
 #define defDEFAULT_TIMER_VAL        _T("100")
-#define STR_EMPTY                   _T("")
 #define defDEFAULT_KEY_VAL          'A'
 
 class CTransmitMsg : public CFormView

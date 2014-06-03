@@ -2518,7 +2518,7 @@ HRESULT CPARSER_FIBEX::Process_Load(MSXML2::IXMLDOMNodePtr& pCurrDOMNode, CECU& 
     {
         objECU.objController.m_sKeySlotUsage.m_nStartUpSync = 0;
         objECU.objController.m_sKeySlotUsage.m_nSync = 0;
-        objECU.objController.m_sKeySlotUsage.m_omNone = EMPTY_STRING;
+        objECU.objController.m_sKeySlotUsage.m_omNone = "";
         hResult = DoIterate_ForLoad(pCurrDOMNode, objECU);
     }
     else if (omModNodeName == STARTUP_SYNC_NODE)

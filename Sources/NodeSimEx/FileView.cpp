@@ -135,7 +135,7 @@ void CFileView::OnDraw(CDC* pDC)
     pomDC = &omMemDC;
     if(pomDoc != nullptr)
     {
-        char acSourceLineNo[10]  = STR_EMPTY;
+        char acSourceLineNo[10]  = "";
         long lLineCount          = LONG_INIT;
         long lCurrentWarnLineNum = LONG_INIT;
         int  nTabStopPositions   = INT_INIT;
@@ -232,7 +232,7 @@ void CFileView::OnDraw(CDC* pDC)
                             omStrTemp =
                                 omStr.Right( omStr.GetLength() - (nIndex));
                             nIndex = omStrTemp.Find( "*/" );
-                            omStr = STR_EMPTY;
+                            omStr = "";
 
                             if ( nIndex != -1 )
                             {
@@ -289,7 +289,7 @@ void CFileView::OnDraw(CDC* pDC)
                                 omStrTemp =
                                     omStr.Right( omStr.GetLength() - (nIndex));
 
-                                omStr = STR_EMPTY;
+                                omStr = "";
                                 pomDC -> TextOut(DEFAULT_X_POS,
                                                  (m_nCharHeight * (lInt+INCR_LEN)),
                                                  acSourceLineNo);
@@ -438,7 +438,7 @@ void CFileView::vDisplayWarningLineNumber( eMESSAGEFROM eMsgFrom, UINT unLineNo)
             CFrameWnd* pMainFrame = (CFrameWnd*)CWnd::FromHandle(CGlobalObj::sm_hWndMDIParentFrame);
             CMDIChildWnd* pChild = ( CMDIChildWnd*) pMainFrame->GetActiveFrame();
 
-            CString omStrText = STR_EMPTY;
+            CString omStrText = "";
             BOOL bInLoop = TRUE;
 
             do

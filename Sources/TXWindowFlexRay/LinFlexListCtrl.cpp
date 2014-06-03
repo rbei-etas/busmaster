@@ -456,7 +456,7 @@ void CLinFlexListCtrl::vShowControl(int nItem, int nSubItem)
         SLISTINFO sInfo;
         SNUMERICINFO    sNumInfo;
         SUSERPROGINFO   sProgInfo;
-        CString omStr = STR_EMPTY;
+        CString omStr = "";
         // Got the entry type from the CMap
         if( m_omListItemType.Lookup(
                     lGetMapID(nItem, nSubItem) , sInfo) == TRUE )

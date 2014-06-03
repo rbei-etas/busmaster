@@ -138,7 +138,7 @@ void CIncludeHeaderDlg::OnOk()
 
                 if (pArray != nullptr)
                 {
-                    CString omStrTemp = STR_EMPTY;
+                    CString omStrTemp = "";
                     for (int nCount = 0;
                             nCount < pArray->GetSize();
                             nCount++)
@@ -199,7 +199,7 @@ void CIncludeHeaderDlg::OnBrowse()
     (
         TRUE,  //open an existing file
         nullptr,  //extension to file
-        STR_EMPTY,  //initial file name
+        "",  //initial file name
         OFN_FILEMUSTEXIST| OFN_HIDEREADONLY|
         OFN_PATHMUSTEXIST,
         "C Header Files(*.h)|*.h||",

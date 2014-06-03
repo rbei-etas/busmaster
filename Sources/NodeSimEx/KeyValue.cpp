@@ -203,7 +203,7 @@ void CKeyValue::OnOK()
 
         if (pKeyArray)
         {
-            CString omStrMsgPro   = STR_EMPTY;
+            CString omStrMsgPro   = "";
             UINT unKeyHandlerCount = 0;
             unKeyHandlerCount = (COMMANUINT)pKeyArray->GetSize();
             for (UINT nCount = 0; nCount < unKeyHandlerCount; nCount++)

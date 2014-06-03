@@ -313,7 +313,7 @@ void CHardwareListing::OnButtonSelect()
     int nSelected = m_nSelectedItem;
     // Insert the selected item in to the selected list
     int nItem = m_omSelectedHwList.GetItemCount();
-    CString omStrChannel;//(STR_EMPTY);
+    CString omStrChannel;//("");
     CString omStrHardware;
     int nArrayIndex = -1;
     // Get the data
@@ -660,7 +660,7 @@ void CHardwareListing::vSetSelectedList()
     int nSelected = m_nSelectedItem;
     // Insert the selected item in to the selected list
     int nItem;
-    CString omStrChannel;//(STR_EMPTY);
+    CString omStrChannel;//("");
     CString omStrHardware;
     int nArrayIndex = -1;
 

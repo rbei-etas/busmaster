@@ -68,12 +68,12 @@ tagAbsSCluster& tagAbsSCluster::operator=(tagAbsSCluster& RefObj)
 
 void tagAbsSCluster::DoCleanup()
 {
-    m_omClusterID  = EMPTY_STRING;
-    m_omClusterName  = EMPTY_STRING;
+    m_omClusterID  = "";
+    m_omClusterName  = "";
     m_ulSpeed  = EMPTY_VALUE;
     m_bIS_HIGH_LOW_BIT_ORDER  = false;
-    m_omBIT_COUNTING_POLICY  = EMPTY_STRING;
-    m_omProtocol  = EMPTY_STRING;
+    m_omBIT_COUNTING_POLICY  = "";
+    m_omProtocol  = "";
     m_omChannelRefs.RemoveAll();
 }
 
@@ -147,9 +147,9 @@ tagAbsSChannel& tagAbsSChannel::operator=(tagAbsSChannel& RefObj)
 }
 void tagAbsSChannel::DoCleanup()
 {
-    m_omChannelID   = EMPTY_STRING;
-    m_omShortName   = EMPTY_STRING;
-    m_omChannelName = EMPTY_STRING;
+    m_omChannelID   = "";
+    m_omShortName   = "";
+    m_omChannelName = "";
     m_odFrameTriggeringList.RemoveAll();
     m_pPDUTriggeringList.RemoveAll();
     /* if (m_pPDUTriggeringList != nullptr)
@@ -161,7 +161,7 @@ void tagAbsSFLEXRAY_SPECIFIC_CTRL::DoCleanup()
 {
     m_sKeySlotUsage.m_nStartUpSync  = EMPTY_VALUE;
     m_sKeySlotUsage.m_nSync = EMPTY_VALUE;
-    m_sKeySlotUsage.m_omNone = EMPTY_STRING;
+    m_sKeySlotUsage.m_omNone = "";
     m_shMaxDynPayloadLgt  = EMPTY_VALUE;
 
 
@@ -237,13 +237,13 @@ void tagAbsSFLEXRAY_SPECIFIC_CTRL::DoCleanup()
 
 void tagAbsSCONTROLLER::DoCleanup()
 {
-    m_omID  = EMPTY_STRING;
-    m_omType  = EMPTY_STRING;
-    m_omContrName  = EMPTY_STRING;
-    m_omVENDOR_NAME  = EMPTY_STRING;
-    m_omCHIP_NAME  = EMPTY_STRING;
+    m_omID  = "";
+    m_omType  = "";
+    m_omContrName  = "";
+    m_omVENDOR_NAME  = "";
+    m_omCHIP_NAME  = "";
     m_ulTERMINATION_IMPEDANCE  = EMPTY_VALUE;
-    m_omTRANSCEIVER  = EMPTY_STRING;
+    m_omTRANSCEIVER  = "";
     m_sFlexraySpecControllerData.DoCleanup();
 
 }
@@ -285,8 +285,8 @@ tagAbsSECU& tagAbsSECU::operator=(tagAbsSECU& RefObj)
 }
 void tagAbsSECU::DoCleanUp()
 {
-    m_omECUID  = EMPTY_STRING;
-    m_omECUName  = EMPTY_STRING;
+    m_omECUID  = "";
+    m_omECUName  = "";
     m_odControllerList.RemoveAll();
 }
 
@@ -315,20 +315,20 @@ tagAbsSFrame& tagAbsSFrame::operator=(tagAbsSFrame& RefObj)
 
 void tagAbsSFrame::DoCleanup()
 {
-    m_omFrameID  = EMPTY_STRING;
-    m_omFrameName  = EMPTY_STRING;
+    m_omFrameID  = "";
+    m_omFrameName  = "";
     m_unByteLength  = EMPTY_VALUE;
-    m_omFrameType  = EMPTY_STRING;
+    m_omFrameType  = "";
     m_odSigInstList.RemoveAll();
     m_podPduInstList.RemoveAll();
 }
 
 void tagAbsSSignal::DoCleanup()
 {
-    m_omSignalID  = EMPTY_STRING;
-    m_omSignalName  = EMPTY_STRING;
+    m_omSignalID  = "";
+    m_omSignalName  = "";
     m_dDEFAULT_VALUE  = EMPTY_VALUE;
-    m_omCoding  = EMPTY_STRING;
+    m_omCoding  = "";
     m_unPriority  = EMPTY_VALUE;
 
 }
@@ -348,10 +348,10 @@ tagAbsSCODED_TYPE& tagAbsSCODED_TYPE::operator=(tagAbsSCODED_TYPE& RefObj)
 
 void tagAbsSCODED_TYPE::DoCleanup()
 {
-    m_omDataType = EMPTY_STRING;
-    m_omCategory = EMPTY_STRING;
-    m_omEncoding = EMPTY_STRING;
-    m_omTermination = EMPTY_STRING;
+    m_omDataType = "";
+    m_omCategory = "";
+    m_omEncoding = "";
+    m_omTermination = "";
     m_sLength.m_odMinMaxList.RemoveAll();
     m_sLength.m_unLength = EMPTY_VALUE ;
 }
@@ -405,10 +405,10 @@ tagAbsSCoding& tagAbsSCoding::operator=(tagAbsSCoding& RefObj)
 
 void tagAbsSCoding::DoCleanup()
 {
-    m_omCodingID = EMPTY_STRING;
-    m_omCodingName = EMPTY_STRING;
+    m_omCodingID = "";
+    m_omCodingName = "";
     m_sPhysicalType.m_fPrecision = EMPTY_VALUE;
-    m_sPhysicalType.m_omBaseType = EMPTY_STRING;
+    m_sPhysicalType.m_omBaseType = "";
     m_sCodedType.DoCleanup();
     m_odCompuMethodList.RemoveAll();
 
@@ -429,8 +429,8 @@ tagAbsSFunction& tagAbsSFunction::operator=(tagAbsSFunction& RefObj)
 
 void tagAbsSFunction::DoCleanup()
 {
-    m_omFunctionID  = EMPTY_STRING;
-    m_omFunctionName  = EMPTY_STRING;
+    m_omFunctionID  = "";
+    m_omFunctionName  = "";
     m_odInputPorts.RemoveAll();
     m_odOutputPorts.RemoveAll();
 }
@@ -449,10 +449,10 @@ tagAbsSComposite& tagAbsSComposite::operator=(tagAbsSComposite& RefObj)
 
 void tagAbsSComposite::Docleanup()
 {
-    m_omCompositeID  = EMPTY_STRING;
-    m_omCompositeName  = EMPTY_STRING;
+    m_omCompositeID  = "";
+    m_omCompositeName  = "";
 
-    m_omCompositionLevel  = EMPTY_STRING;
+    m_omCompositionLevel  = "";
     m_omRefValues.RemoveAll();
 
 }
@@ -470,10 +470,10 @@ tagAbsSPdu& tagAbsSPdu::operator=(tagAbsSPdu& RefObj)
 
 void tagAbsSPdu::DoCleanup()
 {
-    m_omPduID  = EMPTY_STRING;
-    m_omPduName  = EMPTY_STRING;
+    m_omPduID  = "";
+    m_omPduName  = "";
     m_unByteLen  = EMPTY_VALUE;
-    m_omPduType  = EMPTY_STRING;
+    m_omPduType  = "";
     m_odSigInstList.RemoveAll();
 }
 
@@ -834,8 +834,8 @@ void tagAbsSProcInfo::DoCleanup()
 
 void tagAbsSProject::DoCleanup()
 {
-    m_omID = EMPTY_STRING;
-    m_omProjectName = EMPTY_STRING;
+    m_omID = "";
+    m_omProjectName = "";
 }
 
 void tagAbsSFibexContainer::DoCleanup()

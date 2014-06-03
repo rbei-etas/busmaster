@@ -103,16 +103,16 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
 
 /* Start BUSMASTER global variables */
 // Numerical values of commands from Client
-#define  CONNECT          1
-#define  DISCONNECT       2
-#define  RESET_CONTROLLER 3
+//#define  CONNECT          1
+//#define  DISCONNECT       2
+//#define  RESET_CONTROLLER 3
 #define  SEND_MESSAGE     4
-#define  WRITE_TO_LOGFILE 5
-#define  TRACE            6
-#define  GET_VERSION_INFO 7
-#define  DISABLE_INTERRUPT 8
-#define  ENABLE_INTERRUPT 9
-#define  ENABLE_DISABLE_MSG_TX 10
+//#define  WRITE_TO_LOGFILE 5
+//#define  TRACE            6
+//#define  GET_VERSION_INFO 7
+//#define  DISABLE_INTERRUPT 8
+//#define  ENABLE_INTERRUPT 9
+//#define  ENABLE_DISABLE_MSG_TX 10
 
 // Numerical values of commands to Client
 #define RECEIVE_MESSAGE_ASYNC 1

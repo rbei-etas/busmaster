@@ -929,7 +929,7 @@ BOOL CExecuteManager::bExecuteDllBuildLoad(PSNODEINFO psNodeInfo)
                 }
                 else
                 {
-                    CString omStrMessage = STR_EMPTY;
+                    CString omStrMessage = "";
                     omStrMessage  = "Unable to free resources for loaded ";
                     omStrMessage +=
                         psTempNodeObject->m_psExecuteFunc->omGetPrevFileName();
@@ -946,7 +946,7 @@ BOOL CExecuteManager::bExecuteDllBuildLoad(PSNODEINFO psNodeInfo)
                 if(bDLLLoaded == TRUE)
                 {
                     HMODULE hModuleHandle  = nullptr;
-                    CString omStrDLLName = STR_EMPTY;
+                    CString omStrDLLName = "";
                     INT nIndex           = 0;
                     BOOL bInitStruct     = FALSE;
                     hModuleHandle=psNodeInfo->m_hModuleHandle;
@@ -1832,7 +1832,7 @@ BOOL CExecuteManager::bDLLBuildAll(CStringArray* pomStrErrorFiles)
     int nFailure = 0;
     PSSIMSYSINFO pTempSimsys =
         CSimSysManager::ouGetSimSysManager(m_eBus).psReturnSimsysInfoPtr();
-    CString omStrFileName = STR_EMPTY;
+    CString omStrFileName = "";
     int nNodeCount = 0;
     pomStrErrorFiles->RemoveAll();
     vClearOutputWnd();

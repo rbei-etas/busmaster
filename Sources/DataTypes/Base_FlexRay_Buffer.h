@@ -119,10 +119,6 @@ enum eFlexRayPOCStatus
 
 #define DB_MSG_NAME_SIZE         64
 
-//*** Maximum amount of FlexRay Data [in WORDS]
-//#define FLX_MAX_MSG_DATA_SIZE     127
-#define FLX_MAX_MSG_DATA_SIZE     254
-
 //*** FlexRay Controller states
 #define FLX_CNTRL_STATES     5
 enum eFLXCTRLSTATEList
@@ -171,7 +167,7 @@ typedef struct struct_FLXDATAMSG
     short int       m_nDLC;                        // Data length (number of data words) (0-127 {7 bit})
     unsigned long   m_lHeaderInfoFlags;                  // Flagfield of Header information (RBIN_FLXHDRINFO_???)
     bool m_bIsRxMsg;
-    unsigned char   m_ucData[FLX_MAX_MSG_DATA_SIZE];      // FlexRay Data
+    unsigned char   m_ucData[254];      // FlexRay Data
 } s_FLXDATAMSG, *ps_FLXDATAMSG;
 
 enum eFLXMESSAGETYPE
@@ -219,7 +215,7 @@ typedef struct tagRxMSG
     COLORREF m_ColourCode;
     UINT64 m_u64TimeStamp;
     BYTE  m_byDataLength;
-    WORD m_awData[FLX_MAX_MSG_DATA_SIZE];
+    WORD m_awData[254];
     EINTERPRET_MODE m_eInterpretMode;
     DWORD dwChangleable;
     tagRxMSG(void)

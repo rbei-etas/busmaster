@@ -166,7 +166,7 @@ const TYPE_CHANNEL CHANNEL_CAN_MAX = 32;    // Maximum value of a CAN channel
 const TYPE_CHANNEL CHANNEL_ALLOWED = 16;
 const TYPE_CHANNEL FLEXRAY_CHANNEL_ALLOWED = 1;
 #define defNO_OF_CHANNELS CHANNEL_CAN_MAX
-#define FLX_MAX_MSG_DATA_SIZE     127
+
 const TYPE_CHANNEL LIN_CHANNEL_ALL = 0;     // All channel notation
 const TYPE_CHANNEL CHANNEL_LIN_MIN = 1;     // Minimum value of a LIN channel
 const TYPE_CHANNEL CHANNEL_LIN_MAX = 32;    // Maximum value of a LIN channel
@@ -378,7 +378,7 @@ struct tagFlexMsgData
     __int64 m_n64MapId;
     UINT64 m_u64TimeStamp;
     BYTE  m_byDataLength;
-    unsigned char m_awData[FLX_MAX_MSG_DATA_SIZE*2];
+    unsigned char m_awData[254];
     COLORREF m_ColourCode;
     EFRAMETYPE m_eFrameType;
     int m_nBaseCycle;

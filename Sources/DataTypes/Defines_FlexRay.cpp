@@ -496,10 +496,10 @@ CSignalDef::CSignalDef()
 {
     m_unStartbit = EMPTY_VALUE;
     m_unLength = 0;
-    m_omNameSignal = EMPTY_STRING;
+    m_omNameSignal = "";
     m_bIsBigEndian = FALSE;
-    m_omUnit = EMPTY_STRING;
-    m_omPhylVal = EMPTY_STRING;
+    m_omUnit = "";
+    m_omPhylVal = "";
     m_ouSigConstrnt.RemoveAll();
     m_ouCompuMethods.RemoveAll();
 

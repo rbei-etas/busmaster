@@ -81,10 +81,14 @@ const BYTE BITS_EXPRN           = (BITS_TM | BITS_NUM);
 #define IS_MODE_INTRP(Flag)     (Flag & DISP_MODE_INTRP)
 
 // To copy the data and advance the pointer of the target data stream
+#ifndef COPY_DATA
 #define COPY_DATA(TgtStream, SrcStream, TotBytes) {memcpy(TgtStream, SrcStream, TotBytes); TgtStream += TotBytes;}
+#endif
 
 // To copy the data and advance the pointer of the source data stream
+#ifndef COPY_DATA_2
 #define COPY_DATA_2(TgtStream, SrcStream, TotBytes) {memcpy(TgtStream, SrcStream, TotBytes); SrcStream += TotBytes;}
+#endif
 
 #define UNUSED_INTENTIONALLY(X)    (X)
 

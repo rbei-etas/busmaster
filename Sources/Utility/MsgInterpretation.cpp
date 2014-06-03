@@ -52,7 +52,6 @@
 #define defFORMAT_DATA_FLOAT "%f"
 #define defNUMBER_OF_BIT_TO_SHIFT 3
 #define defSTR_FORMAT_PHY_VALUE "%.3f"
-#define STR_EMPTY ""
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -400,7 +399,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
             if (psSignal != nullptr)
             {
                 __int64 n64SigVal = 0;
-                CString omSignalValue(STR_EMPTY), omStrTemp(STR_EMPTY);
+                CString omSignalValue(""), omStrTemp("");
                 BOOL bFoundSignalDesc = FALSE;
 
                 // Get signal value
@@ -583,8 +582,8 @@ BOOL CMsgInterpretation::bInterpretMsgSigList(UINT unMsgCode,
             while(psCurrentSignal != nullptr)
             {
                 __int64 n64SigVal = 0;
-                CString omSignalValue(STR_EMPTY);
-                CString omStrTemp(STR_EMPTY);
+                CString omSignalValue("");
+                CString omStrTemp("");
                 BOOL bFound = FALSE;
 
                 // Get signal value
@@ -784,7 +783,7 @@ BOOL CMsgInterpretation::vInterpretMsgs(UINT unMsgCode,
                 // Store Signal Length
                 sSigInfo.m_ucSigLength = (UCHAR)(psSignal->m_unSignalLength);
                 // Init Signal Description string
-                sSigInfo.m_omStrSignalDescValue = STR_EMPTY;
+                sSigInfo.m_omStrSignalDescValue = "";
 
                 // Replace signal value if any related signal
                 // descriptor is defined
@@ -1551,7 +1550,7 @@ BOOL CMsgInterpretation::bInterpretMsgs(UINT unMsgCode,
             // Store Signal Length
             sSigInfo.m_ucSigLength = (UCHAR)(psSignal->m_unSignalLength);
             // Init Signal Description string
-            sSigInfo.m_omStrSignalDescValue = STR_EMPTY;
+            sSigInfo.m_omStrSignalDescValue = "";
 
             // Replace signal value if any related signal
             // descriptor is defined

@@ -57,9 +57,9 @@ const BYTE BUS_STATS_DLG_VERSION = 0x1;
 CLINBusStatisticsDlg::CLINBusStatisticsDlg(CBaseBusStatisticLIN * pouBSLIN, CWnd * /* pParent */, int nChannelCount)
     : CCommonStatistics(CLINBusStatisticsDlg::IDD, LIN),
       m_pouBSLIN(pouBSLIN),
-      m_omStrBusLoad(STR_EMPTY),
-      m_omStrPeakBusLoad(STR_EMPTY),
-      m_omStrAvgBusLoad( STR_EMPTY )
+      m_omStrBusLoad(""),
+      m_omStrPeakBusLoad(""),
+      m_omStrAvgBusLoad( "" )
 
 {
     //{{AFX_DATA_INIT(CBusStatisticsDlg)
@@ -311,7 +311,7 @@ BOOL CLINBusStatisticsDlg::OnInitDialog()
     // Set the boundary for list control
     m_omStatList.MoveWindow(&cr);
     // Insert Rows
-    CString omStrInitValue = STR_EMPTY;
+    CString omStrInitValue = "";
     // Init Item Index
     nIndex = 0;
 

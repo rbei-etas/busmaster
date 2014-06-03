@@ -396,9 +396,9 @@ void CGraphBottomView::vUpdateSignalData()
     {
         for( int nIndex = 0; nIndex < m_lstSignalDetails.GetItemCount(); nIndex++)
         {
-            m_lstSignalDetails.SetItemText( nIndex, 3, STR_EMPTY);  //Cursor 1 value
-            m_lstSignalDetails.SetItemText( nIndex, 4, STR_EMPTY);  //Cursor 2 value
-            m_lstSignalDetails.SetItemText( nIndex, 5, STR_EMPTY); //Difference value
+            m_lstSignalDetails.SetItemText( nIndex, 3, "");  //Cursor 1 value
+            m_lstSignalDetails.SetItemText( nIndex, 4, "");  //Cursor 2 value
+            m_lstSignalDetails.SetItemText( nIndex, 5, ""); //Difference value
         }
         return;
     }

@@ -419,7 +419,6 @@ typedef struct
 #define defSTR_FILTER_TYPE_STOP                 _T("Stop")
 #define defSTR_MSG_ID_FORMAT_DB                 _T("%x [%s]")
 #define defSTR_MSG_ID_FORMAT_NDB                _T("%x")
-#define STR_EMPTY                               _T("")
 #define defSTR_DEFAULT_MRU_ITEM                 _T("Empty")
 #define defSTR_FILE_MENU_TEXT                   _T("&File")
 #define defSTR_RECENT_MENU_TEXT                 _T("Recent File")

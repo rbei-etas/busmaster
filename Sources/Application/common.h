@@ -57,7 +57,7 @@ enum
 //#define WM_OWNER_DATA_NOTIFICATION  (WM_USER + 60)
 
 
-#define WM_NOTIFICATION_FROM_OTHER  (WM_USER + 34)
+//#define WM_NOTIFICATION_FROM_OTHER  (WM_USER + 34)
 #define WM_RX_COMPLETE              (WM_USER + 61)
 #define WM_TX_COMPLETE              (WM_USER + 62)
 #define WM_HW_STATUS                (WM_USER + 63)
@@ -134,7 +134,6 @@ enum
 #define defSTR_DEFAULT_MRU_ITEM  "Empty"
 #define defSTR_FILE_MENU_TEXT    "&File"
 //#define defSTR_RECENT_MENU_TEXT  _T("Recent File")
-#define STR_EMPTY                ""
 
 #define RULE_FILE_EXTENSION      "xml"
 #define RULE_FILTER              "*.xml|*.xml||"

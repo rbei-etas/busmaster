@@ -62,7 +62,7 @@ CUtlityDlg::CUtlityDlg(CFunctionEditorDoc* pDoc, CWnd* pParent /*=nullptr*/)
     m_omStrUtilsFunText = "";
     //}}AFX_DATA_INIT
     m_bChangeUtilFunc = FALSE;
-    m_omStrTempReturnType = STR_EMPTY ;
+    m_omStrTempReturnType = "" ;
     m_pDoc = pDoc;
 }
 
@@ -142,7 +142,7 @@ void CUtlityDlg::OnOk()
             {
                 if ( m_omStrFunctionName.Find( ')') != -1 )
                 {
-                    CString omStrSelDataType = STR_EMPTY;
+                    CString omStrSelDataType = "";
                     // get the data type selected
                     int nIndex = m_omComboRetType.GetCurSel();
                     // If there is no selection then get the text from editbox
@@ -175,7 +175,7 @@ void CUtlityDlg::OnOk()
 
                                 if (pArray)
                                 {
-                                    CString omStrMsgPro = STR_EMPTY;
+                                    CString omStrMsgPro = "";
                                     for (int nCount = 0;
                                             nCount < pArray->GetSize(); nCount++)
                                     {
@@ -295,7 +295,7 @@ BOOL CUtlityDlg::OnInitDialog()
     //// Get the starting position first
     //POSITION pos = omMessageNames.GetHeadPosition();
     //// Insert every message name into the message list box
-    //CString omStrMsgName = STR_EMPTY;
+    //CString omStrMsgName = "";
     //// Iterate through the list
     //while ( pos != nullptr )
     //{

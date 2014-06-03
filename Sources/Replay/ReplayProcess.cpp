@@ -418,8 +418,8 @@ BOOL CReplayProcess::bOpenReplayFile()
 {
     BOOL bReturn = TRUE;
     BOOL bModeMismatch              = FALSE;
-    CString     omStrLine           = STR_EMPTY;
-    CString     omStrTemp           = STR_EMPTY;
+    CString     omStrLine           = "";
+    CString     omStrTemp           = "";
     CHAR        Line[500]           = { 0 };
     CString     omStrMsgType        = " ";
     std::ifstream    omInReplayFile;
@@ -429,7 +429,7 @@ BOOL CReplayProcess::bOpenReplayFile()
     m_omEntries.RemoveAll();
     m_omMsgList.RemoveAll();
     // Clear error message
-    m_omStrError = STR_EMPTY;
+    m_omStrError = "";
 
     TRY
     {

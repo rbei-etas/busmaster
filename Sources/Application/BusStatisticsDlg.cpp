@@ -73,9 +73,9 @@ const BYTE BUS_STATS_DLG_VERSION = 0x1;
 CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN,int nChannelCount)
     : CCommonStatistics(CBusStatisticsDlg::IDD, CAN),
       m_pouBSCAN(pouBSCAN),
-      m_omStrBusLoad(STR_EMPTY),
-      m_omStrPeakBusLoad(STR_EMPTY),
-      m_omStrAvgBusLoad( STR_EMPTY )
+      m_omStrBusLoad(""),
+      m_omStrPeakBusLoad(""),
+      m_omStrAvgBusLoad( "" )
 
 {
     //{{AFX_DATA_INIT(CBusStatisticsDlg)
@@ -86,9 +86,9 @@ CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN,int nChannel
 CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN * pouBSCAN, CWnd * /* pParent */, int nChannelCount)
     : CCommonStatistics(CBusStatisticsDlg::IDD, CAN),
       m_pouBSCAN(pouBSCAN),
-      m_omStrBusLoad(STR_EMPTY),
-      m_omStrPeakBusLoad(STR_EMPTY),
-      m_omStrAvgBusLoad( STR_EMPTY )
+      m_omStrBusLoad(""),
+      m_omStrPeakBusLoad(""),
+      m_omStrAvgBusLoad( "" )
 
 {
     //{{AFX_DATA_INIT(CBusStatisticsDlg)
@@ -436,7 +436,7 @@ BOOL CBusStatisticsDlg::OnInitDialog()
     // Set the boundary for list control
     m_omStatList.MoveWindow(&cr);
     // Insert Rows
-    CString omStrInitValue = STR_EMPTY;
+    CString omStrInitValue = "";
     // Init Item Index
     nIndex = 0;
 

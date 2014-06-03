@@ -40,7 +40,6 @@
 
 
 
-#define STR_EMPTY ""
 #define defSTR_MSG_SIG_SEPERATER " -> "
 #define defSTR_FORMAT_SW_LIST    "%s%s%s"
 #define defSIZE_OF_IMAGE         25

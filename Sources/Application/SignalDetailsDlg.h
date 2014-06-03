@@ -40,9 +40,9 @@ public:
                        int nDataFormat,
                        CString omStrMsgName,
                        UINT nMsgLen ,
-                       CString omStrSignalType = STR_EMPTY,
-                       CString omStrMaxVal = STR_EMPTY,
-                       CString omStrMinVal = STR_EMPTY,
+                       CString omStrSignalType = "",
+                       CString omStrMaxVal = "",
+                       CString omStrMinVal = "",
                        CString omStrOffset = "0",
                        CString omStrScale = "1",
                        CWnd* pParent = nullptr);   // standard constructor
