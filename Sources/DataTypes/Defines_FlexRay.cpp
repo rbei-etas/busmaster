@@ -956,9 +956,6 @@ tagFormulaCodeVarEx::~tagFormulaCodeVarEx()
     }
 }
 
-
-
-
 CString omSearchValueFromCompuBlks(SIGNAL_STRUCT& ouSignal, DWORD dwRawValue)
 {
     CString omResult = _T("");
@@ -976,38 +973,10 @@ CString omSearchValueFromCompuBlks(SIGNAL_STRUCT& ouSignal, DWORD dwRawValue)
     return omResult;
 }
 
-std::string omGetEnggValue( SIGNAL_STRUCT& ouSignal, DWORD dwRawValue)
+std::string omGetEnggValue(SIGNAL_STRUCT & ouSignal, DWORD dwRawValue)
 {
-    CString RetStr = _T("");
-    //int nCnt = (int) ouSignal.m_ouSigConstrnt.GetSize();
-    SIG_INT_CONSTRAINT_EX ouTempSigCnst;
-    bool bContinue = true;
-    /*for (int j = 0; (j < nCnt) && bContinue; j++)
-    {
-        ouTempSigCnst = ouSignal.m_ouSigConstrnt.GetAt(j);
-        // CHECKING FOR THE RANGE AND SIGNAL CONSTRAINT VALIDITY
-        if (ouTempSigCnst.m_sRange.bIsWithinRange(dwRawValue))
-        {
-            if (ouTempSigCnst.m_eValid == INVALID)
-            {
-                RetStr = "INVALID";
-                bContinue = false;
-            }
-            else if (ouTempSigCnst.m_eValid == NOT_AVAILABLE)
-            {
-                RetStr = "NOT_AVAILABLE";
-                bContinue = false;
-            }
-        }
-    }*/
-
-    if (bContinue)
-    {
-        // Get the engineering value as the signal constrint is valid
-        RetStr = omSearchValueFromCompuBlks(ouSignal, dwRawValue);
-    }
-
-    return RetStr;
+    // Get the engineering value as the signal constrint is valid
+    return (LPCTSTR)omSearchValueFromCompuBlks(ouSignal, dwRawValue);
 }
 
 UINT64 un64GetRawValue( SIGNAL_STRUCT& ouStruct, CByteArray& omMsgByte)
