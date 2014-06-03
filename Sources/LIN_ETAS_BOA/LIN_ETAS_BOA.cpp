@@ -955,6 +955,7 @@ UINT nGetChannel(const OCI_ControllerHandle hHandle)
     }
     return (1); //Currently 1 Channel Has to e fixed for FlexRay also if required
 }
+
 eLinBusEventType vGetTranmissionEventState(UINT unstate)
 {
     switch(unstate)
@@ -982,6 +983,8 @@ eLinBusEventType vGetTranmissionEventState(UINT unstate)
         default:
             break;
     }
+
+    return EVENT_LIN_NONE;
 }
 
 /**

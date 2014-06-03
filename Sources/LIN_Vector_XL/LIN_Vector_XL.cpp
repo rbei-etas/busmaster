@@ -420,9 +420,8 @@ DWORD WINAPI CDIL_LIN_VectorXL::LINMsgReadThreadProc_LIN_Vector_XL(LPVOID pVoid)
     }
     pThreadParam->m_hActionEvent = nullptr;
 
+    return 0;
 }
-
-
 
 /**
 * \brief         Returns the CDIL_LIN_VectorXL object

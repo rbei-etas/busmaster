@@ -264,7 +264,10 @@ USAGEMODE HRESULT TSE_hGetConfigurationData(xmlNodePtr* pxmlNodePtr)
     {
         *pxmlNodePtr = xmlCopyNode(m_pTEXmlNode, 1);
     }
+
+    return S_OK;
 }
+
 USAGEMODE HRESULT TSE_hSetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize)
 {
     if(m_pbyTEConfigData != nullptr)

@@ -18111,6 +18111,8 @@ CString CMainFrame::vGetControllerName(UINT /* nDriverId */)
             return strDriverName;
         }
     }
+
+    return "";
 }
 
 void CMainFrame::vSetFileStorageInfo(CString oCfgFilename)

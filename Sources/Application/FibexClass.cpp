@@ -1194,6 +1194,8 @@ ECHANNEL CPARSER_FIBEX::GetChnlEnumFromChnlName(std::string strChannelName)
     {
         return CHANNEL_B;
     }
+
+    return UNSPECIFIED;
 }
 
 void CPARSER_FIBEX::CopyCodingDetails(SIGNAL_STRUCT& objSignal, SCOMPU_METHOD_v2 objCompuMthd)

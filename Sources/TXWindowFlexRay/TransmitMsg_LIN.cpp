@@ -1744,11 +1744,9 @@ int CTransmitMsgLIN::nUpdateSelectedMessageInList(LIN_FRAME_DATA& ouLinData)
     {
         vUpdateMsgInList(ouLinData);
     }
+
+    return 0;
 }
-
-
-
-
 
 UINT CTransmitMsgLIN::unGetMsgIDFromName(CString omMsgName)
 {
@@ -1830,6 +1828,7 @@ BOOL CTransmitMsgLIN::bCheckIfValueIsMoreThan255(USHORT usNoOfEditCtrlsToCheck, 
     }
     return bResult;
 }
+
 int CTransmitMsgLIN::nGetDbFrame(FRAME_STRUCT& ouFrame)
 {
     int nChannel = m_wndComboChannel.GetCurSel();
@@ -1843,8 +1842,9 @@ int CTransmitMsgLIN::nGetDbFrame(FRAME_STRUCT& ouFrame)
             return pTempConfig->m_ouFlexChannelConfig[nChannel].GetFrame(nMsgCode, 0, UNSPECIFIED, ouFrame);
         }
     }
-}
 
+    return 0;
+}
 
 int CTransmitMsgLIN::nGetMessageName(std::string & strMsgName)
 {

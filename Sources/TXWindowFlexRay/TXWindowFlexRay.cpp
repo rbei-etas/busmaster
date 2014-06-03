@@ -211,6 +211,7 @@ int nShowTxWindow( void* pParentWnd, ETYPE_BUS eBUS )
         pFrameWindow->SetActiveWindow();
     }
 
+    return S_OK;
 }
 
 USAGEMODE HRESULT TXFlexRay_vShowConfigureMsgWindow(void* pParentWnd, ETYPE_BUS eBUS)

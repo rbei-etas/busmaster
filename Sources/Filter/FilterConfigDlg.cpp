@@ -1985,7 +1985,7 @@ void CFilterConfigDlg::OnEditChangeMsgIDCombo()
     }
 }
 
-HRESULT CFilterConfigDlg::hGetFrameFromId(UINT unSlotId, FRAME_STRUCT& ouFrameStrct)
+HRESULT CFilterConfigDlg::hGetFrameFromId(UINT unSlotId, FRAME_STRUCT & ouFrameStrct)
 {
     std::list<FRAME_STRUCT> lstFrameStrct;
 
@@ -1996,6 +1996,8 @@ HRESULT CFilterConfigDlg::hGetFrameFromId(UINT unSlotId, FRAME_STRUCT& ouFrameSt
             return S_OK;
         }
     }
+
+    return S_OK;
 }
 
 /**

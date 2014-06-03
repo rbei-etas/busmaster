@@ -266,6 +266,8 @@ public:
             return defLINETYPE_STICK;
             break;
         }
+
+        return defLINETYPE_SOLID;
     }
 
     static INT nSetLineTypeForGraph(CString strLineType)
@@ -304,12 +306,14 @@ public:
         }
         else if(strLineType == defLINETYPE_BARS)
         {
-            return Bars ;
+            return Bars;
         }
         else if(strLineType == defLINETYPE_STICK )
         {
             return Stick;
         }
+
+        return Solid;
     }
 
     static std::string nGetWindowVisibilityInString(int nShowCmd)
