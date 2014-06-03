@@ -545,7 +545,6 @@ void CFunctionView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 /*****************************************************************************/
 void CFunctionView::OnDropFiles(HDROP /*hDropInfo*/)
 {
-    return;
 }
 
 /*****************************************************************************/

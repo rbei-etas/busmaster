@@ -357,8 +357,6 @@ void CChannelConfigurationDlg::OnCbnSelchangeComboProtocol()
         m_nLinBaudRate = sg_LINPROTOCOL_BAUD[nSel].m_nBaudRate;
         UpdateData(FALSE);
     }
-
-    return;
 }
 
 void CChannelConfigurationDlg::OnCbnSelchangeComboChannel()

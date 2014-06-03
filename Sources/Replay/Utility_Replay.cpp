@@ -282,8 +282,6 @@ void vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
         }
 
     }//while (nStrLength);
-
-    return;
 }
 
 

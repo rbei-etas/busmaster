@@ -183,5 +183,4 @@ void CUtilFunctions::MakeRelativePath(const char * pchCurrentDir, char * pchAbsF
     }
     strcpy(&chRelativeFile[nReverse], &pchAbsFileName[nForword]);
     omStrRelativeParh = chRelativeFile;
-    return;
 }

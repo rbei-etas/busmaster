@@ -251,7 +251,6 @@ void CTreeViewEx::vSetCheck(HTREEITEM hItem, BOOL bCheck)
         int nState = (bCheck == TRUE) ? 2 : 1;
         GetTreeCtrl().SetItemState( hItem, INDEXTOSTATEIMAGEMASK(nState), TVIS_STATEIMAGEMASK );
     }
-    return;
 }
 
 /******************************************************************************
@@ -298,9 +297,8 @@ void CTreeViewEx::vSetCheckChildren(HTREEITEM hItem, BOOL bCheck)
             htiSibling = omTreeCtrl.GetNextSiblingItem(htiSibling);
         }
     }
-
-    return;
 }
+
 /******************************************************************************
 Function Name  :  vSetCheckParent
 Input(s)       :
@@ -337,7 +335,6 @@ void CTreeViewEx::vSetCheckParent(HTREEITEM hItem)
     }
     vSetCheck(hParentItem, bAllChecked);
     vSetCheckParent(hParentItem);
-    return;
 }
 
 /******************************************************************************

@@ -1186,25 +1186,7 @@ void CTransmitMsgLIN::vUpdateMsgInList(LIN_FRAME_DATA ouLinData)
 
     m_lstMsg.SetItemText(nRows, def_COLUMN_DATABYTES_INDEX, strText.c_str());
 
-    //LVITEM lvitem = {0};
-    //lvitem.mask =  LVIF_IMAGE;
-    //lvitem.pszText = "";
-    //lvitem.iImage = ouLinData.m_bTimerEnabled; // Index of first subitem image
-    //lvitem.iItem = nRows; // Index of item
-    //lvitem.iSubItem = def_COLUMN_REPETITION_INDEX; // Index of subitem
-    //m_lstMsg.SetItem(&lvitem);
-    //
-    //lvitem.mask =  LVIF_IMAGE;
-    //lvitem.pszText = "";
-    //lvitem.iImage = ouLinData.bKeyEnabled; // Index of first subitem image
-    //lvitem.iItem = nRows; // Index of item
-    //lvitem.iSubItem = def_COLUMN_KEY_INDEX; // Index of subitem
-    //m_lstMsg.SetItem(&lvitem);
-    //m_lstMsg.SetItem(nRows, 6, LVIF_IMAGE, "H", 1, 0, 0, 0);
-    //m_lstMsg.SetSelectionMark(nRows);
-
     m_lstMsg.SetCheck(nRows, ouLinData.bSelected);
-    return;
 }
 
 int CTransmitMsgLIN::nAddMessageToList(LIN_FRAME_DATA& ouLinData, int nRows)
@@ -3470,7 +3452,6 @@ void CTransmitMsgLIN::OnUpdateEditDLC()
 void CTransmitMsgLIN::OnNMTransmitMessagesRightClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
     OnNMTransmitMessagesClick(pNMHDR, pResult);
-    return;
 }
 
 void CTransmitMsgLIN::OnNMTransmitMessagesClick(NMHDR* pNMHDR, LRESULT* pResult)
@@ -3501,7 +3482,6 @@ void CTransmitMsgLIN::OnNMTransmitMessagesClick(NMHDR* pNMHDR, LRESULT* pResult)
     //Selection Change
     else if(hitinfo.flags == LVHT_ONITEMSTATEICON )
     {
-
         return;
     }
 }

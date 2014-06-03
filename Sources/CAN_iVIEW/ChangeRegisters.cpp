@@ -363,12 +363,6 @@ void CChangeRegisters::OnOK()
 /******************************************************************************/
 void CChangeRegisters:: vDisplayListBox(INT nIndex,INT nItemFocus )
 {
-    //    BOOL bResult = ::IsWindowVisible(m_hWnd);
-
-    //    bResult = ::IsWindowVisible(m_omListCtrlBitTime.m_hWnd);
-
-    //    if (bResult == FALSE) return;
-
     CString cStrText    = "";
     INT nItem           = -1;
     CString omStrBTR0   = "";

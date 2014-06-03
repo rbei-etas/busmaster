@@ -1984,8 +1984,6 @@ void CMainFrame::vPopulateLINIDList()
             pIDArray = nullptr;
         }
     }
-
-    return;
 }
 
 /******************************************************************************
@@ -4898,10 +4896,8 @@ void CMainFrame::vConvStrtoByteArray(CByteArray* bufferTx, char* tempBuf)
             nStrLength --;
         }
     }
-
-    //while (nStrLength);
-    return;
 }
+
 /******************************************************************************/
 /*  Function Name    :  vGetReferenceToToolBarCtrl                            */
 /*  Input(s)         :                                                        */
@@ -12940,34 +12936,6 @@ void CMainFrame::vCloseFormatconverters()
     catch (...)
     {
     }
-
-    ////Method 3
-    //HANDLE   hProc ;
-    //DWORD   dwRet ;
-    //DWORD dwPID = (DWORD)m_hProcess;
-    //DWORD dwTimeout = 1000;
-
-    //// If we can't open the process with PROCESS_TERMINATE rights,
-    //// then we give up immediately.
-    //hProc = OpenProcess(PROCESS_TERMINATE, FALSE, dwPID);
-    //if(hProc == nullptr)
-    //{
-    //  DWORD dwErr = GetLastError();
-    //  return;
-    //}
-
-    //// TerminateAppEnum() posts WM_CLOSE to all windows whose PID
-    //// matches your process's.
-    //EnumWindows((WNDENUMPROC)TerminateAppEnum, (LPARAM) dwPID) ;
-
-    //// Wait on the handle. If it signals, great. If it times out,
-    //// then you kill it.
-    //if(WaitForSingleObject(hProc, dwTimeout)!=WAIT_OBJECT_0)
-    //  TerminateProcess(hProc,0);
-    //else
-    //  return;
-
-    //CloseHandle(hProc) ;
 }
 
 BOOL CALLBACK TerminateAppEnum( HWND hwnd, LPARAM lParam )

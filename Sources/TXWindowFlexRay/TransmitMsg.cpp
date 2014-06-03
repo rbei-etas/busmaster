@@ -876,8 +876,6 @@ void CTransmitMsg::OnBnClickedBtDelFrame()
 
     }
     vChangeDelButtonStatus();
-    return;
-
 }
 
 
@@ -1141,10 +1139,10 @@ HRESULT CTransmitMsg::UpdateTxView(int& m_nChannelsConfigured)
     vChangeDelButtonStatus();
     return S_OK;
 }
+
 void CTransmitMsg::OnNMTransmitMessagesRightClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
     OnNMTransmitMessagesClick(pNMHDR, pResult);
-    return;
 }
 
 void CTransmitMsg::OnNMTransmitMessagesClick(NMHDR* pNMHDR, LRESULT* pResult)

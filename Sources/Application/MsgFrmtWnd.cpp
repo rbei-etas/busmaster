@@ -2576,17 +2576,6 @@ void CMsgFrmtWnd::vOnRxMsg(void* pMsg)
     }
     else if (m_eBusType == FLEXRAY)
     {
-        //static s_FLXMSG* pFLEXMsg = (s_FLXMSG*)pMsg;
-        //static s_FLXSTATUSMSG sFLEXStatusMsg;
-        //static s_FLXDATAMSG sFLEXDataMsg;
-        //if (pFLEXMsg->wMessageType == 1) // Status Msg
-        //{
-        //  m_pouMsgContainerIntrf->hReadFromOWBuffer(&sJ1939Msg, dwMapIndex);
-        //}
-        //else if (pFLEXMsg->wMessageType == 2) // data Msg
-        //{
-        //}
-
         static s_FLXMSG sFLEXMsg;
         m_pouMsgContainerIntrf->hReadFromOWBuffer(&sFLEXMsg, dwMapIndex);
         m_bUpdate = TRUE;
@@ -3996,7 +3985,6 @@ void CMsgFrmtWnd::vUpdateMsgTreeWnd(__int64 nMapIndex)
 *******************************************************************************/
 void CMsgFrmtWnd::OnClose()
 {
-    return;
 }
 
 /*******************************************************************************

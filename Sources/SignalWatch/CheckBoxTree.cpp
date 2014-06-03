@@ -111,7 +111,6 @@ void CCheckBoxTree::OnLButtonDown(UINT nFlags, CPoint point)
 
             }
         }
-        //return;
     }
 
     else
@@ -127,25 +126,18 @@ void CCheckBoxTree::OnLButtonDown(UINT nFlags, CPoint point)
 void CCheckBoxTree::vSetCheck(HTREEITEM hItem, BOOL bCheck)
 {
     if(hItem == nullptr)
-    {
         return;
-    }
-    if (hItem != nullptr)
-    {
-        int nState = (bCheck == TRUE) ? 2 : 1;
-        SetItemState( hItem, INDEXTOSTATEIMAGEMASK(nState), TVIS_STATEIMAGEMASK );
-        GetItemData(hItem);
-    }
-    return;
+
+    int nState = (bCheck == TRUE) ? 2 : 1;
+    SetItemState( hItem, INDEXTOSTATEIMAGEMASK(nState), TVIS_STATEIMAGEMASK );
+    GetItemData(hItem);
 }
 
 
 void CCheckBoxTree::vSetCheckParent(HTREEITEM hItem)
 {
     if(hItem == nullptr)
-    {
         return;
-    }
 
     HTREEITEM hParentItem = GetParentItem(hItem);
     HTREEITEM hChildItem;
@@ -167,17 +159,12 @@ void CCheckBoxTree::vSetCheckParent(HTREEITEM hItem)
     vSetCheck(hParentItem, bAllChecked);
     vSetCheckParent(hParentItem);
     vSetCheckChildren(hParentItem,!fCheck);
-    return;
 }
 
 void CCheckBoxTree::vSetCheckChildren(HTREEITEM hItem, BOOL fCheck)
 {
     if(hItem == nullptr)
-    {
         return;
-    }
-
-
 
     vSetCheck(hItem, fCheck);
 
@@ -192,9 +179,6 @@ void CCheckBoxTree::vSetCheckChildren(HTREEITEM hItem, BOOL fCheck)
             htiChild = GetNextSiblingItem(htiChild);
         }
     }
-
-
-    return;
 }
 
 

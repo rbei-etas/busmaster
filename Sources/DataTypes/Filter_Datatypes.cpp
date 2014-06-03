@@ -678,7 +678,6 @@ void SFILTER_LIN::vGetEventName(eLinBusEventType eEventType, std::string & strEv
             strEventName ="Error - Unknown";
             break;
     }
-    return;
 }
 
 void SFILTER_CAN::vGetEventName(eERROR_STATE eEventType, std::string & strEventName) const
@@ -703,7 +702,6 @@ void SFILTER_CAN::vGetEventName(eERROR_STATE eEventType, std::string & strEventN
         default:
             break;
     }
-    return;
 }
 
 /******************************************************************************

@@ -863,6 +863,7 @@ void CTxMsgWndJ1939::OnCbnSelchangeComboMsgtype()
         break;
     }
 }
+
 void CTxMsgWndJ1939::OnEnChangeEditMilliSec()
 {
     if (m_omCheckCyclic.GetCheck() == BST_CHECKED)
@@ -879,6 +880,7 @@ void CTxMsgWndJ1939::OnEnChangeEditMilliSec()
         }
     }
 }
+
 void CTxMsgWndJ1939::vSetJ1939ClientParam(SJ1939CLIENTPARAM& sClientParam)
 {
     m_sClientParams = sClientParam;

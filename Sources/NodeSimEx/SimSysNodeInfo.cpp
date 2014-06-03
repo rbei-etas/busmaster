@@ -981,7 +981,6 @@ BOOL CSimSysNodeInfo::bDeleteSimsysFromInfo( CString omStrSimSysname )
             delete pPrev;
             pPrev = pNext;
         }
-        //  return;
         m_psSimSysInfo = pPrev = nullptr;
     }
 

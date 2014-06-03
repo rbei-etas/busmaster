@@ -177,29 +177,10 @@ static CFlxTxMsgBuffer sg_ouFlxTxList;
 static OCI_FlexRayTxMessage* sg_psBOA_FlxMsgList = nullptr;
 
 BYTE sg_bCurrState = STATE_DRIVER_SELECTED;
-//
-//// A mapping between system time and the time stamp
-//static SYSTEMTIME sg_CurrSysTime;
-//static UINT64 sg_TimeStamp = 0;
-//// Handle of the owner window
-//static HWND sg_hOwnerWnd = nullptr;
-// Buffer for the driver operation related error messages
+
 static std::string sg_acErrStr = "";
 static HRESULT sg_hLastError = S_OK;
-//// FlexRay controller interface
-//static LPUCIFLXCTRL sg_pFlxIntfPtr = nullptr;
-//
-//#define LOG_ERR_MSG() sg_pIlog->vLogAMessage(__FILE__, __LINE__, sg_acErrStr)
-//#define VALIDATE_POINTER_RETURN_VAL(Ptr, RetVal) if (bIs_NULL_Pointer(#Ptr, Ptr)) {return RetVal;}
-//#define VALIDATE_POINTER_RETURN_VOID(Ptr)        if (bIs_NULL_Pointer(#Ptr, Ptr)) {return;}
-//#define VALIDATE_POINTER_NO_RETURN_LOG(Ptr)      if (bIs_NULL_Pointer(#Ptr, Ptr)) {LOG_ERR_MSG();}
-//#define VALIDATE_POINTER_RETURN_VOID_LOG(Ptr)    if (bIs_NULL_Pointer(#Ptr, Ptr)) {LOG_ERR_MSG(); return;}
-//#define VALIDATE_POINTER_RETURN_VALUE_LOG(Ptr, RetVal) \
-//    if (bIs_NULL_Pointer(#Ptr, Ptr)) {LOG_ERR_MSG(); return RetVal;}
-//
-//// First define the callback function type
-//typedef BOOL (*DILCALLBACK)(BYTE Argument, PBYTE pDatStream, int Length);
-//const int SIZE_WORD     = sizeof(WORD);
+
 
 class FlexrayData
 {

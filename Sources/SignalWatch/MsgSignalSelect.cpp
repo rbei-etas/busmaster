@@ -220,6 +220,7 @@ BOOL CMsgSignalSelect::OnInitDialog()
 
     // CTree message handlers
 }
+
 void CMsgSignalSelect::vStoreintoMap()
 {
     m_mapMsgIDtoSignallst->clear();

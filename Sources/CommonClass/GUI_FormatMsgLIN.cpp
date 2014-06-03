@@ -431,5 +431,4 @@ void CFormatMsgLIN::vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, std::
             strDesc ="Error - Unknown";
             break;
     }
-    return;
 }
