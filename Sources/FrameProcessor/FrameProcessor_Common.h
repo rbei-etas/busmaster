@@ -24,11 +24,11 @@
 
 #pragma once
 
-//#include "FrameProcessor_resource.h"      // main symbols
 #include "Utility/Utility_Thread.h"
 #include "include/BaseDefs.h"
 #include "BaseLogObject.h"
 #include "CommonClass/RefTimeKeeper.h"
+
 const USHORT FOR_ALL = (USHORT) -1;
 
 typedef CArray<CBaseLogObject*, CBaseLogObject*&> CLogObjArray;
@@ -37,9 +37,9 @@ class CFrameProcessor_Common
 {
 private:
 
-    BOOL    m_bFilterON;
+    bool    m_bFilterON;
     USHORT  m_ushLastBlkID;
-    BOOL    m_bEditingON;
+    bool    m_bEditingON;
     BYTE    m_bLogFlagTmp;
     CString m_omStrVersion;
 
@@ -53,15 +53,15 @@ private:
 protected:
     CRefTimeKeeper m_ouRefTimer;
     CPARAM_THREADPROC   m_sDataCopyThread;
-    BOOL                m_bLogEnabled;
-    BOOL                m_bResetAbsTime;
-    BOOL                m_bClientBufferON;
+    bool                m_bLogEnabled;
+    bool                m_bResetAbsTime;
+    bool                m_bClientBufferON;
     CLogObjArray        m_omLogObjectArray;
     CLogObjArray        m_omLogListTmp;
     SYSTEMTIME          m_LogSysTime;
-    BOOL                m_bIsDataLogged;
-    BOOL                m_bIsJ1939DataLogged;
-    BOOL                m_bIsLINDataLogged;
+    bool                m_bIsDataLogged;
+    bool                m_bIsJ1939DataLogged;
+    bool                m_bIsLINDataLogged;
     BYTE     m_bExprnFlag_Log;
 
     HRESULT DoInitialisation(void);
@@ -76,23 +76,23 @@ protected:
                                        UINT64& unAbsTime) = 0;
 
 public:
-    BOOL                m_bIsThreadBlocked;
+    bool                m_bIsThreadBlocked;
     // Alias functions - start
     HRESULT EnableLoggingBlock(USHORT ushBlk, BOOL bEnable);
     HRESULT EnableLogging(BOOL bEnable, ETYPE_BUS);
     HRESULT EnableFilter(USHORT ushBlk, BOOL bEnable);
-    BOOL IsClientBufferON(void);
-    BOOL IsLoggingON(void);
-    BOOL IsDataLogged(void);
+    bool IsClientBufferON(void);
+    bool IsLoggingON(void);
+    bool IsDataLogged(void);
 
     void vCloseLogFile();
-    BOOL IsJ1939DataLogged(void);
-    BOOL IsLINDataLogged(void);
-    BOOL IsThreadBlocked(void);
+    bool IsJ1939DataLogged(void);
+    bool IsLINDataLogged(void);
+    bool IsThreadBlocked(void);
     void DisableDataLogFlag(void);
     void DisableJ1939DataLogFlag(void);
     void DisableLINDataLogFlag(void);
-    BOOL IsFilterON(void);
+    bool IsFilterON(void);
     HRESULT LogString(CString& omStr);
     HRESULT AddLoggingBlock(const SLOGINFO& sLogObject);
     HRESULT RemoveLoggingBlock(USHORT ushBlk);

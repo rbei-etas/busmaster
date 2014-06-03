@@ -523,16 +523,16 @@ public:
         return nShowCmd;
     }
 
-    static BOOL bGetBooleanValue(char* pchBoolValue)
+    static bool bGetBooleanValue(char * pchBoolValue)
     {
-        BOOL bRetValue = TRUE;
+        bool bRetValue = true;
         if ( nullptr != pchBoolValue )
         {
             std::string strTemp = pchBoolValue;
 
             if(strTemp == "FALSE" || strTemp == "0")
             {
-                bRetValue = FALSE;
+                bRetValue = false;
             }
         }
         return bRetValue;
@@ -645,7 +645,7 @@ public:
                     xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
                     if(nullptr != key)
                     {
-                        Info.isVisble = (bool)bGetBooleanValue((char*)key);
+                        Info.isVisble = bGetBooleanValue((char*)key);
                         xmlFree(key);
                     }
                 }

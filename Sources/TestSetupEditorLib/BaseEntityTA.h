@@ -58,8 +58,8 @@ public:
     HRESULT SetDatabaseFile(CString& omstrDataBasePath);
     HRESULT GetDataBaseManager(CDataBaseMsgList& ouDataBaseManager);
     static DWORD GetUniqueID(void);
-    void vEnableEntity(BOOL bEnable);
-    BOOL bGetEnableStatus(void);
+    void vEnableEntity(bool bEnable);
+    bool bGetEnableStatus(void);
     DWORD GetID(void);
 
     //Member variables
@@ -69,7 +69,7 @@ public:
 private:
     static DWORD m_dwNextID;
 protected:
-    BOOL m_bEnable;
+    bool m_bEnable;
     DWORD m_dwID;
     eTYPE_ENTITY m_eType;
 };

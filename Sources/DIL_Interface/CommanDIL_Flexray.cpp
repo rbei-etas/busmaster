@@ -131,20 +131,22 @@ void CCommanDIL_Flexray::vMarkEntryIntoMap(const SACK_MAP& RefObj)
     sg_asAckMapBuf.push_back(RefObj);
     //LeaveCriticalSection(&sg_CritSectForAckBuf); // Unlock the buffer
 }
+
 bool CCommanDIL_Flexray::bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
 {
     EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
-    BOOL bResult = FALSE;
+    bool bResult = false;
     CACK_MAP_LIST::iterator  iResult =
         find( sg_asAckMapBuf.begin(), sg_asAckMapBuf.end(), RefObj );
 
     //if ((*iResult).m_ClientID > 0)
     if (iResult != sg_asAckMapBuf.end())
     {
-        bResult = TRUE;
+        bResult = true;
         ClientID = (*iResult).m_unClientID;
         sg_asAckMapBuf.erase(iResult);
     }
     LeaveCriticalSection(&sg_CritSectForAckBuf); // Unlock the buffer
+
     return bResult;
 }

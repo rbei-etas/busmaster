@@ -6716,7 +6716,7 @@ HRESULT CMsgFrmtWnd::SetConfigData(xmlNodePtr pNode)
 
             if (xmlUtils::GetDataFrmNode(pChildNode,DEF_ID,strVar))
             {
-                pnOrder[nIndividualCol] = (bool)atoi(strVar.c_str());
+                pnOrder[nIndividualCol] = (atoi(strVar.c_str()) != 0);
             }
             if (xmlUtils::GetDataFrmNode(pChildNode,DEF_IS_VISIBLE,strVar))
             {

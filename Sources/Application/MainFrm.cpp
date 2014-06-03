@@ -3847,13 +3847,13 @@ void CMainFrame::OnAddSignalToSignalWindow_LIN()
 void CMainFrame::OnLogFilter()
 {
     CFlags* pouFlags = nullptr;
-    BOOL bLogFilterStatus = FALSE;
+    bool bLogFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
     {
-        bLogFilterStatus = pouFlags->nGetFlagStatus(LOGFILTER);
-        bLogFilterStatus = bLogFilterStatus ? FALSE : TRUE;
+        bLogFilterStatus = pouFlags->nGetFlagStatus(LOGFILTER) ? true : false;
+        bLogFilterStatus = !bLogFilterStatus;
         pouFlags->vSetFlagStatus(LOGFILTER, bLogFilterStatus);
         if (sg_pouFrameProcCAN != nullptr)
         {
@@ -3883,7 +3883,7 @@ void CMainFrame::OnLogFilter()
 void CMainFrame::OnLogFilterLIN()
 {
     CFlags* pouFlags = nullptr;
-    BOOL bLogFilterStatus = FALSE;
+    bool bLogFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
@@ -3904,10 +3904,11 @@ void CMainFrame::OnLogFilterLIN()
         vModifyToolbarIcon( m_wndToolbarLIN, bytTbrItemIndex, bLogFilterStatus, IDI_ICON_LOG_FILTER_ON, IDI_ICON_LOG_FILTER );
     }
 }
+
 void CMainFrame::ApplyReplayFilter()
 {
     CFlags* pouFlags = nullptr;
-    BOOL bReplayFilterStatus = FALSE;
+    bool bReplayFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
@@ -3926,7 +3927,7 @@ void CMainFrame::ApplyReplayFilter()
 void CMainFrame::ApplyLogFilter()
 {
     CFlags* pouFlags = nullptr;
-    BOOL bLogFilterStatus = FALSE;
+    bool bLogFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
@@ -3945,10 +3946,9 @@ void CMainFrame::ApplyLogFilter()
         /* Modify filter icon accordi5ngly in Main toolbar*/
         BYTE bytTbrItemIndex = 5;
         vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bLogFilterStatus, IDI_ICON_LOG_FILTER_ON, IDI_ICON_LOG_FILTER );
-        // logKadoor CLogManager::ouGetLogManager().vUpdateLogFilterEnable(bLogFilterStatus);
-
     }
 }
+
 /******************************************************************************
     Function Name    :  ApplyLINLogFilter
     Input(s)         :  void
@@ -3963,7 +3963,7 @@ void CMainFrame::ApplyLogFilter()
 void CMainFrame::ApplyLINLogFilter()
 {
     CFlags* pouFlags = nullptr;
-    BOOL bLogFilterStatus = FALSE;
+    bool bLogFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
@@ -3982,9 +3982,9 @@ void CMainFrame::ApplyLINLogFilter()
         /* Modify filter icon accordi5ngly in Main toolbar*/
         BYTE bytTbrItemIndex = 8;
         vModifyToolbarIcon( m_wndToolbarLIN, bytTbrItemIndex, bLogFilterStatus, IDI_ICON_LOG_FILTER_ON, IDI_ICON_LOG_FILTER );
-        // logKadoor CLogManager::ouGetLogManager().vUpdateLogFilterEnable(bLogFilterStatus);
     }
 }
+
 /******************************************************************************
     Function Name    :  OnAboutApplication
     Input(s)         :  void
@@ -6401,7 +6401,7 @@ void CMainFrame::OnExecuteMessagehandlersButton()
 void CMainFrame::OnMessageFilterButton()
 {
     CFlags* pouFlags = nullptr;
-    BOOL bMessageFilterStatus = FALSE;
+    bool bMessageFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
@@ -6420,7 +6420,7 @@ void CMainFrame::OnMessageFilterButton()
 void CMainFrame::OnMessageFilterButtonLin()
 {
     CFlags* pouFlags = nullptr;
-    BOOL bMessageFilterStatus = FALSE;
+    bool bMessageFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
@@ -6437,7 +6437,6 @@ void CMainFrame::OnMessageFilterButtonLin()
         vModifyToolbarIcon( m_wndToolbarLIN, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
     }
 }
-
 
 /**
 * \brief         Handles the J1939 tx window close notification
@@ -6519,7 +6518,7 @@ void CMainFrame::vSetToolbarButtonSize(CNVTCToolBar& objToolbar, CSize& objSize)
 * \authors       Arunkumar Karri
 * \date          28.02.2013 Created
 */
-void CMainFrame::vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, BOOL bItemON, UINT nTBIDON, UINT nTBIDOFF)
+void CMainFrame::vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, bool bItemON, UINT nTBIDON, UINT nTBIDOFF)
 {
     /* Perform this only if resource dll is available */
     if ( m_hModAdvancedUILib )
@@ -6605,7 +6604,7 @@ void CMainFrame::vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex,
 void CMainFrame::OnReplayFilter()
 {
     CFlags* pouFlags = nullptr;
-    BOOL bReplayFilterStatus = FALSE;
+    bool bReplayFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
@@ -6625,7 +6624,7 @@ void CMainFrame::OnReplayFilter()
 void CMainFrame::ApplyMessageFilterButton()
 {
     CFlags* pouFlags = nullptr;
-    BOOL bMessageFilterStatus = FALSE;
+    bool bMessageFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
@@ -8447,8 +8446,8 @@ void CMainFrame::OnFileConnect()
     if(pouFlags != nullptr)
     {
         // Toggle connect/disconnect flag
-        BOOL bConnected = pouFlags->nGetFlagStatus(CONNECTED);
-        BOOL bReturn    = FALSE;
+        bool bConnected = pouFlags->nGetFlagStatus(CONNECTED);
+        bool bReturn = false;
         bConnected = !bConnected;
         // Reset flag for stop running of thread function
         g_bStopTimerHandlers    = TRUE;
@@ -8597,7 +8596,7 @@ void CMainFrame::OnFileConnect()
                 if (g_pouDIL_CAN_Interface->DILC_StartHardware() == S_OK)
                 {
                     ouWaitIndicator.SetWindowText(_T(_("Connected... ")));
-                    bReturn = TRUE;
+                    bReturn = true;
                 }
                 else
                 {
@@ -8613,11 +8612,11 @@ void CMainFrame::OnFileConnect()
         {
             if (g_pouDIL_CAN_Interface->DILC_StopHardware() == S_OK)
             {
-                bReturn = TRUE;
+                bReturn = true;
             }
         }
 
-        if(bReturn == TRUE )
+        if(bReturn)
         {
             BOOL bLogIsON = FALSE, bJ1939LogON = FALSE, bLinLogON = FALSE;
 
@@ -8650,7 +8649,7 @@ void CMainFrame::OnFileConnect()
                     sg_pouIJ1939Logger->FPJ1_EnableLogging(bConnected);
 
                     BYTE bytTbrItemIndex = 3;
-                    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, (bool)sg_pouIJ1939Logger->FPJ1_IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
+                    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, sg_pouIJ1939Logger->FPJ1_IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
                 }
 
             }
@@ -8830,7 +8829,7 @@ void CMainFrame::OnLINConnect()
     CFlags* pouFlag  = theApp.pouGetFlagsPtr();
 
     /* Toggle connect/disconnect flag */
-    BOOL bConnected = pouFlag->nGetFlagStatus(LIN_CONNECTED);
+    bool bConnected = pouFlag->nGetFlagStatus(LIN_CONNECTED);
     bConnected = !bConnected;
 
     CBaseNodeSim* pNodeSim = nullptr;
@@ -8969,7 +8968,7 @@ void CMainFrame::OnLINConnect()
 
     pouFlag->vSetFlagStatus(LIN_CONNECTED, bConnected);
     BYTE bytTbrItemIndex = 1;
-    vModifyToolbarIcon( m_wndToolbarLIN, bytTbrItemIndex, bConnected, IDI_ICON_CAN_DISCONNECT, IDI_ICON_CAN_CONNECT );
+    vModifyToolbarIcon(m_wndToolbarLIN, bytTbrItemIndex, bConnected, IDI_ICON_CAN_DISCONNECT, IDI_ICON_CAN_CONNECT);
 }
 
 void CMainFrame::OnUpdateLINConnect(CCmdUI* pCmdUI)
@@ -13189,6 +13188,7 @@ HRESULT CMainFrame::InitializeFLEXRAYDIL()
     }
     return hResult;
 }
+
 void CMainFrame::OnFlexRayConnect()
 {
     CFlags* pouFlag  = theApp.pouGetFlagsPtr();
@@ -13203,7 +13203,7 @@ void CMainFrame::OnFlexRayConnect()
         CFlags* pouFlag  = theApp.pouGetFlagsPtr();
 
         /* Toggle connect/disconnect flag */
-        BOOL bConnected = pouFlag->nGetFlagStatus(FLEX_CONNECTED);
+        bool bConnected = pouFlag->nGetFlagStatus(FLEX_CONNECTED);
         bConnected = !bConnected;
 
         /* If connecton is required */
@@ -13283,6 +13283,7 @@ void CMainFrame::OnFlexRayConnect()
         omRefToolBarCtrl.PressButton(ID_FLEXRAY_CONNECT, bConnected);
     }
 }
+
 void CMainFrame::OnUpdateFlexRayConnect(CCmdUI* pCmdUI)
 {
     // Select the current menu text based on which one between Connect
@@ -16296,7 +16297,7 @@ int CMainFrame::nLoadXMLConfiguration()
                                         xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
                                         if(nullptr != key)
                                         {
-                                            ouFibexContainer.m_bOverwrite = atoi((char*)key);
+                                            ouFibexContainer.m_bOverwrite = (atoi((char*)key) != 0);
                                             nCount++;
                                         }
                                     }
@@ -18026,7 +18027,7 @@ void CMainFrame::LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlN
         }
         if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_TxDelayCompensation",strVar))
         {
-            sController.m_bTxDelayCompensationControl = atoi(strVar.c_str());
+            sController.m_bTxDelayCompensationControl = (atoi(strVar.c_str()) != 0);
         }
         if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_TxSecondarySamplePoint",strVar))
         {
@@ -20363,8 +20364,7 @@ void CMainFrame::OnActionJ1939Log()
     vJ1939StartStopLogging();
     /* Modify filter icon accordingly in J1939 toolbar*/
     BYTE bytTbrItemIndex = 3;
-    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, (bool)sg_pouIJ1939Logger->FPJ1_IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
-    /*sg_pouIJ1939Logger->FPJ1_EnableLogging(!sg_pouIJ1939Logger->FPJ1_IsLoggingON());*/
+    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, sg_pouIJ1939Logger->FPJ1_IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
 }
 
 

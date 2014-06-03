@@ -72,18 +72,18 @@ public:
     virtual HRESULT FPJ1_EnableFilter(USHORT ushBlk, BOOL bEnable) = 0;
 
     // Query function - current logging status (OFF/ON).
-    virtual BOOL FPJ1_IsLoggingON(void) = 0;
+    virtual bool FPJ1_IsLoggingON(void) = false;
 
-    virtual BOOL FPJ1_IsJ1939DataLogged(void) = 0;
+    virtual bool FPJ1_IsJ1939DataLogged(void) = false;
 
     virtual void FPJ1_DisableJ1939DataLogFlag(void) = 0;
 
-    virtual BOOL FPJ1_IsJ1939ThreadBlocked(void) = 0;
+    virtual bool FPJ1_IsJ1939ThreadBlocked(void) = false;
 
     virtual void FPJ1_vCloseLogFile(void) = 0;
 
     // Query function - current filtering status
-    virtual BOOL FPJ1_IsFilterON(void) = 0;
+    virtual bool FPJ1_IsFilterON(void) = false;
 
     // To log a string
     virtual HRESULT FPJ1_LogString(CString& omStr) = 0;

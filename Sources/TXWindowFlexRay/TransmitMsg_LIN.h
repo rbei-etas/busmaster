@@ -200,7 +200,7 @@ public:
 
     void vInitSignalListCtrl();
     void vEnableAddButton(BOOL bEnable);
-    void vUpdateSelMsgDetails(eMsgUpdate eUpdateType, INT nItem, INT nDlc = -1, INT nChannel = -1, BOOL bEnable = FALSE);
+    void vUpdateSelMsgDetails(eMsgUpdate eUpdateType, INT nItem, INT nDlc = -1, INT nChannel = -1, bool bEnable = false);
 
     int nGetCheckedItemCount();// find the List Item Checked Count
 

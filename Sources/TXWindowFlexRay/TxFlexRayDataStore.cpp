@@ -228,7 +228,6 @@ bool bIsValidMessage(int /* nChannelIndex */, FLEXRAY_CONFIG_DATA & /* ouConfigF
     return true;
 }
 
-
 bool CTxFlexRayDataStore::parseForMessage(xmlNodePtr ptrNode, FLEXRAY_CONFIG_DATA& ouData)
 {
     if ( ptrNode == nullptr)
@@ -407,8 +406,7 @@ bool CTxFlexRayDataStore::bSetConfigData(xmlDocPtr pDoc)
     return true;
 }
 
-
-BOOL CTxFlexRayDataStore::bGetConfigData(xmlNodePtr pxmlNodePtr)
+bool CTxFlexRayDataStore::bGetConfigData(xmlNodePtr pxmlNodePtr)
 {
     //windows position
     xmlNodePtr pNodeWndPos = xmlNewNode(nullptr, BAD_CAST DEF_WND_POS);
@@ -427,13 +425,14 @@ BOOL CTxFlexRayDataStore::bGetConfigData(xmlNodePtr pxmlNodePtr)
     }
 
 
-    return TRUE;
+    return true;
 }
-BOOL CTxFlexRayDataStore::bGetMessageListConfig(int nChannel, xmlNodePtr pNode)
+
+bool CTxFlexRayDataStore::bGetMessageListConfig(int nChannel, xmlNodePtr pNode)
 {
     if ( nChannel < 0  || nChannel > CHANNEL_ALLOWED )
     {
-        return FALSE;
+        return false;
     }
     char pchData[1024];
 
@@ -491,13 +490,13 @@ BOOL CTxFlexRayDataStore::bGetMessageListConfig(int nChannel, xmlNodePtr pNode)
         }
         xmlAddChild(pNode, pMsgNode);
     }
-    return TRUE;
+    return true;
 }
 
 
-BOOL CTxFlexRayDataStore::bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid)
+bool CTxFlexRayDataStore::bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid)
 {
-    BOOL bRetVal = TRUE;
+    bool bRetVal = true;
     switch(eParam)
     {
         case TX_WINDOW_PLACEMENT:
@@ -515,9 +514,10 @@ BOOL CTxFlexRayDataStore::bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid)
     }
     return bRetVal;
 }
-BOOL CTxFlexRayDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
+
+bool CTxFlexRayDataStore::bGetTxData(eTXWNDDETAILS eParam, LPVOID * lpData)
 {
-    BOOL bRetVal = TRUE;
+    bool bRetVal = true;
     switch(eParam)
     {
         case TX_WINDOW_PLACEMENT:
@@ -553,16 +553,18 @@ BOOL CTxFlexRayDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
         }
         break;
     }
+
     return !m_bValidTxWndSize;
 }
-BOOL CTxFlexRayDataStore::bSetDILInterfacePtr()
+
+HRESULT CTxFlexRayDataStore::bSetDILInterfacePtr()
 {
     HRESULT hResult = S_OK;
     if (g_pouDIL_FLEXRAY_Interface == nullptr)
     {
         hResult = DIL_GetInterface(FLEXRAY, (void**)&g_pouDIL_FLEXRAY_Interface);
     }
-    return (BOOL)hResult;
+    return hResult;
 }
 
 HRESULT CTxFlexRayDataStore::SetFlexRayConfig(ClusterConfig& ouFlexConfig)
@@ -577,7 +579,6 @@ HRESULT CTxFlexRayDataStore::SetFlexRayConfig(ClusterConfig& ouFlexConfig)
     m_nChannelsConfigured = ouFlexConfig.m_nChannelsConfigured;
 
     //Upddate the Tx Window List;
-
 
     return S_OK;
 }
@@ -601,6 +602,7 @@ void CTxFlexRayDataStore::vUpdateTxList(int nChannel)
         }
     }
 }
+
 bool CTxFlexRayDataStore::bExistInTxList(int nChannel, FLEXRAY_FRAME_DATA& ouData)
 {
     std::list<FRAME_STRUCT>::iterator itrFrameData = m_ouFrameList[nChannel].begin();
@@ -615,4 +617,3 @@ bool CTxFlexRayDataStore::bExistInTxList(int nChannel, FLEXRAY_FRAME_DATA& ouDat
     }
     return false;
 }
-

@@ -646,6 +646,7 @@ HRESULT CFrameProcessor_Common::SetConfigData( xmlDocPtr pDoc, ETYPE_BUS eBus)
     }
     return S_OK;
 }
+
 void CFrameProcessor_Common::vAddLogFile( CLogObjArray& omLogListTmp, CBaseLogObject*& pouBaseLogObj)
 {
     int nCount = omLogListTmp.GetSize();
@@ -681,7 +682,7 @@ void CFrameProcessor_Common::vAddLogFile( CLogObjArray& omLogListTmp, CBaseLogOb
     }
 }
 
-BOOL CFrameProcessor_Common::IsClientBufferON(void)
+bool CFrameProcessor_Common::IsClientBufferON(void)
 {
     return m_bClientBufferON;
 }
@@ -699,27 +700,27 @@ HRESULT CFrameProcessor_Common::LogString(CString& omStr)
     return S_OK;
 }
 
-BOOL CFrameProcessor_Common::IsLoggingON(void)
+bool CFrameProcessor_Common::IsLoggingON(void)
 {
     return m_bLogEnabled;
 }
 
-BOOL CFrameProcessor_Common::IsDataLogged(void)
+bool CFrameProcessor_Common::IsDataLogged(void)
 {
     return m_bIsDataLogged;
 }
 
-BOOL CFrameProcessor_Common::IsLINDataLogged(void)
+bool CFrameProcessor_Common::IsLINDataLogged(void)
 {
     return m_bIsLINDataLogged;
 }
 
-BOOL CFrameProcessor_Common::IsJ1939DataLogged(void)
+bool CFrameProcessor_Common::IsJ1939DataLogged(void)
 {
     return m_bIsJ1939DataLogged;
 }
 
-BOOL CFrameProcessor_Common::IsThreadBlocked(void)
+bool CFrameProcessor_Common::IsThreadBlocked(void)
 {
     return m_bIsThreadBlocked;
 }
@@ -739,7 +740,7 @@ void CFrameProcessor_Common::DisableLINDataLogFlag(void)
     m_bIsLINDataLogged = FALSE;
 }
 
-BOOL CFrameProcessor_Common::IsFilterON(void)
+bool CFrameProcessor_Common::IsFilterON(void)
 {
     return m_bFilterON;
 }

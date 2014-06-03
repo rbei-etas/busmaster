@@ -61,17 +61,15 @@ protected:
     CTreeViewEx();           // protected constructor used by dynamic creation
     virtual ~CTreeViewEx();
 
+    bool bAnscestor(HTREEITEM hItem, HTREEITEM hCheck);
+    bool bSuccessor(HTREEITEM hItem, HTREEITEM hCheck);
 
-
-    BOOL bAnscestor(HTREEITEM hItem, HTREEITEM hCheck);
-    BOOL bSuccessor(HTREEITEM hItem, HTREEITEM hCheck);
-
-    virtual BOOL bItemCanDragged(HTREEITEM hItem);
-    virtual BOOL IsItemCanDropOn(HTREEITEM hSource, HTREEITEM hTarget);
+    virtual bool bItemCanDragged(HTREEITEM hItem);
+    virtual bool IsItemCanDropOn(HTREEITEM hSource, HTREEITEM hTarget);
 
     //To handle Chechbox
-    void vSetCheck(HTREEITEM hti, BOOL bCheck);
-    void vSetCheckChildren(HTREEITEM hItem, BOOL fCheck);
+    void vSetCheck(HTREEITEM hti, bool bCheck);
+    void vSetCheckChildren(HTREEITEM hItem, bool fCheck);
     void vSetCheckParent(HTREEITEM hItem);
 
     //Item drag
@@ -100,7 +98,7 @@ public:
     virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = nullptr);
     virtual void OnInitialUpdate();
     virtual BOOL PreTranslateMessage(MSG* pMsg);
-    BOOL bIsItemChecked(HTREEITEM hItem);
+    bool bIsItemChecked(HTREEITEM hItem);
     //Message Handlers
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
     afx_msg void OnTvnBegindrag(NMHDR* pNMHDR, LRESULT* pResult);
@@ -122,7 +120,7 @@ public:
     HTREEITEM InsertTreeItem(HTREEITEM hParent, CString csItemName, HTREEITEM hInsAfter,
                              int iSelImage ,int iNonSelImage, long lParam);
     INT SetImageList(CImageList* pomImageListNormal, CImageList* pomImageListState);
-    void ShowCheckBoxes(BOOL bShow);
+    void ShowCheckBoxes(bool bShow);
     void vDeleteChildItems(HTREEITEM hItem);
 
     //Debug Functions

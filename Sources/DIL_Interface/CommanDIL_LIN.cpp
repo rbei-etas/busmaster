@@ -503,10 +503,11 @@ void CCommanDIL_LIN::vMarkEntryIntoMap(const SACK_MAP& RefObj)
     m_MapIdClient[RefObj.m_unChannel].insert(std::map<int, int>::value_type(RefObj.m_unMsgID, RefObj.m_unClientID));
     //LeaveCriticalSection(&sg_CritSectForAckBuf); // Unlock the buffer
 }
+
 bool CCommanDIL_LIN::vPeakMapEntry(const SACK_MAP& RefObj, UINT& ClientID, bool bRemove)
 {
     EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
-    BOOL bResult = FALSE;
+    bool bResult = false;
     std::map<int, int>::iterator  iResult = m_MapIdClient[RefObj.m_unChannel].find(RefObj.m_unMsgID);
 
     //if ((*iResult).m_ClientID > 0)
@@ -520,5 +521,6 @@ bool CCommanDIL_LIN::vPeakMapEntry(const SACK_MAP& RefObj, UINT& ClientID, bool 
         }
     }
     LeaveCriticalSection(&sg_CritSectForAckBuf); // Unlock the buffer
+
     return bResult;
 }

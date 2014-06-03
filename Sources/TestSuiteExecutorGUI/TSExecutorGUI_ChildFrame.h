@@ -40,33 +40,33 @@ class CTSExecutorChildFrame : public CMDIChildWnd
     HTREEITEM m_hCurrentTreeItem;
     CDataBaseMsgList m_odDataBaseManager;
     CString m_omCurrentTSFile;
-    BOOL    m_bFileSaved;
+    bool    m_bFileSaved;
     WINDOWPLACEMENT m_sTSDefPlacement;
     CPARAM_THREADPROC m_ouExecutionThread;
     CSemaphore m_ouExecutionSync;
-    BOOL m_bConnected;
+    bool m_bConnected;
     CSplitterWnd m_omSplitterWnd;
     CImageList*  m_pomImageList;
     CString m_strVersionInfo;
 public:
     CTSExecutorLIB m_ouTSExecutor;
-    BOOL m_bModified;
+    bool m_bModified;
     CTreeViewEx* m_odTreeView;
     CResultView* m_odResultView;
     HTREEITEM m_hParentTreeItem;
-    BOOL m_bPasted;
+    bool m_bPasted;
 
     //Member Functions
 public:
     CTSExecutorChildFrame(void);
     HRESULT GetConfigurationData(BYTE*& pDesBuffer, UINT& nBuffSize);
-    BOOL GetConfigurationData(xmlNodePtr& pxmlNodePtr);
+    bool GetConfigurationData(xmlNodePtr& pxmlNodePtr);
     HRESULT SetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize);
     HRESULT SetConfigurationData(xmlNodePtr pXmlNode);
-    VOID vEnableItem(DWORD dwID, BOOL& bEnable);
-    VOID vSetBusStatus(BOOL bConnected);
-    VOID vSetBUSMASTERVersionInfo(CString strVersion);
-    BOOL bGetBusStatus(void);
+    void vEnableItem(DWORD dwID, bool & bEnable);
+    void vSetBusStatus(bool bConnected);
+    void vSetBUSMASTERVersionInfo(CString strVersion);
+    bool bGetBusStatus(void);
     UINT unRepisitonEntry(DWORD dwRepositionItemID, DWORD dwInsertAfterItemID);
 
 protected:
@@ -76,9 +76,9 @@ protected:
     DECLARE_MESSAGE_MAP()
 
 private:
-    VOID vInitialise(void);
-    VOID vUpdateTreeView(void);
-    BOOL bParseTestSetup(INT nIndex);
+    void vInitialise(void);
+    void vUpdateTreeView(void);
+    bool bParseTestSetup(INT nIndex);
 
     //Message Handlers
 public:

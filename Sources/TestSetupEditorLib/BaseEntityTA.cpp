@@ -109,7 +109,7 @@ Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
-void CBaseEntityTA::vEnableEntity(BOOL bEnable)
+void CBaseEntityTA::vEnableEntity(bool bEnable)
 {
     m_bEnable = bEnable;
 }
@@ -125,11 +125,10 @@ Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
-BOOL CBaseEntityTA::bGetEnableStatus(void)
+bool CBaseEntityTA::bGetEnableStatus(void)
 {
     return m_bEnable;
 }
-
 
 /******************************************************************************
 Function Name  :  AddSubEntry

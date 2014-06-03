@@ -84,7 +84,7 @@ void CChannelConfigurationDlg::OnOverwriteCheckBoxClick()
     bool bCheck = false;
     if ( nullptr != pTempBtn )
     {
-        bCheck = pTempBtn->GetCheck();
+        bCheck = (pTempBtn->GetCheck() != 0);
     }
 
     CWnd* pTempChild = GetDlgItem(IDC_COMBO_LIN_PROTOCOL);
@@ -554,7 +554,7 @@ int CChannelConfigurationDlg::nSaveProtocolSettings(int /* nIndex */)
         {
             m_ouFlexrayChannelConfig[m_nCurrentChannel].m_ouLinParams.m_strProtocolVersion = sg_LINPROTOCOL_BAUD[nSel].m_strProtocol;
             m_ouFlexrayChannelConfig[m_nCurrentChannel].m_ouLinParams.m_nBaudRate = m_nLinBaudRate;
-            m_ouFlexrayChannelConfig[m_nCurrentChannel].m_ouLinParams.m_bOverWriteSettings = ((CButton*)GetDlgItem(IDC_CHECK_OVERWRITE_SETTINGS))->GetCheck();
+            m_ouFlexrayChannelConfig[m_nCurrentChannel].m_ouLinParams.m_bOverWriteSettings = (((CButton*)GetDlgItem(IDC_CHECK_OVERWRITE_SETTINGS))->GetCheck() != 0);
         }
 
 

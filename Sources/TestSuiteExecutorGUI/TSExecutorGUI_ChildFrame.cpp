@@ -320,7 +320,7 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :  CS038
 ******************************************************************************/
-VOID CTSExecutorChildFrame::vEnableItem(DWORD dwID, BOOL& bEnable)
+void CTSExecutorChildFrame::vEnableItem(DWORD dwID, bool & bEnable)
 {
     m_ouTSExecutor.EnableItem(dwID, bEnable);
 }
@@ -337,9 +337,9 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-BOOL CTSExecutorChildFrame::bParseTestSetup(INT nIndex)
+bool CTSExecutorChildFrame::bParseTestSetup(INT nIndex)
 {
-    BOOL bResult = FALSE;
+    bool bResult = false;
     STestSetupInfo sTSInfo;
     if( m_ouTSExecutor.GetTestSetupInfo(nIndex, sTSInfo) == S_OK)
     {
@@ -359,7 +359,7 @@ BOOL CTSExecutorChildFrame::bParseTestSetup(INT nIndex)
                 m_odTreeView->GetTreeCtrl().SetCheck(hTCItem, pouTCData->bGetEnableStatus());
             }
         }
-        bResult = TRUE;
+        bResult = true;
     }
     return bResult;
 }
@@ -490,7 +490,7 @@ HRESULT CTSExecutorChildFrame::GetConfigurationData(BYTE*& pDesBuffer, UINT& unB
     return S_OK;
 }
 
-BOOL CTSExecutorChildFrame::GetConfigurationData(xmlNodePtr& pxmlNodePtr)
+bool CTSExecutorChildFrame::GetConfigurationData(xmlNodePtr & pxmlNodePtr)
 {
     WINDOWPLACEMENT wndPlacement;
     GetWindowPlacement(&wndPlacement);
@@ -534,6 +534,7 @@ BOOL CTSExecutorChildFrame::GetConfigurationData(xmlNodePtr& pxmlNodePtr)
     xmlAddChild(pNodeSplitterWnd, pcsCxMin);
     return true;
 }
+
 /******************************************************************************
 Function Name  :  SetConfigurationData
 Input(s)       :  BYTE* pSrcBuffer, UINT unBuffSize
@@ -689,7 +690,7 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-VOID CTSExecutorChildFrame::vSetBusStatus(BOOL bConnected)
+void CTSExecutorChildFrame::vSetBusStatus(bool bConnected)
 {
     m_bConnected = bConnected;
 }
@@ -723,17 +724,18 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-BOOL CTSExecutorChildFrame::bGetBusStatus(void)
+bool CTSExecutorChildFrame::bGetBusStatus(void)
 {
-    BOOL bEnable = TRUE;
+    bool bEnable = true;
     INT nCount;
     m_ouTSExecutor.GetTestSetupCount(nCount);
-    if( (m_bConnected == FALSE) || (nCount <=0))
+    if( (m_bConnected == false) || (nCount <=0))
     {
-        bEnable = FALSE;
+        bEnable = false;
     }
     return bEnable;
 }
+
 /******************************************************************************
 Function Name  :  unRepisitonEntry
 Input(s)       :
@@ -755,6 +757,7 @@ UINT CTSExecutorChildFrame::unRepisitonEntry(DWORD dwRepositionItemID, DWORD dwI
     }
     return hResult;
 }
+
 /******************************************************************************
 Function Name  :  vUpdateTreeView
 Input(s)       :
@@ -785,6 +788,7 @@ VOID CTSExecutorChildFrame::vUpdateTreeView(void)
 
     m_odTreeView->GetTreeCtrl().SetCheck(m_hParentTreeItem, bCheck);
 }
+
 /******************************************************************************
 Function Name  :  OnClose
 Input(s)       :

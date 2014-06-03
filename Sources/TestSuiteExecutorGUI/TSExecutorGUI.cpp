@@ -288,7 +288,8 @@ USAGEMODE HRESULT TS_StartStopReadThread(ETYPE_BUS /*eBus*/, BOOL bStart)
         return S_FALSE;
     }
 }
-USAGEMODE HRESULT TS_BUSConnected(BOOL bConnected)
+
+USAGEMODE HRESULT TS_BUSConnected(bool bConnected)
 {
     if(g_pomTSExecutorChildWindow != nullptr)
     {
@@ -300,6 +301,7 @@ USAGEMODE HRESULT TS_BUSConnected(BOOL bConnected)
         return S_FALSE;
     }
 }
+
 USAGEMODE HRESULT TS_SetBUSMASTERVersionInfo(const BYTE bytMajor, const BYTE bytMinor, const BYTE bytBuild)
 {
     CString strBUSMASTERVersion;

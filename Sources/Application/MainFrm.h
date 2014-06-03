@@ -358,7 +358,7 @@ public:
     void bSetHexDecFlags(BOOL bHexOn);
 
     /* API to modify icon for a particular item in toolbar */
-    void vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, BOOL bItemON, UINT nTBIDON, UINT nTBIDOFF);
+    void vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, bool bItemON, UINT nTBIDON, UINT nTBIDOFF);
     /* API to set icon for a particular item in toolbar */
     void vSetToolBarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, UINT nTBIDNormal, UINT nTBIDHot, UINT nTBIDDisabled);
     /* API to set toolbar button size */

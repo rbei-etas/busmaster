@@ -309,17 +309,17 @@ HRESULT CFrameProcessor_J1939::FPJ1_EnableFilter(USHORT ushBlk, BOOL bEnable)
 }
 
 // Query function - current logging status (OFF/ON).
-BOOL CFrameProcessor_J1939::FPJ1_IsLoggingON(void)
+bool CFrameProcessor_J1939::FPJ1_IsLoggingON(void)
 {
     return IsLoggingON();
 }
 
-BOOL CFrameProcessor_J1939::FPJ1_IsJ1939DataLogged(void)
+bool CFrameProcessor_J1939::FPJ1_IsJ1939DataLogged(void)
 {
     return IsJ1939DataLogged();
 }
 
-BOOL CFrameProcessor_J1939::FPJ1_IsJ1939ThreadBlocked(void)
+bool CFrameProcessor_J1939::FPJ1_IsJ1939ThreadBlocked(void)
 {
     return IsThreadBlocked();
 }
@@ -330,7 +330,7 @@ void CFrameProcessor_J1939::FPJ1_DisableJ1939DataLogFlag(void)
 }
 
 // Query function - current filtering status
-BOOL CFrameProcessor_J1939::FPJ1_IsFilterON(void)
+bool CFrameProcessor_J1939::FPJ1_IsFilterON(void)
 {
     return IsFilterON();
 }
@@ -419,10 +419,12 @@ HRESULT CFrameProcessor_J1939::FPJ1_SetConfigData(BYTE* pvDataStream, const CStr
 {
     return SetConfigData(pvDataStream, omStrVersion);
 }
+
 HRESULT CFrameProcessor_J1939::FPJ1_SetConfigData(xmlDocPtr pDoc)
 {
     return SetConfigData(pDoc, J1939);
 }
+
 // Empty log object
 void CFrameProcessor_J1939::vEmptyLogObjArray(CLogObjArray& omLogObjArray)
 {
@@ -454,5 +456,3 @@ HRESULT CFrameProcessor_J1939::FPJ1_SetChannelBaudRateDetails
     SetChannelBaudRateDetails(controllerDetails, nNumChannels,eBus);
     return hResult;
 }
-
-// USE COMMON BASE CLASS ALIAS FUNCTIONS: END

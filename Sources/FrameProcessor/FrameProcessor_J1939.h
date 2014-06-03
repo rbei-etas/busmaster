@@ -87,17 +87,17 @@ public:
     HRESULT FPJ1_EnableFilter(USHORT ushBlk, BOOL bEnable);
 
     // Query function - current logging status (OFF/ON).
-    BOOL FPJ1_IsLoggingON(void);
+    bool FPJ1_IsLoggingON(void);
 
     void FPJ1_vCloseLogFile(void);
 
     // Check if the data is actually logging in
-    BOOL FPJ1_IsDataLogged(void);
-    BOOL FPJ1_IsJ1939DataLogged(void);
-    BOOL FPJ1_IsJ1939ThreadBlocked(void);
+    bool FPJ1_IsDataLogged(void);
+    bool FPJ1_IsJ1939DataLogged(void);
+    bool FPJ1_IsJ1939ThreadBlocked(void);
     void FPJ1_DisableJ1939DataLogFlag(void);
     // Query function - current filtering status
-    BOOL FPJ1_IsFilterON(void);
+    bool FPJ1_IsFilterON(void);
 
     // To log a string
     HRESULT FPJ1_LogString(CString& omStr);

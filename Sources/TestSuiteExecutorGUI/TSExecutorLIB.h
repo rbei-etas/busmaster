@@ -32,7 +32,7 @@ typedef struct _STestSetupInfo
 {
     DWORD m_dwID;
     CString m_omstrName;
-    BOOL m_bEnable;
+    bool m_bEnable;
     INT m_nTCCount;
     //Result;
 } STestSetupInfo;
@@ -52,7 +52,7 @@ class CTSExecutorLIB
     CResultGenerator m_ouResult;
     CListCtrl* m_ompResultDisplayWnd;
 public:
-    BOOL m_bTestSuiteStatus;
+    bool m_bTestSuiteStatus;
     CTSExecutorLIB(void);
     HRESULT SelectBus(eTYPE_BUS eCurrBus);
     HRESULT SetTestsuiteName(CString& omName);
@@ -62,19 +62,19 @@ public:
     HRESULT UpdateTestSetup( DWORD dwID, CString omFilePath);
     HRESULT DeleteTestSetup( DWORD dwID);
     HRESULT Update( DWORD dwID);
-    HRESULT EnableTestSetup( DWORD dwID, BOOL bEnable);
+    HRESULT EnableTestSetup( DWORD dwID, bool bEnable);
     HRESULT RepositionTestSetup( DWORD dwID, DWORD dwIDPreceding);
     HRESULT GetTestcaseCount( DWORD dwID, UINT& unTotal);
     HRESULT GetTestcaseCount( INT nIndex, UINT& unTotal);
     HRESULT GetTestCaseInfo( DWORD dwID, UINT unIndex, CBaseEntityTA** pTCInfo);
-    HRESULT EnableTestCase( DWORD dwID, UINT unIndex, BOOL bEnable);
+    HRESULT EnableTestCase( DWORD dwID, UINT unIndex, bool bEnable);
     HRESULT GetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize);
     HRESULT GetConfigurationData(xmlNodePtr pxmlNodePtr);
     HRESULT SetConfigurationData(BYTE* pDesBuffer, UINT unBuffSize);
     HRESULT SetConfigurationData(xmlNodePtr pXmlNode);
-    HRESULT EnableItem(DWORD dwID, BOOL& bEnable);
+    HRESULT EnableItem(DWORD dwID, bool & bEnable);
     HRESULT RemoveAllItems(void);
-    HRESULT GetTestSetupEnableStatus(DWORD dwID, BOOL& bEnable);
+    HRESULT GetTestSetupEnableStatus(DWORD dwID, bool & bEnable);
     HRESULT GetTestSetupInfo(INT nIndex, STestSetupInfo& sTSInfo);
     HRESULT GetTestSetupCount(INT& nCount);
     HRESULT Execute( /*PFCALLBACKRESULTTC pfResultTC*/);
@@ -82,7 +82,7 @@ public:
     void vSetVersionInfo(CString& omStrVersionInfo);
     virtual ~CTSExecutorLIB(void);
 private:
-    BOOL bExecuteTestSetup(CTestSetupEntity& pEntiy );
-    BOOL bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTestCaseResult);
+    bool bExecuteTestSetup(CTestSetupEntity& pEntiy );
+    bool bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTestCaseResult);
     int nParseTestSuite(xmlNodePtr pNode, sTestSuiteConfigInfo& sConfigInfo);
 };

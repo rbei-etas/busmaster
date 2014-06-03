@@ -3261,7 +3261,7 @@ void CTransmitMsgLIN::OnKillfocusDataBytesEdit()
 }
 
 
-void CTransmitMsgLIN::vUpdateSelMsgDetails(eMsgUpdate eUpdateType, INT nItem, INT nDlc, INT nChannel, BOOL bEnable)
+void CTransmitMsgLIN::vUpdateSelMsgDetails(eMsgUpdate eUpdateType, INT nItem, INT nDlc, INT nChannel, bool bEnable)
 {
     EnterCriticalSection(&CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouCSMsgList);
     if(nItem != -1)
@@ -3276,7 +3276,7 @@ void CTransmitMsgLIN::vUpdateSelMsgDetails(eMsgUpdate eUpdateType, INT nItem, IN
             case eEnable:
             {
                 itrList->bSelected = bEnable;
-                CTxLINDataStore::ouGetTxLINDataStoreObj().nHandleSelectionState( nItem, bEnable);
+                CTxLINDataStore::ouGetTxLINDataStoreObj().nHandleSelectionState(nItem, bEnable);
             }
             break;
             case eDataBytes:

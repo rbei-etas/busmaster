@@ -190,7 +190,7 @@ Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::GetTestSetupName(DWORD dwID, CString& omName)
 {
-    BOOL bValidID = FALSE;
+    bool bValidID = false;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
     for(INT i = 0; i < nCount; i++)
     {
@@ -199,7 +199,7 @@ HRESULT CTSExecutorLIB::GetTestSetupName(DWORD dwID, CString& omName)
         if(ouTempTestSetup.GetID() == dwID)
         {
             omName = ouTempTestSetup.m_omstrTestSetupTitle;
-            bValidID = TRUE;
+            bValidID = true;
             break;
         }
     }
@@ -223,7 +223,7 @@ Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::UpdateTestSetup( DWORD dwID, CString omFilePath)
 {
-    BOOL bValidID = FALSE;
+    bool bValidID = false;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
     for(INT i = 0; i < nCount; i++)
     {
@@ -232,11 +232,11 @@ HRESULT CTSExecutorLIB::UpdateTestSetup( DWORD dwID, CString omFilePath)
         if(ouTempTestSetup.GetID() == dwID)
         {
             ouTempTestSetup.LoadFile(omFilePath);
-            bValidID = TRUE;
+            bValidID = true;
             break;
         }
     }
-    if(bValidID == FALSE)
+    if(bValidID == false)
     {
         return ERR_WRONG_ID;
     }
@@ -256,7 +256,7 @@ Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::DeleteTestSetup( DWORD dwID)
 {
-    BOOL bValidID = FALSE;
+    bool bValidID = false;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
     for(INT i = 0; i < nCount; i++)
     {
@@ -265,11 +265,11 @@ HRESULT CTSExecutorLIB::DeleteTestSetup( DWORD dwID)
         if(ouTempTestSetup.GetID() == dwID)
         {
             m_ouTestSetupEntityList.RemoveAt(pos);
-            bValidID = TRUE;
+            bValidID = true;
             break;
         }
     }
-    if(bValidID == FALSE)
+    if(bValidID == false)
     {
         return ERR_WRONG_ID;
     }
@@ -288,9 +288,9 @@ Date Created   :  28/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-HRESULT CTSExecutorLIB::Update( DWORD dwID)
+HRESULT CTSExecutorLIB::Update(DWORD dwID)
 {
-    BOOL bValidID = FALSE;
+    bool bValidID = false;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
     for(INT i = 0; i < nCount; i++)
     {
@@ -299,11 +299,11 @@ HRESULT CTSExecutorLIB::Update( DWORD dwID)
         if(ouTempTestSetup.GetID() == dwID)
         {
             ouTempTestSetup.UpdateTestSetup();
-            bValidID = TRUE;
+            bValidID = true;
             break;
         }
     }
-    if(bValidID == FALSE)
+    if(bValidID == false)
     {
         return ERR_WRONG_ID;
     }
@@ -321,10 +321,9 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-HRESULT CTSExecutorLIB::EnableTestSetup( DWORD dwID, BOOL bEnable)
+HRESULT CTSExecutorLIB::EnableTestSetup(DWORD dwID, bool bEnable)
 {
-
-    BOOL bValidID = FALSE;
+    bool bValidID = false;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
     for(INT i = 0; i < nCount; i++)
     {
@@ -333,14 +332,15 @@ HRESULT CTSExecutorLIB::EnableTestSetup( DWORD dwID, BOOL bEnable)
         if(ouTempTestSetup.GetID() == dwID)
         {
             ouTempTestSetup.vEnableEntity(bEnable);
-            bValidID = TRUE;
+            bValidID = true;
             break;
         }
     }
-    if(bValidID == FALSE)
+    if(bValidID == false)
     {
         return ERR_WRONG_ID;
     }
+
     return S_OK;
 }
 /******************************************************************************
@@ -355,9 +355,9 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-HRESULT CTSExecutorLIB::GetTestSetupEnableStatus(DWORD dwID, BOOL& bEnable)
+HRESULT CTSExecutorLIB::GetTestSetupEnableStatus(DWORD dwID, bool & bEnable)
 {
-    BOOL bValidID = FALSE;
+    bool bValidID = false;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
     for(INT i = 0; i < nCount; i++)
     {
@@ -366,11 +366,11 @@ HRESULT CTSExecutorLIB::GetTestSetupEnableStatus(DWORD dwID, BOOL& bEnable)
         if(ouTempTestSetup.GetID() == dwID)
         {
             bEnable = ouTempTestSetup.bGetEnableStatus();
-            bValidID = TRUE;
+            bValidID = true;
             break;
         }
     }
-    if(bValidID == FALSE)
+    if(bValidID == false)
     {
         return ERR_WRONG_ID;
     }
@@ -393,7 +393,7 @@ HRESULT CTSExecutorLIB::RepositionTestSetup( DWORD dwID, DWORD dwIDPreceding)
 {
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
     POSITION pos;
-    BOOL bIdFound = FALSE;
+    bool bIdFound = false;
     CTestSetupEntity ouCurrentTestSetup;
     for(INT i = 0; i < nCount; i++)
     {
@@ -403,21 +403,21 @@ HRESULT CTSExecutorLIB::RepositionTestSetup( DWORD dwID, DWORD dwIDPreceding)
         {
             ouCurrentTestSetup = m_ouTestSetupEntityList.GetAt(pos);
             m_ouTestSetupEntityList.RemoveAt(pos);
-            bIdFound = TRUE;
+            bIdFound = true;
             break;
         }
     }
-    if(bIdFound == FALSE)
+    if(bIdFound == false)
     {
         return ERR_WRONG_ID;
     }
 
-    bIdFound = FALSE;
+    bIdFound = false;
     nCount = (INT)m_ouTestSetupEntityList.GetCount();
     if(dwIDPreceding == def_ID_TESTSUITE)
     {
         m_ouTestSetupEntityList.AddHead(ouCurrentTestSetup);
-        bIdFound = TRUE;
+        bIdFound = true;
     }
     else
     {
@@ -428,12 +428,12 @@ HRESULT CTSExecutorLIB::RepositionTestSetup( DWORD dwID, DWORD dwIDPreceding)
             if(ouTestSetupEntity.GetID() == dwIDPreceding)
             {
                 m_ouTestSetupEntityList.InsertAfter(pos, ouCurrentTestSetup);
-                bIdFound = TRUE;
+                bIdFound = true;
                 break;
             }
         }
     }
-    if(bIdFound == FALSE)
+    if(bIdFound == false)
     {
         return ERR_WRONG_ID_REF;
     }
@@ -454,7 +454,7 @@ Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::GetTestcaseCount( DWORD dwID, UINT& unTotal)
 {
-    BOOL bValidID = FALSE;
+    bool bValidID = false;
     unTotal = (UINT)-1;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
     for(INT i = 0; i < nCount; i++)
@@ -464,11 +464,11 @@ HRESULT CTSExecutorLIB::GetTestcaseCount( DWORD dwID, UINT& unTotal)
         if(ouTempTestSetup.GetID() == dwID)
         {
             unTotal = ouTempTestSetup.GetSubEntryCount();
-            bValidID = TRUE;
+            bValidID = true;
             break;
         }
     }
-    if(bValidID == FALSE)
+    if(bValidID == false)
     {
         return ERR_WRONG_ID;
     }
@@ -489,16 +489,16 @@ Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::GetTestcaseCount( INT nIndex, UINT& unTotal)
 {
-    BOOL bValidID = FALSE;
+    bool bValidID = false;
     unTotal = (UINT)-1;
     POSITION pos = m_ouTestSetupEntityList.FindIndex(nIndex);
     if(pos != nullptr)
     {
         CTestSetupEntity& ouTempTestSetup = m_ouTestSetupEntityList.GetAt(pos);
         unTotal = ouTempTestSetup.GetSubEntryCount();
-        bValidID = TRUE;
+        bValidID = true;
     }
-    if(bValidID == FALSE)
+    if(bValidID == false)
     {
         return ERR_WRONG_ID;
     }
@@ -519,7 +519,7 @@ Code Tag       :
 ******************************************************************************/
 HRESULT CTSExecutorLIB::GetTestCaseInfo( DWORD dwID, UINT unIndex, CBaseEntityTA** pTCInfo)
 {
-    BOOL bValidID = FALSE;
+    bool bValidID = false;
     HRESULT hResult = ERR_WRONG_ID;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
 
@@ -553,9 +553,9 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-HRESULT CTSExecutorLIB::EnableTestCase( DWORD dwID, UINT unIndex, BOOL bEnable)
+HRESULT CTSExecutorLIB::EnableTestCase( DWORD dwID, UINT unIndex, bool bEnable)
 {
-    BOOL bValidID = FALSE;
+    bool bValidID = false;
     HRESULT hResult = ERR_WRONG_ID;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
     CBaseEntityTA* pTCInfo;
@@ -678,7 +678,7 @@ HRESULT CTSExecutorLIB::GetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize
             strcpy_s(acName, MAX_PATH, ouTestSetupEntity.m_omstrCurrentTSFile.GetBuffer(MAX_PATH));
             COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
             //Selection Status
-            BOOL bStatus = ouTestSetupEntity.bGetEnableStatus();
+            bool bStatus = ouTestSetupEntity.bGetEnableStatus();
             COPY_DATA(pbyTemp, &bStatus, sizeof(BOOL));
 
             //TestCase Count
@@ -805,10 +805,10 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
         m_omstrTestSuiteName = acTestSuiteName;
 
         //TestSuite Status
-        COPY_DATA_2(&m_bTestSuiteStatus, pbyTemp, sizeof(BOOL));
+        COPY_DATA_2(&m_bTestSuiteStatus, pbyTemp, sizeof(m_bTestSuiteStatus));
 
         //File Count
-        COPY_DATA_2(&nFileCount, pbyTemp, sizeof(INT));
+        COPY_DATA_2(&nFileCount, pbyTemp, sizeof(nFileCount));
         INT nFileIndex = 0;
         for(INT i = 0; i < nFileCount; i++)
         {
@@ -823,8 +823,8 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
             if(AddTestSetup(omstrFileName, dwID) == S_OK)
             {
                 //Selection Status
-                BOOL bStatus;
-                COPY_DATA_2(&bStatus, pbyTemp, sizeof(BOOL));
+                bool bStatus;
+                COPY_DATA_2(&bStatus, pbyTemp, sizeof(bStatus));
                 POSITION pos = m_ouTestSetupEntityList.FindIndex(nFileIndex++);
                 if(pos != nullptr)
                 {
@@ -832,7 +832,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
                     ouTestSetupEntity.vEnableEntity(bStatus);
 
                     //TestCase Count
-                    COPY_DATA_2(&unConfigCount, pbyTemp, sizeof(UINT));
+                    COPY_DATA_2(&unConfigCount, pbyTemp, sizeof(unConfigCount));
                     ouTestSetupEntity.GetSubEntryCount(unCount);
                     if(unConfigCount != unCount)
                     {
@@ -843,7 +843,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
                     for(UINT j=0; j<unCount; j++)
                     {
                         CBaseEntityTA* pTCEntity;
-                        COPY_DATA_2(&bStatus, pbyTemp, sizeof(BOOL));
+                        COPY_DATA_2(&bStatus, pbyTemp, sizeof(bStatus));
                         ouTestSetupEntity.GetSubEntityObj(j, &pTCEntity);
                         if(pTCEntity != nullptr)
                         {
@@ -856,8 +856,8 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
             {
                 UINT unConfigCount;
                 BOOL bStatus;
-                COPY_DATA_2(&bStatus, pbyTemp, sizeof(BOOL));
-                COPY_DATA_2(&unConfigCount, pbyTemp, sizeof(UINT));
+                COPY_DATA_2(&bStatus, pbyTemp, sizeof(bStatus));
+                COPY_DATA_2(&unConfigCount, pbyTemp, sizeof(unConfigCount));
                 BOOL* bTempData = new BOOL[unConfigCount];
                 COPY_DATA_2(bTempData, pbyTemp, unConfigCount*sizeof(BOOL));
                 delete []bTempData;
@@ -1049,7 +1049,7 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-HRESULT CTSExecutorLIB::EnableItem(DWORD dwID, BOOL& bEnable)
+HRESULT CTSExecutorLIB::EnableItem(DWORD dwID, bool & bEnable)
 {
     HRESULT hResult = ERR_WRONG_ID;
     if(dwID == def_ID_TESTSUITE)
@@ -1073,8 +1073,9 @@ HRESULT CTSExecutorLIB::EnableItem(DWORD dwID, BOOL& bEnable)
             }
         }
     }
-    return  hResult;
+    return hResult;
 }
+
 /******************************************************************************
 Function Name  :  RemoveAllItems
 Input(s)       :  -
@@ -1142,7 +1143,7 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-BOOL CTSExecutorLIB::bExecuteTestSetup(CTestSetupEntity& ouTestSetupEntity)
+bool CTSExecutorLIB::bExecuteTestSetup(CTestSetupEntity & ouTestSetupEntity)
 {
     CBaseEntityTA* pouTestCase;
     UINT unTCCount;
@@ -1156,7 +1157,7 @@ BOOL CTSExecutorLIB::bExecuteTestSetup(CTestSetupEntity& ouTestSetupEntity)
     {
 
         ouTestSetupEntity.GetSubEntityObj(nTCIndex, &pouTestCase);
-        if(pouTestCase->bGetEnableStatus() == TRUE)
+        if(pouTestCase->bGetEnableStatus() == true)
         {
             //Start Result Update
             CTestCaseData ouTestCaseData;
@@ -1168,8 +1169,8 @@ BOOL CTSExecutorLIB::bExecuteTestSetup(CTestSetupEntity& ouTestSetupEntity)
             GetLocalTime(&ouTestCaseResult.m_sStartTime);
             //Now Execute;
             ouTestCaseResult.m_eResult = SUCCESS;
-            BOOL bResult = bExecuteTestCase(pouTestCase, ouTestCaseResult);
-            if(bResult == FALSE)
+            bool bResult = bExecuteTestCase(pouTestCase, ouTestCaseResult);
+            if(bResult == false)
             {
                 //TODO:: ProperHandling Required
                 ouTestCaseResult.m_eResult = ERRORS;
@@ -1179,7 +1180,7 @@ BOOL CTSExecutorLIB::bExecuteTestSetup(CTestSetupEntity& ouTestSetupEntity)
         }
     }
     m_ouResult.GenerateReport();
-    return TRUE;
+    return true;
 }
 
 /******************************************************************************
@@ -1194,7 +1195,7 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :  CS041
 ******************************************************************************/
-BOOL CTSExecutorLIB::bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTestCaseResult)
+bool CTSExecutorLIB::bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTestCaseResult)
 {
     if(g_podTSExecutor == nullptr)
     {
@@ -1205,7 +1206,7 @@ BOOL CTSExecutorLIB::bExecuteTestCase(CBaseEntityTA* pTCEntity, CResultTc& ouTes
     CString omStrID;
     eACTION_EXCP eExp;
     CString omStrDisplayMsg;
-    BOOL bResult = TRUE;
+    bool bResult = true;
     ouTestCaseResult.m_ouVerifyList.RemoveAll();
 
     ((CTestCaseEntity*)pTCEntity)->GetTestCaseDetails(omStrTilte, omStrID, eExp);

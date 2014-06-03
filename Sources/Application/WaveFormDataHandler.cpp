@@ -533,7 +533,7 @@ HRESULT CWaveFormDataHandler::SetConfigData(xmlDocPtr pDoc)
                     xmlChar* key = xmlNodeListGetString(pDoc, pNode->xmlChildrenNode, 1);
                     if(nullptr != key)
                     {
-                        m_bSignalDefinerAutoCorrect = (bool)atoi((char*)key);
+                        m_bSignalDefinerAutoCorrect = (atoi((char*)key) != 0);
                         xmlFree((char*)key);
                     }
                 }

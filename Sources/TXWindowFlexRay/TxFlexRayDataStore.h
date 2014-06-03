@@ -101,11 +101,11 @@ public:
     static CTxFlexRayDataStore m_sTxFlexRayDataStoreObj;
     bool bSetConfigData(xmlDocPtr pDoc);
     bool bSetChannelConfig(xmlNodePtr pNode);
-    BOOL bGetConfigData(xmlNodePtr pxmlNodePtr);
-    BOOL bGetMessageListConfig(int nChannel, xmlNodePtr);
-    BOOL bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData);
-    BOOL bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid);
-    BOOL bSetDILInterfacePtr();
+    bool bGetConfigData(xmlNodePtr pxmlNodePtr);
+    bool bGetMessageListConfig(int nChannel, xmlNodePtr);
+    bool bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData);
+    bool bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid);
+    HRESULT bSetDILInterfacePtr();
     bool parseForMessage(xmlNodePtr ptrNode, FLEXRAY_CONFIG_DATA& ouData);
     void vResetMonoshotBlocks();
     int UpdateMessageList();

@@ -128,43 +128,37 @@ void CTreeViewEx::OnLButtonDown(UINT nFlags, CPoint point)
 
     if((hItem != nullptr) && (TVHT_ONITEMSTATEICON & nHitTestFlags))
     {
-        BOOL bCheck = bIsItemChecked(hItem);
+        bool bCheck = bIsItemChecked(hItem);
         vSetCheck(hItem, !bCheck);
         return;
     }
     CTreeView::OnLButtonDown(nFlags, point);
 }
 
-BOOL CTreeViewEx::bIsItemChecked(HTREEITEM hItem)
+bool CTreeViewEx::bIsItemChecked(HTREEITEM hItem)
 {
     if(hItem == nullptr)
-    {
-        return FALSE;
-    }
+        return false;
+
     CTreeCtrl& omTreeCtrl = GetTreeCtrl();
     return omTreeCtrl.GetItemState( hItem, TVIS_STATEIMAGEMASK )>>12 == 2;
 }
 
-void CTreeViewEx::vSetCheck(HTREEITEM hItem, BOOL bCheck)
+void CTreeViewEx::vSetCheck(HTREEITEM hItem, bool bCheck)
 {
     if(hItem == nullptr)
-    {
         return;
-    }
-    if (hItem != nullptr)
-    {
-        int nState = (bCheck == TRUE) ? 2 : 1;
-        GetTreeCtrl().SetItemState( hItem, INDEXTOSTATEIMAGEMASK(nState), TVIS_STATEIMAGEMASK );
-        GetExecutorWindow()->vEnableItem((DWORD)GetTreeCtrl().GetItemData(hItem), bCheck);
-    }
-    return;
+
+    int nState = (bCheck == TRUE) ? 2 : 1;
+    GetTreeCtrl().SetItemState( hItem, INDEXTOSTATEIMAGEMASK(nState), TVIS_STATEIMAGEMASK );
+    GetExecutorWindow()->vEnableItem((DWORD)GetTreeCtrl().GetItemData(hItem), bCheck);
 }
-void CTreeViewEx::vSetCheckChildren(HTREEITEM hItem, BOOL fCheck)
+
+void CTreeViewEx::vSetCheckChildren(HTREEITEM hItem, bool fCheck)
 {
     if(hItem == nullptr)
-    {
         return;
-    }
+
     CTreeCtrl& omTreeCtrl = GetTreeCtrl();
 
     HTREEITEM hNext = omTreeCtrl.GetChildItem(hItem);
@@ -190,9 +184,8 @@ void CTreeViewEx::vSetCheckChildren(HTREEITEM hItem, BOOL fCheck)
             htiSibling = omTreeCtrl.GetNextSiblingItem(htiSibling);
         }
     }
-
-    return;
 }
+
 void CTreeViewEx::vSetCheckParent(HTREEITEM hItem)
 {
     if(hItem == nullptr)
@@ -202,7 +195,7 @@ void CTreeViewEx::vSetCheckParent(HTREEITEM hItem)
     CTreeCtrl& omTreeCtrl = GetTreeCtrl();
     HTREEITEM hParentItem = omTreeCtrl.GetParentItem(hItem);
     HTREEITEM hChildItem;
-    BOOL bAllChecked = TRUE;
+    bool bAllChecked = true;
     if( omTreeCtrl.ItemHasChildren(hParentItem))
     {
         hChildItem = omTreeCtrl.GetChildItem(hParentItem);
@@ -210,7 +203,7 @@ void CTreeViewEx::vSetCheckParent(HTREEITEM hItem)
         {
             if(!bIsItemChecked(hChildItem))
             {
-                bAllChecked = FALSE;
+                bAllChecked = false;
                 break;
             }
             hChildItem = omTreeCtrl.GetNextSiblingItem(hChildItem);
@@ -218,7 +211,6 @@ void CTreeViewEx::vSetCheckParent(HTREEITEM hItem)
     }
     vSetCheck(hParentItem, bAllChecked);
     vSetCheckParent(hParentItem);
-    return;
 }
 
 void CTreeViewEx::OnTvnBegindrag(NMHDR* pNMHDR, LRESULT* pResult)
@@ -239,23 +231,16 @@ void CTreeViewEx::OnTvnBegindrag(NMHDR* pNMHDR, LRESULT* pResult)
 }
 
 
-BOOL CTreeViewEx::bItemCanDragged(HTREEITEM hItem)
+bool CTreeViewEx::bItemCanDragged(HTREEITEM hItem)
 {
     HTREEITEM hParent = GetTreeCtrl().GetParentItem(hItem);
-    if(GetTreeCtrl().GetItemData(hParent) == def_ID_TESTSUITE)
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
-    }
+    return (GetTreeCtrl().GetItemData(hParent) == def_ID_TESTSUITE);
 }
 
-BOOL CTreeViewEx::IsItemCanDropOn(HTREEITEM hSource, HTREEITEM hTarget)
+bool CTreeViewEx::IsItemCanDropOn(HTREEITEM hSource, HTREEITEM hTarget)
 {
     CTreeCtrl& omTreeCtrl = GetTreeCtrl();
-    BOOL bRetValue = FALSE;
+    bool bRetValue = false;
     if(hSource != nullptr || hTarget != nullptr)
     {
         HTREEITEM hSourceParent = omTreeCtrl.GetParentItem(hSource);
@@ -265,13 +250,12 @@ BOOL CTreeViewEx::IsItemCanDropOn(HTREEITEM hSource, HTREEITEM hTarget)
             DWORD dwId = (DWORD)omTreeCtrl.GetItemData(hSourceParent);
             if(dwId == def_ID_TESTSUITE)
             {
-                bRetValue = TRUE;
+                bRetValue = true;
             }
         }
     }
     return bRetValue;
 }
-
 
 void CTreeViewEx::OnLButtonUp(UINT nFlags, CPoint point)
 {
@@ -522,23 +506,26 @@ HTREEITEM CTreeViewEx::GetDropItem(eTYPE_DROPPING& eDroppingPos)
 
     return hDroppingItem;
 }
-BOOL CTreeViewEx::bAnscestor(HTREEITEM hItem, HTREEITEM hCheck)
+
+bool CTreeViewEx::bAnscestor(HTREEITEM hItem, HTREEITEM hCheck)
 {
     CTreeCtrl& omTreeCtrl = GetTreeCtrl();
     for(HTREEITEM hParent = hCheck; hParent != 0; hParent = omTreeCtrl.GetParentItem(hParent))
     {
         if(hParent == hItem)
         {
-            return TRUE;
+            return true;
         }
     }
-    return FALSE;
+    return false;
 }
-BOOL CTreeViewEx::bSuccessor(HTREEITEM hItem, HTREEITEM hCheck)
+
+bool CTreeViewEx::bSuccessor(HTREEITEM hItem, HTREEITEM hCheck)
 {
     CTreeCtrl& omTreeCtrl = GetTreeCtrl();
     return (hCheck == omTreeCtrl.GetNextItem(hItem, TVGN_NEXT));
 }
+
 CTreeViewEx::eTYPE_DROPPING CTreeViewEx::GetDroppingPosition(UINT flags)
 {
 
@@ -665,7 +652,7 @@ void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
         if(omTempTreeCtrl.GetItemData(hItem) == def_ID_TESTSUITE)
         {
             VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSUITE_ADD, _("Add...")));
-            BOOL bCheck = bIsItemChecked(hItem);
+            bool bCheck = bIsItemChecked(hItem);
             if(GetExecutorWindow()->bGetBusStatus() == TRUE && bCheck == TRUE )
             {
                 VERIFY(omContextMenu.AppendMenu(MF_STRING, IDM_TESTSUITE_EXECUTE, _("Execute")));
@@ -768,12 +755,11 @@ void CTreeViewEx::vDeleteChildItems(HTREEITEM hItem)
     }
 }
 
-
-void CTreeViewEx::ShowCheckBoxes(BOOL bShow)
+void CTreeViewEx::ShowCheckBoxes(bool bShow)
 {
     DWORD lStyle = GetWindowLong(GetSafeHwnd(), GWL_STYLE);
 
-    if(bShow == TRUE)
+    if(bShow)
     {
         lStyle = lStyle | TVS_CHECKBOXES;
     }
@@ -843,8 +829,8 @@ void CTreeViewEx::OnTvnKeyPress(NMHDR * pNMHDR, LRESULT * /* pResult */)
 
     if((nullptr != pTVKeyDown) && (nullptr != hItem) && (pTVKeyDown->wVKey == VK_SPACE))
     {
-        BOOL bCheck = bIsItemChecked(hItem);
-        bCheck = !bCheck ;
+        bool bCheck = bIsItemChecked(hItem);
+        bCheck = !bCheck;
         GetExecutorWindow()->vEnableItem((DWORD)GetTreeCtrl().GetItemData(hItem), bCheck);
     }
 }

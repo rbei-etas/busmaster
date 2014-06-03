@@ -153,7 +153,8 @@ LRESULT CTransmitMsg::vUserCommand(WPARAM wParam, LPARAM lParam)
             SwitchView(m_ouCurrentView);
             break;
         case 1:
-            OnBusConnect((bool)lParam);
+            OnBusConnect(lParam != 0);
+            break;
     }
     return S_OK;
 
@@ -1185,9 +1186,9 @@ void CTransmitMsg::OnNMTransmitMessagesClick(NMHDR* pNMHDR, LRESULT* pResult)
         m_bDataModified = false;
         // They clicked on one that is not selected... just change it
         // ... do something here
-        bChecked = m_lstMsg.GetCheck(nItem);
+        bChecked = (m_lstMsg.GetCheck(nItem) == TRUE);
         bChecked = !bChecked;
-        m_lstMsg.SetCheck(nItem,bChecked);
+        m_lstMsg.SetCheck(nItem, bChecked);
 
         //To change selection state;
 

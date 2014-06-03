@@ -45,7 +45,7 @@ extern "C" {  // only need to export C interface if used by C++ source code
     USAGEMODE HRESULT TS_hSetConfigurationData(BYTE* pSrcBuffer, UINT nBuffSize);
     USAGEMODE HRESULT TS_hSetXMLConfigurationData(xmlDocPtr pDoc);
     USAGEMODE HRESULT TS_GetInterface(ETYPE_BUS eBus, void** ppvInterface);
-    USAGEMODE HRESULT TS_BUSConnected(BOOL bConnected);
+    USAGEMODE HRESULT TS_BUSConnected(bool bConnected);
     USAGEMODE HRESULT TS_SetBUSMASTERVersionInfo(const BYTE bytMajor, const BYTE bytMinor, const BYTE bytBuild);
 
 #ifdef __cplusplus
