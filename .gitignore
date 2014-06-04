@@ -237,6 +237,9 @@ Sources/BIN/Libs/*/TestSetupEditorGUI.lib
 Sources/BIN/Libs/*/TestSetupEditorLib.lib
 Sources/BIN/Libs/*/TestSuiteExecutorGUI.lib
 Sources/BIN/Libs/*/Utils.lib
+Sources/EXTERNAL/DmGraph/DMGraph.h
+Sources/EXTERNAL/DmGraph/DMGraph_i.c
+Sources/EXTERNAL/DmGraph/DMGraph_p.c
 
 # Installation Setup
 Installation Setup/BUSMASTER_Cleanup_Registry.exe
