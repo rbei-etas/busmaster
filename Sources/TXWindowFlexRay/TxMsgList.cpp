@@ -494,22 +494,9 @@ BOOL CTxMsgList::StartEdit(int nItem, int nSubItem)
 //Date Created  :   11/02/2007
 //Modifications :   -
 //************************************************************************************/
-bool CTxMsgList::bValidateDynamicLength(long lValue)
+bool CTxMsgList::bValidateDynamicLength(long /* lValue */)
 {
     return true;
-#if 0
-    bool bResult = false;
-    UCI_FLXINFO sUCI_FLXINFO;
-
-    if( ((CMainFrame*)AfxGetMainWnd())->m_pDoc->m_opFlexRay->GetHarwareConfigStatus(&sUCI_FLXINFO) != S_FALSE )
-    {
-        if(sUCI_FLXINFO.wMaxDynamicDataLength >=  lValue)
-        {
-            bResult = TRUE;
-        }
-    }
-    return bResult;
-#endif
 }
 
 
@@ -1080,10 +1067,8 @@ void CTxMsgList::OnNMClick(NMHDR* pNMHDR, LRESULT* pResult)
 //Date Created  :   19/09/2006
 //Modifications :   -
 //************************************************************************************/
-void CTxMsgList::OnNMDblclk(NMHDR* pNMHDR, LRESULT* pResult)
+void CTxMsgList::OnNMDblclk(NMHDR * /* pNMHDR */, LRESULT * pResult)
 {
-    // TODO: Add your control notification handler code here
-
     *pResult = 0;
 }
 

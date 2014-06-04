@@ -268,22 +268,8 @@ USHORT CFormatMsgFlexRay::usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo)
   Date Created   : 08-09-2010
   Modifications  :
 *******************************************************************************/
-char* CFormatMsgFlexRay::vFormatCurrErrorEntry(USHORT usErrorID)
+char * CFormatMsgFlexRay::vFormatCurrErrorEntry(USHORT /* usErrorID */)
 {
-    /*  BOOL bErrProcessed = FALSE;
-      int nCount = 0;
-
-      while ((nCount < ERRORS_DEFINED) && (bErrProcessed == FALSE))
-      {
-          if (usErrorID == sg_asErrorEntry[nCount].m_usErrorCode)
-          {
-              bErrProcessed = TRUE;
-              return sg_asErrorEntry[nCount].m_ptcErorMsg;
-          }
-
-          nCount++;
-      }*/
-
     return nullptr;
 }
 

@@ -1320,7 +1320,7 @@ static int nSetApplyConfiguration()
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_CAN_VectorXL::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int Length)
+HRESULT CDIL_CAN_VectorXL::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int /* Length */)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 

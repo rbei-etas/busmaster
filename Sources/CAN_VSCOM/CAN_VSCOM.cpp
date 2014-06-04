@@ -199,8 +199,6 @@ static BOOL bClientIdExist(const DWORD& dwClientId);
 static DWORD dwGetAvailableClientSlot(void);
 static void vMarkEntryIntoMap(const SACK_MAP& RefObj);
 static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID);
-static int str_has_char(char* s);
-
 
 /**
  * \return S_OK for success, S_FALSE for failure
@@ -225,19 +223,6 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
     return(hResult);
 }
 
-
-/* void __cdecl ShowErrorMessage(const char *title, const char *text, ...)
-{
-va_list argptr;
-char out[512];
-
-va_start(argptr, text);
-_vstprintf(out, text, argptr);
-va_end(argptr);
-MessageBox(nullptr, out, title, MB_ICONEXCLAMATION | MB_OK);
-} */
-
-
 /**
  * \return S_OK for success, S_FALSE for failure
  *
@@ -251,7 +236,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger
     return(S_OK);
 }
 
-
 /**
  * \return S_OK for success, S_FALSE for failure
  *
@@ -261,7 +245,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_UnloadDriverLibrary(void)
 {
     return(S_OK);
 }
-
 
 /**
  * \return S_OK for success, S_FALSE for failure
@@ -338,7 +321,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANB
     return(hResult);
 }
 
-
 /**
  * \return S_OK for success, S_FALSE for failure
  *
@@ -409,7 +391,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char
     return(hResult);
 }
 
-
 /**
  * \return S_OK for success, S_FALSE for failure
  *
@@ -458,7 +439,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_PerformInitOperations(void)
     return(S_OK);
 }
 
-
 /**
 * \brief         Performs closure operations.
 * \param         void
@@ -485,7 +465,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_PerformClosureOperations(void)
     return(hResult);
 }
 
-
 /**
 * \brief         Gets the time mode mapping of the hardware. CurrSysTime
 *                will be updated with the system time ref.
@@ -506,7 +485,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& 
       *QueryTickCount = sg_QueryTickCount;*/
     return(S_OK);
 }
-
 
 /**
 * \brief         Lists the hardware interface available.
@@ -538,7 +516,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface
     return(S_OK);
 }
 
-
 /**
 * \brief         Selects the hardware interface selected by the user.
 * \param[out]    asSelHwInterface, is INTERFACE_HW_LIST structure
@@ -555,7 +532,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /*asSelHw
     return(S_OK);
 }
 
-
 /**
 * \brief         Deselects the selected hardware interface.
 * \param         void
@@ -571,7 +547,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_DeselectHwInterface(void)
 
     return hResult;
 }
-
 
 /**
 * \brief         Displays the controller configuration dialog.
@@ -680,7 +655,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int&
     return(result);
 }
 
-
 /**
 * \brief         Sets the controller configuration data supplied by ConfigFile.
 * \param[in]     ConfigFile, is SCONTROLLER_DETAILS structure
@@ -765,7 +739,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int L
 
     return(S_OK);
 }
-
 
 /**
  * This function writes the message to the corresponding clients buffer
@@ -902,7 +875,7 @@ static void CopyMsg2CanData(STCANDATA* can_data, VSCAN_MSG* msg, unsigned char f
 }
 
 // RxD Event-Funktion
-static DWORD WINAPI CanRxEvent(LPVOID lpParam)
+static DWORD WINAPI CanRxEvent(LPVOID /* lpParam */)
 {
     static STCANDATA can_data;
     can_data.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
@@ -944,8 +917,6 @@ static DWORD WINAPI CanRxEvent(LPVOID lpParam)
 
     }
 }
-
-
 
 /**
 * \brief         connects to the channels and initiates read thread.
@@ -1048,7 +1019,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_StartHardware(void)
     return(hResult);
 }
 
-
 /**
 * \brief         Stops the controller.
 * \param         void
@@ -1090,7 +1060,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
     return(S_OK);
 }
 
-
 /**
 * \brief         Gets the Tx queue configured.
 * \param[out]    pouFlxTxMsgBuffer, is BYTE*
@@ -1100,7 +1069,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return(S_OK);
 }
-
 
 /**
 * \brief         Sends STCAN_MSG structure from the client dwClientID.
@@ -1167,9 +1135,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
     return(hResult);
 }
 
-
-
-
 /**
 * \brief         Gets bus config info.
 * \param[out]    BusInfo, is BYTE
@@ -1180,19 +1145,16 @@ HRESULT CDIL_CAN_VSCOM::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
     return(S_OK);
 }
 
-
-
 /**
 * \brief         Gets last occured error and puts inside acErrorStr.
 * \param[out]    acErrorStr, is CHAR contains error string
 * \param[in]     nLength, is INT
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_VSCOM::CAN_GetLastErrorString(std::string& acErrorStr)
+HRESULT CDIL_CAN_VSCOM::CAN_GetLastErrorString(std::string & /* acErrorStr */)
 {
     return WARN_DUMMY_API;
 }
-
 
 /**
 * \brief         Gets the controller parametes of the channel based on the request.
@@ -1247,11 +1209,11 @@ HRESULT CDIL_CAN_VSCOM::CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECO
     }
     return hResult;
 }
-HRESULT CDIL_CAN_VSCOM::CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam)
+
+HRESULT CDIL_CAN_VSCOM::CAN_SetControllerParams(int /* nValue */, ECONTR_PARAM /* eContrparam */)
 {
     return S_OK;
 }
-
 
 /**
 * \brief         Gets the error counter for corresponding channel.
@@ -1270,8 +1232,6 @@ HRESULT CDIL_CAN_VSCOM::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, 
     return(S_OK);
 }
 
-
-
 static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf)
 {
     UINT i;
@@ -1288,7 +1248,6 @@ static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFS
     }
     return(bExist);
 }
-
 
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove)
 {
@@ -1309,7 +1268,6 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
     }
     return(bReturn);
 }
-
 
 /**
  * \return Returns true if found else false.
@@ -1333,7 +1291,6 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
     return(bResult);
 }
 
-
 /**
  * \return TRUE if client exists else FALSE
  *
@@ -1352,7 +1309,6 @@ static BOOL bClientExist(std::string pcClientName, INT& Index)
     }
     return(FALSE);
 }
-
 
 /**
  * \return TRUE if client removed else FALSE
@@ -1388,7 +1344,6 @@ static BOOL bRemoveClient(DWORD dwClientId)
     return(bResult);
 }
 
-
 /**
  * \return TRUE if client exists else FALSE
  *
@@ -1410,7 +1365,6 @@ static BOOL bClientIdExist(const DWORD& dwClientId)
     }
     return(bReturn);
 }
-
 
 /**
  * Returns the available slot
@@ -1435,7 +1389,6 @@ static DWORD dwGetAvailableClientSlot(void)
     return(nClientId);
 }
 
-
 /**
  * Pushes an entry into the list at the last position
  */
@@ -1459,30 +1412,4 @@ static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
         sg_asAckMapBuf.erase(iResult);
     }
     return bResult;
-}
-
-
-static int str_has_char(char* s)
-{
-    char c;
-
-    if (!s)
-    {
-        return(-1);
-    }
-    while ((c = *s++))
-    {
-        if (c != ' ')
-        {
-            break;
-        }
-    }
-    if (c)
-    {
-        return(0);
-    }
-    else
-    {
-        return(-1);
-    }
 }

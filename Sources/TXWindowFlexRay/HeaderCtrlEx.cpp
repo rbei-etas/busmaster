@@ -555,7 +555,7 @@ void CHeaderCtrlEx::OnLButtonDblClk(UINT nFlags, CPoint point)
     CHeaderCtrl::OnLButtonDblClk(nFlags, point);
 }
 
-LRESULT CHeaderCtrlEx::OnHdnEndDrag(WPARAM wp, LPARAM lp)
+LRESULT CHeaderCtrlEx::OnHdnEndDrag(WPARAM wp, LPARAM /* lp */)
 {
     int count = GetItemCount();
     int* piArray = new int[count];

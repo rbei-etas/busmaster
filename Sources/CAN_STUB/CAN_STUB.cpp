@@ -513,7 +513,7 @@ HRESULT CDIL_CAN_STUB::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger*
     return hResult;
 }
 
-HRESULT CDIL_CAN_STUB::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
+HRESULT CDIL_CAN_STUB::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS /* InitData */, int & Length)
 {
     HRESULT Result = S_FALSE;
     char acInitFile[MAX_PATH] = {'\0'};
@@ -1035,12 +1035,12 @@ HRESULT CDIL_CAN_STUB::CAN_GetControllerParams(LONG& lParam, UINT /*nChannel*/, 
     return hResult;
 }
 
-HRESULT CDIL_CAN_STUB::CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam)
+HRESULT CDIL_CAN_STUB::CAN_SetControllerParams(int /* nValue */, ECONTR_PARAM /* eContrparam */)
 {
     return S_OK;
 }
 
-HRESULT CDIL_CAN_STUB::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
+HRESULT CDIL_CAN_STUB::CAN_GetErrorCount(SERROR_CNT & sErrorCnt, UINT /* nChannel */, ECONTR_PARAM /* eContrParam */)
 {
     memset(&sErrorCnt, 0, sizeof(SERROR_CNT));
     return S_OK;

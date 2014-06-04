@@ -298,7 +298,7 @@ static void SaveDeviceData(void)
     }
 }
 
-static BOOL CALLBACK CanSetupDlgProc(HWND hDlg, UINT uMessage, WPARAM wParam, LPARAM lParam)
+static BOOL CALLBACK CanSetupDlgProc(HWND hDlg, UINT uMessage, WPARAM wParam, LPARAM /* lParam */)
 {
     int wmId, wmEvent;
 

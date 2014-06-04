@@ -89,7 +89,7 @@ void CHexEdit::SetMaxChars(int nMax)
     LimitText(nMax);
 }
 
-HBRUSH CHexEdit::CtlColor(CDC* pDC, UINT nCtlColor)
+HBRUSH CHexEdit::CtlColor(CDC * pDC, UINT /* nCtlColor */)
 {
     // TODO: Change any attributes of the DC here
     pDC->SetTextColor(m_textcolor);

@@ -799,7 +799,7 @@ static void vWriteIntoClientsBuffer(STCANDATA& can_data)
 }
 
 // Plug & Play Event-Funktion
-static void CALLBACK_TYPE CanPnPEvent(uint32_t index, int32_t status)
+static void CALLBACK_TYPE CanPnPEvent(uint32_t /* index */, int32_t status)
 {
     if (status)
     {
@@ -811,9 +811,8 @@ static void CALLBACK_TYPE CanPnPEvent(uint32_t index, int32_t status)
     }
 }
 
-
 // Status Event-Funktion
-static void CALLBACK_TYPE CanStatusEvent(uint32_t index, struct TDeviceStatus* status)
+static void CALLBACK_TYPE CanStatusEvent(uint32_t /* index */, struct TDeviceStatus * /* status */)
 {
 
 }
@@ -868,13 +867,6 @@ static void CALLBACK_TYPE CanRxEvent(uint32_t index, struct TCanMsg* msg, int32_
         msg++;
     }
 }
-
-
-/*static void CopyMhsToCanData(const struct TCanMsg *src, STCANDATA* dest)
-{
-
-}*/
-
 
 /**
 * \brief         connects to the channels and initiates read thread.
@@ -940,7 +932,7 @@ HRESULT CDIL_CAN_MHS::CAN_StopHardware(void)
 * \param[out]    StatusData, is s_STATUSMSG structure
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_MHS::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
+HRESULT CDIL_CAN_MHS::CAN_GetCurrStatus(s_STATUSMSG & StatusData)
 {
     StatusData.wControllerStatus = NORMAL_ACTIVE;
     return(S_OK);
@@ -952,7 +944,7 @@ HRESULT CDIL_CAN_MHS::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 * \param[out]    pouFlxTxMsgBuffer, is BYTE*
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_MHS::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
+HRESULT CDIL_CAN_MHS::CAN_GetTxMsgBuffer(BYTE * & /*pouFlxTxMsgBuffer*/)
 {
     return(S_OK);
 }
@@ -964,7 +956,7 @@ HRESULT CDIL_CAN_MHS::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 * \param[in]     sMessage is the application specific CAN message structure
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_MHS::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
+HRESULT CDIL_CAN_MHS::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG & sMessage)
 {
     struct TCanMsg msg;
     static SACK_MAP sAckMap;
@@ -1017,20 +1009,15 @@ HRESULT CDIL_CAN_MHS::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
     return(hResult);
 }
 
-
-
-
 /**
 * \brief         Gets bus config info.
 * \param[out]    BusInfo, is BYTE
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_MHS::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
+HRESULT CDIL_CAN_MHS::CAN_GetBusConfigInfo(BYTE * /*BusInfo*/)
 {
     return(S_OK);
 }
-
-
 
 /**
 * \brief         Gets last occured error and puts inside acErrorStr.
@@ -1038,7 +1025,7 @@ HRESULT CDIL_CAN_MHS::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 * \param[in]     nLength, is INT
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(std::string & acErrorStr)
+HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(std::string & /* acErrorStr */)
 {
     return WARN_DUMMY_API;
 }
@@ -1096,11 +1083,11 @@ HRESULT CDIL_CAN_MHS::CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONT
     }
     return hResult;
 }
-HRESULT CDIL_CAN_MHS::CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam)
+
+HRESULT CDIL_CAN_MHS::CAN_SetControllerParams(int /* nValue */, ECONTR_PARAM /* eContrparam */)
 {
     return S_OK;
 }
-
 
 /**
 * \brief         Gets the error counter for corresponding channel.
@@ -1119,8 +1106,6 @@ HRESULT CDIL_CAN_MHS::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, EC
     return(S_OK);
 }
 
-
-
 static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf)
 {
     UINT i;
@@ -1137,7 +1122,6 @@ static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFS
     }
     return(bExist);
 }
-
 
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove)
 {
@@ -1158,7 +1142,6 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
     }
     return(bReturn);
 }
-
 
 /**
  * \return Returns true if found else false.
@@ -1182,7 +1165,6 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
     return(bResult);
 }
 
-
 /**
  * \return TRUE if client exists else FALSE
  *
@@ -1201,7 +1183,6 @@ static BOOL bClientExist(std::string pcClientName, INT& Index)
     }
     return(FALSE);
 }
-
 
 /**
  * \return TRUE if client removed else FALSE
@@ -1237,7 +1218,6 @@ static BOOL bRemoveClient(DWORD dwClientId)
     return(bResult);
 }
 
-
 /**
  * \return TRUE if client exists else FALSE
  *
@@ -1259,7 +1239,6 @@ static BOOL bClientIdExist(const DWORD& dwClientId)
     }
     return(bReturn);
 }
-
 
 /**
  * Returns the available slot
@@ -1283,7 +1262,6 @@ static DWORD dwGetAvailableClientSlot(void)
     }
     return(nClientId);
 }
-
 
 /**
  * Pushes an entry into the list at the last position
@@ -1309,7 +1287,6 @@ static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
     }
     return bResult;
 }
-
 
 static int str_has_char(char* s)
 {
