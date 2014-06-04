@@ -407,20 +407,7 @@ BOOL CTxMsgWndJ1939::OnInitDialog()
     m_omMiliSecs.EnableWindow(FALSE);
     return TRUE;
 }
-static BYTE byExtractAddress(CString& omText)
-{
-    BYTE byAddress = ADDRESS_NULL;
-    CString omTemp;
-    char* pcStopStr = nullptr;
-    int nIndex = omText.Find(defMSGID_EXTENDED);
-    int nCloseBraceIndex = omText.Find(defMSG_NAME_END_CHAR);
-    if((nIndex != -1) && (nCloseBraceIndex != -1))
-    {
-        omTemp = omText.Mid(nIndex + 1, nCloseBraceIndex - (nIndex + 1));
-        byAddress = (BYTE)_tcstol((LPCTSTR )omTemp,&pcStopStr,16);
-    }
-    return byAddress;
-}
+
 void CTxMsgWndJ1939::OnBnClickedSend()
 {
     UpdateData();

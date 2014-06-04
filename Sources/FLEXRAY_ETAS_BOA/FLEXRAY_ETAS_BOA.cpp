@@ -21,8 +21,6 @@
  *
  * Source file for Vector XL DIL functions
  */
-// CAN_Vector_XL.cpp : Defines the initialization routines for the DLL.
-//
 
 /* C++ includes */
 
@@ -391,30 +389,6 @@ void findFlxNodes( CSI_Tree* sfsTree, OCI_URIName uriPrefix, OCI_URIName uriName
  */
 BOA_ResultCode OCI_FindFlexRayController(OCI_URIName uriNames[], INT nSize, uint32* nFound)
 {
-    //OCI_ErrorCode ec;
-
-    ///* Container for search results */
-    //CSI_Tree* sfsTree = nullptr;
-    ///* Specify that we want to search for nodes which implement v1.1.0.0 of OCI_FLX. */
-    //static const BOA_UuidVersion ociFlexRayUuid = { UUID_OCIFLX, {1,1,0,0} };
-
-    ///* Specify that we want to search for any kind of node, not just hardware nodes */
-    //const CSI_NodeRange nodeRange = {CSI_NODE_MIN, CSI_NODE_MAX};
-
-    ///* Search for all connected hardware and latch the result for further processing */
-    //ec = (*(sBOA_PTRS.m_sCSI.createProtocolTree))("", nodeRange, &sfsTree);
-    //if (ec == OCI_SUCCESS)
-    //{
-    //    /* Find the URIs for all nodes which implement v1.1.0.0 of OCI_CAN. */
-    //    ec = (*(sBOA_PTRS.m_sCSI.getUriForUuid))(sfsTree, &ociFlexRayUuid, uriName, nSize, nFound);
-    //    if (ec == OCI_SUCCESS)
-    //    {
-    //        ec = (*(sBOA_PTRS.m_sCSI.destroyProtocolTree))(sfsTree);
-    //    }
-    //}
-
-    //return ec;
-
     OCI_ErrorCode   ec;
 
     /* Container for search results */
@@ -910,62 +884,6 @@ static BOOL bLoadDataFromContr(CHANNEL_CONFIG&  asDeviceConfig)
     sg_asChannel[nChannel].m_ouFlexrayData.m_nValidMessages = 0;
     sg_asChannel[0].m_ouFlexrayData.m_mapSlotBaseCycle.clear();
     return true;
-
-    //Power Train
-    /*sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gColdStartAttempts                   = 8;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gdActionPointOffset                    = 2;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gdCASRxLowMax                      = 87;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gdDynamicSlotIdlePhase             = 1;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gdMinislot                         = 5;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gdMinislotActionPointOffset            = 2;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gdStaticSlot                           = 24;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gdSymbolWindow                     = 0;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gdTSSTransmitter                       = 9;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gdWakeupSymbolRxIdle                   = 59;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gdWakeupSymbolRxLow                    = 50;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gdWakeupSymbolRxWindow             = 301;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gdWakeupSymbolTxIdle                   = 180;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gdWakeupSymbolTxLow                    = 60;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gListenNoise                           = 2;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gMacroPerCycle                     = 3636;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gMaxWithoutClockCorrectionFatal        = 2;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gMaxWithoutClockCorrectionPassive  = 2;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gNetworkManagementVectorLength     = 0;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gNumberOfMinislots                 = 289;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gNumberOfStaticSlots                   = 91;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gOffsetCorrectionStart             = 3632;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gPayloadLengthStatic                   = 8;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.gSyncNodeMax                           = 15;
-
-    //controller configuration
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pAllowHaltDueToClock                   = 1;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pAllowPassiveToActive              = 1;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pChannels                          = OCI_FLEXRAY_CHANNEL_A | OCI_FLEXRAY_CHANNEL_B;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pClusterDriftDamping                   = 2;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pdAcceptedStartupRange             = 220;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pDecodingCorrection                    = 48;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pDelayCompensationA                    = 1;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pDelayCompensationB                    = 1;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pdListenTimeout                        = 401202;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pdMaxDrift                         = 601;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pExternOffsetCorrection                = 0;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pExternRateCorrection              = 0;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pKeySlotId                         = 3;
-
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pKeySlotUsedForStartup             = 1;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pKeySlotUsedForSync                    = 1;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pLatestTx                          = 249;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pMacroInitialOffsetA                   = 3;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pMacroInitialOffsetB                   = 3;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pMicroInitialOffsetA                   = 6;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pMicroInitialOffsetB                   = 6;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pMicroPerCycle                     = 200000;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pOffsetCorrectionOut                   = 127;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pRateCorrectionOut                 = 601;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pSingleSlotEnabled                 = 0;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pWakeupChannel                     = OCI_FLEXRAY_CHANNEL_A;
-    sg_asChannel[nChannel].m_OCI_FlexRayConfig.bus.pWakeupPattern                     = 33;
-    */
 }
 
 
@@ -988,129 +906,6 @@ void vCopy_2_OCI_FLexRay_Data(OCI_FlexRayTxMessage& DestMsg, const s_FLXTXMSG& S
     DestMsg.size    = SrcMsg.m_sFlxMsg.m_nDLC;
     DestMsg.flags = 0;
     memcpy(DestMsg.data, SrcMsg.m_sFlxMsg.m_ucData, sizeof(WORD) * 127);
-}
-
-/**
- * Pushes an entry into the list at the last position
- */
-/*void vMarkEntryIntoMap(const SACK_MAP& RefObj)
-{
-    //EnterCriticalSection(&sg_CritSectForAckBuf); // Lock the buffer
-    sg_asAckMapBuf.push_back(RefObj);
-    //LeaveCriticalSection(&sg_CritSectForAckBuf); // Unlock the buffer
-}
-*/
-/**
- * \return TRUE if client exists else FALSE
- *
- * Checks for the existance of the client with the name pcClientName.
- */
-static BOOL bClientExist(std::string pcClientName, INT& Index)
-{
-    for (UINT i = 0; i < sg_asClientToBufMap.size(); i++)
-    {
-        if (pcClientName == sg_asClientToBufMap[i].m_acClientName)
-        {
-            Index = i;
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
-
-
-/**
- * \return TRUE if client exists else FALSE
- *
- * Searches for the client with the id dwClientId.
- */
-static BOOL bClientIdExist(const DWORD& dwClientId)
-{
-    BOOL bReturn = FALSE;
-
-    for (UINT i = 0; i < sg_asClientToBufMap.size(); i++)
-    {
-        if (sg_asClientToBufMap[i].m_dwClientID == dwClientId)
-        {
-            bReturn = TRUE;
-            i = sg_unClientCnt; // break the loop
-        }
-    }
-    return bReturn;
-}
-
-/**
- * Returns the available slot
- */
-static DWORD dwGetAvailableClientSlot()
-{
-    DWORD nClientId = 2;
-    for (INT i = 0; i < MAX_CLIENT_ALLOWED; i++)
-    {
-        if (bClientIdExist(nClientId))
-        {
-            nClientId += 1;
-        }
-        else
-        {
-            i = MAX_CLIENT_ALLOWED; //break the loop
-        }
-    }
-    return nClientId;
-}
-
-/**
- * \return Returns true if found else false.
- *
- * unClientIndex will have index to client array which has clientId dwClientID.
- */
-static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
-{
-    BOOL bResult = FALSE;
-
-    for (UINT i = 0; i < sg_asClientToBufMap.size(); i++)
-    {
-        if (sg_asClientToBufMap[i].m_dwClientID == dwClientID)
-        {
-            unClientIndex = i;
-            i = sg_unClientCnt; //break the loop
-            bResult = TRUE;
-            break;
-        }
-    }
-    return bResult;
-}
-
-/**
- * \return TRUE if client removed else FALSE
- *
- * Removes the client with client id dwClientId.
- */
-static BOOL bRemoveClient(DWORD dwClientId)
-{
-    BOOL bResult = FALSE;
-    if (sg_unClientCnt > 0)
-    {
-        UINT unClientIndex = 0;
-        if (bGetClientObj(dwClientId, unClientIndex))
-        {
-            sg_asClientToBufMap[unClientIndex].m_dwClientID = 0;
-            sg_asClientToBufMap[unClientIndex].m_acClientName = "";
-
-            for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
-            {
-                sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = nullptr;
-            }
-            sg_asClientToBufMap[unClientIndex].m_unBufCount = 0;
-            if ((unClientIndex + 1) < sg_unClientCnt)
-            {
-                sg_asClientToBufMap[unClientIndex] = sg_asClientToBufMap[sg_unClientCnt - 1];
-            }
-            sg_unClientCnt--;
-            bResult = TRUE;
-        }
-    }
-    return bResult;
 }
 
 /**
@@ -1351,8 +1146,6 @@ public:
     HRESULT FLEXRAY_SetConfigData(CHANNEL_CONFIG& ouAbsSFibexContainer) ;
     HRESULT FLEXRAY_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog) ;
     HRESULT FlexRAY_GetControllerCapabilities(s_FLXControllerCapabilities& ouFlexRayCapabilities);
-    //HRESULT FLEXRAY_ManageMsgBuf(BYTE byAction, DWORD ClientID, CBaseFLEXBufFSE* pBufObj) ;
-    //HRESULT FLEXRAY_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName);
     HRESULT FLEXRAY_StartHardware(void) ;
     HRESULT FLEXRAY_StopHardware(void) ;
     HRESULT FLEXRAY_ResetHardware(void) ;
@@ -1377,28 +1170,7 @@ private:
 };
 //CClientList   CDIL_FLEXRAY_ETAS_BOA::m_ClientList;
 CDIL_FLEXRAY_ETAS_BOA* g_pouDIL_FLEXRAY_BOA = nullptr;
-/**
- * This function writes the message to the corresponding clients buffer
- */
-/*void CDIL_FLEXRAY_ETAS_BOA::vWriteIntoClientsBuffer(s_FLXMSG& sFlexRayData)
-{
-    //Write into the client's buffer and Increment message Count
-    for (int iClientIndex=0; iClientIndex < m_ClientList.Size(); iClientIndex++)
-    {
-        CClientBuffer* pClient = m_ClientList.GetClientByIndex(iClientIndex);
-        if (pClient)
-        {
-            for (int iBufIndex = 0; iBufIndex < pClient->NumOfSEBuffers(); iBufIndex++)
-            {
-                CBaseFLEXBufFSE* pFLEXBufSE = pClient->GetSEBufferByIndex(iBufIndex);
-                if (pFLEXBufSE)
-                {
-                    pFLEXBufSE->WriteIntoBuffer(&sFlexRayData);
-                }
-            }
-        }
-    }
-}*/
+
 /**
  * Processes Rx msg and writes into regiastered clients buffer.
  */
@@ -1549,90 +1321,7 @@ void vInitializeQueueConfig(UINT nChannel)
     {
         sg_asChannel[nChannel].m_OCI_RxQueueCfg.selfReceptionMode = OCI_SELF_RECEPTION_ON;
     }
-
-    /* configure Tx Queue*/
-    //sg_asChannel[nChannel].m_OCI_TxQueueCfg.reserved = 0;
 }
-/**
-* \brief         Returns the CDIL_FLEXRAY_ETAS_BOA object
-* \param[out]    ppvInterface, is void pointer to take back the reference to CDIL_CAN_VectorXL object
-* \return        S_OK for success, S_FALSE for failure
-* \authors       Arunkumar Karri
-* \date          07.10.2011 Created
-*/
-
-
-/**
- * \return S_OK for success, S_FALSE for failure
- *
- * Registers a client to the DIL. ClientID will have client id
- * which will be used for further client related calls
- */
-/*
-HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
-{
-    HRESULT hResult = S_FALSE;
-    if (bRegister)
-    {
-        if (sg_unClientCnt < MAX_CLIENT_ALLOWED)
-        {
-            INT Index = 0;
-            if (!bClientExist(pacClientName, Index))
-            {
-                //Currently store the client information
-                if (strcmp(pacClientName, FLEXRAY_MONITER_NODE) == 0)
-                {
-                    //First slot is reserved to monitor node
-                    ClientID = 1;
-                    sg_asClientToBufMap[0].m_acClientName = pacClientName;
-                    sg_asClientToBufMap[0].m_dwClientID = ClientID;
-                    sg_asClientToBufMap[0].m_unBufCount = 0;
-                }
-                else
-                {
-                    if (!bClientExist(FLEXRAY_MONITER_NODE, Index))
-                    {
-                        Index = sg_unClientCnt + 1;
-                    }
-                    else
-                    {
-                        Index = sg_unClientCnt;
-                    }
-                    ClientID = dwGetAvailableClientSlot();
-                    sg_asClientToBufMap[Index].m_acClientName = pacClientName;
-
-                    sg_asClientToBufMap[Index].m_dwClientID = ClientID;
-                    sg_asClientToBufMap[Index].m_unBufCount = 0;
-                }
-                sg_unClientCnt++;
-                hResult = S_OK;
-            }
-            else
-            {
-                ClientID = sg_asClientToBufMap[Index].m_dwClientID;
-                hResult = ERR_CLIENT_EXISTS;
-            }
-        }
-        else
-        {
-            hResult = ERR_NO_MORE_CLIENT_ALLOWED;
-        }
-    }
-    else
-    {
-        if (bRemoveClient(ClientID))
-        {
-            hResult = S_OK;
-        }
-        else
-        {
-            hResult = ERR_NO_CLIENT_EXIST;
-        }
-    }
-
-    return hResult;
-}
-*/
 
 USAGEMODE HRESULT GetIDIL_FLEXRAY_Controller(void** ppvInterface)
 {
@@ -1680,60 +1369,6 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_SetAppParams(HWND hWndOwner, Base_Wrapper
     return hResult;
 }
 
-/*HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
-{
-    HRESULT hResult;
-    if (bRegister)
-    {
-        hResult = m_ClientList.RegisterClient(ClientID, pacClientName);
-    }
-    else
-    {
-        hResult = m_ClientList.RemoveClient(ClientID);
-    }
-    return hResult;
-}
-*/
-/*HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ManageMsgBuf(BYTE byAction, DWORD ClientID, CBaseFLEXBufFSE* pBufObj)
-{
-    HRESULT hResult = S_FALSE;
-    if (pBufObj)
-    {
-        CClientBuffer* pClientBuf = m_ClientList.GetClientByID(ClientID);
-        if (pClientBuf)
-        {
-            if (byAction == MSGBUF_ADD)
-            {
-                hResult = pClientBuf->AddMsgBuf(pBufObj);
-            }
-            else if (byAction == MSGBUF_CLEAR)
-            {
-                if (pBufObj != nullptr)
-                {
-                    hResult = pClientBuf->RemoveMsgBuf(pBufObj);
-                }
-                else
-                {
-                    // remove all message buffers
-                    hResult = pClientBuf->RemoveAllMsgBuf();
-                }
-            }
-        }
-        else
-        {
-            hResult = ERR_NO_CLIENT_EXIST;
-        }
-    }
-    else
-    {
-        if (byAction == MSGBUF_CLEAR)
-        {
-            hResult = m_ClientList.RemoveAllMsgBufOnAllClients();
-        }
-    }
-    return hResult;
-}
-*/
 HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_LoadDriverLibrary(void)
 {
     HRESULT hResult = S_FALSE;
@@ -2568,4 +2203,3 @@ DWORD WINAPI DataTransmitThread(LPVOID pVoid)
     SetEvent(pThreadParam->hGetExitNotifyEvent());
     return 0;
 }
-
