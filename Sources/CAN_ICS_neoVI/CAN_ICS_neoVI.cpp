@@ -51,42 +51,9 @@
 #define new DEBUG_NEW
 #endif
 
-//
-//  Note!
-//
-//      If this DLL is dynamically linked against the MFC
-//      DLLs, any functions exported from this DLL which
-//      call into MFC must have the AFX_MANAGE_STATE macro
-//      added at the very beginning of the function.
-//
-//      For example:
-//
-//      extern "C" BOOL PASCAL EXPORT ExportedFunction()
-//      {
-//          AFX_MANAGE_STATE(AfxGetStaticModuleState());
-//          // normal function body here
-//      }
-//
-//      It is very important that this macro appear in each
-//      function, prior to any calls into MFC.  This means that
-//      it must appear as the first statement within the
-//      function, even before any object variable declarations
-//      as their constructors may generate calls into the MFC
-//      DLL.
-//
-//      Please see MFC Technical Notes 33 and 58 for additional
-//      details.
-//
-
-// CCAN_ICS_neoVIApp
-
 BEGIN_MESSAGE_MAP(CCAN_ICS_neoVIApp, CWinApp)
 END_MESSAGE_MAP()
 
-
-/**
- * CCAN_ICS_neoVIApp construction
- */
 CCAN_ICS_neoVIApp::CCAN_ICS_neoVIApp()
 {
     // TODO: add construction code here,
@@ -94,14 +61,10 @@ CCAN_ICS_neoVIApp::CCAN_ICS_neoVIApp()
 }
 
 
-// The one and only CCAN_ICS_neoVIApp object
+/** The one and only CCAN_ICS_neoVIApp object */
 CCAN_ICS_neoVIApp theApp;
 
-
-/**
- * CCAN_ICS_neoVIApp initialization
- */
-static HINSTANCE ghLangInst=nullptr;
+static HINSTANCE ghLangInst = nullptr;
 
 BOOL CCAN_ICS_neoVIApp::InitInstance()
 {
@@ -261,9 +224,6 @@ static HANDLE m_hDataEvent = nullptr;
 static HANDLE sg_hCntrlStateChangeEvent = nullptr;
 static DWORD  sg_dwClientID = 0;
 
-// Current buffer size
-//static UINT sg_unMsgBufCount = 0;
-
 // state variables
 static BOOL sg_bIsConnected = FALSE;
 static BOOL sg_bIsDriverRunning = FALSE;
@@ -277,7 +237,6 @@ static void vMapDeviceChannelIndex();
 HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails);
 
 /*Please recheck and retain only necessary variables*/
-
 
 #define NEW_LINE                "\n"
 #define TOTAL_ERROR             600
@@ -307,14 +266,14 @@ static BYTE m_bytNetworkIDs[MAX_DEVICES] = {0};
 static unsigned char m_ucNetworkID[NETWORKS_COUNT] = {0};
 static int m_anhObject[MAX_DEVICES][NETWORKS_COUNT+1] = {0};
 static int m_anhWriteObject[MAX_DEVICES] = {0};
-static char m_omErrStr[MAX_STRING] = {0};
+static std::string m_omErrStr;
 static BOOL m_bInSimMode = FALSE;
-//static CWinThread* m_pomDatInd = nullptr;
 static int s_anErrorCodes[TOTAL_ERROR] = {0};
 
 static INT sg_anSelectedItems[CHANNEL_ALLOWED];
 
 /* Recheck ends */
+
 /* Error Definitions */
 #define CAN_USB_OK 0
 #define CAN_QRCV_EMPTY 0x20
@@ -406,7 +365,6 @@ static sDatIndStr s_DatIndThread;
 class CDIL_CAN_ICSNeoVI : public CBaseDIL_CAN_Controller
 {
 public:
-    /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
     HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
@@ -1334,8 +1292,7 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
 {
     int nResult = 0;
     int hObject = 0;
-    char acTempStr[512] = {'\0'};
-    char acFirmware[128] = {"X.X"};
+    std::stringstream acFirmware;
 
     nResult = (*icsneoOpenNeoDevice)(&sg_ndNeoToOpen[nDevID], &hObject, nullptr, 1, 0);
     if (nResult == NEOVI_OK && hObject != 0)
@@ -1347,7 +1304,9 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
             nResult = (*icsneoGetHWFirmwareInfo)(hObject, &objstFWInfo);
             if ( nResult == 1 )
             {
-                _stprintf(acFirmware, "%d.%d", objstFWInfo.iAppMajor, objstFWInfo.iAppMinor);
+                acFirmware << std::dec << (unsigned short) objstFWInfo.iAppMajor;
+                acFirmware << '.';
+                acFirmware << std::dec << (unsigned short) objstFWInfo.iAppMinor;
             }
         }
         (*icsneoClosePort)(hObject, &nErrors);
@@ -1358,15 +1317,13 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
         sg_HardwareIntr[nChannels].m_dwIdInterface = sg_ndNeoToOpen[nDevID].Handle;
         sg_HardwareIntr[nChannels].m_dwVendor = sg_ndNeoToOpen[nDevID].SerialNumber;
         sg_HardwareIntr[nChannels].m_bytNetworkID = narrNetwordID[i];
-        sg_HardwareIntr[nChannels].m_acDeviceName = acFirmware;
+        sg_HardwareIntr[nChannels].m_acDeviceName = acFirmware.str();
+        sg_HardwareIntr[nChannels].m_acNameInterface = std::to_string(sg_ndNeoToOpen[nDevID].DeviceType);
 
-        _stprintf_s(acTempStr, 512, "%d", sg_ndNeoToOpen[nDevID].DeviceType);
-        sg_HardwareIntr[nChannels].m_acNameInterface = acTempStr;
-
-
-        _stprintf(acTempStr, "SN: %d, Port ID: %d-CAN%d", sg_HardwareIntr[nChannels].m_dwVendor,
-                  sg_HardwareIntr[nChannels].m_dwIdInterface, narrNetwordID[i]);
-        sg_HardwareIntr[nChannels].m_acDescription = acTempStr;
+        std::stringstream acTempStr;
+        acTempStr << "SN: " << std::dec << sg_HardwareIntr[nChannels].m_dwVendor << ", ";
+        acTempStr << "Port ID: " << sg_HardwareIntr[nChannels].m_dwIdInterface << "-CAN" << std::dec << narrNetwordID[i];
+        sg_HardwareIntr[nChannels].m_acDescription = acTempStr.str();
 
         nChannels++;
     }
@@ -1596,14 +1553,14 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
     {
         if (nHardwareCount == 0)
         {
-            _tcscpy(m_omErrStr,"Query successful, but no device found");
+            m_omErrStr = "Query successful, but no device found";
         }
         nReturn = nHardwareCount;
     }
     else
     {
         nHardwareCount = 0;
-        _tcscpy(m_omErrStr,"Query for devices unsuccessful");
+        m_omErrStr = "Query for devices unsuccessful";
     }
     // Return the operation result
     return nReturn;
@@ -1630,13 +1587,11 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt = 0)
     sg_ucNoOfHardware = (UCHAR)nDevices;
     // Capture only Driver Not Running event
     // Take action based on number of Hardware Available
-    char acNo_Of_Hw[MAX_STRING] = {0};
-    _stprintf(acNo_Of_Hw, "Number of neoVIs Available: %d", nDevices);
-    // No Hardware found
 
+    // No Hardware found
     if( nDevices == 0 )
     {
-        MessageBox(nullptr,m_omErrStr, nullptr, MB_OK | MB_ICONERROR);
+        MessageBox(nullptr, m_omErrStr.c_str(), nullptr, MB_OK | MB_ICONERROR);
     }
     // Available hardware is lesser then the supported channels
     else
@@ -2328,7 +2283,7 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
     for (UINT i = 0; i < (UINT)sg_ucNoOfHardware; i++)
     {
         unsigned int serialNumber = sg_ndNeoToOpen[i].SerialNumber;
-        char netid_str[256];
+        std::string netid_str;
 
         int nHardwareLic = 0;
         if (sg_ndNeoToOpen[i].DeviceType == NEODEVICE_VCAN3)
@@ -2357,16 +2312,16 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                 switch (m_bytNetworkIDs[i])
                 {
                     case NETID_HSCAN:
-                        strncpy(&netid_str[0], "HSCAN", sizeof(netid_str));
+                        netid_str = "HSCAN";
                         break;
                     case NETID_MSCAN:
-                        strncpy(&netid_str[0], "MSCAN", sizeof(netid_str));
+                        netid_str = "MSCAN";
                         break;
                     case NETID_SWCAN:
-                        strncpy(&netid_str[0], "SW CAN", sizeof(netid_str));
+                        netid_str = "SW CAN";
                         break;
                     case NETID_LSFTCAN:
-                        strncpy(&netid_str[0], "LSFT CAN", sizeof(netid_str));
+                        netid_str = "LSFT CAN";
                         break;
                 }
                 break;
@@ -2376,7 +2331,7 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                 switch (m_bytNetworkIDs[i])
                 {
                     case NETID_HSCAN:
-                        strncpy(&netid_str[0], "CAN", sizeof(netid_str));
+                        netid_str = "CAN";
                         break;
                 }
                 break;
@@ -2388,7 +2343,7 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                     switch (m_bytNetworkIDs[i])
                     {
                         case NETID_HSCAN:
-                            strncpy(&netid_str[0], "CAN", sizeof(netid_str));
+                            netid_str = "CAN";
                             break;
                     }
                 }
@@ -2397,10 +2352,10 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                     switch (m_bytNetworkIDs[i])
                     {
                         case NETID_HSCAN:
-                            strncpy(&netid_str[0], "CAN 1", sizeof(netid_str));
+                            netid_str = "CAN 1";
                             break;
                         case NETID_MSCAN:
-                            strncpy(&netid_str[0], "CAN 2", sizeof(netid_str));
+                            netid_str = "CAN 2";
                             break;
                     }
                 }
@@ -2408,21 +2363,21 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
         }
 
         /* default case */
-        if (strlen(&netid_str[0]) == 0)
+        if (netid_str.empty())
         {
             switch (m_bytNetworkIDs[i])
             {
                 case NETID_HSCAN:
-                    strncpy(&netid_str[0], "HSCAN", sizeof(netid_str));
+                    netid_str = "HSCAN";
                     break;
                 case NETID_MSCAN:
-                    strncpy(&netid_str[0], "MSCAN", sizeof(netid_str));
+                    netid_str = "MSCAN";
                     break;
                 case NETID_SWCAN:
-                    strncpy(&netid_str[0], "SWCAN", sizeof(netid_str));
+                    netid_str = "SWCAN";
                     break;
                 case NETID_LSFTCAN:
-                    strncpy(&netid_str[0], "LSFTCAN", sizeof(netid_str));
+                    netid_str = "LSFTCAN";
                     break;
             }
         }
@@ -2484,7 +2439,7 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                 chTemp = "Unknown";
                 break;
         };
-        stringStream << chTemp << ", Serial Number " << serialNumber << ", Network: " << netid_str[0];
+        stringStream << chTemp << ", Serial Number " << serialNumber << ", Network: " << netid_str;
         pControllerDetails[i].m_omHardwareDesc = chTemp;
     }
     return S_OK;
@@ -2870,7 +2825,7 @@ static DWORD dwGetAvailableClientSlot()
 /**
  * Register Client
  */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, char* pacClientName)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_RegisterClient(BOOL bRegister, DWORD & ClientID, char * pacClientName)
 {
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
@@ -3088,27 +3043,19 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetControllerParams(int nValue, ECONTR_PARAM eCon
             {
                 case defMODE_ACTIVE:
                 {
-                    char SetFireParms[100];
                     int iErrorIndex;
-                    unsigned short NetworkEnables = 0xFFFF;
-
-                    sprintf(SetFireParms, "can1/Mode=0", NetworkEnables);
                     for (UINT i = 0; i < sg_podActiveNetwork->m_nNoOfChannels; i++)
                     {
-                        (void) icsneoSetDeviceParameters(m_anhObject[0][0], SetFireParms, &iErrorIndex, 1);
+                        (void) icsneoSetDeviceParameters(m_anhObject[0][0], "can1/Mode=0", &iErrorIndex, 1);
                     }
                 }
                 break;
                 case defMODE_PASSIVE:
                 {
-                    char SetFireParms[100];
                     int iErrorIndex;
-                    unsigned short NetworkEnables = 0xFFFF;
-
-                    sprintf(SetFireParms, "can1/Mode=3", NetworkEnables);
                     for (UINT i = 0; i < sg_podActiveNetwork->m_nNoOfChannels; i++)
                     {
-                        (void) icsneoSetDeviceParameters(m_anhObject[0][0], SetFireParms, &iErrorIndex, 1);
+                        (void) icsneoSetDeviceParameters(m_anhObject[0][0], "can1/Mode=3", &iErrorIndex, 1);
                     }
                 }
                 break;

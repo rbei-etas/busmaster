@@ -672,13 +672,13 @@ static HRESULT GetOCI_API_Pointers(HMODULE hLibOCI)
  * Search for all connected Hardware, that supports the OCI
  * CAN interface and deliver the URI location of the hardware.
  */
-static void findCanNodes(CSI_Tree* sfsTree, OCI_URIName uriPrefix, OCI_URIName uriNames[], uint32 size, uint32* position)
+static void findCanNodes(CSI_Tree* sfsTree, std::string uriPrefix, OCI_URIName uriNames[], uint32 size, uint32* position)
 {
     /* Uncomment the next line to get a view of the items in the tree */
     // printf( "uriPrefix is %s; node is %s\n", uriPrefix, sfsTree->item.uriNames );
 
     /* Basic error checking */
-    if(!sfsTree || !uriNames || !uriPrefix || !position)
+    if(!sfsTree || !uriNames || uriPrefix.empty() || !position)
     {
         return;
     }
@@ -691,9 +691,11 @@ static void findCanNodes(CSI_Tree* sfsTree, OCI_URIName uriPrefix, OCI_URIName u
     {
         if (*position < size)
         {
-            strcpy(uriNames[ *position ], uriPrefix);
-            strcat(uriNames[ *position ], "/");
-            strcat(uriNames[ *position ], sfsTree->item.uriName);
+            std::string newUriName;
+            newUriName.append(uriPrefix.c_str());
+            newUriName.append("/");
+            newUriName.append(sfsTree->item.uriName);
+            strncpy_s(uriNames[*position], sizeof(OCI_URIName), newUriName.c_str(), newUriName.length());
             (*position)++;
         }
         else
@@ -705,11 +707,10 @@ static void findCanNodes(CSI_Tree* sfsTree, OCI_URIName uriPrefix, OCI_URIName u
     /* If the current tree node has a child, recurse into it */
     if (sfsTree->child)
     {
-        OCI_URIName newUriPrefix;
-
-        strcpy(newUriPrefix, uriPrefix);
-        strcat(newUriPrefix, "/");
-        strcat(newUriPrefix, sfsTree->item.uriName);
+        std::string newUriPrefix;
+        newUriPrefix.append(uriPrefix);
+        newUriPrefix.append("/");
+        newUriPrefix.append(sfsTree->item.uriName);
         findCanNodes(sfsTree->child, newUriPrefix, uriNames, size, position);
     }
 

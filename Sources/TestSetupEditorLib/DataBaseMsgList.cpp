@@ -72,7 +72,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
     BOOL bReturnValue   = TRUE;
     BOOL bIsFileOpen    = FALSE;
     m_unMessageCount = 0;
-    CHAR s_acTraceStr[1024];
     // validate the file
     bReturnValue = bValidateDatabaseFile(strFileName);
     if ( bReturnValue == TRUE )
@@ -111,16 +110,12 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                     fCurrDBVer = (FLOAT)atof(DATABASE_VERSION_NO);
 
                     // Updated for checking the dbf version with Previous version
-                    if (fDBVerNum < fCurrDBVer && omDbVerNo != DATABASE_PREVIOUS_VERSION_NO)
+                    if ((fDBVerNum < fCurrDBVer) && (omDbVerNo != DATABASE_PREVIOUS_VERSION_NO))
                     {
-                        strcpy (s_acTraceStr, DATABASE_MISMATCH);
-                        //TODO::    vWriteTextToTrace();
                         //m_bIsDatabaseSaved = FALSE;
                     }
                     if (fDBVerNum > fCurrDBVer)
                     {
-                        strcpy_s(s_acTraceStr, 1024, "DATABASE_CORRUPT");
-                        //TODO::    vWriteTextToTrace();
                         return FALSE;
                     }
                 }
@@ -208,8 +203,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     }
                                     else
                                     {
-                                        strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
-                                        //TODO::    vWriteTextToTrace();
                                         bReturnValue = FALSE;
                                         break;
                                     }
@@ -229,8 +222,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     }
                                     else
                                     {
-                                        strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
-                                        //TODO::    vWriteTextToTrace();
                                         bReturnValue = FALSE;
                                         break;
                                     }
@@ -250,8 +241,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     }
                                     else
                                     {
-                                        strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
-                                        //TODO::    vWriteTextToTrace();
                                         bReturnValue = FALSE;
                                         break;
                                     }
@@ -269,8 +258,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     }
                                     else
                                     {
-                                        strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
-                                        //TODO::    vWriteTextToTrace();
                                         bReturnValue = FALSE;
                                         break;
                                     }
@@ -289,7 +276,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     }
                                     else
                                     {
-                                        strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
                                         bReturnValue = FALSE;
                                         break;
                                     }
@@ -297,8 +283,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     // check that extracted substring is not empty
                                     if(sMsgDet.IsEmpty())
                                     {
-                                        strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
-                                        //TODO::    vWriteTextToTrace();
                                         bReturnValue = FALSE;
                                         break;
                                     }
@@ -314,8 +298,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     }
                                     else
                                     {
-                                        strcpy_s(s_acTraceStr, 1024, _("Database file corrupted"));
-                                        //TODO::    vWriteTextToTrace();
                                         bReturnValue = FALSE;
                                         break;
                                     }
@@ -346,8 +328,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
 
                                                 if (sTempSg == nullptr)
                                                 {
-                                                    strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
-                                                    //TODO::    vWriteTextToTrace();
                                                     bReturnValue = FALSE;
                                                     break;
                                                 }
@@ -380,8 +360,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                         }
                                                         else
                                                         {
-                                                            strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
-                                                            //TODO::    vWriteTextToTrace();
                                                             bReturnValue = FALSE;
                                                             break;
                                                         }
@@ -397,8 +375,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                         }
                                                         else
                                                         {
-                                                            strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
-                                                            //TODO::    vWriteTextToTrace();
                                                             bReturnValue = FALSE;
                                                             break;
                                                         }
@@ -416,8 +392,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                         }
                                                         else
                                                         {
-                                                            strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
-                                                            //TODO::    vWriteTextToTrace();
                                                             bReturnValue = FALSE;
                                                             break;
                                                         }
@@ -436,7 +410,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                         }
                                                         else
                                                         {
-                                                            strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
                                                             //TODO::    vWriteTextToTrace();
                                                             bReturnValue = FALSE;
                                                             break;
@@ -457,8 +430,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                         }
                                                         else
                                                         {
-                                                            strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
-                                                            //TODO::    vWriteTextToTrace();
                                                             bReturnValue = FALSE;
                                                             break;
                                                         }
@@ -483,8 +454,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                         }
                                                         else
                                                         {
-                                                            strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
-                                                            //TODO::    vWriteTextToTrace();
                                                             bReturnValue = FALSE;
                                                             break;
                                                         }
@@ -510,8 +479,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                         }
                                                         else
                                                         {
-                                                            strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
-                                                            //TODO::    vWriteTextToTrace();
                                                             bReturnValue = FALSE;
                                                             break;
                                                         }
@@ -538,8 +505,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                         }
                                                         else
                                                         {
-                                                            strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
-                                                            //TODO::    vWriteTextToTrace();
                                                             bReturnValue = FALSE;
                                                             break;
                                                         }
@@ -558,8 +523,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                         }
                                                         else
                                                         {
-                                                            strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
-                                                            //TODO::    vWriteTextToTrace();
                                                             bReturnValue = FALSE;
                                                             break;
                                                         }
@@ -578,8 +541,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                         }
                                                         else
                                                         {
-                                                            strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
-                                                            //TODO::    vWriteTextToTrace();
                                                             bReturnValue = FALSE;
                                                             break;
                                                         }
@@ -634,7 +595,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
 
                                                                     sFirstLine = sFirstLine.Right(sFirstLine.GetLength() - nFoundIndex - 1);
 
-                                                                    //                                                                        pomSgDescVal->m_n64SignalVal = _atoi64( (const char*) sFirstLine );
                                                                     pomSgDescVal->m_DescValue.n64Value = _atoi64( (const char*) sFirstLine );
 
                                                                     pomSgDescVal->m_pouNextSignalSignalDescVal = nullptr;
@@ -642,8 +602,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                                                 }// end if ( finding for comma)
                                                                 else
                                                                 {
-                                                                    strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
-                                                                    //TODO::    vWriteTextToTrace();
                                                                     bReturnValue = FALSE;
                                                                     break;
                                                                 }
@@ -718,8 +676,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                     }
                     else
                     {
-                        strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
-                        //TODO::    vWriteTextToTrace();
                         bReturnValue = FALSE;
                     }
 
@@ -731,10 +687,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
             }
             else
             {
-                CString omStrErrorMsg = "";
-                omStrErrorMsg.Format(_("Error in opening %s database file"),strFileName);
-                strcpy_s(s_acTraceStr, 1024, _(MSG_MEMORY_CONSTRAINT));
-                //TODO::    vWriteTextToTrace();
             }
         }
         CATCH_ALL (pomE)
@@ -744,8 +696,6 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                 LPTSTR lpszError = "";
                 // Get error
                 pomE->GetErrorMessage( lpszError, defSIZE_OF_ERROR_BUFFER);
-                strcpy_s(s_acTraceStr, 1024, lpszError);
-                //TODO::    vWriteTextToTrace();
                 pomE->Delete();
             }
 
@@ -775,11 +725,8 @@ Modifications  :
 BOOL CDataBaseMsgList::bValidateDatabaseFile(CString strFileName)
 {
     BOOL bReturnValue = FALSE;
-    CHAR s_acTraceStr[1024];
     if ( strFileName.IsEmpty() )
     {
-        strcpy_s(s_acTraceStr, 1024, _("Database filename is empty."));
-        //vWriteTextToTrace();
     }
     else
     {
@@ -798,7 +745,6 @@ BOOL CDataBaseMsgList::bValidateDatabaseFile(CString strFileName)
 
             if ( sFileExtn != DATABASE_EXTN)
             {
-                strcpy_s(s_acTraceStr, 1024, _("Invalid database filename"));
                 return FALSE;
             }
             else
@@ -851,8 +797,6 @@ BOOL CDataBaseMsgList::bValidateDatabaseFile(CString strFileName)
                             LPTSTR lpszError = "";
                             // Get error
                             pomE->GetErrorMessage( lpszError, defSIZE_OF_ERROR_BUFFER);
-                            strcpy_s(s_acTraceStr, 1024, "lpszError");
-                            //TODO:: vWriteTextToTrace();
                             pomE->Delete();
                         }
                     }
