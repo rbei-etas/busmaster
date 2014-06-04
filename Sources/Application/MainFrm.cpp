@@ -3886,7 +3886,7 @@ void CMainFrame::OnLogFilterLIN()
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
     {
-        bLogFilterStatus = pouFlags->nGetFlagStatus(LOGFILTER_LIN);
+        bLogFilterStatus = (pouFlags->nGetFlagStatus(LOGFILTER_LIN) != 0);
         bLogFilterStatus = bLogFilterStatus ? FALSE : TRUE;
         pouFlags->vSetFlagStatus(LOGFILTER_LIN, bLogFilterStatus);
         if (sg_pouFrameProcLIN != nullptr)
@@ -3911,7 +3911,7 @@ void CMainFrame::ApplyReplayFilter()
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
     {
-        bReplayFilterStatus = pouFlags->nGetFlagStatus(REPLAYFILTER);
+        bReplayFilterStatus = (pouFlags->nGetFlagStatus(REPLAYFILTER) != 0);
         pouFlags->vSetFlagStatus(REPLAYFILTER, bReplayFilterStatus);
 
         vREP_EnableFilters(bReplayFilterStatus);
@@ -3930,7 +3930,7 @@ void CMainFrame::ApplyLogFilter()
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
     {
-        bLogFilterStatus = pouFlags->nGetFlagStatus(LOGFILTER);
+        bLogFilterStatus = (pouFlags->nGetFlagStatus(LOGFILTER) != 0);
         //bLogFilterStatus = bLogFilterStatus ? FALSE : TRUE;
         pouFlags->vSetFlagStatus(LOGFILTER, bLogFilterStatus);
         if (sg_pouFrameProcCAN != nullptr)
@@ -3966,7 +3966,7 @@ void CMainFrame::ApplyLINLogFilter()
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
     {
-        bLogFilterStatus = pouFlags->nGetFlagStatus(LOGFILTER_LIN);
+        bLogFilterStatus = (pouFlags->nGetFlagStatus(LOGFILTER_LIN) != 0);
         //bLogFilterStatus = bLogFilterStatus ? FALSE : TRUE;
         pouFlags->vSetFlagStatus(LOGFILTER_LIN, bLogFilterStatus);
         if (sg_pouFrameProcLIN != nullptr)
@@ -6402,7 +6402,7 @@ void CMainFrame::OnMessageFilterButton()
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
     {
-        bMessageFilterStatus = pouFlags->nGetFlagStatus(DISPLAYFILTERON);
+        bMessageFilterStatus = (pouFlags->nGetFlagStatus(DISPLAYFILTERON) != 0);
         bMessageFilterStatus = bMessageFilterStatus ? FALSE : TRUE;
         pouFlags->vSetFlagStatus(DISPLAYFILTERON, bMessageFilterStatus);
 
@@ -6421,7 +6421,7 @@ void CMainFrame::OnMessageFilterButtonLin()
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
     {
-        bMessageFilterStatus = pouFlags->nGetFlagStatus(DISPLAYFILTERONLIN);
+        bMessageFilterStatus = (pouFlags->nGetFlagStatus(DISPLAYFILTERONLIN) != 0);
         bMessageFilterStatus = bMessageFilterStatus ? FALSE : TRUE;
         pouFlags->vSetFlagStatus(DISPLAYFILTERONLIN, bMessageFilterStatus);
 
@@ -6605,7 +6605,7 @@ void CMainFrame::OnReplayFilter()
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
     {
-        bReplayFilterStatus = pouFlags->nGetFlagStatus(REPLAYFILTER);
+        bReplayFilterStatus = (pouFlags->nGetFlagStatus(REPLAYFILTER) != 0);
         bReplayFilterStatus = bReplayFilterStatus ? FALSE : TRUE;
         pouFlags->vSetFlagStatus(REPLAYFILTER, bReplayFilterStatus);
 
@@ -6625,7 +6625,7 @@ void CMainFrame::ApplyMessageFilterButton()
     pouFlags = theApp.pouGetFlagsPtr();
     if(pouFlags != nullptr )
     {
-        bMessageFilterStatus = pouFlags->nGetFlagStatus(DISPLAYFILTERON);
+        bMessageFilterStatus = (pouFlags->nGetFlagStatus(DISPLAYFILTERON) != 0);
         //bMessageFilterStatus = bMessageFilterStatus ? FALSE : TRUE;
         pouFlags->vSetFlagStatus(DISPLAYFILTERON, bMessageFilterStatus);
 
@@ -6634,7 +6634,7 @@ void CMainFrame::ApplyMessageFilterButton()
         BYTE bytTbrItemIndex = 6;
         vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
 
-        bMessageFilterStatus = pouFlags->nGetFlagStatus(DISPLAYFILTERONLIN);
+        bMessageFilterStatus = (pouFlags->nGetFlagStatus(DISPLAYFILTERONLIN) != 0);
         //bMessageFilterStatus = bMessageFilterStatus ? FALSE : TRUE;
         pouFlags->vSetFlagStatus(DISPLAYFILTERONLIN, bMessageFilterStatus);
 
@@ -8442,7 +8442,7 @@ void CMainFrame::OnFileConnect()
     if(pouFlags != nullptr)
     {
         // Toggle connect/disconnect flag
-        bool bConnected = pouFlags->nGetFlagStatus(CONNECTED);
+        bool bConnected = (pouFlags->nGetFlagStatus(CONNECTED) != 0);
         bool bReturn = false;
         bConnected = !bConnected;
         // Reset flag for stop running of thread function
@@ -8825,7 +8825,7 @@ void CMainFrame::OnLINConnect()
     CFlags* pouFlag  = theApp.pouGetFlagsPtr();
 
     /* Toggle connect/disconnect flag */
-    bool bConnected = pouFlag->nGetFlagStatus(LIN_CONNECTED);
+    bool bConnected = (pouFlag->nGetFlagStatus(LIN_CONNECTED) != 0);
     bConnected = !bConnected;
 
     CBaseNodeSim* pNodeSim = nullptr;
@@ -13171,7 +13171,7 @@ void CMainFrame::OnFlexRayConnect()
         CFlags* pouFlag  = theApp.pouGetFlagsPtr();
 
         /* Toggle connect/disconnect flag */
-        bool bConnected = pouFlag->nGetFlagStatus(FLEX_CONNECTED);
+        bool bConnected = (pouFlag->nGetFlagStatus(FLEX_CONNECTED) != 0);
         bConnected = !bConnected;
 
         /* If connecton is required */
