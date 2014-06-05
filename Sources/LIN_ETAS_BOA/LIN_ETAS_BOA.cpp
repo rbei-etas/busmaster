@@ -809,24 +809,6 @@ void vCopy_2_OCI_LIN_Data(OCI_LINTxMessage& DestMsg, const STLIN_MSG& SrcMsg)
 /**
  * \return TRUE if client exists else FALSE
  *
- * Checks for the existance of the client with the name pcClientName.
- */
-static BOOL bClientExist(std::string pcClientName, INT & Index)
-{
-    for (UINT i = 0; i < sg_asClientToBufMap.size(); i++)
-    {
-        if (pcClientName == sg_asClientToBufMap[i].m_acClientName)
-        {
-            Index = i;
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
-
-/**
- * \return TRUE if client exists else FALSE
- *
  * Searches for the client with the id dwClientId.
  */
 static BOOL bClientIdExist(const DWORD& dwClientId)
@@ -842,26 +824,6 @@ static BOOL bClientIdExist(const DWORD& dwClientId)
         }
     }
     return bReturn;
-}
-
-/**
- * Returns the available slot
- */
-static DWORD dwGetAvailableClientSlot()
-{
-    DWORD nClientId = 2;
-    for (INT i = 0; i < MAX_CLIENT_ALLOWED; i++)
-    {
-        if (bClientIdExist(nClientId))
-        {
-            nClientId += 1;
-        }
-        else
-        {
-            i = MAX_CLIENT_ALLOWED; //break the loop
-        }
-    }
-    return nClientId;
 }
 
 /**
@@ -881,38 +843,6 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
             i = sg_unClientCnt; //break the loop
             bResult = TRUE;
             break;
-        }
-    }
-    return bResult;
-}
-
-/**
- * \return TRUE if client removed else FALSE
- *
- * Removes the client with client id dwClientId.
- */
-static BOOL bRemoveClient(DWORD dwClientId)
-{
-    BOOL bResult = FALSE;
-    if (sg_unClientCnt > 0)
-    {
-        UINT unClientIndex = 0;
-        if (bGetClientObj(dwClientId, unClientIndex))
-        {
-            sg_asClientToBufMap[unClientIndex].m_dwClientID = 0;
-            sg_asClientToBufMap[unClientIndex].m_acClientName = "";
-
-            for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
-            {
-                sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = nullptr;
-            }
-            sg_asClientToBufMap[unClientIndex].m_unBufCount = 0;
-            if ((unClientIndex + 1) < sg_unClientCnt)
-            {
-                sg_asClientToBufMap[unClientIndex] = sg_asClientToBufMap[sg_unClientCnt - 1];
-            }
-            sg_unClientCnt--;
-            bResult = TRUE;
         }
     }
     return bResult;

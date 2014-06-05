@@ -495,7 +495,7 @@ CString tagFormulaCodeVarEx::omGetEnggValue(DWORD /* dwRawValue */)
 /* STARTS DEFINITION OF CSignalDef */
 CSignalDef::CSignalDef()
 {
-    m_unStartbit = EMPTY_VALUE;
+    m_unStartbit = 0;
     m_unLength = 0;
     m_omNameSignal = "";
     m_bIsBigEndian = FALSE;
@@ -508,14 +508,8 @@ CSignalDef::CSignalDef()
 
 CSignalDef::CSignalDef(CSignalDef& RefObj)
 {
-    if (RefObj.m_unStartbit != EMPTY_VALUE)
-    {
-        m_unStartbit = RefObj.m_unStartbit;
-    }
-    if (RefObj.m_unLength != EMPTY_VALUE)
-    {
-        m_unLength = RefObj.m_unLength;
-    }
+    m_unStartbit = RefObj.m_unStartbit;
+    m_unLength = RefObj.m_unLength;
     m_omNameSignal = RefObj.m_omNameSignal;
     m_bIsBigEndian = RefObj.m_bIsBigEndian;
     m_omUnit = RefObj.m_omUnit;
@@ -531,14 +525,8 @@ CSignalDef::~CSignalDef()
 
 CSignalDef& CSignalDef::operator =(const CSignalDef& RefObj)
 {
-    if (RefObj.m_unStartbit != EMPTY_VALUE)
-    {
-        m_unStartbit = RefObj.m_unStartbit;
-    }
-    if (RefObj.m_unLength != EMPTY_VALUE)
-    {
-        m_unLength = RefObj.m_unLength;
-    }
+    m_unStartbit = RefObj.m_unStartbit;
+    m_unLength = RefObj.m_unLength;
     m_omNameSignal = RefObj.m_omNameSignal;
     m_bIsBigEndian = RefObj.m_bIsBigEndian;
     m_omUnit = RefObj.m_omUnit;
@@ -816,7 +804,7 @@ void vCleanFrameDataSet(CFrameMap& ouDataSet)
 BOOL tagSRange::bIsWithinRange(DWORD dwValue)
 {
     BOOL bReturn = FALSE;
-    if ((m_dwLowerLimit == EMPTY_VALUE) && (m_dwUpperLimit == EMPTY_VALUE))
+    if ((m_dwLowerLimit == 0) && (m_dwUpperLimit == 0))
     {
         bReturn = TRUE;
     }
@@ -829,8 +817,8 @@ BOOL tagSRange::bIsWithinRange(DWORD dwValue)
 
 tagSRange::tagSRange()
 {
-    m_dwLowerLimit = EMPTY_VALUE;
-    m_dwUpperLimit = EMPTY_VALUE;
+    m_dwLowerLimit = 0;
+    m_dwUpperLimit = 0;
 }
 
 // tagScaleLinearCodeVarEx scale linear

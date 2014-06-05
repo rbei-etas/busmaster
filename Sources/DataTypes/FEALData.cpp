@@ -70,7 +70,7 @@ void tagAbsSCluster::DoCleanup()
 {
     m_omClusterID  = "";
     m_omClusterName  = "";
-    m_ulSpeed  = EMPTY_VALUE;
+    m_ulSpeed  = 0;
     m_bIS_HIGH_LOW_BIT_ORDER  = false;
     m_omBIT_COUNTING_POLICY  = "";
     m_omProtocol  = "";
@@ -159,80 +159,34 @@ void tagAbsSChannel::DoCleanup()
 }
 void tagAbsSFLEXRAY_SPECIFIC_CTRL::DoCleanup()
 {
-    m_sKeySlotUsage.m_nStartUpSync  = EMPTY_VALUE;
-    m_sKeySlotUsage.m_nSync = EMPTY_VALUE;
+    m_sKeySlotUsage.m_nStartUpSync  = 0;
+    m_sKeySlotUsage.m_nSync = 0;
     m_sKeySlotUsage.m_omNone = "";
-    m_shMaxDynPayloadLgt  = EMPTY_VALUE;
-
-
-    m_shClusterDriftDamping  = EMPTY_VALUE;
-
-
-    m_nDecodingCorr  = EMPTY_VALUE;
-
-
-
-    m_nListenTimeOut  = EMPTY_VALUE;
-
-
-    m_shMaxDrift  = EMPTY_VALUE;
-
-
-    m_shExternOffsetCorr  = EMPTY_VALUE;
-
-
-    m_shExternRateCorr  = EMPTY_VALUE;
-
-
-    m_shLatestTx  = EMPTY_VALUE;
-
-
-    m_nMicroPreCycle  = EMPTY_VALUE;
-
-
-    m_shOffsetCorrOut  = EMPTY_VALUE;
-
-
-    m_shRateCorrOut  = EMPTY_VALUE;
-
-
-    m_shSamplePerMicrotick  = EMPTY_VALUE;
-
-
-    m_shDelayCompensationA  = EMPTY_VALUE;
-
-
-    m_shDelayCompensationB  = EMPTY_VALUE;
-
-
-    m_shWakeUpPattern  = EMPTY_VALUE;
-
-
+    m_shMaxDynPayloadLgt  = 0;
+    m_shClusterDriftDamping  = 0;
+    m_nDecodingCorr  = 0;
+    m_nListenTimeOut  = 0;
+    m_shMaxDrift  = 0;
+    m_shExternOffsetCorr  = 0;
+    m_shExternRateCorr  = 0;
+    m_shLatestTx  = 0;
+    m_nMicroPreCycle  = 0;
+    m_shOffsetCorrOut  = 0;
+    m_shRateCorrOut  = 0;
+    m_shSamplePerMicrotick  = 0;
+    m_shDelayCompensationA  = 0;
+    m_shDelayCompensationB  = 0;
+    m_shWakeUpPattern  = 0;
     m_bAllowHaltDewToClock  = false;
-
-
-    m_shAllowPassiveToActive  = EMPTY_VALUE;
-
-
-    m_shAcceptedStartUpRange  = EMPTY_VALUE;
-
-
-    m_shMacroInitialOffsetA  = EMPTY_VALUE;
-
-
-    m_shMacroInitialOffsetB  = EMPTY_VALUE;
-
-
-    m_shMicroInitialOffsetA  = EMPTY_VALUE;
-
-
-    m_shMicroInitialOffsetB  = EMPTY_VALUE;
-
-
+    m_shAllowPassiveToActive  = 0;
+    m_shAcceptedStartUpRange  = 0;
+    m_shMacroInitialOffsetA  = 0;
+    m_shMacroInitialOffsetB  = 0;
+    m_shMicroInitialOffsetA  = 0;
+    m_shMicroInitialOffsetB  = 0;
     m_bSingleSlotEnable  = false;
-    m_fMicrotick  = EMPTY_VALUE;
-    m_fMicroPerMacroNom  = EMPTY_VALUE;
-
+    m_fMicrotick  = 0;
+    m_fMicroPerMacroNom  = 0;
 }
 
 void tagAbsSCONTROLLER::DoCleanup()
@@ -242,7 +196,7 @@ void tagAbsSCONTROLLER::DoCleanup()
     m_omContrName  = "";
     m_omVENDOR_NAME  = "";
     m_omCHIP_NAME  = "";
-    m_ulTERMINATION_IMPEDANCE  = EMPTY_VALUE;
+    m_ulTERMINATION_IMPEDANCE  = 0;
     m_omTRANSCEIVER  = "";
     m_sFlexraySpecControllerData.DoCleanup();
 
@@ -317,7 +271,7 @@ void tagAbsSFrame::DoCleanup()
 {
     m_omFrameID  = "";
     m_omFrameName  = "";
-    m_unByteLength  = EMPTY_VALUE;
+    m_unByteLength  = 0;
     m_omFrameType  = "";
     m_odSigInstList.RemoveAll();
     m_podPduInstList.RemoveAll();
@@ -327,9 +281,9 @@ void tagAbsSSignal::DoCleanup()
 {
     m_omSignalID  = "";
     m_omSignalName  = "";
-    m_dDEFAULT_VALUE  = EMPTY_VALUE;
+    m_dDEFAULT_VALUE  = 0;
     m_omCoding  = "";
-    m_unPriority  = EMPTY_VALUE;
+    m_unPriority  = 0;
 
 }
 
@@ -353,7 +307,7 @@ void tagAbsSCODED_TYPE::DoCleanup()
     m_omEncoding = "";
     m_omTermination = "";
     m_sLength.m_odMinMaxList.RemoveAll();
-    m_sLength.m_unLength = EMPTY_VALUE ;
+    m_sLength.m_unLength = 0;
 }
 
 tagAbsSCOMPU_SCALE& tagAbsSCOMPU_SCALE::operator=(tagAbsSCOMPU_SCALE& RefObj)
@@ -407,7 +361,7 @@ void tagAbsSCoding::DoCleanup()
 {
     m_omCodingID = "";
     m_omCodingName = "";
-    m_sPhysicalType.m_fPrecision = EMPTY_VALUE;
+    m_sPhysicalType.m_fPrecision = 0;
     m_sPhysicalType.m_omBaseType = "";
     m_sCodedType.DoCleanup();
     m_odCompuMethodList.RemoveAll();
@@ -472,7 +426,7 @@ void tagAbsSPdu::DoCleanup()
 {
     m_omPduID  = "";
     m_omPduName  = "";
-    m_unByteLen  = EMPTY_VALUE;
+    m_unByteLen  = 0;
     m_omPduType  = "";
     m_odSigInstList.RemoveAll();
 }

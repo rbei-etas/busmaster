@@ -105,12 +105,12 @@ UINT CalcTxTimersExecTime(LPVOID pParam)
         }
         else
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return 0;
 }
@@ -508,7 +508,7 @@ bool CTxFlexRayDataStore::bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -549,7 +549,7 @@ bool CTxFlexRayDataStore::bGetTxData(eTXWNDDETAILS eParam, LPVOID * lpData)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }

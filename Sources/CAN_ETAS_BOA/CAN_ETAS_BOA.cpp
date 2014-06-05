@@ -94,7 +94,7 @@ BOOL CCAN_ETAS_BOA::InitInstance()
     int ret = ::GetModuleFileName(theApp.m_hInstance, szModuleFileName, MAX_PATH);
     if ( ret == 0 || ret == MAX_PATH )
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     /*
@@ -1687,7 +1687,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
             }
             else
             {
-                // ASSERT(FALSE);
+                // ASSERT(false);
             }
         }
         else

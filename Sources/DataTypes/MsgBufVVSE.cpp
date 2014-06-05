@@ -521,7 +521,7 @@ int CMsgBufVVSE::nHandleStartIndex(int nSize)
     {
         if (m_nMsgCount != 0)
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
     TRACE("handled<start>%d<read>%d<write>%d<count>%d<tmpCount>%d\n",m_nStartIndex, m_nReadIndexTmp, m_nIndexWrite, m_nMsgCount, m_nTmpMsgCount);

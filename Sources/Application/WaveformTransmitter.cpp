@@ -110,7 +110,7 @@ UINT64 CWaveformTransmitter::u64GetCurrAmplitude(int CurrItr,
         }
         break;
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
     }
     //ArunKumar K: Currently using the Peak to Peak Amplitude as 0 to 2*Amplitude
     //instead of -Amplitude to +Amplitude
@@ -292,7 +292,7 @@ DWORD WINAPI TransmissionThreadProc(LPVOID pVoid)
         }
         else
         {
-            ASSERT(FALSE); // Unexpected situation.
+            ASSERT(false); // Unexpected situation.
         }
     }
 

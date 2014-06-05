@@ -64,28 +64,28 @@ public:
 
     /* Call to enable/disable logging for a particular block. Having ushBlk equal
     to FOR_ALL, signifies the operation to be performed for all the blocks */
-    virtual HRESULT FPL_EnableLoggingBlock(USHORT ushBlk, BOOL bEnable) = 0;
+    virtual HRESULT FPL_EnableLoggingBlock(USHORT ushBlk, bool bEnable) = 0;
 
     // To enable/disable logging
-    virtual HRESULT FPL_EnableLogging(BOOL bEnable) = 0;
+    virtual HRESULT FPL_EnableLogging(bool bEnable) = 0;
 
     /* Call to enable/disable logging for a particular block. Having ushBlk equal
     to FOR_ALL, signifies the operation to be performed for all the blocks */
-    virtual HRESULT FPL_EnableFilter(USHORT ushBlk, BOOL bEnable) = 0;
+    virtual HRESULT FPL_EnableFilter(USHORT ushBlk, bool bEnable) = 0;
 
     // Query function - current logging status (OFF/ON).
-    virtual BOOL FPL_IsLoggingON(void) = 0;
+    virtual bool FPL_IsLoggingON(void) = 0;
 
-    virtual BOOL FPL_IsLINDataLogged(void) = 0;
+    virtual bool FPL_IsLINDataLogged(void) = 0;
 
     virtual void FPL_DisableLINDataLogFlag(void) = 0;
 
-    virtual BOOL FPL_IsLINThreadBlocked(void) = 0;
+    virtual bool FPL_IsLINThreadBlocked(void) = 0;
 
     virtual void FPL_vCloseLogFile(void) = 0;
 
     // Query function - current filtering status
-    virtual BOOL FPL_IsFilterON(void) = 0;
+    virtual bool FPL_IsFilterON(void) = 0;
 
     // To log a string
     virtual HRESULT FPL_LogString(CString& omStr) = 0;
@@ -135,7 +135,7 @@ public:
     virtual HRESULT FPL_StartEditingSession(void) = 0;
 
     // To stop logging block editing session
-    virtual HRESULT FPL_StopEditingSession(BOOL bConfirm) = 0;
+    virtual HRESULT FPL_StopEditingSession(bool bConfirm) = 0;
 
     // To update the associated database list to logger
     virtual HRESULT FPL_SetDatabaseFiles(const CStringArray& omList) = 0;

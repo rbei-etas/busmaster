@@ -96,7 +96,7 @@ BOOL CSignalWatchApp::InitInstance()
     int ret = ::GetModuleFileName(theApp.m_hInstance, szModuleFileName, MAX_PATH);
     if ( ret == 0 || ret == MAX_PATH )
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     ghLangInst = CMultiLanguage::LoadLangResourceDLL( szModuleFileName );
     if (ghLangInst)
@@ -140,7 +140,7 @@ USAGEMODE HRESULT SW_GetInterface(ETYPE_BUS eBus,
             {
                 if ((sg_pouSW_CAN = new CSignalWatch_CAN) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
                 else
@@ -159,7 +159,7 @@ if sg_pouFP_CAN is null */
             {
                 if ((sg_pouSW_J1939 = new CSignalWatch_J1939) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
                 else
@@ -178,7 +178,7 @@ if sg_pouFP_CAN is null */
             {
                 if ((sg_pouSW_LIN = new CSignalWatch_LIN) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
                 else

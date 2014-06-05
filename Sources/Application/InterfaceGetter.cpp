@@ -108,7 +108,7 @@ CBaseDIL_LIN* GetILINDIL(void)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return Result;
 }
@@ -124,7 +124,7 @@ CBaseDIL_CAN* GetICANDIL(void)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return Result;
 }
@@ -138,7 +138,7 @@ CBaseDILI_J1939* GetIJ1939DIL(void)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return Result;
 }
@@ -152,7 +152,7 @@ CBaseBusStatisticCAN* GetICANBusStat(void)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return Result;
 }
@@ -166,7 +166,7 @@ CBaseBusStatisticLIN* GetILINBusStat(void)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return Result;
 }
@@ -181,7 +181,7 @@ CFlexRayNetworkStats* GetIFlexRayBusStat(void)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return Result;
 }

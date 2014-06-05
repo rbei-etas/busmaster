@@ -416,7 +416,7 @@ LRESULT CNotificWnd::DoConfigOperation(WPARAM WParam, LPARAM LParam)
 
         default :
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
     return 0;

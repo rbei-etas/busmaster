@@ -479,7 +479,7 @@ public:
                     {
                         if (pFlags->nGetFlagStatus(ALL_HANDLER) != bEnable)
                         {
-                            pMainFrm->COM_EnableAllHandlers(bEnable);
+                            pMainFrm->COM_EnableAllHandlers(bEnable == TRUE);
                         }
 
                         hResult = S_OK;
@@ -767,18 +767,10 @@ public:
 
     // FILTERING RELATED FUNCTIONS: START
 
-    /******************************************************************************
-        Function Name    :  EnableFilterSch
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Enables / disables a filter scheme
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT EnableFilterSch(EFILTERMODULE eModule, BOOL bEnable)
+    /**
+     * Enables / disables a filter scheme
+     */
+    HRESULT EnableFilterSch(EFILTERMODULE eModule, bool bEnable)
     {
         HRESULT hResult;
 

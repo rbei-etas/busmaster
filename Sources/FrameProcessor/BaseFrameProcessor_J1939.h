@@ -62,14 +62,14 @@ public:
 
     /* Call to enable/disable logging for a particular block. Having ushBlk equal
     to FOR_ALL, signifies the operation to be performed for all the blocks */
-    virtual HRESULT FPJ1_EnableLoggingBlock(USHORT ushBlk, BOOL bEnable) = 0;
+    virtual HRESULT FPJ1_EnableLoggingBlock(USHORT ushBlk, bool bEnable) = 0;
 
     // To enable/disable logging
-    virtual HRESULT FPJ1_EnableLogging(BOOL bEnable) = 0;
+    virtual HRESULT FPJ1_EnableLogging(bool bEnable) = 0;
 
     /* Call to enable/disable logging for a particular block. Having ushBlk equal
     to FOR_ALL, signifies the operation to be performed for all the blocks */
-    virtual HRESULT FPJ1_EnableFilter(USHORT ushBlk, BOOL bEnable) = 0;
+    virtual HRESULT FPJ1_EnableFilter(USHORT ushBlk, bool bEnable) = 0;
 
     // Query function - current logging status (OFF/ON).
     virtual bool FPJ1_IsLoggingON(void) = false;
@@ -133,7 +133,7 @@ public:
     virtual HRESULT FPJ1_StartEditingSession(void) = 0;
 
     // To stop logging block editing session
-    virtual HRESULT FPJ1_StopEditingSession(BOOL bConfirm) = 0;
+    virtual HRESULT FPJ1_StopEditingSession(bool bConfirm) = 0;
 
     // To update the associated database list to logger
     virtual HRESULT FPJ1_SetDatabaseFiles(const CStringArray& omList) = 0;

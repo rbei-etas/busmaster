@@ -652,7 +652,7 @@ BOOL SFILTER_LIN::bDoesFrameOccur(const void* psCurrFrame) const
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return bResult;
@@ -1006,7 +1006,7 @@ BOOL SFILTER_CAN::bDoesFrameOccur(const void* psCurrFrame) const
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return bResult;
@@ -1365,7 +1365,7 @@ BOOL SFILTER_FLEXRAY::bDoesFrameOccur(const void* psCurrFrame) const
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return bResult;
@@ -1566,7 +1566,7 @@ BOOL SFILTER_MCNET::bDoesFrameOccur(const void* psCurrFrame) const
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return bResult;
@@ -1755,7 +1755,7 @@ BOOL SFILTER_J1939::bDoesFrameOccur(const void* psCurrFrame) const
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return bResult;
@@ -1927,7 +1927,7 @@ void tagFilterSet::vClear(void)
             }
             break;
             default:
-                ASSERT(FALSE);
+                ASSERT(false);
         }
         m_psFilterInfo = nullptr;
     }
@@ -2055,7 +2055,7 @@ bool tagFilterSet::bClone(const tagFilterSet& RefObj)
             }
             break;
             default:
-                ASSERT(FALSE);
+                ASSERT(false);
         }
     }
     else
@@ -2130,7 +2130,7 @@ UINT tagFilterSet::unGetSize(void) const
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -2192,7 +2192,7 @@ BYTE* tagFilterSet::pbGetConfigData(BYTE* pbTarget) const
             break;
             default:
             {
-                ASSERT(FALSE);
+                ASSERT(false);
             }
             break;
         }
@@ -2292,7 +2292,7 @@ void tagFilterSet::pbGetConfigData(xmlNodePtr pNodePtr) const
             break;
             default:
             {
-                ASSERT(FALSE);
+                ASSERT(false);
             }
             break;
         }
@@ -2352,7 +2352,7 @@ void tagFilterSet::pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pxmlDocPtr,boo
                 m_psFilterInfo = new SFILTER_LIN[m_ushFilters];
                 break;
             default:
-                ASSERT(FALSE);
+                ASSERT(false);
         }
 
         if (nullptr != m_psFilterInfo)
@@ -2403,7 +2403,7 @@ void tagFilterSet::pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pxmlDocPtr,boo
                 break;
                 default:
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                 }
                 break;
             }
@@ -2429,7 +2429,7 @@ void tagFilterSet::pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pxmlDocPtr,boo
                     unFilterSize = sizeof(SFILTER_LIN);
                     break;
                 default:
-                    ASSERT(FALSE);
+                    ASSERT(false);
             }
             //pbTStream += m_ushFilters * unFilterSize;
             m_ushFilters = 0;
@@ -2484,7 +2484,7 @@ BYTE* tagFilterSet::pbSetConfigData(BYTE* pbTarget, bool& Result)
                 m_psFilterInfo = new SFILTER_LIN[m_ushFilters];
                 break;
             default:
-                ASSERT(FALSE);
+                ASSERT(false);
         }
 
         if (nullptr != m_psFilterInfo)
@@ -2535,7 +2535,7 @@ BYTE* tagFilterSet::pbSetConfigData(BYTE* pbTarget, bool& Result)
                 break;
                 default:
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                 }
                 break;
             }
@@ -2561,7 +2561,7 @@ BYTE* tagFilterSet::pbSetConfigData(BYTE* pbTarget, bool& Result)
                     unFilterSize = sizeof(SFILTER_LIN);
                     break;
                 default:
-                    ASSERT(FALSE);
+                    ASSERT(false);
             }
             pbTStream += m_ushFilters * unFilterSize;
             m_ushFilters = 0;

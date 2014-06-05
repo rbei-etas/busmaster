@@ -211,7 +211,7 @@ public:
     std::string m_omHardwareDesc;                 // Hw description which user can
     // differentiate between the channels
     int     m_bAccFilterMode;                     // acceptance filter mode(0: single, 1: Dual)
-    int     m_ucControllerMode;                   // Controller mode (1: Active, 2: Passive)
+    unsigned short m_ucControllerMode;            // Controller mode (1: Active, 2: Passive)
     int     m_bSelfReception;
     int     m_bLowSpeed;
     UINT32  m_unBTL_Cycles;

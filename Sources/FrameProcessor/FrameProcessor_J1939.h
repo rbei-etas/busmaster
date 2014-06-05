@@ -75,18 +75,22 @@ public:
 
     /* USE COMMON BASE CLASS ALIAS FUNCTIONS */
 
-    /* Call to enable/disable logging for a particular block. Having ushBlk equal
-    to FOR_ALL, signifies the operation to be performed for all the blocks */
-    HRESULT FPJ1_EnableLoggingBlock(USHORT ushBlk, BOOL bEnable);
+    /**
+     * Call to enable/disable logging for a particular block. Having ushBlk equal
+     * to FOR_ALL, signifies the operation to be performed for all the blocks
+     */
+    HRESULT FPJ1_EnableLoggingBlock(USHORT ushBlk, bool bEnable);
 
-    // To enable/disable logging
-    HRESULT FPJ1_EnableLogging(BOOL bEnable);
+    /** To enable/disable logging */
+    HRESULT FPJ1_EnableLogging(bool bEnable);
 
-    /* Call to enable/disable logging for a particular block. Having ushBlk equal
-    to FOR_ALL, signifies the operation to be performed for all the blocks */
-    HRESULT FPJ1_EnableFilter(USHORT ushBlk, BOOL bEnable);
+    /**
+     * Call to enable/disable filter for a particular block. Having ushBlk equal
+     * to FOR_ALL, signifies the operation to be performed for all the blocks
+     */
+    HRESULT FPJ1_EnableFilter(USHORT ushBlk, bool bEnable);
 
-    // Query function - current logging status (OFF/ON).
+    /** Query function - current logging status (OFF/ON). */
     bool FPJ1_IsLoggingON(void);
 
     void FPJ1_vCloseLogFile(void);
@@ -130,7 +134,7 @@ public:
     HRESULT FPJ1_StartEditingSession(void);
 
     // To stop logging block editing session
-    HRESULT FPJ1_StopEditingSession(BOOL bConfirm);
+    HRESULT FPJ1_StopEditingSession(bool bConfirm);
 
     // Getter for the logging configuration data
     HRESULT FPJ1_GetConfigData(BYTE** ppvConfigData, UINT& unLength);

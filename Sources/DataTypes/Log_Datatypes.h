@@ -53,12 +53,12 @@ const USHORT ID_MAX = (USHORT) ~0;
 typedef struct tagLogInfo
 {
     USHORT       m_ushID;            // Logging block identifier
-    BOOL         m_bIsUpdated;       // To indicate if it needs updation
-    BOOL         m_bEnabled;         // To indicate if its enabled
+    bool         m_bIsUpdated;       // To indicate if it needs updation
+    bool         m_bEnabled;         // To indicate if its enabled
     eTimerMode   m_eLogTimerMode;    // The time mode - system / relative
     eFormat      m_eNumFormat;       // Numeric mode - hexadecimal / decimal
     eMode        m_eFileMode;        // Mode - overwrite / append
-    BOOL         m_bResetAbsTimeStamp; // To indicate if Absolute Time Stamp is Reseted
+    bool         m_bResetAbsTimeStamp; // To indicate if Absolute Time Stamp is Reseted
     TYPE_CHANNEL m_ChannelSelected;  // The current channel
     char         m_sLogFileName[_MAX_PATH]; // Log file name with absolute path
     SLOGTRIGGER  m_sLogTrigger;      // The triggering condition
@@ -69,7 +69,7 @@ typedef struct tagLogInfo
     void vClear(void);               // To clear the logging information
     UINT unGetSize(void) const;      // To get the size of the block in bytes
     BYTE* pbGetConfigData(BYTE* pbTarget) const; // To get configuration data
-    BOOL pbGetConfigData(xmlNodePtr pxmlNodePtr) const; // To get configuration data
+    bool pbGetConfigData(xmlNodePtr pxmlNodePtr) const; // To get configuration data
 
     BYTE* pbSetConfigData(BYTE* pbTarget, BYTE bytLogVersion); // To set configuration data
     INT nSetConfigData(xmlNodePtr pNode);

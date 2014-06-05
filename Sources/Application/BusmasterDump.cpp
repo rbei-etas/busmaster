@@ -26,7 +26,7 @@ LONG CBusmasterDump::ExceptionFilter( struct _EXCEPTION_POINTERS* pExceptionInfo
         std::string strDbgHelpPath = szDbgHelpPath;
         strDbgHelpPath = strDbgHelpPath.find_last_of("\\");
 
-        if (strDbgHelpPath.length() > 0)
+        if (!strDbgHelpPath.empty())
         {
             strDbgHelpPath += "DBGHELP.DLL";
             hDll = ::LoadLibrary( strDbgHelpPath.c_str() );

@@ -125,7 +125,7 @@ void CTreeItemParam::vUpdateTreeValues(CStringArray& omStringArray, COLORREF Tex
 
     if (nCount > m_aomItemHandle.GetSize())
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     omCurrStr = "";
     for (int i = 0; i < nCount; i++)

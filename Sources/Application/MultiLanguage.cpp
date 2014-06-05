@@ -24,7 +24,7 @@ Usage:
     TCHAR szModuleFileName[MAX_PATH];       // Get Module File Name and path
     int ret = ::GetModuleFileName(theApp.m_hInstance, szModuleFileName, MAX_PATH);
     if ( ret == 0 || ret == MAX_PATH )
-        ASSERT(FALSE);
+        ASSERT(false);
     // Load resource-only language DLL. It will use the languages
     // detected above, take first available language,
     // or you can specify another language as second parameter to
@@ -43,7 +43,7 @@ Usage:
         TCHAR szModuleFileName[MAX_PATH];       // Get Module File Name and path
         int ret = ::GetModuleFileName(hInstance, szModuleFileName, MAX_PATH);
         if ( ret == 0 || ret == MAX_PATH )
-            ASSERT(FALSE);
+            ASSERT(false);
         // Load resource-only language DLL. It will use the languages
         // detected above, take first available language,
         // or you can specify another language as second parameter to
@@ -309,7 +309,7 @@ HINSTANCE CMultiLanguage::LoadLangResourceDLL(LPCTSTR szModuleName, LANGID langU
         }
         else
         {
-            ASSERT(FALSE);  // No enough space to hold language resource dll name path.
+            ASSERT(false);  // No enough space to hold language resource dll name path.
             return nullptr;
         }
         hLangDLL = ::LoadLibrary(szResDLLName);

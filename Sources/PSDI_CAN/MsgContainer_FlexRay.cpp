@@ -155,12 +155,6 @@ __int64 CMsgContainerFlexRay::nCreateMapIndexKey( LPVOID pMsgData )
     return (n64MapIndex);
 }
 
-//converts STCANDATA into SFRAMEINFO_BASIC_CAN
-static void vFormatFlexRayDataMsg(s_FLXMSG */* pMsgFlexRay */,
-                                  tagSFRAMEINFO_BASIC_FLEXRAY * /* CurrDataFlexRay */)
-{
-}
-
 BOOL CMsgContainerFlexRay::bTobeBlocked(s_FLXMSG & /* sFlexRayData */)
 {
     return FALSE;

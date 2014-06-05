@@ -339,7 +339,7 @@ HMODULE ghGetNodeDllHandler(char* pcNodeName)
 BOOL gbGetProgramVersion(int* /*pnMajorVersion*/, int* /*pnMinorVersion*/)
 {
     BOOL Result = FALSE;
-    ASSERT(FALSE);
+    ASSERT(false);
     return Result;
 }
 

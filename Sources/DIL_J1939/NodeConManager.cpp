@@ -1543,7 +1543,7 @@ INT CNodeConManager::nIsMsgSentSuccess(UINT32 unExtId, BYTE* pbyData, UINT unAct
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return nDataAck;
 }
@@ -1620,7 +1620,7 @@ HRESULT CNodeConManager::WaitAfterClear2Send(void)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return hResult;
 }
@@ -1665,7 +1665,7 @@ HRESULT CNodeConManager::WaitForMorePackets(void)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return hResult;
 }
@@ -1704,7 +1704,7 @@ HRESULT CNodeConManager::WaitandProcessBroadcastData(void)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return hResult;
 }
@@ -2125,7 +2125,7 @@ HRESULT CNodeConManager::TransmitRequestToSend(BYTE byDestAddress,
         }
         else
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
     return hResult;

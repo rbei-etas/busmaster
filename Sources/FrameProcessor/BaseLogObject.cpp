@@ -122,7 +122,7 @@ CBaseLogObject& CBaseLogObject::operator=(const CBaseLogObject& RefObj)
 /**
  * Enable / disable logging
  */
-void CBaseLogObject::EnableLogging(BOOL bEnable)
+void CBaseLogObject::EnableLogging(bool bEnable)
 {
     m_sLogInfo.m_bEnabled = bEnable;
 }
@@ -130,7 +130,7 @@ void CBaseLogObject::EnableLogging(BOOL bEnable)
 /**
  * Query - if logging is enable
  */
-BOOL CBaseLogObject::IsLoggingEnable(void)
+bool CBaseLogObject::IsLoggingEnable(void)
 {
     return m_sLogInfo.m_bEnabled;
 }
@@ -194,7 +194,7 @@ BYTE* CBaseLogObject::GetConfigData(BYTE* pvDataStream) const
     return pbTStream;
 }
 
-BOOL CBaseLogObject::GetConfigData(xmlNodePtr pxmlNodePtr) const
+bool CBaseLogObject::GetConfigData(xmlNodePtr pxmlNodePtr) const
 {
     m_sLogInfo.pbGetConfigData(pxmlNodePtr);
     Der_GetConfigData(pxmlNodePtr);
@@ -221,24 +221,22 @@ UINT CBaseLogObject::GetID(void)
 /**
  * To log a string
  */
-BOOL CBaseLogObject::bLogString(CString& omStr)
+bool CBaseLogObject::bLogString(CString& omStr)
 {
-    if (m_sLogInfo.m_bEnabled == FALSE)
-    {
-        return FALSE;
-    }
+    if (!m_sLogInfo.m_bEnabled)
+        return false;
 
     if (nullptr == m_pLogFile)
     {
-        ASSERT(FALSE);
-        return FALSE;
+        ASSERT(false);
+        return false;
     }
 
     EnterCriticalSection(&m_CritSection);
     _ftprintf(m_pLogFile, omStr.GetBuffer(MAX_PATH));
     LeaveCriticalSection(&m_CritSection);
 
-    return TRUE;
+    return true;
 }
 
 void CBaseLogObject::vWriteTextToFile(CString& om_LogText, ETYPE_BUS eBus)
@@ -393,9 +391,9 @@ BOOL CBaseLogObject::bStartLogging(ETYPE_BUS eBus)
  *
  * To do actions before logging stop.
  */
-BOOL CBaseLogObject::bStopLogging()
+bool CBaseLogObject::bStopLogging()
 {
-    BOOL bResult = FALSE;
+    bool bResult = false;
 
     if ((m_pLogFile != nullptr) && (m_sLogInfo.m_bEnabled))
     {
@@ -405,16 +403,16 @@ BOOL CBaseLogObject::bStopLogging()
         _ftprintf(m_pLogFile,  "%s\n", omFooter.GetBuffer(MAX_PATH));
         fclose(m_pLogFile);
         m_pLogFile = nullptr;
-        bResult = TRUE;
-        m_bNewSession = FALSE;  // Old session closed
+        bResult = true;
+        m_bNewSession = false;  // Old session closed
     }
 
     return bResult;
 }
 
-BOOL CBaseLogObject::bStopOnlyLogging()
+bool CBaseLogObject::bStopOnlyLogging()
 {
-    BOOL bResult = FALSE;
+    bool bResult = false;
 
     if ((m_pLogFile != nullptr) && (m_sLogInfo.m_bEnabled))
     {
@@ -572,7 +570,7 @@ void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
             break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
             break;
     }
     omHeader += L'\n';

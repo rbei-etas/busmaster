@@ -139,7 +139,7 @@ BOOL CTxWndDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
         }
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -230,7 +230,7 @@ BOOL CTxWndDataStore::bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid)
         }
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }

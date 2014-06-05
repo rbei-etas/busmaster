@@ -89,7 +89,7 @@ void CFrameProcessor_LIN::DeleteLogObj(CBaseLogObject*& pouLogObj)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 }
 
@@ -102,9 +102,7 @@ void CFrameProcessor_LIN::CreateTimeModeMapping(SYSTEMTIME& CurrSysTime,
     }
 }
 
-
-
-BOOL CFrameProcessor_LIN::FPL_IsLINThreadBlocked(void)
+bool CFrameProcessor_LIN::FPL_IsLINThreadBlocked(void)
 {
     return IsThreadBlocked();
 }
@@ -190,19 +188,19 @@ HRESULT CFrameProcessor_LIN::FPL_DoInitialisation(SLINPROC_PARAMS* psInitParams)
             {
                 if (m_pouDilLINInterface->DILL_ManageMsgBuf(MSGBUF_ADD, m_sLINProcParams.dwClientID, &m_ouFSEBufLIN) != S_OK)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                 }
                 hResult = S_OK;
             }
         }
         else
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return hResult;
@@ -240,7 +238,7 @@ hResult = S_OK;
 }
 else
 {
-ASSERT(FALSE);
+ASSERT(false);
 }
 
 return hResult;
@@ -262,7 +260,7 @@ hResult = S_OK;
 }
 else
 {
-ASSERT(FALSE);
+ASSERT(false);
 }
 
 return hResult;
@@ -285,7 +283,7 @@ HRESULT CFrameProcessor_LIN::FPL_GetFilteringScheme(USHORT ushLogBlk,
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return hResult;
@@ -323,13 +321,13 @@ HRESULT CFrameProcessor_LIN::FPL_ApplyFilteringScheme(USHORT ushLogBlkID,
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return hResult;
 }
-// To enable/disable updation of the client flexray frame buffer.
-HRESULT CFrameProcessor_LIN::FPL_SetClientLINBufON(BOOL bEnable)
+
+HRESULT CFrameProcessor_LIN::FPL_SetClientLINBufON(bool bEnable)
 {
     HRESULT hResult = S_FALSE;
 
@@ -359,14 +357,14 @@ CBaseLINBufFSE* CFrameProcessor_LIN::FPL_GetLINBuffer(void)
 // USE COMMON BASE CLASS ALIAS FUNCTIONS: START
 /* Call to enable/disable logging for a particular block. Having ushBlk equal
 to FOR_ALL, signifies the operation to be performed for all the blocks */
-HRESULT CFrameProcessor_LIN::FPL_EnableLoggingBlock(USHORT ushBlk, BOOL bEnable)
+HRESULT CFrameProcessor_LIN::FPL_EnableLoggingBlock(USHORT ushBlk, bool bEnable)
 {
     return EnableLoggingBlock(ushBlk, bEnable);
 }
 
 // To enable/disable logging
 //[RS_LIN_06_03] and [RS_LIN_06_04]
-HRESULT CFrameProcessor_LIN::FPL_EnableLogging(BOOL bEnable)
+HRESULT CFrameProcessor_LIN::FPL_EnableLogging(bool bEnable)
 {
     return EnableLogging(bEnable, LIN);
 }
@@ -390,29 +388,29 @@ void CFrameProcessor_LIN::FPL_vCloseLogFile()
 
 /* Call to enable/disable logging for a particular block. Having ushBlk equal
 to FOR_ALL, signifies the operation to be performed for all the blocks */
-HRESULT CFrameProcessor_LIN::FPL_EnableFilter(USHORT ushBlk, BOOL bEnable)
+HRESULT CFrameProcessor_LIN::FPL_EnableFilter(USHORT ushBlk, bool bEnable)
 {
     return EnableFilter(ushBlk, bEnable);
 }
 
 // Query function - client flexray buffer updation status (OFF/ON)
-BOOL CFrameProcessor_LIN::FPL_IsClientLINBufON(void)
+bool CFrameProcessor_LIN::FPL_IsClientLINBufON(void)
 {
     return IsClientBufferON();
 }
 
 // Query function - current logging status (OFF/ON).
-BOOL CFrameProcessor_LIN::FPL_IsLoggingON(void)
+bool CFrameProcessor_LIN::FPL_IsLoggingON(void)
 {
     return IsLoggingON();
 }
 
-BOOL CFrameProcessor_LIN::FPL_IsLINDataLogged(void)
+bool CFrameProcessor_LIN::FPL_IsLINDataLogged(void)
 {
     return IsLINDataLogged();
 }
 
-BOOL CFrameProcessor_LIN::FPL_IsThreadBlocked(void)
+bool CFrameProcessor_LIN::FPL_IsThreadBlocked(void)
 {
     return IsThreadBlocked();
 }
@@ -423,7 +421,7 @@ void CFrameProcessor_LIN::FPL_DisableDataLogFlag(void)
 }
 
 // Query function - current filtering status
-BOOL CFrameProcessor_LIN::FPL_IsFilterON(void)
+bool CFrameProcessor_LIN::FPL_IsFilterON(void)
 {
     return IsFilterON();
 }
@@ -493,7 +491,7 @@ HRESULT CFrameProcessor_LIN::FPL_StartEditingSession(void)
 }
 
 // To stop logging block editing session
-HRESULT CFrameProcessor_LIN::FPL_StopEditingSession(BOOL bConfirm)
+HRESULT CFrameProcessor_LIN::FPL_StopEditingSession(bool bConfirm)
 {
     return StopEditingSession(bConfirm);
 }

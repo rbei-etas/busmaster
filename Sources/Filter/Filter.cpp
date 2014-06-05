@@ -76,7 +76,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         int ret = ::GetModuleFileName(hInstance, szModuleFileName, MAX_PATH);
         if ( ret == 0 || ret == MAX_PATH )
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         // Load resource-only language DLL. It will use the languages
         // detected above, take first available language,
@@ -306,7 +306,7 @@ USAGEMODE HRESULT Filter_ReUpdateAppliedFilter(void* pvFilterApplied,
             break;
             default:
             {
-                ASSERT(FALSE);
+                ASSERT(false);
             }
             break;
         }

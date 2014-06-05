@@ -71,50 +71,43 @@ public:
                                    SFILTERAPPLIED_LIN& sFilterObj);
 
     // To enable/disable updation of the client flexray frame buffer.
-    HRESULT FPL_SetClientLINBufON(BOOL bEnable);
+    HRESULT FPL_SetClientLINBufON(bool bEnable);
 
     // To get the flexray buffer of this module
     CBaseLINBufFSE* FPL_GetLINBuffer(void);
 
     void FPL_vCloseLogFile();
 
-    BOOL FPL_IsDataLogged(void);
+    bool FPL_IsDataLogged(void);
 
-    BOOL FPL_IsThreadBlocked(void);
+    bool FPL_IsThreadBlocked(void);
 
     void FPL_DisableDataLogFlag(void);
-
-    // Query function - current filtering status
-    // BOOL FPC_IsFilterON(void);
 
     /* USE COMMON BASE CLASS ALIAS FUNCTIONS */
 
     /* Call to enable/disable logging for a particular block. Having ushBlk equal
     to FOR_ALL, signifies the operation to be performed for all the blocks */
-    HRESULT FPL_EnableLoggingBlock(USHORT ushBlk, BOOL bEnable);
+    HRESULT FPL_EnableLoggingBlock(USHORT ushBlk, bool bEnable);
 
     // To enable/disable logging
-    HRESULT FPL_EnableLogging(BOOL bEnable);
-
-    /* Call to enable/disable logging for a particular block. Having ushBlk equal
-    to FOR_ALL, signifies the operation to be performed for all the blocks */
-    // HRESULT FPL_EnableFilter(USHORT ushBlk, BOOL bEnable);
+    HRESULT FPL_EnableLogging(bool bEnable);
 
     // Query function - client flexray buffer updation status (OFF/ON)
-    BOOL FPL_IsClientLINBufON(void);
+    bool FPL_IsClientLINBufON(void);
 
-    HRESULT FPL_EnableFilter(USHORT ushBlk, BOOL bEnable);
+    HRESULT FPL_EnableFilter(USHORT ushBlk, bool bEnable);
     // Query function - current logging status (OFF/ON).
-    BOOL FPL_IsLoggingON(void);
+    bool FPL_IsLoggingON(void);
 
-    BOOL FPL_IsLINDataLogged(void);
+    bool FPL_IsLINDataLogged(void);
 
-    BOOL FPL_IsLINThreadBlocked(void);
+    bool FPL_IsLINThreadBlocked(void);
 
     void FPL_DisableLINDataLogFlag(void);
 
     // Query function - current filtering status
-    BOOL FPL_IsFilterON(void);
+    bool FPL_IsFilterON(void);
 
     // To log a string
     HRESULT FPL_LogString(CString& omStr);
@@ -147,7 +140,7 @@ public:
     HRESULT FPL_StartEditingSession(void);
 
     // To stop logging block editing session
-    HRESULT FPL_StopEditingSession(BOOL bConfirm);
+    HRESULT FPL_StopEditingSession(bool bConfirm);
 
     // Getter for the logging configuration data
     HRESULT FPL_GetConfigData(BYTE** ppvConfigData, UINT& unLength);
@@ -164,9 +157,4 @@ public:
     // To update the channel baud rate info to logger
     HRESULT FPL_SetChannelBaudRateDetails(SCONTROLLER_DETAILS_LIN* controllerDetails,
                                           int nNumChannels,ETYPE_BUS eBus);
-
-    //Shashank
-
-    /* ENDS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
 };
-

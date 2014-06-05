@@ -80,7 +80,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         int ret = ::GetModuleFileName(hInstance, szModuleFileName, MAX_PATH);
         if ( ret == 0 || ret == MAX_PATH )
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         // Load resource-only language DLL. It will use the languages
         // detected above, take first available language,
@@ -153,7 +153,7 @@ USAGEMODE HRESULT NS_GetInterface(ETYPE_BUS eBus,
             {
                 if ((sg_pouNS_CAN = new CNodeSim(CAN)) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
                 else
@@ -172,7 +172,7 @@ if sg_pouFP_CAN is null */
             {
                 if ((sg_pouNS_J1939 = new CNodeSim(J1939)) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
                 else
@@ -191,7 +191,7 @@ if sg_pouFP_J1939 is null */
             {
                 if ((sg_pouNS_LIN = new CNodeSim(LIN)) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
                 else

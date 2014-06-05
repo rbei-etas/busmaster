@@ -112,12 +112,12 @@ CTxLINDataStore& CTxLINDataStore::ouGetTxLINDataStoreObj()
 //        }
 //        else
 //        {
-//            ASSERT(FALSE);
+//            ASSERT(false);
 //        }
 //    }
 //    else
 //    {
-//        ASSERT(FALSE);
+//        ASSERT(false);
 //    }
 //    return 0;
 //}
@@ -576,7 +576,7 @@ BOOL CTxLINDataStore::bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -616,7 +616,7 @@ BOOL CTxLINDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }

@@ -127,7 +127,7 @@ BOOL CCAN_NSI::InitInstance()
     int ret = ::GetModuleFileName(theApp.m_hInstance, szModuleFileName, MAX_PATH);
     if ( ret == 0 || ret == MAX_PATH )
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     // Load resource-only language DLL. It will use the languages
     // detected above, take first available language,
@@ -340,7 +340,6 @@ typedef struct tagClientBufMap
  * Forward declarations
  */
 static void vWriteIntoClientsBuffer(STCANDATA& sCanData);
-static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir);
 static void vCreateTimeModeMapping(HANDLE hDataEvent);
 static BOOL bClientIdExist(const DWORD& dwClientId);
 static DWORD dwGetAvailableClientSlot();
@@ -354,8 +353,6 @@ BOOL Callback_DILNSI(BYTE /*Argument*/, PSCONTROLLER_DETAILS pDatStream, INT /*L
 int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/, PSCONTROLLER_DETAILS pControllerDetails, UINT nCount);
 static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails);
 int ListHardwareInterfaces(HWND hParent, DWORD , INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount);
-//static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0);
-static int nCreateSingleHardwareNetwork();
 static int nInitHwNetwork(UINT unDefaultChannelCnt = 0);
 static int nConnect(BOOL bConnect, BYTE /*hClient*/);
 static int nGetNoOfConnectedHardware(void);
@@ -719,47 +716,6 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData)
             sg_asClientToBufMap[i].pClientBuf[j]->WriteIntoBuffer(&sCanData);
         }
     }
-}
-
-///---------------------------------------------------------------------------
-/// \brief         This will convert the error code from Kvaser driver format
-///                to the format that is used by BUSMASTER.
-/// \param[in]     lError Error code in Peak USB driver format
-/// \param[in]     byDir  Error direction Tx/Rx
-/// \return        UCHAR which indicates error code
-/// \authors       Arunkumar Karri
-/// \date          12.10.2011 Created
-///---------------------------------------------------------------------------
-static UCHAR USB_ucGetErrorCode(LONG lError, BYTE byDir)
-{
-    UCHAR ucReturn = 0;
-
-    // Tx Errors
-    if( byDir == 1)
-    {
-        if (lError & _CAN_LOST_MSG)
-        {
-            ucReturn = STUFF_ERROR_TX;
-        }
-        else
-        {
-            ucReturn = OTHER_ERROR_TX;
-        }
-    }
-    // Rx Errors
-    else
-    {
-        if (lError & _CAN_LOST_MSG)
-        {
-            ucReturn = STUFF_ERROR_RX;
-        }
-        else
-        {
-            ucReturn = OTHER_ERROR_RX;
-        }
-    }
-    // Return the error code
-    return ucReturn;
 }
 
 ///-----------------------------------------------------
@@ -1303,91 +1259,6 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
     return defERR_OK;
 }
 
-///------------------------------------------------------------------------------------------
-/// \brief         This function will create a single network with available single hardware.
-/// \param         void
-/// \return        returns defERR_OK (always)
-/// \authors       Arunkumar Karri
-/// \date          12.10.2011 Created
-///------------------------------------------------------------------------------------------
-static int nCreateSingleHardwareNetwork()
-{
-    /* Set the number of channels as 1 */
-    sg_ucNoOfHardware = (UCHAR)1;
-    sg_nNoOfChannels = 1;
-    sg_aodChannels[0].m_nChannel = 0;
-    char chBuffer[512] = "";
-
-    /* Update channel info */
-    cr = Ic_InitDrv((short)0, &NSI_hCanal[0]);
-    if(cr != _OK)
-    {
-        // Display a message in a new window
-        CString omErr;
-        omErr.Format(_("Ic_InitDrv Failed"));
-        AfxMessageBox(omErr);
-        return 1;
-    }
-    cr = Ic_GetDeviceInfo(NSI_hCanal[0], &NSI_deviceInfo[0]);
-    cr = Ic_ExitDrv(NSI_hCanal[0]);
-    if(cr != _OK)
-    {
-        // Display a message in a new window
-        CString omErr;
-        omErr.Format(_("Ic_ExitDrv Failed"));
-        AfxMessageBox(omErr);
-        return 1;
-    }
-    switch(NSI_deviceInfo[0].deviceType)
-    {
-        case _CANPCISA: // CANPC, CANPCa, CANPCMCIA, CAN104
-            flagLowSpeed = FALSE;
-            break;
-        case _CANPCI2P: // CANPCI
-            flagLowSpeed = FALSE;
-            break;
-        case _CANPCUSB: // CAN-USB Interface
-            flagLowSpeed = FALSE;
-            break;
-        case _OBDUSB: // MUXy, MUXy light
-            strcpy_s(chBuffer, NSI_deviceInfo[0].CAN_USB.manufacturerName);
-            strcat_s(chBuffer, " - ");
-            strcat_s(chBuffer, NSI_deviceInfo[0].CAN_USB.productName);
-            sg_HardwareIntr[0].m_acDeviceName = NSI_deviceInfo[0].CAN_USB.serialNumber;
-            sg_HardwareIntr[0].m_acDescription = chBuffer;
-            sg_HardwareIntr[0].m_dwIdInterface = 0;
-            flagLowSpeed = FALSE;
-            break;
-        case _USBBOX: // MUXyBox
-            strcpy(chBuffer, NSI_deviceInfo[0].CAN_USB.manufacturerName);
-            strcat(chBuffer, " - ");
-            strcat(chBuffer, NSI_deviceInfo[0].CAN_USB.productName);
-            sg_HardwareIntr[0].m_acDeviceName = NSI_deviceInfo[0].CAN_USB.serialNumber;
-            sg_HardwareIntr[0].m_acDescription = chBuffer;
-            sg_HardwareIntr[0].m_dwIdInterface = 0;
-            flagLowSpeed = TRUE;
-            break;
-        case _USBMUXY2: //MUXy2010 et MUXybox 2
-            strcpy(chBuffer, NSI_deviceInfo[0].CAN_USB.manufacturerName);
-            strcat(chBuffer, " - ");
-            strcat(chBuffer, NSI_cardData[0].cardNameString);
-            sg_HardwareIntr[0].m_acDeviceName = NSI_deviceInfo[0].CAN_USB.serialNumber;
-            sg_HardwareIntr[0].m_acDescription = chBuffer;
-            sg_HardwareIntr[0].m_dwIdInterface = 0;
-            flagLowSpeed = TRUE;
-            break;
-    }
-
-    /*_stprintf(sg_aodChannels[0].m_strName , _T("%s, Serial Number - %s"),
-                    sg_HardwareIntr[sg_anSelectedItems[0]].m_acDeviceName.c_str(),
-                    sg_HardwareIntr[sg_anSelectedItems[0]].m_acDescription.c_str());*/
-    sprintf_s(sg_aodChannels[0].m_strName , _T("%s, Serial Number - %s"),
-              sg_HardwareIntr[sg_anSelectedItems[0]].m_acDeviceName.c_str(),
-              sg_HardwareIntr[sg_anSelectedItems[0]].m_acDescription.c_str());
-
-    return defERR_OK;
-}
-
 ///---------------------------------------------------------------------------------------------------
 /// \brief         This function will find number of hardwares connected.
 ///                It will create network as per hardware count.
@@ -1697,7 +1568,6 @@ static int nSetApplyConfiguration()
     char* pchMuxyBox2;
     char* pchMuxy2010;
     char* pchMuxyBox;
-    char* pchPCMCIA;
 
     for (UINT unIndex = 0; unIndex < sg_nNoOfChannels; unIndex++)
     {

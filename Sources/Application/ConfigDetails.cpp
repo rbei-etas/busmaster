@@ -909,7 +909,7 @@ BOOL CConfigDetails::bGetData(eCONFIGDETAILS  eParam, LPVOID* lpData)
 /******************************************************************************/
 BOOL CConfigDetails::bSetData(eCONFIGDETAILS  eParam, LPVOID lpVoid)
 {
-    ASSERT(FALSE);
+    ASSERT(false);
     BOOL bRetVal = TRUE;
 
     // check input param
@@ -2911,7 +2911,7 @@ static void vPopulateFilterCan(SFILTER_CAN& Dest, const SFILTER_OLD& Src)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     switch (Src.m_ucDirection)
@@ -2933,7 +2933,7 @@ static void vPopulateFilterCan(SFILTER_CAN& Dest, const SFILTER_OLD& Src)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -2958,7 +2958,7 @@ static void vPopulateFilterCan(SFILTER_CAN& Dest, const SFILTER_OLD& Src)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -2982,7 +2982,7 @@ static void vPopulateFilterCan(SFILTER_CAN& Dest, const SFILTER_OLD& Src)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -3114,7 +3114,7 @@ BOOL CConfigDetails::bLoadStoreMsgFilterDetails(CArchive& roCfgArchive)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return bRetVal;
@@ -4605,7 +4605,7 @@ BOOL CConfigDetails::bLoadStoreSignalWatchList(CArchive& roCfgArchive)
 
     if (roCfgArchive.IsStoring())
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     // Loading
     else
@@ -5272,7 +5272,7 @@ BOOL CConfigDetails::bLoadStoreDisplayFilterInfo( CArchive& oCfgArchive)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     //return the result
     return bResult;
@@ -5280,6 +5280,7 @@ BOOL CConfigDetails::bLoadStoreDisplayFilterInfo( CArchive& oCfgArchive)
 BOOL static bLogFileSerialize(CArchive& omArchive, SLOGFILEDETS& sLogFileDets)
 {
     BOOL bResult = FALSE;
+    BOOL temp;
     if( omArchive.IsLoading())
     {
         // Assign File Name
@@ -5291,7 +5292,8 @@ BOOL static bLogFileSerialize(CArchive& omArchive, SLOGFILEDETS& sLogFileDets)
         // File Mode
         omArchive >> sLogFileDets.m_nFileMode;
         // Enable Option
-        omArchive >> sLogFileDets.m_bEnabled;
+        omArchive >> temp;
+        sLogFileDets.m_bEnabled = (temp == TRUE);
         // Copy Trigger List
         omArchive >> sLogFileDets.m_sLogTrigger.m_unStartID;
         omArchive >> sLogFileDets.m_sLogTrigger.m_unStopID;
@@ -5352,6 +5354,7 @@ BOOL static bLogFileSerialize(CArchive& omArchive, SLOGFILEDETS& sLogFileDets)
 BOOL static bLoadSaveLogInfo(CArchive& omArchive, SLOGCONFIGDETS& sLogConfigDets)
 {
     BOOL bResult = FALSE;
+    BOOL temp;
     // Loading
     if( omArchive.IsLoading() )
     {
@@ -5365,14 +5368,15 @@ BOOL static bLoadSaveLogInfo(CArchive& omArchive, SLOGCONFIGDETS& sLogConfigDets
             bLogFileSerialize( omArchive, sLogConfigDets.m_asLogFileDets[nIndex]);
         }
         // Get Enable during connect option
-        omArchive >> sLogConfigDets.m_bEnableDuringConnect;
+        omArchive >> temp;
+        sLogConfigDets.m_bEnableDuringConnect = (temp == TRUE);
         // Set the result to true
         bResult = TRUE;
     }
     //Storing
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return bResult;
 }
@@ -5398,18 +5402,20 @@ BOOL CConfigDetails::bLoadStoreLogFileInfo(CArchive& omArchive)
         }
         else
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return bResult;
 }
 
 static BOOL bLoadReplayFile(CArchive& omArchive, SREPLAYFILE& sRepalyFile)
 {
+    BOOL temp;
+
     // Load File Name
     omArchive >> sRepalyFile.m_omStrFileName;
     // Load time mode
@@ -5438,9 +5444,11 @@ static BOOL bLoadReplayFile(CArchive& omArchive, SREPLAYFILE& sRepalyFile)
         sRepalyFile.m_omFilter.Add( sFilter );
     }
     // Load Enabled Option
-    omArchive >> sRepalyFile.m_bEnabled;
+    omArchive >> temp;
+    sRepalyFile.m_bEnabled = (temp == TRUE);
     // Load Interactive Option
-    omArchive >> sRepalyFile.m_bInteractive;
+    omArchive >> temp;
+    sRepalyFile.m_bInteractive = (temp == TRUE);
     // Set the result
     return TRUE;
 }
@@ -5464,7 +5472,7 @@ static BOOL bLoadReplayDetails(CArchive& omArchive, SREPLAYDETS& sRepalyDets)
     //Storing
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return bResult;
 }
@@ -5497,7 +5505,7 @@ BOOL CConfigDetails::bLoadStoreReplayFileInfo(CArchive& omArchive)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return bResult;
 }

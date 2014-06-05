@@ -93,7 +93,7 @@ BOOL CCAN_Vector_XL::InitInstance()
     int ret = ::GetModuleFileName(theApp.m_hInstance, szModuleFileName, MAX_PATH);
     if ( ret == 0 || ret == MAX_PATH )
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     // Load resource-only language DLL. It will use the languages
     // detected above, take first available language,
@@ -206,7 +206,7 @@ static BOOL bClientIdExist(const DWORD& dwClientId);
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
 static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line);
 static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf);
-static int nConnect(BOOL bConnect);
+static int nConnect(bool bConnect);
 static int nGetNoOfConnectedHardware(void);
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED],
                                 UINT& unCount, CBaseCANBufFSE* BufferToRemove);
@@ -214,8 +214,8 @@ static int nDisconnectFromDriver();
 static int nSetApplyConfiguration();
 
 // state variables
-static BOOL sg_bIsConnected = FALSE;
-static UCHAR sg_ucControllerMode = defUSB_MODE_ACTIVE;
+static bool sg_bIsConnected = false;
+static unsigned short sg_ucControllerMode = defUSB_MODE_ACTIVE;
 static CPARAM_THREADPROC sg_sParmRThread;
 static int sg_nFRAMES = 128;
 const int ENTRIES_IN_GBUF       = 2000;
@@ -1754,7 +1754,7 @@ static void vMapDeviceChannelIndex()
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-static int nConnect(BOOL bConnect)
+static int nConnect(bool bConnect)
 {
     int nReturn = -1;
     XLstatus xlStatus;

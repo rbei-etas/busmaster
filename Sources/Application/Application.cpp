@@ -579,7 +579,7 @@ STDMETHODIMP CApplication::XLocalClass:: DeleteFilterInSch (USHORT FilterSchInde
 STDMETHODIMP CApplication::XLocalClass::EnableFilterSch (EFILTERMODULE eModule, BOOL Enable)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->EnableFilterSch (eModule, Enable);
+    return pThis->EnableFilterSch (eModule, Enable == TRUE);
 }
 
 STDMETHODIMP CApplication::XLocalClass::AddSimulatedSystem(BSTR pcSimPath)

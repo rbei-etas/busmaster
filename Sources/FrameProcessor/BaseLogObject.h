@@ -36,7 +36,7 @@ private:
     CString m_omCurrLogFile;        // Current file of the cycle
     DWORD m_dTotalBytes;            // To keep the current file size
     CString m_omVersion;            // Application suite version information
-    BOOL m_bNewSession;         // For file overwriting in new session
+    bool m_bNewSession;         // For file overwriting in new session
 
     // Find the name and size of the file which will be used for logging.
     // i.e., file name which contains max file count
@@ -86,48 +86,47 @@ protected:
     virtual UINT Der_unGetBufSize(void) const = 0;
 
 public:
-    // Overloaded Constructor
     CBaseLogObject(CString omVersion);
-
-    // Destructor
     ~CBaseLogObject();
 
     // Equal operator. THERE SHOULDN'T BE ANY EQUAL OPERATOR OVERLOADING FOR
     // THE DERIVED CLASSES
     CBaseLogObject& operator=(const CBaseLogObject& RefObj);
 
-    // To do actions before logging starts
+    /** To do actions before logging starts */
     BOOL bStartLogging(ETYPE_BUS);
 
     void vCloseLogFile();
 
-    // To do actions before logging stop
-    BOOL bStopLogging(void);
+    /** To do actions before logging stop */
+    bool bStopLogging(void);
 
-    BOOL bStopOnlyLogging(void);
+    bool bStopOnlyLogging(void);
 
-    // To log a string
-    BOOL bLogString(CString& omString);
+    /** To log a string */
+    bool bLogString(CString& omString);
 
-    // Enable / disable filter
-    virtual void EnableFilter(BOOL bEnable) = 0;
-    // Enable / disable logging
-    void EnableLogging(BOOL bEnable);
+    /** Enable / disable filter */
+    virtual void EnableFilter(bool bEnable) = 0;
 
-    // Query - if logging is enable
-    BOOL IsLoggingEnable(void);
+    /** Enable / disable logging */
+    void EnableLogging(bool bEnable);
 
-    //Get the log info structure
+    /** Query - if logging is enable */
+    bool IsLoggingEnable(void);
+
+    /** Get the log info structure */
     void GetLogInfo(SLOGINFO& sLoginfo) const;
-    //Set Log info structure
+
+    /**Set Log info structure */
     void SetLogInfo(const SLOGINFO& sLoginfo);
 
-    // Set configuration data
+    /* Set configuration data */
     BYTE* SetConfigData(BYTE* pvDataStream, BYTE bytLogVersion);
     INT nSetConfigData(xmlNodePtr pNode);
-    // Get configuration data
+    /* Get configuration data */
     BYTE* GetConfigData(BYTE* pvDataStream) const;
-    BOOL GetConfigData(xmlNodePtr pxmlNodePtr) const;
+    bool GetConfigData(xmlNodePtr pxmlNodePtr) const;
     // To get the total buffer size
     UINT unGetBufSize(void) const;
 
@@ -158,5 +157,4 @@ public:
     // To get the channel baud rate
     void GetChannelBaudRateDetails(void* controllerDetails,
                                    int& nNumChannels);
-
 };

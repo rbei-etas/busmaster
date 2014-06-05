@@ -960,7 +960,7 @@ void CGraphLeftView::vPopulateGraphControl()
         }
         else
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
 
         CGraphElement odTemp;
@@ -1072,7 +1072,7 @@ void CGraphLeftView::vHandleConnectionStatusChange(BOOL bConnect)
         }
         else
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
 
         // Update UI Elements

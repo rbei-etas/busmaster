@@ -155,7 +155,7 @@ void CFormatMsgJ1939::vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData,
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     _itot(psJ1939BData->m_unDLC, psJ1939FData->m_acDataLen, 10);
 

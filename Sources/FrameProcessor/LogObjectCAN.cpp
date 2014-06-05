@@ -66,7 +66,7 @@ void CLogObjectCAN::Der_CopySpecificData(const CBaseLogObject* pouLogObjRef)
     pouLobObjCANRef->GetFilterInfo(m_sFilterApplied);
 }
 
-BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
+bool CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
 {
     // Multiple return statements are used to keep the code precise.
 
@@ -80,7 +80,7 @@ BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
 
     if (bToBeLogged(CANInfo_Basic) == FALSE)
     {
-        return FALSE;
+        return false;
     }
 
     CString omLogText = "";
@@ -114,7 +114,7 @@ BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
         break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
             break;
     }
 
@@ -150,7 +150,7 @@ BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
         break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
             break;
     }
 
@@ -166,7 +166,7 @@ BOOL CLogObjectCAN::bLogData(const SFORMATTEDDATA_CAN& sDataCAN)
 
     vWriteTextToFile(omLogText, CAN);
 
-    return TRUE;
+    return true;
 }
 
 // To format the header
@@ -199,19 +199,19 @@ void CLogObjectCAN::vFormatFooter(CString& omFooter)
                      2. Shifted the formatting codes into vWriteTextToFile(...)
 *******************************************************************************/
 
-BOOL CLogObjectCAN::bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic)
+bool CLogObjectCAN::bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic)
 {
     // Multiple return statements are used to keep the code precise.
 
-    if (m_sLogInfo.m_bEnabled == FALSE)
+    if (m_sLogInfo.m_bEnabled == false)
     {
-        return FALSE;
+        return false;
     }
 
     if (nullptr == m_pLogFile)
     {
-        ASSERT(FALSE);
-        return FALSE;
+        ASSERT(false);
+        return false;
     }
 
     // Return if the curent frame occurs in different channel.
@@ -219,7 +219,7 @@ BOOL CLogObjectCAN::bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic)
     {
         if (m_sLogInfo.m_ChannelSelected != CANInfo_Basic.m_eChannel)
         {
-            return FALSE;
+            return false;
         }
     }
 
@@ -227,7 +227,7 @@ BOOL CLogObjectCAN::bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic)
     {
         if (m_sFilterApplied.bToBeBlocked(CANInfo_Basic) == TRUE)
         {
-            return FALSE;
+            return false;
         }
     }
 
@@ -240,7 +240,7 @@ BOOL CLogObjectCAN::bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic)
         case STOPPED:
         {
             //If the log file is stopped then don't log
-            return FALSE;
+            return false;
         }
         break;
         case START:
@@ -252,7 +252,7 @@ BOOL CLogObjectCAN::bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic)
             }
             else
             {
-                return FALSE;
+                return false;
             }
         }
         break;
@@ -275,17 +275,17 @@ BOOL CLogObjectCAN::bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic)
             }
             else
             {
-                return FALSE;
+                return false;
             }
         }
         break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
             break;
     }
 
-    return TRUE;
+    return true;
 }
 
 BYTE* CLogObjectCAN::Der_SetConfigData(BYTE* pvDataStream)
@@ -357,12 +357,13 @@ void CLogObjectCAN::Der_GetConfigData(xmlNodePtr pNodePtr) const
 {
     m_sFilterApplied.pbGetConfigFilterData(pNodePtr);
 }
+
 UINT CLogObjectCAN::Der_unGetBufSize(void) const
 {
     return m_sFilterApplied.unGetSize();
 }
 
-void CLogObjectCAN::EnableFilter(BOOL bEnable)
+void CLogObjectCAN::EnableFilter(bool bEnable)
 {
     m_sFilterApplied.m_bEnabled = bEnable;
 }

@@ -122,7 +122,7 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
         }
         else
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
 
         CurrDataLIN->m_eChannel = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChannel;

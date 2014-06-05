@@ -125,7 +125,7 @@ void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     vFormatTimeStamp(dwTSTmp, acTime);

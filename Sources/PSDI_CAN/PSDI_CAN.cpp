@@ -100,7 +100,7 @@ USAGEMODE HRESULT PSDI_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
             {
                 if ((sg_pouMsgContainer_CAN = new CMsgContainerCAN) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
             }
@@ -115,7 +115,7 @@ if sg_pouMsgContainer_CAN is null */
             {
                 if ((sg_pouMsgContainer_LIN = new CMsgContainerLIN) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
             }
@@ -130,7 +130,7 @@ if sg_pouMsgContainer_LIN is null */
             {
                 if ((sg_pouMsgContainer_J1939 = new CMsgContainerJ1939) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
             }
@@ -145,7 +145,7 @@ if sg_pouMsgContainer_J1939 is null */
             {
                 if ((sg_pouMsgContainer_FlexRay = new CMsgContainerFlexRay) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
             }

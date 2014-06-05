@@ -50,7 +50,6 @@ CFrameProcessor_CAN::~CFrameProcessor_CAN()
 BOOL CFrameProcessor_CAN::InitInstance(void)
 {
     BOOL Result = this->CFrameProcessor_Common::InitInstance();
-    //m_sDataCopyThread.m_hActionEvent = m_ouFSEBufCAN.hGetNotifyingEvent();
 
     return Result;
 }
@@ -85,7 +84,7 @@ void CFrameProcessor_CAN::DeleteLogObj(CBaseLogObject*& pouLogObj)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 }
 
@@ -174,19 +173,19 @@ HRESULT CFrameProcessor_CAN::FPC_DoInitialisation(SCANPROC_PARAMS* psInitParams)
             {
                 if (m_pouDilCanInterface->DILC_ManageMsgBuf(MSGBUF_ADD, m_sCANProcParams.dwClientID, &m_ouFSEBufCAN) != S_OK)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                 }
                 hResult = S_OK;
             }
         }
         else
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return hResult;
@@ -224,7 +223,7 @@ HRESULT CFrameProcessor_CAN::FPC_ApplyFilteringScheme(USHORT ushLogBlkID,
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return hResult;
@@ -246,26 +245,26 @@ HRESULT CFrameProcessor_CAN::FPC_GetFilteringScheme(USHORT ushLogBlk,
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return hResult;
 }
 
 // To enable/disable updation of the client flexray frame buffer.
-HRESULT CFrameProcessor_CAN::FPC_SetClientCANBufON(BOOL bEnable)
+HRESULT CFrameProcessor_CAN::FPC_SetClientCANBufON(bool bEnable)
 {
     HRESULT hResult = S_FALSE;
 
     /* There is only one erroneous situation likely to occur: the client buffer
     doesn't exist and the updation of the same is to be enabled. */
-    if ((bEnable == TRUE) && (nullptr == m_sCANProcParams.m_pouCANBuffer))
+    if (bEnable && (nullptr == m_sCANProcParams.m_pouCANBuffer))
     {
         ;
     }
     else
     {
-        m_bClientBufferON = bEnable;
+        m_bClientBufferON =bEnable;
         hResult = S_OK;
     }
 
@@ -283,13 +282,13 @@ CBaseCANBufFSE* CFrameProcessor_CAN::FPC_GetCANBuffer(void)
 // USE COMMON BASE CLASS ALIAS FUNCTIONS: START
 /* Call to enable/disable logging for a particular block. Having ushBlk equal
 to FOR_ALL, signifies the operation to be performed for all the blocks */
-HRESULT CFrameProcessor_CAN::FPC_EnableLoggingBlock(USHORT ushBlk, BOOL bEnable)
+HRESULT CFrameProcessor_CAN::FPC_EnableLoggingBlock(USHORT ushBlk, bool bEnable)
 {
     return EnableLoggingBlock(ushBlk, bEnable);
 }
 
 // To enable/disable logging
-HRESULT CFrameProcessor_CAN::FPC_EnableLogging(BOOL bEnable)
+HRESULT CFrameProcessor_CAN::FPC_EnableLogging(bool bEnable)
 {
     return EnableLogging(bEnable, CAN);
 }
@@ -313,29 +312,29 @@ void CFrameProcessor_CAN::FPC_vCloseLogFile()
 
 /* Call to enable/disable logging for a particular block. Having ushBlk equal
 to FOR_ALL, signifies the operation to be performed for all the blocks */
-HRESULT CFrameProcessor_CAN::FPC_EnableFilter(USHORT ushBlk, BOOL bEnable)
+HRESULT CFrameProcessor_CAN::FPC_EnableFilter(USHORT ushBlk, bool bEnable)
 {
     return EnableFilter(ushBlk, bEnable);
 }
 
 // Query function - client flexray buffer updation status (OFF/ON)
-BOOL CFrameProcessor_CAN::FPC_IsClientCANBufON(void)
+bool CFrameProcessor_CAN::FPC_IsClientCANBufON(void)
 {
     return IsClientBufferON();
 }
 
 // Query function - current logging status (OFF/ON).
-BOOL CFrameProcessor_CAN::FPC_IsLoggingON(void)
+bool CFrameProcessor_CAN::FPC_IsLoggingON(void)
 {
     return IsLoggingON();
 }
 
-BOOL CFrameProcessor_CAN::FPC_IsDataLogged(void)
+bool CFrameProcessor_CAN::FPC_IsDataLogged(void)
 {
     return IsDataLogged();
 }
 
-BOOL CFrameProcessor_CAN::FPC_IsThreadBlocked(void)
+bool CFrameProcessor_CAN::FPC_IsThreadBlocked(void)
 {
     return IsThreadBlocked();
 }
@@ -346,7 +345,7 @@ void CFrameProcessor_CAN::FPC_DisableDataLogFlag(void)
 }
 
 // Query function - current filtering status
-BOOL CFrameProcessor_CAN::FPC_IsFilterON(void)
+bool CFrameProcessor_CAN::FPC_IsFilterON(void)
 {
     return IsFilterON();
 }
@@ -413,7 +412,7 @@ HRESULT CFrameProcessor_CAN::FPC_StartEditingSession(void)
 }
 
 // To stop logging block editing session
-HRESULT CFrameProcessor_CAN::FPC_StopEditingSession(BOOL bConfirm)
+HRESULT CFrameProcessor_CAN::FPC_StopEditingSession(bool bConfirm)
 {
     return StopEditingSession(bConfirm);
 }

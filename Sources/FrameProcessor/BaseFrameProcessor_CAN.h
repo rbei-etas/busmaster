@@ -65,31 +65,31 @@ public:
 
     /* Call to enable/disable logging for a particular block. Having ushBlk equal
     to FOR_ALL, signifies the operation to be performed for all the blocks */
-    virtual HRESULT FPC_EnableLoggingBlock(USHORT ushBlk, BOOL bEnable) = 0;
+    virtual HRESULT FPC_EnableLoggingBlock(USHORT ushBlk, bool bEnable) = 0;
 
     // To enable/disable logging
-    virtual HRESULT FPC_EnableLogging(BOOL bEnable) = 0;
+    virtual HRESULT FPC_EnableLogging(bool bEnable) = 0;
 
     virtual void FPC_vCloseLogFile() = 0;
 
     /* Call to enable/disable logging for a particular block. Having ushBlk equal
     to FOR_ALL, signifies the operation to be performed for all the blocks */
-    virtual HRESULT FPC_EnableFilter(USHORT ushBlk, BOOL bEnable) = 0;
+    virtual HRESULT FPC_EnableFilter(USHORT ushBlk, bool bEnable) = 0;
 
     // To enable/disable updation of the client flexray frame buffer.
-    virtual HRESULT FPC_SetClientCANBufON(BOOL bEnable) = 0;
+    virtual HRESULT FPC_SetClientCANBufON(bool bEnable) = 0;
 
     // Query function - client flexray buffer updation status (OFF/ON)
-    virtual BOOL FPC_IsClientCANBufON(void) = 0;
+    virtual bool FPC_IsClientCANBufON(void) = 0;
 
     // Query function - current logging status (OFF/ON).
-    virtual BOOL FPC_IsLoggingON(void) = 0;
+    virtual bool FPC_IsLoggingON(void) = 0;
 
-    virtual BOOL FPC_IsDataLogged(void) = 0;
-    virtual BOOL FPC_IsThreadBlocked(void) = 0;
+    virtual bool FPC_IsDataLogged(void) = 0;
+    virtual bool FPC_IsThreadBlocked(void) = 0;
     virtual void FPC_DisableDataLogFlag() = 0;
     // Query function - current filtering status
-    virtual BOOL FPC_IsFilterON(void) = 0;
+    virtual bool FPC_IsFilterON(void) = 0;
 
     // To log a string
     virtual HRESULT FPC_LogString(CString& omStr) = 0;
@@ -143,7 +143,7 @@ public:
     virtual HRESULT FPC_StartEditingSession(void) = 0;
 
     // To stop logging block editing session
-    virtual HRESULT FPC_StopEditingSession(BOOL bConfirm) = 0;
+    virtual HRESULT FPC_StopEditingSession(bool bConfirm) = 0;
 
     // To update the associated database list to logger
     virtual HRESULT FPC_SetDatabaseFiles(const CStringArray& omList) = 0;

@@ -141,7 +141,7 @@ USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT eInterfaceID, void** ppvInterfac
             {
                 if ((sg_pouFP_CAN = new CFrameProcessor_CAN) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
                 else
@@ -160,7 +160,7 @@ USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT eInterfaceID, void** ppvInterfac
             {
                 if ((sg_pouFP_LIN = new CFrameProcessor_LIN) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
                 else
@@ -179,7 +179,7 @@ USAGEMODE HRESULT FP_GetInterface(eID_COMPONENT eInterfaceID, void** ppvInterfac
             {
                 if ((sg_pouFP_J1939 = new CFrameProcessor_J1939) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
                 else

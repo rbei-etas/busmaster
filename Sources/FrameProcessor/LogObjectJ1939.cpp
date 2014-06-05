@@ -39,7 +39,7 @@ void CLogObjectJ1939::Der_CopySpecificData(const CBaseLogObject* pouLogObjRef)
     pouLobObjCANRef->GetFilterInfo(m_sFilterApplied);
 }
 
-BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
+bool CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
 {
     // Multiple return statements are used to keep the code precise.
 
@@ -69,9 +69,9 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
 
     // Assign appropriate values to FrameInfo_Basic
 
-    if (bToBeLogged(J1939Info_Basic) == FALSE)
+    if (bToBeLogged(J1939Info_Basic) == false)
     {
-        return FALSE;
+        return false;
     }
 
     CString omLogText = "";
@@ -108,7 +108,7 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
         break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
             break;
     }
 
@@ -134,7 +134,7 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
         break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
             break;
     }
 
@@ -155,7 +155,7 @@ BOOL CLogObjectJ1939::bLogData(const SFORMATTEDATA_J1939& sDataJ1939)
 
     vWriteTextToFile(omLogText, J1939);
 
-    return TRUE;
+    return true;
 }
 
 // To format the header
@@ -187,33 +187,33 @@ void CLogObjectJ1939::vFormatFooter(CString& omFooter)
                      1. Changed the prototype
                      2. Shifted the formatting codes into vWriteTextToFile(...)
 *******************************************************************************/
-BOOL CLogObjectJ1939::bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic)
+bool CLogObjectJ1939::bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic)
 {
     // Multiple return statements are used to keep the code precise.
 
-    if (m_sLogInfo.m_bEnabled == FALSE)
+    if (m_sLogInfo.m_bEnabled == false)
     {
-        return FALSE;
+        return false;
     }
 
     if (nullptr == m_pLogFile)
     {
-        ASSERT(FALSE);
-        return FALSE;
+        ASSERT(false);
+        return false;
     }
 
     if (CAN_CHANNEL_ALL != m_sLogInfo.m_ChannelSelected)
     {
         if (m_sLogInfo.m_ChannelSelected != J1939Info_Basic.m_eChannel)
         {
-            return FALSE;
+            return false;
         }
     }
-    if (m_sFilterApplied.m_bEnabled == TRUE)
+    if (m_sFilterApplied.m_bEnabled)
     {
         if (m_sFilterApplied.bToBeBlocked(J1939Info_Basic) == TRUE)
         {
-            return FALSE;
+            return false;
         }
     }
 
@@ -226,7 +226,7 @@ BOOL CLogObjectJ1939::bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic)
         case STOPPED:
         {
             //If the log file is stopped then don't log
-            return FALSE;
+            return false;
         }
         break;
         case START:
@@ -238,7 +238,7 @@ BOOL CLogObjectJ1939::bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic)
             }
             else
             {
-                return FALSE;
+                return false;
             }
         }
         break;
@@ -261,17 +261,17 @@ BOOL CLogObjectJ1939::bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic)
             }
             else
             {
-                return FALSE;
+                return false;
             }
         }
         break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
             break;
     }
 
-    return TRUE;
+    return true;
 }
 
 BYTE* CLogObjectJ1939::Der_SetConfigData(BYTE* pvDataStream)
@@ -297,12 +297,13 @@ void CLogObjectJ1939::Der_GetConfigData(xmlNodePtr pNodePtr) const
 {
     m_sFilterApplied.pbGetConfigFilterData(pNodePtr);
 }
+
 UINT CLogObjectJ1939::Der_unGetBufSize(void) const
 {
     return m_sFilterApplied.unGetSize();
 }
 
-void CLogObjectJ1939::EnableFilter(BOOL bEnable)
+void CLogObjectJ1939::EnableFilter(bool bEnable)
 {
     m_sFilterApplied.m_bEnabled = bEnable;
 }

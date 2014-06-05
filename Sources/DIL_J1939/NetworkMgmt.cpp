@@ -636,7 +636,7 @@ LONG CNetworkMgmt::lCreateNodeConManager(char* pacNodeName,
         }
         else
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
     return lResult;

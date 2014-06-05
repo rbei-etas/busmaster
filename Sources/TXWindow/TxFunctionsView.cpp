@@ -699,7 +699,7 @@ void CTxFunctionsView::OnInvokeClose()
 
         if(psMsgBlock != nullptr)
         {
-            bUnChanged = CTxWndDataStore::ouGetTxWndDataStoreObj().nCompareBlockLists(psMsgBlock);
+            bUnChanged = (CTxWndDataStore::ouGetTxWndDataStoreObj().nCompareBlockLists(psMsgBlock) == TRUE);
             if(pBlocksView->m_bDelayBtnBlocks != CTxWndDataStore::ouGetTxWndDataStoreObj().m_bDelayBetweenMsgBlocks)
             {
                 bUnChanged = false;

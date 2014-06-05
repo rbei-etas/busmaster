@@ -225,7 +225,7 @@ int tagSTJ1939_MSG::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -359,7 +359,7 @@ void GetMessageTypeStr(EJ1939_MSG_TYPE eType, char acResult[LEN_STR_TYPE_J1939])
             _tcscpy(acResult, "TPDT");
             break;
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
     }
 }
 

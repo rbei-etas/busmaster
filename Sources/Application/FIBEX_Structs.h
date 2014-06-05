@@ -8,8 +8,6 @@
 #import <msxml6.dll>
 #include "DataTypes/MsgSignal_Datatypes.h"
 
-#define EMPTY_VALUE (-1)
-
 enum ENDIANNESS_ENUM
 {
     INTEL_ENUM,

@@ -299,7 +299,7 @@ HRESULT CDIL_CAN_VSCOM::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANB
                 hResult = S_OK;
             }
             ////else
-            ////  ASSERT(FALSE);
+            ////  ASSERT(false);
         }
         else
         {

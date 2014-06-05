@@ -2231,7 +2231,7 @@ void CTransmitMsgLIN::vCheckBoxClickHandler( CListCtrl* pThis, int nItem, int nS
         bEnable = FALSE;
     }
 
-    ((CTransmitMsgLIN*)uParam)->vUpdateSelMsgDetails(eUpdate, nItem, -1, -1, bEnable);
+    ((CTransmitMsgLIN*)uParam)->vUpdateSelMsgDetails(eUpdate, nItem, -1, -1, bEnable == true);
 
     ((CListCtrl*)pThis)->SetItem(&lvitem);
 }
@@ -3535,7 +3535,7 @@ void CTransmitMsgLIN::OnItemchangedLstcMsgDetails( NMHDR* pNMHDR, LRESULT* pResu
     if( pNMListView->uNewState & defMASK_CHECK_UNCHECK && m_bFromEvent == false )
     {
 
-        vUpdateSelMsgDetails(eEnable, pNMListView->iItem, 0, 1, m_lstMsg.GetCheck(pNMListView->iItem));
+        vUpdateSelMsgDetails(eEnable, pNMListView->iItem, 0, 1, m_lstMsg.GetCheck(pNMListView->iItem) == TRUE);
     }
 
     if((pNMListView->iItem >= 0) && ( pNMListView->uNewState & (LVIS_FOCUSED|LVIS_SELECTED)))

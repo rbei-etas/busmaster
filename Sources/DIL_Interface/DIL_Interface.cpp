@@ -103,7 +103,7 @@ USAGEMODE HRESULT DIL_GetInterface(ETYPE_BUS eBusType, void** ppvInterface)
             {
                 if ((sg_pouDIL_CAN = new CDIL_CAN) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
                 else
@@ -122,7 +122,7 @@ if sg_pouFP_CAN is null */
             {
                 if ((sg_pouDIL_LIN = new CDIL_LIN) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
                 else
@@ -143,7 +143,7 @@ if sg_pouFP_CAN is null */
             {
                 if ((sg_pouDILI_J1939 = new CDILI_J1939) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
                 else
@@ -162,7 +162,7 @@ if sg_pouFP_CAN is null */
             {
                 if ((sg_pouDIL_FLEXRAY = new CDIL_FLEXRAY) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
                 else

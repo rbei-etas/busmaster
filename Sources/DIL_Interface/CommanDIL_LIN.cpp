@@ -408,11 +408,6 @@ void CCommanDIL_LIN::vWriteIntoClientsBuffer(STLINDATA& sLinData)
 
 UCHAR CCommanDIL_LIN::ucCalculateClassicChecksum(SLIN_CRC sCrc)
 {
-    /*sCrc.ucData[0] = 0x4A;
-    sCrc.ucData[1] = 0x55;
-    sCrc.ucData[2] = 0x93;
-    sCrc.ucData[3] = 0xE5;*/
-
     UINT ucChecksum = sCrc.ucData[0];
     UCHAR ucMask = 0xFF;
     for(INT unIndex = 1; unIndex < sCrc.unDlc; unIndex++)

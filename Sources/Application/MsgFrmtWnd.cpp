@@ -545,7 +545,7 @@ LRESULT CMsgFrmtWnd::GetFilterDetails(WPARAM wParam, LPARAM /*lParam*/)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -585,7 +585,7 @@ LRESULT CMsgFrmtWnd::SetFilterDetails(WPARAM wParam, LPARAM /*lParam*/)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -620,7 +620,7 @@ LRESULT CMsgFrmtWnd::EnableFilterApplied(WPARAM wParam, LPARAM /*lParam*/)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -3308,7 +3308,7 @@ void CMsgFrmtWnd::vExpandMsgEntry( SMSGDISPMAPENTRY& sEntry,
                 }
                 else
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                 }
             }
         }
@@ -3422,7 +3422,7 @@ LRESULT CMsgFrmtWnd::OnUpdateMsgTreeItemsPositions(WPARAM /*wParam*/, LPARAM /*l
             }
             else
             {
-                ASSERT(FALSE);
+                ASSERT(false);
             }
         }
     }
@@ -3544,7 +3544,7 @@ void CMsgFrmtWnd::vContractMsgEntry(SMSGDISPMAPENTRY& sEntry, int nMsgIndex)
                     }
                     else
                     {
-                        ASSERT(FALSE);
+                        ASSERT(false);
                     }
                 }
             }
@@ -4109,7 +4109,7 @@ void CMsgFrmtWnd::OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI)
 
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }

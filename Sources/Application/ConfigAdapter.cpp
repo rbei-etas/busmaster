@@ -61,7 +61,7 @@ static void vPopulateLogInfo(SLOGINFO& Dest, const SLOGFILEDETS& Src)
 
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -87,7 +87,7 @@ static void vPopulateLogInfo(SLOGINFO& Dest, const SLOGFILEDETS& Src)
 
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -108,7 +108,7 @@ static void vPopulateLogInfo(SLOGINFO& Dest, const SLOGFILEDETS& Src)
 
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -865,7 +865,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
 

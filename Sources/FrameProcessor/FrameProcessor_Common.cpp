@@ -298,7 +298,7 @@ USHORT CFrameProcessor_Common::GetUniqueID(void)
     return Result;
 }
 
-BOOL CFrameProcessor_Common::bIsEditingON(void)
+bool CFrameProcessor_Common::bIsEditingON(void)
 {
     return m_bEditingON;
 }
@@ -329,7 +329,7 @@ void CFrameProcessor_Common::vCloseLogFile()
 
 /* Start of alias functions in CFrameProcessor_Common */
 
-HRESULT CFrameProcessor_Common::EnableLogging(BOOL bEnable, ETYPE_BUS eBus)
+HRESULT CFrameProcessor_Common::EnableLogging(bool bEnable, ETYPE_BUS eBus)
 {
     HRESULT hResult = S_FALSE;
 
@@ -358,7 +358,7 @@ HRESULT CFrameProcessor_Common::EnableLogging(BOOL bEnable, ETYPE_BUS eBus)
 
     if (ushBlocks > 0)
     {
-        if (FALSE == bEnable)
+        if (bEnable == false)
         {
             m_bLogEnabled = bEnable;
 
@@ -380,7 +380,7 @@ HRESULT CFrameProcessor_Common::EnableLogging(BOOL bEnable, ETYPE_BUS eBus)
         {
             CBaseLogObject* pouCurrLogObj = m_omLogObjectArray.GetAt(i);
 
-            if (TRUE == bEnable)
+            if (bEnable)
             {
                 pouCurrLogObj->bStartLogging(eBus);
             }
@@ -389,7 +389,7 @@ HRESULT CFrameProcessor_Common::EnableLogging(BOOL bEnable, ETYPE_BUS eBus)
                 pouCurrLogObj->bStopLogging();
             }
         }
-        if (TRUE == bEnable)
+        if (bEnable)
         {
             m_bLogEnabled = bEnable;
             m_sDataCopyThread.m_unActionCode = CREATE_TIME_MAP;
@@ -417,7 +417,7 @@ HRESULT CFrameProcessor_Common::EnableLogging(BOOL bEnable, ETYPE_BUS eBus)
     return hResult;
 }
 
-HRESULT CFrameProcessor_Common::EnableFilter(USHORT ushBlk, BOOL bEnable)
+HRESULT CFrameProcessor_Common::EnableFilter(USHORT ushBlk, bool bEnable)
 {
     HRESULT hResult = S_OK;
     // Check if at least one filtering datum is available.
@@ -524,7 +524,7 @@ HRESULT CFrameProcessor_Common::GetConfigData(BYTE** ppvConfigData, UINT& unLeng
         }
         else
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
 
@@ -560,7 +560,7 @@ HRESULT CFrameProcessor_Common::GetConfigData(xmlNodePtr pxmlNodePtr)
         }
         else
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
 
@@ -572,7 +572,7 @@ HRESULT CFrameProcessor_Common::GetConfigData(xmlNodePtr pxmlNodePtr)
 // Setter for the logging configuration data
 HRESULT CFrameProcessor_Common::SetConfigData(BYTE* pvDataStream, const CString& omStrVersion)
 {
-    if (FALSE == bIsEditingON())
+    if (bIsEditingON() == false)
     {
         return S_FALSE;
     }
@@ -599,7 +599,7 @@ HRESULT CFrameProcessor_Common::SetConfigData(BYTE* pvDataStream, const CString&
 
 HRESULT CFrameProcessor_Common::SetConfigData( xmlDocPtr pDoc, ETYPE_BUS eBus)
 {
-    if (FALSE == bIsEditingON())
+    if (bIsEditingON() == false)
     {
         return S_FALSE;
     }
@@ -745,7 +745,7 @@ bool CFrameProcessor_Common::IsFilterON(void)
     return m_bFilterON;
 }
 
-HRESULT CFrameProcessor_Common::EnableLoggingBlock(USHORT ushBlk, BOOL bEnable)
+HRESULT CFrameProcessor_Common::EnableLoggingBlock(USHORT ushBlk, bool bEnable)
 {
     HRESULT hResult = S_FALSE;
 
@@ -783,7 +783,7 @@ HRESULT CFrameProcessor_Common::AddLoggingBlock(const SLOGINFO& sLogObject)
         }
         else
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
 
@@ -841,7 +841,7 @@ HRESULT CFrameProcessor_Common::StartEditingSession(void)
     return S_OK;
 }
 
-HRESULT CFrameProcessor_Common::StopEditingSession(BOOL bConfirm)
+HRESULT CFrameProcessor_Common::StopEditingSession(bool bConfirm)
 {
     HRESULT hResult = S_OK; // Success is default assumption
 

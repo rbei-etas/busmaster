@@ -40,7 +40,7 @@ struct SLOGFILEDETS
     INT                                   m_nTimeMode;
     INT                                   m_nNumMode;
     INT                                   m_nFileMode;
-    BOOL                                  m_bEnabled;
+    bool                                  m_bEnabled;
     SLOGTRIGGER                           m_sLogTrigger;
     CModuleFilterArray                    m_omFilter;
 };
@@ -51,7 +51,7 @@ struct SLOGCONFIGDETS
 {
     UINT m_unCount;
     SLOGFILEDETS m_asLogFileDets[MAX_FILE_COUNT];
-    BOOL m_bEnableDuringConnect;
+    bool m_bEnableDuringConnect;
 };
 
 struct SREPLAYFILE
@@ -61,8 +61,8 @@ struct SREPLAYFILE
     UINT m_unMsgTimeDelay;  // Time delay between messages in case time mode = 1
     int m_nReplayMode;      // 0 - Monoshot, 1 - Cyclic
     UINT m_unCycleTimeDelay;// Cyclic delay in case replay mode = 1
-    BOOL    m_bEnabled;     // To indicate replay is enabled or not
-    BOOL    m_bInteractive; // 0 - Non Interactive, 1 - interactive
+    bool    m_bEnabled;     // To indicate replay is enabled or not
+    bool    m_bInteractive; // 0 - Non Interactive, 1 - interactive
     CModuleFilterArray m_omFilter;
 };
 
@@ -75,10 +75,10 @@ struct SREPLAYDETS
 struct SMSG_FRMT_WND
 {
     SHORT m_shColHdrPos[10];
-    BOOL  m_bColShowHideStatus[10];
-    BOOL  m_bDisplayFormat; //HEX or DEC
-    BOOL  m_bDisplayMode; //Overwrite or append
-    BOOL  m_bInterpretStatus;
+    bool  m_bColShowHideStatus[10];
+    bool  m_bDisplayFormat; //HEX or DEC
+    bool  m_bDisplayMode; //Overwrite or append
+    bool  m_bInterpretStatus;
     SHORT  m_shTimeDisplay;// System, relative , absolute
     SMSG_FRMT_WND()
     {

@@ -80,80 +80,35 @@ CECU::CECU(CECU& RefObj)
 
 CController::CController()
 {
-    m_sKeySlotUsage.m_nStartUpSync  = EMPTY_VALUE;
-    m_sKeySlotUsage.m_nSync = EMPTY_VALUE;
-    m_sKeySlotUsage.m_omNone = EMPTY_VALUE;
-    m_shMaxDynPayloadLgt  = EMPTY_VALUE;
-
-    m_nKeySlotId = EMPTY_VALUE;
-
-    m_shClusterDriftDamping  = EMPTY_VALUE;
-
-
-    m_nDecodingCorr  = EMPTY_VALUE;
-
-
-
-    m_nListenTimeOut  = EMPTY_VALUE;
-
-
-    m_shMaxDrift  = EMPTY_VALUE;
-
-
-    m_shExternOffsetCorr  = EMPTY_VALUE;
-
-
-    m_shExternRateCorr  = EMPTY_VALUE;
-
-
-    m_shLatestTx  = EMPTY_VALUE;
-
-
-    m_nMicroPreCycle  = EMPTY_VALUE;
-
-
-    m_shOffsetCorrOut  = EMPTY_VALUE;
-
-
-    m_shRateCorrOut  = EMPTY_VALUE;
-
-
-    m_shSamplePerMicrotick  = EMPTY_VALUE;
-
-
-    m_shDelayCompensationA  = EMPTY_VALUE;
-
-
-    m_shDelayCompensationB  = EMPTY_VALUE;
-
-
-    m_shWakeUpPattern  = EMPTY_VALUE;
-
-
+    m_sKeySlotUsage.m_nStartUpSync  = 0;
+    m_sKeySlotUsage.m_nSync = 0;
+    m_sKeySlotUsage.m_omNone = "";
+    m_shMaxDynPayloadLgt  = 0;
+    m_nKeySlotId = 0;
+    m_shClusterDriftDamping  = 0;
+    m_nDecodingCorr  = 0;
+    m_nListenTimeOut  = 0;
+    m_shMaxDrift  = 0;
+    m_shExternOffsetCorr  = 0;
+    m_shExternRateCorr  = 0;
+    m_shLatestTx  = 0;
+    m_nMicroPreCycle  = 0;
+    m_shOffsetCorrOut  = 0;
+    m_shRateCorrOut  = 0;
+    m_shSamplePerMicrotick  = 0;
+    m_shDelayCompensationA  = 0;
+    m_shDelayCompensationB  = 0;
+    m_shWakeUpPattern  = 0;
     m_bAllowHaltDewToClock  = false;
-
-
-    m_shAllowPassiveToActive  = EMPTY_VALUE;
-
-
-    m_shAcceptedStartUpRange  = EMPTY_VALUE;
-
-
-    m_shMacroInitialOffsetA  = EMPTY_VALUE;
-
-
-    m_shMacroInitialOffsetB  = EMPTY_VALUE;
-
-
-    m_shMicroInitialOffsetA  = EMPTY_VALUE;
-
-
-    m_shMicroInitialOffsetB  = EMPTY_VALUE;
-
-
+    m_shAllowPassiveToActive  = 0;
+    m_shAcceptedStartUpRange  = 0;
+    m_shMacroInitialOffsetA  = 0;
+    m_shMacroInitialOffsetB  = 0;
+    m_shMicroInitialOffsetA  = 0;
+    m_shMicroInitialOffsetB  = 0;
     m_bSingleSlotEnable  = false;
-    m_fMicrotick  = EMPTY_VALUE;
-    m_fMicroPerMacroNom  = EMPTY_VALUE;
+    m_fMicrotick  = 0;
+    m_fMicroPerMacroNom  = 0;
 }
 
 CController::~CController()

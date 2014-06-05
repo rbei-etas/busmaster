@@ -78,7 +78,7 @@ BOOL CCAN_ICS_neoVIApp::InitInstance()
     int ret = ::GetModuleFileName(theApp.m_hInstance, szModuleFileName, MAX_PATH);
     if ( ret == 0 || ret == MAX_PATH )
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     // Load resource-only language DLL. It will use the languages
     // detected above, take first available language,
@@ -825,7 +825,7 @@ static BYTE bClassifyMsgType(icsSpyMessage& CurrSpyMsg,
         }
         /*else
         {
-            //ASSERT(FALSE);
+            //ASSERT(false);
         }*/
         // Copy data length
         sCanData.m_uDataInfo.m_sCANMsg.m_ucDataLen = CurrSpyMsg.NumberBytesData;
@@ -2936,7 +2936,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseC
             }
             else
             {
-                ////ASSERT(FALSE);
+                ////ASSERT(false);
             }
         }
         else

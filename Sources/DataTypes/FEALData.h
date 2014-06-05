@@ -33,7 +33,6 @@
 #include <list>
 
 #define MAX_VAL_OF_BYTE         256
-#define EMPTY_VALUE -1
 
 enum CATEGORY_GROUP { CATERGORY_NONE = 0};
 
@@ -55,86 +54,106 @@ typedef struct tagAbsSFlexrayCluster
     short m_shMINISLOT;
     short m_shMINISLOT_ACTION_POINT_OFFSET;
     short m_shNIT;
+
     /**
-    * float enum - .05,.025,.0125
-    */
+     * float enum - .05,.025,.0125
+     */
     float m_fSAMPLE_CLOCK_PERIOD;
+
     /**
-    * 4 to 659 inclusive
-    */
+     * 4 to 659 inclusive
+     */
     short m_shSTATIC_SLOT;
+
     /**
-    * 0 to 139 inclusive
-    */
+     * 0 to 139 inclusive
+     */
     short m_shSYMBOL_WINDOW;
+
     /**
-    * 3 to 15 inclusive
-    */
+     * 3 to 15 inclusive
+     */
     short m_shTSS_TRANSMITTER;
     ABS_WAKEUP m_ouWAKEUP;
+
     /**
-    * 2 to 16 inclusive
-    */
+     * 2 to 16 inclusive
+     */
     short m_shLISTEN_NOISE;
+
     /**
-    * 10 to 16000 inclusive
-    */
+     * 10 to 16000 inclusive
+     */
     short m_shMACRO_PER_CYCLE;
+
     /**
-    * Min 1
-    */
+     * Min 1
+     */
     float m_fMACROTICK;
+
     /**
-    * 0 to 11.7 inclusive
-    */
+     * 0 to 11.7 inclusive
+     */
     float m_fMAX_INITIALIZATION_ERROR;
+
     /**
-    * 1 to 15
-    */
+     * 1 to 15
+     */
     short m_shMAX_WITHOUT_CLOCK_CORRECTION_FATAL;
+
     /**
-    * 1 to 15
-    */
+     * 1 to 15
+     */
     short m_shMAX_WITHOUT_CLOCK_CORRECTION_PASSIVE;
+
     /**
-    * Min 0, default 0, 0 to 12
-    */
+     * Min 0, default 0, 0 to 12
+     */
     short m_shNETWORK_MANAGEMENT_VECTOR_LENGTH;
+
     /**
-    * 0 to 7986
-    */
+     * 0 to 7986
+     */
     short m_shNUMBER_OF_MINISLOTS;
+
     /**
-    * 2 to 1023
-    */
+     * 2 to 1023
+     */
     short m_shNUMBER_OF_STATIC_SLOTS;
+
     /**
-    * 9 to 15999
-    */
+     * 9 to 15999
+     */
     short m_shOFFSET_CORRECTION_START;
+
     /**
-    * 0 to 127
-    */
+     * 0 to 127
+     */
     short m_shPAYLOAD_LENGTH_STATIC;
+
     /**
-    * 2 to 15
-    */
+     * 2 to 15
+     */
     short m_shSYNC_NODE_MAX;
+
     /**
-    * Min. 0, short 67 to 99
-    */
+     * Min. 0, short 67 to 99
+     */
     short m_shCAS_RX_LOW_MAX;
+
     /**
-    * Min 0, float enum .1,.2 or .4
-    */
+     * Min 0, float enum .1,.2 or .4
+     */
     float m_fBIT;
+
     /**
-    * 10 - 16000
-    */
+     * 10 - 16000
+     */
     short m_shCYCLE;
+
     /**
-    * 0 to 5
-    */
+     * 0 to 5
+     */
     short m_shCLUSTER_DRIFT_DAMPING;
     void DoCleanup();
 
@@ -204,7 +223,6 @@ typedef struct tagAbsSCONDITION
 
 } ABS_CONDITION, *PABS_CONDITION;
 
-
 typedef struct tagAbsSTIME_RANGE
 {
     CString m_omValue;
@@ -237,7 +255,6 @@ typedef struct tagAbsSREQUEST_CONTROLLED_TIMING
      */
     CString        m_omACTIVE_CONDITION;
     unsigned short m_ushFINAL_REPETITIONS;
-
 } ABS_REQUEST_CONTROLLED_TIMING, *PABS_REQUEST_CONTROLLED_TIMING;
 
 typedef struct tagAbsSEVENT_CONTROLLED_TIMING
@@ -250,9 +267,6 @@ typedef struct tagAbsSEVENT_CONTROLLED_TIMING
     CString        m_omACTIVE_CONDITION;
     ABS_CONDITION     m_sSEND_CONDITION;
     unsigned short m_ushFINAL_REPETITIONS;
-
-
-
 } ABS_EVENT_CONTROLLED_TIMING, *PABS_EVENT_CONTROLLED_TIMING;
 
 typedef struct tagAbsSRELATIVELY_SCHEDULED_TIMING
@@ -290,7 +304,6 @@ typedef struct tagAbsSTIMINGS
     BYTE                                m_byFrameTimeMode; // Choice between Relative and Absolute
     ABS_RELATIVELY_SCHEDULED_TIMING     m_sRelScheduledTiming;
     ABS_ABSOLUTELY_SCHEDULED_TIMING     m_sAbsScheduledTiming;
-
 } ABS_TIMINGS, *PABS_TIMINGS;
 
 typedef CList<ABS_TIMINGS, ABS_TIMINGS&> AbsCFrameTimingList;
@@ -302,8 +315,6 @@ typedef struct tagAbsSFRAME_TRIGGERING
     CString             m_omFrameRef;
     ABS_UIDENTIFIER     m_uIdentifier;
     tagAbsSFRAME_TRIGGERING& operator=(tagAbsSFRAME_TRIGGERING& RefObj);
-
-
 } ABS_FRAME_TRIGGERING, *PABS_FRAME_TRIGGERING;
 
 typedef CList<ABS_FRAME_TRIGGERING, ABS_FRAME_TRIGGERING&> AbsCFrameTriggeringList;
@@ -315,10 +326,7 @@ typedef struct tagAbsSPDUTRIGGTIMING
     ABS_EVENT_CONTROLLED_TIMING        m_psEventControlledTiming;
     ABS_REQUEST_CONTROLLED_TIMING      m_psRequestControlledTiming;
 
-    // tagAbsSPDUTRIGGTIMING();
     tagAbsSPDUTRIGGTIMING& operator=(tagAbsSPDUTRIGGTIMING& RefObj);
-    // ~tagAbsSPDUTRIGGTIMING();
-
 } ABS_PDUTRIGGTIMING, *PABS_PDUTRIGGTIMING;
 
 typedef CList<ABS_PDUTRIGGTIMING, ABS_PDUTRIGGTIMING&> AbsCPduTimingList;
@@ -329,7 +337,6 @@ typedef struct tagAbsSPDU_TRIGGERING
     AbsCPduTimingList   m_odTimingList;
     CString             m_omPDU_REF;
     tagAbsSPDU_TRIGGERING& operator=(tagAbsSPDU_TRIGGERING& RefObj);
-
 } ABS_PDU_TRIGGERING, *PABS_PDU_TRIGGERING;
 
 typedef CList<ABS_PDU_TRIGGERING, ABS_PDU_TRIGGERING&> AbsCPduTriggeringList;
@@ -346,7 +353,6 @@ typedef struct tagAbsSChannel
     ~tagAbsSChannel();
     tagAbsSChannel& operator=(tagAbsSChannel& RefObj);
     void DoCleanup();
-
 } ABS_CHANNEL, *PABS_CHANNEL;
 
 typedef CList<ABS_CHANNEL, ABS_CHANNEL&> AbsCChannelList;

@@ -90,7 +90,7 @@ int sTCANDATA::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -195,7 +195,7 @@ int sTLINDATA::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }

@@ -138,7 +138,7 @@ int nShowTxWindow( void* pParentWnd, ETYPE_BUS eBUS )
             }
             else if ( eBUS == LIN )
             {
-                bRetVal = CTxLINDataStore::ouGetTxLINDataStoreObj().bGetTxData(TX_WINDOW_PLACEMENT, (void**)&psTxWndPlacement);
+                bRetVal = (CTxLINDataStore::ouGetTxLINDataStoreObj().bGetTxData(TX_WINDOW_PLACEMENT, (void**)&psTxWndPlacement) == TRUE);
             }
 
             if ( bRetVal == false)//Load default configuration

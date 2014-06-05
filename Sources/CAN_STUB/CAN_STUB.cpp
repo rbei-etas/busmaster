@@ -742,7 +742,7 @@ HRESULT CDIL_CAN_STUB::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBu
             }
             else
             {
-                ////ASSERT(FALSE);
+                ////ASSERT(false);
             }
         }
         else

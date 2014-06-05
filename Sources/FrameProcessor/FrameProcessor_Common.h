@@ -67,7 +67,7 @@ protected:
     HRESULT DoInitialisation(void);
     virtual void vEmptyLogObjArray(CLogObjArray& omLogObjArray) = 0;
     CBaseLogObject* FindLoggingBlock(USHORT ushID);
-    BOOL bIsEditingON(void);
+    bool bIsEditingON(void);
     // To create a new logging object
     virtual CBaseLogObject* CreateNewLogObj(const CString& omStrVersion) = 0;
     // To delete a logging object
@@ -78,9 +78,9 @@ protected:
 public:
     bool                m_bIsThreadBlocked;
     // Alias functions - start
-    HRESULT EnableLoggingBlock(USHORT ushBlk, BOOL bEnable);
-    HRESULT EnableLogging(BOOL bEnable, ETYPE_BUS);
-    HRESULT EnableFilter(USHORT ushBlk, BOOL bEnable);
+    HRESULT EnableLoggingBlock(USHORT ushBlk, bool bEnable);
+    HRESULT EnableLogging(bool bEnable, ETYPE_BUS);
+    HRESULT EnableFilter(USHORT ushBlk, bool bEnable);
     bool IsClientBufferON(void);
     bool IsLoggingON(void);
     bool IsDataLogged(void);
@@ -109,7 +109,7 @@ public:
     HRESULT Reset(void);
     HRESULT Confirm(void);
     HRESULT StartEditingSession(void);
-    HRESULT StopEditingSession(BOOL bConfirm);
+    HRESULT StopEditingSession(bool bConfirm);
     HRESULT SetDatabaseFiles(const CStringArray& omList);
     void GetDatabaseFiles(CStringArray& omList);
     void SetChannelBaudRateDetails(void* controllerDetails,

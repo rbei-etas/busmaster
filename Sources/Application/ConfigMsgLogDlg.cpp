@@ -109,7 +109,7 @@ CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL&
         }
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
     }
     m_nLogIndexSel = -1;
     m_bUpdatingUI = FALSE;
@@ -205,7 +205,7 @@ void CConfigMsgLogDlg::SetGUIFromChannel(TYPE_CHANNEL CurrChannel)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 }
 
@@ -257,7 +257,7 @@ void CConfigMsgLogDlg::vEnableDisableControl(int nControlID,
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 }
 
@@ -292,13 +292,13 @@ void CConfigMsgLogDlg::vUpdateControl(int nControlID, ECONTROLTYPE eCtrlType,
                     break;
 
                 default:
-                    ASSERT(FALSE);
+                    ASSERT(false);
             }
         }
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 }
 void CConfigMsgLogDlg::vEnableDisableControls(BOOL bValue)
@@ -597,7 +597,7 @@ void CConfigMsgLogDlg::vUpdate_Datastore_From_GUI(USHORT ushIndex, int CtrlID)
         break;
         case IDC_LOGBLOCK_LST:
         {
-            sLogStruct.m_bEnabled = m_omListLogFiles.GetCheck(ushIndex);
+            sLogStruct.m_bEnabled = (m_omListLogFiles.GetCheck(ushIndex) == TRUE);
         }
         break;
         case IDC_EDIT_LOGFILEPATH:
@@ -1185,7 +1185,7 @@ USHORT CConfigMsgLogDlg::GetLoggingBlockCount(void)
             break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
     }
     return Result;
 }
@@ -1208,7 +1208,7 @@ HRESULT CConfigMsgLogDlg::GetLoggingBlock(USHORT ushBlk, SLOGINFO& sLogObject)
             break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
     }
     return Result;
 }
@@ -1232,7 +1232,7 @@ HRESULT CConfigMsgLogDlg::SetLoggingBlock(USHORT ushBlk, const SLOGINFO& sLogObj
 
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
     }
     return Result;
 }
@@ -1255,7 +1255,7 @@ HRESULT CConfigMsgLogDlg::AddLoggingBlock(const SLOGINFO& sLogObject)
             break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
     }
     return Result;
 }
@@ -1278,7 +1278,7 @@ HRESULT CConfigMsgLogDlg::RemoveLoggingBlock(USHORT ushBlk)
             break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
     }
     return Result;
 }
@@ -1303,7 +1303,7 @@ HRESULT CConfigMsgLogDlg::ApplyFilteringScheme(USHORT ushLogBlkID, const void* p
         break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
     }
 
     return Result;
@@ -1329,7 +1329,7 @@ HRESULT CConfigMsgLogDlg::GetFilteringScheme(USHORT ushLogBlk, void* psFilterObj
         break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
     }
 
     return Result;

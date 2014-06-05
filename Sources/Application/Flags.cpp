@@ -509,7 +509,7 @@ void CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             m_bJAddressClaimed = nValue;
             break;
         default:
-            ASSERT(FALSE); // Invalid flag enum value
+            ASSERT(false); // Invalid flag enum value
     }
     m_omCriticalSec.Unlock();
 }
@@ -522,7 +522,7 @@ void CFlags::vSetFlagStatus(eFLEXRAYMONITORFLAG eWhichFlag, INT nValue)
             m_bFlexConnected = nValue;
             break;
         default:
-            ASSERT(FALSE); // Invalid flag enum value
+            ASSERT(false); // Invalid flag enum value
     }
     m_omCriticalSecFlex.Unlock();
 }

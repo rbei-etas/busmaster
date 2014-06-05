@@ -174,13 +174,10 @@ SMSGENTRY* CTxMsgWndJ1939::m_psMsgRoot = nullptr;
 const BYTE CAPL_2_C_MASK  = 0x1;
 const BYTE DBF_2_DBC_MASK = 0x2;
 const BYTE DBC_2_DBF_MASK = 0x4;
-/////////////////////////////////////////////////////////////////////////////
-// CMainFrame
 
 IMPLEMENT_DYNAMIC(CMainFrame, CMDIFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
-    //{{AFX_MSG_MAP(CMainFrame)
     ON_WM_CREATE()
     ON_COMMAND(IDM_CONFIGURE_DATABASE_OPENACTIVE, OnOpenDatabase)
     ON_COMMAND(IDM_CONFIGURE_DATABASE_CLOSE, OnCloseDatabase)
@@ -338,8 +335,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_FLEX_DRIVER,IDC_SELECT_FLEX_DRIVER + FLEXRAY_DIL_TOTAL, OnUpdateSelectFLEXRAYDriver)
     ON_COMMAND_RANGE(IDC_SELECT_LIN_DRIVER,IDC_SELECT_LIN_DRIVER + DIL_LIN_TOTAL, OnSelectLINDriver)
     ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_LIN_DRIVER,IDC_SELECT_LIN_DRIVER + DIL_LIN_TOTAL, OnUpdateSelectLINDriver)
-    //}}AFX_MSG_MAP
-    // Global help commands
     ON_COMMAND(ID_HELP_FINDER, CMDIFrameWnd::OnHelpFinder)
     ON_COMMAND(ID_HELP, CMDIFrameWnd::OnHelp)
     ON_COMMAND(ID_CONTEXT_HELP, CMDIFrameWnd::OnContextHelp)
@@ -455,11 +450,10 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(WM_KEYBOARD_KEYDOWN, OnReceiveKeyDown)
     ON_MESSAGE(MSG_GET_CONFIGPATH, onGetConfigPath)
     ON_MESSAGE(WM_J1939_TX_CLOSE_MSG, onJ1939TxWndClose)
-    ON_COMMAND(IDM_FLEX_CFGN_SEND_MSGS, OnFlexRayTxWindow)             //open flexray window
-    ON_COMMAND(ID_FLEXRAY_CLUSTER_CONFIG, OnFlexRayDBAssociate)               //open flexray DB association
+    ON_COMMAND(IDM_FLEX_CFGN_SEND_MSGS, OnFlexRayTxWindow)
+    ON_COMMAND(ID_FLEXRAY_CLUSTER_CONFIG, OnFlexRayDBAssociate)
     ON_UPDATE_COMMAND_UI(ID_FLEXRAY_CLUSTER_CONFIG, OnUpdateFlexrayAssociate)
-    ON_COMMAND(ID_FLEXRAY_DB_DISOCIATE, OnFlexRayDBDisociate)               //open flexray DB association
-    //LIN MESSAGE MAPPING
+    ON_COMMAND(ID_FLEXRAY_DB_DISOCIATE, OnFlexRayDBDisociate)
     ON_UPDATE_COMMAND_UI(ID_HARDWAREINTERFACE_CUBASLIN, OnConfigBaudrateLIN)
     ON_COMMAND(ID_TRANSMIT_CONFIGURE_LIN, OnCfgSendMsgsLIN)
     ON_COMMAND(ID_LIN_CLUSTER_CONFIG, OnLinClusterConfig)
@@ -485,40 +479,6 @@ const int INDEX_LIN_LOG_ICON = 0x5;
 
 CAppServices_Impl sg_ouAppServiceObj;
 
-/////////////////////////////////////////////////////////////////////////////
-// CMainFrame construction/destruction
-/*******************************************************************************
- Function Name    : CMainFrame
- Input(s)         :
- Output           :
- Functionality    : Constructor
- Member of        : CMainFrame
- Friend of        :     -
- Author(s)        : Amarnath Shastry,Amitesh Bharti,Ratnadip Choudhury
- Date Created     : 05.03.2002
- Modifications    : Amitesh Bhati
-                    07.08.2002,Initialisation of m_omStrPrevLoadedDll added
- Modifications    : Amitesh Bhati
-                    19.01.2004,Initialisation of m_unTimerSB and  added
-                               m_omStrSavedConfigFile added.
- Modifications    : Raja N
-                    05.04.2004,Modified to refer the latest signal watch list
-                    structure
- Modifications    : Raja N
-                    28.04.2004,Replaced hardcoded string "Empty" with
-                    defSTR_DEFAULT_MRU_ITEM
- Modifications    : Raja N
-                    12.12.2004,Added code to init graph related member variables
- Modifications    : Raja N
-                    14.03.2005,Added code to init controller state variable
- Modifications    : Raja N
-                    13.04.2005,Added code to init Tx Msg Window pointer and Tx
-                    message manager.
- Modifications    : Raja N
-                    19.07.2005,Removed code to init replay window pointer
- Modifications    : Pradeep Kadoor on 12.06.2009.
-                    A Variable to store application directory is added.
-*******************************************************************************/
 CMainFrame::CMainFrame()
 {
     GetCurrentDirectory(MAX_PATH, theApp.m_acApplicationDirectory);// Get application directory
@@ -681,24 +641,8 @@ CMainFrame::CMainFrame()
 
 }
 
-/*******************************************************************************
- Function Name    : ~CMainFrame
- Input(s)         :
- Output           :
- Functionality    : Destructor
- Member of        : CMainFrame
- Friend of        :     -
- Author(s)        : Amarnath Shastry,Amitesh Bharthi,Ratnadip Choudhury
- Date Created     : 05.03.2002
- Modifications    : Raja N on 10.05.2004
-                    Removed the deletion of memory m_punTrigMsg as it will be
-                    deleted in the Destructor of CMsgWnd.
- Modifications    : Raja N on 26.04.2005
-                    Added code to delete global tx list and tx message manager
-*******************************************************************************/
 CMainFrame::~CMainFrame()
 {
-
     m_objTxHandler.vDeleteTxBlockMemory();
     m_objFlexTxHandler.vDeleteTxBlockMemory();
     m_objTxHandlerLin.vDeleteTxBlockMemory();
@@ -739,16 +683,8 @@ CMainFrame::~CMainFrame()
 }
 
 /******************************************************************************
-    Function Name    :  vGettextBusmaster
-    Input(s)         :  -
-    Output           :  -
     Functionality    :  National Language Support
-    Member of        :  CMainFrame
-    Friend of        :      -
-    Author(s)        :
-    Date Created     :  01.05.2012
 ******************************************************************************/
-
 void CMainFrame::vGettextBusmaster()
 {
     setlocale(LC_ALL, "");
@@ -757,17 +693,12 @@ void CMainFrame::vGettextBusmaster()
 }
 
 /******************************************************************************
-    Function Name    :  nFindMenuItem
     Input(s)         :  CMenu* Menu, LPCTSTR MenuString
     Output           :  int
     Functionality    :  FindMenuItem() will find a menu item string from the
                         specified popup menu and returns its position (0-based)
                         in the specified popup menu.
                         It returns -1 if no such menu item string is found.
-    Member of        :  CMainFrame
-    Friend of        :      -
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  15.11.2002
 ******************************************************************************/
 int CMainFrame::nFindMenuItem(CMenu* Menu, LPCTSTR MenuString)
 {
@@ -789,9 +720,9 @@ int CMainFrame::nFindMenuItem(CMenu* Menu, LPCTSTR MenuString)
     return -1;
 }
 
-static BOOL bIsMsgExist(UINT MsgId, const SMSGENTRY* psFromList, sMESSAGE*& psMsg)
+static bool bIsMsgExist(UINT MsgId, const SMSGENTRY* psFromList, sMESSAGE*& psMsg)
 {
-    BOOL bResult = FALSE;
+    bool bResult = false;
     if (psFromList != nullptr)
     {
         const SMSGENTRY* pTempMsgEntry = psFromList;
@@ -800,7 +731,7 @@ static BOOL bIsMsgExist(UINT MsgId, const SMSGENTRY* psFromList, sMESSAGE*& psMs
             if (pTempMsgEntry->m_psMsg->m_unMessageCode == MsgId)
             {
                 psMsg = pTempMsgEntry->m_psMsg;
-                bResult = TRUE;
+                bResult = true;
                 break;
             }
             pTempMsgEntry = pTempMsgEntry->m_psNext;
@@ -808,15 +739,16 @@ static BOOL bIsMsgExist(UINT MsgId, const SMSGENTRY* psFromList, sMESSAGE*& psMs
     }
     return bResult;
 }
-static BOOL bIsSigExist(const CString& omSigName, sSIGNALS* pSigList, sSIGNALS*& pSig)
+
+static bool bIsSigExist(const CString& omSigName, sSIGNALS* pSigList, sSIGNALS*& pSig)
 {
-    BOOL bResult = FALSE;
+    bool bResult = false;
     while (pSigList != nullptr)
     {
         if (omSigName == pSigList->m_omStrSignalName)
         {
             pSig = pSigList;
-            bResult = TRUE;
+            bResult = true;
             break;
         }
         pSigList = pSigList->m_psNextSignalList;
@@ -880,49 +812,12 @@ static void vPopulateMainEntryList(CMainEntryList* podResultingList, const SMSGE
     }
 }
 
-
 /******************************************************************************
- Function Name    : OnCreate
- Input(s)         : LPCREATESTRUCT
- Output           : int
  Functionality    : #Called by the framework while a window is being created
                     #Creates toolbar, status bar.
                     #Creates combo box in the menu.
                     #Creates Dropdwon menu for signal watch window.
                     #Creates Dropdwon menu for time mode.
- Member of        : CMainFrame
- Friend of        :     -
- Author(s)        : Amarnath Shastry
- Date Created     : 05.03.2002
- Modifications    : Ratnadip Choudhury
- Date Modified    : 05.03.2002
- Modifications    : Amitesh Bharti
-                    26.11.2002, The double line toolbar is reverted back to
-                                single line
- Modifications    : Krishnaswamy B.N
-                    03.06.2003, The style of the time mode toolbar button
-                    changed to dropdown type.
- Modifications    : Raja N
-                    28.04.2004,Replaced hardcoded string "Empty" with
-                    defSTR_DEFAULT_MRU_ITEM
- Modifications    : Raja N
-                    12.05.2004, Added tool tip for Bus Status
- Modifications    : Raja N
-                    07.09.2004, Added code to avoid setting tool tip in case
-                    of USB and to set empty text to "Error Counter" tab.
- Modifications    : Raja N
-                    15.09.2004, Added code to support tool tip as the controller
-                    state support is implemented
- Modifications    : Raja N
-                    14.03.2005, Removed error counter and controller status pans
-                    Added a pane to show number of channels supported by the
-                    application
-Modifications    : ArunKumar K
-                    20.05.2010, Added code to load toolbar positions
-                    previosly saved.
-                    Added new toolbar groups.
-Modifications    : Ashwin R Uchil
-                    7.8.2012, Added toolbar configuration loading from global xml file
 /******************************************************************************/
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -984,9 +879,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
         return -1;      // fail to create
     }
     LoadBarState(PROFILE_CAN_MONITOR);
-
-
-
 
     //CheckDlgButton(IDR_TOOL_HEXDEC,BST_CHECKED);
     if (!m_wndStatusBar.CreateEx(this,SBT_TOOLTIPS) ||
@@ -1136,20 +1028,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     bInitFrameProcLIN(); // Initialize logger module
     //vInitializeBusStatLIN();
 
-
-
     return 0;
 }
 
 /******************************************************************************
- Function Name    : bSetDefaultToolbarPosition
- Input(s)         : -
  Output           : bool - failure/ success
  Functionality    : sets the default position for the toolbar
- Member of        : CMainFrame
- Friend of        :     -
- Author(s)        : Ashwin. R. Uchil
- Date Created     : 06.09.2012
  ******************************************************************************/
 bool CMainFrame::bSetDefaultToolbarPosition()
 {
@@ -1179,7 +1063,6 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 #endif //_DEBUG
 
-// HELPER FUNCTIONS -- START
 int CMainFrame::nCreateToolbar(CWnd* pomParent, CToolBar& omToolbar, UINT unID,
                                CString omTitle)
 {
@@ -1201,6 +1084,7 @@ int CMainFrame::nCreateToolbar(CWnd* pomParent, CToolBar& omToolbar, UINT unID,
 
     return Result;
 }
+
 void CMainFrame::DockControlBarLeftOf(CToolBar* pomCurrBar,CToolBar* pomLeftOf)
 {
     ASSERT(pomCurrBar != nullptr);
@@ -1226,23 +1110,14 @@ void CMainFrame::DockControlBarLeftOf(CToolBar* pomCurrBar,CToolBar* pomLeftOf)
     // are simulating a Toolbar being dragged to that location and docked.
     DockControlBar(pomCurrBar, unBarID, &omRect);
 }
-// HELPER FUNCTIONS -- END
 
 /******************************************************************************
-    Function Name    :  OnNotify
     Input(s)         :  WPARAM wParam, LPARAM lParam, LRESULT* pResult
     Output           :  BOOL
     Functionality    :  #Called by the framework when the user clicks on
                          drop down of signal watch button
                         #Called by the framework when the user clicks on
                          drop down of time mode button
-    Member of        :  CMainFrame
-    Friend of        :      -
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  05.03.2002
-    Modified By      :  Krishnaswamy B.N
-                        03.06.2003, Added code for dropdown functionality for
-                        Time Mode toolbar button
 ******************************************************************************/
 BOOL CMainFrame::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {
@@ -1263,24 +1138,10 @@ BOOL CMainFrame::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
     }
     return CMDIFrameWnd::OnNotify(wParam, lParam, pResult);
 }
+
 /******************************************************************************
-FUNCTION:           OnOpenDatabase
 DESCRIPTION:        Opens a database file for editing
-PARAMETERS:
-RETURN VALUE:
 AUTHOR:             RBIN/EMC2 - Amarnath Shastry
-HISTORY:
-20-02-2002          Initial Version     Amarnath Shastry
-Modification Date:  01.04.2002
-Modified By:        Amarnath Shastry
-Modification        Amarnath Shastry, 17-12-2002
-                    Message box displayed if database file is not found
-Modification        Raja N
-                    10/03/2004 Modified Active/Passive database concept and the
-                    database editor will use inactive data structure always for
-                    editing purpose
-Modifications:      Pradeep Kadoor on 12.06.2009.
-                    Code added to enable menu item 'Save and Save & Import'
 *******************************************************************************/
 void CMainFrame::OnOpenDatabase()
 {
@@ -1414,66 +1275,18 @@ Operation unsuccessful."), MB_OK|MB_ICONINFORMATION);
         }
     }
 }
-/******************************************************************************
-FUNCTION:       pomGetMsgSgWnd
-DESCRIPTION:    Opens a database file for editing
-PARAMETERS:
-RETURN VALUE:   Pointer to "CMsgSignalDBWnd" class
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
-HISTORY:
-20-02-2002      Initial Version     Amarnath Shastry
-*******************************************************************************/
 
+/******************************************************************************
+DESCRIPTION:    Opens a database file for editing
+RETURN VALUE:   Pointer to "CMsgSignalDBWnd" class
+*******************************************************************************/
 CMsgSignalDBWnd* CMainFrame::pomGetMsgSgWnd()
 {
     return ( m_podMsgSgWnd );
 }
 
-
 /******************************************************************************
-FUNCTION:       pomGetSimSysWnd
-DESCRIPTION:    Opens the simulated system window for editing
-PARAMETERS:
-RETURN VALUE:   Pointer to "CSimSysWnd" class
-AUTHOR:         Harika M
-HISTORY:
-
-*******************************************************************************/
-
-//CSimSysWnd* CMainFrame::pomGetSimSysWnd()
-//{
-//    return ( m_pomSimSysWnd );
-//}
-
-/******************************************************************************
-FUNCTION:       m_pomSimSysConfig
-DESCRIPTION:    Returns pointer to CSimSysConfigDetails class
-PARAMETERS:
-RETURN VALUE:   Pointer to "CSimSysWnd" class
-AUTHOR:         Harika M
-HISTORY:
-
-*******************************************************************************/
-//CSimSysConfigDetails* CMainFrame::pomGetSimSysConfig()
-//{
-//  return (m_pomSimSysConfig );
-//}
-
-
-/******************************************************************************
-FUNCTION:       OnCloseDatabase
 DESCRIPTION:    Closes a database file
-PARAMETERS:
-RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
-HISTORY:
-20-02-2002      Initial Version     Amarnath Shastry
-25.03.2002      Added flag closing  Amarnath Shastry
-                status
-Modification    Raja N
-                10/03/2004 Modified Active/Passive database concept and the
-                database editor will use inactive data structure always for
-                editing purpose
 *******************************************************************************/
 void CMainFrame::OnCloseDatabase()
 {
@@ -1517,157 +1330,46 @@ void CMainFrame::OnCloseDatabase()
 
     }
 }
+
 /******************************************************************************
-FUNCTION:       podGetMsgSgDetView
 DESCRIPTION:    Returns pointer to CMsgSgDetView class
-PARAMETERS:
 RETURN VALUE:   Pointer to "CMsgSgDetView" class
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
-HISTORY:
-20-02-2002      Initial Version     Amarnath Shastry
 *******************************************************************************/
 CMsgSgDetView* CMainFrame::podGetMsgSgDetView(ETYPE_BUS eBus)
 {
     return m_pomMsgSgDetViews[eBus];
 }
+
 /******************************************************************************
-FUNCTION:       podGetMsgSgTreeView
 DESCRIPTION:    Returns pointer to CMsgSgTreeView class
-PARAMETERS:
 RETURN VALUE:   Pointer to "CMsgSgTreeView" class
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
-HISTORY:
-20-02-2002      Initial Version     Amarnath Shastry
 *******************************************************************************/
 CMsgSgTreeView* CMainFrame::podGetMsgSgTreeView(ETYPE_BUS eBus)
 {
     return(m_pomMsgSgTreeViews[eBus]);
 }
+
 /******************************************************************************
-FUNCTION:       podSetMsgSgTreeView
 DESCRIPTION:    Sets pointer to CMsgSgTreeView class
 PARAMETERS:     Pointer to "CMsgSgTreeView" class
-RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
-HISTORY:
-20-02-2002      Initial Version     Amarnath Shastry
 *******************************************************************************/
 void CMainFrame::podSetMsgSgTreeView(CMsgSgTreeView* pTreeView, ETYPE_BUS eBus)
 {
     m_pomMsgSgTreeViews[eBus] = pTreeView;
 }
+
 /******************************************************************************
-FUNCTION:       podSetMsgSgDetView
 DESCRIPTION:    Sets pointer to CMsgSgDetView class
 PARAMETERS:     Pointer to "CMsgSgDetView" class
-RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
-HISTORY:
-20-02-2002      Initial Version     Amarnath Shastry
 *******************************************************************************/
 void CMainFrame::podSetMsgSgDetView(CMsgSgDetView* pDetView, ETYPE_BUS eBus)
 {
     m_pomMsgSgDetViews[eBus] = pDetView;
 }
 
-
 /******************************************************************************
-FUNCTION:       podGetSimSysDetView
-DESCRIPTION:    Returns pointer to CMsgSgDetView class
-PARAMETERS:
-RETURN VALUE:   Pointer to "CMsgSgDetView" class
-AUTHOR:         Harika M
-HISTORY:
-
-*******************************************************************************/
-//CSimSysDetView* CMainFrame::podGetSimSysDetView()
-//{
-//    return(m_pomSimSysDetView);
-//}
-/******************************************************************************
-FUNCTION:       podGetSimSysTreeView
-DESCRIPTION:    Returns pointer to CMsgSgTreeView class
-PARAMETERS:
-RETURN VALUE:   Pointer to "CMsgSgTreeView" class
-AUTHOR:         Harika M
-HISTORY:
-
-*******************************************************************************/
-//CSimSysTreeView* CMainFrame::podGetSimSysTreeView()
-//{
-//    return(m_pomSimSysTreeView);
-//}
-/******************************************************************************
-FUNCTION:       podSetSimSysTreeView
-DESCRIPTION:    Sets pointer to CMsgSgTreeView class
-PARAMETERS:     Pointer to "CSimSysTreeView" class
-RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
-HISTORY:
-20-02-2002      Initial Version     Amarnath Shastry
-*******************************************************************************/
-//void CMainFrame::podSetSimSysTreeView(CSimSysTreeView *pTreeView)
-//{
-//    m_pomSimSysTreeView = pTreeView;
-//}
-/******************************************************************************
-FUNCTION:       podSetSimSysDetView
-DESCRIPTION:    Sets pointer to CMsgSgDetView class
-PARAMETERS:     Pointer to "CSimSysDetView" class
-RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
-HISTORY:
-20-02-2002      Initial Version     Amarnath Shastry
-*******************************************************************************/
-//void CMainFrame::podSetSimSysDetView(CSimSysDetView *pDetView)
-//{
-//    m_pomSimSysDetView = pDetView;
-//}
-
-//void CMainFrame::pomSetSimSysConfig(CSimSysConfigDetails *pSimsysConfig)
-//{
-//  m_pomSimSysConfig = pSimsysConfig;
-//}
-
-/******************************************************************************
-FUNCTION:       OnImportDatabase
 DESCRIPTION:    Loads a database file selected by the user
-PARAMETERS:
-RETURN VALUE:
 AUTHOR:         RBIN/EMC2 - Amarnath Shastry
-HISTORY:
-20-02-2002      Initial Version     Amarnath Shastry
-12-11-2002      Modifications       Gopi, Changed usage to configuration from
-                                    registry
-Modifications:  Raja N
-                10/03/2004 Included checks for clearing signal watch list and
-                to post warnning message if DLL is loaded
-Modifications:  Raja N
-                12/03/2004 Included checks to prevent import if signal watch
-                list has some elements. If the user still wants to import then
-                go ahead import and clear the list
-Modifications:  Raja N
-                05/04/2004 Modified to refer latest signal watch list. Add added
-                check to compare the importing database with active database. If
-                both are same Signal Watch list delete option will be given to
-                the user. If both are different signal watch list will be
-                cleared with out any option.
-Modifications:  Raja N
-                18.05.2004 Added check before popping the import warning for
-                Signal Watch
-Modifications:  Raja N
-                10.08.2004 Added code to delete Signal Watch list incase of
-                different database got imported
-Modifications:  Raja N
-                10.08.2004 Added code to delete graph list incase of different
-                database got imported
-Modifications:  Raja N
-                26.04.2005 Modified code to refer Tx Msg Window to send database
-                import notification.
-Modifications:  Anish
-                07.06.2006 Modified code to implement COM interface
-Modifications:  Anish
-                07.12.2006 Modified code to for Multiple database
 *******************************************************************************/
 void CMainFrame::OnImportDatabase()
 {
@@ -1740,7 +1442,7 @@ void CMainFrame::OnImportDatabase()
     }
 }
 
-DWORD CMainFrame::dLoadJ1939DBFile(CString omStrActiveDataBase,BOOL bFrmCom)
+DWORD CMainFrame::dLoadJ1939DBFile(CString omStrActiveDataBase, bool bFrmCom)
 {
     DWORD dReturn= (DWORD)E_FAIL;
     if (m_pouMsgSigJ1939 == nullptr)
@@ -1828,16 +1530,13 @@ DWORD CMainFrame::dLoadJ1939DBFile(CString omStrActiveDataBase,BOOL bFrmCom)
     }
     return dReturn;
 }
+
 /******************************************************************************
-FUNCTION:       bLoadDataBaseFile
 DESCRIPTION:    Loads a database file selected by the user
 PARAMETERS:     file name ,bFrmCom
 RETURN VALUE:   bool
-AUTHOR:         Anish kumar
-Modifications:  Anish
-                07.12.2006 Modified code to for Multiple database
 *******************************************************************************/
-DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase,BOOL /*bFrmCom*/)
+DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase, bool /* bFrmCom */)
 {
     DWORD dReturn= (DWORD)E_FAIL;
     //Check for same DB path......
@@ -1987,93 +1686,35 @@ void CMainFrame::vPopulateLINIDList()
 }
 
 /******************************************************************************
-FUNCTION:       nConvertStringToInt
 DESCRIPTION:    Closes a database file
 PARAMETERS:     CString omStrHexNo -- Hex number
 RETURN VALUE:   Equivalent decimal number
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
-HISTORY:
-20-02-2002      Initial Version     Amarnath Shastry
-02.06.2003      Changed the int to __int64 Amitesh Bharti
-12.06.2003      review comment for CRH0005 incorporated. Amitesh Bharti
 *******************************************************************************/
 __int64 CMainFrame::nConvertStringToInt(CString omStrHexNo)
 {
     __int64 n64RetVal = 0;
 
-    BOOL b_IsNegative = FALSE;
+    bool b_IsNegative = false;
 
     for (int nCount = 0; nCount < omStrHexNo.GetLength(); nCount++)
     {
         char cChar = omStrHexNo.GetAt( nCount);
 
-        if ( cChar == '0' )
+        if ((cChar >= '0') && (cChar <= '9'))
         {
-            n64RetVal = n64RetVal * 16 + 0;
+            n64RetVal = n64RetVal * 16 + (cChar - '0');
         }
-        else if ( cChar == '1' )
+        else if ((cChar >= 'A') && (cChar <= 'F'))
         {
-            n64RetVal = n64RetVal * 16 + 1;
+            n64RetVal = n64RetVal * 16 + (cChar - 'A');
         }
-        else if ( cChar == '2' )
+        else if ((cChar >= 'a') && (cChar <= 'f'))
         {
-            n64RetVal = n64RetVal * 16 + 2;
-        }
-        else if ( cChar == '3' )
-        {
-            n64RetVal = n64RetVal * 16 + 3;
-        }
-        else if ( cChar == '4' )
-        {
-            n64RetVal = n64RetVal * 16 + 4;
-        }
-        else if ( cChar == '5' )
-        {
-            n64RetVal = n64RetVal * 16 + 5;
-        }
-        else if ( cChar == '6' )
-        {
-            n64RetVal = n64RetVal * 16 + 6;
-        }
-        else if ( cChar == '7' )
-        {
-            n64RetVal = n64RetVal * 16 + 7;
-        }
-        else if ( cChar == '8' )
-        {
-            n64RetVal = n64RetVal * 16 + 8;
-        }
-        else if ( cChar == '9' )
-        {
-            n64RetVal = n64RetVal * 16 + 9;
-        }
-        else if ( cChar == 'A' || cChar == 'a')
-        {
-            n64RetVal = n64RetVal * 16 + 10;
-        }
-        else if ( cChar == 'B' || cChar == 'b')
-        {
-            n64RetVal = n64RetVal * 16 + 11;
-        }
-        else if ( cChar == 'C' || cChar == 'c')
-        {
-            n64RetVal = n64RetVal * 16 + 12;
-        }
-        else if ( cChar == 'D' || cChar == 'd')
-        {
-            n64RetVal = n64RetVal * 16 + 13;
-        }
-        else if ( cChar == 'E' || cChar == 'e')
-        {
-            n64RetVal = n64RetVal * 16 + 14;
-        }
-        else if ( cChar == 'F' || cChar == 'f')
-        {
-            n64RetVal = n64RetVal * 16 + 15;
+            n64RetVal = n64RetVal * 16 + (cChar - 'a');
         }
         else if ( cChar == '-' )
         {
-            b_IsNegative = TRUE;
+            b_IsNegative = true;
         }
     }
     if ( b_IsNegative )
@@ -2082,17 +1723,12 @@ __int64 CMainFrame::nConvertStringToInt(CString omStrHexNo)
     }
     return n64RetVal;
 }
+
 /******************************************************************************/
-/*  Function Name    :  OnConfigBaudrate                                      */
 /*  Input(s)         :  BTR0 and BTR1                                         */
 /*  Output           :  baudrate                                              */
 /*  Functionality    :  This function is called to invoke the CChangeRegisters*/
 /*                   dialog box. On selection of menu, this function is called*/
-/*  Member of        :  CChangeRegisters                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  22.02.2002                                            */
-/*  Modifications    :                                                        */
 /******************************************************************************/
 void CMainFrame::OnConfigBaudrate()
 {
@@ -2210,19 +1846,10 @@ void CMainFrame::OnUpdateConfigChannelSelection(CCmdUI* pCmdUI)
 
 
 /******************************************************************************
-FUNCTION:       OnNewDatabase
 DESCRIPTION:    #Called by the framework when user selects new database
                 option from the menu
                 #Creates a new database file name and displays
                 database editior
-PARAMETERS:
-RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
-HISTORY:
-20-02-2002      Initial Version     Amarnath Shastry
-29.05.2002      Get the current working directory and add it
-                with file name      Amitesh Bharti
-10.03.2004      Removed Active database flag set call - Raja N
 *******************************************************************************/
 void CMainFrame::OnNewDatabase()
 {
@@ -2283,15 +1910,6 @@ void CMainFrame::OnNewDatabase()
                 }
             }
             END_CATCH_ALL
-            //// Get the current working directory and add it with file name
-            //char acBeffer[512] = {nullptr};
-            //_getcwd(acBeffer,sizeof(acBeffer));
-            //m_omStrDatabaseName  = acBeffer;
-            //m_omStrDatabaseName +="\\";
-            //m_omStrDatabaseName += omStrDbName;
-
-
-
             break;
         }
 
@@ -2339,22 +1957,12 @@ void CMainFrame::OnNewDatabase()
         }
     }
 }
+
 /******************************************************************************
-FUNCTION:       OnConfigDatabaseSaveAs
 DESCRIPTION:    #Called by the framework when user selects SaveAs...
                 option from the menu for the database editor
                 #Dispalys Save file dialog
                 #Saves the datastructure contents into the selected file
-PARAMETERS:
-RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
-HISTORY:
-20-02-2002      Initial Version     Amarnath Shastry
-29.05.2002      Added code to change the font after saving the file -- Amitesh
-Modification    Raja N
-                10/03/2004 Modified Active/Passive database concept and the
-                database editor will use inactive data structure always for
-                editing purpose
 *******************************************************************************/
 void CMainFrame::OnConfigDatabaseSaveAs()
 {
@@ -2485,19 +2093,9 @@ void CMainFrame::OnJ1939DBSaveAs()
 }
 
 /******************************************************************************
-FUNCTION:       OnConfigDatabaseSave
 DESCRIPTION:    #Called by the framework when user selects Save...
                 option from the menu for the database editor
                 #Saves the datastructure contents into the selected file
-PARAMETERS:
-RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Amarnath Shastry
-HISTORY:
-20-02-2002      Initial Version     Amarnath Shastry
-Modification    Raja N
-                10/03/2004 Modified Active/Passive database concept and the
-                database editor will use inactive data structure always for
-                editing purpose
 *******************************************************************************/
 void CMainFrame::OnConfigDatabaseSave()
 {
@@ -2572,21 +2170,11 @@ void CMainFrame::OnConfigDatabaseSave()
         }
     }
 }
+
 /******************************************************************************
-FUNCTION:       OnConfigMessageDisplay
 DESCRIPTION:    #Called by the framework when user selects Configure Message...
                 option from the menu.
                 #Displays message attribute dialog
-PARAMETERS:
-RETURN VALUE:
-AUTHOR:         RBIN/EMC2 - Ratnadip Choudhury
-HISTORY:
-20-02-2002      Initial Version     Ratnadip Choudhury
-04-11-2003      Change to have property page for database and non database
-                messages.
-22.07.2004      Raja N, Added a new page for message buffer configuration
-31.07.2004      Raja N, Modified the name as per code review comments
-20.06.2005      Raja N, Modified to include Filter Page
 *******************************************************************************/
 void CMainFrame::OnConfigMessageDisplay()
 {
@@ -2697,102 +2285,44 @@ void CMainFrame::OnConfigMessageDisplayLin()
 }
 
 /******************************************************************************/
-/*  Function Name    :  OnReplaySingleSkip                                    */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user select command skip    */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  03.04.2002                                            */
-/*  Modifications    :  Raja N on 19.07.2005, Changed the implimentation to   */
-/*                      call replay manager                                   */
 /******************************************************************************/
 void CMainFrame::OnReplaySingleSkip()
 {
     // Dispatch it to Replay Manager
     vREP_CmdSkip();
 }
+
 /******************************************************************************/
-/*  Function Name    :  OnReplaySingleStep                                    */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user select command step    */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  03.04.2002                                            */
-/*  Modifications    :  Raja N on 19.07.2005, Changed the implimentation to   */
-/*                      call replay manager                                   */
 /******************************************************************************/
 void CMainFrame::OnReplaySingleStep()
 {
     // Dispatch it to Replay Manager
     vREP_CmdStep();
 }
+
 /******************************************************************************/
-/*  Function Name    :  OnReplayStop                                          */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user select command stop    */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  03.04.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  22.10.2002, Flag g_bStopReplay name changed           */
-/*  Modifications    :  Raja N on 19.07.2005, Changed the implimentation to   */
-/*                      call replay manager                                   */
 /******************************************************************************/
 void CMainFrame::OnReplayStop()
 {
     // Dispatch it to Replay Manager
     vREP_CmdStop();
 }
+
 /******************************************************************************/
-/*  Function Name    :  OnReplayGo                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user select go command      */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  03.04.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  29.10.2002, keep the go button always pressed if      */
-/*                                  button is enable and pressed              */
-/*  Modifications    :  Raja N on 19.07.2005, Changed the implimentation to   */
-/*                      call replay manager                                   */
 /******************************************************************************/
 void CMainFrame::OnReplayGo()
 {
     // Dispatch it to Replay Manager
     vREP_CmdGo();
 }
+
 /******************************************************************************/
-/*  Function Name    :  OnActivateMessageHandler                              */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user select to activate     */
 /*                      message handler                                       */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  14.03.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  08.04.2002,                                           */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  29.04.2004,                                           */
-/*                   :  Replaced PostMessage with direct assignment of global */
-/*                      variable g_bMsgHandlerON Msg Handler Enable flag      */
-/*  Modification By  :  Anish kumar                                           */
-/*  Modification on  :  27.12.2005,                                           */
-/*                   :   Inserted CExecute manger for activating flags        */
 /******************************************************************************/
 extern BOOL gbStopActiveThreads(int);
 void CMainFrame::OnActivateMessageHandler()
@@ -2812,23 +2342,8 @@ void CMainFrame::OnActivateMessageHandlerLIN()
 }
 
 /******************************************************************************/
-/*  Function Name    :  OnActivateTimerHandler                                */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user select to activate     */
 /*                      timer handler                                         */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  14.03.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  07.10.2003, The flag is 'm_bTimerInvokedOnce'         */
-/*                      introduced due to change from model dialog to         */
-/*                      modelless dialog.                                     */
-/*  Modification By  :  Anish kumar                                           */
-/*  Modification on  :  27.12.2005,                                           */
-/*                   :   Inserted CExecute manger for activating flags        */
 /******************************************************************************/
 void CMainFrame::OnActivateTimerHandler()
 {
@@ -2839,23 +2354,8 @@ void CMainFrame::OnActivateTimerHandler()
 }
 
 /******************************************************************************/
-/*  Function Name    :  OnActivateTimerHandler                                */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user select to activate     */
 /*                      timer handler                                         */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  14.03.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  07.10.2003, The flag is 'm_bTimerInvokedOnce'         */
-/*                      introduced due to change from model dialog to         */
-/*                      modelless dialog.                                     */
-/*  Modification By  :  Anish kumar                                           */
-/*  Modification on  :  27.12.2005,                                           */
-/*                   :   Inserted CExecute manger for activating flags        */
 /******************************************************************************/
 void CMainFrame::OnActivateTimerHandlerLIN()
 {
@@ -2867,17 +2367,8 @@ void CMainFrame::OnActivateTimerHandlerLIN()
 
 
 /******************************************************************************/
-/*  Function Name    :  OnDLLBuildLoad                                        */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user want to build and load */
 /*                       all the DLL under the configuration.                 */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  20.01.2006                                            */
-/*  Modification By  :                                                        */
 /******************************************************************************/
 void CMainFrame::OnDLLBuildLoad()
 {
@@ -2901,17 +2392,8 @@ void CMainFrame::OnDLLBuildLoad()
 }
 
 /******************************************************************************/
-/*  Function Name    :  OnDLLBuildLoad                                        */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user want to build and load */
 /*                       all the DLL under the configuration.                 */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  20.01.2006                                            */
-/*  Modification By  :                                                        */
 /******************************************************************************/
 void CMainFrame::OnDLLBuildLoadLIN()
 {
@@ -2936,127 +2418,20 @@ void CMainFrame::OnDLLBuildLoadLIN()
 
 
 /******************************************************************************/
-/*  Function Name    :  bDLLBuildLoad                                         */
 /*  Input(s)         :  Stringarray                                           */
 /*  Output           :  array of files not built properly                     */
 /*  Functionality    :  It builds and load                                    */
 /*                       all the DLL under the configuration.                 */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Anish                                                 */
-/*  Date Created     :  15.06.2006                                            */
-/*  Modification By  :  Anish                                                 */
-/*                   :  18.10.06,Bug if any file is opened and BL is called   */
 /******************************************************************************/
-
-BOOL CMainFrame::bDLLBuildLoad(CStringArray* /*omStrBuildFiles*/)
+bool CMainFrame::bDLLBuildLoad(CStringArray * /* omStrBuildFiles */)
 {
-    BOOL bReturn = FALSE;
-    //  BOOL bSuccess = FALSE;
-    //  int nFailure=0;
-    //  /*CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys =
-    //      theApp.psReturnSimsysInfoPtr();*/
-    //  CExecuteManager::ouGetExecuteManager().vStopTimer();
-    //  CExecuteManager::ouGetExecuteManager().vClearOutputWnd();
-    //  int nNodeCount = 0;
-    //
-    //  omStrBuildFiles->RemoveAll();
-    //
-    //  CWaitCursor omWait;
-    //  //while(pTempSimsys != nullptr)
-    //  //{
-    //  //  nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
-    //  //  CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-    //
-    //  //  while(pTempNode != nullptr)
-    //  //  {
-    //  //      if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
-    //  //      {
-    //  //          //TO find which all files are opened through Framewnd
-    //  //          CMDIFrameWnd *pMainWnd = (CMDIFrameWnd*)AfxGetApp()->m_pMainWnd;
-    //  //          if(pMainWnd != nullptr)
-    //  //          {
-    //  //              //Get the active child wnd
-    //  //              CWnd *pWndTemp = pMainWnd->GetActiveFrame();
-    //  //              if(pWndTemp != nullptr)
-    //  //              {
-    //  //                  CWnd *pWnd = pWndTemp;
-    //  //                  do
-    //  //                  {
-    //  //                      CString omStrWndName;
-    //  //                      CString omStrFileName =pTempNode->m_sNodeInfo.m_omStrFileName;
-    //  //                      int nIndex = omStrFileName.ReverseFind(defCHAR_PATH_SEPRATER);
-    //  //                      int nLength = omStrFileName.GetLength();
-    //  //                      omStrFileName = omStrFileName.Right(nLength - nIndex -1);
-    //  //                      pWnd->GetWindowText(omStrWndName);
-    //  //                      //if the file is opened save it
-    //  //                      if(!(omStrFileName.Compare(omStrWndName)))
-    //  //                      {
-    //  //                          CDocument*(pDoc) = theApp.OpenDocumentFile(pTempNode->
-    //  //                              m_sNodeInfo.m_omStrFileName);
-    //  //                          if(pDoc!=nullptr)
-    //  //                          {
-    //  //                              // If file name is not empty generate new def file
-    //  //                              pDoc->OnSaveDocument(pTempNode->
-    //  //                                  m_sNodeInfo.m_omStrFileName);
-    //  //                          }
-    //  //                          break;
-    //  //                      }
-    //  //                      pWnd = pWnd->GetNextWindow();
-    //  //                  }
-    //  //                  while((pWndTemp != pWnd) && pWnd != nullptr);
-    //
-    //  //              }
-    //  //              bSuccess = CExecuteManager::ouGetExecuteManager().
-    //  //                  bExecuteDllBuildLoad(&pTempNode->m_sNodeInfo);
-    //  //              if(!bSuccess)
-    //  //              {
-    //  //                  nFailure++;
-    //  //                  omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrFileName);
-    //  //              }
-    //  //          }
-    //  //      }
-    //  //      pTempNode = pTempNode->m_psNextNode;
-    //  //  }
-    //  //  pTempSimsys = pTempSimsys->m_psSimsysNext;
-    //  //}
-    //
-    //
-    //
-    //    if((nFailure == 0) || (nFailure != nNodeCount))
-    //    {   // if the build n load is successfull atleast for one.
-    //
-    //        // to indicate to the tree view about the dlls loaded.
-    //        /*CSimSysTreeView* psSimSysTree = podGetSimSysTreeView();
-    //        if(psSimSysTree != nullptr)
-    //        psSimSysTree->bPopulateTree();*/
-    //
-    //    }
-    //  if(nFailure == 0)
-    //  {
-    //      bReturn= TRUE;
-    //  }
-    //
-    //  CExecuteManager::ouGetExecuteManager().vStartTimer();
-    return bReturn;
+    return false;
 }
 
-
 /******************************************************************************/
-/*  Function Name    :  OnDLLBuild                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame-work when user wants to build         */
 /*                      all the C files associated with all the simulated
 /*                      systems.                                              */
-/*
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  20.01.2006                                            */
-/*  Modification By  :
 /******************************************************************************/
 void CMainFrame::OnDLLBuild()
 {
@@ -3078,21 +2453,10 @@ void CMainFrame::OnDLLBuild()
     }
 }
 
-
 /******************************************************************************/
-/*  Function Name    :  OnDLLBuild                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame-work when user wants to build         */
 /*                      all the C files associated with all the simulated
 /*                      systems.                                              */
-/*
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  20.01.2006                                            */
-/*  Modification By  :
 /******************************************************************************/
 void CMainFrame::OnDLLBuildLIN()
 {
@@ -3115,121 +2479,17 @@ void CMainFrame::OnDLLBuildLIN()
 }
 
 /******************************************************************************/
-/*  Function Name    :  bDLLBuild                                             */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :   to build                                             */
 /*                      all the C files associated with all the simulated     */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Anish Kr                                              */
-/*  Date Created     :  16.06.06                                              */
-/*  Modification By  :  Anish                                                 */
-/*                   :  18.10.06,Bug if any file is opened and BA is called   */
-/*  Modification By  :  Anish,02.02.07
-                        Bug fixed,removed infinite loop if file name is empty
 /******************************************************************************/
-BOOL CMainFrame::bDLLBuild(CStringArray* /*omStrBuildFiles*/)
+bool CMainFrame::bDLLBuild(CStringArray * /* omStrBuildFiles */)
 {
-    BOOL bReturn = FALSE;
-    //BOOL bSuccess = FALSE;
-    //int nFailure = 0;
-    /* CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys =
-             theApp.psReturnSimsysInfoPtr();*/
-    //CString omStrFileName = "";
-    //int nNodeCount = 0;
-    //omStrBuildFiles->RemoveAll();
-
-    //CExecuteManager::ouGetExecuteManager().vClearOutputWnd();
-    //CWaitCursor omWait;
-    //while(pTempSimsys != nullptr)
-    //{
-    //  nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
-    //  CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-    //  while(pTempNode != nullptr)
-    //  {
-    //      if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
-    //      {
-    //          //TO find which all files are opened through Framewnd
-    //          CMDIFrameWnd *pMainWnd = (CMDIFrameWnd*)AfxGetApp()->m_pMainWnd;
-    //          if(pMainWnd != nullptr)
-    //          {
-    //              //Get the active child wnd
-    //              CWnd *pWndTemp = pMainWnd->GetActiveFrame();
-    //              if(pWndTemp != nullptr)
-    //              {
-    //                  CWnd *pWnd = pWndTemp;
-    //                  do
-    //                  {
-    //                      CString omStrWndName;
-    //                      CString omStrFileName =pTempNode->m_sNodeInfo.m_omStrFileName;
-    //                      int nIndex = omStrFileName.ReverseFind(defCHAR_PATH_SEPRATER);
-    //                      int nLength = omStrFileName.GetLength();
-    //                      omStrFileName = omStrFileName.Right(nLength - nIndex -1);
-    //                      pWnd->GetWindowText(omStrWndName);
-    //                      //if the file is opened save it
-    //                      if(!(omStrFileName.Compare(omStrWndName)))
-    //                      {
-    //                          CDocument*(pDoc) = theApp.OpenDocumentFile(pTempNode->
-    //                                                      m_sNodeInfo.m_omStrFileName);
-    //                          if(pDoc!=nullptr)
-    //                          {
-    //                              // If file name is not empty generate new def file
-    //                              pDoc->OnSaveDocument(pTempNode->
-    //                                       m_sNodeInfo.m_omStrFileName);
-    //                          }
-    //                          break;
-    //                      }
-    //                      pWnd = pWnd->GetNextWindow();
-    //                  }
-    //                  while((pWndTemp != pWnd) && pWnd != nullptr);
-
-
-    //                  bSuccess = CExecuteManager::ouGetExecuteManager().
-    //                      bExecuteDllBuild(&pTempNode->m_sNodeInfo);
-    //                  if(!bSuccess)
-    //                  {
-    //                      nFailure++;
-    //                      omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrFileName);
-    //                  }
-
-    //              }
-    //          }
-    //      }
-    //      pTempNode = pTempNode->m_psNextNode;
-    //  }
-    //  pTempSimsys = pTempSimsys->m_psSimsysNext;
-    //}
-    //if((nFailure == 0) || (nFailure != nNodeCount))
-    //{ // if the build is successfull atleast for one.
-
-    // to indicate to the tree view about the new dlls built.
-    /*CSimSysTreeView* psSimSysTree = podGetSimSysTreeView();
-    if(psSimSysTree != nullptr)
-        psSimSysTree->bPopulateTree();*/
-    //}
-    //if(nFailure == 0)
-    //{
-    //  bReturn= TRUE;
-    //}
-    return bReturn;
-
-
+    return false;
 }
 
 /******************************************************************************/
-/*  Function Name    :  OnDllLoad                                             */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user want to  load          */
 /*                       all the DLLs under the configuration.                */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :                                            */
-/*  Date Created     :  20.01.2006                                            */
-/*  Modification By  :                                                        */
 /******************************************************************************/
 void CMainFrame::OnDllLoad()
 {
@@ -3254,17 +2514,8 @@ void CMainFrame::OnDllLoad()
 }
 
 /******************************************************************************/
-/*  Function Name    :  OnDllLoad                                             */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user want to  load          */
 /*                       all the DLLs under the configuration.                */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :                                            */
-/*  Date Created     :  20.01.2006                                            */
-/*  Modification By  :                                                        */
 /******************************************************************************/
 void CMainFrame::OnDllLoadLIN()
 {
@@ -3288,188 +2539,28 @@ void CMainFrame::OnDllLoadLIN()
 
 }
 
-
-
 /******************************************************************************/
-/*  Function Name    :  bDllLoad                                             */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user want to  load          */
 /*                       all the DLLs under the configuration.                */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  20.01.2006                                            */
-/*  Modification By  :                                                        */
 /******************************************************************************/
-BOOL CMainFrame::bDllLoad(CStringArray* /*omStrBuildFiles*/)
+bool CMainFrame::bDllLoad(CStringArray * /*omStrBuildFiles*/)
 {
-    BOOL bReturn = FALSE;
-    //BOOL bSuccess = FALSE;
-    //int nFailure = 0;
-    /* CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys =
-             theApp.psReturnSimsysInfoPtr();*/
-    //int nNodeCount = 0;
-
-    //omStrBuildFiles->RemoveAll();
-
-    //CWaitCursor omWait;
-    //CExecuteManager::ouGetExecuteManager().vStopTimer();
-    //CExecuteManager::ouGetExecuteManager().vClearOutputWnd();
-    //while(pTempSimsys != nullptr)
-    //{
-    //       nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
-    //       CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-    //       while(pTempNode != nullptr)
-    //       {
-    //           if(pTempNode->m_sNodeInfo.m_omStrDllName != "")
-    //           {
-    //               bSuccess = CExecuteManager::ouGetExecuteManager().bExecuteDllLoad(&
-    //                   pTempNode->m_sNodeInfo);
-    //               if(!bSuccess)
-    //               {
-    //                   nFailure++;
-    //                   omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrDllName);
-    //               }
-    //               else
-    //               {    // to make the status of the handlers disabled
-    //                   pTempNode->m_sNodeInfo.m_bDllHandlersEnabled = FALSE;
-    //                   pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled = FALSE;
-    //                   pTempNode->m_sNodeInfo.m_bIsAllHandlersEnabled = FALSE;
-    //                   pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled = FALSE;
-    //                   pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled = FALSE;
-    //                   pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = FALSE;
-    //
-    //
-    //                   theApp.pouGetFlagsPtr()->vSetFlagStatus(ALL_HANDLER, FALSE);
-    //
-    //                   theApp.pouGetFlagsPtr()->vSetFlagStatus(ERROR_HANDLER, FALSE);
-    //                   theApp.pouGetFlagsPtr()->vSetFlagStatus(KEY_HANDLER_ON, FALSE);
-    //                   theApp.pouGetFlagsPtr()->vSetFlagStatus(MSGHANDLERBUTTON, FALSE);
-    //               }
-    //
-    //           }
-    //           pTempNode = pTempNode->m_psNextNode;
-    //       }
-    //       pTempSimsys = pTempSimsys->m_psSimsysNext;
-    //
-    //   }
-    //if((nFailure == 0) || (nFailure != nNodeCount))
-    //{   // if the load is successfull atleast for one dll.
-
-    // to indicate to the tree view about the dlls loaded.
-    /*CSimSysTreeView* psSimSysTree = podGetSimSysTreeView();
-    if(psSimSysTree != nullptr)
-        psSimSysTree->bPopulateTree();*/
-    //}
-
-    //CExecuteManager::ouGetExecuteManager().vStartTimer();
-    //if(nFailure == 0)
-    //{
-    //  bReturn= TRUE;
-    //}
-    return bReturn;
+    return false;
 }
 
-
 /******************************************************************************/
-/*  Function Name    :  bDllUnload                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :   to  unload                                           */
 /*                       all the DLLs under the configuration.                */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Anish Kr                                              */
-/*  Date Created     :  16.06.2006                                            */
-/*  Modification By  :                                                        */
 /******************************************************************************/
-BOOL CMainFrame::bDllUnload(CStringArray* /*omStrBuildFiles*/)
+bool CMainFrame::bDllUnload(CStringArray * /*omStrBuildFiles*/)
 {
-    BOOL bReturn = FALSE;
-    //BOOL bSuccess = FALSE;
-    //int nFailure = 0;
-    /*CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys =
-                theApp.psReturnSimsysInfoPtr();*/
-    /* int nNodeCount = 0;
-
-     CStringArray omStrUnLoadFiles;
-     omStrBuildFiles->RemoveAll();
-
-    CWaitCursor omWait;
-    CExecuteManager::ouGetExecuteManager().vStopTimer();
-    CExecuteManager::ouGetExecuteManager().vClearOutputWnd();*/
-    //while(pTempSimsys != nullptr)
-    //{
-    //    nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
-    //    CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-    //    while(pTempNode != nullptr)
-    //    {
-    //        if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)  // if any dll is loaded
-    //        {
-    //            bSuccess = CExecuteManager::ouGetExecuteManager().bExecuteDllUnload(&
-    //                pTempNode->m_sNodeInfo);
-    //            if(!bSuccess)
-    //            {
-    //                nFailure++;
-    //                omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrDllName);
-    //            }
-    //            else
-    //            {    // to make the status of the handlers disabled
-    //                pTempNode->m_sNodeInfo.m_bDllHandlersEnabled = FALSE;
-    //                pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled = FALSE;
-    //                pTempNode->m_sNodeInfo.m_bIsAllHandlersEnabled = FALSE;
-    //                pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled = FALSE;
-    //                pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled = FALSE;
-    //                pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = FALSE;
-    //
-    //
-    //                theApp.pouGetFlagsPtr()->vSetFlagStatus(ALL_HANDLER, FALSE);
-    //
-    //                theApp.pouGetFlagsPtr()->vSetFlagStatus(ERROR_HANDLER, FALSE);
-    //                theApp.pouGetFlagsPtr()->vSetFlagStatus(KEY_HANDLER_ON, FALSE);
-    //                theApp.pouGetFlagsPtr()->vSetFlagStatus(MSGHANDLERBUTTON, FALSE);
-    //            }
-    //
-    //        }
-    //        pTempNode = pTempNode->m_psNextNode;
-    //    }
-    //    pTempSimsys = pTempSimsys->m_psSimsysNext;
-    //
-    //}
-    //   if((nFailure == 0) || (nFailure != nNodeCount))
-    //   {   // if the unload is successfull atleast for one dll.
-    //
-    //       // to indicate to the tree view about the dlls unloaded.
-    //       /*CSimSysTreeView* psSimSysTree = podGetSimSysTreeView();
-    //       if(psSimSysTree != nullptr)
-    //           psSimSysTree->bPopulateTree();*/
-    //   }
-
-    //CExecuteManager::ouGetExecuteManager().vStartTimer();
-
-    //if(nFailure == 0)
-    //{
-    //  bReturn= TRUE;
-    //}
-    return bReturn;
+    return false;
 
 }
 
 /******************************************************************************/
-/*  Function Name    :  OnDllUnload                                           */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user want to  unload        */
 /*                       all the DLLs under the configuration.                */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  20.01.2006                                            */
-/*  Modification By  :                                                        */
 /******************************************************************************/
 void CMainFrame::OnDllUnload()
 {
@@ -3492,17 +2583,8 @@ void CMainFrame::OnDllUnload()
 }
 
 /******************************************************************************/
-/*  Function Name    :  OnDllUnload                                           */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user want to  unload        */
 /*                       all the DLLs under the configuration.                */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  20.01.2006                                            */
-/*  Modification By  :                                                        */
 /******************************************************************************/
 void CMainFrame::OnDllUnloadLIN()
 {
@@ -3523,18 +2605,10 @@ void CMainFrame::OnDllUnloadLIN()
         AfxMessageBox(omStrErrorMsg);
     }
 }
+
 /******************************************************************************/
-/*  Function Name    :  OnDllUnload                                           */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Called by frame work when user want to  unload        */
 /*                       all the DLLs under the configuration.                */
-/*                                                                            */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  20.01.2006                                            */
-/*  Modification By  :                                                        */
 /******************************************************************************/
 void CMainFrame::OnDllUnloadJ1939()
 {
@@ -3556,18 +2630,8 @@ void CMainFrame::OnDllUnloadJ1939()
 }
 
 /******************************************************************************/
-/*  Function Name    :  vPopulateJ1939PGNList                                 */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  Fills the J1939PGNList struct with dtabase message ID,
                         name and color for future use.
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Arunkumar K                                           */
-/*  Date Created     :  08.03.2011                                            */
-/*  Modifications    :                                                        */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
 /******************************************************************************/
 void CMainFrame::vPopulateJ1939PGNList()
 {
@@ -3620,19 +2684,8 @@ void CMainFrame::vPopulateJ1939PGNList()
 }
 
 /******************************************************************************
-    Function Name    :  OnMessageInterpretation
-
-    Input(s)         :      -
-    Output           :      -
     Functionality    :  Changes the press state of Interpretation
                         tool bar button
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  20.03.2002
-    Modifications    :  Ratnadip Choudhury
-    Date modified    :  26.03.2002
 ******************************************************************************/
 void CMainFrame::OnMessageInterpretation()
 {
@@ -3657,7 +2710,7 @@ void CMainFrame::OnMessageInterpretation()
         }
         else
         {
-            ASSERT(FALSE); // Must not arise
+            ASSERT(false); // Must not arise
         }
         for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
         {
@@ -3737,28 +2790,11 @@ void CMainFrame::vUpdateSWList()
 
 }
 /*******************************************************************************
- Function Name    : OnAddSignalToSignalWindow
- Input(s)         : -
- Output           : -
  Functionality    : This function is called by framework when user wants to
                     watch a signal value. This function will display the
                     database messages to select signals. The selected signal
                     names will be copied into Signal watch data structure.user
                     can also remove added signal from the Signal Watch List
- Member of        : CMainFrame
- Friend of        :  -
- Author(s)        : Amarnath Shastry
- Date Created     : 25.03.2002
- Modification By  : Amarnath Shastry
- Modifications on : 27.03.2002
- Modifications    : Raja N on 30.03.2004
-                    Modified to refer latest dialog for add/del operations
- Modifications    : Raja N on 10.08.2004
-                    Added check to find the database import. If database is not
-                    imported don't show the dialog and show error msg box.
- Modifications    : Anish on 13.12.2006
-                    Changed code for checking whether a database is selected
-                    from CFlag class.
 *******************************************************************************/
 void CMainFrame::OnAddSignalToSignalWindow()
 {
@@ -3829,18 +2865,7 @@ void CMainFrame::OnAddSignalToSignalWindow_LIN()
 }
 
 /******************************************************************************
-    Function Name    :  OnLogFilter
-    Input(s)         :  void
-    Output           :  void
     Functionality    :  Called by the framework when user select Log Filter
-    Member of        :  CMainFrame
-    Friend of        :      -
-    Author(s)        :  Ratnadip Choudhury
-    Date Created     :  05.03.2002
-    Modifications    :  Amitesh Bharti, 26.12.2002, Function name is changed
-                                               and CFlag pointer is validated
-    Modifications    :  Raja N on 19.07.2005, Changed the code to call Log file
-                        manager to enable filter
 ******************************************************************************/
 void CMainFrame::OnLogFilter()
 {
@@ -3868,15 +2893,7 @@ void CMainFrame::OnLogFilter()
 }
 
 /******************************************************************************
-    Function Name    :  OnLogFilterLIN
-    Input(s)         :  void
-    Output           :  void
     Functionality    :  Called by the framework when user select Log Filter
-    Member of        :  CMainFrame
-    Friend of        :      -
-    Author(s)        :  Prathiba P
-    Date Created     :  11.03.2014
-    Modifications    :
 ******************************************************************************/
 void CMainFrame::OnLogFilterLIN()
 {
@@ -3948,15 +2965,7 @@ void CMainFrame::ApplyLogFilter()
 }
 
 /******************************************************************************
-    Function Name    :  ApplyLINLogFilter
-    Input(s)         :  void
-    Output           :  void
     Functionality    :  Applying Filter to logging module
-    Member of        :  CMainFrame
-    Friend of        :      -
-    Author(s)        :  Prathiba P
-    Date Created     :  12.03.2014
-    Modifications    :
 ******************************************************************************/
 void CMainFrame::ApplyLINLogFilter()
 {
@@ -3984,23 +2993,16 @@ void CMainFrame::ApplyLINLogFilter()
 }
 
 /******************************************************************************
-    Function Name    :  OnAboutApplication
-    Input(s)         :  void
-    Output           :  void
     Functionality    :  Called by the framework when user selects About
                         Application... menu option
                         Displays a dialog with program information.
-    Member of        :  CMainFrame
-    Friend of        :      -
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  05.03.2002
-    Modifications    :
 ******************************************************************************/
 void CMainFrame::OnAboutApplication()
 {
     theApp.OnAppAbout();
 
 }
+
 static void vPopulateMsgEntryFromDB(SMSGENTRY*& psMsgEntry,
                                     CMsgSignal* pouMsgSig)
 {
@@ -4021,24 +3023,11 @@ static void vPopulateMsgEntryFromDB(SMSGENTRY*& psMsgEntry,
         delete[] punMsgIds;
     }
 }
+
 /******************************************************************************/
-/*  Function Name    :  OnSelectMessage                                       */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  This function is called by framework when user wants  */
 /*                      to select message filter list.A dialog box will be    */
 /*                      for user to select the message list the choose options*/
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  27.02.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modifications on :  23.03.2002, Reset the filter flag                     */
-/*  Modification By  :  Raja N                                                */
-/*  Modifications on :  02.08.2004, Removed disabling filtering call to avoid */
-/*                      disabling of filtering                                */
-/*  Modifications    :  Raja N on 19.07.2005, Changed the implementation to   */
-/*                      call Filter Manager to show config dlg                */
 /******************************************************************************/
 void CMainFrame::OnSelectMessage()
 {
@@ -4118,17 +3107,11 @@ void CMainFrame::OnSelectMessage()
         }
     }
 }
+
 /******************************************************************************/
-/*  Function Name    :  OnLINFilter                                           */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  This function is called by framework when user wants  */
 /*                      to select message filter list.A dialog box will be    */
 /*                      for user to select the message list the choose options*/
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Prathiba P                                            */
-/*  Date Created     :  03.03.2014                                            */
 /******************************************************************************/
 void CMainFrame::OnLINFilter()
 {
@@ -4210,29 +3193,12 @@ void CMainFrame::OnLINFilter()
 }
 
 /******************************************************************************/
-/*  Function Name    :  OnLogEnable                                           */
-/*  Input(s)         :  -                                                     */
-/*  Output           :  -                                                     */
 /*  Functionality    :  This function is called by framework when user wants  */
 /*                      a log file. This will set the status of corresponding
                         toolbar button.
                         Gets the log file from the registry.
                         Post a thread message to perform logging to the specifi
                         -ed log file name.
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Ratnadip Choudhury, Amarnath Shastry                  */
-/*  Date Created     :  29.03.2002                                            */
-/*  Modifications    :  11.12.2002, Amarnath S                                */
-/*                      Integration with config class included                */
-/*  Modifications    :  19.08.2003, Krishnaswamy B.N                          */
-/*                      Changes for CRH0008,Increment of log file name        */
-/*                      depending on the eLOGOVERWRITEMODEON flag status      */
-/*  Modifications    :  20.01.2003, Amitesh Bharti                            */
-/*                      Checking for increment of file is corrected. It was   */
-/*                      bOverWriteModeON == FALSE.                            */
-/*  Modifications    :  Raja N on 19.07.2005, Modified the code to call Log   */
-/*                      manager to start/stop logging                         */
 /******************************************************************************/
 void CMainFrame::OnLogEnable()
 {
@@ -4290,23 +3256,16 @@ void CMainFrame::OnLogEnable()
         }
     }
 
-    vStartStopLogging( bLogON );
+    vStartStopLogging(bLogON == TRUE );
 }
 
 /******************************************************************************/
-/*  Function Name    :  OnLog_LIN_Enable                                      */
-/*  Input(s)         :  -                                                     */
-/*  Output           :  -                                                     */
 /*  Functionality    :  This function is called by framework when user wants  */
 /*                      a log file. This will set the status of corresponding
                         toolbar button.
                         Gets the log file from the registry.
                         Post a thread message to perform logging to the specifi
                         -ed log file name.
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Shashank Vernekar                                     */
-/*  Date Created     :  29.01.2014                                            */
 /******************************************************************************/
 
 void CMainFrame::OnLog_LIN_Enable()
@@ -4371,52 +3330,31 @@ void CMainFrame::OnLog_LIN_Enable()
         }
     }
 
-    vStartStopLogging_LIN( bLogON );
+    vStartStopLogging_LIN(bLogON == TRUE);
 }
 
 /******************************************************************************/
-/*  Function Name    :  OnStatisticsCAN                                       */
-/*  Input(s)         :  -                                                     */
-/*  Output           :  -                                                     */
 /*  Functionality    :  This function is called by framework when user wants  */
 /*                      clicks the CAN network statistics
-
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Shashank Vernekar                                     */
-/*  Date Created     :  03.02.2014                                            */
 /******************************************************************************/
 void CMainFrame::OnStatisticsCAN()
 {
     OnStatistics(CAN);
 }
+
 /******************************************************************************/
-/*  Function Name    :  OnStatisticsLIN                                       */
-/*  Input(s)         :  -                                                     */
-/*  Output           :  -                                                     */
 /*  Functionality    :  This function is called by framework when user        */
 /*                      clicks the LIN network statistics
-
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Shashank Vernekar                                     */
-/*  Date Created     :  03.02.2014                                            */
 /******************************************************************************/
 void CMainFrame::OnStatisticsLIN()
 {
     OnStatistics(LIN);
 }
+
 /******************************************************************************/
-/*  Function Name    :  OnStatistics                                          */
-/*  Input(s)         :  - ETYPE_BUS                                           */
-/*  Output           :  -                                                     */
 /*  Functionality    :  This function is called by framework when user clicks */
 /*                      on the network statistics window . Depending on the
                         BUS selected the corrsponding tab will be made active
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Shashank Vernekar                                     */
-/*  Date Created     :  04.02.2014                                            */
 /******************************************************************************/
 void CMainFrame::OnStatistics(ETYPE_BUS ebus)
 {
@@ -4557,29 +3495,8 @@ void CMainFrame::OnButtonSignalWatchButton_LIN()
 }
 
 /******************************************************************************/
-/*  Function Name    :  OnSendMessage                                         */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  This function is called by framework when user wants  */
 /*                      to send message selected from combo box.              */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  23.03.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modifications on :  25.03.2002, Interface for send message                */
-/*  Modified By      :  Ratnadip Choudhury; 02-12-2002                        */
-/*  Modification     :  Data buffer from the configuration file was released  */
-/*                      even after passing its address to multiple message    */
-/*                      sending thread: code to release the same is moved     */
-/*                      away from here.                                       */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modifications on :  08.01.2004, Interface for send message is changed     */
-/*                                  The message block is transmitted by       */
-/*                                  calling member function of CSendMumtiMsg  */
-/*  Modifications    :  Raja N on 26.04.2005, Modified code to refer new      */
-/*                      Tx Msg configuration window for posting message about */
-/*                      Tx start and used Tx Manager object for msg transmission
 /******************************************************************************/
 void CMainFrame::OnSendMessage()
 {
@@ -4652,95 +3569,22 @@ void CMainFrame::OnSendFlexRayMessage()
     CToolBarCtrl& omRefToolBarCtrl = ((pToolBar)->GetToolBarCtrl());
     omRefToolBarCtrl.PressButton(IDR_TOOL_FLEX_SENDMSG, bConnected);
 }
+
 /******************************************************************************
-    Function Name    :  podGetFunctionViewPtr
-
-    Input(s)         :
-    Output           :  CFunctionView*
-    Functionality    :  Return pointer to CFunctionView class
-                        menu item
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modifications    :
-******************************************************************************/
-//CFunctionView* CMainFrame::podGetFunctionViewPtr()
-//{
-//    return (m_pomFunctionView);
-//}
-/******************************************************************************
-    Function Name    :  podGetFileViewPtr
-
-    Input(s)         :
-    Output           :  CFileView*
-    Functionality    :  Return pointer to CFileView class
-                        menu item
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modifications    :
-******************************************************************************/
-//CFileView* CMainFrame::podGetFileViewPtr()
-//{
-//    return (m_pomFileView);
-//}
-/******************************************************************************
-    Function Name    :  podGetFuncsTreeViewPtr
-
-    Input(s)         :
-    Output           :  CFnsTreeView*
-    Functionality    :  Return pointer to CFnsTreeView class
-                        menu item
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modifications    :
-******************************************************************************/
-//CFnsTreeView* CMainFrame::podGetFuncsTreeViewPtr()
-//{
-//    return (m_pomFnsTreeView);
-//}
-/******************************************************************************
-    Function Name    :  hGetModuleHandle
-
-    Input(s)         :
-    Output           :  HMODULE
     Functionality    :  Returns HMODULE which will have the handle to the DLL
                         loaded
                         menu item
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modifications    :
 ******************************************************************************/
 HMODULE CMainFrame::hGetModuleHandle()
 {
     return m_hModuleHandle;
 }
-/******************************************************************************
-    Function Name    :  vSetModuleHandle
 
+/******************************************************************************
     Input(s)         :  HMODULE hModuleHandle, CString& omStrDLLName
-    Output           :      -
     Functionality    :  Sets HMODULE which will have the handle to the DLL
                         loaded to the member variable and the corresponding DLL
                         name.
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modifications    :  Amitesh Bharti
-                        07.08.2002, changed the prototype of function to set
-                        the DLL name which will be use
 ******************************************************************************/
 void CMainFrame::vSetModuleHandleAndDLLName(HMODULE hModuleHandle, CString& omStrDLLName)
 {
@@ -4750,18 +3594,9 @@ void CMainFrame::vSetModuleHandleAndDLLName(HMODULE hModuleHandle, CString& omSt
 
     //    theApp.bSetData(MRU_DLL_FILE_NAME, (void**)&m_omStrPrevLoadedDll);
 }
+
 /******************************************************************************
-    Function Name    :  omStrConvByteArrToStr
-
-    Input(s)         :  CByteArray *byteArr
-    Output           :  CString
     Functionality    :  Function will convert a byte array to CString
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  19.03.2002
-    Modifications    :
 ******************************************************************************/
 CString CMainFrame::omStrConvByteArrToStr(CByteArray* byteArr)
 {
@@ -4807,19 +3642,10 @@ CString CMainFrame::omStrConvByteArrToStr(CByteArray* byteArr)
     strDisplay= strDisplay.Left(strDisplay.GetLength() - 1);
     return strDisplay;
 }
-/******************************************************************************
-    Function Name    :  vConvStrtoByteArray
 
-    Input(s)         :   char* tempBuf
-    Output           :  CByteArray *byteArr
+/******************************************************************************
     Functionality    :  Function will convert a string to equivalent
                         byte array.
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  19.03.2002
-    Modifications    :
 ******************************************************************************/
 void CMainFrame::vConvStrtoByteArray(CByteArray* bufferTx, char* tempBuf)
 {
@@ -4899,116 +3725,38 @@ void CMainFrame::vConvStrtoByteArray(CByteArray* bufferTx, char* tempBuf)
 }
 
 /******************************************************************************/
-/*  Function Name    :  vGetReferenceToToolBarCtrl                            */
-/*  Input(s)         :                                                        */
-/*  Output           :  CToolBarCtrl&                                         */
 /*  Functionality    :  Returns reference to CToolBarCtrl
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  14.03.2002                                            */
-/*  Modifications    :                                                        */
 /******************************************************************************/
-
 CToolBarCtrl& CMainFrame::vGetReferenceToToolBarCtrl()
 {
     CToolBar* pToolBar = &m_wndToolBar;
     return ((pToolBar)->GetToolBarCtrl());
 }
+
+
 /******************************************************************************/
-/*  Function Name    :  vSetFuncsTreeViewPtr
-/*  Input(s)         :  CFnsTreeView* pFnsTreeView
-/*  Output           :  void
-/*  Functionality    :  Sets CFnsTreeView class pointer to member variable
-/*  Member of        :  CMainFrame
-/*  Friend of        :      -
-/*  Author(s)        :  Amarnath Shastry
-/*  Date Created     :  14.03.2002
-/*  Modifications    :
-/******************************************************************************/
-//void CMainFrame::vSetFuncsTreeViewPtr(CFnsTreeView* pFnsTreeView)
-//{
-//    m_pomFnsTreeView = pFnsTreeView;
-//}
-/******************************************************************************/
-/*  Function Name    :  vSetFileViewPtr
-/*  Input(s)         :  CFileView* pFnsTreeView
-/*  Output           :  void
-/*  Functionality    :  Sets CFileView class pointer to member variable
-/*  Member of        :  CMainFrame
-/*  Friend of        :      -
-/*  Author(s)        :  Amarnath Shastry
-/*  Date Created     :  14.03.2002
-/*  Modifications    :
-/******************************************************************************/
-//void CMainFrame::vSetFileViewPtr(CFileView* pFileView)
-//{
-//    m_pomFileView = pFileView;
-//}
-/******************************************************************************/
-/*  Function Name    :  vSetFunctionViewPtr
-/*  Input(s)         :  CFunctionView* pFnsTreeView
-/*  Output           :  void
-/*  Functionality    :  Sets CFunctionView class pointer to member variable
-/*  Member of        :  CMainFrame
-/*  Friend of        :      -
-/*  Author(s)        :  Amarnath Shastry
-/*  Date Created     :  14.03.2002
-/*  Modifications    :
-/******************************************************************************/
-//void CMainFrame::vSetFunctionViewPtr(CFunctionView* pFunctionView)
-//{
-//    m_pomFunctionView = pFunctionView;
-//}
-/******************************************************************************/
-/*  Function Name    :  vGetNewDatabaseFlag
-/*  Input(s)         :
-/*  Output           :  BOOL
 /*  Functionality    :  Returns the value of m_bIsNewDatabase
-/*  Member of        :  CMainFrame
-/*  Friend of        :      -
-/*  Author(s)        :  Amarnath Shastry
-/*  Date Created     :  14.03.2002
-/*  Modifications    :
 /******************************************************************************/
-BOOL CMainFrame::vGetNewDatabaseFlag()
+bool CMainFrame::vGetNewDatabaseFlag()
 {
-    return (m_bIsNewDatabase);
+    return m_bIsNewDatabase;
 }
+
 /******************************************************************************/
-/*  Function Name    :  vSetNewDatabaseFlag
-/*  Input(s)         :  BOOL
-/*  Output           :
 /*  Functionality    :  Sets the value of m_bIsNewDatabase to "bValue"
                         passed as parameter
-/*  Member of        :  CMainFrame
-/*  Friend of        :      -
-/*  Author(s)        :  Amarnath Shastry
-/*  Date Created     :  14.03.2002
-/*  Modifications    :
 /******************************************************************************/
-void CMainFrame::vSetNewDatabaseFlag(BOOL bValue)
+void CMainFrame::vSetNewDatabaseFlag(bool bValue)
 {
     m_bIsNewDatabase = bValue;
 }
+
 /******************************************************************************/
-/*  Function Name    :  OnUpdateStatusBar                                     */
 /*  Input(s)         :  "wpParam" contains the string to be displayed         */
 /*  Output           :  baudrate                                              */
 /*  Functionality    :  This function is by frame work when a WM_STATUSBAR    */
 /*                      message is posted. It displayed on status bar text    */
 /*                      passed a parameter "wpParam"                          */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  27.02.2002                                            */
-/*  Modifications    :  Raja N on 07.09.2004                                  */
-/*                      Added code to prevent error counter access in case of */
-/*                      USB build                                             */
-/*  Modifications    :  Raja N on 14.03.2005                                  */
-/*                      Added code to extract channel information from wpParam*/
-/*  Modifications    :  Anish kumar on 20.01.06,changed the function to refer */
-/*                       Execute manager for executing handlers               */
 /******************************************************************************/
 LRESULT CMainFrame::OnErrorMessageProc(WPARAM wpParam, LPARAM lParam)
 {
@@ -5085,8 +3833,6 @@ LRESULT CMainFrame::OnErrorMessageProc(WPARAM wpParam, LPARAM lParam)
 }
 
 /******************************************************************************
-    Function Name    :  bIsTransitionInState
-
     Input(s)         :  unChannel - Channel ID
                         byRxError - Rx Error counter value
                         byTxError - Tx Error counter value
@@ -5096,18 +3842,12 @@ LRESULT CMainFrame::OnErrorMessageProc(WPARAM wpParam, LPARAM lParam)
                         current error state. If it is different than what is
                         indicated currently with m_eCurrErrorState, this
                         returns TRUE, else FALSE.
-    Member of        :  CMainFrame
-
-    Author(s)        :  Ratnadip Choudhury
-    Date Created     :
-    Modifications    :  Raja N on 14.03.2005, Modified logic to support multi
-                        channel controller state.
 ******************************************************************************/
-BOOL CMainFrame::bIsTransitionInState( UINT unChannel,
+bool CMainFrame::bIsTransitionInState( UINT unChannel,
                                        BYTE byRxError,
                                        BYTE byTxError )
 {
-    BOOL bIsTransition = FALSE;
+    bool bIsTransition = false;
     // Based on the value of transmit and receive error counter decide
     // the current error state
 
@@ -5116,7 +3856,7 @@ BOOL CMainFrame::bIsTransitionInState( UINT unChannel,
         // Error Active Mode
         if (m_eCurrErrorState[ unChannel ] != ERROR_ACTIVE)
         {
-            bIsTransition = TRUE;
+            bIsTransition = true;
             m_eCurrErrorState[ unChannel ] = ERROR_ACTIVE;
         }
     }
@@ -5127,7 +3867,7 @@ BOOL CMainFrame::bIsTransitionInState( UINT unChannel,
         // Bus off
         if (m_eCurrErrorState[ unChannel ] != ERROR_BUS_OFF)
         {
-            bIsTransition = TRUE;
+            bIsTransition = true;
             m_eCurrErrorState[ unChannel ] = ERROR_BUS_OFF;
         }
     }
@@ -5136,26 +3876,17 @@ BOOL CMainFrame::bIsTransitionInState( UINT unChannel,
         // Error passive
         if (m_eCurrErrorState[ unChannel ] != ERROR_PASSIVE)
         {
-            bIsTransition = TRUE;
+            bIsTransition = true;
             m_eCurrErrorState[ unChannel ] = ERROR_PASSIVE;
         }
     }
 
     return bIsTransition;
 }
+
 /******************************************************************************/
-/*  Function Name    :  omStrConvertIntegerToHex                              */
-/*  Input(s)         :  CString omStrInt                                      */
-/*  Output           :  CString                                               */
 /*  Functionality    :  This function will convert a integer passed as CString
                         to hexadecimal no.
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  19.03.2002                                            */
-/*  Modifications    :  rajesh: 05.03.2003. Formating rewritten               */
-/*  Modifications    :  Amitesh Bharti, 05.06.2003,replace datatype for       */
-/*                      supporting 64bits to __int64                          */
 /******************************************************************************/
 CString CMainFrame::omStrConvertIntegerToHex(CString omStrInt)
 {
@@ -5245,24 +3976,15 @@ CString CMainFrame::omStrConvertIntegerToHex(CString omStrInt)
     // u r done!
     return omStrHexNo;
 }
-/******************************************************************************
-    Function Name    :  bIsHexNumber
 
-    Input(s)         :  CString omStrHexNumber
-    Output           :  BOOL
+/******************************************************************************
     Functionality    :  Checks whether the value passed as parameter is valid
                         Hexadecimal number. If yes, the function returns TRUE,
                         otherwise FALSE
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  10.03.2002
-    Modifications    :
 ******************************************************************************/
-BOOL CMainFrame::bIsHexNumber(CString omStrHexNumber)
+bool CMainFrame::bIsHexNumber(CString omStrHexNumber)
 {
-    BOOL b_RetVal = FALSE;
+    bool b_RetVal = false;
 
     omStrHexNumber.MakeUpper();
 
@@ -5274,66 +3996,39 @@ BOOL CMainFrame::bIsHexNumber(CString omStrHexNumber)
                 ( t_cChar >= '0' && t_cChar <= '9' ) ||
                 ( t_cChar == '-') )
         {
-            b_RetVal = TRUE;
+            b_RetVal = true;
         }
         else
         {
-            b_RetVal = FALSE;
+            b_RetVal = false;
             break;
         }
     }
 
     return b_RetVal;
 }
-/******************************************************************************
-    Function Name    :  OnUpdateConfigureDatabaseClose
 
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :  void
+/******************************************************************************
     Functionality    :  Called by the framework to enable or disable
                         Database Close menu option.
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  10.03.2002
-    Modifications    :
 ******************************************************************************/
 void CMainFrame::OnUpdateConfigureDatabaseClose(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN ));
 }
-/******************************************************************************
-    Function Name    :  OnUpdateConfigureDatabaseNew
 
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :  void
+/******************************************************************************
     Functionality    :  Called by the framework to enable or disable
                         Database New menu option.
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  10.03.2002
-    Modifications    :
 ******************************************************************************/
 void CMainFrame::OnUpdateConfigureDatabaseNew(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable( !theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN ));
 }
-/******************************************************************************
-    Function Name    :  OnUpdateConfigureDatabaseSave
 
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :  void
+/******************************************************************************
     Functionality    :  Called by the framework to enable or disable
                         Database Save menu option.
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  10.03.2002
-    Modifications    :
 ******************************************************************************/
 void CMainFrame::OnUpdateConfigureDatabaseSave(CCmdUI* pCmdUI)
 {
@@ -5341,76 +4036,17 @@ void CMainFrame::OnUpdateConfigureDatabaseSave(CCmdUI* pCmdUI)
 }
 
 /******************************************************************************
-    Function Name    :  OnUpdateConfigureDatabaseSaveas
-
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :  void
     Functionality    :  Called by the framework to enable or disable
                         Database SaveAs menu option.
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  10.03.2002
-    Modifications    :
 ******************************************************************************/
 void CMainFrame::OnUpdateConfigureDatabaseSaveas(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable( theApp.pouGetFlagsPtr()->nGetFlagStatus( DBOPEN ));
 }
-/******************************************************************************
-    Function Name    :  OnClose
 
-    Input(s)         :  void
-    Output           :  void
+/******************************************************************************
     Functionality    :  Called by the framework when mainframe receives WM_CLOSE
                         message.
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Ratnadip Choudhury
-    Date Created     :  05.03.2002
-    Modifications    :  27.11.2002, Gopi, Fixed bug. The window coords of Msg
-                        window, Replay window and Output window were not
-                        saved into the config file. Only the file name where
-                        the current info can be saved is now stored in this
-                        method. The file is actually saved in onDestroy(..)
-                        of this class.
-                        Store the coords of the output window and the replay
-                        window here
-    Modifications    :  29.11.2002, Amarnath S
-                        For the first time after selecting the config filename
-                        SaveConfiguration(..) is called.
-                        Use of m_omstrConfigurationFile removed.
-                        Registry is updated only if SaveConfig.. is successful
-                        SaveMesageAttributes(...) function shifted to
-                        OnImportDatabase().
-    Modifications    :  08.05.2003, Amitesh Bharti
-                        The file explorer to select a configuration file for
-                        the default configuration will be thrown only if the
-                        configuration setting is modified from default setting.
-    Modifications    :  08.05.2003, Amitesh Bharti
-                        The timer is killed it is has a valid handle. Also
-                        the flag m_bIsStatWndCreated is reset to ensure if
-                        application is closed it does not try to post a message.
-                        to update the statistics since window may be closed.
-    Modifications    :  10.03.2004, Raja N
-                        OnCloseDatabase function is called to take actions if
-                        editor is open and related code is removed from here.
-    Modifications    :  05.04.2004, Raja N
-                        Added window position update for Signal Watch Window and
-                        Interpretation window.
-    Modifications    :  02.05.2005, Raja N
-                        Moved window save functionality to the function
-                        vSaveWindowPostion and made a call to this function
-    Modifications    :  02.05.2005, Raja N
-                        Added code to stop logging if it is on
-    Modifications    :  30.01.2007, Anish
-                        Added code to terminate CUIThread & CGraphUIThread properly
-    Modifications    :  20.05.2010, ArunKumar K
-                        Added code to Save Toolbar Positions
-    Modifications    :  Saravanan K S, 16-11-2011,
-            Added Cancel button option in the close warning message box
 ******************************************************************************/
 void CMainFrame::OnClose()
 {
@@ -5562,7 +4198,7 @@ void CMainFrame::OnClose()
     if ( bLogON )
     {
         bLogON = bLogON ? FALSE : TRUE;
-        vStartStopLogging( bLogON );
+        vStartStopLogging(bLogON == TRUE);
     }
 
     // Stop J1939 Logging if it is enabled
@@ -5580,7 +4216,7 @@ void CMainFrame::OnClose()
     if ( bLogON )
     {
         bLogON = bLogON ? FALSE : TRUE;
-        vStartStopLogging_LIN( bLogON );
+        vStartStopLogging_LIN(bLogON == TRUE);
     }
 
 
@@ -5599,119 +4235,6 @@ void CMainFrame::OnClose()
     vCloseFormatconverters();
 
     SaveBarState(PROFILE_CAN_MONITOR);
-
-    //--------storing toolbar position--------------------------------------
-    //string                path;
-    //char              cBuffer[_MAX_PATH];
-    //size_t                size;
-    //CFileException        fileException;
-    //CFileFind         finder;
-    //xmlDocPtr         pXMLDocPtr = nullptr;       /* document pointer */
-    //xmlNodePtr            pRtNodePtr = nullptr;
-    //xmlDtdPtr         dtd = nullptr;       /* DTD pointer */
-    //xmlNodePtr            pToolBarPos;
-
-    //// Get the working directory
-    //CString           strPath;
-    //char* pstrExePath = strPath.GetBuffer (MAX_PATH);
-    //::GetModuleFileName (0, pstrExePath, MAX_PATH);
-    //strPath.ReleaseBuffer ();
-    //strPath = strPath.Left(strPath.ReverseFind(92));
-
-    //path = strPath;
-    //path.append("\\BUSMASTER_Init_Config.xml");           //get the file from current working folder
-    //bool bFound = finder.FindFile((LPCTSTR)path.c_str());
-
-    //CRect         rMainFrmRect;
-    //GetWindowRect(&rMainFrmRect);
-    ////get the file
-    //if(bFound)
-    //{
-    //  //clear user defined nodes
-    //  ClearUserDefinedNodes(path);
-
-    //  pXMLDocPtr = xmlParseFile(path.c_str());
-    //  xmlChar* pXpath = (xmlChar*)"//Busmaster_Init_Config/Toolbar_Position_User_Defined";
-    //  xmlXPathObjectPtr pObjectPath = xmlUtils::pGetNodes(pXMLDocPtr, pXpath);
-
-    //  if( nullptr != pObjectPath )
-    //  {
-    //      xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-    //      if( nullptr != pNodeSet )
-    //      {
-    //          pToolBarPos = pNodeSet->nodeTab[0];             //Take First One only
-    //      }
-    //  }
-    //  else                                        //if this section doesnt exist then create it
-    //  {
-    //      if(pXMLDocPtr == nullptr)
-    //      {
-    //          // Create the document with version 1.0
-    //          pXMLDocPtr = xmlNewDoc(BAD_CAST "1.0");
-    //      }
-
-    //      xmlChar* pXpath = (xmlChar*)"//Busmaster_Init_Config";
-    //      xmlXPathObjectPtr pObjectPath = xmlUtils::pGetNodes(pXMLDocPtr, pXpath);
-
-    //      if(pObjectPath == nullptr)                 //if root node doean't exist, then create it
-    //      {
-    //          // Creating the Root node
-    //          pRtNodePtr = xmlNewNode(nullptr, BAD_CAST DEF_BUSMASTER_INIT_CONFIG);
-    //          xmlDocSetRootElement(pXMLDocPtr, pRtNodePtr);
-    //      }
-    //
-    //      //create the user defined node
-    //      pToolBarPos = xmlNewNode(nullptr, BAD_CAST DEF_TOOLBAR_POS_USER_DEFINED    );
-    //      xmlAddChild(pRtNodePtr, pToolBarPos);
-    //  }
-    //}
-    //else      //if file not found, create a new one
-    //{
-    //  xmlKeepBlanksDefault(0);
-
-    //  // Create the document with version 1.0
-    //  pXMLDocPtr = xmlNewDoc(BAD_CAST "1.0");
-
-    //  // Creating the Root node
-    //  pRtNodePtr = xmlNewNode(nullptr, BAD_CAST DEF_BUSMASTER_INIT_CONFIG);
-    //  xmlDocSetRootElement(pXMLDocPtr, pRtNodePtr);
-
-    //  //creating user define node
-    //  pToolBarPos = xmlNewNode(nullptr, BAD_CAST DEF_TOOLBAR_POS_USER_DEFINED    );
-    //  xmlAddChild(pRtNodePtr, pToolBarPos);
-    //}
-    //
-    //if(pToolBarPos != nullptr)
-    //{
-    //  //store the positions of the toolbars in the file
-    //  CreateToolBarPosInGlobalFile(pToolBarPos);
-    //}
-
-    //xmlIndentTreeOutput = 1;
-    //xmlThrDefIndentTreeOutput(TRUE);
-
-    //if(pXMLDocPtr != nullptr)
-    //{
-    //  xmlSaveFormatFileEnc(path.c_str(), pXMLDocPtr, "UTF-8", 1);
-
-    //  xmlFreeDoc(pXMLDocPtr);
-    //}
-    //
-
-    // xmlCleanupParser();
-
-    //----------------------------------------------------------------------
-    /* if( nullptr != m_pCopyBusStsticsNode )
-    {
-    xmlFreeNode(m_pCopyBusStsticsNode);
-    m_pCopyBusStsticsNode = nullptr;
-    }
-
-    if( nullptr != m_pCopyBusStsticsNode_LIN )
-    {
-    xmlFreeNode(m_pCopyBusStsticsNode_LIN);
-    m_pCopyBusStsticsNode_LIN = nullptr;
-    }*/
 
     if(nullptr != m_pXmlNodeBusStats)
     {
@@ -5760,25 +4283,12 @@ bool CMainFrame::bWriteIntoRegistry(HKEY /* hRootKey */, CString strSubKey, CStr
 }
 
 /******************************************************************************
-    Function Name    :  bCreateMsgWindow
-
-    Input(s)         :      -
-    Output           :  BOOL
     Functionality    :  Creates the message window (an object of
                         CMsgMDIChildWnd class)
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Ratnadip Choudhury
-    Date Created     :  05.03.2002
-    Modifications    :
-                        Arunkumar K on 15.06.2010, New Message Window Thread
-                        Raja N on 19.07.2005, Removed code related to log file
-                        triggering
 ******************************************************************************/
-BOOL CMainFrame::bCreateMsgWindow()
+bool CMainFrame::bCreateMsgWindow()
 {
-    BOOL bReturn=TRUE;
+    bool bReturn=true;
     if (m_podMsgWndThread == nullptr)
     {
         m_podMsgWndThread = new CMsgWndThread;
@@ -5810,7 +4320,7 @@ BOOL CMainFrame::bCreateMsgWindow()
         }
         else
         {
-            bReturn = FALSE;
+            bReturn = false;
         }
     }
     else
@@ -5820,24 +4330,12 @@ BOOL CMainFrame::bCreateMsgWindow()
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
     }
 
-    return TRUE;
+    return true;
 }
 
 /******************************************************************************
-    Function Name    :  OnHex_DecButon
-
-    Input(s)         :      -
-    Output           :  void
     Functionality    :  Toggles hexadecimal button and switches between decimal
                         state to hexadecimal state
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Ratnadip Choudhury
-    Date Created     :  15.03.2002
-    Modifications    :  Raja N on 26.04.2005, modified code to refer new Tx Msg
-                        configuration window for posting message about numeric
-                        mode change
 ******************************************************************************/
 void CMainFrame::OnHex_DecButon()
 {
@@ -5916,7 +4414,7 @@ void CMainFrame::OnHex_DecButon()
 * \authors       Prathiba P
 * \date          06.18.2013 Created
 */
-void CMainFrame::bSetHexDecFlags(BOOL bHexEnabled)
+void CMainFrame::bSetHexDecFlags(bool bHexEnabled)
 {
     if (m_podMsgWndThread != nullptr)
     {
@@ -5966,6 +4464,7 @@ void CMainFrame::bSetHexDecFlags(BOOL bHexEnabled)
         sg_pouSWInterface[J1939]->SW_SetDisplayMode(bHexON);
     }
 }
+
 /**
  * \brief Display Message window Overwrite
  * \req RS_16_01 - Two display modes namely, overwrite and append shall be supported.
@@ -6021,12 +4520,8 @@ void CMainFrame::ApplyMessagewindowOverwrite()
             }
         }
     }
-    /* BOOL bOverwriteON = theApp.pouGetFlagsPtr()->nGetFlagStatus(OVERWRITE);
-     bOverwriteON = bOverwriteON ? FALSE : TRUE;
-     theApp.pouGetFlagsPtr()->vSetFlagStatus(OVERWRITE, bOverwriteON);
-     PostThreadMessage(GUI_dwThread_MsgDisp, TM_OVERWRITE_MESSAGE, bOverwriteON,
-         0);*/
 }
+
 /**
  * \brief Display Message window Overwrite
  * \req RS_16_01 - Two display modes namely, overwrite and append shall be supported.
@@ -6082,55 +4577,24 @@ void CMainFrame::OnDisplayMessagewindowOverwrite()
             }
         }
     }
-    /* BOOL bOverwriteON = theApp.pouGetFlagsPtr()->nGetFlagStatus(OVERWRITE);
-     bOverwriteON = bOverwriteON ? FALSE : TRUE;
-     theApp.pouGetFlagsPtr()->vSetFlagStatus(OVERWRITE, bOverwriteON);
-     PostThreadMessage(GUI_dwThread_MsgDisp, TM_OVERWRITE_MESSAGE, bOverwriteON,
-         0);*/
 }
 
 
 /******************************************************************************
-    Function Name    :  bSetPressStatus
-
-    Input(s)         :  int nButtonID, eCANMONITORFLAG eFlag
-    Output           :  BOOL
     Functionality    :  Retrieves status of eFlag from global CFlags object, a
                         placeholder for all main program state flags and
                         modifies press status of nButtonID accordingly.
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Ratnadip Choudhury
-    Date Created     :  15.03.2002
-    Modifications    :
 ******************************************************************************/
-BOOL CMainFrame::bSetPressStatus(int nButtonID, eCANMONITORFLAG eFlag)
+bool CMainFrame::bSetPressStatus(int nButtonID, eCANMONITORFLAG eFlag)
 {
     // Get reference to Tool Bar ctrl
-    BOOL bStatus = theApp.pouGetFlagsPtr()->nGetFlagStatus(eFlag);
+    bool bStatus = (theApp.pouGetFlagsPtr()->nGetFlagStatus(eFlag) != 0);
     CToolBarCtrl& omRefToolBarCtrl = vGetReferenceToToolBarCtrl();
-    return omRefToolBarCtrl.PressButton(nButtonID, bStatus);
+    return (omRefToolBarCtrl.PressButton(nButtonID, bStatus ? TRUE : FALSE) == TRUE);
 }
 
 /******************************************************************************
-    Function Name    :  OnUpdateMessageInterpret
-
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :      -
     Functionality    :  Checks or Unchecks the Interpretation menu option
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  20.03.2002
-    Modifications    :  Amitesh Bharti
-                        18.06.2003, Uncheck the toolbar when it is disable.
-    Modifications    :  Ratnadip Choudhury
-                        10.01.2004, toolbar is only pressed/unpressed.
-    Modifications    :  Raja N
-                        23.06.2004, Disabled the button in Append mode to
-                        prevent interpretation in Append mode
 ******************************************************************************/
 void CMainFrame::OnUpdateMessageInterpret(CCmdUI* pCmdUI)
 {
@@ -6182,22 +4646,10 @@ void CMainFrame::OnUpdateMessageInterpret(CCmdUI* pCmdUI)
         }
     }
 }
-/******************************************************************************
-    Function Name    :  OnUpdateExecuteMessagehandlers
 
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :      -
+/******************************************************************************
     Functionality    :  Enable or disable execute message handler
                         menu item
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modification By  :  Amitesh Bharti
-    Modification on  :  23.10.2002,Enable menu/button if tool is connected
-    Modification By  :  Amitesh Bharti
-    Modification on  :  31.10.2002,Review comment incorporated.
 /******************************************************************************/
 void CMainFrame::OnUpdateExecuteMessagehandlers(CCmdUI* pCmdUI)
 {
@@ -6207,21 +4659,8 @@ void CMainFrame::OnUpdateExecuteMessagehandlers(CCmdUI* pCmdUI)
 }
 
 /******************************************************************************
-    Function Name    :  OnUpdateExecuteMessagehandlers
-
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :      -
     Functionality    :  Enable or disable execute message handler
                         menu item
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modification By  :  Amitesh Bharti
-    Modification on  :  23.10.2002,Enable menu/button if tool is connected
-    Modification By  :  Amitesh Bharti
-    Modification on  :  31.10.2002,Review comment incorporated.
 /******************************************************************************/
 void CMainFrame::OnUpdateExecuteMessagehandlersLIN(CCmdUI* pCmdUI)
 {
@@ -6229,19 +4668,10 @@ void CMainFrame::OnUpdateExecuteMessagehandlersLIN(CCmdUI* pCmdUI)
     BOOL bEnable = GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
     pCmdUI->Enable(bEnable);
 }
-/******************************************************************************
-    Function Name    :  OnUpdateLogFilter
 
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :      -
+/******************************************************************************
     Functionality    :  Check or uncheck log filter
                         menu item
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modifications    :  Amitesh Bharti, 26.12.2002, File name is changed
 ******************************************************************************/
 void CMainFrame::OnUpdateLogFilter(CCmdUI* pCmdUI)
 {
@@ -6250,19 +4680,10 @@ void CMainFrame::OnUpdateLogFilter(CCmdUI* pCmdUI)
     pCmdUI->SetCheck(
         theApp.pouGetFlagsPtr()->nGetFlagStatus( LOGFILTER ) );
 }
-/******************************************************************************
-    Function Name    :  OnUpdateLogFilterLIN
 
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :      -
+/******************************************************************************
     Functionality    :  Check or uncheck log filter
                         menu item
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modifications    :  Amitesh Bharti, 26.12.2002, File name is changed
 ******************************************************************************/
 void CMainFrame::OnUpdateLogFilterLIN(CCmdUI* pCmdUI)
 {
@@ -6271,6 +4692,7 @@ void CMainFrame::OnUpdateLogFilterLIN(CCmdUI* pCmdUI)
     pCmdUI->SetCheck(
         theApp.pouGetFlagsPtr()->nGetFlagStatus( LOGFILTER_LIN ) );
 }
+
 void CMainFrame::OnUpdateReplayFilter(CCmdUI* pCmdUI)
 {
     // Check or uncheck replay filter
@@ -6278,42 +4700,9 @@ void CMainFrame::OnUpdateReplayFilter(CCmdUI* pCmdUI)
     pCmdUI->SetCheck(
         theApp.pouGetFlagsPtr()->nGetFlagStatus( REPLAYFILTER ) );
 }
+
 /******************************************************************************
-    Function Name    :  OnUpdateMessageFilter
-
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :      -
-    Functionality    :  Check or uncheck message filter
-                        menu item
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modifications    :  Amitesh Bharti, 26.12.2002, File name is changed
-******************************************************************************/
-//void CMainFrame::OnUpdateMessageFilter(CCmdUI* pCmdUI)
-//{
-//    // Check or uncheck message filter
-//    // menu item
-//    pCmdUI->SetCheck(
-//        theApp.pouGetFlagsPtr()->nGetFlagStatus( DISPLAYFILTERON ) );
-//}
-/******************************************************************************
-    Function Name    :  OnUpdateExecuteMessagehandlersButton
-
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :      -
     Functionality    :  Toggle execute message handler button status
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modification By  :  Amitesh Bharti
-    Modification on  :  23.10.2002,Enable menu/button if tool is connected
-    Modification By  :  Amitesh Bharti
-    Modification on  :  31.10.2002, Review comment incorporated.
 /******************************************************************************/
 void CMainFrame::OnUpdateExecuteMessagehandlersButton(CCmdUI* pCmdUI)
 {
@@ -6321,18 +4710,9 @@ void CMainFrame::OnUpdateExecuteMessagehandlersButton(CCmdUI* pCmdUI)
     BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
     pCmdUI->Enable(bEnable);
 }
+
 /******************************************************************************
-    Function Name    :  OnExecuteMessagehandlersButton
-
-    Input(s)         :      -
-    Output           :      -
     Functionality    :  Calls OnActivateMessageHandler function
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modifications    :
 ******************************************************************************/
 void CMainFrame::OnExecuteMessagehandlersButton()
 {
@@ -6341,58 +4721,9 @@ void CMainFrame::OnExecuteMessagehandlersButton()
     //Change the status of handler
     GetICANNodeSim()->NS_EnableAllMessageHandler( !bEnable );
 }
+
 /******************************************************************************
-    Function Name    :  OnLogFilterButton
-
-    Input(s)         :      -
-    Output           :      -
-    Functionality    :  Calls OnFilterLog function
-    Member of        :  CMainFrame
-    Friend of        :
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modifications    :  Amitesh Bharti, 26.12.2002, File name is changed
-******************************************************************************/
-//void CMainFrame::OnLogFilterButton()
-//{
-//    OnLogFilter();
-//}
-/******************************************************************************
-    Function Name    :  OnUpdateLogFilterButton
-
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :      -
-    Functionality    :  Toggle log filter button status
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modifications    :
-******************************************************************************/
-//void CMainFrame::OnUpdateLogFilterButton(CCmdUI* pCmdUI)
-//{
-//    // Toggle log filter button status
-//    pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(LOGFILTER));
-//}
-/******************************************************************************
-    Function Name    :  OnMessageFilterButton
-
-    Input(s)         :      -
-    Output           :      -
     Functionality    :  Calls OnActivateTimerHandler function
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modified by      :  Ratnadip Choudhury
-    Modifications    :  Added code to post filter message to display thread
-    Date Modified    :  27.03.2002
-    Modified by      :  Amitesh Bharti
-    Modifications    :  Function name is changed and CFlag pointer is validated.
-    Date Modified    :  26.12.2002
 ******************************************************************************/
 void CMainFrame::OnMessageFilterButton()
 {
@@ -6587,15 +4918,8 @@ void CMainFrame::vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex,
 }
 
 /******************************************************************************
-    Function Name    :  OnReplayFilter
-    Input(s)         :      -
-    Output           :      -
     Functionality    :  To handle(enable/disable) filter for replay when user
                         selects from the main menu
-    Member of        :  CMainFrame
-    Friend of        :      -
-    Author(s)        :  Ashwin R Uchil
-    Date Created     :  3.1.2013
 ******************************************************************************/
 void CMainFrame::OnReplayFilter()
 {
@@ -6606,7 +4930,7 @@ void CMainFrame::OnReplayFilter()
     if(pouFlags != nullptr )
     {
         bReplayFilterStatus = (pouFlags->nGetFlagStatus(REPLAYFILTER) != 0);
-        bReplayFilterStatus = bReplayFilterStatus ? FALSE : TRUE;
+        bReplayFilterStatus = !bReplayFilterStatus;
         pouFlags->vSetFlagStatus(REPLAYFILTER, bReplayFilterStatus);
 
         vREP_EnableFilters(bReplayFilterStatus);
@@ -6815,7 +5139,7 @@ void CMainFrame::OnShowHideMessageWindow(UINT nID)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -6877,7 +5201,7 @@ void CMainFrame::OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI)
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -6976,7 +5300,7 @@ void CMainFrame::OnUpdateDllBuildloadAllLIN(CCmdUI* pCmdUI)
     date             :  19.03.2008
 ******************************************************************************/
 sSIGNALS* CMainFrame::poGetSignalPointer(
-    BOOL bActive,
+    bool bActive,
     const UINT& unMsgID,
     const CString& omStrSignalName)
 {
@@ -7232,9 +5556,10 @@ USHORT CMainFrame::vCheckValidLogFiles_LIN(USHORT LogBlocks)
     }
     return LogBlocks;
 }
-BOOL CMainFrame::bIsAtleastOneLoggingBlockEnabled(USHORT LogBlocks)
+
+bool CMainFrame::bIsAtleastOneLoggingBlockEnabled(USHORT LogBlocks)
 {
-    BOOL bEnabled = FALSE; // Assume no log files are configured or enabled
+    bool bEnabled = false; // Assume no log files are configured or enabled
 
     if (LogBlocks > 0)
     {
@@ -7242,9 +5567,9 @@ BOOL CMainFrame::bIsAtleastOneLoggingBlockEnabled(USHORT LogBlocks)
         {
             SLOGINFO sLogObject;
             sg_pouFrameProcCAN->FPC_GetLoggingBlock(i, sLogObject);
-            if (sLogObject.m_bEnabled == TRUE)
+            if (sLogObject.m_bEnabled)
             {
-                bEnabled = TRUE;
+                bEnabled = true;
                 break;
             }
         }
@@ -7252,10 +5577,9 @@ BOOL CMainFrame::bIsAtleastOneLoggingBlockEnabled(USHORT LogBlocks)
     return bEnabled;
 }
 
-
-BOOL CMainFrame::bIsAtleastOneLoggingBlockEnabled_LIN(USHORT LogBlocks)
+bool CMainFrame::bIsAtleastOneLoggingBlockEnabled_LIN(USHORT LogBlocks)
 {
-    BOOL bEnabled = FALSE; // Assume no log files are configured or enabled
+    bool bEnabled = false; // Assume no log files are configured or enabled
 
     if (LogBlocks > 0)
     {
@@ -7263,15 +5587,16 @@ BOOL CMainFrame::bIsAtleastOneLoggingBlockEnabled_LIN(USHORT LogBlocks)
         {
             SLOGINFO sLogObject;
             sg_pouFrameProcLIN->FPL_GetLoggingBlock(i, sLogObject);
-            if (sLogObject.m_bEnabled == TRUE)
+            if (sLogObject.m_bEnabled)
             {
-                bEnabled = TRUE;
+                bEnabled = true;
                 break;
             }
         }
     }
     return bEnabled;
 }
+
 /******************************************************************************/
 /*  Function Name    :  PreTranslateMessage                                   */
 /*  Input(s)         :                                                        */
@@ -7736,7 +6061,7 @@ void CMainFrame::OnCfgLogFile()
                                (void*) &m_sFilterAppliedCAN);
         sg_pouFrameProcCAN->FPC_StartEditingSession(); // Start the editing session
         omDlg.vSetLogFileONOFF(sg_pouFrameProcCAN->FPC_IsLoggingON());
-        BOOL bToConfirm = (omDlg.DoModal() == IDOK);
+        bool bToConfirm = (omDlg.DoModal() == IDOK);
         sg_pouFrameProcCAN->FPC_StopEditingSession(bToConfirm);
 
         if(bToConfirm == IDOK)
@@ -7774,10 +6099,10 @@ void CMainFrame::OnCfgLogFile_LIN()
                                (void*) &m_sFilterAppliedLIN);
         sg_pouFrameProcLIN->FPL_StartEditingSession(); // Start the editing session
         omDlg.vSetLogFileONOFF(sg_pouFrameProcLIN->FPL_IsLoggingON());
-        BOOL bToConfirm = (omDlg.DoModal() == IDOK);
+        bool bToConfirm = (omDlg.DoModal() == IDOK);
         sg_pouFrameProcLIN->FPL_StopEditingSession(bToConfirm);
 
-        if(bToConfirm == IDOK)
+        if(bToConfirm)
         {
             // Check if the filter for log is enabled
             ApplyLINLogFilter();
@@ -8184,32 +6509,33 @@ DWORD WINAPI InterpretThreadProc(LPVOID pVoid)
 }
 
 /* Function to start Msg read thread*/
-BOOL CMainFrame::bStartGraphReadThread()
+bool CMainFrame::bStartGraphReadThread()
 {
-    BOOL bReturn = FALSE;
+    bool bReturn = false;
     //First stop the thread if running
     bStopGraphReadThread();
     m_ouGraphReadThread.m_pBuffer = this;
     m_ouGraphReadThread.m_hActionEvent = m_ouCanBuf.hGetNotifyingEvent();
-    bReturn = m_ouGraphReadThread.bStartThread(InterpretThreadProc);
+    bReturn = (m_ouGraphReadThread.bStartThread(InterpretThreadProc) == TRUE);
 
     return bReturn;
 }
+
 /* Function to stop msg read thread*/
-BOOL CMainFrame::bStopGraphReadThread()
+bool CMainFrame::bStopGraphReadThread()
 {
-    BOOL bReturn = FALSE;
-    bReturn = m_ouGraphReadThread.bTerminateThread();
+    bool bReturn = false;
+    bReturn = (m_ouGraphReadThread.bTerminateThread() == TRUE);
     m_ouGraphReadThread.m_hActionEvent = nullptr;
     m_ouGraphReadThread.m_unActionCode = IDLE;
     return bReturn;
 }
 
 /* routine to read the data from buffer */
-INT CMainFrame::ReadGraphDataBuffer(BOOL bCalcTime)
+INT CMainFrame::ReadGraphDataBuffer(bool bCalcTime)
 {
     static STCANDATA sCanData;
-    if (bCalcTime == TRUE)
+    if (bCalcTime)
     {
         if (m_ouCanBuf.ReadFromBuffer(&sCanData) == CALL_SUCCESS)
         {
@@ -8364,9 +6690,6 @@ void CMainFrame::vUpdateGraphData(const STCANDATA& sCanData)
     } // If list and control and dbase pointers are valid
 }
 /******************************************************************************/
-/*  Function Name    :  OnFileConnect                                         */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
 /*  Functionality    :  This function is called by framework when user selects*/
 /*                      connect/disconnect menu/toolbar button. This will be  */
 /*                     also called from PreTranslateMsg() function when ESC/F2*/
@@ -8375,59 +6698,6 @@ void CMainFrame::vUpdateGraphData(const STCANDATA& sCanData)
 /*                     All global flags are toggled when state of connected or*/
 /*                     disconnected toggles. Msg is posted to msg window to   */
 /*                      reset handler flags.                                  */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti, Amarnath Shastry                      */
-/*  Date Created     :  21.10.2002                                            */
-/*  Modification By  :  Amarnath S                                            */
-/*  Modification on  :  28.10.2002                                            */
-/*                      Initialised all the global thread flags to TRUE       */
-/*                      instead of "!bConnected"                              */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  31.10.2002, Review comment incorporated               */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  26.11.2002, Order of connect and disconnect toolbar   */
-/*                                  bitmap have been revered                  */
-/*                      02.01.2003, One more parameter, unMaxWaitTime, added  */
-/*                      in function vInitialiseTimerStruct.                   */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  08.01.2004, Changes for terminating running thread for*/
-/*                                  message blocks.                           */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  23.02.2004, Added PostThreadMessage to ack. msg thread*/
-/*                                  to update the time reference used for     */
-/*                                  absolute time calculation                 */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  29.04.2004 Replaced PostMessage with direct assignment*/
-/*                      of global variable g_bMsgHandlerON Msg Handler Enable */
-/*                      flag. And moved PostThreadMessage upwards to avoide   */
-/*                      negative timings and added call to clear message      */
-/*                      window on connect - CRH0022                           */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  10.05.2004 Removed init of g_bStopMessageHandlers flag*/
-/*                      as it is not required and removed from the global list*/
-/*  Modifications    :  Raja N                                                */
-/*                      23.06.2004, Modified PostMessage with CTimeManager::  */
-/*                      vInitAbsoluteTime to init Abs time on connect         */
-/*  Modifications    :  Raja N                                                */
-/*                      22.07.2004, Modifications because of new DLL unload   */
-/*                      handler moved in to a seprate thread and message      */
-/*                      buffer creation creation in case of size of change    */
-/*  Modifications    :  Raja N                                                */
-/*                      01.08.2004, Added postmessage to indicate disconnect  */
-/*                      to send multimessage dialog to enable controls        */
-/*  Modifications    :  Raja N                                                */
-/*                      07.09.2004, Modified code to refer HI layer functions */
-/*  Modifications    :  Raja N                                                */
-/*                      07.09.2004, Modified code to reflect changes in the   */
-/*                      bus statistics dialog                                 */
-/*  Modifications    :  Raja N on 26.04.2005, Modification code to refer new  */
-/*                      Tx Msg configuration window for posting message about */
-/*                      connection status change                              */
-/*  Modifications    :  Raja N on 19.07.2005, Changed to code to use new      */
-/*                      architecture for Log and Replay                       */
-/*  Modifications    :  ArunKumar K on 09.11.2010, Added code for updating    */
-/*                      connect status to Signal Graph Window module.         */
 /******************************************************************************/
 void CMainFrame::OnFileConnect()
 {
@@ -8629,7 +6899,7 @@ void CMainFrame::OnFileConnect()
             }
             else if(bLogIsON == TRUE && bConnected == TRUE)
             {
-                vStartStopLogging(bLogIsON);
+                vStartStopLogging(bLogIsON == TRUE);
             }
 
             if (m_abLogOnConnect[J1939] == TRUE)
@@ -8869,7 +7139,7 @@ void CMainFrame::OnLINConnect()
         }
         else if(bLogIsON == TRUE && bConnected == TRUE)
         {
-            vStartStopLogging_LIN(bLogIsON);
+            vStartStopLogging_LIN(bLogIsON == TRUE);
         }
 
         m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, BUS_CONNECTED);
@@ -9301,7 +7571,7 @@ void CMainFrame::OnNewConfigFile()
         if ( bLogON )
         {
             bLogON = bLogON ? FALSE : TRUE;
-            vStartStopLogging( bLogON );
+            vStartStopLogging(bLogON == TRUE);
         }
 
         BOOL bLogONl = FALSE;
@@ -9312,7 +7582,7 @@ void CMainFrame::OnNewConfigFile()
         if ( bLogONl )
         {
             bLogONl = bLogONl ? FALSE : TRUE;
-            vStartStopLogging_LIN( bLogONl );
+            vStartStopLogging_LIN(bLogONl == TRUE);
         }
 
         // setting by default Hex mode on new configuration
@@ -10696,26 +8966,26 @@ void CMainFrame::OnUpdateFlexRayNetworkStatisticsWnd(CCmdUI* pCmdUI)
     Date Created     :  24.02.2003
     Modifications    :  21.03.2002, Ravikumar Patil, code review comment
 *****************************************************************************/
-BOOL CMainFrame::bEnableDisableLog(BOOL bStart)
+bool CMainFrame::bEnableDisableLog(bool bStart)
 {
-    BOOL bRetval = TRUE ;
+    bool bRetval = true ;
     BOOL bLogging = theApp.pouGetFlagsPtr()->nGetFlagStatus(LOGTOFILE);
 
-    if ( (bStart == TRUE) && (bLogging == TRUE) ) //If logging enabled and trying
+    if (bStart && (bLogging == TRUE)) //If logging enabled and trying
     {
         //to enable
-        bRetval = FALSE ;
+        bRetval = false;
     }
-    else if ( (bStart == FALSE) && (bLogging == FALSE) ) //If logging disabled and trying
+    else if (!bStart && (bLogging == FALSE)) //If logging disabled and trying
     {
         //to disable
-        bRetval = FALSE ;
+        bRetval = false;
     }
     else
     {
-        OnLogEnable() ;
+        OnLogEnable();
     }
-    return bRetval ;
+    return bRetval;
 }
 
 /******************************************************************************
@@ -10729,19 +8999,19 @@ BOOL CMainFrame::bEnableDisableLog(BOOL bStart)
     Date Created     :  28.02.2003
     Modifications    :  21.03.2002, Ravikumar Patil, code review comment
 ******************************************************************************/
-BOOL CMainFrame::bWriteToLog(char* pcOutStrLog)
+bool CMainFrame::bWriteToLog(char* pcOutStrLog)
 {
-    BOOL bRetval = TRUE ;
+    bool bRetval = true;
     BOOL bLogON = TRUE ;
     bLogON = theApp.pouGetFlagsPtr()->nGetFlagStatus(LOGTOFILE);
 
-    if ( (bLogON == TRUE) && (pcOutStrLog != nullptr) )
+    if ((bLogON == TRUE) && (pcOutStrLog != nullptr))
     {
         //::SendMessage(GUI_hDisplayWindow,WM_LOG_STRING,0,(LPARAM)pcOutStrLog) ;
     }
     else
     {
-        bRetval = FALSE ;
+        bRetval = false;
     }
 
     return bRetval ;
@@ -10760,35 +9030,33 @@ BOOL CMainFrame::bWriteToLog(char* pcOutStrLog)
     Date Created     :  28.02.2003
     Modifications    :
 ******************************************************************************/
-BOOL CMainFrame::bSetControllerMode(BOOL bMode)
+bool CMainFrame::bSetControllerMode(bool bMode)
 {
-    BOOL bRetval = TRUE ;
-    BOOL bControllerMode = theApp.pouGetFlagsPtr()->nGetFlagStatus(CONTROLLER_MODE);
+    bool bRetval = true;
+    int bControllerMode = theApp.pouGetFlagsPtr()->nGetFlagStatus(CONTROLLER_MODE);
     BOOL bConnect = theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED);
 
-    if(bConnect == TRUE ) //If connected
+    if(bConnect == TRUE) //If connected
     {
-        bRetval = FALSE ;
+        bRetval = false;
     }
     else //If not connected
     {
-        if ( (bMode == TRUE ) && (bControllerMode != 1))
+        if (bMode && (bControllerMode != 1))
         {
             OnConfigureModeActive() ;
         }
-        else if( (bMode == FALSE ) && (bControllerMode != 2))
+        else if(!bMode && (bControllerMode != 2))
         {
-            OnConfigurePassive() ;
+            OnConfigurePassive();
         }
         else
         {
-            bRetval = FALSE ;
+            bRetval = false;
         }
     }
-    return bRetval ;
+    return bRetval;
 }
-
-
 
 /******************************************************************************
     Function Name    :  vDisconnect
@@ -11530,6 +9798,7 @@ void CMainFrame::vAssignMsgBlockList()
     //m_podTxMsgManager->vAssignMsgBlockList();
     m_objTxHandler.vAssignMsgBlockList();
 }
+
 /******************************************************************************/
 /*  Function Name    :  bAllocateMemoryForGlobalTxList                        */
 /*  Input(s)         :  TRUE or FALSE                                         */
@@ -11546,21 +9815,13 @@ void CMainFrame::vAssignMsgBlockList()
 /*                      26.04.2005, Modified to refer CTxMsgManager class for */
 /*                      clearing global Tx list memory                        */
 /******************************************************************************/
-BOOL CMainFrame::bAllocateMemoryForGlobalTxList()
+bool CMainFrame::bAllocateMemoryForGlobalTxList()
 {
-    //return m_podTxMsgManager->bAllocateMemoryForGlobalTxList();
     HRESULT hResult = S_FALSE;
     hResult = m_objTxHandler.hAllocateMemoryForGlobalTxList();
-
-    if(hResult == S_OK)
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
-    }
+    return (hResult == S_OK);
 }
+
 /******************************************************************************
     Function Name    :  vNotificationFromOtherWin
     Input(s)         :  wParam - ID of the window that posts the message
@@ -11581,18 +9842,9 @@ LRESULT CMainFrame::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
     // lParam contains the different informations been passed
     if (wParam == eWINID_TRACEWND)
     {
-        m_bNotificWndVisible = (BOOL) lParam;
+        m_bNotificWndVisible = (bool) lParam;
     }
-    //SGW Code commented by Arun 21-10-2010
-    // Update Graph window status
-    //if( wParam == eWNDID_GRAPHWND)
-    //{
-    //    m_bGraphWindowVisible = (BOOL) lParam;
-    //    // Update Msg Wnd
-    //    //::PostMessage( GUI_hDisplayWindow, WM_NOTIFICATION_FROM_OTHER,
-    //    //          eWNDID_GRAPHWND, lParam );
-    //}
-    //SGW Code commented by Arun 21-10-2010
+
     return 0;
 }
 /******************************************************************************
@@ -11626,7 +9878,7 @@ LRESULT CMainFrame::vCreateTraceWindow(WPARAM , LPARAM )
     Modified by      :
     Modification     :
 /*****************************************************************************/
-BOOL CMainFrame::bCreateTraceWindow(void)
+bool CMainFrame::bCreateTraceWindow(void)
 {
     BOOL bResult = FALSE;
 
@@ -11646,7 +9898,7 @@ BOOL CMainFrame::bCreateTraceWindow(void)
         }
     }
 
-    return bResult;
+    return (bResult == TRUE);
 }
 /******************************************************************************
     Function Name    :  OnSize
@@ -12303,7 +10555,7 @@ void CMainFrame::vRestoreWindowPostion()
   Date Created   : 19.7.2005
   Modifications  :
 *******************************************************************************/
-void CMainFrame::vStartStopLogging(BOOL bStart)
+void CMainFrame::vStartStopLogging(bool bStart)
 {
     // Enable Logging or stop logging
     if (nullptr != sg_pouFrameProcCAN)
@@ -12317,7 +10569,6 @@ void CMainFrame::vStartStopLogging(BOOL bStart)
 
         sg_pouFrameProcCAN->FPC_EnableLogging(bStart);
     }
-    //LogKadoor CLogManager::ouGetLogManager().vStartStopLogging( bStart );
 }
 
 /*******************************************************************************
@@ -12331,7 +10582,7 @@ void CMainFrame::vStartStopLogging(BOOL bStart)
   Modifications  :
 *******************************************************************************/
 //[RS_LIN_06_14]
-void CMainFrame::vStartStopLogging_LIN(BOOL bStart)
+void CMainFrame::vStartStopLogging_LIN(bool bStart)
 {
     // Enable Logging or stop logging
     if (nullptr != sg_pouFrameProcLIN)
@@ -12473,12 +10724,12 @@ void CMainFrame::vSetBaudRateInfo(ETYPE_BUS eBus)
   Date Created   : 19.7.2005
   Modifications  :
 *******************************************************************************/
-void CMainFrame::vComStartStopLog(BOOL bStart)
+void CMainFrame::vComStartStopLog(bool bStart)
 {
     vStartStopLogging(bStart);
 }
 
-void CMainFrame::vComStartStopLog_LIN(BOOL bStart)
+void CMainFrame::vComStartStopLog_LIN(bool bStart)
 {
     vStartStopLogging_LIN(bStart);
 }
@@ -12783,7 +11034,7 @@ void CMainFrame::OnDissociateDatabase()
     Date Created     :  05.04.11
     Modifications    :
 ******************************************************************************/
-void CMainFrame::vUpdateAllMsgWndInterpretStatus(BOOL /*bAssociate*/)
+void CMainFrame::vUpdateAllMsgWndInterpretStatus(bool /* bAssociate */)
 {
     HWND hWnd = nullptr;
     //Update MsgWnds
@@ -13677,9 +11928,9 @@ LRESULT CMainFrame::OnProvidePGNNameFromCode(WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-BOOL CMainFrame::bInitFrameProcCAN(void)
+bool CMainFrame::bInitFrameProcCAN(void)
 {
-    BOOL bReturn = FALSE;
+    bool bReturn = false;
     if (FP_GetInterface(FRAMEPROC_CAN, (void**)&sg_pouFrameProcCAN) == S_OK)
     {
         CString omVerStr("");
@@ -13693,15 +11944,15 @@ BOOL CMainFrame::bInitFrameProcCAN(void)
 
         if (sg_pouFrameProcCAN->FPC_DoInitialisation(&sCANProcParams) == S_OK)
         {
-            bReturn = TRUE;
+            bReturn = true;
         }
     }
     return bReturn;
 }
 
-BOOL CMainFrame::bInitFrameProcLIN(void)
+bool CMainFrame::bInitFrameProcLIN(void)
 {
-    BOOL bReturn = FALSE;
+    bool bReturn = false;
     if (FP_GetInterface(FRAMEPROC_LIN, (void**)&sg_pouFrameProcLIN) == S_OK)
     {
         CString omVerStr("");
@@ -13715,7 +11966,7 @@ BOOL CMainFrame::bInitFrameProcLIN(void)
 
         if (sg_pouFrameProcLIN->FPL_DoInitialisation(&sLINProcParams) == S_OK)
         {
-            bReturn = TRUE;
+            bReturn = true;
         }
     }
     return bReturn;
@@ -13732,111 +11983,43 @@ int CMainFrame::COM_ConnectTool()
     return 0;
 }
 
-BOOL CMainFrame::COM_SaveConfigFile()
+bool CMainFrame::COM_SaveConfigFile()
 {
     OnSaveConfigFile();
-    return TRUE;
+    return true;
 }
 
-BOOL CMainFrame::COM_SaveConfigFileAs(CString omCfgFilePath)
+bool CMainFrame::COM_SaveConfigFileAs(CString omCfgFilePath)
 {
     // Save the file
     CConfigData::ouGetConfigDetailsObject().vCloseConfigFile();
     vSetFileStorageInfo(omCfgFilePath);
     SaveConfiguration();
-    return TRUE;
+    return true;
 }
 
-BOOL CMainFrame::COM_bDLLBuild(CStringArray* omStrBuildFiles)
+bool CMainFrame::COM_bDLLBuild(CStringArray * omStrBuildFiles)
 {
-    BOOL bReturn            = FALSE;
-    //BOOL bSuccess           = FALSE;
-    int nFailure            = 0;
-    CString omStrFileName   = "";
-    //int nNodeCount          = 0;
-
-    //CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys = theApp.psReturnSimsysInfoPtr();
     omStrBuildFiles->RemoveAll();
-
-    //while(pTempSimsys != nullptr)
-    /*{
-        nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
-        CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
-            {
-                bSuccess = CExecuteManager::ouGetExecuteManager().
-                    bExecuteDllBuild(&pTempNode->m_sNodeInfo);
-                if(!bSuccess)
-                {
-                    nFailure++;
-                    omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrFileName);
-                }
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
-    }*/
-    if(nFailure == 0)
-    {
-        bReturn= TRUE;
-    }
-    return bReturn;
+    return true;
 }
 
-
-BOOL CMainFrame::COM_bDLLBuildLoad(CStringArray* omStrBuildFiles)
+bool CMainFrame::COM_bDLLBuildLoad(CStringArray * omStrBuildFiles)
 {
-    BOOL bReturn    = FALSE;
-    //BOOL bSuccess   = FALSE;
-    int nFailure    = 0;
-    //int nNodeCount  = 0;
-    /*CSimSysNodeInfo::PSSIMSYSINFO pTempSimsys = theApp.psReturnSimsysInfoPtr();*/
-    //CExecuteManager::ouGetExecuteManager().vStopTimer();
-
     omStrBuildFiles->RemoveAll();
-
-    //while(pTempSimsys != nullptr)
-    /*{
-        nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
-        CSimSysNodeInfo::PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
-            {
-                bSuccess = CExecuteManager::ouGetExecuteManager().
-                    bExecuteDllBuildLoad(&pTempNode->m_sNodeInfo);
-                if(!bSuccess)
-                {
-                    nFailure++;
-                    omStrBuildFiles->Add(pTempNode->m_sNodeInfo.m_omStrFileName);
-                }
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
-    }*/
-    if(nFailure == 0)
-    {
-        bReturn= TRUE;
-    }
-
-    //CExecuteManager::ouGetExecuteManager().vStartTimer();
-    return bReturn;
+    return true;
 }
 
-BOOL CMainFrame::COM_bDllLoad(CStringArray* /*omStrBuildFiles*/)
+bool CMainFrame::COM_bDllLoad(CStringArray * /*omStrBuildFiles*/)
 {
     OnDllLoad();
-    return TRUE;
+    return true;
 }
 
-BOOL CMainFrame::COM_bDllUnload(CStringArray* /*omStrBuildFiles*/)
+bool CMainFrame::COM_bDllUnload(CStringArray * /*omStrBuildFiles*/)
 {
     OnDllUnload();
-    return TRUE;
+    return true;
 }
 
 void CMainFrame::COM_SendMessage()
@@ -13844,7 +12027,7 @@ void CMainFrame::COM_SendMessage()
     OnSendMessage();
 }
 
-void CMainFrame::COM_EnableAllHandlers(BOOL /*bEnable*/)
+void CMainFrame::COM_EnableAllHandlers(bool /*bEnable*/)
 {
     OnExecuteAllHandlers();
 }
@@ -13860,6 +12043,7 @@ CString CMainFrame::omStrGetUnionFilePath(CString omStrTemp)
     }
     return omStrHeaderFileName;
 }
+
 static int App_SendMsg(void* pMsg, HMODULE /*hModule*/)
 {
     STCAN_MSG* psMsg = (STCAN_MSG*)pMsg;
@@ -13979,7 +12163,7 @@ void CMainFrame::ToggleView(CToolBar& omToolbar)
     Invalidate();
 }
 
-BOOL CMainFrame::bIsToolbarVisible(CToolBar& omToolbar)
+bool CMainFrame::bIsToolbarVisible(CToolBar & omToolbar)
 {
     return ((omToolbar.GetStyle() & WS_VISIBLE) != 0);
 }
@@ -15645,7 +13829,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE * & /* pbyConfi
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -17074,7 +15258,7 @@ int CMainFrame::nLoadXMLConfiguration()
                         bLogON = pFlag->nGetFlagStatus(LOGTOFILE);
                         BOOL bFilterON = FALSE;
                         bFilterON = pFlag->nGetFlagStatus(LOGFILTER);
-                        vStartStopLogging( bLogON );
+                        vStartStopLogging(bLogON == TRUE);
                     }
                 }
                 else if ( (m_xmlConfigFiledoc != nullptr) || (nRetVal == S_FALSE) )
@@ -17094,7 +15278,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     {
                         GetIJ1939Logger()->FPJ1_StartEditingSession();
                         GetIJ1939Logger()->FPJ1_SetConfigData(m_xmlConfigFiledoc);
-                        GetIJ1939Logger()->FPJ1_StopEditingSession(TRUE);
+                        GetIJ1939Logger()->FPJ1_StopEditingSession(true);
                     }
                 }
                 else
@@ -17103,7 +15287,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     {
                         GetIJ1939Logger()->FPJ1_StartEditingSession();
                         GetIJ1939Logger()->FPJ1_ClearLoggingBlockList();
-                        GetIJ1939Logger()->FPJ1_StopEditingSession(TRUE);
+                        GetIJ1939Logger()->FPJ1_StopEditingSession(true);
                     }
                 }
             }
@@ -17127,7 +15311,7 @@ int CMainFrame::nLoadXMLConfiguration()
                         bLogON = pFlag->nGetFlagStatus(LOGTOFILE_LIN);
                         BOOL bFilterON = FALSE;
                         // bFilterON = pFlag->nGetFlagStatus(LOGFILTER);
-                        vStartStopLogging_LIN( bLogON );
+                        vStartStopLogging_LIN(bLogON == TRUE);
                     }
                 }
                 else if ( (m_xmlConfigFiledoc != nullptr) || (nRetVal == S_FALSE) )
@@ -18188,7 +16372,7 @@ void CMainFrame::vClearDbInfo(ETYPE_BUS eBus)
     }
 }
 
-BOOL CMainFrame::CompareFile(CString FirstFile,CString SecFile)
+bool CMainFrame::CompareFile(CString FirstFile, CString SecFile)
 {
     int nSizeF, nSizeS;
     CStdioFile InFile, InFile2;
@@ -18201,13 +16385,13 @@ BOOL CMainFrame::CompareFile(CString FirstFile,CString SecFile)
     InFile2.Open(SecFile,CFile::modeRead);
     if( 0 == InFile.m_hFile || 0 == InFile2.m_hFile )
     {
-        return FALSE;
+        return false;
     }
     else
     {
         if(InFile.m_pStream == nullptr)
         {
-            return TRUE;
+            return true;
         }
 
         while(InFile.ReadString(strTemp))
@@ -18221,7 +16405,7 @@ BOOL CMainFrame::CompareFile(CString FirstFile,CString SecFile)
 
         if(InFile2.m_pStream == nullptr)
         {
-            return TRUE;
+            return true;
         }
 
         while(InFile2.ReadString(strTemp))
@@ -18241,7 +16425,7 @@ BOOL CMainFrame::CompareFile(CString FirstFile,CString SecFile)
 
         if(nSizeF != nSizeS)
         {
-            return TRUE;
+            return true;
         }
 
         int nSizeT;
@@ -18265,23 +16449,18 @@ BOOL CMainFrame::CompareFile(CString FirstFile,CString SecFile)
                 strTemp.Format(_T("%d"),ni);
                 //Adds unmatching tags in an array
                 ArrDisC.Add(strTemp);
-                return TRUE;
+                return true;
                 break;
             }
         }
 
-        return FALSE;
+        return false;
     }
-    /* for(int ni=nSizeT;ni<m_nMaxSize;ni++)
-     {
-         strTemp.Format(_T("%d"),ni);
-         ArrDisC.Add(strTemp);
-     }*/
 }
 
-BOOL CMainFrame::bIsConfigurationModified(void)
+bool CMainFrame::bIsConfigurationModified(void)
 {
-    BOOL bResult = TRUE;
+    bool bResult = true;
     CString oCfgFilename;
     vGetLoadedCfgFileName(oCfgFilename);
 
@@ -18302,8 +16481,8 @@ BOOL CMainFrame::bIsConfigurationModified(void)
         vSaveXMLConfiguration(strTempPath);
         bResult = CompareFile(strTempPath, oCfgFilename);
 
-        bResult |= GetICANNodeSim()->NS_IsSimSysConfigChanged();
-        bResult |= GetIJ1939NodeSim()->NS_IsSimSysConfigChanged();
+        bResult |= (GetICANNodeSim()->NS_IsSimSysConfigChanged() == TRUE);
+        bResult |= (GetIJ1939NodeSim()->NS_IsSimSysConfigChanged() == TRUE);
 
     }
 
@@ -18376,7 +16555,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 if(pFlag != nullptr)
                 {
                     bLogON = pFlag->nGetFlagStatus(LOGTOFILE);
-                    vStartStopLogging( bLogON );
+                    vStartStopLogging(bLogON == TRUE);
                 }
             }
             else
@@ -18397,7 +16576,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 {
                     GetIJ1939Logger()->FPJ1_StartEditingSession();
                     GetIJ1939Logger()->FPJ1_SetConfigData(pbyTemp, omVerStr);
-                    GetIJ1939Logger()->FPJ1_StopEditingSession(TRUE);
+                    GetIJ1939Logger()->FPJ1_StopEditingSession(true);
                 }
             }
             else
@@ -18406,7 +16585,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 {
                     GetIJ1939Logger()->FPJ1_StartEditingSession();
                     GetIJ1939Logger()->FPJ1_ClearLoggingBlockList();
-                    GetIJ1939Logger()->FPJ1_StopEditingSession(TRUE);
+                    GetIJ1939Logger()->FPJ1_StopEditingSession(true);
                 }
             }
         }
@@ -18428,7 +16607,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 if(pFlag != nullptr)
                 {
                     bLogON = pFlag->nGetFlagStatus(LOGTOFILE_LIN);
-                    vStartStopLogging_LIN( bLogON );
+                    vStartStopLogging_LIN(bLogON == TRUE);
                 }
             }
             else
@@ -19226,7 +17405,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
         break;
         default:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
     }
@@ -19450,7 +17629,7 @@ void CMainFrame::OnUpdateSelectLINDriver(CCmdUI* pCmdUI)
 
 }
 
-BOOL CMainFrame::bUpdatePopupMenuFLEXRAYDIL(void)
+bool CMainFrame::bUpdatePopupMenuFLEXRAYDIL(void)
 {
     USES_CONVERSION;
 
@@ -19482,7 +17661,7 @@ BOOL CMainFrame::bUpdatePopupMenuFLEXRAYDIL(void)
         else
         {
             theApp.bWriteIntoTraceWnd(_("new CMenu() for FlexRay failed!"));
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
 
@@ -19504,10 +17683,10 @@ BOOL CMainFrame::bUpdatePopupMenuFLEXRAYDIL(void)
         theApp.bWriteIntoTraceWnd(_("Could not create DIL menu items"));
     }
 
-    return bResult;
+    return (bResult == TRUE);
 }
 
-BOOL CMainFrame::bUpdatePopupMenuDIL(void)
+bool CMainFrame::bUpdatePopupMenuDIL(void)
 {
     USES_CONVERSION;
 
@@ -19523,8 +17702,8 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
                 // Add the DIL list
                 for (int i = 0; (i < m_nDILCount) && bResult; i++)
                 {
-                    bResult = m_pDILSubMenu->AppendMenu(MF_STRING,
-                                                        IDC_SELECT_DRIVER + i, _((char*)m_ouList[i].m_acName.c_str()));
+                    bResult = (m_pDILSubMenu->AppendMenu(MF_STRING,
+                                                        IDC_SELECT_DRIVER + i, _((char*)m_ouList[i].m_acName.c_str())) == TRUE);
                     if (bResult == TRUE)
                     {
                         m_ouList[i].m_ResourceID = IDC_SELECT_DRIVER + i;
@@ -19539,7 +17718,7 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
         else
         {
             theApp.bWriteIntoTraceWnd(_("new CMenu() failed"));
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
 
@@ -19563,9 +17742,10 @@ BOOL CMainFrame::bUpdatePopupMenuDIL(void)
         theApp.bWriteIntoTraceWnd(_("Could not create DIL menu items"));
     }
 
-    return bResult;
+    return (bResult == TRUE);
 }
-FLEXRAY_DILINFO* CMainFrame::psGetFLEXRAYDILEntry(UINT unKeyID, BOOL bKeyMenuItem)
+
+FLEXRAY_DILINFO* CMainFrame::psGetFLEXRAYDILEntry(UINT unKeyID, bool bKeyMenuItem)
 {
     FLEXRAY_DILINFO* psResult = nullptr;
     for (int i = 0; i < m_nFlexRayDILCount; i++)
@@ -19590,9 +17770,8 @@ FLEXRAY_DILINFO* CMainFrame::psGetFLEXRAYDILEntry(UINT unKeyID, BOOL bKeyMenuIte
     return psResult;
 }
 
-BOOL CMainFrame::bUpdatePopupMenuDILL(void)
+bool CMainFrame::bUpdatePopupMenuDILL(void)
 {
-
     USES_CONVERSION;
 
     BOOL bResult = TRUE;
@@ -19627,7 +17806,7 @@ BOOL CMainFrame::bUpdatePopupMenuDILL(void)
         else
         {
             theApp.bWriteIntoTraceWnd(_("new CMenu() failed"));
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
 
@@ -19651,10 +17830,10 @@ BOOL CMainFrame::bUpdatePopupMenuDILL(void)
         theApp.bWriteIntoTraceWnd(_("Could not create DIL menu items"));
     }
 
-    return bResult;
+    return (bResult == TRUE);
 }
 
-DILINFO* CMainFrame::psGetDILEntry(UINT unKeyID, BOOL bKeyMenuItem)
+DILINFO* CMainFrame::psGetDILEntry(UINT unKeyID, bool bKeyMenuItem)
 {
     DILINFO* psResult = nullptr;
     for (int i = 0; i < m_nDILCount; i++)
@@ -19678,12 +17857,13 @@ DILINFO* CMainFrame::psGetDILEntry(UINT unKeyID, BOOL bKeyMenuItem)
     }
     return psResult;
 }
-DILINFO* CMainFrame::psGetDILLINEntry(UINT unKeyID, BOOL bKeyMenuItem)
+
+DILINFO* CMainFrame::psGetDILLINEntry(UINT unKeyID, bool bKeyMenuItem)
 {
     DILINFO* psResult = nullptr;
     for (int i = 0; i < m_nDILCountLin; i++)
     {
-        if (bKeyMenuItem == TRUE)
+        if (bKeyMenuItem == true)
         {
             if (m_ouListLin[i].m_ResourceID == unKeyID)
             {
@@ -20061,7 +18241,7 @@ void CMainFrame::OnUpdateSignalgraphwindowMcnet(CCmdUI* pCmdUI)
     pCmdUI->SetCheck(m_objSigGrphHandler.bIsWindowVisible(MCNET));
 }
 
-void CMainFrame::vPostConfigChangeCmdToSigGrphWnds(BOOL bHideGraphWnd)
+void CMainFrame::vPostConfigChangeCmdToSigGrphWnds(bool bHideGraphWnd)
 {
     for(register int nBusID = CAN; nBusID < AVAILABLE_PROTOCOLS; nBusID++)
     {
@@ -20314,7 +18494,7 @@ void CMainFrame::vJ1939StartStopLogging()
     // Enable Logging or stop logging
     if (nullptr != sg_pouIJ1939Logger)
     {
-        BOOL bEnable = !sg_pouIJ1939Logger->FPJ1_IsLoggingON();
+        bool bEnable = !sg_pouIJ1939Logger->FPJ1_IsLoggingON();
         if (bEnable)
         {
             vSetAssociatedDatabaseFiles(J1939); // Update the db file names associated
@@ -20326,7 +18506,6 @@ void CMainFrame::vJ1939StartStopLogging()
 
 }
 
-
 void CMainFrame::OnActionJ1939Log()
 {
     vJ1939StartStopLogging();
@@ -20334,8 +18513,6 @@ void CMainFrame::OnActionJ1939Log()
     BYTE bytTbrItemIndex = 3;
     vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, sg_pouIJ1939Logger->FPJ1_IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
 }
-
-
 
 void CMainFrame::OnUpdateActionJ1939Log(CCmdUI* pCmdUI)
 {
@@ -20584,7 +18761,7 @@ void CMainFrame::vConfigureLogFile(ETYPE_BUS eCurrBus)
                                    (void*) &m_sFilterAppliedJ1939);
             sg_pouIJ1939Logger->FPJ1_StartEditingSession(); // Start the editing session
             omDlg.vSetLogFileONOFF(sg_pouIJ1939Logger->FPJ1_IsLoggingON());
-            BOOL bToConfirm = (omDlg.DoModal() == IDOK);
+            bool bToConfirm = (omDlg.DoModal() == IDOK);
             sg_pouIJ1939Logger->FPJ1_StopEditingSession(bToConfirm);
         }
     }
@@ -20598,7 +18775,7 @@ void CMainFrame::vConfigureLogFile(ETYPE_BUS eCurrBus)
                                    (void*) &m_sFilterAppliedLIN);
             sg_pouLinLogger->FPL_StartEditingSession(); // Start the editing session
             omDlg.vSetLogFileONOFF(sg_pouLinLogger->FPL_IsLoggingON());
-            BOOL bToConfirm = (omDlg.DoModal() == IDOK);
+            bool bToConfirm = (omDlg.DoModal() == IDOK);
             sg_pouLinLogger->FPL_StopEditingSession(bToConfirm);
         }
     }
@@ -20624,8 +18801,7 @@ void CMainFrame::OnUpdateJ1939DBNew(CCmdUI* pCmdUI)
 static void vGetNewJ1939DBName(CString& omString)
 {
     UINT unCount = 1;
-    BOOL bContinue = TRUE;
-    while (bContinue == TRUE)
+    for(;;)
     {
         CString omStrDbName = NEW_DATABASE_NAME_J1939;
         CString omStr = "";
@@ -20639,10 +18815,11 @@ static void vGetNewJ1939DBName(CString& omString)
         if (_findfirst( omStrDbName, &fileinfo)== -1L)
         {
             omString = omStrDbName;
-            bContinue = FALSE;
+            break;
         }
     }
 }
+
 static BOOL bCreateStudioFile(CString& omDefaultFileName)
 {
     BOOL bResult = FALSE;
@@ -21658,9 +19835,10 @@ void CMainFrame::vProcessKeyPress(MSG* pMsg)
         }
     }
 }
-BOOL CMainFrame::bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList& odMainEntryList)
+
+bool CMainFrame::bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList & odMainEntryList)
 {
-    BOOL bProper = TRUE;
+    bool bProper = true;
     if (m_xmlConfigFiledoc != nullptr)
     {
         UINT nMainCount = 0;
@@ -21733,24 +19911,21 @@ BOOL CMainFrame::bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList& odMa
             }
             else
             {
-                bProper = FALSE;
+                bProper = false;
             }
             xmlXPathFreeObject(pOjectPath);
         }
         else
         {
-            bProper = FALSE;
+            bProper = false;
         }
     }
     else
     {
-        bProper = FALSE;
+        bProper = false;
     }
     return bProper;
 }
-
-// START LIN RELATED HANDLERS
-
 
 /******************************************************************************/
 /*  Function Name    :  OnConfigBaudrateLin                                   */
@@ -22009,10 +20184,8 @@ void CMainFrame::OnLinClusterConfig()
     Date Created     :  20.03.2013
     Modifications    :
 ******************************************************************************/
-BOOL CMainFrame::bCreateFlexRayMsgWindow()
+bool CMainFrame::bCreateFlexRayMsgWindow()
 {
-    BOOL bReturn = TRUE;
-
     if (m_podMsgWndThread == nullptr)
     {
         m_podMsgWndThread = new CMsgWndThread;
@@ -22027,11 +20200,7 @@ BOOL CMainFrame::bCreateFlexRayMsgWindow()
 
         //m_podMsgWndThread->vUpdateClientID(FLEXRAY, 0);
     }
-    else
-    {
-        bReturn = FALSE;
-    }
 
-    return TRUE;
+    return true;
 }
 #endif

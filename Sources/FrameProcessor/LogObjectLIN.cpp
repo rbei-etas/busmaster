@@ -67,7 +67,7 @@ void CLogObjectLIN::Der_CopySpecificData(const CBaseLogObject* pouLogObjRef)
     pouLobObjLINRef->GetFilterInfo(m_sFilterApplied);
 }
 
-BOOL CLogObjectLIN::bLogData(const SFORMATTEDDATA_LIN& sDataLIN)
+bool CLogObjectLIN::bLogData(const SFORMATTEDDATA_LIN& sDataLIN)
 {
     // Multiple return statements are used to keep the code precise.
 
@@ -79,9 +79,9 @@ BOOL CLogObjectLIN::bLogData(const SFORMATTEDDATA_LIN& sDataLIN)
 
     // Assign appropriate values to FrameInfo_Basic
 
-    if (bToBeLogged(LINInfo_Basic) == FALSE)
+    if (bToBeLogged(LINInfo_Basic) == false)
     {
-        return FALSE;
+        return false;
     }
 
     CString omLogText = "";
@@ -116,7 +116,7 @@ BOOL CLogObjectLIN::bLogData(const SFORMATTEDDATA_LIN& sDataLIN)
         break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
             break;
     }
 
@@ -151,7 +151,7 @@ BOOL CLogObjectLIN::bLogData(const SFORMATTEDDATA_LIN& sDataLIN)
         break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
             break;
     }
 
@@ -192,7 +192,7 @@ BOOL CLogObjectLIN::bLogData(const SFORMATTEDDATA_LIN& sDataLIN)
 
     }
 
-    return TRUE;
+    return true;
 }
 
 // To format the header
@@ -221,19 +221,19 @@ void CLogObjectLIN::vFormatFooter(CString& omFooter)
 //  Creation Date  : 30.01.2014
 *******************************************************************************/
 //[RS_LIN_06_12-13]
-BOOL CLogObjectLIN::bToBeLogged(SFRAMEINFO_BASIC_LIN& LINInfo_Basic)
+bool CLogObjectLIN::bToBeLogged(SFRAMEINFO_BASIC_LIN& LINInfo_Basic)
 {
     // Multiple return statements are used to keep the code precise.
 
-    if (m_sLogInfo.m_bEnabled == FALSE)
+    if (m_sLogInfo.m_bEnabled == false)
     {
-        return FALSE;
+        return false;
     }
 
     if (nullptr == m_pLogFile)
     {
-        ASSERT(FALSE);
-        return FALSE;
+        ASSERT(false);
+        return false;
     }
 
     // Return if the curent frame occurs in different channel.
@@ -241,15 +241,15 @@ BOOL CLogObjectLIN::bToBeLogged(SFRAMEINFO_BASIC_LIN& LINInfo_Basic)
     {
         if (m_sLogInfo.m_ChannelSelected != LINInfo_Basic.m_eChannel)
         {
-            return FALSE;
+            return false;
         }
     }
 
-    if (m_sFilterApplied.m_bEnabled == TRUE)
+    if (m_sFilterApplied.m_bEnabled)
     {
-        if (m_sFilterApplied.bToBeBlocked(LINInfo_Basic) == TRUE)
+        if (m_sFilterApplied.bToBeBlocked(LINInfo_Basic))
         {
-            return FALSE;
+            return false;
         }
     }
 
@@ -262,7 +262,7 @@ BOOL CLogObjectLIN::bToBeLogged(SFRAMEINFO_BASIC_LIN& LINInfo_Basic)
         case STOPPED:
         {
             //If the log file is stopped then don't log
-            return FALSE;
+            return false;
         }
         break;
         case START:
@@ -274,7 +274,7 @@ BOOL CLogObjectLIN::bToBeLogged(SFRAMEINFO_BASIC_LIN& LINInfo_Basic)
             }
             else
             {
-                return FALSE;
+                return false;
             }
         }
         break;
@@ -303,11 +303,11 @@ BOOL CLogObjectLIN::bToBeLogged(SFRAMEINFO_BASIC_LIN& LINInfo_Basic)
         break;
 
         default:
-            ASSERT(FALSE);
+            ASSERT(false);
             break;
     }
 
-    return TRUE;
+    return true;
 }
 
 BYTE* CLogObjectLIN::Der_SetConfigData(BYTE* pvDataStream)
@@ -384,7 +384,7 @@ UINT CLogObjectLIN::Der_unGetBufSize(void) const
     return m_sFilterApplied.unGetSize();
 }
 
-void CLogObjectLIN::EnableFilter(BOOL bEnable)
+void CLogObjectLIN::EnableFilter(bool bEnable)
 {
     m_sFilterApplied.m_bEnabled = bEnable;
 }

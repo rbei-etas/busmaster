@@ -43,7 +43,7 @@ private:
     // To format the footer
     void vFormatFooter(CString& omFooter);
 
-    BOOL bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic);
+    bool bToBeLogged(SFRAMEINFO_BASIC_J1939& J1939Info_Basic);
 
 protected:
     // To copy specific data pertaining to the conrete class.
@@ -66,18 +66,20 @@ public:
     ~CLogObjectJ1939();   // Destructor
 
     // Log a J1939 data object
-    BOOL bLogData(const SFORMATTEDATA_J1939&);
+    bool bLogData(const SFORMATTEDATA_J1939&);
 
     // Enable / disable filter
-    void EnableFilter(BOOL bEnable);
+    void EnableFilter(bool bEnable);
 
     // Get the filter info structure
     void GetFilterInfo(SFILTERAPPLIED_J1939& sFilterInfo) const;
+
     // Set the filter info structure
     void SetFilterInfo(const SFILTERAPPLIED_J1939& sFilterInfo);
 
     // Get the list of database files associated
     void Der_GetDatabaseFiles(CStringArray& omList);
+
     // Set the list of database files associated
     void Der_SetDatabaseFiles(const CStringArray& omList);
     int Der_SetConfigData(xmlNodePtr)
@@ -87,6 +89,7 @@ public:
     // Set the baud rate details for each channel
     void Der_SetChannelBaudRateDetails(void* controllerDetails,
                                        int nNumChannels);
+
     // To get the channel baud rate info for each channel
     void Der_GetChannelBaudRateDetails(void* controllerDetails,
                                        int& nNumChannels);

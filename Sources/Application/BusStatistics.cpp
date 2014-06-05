@@ -46,7 +46,7 @@ HRESULT BS_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
             {
                 if ((sg_pouBS_CAN = new CBusStatisticCAN) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
             }
@@ -61,7 +61,7 @@ HRESULT BS_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
             {
                 if ((sg_pouBS_FlexRay = new CFlexRayNetworkStats) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
             }
@@ -72,7 +72,7 @@ HRESULT BS_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
         case MCNET:
         case J1939:
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
         break;
 
@@ -82,7 +82,7 @@ HRESULT BS_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
             {
                 if ((sg_pouBS_LIN = new CBusStatisticLIN) == nullptr)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                     hResult = S_FALSE;
                 }
             }

@@ -252,7 +252,7 @@ void CMsgHandlerDlg::OnCbtnMsgHandlerApply()
                 pDoc->m_omSourceCodeTextList.AddTail( omSelectedText );
                 if (CGlobalObj::ouGetObj(m_eBus).m_omMsgStructName.IsEmpty())
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                 }
                 omSelectedText = defTODO;
                 pDoc->m_omSourceCodeTextList.AddTail( omSelectedText );

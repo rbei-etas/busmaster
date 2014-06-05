@@ -274,7 +274,7 @@ void CFormatMsgJ1939::vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData, __int64 nDe
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     _itoa_s(psJ1939BData->m_unDLC, psJ1939FData->m_acDataLen, LEN_STR_DLC_J1939, 10);

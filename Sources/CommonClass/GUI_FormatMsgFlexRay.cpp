@@ -463,7 +463,7 @@ void CFormatMsgFlexRay::vFormatFlexRayDataMsg(s_FLXMSG* pMsgFlexRay,
 //        }
 //        else
 //        {
-//            ASSERT(FALSE);
+//            ASSERT(false);
 //        }
 //        m_qwRelBaseTime = TimeStamp;
 //    }
@@ -473,7 +473,7 @@ void CFormatMsgFlexRay::vFormatFlexRayDataMsg(s_FLXMSG* pMsgFlexRay,
 //    }
 //    else
 //    {
-//        ASSERT(FALSE);
+//        ASSERT(false);
 //    }
 //
 //     // Static variables to reduce the creation time

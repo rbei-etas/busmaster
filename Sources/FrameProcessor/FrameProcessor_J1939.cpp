@@ -111,7 +111,7 @@ void CFrameProcessor_J1939::DeleteLogObj(CBaseLogObject*& pouLogObj)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 }
 
@@ -201,18 +201,18 @@ HRESULT CFrameProcessor_J1939::FPJ1_DoInitialisation(CParamLoggerJ1939* psInitPa
                           m_sJ1939ProcParams.dwClientID, &m_ouVSEBufJ1939);
                 if (S_OK != hResult)
                 {
-                    ASSERT(FALSE);
+                    ASSERT(false);
                 }
             }
         }
         else
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return hResult;
@@ -238,7 +238,7 @@ HRESULT CFrameProcessor_J1939::FPJ1_ApplyFilteringScheme(USHORT ushLogBlkID,
             }
             else
             {
-                ASSERT(FALSE);
+                ASSERT(false);
             }
         }
     }
@@ -262,7 +262,7 @@ HRESULT CFrameProcessor_J1939::FPJ1_GetFilteringScheme(USHORT ushLogBlk,
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return hResult;
@@ -272,15 +272,13 @@ HRESULT CFrameProcessor_J1939::FPJ1_GetFilteringScheme(USHORT ushLogBlk,
 
 
 // USE COMMON BASE CLASS ALIAS FUNCTIONS: START
-/* Call to enable/disable logging for a particular block. Having ushBlk equal
-to FOR_ALL, signifies the operation to be performed for all the blocks */
-HRESULT CFrameProcessor_J1939::FPJ1_EnableLoggingBlock(USHORT ushBlk, BOOL bEnable)
+
+HRESULT CFrameProcessor_J1939::FPJ1_EnableLoggingBlock(USHORT ushBlk, bool bEnable)
 {
     return EnableLoggingBlock(ushBlk, bEnable);
 }
 
-// To enable/disable logging
-HRESULT CFrameProcessor_J1939::FPJ1_EnableLogging(BOOL bEnable)
+HRESULT CFrameProcessor_J1939::FPJ1_EnableLogging(bool bEnable)
 {
     return EnableLogging(bEnable, J1939);
 }
@@ -301,14 +299,11 @@ void CFrameProcessor_J1939::FPJ1_vCloseLogFile(void)
     }
 }
 
-/* Call to enable/disable logging for a particular block. Having ushBlk equal
-to FOR_ALL, signifies the operation to be performed for all the blocks */
-HRESULT CFrameProcessor_J1939::FPJ1_EnableFilter(USHORT ushBlk, BOOL bEnable)
+HRESULT CFrameProcessor_J1939::FPJ1_EnableFilter(USHORT ushBlk, bool bEnable)
 {
     return EnableFilter(ushBlk, bEnable);
 }
 
-// Query function - current logging status (OFF/ON).
 bool CFrameProcessor_J1939::FPJ1_IsLoggingON(void)
 {
     return IsLoggingON();
@@ -397,7 +392,7 @@ HRESULT CFrameProcessor_J1939::FPJ1_StartEditingSession(void)
 }
 
 // To stop logging block editing session
-HRESULT CFrameProcessor_J1939::FPJ1_StopEditingSession(BOOL bConfirm)
+HRESULT CFrameProcessor_J1939::FPJ1_StopEditingSession(bool bConfirm)
 {
     return StopEditingSession(bConfirm);
 }

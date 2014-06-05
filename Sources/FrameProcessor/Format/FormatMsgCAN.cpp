@@ -127,7 +127,7 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
         eERROR_STATE eErrType;
         vFormatErrMsg(pMsgCAN->m_uDataInfo.m_sErrInfo, eErrType);
         CurrDataCAN->m_eEventType = eErrType;
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     CurrDataCAN->m_eChannel = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucChannel;

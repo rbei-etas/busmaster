@@ -850,7 +850,7 @@ void CSimSysDetView::OnButtonOpenfile()
 //         wcscat(buffer ,_T("\n#include <Windows.h>"));
 //         if (CGlobalObj::m_omMsgStructFile.IsEmpty())
 //         {
-//             ASSERT(FALSE);
+//             ASSERT(false);
 //         }
 //         CString omStr;
 //         omStr.Format(STR_INCLUDE_FILE, CGlobalObj::m_omMsgStructFile);

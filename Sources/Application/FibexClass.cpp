@@ -422,14 +422,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                                 SIGNAL_STRUCT objSignal;
 
                                 objSignal.m_unStartbit = objSigInst.m_unBitPos + objPduInst.m_nStartBit;
-                                if(objSigInst.m_bByteOrder == false)
-                                {
-                                    objSignal.m_ouEndianness = INTEL;
-                                }
-                                else if(objSigInst.m_bByteOrder == true)
-                                {
-                                    objSignal.m_ouEndianness = MOTOROLA;
-                                }
+                                objSignal.m_ouEndianness = objSigInst.m_bByteOrder ? MOTOROLA : INTEL;
                                 std::string strSigRef = objSigInst.m_omSigRef;
 
                                 CSignal objBaseSig = m_mapSignalDetails[strSigRef];
@@ -708,14 +701,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                             SIGNAL_STRUCT objSignal;
 
                             objSignal.m_unStartbit = objSigInst.m_unBitPos + objPduInst.m_nStartBit;
-                            if(objSigInst.m_bByteOrder == false)
-                            {
-                                objSignal.m_ouEndianness = INTEL;
-                            }
-                            else if(objSigInst.m_bByteOrder == true)
-                            {
-                                objSignal.m_ouEndianness = MOTOROLA;
-                            }
+                            objSignal.m_ouEndianness = objSigInst.m_bByteOrder ? MOTOROLA : INTEL;
                             std::string strSigRef = objSigInst.m_omSigRef;
 
                             CSignal objBaseSig = m_mapSignalDetails[strSigRef];
@@ -1123,14 +1109,7 @@ void CPARSER_FIBEX::GetSignalStruct(std::map<std::string, CSigInstance> mapSigIn
         SIGNAL_STRUCT objSignal;
 
         objSignal.m_unStartbit = objSigInst.m_unBitPos;
-        if(objSigInst.m_bByteOrder == false)
-        {
-            objSignal.m_ouEndianness = INTEL;
-        }
-        else if(objSigInst.m_bByteOrder == true)
-        {
-            objSignal.m_ouEndianness = MOTOROLA;
-        }
+        objSignal.m_ouEndianness = objSigInst.m_bByteOrder ? MOTOROLA : INTEL;
         std::string strSigRef = objSigInst.m_omSigRef;
 
         CSignal objBaseSig = m_mapSignalDetails[strSigRef];
@@ -3428,7 +3407,7 @@ int CPARSER_FIBEX::ResetFibexEntity(eENTITY_FIBEX eEntity, PVOID pFibexEntity)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return TRUE;
 }
@@ -3453,7 +3432,7 @@ BOOL CPARSER_FIBEX::WriteFibexFile(std::string omFibexFilePath,
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return TRUE;
@@ -3473,7 +3452,7 @@ int CPARSER_FIBEX::bTranslate(eENTITY_FIBEX eEntity, std::string omID, BYTE* Buf
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
 
     return TRUE;

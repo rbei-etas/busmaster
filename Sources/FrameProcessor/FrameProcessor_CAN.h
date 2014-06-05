@@ -72,7 +72,7 @@ public:
                                    SFILTERAPPLIED_CAN& sFilterObj);
 
     // To enable/disable updation of the client flexray frame buffer.
-    HRESULT FPC_SetClientCANBufON(BOOL bEnable);
+    HRESULT FPC_SetClientCANBufON(bool bEnable);
 
     // To get the flexray buffer of this module
     CBaseCANBufFSE* FPC_GetCANBuffer(void);
@@ -84,29 +84,29 @@ public:
 
     /* Call to enable/disable logging for a particular block. Having ushBlk equal
     to FOR_ALL, signifies the operation to be performed for all the blocks */
-    HRESULT FPC_EnableLoggingBlock(USHORT ushBlk, BOOL bEnable);
+    HRESULT FPC_EnableLoggingBlock(USHORT ushBlk, bool bEnable);
 
     // To enable/disable logging
-    HRESULT FPC_EnableLogging(BOOL bEnable);
+    HRESULT FPC_EnableLogging(bool bEnable);
 
     /* Call to enable/disable logging for a particular block. Having ushBlk equal
     to FOR_ALL, signifies the operation to be performed for all the blocks */
-    HRESULT FPC_EnableFilter(USHORT ushBlk, BOOL bEnable);
+    HRESULT FPC_EnableFilter(USHORT ushBlk, bool bEnable);
 
     // Query function - client flexray buffer updation status (OFF/ON)
-    BOOL FPC_IsClientCANBufON(void);
+    bool FPC_IsClientCANBufON(void);
 
     // Query function - current logging status (OFF/ON).
-    BOOL FPC_IsLoggingON(void);
+    bool FPC_IsLoggingON(void);
 
-    BOOL FPC_IsDataLogged(void);
+    bool FPC_IsDataLogged(void);
 
-    BOOL FPC_IsThreadBlocked(void);
+    bool FPC_IsThreadBlocked(void);
 
     void FPC_DisableDataLogFlag(void);
 
     // Query function - current filtering status
-    BOOL FPC_IsFilterON(void);
+    bool FPC_IsFilterON(void);
 
     // To log a string
     HRESULT FPC_LogString(CString& omStr);
@@ -139,7 +139,7 @@ public:
     HRESULT FPC_StartEditingSession(void);
 
     // To stop logging block editing session
-    HRESULT FPC_StopEditingSession(BOOL bConfirm);
+    HRESULT FPC_StopEditingSession(bool bConfirm);
 
     // Getter for the logging configuration data
     HRESULT FPC_GetConfigData(BYTE** ppvConfigData, UINT& unLength);

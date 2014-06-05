@@ -42,7 +42,7 @@ private:
     // To format the footer
     void vFormatFooter(CString& omFooter);
 
-    BOOL bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic);
+    bool bToBeLogged(SFRAMEINFO_BASIC_CAN& CANInfo_Basic);
 
 protected:
     // To copy specific data pertaining to the conrete class.
@@ -66,10 +66,10 @@ public:
     ~CLogObjectCAN();   // Destructor
 
     // Log a CAN data object
-    BOOL bLogData(const SFORMATTEDDATA_CAN&);
+    bool bLogData(const SFORMATTEDDATA_CAN&);
 
     // Enable / disable filter
-    void EnableFilter(BOOL bEnable);
+    void EnableFilter(bool bEnable);
 
     // Get the filter info structure
     void GetFilterInfo(SFILTERAPPLIED_CAN& sFilterInfo) const;

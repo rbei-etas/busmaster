@@ -136,21 +136,12 @@ BYTE* tagLogInfo::pbGetConfigData(BYTE* pbTarget) const
     return pbTStream;
 }
 
-BOOL tagLogInfo::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
+bool tagLogInfo::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
 {
     const char* omstrIsLogEnabled = "";
-
-    if(m_bEnabled == TRUE)
-    {
-        omstrIsLogEnabled = "TRUE";
-    }
-    else
-    {
-        omstrIsLogEnabled = "FALSE";
-    }
+    omstrIsLogEnabled = m_bEnabled ? "TRUE" : "FALSE";
 
     const char* omstrTimerMode = "";
-
     if(m_eLogTimerMode == TIME_MODE_SYSTEM)
     {
         omstrTimerMode = "SYSTEM";
@@ -165,7 +156,6 @@ BOOL tagLogInfo::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
     }
 
     const char* omstrNumMode = "";
-
     if(m_eNumFormat == HEXADECIMAL)
     {
         omstrNumMode = "HEX";
@@ -176,21 +166,15 @@ BOOL tagLogInfo::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
     }
 
     const char* omstrFileMode = "FALSE";
-
     if(m_eFileMode == APPEND_MODE)
     {
         omstrFileMode = "TRUE";
     }
 
-    const char* omstrAbsMode = "FALSE";
-
-    if(m_bResetAbsTimeStamp == TRUE)
-    {
-        omstrAbsMode = "TRUE";
-    }
+    const char* omstrAbsMode = "";
+    omstrAbsMode = m_bResetAbsTimeStamp ? "TRUE" : "FALSE";
 
     CString omstrChannel = "";
-
     if (m_ChannelSelected == CHANNEL_All_UNSPECIFIED || m_ChannelSelected > CHANNEL_ALLOWED )
     {
         //due to const declaration
@@ -265,7 +249,7 @@ BOOL tagLogInfo::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
     xmlNodePtr pStpIdPtr = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_TRGR_STP_ID, BAD_CAST omcStpId);
     xmlAddChild(pxmlNodePtr, pStpIdPtr);
 
-    return TRUE;
+    return true;
 }
 
 /******************************************************************************

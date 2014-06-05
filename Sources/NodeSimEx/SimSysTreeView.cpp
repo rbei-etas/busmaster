@@ -1750,7 +1750,7 @@ void CSimSysTreeView::OnNodeErrorhandlers()
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     sSIMSYSINFO* pSimsys = nullptr;
     sNODEINFO* pNode = nullptr;
@@ -1821,7 +1821,7 @@ void CSimSysTreeView::OnNodeKeyhandlers()
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     sSIMSYSINFO* pSimsys = nullptr;
     sNODEINFO* pNode = nullptr;

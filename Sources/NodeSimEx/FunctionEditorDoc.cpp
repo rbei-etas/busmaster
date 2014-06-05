@@ -147,7 +147,7 @@ BOOL CFunctionEditorDoc::bCreateNewDocument(CString& omStrFileName )
         strcat(buffer, "\n#include <Windows.h>");
         if (m_sBusSpecInfo.m_omHeaderFileName.IsEmpty())
         {
-            ASSERT(FALSE);
+            ASSERT(false);
         }
 
         omStr.Format(STR_INCLUDE_FILE, m_sBusSpecInfo.m_omHeaderFileName);
@@ -282,7 +282,7 @@ BOOL CFunctionEditorDoc::OnNewDocument()
     // Include struct.h header file.
     if (CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_omMsgStructFile.IsEmpty())
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     omStr.Format(STR_INCLUDE_FILE, CGlobalObj::ouGetObj(m_sBusSpecInfo.m_eBus).m_omMsgStructFile);
     m_omSourceCodeTextList.AddTail( omStr );

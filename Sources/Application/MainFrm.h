@@ -110,7 +110,7 @@ public:
     SHORT m_shLINDriverId;
     WrapperErrorLogger m_ouWrapperLogger;
     // send toolbar button
-    //BOOL m_bEnableSendToolbarButton;
+    //bool m_bEnableSendToolbarButton;
     // MRU list
     CString m_omStrMRU_ConfigurationFiles[6];
     // Pointer to CBuildProgram class
@@ -137,7 +137,7 @@ public:
     //Notification window (Trace window) object pointer
     CUIThread* m_podUIThread;
     // Flag to indicate that notific window is created.
-    BOOL    m_bNotificWndVisible ;
+    bool    m_bNotificWndVisible ;
     //flag whether the current hardware is available or not
     bool    m_bNoHardwareFound;
     // Graph Control data members
@@ -146,13 +146,13 @@ public:
     // Graph Control
     CCGCtrl*            m_podGraphControl;
     // Flag to Indicate Graph Window status
-    BOOL                m_bGraphWindowVisible;
+    bool                m_bGraphWindowVisible;
 
     TSEditorHandler m_objTSEditorHandler;
     TSExecutorHandler m_objTSExecutorHandler;
 
     CMsgWndThread* m_podMsgWndThread;
-    BOOL m_bInterPretMsg;
+    bool m_bInterPretMsg;
     CTxHandler m_objTxHandler;
     CFlexTxHandler  m_objFlexTxHandler;
     CTxHandlerLIN m_objTxHandlerLin;
@@ -164,7 +164,7 @@ public:
     CBusStatisticsDlg* m_bsCAN;
     CLINBusStatisticsDlg* m_bsLIN;
 
-    BOOL CompareFile(CString FirstFile,CString SecFile);
+    bool CompareFile(CString FirstFile,CString SecFile);
 
     int             m_nNumChannels;
     int             m_nNumChannelsLIN;
@@ -182,19 +182,19 @@ public:
 
     void vGettextBusmaster();
     HICON m_hLogIcon1, m_hLogIcon2, m_hLogOffIcon;
-    BOOL m_bIconSetFlag;
-    BOOL m_bJ1939IconSetFlag;
-    BOOL m_bLinIconSetFlag;
+    bool m_bIconSetFlag;
+    bool m_bJ1939IconSetFlag;
+    bool m_bLinIconSetFlag;
 
     INT m_nSendMsgLogCnt;
     INT m_nSendMsgJ1939LogCnt;
     CWaveformTransmitter m_ouWaveTransmitter;
     USHORT vCheckValidLogFiles(USHORT iCount);
-    BOOL bIsAtleastOneLoggingBlockEnabled(USHORT LogBlocks);
+    bool bIsAtleastOneLoggingBlockEnabled(USHORT LogBlocks);
 
 
     USHORT vCheckValidLogFiles_LIN(USHORT iCount);
-    BOOL bIsAtleastOneLoggingBlockEnabled_LIN(USHORT LogBlocks);
+    bool bIsAtleastOneLoggingBlockEnabled_LIN(USHORT LogBlocks);
 
     //Get Message Window Thread
     inline CMsgWndThread* pGetMessageWndThread()
@@ -225,7 +225,7 @@ public:
     /* Buffer for FLEXRAY */
     FLEXRAY_INTERFACE_HW_LIST m_sSelFlxHwInterface;
     // To Create Graph UI thread and graph Window
-    BOOL bCreateGraphWindow();
+    bool bCreateGraphWindow();
     // Function to club activities needs to be done after conf load.
     void vClearOnConfLoad();
     // Function to init controller after configuration load
@@ -240,7 +240,7 @@ public:
     // Function to clear Simulated system List
     void vEmptySimsysList();
 
-    BOOL bAllocateMemoryForGlobalTxList();
+    bool bAllocateMemoryForGlobalTxList();
     void vAssignMsgBlockList();
     void vDeleteGlobalTxMemory();
     void vPostMsgToSendMsgDlg(ETYPE_BUS eBus);
@@ -251,27 +251,27 @@ public:
     void vFreeSignalWatchMemorySpace();
 
     // Gets pointer to specified signal
-    sSIGNALS* poGetSignalPointer( BOOL, const UINT& unMsgID,
+    sSIGNALS* poGetSignalPointer( bool, const UINT& unMsgID,
                                   const CString& omStrSignalName);
 
     void vSetMessageData(BYTE*  pbMessageData);
     // Creates message window
-    BOOL bCreateMsgWindow(void);
-    BOOL bCreateFlexRayMsgWindow();
+    bool bCreateMsgWindow(void);
+    bool bCreateFlexRayMsgWindow();
     //Create toolbar nodes
-    //BOOL CreationOfToolBarNode(xmlNodePtr pNodePtr, string strTag, string strData);
-    //BOOL CreationOfToolBarNode(xmlNodePtr pNodePtr, string strTag, int nData);
+    //bool CreationOfToolBarNode(xmlNodePtr pNodePtr, string strTag, string strData);
+    //bool CreationOfToolBarNode(xmlNodePtr pNodePtr, string strTag, int nData);
     // Returns reference to CByteArray
     CByteArray& pomGetMsgByteArrayReference();
     // Fills the tool bar combo box with message names
 
-    BOOL bIsHexNumber(CString omStrHexNumber);
+    bool bIsHexNumber(CString omStrHexNumber);
     // COnvert integer to hex
     CString omStrConvertIntegerToHex( CString omStrInt );
     // Set new database indication flag
-    void vSetNewDatabaseFlag(BOOL bValue);
+    void vSetNewDatabaseFlag(bool bValue);
     // Get new database indication flag
-    BOOL vGetNewDatabaseFlag();
+    bool vGetNewDatabaseFlag();
     // Return reference to toolbar control
     CToolBarCtrl& vGetReferenceToToolBarCtrl();
     // Convert string to byte array
@@ -301,18 +301,18 @@ public:
 
     virtual ~CMainFrame();
     //Called by wrapper function to Start\Stop logging$Log:$Log:
-    BOOL bEnableDisableLog(BOOL bStart) ;
+    bool bEnableDisableLog(bool bStart) ;
     //Called by wrapper function to Log a string $Log:$Log:
-    BOOL bWriteToLog(char* pcOutStrLog) ;
+    bool bWriteToLog(char* pcOutStrLog) ;
     //Called by wrapper function to change the controller mode $Log:$Log:
-    BOOL bSetControllerMode(BOOL bMode) ;
+    bool bSetControllerMode(bool bMode) ;
     //To display the context menu when user selects the time mode drop down menu
     void vToolBarDropDownMenu( UINT unControlID, int nButtonIndex);
     // To create the trace window
-    BOOL bCreateTraceWindow();
-    DWORD dLoadJ1939DBFile(CString omStrActiveDataBase,BOOL bFrmCom);
+    bool bCreateTraceWindow();
+    DWORD dLoadJ1939DBFile(CString omStrActiveDataBase, bool bFrmCom);
     // To load specified configuration File
-    DWORD dLoadDataBaseFile(CString omStrActiveDataBase,BOOL bFrmCom);
+    DWORD dLoadDataBaseFile(CString omStrActiveDataBase, bool bFrmCom);
     // To clear Message Interpretation Window Content on change of Config. File
     //void vClearInterpretationWindow();
     // To get the menu pointer of the MRU list
@@ -321,41 +321,38 @@ public:
     // To get Dll path of recent compiled file
     CString omGetDllName();
     //Calling build and load from com interface function also
-    BOOL bDLLBuildLoad(CStringArray* omStrBuildFiles);
-    BOOL bDLLBuild(CStringArray* omStrBuildFiles) ;
-    BOOL bDllLoad(CStringArray* omStrBuildFiles) ;
-    BOOL bDllUnload(CStringArray* omStrBuildFiles) ;
+    bool bDLLBuildLoad(CStringArray* omStrBuildFiles);
+    bool bDLLBuild(CStringArray* omStrBuildFiles) ;
+    bool bDllLoad(CStringArray* omStrBuildFiles) ;
+    bool bDllUnload(CStringArray* omStrBuildFiles) ;
     // To stop or start logging during configuration change
-    inline void vStartStopLogging(BOOL bStart);
+    inline void vStartStopLogging(bool bStart);
 
-    inline void vStartStopLogging_LIN(BOOL bStart);
+    inline void vStartStopLogging_LIN(bool bStart);
     // To stop or start logging during configuration change
     inline void vJ1939StartStopLogging();
-
-
-
 
     // To set the associated database file names for logging
     void vSetAssociatedDatabaseFiles(ETYPE_BUS eBus);
     // To set the baudrate for the selected channels
     void vSetBaudRateInfo(ETYPE_BUS eBus);
     //Wrapper function around the inline function,to be called from com function
-    void vComStartStopLog(BOOL bStart);
-    void vComStartStopLog_LIN(BOOL bStart);
+    void vComStartStopLog(bool bStart);
+    void vComStartStopLog_LIN(bool bStart);
     //Function takes the Root Menu and returns the SubMenu Pointer
     CMenu* GetSubMenu(CString MenuName);
 
-    BOOL bInitFrameProcCAN(void);
-    BOOL bInitFrameProcLIN(void);
+    bool bInitFrameProcCAN(void);
+    bool bInitFrameProcLIN(void);
     DWORD dwGetMonitorNodeClientID();
 
     CWnd* IsWindowCreated();
     void vCloseFormatconverters();
     void vProcessKeyPress(MSG* pMsg);
-    BOOL bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList& odMainEntryList);
+    bool bParseSignalWatchXMLconfig(ETYPE_BUS eBus, CMainEntryList& odMainEntryList);
     void OnHex_DecButon();
 
-    void bSetHexDecFlags(BOOL bHexOn);
+    void bSetHexDecFlags(bool bHexOn);
 
     /* API to modify icon for a particular item in toolbar */
     void vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, bool bItemON, UINT nTBIDON, UINT nTBIDOFF);
@@ -588,15 +585,15 @@ public:
     // To update graph data with statistics parameters
     void vUpdateGraphStatsData();
     //To send configuration change command to all signal graph windows
-    void vPostConfigChangeCmdToSigGrphWnds(BOOL bHideGraphWnd = TRUE);
+    void vPostConfigChangeCmdToSigGrphWnds(bool bHideGraphWnd = TRUE);
 
     void vClearSignalInfoList(void);
     void vUpdateChannelInfo(void);
     void vUpdateHWStatusInfo(void);
-    BOOL bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB);
+    bool bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB);
     void vInitialiaseLINConfig(int nChannel = 0);
 private:
-    BOOL m_bLINDisconnect;
+    bool m_bLINDisconnect;
     HMODULE m_hModAdvancedUILib;
     bool    m_bUseAdvancedUILib;
     BYTE    m_bytIconSize;
@@ -644,29 +641,29 @@ private:
     STCAN_MSG m_sRxMsgInfo;
     STLIN_MSG m_sRxMsgInfoLin;
 
-    BOOL m_bMsgHandlerRxDataByte;
-    BOOL m_bAbortMsgHandler;
+    bool m_bMsgHandlerRxDataByte;
+    bool m_bAbortMsgHandler;
     //   void vInitialiseInterfaceFunctionPointers();
     // To apply window postion from configuration module
     void vRestoreWindowPostion();
     // To find state transtition
-    BOOL bIsTransitionInState(UINT unChannel, BYTE byRxError, BYTE byTxError);
+    bool bIsTransitionInState(UINT unChannel, BYTE byRxError, BYTE byTxError);
 
     //To initialize Read Buffer for Graph window purpose
     void vInitializeGraphWndReadBuffer();
 
     // Menu options for configuration file
-    BOOL m_bCfgNewMenuOption;
-    BOOL m_bCfgLoadMenuOption;
-    BOOL m_bCfgSaveMenuOption;
-    BOOL m_bCfgSaveAsMenuOption;
+    bool m_bCfgNewMenuOption;
+    bool m_bCfgLoadMenuOption;
+    bool m_bCfgSaveMenuOption;
+    bool m_bCfgSaveAsMenuOption;
     // Returns the position of the menu item asked for
     INT nFindMenuItem(CMenu* Menu, LPCTSTR MenuString);
     // Shuffles MRU filenames
     //gets the toolbar style of a toolbar in terms of TOP, BOTTOM, LEFT, RIGHT
     //string GetToolBarStyle(CToolBar& wndToolbar);
 
-    BOOL m_bIsSendingMsg;
+    bool m_bIsSendingMsg;
     // Holds Previously loaded DLL name
     CString m_omStrPrevLoadedDll;
     // Data bytes for sending message
@@ -676,7 +673,7 @@ private:
     // Pointer to CMsgMDIChildWnd class
     CMsgMDIChildWnd* m_podMsgMDIChild;
     // Flag to indicate creation of new database
-    BOOL m_bIsNewDatabase;
+    bool m_bIsNewDatabase;
     // Pointer to CMsgSgDetView class
     CMsgSgDetView* m_pomMsgSgDetViews[BUS_TOTAL];
     // Pointer to CMsgSgTreeView class
@@ -699,7 +696,7 @@ private:
     // Transmission and reception error counters
     SERROR_CNT m_sErrorCount;
     // Flag to indicate which one between message ID and name is selected
-    BOOL m_bMessageName;
+    bool m_bMessageName;
     // Get new log filename from old
     void vWriteNewLogFilenameInRegistry( CString omLogFilename );
     // Get window status
@@ -708,11 +705,11 @@ private:
     void vSaveWinStatus(WINDOWPLACEMENT);
 
     bool bSetDefaultToolbarPosition();
-    BOOL bDestroyMsgWindow(void);
+    bool bDestroyMsgWindow(void);
     // Change status of tool bar button
-    BOOL bSetPressStatus(int, eCANMONITORFLAG);
+    bool bSetPressStatus(int, eCANMONITORFLAG);
     // To stop or start logging during configuration change
-    //inline void vStartStopLogging(BOOL bStart);
+    //inline void vStartStopLogging(bool bStart);
     // To process J1939 DIL and logger interfaces
     HRESULT ProcessJ1939Interfaces(void);
     // To deselect J1939 interfaces
@@ -729,15 +726,15 @@ private:
     CFlexRayNetworkStatsDlg* m_podFlexRayBusStatistics;
     CNetworkStatistics* m_cnsTester;
 
-    BOOL m_bIsStatWndCreated;
-    BOOL m_bIsFlexRayStatWndCreated;
+    bool m_bIsStatWndCreated;
+    bool m_bIsFlexRayStatWndCreated;
     UINT m_unWarningLimit;
 
     CString         m_omAppDirectory;
-    BOOL            m_bFlxDILChanging;
+    bool            m_bFlxDILChanging;
 
     void ToggleView(CToolBar& omToolbar);
-    BOOL bIsToolbarVisible(CToolBar& omToolbar);
+    bool bIsToolbarVisible(CToolBar& omToolbar);
     /* Helper function to populate sigwatch list from MainSubEntry
        data structure */
     void vPopulateSigWatchList(CMainEntryList& odFromList, SMSGENTRY*& psToList, CMsgSignal* pouDatabase);
@@ -750,7 +747,7 @@ private:
     void vReRegisterAllJ1939Nodes(void);
 
     void vGetLoadedCfgFileName(CString& omFileName);
-    BOOL bIsConfigurationModified(void);
+    bool bIsConfigurationModified(void);
     void vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfig, UINT& nSize);
     void vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& pbyConfigData, UINT& nSize, xmlNodePtr pNodePtr);
     void vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData, UINT nSize);
@@ -773,16 +770,16 @@ private:
     void vSetFileStorageInfo(CString omCfgFileName);
     void vSetCurrProjInfo(float fAppVersion);
 
-    DILINFO* psGetDILEntry(UINT unKeyID, BOOL bKeyMenuItem = TRUE);
-    FLEXRAY_DILINFO* psGetFLEXRAYDILEntry(UINT unKeyID, BOOL bKeyMenuItem = TRUE);
+    DILINFO* psGetDILEntry(UINT unKeyID, bool bKeyMenuItem = TRUE);
+    FLEXRAY_DILINFO* psGetFLEXRAYDILEntry(UINT unKeyID, bool bKeyMenuItem = TRUE);
     void vInitializeBusStatCAN(void);
     void vInitializeBusStatFlexRay(void);
 
-    DILINFO* psGetDILLINEntry(UINT unKeyID, BOOL bKeyMenuItem = TRUE);
+    DILINFO* psGetDILLINEntry(UINT unKeyID, bool bKeyMenuItem = TRUE);
     void vInitializeBusStatLIN(void);
 
-    BOOL bStartGraphReadThread();
-    BOOL bStopGraphReadThread();
+    bool bStartGraphReadThread();
+    bool bStopGraphReadThread();
     void vUpdateGraphData(const STCANDATA& sCanData);
     void vClearDbInfo(ETYPE_BUS eBus);
     CPARAM_THREADPROC m_ouGraphReadThread;
@@ -800,21 +797,21 @@ private:
     void vSetGlobalConfiguration(xmlNodePtr& pNodePtr);
 public:
     void vPopulateJ1939PGNList();
-    INT ReadGraphDataBuffer(BOOL bCalcTime);
+    INT ReadGraphDataBuffer(bool bCalcTime);
     INT nLoadConfigFile(CString omConfigFileName);
     int  COM_ConnectTool();
-    BOOL COM_SaveConfigFile();
-    BOOL COM_SaveConfigFileAs(CString omCfgFilePath);
-    BOOL COM_bDLLBuild(CStringArray* omStrBuildFiles);
-    BOOL COM_bDLLBuildLoad(CStringArray* omStrBuildFiles);
-    BOOL COM_bDllLoad(CStringArray* omStrBuildFiles);
-    BOOL COM_bDllUnload(CStringArray* omStrBuildFiles);
+    bool COM_SaveConfigFile();
+    bool COM_SaveConfigFileAs(CString omCfgFilePath);
+    bool COM_bDLLBuild(CStringArray* omStrBuildFiles);
+    bool COM_bDLLBuildLoad(CStringArray* omStrBuildFiles);
+    bool COM_bDllLoad(CStringArray* omStrBuildFiles);
+    bool COM_bDllUnload(CStringArray* omStrBuildFiles);
     void COM_SendMessage();
-    void COM_EnableAllHandlers(BOOL bEnable);
+    void COM_EnableAllHandlers(bool bEnable);
 
-    BOOL bUpdatePopupMenuDIL(void);
-    BOOL bUpdatePopupMenuFLEXRAYDIL(void);
-    BOOL bUpdatePopupMenuDILL(void);
+    bool bUpdatePopupMenuDIL(void);
+    bool bUpdatePopupMenuFLEXRAYDIL(void);
+    bool bUpdatePopupMenuDILL(void);
     CString omStrGetUnionFilePath(CString omStrTemp);
 
     void vNS_LINInitCFileFunctPtrs();
@@ -823,7 +820,7 @@ public:
     void vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB);
     void vPushConfigFilenameDown ( CString omStrConfigFilename );
     void vUpdateMainEntryListInWaveDataHandler();
-    void vUpdateAllMsgWndInterpretStatus(BOOL bAssociate);
+    void vUpdateAllMsgWndInterpretStatus(bool bAssociate);
 public:
     afx_msg void OnUpdateSelectDriver(CCmdUI* pCmdUI);
     afx_msg void OnSelectDriver(UINT nID);
@@ -958,7 +955,7 @@ public:
     void ApplyLINLogFilter();
     void ApplyReplayFilter();
     xmlDocPtr m_xmlConfigFiledoc;
-    BOOL m_bIsXmlConfig;
+    bool m_bIsXmlConfig;
 
 private:
     void vVlaidateAndLoadFibexConfig(sFibexConfigContainer& ouFibexContainer);

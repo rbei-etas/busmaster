@@ -542,7 +542,7 @@ HRESULT CIxxatCanChannel::CreateCANChannel()
                 {
                     //TODO: what to do in release mode
 #ifdef _DEBUG
-                    ASSERT(FALSE);
+                    ASSERT(false);
 #endif
                     m_dwTimerTickResolutionNSec = sCanCapabilities.dwClockFreq;
                 }

@@ -351,7 +351,7 @@ sMESSAGE* tagSMSGENTRY::psCopyMsgVal(sMESSAGE* psMsg)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return Result;
 }
@@ -386,7 +386,7 @@ sSIGNALS* tagSMSGENTRY::psCopySignalVal(sSIGNALS* psSignal)
     }
     else
     {
-        ASSERT(FALSE);
+        ASSERT(false);
     }
     return Result;
 }
