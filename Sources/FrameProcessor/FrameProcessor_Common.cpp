@@ -34,11 +34,9 @@
 
 /* Log version..applicable for log files from ver 1.6.2 */
 #define VERSION_CURR    0x02
+
 /* Log version..applicable for log files before ver 1.6.2 */
 /*#define VERSION_CURR    0x01*/
-
-// CFrameProcessor_Common
-
 
 DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
 {
@@ -105,8 +103,6 @@ DWORD WINAPI DataCopyThreadProc(LPVOID pVoid)
     return 0;
 }
 
-// CFrameProcessor_Common construction
-
 CFrameProcessor_Common::CFrameProcessor_Common()
 {
     // TODO: add construction code here,
@@ -123,8 +119,6 @@ CFrameProcessor_Common::CFrameProcessor_Common()
 
 CFrameProcessor_Common::~CFrameProcessor_Common()
 {
-    // TODO: add construction code here,
-    // Place all significant initialization in InitInstance
 }
 
 HRESULT CFrameProcessor_Common::DoInitialisation(void)
@@ -153,8 +147,6 @@ void CFrameProcessor_Common::vCopyLogObjArray(
         }
     }
 }
-
-// CFrameProcessor_Common initialization
 
 BOOL CFrameProcessor_Common::InitInstance(void)
 {
@@ -908,5 +900,3 @@ void CFrameProcessor_Common::SetChannelBaudRateDetails(void* controllerDetails,
         }
     }
 }
-
-/* End of alias functions in CFrameProcessor_Common */

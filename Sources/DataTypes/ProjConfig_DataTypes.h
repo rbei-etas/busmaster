@@ -22,9 +22,8 @@
  * Definition file for project configuration data types.
  */
 
+#pragma once
 
-#if !defined PROJCONFIG_DATATYPES__H_INCLUDED_
-#define PROJCONFIG_DATATYPES__H_INCLUDED_
 #include <malloc.h>
 #include <memory.h>
 #include <tchar.h>
@@ -33,7 +32,6 @@
 #include <stdio.h>
 #include <iostream>
 #include <list>
-
 
 enum {OPEN = 0x1, SAVE = 0x2, CLOSE = 0x4};
 
@@ -118,6 +116,3 @@ public:
     // currently pointing to a section. Advances the file pointer afterwards.
     bool Read(FILE* pFile);
 };
-
-
-#endif // PROJCONFIG_DATATYPES__H_INCLUDED_

@@ -56,9 +56,9 @@ void PROJECTDATA::Initialise(void)
     SYSTEMTIME CurrSysTime;
     GetSystemTime(&CurrSysTime);
 
-    m_ProjectName   = "";
-    m_Language      = "eng";
-    memcpy(&m_ProjSysTime, &CurrSysTime, sizeof (SYSTEMTIME));
+    m_ProjectName  = "";
+    m_Language = "eng";
+    m_ProjSysTime = CurrSysTime;
     m_fAppVersion = 0;
     m_dwAppUniqueId = 0;
 };
@@ -114,7 +114,7 @@ PROJECTDATA& PROJECTDATA::operator=(const PROJECTDATA& RefObj)
     m_Language    = RefObj.m_Language;
     m_fAppVersion = RefObj.m_fAppVersion;
     m_dwAppUniqueId = RefObj.m_dwAppUniqueId;
-    memcpy(&m_ProjSysTime, &RefObj.m_ProjSysTime, sizeof (SYSTEMTIME));
+    m_ProjSysTime = RefObj.m_ProjSysTime;
 
     return *this;
 }

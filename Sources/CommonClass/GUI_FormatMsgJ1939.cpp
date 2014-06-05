@@ -1,19 +1,4 @@
-
 /**********************************************************************************
-  Project       :   Auto-SAT_Tools
-  FileName      :   GUI_FormatMsgJ1939.cpp
-  Description   :   Implementation of CRefTimeKeeper class
-  $Log:   X:/Archive/Sources/CommonClass/GUI_FormatMsgJ1939.cpv  $
-
-      Rev 1.3   10 Jun 2011 15:14:36   CANMNTTM
-   All W4 warnings are removed
-
-      Rev 1.2   15 Apr 2011 19:07:08   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-
-  Author(s)     :
-  Date Created  :   04/11/2009
-  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 **********************************************************************************/
 
@@ -27,10 +12,10 @@ struct sERRORMSGINFO
     unsigned short m_usErrorCode; // Error code
     char* m_ptcErorMsg;          // Error message
 };
+
 typedef sERRORMSGINFO SERRORMSGINFO;
 typedef sERRORMSGINFO* PERRORMSGINFO;
 const int ERRORS_DEFINED = 15;
-
 
 static SERRORMSGINFO sg_asErrorEntry[ERRORS_DEFINED] =
 {
@@ -51,30 +36,10 @@ static SERRORMSGINFO sg_asErrorEntry[ERRORS_DEFINED] =
     {ERROR_DLLMSG_BUFF_OVERFLOW,        "DLL message buffer Overflow"}
 };
 
-/*******************************************************************************
-  Function Name  : CFormatMsgJ1939
-  Input(s)       : -
-  Output         : -
-  Functionality  : Constructor
-  Member of      : CFormatMsgJ1939
-  Author(s)      : Ratnadip
-  Date Created   : 8.7.2009
-  Modifications  :
-*******************************************************************************/
 CFormatMsgJ1939::CFormatMsgJ1939(void)
 {
 }
 
-/*******************************************************************************
-  Function Name  : ~CFormatMsgJ1939
-  Input(s)       : -
-  Output         : -
-  Functionality  : Destructor
-  Member of      : CFormatMsgJ1939
-  Author(s)      : Arun kumar K
-  Date Created   : 24.01.2011
-  Modifications  :
-*******************************************************************************/
 CFormatMsgJ1939::~CFormatMsgJ1939(void)
 {
 }

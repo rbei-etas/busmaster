@@ -28,33 +28,12 @@
 #include "RefTimeKeeper.h"
 #include "include/Utils_Macro.h"
 
-/******************************************************************************
-    Function Name    :  CFormatMsgCommon
-    Input(s)         :
-    Output           :
-    Functionality    :  Default Constructor
-    Member of        :  CFormatMsgCommon
-    Friend of        :      -
-    Author(s)        :  Anish kumar
-    Date Created     :  01.04.2010
-******************************************************************************/
 CFormatMsgCommon::CFormatMsgCommon(void)
 {
-
     m_qwAbsBaseTime = 0;
     m_qwRefSysTime  = 0;
 }
 
-/******************************************************************************
-    Function Name    :  ~CFormatMsgCommon
-    Input(s)         :
-    Output           :
-    Functionality    :  Destructor
-    Member of        :  CFormatMsgCommon
-    Friend of        :      -
-    Author(s)        :  Anish kumar
-    Date Created     :  01.04.2010
-******************************************************************************/
 CFormatMsgCommon::~CFormatMsgCommon(void)
 {
 }

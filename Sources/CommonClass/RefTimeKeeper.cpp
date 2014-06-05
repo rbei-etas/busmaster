@@ -14,17 +14,12 @@
  */
 
 /**
- * \file      RefTimeKeeper.cpp
- * \brief     Implementation of CRefTimeKeeper class
- * \author    Anish kumar
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- *
- * Implementation of CRefTimeKeeper class
+ * @author Anish kumar
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
 #include "CommonClass_stdafx.h"
 #include "RefTimeKeeper.h"
-
 
 CRefTimeKeeper::CRefTimeKeeper()
 {
@@ -34,8 +29,11 @@ CRefTimeKeeper::CRefTimeKeeper()
 
 void CRefTimeKeeper::vSetTimeParams(SYSTEMTIME& currentSystemTime, UINT64 connectTime)
 {
-    m_qwRefSysTime = (currentSystemTime.wHour * 3600 + currentSystemTime.wMinute * 60 +
-                      + currentSystemTime.wSecond) * 10000 + currentSystemTime.wMilliseconds * 10;
+    m_qwRefSysTime =
+        currentSystemTime.wHour         * 36000000 +
+        currentSystemTime.wMinute       *   600000 +
+        currentSystemTime.wSecond       *    10000 +
+        currentSystemTime.wMilliseconds *       10;
     m_qwAbsBaseTime = connectTime;
 }
 
@@ -44,4 +42,3 @@ void CRefTimeKeeper::vGetTimeParams(UINT64& referenceSystemTime_, UINT64& absolu
     referenceSystemTime_ = m_qwRefSysTime;
     absoluteBaseTime_ = m_qwAbsBaseTime;
 }
-//}

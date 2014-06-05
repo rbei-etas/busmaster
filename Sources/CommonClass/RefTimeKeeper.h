@@ -14,12 +14,8 @@
  */
 
 /**
- * \file      RefTimeKeeper.h
- * \brief     Definition of CRefTimeKeeper class
- * \author    Anish kumar
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- *
- * Definition of CRefTimeKeeper class
+ * @author Anish kumar
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
 #pragma once
@@ -28,11 +24,27 @@ class CRefTimeKeeper
 {
 public:
     CRefTimeKeeper();
-    void vSetTimeParams(SYSTEMTIME& currentSystemTime, UINT64 connectTime);
-    void vGetTimeParams(UINT64& referenceSystemTime_, UINT64& absoluteBaseTime_);
-protected:
-    UINT64 m_qwRefSysTime;
-    UINT64 m_qwAbsBaseTime;
 
-    //static void vGetTimeParams(UINT64& qwRefSysTime, UINT64& qwAbsBaseTime);
+    /**
+     * set time parameters
+     *
+     * @param[in] currentSystemTime current system time (granularity: milliseconds)
+     * @param[in] connectTime connect time (granularity: 100 microseconds)
+     */
+    void vSetTimeParams(SYSTEMTIME & currentSystemTime, UINT64 connectTime);
+
+    /**
+     * get time parameters
+     *
+     * @param[out] referenceSystemTime_ reference system time (granularity: 100 microseconds)
+     * @param[out] absoluteBasetime_ absolute base time (granularity: 100 microseconds)
+     */
+    void vGetTimeParams(UINT64 & referenceSystemTime_, UINT64 & absoluteBaseTime_);
+
+protected:
+    /** reference system time (granularity: 100 microseconds) */
+    UINT64 m_qwRefSysTime;
+
+    /** absolute base time (granularity: 100 microseconds) */
+    UINT64 m_qwAbsBaseTime;
 };

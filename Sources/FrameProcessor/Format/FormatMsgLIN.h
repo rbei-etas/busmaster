@@ -21,28 +21,25 @@
 *
 * Definition of CFormatMsgLIN class.
 */
-#ifndef FORMAT_MSG_LIN_H_INCLUDED
-#define FORMAT_MSG_LIN_H_INCLUDED
 
 #pragma once
+
 #include "FormatMsgCommon.h"
 #include "include/BaseDefs.h"
 #include "include/struct_can.h"
 
 class CFormatMsgLIN : public CFormatMsgCommon
 {
+public:
+    CFormatMsgLIN(CRefTimeKeeper& ouRefTimeKeeper);
+    ~CFormatMsgLIN();
+    void vFormatLINDataMsg(STLINDATA* pMsgLIN,
+                           SFORMATTEDDATA_LIN* CurrDataLIN,
+                           BYTE bExprnFlag_Log);
+
 private:
     //[RS_LIN_06_07]
     void vFormatTime(BYTE bExprnFlag, SFORMATTEDDATA_LIN* CurrDataLIN);
     void vFormatDataAndId(BYTE bExprnFlag, SFORMATTEDDATA_LIN* CurrDataLIN);
     void vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, std::string & strDesc);
-
-public:
-    CFormatMsgLIN(CRefTimeKeeper& ouRefTimeKeeper);
-    ~CFormatMsgLIN(void);
-    void vFormatLINDataMsg(STLINDATA* pMsgLIN,
-                           SFORMATTEDDATA_LIN* CurrDataLIN,
-                           BYTE bExprnFlag_Log);
 };
-
-#endif
