@@ -98,7 +98,8 @@ void CFrameProcessor_LIN::CreateTimeModeMapping(SYSTEMTIME& CurrSysTime,
 {
     if (m_pouDilLINInterface != nullptr)
     {
-        m_pouDilLINInterface->DILL_GetTimeModeMapping(CurrSysTime, unAbsTime);
+        LARGE_INTEGER QueryTickCount;
+        m_pouDilLINInterface->DILL_GetTimeModeMapping(CurrSysTime, unAbsTime, QueryTickCount);
     }
 }
 

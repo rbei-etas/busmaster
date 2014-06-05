@@ -3581,7 +3581,8 @@ void CExecuteFunc::vWriteInQMsg(STCAN_TIME_MSG sRxMsgInfo)
             {
                 SYSTEMTIME CurrSysTime;
                 UINT64 unAbsTime;
-                pBaseDIL_CAN->DILC_GetTimeModeMapping(CurrSysTime, unAbsTime);
+                LARGE_INTEGER QueryTickCount;
+                pBaseDIL_CAN->DILC_GetTimeModeMapping(CurrSysTime, unAbsTime, QueryTickCount);
                 sRxMsgInfo.m_ulTimeStamp -= (ULONG)unAbsTime;
             }
             m_asQMsg[m_unWriteQMsgIndex] = sRxMsgInfo;
@@ -3623,7 +3624,8 @@ void CExecuteFunc::vWriteInQMsgLIN(STLIN_TIME_MSG sRxMsgInfo)
             {
                 SYSTEMTIME CurrSysTime;
                 UINT64 unAbsTime;
-                pBaseDIL_LIN->DILL_GetTimeModeMapping(CurrSysTime, unAbsTime);
+                LARGE_INTEGER QueryTickCount;
+                pBaseDIL_LIN->DILL_GetTimeModeMapping(CurrSysTime, unAbsTime, QueryTickCount);
                 sRxMsgInfo.m_ulTimeStamp -= (ULONG)unAbsTime;
             }
             m_asQMsgLIN[m_unWriteQMsgIndexLIN] = sRxMsgInfo;

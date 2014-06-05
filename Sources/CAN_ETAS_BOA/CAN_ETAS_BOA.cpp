@@ -336,7 +336,7 @@ public:
     /* overloaded functions */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -2025,14 +2025,11 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_PerformClosureOperations(void)
     return hResult;
 }
 
-HRESULT CDIL_CAN_ETAS_BOA::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+HRESULT CDIL_CAN_ETAS_BOA::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount)
 {
     CurrSysTime = sg_CurrSysTime;
     TimeStamp   = sg_TimeStamp;
-    if(QueryTickCount != nullptr)
-    {
-        *QueryTickCount = sg_QueryTickCount;
-    }
+    QueryTickCount = sg_QueryTickCount;
     return S_OK;
 }
 
@@ -2083,7 +2080,6 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             INTERFACE_HW psHWInterface[defNO_OF_CHANNELS];
             /* set the current number of channels */
             nCount = min(nCount, defNO_OF_CHANNELS);
-
 
             for (UINT i = 0; i < nCount; i++)
             {

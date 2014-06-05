@@ -104,7 +104,7 @@ public:
     /**
      * Call this function to get a system time and the time stamp associated with it
      */
-    virtual HRESULT DILL_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL) = 0;
+    virtual HRESULT DILL_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount) = 0;
 
     /**
      * Call this function to list the hardware interfaces available and receive

@@ -40,7 +40,7 @@ HRESULT CDIL_LIN_DUMMY::LIN_PerformClosureOperations(void)
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_LIN_DUMMY::LIN_GetTimeModeMapping(SYSTEMTIME& /*CurrSysTime*/, UINT64& /*TimeStamp*/, LARGE_INTEGER* /*QueryTickCount*/)
+HRESULT CDIL_LIN_DUMMY::LIN_GetTimeModeMapping(SYSTEMTIME& /*CurrSysTime*/, UINT64& /*TimeStamp*/, LARGE_INTEGER& /*QueryTickCount*/)
 {
     return WARN_DUMMY_API;
 }

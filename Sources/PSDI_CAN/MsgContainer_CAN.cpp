@@ -98,7 +98,8 @@ void CMsgContainerCAN::InitTimeParams(void)
     //Kadoor WaitForSingleObject(hReadHandle, INFINITE);
     if (nullptr != m_pouDIL_CAN_Interface)
     {
-        m_pouDIL_CAN_Interface->DILC_GetTimeModeMapping(CurrSysTime, unAbsTime);
+        LARGE_INTEGER QueryTickCount;
+        m_pouDIL_CAN_Interface->DILC_GetTimeModeMapping(CurrSysTime, unAbsTime, QueryTickCount);
         m_ouFormatCAN.vSetTimeParams(CurrSysTime, unAbsTime);
     }
 }

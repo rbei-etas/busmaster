@@ -408,7 +408,7 @@ public:
     virtual ~CDIL_CAN_i_VIEW();
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);

@@ -570,8 +570,7 @@ STDMETHODIMP CSimENG::DisconnectNode(USHORT ClientID)
  */
 STDMETHODIMP CSimENG::GetTimeModeMapping(SYSTEMTIME* CurrSysTime, ULONGLONG* TimeStamp, LARGE_INTEGER* lQueryTickCount)
 {
-    // TODO: Add your implementation code here
-    memcpy(CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
+    *CurrSysTime = sg_CurrSysTime;
     *TimeStamp = (ULONGLONG) (sg_lnTimeStamp.QuadPart);
     *lQueryTickCount = sg_lnCurrCounter;
     return S_OK;

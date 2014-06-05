@@ -59,7 +59,7 @@ public:
     HRESULT RemoveMsgBuf(CBaseFLEXBufFSE* pBufObj);
     HRESULT RemoveAllMsgBuf();
 
-    CBaseFLEXBufFSE* GetSEBufferByIndex(int iBufIndex);
+    CBaseFLEXBufFSE* GetSEBufferByIndex(unsigned int iBufIndex);
 
     int NumOfSEBuffers()
     {

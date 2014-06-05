@@ -371,7 +371,7 @@ HRESULT CTSExecutionCAN::TSX_VerifyResponse(CBaseEntityTA* pEntity, CResultVerif
         LARGE_INTEGER Tickr;
         UINT64 tr;
         SYSTEMTIME sysTime;
-        m_pouDIL_CAN->DILC_GetTimeModeMapping(sysTime, tr, &Tickr);
+        m_pouDIL_CAN->DILC_GetTimeModeMapping(sysTime, tr, Tickr);
         //UINT64 t2 = m_LastCanMsg;
         CString omStrCount;
         if(m_LastCanMsg != -1)

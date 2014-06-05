@@ -163,10 +163,13 @@ void CNetworkMgmt::vInitializeAllNodes(void)
         }
     }
 }
-HRESULT CNetworkMgmt::GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& unAbsTime)
+
+HRESULT CNetworkMgmt::GetTimeModeMapping(SYSTEMTIME & CurrSysTime, UINT64 & unAbsTime)
 {
-    return m_pIDIL_CAN->DILC_GetTimeModeMapping(CurrSysTime, unAbsTime);
+    LARGE_INTEGER QueryTickCount;
+    return m_pIDIL_CAN->DILC_GetTimeModeMapping(CurrSysTime, unAbsTime, QueryTickCount);
 }
+
 void CNetworkMgmt::vGetTimeOut(ETYPE_TIMEOUT eTimeOutType, UINT& unMiliSeconds)
 {
     switch (eTimeOutType)

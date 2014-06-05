@@ -896,19 +896,15 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, 
  * @return
  *      Always S_OK.
  */
-HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount)
 {
 #ifdef _IXXAT_DEBUG
     LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_GetTimeModeMapping\n"));
 #endif
 
-    memcpy(&CurrSysTime, &m_sCurrSysTime, sizeof(SYSTEMTIME));
+    CurrSysTime = m_sCurrSysTime;
     TimeStamp = m_qwTimeStamp;
-    //TimeStamp = 0;
-    if(QueryTickCount != nullptr)
-    {
-        QueryTickCount->QuadPart = m_qwQueryTickCount;
-    }
+    QueryTickCount.QuadPart = m_qwQueryTickCount;
 
     return S_OK;
 }

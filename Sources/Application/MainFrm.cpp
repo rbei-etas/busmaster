@@ -19764,18 +19764,6 @@ void CMainFrame::vProcessKeyPress(MSG* pMsg)
                         m_pomMsgSgTreeViews[CAN]->SendMessage(WM_COMMAND, IDM_EDIT_MSG,0);
                     }
                 }
-                //else if(m_podMsgSgWndLin == pFrmWnd)//check for LIN Database
-                //            {
-                //                CWnd* pViewWnd = m_podMsgSgWndLin->GetWorkingView();
-                //                if(m_pomMsgSgDetViews[LIN] == pViewWnd)//check for Signal view
-                //                {
-                //                    m_pomMsgSgDetViews[LIN]->vEditSignalName();
-                //                }
-                //                else if(m_pomMsgSgTreeViews[LIN] == pViewWnd)//check for Treeview
-                //                {
-                //                    m_pomMsgSgTreeViews[LIN]->SendMessage(WM_COMMAND, IDM_EDIT_MSG,0);
-                //                }
-                //            }
                 else if (m_podMsgSgWndJ1939 == pFrmWnd)//check for J1939 Database
                 {
                     //if (CMsgSignalDBWnd::sm_bValidJ1939Wnd == TRUE)

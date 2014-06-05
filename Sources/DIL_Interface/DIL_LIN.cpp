@@ -343,7 +343,7 @@ HRESULT CDIL_LIN::DILL_PerformClosureOperations(void)
  *
  * Call this function to get a system time and the time stamp associated with it
  */
-HRESULT CDIL_LIN::DILL_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+HRESULT CDIL_LIN::DILL_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount)
 {
     VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
     return m_pBaseDILLIN_Controller->LIN_GetTimeModeMapping(CurrSysTime, TimeStamp, QueryTickCount);

@@ -33,7 +33,7 @@ class CBaseDIL_LIN_Controller
 public:
     virtual HRESULT LIN_PerformInitOperations(void) = 0;
     virtual HRESULT LIN_PerformClosureOperations(void) = 0;
-    virtual HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = NULL) = 0;
+    virtual HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount) = 0;
     virtual HRESULT LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount) = 0;
     virtual HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount) = 0;
     virtual HRESULT LIN_DeselectHwInterface(void) = 0;

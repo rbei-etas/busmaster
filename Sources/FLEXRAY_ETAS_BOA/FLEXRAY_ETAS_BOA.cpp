@@ -502,7 +502,7 @@ HRESULT ManageQueue(BYTE byCode, UINT nChannel)
         if (hResult == S_OK)
         {
             sg_asChannel[nChannel].m_OCI_TxQueueCfg.count = sg_asChannel[nChannel].m_unMsgConfig;
-            for ( int i = 0 ; i < sg_asChannel[nChannel].m_unMsgConfig; i++ )
+            for (unsigned int i = 0 ; i < sg_asChannel[nChannel].m_unMsgConfig; i++ )
             {
                 sg_asChannel[nChannel].m_OCI_TxQueueCfg.bufferIndexes[i] = i;
             }
@@ -1491,7 +1491,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_PerformClosureOperations(void)
 {
     FLEXRAY_StopHardware();
     FLEXRAY_DeselectHwInterface();
-    for ( int i = 0 ; i < sg_nNoOfChannels; i++ )
+    for (unsigned int i = 0 ; i < sg_nNoOfChannels; i++ )
     {
         sg_asChannel[i].m_ouDataTransmitThread.m_unActionCode = EXIT_THREAD;
         sg_asChannel[i].m_ouDataTransmitThread.bTerminateThread();
@@ -1504,8 +1504,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_PerformClosureOperations(void)
 
 HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp)
 {
-
-    memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
+    CurrSysTime = sg_CurrSysTime;
     TimeStamp = sg_TimeStamp;
 
     return S_OK;
@@ -1540,7 +1539,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ListHwInterfaces(FLEXRAY_INTERFACE_HW & s
                 //set the current number of channels
                 nCount = min(nCount, defNO_OF_CHANNELS);
 
-                for (UINT i = 0; i < nCount; i++)
+                for (unsigned int i = 0; i < nCount; i++)
                 {
                     psHWInterface[i].m_dwIdInterface = 0;
                     psHWInterface[i].m_dwVendor = 0;
@@ -1602,9 +1601,9 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ListHwInterfaces(FLEXRAY_INTERFACE_HW & s
                 if (nCount > 1)// List hw interface if there are more than one hw
                 {
                     /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
-                    if ( unDefaultChannelCnt && nCount >= unDefaultChannelCnt )
+                    if ((unDefaultChannelCnt >= 0) && (unDefaultChannelCnt <= nCount))
                     {
-                        for (UINT i = 0; i < unDefaultChannelCnt; i++)
+                        for (unsigned int i = 0; i < unDefaultChannelCnt; i++)
                         {
                             sg_anSelectedItems[i] = i;
                         }

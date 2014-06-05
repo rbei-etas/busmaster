@@ -99,7 +99,8 @@ void CMsgContainerLIN::InitTimeParams(void)
     //Kadoor WaitForSingleObject(hReadHandle, INFINITE);
     if (nullptr != m_pouDIL_LIN_Interface)
     {
-        m_pouDIL_LIN_Interface->DILL_GetTimeModeMapping(CurrSysTime, unAbsTime);
+        LARGE_INTEGER QueryTickCount;
+        m_pouDIL_LIN_Interface->DILL_GetTimeModeMapping(CurrSysTime, unAbsTime, QueryTickCount);
         m_ouFormatLIN.vSetTimeParams(CurrSysTime, unAbsTime);
     }
 }

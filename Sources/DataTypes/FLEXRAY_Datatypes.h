@@ -18,7 +18,7 @@ enum
     FLEXRAY_DRIVER_STUB         = 0x00,
     FLEXRAY_DRIVER_ETAS_BOA,
     FLEXRAY_DIL_TOTAL,          // Its value must be <= MAX_DILS
-    FLEXRAY_DAL_NONE        = ~0x0
+    FLEXRAY_DAL_NONE            // none selected
 };
 
 typedef enum FLEX_CHANNEL

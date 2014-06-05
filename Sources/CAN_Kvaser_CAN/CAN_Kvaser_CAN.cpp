@@ -331,7 +331,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
-    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
+    HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
     HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
@@ -781,15 +781,11 @@ HRESULT CDIL_CAN_Kvaser::CAN_PerformClosureOperations(void)
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
-HRESULT CDIL_CAN_Kvaser::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount)
+HRESULT CDIL_CAN_Kvaser::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount)
 {
-    memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
+    CurrSysTime = sg_CurrSysTime;
     TimeStamp = sg_TimeStamp;
-    //TimeStamp = 0;
-    if(QueryTickCount != nullptr)
-    {
-        *QueryTickCount = sg_QueryTickCount;
-    }
+    QueryTickCount = sg_QueryTickCount;
 
     return S_OK;
 }

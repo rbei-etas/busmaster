@@ -1,13 +1,11 @@
 #include "DIL_Interface_stdafx.h"
 #include "CommanDIL_LIN.h"
 
-
 CCommanDIL_LIN::CCommanDIL_LIN(void)
 {
     InitializeCriticalSection(&sg_CritSectForAckBuf);
     m_unClientCnt = 0;
 }
-
 
 CCommanDIL_LIN::~CCommanDIL_LIN(void)
 {
@@ -31,6 +29,7 @@ DWORD CCommanDIL_LIN::dwGetAvailableClientSlot()
 
     return nClientId;
 }
+
 BOOL CCommanDIL_LIN::bClientIdExist(const DWORD& dwClientId)
 {
     BOOL bReturn = FALSE;
@@ -72,6 +71,7 @@ BOOL CCommanDIL_LIN::bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
     }
     return bResult;
 }
+
 BOOL CCommanDIL_LIN::bIsBufferExists(const SLINCLIENTBUFMAP& sClientObj, const CBaseLINBufFSE* pBuf)
 {
     BOOL bExist = FALSE;
@@ -346,7 +346,6 @@ HRESULT CCommanDIL_LIN::LIN_ManageMsgBuf(BYTE byAction, DWORD ClientID, CBaseLIN
     return hResult;
 }
 
-
 void CCommanDIL_LIN::vWriteIntoClientsBuffer(STLINDATA& sLinData)
 {
     //Write into the client's buffer and Increment message Count
@@ -410,7 +409,7 @@ UCHAR CCommanDIL_LIN::ucCalculateClassicChecksum(SLIN_CRC sCrc)
 {
     UINT ucChecksum = sCrc.ucData[0];
     UCHAR ucMask = 0xFF;
-    for(INT unIndex = 1; unIndex < sCrc.unDlc; unIndex++)
+    for(unsigned int unIndex = 1; unIndex < sCrc.unDlc; unIndex++)
     {
         UCHAR ucDatabyte = sCrc.ucData[unIndex];
 

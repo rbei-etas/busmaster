@@ -90,7 +90,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT LIN_PerformInitOperations(void);
     HRESULT LIN_PerformClosureOperations(void);
-    HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
+    HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
     HRESULT LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT LIN_DeselectHwInterface(void);
@@ -670,14 +670,11 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_PerformClosureOperations(void)
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* lQueryTickCount)
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& lQueryTickCount)
 {
-    memcpy(&CurrSysTime, &sg_CurrSysTime, sizeof(SYSTEMTIME));
+    CurrSysTime = sg_CurrSysTime;
     TimeStamp = sg_TimeStampRef;
-    if(lQueryTickCount != nullptr)
-    {
-        *lQueryTickCount = sg_QueryTickCount;
-    }
+    lQueryTickCount = sg_QueryTickCount;
     return S_OK;
 }
 

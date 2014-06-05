@@ -866,15 +866,11 @@ HRESULT CDIL_CAN_i_VIEW::CAN_GetCntrlStatus(
 HRESULT CDIL_CAN_i_VIEW::CAN_GetTimeModeMapping(
     SYSTEMTIME& CurrSysTime,
     UINT64&     TimeStamp,
-    LARGE_INTEGER*  QueryTickCount)
+    LARGE_INTEGER&  QueryTickCount)
 {
     CurrSysTime = m_CurrSysTime;
     TimeStamp = m_TimeStamp;
-
-    if(QueryTickCount != nullptr)
-    {
-        *QueryTickCount = m_QueryTickCount;
-    }
+    QueryTickCount = m_QueryTickCount;
     return S_OK;
 }
 

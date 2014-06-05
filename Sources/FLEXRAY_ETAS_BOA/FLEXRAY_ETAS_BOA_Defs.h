@@ -241,12 +241,13 @@ typedef struct tagCHANNEL
     tagCHANNEL()
     {
         //OCI Transfer Data
-        //memset(&m_OCI_FlexRayMessageArray, 0, OCI_FLEXRAY_MAX_BUFFERCOUNT * sizeof(OCI_FlexRayMessage));
         m_unMsgConfig = 0;
-        m_unCycleTime = -1;
+        m_unCycleTime = 0;
+
         //Thread Initialisation
         InitializeCriticalSection(&m_ouCriticalSection);
     }
+
     ~tagCHANNEL()
     {
         DeleteCriticalSection(&m_ouCriticalSection);

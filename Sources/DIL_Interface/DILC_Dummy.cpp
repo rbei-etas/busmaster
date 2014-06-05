@@ -39,7 +39,7 @@ HRESULT CDIL_CAN_DUMMY::CAN_PerformClosureOperations(void)
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_GetTimeModeMapping(SYSTEMTIME& /*CurrSysTime*/, UINT64& /*TimeStamp*/, LARGE_INTEGER* /*QueryTickCount*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetTimeModeMapping(SYSTEMTIME& /*CurrSysTime*/, UINT64& /*TimeStamp*/, LARGE_INTEGER& /*QueryTickCount*/)
 {
     return WARN_DUMMY_API;
 }

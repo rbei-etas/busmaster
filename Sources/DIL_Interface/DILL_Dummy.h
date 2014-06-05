@@ -32,7 +32,7 @@ public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT LIN_PerformInitOperations(void);
     HRESULT LIN_PerformClosureOperations(void);
-    HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER* QueryTickCount = nullptr);
+    HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
     HRESULT LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT LIN_DeselectHwInterface(void);
