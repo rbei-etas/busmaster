@@ -292,7 +292,7 @@ BOOL CReplayFile::pbySaveConfig(xmlNodePtr pxmlNodePtr)         //replay is the 
     CString     csFilter;
     for(int iCnt=0; iCnt < m_sFilterApplied.m_ushTotal; iCnt++)
     {
-        csFilter.Format("%s",((m_sFilterApplied.m_psFilters)+iCnt)->m_sFilterName.m_acFilterName);
+        csFilter.Format("%s",((m_sFilterApplied.m_psFilters)+iCnt)->m_sFilterName.m_acFilterName.c_str());
         omcVarChar = csFilter;
         xmlNodePtr pFilter = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_FILTER,BAD_CAST omcVarChar);
         xmlAddChild(pxmlNodePtr, pFilter);

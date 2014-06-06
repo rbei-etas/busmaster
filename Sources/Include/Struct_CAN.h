@@ -223,9 +223,9 @@ public:
     UINT32  m_unDataSJW;
     bool    m_bTxDelayCompensationControl;
     UINT32  m_unTxSecondarySamplePointOffset;
-    BYTE    m_bytCanRxMode;
-    BYTE    m_bytCanFdRxMode;
-    BYTE    m_bytCanFdTxConfig;
+    unsigned short m_bytCanRxMode;
+    unsigned short m_bytCanFdRxMode;
+    unsigned short m_bytCanFdTxConfig;
 
     int     m_bDebug;                            // debug mode for channel driver
     int     m_bPassiveMode;                      // passive mode (no bus interaction, acknowledge, etc.)

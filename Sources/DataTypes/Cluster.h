@@ -92,10 +92,10 @@ class FRAME_STRUCT
 public:
     std::string m_strFrameId;
     std::string m_strFrameName;
-    short   m_nSlotId;
-    unsigned char m_nBaseCycle;
-    unsigned char m_nReptition;
-    unsigned char m_nLength;
+    unsigned short m_nSlotId;
+    unsigned short m_nBaseCycle;
+    unsigned short m_nReptition;
+    unsigned short m_nLength;
     //bool m_bConsiderPdu;
     std::list<PDU_STRUCT>    m_ouPduList;
     //list<SIGNAL_STRUCT>   m_ouSignalList;
@@ -103,41 +103,36 @@ public:
     ESLOT_TYPE m_eSlotType;
     ESYNC m_eSync;
 
-    bool operator == (FRAME_STRUCT& ob1)
+    bool operator == (FRAME_STRUCT & ob1)
     {
-        bool bResult = false;
-
-        if((m_strFrameId == ob1.m_strFrameId) && (m_nSlotId == ob1.m_nSlotId) && (m_nBaseCycle == ob1.m_nBaseCycle))
-        {
-            bResult = true;
-        }
-
-        return bResult;
+        return
+            (m_strFrameId == ob1.m_strFrameId) &&
+            (m_nSlotId == ob1.m_nSlotId) &&
+            (m_nBaseCycle == ob1.m_nBaseCycle);
     }
-    bool operator < (FRAME_STRUCT& ob1)
+    bool operator < (FRAME_STRUCT & ob1)
     {
-        return (m_strFrameId < ob1.m_strFrameId);
+        return m_strFrameId < ob1.m_strFrameId;
     }
 
-    bool operator > (FRAME_STRUCT& ob1)
+    bool operator > (FRAME_STRUCT & ob1)
     {
         return (m_strFrameId > ob1.m_strFrameId);
     }
 
     ~FRAME_STRUCT()
     {
-
     }
 
     FRAME_STRUCT();
-    HRESULT GetPDUList ( std::list<SIGNAL_STRUCT>& ouSignalList );
-    HRESULT GetSignalList ( std::string omStrPduName, std::list<SIGNAL_STRUCT>& ouSignalList );
-    HRESULT GetSignalList ( std::list<SIGNAL_STRUCT>& ouSignalList );
-    HRESULT GetSignalNames (CStringList& ouSignalList );
-    HRESULT GetSignalCount ( int& nCount);
+    HRESULT GetPDUList(std::list<SIGNAL_STRUCT> & ouSignalList);
+    HRESULT GetSignalList(std::string omStrPduName, std::list<SIGNAL_STRUCT> & ouSignalList);
+    HRESULT GetSignalList(std::list<SIGNAL_STRUCT> & ouSignalList);
+    HRESULT GetSignalNames(CStringList & ouSignalList);
+    HRESULT GetSignalCount(int & nCount);
 };
 
-bool Compare_Frame_Structs(FRAME_STRUCT& ob1, FRAME_STRUCT& ob2 );
+bool Compare_Frame_Structs(FRAME_STRUCT & ob1, FRAME_STRUCT & ob2);
 
 class ECU_Struct
 {
@@ -170,6 +165,7 @@ public:
 };
 
 typedef std::map<ECU_ID, ECU_Struct> ECUMAP;
+
 class Cluster
 {
 public:
@@ -250,8 +246,6 @@ public:
         vInitialiseConfig();
     }
 };
-
-
 
 typedef struct tag_Channel_Config
 {

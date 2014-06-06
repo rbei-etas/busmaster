@@ -182,7 +182,7 @@ public:
 
     void vGettextBusmaster();
     HICON m_hLogIcon1, m_hLogIcon2, m_hLogOffIcon;
-    bool m_bIconSetFlag;
+    int m_bIconSetFlag;
     bool m_bJ1939IconSetFlag;
     bool m_bLinIconSetFlag;
 

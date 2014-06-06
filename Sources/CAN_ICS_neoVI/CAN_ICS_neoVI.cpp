@@ -2216,7 +2216,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
 /**
  * Function to set controller configuration
  */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int Length)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int /* Length */)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
@@ -2227,12 +2227,10 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, in
 
     HRESULT hResult = S_FALSE;
 
-    //memcpy((void*)sg_ControllerDetails, (void*)ConfigFile, Length);
     for(int i = 0; i < defNO_OF_CHANNELS; i++)
     {
         sg_ControllerDetails[i] = ConfigFile[i];
     }
-
 
     int nReturn = nSetApplyConfiguration();
     if (nReturn == defERR_OK)
@@ -2394,14 +2392,14 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
 
                 /* ValueCAN */
             case NEODEVICE_DW_VCAN:
-                //_stprintf(chTemp, "ValueCAN, Serial Number %d, Network: %s",
+                //sprintf(chTemp, "ValueCAN, Serial Number %d, Network: %s",
                 //          serialNumber, &netid_str[0]);
                 chTemp = "ValueCAN";
                 break;
 
                 /* neoVI Fire/Red */
             case NEODEVICE_FIRE:
-                //_stprintf(chTemp, "neoVi Fire/Red, Serial Number %d, Network: %s",
+                //sprintf(chTemp, "neoVi Fire/Red, Serial Number %d, Network: %s",
                 //          serialNumber, &netid_str[0]);
                 chTemp = "neoVi Fire/Red";
                 break;
@@ -2410,7 +2408,7 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
             case NEODEVICE_VCAN3:
                 if (serialNumber < 50000)
                 {
-                    //_stprintf(chTemp, "ValueCAN3, Serial Number %d, Network: %s",
+                    //sprintf(chTemp, "ValueCAN3, Serial Number %d, Network: %s",
                     //          serialNumber, &netid_str[0]);
                     chTemp = "ValueCAN3";
                 }
@@ -2418,13 +2416,13 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                 {
                     if (nHardwareLic == 8)   // Limited Version with only one channel
                     {
-                        //_stprintf(chTemp, "ES581.2, Serial Number %d, Network: %s",
+                        //sprintf(chTemp, "ES581.2, Serial Number %d, Network: %s",
                         //          serialNumber-50000, &netid_str[0]);
                         chTemp = "ES581.2";
                     }
                     else     // Two channels
                     {
-                        //_stprintf(chTemp, "ES581.3, Serial Number %d, Network: %s",
+                        //sprintf(chTemp, "ES581.3, Serial Number %d, Network: %s",
                         //          serialNumber-50000, &netid_str[0]);
                         chTemp = "ES581.3";
                     }
@@ -2432,7 +2430,7 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                 break;
 
             default:
-                //_stprintf(chTemp, "Unknown, Serial Number %d", serialNumber);
+                //sprintf(chTemp, "Unknown, Serial Number %d", serialNumber);
                 chTemp = "Unknown";
                 break;
         };

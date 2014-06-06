@@ -128,7 +128,7 @@ bool CLogObjectLIN::bLogData(const SFORMATTEDDATA_LIN& sDataLIN)
 
             BYTE CurrDat = sDataLIN.m_byChecksum;
 
-            _stprintf(acChecksum, FORMAT_STR_CHECKSUM_HEX, CurrDat);
+            sprintf(acChecksum, FORMAT_STR_CHECKSUM_HEX, CurrDat);
 
 
 
@@ -142,7 +142,7 @@ bool CLogObjectLIN::bLogData(const SFORMATTEDDATA_LIN& sDataLIN)
             pId = (char*) (sDataLIN.m_acMsgIDDec);
 
             BYTE CurrDat = sDataLIN.m_byChecksum;
-            _stprintf(acChecksum, FORMAT_STR_CHECKSUM_DEC, CurrDat);
+            sprintf(acChecksum, FORMAT_STR_CHECKSUM_DEC, CurrDat);
 
             {
                 pData = (char*) (sDataLIN.m_acDataDec);

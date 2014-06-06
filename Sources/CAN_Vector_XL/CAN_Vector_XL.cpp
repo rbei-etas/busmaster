@@ -887,17 +887,10 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             oss << std::dec << serialNumber;
             std::string strTemp =  oss.str();
             asSelHwInterface[i].m_acDescription = strTemp;
-            //_stprintf(asSelHwInterface[i].m_acDescription, _T("%d"), serialNumber);
             std::ostringstream oss1;
             oss1 << "Vector - " << sg_aodChannels[i].m_pXLChannelInfo->name << " SN - " <<serialNumber;
             oss1 << "Channel Index - " <<(int)sg_aodChannels[i].m_pXLChannelInfo->channelIndex;
             sg_ControllerDetails[i].m_omHardwareDesc = oss1.str();
-
-            /*_stprintf(sg_ControllerDetails[i].m_omHardwareDesc, _T("Vector - %s SN - %d Channel Index - %d"),
-                                        sg_aodChannels[i].m_pXLChannelInfo->name,
-                                        serialNumber,
-                                        sg_aodChannels[i].m_pXLChannelInfo->channelIndex);*/
-
             sg_bCurrState = STATE_HW_INTERFACE_LISTED;
         }
         hResult = S_OK;
@@ -1122,7 +1115,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, i
     {
         //pControllerDetails[i].m_omHardwareDesc  = sg_aodChannels[i].m_strName;
         static char chName[MAX_PATH];
-        _stprintf(chName , _T("Vector - %s, Serial Number- %d"),
+        sprintf(chName , _T("Vector - %s, Serial Number- %d"),
                   sg_aodChannels[i].m_pXLChannelInfo->name,
                   sg_aodChannels[i].m_pXLChannelInfo->serialNumber);
         pControllerDetails[i].m_omHardwareDesc = chName;
@@ -2325,8 +2318,7 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
             }
             sg_HardwareIntr[nChannels].m_dwIdInterface = nCount;
             sg_HardwareIntr[nChannels].m_dwVendor = g_xlDrvConfig.channel[nCount].serialNumber;
-            /*_stprintf(acTempStr, _T("SN: %d, Port ID: %d"), sg_HardwareIntr[nChannels].m_dwVendor,
-                                                                    sg_HardwareIntr[nChannels].m_dwIdInterface);*/
+
             sg_HardwareIntr[nChannels].m_acDescription = g_xlDrvConfig.channel[nCount].name;
             nChannels++;
         }
@@ -2423,7 +2415,7 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
      * Take action based on number of Hardware Available
      */
     char acNo_Of_Hw[MAX_STRING] = {0};
-    _stprintf(acNo_Of_Hw, _T(_("Number of Vector hardwares Available: %d")), nChannelCount);
+    sprintf(acNo_Of_Hw, _T(_("Number of Vector hardwares Available: %d")), nChannelCount);
 
     /* No Hardware found */
     if( nChannelCount == 0 )

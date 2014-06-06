@@ -667,47 +667,25 @@ int sg_GetMessageName(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize)
         }
     }
 
-
-    //POSITION pos = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.GetHeadPosition();
-    //   while (pos != nullptr)
-    //   {
-    //  //Get the individual message structure
-    //       SMSG_NAME_CODE& sMsgNameCode = CGlobalObj::ouGetObj(m_eBus).m_odMsgNameMsgCodeList.
-    //                                                       GetNext(pos);
-
-    //
-    //   }
-    // }
     return 0;
 }
 
-/******************************************************************************
-    Function Name    :  sg_GetTimeNow
-    Input(s)         :  -
-    Output           :  Returns the absolute time
-    Functionality    :  Returns the absolute time(time from connection)
-    Member of        :  None (Global function)
-    Friend of        :  None
-    Author(s)        :  Ashwin. R. Uchil
-    Date Created     :  3-5-2012
-******************************************************************************/
-long sg_TimeNow()
+long long sg_TimeNow()
 {
-    long        lAbsoluteTime = 0;
+    long long lAbsoluteTime = 0;
 
-    if (CGlobalObj::sm_hWndMDIParentFrame != nullptr)          //check for mainframe
+    /* check for mainframe */
+    if (CGlobalObj::sm_hWndMDIParentFrame != nullptr)
     {
-        __int64                 nCurrentTime =0, nTimeElapsed =0;
-        LARGE_INTEGER           f1;
-
-
+        LARGE_INTEGER f1;
         QueryPerformanceFrequency(&f1);
 
+        __int64 nCurrentTime;
         nCurrentTime = gnGetCpuClocks();
-        CNodeSim* Result = nullptr;
 
-
-        if (NS_GetInterface(CAN, (void**) &Result) == S_OK)                 //get the interface of NodeSim to get the connection time
+        /* get the interface of NodeSim to get the connection time */
+        CNodeSim * Result = nullptr;
+        if (NS_GetInterface(CAN, (void**) &Result) == S_OK)
         {
             if(Result->m_n64TimeElapsedSinceConnection == 0)
             {
@@ -716,7 +694,7 @@ long sg_TimeNow()
 
             lAbsoluteTime = ((nCurrentTime - Result->m_n64TimeElapsedSinceConnection)*1000000)/f1.QuadPart;
         }
-
     }
+
     return lAbsoluteTime;
 }

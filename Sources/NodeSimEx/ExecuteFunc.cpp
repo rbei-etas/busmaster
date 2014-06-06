@@ -73,7 +73,14 @@ extern HWND g_hMainGUI;
 const int CANMSG_STRUCT_SIZE    = sizeof(sTCANDATA);
 extern int sg_KeyPressed();
 extern int sg_GetMessageName(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize);
-extern long sg_TimeNow();
+
+/**
+ * Returns the absolute time(time from connection)
+ *
+ * @return Returns the absolute time
+ */
+extern long long sg_TimeNow();
+
 extern DWORD gdGetFirstCANdbName(char cBuffer[], DWORD size);
 
 
@@ -4110,8 +4117,6 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrsCAN(HMODULE hModuleHandle)
     {
         (*pfGetFirstCANdbName)(gdGetFirstCANdbName);
     }
-    //TODO::CAPL_NEW_ADDITIONS
-    //Initialise function pointer
 }
 
 

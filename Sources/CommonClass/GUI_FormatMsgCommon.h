@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      GUI_FormatMsgCommon.h
- * \brief     Definition of CFormatMsgCommon class
- * \author    Anish kumar
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Definition of CFormatMsgCommon class
+ * @author Anish kumar
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition of CFormatMsgCommon class
  */
@@ -26,14 +25,29 @@
 
 #include "CommonClass/RefTimeKeeper.h"
 
-class CFormatMsgCommon: public CRefTimeKeeper
+class CFormatMsgCommon : public CRefTimeKeeper
 {
 public:
-    ~CFormatMsgCommon(void);
-    void vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,char acTime[]);
-    void vCalAndFormatTM_Offline(BYTE bExprnFlag,  UINT64 TimeStamp, char acTime[]);
-
-protected:
     CFormatMsgCommon(void);
+
+    /**
+     * Format time details
+     *
+     * In order to make this function work properly ENSURE bExprnFlag has ONLY
+     * 1 time mode bit up.
+     *
+     * @param[in] bExprnFlag Details of time mode
+     * @param[in] TimeStamp Msg time stamp, Rel time in case of Rel. mode
+     * @param[out] acTime Buffer to store formatted time
+     */
+    void vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp, char acTime[]);
+
+private:
+    /**
+     * Format Time Stamp
+     *
+     * @param[in] dwTimeStamp time stamp to be formatted
+     * @param[out] acTime Buffer to store formatted time
+     */
     void vFormatTimeStamp(DWORD dwTimeStamp, char acTime[]);
 };

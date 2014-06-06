@@ -87,9 +87,8 @@ std::string CPARSER_FIBEX::GetVersionInfo(const std::string& omFibexFilePath)
             if ((!xmlStrcmp(pRootNodeAttr->name, (const xmlChar*)"VERSION")))
             {
                 char chVersion[1024];
-                sprintf(chVersion, "%s", pRootNodeAttr->children->content);;
+                sprintf_s(chVersion, sizeof(chVersion), "%s", pRootNodeAttr->children->content);;
                 strVersion = chVersion;
-                //strVersion.Format("%s", pRootNodeAttr->children->content);
                 break;
             }
             pRootNodeAttr = pRootNodeAttr->next;

@@ -9842,7 +9842,7 @@ LRESULT CMainFrame::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
     // lParam contains the different informations been passed
     if (wParam == eWINID_TRACEWND)
     {
-        m_bNotificWndVisible = (bool) lParam;
+        m_bNotificWndVisible = (lParam != 0);
     }
 
     return 0;
@@ -11883,8 +11883,8 @@ void CMainFrame::vUpdateHWStatusInfo(void)
             CString strDriverName = m_ouList[i].m_acName.c_str();
             strDriverName.Replace("&", "");
 
-            float fBaudRate = atof(m_asControllerDetails->m_omStrBaudrate.c_str());
-            if( fBaudRate >1000 )
+            double fBaudRate = atof(m_asControllerDetails->m_omStrBaudrate.c_str());
+            if(fBaudRate > 1000)
             {
                 fBaudRate /= 1000;
             }
@@ -12848,8 +12848,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE * & /* pbyConfi
 
                     char ch[10];
 
-                    sprintf(ch, "%02x%02x%02x", nR,nG,nB);
-
+                    sprintf_s(ch, sizeof(ch), "%02x%02x%02x", nR,nG,nB);
 
                     omcVarChar = csColor;
                     xmlNodePtr pMsgColor = xmlNewChild(pCANMsgAttribute, nullptr, BAD_CAST DEF_MSG_COLOR,BAD_CAST ch);
@@ -12860,7 +12859,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE * & /* pbyConfi
             CString     csFilter;
             for(int iCnt=0; iCnt < sMsgWndFilter.m_ushTotal; iCnt++)
             {
-                csFilter.Format("%s",((sMsgWndFilter.m_psFilters)+iCnt)->m_sFilterName.m_acFilterName);
+                csFilter.Format("%s",((sMsgWndFilter.m_psFilters)+iCnt)->m_sFilterName.m_acFilterName.c_str());
                 omcVarChar = csFilter;
                 xmlNodePtr pFilter = xmlNewChild(pCANMsgWindow, nullptr, BAD_CAST DEF_FILTER,BAD_CAST omcVarChar);
                 xmlAddChild(pCANMsgWindow, pFilter);
@@ -12940,7 +12939,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE * & /* pbyConfi
 
                     char ch[10];
 
-                    sprintf(ch, "%02x%02x%02x", nR,nG,nB);
+                    sprintf_s(ch, sizeof(ch), "%02x%02x%02x", nR,nG,nB);
 
 
                     omcVarChar = csColor;
@@ -12952,7 +12951,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE * & /* pbyConfi
             CString     csFilter;
             for(int iCnt=0; iCnt < sMsgWndFilter.m_ushTotal; iCnt++)
             {
-                csFilter.Format("%s",((sMsgWndFilter.m_psFilters)+iCnt)->m_sFilterName.m_acFilterName);
+                csFilter.Format("%s",((sMsgWndFilter.m_psFilters)+iCnt)->m_sFilterName.m_acFilterName.c_str());
                 omcVarChar = csFilter;
                 xmlNodePtr pFilter = xmlNewChild(pLINMsgWindow, nullptr, BAD_CAST DEF_FILTER,BAD_CAST omcVarChar);
                 xmlAddChild(pLINMsgWindow, pFilter);
@@ -13015,7 +13014,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE * & /* pbyConfi
 
                     char ch[7] = {0};
 
-                    sprintf(ch, "%02x%02x%02x", nR,nG,nB);
+                    sprintf_s(ch, sizeof(ch), "%02x%02x%02x", nR,nG,nB);
 
                     omcVarChar = csColor.GetBuffer(MAX_PATH);
                     xmlNodePtr pMsgColor = xmlNewChild(pJ1939MsgAttribute, nullptr, BAD_CAST DEF_MSG_COLOR,BAD_CAST ch);
@@ -13595,7 +13594,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE * & /* pbyConfi
                         char chValue[256];
 
                         //Index
-                        sprintf(chValue, "%d", i);
+                        sprintf_s(chValue, sizeof(chValue), "%d", i);
                         xmlNodePtr pIndex= xmlNewChild(pNodeChannelPtr, nullptr, BAD_CAST DEF_FLEX_CHANNEL_INDEX ,BAD_CAST chValue);
                         xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
 
@@ -13613,7 +13612,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE * & /* pbyConfi
                         xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
 
                         //BaudRate
-                        sprintf(chValue, "%d", m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouLinParams.m_nBaudRate);
+                        sprintf_s(chValue, sizeof(chValue), "%d", m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouLinParams.m_nBaudRate);
                         pIndex= xmlNewChild(pNodeChannelPtr, nullptr, BAD_CAST DEF_LIN_BAUDRATE, BAD_CAST chValue  );
                         xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
 
@@ -13622,7 +13621,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE * & /* pbyConfi
                         xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
 
 
-                        sprintf(chValue, "%d", m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouLinParams.m_bOverWriteSettings);
+                        sprintf_s(chValue, sizeof(chValue), "%d", m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_ouLinParams.m_bOverWriteSettings);
                         pIndex= xmlNewChild(pNodeChannelPtr, nullptr, BAD_CAST DEF_LIN_OVERWRITE_SETTINGS, BAD_CAST chValue );
                         xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
 
@@ -13670,7 +13669,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE * & /* pbyConfi
                         char chValue[256];
 
                         //Index
-                        sprintf(chValue, "%d", i);
+                        sprintf_s(chValue, sizeof(chValue), "%d", i);
                         xmlNodePtr pIndex= xmlNewChild(pNodeChannelPtr, nullptr, BAD_CAST DEF_FLEX_CHANNEL_INDEX ,BAD_CAST chValue);
                         xmlAddChild(pNodeDBFilePtr, pNodeChannelPtr);
 
@@ -13813,7 +13812,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE * & /* pbyConfi
 
                     char ch[7] = {0};
 
-                    sprintf(ch, "%02x%02x%02x", nR,nG,nB);
+                    sprintf_s(ch, sizeof(ch), "%02x%02x%02x", nR,nG,nB);
 
                     omcVarChar = csColor.GetBuffer(MAX_PATH);
                     xmlNodePtr pMsgColor = xmlNewChild(pFlexRayMsgAttribute, nullptr, BAD_CAST DEF_MSG_COLOR,BAD_CAST ch);
@@ -14771,7 +14770,7 @@ int CMainFrame::nLoadXMLConfiguration()
                             //Tight Checking
                         {
                             unChannelCount = pNodeSet->nodeNr;
-                            for(int i = 0; i < unChannelCount; i++)
+                            for(unsigned int i = 0; i < unChannelCount; i++)
                             {
                                 LoadControllerConfigData(m_asControllerDetails[i], pNodeSet->nodeTab[i]);
                             }
@@ -15962,7 +15961,7 @@ void CMainFrame::LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlN
     pNodePtr = pNodePtr->xmlChildrenNode;
     std::string strVar;
     UINT unTemp = 0;
-    float fBaudRate = 0.00;
+    double fBaudRate = 0.0;
     //sController.LoadControllerConfigData(pNodePtr);
     while(nullptr != pNodePtr)
     {
@@ -17109,7 +17108,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                     COPY_DATA_2(&m_dwDriverId, pbyTemp, sizeof(DWORD));
                     COPY_DATA_2(&m_byControllerMode, pbyTemp, sizeof(BYTE));
                     //COPY_DATA_2(m_asControllerDetails, pbyTemp, (sizeof(SCONTROLLER_DETAILS) * unChannelCount));
-                    for(int i = 0; i < unChannelCount; i++)
+                    for(unsigned int i = 0; i < unChannelCount; i++)
                     {
                         m_asControllerDetails[i].LoadControllerConfigData(pbyTemp);
                     }
@@ -19620,7 +19619,8 @@ LRESULT CMainFrame::OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam)
 
 LRESULT CMainFrame::onGetConfigPath(WPARAM wParam, LPARAM /* lParam */)
 {
-    char* pchPath = (char*)wParam;
+    char * pchPath = (char*) wParam;
+
     if(pchPath != nullptr)
     {
         CString strPath;

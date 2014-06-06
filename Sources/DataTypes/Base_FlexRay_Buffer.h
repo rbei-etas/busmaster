@@ -153,21 +153,35 @@ typedef struct struct_FLXSTATUSMSG
     eFlexRayPOCStatus m_oeFlexRayStatus;
 } s_FLXSTATUSMSG, *ps_FLXSTATUSMSG;
 
-//----------------------------------------------------------------------------
-// declaration of FlexRay data message
-//----------------------------------------------------------------------------
+/** declaration of FlexRay data message */
 typedef struct struct_FLXDATAMSG
 {
-    short int       m_nSlotID;                        // FlexRay Identifier (0x001-0x7FF {11 bit})
-    unsigned char   m_ucCycleNumber;                       // Cycle Number (0-63 {6 bit})
-    unsigned char   m_ucRepetition;
-    int             m_nBaseCycle;
-    short int       m_nCluster;                         //Cluster
-    ECHANNEL        m_eChannel;                     //A or B or AB
-    short int       m_nDLC;                        // Data length (number of data words) (0-127 {7 bit})
-    unsigned long   m_lHeaderInfoFlags;                  // Flagfield of Header information (RBIN_FLXHDRINFO_???)
+    /** FlexRay Identifier (0x001-0x7FF {11 bit}) */
+    unsigned short m_nSlotID;
+
+    /** Cycle Number (0-63 {6 bit}) */
+    unsigned short m_ucCycleNumber;
+
+    unsigned short m_ucRepetition;
+
+    unsigned short m_nBaseCycle;
+
+    /** Cluster */
+    unsigned short m_nCluster;
+
+    /** A or B or AB */
+    ECHANNEL m_eChannel;
+
+    /**  Data length (number of data words) (0-127 {7 bit}) */
+    unsigned short m_nDLC;
+
+    /** Flagfield of Header information (RBIN_FLXHDRINFO_???) */
+    unsigned long   m_lHeaderInfoFlags;
+
     bool m_bIsRxMsg;
-    unsigned char   m_ucData[254];      // FlexRay Data
+
+    /**  FlexRay Data */
+    unsigned char m_ucData[254];
 } s_FLXDATAMSG, *ps_FLXDATAMSG;
 
 enum eFLXMESSAGETYPE
@@ -176,6 +190,7 @@ enum eFLXMESSAGETYPE
     FLXMSGTYPE_STATUS,
     FLXMSGTYPE_DATA
 };
+
 //----------------------------------------------------------------------------
 // union for FlexRay data and status message types
 //----------------------------------------------------------------------------

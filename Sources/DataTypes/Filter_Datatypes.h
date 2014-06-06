@@ -84,30 +84,34 @@ const int LENGTH_FILTERNAME = 128;
 // The descriobes a filter name with type.
 typedef struct tagFilterName
 {
-    char m_acFilterName[LENGTH_FILTERNAME];                     // Filter name
-    BOOL  m_bFilterType;                    // Filter Type 0 - Stop, 1 for Pass
+    /** Filter name */
+    std::string m_acFilterName;
 
-    tagFilterName();    // Standard constructor
+    /**  Filter Type 0 - Stop, 1 for Pass */
+    int m_bFilterType;
 
-    // To copy the source object. '=' operator overloaded.
+    tagFilterName();
+
+    /** To copy the source object. '=' operator overloaded. */
     tagFilterName& operator=(const tagFilterName& RefObj);
 
-    // To clear the current object.
+    /** To clear the current object. */
     void vClear(void);
 
-    // Called to get the filter object's data into a stream buffer.
+    /** Called to get the filter object's data into a stream buffer. */
     BYTE* pbGetConfigData(BYTE* pbTarget) const;
 
     void pbGetConfigData(xmlNodePtr pxmlNodePtr) const;
     void pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr);
 
-    // Called to retrieve a filter object's data from a byte stream and
-    // initialise the current filter object with the retrieved data.
+    /**
+     * Called to retrieve a filter object's data from a byte stream and
+     * initialise the current filter object with the retrieved data.
+     */
     BYTE* pbSetConfigData(BYTE* pbTarget);
 
     INT nSetXMLConfigData(xmlNodePtr pFilter);
     BOOL nFilterType(std::string strFilteType);
-
 } SFILTERNAME, *PSFILTERNAME;
 
 // Base class for an individual filter data structure.
@@ -624,7 +628,7 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbGetConfigFilterData(xmlNodePtr pNod
 
     for (USHORT i = 0; i < m_ushTotal; i++)
     {
-        CString strFilterName = m_psFilters[i].m_sFilterName.m_acFilterName;
+        CString strFilterName = m_psFilters[i].m_sFilterName.m_acFilterName.c_str();
 
         xmlNodePtr pFilterPtr = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_FILTER, BAD_CAST strFilterName.GetBufferSetLength(strFilterName.GetLength()));
         xmlAddChild(pNodePtr, pFilterPtr);
@@ -818,15 +822,6 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData(SFILTERAPPLIED& pFilt
         SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS> sFilterApplied;
         if( sFilterApplied.nSetXMLConfigData(pdocptr, eBusType) == S_OK)
         {
-            /*for(INT nI = 0; nI < omStrFilters.GetSize(); nI++)
-            {
-                CString strFilterName = m_psFilters[nI].m_sFilterName.m_acFilterName;
-
-                for(INT nIFilterInfo = 0; nIFilterInfo < m_psFilters[nI].m_psFilterInfo->unGetSize(); nIFilterInfo++)
-                {
-                    m_psFilters[nI].m_psFilterInfo[nIFilterInfo].m_dwMsgIDFrom;
-                }
-            }*/
             sFilterApplied.nGetFiltersFromName(pFilterAppliedCAN, mapFilters);
         }
     }

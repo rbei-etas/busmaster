@@ -155,7 +155,7 @@ void CFormatMsgLIN::vFormatDataAndId(BYTE bExprnFlag,
         for (int i = 0; i < CurrDataLIN->m_byDataLength; i++)
         {
             BYTE CurrDat = CurrDataLIN->m_abData[i];
-            _stprintf(&(CurrDataLIN->m_acDataHex[j]), FORMAT_STR_DATA_HEX, CurrDat);
+            sprintf(&(CurrDataLIN->m_acDataHex[j]), FORMAT_STR_DATA_HEX, CurrDat);
             j += 3;
         }
         CurrDataLIN->m_acDataHex[j] = L'\0';
@@ -173,7 +173,7 @@ void CFormatMsgLIN::vFormatDataAndId(BYTE bExprnFlag,
         for (int i = 0; i < CurrDataLIN->m_byDataLength; i++)
         {
             BYTE CurrDat = CurrDataLIN->m_abData[i];
-            _stprintf(&(CurrDataLIN->m_acDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
+            sprintf(&(CurrDataLIN->m_acDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
             j += 4;
             CurrDataLIN->m_acDataDec[j-1] = L' ';
         }
@@ -324,14 +324,12 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
             CurrDataLIN->m_byChecksumType=pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksumTyp;
             if (IS_NUM_HEX_SET(bExprnFlag_Log))
             {
-                sprintf(CurrDataLIN->m_acChecksum, "0x%X \(\"%s\"\)"/*FORMAT_STR_DATA_HEX*/, pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum, str.c_str());
+                sprintf(CurrDataLIN->m_acChecksum, "0x%X (\"%s\")", pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum, str.c_str());
             }
 
             if (IS_NUM_DEC_SET(bExprnFlag_Log))
             {
-                /*sprintf(CurrDataLIN->m_acChecksum, "%x", pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum);*/
-                //_stprintf(&(CurrDataLIN->m_acChecksum), FORMAT_STR_DATA_DEC, pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum);
-                sprintf(CurrDataLIN->m_acChecksum, "%03d \(\"%s\"\)", pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum, str.c_str());
+                sprintf(CurrDataLIN->m_acChecksum, "%03d (\"%s\")", pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum, str.c_str());
             }
 
             memcpy(CurrDataLIN->m_abData, pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucData,

@@ -1904,7 +1904,7 @@ HRESULT CDIL_LIN_ETAS_BOA::hRecreateLINController(INT nIndex)
     OCI_ErrorCode OciErrorCode = OCI_SUCCESS;
 
     sg_asChannel[nIndex].m_OCI_CntrlProp.mode = OCI_CONTROLLER_MODE_SUSPENDED;
-    OciErrorCode == (*(sBOA_PTRS.m_sOCI.setLINControllerProperties))(sg_asChannel[nIndex].m_OCI_HwHandle,
+    OciErrorCode = (*(sBOA_PTRS.m_sOCI.setLINControllerProperties))(sg_asChannel[nIndex].m_OCI_HwHandle,
             &(sg_asChannel[nIndex].m_OCI_CntrlProp));
 
     // First destroy LIN Controller
@@ -1954,7 +1954,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_StopHardware(void)
             if (sg_asChannel[i].m_OCI_CntrlProp.mode == OCI_CONTROLLER_MODE_RUNNING)
             {
                 sg_asChannel[i].m_OCI_CntrlProp.mode = OCI_CONTROLLER_MODE_SUSPENDED;
-                ociErrorCode == (*(sBOA_PTRS.m_sOCI.setLINControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
+                ociErrorCode = (*(sBOA_PTRS.m_sOCI.setLINControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
                         &(sg_asChannel[i].m_OCI_CntrlProp));
                 if (ociErrorCode == OCI_SUCCESS)
                 {

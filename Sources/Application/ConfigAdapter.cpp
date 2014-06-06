@@ -146,6 +146,7 @@ static UINT unGetReplayFileSize(SREPLAYFILE & sReplayFile)
 
     return nSize;
 }
+
 static UINT unGetFilterSize(CModuleFilterArray* pouModuleFilterArray, SFILTERAPPLIED_CAN* psFilterConfigured)
 {
     UINT unSize = sizeof(BYTE);//Configuration version

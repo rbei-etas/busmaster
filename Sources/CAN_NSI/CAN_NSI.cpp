@@ -1249,9 +1249,6 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
     for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
     {
         sg_aodChannels[nCount].m_nChannel = sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface;
-        /*_stprintf(sg_aodChannels[nCount].m_strName , _T("%s, Serial Number - %s"),
-                    sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDescription.c_str(),
-                    sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDeviceName.c_str());*/
         sprintf_s(sg_aodChannels[nCount].m_strName , _T("%s, Serial Number - %s"),
                   sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDescription.c_str(),
                   sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDeviceName.c_str());
@@ -1295,7 +1292,6 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
     /* No Hardware found */
     if( nChannelCount == 0 )
     {
-        //_stprintf(sg_omErrStr, _T("No NSI hardwares Available.\nPlease check if NSI drivers are installed."));
         sprintf_s(sg_omErrStr, _T("No NSI hardwares Available.\nPlease check if NSI drivers are installed."));
     }
     /* Available hardware is lesser then the supported channels */

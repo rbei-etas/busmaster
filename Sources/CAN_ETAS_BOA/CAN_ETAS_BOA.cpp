@@ -260,7 +260,7 @@ static INT sg_anSelectedItems[CHANNEL_ALLOWED];
 
 /* Timer variables */
 static SYSTEMTIME sg_CurrSysTime;
-static UINT64 sg_TimeStamp = 0;
+static LONGLONG sg_TimeStamp = 0;
 static LARGE_INTEGER sg_QueryTickCount;
 static LARGE_INTEGER sg_lnFrequency;
 
@@ -1357,17 +1357,17 @@ static void vProcessRxMsg(void* userData, struct OCI_CANMessage* msg)
 
         LARGE_INTEGER g_QueryTickCount;
         QueryPerformanceCounter(&g_QueryTickCount);
-        UINT64 unConnectionTime;
+        LONGLONG unConnectionTime;
         unConnectionTime = ((g_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart) - sg_TimeStamp;
 
         /* Time difference should be +ve value */
         if(sCanData.m_lTickCount.QuadPart >= unConnectionTime)
         {
-            sg_TimeStamp  = (LONGLONG)(sCanData.m_lTickCount.QuadPart - unConnectionTime);
+            sg_TimeStamp  = sCanData.m_lTickCount.QuadPart - unConnectionTime;
         }
         else
         {
-            sg_TimeStamp  = (LONGLONG)(unConnectionTime - sCanData.m_lTickCount.QuadPart);
+            sg_TimeStamp  = unConnectionTime - sCanData.m_lTickCount.QuadPart;
         }
     }
 
@@ -2067,7 +2067,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     OCI_URIName acURI[defNO_OF_CHANNELS];
     INT nFound = 0;
 
-    UINT unDefaultChannelCnt = nCount;
+    INT unDefaultChannelCnt = nCount;
 
     if (BOA_SUCCEEDED(OCI_FindCANController(acURI, defNO_OF_CHANNELS, &nFound)))
     {
@@ -2081,7 +2081,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             /* set the current number of channels */
             nCount = min(nCount, defNO_OF_CHANNELS);
 
-            for (UINT i = 0; i < nCount; i++)
+            for (INT i = 0; i < nCount; i++)
             {
                 psHWInterface[i].m_dwIdInterface = 0;
                 psHWInterface[i].m_dwVendor = 0;

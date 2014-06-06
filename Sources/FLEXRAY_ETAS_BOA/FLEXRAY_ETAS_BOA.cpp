@@ -1526,7 +1526,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ListHwInterfaces(FLEXRAY_INTERFACE_HW & s
         OCI_URIName acURI[defNO_OF_CHANNELS];
         uint32 nFound = 0;
 
-        UINT unDefaultChannelCnt = nCount;
+        int unDefaultChannelCnt = nCount;
 
         if (OCI_FindFlexRayController(acURI, defNO_OF_CHANNELS, &nFound) == OCI_SUCCESS)
         {
@@ -1539,7 +1539,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ListHwInterfaces(FLEXRAY_INTERFACE_HW & s
                 //set the current number of channels
                 nCount = min(nCount, defNO_OF_CHANNELS);
 
-                for (unsigned int i = 0; i < nCount; i++)
+                for (int i = 0; i < nCount; i++)
                 {
                     psHWInterface[i].m_dwIdInterface = 0;
                     psHWInterface[i].m_dwVendor = 0;
@@ -1603,7 +1603,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ListHwInterfaces(FLEXRAY_INTERFACE_HW & s
                     /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
                     if ((unDefaultChannelCnt >= 0) && (unDefaultChannelCnt <= nCount))
                     {
-                        for (unsigned int i = 0; i < unDefaultChannelCnt; i++)
+                        for (int i = 0; i < unDefaultChannelCnt; i++)
                         {
                             sg_anSelectedItems[i] = i;
                         }
@@ -1621,13 +1621,6 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ListHwInterfaces(FLEXRAY_INTERFACE_HW & s
                 }
 
                 sg_nNoOfChannels = min(nCount, defNO_OF_CHANNELS);
-                //for (UINT nList = 0; nList < sg_nNoOfChannels; nList++)
-                //{
-                //  sSelHwInterface[nList].m_acNameInterface = psHWInterface[sg_anSelectedItems[nList]].m_acNameInterface;
-                //  sSelHwInterface[nList].m_acDescription = psHWInterface[sg_anSelectedItems[nList]].m_acDescription;
-                //  sSelHwInterface[nList].m_dwIdInterface = 100 + nList; // Give a dummy number
-                //}
-
                 strcpy(sSelHwInterface.m_acNameInterface, psHWInterface[sg_anSelectedItems[0]].m_acNameInterface.c_str());
                 strcpy(sSelHwInterface.m_acDescription , psHWInterface[sg_anSelectedItems[0]].m_acNameInterface.c_str());
                 sSelHwInterface.m_dwIdInterface = 100 ; // Give a dummy number

@@ -575,7 +575,7 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
             }
             sg_HardwareIntr[nChannels].m_dwIdInterface = nCount;
             sg_HardwareIntr[nChannels].m_dwVendor = g_xlDrvConfig.channel[nCount].serialNumber;
-            /*_stprintf(acTempStr, _T("SN: %d, Port ID: %d"), sg_HardwareIntr[nChannels].m_dwVendor,
+            /*sprintf(acTempStr, _T("SN: %d, Port ID: %d"), sg_HardwareIntr[nChannels].m_dwVendor,
                                                                     sg_HardwareIntr[nChannels].m_dwIdInterface);*/
             sg_HardwareIntr[nChannels].m_acDescription = g_xlDrvConfig.channel[nCount].name;
             nChannels++;
@@ -672,8 +672,6 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
     /* Capture only Driver Not Running event
      * Take action based on number of Hardware Available
      */
-    char acNo_Of_Hw[MAX_STRING] = {0};
-    _stprintf(acNo_Of_Hw, _T(_("Number of Vector hardwares Available: %d")), nChannelCount);
 
     /* No Hardware found */
     if( nChannelCount == 0 )
@@ -889,7 +887,6 @@ HRESULT CDIL_LIN_VectorXL::LIN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             oss << std::dec << serialNumber;
             std::string strTemp =  oss.str();
             asSelHwInterface[i].m_acDescription = strTemp;
-            //_stprintf(asSelHwInterface[i].m_acDescription, _T("%d"), serialNumber);
             std::ostringstream oss1;
             oss1 << "Vector - " << sg_aodChannels[i].m_pXLChannelInfo->name << " SN - " <<serialNumber;
             oss1 << "Channel Index - " <<(int)sg_aodChannels[i].m_pXLChannelInfo->channelIndex;

@@ -212,7 +212,7 @@ void CFormatMsgJ1939::vFormatJ1939DataMsg(PSTJ1939_MSG psJ1939BData, __int64 nDe
     TYPE_CHANNEL CurrChannel = psJ1939BData->m_sMsgProperties.m_byChannel;
     if ((CurrChannel >= CHANNEL_CAN_MIN) && (CurrChannel <= CHANNEL_CAN_MAX ))
     {
-        _stprintf(psJ1939FData->m_acChannel, "%d", CurrChannel);
+        sprintf(psJ1939FData->m_acChannel, "%d", CurrChannel);
     }
 
     if (IS_NUM_HEX_SET(bExprnFlag_Log))

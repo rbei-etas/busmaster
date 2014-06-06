@@ -26,25 +26,46 @@
 
 #include "CommonClass/RefTimeKeeper.h"
 
+/**
+ * Common class for Message Formatting.
+ *
+ * The relative base time will be diff. for each read thread so it is made member
+ * Variable. Thus for each read thread an object of class derived from this class
+ * should be present
+ */
 class CFormatMsgCommon
 {
 public:
-    ~CFormatMsgCommon();
-    void vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,char acTime[]);
+    CFormatMsgCommon(CRefTimeKeeper & ouRefTimeKeeper);
+    virtual ~CFormatMsgCommon();
+
+    /**
+     * In order to make this function work properly ENSURE bExprnFlag has ONLY
+     * ONE time mode bit up
+     */
+    void vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp, char acTime[]);
+
     void vCalAndFormatTM_Offline(BYTE bExprnFlag,  UINT64 TimeStamp, char acTime[]);
-    void vSetRelBaseTime(INT64 qwRelBaseTime); //Called to sart afresh for append mode
+
+    /**
+     * Called to sart afresh for append mode
+     */
+    void vSetRelBaseTime(INT64 qwRelBaseTime);
+
     BOOL m_bResetMsgAbsTime;
+
     SYSTEMTIME m_LogSysTime;
-    DWORD m_qwLogDelayTime; //for log-msg difference
+
+    /** for log-msg difference */
+    DWORD m_qwLogDelayTime;
 
 protected:
-    CFormatMsgCommon(CRefTimeKeeper & ouRefTimeKeeper);
-
-    //The relative base time will be diff. for each read thread so it is made member
-    //Variable. Thus for each read thread an object of class derivedfrom this class
-    //should be present
-    UINT64 m_qwResTime;//for reset log time
+    /** for reset log time */
+    UINT64 m_qwResTime;
+    
     UINT64 m_qwRelBaseTime;
-    CRefTimeKeeper& m_ouRefTimeKeeper;
+
+    CRefTimeKeeper & m_ouRefTimeKeeper;
+    
     void vFormatTimeStamp(DWORD dwTimeStamp, char acTime[]);
 };

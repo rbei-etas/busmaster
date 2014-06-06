@@ -43,7 +43,7 @@ const int SIZE_CHAR = sizeof(char);
 ******************************************************************************/
 tagFilterName::tagFilterName()
 {
-    m_acFilterName[LENGTH_FILTERNAME - 1] = L'\0';
+    m_acFilterName.clear();
     vClear();
 }
 
@@ -61,7 +61,7 @@ tagFilterName::tagFilterName()
 ******************************************************************************/
 void tagFilterName::vClear(void)
 {
-    _tcsset(m_acFilterName, L'\0');
+    m_acFilterName.clear();
     m_bFilterType = FALSE;
 }
 
@@ -79,7 +79,7 @@ void tagFilterName::vClear(void)
 ******************************************************************************/
 tagFilterName& tagFilterName::operator=(const tagFilterName& RefObj)
 {
-    _tcscpy(m_acFilterName, RefObj.m_acFilterName);
+    m_acFilterName = RefObj.m_acFilterName;
     m_bFilterType = RefObj.m_bFilterType;
 
     return *this;
@@ -105,7 +105,7 @@ BYTE* tagFilterName::pbGetConfigData(BYTE* pbTarget) const
 {
     BYTE* pbTStream = pbTarget;
 
-    COPY_DATA(pbTStream, m_acFilterName, LENGTH_FILTERNAME * SIZE_CHAR);
+    COPY_DATA(pbTStream, m_acFilterName.c_str(), LENGTH_FILTERNAME * SIZE_CHAR);
     COPY_DATA(pbTStream, &m_bFilterType, sizeof(m_bFilterType));
 
     return pbTStream;
@@ -113,18 +113,8 @@ BYTE* tagFilterName::pbGetConfigData(BYTE* pbTarget) const
 
 void tagFilterName::pbGetConfigData(xmlNodePtr pFilterTag) const
 {
-    /*BYTE* pbTStream = pbTarget;
-
-    COPY_DATA(pbTStream, m_acFilterName, LENGTH_FILTERNAME * SIZE_CHAR);
-    COPY_DATA(pbTStream, &m_bFilterType, sizeof(m_bFilterType));
-
-    return pbTStream;*/
-
-    /*xmlNodePtr pFilterTag = xmlNewNode(nullptr, BAD_CAST DEF_FILTER);
-    xmlAddChild(pxmlNodePtr, pFilterTag);*/
-
     // Adding Filter Name to the xml
-    xmlNodePtr pFilterNameNodePtr = xmlNewChild(pFilterTag, nullptr, BAD_CAST _(DEF_NAME), BAD_CAST m_acFilterName);
+    xmlNodePtr pFilterNameNodePtr = xmlNewChild(pFilterTag, nullptr, BAD_CAST _(DEF_NAME), BAD_CAST m_acFilterName.c_str());
     xmlAddChild(pFilterTag, pFilterNameNodePtr);
 
     const char* omstrFilterType = "";
@@ -132,11 +122,11 @@ void tagFilterName::pbGetConfigData(xmlNodePtr pFilterTag) const
     // Getting the Filter Type
     if(m_bFilterType == 1)
     {
-        omstrFilterType = _("PASS");
+        omstrFilterType = "PASS";
     }
     else
     {
-        omstrFilterType = _("STOP");
+        omstrFilterType = "STOP";
     }
 
 
@@ -164,7 +154,7 @@ BYTE* tagFilterName::pbSetConfigData(BYTE* pbTarget)
 {
     BYTE* pbTStream = pbTarget;
 
-    COPY_DATA_2(m_acFilterName, pbTStream, LENGTH_FILTERNAME * SIZE_CHAR);
+    m_acFilterName.assign((char *) pbTStream, LENGTH_FILTERNAME * SIZE_CHAR);
     COPY_DATA_2(&m_bFilterType, pbTStream, sizeof(m_bFilterType));
 
     return pbTStream;
@@ -183,7 +173,7 @@ void tagFilterName::pbSetConfigData(xmlNodePtr pNodePtr, xmlDocPtr xmlConfigFile
             {
                 if(ptext != nullptr)
                 {
-                    strcpy_s(m_acFilterName, 128, ptext);
+                    m_acFilterName = ptext;
                 }
 
                 xmlFree(ptext);
@@ -197,7 +187,7 @@ INT tagFilterName::nSetXMLConfigData(xmlNodePtr pFilter)
 {
     INT nRetVal = S_OK;
     xmlNodePtr pTempFilter = pFilter->xmlChildrenNode;
-    m_acFilterName[0] = '\0';
+    m_acFilterName.clear();
     m_bFilterType = FALSE;
     while (pTempFilter != nullptr)
     {
@@ -206,7 +196,7 @@ INT tagFilterName::nSetXMLConfigData(xmlNodePtr pFilter)
             char* pcTemp = (char*)xmlNodeListGetString(pTempFilter->doc, pTempFilter->xmlChildrenNode, 1);
             if(pcTemp != nullptr)
             {
-                strcpy_s(m_acFilterName, 128, pcTemp);
+                m_acFilterName = pcTemp;
             }
         }
         if ((!xmlStrcmp(pTempFilter->name, (const xmlChar*)_("Type"))))
@@ -215,10 +205,12 @@ INT tagFilterName::nSetXMLConfigData(xmlNodePtr pFilter)
         }
         pTempFilter = pTempFilter->next;
     }
-    if( strlen(m_acFilterName ) == 0 )
+    if(m_acFilterName.empty())
     {
         UINT unRand = time(nullptr);
-        sprintf_s(m_acFilterName, 128, "Filter_%u", (UINT)time(nullptr));
+        char temp[128];
+        sprintf_s(temp, 128, "Filter_%u", (UINT)time(nullptr));
+        m_acFilterName = temp;
         nRetVal = S_FALSE;
     }
     return nRetVal;
@@ -2667,12 +2659,10 @@ tagFilterSet* tagFilterSet::psGetFilterSetPointer(tagFilterSet* psSet, UINT Coun
     for (UINT i = 0; i < Count; i++)
     {
         tagFilterSet* psTemp = psSet + i;
-        if ((psTemp != nullptr) &&(_tcscmp(psTemp->m_sFilterName.m_acFilterName, acFilterName) == 0))
+        if ((psTemp != nullptr) && (psTemp->m_sFilterName.m_acFilterName == acFilterName))
         {
             return psTemp;
         }
     }
     return nullptr;
 }
-
-/* Ends SFILTERSET / tagFilterSet */

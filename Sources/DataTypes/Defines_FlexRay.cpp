@@ -205,16 +205,9 @@ bool CCompuMethodEx::omGetRawValue(CString& omRawValue, double dwEnggValue)
         OBJ_TEXTCODEVAR_EX::iterator itr = m_uMethod.m_objTextCode.begin();
         while (itr != m_uMethod.m_objTextCode.end())
         {
-            //if (itr->m_sRange.bIsWithinRange(dwRawValue))
-            {
-                //omEnggValue.Format("%lf", (DOUBLE)dwRawValue);
-
-                UINT unRawVal = dwEnggValue;
-                omRawValue.Format("%d", unRawVal);
-
-                //omEnggValue = itr->m_aTextName;
-                bResult = true;
-            }
+            UINT unRawVal = dwEnggValue;
+            omRawValue.Format("%d", unRawVal);
+            bResult = true;
             itr++;
         }
 
@@ -225,13 +218,9 @@ bool CCompuMethodEx::omGetRawValue(CString& omRawValue, double dwEnggValue)
     }
     else if (m_eCompuType == IDENTICAL_ENUM)
     {
-        //if (m_uMethod.m_IdenticalCode.m_sRange.bIsWithinRange(dwRawValue))
-        {
-            UINT unRawVal = dwEnggValue;
-            omRawValue.Format("%d", unRawVal);
-
-            bResult = true;
-        }
+        UINT unRawVal = dwEnggValue;
+        omRawValue.Format("%d", unRawVal);
+        bResult = true;
     }
     else if (m_eCompuType == SCALE_LINEAR_ENUM)
     {

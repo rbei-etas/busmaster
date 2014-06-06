@@ -780,7 +780,7 @@ static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_
         {
             SSUBENTRY sSubEntry;
             sSubEntry.m_omSubEntryName.Format("%s",
-                                              psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
+                                              psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName.c_str());
             sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);
         }
     }
@@ -791,7 +791,7 @@ static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_
         {
             SSUBENTRY sSubEntry;
             sSubEntry.m_omSubEntryName.Format("%s",
-                                              psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName);
+                                              psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName.c_str());
             if (SFILTERSET::psGetFilterSetPointer(psFilterApplied->m_psFilters,
                                                   psFilterApplied->m_ushTotal,
                                                   sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH)) != nullptr)

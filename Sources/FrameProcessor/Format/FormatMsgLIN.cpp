@@ -77,13 +77,13 @@ void CFormatMsgLIN::vFormatDataAndId(BYTE bExprnFlag,
 {
     if (IS_NUM_HEX_SET(bExprnFlag))
     {
-        _stprintf(CurrDataLIN->m_acMsgIDHex, FORMAT_STR_ID_HEX, CurrDataLIN->m_dwMsgID);
+        sprintf(CurrDataLIN->m_acMsgIDHex, FORMAT_STR_ID_HEX, CurrDataLIN->m_dwMsgID);
 
         int i, j;
         for (i = 0, j = 0; i < CurrDataLIN->m_byDataLength; i++)
         {
             BYTE CurrDat = CurrDataLIN->m_abData[i];
-            _stprintf(&(CurrDataLIN->m_acDataHex[j]), FORMAT_STR_DATA_HEX, CurrDat);
+            sprintf(&(CurrDataLIN->m_acDataHex[j]), FORMAT_STR_DATA_HEX, CurrDat);
             j += 3;
         }
         CurrDataLIN->m_acDataHex[j] = L'\0';
@@ -91,13 +91,13 @@ void CFormatMsgLIN::vFormatDataAndId(BYTE bExprnFlag,
 
     if (IS_NUM_DEC_SET(bExprnFlag))
     {
-        _stprintf(CurrDataLIN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataLIN->m_dwMsgID);
+        sprintf(CurrDataLIN->m_acMsgIDDec, FORMAT_STR_ID_DEC, CurrDataLIN->m_dwMsgID);
 
         int i, j;
         for (i = 0, j = 0; i < CurrDataLIN->m_byDataLength; i++)
         {
             BYTE CurrDat = CurrDataLIN->m_abData[i];
-            _stprintf(&(CurrDataLIN->m_acDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
+            sprintf(&(CurrDataLIN->m_acDataDec[j]), FORMAT_STR_DATA_DEC, CurrDat);
             j += 4;
             CurrDataLIN->m_acDataDec[j-1] = L' ';
         }
@@ -130,7 +130,7 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
         CurrDataLIN->m_eChannel = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChannel;
         if ((CurrDataLIN->m_eChannel >= CHANNEL_LIN_MIN) && (CurrDataLIN->m_eChannel <= CHANNEL_LIN_MAX ))
         {
-            _stprintf(CurrDataLIN->m_acChannel, "%d", CurrDataLIN->m_eChannel);
+            sprintf(CurrDataLIN->m_acChannel, "%d", CurrDataLIN->m_eChannel);
         }
 
 

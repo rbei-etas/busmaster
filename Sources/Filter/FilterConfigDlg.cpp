@@ -567,7 +567,7 @@ BOOL CFilterConfigDlg::bPopulateNamedFilterList()
             CString omStrFilterName = "";
             if( psFilterSet != nullptr )
             {
-                omStrFilterName.Format("%s", psFilterSet->m_sFilterName.m_acFilterName);
+                omStrFilterName.Format("%s", psFilterSet->m_sFilterName.m_acFilterName.c_str());
                 // Insert the item
                 // Filter Name
                 m_omLstcFilterList.InsertItem( nIndex,
@@ -614,7 +614,7 @@ BOOL CFilterConfigDlg::bPopulateNamedFilterList()
             CString omStrFilterName = "";
             if( psFilterSet != nullptr )
             {
-                omStrFilterName.Format("%s", psFilterSet->m_sFilterName.m_acFilterName);
+                omStrFilterName.Format("%s", psFilterSet->m_sFilterName.m_acFilterName.c_str());
                 // Insert the item
                 // Filter Name
                 m_omLstcFilterList.InsertItem( nIndex,
@@ -1067,7 +1067,7 @@ void CFilterConfigDlg::vUpdateFromFilterName(int nItem, int nSubItem)
                     psTemp = SFILTERSET::psGetFilterSetPointer(m_psFilterApplied->m_psFilters,
                              m_psFilterApplied->m_ushTotal,m_omStrSelectedFilterNameBeforeEdit.GetBuffer(MAX_PATH));
                     ASSERT(psTemp != nullptr);
-                    strcpy_s(psTemp->m_sFilterName.m_acFilterName,LENGTH_FILTERNAME, omStrNewName.GetBuffer(MAX_PATH));
+                    psTemp->m_sFilterName.m_acFilterName = omStrNewName.GetBuffer(MAX_PATH);
                     m_omStrSelectedFilterNameBeforeEdit = omStrNewName;
                 }
             }
@@ -1093,7 +1093,7 @@ void CFilterConfigDlg::vUpdateFromFilterName(int nItem, int nSubItem)
                     psTemp = SFILTERSET::psGetFilterSetPointer(m_psFilterAppliedLin->m_psFilters,
                              m_psFilterAppliedLin->m_ushTotal,m_omStrSelectedFilterNameBeforeEdit.GetBuffer(MAX_PATH));
                     ASSERT(psTemp != nullptr);
-                    strcpy_s(psTemp->m_sFilterName.m_acFilterName,LENGTH_FILTERNAME, omStrNewName.GetBuffer(MAX_PATH));
+                    psTemp->m_sFilterName.m_acFilterName = omStrNewName.GetBuffer(MAX_PATH);
                     m_omStrSelectedFilterNameBeforeEdit = omStrNewName;
                 }
             }
@@ -3344,7 +3344,7 @@ void CFilterConfigDlg::vAddCANFilter()
         {
             psSetIndex->m_sFilterName.m_bFilterType = 0;  // Stop Filter
             // Add the filter in to the map
-            strcpy_s(psSetIndex->m_sFilterName.m_acFilterName, LENGTH_FILTERNAME, omStrFilterName.GetBuffer(MAX_PATH));
+            psSetIndex->m_sFilterName.m_acFilterName = omStrFilterName.GetBuffer(MAX_PATH);
             ++(m_psFilterApplied->m_ushTotal);
 
             m_psFilterApplied->m_psFilters = psNewSet;
@@ -3434,7 +3434,7 @@ void CFilterConfigDlg::vAddLINFilter()
         {
             psSetIndex->m_sFilterName.m_bFilterType = 0;  // Stop Filter
             // Add the filter in to the map
-            strcpy_s(psSetIndex->m_sFilterName.m_acFilterName, LENGTH_FILTERNAME, omStrFilterName.GetBuffer(MAX_PATH));
+            psSetIndex->m_sFilterName.m_acFilterName = omStrFilterName.GetBuffer(MAX_PATH);
             ++(m_psFilterAppliedLin->m_ushTotal);
 
             m_psFilterAppliedLin->m_psFilters = psNewSet;
