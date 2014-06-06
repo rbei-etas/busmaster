@@ -31,7 +31,7 @@
 class CFormatMsgLIN : public CFormatMsgCommon
 {
 public:
-    CFormatMsgLIN(CRefTimeKeeper& ouRefTimeKeeper);
+    CFormatMsgLIN(CRefTimeKeeper & ouRefTimeKeeper);
     ~CFormatMsgLIN();
     void vFormatLINDataMsg(STLINDATA* pMsgLIN,
                            SFORMATTEDDATA_LIN* CurrDataLIN,

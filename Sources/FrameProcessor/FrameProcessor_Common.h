@@ -51,7 +51,7 @@ private:
     CLogObjArray* GetActiveLogObjArray(void);
 
 protected:
-    CRefTimeKeeper m_ouRefTimer;
+    CRefTimeKeeper      m_ouRefTimer;
     CPARAM_THREADPROC   m_sDataCopyThread;
     bool                m_bLogEnabled;
     bool                m_bResetAbsTime;
@@ -62,7 +62,7 @@ protected:
     bool                m_bIsDataLogged;
     bool                m_bIsJ1939DataLogged;
     bool                m_bIsLINDataLogged;
-    BYTE     m_bExprnFlag_Log;
+    BYTE                m_bExprnFlag_Log;
 
     HRESULT DoInitialisation(void);
     virtual void vEmptyLogObjArray(CLogObjArray& omLogObjArray) = 0;

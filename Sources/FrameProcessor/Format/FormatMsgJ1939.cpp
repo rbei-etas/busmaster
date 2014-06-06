@@ -1,29 +1,7 @@
-
 /******************************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  FormatMsgJ1939.cpp
   Description   :  Source of CFormatMsgJ1939 class.
-  $Log:   X:/Archive/Sources/FrameProcessor/FormatMsgJ1939.cpv  $
-
-      Rev 1.4   09 Jun 2011 18:00:20   CANMNTTM
-   All errors in VS2005 are removed
-
-      Rev 1.3   15 Apr 2011 19:19:42   rac2kor
-   Inserted RBEI Copyright information text into the file header.
-
-      Rev 1.2   23 Mar 2011 14:59:14   CANMNTTM
-   Support upto 32 channels
-
-      Rev 1.1   13 Dec 2010 21:25:56   rac2kor
-   In the structure PSFORMATTEDATA_J1939, the data member m_dwMsgID
-   is now being assigned value.
-
-      Rev 1.0   06 Dec 2010 18:56:20   rac2kor
-
-
   Author(s)     :  Ratnadip Choudhury
   Date Created  :  1.12.2010
-  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
@@ -32,12 +10,11 @@
 #include "FormatMsgJ1939.h"
 #include "include/Utils_macro.h"
 
-
-
-CFormatMsgJ1939::CFormatMsgJ1939(CRefTimeKeeper& ouRefTimeKeeper):CFormatMsgCommon(ouRefTimeKeeper)
+CFormatMsgJ1939::CFormatMsgJ1939(CRefTimeKeeper& ouRefTimeKeeper) :
+    CFormatMsgCommon(ouRefTimeKeeper)
 {
-    //m_podJ1939Rules = nullptr;
 }
+
 CFormatMsgJ1939::~CFormatMsgJ1939(void)
 {
 }

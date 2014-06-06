@@ -38,13 +38,13 @@ public:
     DWORD m_qwLogDelayTime; //for log-msg difference
 
 protected:
-    CFormatMsgCommon(CRefTimeKeeper& ouRefTimeKeeper);
+    CFormatMsgCommon(CRefTimeKeeper & ouRefTimeKeeper);
 
     //The relative base time will be diff. for each read thread so it is made member
     //Variable. Thus for each read thread an object of class derivedfrom this class
     //should be present
     UINT64 m_qwResTime;//for reset log time
-    UINT64   m_qwRelBaseTime;
+    UINT64 m_qwRelBaseTime;
     CRefTimeKeeper& m_ouRefTimeKeeper;
     void vFormatTimeStamp(DWORD dwTimeStamp, char acTime[]);
 };

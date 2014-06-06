@@ -27,7 +27,8 @@
 
 #include "include/Utils_Macro.h"
 
-CFormatMsgCommon::CFormatMsgCommon(CRefTimeKeeper& ouRefTimeKeeper):m_ouRefTimeKeeper(ouRefTimeKeeper)
+CFormatMsgCommon::CFormatMsgCommon(CRefTimeKeeper& ouRefTimeKeeper) :
+    m_ouRefTimeKeeper(ouRefTimeKeeper)
 {
     m_qwRelBaseTime = 0;
     m_qwResTime = 0;
@@ -45,10 +46,10 @@ void CFormatMsgCommon::vCalculateAndFormatTM(BYTE bExprnFlag, UINT64 TimeStamp,
     /* In order to make this function work properly ENSURE bExprnFlag has ONLY
     ONE time mode bit up */
 
-    DWORD dwTSTmp = 0; // temporary time stamp
     UINT64 qwRefSysTime, qwAbsBaseTime;
     m_ouRefTimeKeeper.vGetTimeParams(qwRefSysTime, qwAbsBaseTime);
 
+    DWORD dwTSTmp = 0; // temporary time stamp
     if (IS_TM_SYS_SET(bExprnFlag))
     {
         dwTSTmp = (DWORD) ((TimeStamp - qwAbsBaseTime) + qwRefSysTime);

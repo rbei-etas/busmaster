@@ -27,7 +27,8 @@
 #include "include/Utils_macro.h"
 #include "Include\CAN_Error_Defs.h"
 
-CFormatMsgCAN::CFormatMsgCAN(CRefTimeKeeper& ouRefTimeKeeper):CFormatMsgCommon(ouRefTimeKeeper)
+CFormatMsgCAN::CFormatMsgCAN(CRefTimeKeeper & ouRefTimeKeeper) :
+    CFormatMsgCommon(ouRefTimeKeeper)
 {
 }
 

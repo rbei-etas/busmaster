@@ -31,7 +31,7 @@
 class CFormatMsgCAN : public CFormatMsgCommon
 {
 public:
-    CFormatMsgCAN(CRefTimeKeeper& ouRefTimeKeeper);
+    CFormatMsgCAN(CRefTimeKeeper & ouRefTimeKeeper);
     ~CFormatMsgCAN(void);
     void vFormatCANDataMsg(STCANDATA* pMsgCAN,
                            SFORMATTEDDATA_CAN* CurrDataCAN,

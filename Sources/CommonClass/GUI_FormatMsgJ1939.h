@@ -1,18 +1,7 @@
-
-/**********************************************************************************
-  Project       :   Auto-SAT_Tools
-  FileName      :   GUI_FormatMsgJ1939.h
-  Description   :   Implementation of CRefTimeKeeper class
-  $Log:   X:/Archive/Sources/CommonClass/GUI_FormatMsgJ1939.h_v  $
- *
- *    Rev 1.1   15 Apr 2011 19:07:08   rac2kor
- * Inserted RBEI Copyright information text into the file header.
-
 /**
- * \file      GUI_FormatMsgJ1939.h
- * \brief     Definition of CFormatMsgJ1939 class
- * \author    Anish kumar
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Definition of CFormatMsgJ1939 class
+ * @author Anish kumar
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition of CFormatMsgJ1939 class
  */

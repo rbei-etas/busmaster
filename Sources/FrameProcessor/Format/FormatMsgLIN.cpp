@@ -21,11 +21,13 @@
 *
 * Source of CFormatMsgLIN class.
 */
+
 #include "../FrameProcessor_stdafx.h"
 #include "FormatMsgLIN.h"
 #include "include/Utils_macro.h"
 
-CFormatMsgLIN::CFormatMsgLIN(CRefTimeKeeper& ouRefTimeKeeper):CFormatMsgCommon(ouRefTimeKeeper)
+CFormatMsgLIN::CFormatMsgLIN(CRefTimeKeeper & ouRefTimeKeeper) :
+    CFormatMsgCommon(ouRefTimeKeeper)
 {
 }
 
