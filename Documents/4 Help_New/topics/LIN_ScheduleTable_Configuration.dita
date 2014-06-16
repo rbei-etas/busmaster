@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" [
+<!ENTITY Introduction '<xref/>'>]>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>LIN Schedule Table Configuration</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2013"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>LIN Schedule Table Configuration</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>LIN Schedule Table Configuration can be used to configure  schedule tables imported from LDF file to transmit master requests by following the below steps.</p>
+    <p><ol>
+        <li>To configure Schedule Table use <b>LIN-&gt;Schedule Configuration</b> menu which displays <b>Configure Schedule Table</b> dialog as shown below.<p><image href="../images/LIN_ScheduleConfig_Example.bmp"/></p></li>
+        <li>Configure Schedule Table window displays the Schedule Tables channel wise.</li>
+        <li>
+          <p>Frames will be listed under respective Schedule table.</p>
+          <p><b>Displayed Columns</b></p>
+          <p> <ul>
+              <li>
+                <p><b>Table/Frame</b></p>
+                <p>Schedule Table name or Frame name</p>
+              </li>
+              <li>
+                <b>ID(hex)</b>
+                <p>Frame Identifier displayed in hex mode</p>
+              </li>
+              <li>
+                <b>Type</b>
+                <p>Frame type or Command name</p>
+              </li>
+              <li>
+                <b>Delay</b>
+                <p>Frame delay time in ms</p>
+              </li>
+            </ul></p>
+        </li>
+        <li>To select the Schedule Table from the list, mark the respective Schedule Table as checked. By which all the frames part of Schedule Table will be selected</li>
+        <li>User can select/de-select the frame(s) by marking the frame as check/un-check.</li>
+        <li>Master request(s) shall be sent only for the selected frame(s) at pre-configured time interval as specified in the Schedule table.</li>
+        <li>Schedule Tables and Frames can be selected/de-selected during runtime.</li>
+        <li>The check status of Schedule Table and the frames will be stored in the configuration file and retained on importing configuration file.</li>
+      </ol></p>
+    <p><note>
+        <ul>
+          <li>Schedule Tables and frames from the <b>Configure Schedule Table</b> window will be considered when BUSMASTER simulates the LIN Master node of a LIN network</li>
+          <li> From the LDF file imported, only unconditional frames in the Schedule Table will be considered for the configuration and execution.</li>
+        </ul>
+      </note></p>
+  </body>
+</topic>
