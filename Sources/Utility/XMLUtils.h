@@ -657,7 +657,8 @@ public:
         }
         return nRetVal;
     }
-    static int parseColumnInfoNode(xmlNodePtr pNode, stringList& columnList, columnInfo& Info)
+
+    static int parseColumnInfoNode(xmlNodePtr pNode, stringList & columnList, columnInfo & /* Info */)
     {
         int nRetVal = S_OK;
         if (columnList.size() <= 0 || pNode == NULL )
@@ -665,6 +666,7 @@ public:
             nRetVal = S_FALSE;
         }
     }
+
     static int xmlUtils::ParseSplitterWindow(xmlNodePtr pNode, int& nCxCur, int& nCxMax)
     {
         int nRetVal = S_OK;

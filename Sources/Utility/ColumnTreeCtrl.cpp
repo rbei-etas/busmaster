@@ -77,7 +77,7 @@ void CColumnTreeCtrl::OnPaint()
     dcMem.DeleteDC();
 }
 
-BOOL CColumnTreeCtrl::OnEraseBkgnd(CDC* pDC)
+BOOL CColumnTreeCtrl::OnEraseBkgnd(CDC * /* pDC */)
 {
     return TRUE;    // do nothing
 }
@@ -199,4 +199,3 @@ void CColumnTreeCtrl::HandleMouse(UINT message, UINT nFlags, CPoint point)
     // pass message to the default procedure
     CWnd::DefWindowProc(message, nFlags, MAKELONG(point.x, point.y));
 }
-

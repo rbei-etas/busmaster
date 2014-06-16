@@ -477,10 +477,8 @@ void CCANMonitorApp::WinHelp(DWORD dwData, UINT nCmd)
 
 int CCANMonitorApp::ExitInstance()
 {
-    if(g_hLibIntl)                  //free the multi language support library, intl.dll
-    {
-        FreeLibrary(g_hLibIntl);
-    }
+    unloadInternationalizationLibrary();
+
     if (ghLangInst)
     {
         FreeLibrary( ghLangInst );

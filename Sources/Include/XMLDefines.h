@@ -140,7 +140,7 @@
 
 //Common defines
 #define DEF_FILTER                  "Filter"
-#define DEF_MSG_ID                  "ID"
+//#define DEF_MSG_ID                  "ID"
 #define DEF_MSGID                   "Id"
 
 //TX window
