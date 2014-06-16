@@ -45,7 +45,7 @@
           </ul></li>
       </ul>
     </section>
-    <p>Here is a sample test file: <xref href="https://github.com/rbei-etas/busmaster/tree/master/Documents/4%20Help/files/SampleTestSetupFile.xml" scope="external">SampleTestSetupFile.xml</xref>.</p>
+    <p>Here is a sample test file: <xref href="https://github.com/rbei-etas/busmaster/tree/master/Examples/TestAutomation/SampleTestSetupFile.xml" scope="external">SampleTestSetupFile.xml</xref>.</p>
     <p>The table below contains a concise description of each of the section details and error handling procedure in case of absence of any information.</p>
     <table>
       <tgroup cols="4">
