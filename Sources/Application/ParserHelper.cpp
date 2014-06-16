@@ -34,12 +34,6 @@ int CParserHelper::OnSectionStarted(eCurrentSection ouCurrentSection)
 }
 int CParserHelper::OnSectionClosed()
 {
-#ifdef _DEBUG
-    std::string strName;
-    GetStringSectionName(m_eCurrentSection, strName);
-    printf("CParserClass::OnSection End  %s \n", strName.c_str());
-#endif // _DEBUG
-
     if ( m_ouSectionStack.size() > 0 )
     {
         m_ouSectionStack.pop();
@@ -73,7 +67,7 @@ int CParserHelper::nOnProtocolVersion(std::string strProtocolVer)
 int CParserHelper::nOnLinBaudRate(std::string strBaudRate)
 {
     double dBaud = atof(strBaudRate.c_str());
-    m_nBaudRate = dBaud * 1000;
+    m_nBaudRate = static_cast<int> ( dBaud * 1000.0);
     return 0;
 }
 
@@ -108,6 +102,20 @@ int CParserHelper::nAddSignaltoFrame(std::string strName, int nAt)
     return 0;
 }
 
+int CParserHelper::OnEventTriggeredFrame(std::string strId, int nId)
+{
+    m_LdfEventTriggerFrameList[strId] = nId;
+    return S_OK;
+}
+
+int CParserHelper::OnSporadicFrame(std::string strName)
+{
+    m_LdfSporadicFrameList.push_back(strName);
+    return S_OK;
+}
+
+
+
 int CParserHelper::OnSporadicOrCompuType(std::string strId)
 {
     if ( m_eCurrentSection == SEC_SIGNAL_REP_DEC )
@@ -124,18 +132,23 @@ int CParserHelper::OnSporadicOrCompuType(std::string strId)
             itrSignal++;
         }
     }
+    else if ( m_eCurrentSection == SEC_SPORADIC_FRAME_DEC )
+    {
+        m_LdfSporadicFrameList.push_back(strId);
+    }
+
 
     return 0;
 }
 
-int CParserHelper::OnFrameStarted(std::string strName, int nID, std::string strTxNode, std::string strLength)
+int CParserHelper::OnFrameStarted( std::string strName, int nID, std::string strTxNode, int nLength)
 {
     if ( nID == 0x3C )
     {
         m_ouDiagMasterFrame.m_strName = strName;
         m_ouDiagMasterFrame.m_nId = nID;
         m_ouDiagMasterFrame.m_strTxNode = strTxNode;
-        m_ouDiagMasterFrame.nLength = atoi(strLength.c_str());
+        m_ouDiagMasterFrame.nLength = nLength;
 
     }
     else if ( nID == 0x3d )
@@ -143,7 +156,7 @@ int CParserHelper::OnFrameStarted(std::string strName, int nID, std::string strT
         m_ouDiagSlaveFrame.m_strName = strName;
         m_ouDiagSlaveFrame.m_nId = nID;
         m_ouDiagSlaveFrame.m_strTxNode = strTxNode;
-        m_ouDiagSlaveFrame.nLength = atoi(strLength.c_str());
+        m_ouDiagSlaveFrame.nLength = nLength;
     }
     else
     {
@@ -151,7 +164,7 @@ int CParserHelper::OnFrameStarted(std::string strName, int nID, std::string strT
         ouLdfFrame.m_strName = strName;
         ouLdfFrame.m_nId = nID;
         ouLdfFrame.m_strTxNode = strTxNode;
-        ouLdfFrame.nLength = atoi(strLength.c_str());
+        ouLdfFrame.nLength = nLength;
         m_LdfFrameMap[nID] = ouLdfFrame;
     }
     m_nLastFrameId = nID;
@@ -175,7 +188,7 @@ int CParserHelper::nOnSignalEncoding( UINT m_unMin, UINT m_unMax, DOUBLE m_fFact
     return 0;
 }
 
-std::list<FRAME_STRUCT> ouList;
+
 
 int CParserHelper::nCreateMapList(std::map<std::string, std::string>& strDes, std::list<std::string>& strSourceList)
 {
@@ -230,6 +243,7 @@ int CParserHelper::nAaddFrameToEcu(std::string& strTxNode, std::map<std::string,
 
 INT CParserHelper::CreateNetwork()
 {
+    std::list<FRAME_STRUCT> ouList;
     m_ouCluster.m_ouLinParams.m_nBaudRate = m_nBaudRate;
     m_ouCluster.m_ouLinParams.m_strProtocolVersion = m_strProtocol;
 
@@ -417,6 +431,11 @@ INT CParserHelper::CreateNetwork()
 
         nAddDiadFrameToEcu(ouFrame);
     }
+for ( auto itrTable : m_listScheduleTable )
+    {
+        m_ouCluster.m_ouLinParams.ouLinParams.push_back(itrTable);
+    }
+
     return S_OK;
 }
 int CParserHelper::nAddDiadFrameToEcu(FRAME_STRUCT& ouFrame)
@@ -465,6 +484,184 @@ int CParserHelper::nAddDiadFrameToEcu(FRAME_STRUCT& ouFrame)
 
     return 0;
 }
+
+int CParserHelper::nAddCommand (  CScheduleCommands& ouScheduleCommand )
+{
+
+    /*if ( ouScheduleCommand.m_eCommandType == COMMAND_INVALID )
+    {
+        ouScheduleCommand.m_eCommandType = eGetCommandType(ouScheduleCommand.m_strCommandName);
+    }*/
+    if ( ouScheduleCommand.m_eCommandType != COMMAND_INVALID )
+    {
+        nFillDiagnosticDetails(ouScheduleCommand);
+        m_listTempScheduleCommands.push_back(ouScheduleCommand);
+    }
+    return 0;
+}
+
+
+int CParserHelper::nFillDiagnosticDetails(CScheduleCommands& ouScheduleCommand)
+{
+    std::map<std::string, Ecu_Lin_Params>::iterator itrEcuDetails = m_ouEcuList.find(ouScheduleCommand.m_strNodeName);
+    if ( itrEcuDetails == m_ouEcuList.end() )
+    {
+        return S_FALSE;
+    }
+    switch ( ouScheduleCommand.m_eCommandType )
+    {
+        case COMMAND_ASSIGN_FRAME_ID:
+        {
+            ouScheduleCommand.m_listIDs[LIN_NAD_INDEX] = itrEcuDetails->second.m_nConfiguredNAD;
+            ouScheduleCommand.m_listIDs[LIN_PCI_INDEX] = 0x6;
+            ouScheduleCommand.m_listIDs[LIN_SID_INDEX] = LIN_SID_ASSIGN_FRAME_ID;
+            ouScheduleCommand.m_listIDs[3] = itrEcuDetails->second.m_unProductId[0];
+            ouScheduleCommand.m_listIDs[4] = 0;
+            ouScheduleCommand.m_listIDs[5] = 0xFF;
+            ouScheduleCommand.m_listIDs[6] = 0xFF;
+            ouScheduleCommand.m_listIDs[7] = 0;             //TODO::PID
+        }
+        break;
+        case COMMAND_ASSIGN_NAD:
+        {
+            ouScheduleCommand.m_listIDs[LIN_NAD_INDEX] = itrEcuDetails->second.m_nInitialNAD;
+            ouScheduleCommand.m_listIDs[LIN_PCI_INDEX] = 0x6;
+            ouScheduleCommand.m_listIDs[LIN_SID_INDEX] = LIN_SID_ASSIGN_NAD_ID;
+            ouScheduleCommand.m_listIDs[3] = itrEcuDetails->second.m_unProductId[0];
+            ouScheduleCommand.m_listIDs[4] = 0;
+            ouScheduleCommand.m_listIDs[5] = itrEcuDetails->second.m_unProductId[1];
+            ouScheduleCommand.m_listIDs[6] = 0;
+            ouScheduleCommand.m_listIDs[7] = (unsigned char)itrEcuDetails->second.m_nConfiguredNAD;             //TODO::PID
+        }
+        break;
+        case COMMAND_CONDITIONAL_CHANGE_NAD:
+        {
+            unsigned char ucTempData[8];
+            memcpy(ucTempData, ouScheduleCommand.m_listIDs, sizeof(ucTempData));
+            ouScheduleCommand.m_listIDs[LIN_NAD_INDEX] = ucTempData[0];
+            ouScheduleCommand.m_listIDs[LIN_PCI_INDEX] = 0x6;
+            ouScheduleCommand.m_listIDs[LIN_SID_INDEX] = LIN_SID_COND_CHANGE_NAD;
+            memcpy( &ouScheduleCommand.m_listIDs[3], &ucTempData[1], 5 );
+        }
+        break;
+        case COMMAND_DATA_DUMP:
+        {
+            ouScheduleCommand.m_listIDs[LIN_NAD_INDEX] = itrEcuDetails->second.m_nConfiguredNAD;
+            ouScheduleCommand.m_listIDs[LIN_PCI_INDEX] = 0x6;
+            ouScheduleCommand.m_listIDs[LIN_SID_INDEX] = LIN_SID_DATA_DUMP;
+            memset( &ouScheduleCommand.m_listIDs[3], 0XFF, 5 );
+        }
+        break;
+        case COMMAND_SAVE_CONFIGURATION:
+        {
+            ouScheduleCommand.m_listIDs[LIN_NAD_INDEX] = itrEcuDetails->second.m_nConfiguredNAD;
+            ouScheduleCommand.m_listIDs[LIN_PCI_INDEX] = 0x6;
+            ouScheduleCommand.m_listIDs[LIN_SID_INDEX] = LIN_SID_SAVE_CONFIG;
+            memset( &ouScheduleCommand.m_listIDs[3], 0XFF, 5 );
+        }
+        break;
+        case COMMAND_FREE_FORMAT:
+        {
+            unsigned char ucTempData[8];
+            memcpy(ucTempData, ouScheduleCommand.m_listIDs, sizeof(ucTempData));
+            ouScheduleCommand.m_listIDs[LIN_NAD_INDEX] = itrEcuDetails->second.m_nConfiguredNAD;
+            ouScheduleCommand.m_listIDs[LIN_PCI_INDEX] = 0x6;
+            ouScheduleCommand.m_listIDs[LIN_SID_INDEX] = LIN_SID_SAVE_CONFIG;
+            memcpy( &ouScheduleCommand.m_listIDs[3], &ucTempData[0], 6 );
+        }
+        break;
+        default:
+            memset( ouScheduleCommand.m_listIDs, 0, 8 );
+    }
+
+    return S_OK;
+}
+
+
+HRESULT CParserHelper::nGetMessageTypeId( std::string strFrameName, int& nId, eCommandType& m_eCommandType )
+{
+    //1. Check in Unconditional & Diag Frames.
+    std::map<int, LdfFrame>::iterator itrFrame =  m_LdfFrameMap.begin();
+    while ( m_LdfFrameMap.end()  != itrFrame )
+    {
+        if ( itrFrame->second.m_strName == strFrameName )
+        {
+            nId = itrFrame->first;
+            m_eCommandType = COMMAND_UNCONDITIONAL;
+            return S_OK;
+        }
+        itrFrame++;
+    }
+
+    if ( m_ouDiagMasterFrame.m_strName == strFrameName )
+    {
+        nId = 0x3c;
+        m_eCommandType = COMMAND_UNCONDITIONAL;
+        return S_OK;
+    }
+
+    if ( m_ouDiagSlaveFrame.m_strName == strFrameName )
+    {
+        nId = 0x3d;
+        m_eCommandType = COMMAND_UNCONDITIONAL;
+        return S_OK;
+    }
+
+    std::list<std::string>::iterator itrName = std::find(m_LdfSporadicFrameList.begin(), m_LdfSporadicFrameList.end(), strFrameName );
+
+    if ( ( itrName != m_LdfSporadicFrameList.end() ) && ( *itrName == strFrameName ) )
+    {
+        nId = -1;
+        m_eCommandType = COMMAND_SPORADIC;
+        return S_OK;
+    }
+    std::map<std::string, int>::iterator itr = m_LdfEventTriggerFrameList.find(strFrameName);
+    if ( itr != m_LdfEventTriggerFrameList.end() )
+    {
+        nId = itr->second;
+        m_eCommandType = COMMAND_EVENT;
+        return S_OK;
+    }
+    return S_FALSE;
+}
+
+
+eCommandType CParserHelper::eGetCommandType(std::string& strName)
+{
+    eCommandType ouCommandType = COMMAND_UNCONDITIONAL;     //By default
+    std::list<std::string>::iterator itrName =  find(m_LdfSporadicFrameList.begin(), m_LdfSporadicFrameList.end(), strName );
+    if ( itrName != m_LdfSporadicFrameList.end() )
+    {
+        return COMMAND_SPORADIC;
+    }
+    std::map<std::string, int>::iterator itr =  m_LdfEventTriggerFrameList.find(strName);
+    if ( itr != m_LdfEventTriggerFrameList.end() )
+    {
+        return COMMAND_EVENT;
+    }
+    return ouCommandType;
+}
+
+
+int CParserHelper::nAddScheduleTable( std::string strName )
+{
+    CSheduleTable ouTable;
+    ouTable.m_strTableName = strName;
+    ouTable.m_listCommands = m_listTempScheduleCommands;
+    m_listTempScheduleCommands.clear();
+    if ( ouTable.m_listCommands.size() > 0 )
+    {
+        m_listScheduleTable.push_back(ouTable);
+    }
+    return 0;
+}
+
+int CParserHelper::nUpdateEcuDetails(std::string strEcuName, Ecu_Lin_Params& ouLinParams )
+{
+    m_ouEcuList[strEcuName] = ouLinParams;
+    return 0;
+}
+
 
 
 void CParserHelper::GetStringSectionName(eCurrentSection ouCurrentSection, std::string& strSectionName)

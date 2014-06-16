@@ -1,11 +1,16 @@
 #include "DIL_Interface_stdafx.h"
 #include "CommanDIL_LIN.h"
 
+
 CCommanDIL_LIN::CCommanDIL_LIN(void)
 {
     InitializeCriticalSection(&sg_CritSectForAckBuf);
+    m_ouTransmitThread.m_pBuffer = this;
+    m_ouTransmitThread.m_hActionEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
     m_unClientCnt = 0;
+    InitializeCriticalSection(&m_ouCriticalSection);
 }
+
 
 CCommanDIL_LIN::~CCommanDIL_LIN(void)
 {
@@ -29,7 +34,6 @@ DWORD CCommanDIL_LIN::dwGetAvailableClientSlot()
 
     return nClientId;
 }
-
 BOOL CCommanDIL_LIN::bClientIdExist(const DWORD& dwClientId)
 {
     BOOL bReturn = FALSE;
@@ -156,6 +160,12 @@ BOOL CCommanDIL_LIN::bRemoveClient(DWORD dwClientId)
         }
     }
     return bResult;
+}
+HRESULT CCommanDIL_LIN::LIN_PerformClosureOperations(void)
+{
+    m_ouTransmitThread.bTerminateThread();      //Created or Not
+    PerformClosureOperations();
+    return S_OK;
 }
 
 HRESULT CCommanDIL_LIN::LIN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
@@ -346,6 +356,7 @@ HRESULT CCommanDIL_LIN::LIN_ManageMsgBuf(BYTE byAction, DWORD ClientID, CBaseLIN
     return hResult;
 }
 
+
 void CCommanDIL_LIN::vWriteIntoClientsBuffer(STLINDATA& sLinData)
 {
     //Write into the client's buffer and Increment message Count
@@ -518,3 +529,347 @@ bool CCommanDIL_LIN::vPeakMapEntry(const SACK_MAP& RefObj, UINT& ClientID, bool 
 
     return bResult;
 }
+
+HRESULT CCommanDIL_LIN::LIN_SetConfigData(ClusterConfig& ouConfig)
+{
+    for ( int i = 0 ; i < ouConfig.m_nChannelsConfigured; i++ )
+    {
+        std::list<FRAME_STRUCT> ouFrameList;
+        ouConfig.m_ouFlexChannelConfig[i].m_ouClusterInfo.GetFrames(ouFrameList);
+
+        memset(m_ucConfiguredMasterDlc[i], 8, sizeof(m_ucConfiguredMasterDlc[i]));
+
+for ( auto& ouFrame : ouFrameList )
+        {
+            m_ucConfiguredMasterDlc[i][ouFrame.m_nSlotId] = ouFrame.m_nLength;
+        }
+    }
+    return SetConfigData(ouConfig);
+}
+
+
+
+//Schedule table
+HRESULT CCommanDIL_LIN::LIN_RegisterLinScheduleTable(DWORD& dwClientId, int& nChannel, CSheduleTable ouTable, int& nHandle)
+{
+    EnterCriticalSection(&m_ouCriticalSection);
+    if (bClientIdExist(dwClientId) == false)
+    {
+        return ERR_NO_CLIENT_EXIST;
+    }
+    nChannel--;
+    if ( nChannel < 0 || nChannel > CHANNEL_ALLOWED )
+    {
+        return ERR_INVALID_CHANNEL;
+    }
+    nHandle = ++(m_ouScheduleController[nChannel].m_nTotalTables);
+    m_ouScheduleController[nChannel].m_ouScheduleTableList[nHandle] = ouTable;
+
+
+    //Register All Commands
+    std::list<CScheduleCommands>::iterator itrCommands = ouTable.m_listCommands.begin();
+    STLIN_MSG ouMsg;
+    ouMsg.m_ucChannel = nChannel+1;
+    ouMsg.m_ucMsgTyp = LIN_MASTER_RESPONSE;
+for(auto itrCommands : ouTable.m_listCommands)
+    {
+        ouMsg.m_ucMsgID= itrCommands.m_nId;
+        ouMsg.m_ucDataLen = m_ucConfiguredMasterDlc[nChannel][itrCommands.m_nId];
+        memset(ouMsg.m_ucData, 0xFF, sizeof(ouMsg.m_ucData));
+        if ( ouMsg.m_ucMsgID == 0x3C)
+        {
+            ouMsg.m_ucMsgTyp = LIN_SLAVE_RESPONSE;
+            ouMsg.m_ucDataLen = 8;
+            memcpy(ouMsg.m_ucData, m_ouScheduleController[nChannel].m_ouCurrentCommand.m_listIDs, 8);
+            LIN_Send(ouMsg);
+        }
+        ouMsg.m_ucMsgTyp = LIN_MASTER_RESPONSE;
+        LIN_Send(ouMsg);
+    }
+    LeaveCriticalSection(&m_ouCriticalSection);
+    return S_OK;
+}
+
+HRESULT CCommanDIL_LIN::LIN_DeRegisterLinScheduleTabel(DWORD& dwClientId, int& nChannel, int& nTableHandle)
+{
+    EnterCriticalSection(&m_ouCriticalSection);
+    if (bClientIdExist(dwClientId) == false)
+    {
+        return ERR_NO_CLIENT_EXIST;
+    }
+    if ( nChannel < 0 || nChannel > CHANNEL_ALLOWED )
+    {
+        return ERR_INVALID_CHANNEL;
+    }
+
+    std::map<int, CSheduleTable>::iterator itr = m_ouScheduleController[nChannel].m_ouScheduleTableList.find(nTableHandle);
+    if ( itr != m_ouScheduleController[nChannel].m_ouScheduleTableList.end() )
+    {
+        m_ouScheduleController[nChannel].m_ouScheduleTableList.erase(itr);
+    }
+    LeaveCriticalSection(&m_ouCriticalSection);
+    return S_OK;
+}
+
+
+
+HRESULT CCommanDIL_LIN::LIN_StartLinScheduleTable(DWORD& dwClientId, int& nChannel, int& nTableHandle)
+{
+    nChannel--;
+    if (bClientIdExist(dwClientId) == false)
+    {
+        return ERR_NO_CLIENT_EXIST;
+    }
+    if ( nChannel < 0 || nChannel > CHANNEL_ALLOWED )
+    {
+        return ERR_INVALID_CHANNEL;
+    }
+    if ( m_ouScheduleController[nChannel].m_nCurrentHandle == nTableHandle )
+    {
+        return S_OK;
+    }
+
+    EnterCriticalSection(&m_ouCriticalSection);
+    std::map<int, CSheduleTable>::iterator itr = m_ouScheduleController[nChannel].m_ouScheduleTableList.find(nTableHandle);
+    if ( itr != m_ouScheduleController[nChannel].m_ouScheduleTableList.end() )
+    {
+        std::list<CScheduleCommands>::iterator itrCommand = itr->second.m_listCommands.begin();
+        if ( itrCommand != itr->second.m_listCommands.end() )
+        {
+            m_ouScheduleController[nChannel].m_ouCurrentCommand = *itrCommand;
+            m_ouScheduleController[nChannel].m_nCurrentHandle = nTableHandle;
+            m_ouScheduleController[nChannel].m_nCurrentCommandIndex = 0;
+            m_ouScheduleController[nChannel].m_nCurrentDelay = static_cast<int>(itrCommand->m_fDelay);
+        }
+    }
+    LeaveCriticalSection(&m_ouCriticalSection);
+    return S_OK;
+}
+
+HRESULT CCommanDIL_LIN::LIN_UpdateLinScheduleTable( DWORD& dwClientId, int& nChannel, int& nTableHandle, CSheduleTable& ouTable )
+{
+    EnterCriticalSection(&m_ouCriticalSection);
+    if (bClientIdExist(dwClientId) == false)
+    {
+        return ERR_NO_CLIENT_EXIST;
+    }
+    if ( nChannel < 0 || nChannel > CHANNEL_ALLOWED )
+    {
+        return ERR_INVALID_CHANNEL;
+    }
+
+
+    std::map<int, CSheduleTable>::iterator itr = m_ouScheduleController[nChannel].m_ouScheduleTableList.find(nTableHandle);
+    if ( itr != m_ouScheduleController[nChannel].m_ouScheduleTableList.end() )
+    {
+        itr->second = ouTable;
+    }
+    LeaveCriticalSection(&m_ouCriticalSection);
+    return S_OK;
+}
+
+
+HRESULT CCommanDIL_LIN::LIN_EnableLinScheuleCommand( DWORD& dwClientId, int& nChannel, int nTableHandle, int nIndex, bool bEnable )
+{
+    EnterCriticalSection(&m_ouCriticalSection);
+    std::map<int, CSheduleTable>::iterator itrTable = m_ouScheduleController[nChannel].m_ouScheduleTableList.find(nTableHandle);
+    if ( itrTable != m_ouScheduleController[nChannel].m_ouScheduleTableList.end() )
+    {
+        std::list<CScheduleCommands>::iterator itrCommand = itrTable->second.m_listCommands.begin();
+        advance(itrCommand, nIndex);
+        if ( itrCommand != itrTable->second.m_listCommands.end() )
+        {
+            itrCommand->m_bEnabled = bEnable;
+        }
+    }
+    LeaveCriticalSection(&m_ouCriticalSection);
+    return S_OK;
+}
+
+
+//Individual Header commands.
+HRESULT CCommanDIL_LIN::LIN_RegisterLinHeader( DWORD& dwClientId, int& nChannel, int nId, int nCycleTimer )
+{
+    if (bClientIdExist(dwClientId) == false)
+    {
+        return ERR_NO_CLIENT_EXIST;
+    }
+    if ( nChannel < 0 || nChannel > CHANNEL_ALLOWED )
+    {
+        return ERR_INVALID_CHANNEL;
+    }
+
+    sIdDelay ouidDelay;
+    ouidDelay.m_nActualDelay = ouidDelay.m_nCurrentDelay = nCycleTimer;
+
+    m_ouScheduleController[nChannel].m_ouHeaderCommands[nId] = ouidDelay;
+    return S_OK;
+}
+
+HRESULT CCommanDIL_LIN::LIN_DeRegisterLinHeader( DWORD& dwClientId, int& nChannel, int nId)
+{
+    if (bClientIdExist(dwClientId) == false)
+    {
+        return ERR_NO_CLIENT_EXIST;
+    }
+    if ( nChannel < 0 || nChannel > CHANNEL_ALLOWED )
+    {
+        return ERR_INVALID_CHANNEL;
+    }
+
+    std::map<int, sIdDelay>::iterator itr = m_ouScheduleController[nChannel].m_ouHeaderCommands.find(nId);
+    if ( itr!= m_ouScheduleController[nChannel].m_ouHeaderCommands.end() )
+    {
+        m_ouScheduleController[nChannel].m_ouHeaderCommands.erase(itr);
+    }
+
+    return S_OK;
+}
+
+
+HRESULT CCommanDIL_LIN::LIN_StartHardware(void)
+{
+    StartHardware();
+    m_ouTransmitThread.m_unActionCode = INVOKE_FUNCTION;
+    m_ouTransmitThread.bStartThread(LINTxWndTransmitThread);
+    SetEvent(m_ouTransmitThread.m_hActionEvent);
+    return S_OK;
+}
+
+HRESULT CCommanDIL_LIN::LIN_PreStartHardware(void)
+{
+    PreStartHardware();
+    return S_OK;
+}
+
+HRESULT CCommanDIL_LIN::LIN_StopHardware(void)
+{
+    m_ouTransmitThread.m_unActionCode = SUSPEND;
+    for ( int nChannel = 0; nChannel < CHANNEL_ALLOWED; nChannel++ )
+    {
+        m_ouScheduleController[nChannel].m_nCurrentCommandIndex = -1;
+        m_ouScheduleController[nChannel].m_nCurrentDelay = -1;
+        m_ouScheduleController[nChannel].m_nCurrentHandle = -1;
+        m_ouScheduleController[nChannel].m_nTotalTables = 0;
+        m_ouScheduleController[nChannel].m_ouHeaderCommands.clear();
+        m_ouScheduleController[nChannel].m_ouScheduleTableList.clear();
+        m_ouScheduleController[nChannel].m_ouCurrentCommand.m_bEnabled = false;
+
+    }
+
+    StopHardware();
+    return S_OK;
+}
+
+INT CCommanDIL_LIN::nTransmitMessages(int nChannel)
+{
+    STLIN_MSG ouMsg;
+    ouMsg.m_ucMsgTyp = LIN_MASTER_RESPONSE;
+    ouMsg.m_ucChannel = nChannel+1;
+    EnterCriticalSection(&m_ouCriticalSection);
+    //1. SCeduale Table
+    m_ouScheduleController[nChannel].m_nCurrentDelay--;
+    if ( 0 >= m_ouScheduleController[nChannel].m_nCurrentDelay )
+    {
+        //1. Transmit Messages
+        ouMsg.m_ucMsgID= m_ouScheduleController[nChannel].m_ouCurrentCommand.m_nId;
+        if ( m_ouScheduleController[nChannel].m_ouCurrentCommand.m_bEnabled == true)
+        {
+            ouMsg.m_ucDataLen = m_ucConfiguredMasterDlc[nChannel][ouMsg.m_ucMsgID];
+            memset(ouMsg.m_ucData, 0xFF, sizeof(ouMsg.m_ucData));
+
+            //Diag Message
+            if ( ouMsg.m_ucMsgID == 0x3C )
+            {
+                ouMsg.m_ucMsgTyp = LIN_SLAVE_RESPONSE;
+                ouMsg.m_ucDataLen = 8;
+                memcpy(ouMsg.m_ucData, m_ouScheduleController[nChannel].m_ouCurrentCommand.m_listIDs, 8);
+                LIN_Send(ouMsg);
+            }
+            ouMsg.m_ucMsgTyp = LIN_MASTER_RESPONSE;
+            LIN_Send(ouMsg);
+        }
+        //2. Get Next Message
+        std::map<int, CSheduleTable>::iterator itrTable = m_ouScheduleController[nChannel].m_ouScheduleTableList.find(m_ouScheduleController[nChannel].m_nCurrentHandle);
+        if ( itrTable != m_ouScheduleController[nChannel].m_ouScheduleTableList.end() )
+        {
+            m_ouScheduleController[nChannel].m_nCurrentCommandIndex++;
+            if (m_ouScheduleController[nChannel].m_nCurrentCommandIndex >= itrTable->second.m_listCommands.size() )
+            {
+                m_ouScheduleController[nChannel].m_nCurrentCommandIndex =  0;
+            }
+            std::list<CScheduleCommands>::iterator itrCommand = itrTable->second.m_listCommands.begin();
+            advance(itrCommand, m_ouScheduleController[nChannel].m_nCurrentCommandIndex);
+            m_ouScheduleController[nChannel].m_ouCurrentCommand = *itrCommand;
+            m_ouScheduleController[nChannel].m_nCurrentDelay =  static_cast<int>(itrCommand->m_fDelay);
+        }
+
+    }
+
+    //For Normal Headers
+    for (std::map<int, sIdDelay>::iterator itr = m_ouScheduleController[nChannel].m_ouHeaderCommands.begin(); itr != m_ouScheduleController[nChannel].m_ouHeaderCommands.end(); itr++ )
+    {
+        itr->second.m_nCurrentDelay--;
+        if ( itr->second.m_nCurrentDelay == 0 )
+        {
+            ouMsg.m_ucMsgID= itr->first;
+            ouMsg.m_ucDataLen = m_ucConfiguredMasterDlc[nChannel][ouMsg.m_ucMsgID];
+            memset(ouMsg.m_ucData, 0xFF, sizeof(ouMsg.m_ucData));
+            itr->second.m_nCurrentDelay = itr->second.m_nActualDelay;
+            LIN_Send(ouMsg);
+        }
+    }
+    LeaveCriticalSection(&m_ouCriticalSection);
+    return S_OK;
+}
+
+
+DWORD WINAPI CCommanDIL_LIN::LINTxWndTransmitThread(LPVOID pVoid)
+{
+    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
+    if (pThreadParam == NULL)
+    {
+        return (DWORD)-1;
+    }
+    CCommanDIL_LIN* pouData = (CCommanDIL_LIN*)pThreadParam->m_pBuffer;
+
+    if (pouData == NULL)
+    {
+        return (DWORD)-1;
+    }
+
+    bool bLoopON = true;
+
+    while (bLoopON)
+    {
+        WaitForSingleObject(pThreadParam->m_hActionEvent, 1);
+        switch (pThreadParam->m_unActionCode)
+        {
+            case INVOKE_FUNCTION:
+            {
+                //TODO:: Required to loop by number of channels.
+                pouData->nTransmitMessages(0);
+            }
+            break;
+
+            case SUSPEND:
+            {
+                WaitForSingleObject(pThreadParam->m_hActionEvent, INFINITE);
+            }
+            break;
+
+            case EXIT_THREAD:
+            {
+                bLoopON = false;
+            }
+            break;
+
+            default:
+                break;
+        }
+    }
+    SetEvent(pThreadParam->hGetExitNotifyEvent());
+    return 0;
+}
+
+

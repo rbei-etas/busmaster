@@ -155,7 +155,7 @@ __int64 CMsgContainerFlexRay::nCreateMapIndexKey( LPVOID pMsgData )
     return (n64MapIndex);
 }
 
-BOOL CMsgContainerFlexRay::bTobeBlocked(s_FLXMSG & /* sFlexRayData */)
+BOOL CMsgContainerFlexRay::bTobeBlocked(s_FLXMSG& /* sFlexRayData */)
 {
     return FALSE;
 }
@@ -167,7 +167,7 @@ BOOL CMsgContainerFlexRay::bIsTransitionInState(UINT /* unChannel */,
     return FALSE;
 }
 
-void CMsgContainerFlexRay::vProcessCurrErrorEntry(const SERROR_INFO & /* sErrInfo */)
+void CMsgContainerFlexRay::vProcessCurrErrorEntry(const SERROR_INFO& /* sErrInfo */)
 {
 }
 
@@ -458,12 +458,12 @@ void CMsgContainerFlexRay::vSaveOWandGetDetails( void* pMsg,
     m_ouOWFlexRayBuf.WriteIntoBuffer(pouFLEXData, dwMapIndex, nBufferIndex);
 }
 
-HRESULT CMsgContainerFlexRay::ApplyFilterScheme(void * /* pvFilterApplied */)
+HRESULT CMsgContainerFlexRay::ApplyFilterScheme(void* /* pvFilterApplied */)
 {
     return S_FALSE;
 }
 
-HRESULT CMsgContainerFlexRay::GetFilterScheme(void * /* pvFilterApplied */)
+HRESULT CMsgContainerFlexRay::GetFilterScheme(void* /* pvFilterApplied */)
 {
     return S_FALSE;
 }
@@ -585,7 +585,7 @@ void CMsgContainerFlexRay::vSetMsgLength(CString strsgLength)
   Date Created   : 14-04-2011
   Modifications  :
 *******************************************************************************/
-USHORT CMsgContainerFlexRay::usProcessCurrErrorEntry(SERROR_INFO & /* sErrInfo */)
+USHORT CMsgContainerFlexRay::usProcessCurrErrorEntry(SERROR_INFO& /* sErrInfo */)
 {
     return 0;
 }

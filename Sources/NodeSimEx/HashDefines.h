@@ -299,7 +299,7 @@ struct sTCAN_TIME_MSG
     bool  m_bCANFD;     // bool indicates CAN FD message or not
 };
 typedef sTCAN_TIME_MSG STCAN_TIME_MSG;
-typedef sTCAN_TIME_MSG * PSTCAN_TIME_MSG;
+typedef sTCAN_TIME_MSG* PSTCAN_TIME_MSG;
 
 struct sTLIN_TIME_MSG
 {
@@ -313,7 +313,7 @@ struct sTLIN_TIME_MSG
     ULONG m_ulTimeStamp;
 };
 typedef sTLIN_TIME_MSG STLIN_TIME_MSG;
-typedef STLIN_TIME_MSG * PSTLIN_TIME_MSG;
+typedef STLIN_TIME_MSG* PSTLIN_TIME_MSG;
 
 // All function prototype is used in function editor.
 typedef VOID (__cdecl* PFMSG_HANDLER_CAN)(STCAN_TIME_MSG Rx_Msg);
@@ -352,7 +352,7 @@ struct sTIMERHANDLER
     CWinThread*     pomThreadHandle;
 };
 typedef sTIMERHANDLER STIMERHANDLER;
-typedef STIMERHANDLER * PSTIMERHANDLER;
+typedef STIMERHANDLER* PSTIMERHANDLER;
 
 
 //this structure store STIMERHANDLER and pointer to make a list
@@ -362,7 +362,7 @@ struct sTIMERHANDLERLIST
     sTIMERHANDLERLIST* psNextTimer;
 };
 typedef sTIMERHANDLERLIST STIMERHANDLERLIST;
-typedef STIMERHANDLERLIST * PSTIMERHANDLERLIST;
+typedef STIMERHANDLERLIST* PSTIMERHANDLERLIST;
 
 //This structure stores node name and pointer to the list of timer of
 //the node
@@ -373,7 +373,7 @@ struct sNODETIMERLIST
     sNODETIMERLIST* psNextTimerListPtr;
 };
 typedef sNODETIMERLIST SNODETIMERLIST;
-typedef SNODETIMERLIST * PSNODETIMERLIST;
+typedef SNODETIMERLIST* PSNODETIMERLIST;
 
 class CExecuteFunc;
 
@@ -385,7 +385,7 @@ struct sNODEOBJECT
     sNODEOBJECT* m_psNextNode;
 };
 typedef sNODEOBJECT SNODEOBJECT;
-typedef SNODEOBJECT * PSNODEOBJECT;
+typedef SNODEOBJECT* PSNODEOBJECT;
 
 // This structure stores the DLL Handler and pointer to its corresponding function
 // to be executed on press of the key.
@@ -396,7 +396,7 @@ struct sDLLHANDLER
     // executed on DLL Load\Unload
 };
 typedef sDLLHANDLER SDLLHANDLER;
-typedef sDLLHANDLER * PSDLLHANDLER;
+typedef sDLLHANDLER* PSDLLHANDLER;
 
 struct sBUSEVHANDLER
 {
@@ -404,7 +404,7 @@ struct sBUSEVHANDLER
     PFBUSEV_HANDLER m_pFBusEvHandlers;       // Long pointer to the function to be
 };
 typedef sBUSEVHANDLER SBUSEVHANDLER;
-typedef sBUSEVHANDLER * PSBUSEVHANDLER;
+typedef sBUSEVHANDLER* PSBUSEVHANDLER;
 
 // This structure stores the error code and pointer to its corresponding function
 // to be executed on press of the key.
@@ -416,7 +416,7 @@ struct sERRORHANDLER
     CExecuteFunc* m_pCExecuteFunc;        //to pass this pointer to access its variable
 };
 typedef sERRORHANDLER SERRORHANDLER;
-typedef sERRORHANDLER * PSERRORHANDLER;
+typedef sERRORHANDLER* PSERRORHANDLER;
 
 
 struct sEVENTHANDLERLIN
@@ -427,7 +427,7 @@ struct sEVENTHANDLERLIN
     sERROR_INFO_LIN m_ouLinEventInfo;
 };
 typedef sEVENTHANDLERLIN SEVENTHANDLERLIN;
-typedef sEVENTHANDLERLIN * PSEVENTHANDLERLIN;
+typedef sEVENTHANDLERLIN* PSEVENTHANDLERLIN;
 
 // This structure stores the event handler info and pointer to its corresponding function
 // to be executed.
@@ -443,7 +443,7 @@ struct sEVENTHANDLER
     CExecuteFunc* m_pCExecuteFunc;        //to pass this pointer to access its variable
 };
 typedef sEVENTHANDLER SEVENTHANDLER;
-typedef sEVENTHANDLER * PSEVENTHANDLER;
+typedef sEVENTHANDLER* PSEVENTHANDLER;
 
 // This structure stores the key value and pointer to its corresponding function
 // to be executed on press of the key.
@@ -455,7 +455,7 @@ struct sKEYHANDLER
     // key
 };
 typedef sKEYHANDLER SKEYHANDLER;
-typedef SKEYHANDLER * PSKEYHANDLER;
+typedef SKEYHANDLER* PSKEYHANDLER;
 
 struct sMSG_RANGE
 {
@@ -463,7 +463,7 @@ struct sMSG_RANGE
     UINT    m_unTo;
 };
 typedef sMSG_RANGE SMSG_RANGE;
-typedef sMSG_RANGE * PSMSG_RANGE;
+typedef sMSG_RANGE* PSMSG_RANGE;
 
 
 struct sMSGINFO_FOR_HANDLER
@@ -476,7 +476,7 @@ struct sMSGINFO_FOR_HANDLER
     BOOL    m_bGenericHandlerON;
 };
 typedef sMSGINFO_FOR_HANDLER SMSGINFO_FOR_HANDLER;
-typedef sMSGINFO_FOR_HANDLER * PSMSGINFO_FOR_HANDLER;
+typedef sMSGINFO_FOR_HANDLER* PSMSGINFO_FOR_HANDLER;
 
 struct sMSGID_HANDLER_CAN
 {
@@ -484,7 +484,7 @@ struct sMSGID_HANDLER_CAN
     PFMSG_HANDLER_CAN m_pFMsgHandler;
 };
 typedef sMSGID_HANDLER_CAN SMSGID_HANDLER_CAN;
-typedef sMSGID_HANDLER_CAN * PSMSGID_HANDLER_CAN;
+typedef sMSGID_HANDLER_CAN* PSMSGID_HANDLER_CAN;
 
 //This is used for all the buses except CAN
 struct sMSGID_HANDLER
@@ -493,7 +493,7 @@ struct sMSGID_HANDLER
     PFMSG_HANDLER m_pFMsgHandler;
 };
 typedef sMSGID_HANDLER SMSGID_HANDLER;
-typedef sMSGID_HANDLER * PSMSGID_HANDLER;
+typedef sMSGID_HANDLER* PSMSGID_HANDLER;
 
 struct sMSGID_RANGE_HANDLER_CAN
 {
@@ -501,7 +501,7 @@ struct sMSGID_RANGE_HANDLER_CAN
     PFMSG_HANDLER_CAN m_pFMsgHandler;
 };
 typedef sMSGID_RANGE_HANDLER_CAN SMSGID_RANGE_HANDLER_CAN;
-typedef sMSGID_RANGE_HANDLER_CAN * PSMSGID_RANGE_HANDLER_CAN;
+typedef sMSGID_RANGE_HANDLER_CAN* PSMSGID_RANGE_HANDLER_CAN;
 
 struct sMSGID_RANGE_HANDLER_LIN
 {
@@ -509,7 +509,7 @@ struct sMSGID_RANGE_HANDLER_LIN
     PFMSG_HANDLER_LIN m_pFMsgHandler;
 };
 typedef sMSGID_RANGE_HANDLER_LIN SMSGID_RANGE_HANDLER_LIN;
-typedef SMSGID_RANGE_HANDLER_LIN * PSMSGID_RANGE_HANDLER_LIN;
+typedef SMSGID_RANGE_HANDLER_LIN* PSMSGID_RANGE_HANDLER_LIN;
 
 struct sMSGID_LIST_HANDLER_CAN
 {
@@ -517,7 +517,7 @@ struct sMSGID_LIST_HANDLER_CAN
     PFMSG_HANDLER_CAN m_pFMsgHandler;
 };
 typedef sMSGID_LIST_HANDLER_CAN SMSGID_LIST_HANDLER_CAN;
-typedef sMSGID_LIST_HANDLER_CAN * PSMSGID_LIST_HANDLER_CAN;
+typedef sMSGID_LIST_HANDLER_CAN* PSMSGID_LIST_HANDLER_CAN;
 
 struct sMSGID_LIST_HANDLER_LIN
 {
@@ -525,7 +525,7 @@ struct sMSGID_LIST_HANDLER_LIN
     PFMSG_HANDLER_LIN m_pFMsgHandler;
 };
 typedef sMSGID_LIST_HANDLER_LIN SMSGID_LIST_HANDLER_LIN;
-typedef SMSGID_LIST_HANDLER_LIN * PSMSGID_LIST_HANDLER_LIN;
+typedef SMSGID_LIST_HANDLER_LIN* PSMSGID_LIST_HANDLER_LIN;
 
 //This is used for all the buses except CAN
 struct sMSGID_RANGE_HANDLER
@@ -534,7 +534,7 @@ struct sMSGID_RANGE_HANDLER
     PFMSG_HANDLER m_pFMsgHandler;
 };
 typedef sMSGID_RANGE_HANDLER SMSGID_RANGE_HANDLER;
-typedef sMSGID_RANGE_HANDLER * PSMSGID_RANGE_HANDLER;
+typedef sMSGID_RANGE_HANDLER* PSMSGID_RANGE_HANDLER;
 
 struct sEXECUTE_MSG_HANDLER_CAN
 {
@@ -543,7 +543,7 @@ struct sEXECUTE_MSG_HANDLER_CAN
     CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_MSG_HANDLER_CAN SEXECUTE_MSG_HANDLER_CAN;
-typedef sEXECUTE_MSG_HANDLER_CAN * PSEXECUTE_MSG_HANDLER_CAN;
+typedef sEXECUTE_MSG_HANDLER_CAN* PSEXECUTE_MSG_HANDLER_CAN;
 
 struct sEXECUTE_MSG_HANDLER_LIN
 {
@@ -552,7 +552,7 @@ struct sEXECUTE_MSG_HANDLER_LIN
     CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_MSG_HANDLER_LIN SEXECUTE_MSG_HANDLER_LIN;
-typedef sEXECUTE_MSG_HANDLER_LIN * PSEXECUTE_MSG_HANDLER_LIN;
+typedef sEXECUTE_MSG_HANDLER_LIN* PSEXECUTE_MSG_HANDLER_LIN;
 
 //This is used for all the buses except CAN
 struct sEXECUTE_MSG_HANDLER
@@ -562,7 +562,7 @@ struct sEXECUTE_MSG_HANDLER
     CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_MSG_HANDLER SEXECUTE_MSG_HANDLER;
-typedef sEXECUTE_MSG_HANDLER * PSEXECUTE_MSG_HANDLER;
+typedef sEXECUTE_MSG_HANDLER* PSEXECUTE_MSG_HANDLER;
 
 struct sEXECUTE_KEY_HANDLER
 {
@@ -571,7 +571,7 @@ struct sEXECUTE_KEY_HANDLER
     CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_KEY_HANDLER SEXECUTE_KEY_HANDLER;
-typedef sEXECUTE_KEY_HANDLER * PSEXECUTE_KEY_HANDLER;
+typedef sEXECUTE_KEY_HANDLER* PSEXECUTE_KEY_HANDLER;
 
 struct sMsgHandlerDataCan
 {
@@ -598,7 +598,7 @@ struct sMsgHandlerDataCan
 
 };
 typedef sMsgHandlerDataCan SMSGHANDLERDATA_CAN;
-typedef sMsgHandlerDataCan * PSMSGHANDLERDATA_CAN;
+typedef sMsgHandlerDataCan* PSMSGHANDLERDATA_CAN;
 
 struct sMsgHandlerDataLin
 {
@@ -625,7 +625,7 @@ struct sMsgHandlerDataLin
 
 };
 typedef sMsgHandlerDataLin SMSGHANDLERDATA_LIN;
-typedef sMsgHandlerDataLin * PSMSGHANDLERDATA_LIN;
+typedef sMsgHandlerDataLin* PSMSGHANDLERDATA_LIN;
 
 struct sMsgHandlerData
 {
@@ -652,7 +652,7 @@ struct sMsgHandlerData
 
 };
 typedef sMsgHandlerData SMSGHANDLERDATA;
-typedef sMsgHandlerData * PSMSGHANDLERDATA;
+typedef sMsgHandlerData* PSMSGHANDLERDATA;
 
 // error defines for CConfigDetails class..
 #define defCONFIG_FILE_ERROR                1000
@@ -722,7 +722,7 @@ struct sSIMSYSARRAY
 
 };
 typedef sSIMSYSARRAY SSIMSYSARRAY;
-typedef SSIMSYSARRAY * PSSIMSYSARRAY;
+typedef SSIMSYSARRAY* PSSIMSYSARRAY;
 
 #define defMASK_CHECK_UNCHECK    0x00003000
 #define defMASK_LIST_CTRL        0x00003003
@@ -783,7 +783,7 @@ struct sEXECUTE_LOAD_HANDLER
     CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_LOAD_HANDLER SEXECUTE_LOAD_HANDLER;
-typedef sEXECUTE_LOAD_HANDLER * PSEXECUTE_LOAD_HANDLER;
+typedef sEXECUTE_LOAD_HANDLER* PSEXECUTE_LOAD_HANDLER;
 
 //The structure pass to thread function for load Fn execution
 struct sEXECUTE_BUSEVENT_HANDLER
@@ -792,7 +792,7 @@ struct sEXECUTE_BUSEVENT_HANDLER
     CExecuteFunc* m_pCExecuteFunc;
 };
 typedef sEXECUTE_BUSEVENT_HANDLER SEXECUTE_BUSEVENT_HANDLER;
-typedef sEXECUTE_BUSEVENT_HANDLER * PSEXECUTE_BUSEVENT_HANDLER;
+typedef sEXECUTE_BUSEVENT_HANDLER* PSEXECUTE_BUSEVENT_HANDLER;
 
 #define BLUE_COLOR              RGB(0,0,255)
 #define DEFAULT_FONT            _T("Courier")

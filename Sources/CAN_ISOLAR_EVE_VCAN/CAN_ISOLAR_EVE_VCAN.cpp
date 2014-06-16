@@ -90,6 +90,7 @@ public:
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
     HRESULT CAN_GetLastErrorString(std::string& acErrorStr);
+    HRESULT CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -447,6 +448,11 @@ static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
     /* Get the error text for the corresponding error code */
     sg_pIlog->vLogAMessage(A2T(File), Line, A2T(acErrText));
 
+    size_t nStrLen = strlen(acErrText);
+    if (nStrLen > CAN_MAX_ERRSTR)
+    {
+        nStrLen = CAN_MAX_ERRSTR;
+    }
     sg_acErrStr = acErrText;
 }
 
@@ -740,17 +746,17 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_PerformClosureOperations(void)
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetTimeModeMapping(SYSTEMTIME & /* CurrSysTime */, UINT64 & /* TimeStamp */, LARGE_INTEGER & /* QueryTickCount */)
+HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetTimeModeMapping(SYSTEMTIME& /* CurrSysTime */, UINT64& /* TimeStamp */, LARGE_INTEGER& /* QueryTickCount */)
 {
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_ListHwInterfaces(INTERFACE_HW_LIST & /* sSelHwInterface */, INT & /* nCount */)
+HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_ListHwInterfaces(INTERFACE_HW_LIST& /* sSelHwInterface */, INT& /* nCount */)
 {
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_SelectHwInterface(const INTERFACE_HW_LIST & /* sSelHwInterface */, INT /* nCount */)
+HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /* sSelHwInterface */, INT /* nCount */)
 {
     return S_OK;
 }
@@ -760,7 +766,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_DeselectHwInterface(void)
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS /* InitData */, int & /* Length */)
+HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS /* InitData */, int& /* Length */)
 {
     return S_OK;
 }
@@ -797,12 +803,12 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_ResetHardware(void)
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetCntrlStatus(const HANDLE & /* hEvent */, UINT & /* unCntrlStatus */)
+HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetCntrlStatus(const HANDLE& /* hEvent */, UINT& /* unCntrlStatus */)
 {
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_SendMsg(DWORD /* dwClientID */, const STCAN_MSG & sCanTxMsg)
+HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_SendMsg(DWORD /* dwClientID */, const STCAN_MSG& sCanTxMsg)
 {
     HRESULT ret_result = S_FALSE;
     STCAN_MSG sCanTxMsg1;
@@ -826,8 +832,15 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_SendMsg(DWORD /* dwClientID */, const STCAN_MS
     return ret_result;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetLastErrorString(std::string & /* acErrorStr */)
+HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetLastErrorString(std::string& /* acErrorStr */)
 {
+
+    return S_OK;
+}
+
+HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength)
+{
+
     return S_OK;
 }
 
@@ -838,7 +851,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetLastErrorString(std::string & /* acErrorStr
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetCurrStatus(s_STATUSMSG & StatusData)
+HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 {
     StatusData.wControllerStatus = m_Ctrl_Status;
 
@@ -866,7 +879,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetControllerParams(LONG & lParam, UINT /* nChannel */, ECONTR_PARAM eContrParam)
+HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetControllerParams(LONG& lParam, UINT /* nChannel */, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult = S_OK;
     switch (eContrParam)
@@ -945,7 +958,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_SetControllerParams(INT nValue, ECONTR_PARAM e
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetErrorCount(SERROR_CNT & /* sErrorCnt */, UINT /* nChannel */, ECONTR_PARAM /* eContrParam */)
+HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetErrorCount(SERROR_CNT& /* sErrorCnt */, UINT /* nChannel */, ECONTR_PARAM /* eContrParam */)
 {
     HRESULT hResult = S_OK;
     return hResult;
@@ -959,7 +972,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetErrorCount(SERROR_CNT & /* sErrorCnt */, UI
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_SetAppParams(HWND /* hWndOwner */, Base_WrapperErrorLogger * /* pILog */)
+HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_SetAppParams(HWND /* hWndOwner */, Base_WrapperErrorLogger* /* pILog */)
 {
     return S_OK;
 }

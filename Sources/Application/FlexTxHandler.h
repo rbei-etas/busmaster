@@ -61,4 +61,8 @@ public:
 
     //LIN
     HRESULT SetChannelConfig(ETYPE_BUS eBus, ClusterConfig* ouFlexConfig);
+    void vShowLINScheduleConfigDlg(bool bShow);
+    void vCreateLINScheduleConfigDlg(void* pParentWnd, ClusterConfig& pClusterConfig);
+    void vSetScheduleConfig(xmlDocPtr pxmlDocPtr);
+    void vGetScheduleConfig(xmlNodePtr pxmlNodePtr);
 };

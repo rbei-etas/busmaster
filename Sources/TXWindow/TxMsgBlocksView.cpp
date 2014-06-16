@@ -962,7 +962,7 @@ void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
     *pResult = 0;
 }
 
-void CTxMsgBlocksView::UpdateList(NM_LISTVIEW * /* pNMListView */)
+void CTxMsgBlocksView::UpdateList(NM_LISTVIEW* /* pNMListView */)
 {
     //AUC
     PSMSGBLOCKLIST psMsgBlock = nullptr ;
@@ -1449,7 +1449,7 @@ void CTxMsgBlocksView::OnChkbOnTimeTrigger()
 
     // Update Modified Flag
 
-    if( psMsgCurrentBlock->m_bActive == TRUE )
+    if( psMsgCurrentBlock != nullptr && psMsgCurrentBlock->m_bActive == TRUE )
     {
         m_bModified = TRUE;
     }

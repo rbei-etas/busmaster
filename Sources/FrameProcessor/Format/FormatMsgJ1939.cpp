@@ -63,7 +63,7 @@ void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
     if (IS_NUM_HEX_SET(bExprnFlag))
     {
         sprintf(psJ1939FData->m_acPGNHex, FORMAT_PGN_ID_HEX,
-                  psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
+                psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
         USHORT j = 0;       //j declared outside
         for (USHORT i = 0; i < psJ1939BData->m_unDLC; i++)
         {
@@ -76,7 +76,7 @@ void CFormatMsgJ1939::vFormatDataAndId(BYTE bExprnFlag,
     if (IS_NUM_DEC_SET(bExprnFlag))
     {
         sprintf(psJ1939FData->m_acPGNDec, FORMAT_PGN_ID_DEC,
-                  psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
+                psJ1939BData->m_sMsgProperties.m_uExtendedID.m_s29BitId.unGetPGN());
         USHORT j = 0;   //j declared outside
         for (USHORT i = 0; i < psJ1939BData->m_unDLC; i++)
         {

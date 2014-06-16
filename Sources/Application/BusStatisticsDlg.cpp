@@ -83,7 +83,7 @@ CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN,int nChannel
     m_nChannelCount = nChannelCount;
 }
 
-CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN * pouBSCAN, CWnd * /* pParent */, int nChannelCount)
+CBusStatisticsDlg::CBusStatisticsDlg(CBaseBusStatisticCAN* pouBSCAN, CWnd* /* pParent */, int nChannelCount)
     : CCommonStatistics(CBusStatisticsDlg::IDD, CAN),
       m_pouBSCAN(pouBSCAN),
       m_omStrBusLoad(""),

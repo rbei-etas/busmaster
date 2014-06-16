@@ -384,7 +384,7 @@ void CTxHandler::vGetTxWndConfigData(xmlNodePtr pxmlNodePtr)
 /**
  * Gets the configuration data of Tx Window.
  */
-void CTxHandler::vGetTxWndConfigData(BYTE * & /* pDesBuffer */, int & /* nBuffSize */)
+void CTxHandler::vGetTxWndConfigData(BYTE*& /* pDesBuffer */, int& /* nBuffSize */)
 {
 }
 

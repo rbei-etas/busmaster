@@ -151,11 +151,13 @@ enum eScroll
     FREEZE
 };
 
-enum eTreeItemStates {
+enum eTreeItemStates
+{
     TREESTATE_TOGGLE,
     TREESTATE_EXPAND,
     TREESTATE_COLLAPSE
 };
+
 
 typedef UINT TYPE_CHANNEL;
 
@@ -300,7 +302,7 @@ struct sWMUpdatePtrPara
     BOOL             m_bResult;
 };
 typedef sWMUpdatePtrPara SWMUPDATEPTRPARA;
-typedef sWMUpdatePtrPara * PSWMUPDATEPTRPARA;
+typedef sWMUpdatePtrPara* PSWMUPDATEPTRPARA;
 
 #define MAX_MSG_WND_COL_CNT              12
 

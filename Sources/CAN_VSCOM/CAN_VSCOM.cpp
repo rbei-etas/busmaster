@@ -474,7 +474,7 @@ HRESULT CDIL_CAN_VSCOM::CAN_PerformClosureOperations(void)
 * \param[out]    QueryTickCount, is LARGE_INTEGER
 * \return        S_OK for success
 */
-HRESULT CDIL_CAN_VSCOM::CAN_GetTimeModeMapping(SYSTEMTIME & CurrSysTime, UINT64 & /* TimeStamp */, LARGE_INTEGER & /* QueryTickCount */)
+HRESULT CDIL_CAN_VSCOM::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& /* TimeStamp */, LARGE_INTEGER& /* QueryTickCount */)
 {
     CurrSysTime = sg_CurrSysTime;
     return S_OK;
@@ -1145,7 +1145,7 @@ HRESULT CDIL_CAN_VSCOM::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 * \param[in]     nLength, is INT
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_VSCOM::CAN_GetLastErrorString(std::string & /* acErrorStr */)
+HRESULT CDIL_CAN_VSCOM::CAN_GetLastErrorString(std::string& /* acErrorStr */)
 {
     return WARN_DUMMY_API;
 }

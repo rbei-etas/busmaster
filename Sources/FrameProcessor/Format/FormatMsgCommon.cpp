@@ -27,7 +27,7 @@
 
 #include "include/Utils_Macro.h"
 
-CFormatMsgCommon::CFormatMsgCommon(CRefTimeKeeper & ouRefTimeKeeper) :
+CFormatMsgCommon::CFormatMsgCommon(CRefTimeKeeper& ouRefTimeKeeper) :
     m_ouRefTimeKeeper(ouRefTimeKeeper)
 {
     m_qwRelBaseTime = 0;

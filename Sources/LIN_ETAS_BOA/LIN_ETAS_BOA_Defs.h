@@ -162,6 +162,7 @@ class BOA_LINData
 public:
     STLIN_MSG m_ouLinData;
     OCI_QueueHandle m_OCI_TxQueueHandle;
+    UINT m_ouFrameType;
 };
 
 static BOOL m_bLINConnected = FALSE;
@@ -205,6 +206,7 @@ typedef struct tagCHANNEL
 
     OCI_LINControllerCapabilities m_ControllerCapabilities;
     CRITICAL_SECTION m_ouCriticalSection;
+    OCI_QueueHandle m_OCI_Master_Queue;
 
     //Thread
     CPARAM_THREADPROC m_ouDataTransmitThread;

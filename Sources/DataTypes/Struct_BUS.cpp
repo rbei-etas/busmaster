@@ -126,12 +126,12 @@ void s_FLXMSG::vSetSortAscending(bool /* bAscending */)
 {
 };
 
-int s_FLXMSG::DoCompareIndiv(const void * /* pEntry1 */, const void * /* pEntry2 */)
+int s_FLXMSG::DoCompareIndiv(const void* /* pEntry1 */, const void* /* pEntry2 */)
 {
     return 0;
 };
 
-__int64 s_FLXMSG::GetSlotID(struct_UCI_FLXMSG & /* pDatFLEX */)
+__int64 s_FLXMSG::GetSlotID(struct_UCI_FLXMSG& /* pDatFLEX */)
 {
     return 0;
 };

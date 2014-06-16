@@ -232,6 +232,9 @@
       <Project>{77290670-1dbd-4127-8bad-7c09990fa5ae}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\UDS_Protocol\UDS_Protocol.vcxproj">
+      <Project>{3f0ef2e6-3377-4f4e-872d-5366529cd038}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Utility\Utils.vcxproj">
       <Project>{4a20171c-51db-4e82-bce0-5e3eeb070566}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

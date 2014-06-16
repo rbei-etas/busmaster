@@ -95,7 +95,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <AdditionalOptions>/I "../EXTERNAL/GetText/include" %(AdditionalOptions)</AdditionalOptions>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(SolutionDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;..\EXTERNAL\libxml2\include;..\EXTERNAL\iconv\include;..\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;WINVER=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -146,6 +146,7 @@
     <ClCompile Include="MsgSignal_Datatypes.cpp" />
     <ClCompile Include="ProjConfig_DataTypes.cpp" />
     <ClCompile Include="Struct_BUS.cpp" />
+    <ClCompile Include="UDS_DataTypes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base_FlexRay_Buffer.h" />
@@ -173,6 +174,7 @@
     <ClInclude Include="SigGrphWnd_Datatypes.h" />
     <ClInclude Include="SigWatch_Datatypes.h" />
     <ClInclude Include="Typecode_FBX_entities.h" />
+    <ClInclude Include="UDS_DataTypes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

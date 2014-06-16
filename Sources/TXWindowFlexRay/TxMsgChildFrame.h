@@ -3,6 +3,7 @@
 //#include "TxFlexRayDataStore.h"
 #include "TransmitMsg.h"
 #include "TransmitMsg_LIN.h"
+#include "ScheduleTableCfgDlg.h"
 
 class CTxMsgChildFrame : public CMDIChildBase
 {

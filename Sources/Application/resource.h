@@ -361,6 +361,7 @@
 #define IDC_BUTTON_ENABLEALLHANDLERS    1015
 #define IDC_CHECK_CYCLIC                1015
 #define IDC_CHECK_HOLDING               1015
+#define IDC_ENABLE_MASTER_MODE          1015
 #define IDC_STAT_BTR0                   1016
 #define IDC_RBTN_EXTDED                 1016
 #define IDC_STAT_BUAD_RATE2             1016
@@ -978,6 +979,7 @@
 #define IDM_EDIT_MSG                    32885
 #define ID_SEND_MULTI_MSGS              32887
 #define IDM_NEW_UDEFNED_MSG             32888
+#define IDM_DELETE                      32889
 #define IDR_TOOL_STOPSENDMSG            32890
 #define IDM_CFGN_SEND_MSGS              32891
 #define IDM_DELETE_SEL_MSG              32892
@@ -1144,6 +1146,10 @@
 #define IDM_EXECUTE_ALL_HANDLERS_LIN    40023
 #define ID_CONFIGURE_MESSAGEDISPLAY_LIN 40024
 #define ID_LIN_FILTER_CONFIG            40025
+#define IDM_SCHEDULE_CONFIG_LIN         40026
+//UDS
+#define IDM_UDS                         40100
+#define IDD_SETTINGS_UDS                40101
 #define IDS_PROPT_FOR_EMPTY_FILENAME    61446
 #define IDS_INVALID_DB_PROMPT           61447
 #define IDC_COMB_TOOLBAR                61448
@@ -1197,15 +1203,14 @@
 #define IDM_NETWORK_STATISTICS_LIN      62492
 #define IDM_FILTER_LOGLINOFF            62493
 #define IDM_FILTER_MSGLINOFF            62494
-
-#define IDD_DLG_NETWORK_STATISTICS_LIN      62495
-#define IDM_NETWORK_STATISTICS_WND_LIN      63496
+#define IDD_DLG_NETWORK_STATISTICS_LIN  62495
 #define IDM_CONFIGURE_FILTER_LIN        62497
-#define IDM_SIGNALWATCH_ADDSIGNAL_LIN       63498
-#define IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN    63499
-#define IDI_ICON_SMSG                       63500
-#define IDM_NETWORK_STATISTICS_WND_CAN      63501
-
+#define IDM_NETWORK_STATISTICS_WND_LIN  63496
+#define IDM_SIGNALWATCH_ADDSIGNAL_LIN   63498
+#define IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN 63499
+#define IDI_ICON_SMSG                   63500
+#define IDM_NETWORK_STATISTICS_WND_CAN  63501
+#define IDC_STATIC_LIN_OVERWRITE        63502
 // Next default values for new objects
 //
 #ifdef APSTUDIO_INVOKED

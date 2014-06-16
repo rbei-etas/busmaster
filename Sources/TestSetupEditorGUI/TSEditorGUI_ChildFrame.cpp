@@ -80,6 +80,7 @@ CTSEditorChildFrame::CTSEditorChildFrame()
         m_pMainMenu = pMain->GetMenu();
     }
     vSetDefaultWndPlacement();
+    m_iNumberOfActiveChannels = CHANNEL_ALLOWED;
 }
 
 /******************************************************************************
@@ -1622,7 +1623,7 @@ void CTSEditorChildFrame::vSaveSendMessageInfo(CBaseEntityTA* pEntity)
         ouSendMsgEntity.m_eSignalUnitType = RAW;
     }
 
-    ouSendMsgEntity.m_byChannelNumber = BYTE(atoi(omTempListCtrl.GetItemText(def_SMSG_ROWNUM_SUINT, def_COLUMN_CHANNEL)));  // store Channel-Number
+    //ouSendMsgEntity.m_byChannelNumber = BYTE(atoi(omTempListCtrl.GetItemText(def_SMSG_ROWNUM_SUINT, def_COLUMN_CHANNEL)));  // store Channel-Number
 
     /*//Default Signal Vlaue
     omstrTemp = omTempListCtrl.GetItemText(def_SMSG_ROWNUM_SVALUE, def_COLUMN_VALUE);
@@ -2307,7 +2308,10 @@ INT CTSEditorChildFrame::nChangeEntityTitle(CBaseEntityTA* pEntity, CString& oms
     {
         case TEST_SETUP:
         {
-            m_ouTSEntity.m_omstrTestSetupTitle = omstrName;
+            if(omstrName.IsEmpty() == FALSE)
+            {
+                m_ouTSEntity.m_omstrTestSetupTitle = omstrName;
+            }
             vDisplayHeaderInfo(0);
             vSetFileSavedFlag(FALSE);
             break;
@@ -2316,7 +2320,10 @@ INT CTSEditorChildFrame::nChangeEntityTitle(CBaseEntityTA* pEntity, CString& oms
         {
             CTestCaseData ouTestCaseData;
             ((CTestCaseEntity*)pEntity)->GetTestCaseDetails(ouTestCaseData.m_omTitle, ouTestCaseData.m_omID, ouTestCaseData.m_eExcpAction);
-            ouTestCaseData.m_omTitle = omstrName;
+            if(omstrName.IsEmpty() == FALSE)
+            {
+                ouTestCaseData.m_omTitle = omstrName;
+            }
             ((CTestCaseEntity*)pEntity)->SetTestCaseDetails(ouTestCaseData.m_omTitle, ouTestCaseData.m_omID, ouTestCaseData.m_eExcpAction);
             vDisplayTestcaseInfo(pEntity);
             vSetFileSavedFlag(FALSE);
@@ -3535,13 +3542,15 @@ Code Tag       :
 ******************************************************************************/
 void CTSEditorChildFrame::OnFileExit(void)
 {
-    ShowWindow(SW_HIDE);
+    INT nRetVal = nPromptForSaveFile();
+    CHECKEQ(nRetVal, IDCANCEL);
     AfxGetMainWnd()->SetMenu(m_pMainMenu);
 
     /* Make the next available MDI window active */
     CWnd* pActivateWnd =   GetNextWindow();
     pActivateWnd->SetForegroundWindow();
     pActivateWnd->SetFocus();
+    ShowWindow(SW_HIDE);
     //OnFileClose();
     //OnClose();
 }
@@ -3669,13 +3678,13 @@ void CTSEditorChildFrame::OnClose()
     INT nRetVal = nPromptForSaveFile();
     CHECKEQ(nRetVal, IDCANCEL);
 
-    ShowWindow(SW_HIDE);
     AfxGetMainWnd()->SetMenu(m_pMainMenu);
 
     /* Make the next available MDI window active */
     CWnd* pActivateWnd =   GetNextWindow();
     pActivateWnd->SetForegroundWindow();
     pActivateWnd->SetFocus();
+    ShowWindow(SW_HIDE);
 }
 
 /**

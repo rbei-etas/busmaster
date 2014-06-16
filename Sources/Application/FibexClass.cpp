@@ -109,7 +109,7 @@ std::string CPARSER_FIBEX::GetActiveVersion()
     return sg_omActiveVersion;
 }
 
-int CPARSER_FIBEX::SetActiveVersion(std::string & omVersion)
+int CPARSER_FIBEX::SetActiveVersion(std::string& omVersion)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
@@ -314,7 +314,7 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
 
             //map<UINT, list<FRAME_STRUCT> > mapTxFrames;
 
-            memcpy(&objECU.m_ouControllerParams, &objBaseCntrl, sizeof(ABS_FLEXRAY_SPEC_CNTLR));
+            memcpy(&objECU.m_ouFlexRayParams.m_ouControllerParams, &objBaseCntrl, sizeof(ABS_FLEXRAY_SPEC_CNTLR));
 
             while(itr != objBaseConn.m_mapTxFrameTrigs.end())
             {
@@ -575,9 +575,9 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                             {
                                 objFrame.m_nLength++;
 
-                                if(objFrame.m_nLength > objECU.m_ouControllerParams.m_shMaxDynPayloadLgt)
+                                if(objFrame.m_nLength > objECU.m_ouFlexRayParams.m_ouControllerParams.m_shMaxDynPayloadLgt)
                                 {
-                                    objFrame.m_nLength = objECU.m_ouControllerParams.m_shMaxDynPayloadLgt;
+                                    objFrame.m_nLength = objECU.m_ouFlexRayParams.m_ouControllerParams.m_shMaxDynPayloadLgt;
                                 }
                             }
                         }
@@ -854,9 +854,9 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
                             {
                                 objFrame.m_nLength++;
 
-                                if(objFrame.m_nLength > objECU.m_ouControllerParams.m_shMaxDynPayloadLgt)
+                                if(objFrame.m_nLength > objECU.m_ouFlexRayParams.m_ouControllerParams.m_shMaxDynPayloadLgt)
                                 {
-                                    objFrame.m_nLength = objECU.m_ouControllerParams.m_shMaxDynPayloadLgt;
+                                    objFrame.m_nLength = objECU.m_ouFlexRayParams.m_ouControllerParams.m_shMaxDynPayloadLgt;
                                 }
                             }
                         }
@@ -888,15 +888,15 @@ void CPARSER_FIBEX::CopyECUDetails(CECU objBaseECU, Cluster& objCluster)
             objECU.m_ouRxFrames = mapRxFrames;
             objECU.m_ouTxFrames = mapTxFrames;
 
-            if(objECU.m_ouControllerParams.m_sKeySlotUsage.m_omNone == "")
+            if(objECU.m_ouFlexRayParams.m_ouControllerParams.m_sKeySlotUsage.m_omNone == "")
             {
-                if(objECU.m_ouControllerParams.m_sKeySlotUsage.m_nStartUpSync > 0)
+                if(objECU.m_ouFlexRayParams.m_ouControllerParams.m_sKeySlotUsage.m_nStartUpSync > 0)
                 {
-                    objECU.m_nKeySlot = objECU.m_ouControllerParams.m_sKeySlotUsage.m_nStartUpSync;
+                    objECU.m_ouFlexRayParams.m_nKeySlot = objECU.m_ouFlexRayParams.m_ouControllerParams.m_sKeySlotUsage.m_nStartUpSync;
                 }
-                else if(objECU.m_ouControllerParams.m_sKeySlotUsage.m_nSync > 0)
+                else if(objECU.m_ouFlexRayParams.m_ouControllerParams.m_sKeySlotUsage.m_nSync > 0)
                 {
-                    objECU.m_nKeySlot = objECU.m_ouControllerParams.m_sKeySlotUsage.m_nSync;
+                    objECU.m_ouFlexRayParams.m_nKeySlot = objECU.m_ouFlexRayParams.m_ouControllerParams.m_sKeySlotUsage.m_nSync;
                 }
             }
 

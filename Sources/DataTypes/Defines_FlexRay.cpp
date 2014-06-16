@@ -815,7 +815,7 @@ tagScaleLinearCodeVarEx::tagScaleLinearCodeVarEx()
 {
 }
 
-tagScaleLinearCodeVarEx & tagScaleLinearCodeVarEx::operator=(const tagScaleLinearCodeVarEx & /* RefObj */)
+tagScaleLinearCodeVarEx& tagScaleLinearCodeVarEx::operator=(const tagScaleLinearCodeVarEx& /* RefObj */)
 {
     return *this;
 }
@@ -830,7 +830,7 @@ tagTextCodeVarEx::tagTextCodeVarEx()
     m_aTextName = "";
 }
 
-tagTextCodeVarEx & tagTextCodeVarEx::operator=(const tagTextCodeVarEx & RefObj)
+tagTextCodeVarEx& tagTextCodeVarEx::operator=(const tagTextCodeVarEx& RefObj)
 {
     m_sRange = RefObj.m_sRange;
     m_aTextName = RefObj.m_aTextName;
@@ -950,7 +950,7 @@ CString omSearchValueFromCompuBlks(SIGNAL_STRUCT& ouSignal, DWORD dwRawValue)
     return omResult;
 }
 
-std::string omGetEnggValue(SIGNAL_STRUCT & ouSignal, DWORD dwRawValue)
+std::string omGetEnggValue(SIGNAL_STRUCT& ouSignal, DWORD dwRawValue)
 {
     // Get the engineering value as the signal constrint is valid
     return (LPCTSTR)omSearchValueFromCompuBlks(ouSignal, dwRawValue);

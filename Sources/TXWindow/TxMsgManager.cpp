@@ -1163,7 +1163,7 @@ int CTxMsgManager::nGetSizeOfTxWndConfigData()
     return nTotalByteCount;
 }
 
-void CTxMsgManager::vGetTxWndConfigData(BYTE * & /* pDesBuffer */, int & /* nBuffSize */)
+void CTxMsgManager::vGetTxWndConfigData(BYTE*& /* pDesBuffer */, int& /* nBuffSize */)
 {
 }
 

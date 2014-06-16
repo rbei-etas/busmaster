@@ -268,7 +268,7 @@ USHORT CFormatMsgFlexRay::usProcessCurrErrorEntry(SERROR_INFO& sErrorInfo)
   Date Created   : 08-09-2010
   Modifications  :
 *******************************************************************************/
-char * CFormatMsgFlexRay::vFormatCurrErrorEntry(USHORT /* usErrorID */)
+char* CFormatMsgFlexRay::vFormatCurrErrorEntry(USHORT /* usErrorID */)
 {
     return nullptr;
 }

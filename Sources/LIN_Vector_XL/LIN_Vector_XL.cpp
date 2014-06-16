@@ -81,16 +81,16 @@ private:
 public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT LIN_PerformInitOperations(void);
-    HRESULT LIN_PerformClosureOperations(void);
+    HRESULT PerformClosureOperations(void);
     HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
     HRESULT LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT LIN_DeselectHwInterface(void);
     HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN InitData, int& Length);
-    HRESULT LIN_SetConfigData(ClusterConfig& ouConfig);
-    HRESULT LIN_StartHardware(void);
-    HRESULT LIN_PreStartHardware(void);
-    HRESULT LIN_StopHardware(void);
+    HRESULT SetConfigData(ClusterConfig& ouConfig);
+    HRESULT StartHardware(void);
+    HRESULT PreStartHardware(void);
+    HRESULT StopHardware(void);
     HRESULT LIN_ResetHardware(void);
     HRESULT LIN_GetCurrStatus(s_STATUSMSG& StatusData);
     HRESULT LIN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
@@ -120,6 +120,7 @@ public:
 
     static DWORD WINAPI LINMsgReadThreadProc_LIN_Vector_XL(LPVOID pVoid);
     void ProcessLINMsg(XLevent& xlEvent);
+    static int nSetBaudRate();
 
 
 };
@@ -604,6 +605,14 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
     {
         sg_aodChannels[nCount].m_pXLChannelInfo  = &g_xlDrvConfig.channel[sg_anSelectedItems[nCount]];
         g_xlChannelMask |= sg_aodChannels[nCount].m_pXLChannelInfo->channelMask;
+
+        sg_HardwareIntr[nCount].m_dwIdInterface = nCount;
+        sg_HardwareIntr[nCount].m_dwVendor = g_xlDrvConfig.channel[sg_anSelectedItems[nCount]].serialNumber;
+        /*_stprintf(acTempStr, _T("SN: %d, Port ID: %d"), sg_HardwareIntr[nChannels].m_dwVendor,
+                                                                sg_HardwareIntr[nChannels].m_dwIdInterface);*/
+        sg_HardwareIntr[nCount].m_acDescription = g_xlDrvConfig.channel[sg_anSelectedItems[nCount]].name;
+
+
     }
     g_xlPermissionMask = g_xlChannelMask;
 
@@ -856,7 +865,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_PerformInitOperations(void)
     return hResult;
 }
 
-HRESULT CDIL_LIN_VectorXL::LIN_PerformClosureOperations(void)
+HRESULT CDIL_LIN_VectorXL::PerformClosureOperations(void)
 {
     return S_OK;
 }
@@ -929,7 +938,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN InitDat
     return S_OK;
 }
 
-UINT nGetProtocolVersion(std::string & strProtocol)
+UINT nGetProtocolVersion(std::string& strProtocol)
 {
     UINT unVer = XL_LIN_VERSION_2_1;
     if ( strProtocol == "LIN 1.1" || strProtocol == "LIN 1.2" || strProtocol == "LIN 1.1" || strProtocol == "LIN 1.3" )
@@ -948,14 +957,14 @@ UINT nGetProtocolVersion(std::string & strProtocol)
 }
 
 
-HRESULT CDIL_LIN_VectorXL::LIN_SetConfigData(ClusterConfig& ouConfig)
+HRESULT CDIL_LIN_VectorXL::SetConfigData(ClusterConfig& ouConfig)
 {
     for ( int i = 0 ; i < ouConfig.m_nChannelsConfigured; i++ )
     {
         sg_aodChannels[i].m_unBaudrate = ouConfig.m_ouFlexChannelConfig[i].m_ouLinParams.m_nBaudRate;
         sg_aodChannels[i].m_unLINVersion = nGetProtocolVersion(ouConfig.m_ouFlexChannelConfig[i].m_ouLinParams.m_strProtocolVersion);
         sg_aodChannels[i].m_strLinVersion = ouConfig.m_ouFlexChannelConfig[i].m_ouLinParams.m_strProtocolVersion;
-        sg_aodChannels[i].m_unLINMode = XL_LIN_SLAVE ;//XL_LIN_MASTER;
+        sg_aodChannels[i].m_unLINMode = ouConfig.m_ouFlexChannelConfig[i].m_ouLinParams.m_bIsMasterMode ? XL_LIN_MASTER:XL_LIN_SLAVE ;//XL_LIN_MASTER;
     }
 
 
@@ -1021,7 +1030,7 @@ static int nSetBaudRate()
     XLstatus xlStatus;
     XLaccess xlChanMaskTx = 0;
     XLlinStatPar xlLinStatusVar;
-    static int nLINMode = XL_LIN_SLAVE;
+    //static int nLINMode = XL_LIN_SLAVE;
     //if ( nLINMode > XL_LIN_SLAVE )
     //  nLINMode = XL_LIN_MASTER;
 
@@ -1041,73 +1050,25 @@ static int nSetBaudRate()
         // Set the baud rate
         xlStatus = xlLinSetChannelParams(g_xlPortHandle[unIndex], xlChanMaskTx, xlLinStatusVar);
 
-        /*unsigned char checksum[60];
-        for (int i = 0; i < 60; i++)
+        if ( odChannel.m_unLINMode == XL_LIN_MASTER )
         {
-            checksum[i] = XL_LIN_CHECKSUM_CLASSIC;
+            int nCheksumType = (odChannel.m_unLINVersion == XL_LIN_VERSION_1_3) ?  XL_LIN_CHECKSUM_CLASSIC:XL_LIN_CHECKSUM_ENHANCED;
+
+            unsigned char nChecksum[60];
+            memset(nChecksum, nCheksumType, sizeof(nChecksum));
+            for ( int i = 0; i < 60; i++ )
+            {
+                sg_aodChannels[unIndex].m_nMapIdChecksumType[i] = (int)nCheksumType;
+            }
+            xlStatus = xlLinSetChecksum(g_xlPortHandle[unIndex], xlChanMaskTx, nChecksum);
         }
-        xlStatus = xlLinSetChecksum(g_xlPortHandle[unIndex], xlChanMaskTx, checksum);*/
 
         // ---------------------------------------
         // Setup the Master DLC's
         // ---------------------------------------
-        unsigned char   DLC[64];
-        // set the DLC for all ID's to DEFAULT_LIN_DLC
-        for (int i=0; i<64; i++)
-        {
-            DLC[i] = DEFAULT_LIN_DLC;
-        }
 
-        //xlStatus = xlLinSetDLC(g_xlPortHandle[unIndex], xlChanMaskTx, DLC);
+        xlStatus = xlLinSetDLC(g_xlPortHandle[unIndex], xlChanMaskTx, g_pouDIL_LIN_Vector_XL->m_ucConfiguredMasterDlc[unIndex]);
 
-
-        //if ( nLINMode++ == XL_LIN_SLAVE )
-        {
-            /* Set Slave IDs */
-            unsigned char data[8];
-            unsigned char id = 0x00;
-            unsigned char dlc = 8;
-            for (int i = 0; i <= 63; i++)
-            {
-                id      = i;
-                memset(data, 0, dlc);
-
-                /*if ( id >= 60 && id <= 63 )
-                {
-                    xlStatus = xlLinSetSlave(g_xlPortHandle[unIndex],xlChanMaskTx,
-                    id, data, dlc, XL_LIN_CHECKSUM_CLASSIC);
-                }
-                else
-                {
-                    /*if ( odChannel.m_unLINVersion == XL_LIN_VERSION_1_3 )
-                    {
-                        xlStatus = xlLinSetSlave(g_xlPortHandle[unIndex],xlChanMaskTx,
-                            id, data, dlc, XL_LIN_CALC_CHECKSUM_ENHANCED);
-                    }
-                    else
-                    {
-                        xlStatus = xlLinSetSlave(g_xlPortHandle[unIndex],xlChanMaskTx,
-                            id, data, dlc, XL_LIN_CALC_CHECKSUM);
-                    }
-
-                    xlStatus = xlLinSetSlave(g_xlPortHandle[unIndex],xlChanMaskTx,
-                            id, data, dlc, XL_LIN_CALC_CHECKSUM_ENHANCED);
-
-                }*/
-                //xlStatus = xlLinSetSlave(g_xlPortHandle[unIndex],xlChanMaskTx,
-                //          0x29, data, 8, XL_LIN_CALC_CHECKSUM_ENHANCED);
-                //xlStatus = xlLinSetSlave(g_xlPortHandle[unIndex],xlChanMaskTx,
-                //      0x12, data, 2, XL_LIN_CALC_CHECKSUM_ENHANCED);
-                if ( xlStatus !=  XL_SUCCESS )
-                {
-                    return 0;
-                }
-
-                //xlLinSwitchSlave(g_xlPortHandle[unIndex], xlChanMaskTx, 0X12, XL_LIN_SLAVE_ON);
-                //xlLinSwitchSlave(g_xlPortHandle[unIndex], xlChanMaskTx, 0X29, XL_LIN_SLAVE_ON);
-
-            }
-        }
 
         /* Check for failure */
         if( xlStatus != XL_SUCCESS )
@@ -1195,7 +1156,7 @@ static int nConnect(BOOL bConnect)
 
     return nReturn;
 }
-HRESULT CDIL_LIN_VectorXL::LIN_StartHardware(void)
+HRESULT CDIL_LIN_VectorXL::StartHardware(void)
 {
     // ------------------------------------
     // go with all selected channels on bus
@@ -1212,7 +1173,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_StartHardware(void)
     }
     return nReturn;
 }
-HRESULT CDIL_LIN_VectorXL::LIN_PreStartHardware(void)
+HRESULT CDIL_LIN_VectorXL::PreStartHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
@@ -1257,7 +1218,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_PreStartHardware(void)
     return hResult;
 }
 
-HRESULT CDIL_LIN_VectorXL::LIN_StopHardware(void)
+HRESULT CDIL_LIN_VectorXL::StopHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
 
@@ -1335,16 +1296,28 @@ static int nWriteMessage(STLIN_MSG sMessage, DWORD dwClientID)
     {
         //Get channel mask
         xlChanMaskTx = sg_aodChannels[sMessage.m_ucChannel - 1].m_pXLChannelInfo->channelMask;
-        //Transmit message
 
-        xlLinSwitchSlave(g_xlPortHandle[0], xlChanMaskTx, sMessage.m_ucMsgID, XL_LIN_SLAVE_ON);
-        //xlLinSwitchSlave(g_xlPortHandle[unClientIndex], xlChanMaskTx, 0X12, XL_LIN_SLAVE_ON);
+        if ( sMessage.m_ucMsgTyp == LIN_SLAVE_RESPONSE )
+        {
 
-        xlLinSetSlave(g_xlPortHandle[0], xlChanMaskTx, sMessage.m_ucMsgID, sMessage.m_ucData, sMessage.m_ucDataLen, nGetCalcChecksum(sMessage.m_ucChannel - 1, sMessage.m_ucMsgID));
-        //xlLinSendRequest(g_xlPortHandle[unClientIndex], xlChanMaskTx, sMessage.m_ucMsgID, 0);
+            //Transmit message
 
-        //set result
-        //nReturn = xlStatus;
+            xlLinSwitchSlave(g_xlPortHandle[0], xlChanMaskTx, sMessage.m_ucMsgID, XL_LIN_SLAVE_ON);
+            //xlLinSwitchSlave(g_xlPortHandle[unClientIndex], xlChanMaskTx, 0X12, XL_LIN_SLAVE_ON);
+
+            xlLinSetSlave(g_xlPortHandle[0], xlChanMaskTx, sMessage.m_ucMsgID, sMessage.m_ucData, sMessage.m_ucDataLen, nGetCalcChecksum(sMessage.m_ucChannel - 1, sMessage.m_ucMsgID));
+            //xlLinSendRequest(g_xlPortHandle[unClientIndex], xlChanMaskTx, sMessage.m_ucMsgID, 0);
+
+            //set result
+            //nReturn = xlStatus;
+        }
+        else
+        {
+
+
+            xlLinSendRequest(g_xlPortHandle[0], xlChanMaskTx, sMessage.m_ucMsgID, 0);
+        }
+
     }
 
     return S_OK;

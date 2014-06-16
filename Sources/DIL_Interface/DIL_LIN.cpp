@@ -50,6 +50,7 @@ static ENTRY_DIL sg_ListDIL[] =
     {DAL_LIN_NONE, "&Deactivate"},
     {DRIVER_LIN_ETAS_BOA, "ETAS &BOA"},
     {DRIVER_LIN_ISOLAR_EVE_VLIN,"ETAS &ISOLAR-EVE"},
+    {DRIVER_LIN_PEAK_USB,"&PEAK USB"},
     {DRIVER_LIN_VECTOR_XL, "&Vector XL"},
 };
 
@@ -102,7 +103,8 @@ BOOL CDIL_LIN::InitInstance()
  */
 void CDIL_LIN::vSelectInterface_Dummy(void)
 {
-    m_pBaseDILLIN_Controller = (CBaseDIL_LIN_Controller*) sg_pouDIL_LIN_DUMMY;
+    //Delete will be done in DILL_SelectDriver
+    m_pBaseDILLIN_Controller = new CDIL_LIN_DUMMY();
 }
 
 /* ROUTER CODE FINISHES */
@@ -169,8 +171,11 @@ HRESULT CDIL_LIN::DILL_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
         //Save the currently selected DIL library handle
         if ( m_hDll )
         {
-            //FreeLibrary(m_hDll);
-            //m_pBaseDILLIN_Controller = nullptr;
+            DILL_PerformClosureOperations();
+            FreeLibrary(m_hDll);
+            delete m_pBaseDILLIN_Controller;
+            m_pBaseDILLIN_Controller = nullptr;
+            m_hDll = nullptr;
             m_hOldDll = m_hDll;
             m_pOldBaseDILLIN_Controller = m_pBaseDILLIN_Controller;
             m_dwOldDriverID = m_dwDriverID;
@@ -202,6 +207,9 @@ HRESULT CDIL_LIN::DILL_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                 break;
             case DRIVER_LIN_ETAS_BOA:
                 m_hDll = LoadLibrary("LIN_ETAS_BOA.dll");
+                break;
+            case DRIVER_LIN_PEAK_USB:
+                m_hDll = LoadLibrary("LIN_PEAK_USB.dll");
                 break;
             default:
                 DILL_PerformClosureOperations();
@@ -247,7 +255,10 @@ HRESULT CDIL_LIN::DILL_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                             m_pBaseDILLIN_Controller->LIN_UnloadDriverLibrary();
                         }
                         FreeLibrary(m_hDll);
-                        //m_pBaseDILLIN_Controller = nullptr;
+                        delete m_pBaseDILLIN_Controller;
+                        m_pBaseDILLIN_Controller = nullptr;
+                        vSelectInterface_Dummy();
+                        m_dwDriverID = DAL_NONE;
                         if ( m_hOldDll )
                         {
                             m_hDll = m_hOldDll;
@@ -641,4 +652,50 @@ HRESULT  CDIL_LIN::DILL_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECON
 {
     VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
     return m_pBaseDILLIN_Controller->LIN_GetErrorCount(sErrorCnt, nChannel, eContrParam);
+}
+
+
+//Schedule table
+HRESULT CDIL_LIN::DILL_RegisterLinScheduleTable(DWORD& dwClientId, int& nChannel, CSheduleTable ouTable, int& nHandle)
+{
+    VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
+    return m_pBaseDILLIN_Controller->LIN_RegisterLinScheduleTable(dwClientId, nChannel, ouTable, nHandle);
+}
+
+HRESULT CDIL_LIN::DIIL_DeRegisterLinScheduleTabel(DWORD& dwClientId, int& nChannel, int& nTableHandle)
+{
+    VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
+    return m_pBaseDILLIN_Controller->LIN_DeRegisterLinScheduleTabel( dwClientId, nChannel, nTableHandle);
+}
+
+HRESULT CDIL_LIN::DILL_StartLinScheduleTable(DWORD& dwClientId, int& nChannel, int& nTableHandle)
+{
+    VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
+    return m_pBaseDILLIN_Controller->LIN_StartLinScheduleTable(dwClientId, nChannel, nTableHandle);
+}
+HRESULT CDIL_LIN::DILL_UpdateLinScheduleTable( DWORD& dwClientId, int& nChannel, int& nHandle, CSheduleTable& ouTable )
+{
+    VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
+    return m_pBaseDILLIN_Controller->LIN_UpdateLinScheduleTable( dwClientId, nChannel, nHandle, ouTable );
+}
+
+
+HRESULT CDIL_LIN::DIIL_EnableLinScheuleCommand( DWORD& dwClientId, int& nChannel, int nTableHandle, int nIndex, bool bEnable)
+{
+    VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
+    return m_pBaseDILLIN_Controller->LIN_EnableLinScheuleCommand( dwClientId, nChannel, nTableHandle, nIndex, bEnable);
+}
+
+
+//Individual Header commands.
+HRESULT CDIL_LIN::DIIL_RegisterLinHeader(DWORD& dwClientId, int& nChannel, int nId, int nCycleTimer)
+{
+    VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
+    return m_pBaseDILLIN_Controller->LIN_RegisterLinHeader( dwClientId, nChannel, nId, nCycleTimer);
+}
+
+HRESULT CDIL_LIN::DIIL_DeRegisterLinHeader(DWORD& dwClientId, int& nChannel, int nId)
+{
+    VALIDATE_LIN_POINTER(m_pBaseDILLIN_Controller);
+    return m_pBaseDILLIN_Controller->LIN_DeRegisterLinHeader( dwClientId, nChannel, nId);
 }

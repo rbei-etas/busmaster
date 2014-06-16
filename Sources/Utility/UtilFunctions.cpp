@@ -40,7 +40,7 @@ CUtilFunctions::~CUtilFunctions()
 {
 }
 
-void CUtilFunctions::s_vRemoveUnwantedBits(__int64 & n64rData, int nLength)
+void CUtilFunctions::s_vRemoveUnwantedBits(__int64& n64rData, int nLength)
 {
     /*
      * So -1 is FFFFFFFFFFFFFFFF (as it is __int64 type)
@@ -57,7 +57,7 @@ void CUtilFunctions::s_vRemoveUnwantedBits(__int64 & n64rData, int nLength)
     n64rData = n64rData & un64Mask;
 }
 
-void CUtilFunctions::s_vExtendSignBit( __int64 & n64Val, int nSize)
+void CUtilFunctions::s_vExtendSignBit( __int64& n64Val, int nSize)
 {
     /* Avoid processing 64 bit signals */
     if( nSize < defMAX_BITS )
@@ -86,7 +86,7 @@ void CUtilFunctions::s_vExtendSignBit( __int64 & n64Val, int nSize)
     }
 }
 
-INT CUtilFunctions::nGetBaseFolder(const char * omConfigFileName, std::string & omStrConfigFolder)
+INT CUtilFunctions::nGetBaseFolder(const char* omConfigFileName, std::string& omStrConfigFolder)
 {
     char pchFilePath[MAX_PATH];
     char* pchTemp = pchFilePath;
@@ -110,7 +110,7 @@ INT CUtilFunctions::nGetBaseFolder(const char * omConfigFileName, std::string & 
     return S_OK;
 }
 
-void CUtilFunctions::MakeRelativePath(const char * pchCurrentDir, char * pchAbsFileName, std::string & omStrRelativeParh)
+void CUtilFunctions::MakeRelativePath(const char* pchCurrentDir, char* pchAbsFileName, std::string& omStrRelativeParh)
 {
     int nCurrentDirectoryLength = strlen(pchCurrentDir);
     int nAbsoluteFileLen = strlen(pchAbsFileName);

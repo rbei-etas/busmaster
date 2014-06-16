@@ -532,7 +532,7 @@ BOOL CSimSysConfigDetails:: bLoadStoreSimSysInfo (CArchive& roSimCfgArchive,
 * \authors       Arunkumar Karri
 * \date          01.02.2013 Created
 */
-void CSimSysConfigDetails::vGetRelativePath(std::string & omStrBasePath, CString& strFileName)
+void CSimSysConfigDetails::vGetRelativePath(std::string& omStrBasePath, CString& strFileName)
 {
     if ( !strFileName.IsEmpty() )
     {
@@ -542,7 +542,7 @@ void CSimSysConfigDetails::vGetRelativePath(std::string & omStrBasePath, CString
     }
 }
 
-void CSimSysConfigDetails::vGetAbsolutePath(std::string & omStrBasePath, CString& strFileName)
+void CSimSysConfigDetails::vGetAbsolutePath(std::string& omStrBasePath, CString& strFileName)
 {
     if ( !strFileName.IsEmpty() )
     {

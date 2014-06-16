@@ -138,7 +138,9 @@ void CTreeViewEx::OnLButtonDown(UINT nFlags, CPoint point)
 bool CTreeViewEx::bIsItemChecked(HTREEITEM hItem)
 {
     if(hItem == nullptr)
+    {
         return false;
+    }
 
     CTreeCtrl& omTreeCtrl = GetTreeCtrl();
     return omTreeCtrl.GetItemState( hItem, TVIS_STATEIMAGEMASK )>>12 == 2;
@@ -147,7 +149,9 @@ bool CTreeViewEx::bIsItemChecked(HTREEITEM hItem)
 void CTreeViewEx::vSetCheck(HTREEITEM hItem, bool bCheck)
 {
     if(hItem == nullptr)
+    {
         return;
+    }
 
     int nState = (bCheck == TRUE) ? 2 : 1;
     GetTreeCtrl().SetItemState( hItem, INDEXTOSTATEIMAGEMASK(nState), TVIS_STATEIMAGEMASK );
@@ -157,7 +161,9 @@ void CTreeViewEx::vSetCheck(HTREEITEM hItem, bool bCheck)
 void CTreeViewEx::vSetCheckChildren(HTREEITEM hItem, bool fCheck)
 {
     if(hItem == nullptr)
+    {
         return;
+    }
 
     CTreeCtrl& omTreeCtrl = GetTreeCtrl();
 
@@ -820,7 +826,7 @@ void CTreeViewEx::OnTvnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
     m_bEditing = FALSE;
 }
 
-void CTreeViewEx::OnTvnKeyPress(NMHDR * pNMHDR, LRESULT * /* pResult */)
+void CTreeViewEx::OnTvnKeyPress(NMHDR* pNMHDR, LRESULT* /* pResult */)
 {
     TV_KEYDOWN* pTVKeyDown = (TV_KEYDOWN*)pNMHDR;
 

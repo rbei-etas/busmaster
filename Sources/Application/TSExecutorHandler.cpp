@@ -98,7 +98,7 @@ void TSExecutorHandler::vShowTSExecutorWindow(void* pParentWnd)
     }
 }
 
-void TSExecutorHandler::vGetConfigurationData(BYTE * & /* pDesBuffer */, UINT & /* unBuffSize */)
+void TSExecutorHandler::vGetConfigurationData(BYTE*& /* pDesBuffer */, UINT& /* unBuffSize */)
 {
 }
 

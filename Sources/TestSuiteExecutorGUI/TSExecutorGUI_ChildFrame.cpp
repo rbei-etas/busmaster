@@ -320,7 +320,7 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :  CS038
 ******************************************************************************/
-void CTSExecutorChildFrame::vEnableItem(DWORD dwID, bool & bEnable)
+void CTSExecutorChildFrame::vEnableItem(DWORD dwID, bool& bEnable)
 {
     m_ouTSExecutor.EnableItem(dwID, bEnable);
 }
@@ -490,7 +490,7 @@ HRESULT CTSExecutorChildFrame::GetConfigurationData(BYTE*& pDesBuffer, UINT& unB
     return S_OK;
 }
 
-bool CTSExecutorChildFrame::GetConfigurationData(xmlNodePtr & pxmlNodePtr)
+bool CTSExecutorChildFrame::GetConfigurationData(xmlNodePtr& pxmlNodePtr)
 {
     WINDOWPLACEMENT wndPlacement;
     GetWindowPlacement(&wndPlacement);
@@ -803,8 +803,6 @@ Code Tag       :
 ******************************************************************************/
 void CTSExecutorChildFrame::OnClose()
 {
-    ShowWindow(SW_HIDE);
-
     WINDOWPLACEMENT wndPlcmnt;
 
     GetWindowPlacement(&wndPlcmnt);
@@ -812,4 +810,8 @@ void CTSExecutorChildFrame::OnClose()
     wndPlcmnt.showCmd = SW_HIDE;
 
     SetWindowPlacement(&wndPlcmnt);
+    CWnd* pActivateWnd =   GetNextWindow();
+    pActivateWnd->SetForegroundWindow();
+    pActivateWnd->SetFocus();
+    ShowWindow(SW_HIDE);
 }

@@ -163,7 +163,7 @@ HRESULT CClientBuffer::RemoveAllMsgBuf()
  *  null if it fails, else the buffer object at this index.
  *
  */
-CBaseFLEXBufFSE * CClientBuffer::GetSEBufferByIndex(unsigned int iBufIndex)
+CBaseFLEXBufFSE* CClientBuffer::GetSEBufferByIndex(unsigned int iBufIndex)
 {
     CBaseFLEXBufFSE* pResultBufSE = nullptr;
     if (iBufIndex < m_BaseFLEXRAYBufFSEVector.size())

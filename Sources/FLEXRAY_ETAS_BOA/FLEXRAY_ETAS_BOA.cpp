@@ -1510,7 +1510,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetTimeModeMapping(SYSTEMTIME& CurrSysTim
     return S_OK;
 }
 
-HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ListHwInterfaces(FLEXRAY_INTERFACE_HW & sSelHwInterface, FLEXRAY_CONFIG_FILES & /* sAvailableConfigFiles */)
+HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ListHwInterfaces(FLEXRAY_INTERFACE_HW& sSelHwInterface, FLEXRAY_CONFIG_FILES& /* sAvailableConfigFiles */)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_DRIVER_SELECTED, ERR_IMPROPER_STATE);
 
@@ -1745,7 +1745,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_DeselectHwInterface(void)
     return hResult;
 }
 
-HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_DisplayConfigDlg(PCHAR & /* InitData */, int & /* Length */)
+HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_DisplayConfigDlg(PCHAR& /* InitData */, int& /* Length */)
 {
     return S_OK;
 }
@@ -1895,7 +1895,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_StopHardware(void)
             {
                 sg_asChannel[i].m_OCI_CntrlProp.mode = OCI_CONTROLLER_MODE_SUSPENDED;
                 ociErrorCode = (*(sBOA_PTRS.m_sOCI.setFlexRayControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
-                        &(sg_asChannel[i].m_OCI_CntrlProp));
+                               &(sg_asChannel[i].m_OCI_CntrlProp));
                 if (ociErrorCode == OCI_SUCCESS)
                 {
                     hResult |= S_OK;
@@ -1969,7 +1969,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetFlxTxMsgBuffer(CFlxTxMsgBuffer*& pouFl
     return S_OK;
 }
 
-HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_DeleteMsg(DWORD /* dwClientID */, s_FLXTXMSG * pouFlxTxMsg)
+HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_DeleteMsg(DWORD /* dwClientID */, s_FLXTXMSG* pouFlxTxMsg)
 {
     //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
     HRESULT hResult = S_FALSE;
@@ -1992,7 +1992,7 @@ HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_DeleteMsg(DWORD /* dwClientID */, s_FLXTX
     return S_OK;
 }
 
-HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_SendMsg(DWORD /* dwClientID */, s_FLXTXMSG * pouFlxTxMsg)
+HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_SendMsg(DWORD /* dwClientID */, s_FLXTXMSG* pouFlxTxMsg)
 {
     //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
     HRESULT hResult = S_FALSE;
@@ -2092,34 +2092,34 @@ int CDIL_FLEXRAY_ETAS_BOA::nCreateTxQueue()
     return Err;
 }
 
-HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetBoardInfo(s_BOARDINFO & /* BoardInfo */)
+HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetBoardInfo(s_BOARDINFO& /* BoardInfo */)
 {
     return S_OK;
 }
 
-HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetFlexRayInfo(s_FLXINFO & /* FlexRayInfo */)
+HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetFlexRayInfo(s_FLXINFO& /* FlexRayInfo */)
 {
     return S_OK;
 }
 
-HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetVersionInfo(VERSIONINFO & /* sVerInfo */)
+HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetVersionInfo(VERSIONINFO& /* sVerInfo */)
 {
     return S_OK;
 }
 
-HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetLastErrorString(std::string acErrorStr, HRESULT & nError)
+HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_GetLastErrorString(std::string acErrorStr, HRESULT& nError)
 {
     acErrorStr = sg_acErrStr;
     nError = sg_hLastError;
     return S_OK;
 }
 
-HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_FilterFrames(FILTER_TYPE /* FilterType */, FLEX_CHANNEL /* FlexChannel */, UINT * /* punFrames */, UINT /* nLength */)
+HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_FilterFrames(FILTER_TYPE /* FilterType */, FLEX_CHANNEL /* FlexChannel */, UINT* /* punFrames */, UINT /* nLength */)
 {
     return S_OK;
 }
 
-HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ConfigMsgBuf(s_MSGBUF /* sMsgBuf */, UINT * /* punAddress */)
+HRESULT CDIL_FLEXRAY_ETAS_BOA::FLEXRAY_ConfigMsgBuf(s_MSGBUF /* sMsgBuf */, UINT* /* punAddress */)
 {
     return S_OK;
 }

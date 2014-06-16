@@ -139,17 +139,17 @@ HRESULT Cluster::GetFrameNames(std::string omStrEcuName, std::list<std::string>&
     return S_FALSE;
 }
 
-HRESULT Cluster::GetPDUList(SLOT_BASECYCLE /* ouSlotBaseKey */, std::list<PDU_STRUCT> & /* ouPduList */)
+HRESULT Cluster::GetPDUList(SLOT_BASECYCLE /* ouSlotBaseKey */, std::list<PDU_STRUCT>& /* ouPduList */)
 {
     return S_OK;
 }
 
-HRESULT Cluster::GetSignalList(SLOT_BASECYCLE /* ouSlotBaseKey */, std::list<SIGNAL_STRUCT> & /* ouSignalList */)
+HRESULT Cluster::GetSignalList(SLOT_BASECYCLE /* ouSlotBaseKey */, std::list<SIGNAL_STRUCT>& /* ouSignalList */)
 {
     return S_OK;
 }
 
-HRESULT Cluster::GetEcuChannel(ECHANNEL & /* ouChannelType */)
+HRESULT Cluster::GetEcuChannel(ECHANNEL& /* ouChannelType */)
 {
     return S_OK;
 }
@@ -168,7 +168,7 @@ ECU_Struct::ECU_Struct()
 
 HRESULT ECU_Struct::GetControllerParams(ABS_FLEXRAY_SPEC_CNTLR& ouControllerParams)
 {
-    ouControllerParams = m_ouControllerParams;
+    ouControllerParams = m_ouFlexRayParams.m_ouControllerParams;
     return S_OK;
 }
 
@@ -368,12 +368,12 @@ HRESULT ECU_Struct::GetFrameList( std::list<FRAME_STRUCT>& ouFrameTempList)
     return hResult;
 }
 
-HRESULT ECU_Struct::GetPDUList (SLOT_BASECYCLE /* ouSlotBaseKey */, std::list<PDU_STRUCT> & /* ouPduList */)
+HRESULT ECU_Struct::GetPDUList (SLOT_BASECYCLE /* ouSlotBaseKey */, std::list<PDU_STRUCT>& /* ouPduList */)
 {
     return S_OK;
 }
 
-HRESULT ECU_Struct::GetSignalList (SLOT_BASECYCLE /* ouSlotBaseKey */, std::list<SIGNAL_STRUCT> & /* ouSignalList */)
+HRESULT ECU_Struct::GetSignalList (SLOT_BASECYCLE /* ouSlotBaseKey */, std::list<SIGNAL_STRUCT>& /* ouSignalList */)
 {
     return S_OK;
 };
@@ -393,12 +393,12 @@ FRAME_STRUCT::FRAME_STRUCT()
     m_eSync = NONE_TYPE;
 }
 
-HRESULT FRAME_STRUCT::GetSignalList (std::string /* omStrPduName */, std::list<SIGNAL_STRUCT> & /* ouSignalList */)
+HRESULT FRAME_STRUCT::GetSignalList (std::string /* omStrPduName */, std::list<SIGNAL_STRUCT>& /* ouSignalList */)
 {
     return S_OK;
 }
 
-HRESULT FRAME_STRUCT::GetPDUList (std::list<SIGNAL_STRUCT> & /* ouSignalList */)
+HRESULT FRAME_STRUCT::GetPDUList (std::list<SIGNAL_STRUCT>& /* ouSignalList */)
 {
     return S_OK;
 }
@@ -450,7 +450,7 @@ HRESULT FRAME_STRUCT::GetSignalCount ( int& nCount)
     return S_OK;
 }
 
-HRESULT PDU_STRUCT::GetSignalList (std::list<SIGNAL_STRUCT> & /* ouSignalList */ )
+HRESULT PDU_STRUCT::GetSignalList (std::list<SIGNAL_STRUCT>& /* ouSignalList */ )
 {
     return S_OK;
 }

@@ -230,10 +230,10 @@ public:
     //Delete the memory allocated to a Inactive Database
     BOOL bDeAllocateMemoryInactive();
     // Return the array of DB file
-    void vGetDataBaseNames(CStringArray * pastrDBnames);
-    void vGetRelativeDataBaseNames(std::string & omStrBasePath, CStringArray* pastrDBnames);
-    void vSetDataBaseNames(const CStringArray * pastrDBnames);
-    void bAddDbNameEntry(const CString & omDbFileName);
+    void vGetDataBaseNames(CStringArray* pastrDBnames);
+    void vGetRelativeDataBaseNames(std::string& omStrBasePath, CStringArray* pastrDBnames);
+    void vSetDataBaseNames(const CStringArray* pastrDBnames);
+    void bAddDbNameEntry(const CString& omDbFileName);
     // Validate dupliacte start bit value
     BOOL bIsDuplicateSignalStartBitValue( CString omStrMsgName,
                                           UINT unByteNum,

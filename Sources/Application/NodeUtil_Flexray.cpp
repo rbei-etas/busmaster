@@ -51,7 +51,7 @@ bool CNodeUtil::bReadAttribute(MSXML2::IXMLDOMNode* iNode,
     return bResult;
 }
 
-bool CNodeUtil::bRemoveTag(const std::string omSrcString, std::string & omDestString)
+bool CNodeUtil::bRemoveTag(const std::string omSrcString, std::string& omDestString)
 {
     bool bResult = TRUE;
     omDestString = "";

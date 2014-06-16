@@ -182,9 +182,9 @@ public:
 
     void vGettextBusmaster();
     HICON m_hLogIcon1, m_hLogIcon2, m_hLogOffIcon;
-    int m_bIconSetFlag;
-    bool m_bJ1939IconSetFlag;
-    bool m_bLinIconSetFlag;
+    int m_nIconSetFlag;
+    int m_nJ1939IconSetFlag;
+    int m_nLinIconSetFlag;
 
     INT m_nSendMsgLogCnt;
     INT m_nSendMsgJ1939LogCnt;
@@ -415,6 +415,7 @@ protected:
     afx_msg void OnAddSignalToSignalWindow();
 
     afx_msg void OnAddSignalToSignalWindow_LIN();
+    afx_msg void vOnLINScheduleTableConfig();
 
     //afx_msg void OnMessageFilter();
     afx_msg void OnLogFilter();
@@ -437,6 +438,7 @@ protected:
     afx_msg void OnUpdateExecuteMessagehandlersLIN(CCmdUI* pCmdUI);
     afx_msg void OnUpdateLogFilter(CCmdUI* pCmdUI);
     afx_msg void OnUpdateLogFilterLIN(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateLINScheduleTableConfig(CCmdUI* pCmdUI);
     afx_msg void OnUpdateReplayFilter(CCmdUI* pCmdUI);
     //afx_msg void OnUpdateMessageFilter(CCmdUI* pCmdUI);
     afx_msg void OnUpdateExecuteMessagehandlersButton(CCmdUI* pCmdUI);
@@ -546,6 +548,9 @@ protected:
     //LIN
     afx_msg void OnConfigureSimulatedsystemsLin();
     afx_msg void OnUpdateLinClusterConfig(CCmdUI* pCmdUI);
+    //UDS
+    afx_msg void OnCfgnUdsMainWnd();
+    afx_msg void OnCfgnUdsSettingsWnd();
     afx_msg void OnAutomationTSEditor();
     afx_msg void OnAutomationTSExecutor();
 
@@ -713,7 +718,7 @@ private:
     // To process J1939 DIL and logger interfaces
     HRESULT ProcessJ1939Interfaces(void);
     // To deselect J1939 interfaces
-    HRESULT DeselectJ1939Interfaces(void);
+    HRESULT DeselectJ1939Interfaces(BOOL bTrace = TRUE);
     // To process LIN DIL and logger interfaces
     HRESULT ProcessLINInterfaces(void);
     // To deselect LIN interfaces
@@ -753,7 +758,7 @@ private:
     void vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData, UINT nSize);
     INT LoadConfiguration(void);
     INT SaveConfiguration(void);
-    int nLoadXMLConfiguration(std::string & m_strCfxFile);
+    int nLoadXMLConfiguration(std::string& m_strCfxFile);
     int nLoadXMLConfiguration();
 
     void vSetWindowPositionForGraph(xmlNodePtr pNodePtr, xmlDocPtr pDocPtr);

@@ -17,7 +17,7 @@
  * \file      CAN_NSI.cpp
  * \brief     Source file for NSI CAN DIL functions
  * \author    Gregory MERCHAT
- * \copyright Copyright (c) 2013, NSI by Altran. All rights reserved.
+ * \copyright Copyright (c) 2013, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Source file for NSI CAN DIL functions
  */
@@ -402,7 +402,7 @@ public:
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-    HRESULT CAN_GetLastErrorString(std::string & acErrorStr);
+    HRESULT CAN_GetLastErrorString(std::string& acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -2430,7 +2430,7 @@ HRESULT CDIL_CAN_NSI::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 /// \authors       Arunkumar Karri
 /// \date          12.10.2011 Created
 ///-------------------------------------------------------------------
-HRESULT CDIL_CAN_NSI::CAN_GetLastErrorString(std::string & /*acErrorStr*/)
+HRESULT CDIL_CAN_NSI::CAN_GetLastErrorString(std::string& /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }

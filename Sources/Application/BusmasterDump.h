@@ -13,8 +13,9 @@ class CBusmasterDump
 {
 public:
     CBusmasterDump(std::string strAppName);
-
 private:
     static std::string m_strAppName;
-    static LONG WINAPI ExceptionFilter(struct _EXCEPTION_POINTERS * pExceptionInfo);
+
+    static LONG WINAPI ExceptionFilter( struct _EXCEPTION_POINTERS* pExceptionInfo );
+
 };

@@ -191,11 +191,15 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
 
     CComboBox* pComboBTLCYCL = (CComboBox*)GetDlgItem(IDC_COMB_BTL);
     if (pComboBTLCYCL != nullptr)
+    {
         pComboBTLCYCL->SetCurSel (0);
+    }
 
     CButton* pCheckSelfRec = (CButton*)GetDlgItem(IDC_CHECK_SELF_REC);
     if (pCheckSelfRec != nullptr)
+    {
         pCheckSelfRec->SetCheck(BST_CHECKED);
+    }
 
     /* Add an entry in each of the two combo boxes FindStringExact */
     int nIndex = m_omCtrlSamplePoint.FindStringExact(-1,
@@ -303,7 +307,9 @@ CString CChangeRegisters_CAN_ETAS_BOA::omGetFormattedRegVal(UCHAR ucRegVal)
 
     /* Insert one zero to format the sigle digit value to 0x05 etc. */
     if (omStr.GetLength() == 3)
+    {
         omStr.Insert(2, '0');
+    }
 
     return omStr;
 }
@@ -386,10 +392,14 @@ void CChangeRegisters_CAN_ETAS_BOA::OnSelchangeCombSampling()
 
     nGetValue =  m_omCombSampling.GetCurSel();
     if (nGetValue != CB_ERR)
+    {
         m_omCombSampling.GetLBText(nGetValue, omStrComboEditItem);
+    }
 
     if (m_omStrComboSampling != omStrComboEditItem)
+    {
         m_omStrComboSampling = omStrComboEditItem;
+    }
 }
 
 /**
@@ -509,14 +519,18 @@ void CChangeRegisters_CAN_ETAS_BOA::OnClickedOK()
 
     /* Update data members associated with the controller */
     if (bUpdateControllerDataMembers() == FALSE)
+    {
         return;
+    }
 
     /* Save the changes in to the local data structure */
     vUpdateControllerDetails();
 
     /* Save the changes permanently into the main data structure */
     for (UINT i = 0; i < min(m_nNoHardware, defNO_OF_CHANNELS); i++)
+    {
         psMainContrDets[i] = m_pControllerDetails[i];
+    }
 
     /* Close the dialog */
     m_nDataConfirmStatus = INFO_INIT_DATA_CONFIRMED;
@@ -894,7 +908,7 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::bGetFilterFromCom(BOOL&  bExtended, double& 
                                      &pcStopStr,defHEXADECIMAL);
         int nMaskCodeByte4 = _tcstol((LPCTSTR)m_pControllerDetails[ 0 ].m_omStrAccMaskByte4,
                                      &pcStopStr,defHEXADECIMAL);
-        
+
         //now make them as dword in decimal
         dBeginMsgId = (ULONG)(nAccCodeByte1*0X1000000+nAccCodeByte2*0X10000+
                               nAccCodeByte3*0X100+nAccCodeByte4);

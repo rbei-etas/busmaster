@@ -132,7 +132,9 @@ static BYTE byGetLastFrameLen(UINT unDLC)
 {
     BYTE byLastFrameLen = (BYTE)(unDLC % MAX_TPDU_DATA_SIZE);
     if (byLastFrameLen == 0)
+    {
         byLastFrameLen = MAX_TPDU_DATA_SIZE;
+    }
     return byLastFrameLen;
 }
 
@@ -312,51 +314,51 @@ static EJ1939_MSG_TYPE eGetMsgType(UINT32 unExtId,BYTE* pbyData)
             break;
 
         case PDU_FORMAT_REQUEST4:
+        {
+            BYTE byCB = pbyData[1];
+            if (byCB == PDU_FORMAT_ACL)
             {
-                BYTE byCB = pbyData[1];
-                if (byCB == PDU_FORMAT_ACL)
-                {
-                    eType = MSG_TYPE_NM_RQST_ACL;
-                }
-                else
-                {
-                    eType = MSG_TYPE_REQUEST;
-                }
+                eType = MSG_TYPE_NM_RQST_ACL;
             }
-            break;
+            else
+            {
+                eType = MSG_TYPE_REQUEST;
+            }
+        }
+        break;
 
         case PDU_FORMAT_ACL:
             eType = MSG_TYPE_NM_ACL;
             break;
 
         case PDU_FORMAT_TPCM:
+        {
+            BYTE byCB = pbyData[0];
+            switch (byCB)
             {
-                BYTE byCB = pbyData[0];
-                switch (byCB)
-                {
-                    case CB_BAM:
-                        eType = MSG_TYPE_NM_TPCM_BAM;
-                        break;
-                
-                    case CB_REQ_TO_SEND:
-                        eType = MSG_TYPE_NM_TPCM_RTS;
-                        break;
+                case CB_BAM:
+                    eType = MSG_TYPE_NM_TPCM_BAM;
+                    break;
 
-                    case CB_CLEAR_TO_SEND:
-                        eType = MSG_TYPE_NM_TPCM_CTS;
-                        break;
+                case CB_REQ_TO_SEND:
+                    eType = MSG_TYPE_NM_TPCM_RTS;
+                    break;
 
-                    case CB_CON_ABORT:
-                        eType = MSG_TYPE_NM_TPCM_CON_ABORT;
-                        break;
+                case CB_CLEAR_TO_SEND:
+                    eType = MSG_TYPE_NM_TPCM_CTS;
+                    break;
 
-                    case CB_EOM_ACK:
-                        eType = MSG_TYPE_NM_TPCM_EOM_ACK;
-                        break;
-                }
+                case CB_CON_ABORT:
+                    eType = MSG_TYPE_NM_TPCM_CON_ABORT;
+                    break;
+
+                case CB_EOM_ACK:
+                    eType = MSG_TYPE_NM_TPCM_EOM_ACK;
+                    break;
             }
-            break;
-        
+        }
+        break;
+
         case PDU_FORMAT_TPDT:
             eType = MSG_TYPE_NM_TPDT;
             break;

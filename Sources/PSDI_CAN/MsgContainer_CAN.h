@@ -37,6 +37,8 @@
 #include "CommonClass/MsgContainerBase.h"
 #include "DIL_Interface/BaseDIL_CAN.h"
 #include "DIL_Interface/DIL_Interface_extern.h"
+#include "UDS_Protocol/UDS_Extern.h"
+
 
 typedef CMsgBufCANVFSE<STCANDATA> CCANBufVFSE;
 typedef void (*MSG_RX_CALL_BK)(void* pParam, ETYPE_BUS eBusType);

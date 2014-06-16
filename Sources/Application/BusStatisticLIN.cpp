@@ -273,7 +273,7 @@ HRESULT CBusStatisticLIN::BSL_GetTotalErrCount(UINT unChannelIndex, eDirection e
  * Returns average number of msgs per second (Msg/s)
  */
 HRESULT CBusStatisticLIN::BSL_GetAvgMsgCountPerSec(UINT unChannelIndex,
-        eDirection eDir, BYTE /* byIdType */, double & dMsgRate)
+        eDirection eDir, BYTE /* byIdType */, double& dMsgRate)
 {
     EnterCriticalSection(&m_omCritSecBS);
 

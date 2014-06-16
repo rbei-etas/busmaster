@@ -612,7 +612,7 @@ void CHardwareListing::vEnableDisableButtons()
     // Get the selected hardware count
     int nSelectedHardware = m_omSelectedHwList.GetItemCount();
     // Check for the minimum of supported channels or available channels
-    if( (UINT)nSelectedHardware < MIN( (UINT)m_nSize, CHANNEL_ALLOWED ) )
+    if( (UINT)nSelectedHardware < MIN( (UINT)m_nSize, FLEXRAY_CHANNEL_ALLOWED ) )
     {
         if( m_omHardwareList.GetSelectedCount() != 0 )
         {

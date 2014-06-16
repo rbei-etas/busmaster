@@ -99,7 +99,7 @@ HRESULT CDIL_CAN_DUMMY::CAN_SendMsg(DWORD /*dwClientID*/, const STCAN_MSG& /*sCa
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_GetLastErrorString(std::string & /*acErrorStr*/)
+HRESULT CDIL_CAN_DUMMY::CAN_GetLastErrorString(std::string& /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }
@@ -129,7 +129,7 @@ HRESULT CDIL_CAN_DUMMY::CAN_SetControllerParams(int /* nValue */, ECONTR_PARAM /
     return WARN_DUMMY_API;
 }
 
-HRESULT CDIL_CAN_DUMMY::CAN_SetAppParams(HWND /* hWndOwner */, Base_WrapperErrorLogger * /* pILog */)
+HRESULT CDIL_CAN_DUMMY::CAN_SetAppParams(HWND /* hWndOwner */, Base_WrapperErrorLogger* /* pILog */)
 {
     return WARN_DUMMY_API;
 }

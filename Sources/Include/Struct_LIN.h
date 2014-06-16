@@ -43,7 +43,7 @@ struct sTLIN_FRAME
     unsigned char m_ucChksum;       // Checksum
 };
 typedef sTLIN_FRAME STLIN_FRAME;
-typedef sTLIN_FRAME * PSTLIN_FRAME;
+typedef sTLIN_FRAME* PSTLIN_FRAME;
 
 struct sTLIN_MSG
 {
@@ -57,7 +57,7 @@ struct sTLIN_MSG
     unsigned char m_ucChksum;       // Checksum
 };
 typedef sTLIN_MSG STLIN_MSG;
-typedef sTLIN_MSG * PSTLIN_MSG;
+typedef sTLIN_MSG* PSTLIN_MSG;
 
 enum eLinBusEventType
 {
@@ -150,7 +150,7 @@ struct sERROR_INFO_LIN
     int           m_nSubError;   //added for providing Error bit details
 };
 typedef sERROR_INFO_LIN SERROR_INFO_LIN;
-typedef sERROR_INFO_LIN * PSERROR_INFO_LIN;
+typedef sERROR_INFO_LIN* PSERROR_INFO_LIN;
 
 /**
  * This structure holds the error and the channel number
@@ -163,7 +163,7 @@ struct sLIN_ERR
 
 };
 typedef sLIN_ERR SLIN_ERR;
-typedef sLIN_ERR * SPLIN_ERR;
+typedef sLIN_ERR* SPLIN_ERR;
 
 // To copy the data and advance the pointer of the target data stream
 #ifndef COPY_DATA
@@ -307,7 +307,7 @@ public:
     int     m_bHWTimestamps;                     // timestamps from the controllers hardware
 };
 typedef sCONTROLLERDETAILSLIN SCONTROLLER_DETAILS_LIN;
-typedef sCONTROLLERDETAILSLIN * PSCONTROLLER_DETAILS_LIN;
+typedef sCONTROLLERDETAILSLIN* PSCONTROLLER_DETAILS_LIN;
 
 /**
  * This structure is used for communicating between Driver and LIN Application
@@ -320,7 +320,7 @@ struct sTLINDATAINFO
     SERROR_INFO_LIN   m_sErrInfo;
 };
 typedef sTLINDATAINFO STLINDATAINFO;
-typedef sTLINDATAINFO * PSTLINDATAINFO;
+typedef sTLINDATAINFO* PSTLINDATAINFO;
 
 
 /**
@@ -351,7 +351,7 @@ public:
     static __int64 GetSlotID(sTLINDATA& pDatLIN);
 };
 typedef sTLINDATA STLINDATA;
-typedef sTLINDATA * PSTLINDATA;
+typedef sTLINDATA* PSTLINDATA;
 
 enum eLIN_MSG_TYPE
 {
@@ -401,7 +401,7 @@ struct sSUBBUSSTATISTICS_LIN
     unsigned int m_unTotalWakeUpsCount;
 };
 typedef sSUBBUSSTATISTICS_LIN SSUBBUSSTATISTICS_LIN;
-typedef sSUBBUSSTATISTICS_LIN * PSSUBBUSSTATISTICS_LIN;
+typedef sSUBBUSSTATISTICS_LIN* PSSUBBUSSTATISTICS_LIN;
 
 /**
  * Bus statistics structure
@@ -459,7 +459,7 @@ struct sBUSSTATISTICS_LIN
     }
 };
 typedef sBUSSTATISTICS_LIN SBUSSTATISTICS_LIN;
-typedef sBUSSTATISTICS_LIN * PBUSSTATISTICS_LIN;
+typedef sBUSSTATISTICS_LIN* PBUSSTATISTICS_LIN;
 
 #define TX_FLAG                 0x01
 #define RX_FLAG                 0x02

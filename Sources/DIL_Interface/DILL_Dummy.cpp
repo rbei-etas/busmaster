@@ -185,3 +185,39 @@ HRESULT CDIL_LIN_DUMMY::LIN_UnloadDriverLibrary(void)
 {
     return WARN_DUMMY_API;
 }
+
+
+//Schedule table
+HRESULT CDIL_LIN_DUMMY::LIN_RegisterLinScheduleTable(DWORD& dwClientId, int& nChannel, CSheduleTable ouTable, int& nHandle)
+{
+    return WARN_DUMMY_API;
+}
+
+HRESULT CDIL_LIN_DUMMY::LIN_DeRegisterLinScheduleTabel(DWORD& dwClientId, int& nChannel, int& nTableHandle)
+{
+    return WARN_DUMMY_API;
+}
+
+HRESULT CDIL_LIN_DUMMY::LIN_StartLinScheduleTable(DWORD& dwClientId, int& nChannel, int& nTableHandle)
+{
+    return WARN_DUMMY_API;
+}
+HRESULT CDIL_LIN_DUMMY::LIN_UpdateLinScheduleTable( DWORD& dwClientId, int& nChannel, int& nHandle, CSheduleTable& ouTable )
+{
+    return WARN_DUMMY_API;
+}
+
+HRESULT CDIL_LIN_DUMMY::LIN_EnableLinScheuleCommand( DWORD& dwClientId, int& nChannel, int nTableHandle, int nIndex, bool bEnable )
+{
+    return WARN_DUMMY_API;
+}
+
+//Individual Header commands.
+HRESULT CDIL_LIN_DUMMY::LIN_RegisterLinHeader(  DWORD& dwClientId, int& nChannel, int nId, int nCycleTimer )
+{
+    return WARN_DUMMY_API;
+}
+HRESULT CDIL_LIN_DUMMY::LIN_DeRegisterLinHeader( DWORD& dwClientId, int& nChannel, int nId)
+{
+    return WARN_DUMMY_API;
+}

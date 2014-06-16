@@ -83,9 +83,6 @@
     <ClInclude Include="SigWatchDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BaseSignalWatch_LIN.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SigWatchAddDelDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>

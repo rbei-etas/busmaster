@@ -235,9 +235,13 @@ void CSignalWatch_LIN::vDeleteRemovedListEntries()
     }
 }
 
-HRESULT CSignalWatch_LIN::SW_DoInitialization()
+HRESULT CSignalWatch_LIN::SW_DoInitialization(void* RefObj, void* ouCluster)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
+
+    cluster= (ClusterConfig*)ouCluster;
+    SW_UpdateMsgInterpretObj(RefObj);
+
     //Create the signal watch window for CAN
     if (m_pouSigWnd == nullptr)
     {
@@ -266,12 +270,9 @@ HRESULT CSignalWatch_LIN::SW_DoInitialization()
 HRESULT CSignalWatch_LIN::SW_ShowAddDelSignalsDlg(CWnd* pParent, void* m_ouCluster)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    ClusterConfig* m_ouClusterfinal=(ClusterConfig*) m_ouCluster;
-
-    cluster=m_ouClusterfinal;
 
     //cluster[LIN].m_nChannelsConfigured;
-    CMsgSignalSelect odDlg(m_ouClusterfinal, pParent, m_mapMsgIDtoSignallst);
+    CMsgSignalSelect odDlg(cluster, pParent, m_mapMsgIDtoSignallst);
 
     //WndPlace=odDlg.wpPosition();
 

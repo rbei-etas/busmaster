@@ -24,8 +24,8 @@ public:
 
     // To get the engineering value
     //string omGetEnggValue(DWORD dwRawValue);
-    bool omGetEnggValue(DWORD dwRawValue, std::string & omEnggValue); // TO BE REMOVED CHOU
-    BOOL bGetEnggValue(DWORD dwRawValue, std::string & omEnggValue) const;
+    bool omGetEnggValue(DWORD dwRawValue, std::string& omEnggValue);  // TO BE REMOVED CHOU
+    BOOL bGetEnggValue(DWORD dwRawValue, std::string& omEnggValue) const;
 };
 
 struct SPHYSICAL_TYPE_v2

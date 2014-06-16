@@ -195,6 +195,41 @@ public:
      * Call to Get Error Counts
      */
     virtual HRESULT  DILL_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
+
+
+    //Master Mode Commands
+
+    //Schedule table
+    /**
+     * Register a schedule table to DIL.Return an handle of the table, which can be used later to refer to the table
+     *
+     **/
+    virtual HRESULT DILL_RegisterLinScheduleTable( DWORD& dwClientId, int& nChannel, CSheduleTable ouTable, int& nHandle) = 0;
+
+    /**
+     * Deregister a specified schedule table from DIL.
+     *
+     **/
+    virtual HRESULT DIIL_DeRegisterLinScheduleTabel(DWORD& dwClientId, int& nChannel, int& nTableHandle) = 0;
+
+    /**
+     * Starts specified schedule table. The currently executing table will be stopped
+     *
+     **/
+    virtual HRESULT DILL_StartLinScheduleTable(DWORD& dwClientId, int& nChannel, int& nTableHandle) = 0;
+
+    /**
+     * Enable or Disable a perticular Header transmission int Lin Scheduling table.
+     *
+     **/
+    virtual HRESULT DIIL_EnableLinScheuleCommand(DWORD& dwClientId, int& nChannel, int nTableHandle, int nIndex, bool bEnable) = 0;
+
+
+    virtual HRESULT DILL_UpdateLinScheduleTable( DWORD& dwClientId, int& nChannel, int& nHandle, CSheduleTable& ouTable ) = 0;
+
+    //Individual commands.
+    virtual HRESULT DIIL_RegisterLinHeader(DWORD& dwClientId, int& nChannel, int nId, int nCycleTimer) = 0;
+    virtual HRESULT DIIL_DeRegisterLinHeader(DWORD& dwClientId, int& nChannel, int nId) = 0;
 };
 
 #endif // BASEDIL_LIN_H__INCLUDED_

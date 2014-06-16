@@ -29,12 +29,31 @@
 
 #define defWARNING_LIMIT_INT    96
 
+#define defDLCSIZE          8
+
 #define defBASE_DEC                 10
 #define defBASE_HEX                 16
+
+#define defSTR_PEAK_USB_DEVICE              _T("pcan_usb")
+#define defSTR_PEAK_USB_DEVICE_NAME         _T("PCAN-USB") /*_T("PEAK USB-CAN")*/
+#define defSTR_PEAK_USB_PRO_DEVICE_NAME     _T("PCAN-USB PRO")
+#define defSTR_PEAK_NPNP_DEVICE             _T("PeakCan")
+//// Maximum name length is 20
+#define defSTR_PEAK_USB_HW_NET_NAME                _T("BUSMASTER USB Net")
+#define defSTR_PEAK_USB_SIM_NET_NAME               _T("BUSMASTER Sim Net")
+#define defPEAK_USB_SIM_HW_HANDLE              0
+#define defPEAK_USB_SIM_NET_HANDLE             32
+
+#define defUSB_PARAM_BUFFER_SIZE               1024
+#define defUSB_PARAM_READ_BUFFER_SIZE          128
+#define defSTR_USB_CLIENT_NAME              _T("BUSMASTER USB")
+#define defSTR_NET_NAME_FORMAT              _T("%s_%d")
 
 #define defUSB_MODE_ACTIVE                     1
 #define defUSB_MODE_PASSIVE                    2
 #define defUSB_MODE_SIMULATE                   3
+
+#define defSIM_NETWORK_HANDLE                  31
 
 #define defMODE_ACTIVE                         1
 #define defMODE_PASSIVE                        2
@@ -43,6 +62,8 @@
 #define defCONTROLLER_ACTIVE                   1
 #define defCONTROLLER_PASSIVE                  2
 #define defCONTROLLER_BUSOFF                   3
+
+#define defSTR_NET_NAME_FORMAT              _T("%s_%d")
 
 #define defINIT_CODE_VALUE                  0x00
 #define defINIT_MASK_VALUE                  0xFF
@@ -54,3 +75,4 @@
 #define defSamplingVal                      1
 
 #define defSTR_WARNING_LIMIT_SET_FAILED     _T("Setting warning limit failed")
+

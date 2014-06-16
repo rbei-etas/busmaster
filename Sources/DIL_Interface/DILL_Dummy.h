@@ -59,4 +59,15 @@ public:
     HRESULT LIN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT LIN_LoadDriverLibrary(void);
     HRESULT LIN_UnloadDriverLibrary(void);
+
+    //Schedule table
+    HRESULT LIN_RegisterLinScheduleTable(DWORD& dwClientId, int& nChannel, CSheduleTable ouTable, int& nHandle);
+    HRESULT LIN_DeRegisterLinScheduleTabel(DWORD& dwClientId, int& nChannel, int& nTableHandle);
+    HRESULT LIN_StartLinScheduleTable(DWORD& dwClientId, int& nChannel, int& nTableHandle);
+    HRESULT LIN_EnableLinScheuleCommand( DWORD& dwClientId, int& nChannel, int nTableHandle, int nIndex, bool bEnable );
+    HRESULT LIN_UpdateLinScheduleTable( DWORD& dwClientId, int& nChannel, int& nHandle, CSheduleTable& ouTable );
+
+    //Individual Header commands.
+    HRESULT LIN_RegisterLinHeader( DWORD& dwClientId, int& nChannel, int nId, int nCycleTimer );
+    HRESULT LIN_DeRegisterLinHeader(DWORD& dwClientId, int& nChannel, int nId);
 };

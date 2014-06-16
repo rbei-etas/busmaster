@@ -55,8 +55,8 @@ private:
     // called from bLoadStoreData(..) for simulated system info
     BOOL bLoadStoreSimSysInfo(CArchive& roCfgArchive, PSSIMSYSINFO& psSimsysInfo);
 
-    void vGetRelativePath(std::string & omStrBasePath, CString & strFileName);
-    void vGetAbsolutePath(std::string & omStrBasePath, CString & strFileName);
+    void vGetRelativePath(std::string& omStrBasePath, CString& strFileName);
+    void vGetAbsolutePath(std::string& omStrBasePath, CString& strFileName);
 
 
 };

@@ -40,7 +40,14 @@ UINT gunSendMsg_LIN(STLIN_MSG* psTxMsg, HMODULE hModule)
     sMsg.m_ucChksumTyp   = psTxMsg->m_ucChksumTyp;
     sMsg.m_ucDataLen     = psTxMsg->m_ucDataLen;
     sMsg.m_ucMsgID       = psTxMsg->m_ucMsgID;
-    sMsg.m_ucMsgTyp      = psTxMsg->m_ucMsgTyp;
+    if ( psTxMsg->m_ucMsgTyp == 1 )
+    {
+        sMsg.m_ucMsgTyp      = LIN_SLAVE_RESPONSE;
+    }
+    else
+    {
+        sMsg.m_ucMsgTyp      = LIN_MASTER_RESPONSE;
+    }
 
     memset(sMsg.m_ucData, 0, sMsg.m_ucDataLen);
     for(int j=0; j < 8; j++)

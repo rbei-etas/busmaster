@@ -1633,7 +1633,7 @@ void CMsgInterpretationFlexRay::vSetFlexRayClusterInfo(ClusterConfig* ouConfig)
     m_ouFlexConfig = *ouConfig;
 }
 
-BOOL CMsgInterpretationLIN::bInterpretMsgs(EFORMAT /* eNumFormat */, STLIN_MSG * pMsg, SSignalInfoArray & SigInfoArray)
+BOOL CMsgInterpretationLIN::bInterpretMsgs(EFORMAT /* eNumFormat */, STLIN_MSG* pMsg, SSignalInfoArray& SigInfoArray)
 {
     //if ( pMsg-> == FLXMSGTYPE_DATA )
     {

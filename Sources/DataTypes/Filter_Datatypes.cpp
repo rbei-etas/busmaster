@@ -154,7 +154,7 @@ BYTE* tagFilterName::pbSetConfigData(BYTE* pbTarget)
 {
     BYTE* pbTStream = pbTarget;
 
-    m_acFilterName.assign((char *) pbTStream, LENGTH_FILTERNAME * SIZE_CHAR);
+    m_acFilterName.assign((char*) pbTStream, LENGTH_FILTERNAME * SIZE_CHAR);
     COPY_DATA_2(&m_bFilterType, pbTStream, sizeof(m_bFilterType));
 
     return pbTStream;
@@ -650,7 +650,7 @@ BOOL SFILTER_LIN::bDoesFrameOccur(const void* psCurrFrame) const
     return bResult;
 }
 
-void SFILTER_LIN::vGetEventName(eLinBusEventType eEventType, std::string & strEventName) const
+void SFILTER_LIN::vGetEventName(eLinBusEventType eEventType, std::string& strEventName) const
 {
     switch ( eEventType )
     {
@@ -672,7 +672,7 @@ void SFILTER_LIN::vGetEventName(eLinBusEventType eEventType, std::string & strEv
     }
 }
 
-void SFILTER_CAN::vGetEventName(eERROR_STATE eEventType, std::string & strEventName) const
+void SFILTER_CAN::vGetEventName(eERROR_STATE eEventType, std::string& strEventName) const
 {
     switch ( eEventType )
     {

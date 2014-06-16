@@ -224,7 +224,9 @@ UINT CBaseLogObject::GetID(void)
 bool CBaseLogObject::bLogString(CString& omStr)
 {
     if (!m_sLogInfo.m_bEnabled)
+    {
         return false;
+    }
 
     if (nullptr == m_pLogFile)
     {

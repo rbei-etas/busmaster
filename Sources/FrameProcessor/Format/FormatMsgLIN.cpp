@@ -26,7 +26,7 @@
 #include "FormatMsgLIN.h"
 #include "include/Utils_macro.h"
 
-CFormatMsgLIN::CFormatMsgLIN(CRefTimeKeeper & ouRefTimeKeeper) :
+CFormatMsgLIN::CFormatMsgLIN(CRefTimeKeeper& ouRefTimeKeeper) :
     CFormatMsgCommon(ouRefTimeKeeper)
 {
 }
@@ -203,7 +203,7 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
     vFormatDataAndId(bExprnFlag_Log, CurrDataLIN);
 }
 
-void CFormatMsgLIN::vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, std::string & strDesc)
+void CFormatMsgLIN::vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, std::string& strDesc)
 {
     switch ( sLinErrorInfo.m_eEventType )
     {

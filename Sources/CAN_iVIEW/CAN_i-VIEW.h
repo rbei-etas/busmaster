@@ -16,7 +16,7 @@
 /**
  * \file    CAN_i_VIEW/CAN_i_VIEW.h
  * \author  D Southworth
- * \copyright Copyright (c) 2013, Robert Bosch Automotive Service Solutions.
+ * \copyright Copyright (c) 2013, Robert Bosch Automotive Service Solutions. All rights reserved.
  */
 
 #pragma once

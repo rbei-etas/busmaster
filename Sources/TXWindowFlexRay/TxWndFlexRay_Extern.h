@@ -59,25 +59,31 @@ extern "C" {  // only need to export C interface if used by C++ source code
 #endif
 
     USAGEMODE HRESULT TXComman_nSetFibexConfig(ETYPE_BUS eBus, ClusterConfig& ouFlexConfig);
-    USAGEMODE HRESULT TXFlexRay_vSetMsgDBPtrInDetailsView(void* pMsgDB);
+
     USAGEMODE HRESULT TXFlexRay_vShowConfigureMsgWindow(void* pParentWnd, ETYPE_BUS eBUS);
+
+    USAGEMODE HRESULT TXLIN_vCreateScheduleConfigDlg(void* pParentWnd, ClusterConfig& pClusterConfig);
+    USAGEMODE HRESULT TXLIN_vShowScheduleConfigDlg(bool bShow);
+
+    USAGEMODE HRESULT TXComman_vSetScheduleConfig(xmlDocPtr);
+    USAGEMODE HRESULT TXComman_vGetScheduleConfig(xmlNodePtr);
     USAGEMODE HRESULT TXComman_vSetClientID(ETYPE_BUS eBusType, DWORD dwClientID);
     USAGEMODE HRESULT TXComman_vSetDILInterfacePtr(ETYPE_BUS eBusType, void* pDilPointer);
     USAGEMODE HRESULT TXComman_vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM lParam);
     USAGEMODE HRESULT TXComman_hConfigWindowShown(ETYPE_BUS eBusType);
-    USAGEMODE HRESULT TXFlexRay_vStartTransmission(UCHAR ucKeyVal);
-    USAGEMODE HRESULT TXFlexRay_bAllocateMemoryForGlobalTxList();
-    USAGEMODE HRESULT TXFlexRay_vAssignMsgBlockList();
-    USAGEMODE HRESULT TXFlexRay_vDeleteTxBlockMemory();
+
+
+
+
     USAGEMODE HRESULT TX_vBusStatusChanged(ETYPE_BUS eBusType,  ESTATUS_BUS eBusStatus);
 
     USAGEMODE HRESULT TXComman_vGetTxWndConfigData( ETYPE_BUS eBusType, xmlNodePtr pxmlNodePtr);
     USAGEMODE HRESULT TXFlexRay_vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize);
     USAGEMODE HRESULT TXComman_vSetTxWndConfigDataXML(ETYPE_BUS eBusType, xmlDocPtr pDoc);
-    USAGEMODE UINT    TXFlexRay_unGetTxBlockCount(void);
-    USAGEMODE HRESULT TXFlexRay_vSetTxStopFlag(BOOL bStartStop);
-    USAGEMODE BOOL    TXFlexRay_bGetTxStopFlag();
-    USAGEMODE HRESULT TXFlexRay_vFlexFileChanged();
+
+
+
+
 
 
 

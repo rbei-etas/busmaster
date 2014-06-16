@@ -208,7 +208,7 @@ void CSignalWatch_CAN::vDeleteRemovedListEntries()
     }
 }
 
-HRESULT CSignalWatch_CAN::SW_DoInitialization()
+HRESULT CSignalWatch_CAN::SW_DoInitialization(void*, void*)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     //Create the signal watch window for CAN

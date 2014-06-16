@@ -17,7 +17,7 @@
  * \file      CAN_MHS.h
  * \brief     Exports API functions for MHS-Elektronik Tiny-CAN Hardware interface
  * \author    Klaus Demlehner
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Exports API functions for Vector CAN Hardware interface
  */

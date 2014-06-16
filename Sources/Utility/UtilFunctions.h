@@ -51,9 +51,9 @@ public:
      */
     static void s_vExtendSignBit( __int64& n64Val, int nSize);
 
-    static void MakeRelativePath(const char * currentDirectory, char * absoluteFilename, std::string & omStrRelativeParh);
+    static void MakeRelativePath(const char* currentDirectory, char* absoluteFilename, std::string& omStrRelativeParh);
 
-    static INT nGetBaseFolder(const char * omConfigFileName, std::string & omStrConfigFolder);
+    static INT nGetBaseFolder(const char* omConfigFileName, std::string& omStrConfigFolder);
 
 private:
     /* Make constructor as private so that object can not be created for this class */

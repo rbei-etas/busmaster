@@ -368,6 +368,13 @@ Section "BUSMASTER"
 	IfFileExists $INSTDIR\LIN_Vector_XL.dll bTxWndLINEtasbExists
 	bTxWndLINEtasbExists:
 			Delete "$INSTDIR\LIN_Vector_XL.dll"	
+			
+	; Deleting If LIN_PEAK_USB.dll exists
+	IfFileExists $INSTDIR\LIN_PEAK_USB.dll bLinPeakUsbExist
+	bLinPeakUsbExist:
+			Delete "$INSTDIR\LIN_PEAK_USB.dll"	
+	
+			
 				
 	; Deleting If CAN_ICS_neoVI.dll exists
 	IfFileExists $INSTDIR\CAN_ICS_neoVI.dll bCanneoVIbExists
@@ -437,6 +444,12 @@ Section "BUSMASTER"
 	IfFileExists $INSTDIR\DIL_J1939.dll bDILJbExists
 	bDILJbExists:
 			Delete "$INSTDIR\DIL_J1939.dll"
+	
+	; Deleting If UDS_Protocol.dll exists
+	IfFileExists $INSTDIR\UDS_Protocol.dll bDILUdsProtocol
+	bDILUdsProtocol:
+			Delete "$INSTDIR\UDS_Protocol.dll"
+			
 			
 	; Deleting If Filter.dll exists
 	IfFileExists $INSTDIR\Filter.dll bFilterbExists
@@ -778,12 +791,7 @@ Section "BUSMASTER"
 	bController1Exists:
 			Delete "$INSTDIR\Controller_1.dll"	
 			
-	; Deleting If LIN_Vector_XL.dll exists
-	IfFileExists $INSTDIR\LIN_Vector_XL.dll bLinVctrbExists
-	bLinVctrbExists:
-			Delete "$INSTDIR\LIN_Vector_XL.dll"
-
-			; PTV END
+	; PTV END
 	
 	
     ; BUSMASTER
@@ -797,6 +805,7 @@ Section "BUSMASTER"
     File ..\Sources\BIN\Release\Changelog.txt
     File ..\Sources\BIN\Release\DIL_Interface.dll
     File ..\Sources\BIN\Release\DIL_J1939.dll
+	File ..\Sources\BIN\Release\UDS_Protocol.dll
     File ..\Sources\BIN\Release\Filter.dll
     File ..\Sources\BIN\Release\FrameProcessor.dll
     File ..\Sources\BIN\Release\GCCDLLMakeTemplate_CAN
@@ -827,6 +836,9 @@ Section "BUSMASTER"
 	File ..\Sources\BIN\Release\Controller_0.dll
 	File ..\Sources\BIN\Release\Controller_1.dll
 	File ..\Sources\BIN\Release\LIN_Vector_XL.dll
+	File ..\Sources\BIN\Release\LIN_PEAK_USB.dll
+	
+	
 
     ; Converters
     File /r ..\Sources\BIN\Release\ConverterPlugins

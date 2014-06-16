@@ -440,13 +440,17 @@ void CHardwareListing::vEnableDisableButtons()
     if( (UINT)nSelectedHardware < MIN( (UINT)m_nSize, CHANNEL_ALLOWED ) )
     {
         if( m_omHardwareList.GetSelectedCount() != 0 )
+        {
             bSelectEnable = TRUE;
+        }
     }
 
     /* Check the item count in the selected list and enable/disable */
     if( nSelectedHardware != 0 &&
             m_omSelectedHwList.GetSelectedCount() != 0 )
+    {
         bRemoveEnable = TRUE;
+    }
 
     /* Update Window. */
     CWnd* pWnd = nullptr;
@@ -454,12 +458,16 @@ void CHardwareListing::vEnableDisableButtons()
     /* Select Button */
     pWnd = GetDlgItem( IDC_BUT_SELECT );
     if( pWnd != nullptr )
+    {
         pWnd->EnableWindow( bSelectEnable );
+    }
 
     /* Remove Button */
     pWnd = GetDlgItem( IDC_BUT_REMOVE );
     if( pWnd != nullptr )
+    {
         pWnd->EnableWindow( bRemoveEnable );
+    }
 
     /* Enable Hardware Details */
     BOOL bHardwareDetailsEnable = TRUE;
@@ -469,10 +477,12 @@ void CHardwareListing::vEnableDisableButtons()
     if( pWnd != nullptr )
     {
         pWnd->EnableWindow( bHardwareDetailsEnable );
-        
+
         /* If disabled then clear the text */
         if( bHardwareDetailsEnable == FALSE )
+        {
             pWnd->SetWindowText("");
+        }
     }
 
     /* Network Name */
@@ -483,7 +493,9 @@ void CHardwareListing::vEnableDisableButtons()
 
         /* If disabled then clear the text */
         if( bHardwareDetailsEnable == FALSE )
+        {
             pWnd->SetWindowText("");
+        }
     }
 
     /* Firmware */
@@ -494,7 +506,9 @@ void CHardwareListing::vEnableDisableButtons()
 
         /* If disabled then clear the text */
         if( bHardwareDetailsEnable == FALSE )
+        {
             pWnd->SetWindowText("");
+        }
     }
 }
 
@@ -618,7 +632,9 @@ void CHardwareListing::vSortHardwareItems()
 {
     /* clear map data */
     if(!mHardwareListMap.empty())
+    {
         mHardwareListMap.clear();
+    }
 
     int nItemCount = m_omHardwareList.GetItemCount();
     for(int nIndex = 0; nIndex < nItemCount; nIndex++)

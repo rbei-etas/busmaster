@@ -5,7 +5,6 @@
 #include "afxres.h"
 #undef APSTUDIO_READONLY_SYMBOLS
 // English (United States) resources
-
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 #ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
@@ -103,15 +102,15 @@ BEGIN
     EDITTEXT        IDC_EDIT_DB7,302,170,23,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_DB8,328,170,23,12,ES_AUTOHSCROLL
     COMBOBOX        IDC_COMB_CHANNEL_ID,355,170,27,40,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Header",IDC_LIN_MSGTYPE_HEADER,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,392,169,36,10
-    CONTROL         "Response",IDC_LIN_MSGTYPE_SLAVE,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,434,169,48,10
-    PUSHBUTTON      "Add &Message",IDC_CBTN_ADD_MSG_LIN,480,168,63,14
+    CONTROL         "Master",IDC_LIN_MSGTYPE_HEADER,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,394,169,36,10
+    CONTROL         "Slave",IDC_LIN_MSGTYPE_SLAVE,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,436,169,43,10
+    PUSHBUTTON      "Add &Message",IDC_CBTN_ADD_MSG_LIN,487,168,49,14
     CONTROL         "",IDC_LSTC_SIG_DETAILS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,18,208,377,98
     LTEXT           "Message ID/Name",IDC_STAT_HEADER2,17,159,61,8
     CTEXT           "DLC ",IDC_STATIC,126,159,16,8
     GROUPBOX        "",IDC_STATIC,10,151,536,35
     GROUPBOX        "Signal Details",IDC_STATIC,10,192,536,126
-    GROUPBOX        "Type",IDC_STATIC,387,158,93,26
+    GROUPBOX        "Type",IDC_STATIC,389,158,94,26
     CTEXT           "Channel",IDC_STATIC,356,159,26,8
     CTEXT           "6",IDC_STAT_8,411,283,8,8
     CTEXT           "0",IDC_STAT_7,411,210,8,8
@@ -134,6 +133,15 @@ BEGIN
     PUSHBUTTON      "D&elete",IDC_DEL_FRAME,426,131,50,15
     CTEXT           "|------------------------------Data Bytes-------------------------------|",IDC_STATIC,146,159,204,8
     LTEXT           "",IDC_STAT_STATUS_LIN,10,321,161,9,0,WS_EX_STATICEDGE
+END
+
+IDD_DLG_LIN_SCHEDULE_CONFIG DIALOGEX 0, 0, 283, 311
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Configure Schedule Table"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_TREE_LIN_SCHEDULE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_CHECKBOXES | TVS_NOHSCROLL | WS_BORDER | WS_TABSTOP,0,0,282,289
+    DEFPUSHBUTTON   "Close",IDCLOSE,230,296,50,14
 END
 
 
@@ -168,7 +176,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_FRM_TRANSMIT_MSG, DIALOG
     BEGIN
@@ -183,6 +191,12 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 338
     END
+
+    IDD_DLG_LIN_SCHEDULE_CONFIG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 282
+        BOTTOMMARGIN, 310
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -193,6 +207,7 @@ END
 //
 
 IDR_BMP_CHECKBOX        BITMAP                  "res\\bmp_chec.bmp"
+IDR_BMP_MSG             BITMAP                  "res\\ScheduleTable.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -203,14 +218,7 @@ IDR_BMP_CHECKBOX        BITMAP                  "res\\bmp_chec.bmp"
 // remains consistent on all systems.
 IDI_ICO_SEND_MSG        ICON                    "res\\ico_send.ico"
 IDI_ICO_TX_WINDOW       ICON                    "res\\TxWindow.ico"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog Info
-//
-
-
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

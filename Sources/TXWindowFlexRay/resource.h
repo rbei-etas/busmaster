@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by TXWindowFlexRay - Copy.rc
+// Used by TXWindowFlexRay.rc
 //
 #define ID_SEPARATOR                    0
 #define VS_VERSION_INFO                 1
@@ -14,6 +14,7 @@
 #define AFX_IDC_PRINT_PORTNAME          203
 #define AFX_IDC_PRINT_PAGENUM           204
 #define IDD_LIN_TRANSMIT_MSG            241
+#define IDR_BMP_MSG                     241
 #define IDR_BMP_CHECKBOX                999
 #define IDC_SIGNAL_FLEXLIST             1000
 #define ID_MFCLOC_MANIFEST              1000
@@ -75,7 +76,6 @@
 #define AFX_IDC_COLORPROP               1116
 #define AFX_IDC_SYSTEMCOLORS            1117
 #define IDC_CBTN_ADD_MSG                1122
-#define IDC_CBTN_ADD_MSG_LIN            1122
 #define IDC_STAT_HEADER2                1124
 #define IDC_EDIT_DLC                    1125
 #define IDC_EDIT_DB1                    1126
@@ -103,10 +103,8 @@
 #define IDC_CHKB_BIT11                  1211
 #define IDC_CHKB_BIT12                  1212
 #define IDC_CHKB_BIT13                  1213
-#define IDC_RBTN_MSGTYPE_EXTD           1213
-#define IDC_CHKB_BIT14                  1214
-#define IDC_CHKB_BIT15                  1215
-#define IDC_RBTN_MSGTYPE_STD            1215
+#define IDC_LIN_MSGTYPE_HEADER          1213
+#define IDC_LIN_MSGTYPE_SLAVE           1214
 #define IDD_FLEXRAYMSGHANDLER_DIALOG    1216
 #define IDC_STAT_MATRIX_RECT            1216
 #define IDC_CHKB_MSGTYPE_RTR            1216
@@ -128,8 +126,10 @@
 #define IDC_STAT_3                      1230
 #define IDC_STAT_2                      1231
 #define IDC_STAT_1                      1232
-#define IDC_LSTC_SIG_DETAILS            1232
+#define IDC_LSTC_SIG_DETAILS            1233
 #define IDC_STAT_MATRIX_RECT2           1249
+#define IDC_CBTN_ADD_MSG_LIN            1250
+#define IDC_STAT_STATUS_LIN             1251
 #define AFX_IDC_TAB_CONTROL             0x3020
 #define ID_APPLY_NOW                    0x3021
 #define ID_WIZBACK                      0x3023
@@ -189,6 +189,8 @@
 #define ID_EDIT_DELETE                  32814
 #define ID_EDIT_UNSELECT_ALL            32879
 #define ID_EDIT_SEND                    32887
+#define IDC_TREE_LIN_SCHEDULE           32888
+#define IDD_DLG_LIN_SCHEDULE_CONFIG     32889
 #define AFX_IDS_APP_TITLE               0xE000
 #define AFX_IDS_IDLEMESSAGE             0xE001
 #define AFX_IDS_HELPMODEMESSAGE         0xE002
@@ -579,7 +581,7 @@
 //
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        241
+#define _APS_NEXT_RESOURCE_VALUE        242
 #define _APS_NEXT_COMMAND_VALUE         33092
 #define _APS_NEXT_CONTROL_VALUE         1057
 #define _APS_NEXT_SYMED_VALUE           101

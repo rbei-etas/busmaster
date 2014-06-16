@@ -34,12 +34,12 @@
 /* DIL CAN INTERFACE */
 #include "DIL_Interface/DIL_Interface_extern.h"
 #include "DIL_Interface/BaseDIL_LIN.h"
-#include"BaseSignalWatch_LIN.h"
+#include"BaseSignalWatch_CAN.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
 
 
-class CSignalWatch_LIN : CBaseSignalWatch_LIN
+class CSignalWatch_LIN : CBaseSignalWatch_CAN
 {
 public:
     CLINBufFSE m_ouLinBufFSE;
@@ -60,8 +60,8 @@ public:
     BOOL InitInstance(void);
     int ExitInstance(void);
     void vGetWindowPosition();
-    HRESULT SW_DoInitialization(void);
-    HRESULT SW_ShowAddDelSignalsDlg(CWnd* pParent, void* m_ouCluster);
+    HRESULT SW_DoInitialization(void* RefObj, void* info);
+    HRESULT SW_ShowAddDelSignalsDlg(CWnd* pParent, void* info);
     HRESULT SW_ShowSigWatchWnd(CWnd* pParent, HWND hMainWnd, INT nCmd);
     HRESULT SW_SetDisplayMode(BOOL bHex);
     HRESULT SW_GetConfigSize(void);

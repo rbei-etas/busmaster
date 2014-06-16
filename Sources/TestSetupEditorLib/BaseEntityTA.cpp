@@ -42,6 +42,7 @@ CBaseEntityTA::CBaseEntityTA(void)
 {
     m_dwID = GetUniqueID();
     m_bEnable = /*FALSE*/TRUE;
+    m_lDefaultChannelUsed = 0;
 }
 
 /******************************************************************************
@@ -76,6 +77,7 @@ CBaseEntityTA& CBaseEntityTA::operator=(const CBaseEntityTA& RefObj)
     m_dwNextID = RefObj.m_dwNextID;
     m_eType = RefObj.m_eType;
     m_bEnable = RefObj.m_bEnable;
+    m_lDefaultChannelUsed = RefObj.m_lDefaultChannelUsed;
     return *this;
 }
 
@@ -95,6 +97,7 @@ CBaseEntityTA::CBaseEntityTA(const CBaseEntityTA& RefObj)
     m_dwNextID = RefObj.m_dwNextID;
     m_dwID = GetUniqueID();
     m_eType = RefObj.m_eType;
+    m_lDefaultChannelUsed = RefObj.m_lDefaultChannelUsed;
 }
 
 /******************************************************************************

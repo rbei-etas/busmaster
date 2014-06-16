@@ -31,12 +31,12 @@ void CConfigDetails::vCloseConfigFile()
 {
 }
 
-int CConfigDetails::SetConfigDatastorage(DATASTORAGEINFO * /* StorageInfo */)
+int CConfigDetails::SetConfigDatastorage(DATASTORAGEINFO* /* StorageInfo */)
 {
     return true;
 }
 
-int CConfigDetails::GetConfigDatastorage(DATASTORAGEINFO * /* StorageInfo */)
+int CConfigDetails::GetConfigDatastorage(DATASTORAGEINFO* /* StorageInfo */)
 {
     return true;
 }
@@ -53,12 +53,12 @@ std::string CConfigDetails::GetCurrProjName()
 }
 
 
-BOOL CConfigDetails::bSetCurrProjInfo(PROJECTDATA * /* ProjData */)
+BOOL CConfigDetails::bSetCurrProjInfo(PROJECTDATA* /* ProjData */)
 {
     return TRUE;
 }
 
-BOOL CConfigDetails::bGetCurrProjInfo(PROJECTDATA * /* ProjData */)
+BOOL CConfigDetails::bGetCurrProjInfo(PROJECTDATA* /* ProjData */)
 {
     return TRUE;
 }
@@ -68,7 +68,7 @@ BOOL CConfigDetails::bSetData(LPVOID /* lpVoid */, int /* nStreamLength */, std:
     return TRUE;
 }
 
-BOOL CConfigDetails::bGetData(void * & /* lpData */, int & /* nStreamLength */, std::string /* strSectionName */)
+BOOL CConfigDetails::bGetData(void*& /* lpData */, int& /* nStreamLength */, std::string /* strSectionName */)
 {
     return FALSE;
 }

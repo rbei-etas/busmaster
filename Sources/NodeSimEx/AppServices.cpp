@@ -657,7 +657,7 @@ int sg_GetMessageName(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize)
                     {
                         strcpy(pBuffer, sMsgNameCode.m_omMsgName.GetBuffer(0));
                     }
-                    catch(CException * /* e */)
+                    catch(CException* /* e */)
                     {
                         return 0;
                     }
@@ -684,7 +684,7 @@ long long sg_TimeNow()
         nCurrentTime = gnGetCpuClocks();
 
         /* get the interface of NodeSim to get the connection time */
-        CNodeSim * Result = nullptr;
+        CNodeSim* Result = nullptr;
         if (NS_GetInterface(CAN, (void**) &Result) == S_OK)
         {
             if(Result->m_n64TimeElapsedSinceConnection == 0)

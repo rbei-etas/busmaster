@@ -164,7 +164,7 @@ void CNetworkMgmt::vInitializeAllNodes(void)
     }
 }
 
-HRESULT CNetworkMgmt::GetTimeModeMapping(SYSTEMTIME & CurrSysTime, UINT64 & unAbsTime)
+HRESULT CNetworkMgmt::GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& unAbsTime)
 {
     LARGE_INTEGER QueryTickCount;
     return m_pIDIL_CAN->DILC_GetTimeModeMapping(CurrSysTime, unAbsTime, QueryTickCount);

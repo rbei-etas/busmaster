@@ -959,7 +959,7 @@ void CMsgSignal::vGetDataBaseNames(CStringArray* pastrDBnames)
         pastrDBnames->Append(m_omDatabaseNames);
     }
 }
-void CMsgSignal::vGetRelativeDataBaseNames(std::string & omStrBasePath, CStringArray* pastrDBnames)
+void CMsgSignal::vGetRelativeDataBaseNames(std::string& omStrBasePath, CStringArray* pastrDBnames)
 {
     if(pastrDBnames != nullptr)
     {
@@ -5519,7 +5519,7 @@ HRESULT CMsgSignal::hSimulateFibexCluster(CString strFIBEXFile, std::list<Cluste
     return hr;
 }
 
-HRESULT CMsgSignal::hSimulateFillClusterInfo(CString /* strName */, Cluster & /* ouCluster */)
+HRESULT CMsgSignal::hSimulateFillClusterInfo(CString /* strName */, Cluster& /* ouCluster */)
 {
     HRESULT hr = S_OK;
 

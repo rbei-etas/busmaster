@@ -17,11 +17,13 @@
   </prolog>
   <body>
     <p><b>Introduction:</b></p>
-    <p>To connect BUSMASTER to the LIN Network first it has to be configured with the proper LIN Baud Rate and LIN Protocol Version.This can be done using by importing a LDF or using manual settings</p>
+    <p>To connect BUSMASTER to the LIN Network first it has to be configured with the proper LIN Baud Rate and LIN Protocol Version.This can be done using by importing a LDF or using manual settings.</p>
     <p><b>Configuration:</b></p>
     <p>To configure the Cluster use <b>LIN-&gt;Cluster Configuration</b> menu.This will display the Window as shown in following Figure.</p>
-    <p/>
     <image href="../images/LIN_ClusterConfig_Example.bmp"/>
-    <p>LIN Buad Rate &amp;  Protocol version can be set either by Loading the LDF File or using <b>LIN Network Settings</b> section by Enabling <b>Overwrite LDF Settings</b> as shown in above figure.</p>
+    <p><ol>
+        <li>To enable master mode for LIN channel for transmitting frame headers, check the <b>Enable Master Mode</b> check box under <b>LIN Network Settings</b></li>
+        <li>LIN baud rate &amp; Protocol version can be set either by loading the LDF file or can be set explicity by using <b>LIN Network Settings</b> section by Enabling <b>Overwrite LDF Settings</b> as shown in above figure.</li>
+      </ol></p>
   </body>
 </topic>

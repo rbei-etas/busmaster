@@ -24,6 +24,10 @@
 //Function Pointer Declarations
 typedef HRESULT (*SETMSGPTRINDETAILSVIEW)(void* pMsgDB);
 typedef HRESULT (*SHOWCONFIGUREMSGWINDOW)(void* pParentWnd, ETYPE_BUS eBUS);
+typedef HRESULT (*CREATESCHEDULECONFIGDLG)(void* pParentWnd, ClusterConfig& pClusterConfig);
+typedef HRESULT (*SHOWSCHEDULECONFIGDLG)(bool);
+typedef HRESULT (*SETSCHECULECONFIG)(xmlDocPtr pxmlDocPtr);
+typedef HRESULT (*GETSCHECULECONFIG)(xmlNodePtr pxmlNodePtr);
 typedef HRESULT (*SETCLIENTID)(ETYPE_BUS eBusType, DWORD dwClientID);
 typedef HRESULT (*SETDILINTERFACEPTR)(ETYPE_BUS eBusType, void*);
 typedef HRESULT (*POSTMESSAGETOTXWND)(UINT msg, WPARAM wParam, LPARAM lParam);
@@ -49,6 +53,10 @@ typedef HRESULT (*PFSETCHANNELCONFIG)(ETYPE_BUS eBus, ClusterConfig* pMsgData);
 
 SETMSGPTRINDETAILSVIEW      pfFlexSetMsgDBPtrInDetailsView;
 SHOWCONFIGUREMSGWINDOW      pfFlexShowConfigureMsgWindow;
+CREATESCHEDULECONFIGDLG       pfCreateLINScheduleConfigDlg;
+SHOWSCHEDULECONFIGDLG       pfLINShowScheduleConfigDlg;
+SETSCHECULECONFIG           pfLINSetScheduleConfig;
+GETSCHECULECONFIG           pfLINGetScheduleConfig;
 SETCLIENTID                 pfFlexSetClientId;
 SETDILINTERFACEPTR          pfFlexSetDILInterfacePtr;
 POSTMESSAGETOTXWND          pfFlexPostMessageToTxWnd;
@@ -118,6 +126,10 @@ void CFlexTxHandler::vInitializeFuncPtrs()
 {
     pfFlexSetMsgDBPtrInDetailsView      = nullptr;
     pfFlexShowConfigureMsgWindow        = nullptr;
+    pfCreateLINScheduleConfigDlg              = nullptr;
+    pfLINShowScheduleConfigDlg          = nullptr;
+    pfLINSetScheduleConfig              = nullptr;
+    pfLINGetScheduleConfig              = nullptr;
     pfFlexSetClientId                   = nullptr;
     pfFlexSetDILInterfacePtr            = nullptr;
     pfFlexPostMessageToTxWnd            = nullptr;
@@ -153,6 +165,10 @@ void CFlexTxHandler::vloadFuncPtrAddress()
     vInitializeFuncPtrs();
     pfFlexSetMsgDBPtrInDetailsView          = (SETMSGPTRINDETAILSVIEW)GetProcAddress(m_hTxHandle, "TXFlexRay_vSetMsgDBPtrInDetailsView");
     pfFlexShowConfigureMsgWindow            = (SHOWCONFIGUREMSGWINDOW)GetProcAddress(m_hTxHandle, "TXFlexRay_vShowConfigureMsgWindow");         //mess wnd creation
+    pfCreateLINScheduleConfigDlg                  = (CREATESCHEDULECONFIGDLG)GetProcAddress(m_hTxHandle, "TXLIN_vCreateScheduleConfigDlg");
+    pfLINShowScheduleConfigDlg              = (SHOWSCHEDULECONFIGDLG)GetProcAddress(m_hTxHandle, "TXLIN_vShowScheduleConfigDlg");
+    pfLINSetScheduleConfig                  = (SETSCHECULECONFIG)GetProcAddress(m_hTxHandle, "TXComman_vSetScheduleConfig");
+    pfLINGetScheduleConfig                  = (GETSCHECULECONFIG)GetProcAddress(m_hTxHandle, "TXComman_vGetScheduleConfig");
     pfFlexSetClientId                       = (SETCLIENTID)GetProcAddress(m_hTxHandle, "TXComman_vSetClientID");
     pfFlexSetDILInterfacePtr                = (SETDILINTERFACEPTR)GetProcAddress(m_hTxHandle, "TXComman_vSetDILInterfacePtr");
     pfFlexPostMessageToTxWnd                = (POSTMESSAGETOTXWND)GetProcAddress(m_hTxHandle, "TXComman_vPostMessageToTxWnd");
@@ -184,7 +200,23 @@ void CFlexTxHandler::vBusStatusChanged(ETYPE_BUS eBusType, ESTATUS_BUS eBusStatu
     }
 }
 
+void CFlexTxHandler::vShowLINScheduleConfigDlg(bool bShow)
+{
+    if ( pfLINShowScheduleConfigDlg != nullptr )
+    {
+        pfLINShowScheduleConfigDlg(bShow);
+    }
 
+}
+
+
+void CFlexTxHandler::vCreateLINScheduleConfigDlg(void* pParentWnd, ClusterConfig& pClusterConfig)
+{
+    if(pfCreateLINScheduleConfigDlg != nullptr)
+    {
+        pfCreateLINScheduleConfigDlg(pParentWnd, pClusterConfig);
+    }
+}
 
 /*******************************************************************************
   Function Name  : vSetMsgDBPtrInDetailsView
@@ -437,10 +469,41 @@ void CFlexTxHandler::vGetTxWndConfigData(ETYPE_BUS eBusType, xmlNodePtr pxmlNode
   Date Created   : 30.07.2010
   Modifications  :
 *******************************************************************************/
-void CFlexTxHandler::vGetTxWndConfigData(BYTE * & /* pDesBuffer */, int & /* nBuffSize */)
+void CFlexTxHandler::vGetTxWndConfigData(BYTE*& /* pDesBuffer */, int& /* nBuffSize */)
 {
 }
 
+/*******************************************************************************
+  Function Name  : vSetScheduleConfig
+  Input(s)       : xmlDocPtr
+  Output         : -
+  Functionality  : Sets the schedule config
+  Member of      : CFlexTxHandler
+  Author(s)      : Prathiba p
+*******************************************************************************/
+void CFlexTxHandler::vSetScheduleConfig(xmlDocPtr pxmlDocPtr)
+{
+    if(pfLINSetScheduleConfig != nullptr)
+    {
+        pfLINSetScheduleConfig(pxmlDocPtr);
+    }
+}
+
+/*******************************************************************************
+  Function Name  : vGetScheduleConfig
+  Input(s)       : xmlNodePtr
+  Output         : -
+  Functionality  : Gets the schedule table configuration
+  Member of      : CFlexTxHandler
+  Author(s)      : Prathiba p
+*******************************************************************************/
+void CFlexTxHandler::vGetScheduleConfig(xmlNodePtr pxmlNodePtr)
+{
+    if(pfLINGetScheduleConfig != nullptr)
+    {
+        pfLINGetScheduleConfig(pxmlNodePtr);
+    }
+}
 /*******************************************************************************
   Function Name  : vSetTxWndConfigData
   Input(s)       : pSrcBuffer, nBuffSize

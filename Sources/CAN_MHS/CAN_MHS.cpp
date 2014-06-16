@@ -809,7 +809,7 @@ static void CALLBACK_TYPE CanPnPEvent(uint32_t /* index */, int32_t status)
 }
 
 // Status Event-Funktion
-static void CALLBACK_TYPE CanStatusEvent(uint32_t /* index */, struct TDeviceStatus * /* status */)
+static void CALLBACK_TYPE CanStatusEvent(uint32_t /* index */, struct TDeviceStatus* /* status */)
 {
 
 }
@@ -929,7 +929,7 @@ HRESULT CDIL_CAN_MHS::CAN_StopHardware(void)
 * \param[out]    StatusData, is s_STATUSMSG structure
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_MHS::CAN_GetCurrStatus(s_STATUSMSG & StatusData)
+HRESULT CDIL_CAN_MHS::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 {
     StatusData.wControllerStatus = NORMAL_ACTIVE;
     return(S_OK);
@@ -941,7 +941,7 @@ HRESULT CDIL_CAN_MHS::CAN_GetCurrStatus(s_STATUSMSG & StatusData)
 * \param[out]    pouFlxTxMsgBuffer, is BYTE*
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_MHS::CAN_GetTxMsgBuffer(BYTE * & /*pouFlxTxMsgBuffer*/)
+HRESULT CDIL_CAN_MHS::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 {
     return(S_OK);
 }
@@ -953,7 +953,7 @@ HRESULT CDIL_CAN_MHS::CAN_GetTxMsgBuffer(BYTE * & /*pouFlxTxMsgBuffer*/)
 * \param[in]     sMessage is the application specific CAN message structure
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_MHS::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG & sMessage)
+HRESULT CDIL_CAN_MHS::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
 {
     struct TCanMsg msg;
     static SACK_MAP sAckMap;
@@ -1011,7 +1011,7 @@ HRESULT CDIL_CAN_MHS::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG & sMessage)
 * \param[out]    BusInfo, is BYTE
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_MHS::CAN_GetBusConfigInfo(BYTE * /*BusInfo*/)
+HRESULT CDIL_CAN_MHS::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 {
     return(S_OK);
 }
@@ -1022,7 +1022,7 @@ HRESULT CDIL_CAN_MHS::CAN_GetBusConfigInfo(BYTE * /*BusInfo*/)
 * \param[in]     nLength, is INT
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(std::string & /* acErrorStr */)
+HRESULT CDIL_CAN_MHS::CAN_GetLastErrorString(std::string& /* acErrorStr */)
 {
     return WARN_DUMMY_API;
 }

@@ -2,8 +2,9 @@
                            about.c  -  description
                              -------------------
     begin             : 14.10.2011
-    copyright         : Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
-    author            : Saravanan
+    copyright         : Copyright (c) 2011, Robert Bosch Engineering and 
+						Business Solutions. All rights reserved.
+    author            : Klaus Demlehner, klaus@mhs-elektronik.de
  ***************************************************************************/
 
 /***************************************************************************

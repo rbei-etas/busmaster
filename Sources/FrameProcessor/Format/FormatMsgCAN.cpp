@@ -27,7 +27,7 @@
 #include "include/Utils_macro.h"
 #include "Include\CAN_Error_Defs.h"
 
-CFormatMsgCAN::CFormatMsgCAN(CRefTimeKeeper & ouRefTimeKeeper) :
+CFormatMsgCAN::CFormatMsgCAN(CRefTimeKeeper& ouRefTimeKeeper) :
     CFormatMsgCommon(ouRefTimeKeeper)
 {
 }
@@ -209,7 +209,7 @@ void CFormatMsgCAN::vFormatErrMsg(SERROR_INFO sErrInfo, eERROR_STATE& eErrType)
     }
 }
 
-BOOL CFormatMsgCAN::bIsTransitionInState(UINT /* unChannel */, BYTE byRxError, BYTE byTxError, eERROR_STATE & eErrState)
+BOOL CFormatMsgCAN::bIsTransitionInState(UINT /* unChannel */, BYTE byRxError, BYTE byTxError, eERROR_STATE& eErrState)
 {
     BOOL bIsTransition = FALSE;
     // Based on the value of transmit and receive error counter decide

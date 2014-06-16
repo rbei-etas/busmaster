@@ -63,7 +63,7 @@ public:
     bool GetConfigurationData(xmlNodePtr& pxmlNodePtr);
     HRESULT SetConfigurationData(BYTE* pSrcBuffer, UINT unBuffSize);
     HRESULT SetConfigurationData(xmlNodePtr pXmlNode);
-    void vEnableItem(DWORD dwID, bool & bEnable);
+    void vEnableItem(DWORD dwID, bool& bEnable);
     void vSetBusStatus(bool bConnected);
     void vSetBUSMASTERVersionInfo(CString strVersion);
     bool bGetBusStatus(void);

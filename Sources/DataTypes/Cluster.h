@@ -1,5 +1,4 @@
 #pragma once
-
 #include <string>
 #include <list>
 #include <map>
@@ -11,6 +10,22 @@
 typedef UINT SLOT;
 typedef LONG SLOT_BASECYCLE;
 typedef std::string ECU_ID;
+
+
+#define     LIN_SID_ASSIGN_FRAME_ID     0xB1
+#define     LIN_SID_UNASSIGN_FRAME_ID   0xB1
+#define     LIN_SID_ASSIGN_NAD_ID       0xB0
+#define     LIN_SID_COND_CHANGE_NAD     0xB3
+#define     LIN_SID_DATA_DUMP           0xB4
+#define     LIN_SID_SAVE_CONFIG         0xB6
+#define     LIN_SID_ASSIGN_FRAME_RANGE  0xB7
+
+
+
+#define     LIN_NAD_INDEX       0
+#define     LIN_PCI_INDEX       1
+#define     LIN_SID_INDEX       2
+#define     LIN_RSID_INDEX      3
 
 enum ENDIANNESS
 {
@@ -103,19 +118,19 @@ public:
     ESLOT_TYPE m_eSlotType;
     ESYNC m_eSync;
 
-    bool operator == (FRAME_STRUCT & ob1)
+    bool operator == (FRAME_STRUCT& ob1)
     {
         return
             (m_strFrameId == ob1.m_strFrameId) &&
             (m_nSlotId == ob1.m_nSlotId) &&
             (m_nBaseCycle == ob1.m_nBaseCycle);
     }
-    bool operator < (FRAME_STRUCT & ob1)
+    bool operator < (FRAME_STRUCT& ob1)
     {
         return m_strFrameId < ob1.m_strFrameId;
     }
 
-    bool operator > (FRAME_STRUCT & ob1)
+    bool operator > (FRAME_STRUCT& ob1)
     {
         return (m_strFrameId > ob1.m_strFrameId);
     }
@@ -125,24 +140,50 @@ public:
     }
 
     FRAME_STRUCT();
-    HRESULT GetPDUList(std::list<SIGNAL_STRUCT> & ouSignalList);
-    HRESULT GetSignalList(std::string omStrPduName, std::list<SIGNAL_STRUCT> & ouSignalList);
-    HRESULT GetSignalList(std::list<SIGNAL_STRUCT> & ouSignalList);
-    HRESULT GetSignalNames(CStringList & ouSignalList);
-    HRESULT GetSignalCount(int & nCount);
+    HRESULT GetPDUList(std::list<SIGNAL_STRUCT>& ouSignalList);
+    HRESULT GetSignalList(std::string omStrPduName, std::list<SIGNAL_STRUCT>& ouSignalList);
+    HRESULT GetSignalList(std::list<SIGNAL_STRUCT>& ouSignalList);
+    HRESULT GetSignalNames(CStringList& ouSignalList);
+    HRESULT GetSignalCount(int& nCount);
 };
 
-bool Compare_Frame_Structs(FRAME_STRUCT & ob1, FRAME_STRUCT & ob2);
+bool Compare_Frame_Structs(FRAME_STRUCT& ob1, FRAME_STRUCT& ob2);
 
+class Ecu_FlexRay_Params
+{
+public:
+    //One Controller per ECU
+    ABS_FLEXRAY_SPEC_CNTLR m_ouControllerParams;
+    int m_nKeySlot;
+
+};
+class Ecu_Lin_Params
+{
+public:
+    std::string m_strProtocolVer;
+    int m_nConfiguredNAD;
+    int m_nInitialNAD;
+    unsigned char m_unProductId[3];
+    float m_p2Min;
+    float m_stMin;
+    float m_nAsTimeout;
+    float m_nCrTimeout;
+    std::string m_strResponseError;
+};
+class Ecu_CAN_Params
+{
+};
 class ECU_Struct
 {
 public:
     std::string m_strEcuId;
     std::string m_strECUName;
 
-    //One Controller per ECU
-    ABS_FLEXRAY_SPEC_CNTLR m_ouControllerParams;
-    int m_nKeySlot;
+    Ecu_FlexRay_Params m_ouFlexRayParams;
+    Ecu_Lin_Params  m_ouLinParams;
+    Ecu_CAN_Params m_ouCANParams;
+
+
     // Slot Id to Tx FrameList
     std::map<UINT, std::list<FRAME_STRUCT>> m_ouTxFrames;
 
@@ -164,6 +205,91 @@ public:
 
 };
 
+/////////////Schedule Table Definitions - LIN//////////////
+enum eCommandType
+{
+    COMMAND_INVALID,
+    COMMAND_UNCONDITIONAL,
+    COMMAND_SPORADIC,
+    COMMAND_EVENT,
+    COMMAND_MASTERREQ,
+    COMMAND_SLAVE,
+    COMMAND_ASSIGN_FRAME_ID,
+    COMMAND_ASSIGN_FRAME_ID_RANGE,
+    COMMAND_ASSIGN_NAD,
+    COMMAND_CONDITIONAL_CHANGE_NAD,
+    COMMAND_DATA_DUMP,
+    COMMAND_FREE_FORMAT,
+    COMMAND_READ_BY_IDENTIFIER,
+    COMMAND_SAVE_CONFIGURATION,
+    COMMAND_UNASSIGN_FRAME_ID,
+    COMMAND_TOTAL
+};
+
+const std::string m_omCommandType[COMMAND_TOTAL] =
+{
+    "Invalid",
+    "UnConditional",
+    "Sporadic Frame",
+    "Event Triggered",
+    "Master Request",
+    "Slave Response",
+    "AssignFrameId",
+    "AssignFrameIdRange",
+    "AssignNAD",
+    "ConditionalChangeNAD",
+    "DataDump",
+    "FreeFormat",
+    "ReadyByIdentifier",
+    "SaveConfiguration",
+    "UnassignFrameId"
+};
+
+class CScheduleCommands
+{
+public:
+    eCommandType m_eCommandType;
+    std::string m_strCommandName;                   //
+    std::string m_strNodeName;
+    double m_fDelay;
+    unsigned char m_listIDs[8];
+    int m_nId;
+    bool m_bEnabled;
+    CScheduleCommands()
+    {
+        m_bEnabled = false;
+    }
+
+};
+
+
+
+class CSheduleTable
+{
+public:
+    std::string m_strTableName;
+    std::list<CScheduleCommands> m_listCommands;
+    CSheduleTable()
+    {
+        m_strTableName.clear();
+        m_listCommands.clear();
+    }
+    CSheduleTable(const CSheduleTable& ouRefObj)
+    {
+        m_strTableName = ouRefObj.m_strTableName;
+        m_listCommands.clear();
+        m_listCommands.insert(m_listCommands.begin(), ouRefObj.m_listCommands.begin(), ouRefObj.m_listCommands.end());
+    }
+    CSheduleTable operator=(const CSheduleTable& ouRefObj)
+    {
+        m_strTableName = ouRefObj.m_strTableName;
+        m_listCommands.clear();
+        m_listCommands.insert(m_listCommands.begin(), ouRefObj.m_listCommands.begin(), ouRefObj.m_listCommands.end());
+        return *this;
+    }
+
+};
+//////////////////////////////////////////////
 typedef std::map<ECU_ID, ECU_Struct> ECUMAP;
 
 class Cluster
@@ -233,19 +359,46 @@ class LinChannelParam
 {
 public:
     int m_nBaudRate;
+    bool m_bIsMasterMode;
     std::string m_strProtocolVersion;
     bool m_bOverWriteSettings;
+    std::list<CSheduleTable> ouLinParams;
     void vInitialiseConfig()
     {
         m_nBaudRate = 19200;
         m_strProtocolVersion = "LIN 2.0";
         m_bOverWriteSettings = true;
+        m_bIsMasterMode = false;
+        ouLinParams.clear();
     }
     LinChannelParam()
     {
         vInitialiseConfig();
     }
+    LinChannelParam(const LinChannelParam& ouRefObj)
+    {
+        m_nBaudRate = ouRefObj.m_nBaudRate;
+        m_strProtocolVersion = ouRefObj.m_strProtocolVersion;
+        m_bOverWriteSettings = ouRefObj.m_bOverWriteSettings;
+        m_bIsMasterMode = ouRefObj.m_bIsMasterMode;
+        ouLinParams.clear();
+        ouLinParams.insert(ouLinParams.begin(), ouRefObj.ouLinParams.begin(), ouRefObj.ouLinParams.end());
+    }
+    LinChannelParam operator=(const LinChannelParam& ouRefObj)
+    {
+        m_nBaudRate = ouRefObj.m_nBaudRate;
+        m_strProtocolVersion = ouRefObj.m_strProtocolVersion;
+        m_bOverWriteSettings = ouRefObj.m_bOverWriteSettings;
+        m_bIsMasterMode = ouRefObj.m_bIsMasterMode;
+        ouLinParams.clear();
+        ouLinParams.insert(ouLinParams.begin(), ouRefObj.ouLinParams.begin(), ouRefObj.ouLinParams.end());
+        return *this;
+    }
+
+
 };
+
+
 
 typedef struct tag_Channel_Config
 {
@@ -256,6 +409,11 @@ typedef struct tag_Channel_Config
 
     FlexRayChannelParam m_ouFlexRayParams;
     LinChannelParam     m_ouLinParams;
+    std::list<CSheduleTable> GetScheduleTablesList()
+    {
+        return m_ouLinParams.ouLinParams;
+    }
+
 
     tag_Channel_Config(ETYPE_BUS eBusChannelType = BUS_INVALID)
     {
@@ -286,6 +444,8 @@ typedef struct tag_Channel_Config
         m_ouLinParams.m_bOverWriteSettings = ouRefObj.m_ouLinParams.m_bOverWriteSettings;
         m_ouLinParams.m_nBaudRate = ouRefObj.m_ouLinParams.m_nBaudRate;
         m_ouLinParams.m_strProtocolVersion = ouRefObj.m_ouLinParams.m_strProtocolVersion;
+        m_ouLinParams.m_bIsMasterMode = ouRefObj.m_ouLinParams.m_bIsMasterMode;
+        m_ouLinParams.ouLinParams = ouRefObj.m_ouLinParams.ouLinParams;
         return *this;
     }
 

@@ -353,7 +353,7 @@ private:
     int nAddMessageToList(LIN_FRAME_DATA& ouLinData, int nRow = -1);
     void vUpdateMsgInList(LIN_FRAME_DATA ouLinData);
     void vUpdateViews(BOOL bIsUpdate);
-    int nGetMessageName(std::string & strMsgName);
+    int nGetMessageName(std::string& strMsgName);
     int nGetDbFrame(FRAME_STRUCT& ouFrame);
     BOOL bUpdateSignalList(LIN_FRAME_DATA& sMsg);
     int nShowListOfCurrentSignls();

@@ -105,7 +105,7 @@ public:
 protected:
     /** The data buffer */
     SMSGBUFFER m_asMsgBuffer[SIZE_APP_BUFFER];
-    
+
     /** To make it thread safe */
     CRITICAL_SECTION m_CritSectionForGB;
 
@@ -167,7 +167,7 @@ template <typename SMSGBUFFER> HRESULT CMsgBufFSE<SMSGBUFFER>::ReadFromBuffer(
     /* Lock the buffer */
     EnterCriticalSection(&m_CritSectionForGB);
 
-    /* Check entry indexed by m_nIndexRead. If this particular entry */
+    // Check entry indexed by m_nIndexRead. If this particular entry
     if (m_nMsgCount == 0)
     {
         nResult = EMPTY_APP_BUFFER;

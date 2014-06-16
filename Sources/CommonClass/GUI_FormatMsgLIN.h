@@ -35,7 +35,7 @@ private:
     void vFormatDataAndId(BYTE bExprnFlag, SFORMATTEDDATA_LIN* CurrDataLIN);
     USHORT usProcessCurrErrorEntryLin(SERROR_INFO_LIN& sErrorInfo);
     char* vFormatCurrErrorEntry(USHORT usErrorID);
-    void vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, std::string & strDesc);
+    void vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, std::string& strDesc);
 
 
 

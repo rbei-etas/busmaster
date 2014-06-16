@@ -1007,7 +1007,7 @@ static void vPopulateMainSubList(CMainEntryList& DestList, const SFILTERAPPLIED_
         {
             SSUBENTRY sSubEntry;
             sSubEntry.m_omSubEntryName.Format("%s",
-                psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName.c_str());
+                                              psFilterConfigured->m_psFilters[i].m_sFilterName.m_acFilterName.c_str());
             sMainEntry.m_odUnSelEntryList.AddTail(sSubEntry);
         }
     }

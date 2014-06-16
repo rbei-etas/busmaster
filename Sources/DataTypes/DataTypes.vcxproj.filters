@@ -50,6 +50,9 @@
     <ClCompile Include="Cluster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UDS_DataTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base_WrapperErrorLogger.h">
@@ -125,6 +128,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MsgBufLINVFSE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UDS_DataTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

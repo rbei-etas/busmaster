@@ -364,7 +364,7 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
             if((&sTempAppliedFilter.m_psFilters[nTempFilCnt]) != nullptr)
             {
                 if(sFilterApplied.m_psFilters[nAppFilterCnt].m_sFilterName.m_acFilterName ==
-                    sTempAppliedFilter.m_psFilters[nTempFilCnt].m_sFilterName.m_acFilterName)
+                        sTempAppliedFilter.m_psFilters[nTempFilCnt].m_sFilterName.m_acFilterName)
                 {
                     ((sFilterApplied.m_psFilters)+ nAppFilterCnt) ->m_bEnabled
                         =  ((sTempAppliedFilter.m_psFilters)+ nTempFilCnt) ->m_bEnabled;

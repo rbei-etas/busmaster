@@ -120,9 +120,64 @@ public:
     HRESULT LIN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT LIN_LoadDriverLibrary(void);
     HRESULT LIN_UnloadDriverLibrary(void);
+
+    //Schedule table
+    virtual HRESULT LIN_RegisterLinScheduleTable(DWORD& dwClientId, int& nChannel, CSheduleTable ouTable, int& nHandle);
+    virtual HRESULT LIN_DeRegisterLinScheduleTabel(DWORD& dwClientId, int& nChannel, int& nTableHandle);
+    virtual HRESULT LIN_StartLinScheduleTable(DWORD& dwClientId, int& nChannel, int& nTableHandle);
+    virtual HRESULT LIN_EnableLinScheuleCommand( DWORD& dwClientId, int& nChannel, int nTableHandle, int nIndex, bool bEnable );
+    virtual HRESULT LIN_UpdateLinScheduleTable( DWORD& dwClientId, int& nChannel, int& nHandle, CSheduleTable& ouTable );
+
+
+    //Individual Header commands.
+    virtual HRESULT LIN_RegisterLinHeader( DWORD& dwClientId, int& nChannel, int nId, int nCycleTimer );
+    virtual HRESULT LIN_DeRegisterLinHeader(DWORD& dwClientId, int& nChannel, int nId);
+
 };
 
-CDIL_ISOLAR_EVE_VLIN* g_pouDIL_ISOLAR_EVE_VLIN = nullptr;
+
+//Schedule table
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_RegisterLinScheduleTable(DWORD& dwClientId, int& nChannel, CSheduleTable ouTable, int& nHandle)
+{
+    return S_OK;
+}
+
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_DeRegisterLinScheduleTabel(DWORD& dwClientId, int& nChannel, int& nTableHandle)
+{
+    return S_OK;
+}
+
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_StartLinScheduleTable(DWORD& dwClientId, int& nChannel, int& nTableHandle)
+{
+    return S_OK;
+}
+
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_UpdateLinScheduleTable( DWORD& dwClientId, int& nChannel, int& nHandle, CSheduleTable& ouTable )
+{
+    return S_OK;
+}
+
+
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_EnableLinScheuleCommand( DWORD& dwClientId, int& nChannel, int nTableHandle, int nIndex, bool bEnable )
+{
+    return S_OK;
+}
+
+
+//Individual Header commands.
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_RegisterLinHeader( DWORD& dwClientId, int& nChannel, int nId, int nCycleTimer )
+{
+    return S_OK;
+}
+
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_DeRegisterLinHeader(DWORD& dwClientId, int& nChannel, int nId)
+{
+    return S_OK;
+}
+
+
+
+CDIL_ISOLAR_EVE_VLIN* g_pouDIL_ISOLAR_EVE_VLIN = NULL;
 
 /**
 * \brief         Function to store the Tx message entry into sg_asAckMapBuf list.
@@ -840,17 +895,17 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_ResetSlaveRespData(void)
 
     return S_OK;
 }
-HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG & sMessage)
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_DisableSlaveRespData(DWORD dwClientID, STLIN_MSG& sMessage)
 {
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetLastErrorString(std::string & acErrorStr)
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetLastErrorString(std::string& acErrorStr)
 {
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT * punMsgIds, UINT nLength)
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength)
 {
     return S_OK;
 }
@@ -862,7 +917,7 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHAN
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetCurrStatus(s_STATUSMSG & StatusData)
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetCurrStatus(s_STATUSMSG& StatusData)
 {
     StatusData.wControllerStatus = m_Ctrl_Status;
 
@@ -881,7 +936,7 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetConfiguration(sCONTROLLERDETAILSLIN psControllerConfig[], INT & nSize)
+HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_GetConfiguration(sCONTROLLERDETAILSLIN psControllerConfig[], INT& nSize)
 {
     for ( int i = 0; i < 1; i++ )
     {

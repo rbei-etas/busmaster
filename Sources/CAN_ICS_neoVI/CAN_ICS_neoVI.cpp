@@ -379,7 +379,7 @@ public:
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-    HRESULT CAN_GetLastErrorString(std::string & acErrorStr);
+    HRESULT CAN_GetLastErrorString(std::string& acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -1285,6 +1285,50 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
     return 0;
 }
 
+int ulGetESSerialNum(unsigned long DeviceType, int serialNumber, int nHardwareLic)
+{
+    CHAR chTemp[MAX_PATH];
+
+    switch (DeviceType)
+    {
+            /* neoVI Blue */
+        case NEODEVICE_BLUE:
+            return serialNumber;
+            break;
+
+            /* ValueCAN */
+        case NEODEVICE_DW_VCAN:
+            return serialNumber;
+            break;
+
+            /* neoVI Fire/Red */
+        case NEODEVICE_FIRE:
+            return serialNumber;
+            break;
+
+            /* ValueCAN3 and ETAS ES581 */
+        case NEODEVICE_VCAN3:
+            if (serialNumber < 50000)
+            {
+                return serialNumber;
+            }
+            else
+            {
+                if (nHardwareLic == 8)   // Limited Version with only one channel
+                {
+                    return serialNumber-50000;
+                }
+                else     // Two channels
+                {
+                    return serialNumber-50000;
+                }
+            }
+            break;
+        default:
+            return serialNumber;
+            break;
+    };
+}
 /**
  * This function will add channels to hardware inteface structure.
  */
@@ -1295,10 +1339,15 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
     std::stringstream acFirmware;
 
     nResult = (*icsneoOpenNeoDevice)(&sg_ndNeoToOpen[nDevID], &hObject, nullptr, 1, 0);
+    int nHardwareLic = 0;
     if (nResult == NEOVI_OK && hObject != 0)
     {
         stAPIFirmwareInfo objstFWInfo;
         int nErrors = 0;
+        if ( icsneoGetHardwareLicense )
+        {
+            (*icsneoGetHardwareLicense)(hObject, &nHardwareLic);
+        }
         if ( icsneoGetHWFirmwareInfo )
         {
             nResult = (*icsneoGetHWFirmwareInfo)(hObject, &objstFWInfo);
@@ -1318,10 +1367,13 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
         sg_HardwareIntr[nChannels].m_dwVendor = sg_ndNeoToOpen[nDevID].SerialNumber;
         sg_HardwareIntr[nChannels].m_bytNetworkID = narrNetwordID[i];
         sg_HardwareIntr[nChannels].m_acDeviceName = acFirmware.str();
+
         sg_HardwareIntr[nChannels].m_acNameInterface = std::to_string(sg_ndNeoToOpen[nDevID].DeviceType);
 
+        int ulSerialNumber = ulGetESSerialNum(sg_ndNeoToOpen[nDevID].DeviceType, sg_HardwareIntr[nChannels].m_dwVendor, nHardwareLic);
+
         std::stringstream acTempStr;
-        acTempStr << "SN: " << std::dec << sg_HardwareIntr[nChannels].m_dwVendor << ", ";
+        acTempStr << "SN: " << std::dec << ulSerialNumber << ", ";
         acTempStr << "Port ID: " << sg_HardwareIntr[nChannels].m_dwIdInterface << "-CAN" << std::dec << narrNetwordID[i];
         sg_HardwareIntr[nChannels].m_acDescription = acTempStr.str();
 
@@ -2278,7 +2330,7 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
     for (UINT i = 0; i < (UINT)sg_ucNoOfHardware; i++)
     {
         unsigned int serialNumber = sg_ndNeoToOpen[i].SerialNumber;
-        std::string netid_str;
+        char netid_str[256];
 
         int nHardwareLic = 0;
         if (sg_ndNeoToOpen[i].DeviceType == NEODEVICE_VCAN3)
@@ -2307,16 +2359,16 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                 switch (m_bytNetworkIDs[i])
                 {
                     case NETID_HSCAN:
-                        netid_str = "HSCAN";
+                        strncpy(&netid_str[0], "HSCAN", sizeof(netid_str));
                         break;
                     case NETID_MSCAN:
-                        netid_str = "MSCAN";
+                        strncpy(&netid_str[0], "MSCAN", sizeof(netid_str));
                         break;
                     case NETID_SWCAN:
-                        netid_str = "SW CAN";
+                        strncpy(&netid_str[0], "SW CAN", sizeof(netid_str));
                         break;
                     case NETID_LSFTCAN:
-                        netid_str = "LSFT CAN";
+                        strncpy(&netid_str[0], "LSFT CAN", sizeof(netid_str));
                         break;
                 }
                 break;
@@ -2326,7 +2378,7 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                 switch (m_bytNetworkIDs[i])
                 {
                     case NETID_HSCAN:
-                        netid_str = "CAN";
+                        strncpy(&netid_str[0], "CAN", sizeof(netid_str));
                         break;
                 }
                 break;
@@ -2338,7 +2390,7 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                     switch (m_bytNetworkIDs[i])
                     {
                         case NETID_HSCAN:
-                            netid_str = "CAN";
+                            strncpy(&netid_str[0], "CAN", sizeof(netid_str));
                             break;
                     }
                 }
@@ -2347,10 +2399,10 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                     switch (m_bytNetworkIDs[i])
                     {
                         case NETID_HSCAN:
-                            netid_str = "CAN 1";
+                            strncpy(&netid_str[0], "CAN 1", sizeof(netid_str));
                             break;
                         case NETID_MSCAN:
-                            netid_str = "CAN 2";
+                            strncpy(&netid_str[0], "CAN 2", sizeof(netid_str));
                             break;
                     }
                 }
@@ -2358,26 +2410,26 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
         }
 
         /* default case */
-        if (netid_str.empty())
+        if (strlen(&netid_str[0]) == 0)
         {
             switch (m_bytNetworkIDs[i])
             {
                 case NETID_HSCAN:
-                    netid_str = "HSCAN";
+                    strncpy(&netid_str[0], "HSCAN", sizeof(netid_str));
                     break;
                 case NETID_MSCAN:
-                    netid_str = "MSCAN";
+                    strncpy(&netid_str[0], "MSCAN", sizeof(netid_str));
                     break;
                 case NETID_SWCAN:
-                    netid_str = "SWCAN";
+                    strncpy(&netid_str[0], "SWCAN", sizeof(netid_str));
                     break;
                 case NETID_LSFTCAN:
-                    netid_str = "LSFTCAN";
+                    strncpy(&netid_str[0], "LSFTCAN", sizeof(netid_str));
                     break;
             }
         }
-        //CHAR chTemp[MAX_PATH];
-        std::string chTemp = "";
+        CHAR chTemp[MAX_PATH];
+        //string chTemp = "";
         std::ostringstream stringStream;
         stringStream.clear();
 
@@ -2385,56 +2437,56 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
         {
                 /* neoVI Blue */
             case NEODEVICE_BLUE:
-                //sprintf_s(chTemp,"neoVI Blue, Serial Number %d, Network: %s",
-                //          serialNumber, &netid_str[0]);
-                chTemp = "neoVI Blue";
+                sprintf_s(chTemp,"neoVI Blue, Serial Number %d, Network: %s",
+                          serialNumber, &netid_str[0]);
+
                 break;
 
                 /* ValueCAN */
             case NEODEVICE_DW_VCAN:
-                //sprintf(chTemp, "ValueCAN, Serial Number %d, Network: %s",
-                //          serialNumber, &netid_str[0]);
-                chTemp = "ValueCAN";
+                _stprintf(chTemp, "ValueCAN, Serial Number %d, Network: %s",
+                          serialNumber, &netid_str[0]);
+
                 break;
 
                 /* neoVI Fire/Red */
             case NEODEVICE_FIRE:
-                //sprintf(chTemp, "neoVi Fire/Red, Serial Number %d, Network: %s",
-                //          serialNumber, &netid_str[0]);
-                chTemp = "neoVi Fire/Red";
+                _stprintf(chTemp, "neoVi Fire/Red, Serial Number %d, Network: %s",
+                          serialNumber, &netid_str[0]);
+
                 break;
 
                 /* ValueCAN3 and ETAS ES581 */
             case NEODEVICE_VCAN3:
                 if (serialNumber < 50000)
                 {
-                    //sprintf(chTemp, "ValueCAN3, Serial Number %d, Network: %s",
-                    //          serialNumber, &netid_str[0]);
-                    chTemp = "ValueCAN3";
+                    _stprintf(chTemp, "ValueCAN3, Serial Number %d, Network: %s",
+                              serialNumber, &netid_str[0]);
+
                 }
                 else
                 {
                     if (nHardwareLic == 8)   // Limited Version with only one channel
                     {
-                        //sprintf(chTemp, "ES581.2, Serial Number %d, Network: %s",
-                        //          serialNumber-50000, &netid_str[0]);
-                        chTemp = "ES581.2";
+                        _stprintf(chTemp, "ES581.2, Serial Number %d, Network: %s",
+                                  serialNumber-50000, &netid_str[0]);
+
                     }
                     else     // Two channels
                     {
-                        //sprintf(chTemp, "ES581.3, Serial Number %d, Network: %s",
-                        //          serialNumber-50000, &netid_str[0]);
-                        chTemp = "ES581.3";
+                        _stprintf(chTemp, "ES581.3, Serial Number %d, Network: %s",
+                                  serialNumber-50000, &netid_str[0]);
+
                     }
                 }
                 break;
 
             default:
-                //sprintf(chTemp, "Unknown, Serial Number %d", serialNumber);
-                chTemp = "Unknown";
+                _stprintf(chTemp, "Unknown, Serial Number %d", serialNumber);
+                //chTemp = "Unknown";
                 break;
         };
-        stringStream << chTemp << ", Serial Number " << serialNumber << ", Network: " << netid_str;
+        //stringStream << chTemp << ", Serial Number " << serialNumber << ", Network: " << netid_str[0];
         pControllerDetails[i].m_omHardwareDesc = chTemp;
     }
     return S_OK;
@@ -2758,7 +2810,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessa
 /**
  * Function to retreive error string of last occurred error
  */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_GetLastErrorString(std::string & acErrorStr)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_GetLastErrorString(std::string& acErrorStr)
 {
     acErrorStr = sg_acErrStr;
     return S_OK;
@@ -2820,7 +2872,7 @@ static DWORD dwGetAvailableClientSlot()
 /**
  * Register Client
  */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_RegisterClient(BOOL bRegister, DWORD & ClientID, char * pacClientName)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName)
 {
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;

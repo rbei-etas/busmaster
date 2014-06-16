@@ -234,37 +234,38 @@ public:
 
     static CString nGetLineTypeForGraph(INT nLineType)
     {
-        switch(nLineType) {
-        case Solid:
-            return defLINETYPE_SOLID;
-            break;
-        case Dash:
-            return defLINETYPE_DASH;
-            break;
-        case Dot:
-            return defLINETYPE_DOT;
-            break;
-        case DashDot:
-            return defLINETYPE_DASHDOT;
-            break;
-        case DashDotDot:
-            return defLINETYPE_DASHDOTDOT;
-            break;
-        case Null:
-            return defLINETYPE_NULL;
-            break;
-        case XYStep:
-            return defLINETYPE_XYSTEP;
-            break;
-        case YXStep:
-            return defLINETYPE_YXSTEP;
-            break;
-        case Bars:
-            return defLINETYPE_BARS;
-            break;
-        case Stick:
-            return defLINETYPE_STICK;
-            break;
+        switch(nLineType)
+        {
+            case Solid:
+                return defLINETYPE_SOLID;
+                break;
+            case Dash:
+                return defLINETYPE_DASH;
+                break;
+            case Dot:
+                return defLINETYPE_DOT;
+                break;
+            case DashDot:
+                return defLINETYPE_DASHDOT;
+                break;
+            case DashDotDot:
+                return defLINETYPE_DASHDOTDOT;
+                break;
+            case Null:
+                return defLINETYPE_NULL;
+                break;
+            case XYStep:
+                return defLINETYPE_XYSTEP;
+                break;
+            case YXStep:
+                return defLINETYPE_YXSTEP;
+                break;
+            case Bars:
+                return defLINETYPE_BARS;
+                break;
+            case Stick:
+                return defLINETYPE_STICK;
+                break;
         }
 
         return defLINETYPE_SOLID;
@@ -326,40 +327,41 @@ public:
 
         char* strTemp = "";
 
-        switch(nShowCmd) {
-        case SW_HIDE:
-            strTemp = "HIDE";
-            break;
-        case SW_MAXIMIZE:
-            strTemp = "MAXIMIZE";
-            break;
-        case SW_MINIMIZE:
-            strTemp = "MINIMIZE";
-            break;
-        case SW_RESTORE:
-            strTemp = "RESTORE";
-            break;
-        case SW_SHOW:
-            strTemp = "SHOW";
-            break;
-//        case SW_SHOWMAXIMIZED:
-//            strTemp = "SHOWMAXIMIZED";
-//            break;
-        case SW_SHOWMINIMIZED:
-            strTemp = "SHOWMINIMIZED";
-            break;
-        case SW_SHOWMINNOACTIVE:
-            strTemp = "SHOWMINNOACTIVE";
-            break;
-        case SW_SHOWNA:
-            strTemp = "SHOWNA";
-            break;
-        case SW_SHOWNOACTIVATE:
-            strTemp = "SHOWNOACTIVATE";
-            break;
-        case SW_SHOWNORMAL:
-            strTemp = "SHOWNORMAL";
-            break;
+        switch(nShowCmd)
+        {
+            case SW_HIDE:
+                strTemp = "HIDE";
+                break;
+            case SW_MAXIMIZE:
+                strTemp = "MAXIMIZE";
+                break;
+            case SW_MINIMIZE:
+                strTemp = "MINIMIZE";
+                break;
+            case SW_RESTORE:
+                strTemp = "RESTORE";
+                break;
+            case SW_SHOW:
+                strTemp = "SHOW";
+                break;
+                /*  case SW_SHOWMAXIMIZED:
+                      strTemp = "SHOWMAXIMIZED";
+                     break;*/
+            case SW_SHOWMINIMIZED:
+                strTemp = "SHOWMINIMIZED";
+                break;
+            case SW_SHOWMINNOACTIVE:
+                strTemp = "SHOWMINNOACTIVE";
+                break;
+            case SW_SHOWNA:
+                strTemp = "SHOWNA";
+                break;
+            case SW_SHOWNOACTIVATE:
+                strTemp = "SHOWNOACTIVATE";
+                break;
+            case SW_SHOWNORMAL:
+                strTemp = "SHOWNORMAL";
+                break;
         }
 
         return strTemp;
@@ -369,40 +371,41 @@ public:
     {
         CString strTemp = "";
 
-        switch(nShowCmd) {
-        case SW_HIDE:
-            strTemp = "HIDE";
-            break;
-        case SW_MAXIMIZE:
-            strTemp = "MAXIMIZE";
-            break;
-        case SW_MINIMIZE:
-            strTemp = "MINIMIZE";
-            break;
-        case SW_RESTORE:
-            strTemp = "RESTORE";
-            break;
-        case SW_SHOW:
-            strTemp = "SHOW";
-            break;
-//        case SW_SHOWMAXIMIZED:
-//            strTemp = "SHOWMAXIMIZED";
-//            break;
-        case SW_SHOWMINIMIZED:
-            strTemp = "SHOWMINIMIZED";
-            break;
-        case SW_SHOWMINNOACTIVE:
-            strTemp = "SHOWMINNOACTIVE";
-            break;
-        case SW_SHOWNA:
-            strTemp = "SHOWNA";
-            break;
-        case SW_SHOWNOACTIVATE:
-            strTemp = "SHOWNOACTIVATE";
-            break;
-        case SW_SHOWNORMAL:
-            strTemp = "SHOWNORMAL";
-            break;
+        switch(nShowCmd)
+        {
+            case SW_HIDE:
+                strTemp = "HIDE";
+                break;
+            case SW_MAXIMIZE:
+                strTemp = "MAXIMIZE";
+                break;
+            case SW_MINIMIZE:
+                strTemp = "MINIMIZE";
+                break;
+            case SW_RESTORE:
+                strTemp = "RESTORE";
+                break;
+            case SW_SHOW:
+                strTemp = "SHOW";
+                break;
+                /*  case SW_SHOWMAXIMIZED:
+                      strTemp = "SHOWMAXIMIZED";
+                       break;*/
+            case SW_SHOWMINIMIZED:
+                strTemp = "SHOWMINIMIZED";
+                break;
+            case SW_SHOWMINNOACTIVE:
+                strTemp = "SHOWMINNOACTIVE";
+                break;
+            case SW_SHOWNA:
+                strTemp = "SHOWNA";
+                break;
+            case SW_SHOWNOACTIVATE:
+                strTemp = "SHOWNOACTIVATE";
+                break;
+            case SW_SHOWNORMAL:
+                strTemp = "SHOWNORMAL";
+                break;
         }
 
         return strTemp;
@@ -523,7 +526,7 @@ public:
         return nShowCmd;
     }
 
-    static bool bGetBooleanValue(char * pchBoolValue)
+    static bool bGetBooleanValue(char* pchBoolValue)
     {
         bool bRetValue = true;
         if ( nullptr != pchBoolValue )
@@ -654,7 +657,14 @@ public:
         }
         return nRetVal;
     }
-
+    static int parseColumnInfoNode(xmlNodePtr pNode, stringList& columnList, columnInfo& Info)
+    {
+        int nRetVal = S_OK;
+        if (columnList.size() <= 0 || pNode == NULL )
+        {
+            nRetVal = S_FALSE;
+        }
+    }
     static int xmlUtils::ParseSplitterWindow(xmlNodePtr pNode, int& nCxCur, int& nCxMax)
     {
         int nRetVal = S_OK;

@@ -637,6 +637,7 @@ public:
     int m_nBaudRate;
     std::string m_srtProtocolVerson;
     bool m_bOverwrite;
+    bool m_bIsMasterMode;
 };
 
 

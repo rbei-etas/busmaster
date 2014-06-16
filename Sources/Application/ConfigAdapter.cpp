@@ -132,7 +132,7 @@ static BYTE* pbGetReplayFileConfig(SREPLAYFILE& sReplayFile, BYTE* pbTarget)
     return pbTemp;
 }
 
-static UINT unGetReplayFileSize(SREPLAYFILE & sReplayFile)
+static UINT unGetReplayFileSize(SREPLAYFILE& sReplayFile)
 {
     UINT nSize = 0;
 
@@ -469,6 +469,7 @@ BOOL CConfigAdapter::bGetConfigData(BYTE*& lpData, int& nStreamLength, eSECTION_
                 WINDOWPLACEMENT* pWndPlacement = &WndPlacement;
                 m_ouConfigDetails.bGetData(REPLAY_WND_PLACEMENT, (void**)(&pWndPlacement));
                 memcpy(pbyTemp, &WndPlacement, sizeof(WINDOWPLACEMENT));
+                pbyTemp += sizeof(WINDOWPLACEMENT);
                 //Now update the parameter out pointer
                 lpData = pbyConfigData;
                 nStreamLength = unSize;

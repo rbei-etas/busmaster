@@ -26,7 +26,7 @@
 #define Converter_H
 
 #include <list>
-#include "../../Utility/utility.h"
+//#include "../../Utility/utility.h"
 
 #include "DBFMessage.h"
 #include "DBFComment.h"

@@ -271,7 +271,7 @@ public:
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-    HRESULT CAN_GetLastErrorString(std::string & acErrorStr);
+    HRESULT CAN_GetLastErrorString(std::string& acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -1116,8 +1116,8 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, i
         //pControllerDetails[i].m_omHardwareDesc  = sg_aodChannels[i].m_strName;
         static char chName[MAX_PATH];
         sprintf(chName , _T("Vector - %s, Serial Number- %d"),
-                  sg_aodChannels[i].m_pXLChannelInfo->name,
-                  sg_aodChannels[i].m_pXLChannelInfo->serialNumber);
+                sg_aodChannels[i].m_pXLChannelInfo->name,
+                sg_aodChannels[i].m_pXLChannelInfo->serialNumber);
         pControllerDetails[i].m_omHardwareDesc = chName;
 
     }
@@ -1997,7 +1997,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_CAN_VectorXL::CAN_GetLastErrorString(std::string & acErrorStr)
+HRESULT CDIL_CAN_VectorXL::CAN_GetLastErrorString(std::string& acErrorStr)
 {
     acErrorStr = sg_acErrStr;
     return S_OK;

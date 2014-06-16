@@ -88,7 +88,7 @@ int CFrameProcessor_J1939::ExitInstance(void)
     return Result;
 }
 
-CBaseLogObject* CFrameProcessor_J1939::CreateNewLogObj(const CString & /* omStrVersion */)
+CBaseLogObject* CFrameProcessor_J1939::CreateNewLogObj(const CString& /* omStrVersion */)
 {
     CLogObjectJ1939* pLogObj = nullptr;
     CString strVersion = CString(m_sJ1939ProcParams.m_acVersion);
@@ -115,8 +115,8 @@ void CFrameProcessor_J1939::DeleteLogObj(CBaseLogObject*& pouLogObj)
     }
 }
 
-void CFrameProcessor_J1939::CreateTimeModeMapping(SYSTEMTIME & CurrSysTime,
-        UINT64 & unAbsTime)
+void CFrameProcessor_J1939::CreateTimeModeMapping(SYSTEMTIME& CurrSysTime,
+        UINT64& unAbsTime)
 {
     if (nullptr != m_pouDIL_J1939)
     {

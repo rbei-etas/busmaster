@@ -355,7 +355,7 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-HRESULT CTSExecutorLIB::GetTestSetupEnableStatus(DWORD dwID, bool & bEnable)
+HRESULT CTSExecutorLIB::GetTestSetupEnableStatus(DWORD dwID, bool& bEnable)
 {
     bool bValidID = false;
     INT nCount = (INT)m_ouTestSetupEntityList.GetCount();
@@ -1049,7 +1049,7 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-HRESULT CTSExecutorLIB::EnableItem(DWORD dwID, bool & bEnable)
+HRESULT CTSExecutorLIB::EnableItem(DWORD dwID, bool& bEnable)
 {
     HRESULT hResult = ERR_WRONG_ID;
     if(dwID == def_ID_TESTSUITE)
@@ -1143,7 +1143,7 @@ Date Created   :  07/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-bool CTSExecutorLIB::bExecuteTestSetup(CTestSetupEntity & ouTestSetupEntity)
+bool CTSExecutorLIB::bExecuteTestSetup(CTestSetupEntity& ouTestSetupEntity)
 {
     CBaseEntityTA* pouTestCase;
     UINT unTCCount;

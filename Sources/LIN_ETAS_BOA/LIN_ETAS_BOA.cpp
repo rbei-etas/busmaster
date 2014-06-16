@@ -100,7 +100,7 @@ static void vInitialiseAllData(void)
 /**
  * Gets the CSI API function pointer from the cslproxy.dll
  */
-BOOL bGetBOAInstallationPath(std::string & pcPath)
+BOOL bGetBOAInstallationPath(std::string& pcPath)
 {
     USES_CONVERSION;
 
@@ -732,7 +732,7 @@ static BOOL bLoadDataFromContr(ClusterConfig&  asDeviceConfig)
         //1. Cluster Configuration
         memset ( &sg_asChannel[nChannel].m_OCI_FlexRayConfig, 0, sizeof( sg_asChannel[nChannel].m_OCI_FlexRayConfig ) );                    // Initialize the Controller Configuration to 0
 
-        sg_asChannel[nChannel].m_OCI_FlexRayConfig.mode               = OCI_LIN_SLAVE;                    // Open this controller as a LIN Slave.
+        sg_asChannel[nChannel].m_OCI_FlexRayConfig.mode               =  asDeviceConfig.m_ouFlexChannelConfig[nChannel].m_ouLinParams.m_bIsMasterMode ? OCI_LIN_MASTER : OCI_LIN_SLAVE;;                    // Open this controller as a LIN Slave.
         sg_asChannel[nChannel].m_OCI_FlexRayConfig.baudrate           = asDeviceConfig.m_ouFlexChannelConfig[nChannel].m_ouLinParams.m_nBaudRate;                            // The chosen baudrate on the LIN BUS.  Note that this must match the
         // baudrate of the other controllers connected to the same BUS.
         sg_asChannel[nChannel].m_OCI_FlexRayConfig.version            = nGetProtocolVersion(asDeviceConfig.m_ouFlexChannelConfig[nChannel].m_ouLinParams.m_strProtocolVersion);
@@ -809,6 +809,24 @@ void vCopy_2_OCI_LIN_Data(OCI_LINTxMessage& DestMsg, const STLIN_MSG& SrcMsg)
 /**
  * \return TRUE if client exists else FALSE
  *
+ * Checks for the existance of the client with the name pcClientName.
+ */
+static BOOL bClientExist(std::string pcClientName, INT& Index)
+{
+    for (UINT i = 0; i < sg_asClientToBufMap.size(); i++)
+    {
+        if (pcClientName == sg_asClientToBufMap[i].m_acClientName)
+        {
+            Index = i;
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+/**
+ * \return TRUE if client exists else FALSE
+ *
  * Searches for the client with the id dwClientId.
  */
 static BOOL bClientIdExist(const DWORD& dwClientId)
@@ -824,6 +842,26 @@ static BOOL bClientIdExist(const DWORD& dwClientId)
         }
     }
     return bReturn;
+}
+
+/**
+ * Returns the available slot
+ */
+static DWORD dwGetAvailableClientSlot()
+{
+    DWORD nClientId = 2;
+    for (INT i = 0; i < MAX_CLIENT_ALLOWED; i++)
+    {
+        if (bClientIdExist(nClientId))
+        {
+            nClientId += 1;
+        }
+        else
+        {
+            i = MAX_CLIENT_ALLOWED; //break the loop
+        }
+    }
+    return nClientId;
 }
 
 /**
@@ -843,6 +881,38 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
             i = sg_unClientCnt; //break the loop
             bResult = TRUE;
             break;
+        }
+    }
+    return bResult;
+}
+
+/**
+ * \return TRUE if client removed else FALSE
+ *
+ * Removes the client with client id dwClientId.
+ */
+static BOOL bRemoveClient(DWORD dwClientId)
+{
+    BOOL bResult = FALSE;
+    if (sg_unClientCnt > 0)
+    {
+        UINT unClientIndex = 0;
+        if (bGetClientObj(dwClientId, unClientIndex))
+        {
+            sg_asClientToBufMap[unClientIndex].m_dwClientID = 0;
+            sg_asClientToBufMap[unClientIndex].m_acClientName = "";
+
+            for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
+            {
+                sg_asClientToBufMap[unClientIndex].m_pClientBuf[i] = NULL;
+            }
+            sg_asClientToBufMap[unClientIndex].m_unBufCount = 0;
+            if ((unClientIndex + 1) < sg_unClientCnt)
+            {
+                sg_asClientToBufMap[unClientIndex] = sg_asClientToBufMap[sg_unClientCnt - 1];
+            }
+            sg_unClientCnt--;
+            bResult = TRUE;
         }
     }
     return bResult;
@@ -956,30 +1026,30 @@ private:
 public:
     /* STARTS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
     HRESULT LIN_PerformInitOperations(void);
-    HRESULT LIN_PerformClosureOperations(void);
+    HRESULT PerformClosureOperations(void);
     HRESULT LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
     HRESULT LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
     HRESULT LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT LIN_DeselectHwInterface(void);
-    HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN /* InitData */, int & /* Length */)
+    HRESULT LIN_DisplayConfigDlg(PSCONTROLLER_DETAILS_LIN /* InitData */, int& /* Length */)
     {
         return S_OK;
     }
-    HRESULT LIN_SetConfigData(ClusterConfig& ouConfig);
-    HRESULT LIN_StartHardware(void);
-    HRESULT LIN_PreStartHardware(void)
+    HRESULT SetConfigData(ClusterConfig& ouConfig);
+    HRESULT StartHardware(void);
+    HRESULT PreStartHardware(void)
     {
         return S_OK;
     }
 
-    HRESULT LIN_StopHardware(void);
+    HRESULT StopHardware(void);
     HRESULT hRecreateLINController(INT nIndex);
     HRESULT LIN_ResetHardware(void)
     {
         return S_OK;
     }
 
-    HRESULT LIN_GetCurrStatus(s_STATUSMSG & /* StatusData */)
+    HRESULT LIN_GetCurrStatus(s_STATUSMSG& /* StatusData */)
     {
         return S_OK;
     }
@@ -998,13 +1068,13 @@ public:
         return S_OK;
     };
 
-    HRESULT LIN_DisableSlave(STLIN_MSG & /* sMessage */)
+    HRESULT LIN_DisableSlave(STLIN_MSG& /* sMessage */)
     {
         return S_OK;
     }
 
     HRESULT LIN_GetBusConfigInfo(BYTE* BusInfo);
-    HRESULT LIN_GetLastErrorString(std::string & acErrorStr);
+    HRESULT LIN_GetLastErrorString(std::string& acErrorStr);
     HRESULT LIN_FilterFrames(FILTER_TYPE FilterType, TYPE_CHANNEL Channel, UINT* punMsgIds, UINT nLength);
     HRESULT LIN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT LIN_GetConfiguration(sCONTROLLERDETAILSLIN[], INT& nSize);
@@ -1460,15 +1530,16 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_LoadDriverLibrary(void)
 
 HRESULT CDIL_LIN_ETAS_BOA::LIN_UnloadDriverLibrary(void)
 {
-    /* Unload OCI library */
-    if (sg_hLibOCI != nullptr)
-    {
-        FreeLibrary(sg_hLibOCI);
-    }
+
     /* Unload CSI library */
     if (sg_hLibCSI != nullptr)
     {
         FreeLibrary(sg_hLibCSI);
+    }
+    /* Unload OCI library */
+    if (sg_hLibOCI != nullptr)
+    {
+        FreeLibrary(sg_hLibOCI);
     }
 
     /* Invalidate all API pointers */
@@ -1511,13 +1582,13 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_PerformInitOperations(void)
     return S_OK;
 }
 
-HRESULT CDIL_LIN_ETAS_BOA::LIN_PerformClosureOperations(void)
+HRESULT CDIL_LIN_ETAS_BOA::PerformClosureOperations(void)
 {
     sg_bCurrState = STATE_DRIVER_SELECTED;
     return S_OK;
 }
 
-HRESULT CDIL_LIN_ETAS_BOA::LIN_GetTimeModeMapping(SYSTEMTIME & CurrSysTime, UINT64 & TimeStamp, LARGE_INTEGER & /* QueryTickCount */)
+HRESULT CDIL_LIN_ETAS_BOA::LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& /* QueryTickCount */)
 {
     CurrSysTime = sg_CurrSysTime;
     TimeStamp = sg_TimeStamp;
@@ -1525,7 +1596,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_GetTimeModeMapping(SYSTEMTIME & CurrSysTime, UINT
     return S_OK;
 }
 
-HRESULT CDIL_LIN_ETAS_BOA::LIN_ListHwInterfaces(INTERFACE_HW_LIST & sSelHwInterface, INT & /* sAvailableConfigFiles */)
+HRESULT CDIL_LIN_ETAS_BOA::LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& /* sAvailableConfigFiles */)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_DRIVER_SELECTED, ERR_IMPROPER_STATE);
 
@@ -1630,7 +1701,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_ListHwInterfaces(INTERFACE_HW_LIST & sSelHwInterf
     }
 }
 
-HRESULT CDIL_LIN_ETAS_BOA::LIN_SelectHwInterface(const INTERFACE_HW_LIST & sSelHwInterface, INT /* nCount */)
+HRESULT CDIL_LIN_ETAS_BOA::LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT /* nCount */)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_LISTED, ERR_IMPROPER_STATE);
 
@@ -1736,7 +1807,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_DeselectHwInterface(void)
     return hResult;
 }
 
-HRESULT CDIL_LIN_ETAS_BOA::LIN_SetConfigData(ClusterConfig& ouAbsSFibexContainer)
+HRESULT CDIL_LIN_ETAS_BOA::SetConfigData(ClusterConfig& ouAbsSFibexContainer)
 {
     HRESULT hResult = WARNING_NOTCONFIRMED;
 
@@ -1749,7 +1820,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_SetConfigData(ClusterConfig& ouAbsSFibexContainer
     return S_OK;
 }
 
-HRESULT CDIL_LIN_ETAS_BOA::LIN_StartHardware(void)
+HRESULT CDIL_LIN_ETAS_BOA::StartHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
@@ -1871,6 +1942,18 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_InitializeBuffers(void)
             OciErrorCode = (*(sBOA_PTRS.m_sOCI.linioVTable.createLINTxQueue))
                            (sg_asChannel[i].m_OCI_HwHandle, &(m_OCI_NewTxQueueCfg), &(itr->second.m_OCI_TxQueueHandle));
         }
+
+        if ( sg_asChannel[i].m_OCI_FlexRayConfig.mode == OCI_LIN_MASTER )
+        {
+            OCI_LINTxQueueConfiguration ociMasterQConf;
+            memset( &ociMasterQConf, 0, sizeof( ociMasterQConf ) );   // Initialize the Queue Configuration to 0.
+            ociMasterQConf.type = OCI_LIN_MASTER_QUEUE;        // Tx Queue Type is Master Queue.
+
+            // Create the Tx Queue on the Controller, using the Configuration defined above.
+            OciErrorCode = (*(sBOA_PTRS.m_sOCI.linioVTable.createLINTxQueue)) ( sg_asChannel[i].m_OCI_HwHandle, &ociMasterQConf, &sg_asChannel[i].m_OCI_Master_Queue );
+        }
+
+
         /* Fill the hardware description details */
         /*((PSCONTROLLER_DETAILS)pInitData)[i].m_omHardwareDesc =
         sg_asChannel[i].m_acURI;*/
@@ -1905,7 +1988,7 @@ HRESULT CDIL_LIN_ETAS_BOA::hRecreateLINController(INT nIndex)
 
     sg_asChannel[nIndex].m_OCI_CntrlProp.mode = OCI_CONTROLLER_MODE_SUSPENDED;
     OciErrorCode = (*(sBOA_PTRS.m_sOCI.setLINControllerProperties))(sg_asChannel[nIndex].m_OCI_HwHandle,
-            &(sg_asChannel[nIndex].m_OCI_CntrlProp));
+                   &(sg_asChannel[nIndex].m_OCI_CntrlProp));
 
     // First destroy LIN Controller
     (*(sBOA_PTRS.m_sOCI.destroyLINController))(sg_asChannel[nIndex].m_OCI_HwHandle);
@@ -1938,7 +2021,7 @@ HRESULT CDIL_LIN_ETAS_BOA::hRecreateLINController(INT nIndex)
     return OciErrorCode;
 }
 
-HRESULT CDIL_LIN_ETAS_BOA::LIN_StopHardware(void)
+HRESULT CDIL_LIN_ETAS_BOA::StopHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
 
@@ -1955,7 +2038,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_StopHardware(void)
             {
                 sg_asChannel[i].m_OCI_CntrlProp.mode = OCI_CONTROLLER_MODE_SUSPENDED;
                 ociErrorCode = (*(sBOA_PTRS.m_sOCI.setLINControllerProperties))(sg_asChannel[i].m_OCI_HwHandle,
-                        &(sg_asChannel[i].m_OCI_CntrlProp));
+                               &(sg_asChannel[i].m_OCI_CntrlProp));
                 if (ociErrorCode == OCI_SUCCESS)
                 {
                     hResult |= S_OK;
@@ -2025,20 +2108,29 @@ HRESULT CDIL_LIN_ETAS_BOA::nWriteMessage(STLIN_MSG& ouData)
     uint32 nRemaining = 0;
     EnterCriticalSection(&sg_asChannel[ouData.m_ucChannel-1].m_ouCriticalSection);
 
-    std::map<UINT, BOA_LINData>::iterator itr = sg_asChannel[ouData.m_ucChannel-1].m_ouBoaLINData.find(ouData.m_ucMsgID);
-
-    if ( itr != sg_asChannel[ouData.m_ucChannel-1].m_ouBoaLINData.end() )
+    OCI_LINMessage msg;
+    if ( ouData.m_ucMsgTyp == LIN_SLAVE_RESPONSE )
     {
-        OCI_LINMessage msg;
-        msg.type                    = OCI_LIN_TX_MESSAGE;
-        msg.reserved                = 0;
-        msg.data.txMessage.flags    = 0;
+        std::map<UINT, BOA_LINData>::iterator itr = sg_asChannel[ouData.m_ucChannel-1].m_ouBoaLINData.find(ouData.m_ucMsgID);
 
-        memcpy(msg.data.txMessage.data, ouData.m_ucData, ouData.m_ucDataLen);
+        if ( itr != sg_asChannel[ouData.m_ucChannel-1].m_ouBoaLINData.end() )
+        {
+            msg.type                    = OCI_LIN_TX_MESSAGE ;
+            msg.reserved                = 0;
+            msg.data.txMessage.flags    = 0;
 
-        ErrCode = (*(sBOA_PTRS.m_sOCI.linioVTable.writeLINData))( itr->second.m_OCI_TxQueueHandle, OCI_NO_TIME, &msg, 1, &nRemaining);
+            memcpy(msg.data.txMessage.data, ouData.m_ucData, ouData.m_ucDataLen);
+            ErrCode = (*(sBOA_PTRS.m_sOCI.linioVTable.writeLINData))( itr->second.m_OCI_TxQueueHandle, OCI_NO_TIME, &msg, 1, &nRemaining);
+
+        }
     }
-
+    else
+    {
+        memset( &msg, 0, sizeof( msg ) );               // Initialize the message struct to 0.
+        msg.type = OCI_LIN_REQUEST;                     // Message Type is OCI_LIN_REQUEST.
+        msg.data.masterRequestMessage.frameID = ouData.m_ucMsgID;    // This message is the frame header for frame 3.
+        ErrCode = (*(sBOA_PTRS.m_sOCI.linioVTable.writeLINData))( sg_asChannel[ouData.m_ucChannel-1].m_OCI_Master_Queue, OCI_NO_TIME, &msg, 1, &nRemaining);
+    }
     LeaveCriticalSection(&sg_asChannel[ouData.m_ucChannel-1].m_ouCriticalSection);
     return S_OK;
 }
@@ -2049,7 +2141,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_Send(STLIN_MSG& pouFlxTxMsg)
 
     EnterCriticalSection(&sg_asChannel[pouFlxTxMsg.m_ucChannel-1].m_ouCriticalSection);
 
-    if (m_bLINConnected == FALSE )          //Controller Not active
+    if (m_bLINConnected == FALSE && pouFlxTxMsg.m_ucMsgTyp == LIN_SLAVE_RESPONSE )          //Controller Not active
     {
         BOA_LINData ouData;
         ouData.m_OCI_TxQueueHandle = 0;
@@ -2066,7 +2158,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_Send(STLIN_MSG& pouFlxTxMsg)
     return hResult;
 }
 
-HRESULT CDIL_LIN_ETAS_BOA::LIN_GetLastErrorString(std::string & acErrorStr)
+HRESULT CDIL_LIN_ETAS_BOA::LIN_GetLastErrorString(std::string& acErrorStr)
 {
     acErrorStr = sg_acErrStr;
     return S_OK;

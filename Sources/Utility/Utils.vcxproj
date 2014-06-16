@@ -130,6 +130,8 @@ iconv.lib %(AdditionalOptions)</AdditionalOptions>
     <ClCompile Include="AlphanumiricEdit.cpp" />
     <ClCompile Include="ButtonItem.cpp" />
     <ClCompile Include="ColorSelector.cpp" />
+    <ClCompile Include="ColumnTreeCtrl.cpp" />
+    <ClCompile Include="ColumnTreeWnd.cpp" />
     <ClCompile Include="ComboItem.cpp" />
     <ClCompile Include="ComputeCheckSum.cpp" />
     <ClCompile Include="EditItem.cpp" />
@@ -161,6 +163,8 @@ iconv.lib %(AdditionalOptions)</AdditionalOptions>
     <ClInclude Include="AlphanumiricEdit.h" />
     <ClInclude Include="ButtonItem.h" />
     <ClInclude Include="ColorSelector.h" />
+    <ClInclude Include="ColumnTreeCtrl.h" />
+    <ClInclude Include="ColumnTreeWnd.h" />
     <ClInclude Include="ComboItem.h" />
     <ClInclude Include="ComputeCheckSum.h" />
     <ClInclude Include="EditItem.h" />

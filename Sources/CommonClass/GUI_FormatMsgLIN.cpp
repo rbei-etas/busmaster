@@ -382,7 +382,7 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
 
 
 
-void CFormatMsgLIN::vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, std::string & strDesc)
+void CFormatMsgLIN::vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, std::string& strDesc)
 {
     switch ( sLinErrorInfo.m_eEventType )
     {

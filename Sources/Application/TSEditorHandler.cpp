@@ -118,7 +118,7 @@ HWND TSEditorHandler::vGetSafeHWnd()
     }
 }
 
-void TSEditorHandler::vGetConfigurationData(BYTE * & /* pDesBuffer */, UINT & /* unBuffSize */)
+void TSEditorHandler::vGetConfigurationData(BYTE*& /* pDesBuffer */, UINT& /* unBuffSize */)
 {
 }
 

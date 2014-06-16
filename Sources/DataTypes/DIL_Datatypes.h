@@ -94,7 +94,7 @@ enum
     DRIVER_CAN_IVIEW,
     DRIVER_CAN_ISOLAR,
     DIL_TOTAL,          // Its value must be <= MAX_DILS
-    DAL_NONE            // none selected
+    DAL_NONE            = ~0x0
 };
 
 enum
@@ -102,8 +102,9 @@ enum
     DRIVER_LIN_ISOLAR_EVE_VLIN = 0,
     DRIVER_LIN_VECTOR_XL,
     DRIVER_LIN_ETAS_BOA,
+    DRIVER_LIN_PEAK_USB,
     DIL_LIN_TOTAL,
-    DAL_LIN_NONE
+    DAL_LIN_NONE            = ~0x0
 };
 
 typedef enum FILTER_TYPE

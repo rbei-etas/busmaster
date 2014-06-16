@@ -1320,8 +1320,13 @@ BOOL CCANMonitorApp::bGetDefaultValue(eCONFIGDETAILS /*eParam*/,
  * Since this function is asynchronous, caller should not immediately
  * deallocate the omText.
  */
-BOOL CCANMonitorApp::bWriteIntoTraceWnd(char* omText)
+BOOL CCANMonitorApp::bWriteIntoTraceWnd(char* omText, BOOL bTrace)
 {
+    if(bTrace == FALSE)
+    {
+        return FALSE;
+    }
+
     BOOL bResult = FALSE;
     CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
 

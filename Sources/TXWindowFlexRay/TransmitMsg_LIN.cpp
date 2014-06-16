@@ -130,7 +130,7 @@ CTransmitMsgLIN::CTransmitMsgLIN()
     vInitialiseDataBytes();
 }
 
-void CTransmitMsgLIN::OnClick(NMHDR * /* pNMHDR */, LRESULT * /* pResult */)
+void CTransmitMsgLIN::OnClick(NMHDR* /* pNMHDR */, LRESULT* /* pResult */)
 {
 }
 
@@ -258,6 +258,26 @@ void CTransmitMsgLIN::vChangeDelButtonStatus(bool /* bStatus */)
         }
     }
 
+    //Master or Slave Radio Button
+    omBtWnd = (CWnd*)GetDlgItem(IDC_LIN_MSGTYPE_HEADER);
+    if( CTxLINDataStore::ouGetTxLINDataStoreObj().m_eBusStatus == BUS_DISCONNECTED )
+    {
+        omBtWnd->EnableWindow(TRUE);
+    }
+    else
+    {
+        omBtWnd->EnableWindow(FALSE);
+    }
+
+    omBtWnd = (CWnd*)GetDlgItem(IDC_LIN_MSGTYPE_SLAVE);
+    if( CTxLINDataStore::ouGetTxLINDataStoreObj().m_eBusStatus == BUS_DISCONNECTED )
+    {
+        omBtWnd->EnableWindow(TRUE);
+    }
+    else
+    {
+        omBtWnd->EnableWindow(FALSE);
+    }
     omBtWnd = (CWnd*)GetDlgItem(IDC_CBTN_ADDNEW);
     if ( omBtWnd != nullptr )
     {
@@ -770,11 +790,73 @@ void CTransmitMsgLIN::vSetControlProperties()
 void CTransmitMsgLIN::onLinSlaveTypeSelected()
 {
     m_CurrentMsgType = LIN_SLAVE_RESPONSE;
+    char chText[MAX_PATH] = "";
+    //1. Enable DLC and Databytes
+    m_odDLC.SetReadOnly(false);
+    /*for ( int nId = 0; nId <= 8; nId++ )
+    {
+        m_odDB[nId].SetReadOnly(false);
+    }*/
+    vUpdateDataBytes();
+    //2. Update Text In List Ctrl if any item is selected;
+    int nSelItem = m_lstMsg.GetNextItem(-1, LVNI_SELECTED);
+    if ( -1 != nSelItem )
+    {
+        std::list<LIN_FRAME_DATA>::iterator itrList = CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouLIN_Frame_Data.begin();
+        advance(itrList, nSelItem);
+        if ( itrList !=  CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouLIN_Frame_Data.end() )
+        {
+            std::string strVal, strTemp;
+            sprintf(chText, "%d", itrList->m_ouLinMessage.m_ucDataLen);
+
+            m_lstMsg.SetItemText(nSelItem, def_COLUMN_DLC_INDEX, chText);
+
+            strVal = "";
+            for ( int i =0 ; i < itrList->m_ouLinMessage.m_ucDataLen; i++ )
+            {
+                vGetStringFromValue(itrList->m_ouLinMessage.m_ucData[i], strTemp, false);
+                strVal += strTemp;
+                strVal += " ";
+            }
+            m_lstMsg.SetItemText(nSelItem, def_COLUMN_DATABYTES_INDEX, strVal.c_str());
+
+            m_lstMsg.SetItemText( nSelItem, def_COLUMN_MSGTYPE_INDEX, "Slave" );
+
+            itrList->m_ouLinMessage.m_ucMsgTyp = m_CurrentMsgType;
+        }
+
+    }
+    m_omLctrSigList.EnableWindow(true);
+
 }
 
 void CTransmitMsgLIN::onLinHeaderTypeSelected()
 {
     m_CurrentMsgType = LIN_MASTER_RESPONSE;
+    m_omLctrSigList.EnableWindow(false);
+
+    //1. Disable DLC and Databytes
+    m_odDLC.SetReadOnly(true);
+    for ( int nId = 0; nId < 8; nId++ )
+    {
+        m_odDB[nId].SetReadOnly(true);
+    }
+
+    //2. Update Text In List Ctrl if any item is selected;
+    int nSelItem = m_lstMsg.GetNextItem(-1, LVNI_SELECTED);
+    if ( -1 != nSelItem )
+    {
+        m_lstMsg.SetItemText( nSelItem, def_COLUMN_DLC_INDEX, "" );
+        m_lstMsg.SetItemText( nSelItem, def_COLUMN_DATABYTES_INDEX, "" );
+        m_lstMsg.SetItemText( nSelItem, def_COLUMN_MSGTYPE_INDEX, "Master" );
+        std::list<LIN_FRAME_DATA>::iterator itrList = CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouLIN_Frame_Data.begin();
+        advance(itrList, nSelItem);
+        if ( itrList !=  CTxLINDataStore::ouGetTxLINDataStoreObj().m_ouLIN_Frame_Data.end() )
+        {
+            itrList->m_ouLinMessage.m_ucMsgTyp = m_CurrentMsgType;
+        }
+
+    }
 }
 
 
@@ -1131,8 +1213,11 @@ void CTransmitMsgLIN::vUpdateMsgInList(LIN_FRAME_DATA ouLinData)
     vGetStringFromValue(ouLinData.m_ouLinMessage.m_ucMsgID, strText);
     m_lstMsg.SetItemText(nRows, def_COLUMN_MSGID_INDEX, strText.c_str());
 
-
-    vGetStringFromValue(ouLinData.m_ouLinMessage.m_ucDataLen, strText);
+    strText = "";
+    if ( ouLinData.m_ouLinMessage.m_ucMsgTyp == LIN_SLAVE_RESPONSE )
+    {
+        vGetStringFromValue(ouLinData.m_ouLinMessage.m_ucDataLen, strText);
+    }
     m_lstMsg.SetItemText(nRows, def_COLUMN_DLC_INDEX, strText.c_str());
 
     char chValue[MAX_PATH];
@@ -1142,11 +1227,11 @@ void CTransmitMsgLIN::vUpdateMsgInList(LIN_FRAME_DATA ouLinData)
 
     if ( ouLinData.m_ouLinMessage.m_ucMsgTyp == LIN_SLAVE_RESPONSE )
     {
-        strText = "slave";
+        strText = "Slave";
     }
     else
     {
-        strText = "master";
+        strText = "Master";
     }
 
     m_lstMsg.SetItemText(nRows, def_COLUMN_MSGTYPE_INDEX, strText.c_str());
@@ -1177,11 +1262,14 @@ void CTransmitMsgLIN::vUpdateMsgInList(LIN_FRAME_DATA ouLinData)
 
     std::string strTemp;
     strText = "";
-    for ( int i =0 ; i < ouLinData.m_ouLinMessage.m_ucDataLen; i++ )
+    if ( ouLinData.m_ouLinMessage.m_ucMsgTyp == LIN_SLAVE_RESPONSE )
     {
-        vGetStringFromValue(ouLinData.m_ouLinMessage.m_ucData[i], strTemp, false);
-        strText += strTemp;
-        strText += " ";
+        for ( int i =0 ; i < ouLinData.m_ouLinMessage.m_ucDataLen; i++ )
+        {
+            vGetStringFromValue(ouLinData.m_ouLinMessage.m_ucData[i], strTemp, false);
+            strText += strTemp;
+            strText += " ";
+        }
     }
 
     m_lstMsg.SetItemText(nRows, def_COLUMN_DATABYTES_INDEX, strText.c_str());
@@ -1206,7 +1294,14 @@ int CTransmitMsgLIN::nAddMessageToList(LIN_FRAME_DATA& ouLinData, int nRows)
     char chText[MAX_PATH] = {0};
     sprintf_s(chText, MAX_PATH, "%d", ouLinData.m_ouLinMessage.m_ucDataLen);
     //vGetStringFromValue(ouLinData.m_ouLinMessage.m_ucDataLen, strText);
-    m_lstMsg.SetItemText(nRows, def_COLUMN_DLC_INDEX, chText);
+    if ( ouLinData.m_ouLinMessage.m_ucMsgTyp == LIN_SLAVE_RESPONSE )
+    {
+        m_lstMsg.SetItemText(nRows, def_COLUMN_DLC_INDEX, chText);
+    }
+    else
+    {
+        m_lstMsg.SetItemText(nRows, def_COLUMN_DLC_INDEX, "");
+    }
 
     char chValue[MAX_PATH];
     sprintf_s(chValue, MAX_PATH, "%d", ouLinData.m_ouLinMessage.m_ucChannel);
@@ -1217,11 +1312,11 @@ int CTransmitMsgLIN::nAddMessageToList(LIN_FRAME_DATA& ouLinData, int nRows)
 
     if ( ouLinData.m_ouLinMessage.m_ucMsgTyp == LIN_SLAVE_RESPONSE )
     {
-        strText = "slave";
+        strText = "Slave";
     }
     else
     {
-        strText = "master";
+        strText = "Master";
     }
 
     m_lstMsg.SetItemText(nRows, def_COLUMN_MSGTYPE_INDEX, strText.c_str());
@@ -1257,13 +1352,18 @@ int CTransmitMsgLIN::nAddMessageToList(LIN_FRAME_DATA& ouLinData, int nRows)
         CTxLINDataStore::ouGetTxLINDataStoreObj().nInsertKey(nRows, strText[0]);
     }
 
-    std::string strTemp;
+    std::string strTemp = "";
     strText = "";
-    for ( int i =0 ; i < ouLinData.m_ouLinMessage.m_ucDataLen; i++ )
+    if ( ouLinData.m_ouLinMessage.m_ucMsgTyp == LIN_SLAVE_RESPONSE )
     {
-        vGetStringFromValue(ouLinData.m_ouLinMessage.m_ucData[i], strTemp, false);
-        strText += strTemp;
-        strText += " ";
+        std::string strTemp = "";
+
+        for ( int i =0 ; i < ouLinData.m_ouLinMessage.m_ucDataLen; i++ )
+        {
+            vGetStringFromValue(ouLinData.m_ouLinMessage.m_ucData[i], strTemp, false);
+            strText += strTemp;
+            strText += " ";
+        }
     }
 
     m_lstMsg.SetItemText(nRows, def_COLUMN_DATABYTES_INDEX, strText.c_str());
@@ -1292,7 +1392,11 @@ int CTransmitMsgLIN::nAddMessageToList(LIN_FRAME_DATA& ouLinData, int nRows)
 
 eLIN_MSG_TYPE CTransmitMsgLIN::eGetMessageType()
 {
-    return m_CurrentMsgType;
+    if ( ((CButton*)GetDlgItem(IDC_LIN_MSGTYPE_SLAVE))->GetCheck() == TRUE )
+    {
+        return LIN_SLAVE_RESPONSE;
+    }
+    return LIN_MASTER_RESPONSE;
 }
 
 void CTransmitMsgLIN::OnClose()
@@ -1669,9 +1773,11 @@ void CTransmitMsgLIN::vUpdateViews(BOOL bIsUpdate)
                 {
                     nUpdateSelectedMessage();
                 }
+                m_omButtonAddMsg.EnableWindow(TRUE);
             }
         }
     }
+
 }
 
 int CTransmitMsgLIN::nUpdateSelectedMessage()
@@ -1828,7 +1934,7 @@ int CTransmitMsgLIN::nGetDbFrame(FRAME_STRUCT& ouFrame)
     return 0;
 }
 
-int CTransmitMsgLIN::nGetMessageName(std::string & strMsgName)
+int CTransmitMsgLIN::nGetMessageName(std::string& strMsgName)
 {
     int nChannel = m_wndComboChannel.GetCurSel();
     if ( nChannel >= 0&& nChannel < CHANNEL_ALLOWED )
@@ -2062,12 +2168,23 @@ INT CTransmitMsgLIN::nGetMessageID()
 
 void CTransmitMsgLIN::vUpdateStateDataBytes()
 {
-    unsigned int dlc = (unsigned int) m_odDLC.lGetValue();
-
-    for(INT nIndex = 0; nIndex < defMAX_BYTE; nIndex++)
+    if ( ((CButton*)GetDlgItem(IDC_LIN_MSGTYPE_SLAVE))->GetCheck() == TRUE )
     {
-        m_odDB[nIndex].SetReadOnly( dlc < (nIndex+1));
+        unsigned int dlc = (unsigned int) m_odDLC.lGetValue();
+
+        for(INT nIndex = 0; nIndex < defMAX_BYTE; nIndex++)
+        {
+            m_odDB[nIndex].SetReadOnly( dlc < (nIndex+1));
+        }
     }
+    else
+    {
+        for(INT nIndex = 0; nIndex < defMAX_BYTE; nIndex++)
+        {
+            m_odDB[nIndex].SetReadOnly( true );
+        }
+    }
+
 
     /*m_odDB1.SetReadOnly(dlc < 1);
     m_odDB2.SetReadOnly(dlc < 2);
@@ -3541,10 +3658,10 @@ void CTransmitMsgLIN::OnItemchangedLstcMsgDetails( NMHDR* pNMHDR, LRESULT* pResu
     if((pNMListView->iItem >= 0) && ( pNMListView->uNewState & (LVIS_FOCUSED|LVIS_SELECTED)))
     {
         m_nSelectedMsgIndex = pNMListView->iItem ;
-        m_omButtonAddMsg.SetWindowText(def_SEND_Message);
 
         if(CTxLINDataStore::ouGetTxLINDataStoreObj().m_eBusStatus == BUS_CONNECTED)
         {
+            m_omButtonAddMsg.SetWindowText(def_SEND_Message);
             m_omButtonAddMsg.EnableWindow(TRUE);
         }
         else
@@ -3640,8 +3757,31 @@ INT CTransmitMsgLIN::nUpdateMessageDetails(LIN_FRAME_DATA& ouLinData)
     m_odSignalMatrix.vSetMessageLength(m_odDLC.lGetValue());
     vUpdateSignalMatrix();
 
+
+    //5. DLC
+    m_odDLC.SetReadOnly(false);
+
+    //6. Header or Slave
+    ((CButton*)GetDlgItem(IDC_LIN_MSGTYPE_SLAVE))->SetCheck(TRUE);
+    ((CButton*)GetDlgItem(IDC_LIN_MSGTYPE_HEADER))->SetCheck(FALSE);
+
     //7. Channel
     m_omComboChannelID.SetCurSel(ouLinData.m_ouLinMessage.m_ucChannel - 1);
+    m_omLctrSigList.EnableWindow(true);
+    if ( ouLinData.m_ouLinMessage.m_ucMsgTyp == LIN_MASTER_RESPONSE )
+    {
+        //1. Disable DLC and Databytes
+        m_odDLC.SetReadOnly(true);
+        for ( int nId = 0; nId < 8; nId++ )
+        {
+            m_odDB[nId].SetReadOnly(true);
+        }
+
+        ((CButton*)GetDlgItem(IDC_LIN_MSGTYPE_SLAVE))->SetCheck(FALSE);
+        ((CButton*)GetDlgItem(IDC_LIN_MSGTYPE_HEADER))->SetCheck(TRUE);
+        m_omLctrSigList.EnableWindow(false);
+
+    }
     return 0;
 }
 

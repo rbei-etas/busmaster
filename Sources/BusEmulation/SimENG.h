@@ -21,7 +21,6 @@
 // SimENG.h : Declaration of the CSimENG
 
 #pragma once
-
 #include "resource_BusSim.h"       // main symbols
 #include "BusEmulation.h"
 

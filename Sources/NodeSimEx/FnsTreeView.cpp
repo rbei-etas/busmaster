@@ -471,7 +471,7 @@ BOOL CFnsTreeView::PreCreateWindow(CREATESTRUCT& cs)
     return CTreeView::PreCreateWindow(cs);
 }
 
-void CFnsTreeView::OnTreeItemSelectionChanged(NMHDR * /* pNMHDR */, LRESULT * /* pResult */)
+void CFnsTreeView::OnTreeItemSelectionChanged(NMHDR* /* pNMHDR */, LRESULT* /* pResult */)
 {
     vEditSelectedFunction();
 }
@@ -1944,7 +1944,7 @@ void CFnsTreeView::vOnNewErrorHandler()
     }
 }
 
-INT CFnsTreeView::nGetLinEventTypeFromName(CString strName, std::string & strEventName)
+INT CFnsTreeView::nGetLinEventTypeFromName(CString strName, std::string& strEventName)
 {
     HRESULT hResult = S_OK;
     if(strName.Find("Error_Checksum") != -1)

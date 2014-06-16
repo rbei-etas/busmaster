@@ -72,9 +72,9 @@ public:
     HRESULT GetConfigurationData(xmlNodePtr pxmlNodePtr);
     HRESULT SetConfigurationData(BYTE* pDesBuffer, UINT unBuffSize);
     HRESULT SetConfigurationData(xmlNodePtr pXmlNode);
-    HRESULT EnableItem(DWORD dwID, bool & bEnable);
+    HRESULT EnableItem(DWORD dwID, bool& bEnable);
     HRESULT RemoveAllItems(void);
-    HRESULT GetTestSetupEnableStatus(DWORD dwID, bool & bEnable);
+    HRESULT GetTestSetupEnableStatus(DWORD dwID, bool& bEnable);
     HRESULT GetTestSetupInfo(INT nIndex, STestSetupInfo& sTSInfo);
     HRESULT GetTestSetupCount(INT& nCount);
     HRESULT Execute( /*PFCALLBACKRESULTTC pfResultTC*/);

@@ -87,6 +87,11 @@ const int CH_B_MESSAGE = 0x80000000;  // bitwise OR to make it a Channnel B  mes
 #define TX_DATA_LENGTH  0
 #define TX_DATA_BYTE    1
 
+#define defSTR_FRAME_NAME           "Table/Frame"
+#define defSTR_FRAME_ID             "ID(hex)"
+#define defSTR_FRAME_TYPE           "Type"
+#define defSTR_DELAY                "Delay[ms]"
+
 #define INITIAL_DB_INDEX 1
 #define FIBEXTREE_ROOTNAME _T("Fibex Databases...")
 #define ERROR_IN_OBJECTCREATION _T("Exception in Fibex object Creation\nPlease Reload the DLL")

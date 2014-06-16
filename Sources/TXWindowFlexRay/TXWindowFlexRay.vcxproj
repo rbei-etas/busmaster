@@ -22,7 +22,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v110_xp</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
@@ -154,11 +154,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CCheckColumnTreeCtrl.cpp" />
     <ClCompile Include="ConfigDetails.cpp" />
     <ClCompile Include="FlexListCtrl.cpp" />
     <ClCompile Include="HeaderCtrlEx.cpp" />
     <ClCompile Include="CHexEdit\HexEdit.cpp" />
     <ClCompile Include="LinFlexListCtrl.cpp" />
+    <ClCompile Include="LINScheduleDataStore.cpp" />
+    <ClCompile Include="ScheduleTableCfgDlg.cpp" />
     <ClCompile Include="TransmitMsg.cpp" />
     <ClCompile Include="TransmitMsg_LIN.cpp" />
     <ClCompile Include="TxLINDataStore.cpp" />
@@ -173,12 +176,15 @@
     <ClCompile Include="TxWindowFlexRay_stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CCheckColumnTreeCtrl.h" />
     <ClInclude Include="ConfigDetails.h" />
     <ClInclude Include="FlexListCtrl.h" />
     <ClInclude Include="HashDefines.h" />
     <ClInclude Include="HeaderCtrlEx.h" />
     <ClInclude Include="CHexEdit\HexEdit.h" />
     <ClInclude Include="LinFlexListCtrl.h" />
+    <ClInclude Include="LINScheduleDataStore.h" />
+    <ClInclude Include="ScheduleTableCfgDlg.h" />
     <ClInclude Include="TransmitMsg.h" />
     <ClInclude Include="TransmitMsg_LIN.h" />
     <ClInclude Include="TxLINDataStore.h" />
@@ -199,6 +205,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\bmp_chec.bmp" />
+    <Image Include="res\ico_send.ico" />
+    <Image Include="res\ScheduleTable.bmp" />
+    <Image Include="res\TxWindow.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

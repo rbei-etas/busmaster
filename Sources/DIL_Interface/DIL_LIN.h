@@ -216,6 +216,20 @@ public:
     /* HELPER FUNCTIONS START */
     void vSelectInterface_Dummy(void);
 
+    //Schedule table
+    HRESULT DILL_RegisterLinScheduleTable(DWORD& dwClientId, int& nChannel, CSheduleTable ouTable, int& nHandle);
+    HRESULT DIIL_DeRegisterLinScheduleTabel(DWORD& dwClientId, int& nChannel, int& nTableHandle);
+    HRESULT DILL_StartLinScheduleTable(DWORD& dwClientId, int& nChannel, int& nTableHandle);
+    HRESULT DILL_UpdateLinScheduleTable( DWORD& dwClientId, int& nChannel, int& nHandle, CSheduleTable& ouTable );
+
+    HRESULT DIIL_EnableLinScheuleCommand( DWORD& dwClientId, int& nChannel, int nTableHandle, int nIndex, bool bEnable);
+
+    //Individual Header commands.
+    HRESULT DIIL_RegisterLinHeader( DWORD& dwClientId, int& nChannel, int nId, int nCycleTimer);
+    HRESULT DIIL_DeRegisterLinHeader( DWORD& dwClientId, int& nChannel, int nId);
+
+
+
 private:
     HRESULT (*m_pfPerformInitOperations)(void);
     HRESULT (*m_pfPerformClosureOperations)(void);

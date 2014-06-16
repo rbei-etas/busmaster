@@ -15,6 +15,16 @@
     </metadata>
   </prolog>
   <body>
+    <p><b>2.4.0</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>LIN PEAK device support</li>
+        <li>LIN Master mode</li>
+        <li>LIN Status message reporting</li>
+        <li>ISO-TP over CAN support</li>
+        <li>UDS support</li>
+        <li>Bug Fixes</li>
+      </ul></p>
     <p><b>2.3.0</b></p>
     <p>Following features are added:</p>
     <p><ul>

@@ -343,7 +343,7 @@ public:
     HRESULT CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg);
     HRESULT CAN_GetBusConfigInfo(BYTE* BusInfo);
-    HRESULT CAN_GetLastErrorString(std::string & acErrorStr);
+    HRESULT CAN_GetLastErrorString(std::string& acErrorStr);
     HRESULT CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam);
     HRESULT CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
@@ -1763,7 +1763,7 @@ HRESULT CDIL_CAN_Kvaser::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 * \authors       Arunkumar Karri
 * \date          12.10.2011 Created
 */
-HRESULT CDIL_CAN_Kvaser::CAN_GetLastErrorString(std::string & /*acErrorStr*/)
+HRESULT CDIL_CAN_Kvaser::CAN_GetLastErrorString(std::string& /*acErrorStr*/)
 {
     return WARN_DUMMY_API;
 }
@@ -2188,9 +2188,9 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
     {
         sg_aodChannels[nCount].m_nChannel = sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface;
         sprintf(sg_aodChannels[nCount].m_strName , _T("Kvaser - %s, Serial Number- %ld, Firmware- %s"),
-                  sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDescription.c_str(),
-                  sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwVendor,
-                  sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDeviceName.c_str());
+                sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDescription.c_str(),
+                sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwVendor,
+                sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDeviceName.c_str());
     }
 
     return defERR_OK;
@@ -2233,9 +2233,9 @@ static int nCreateSingleHardwareNetwork()
     sg_HardwareIntr[0].m_acDeviceName = chBuffer;
 
     sprintf(sg_aodChannels[0].m_strName , _T("%s, Serial Number: %ld, Firmware: %s"),
-              sg_HardwareIntr[0].m_acDescription.c_str(),
-              sg_HardwareIntr[0].m_dwVendor,
-              sg_HardwareIntr[0].m_acDeviceName.c_str());
+            sg_HardwareIntr[0].m_acDescription.c_str(),
+            sg_HardwareIntr[0].m_dwVendor,
+            sg_HardwareIntr[0].m_acDeviceName.c_str());
 
     return defERR_OK;
 }

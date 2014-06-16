@@ -28,9 +28,11 @@
 #define USAGE_EXPORT
 #include "TxWndFlexRay_Extern.h"
 #include "TxMsgChildFrame.h"
+#include "LINScheduleDataStore.h"
 
 CTxMsgChildFrame* g_pomTxMsgFlexChildWindow = nullptr;
 CTxMsgChildFrame* g_pomTxMsgLinChildWindow = nullptr;
+CScheduleTableCfgDlg* g_pomLINScheduleCfgDlg = NULL;
 
 static AFX_EXTENSION_MODULE TXFlexRayWindowDLL = { false, nullptr };
 
@@ -72,10 +74,8 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
     return 1;   // ok
 }
 
-USAGEMODE HRESULT TXFlexRay_vSetMsgDBPtrInDetailsView(void * /* pMsgDB */)
-{
-    return S_OK;
-}
+
+//Export Function Definitions.
 
 void SetDefaultWindowPos(WINDOWPLACEMENT& sTxWndPlacement)
 {
@@ -90,6 +90,30 @@ void SetDefaultWindowPos(WINDOWPLACEMENT& sTxWndPlacement)
     sTxWndPlacement.rcNormalPosition.left = 11;
     sTxWndPlacement.rcNormalPosition.right = 883;
     sTxWndPlacement.showCmd = 1;
+}
+
+HRESULT nShowScheduleConfigDlg(void* pParentWnd, ClusterConfig& pClusterConfig)
+{
+    HRESULT hResult = S_FALSE;
+
+    if(g_pomLINScheduleCfgDlg == NULL)
+    {
+        g_pomLINScheduleCfgDlg = new CScheduleTableCfgDlg(pClusterConfig, (CWnd*)pParentWnd);
+
+        hResult = g_pomLINScheduleCfgDlg->Create(IDD_DLG_LIN_SCHEDULE_CONFIG, (CWnd*)pParentWnd);
+        //g_pomLINScheduleCfgDlg->SetParent((CWnd*)pParentWnd);
+        WINDOWPLACEMENT wndPos;
+        CLINScheduleDataStore::pGetLINSchedDataStore().vGetWindowPlacement(wndPos);
+        g_pomLINScheduleCfgDlg->SetWindowPlacement(&(wndPos));
+        g_pomLINScheduleCfgDlg->ShowWindow(SW_SHOW);
+        hResult = S_OK;
+    }
+    else
+    {
+        g_pomLINScheduleCfgDlg->ShowWindow(SW_SHOW);
+    }
+
+    return hResult;
 }
 int nShowTxWindow( void* pParentWnd, ETYPE_BUS eBUS )
 {
@@ -211,9 +235,64 @@ int nShowTxWindow( void* pParentWnd, ETYPE_BUS eBUS )
         pFrameWindow->SetActiveWindow();
     }
 
+}
+
+
+
+USAGEMODE HRESULT TXLIN_vShowScheduleConfigDlg(bool bShow)
+{
+    if ( NULL != g_pomLINScheduleCfgDlg )
+    {
+        int nShow  = bShow ? SW_SHOW : SW_HIDE;
+        g_pomLINScheduleCfgDlg->ShowWindow(nShow);
+    }
     return S_OK;
 }
 
+
+USAGEMODE HRESULT TXLIN_vCreateScheduleConfigDlg(void* pParentWnd, ClusterConfig& pClusterConfig)
+{
+    //Place this code at the beginning of the export function.
+    //Save previous resource handle and switch to current one.
+    HINSTANCE hInst = AfxGetResourceHandle();
+    AfxSetResourceHandle(TXFlexRayWindowDLL.hResource);
+
+    HRESULT nResult = nShowScheduleConfigDlg(pParentWnd, pClusterConfig);
+
+    AfxSetResourceHandle(hInst);
+    return nResult;
+}
+
+USAGEMODE HRESULT TXComman_vSetScheduleConfig( xmlDocPtr pDoc)
+{
+
+    CLINScheduleDataStore::pGetLINSchedDataStore().hSetConfigData(pDoc);
+    if ( g_pomLINScheduleCfgDlg != NULL )
+    {
+        g_pomLINScheduleCfgDlg->nUpdateScheduleView();
+    }
+
+    return S_OK;
+}
+
+USAGEMODE HRESULT TXComman_vGetScheduleConfig( xmlNodePtr pDoc)
+{
+    WINDOWPLACEMENT wndPlacement;
+    if ( g_pomLINScheduleCfgDlg != NULL )
+    {
+        g_pomLINScheduleCfgDlg->GetWindowPlacement(&wndPlacement);
+    }
+    else
+    {
+        CLINScheduleDataStore::pGetLINSchedDataStore().vGetWindowPlacement(wndPlacement);
+    }
+    //1. Save Window Positions
+    xmlNodePtr pNodeWndPos = xmlNewNode(NULL, BAD_CAST DEF_WND_POS);
+    xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWndPos,wndPlacement);
+    xmlAddChild(pDoc, pNodeWndPos);
+    CLINScheduleDataStore::pGetLINSchedDataStore().hGetConfigData(pDoc);
+    return S_OK;
+}
 USAGEMODE HRESULT TXFlexRay_vShowConfigureMsgWindow(void* pParentWnd, ETYPE_BUS eBUS)
 {
     //Place this code at the beginning of the export function.
@@ -227,6 +306,7 @@ USAGEMODE HRESULT TXFlexRay_vShowConfigureMsgWindow(void* pParentWnd, ETYPE_BUS 
     return nRes;
 }
 
+
 USAGEMODE HRESULT TXComman_vSetClientID(ETYPE_BUS eBusType, DWORD dwClientID)
 {
     if ( eBusType == FLEXRAY )
@@ -235,10 +315,10 @@ USAGEMODE HRESULT TXComman_vSetClientID(ETYPE_BUS eBusType, DWORD dwClientID)
     else if ( eBusType == LIN )
     {
         CTxLINDataStore::ouGetTxLINDataStoreObj().m_dwClientID = dwClientID;
+        CLINScheduleDataStore::pGetLINSchedDataStore().m_dwClientID = dwClientID;
     }
     return S_OK;
 }
-
 USAGEMODE HRESULT TXComman_vSetDILInterfacePtr(ETYPE_BUS eBusType, void* pDilPointer)
 {
     if ( eBusType == FLEXRAY )
@@ -249,6 +329,7 @@ USAGEMODE HRESULT TXComman_vSetDILInterfacePtr(ETYPE_BUS eBusType, void* pDilPoi
     {
         CTxLINDataStore::ouGetTxLINDataStoreObj().bSetDILInterfacePtr((CBaseDIL_LIN*)pDilPointer);
     }
+
     return S_OK;
 }
 
@@ -302,25 +383,6 @@ USAGEMODE HRESULT TXComman_hConfigWindowShown(ETYPE_BUS eBusType)
     return S_OK;
 }
 
-USAGEMODE HRESULT TXFlexRay_vStartTransmission(UCHAR /* ucKeyVal */)
-{
-    return S_OK;
-}
-
-USAGEMODE HRESULT TXFlexRay_bAllocateMemoryForGlobalTxList()
-{
-    return S_OK;
-}
-
-USAGEMODE HRESULT TXFlexRay_vAssignMsgBlockList()
-{
-    return S_OK;
-}
-
-USAGEMODE HRESULT TXFlexRay_vDeleteTxBlockMemory()
-{
-    return S_OK;
-}
 
 USAGEMODE HRESULT TX_vBusStatusChanged(ETYPE_BUS eBusType, ESTATUS_BUS eBusStatus)
 {
@@ -337,21 +399,13 @@ USAGEMODE HRESULT TX_vBusStatusChanged(ETYPE_BUS eBusType, ESTATUS_BUS eBusStatu
     else if ( eBusType == LIN )
     {
         CTxLINDataStore::ouGetTxLINDataStoreObj().vSetBusStatus(eBusStatus);
+        CLINScheduleDataStore::pGetLINSchedDataStore().vSetBusStatus(eBusStatus);
     }
 
     //CTxMsgManager::s_podGetTxMsgManager()->vStopTransmission(unMaxWaitTime);
     return S_OK;
 }
 
-//USAGEMODE HRESULT TX_vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize)
-//{
-//    if(g_pomTxMsgChildWindow)
-//    {
-//        g_pomTxMsgChildWindow->vUpdateWndCo_Ords();
-//    }
-//    CTxMsgManager::s_podGetTxMsgManager()->vGetTxWndConfigData(pDesBuffer, nBuffSize);
-//    return S_OK;
-//}
 USAGEMODE HRESULT TXComman_vGetTxWndConfigData( ETYPE_BUS eBusType, xmlNodePtr pxmlNodePtr)
 {
     if ( eBusType == FLEXRAY )
@@ -388,26 +442,6 @@ USAGEMODE HRESULT TXComman_vSetTxWndConfigDataXML( ETYPE_BUS eBusType, xmlDocPtr
     return S_OK;
 }
 
-USAGEMODE HRESULT TXFlexRay_vSetTxStopFlag(BOOL /* bStartStop */)
-{
-    return S_OK;
-}
-
-USAGEMODE BOOL TXFlexRay_bGetTxStopFlag()
-{
-    return S_OK;
-}
-
-USAGEMODE UINT TXFlexRay_unGetTxBlockCount()
-{
-    return 0;
-}
-
-USAGEMODE HRESULT TXFlexRay_vFlexFileChanged()
-{
-    return S_OK;
-}
-
 USAGEMODE HRESULT TXComman_nSetFibexConfig(ETYPE_BUS eBus, ClusterConfig& ouFlexConfig)
 {
     HRESULT hr = S_FALSE;
@@ -426,6 +460,12 @@ USAGEMODE HRESULT TXComman_nSetFibexConfig(ETYPE_BUS eBus, ClusterConfig& ouFlex
         {
             g_pomTxMsgLinChildWindow->m_pLinTransmitMsgView->UpdateTxView(ouFlexConfig.m_nChannelsConfigured);
         }
+        CLINScheduleDataStore::pGetLINSchedDataStore().hSetClusterConfig(&ouFlexConfig);
+        if (NULL != g_pomLINScheduleCfgDlg )
+        {
+            g_pomLINScheduleCfgDlg->nUpdateScheduleView();
+        }
+
     }
 
     return hr;

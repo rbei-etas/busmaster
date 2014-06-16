@@ -2,16 +2,16 @@ HKCR
 {
 	BusEmulation.SimENG.1 = s 'SimENG Class'
 	{
-		CLSID = s '{CC7F5A80-DED7-49B8-B67C-7511E18E60B5}'
+		CLSID = s '{0583EE2A-D931-402B-A067-A47A48D1268D}'
 	}
 	BusEmulation.SimENG = s 'SimENG Class'
 	{
-		CLSID = s '{CC7F5A80-DED7-49B8-B67C-7511E18E60B5}'
+		CLSID = s '{0583EE2A-D931-402B-A067-A47A48D1268D}'
 		CurVer = s 'BusEmulation.SimENG.1'
 	}
 	NoRemove CLSID
 	{
-		ForceRemove {CC7F5A80-DED7-49B8-B67C-7511E18E60B5} = s 'SimENG Class'
+		ForceRemove {0583EE2A-D931-402B-A067-A47A48D1268D} = s 'SimENG Class'
 		{
 			ProgID = s 'BusEmulation.SimENG.1'
 			VersionIndependentProgID = s 'BusEmulation.SimENG'

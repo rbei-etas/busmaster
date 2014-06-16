@@ -129,7 +129,7 @@ typedef sMSGBLOCKLIST* PSMSGBLOCKLIST;
 struct sTHREAD_INFO
 {
     HANDLE m_hThread;
-    void * m_pvThread;
+    void* m_pvThread;
 };
 
 typedef sTHREAD_INFO  STHREADINFO;

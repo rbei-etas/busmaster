@@ -153,7 +153,7 @@ void CTxLINDataStore::vSetBusStatus(ESTATUS_BUS eBusStatus)
     }
 }
 
-int CTxLINDataStore::UpdateMessagetoDIL(LIN_FRAME_DATA & /* ouFlexData */,  bool /* bDelete */)
+int CTxLINDataStore::UpdateMessagetoDIL(LIN_FRAME_DATA& /* ouFlexData */,  bool /* bDelete */)
 {
     return 0;
 }
@@ -188,7 +188,7 @@ bool CTxLINDataStore::bSetChannelConfig(xmlNodePtr pNode)
     return true;
 }
 
-bool CTxLINDataStore::bAddToChannelList(LIN_FRAME_DATA & /* ouData */)
+bool CTxLINDataStore::bAddToChannelList(LIN_FRAME_DATA& /* ouData */)
 {
     std::list<LIN_FRAME_DATA>::iterator itrFramList = m_ouLIN_Frame_Data.begin();
     return true;
@@ -623,7 +623,7 @@ BOOL CTxLINDataStore::bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData)
     return !m_bValidTxWndSize;
 }
 
-BOOL CTxLINDataStore::bSetDILInterfacePtr(CBaseDIL_LIN * /* pLinDIL */)
+BOOL CTxLINDataStore::bSetDILInterfacePtr(CBaseDIL_LIN* /* pLinDIL */)
 {
     HRESULT hResult = S_OK;
     if (m_pouDIL_LIN_Interface == nullptr)
@@ -707,7 +707,7 @@ void CTxLINDataStore::vUpdateTxList(int nChannel)
     }
 }
 
-bool CTxLINDataStore::bExistInTxList(int /* nChannel */, LIN_FRAME_DATA & /* ouData */)
+bool CTxLINDataStore::bExistInTxList(int /* nChannel */, LIN_FRAME_DATA& /* ouData */)
 {
     return false;
 }

@@ -222,6 +222,18 @@ int CChannelConfigurationDlg::nEnableControls( ETYPE_BUS eBusType)
         {
             pWnd->ShowWindow(FALSE);
         }
+
+        pWnd = GetDlgItem(IDC_ENABLE_MASTER_MODE);
+        if ( pWnd != NULL )
+        {
+            pWnd->ShowWindow(FALSE);
+        }
+
+        pWnd = GetDlgItem(IDC_STATIC_LIN_OVERWRITE);
+        if ( pWnd != NULL )
+        {
+            pWnd->ShowWindow(FALSE);
+        }
     }
     else if ( eBusType == LIN )
     {
@@ -472,10 +484,12 @@ int CChannelConfigurationDlg::nDisplayProtocolSettings(int nChannelIndex)
                 break;
             }
         }
+        ((CButton*)GetDlgItem(IDC_ENABLE_MASTER_MODE))->SetCheck(m_ouFlexrayChannelConfig[nChannelIndex].m_ouLinParams.m_bIsMasterMode);
         UpdateData(FALSE);
     }
     return 0;
 }
+
 
 bool CChannelConfigurationDlg::bIsEcuSlected(std::list<std::string>& ouEcuList, std::string strEcuName)
 {
@@ -505,6 +519,8 @@ INT CChannelConfigurationDlg::nUpdateLinParams(INT /* nChannelIndex */, INT nClu
         {
             m_omComboLinProtocol.SetCurSel(nIndex);
         }
+
+        ((CButton*)GetDlgItem(IDC_ENABLE_MASTER_MODE))->SetCheck(itrCluster->m_bIsMasterMode);
     }
     return 0;
 }
@@ -553,6 +569,11 @@ int CChannelConfigurationDlg::nSaveProtocolSettings(int /* nIndex */)
             m_ouFlexrayChannelConfig[m_nCurrentChannel].m_ouLinParams.m_strProtocolVersion = sg_LINPROTOCOL_BAUD[nSel].m_strProtocol;
             m_ouFlexrayChannelConfig[m_nCurrentChannel].m_ouLinParams.m_nBaudRate = m_nLinBaudRate;
             m_ouFlexrayChannelConfig[m_nCurrentChannel].m_ouLinParams.m_bOverWriteSettings = (((CButton*)GetDlgItem(IDC_CHECK_OVERWRITE_SETTINGS))->GetCheck() != 0);
+            m_ouFlexrayChannelConfig[m_nCurrentChannel].m_ouLinParams.m_bIsMasterMode = ((CButton*)GetDlgItem(IDC_ENABLE_MASTER_MODE))->GetCheck();
+            if( m_ouLinChannelParams.size() > 0 )
+            {
+                m_ouFlexrayChannelConfig[m_nCurrentChannel].m_ouLinParams.ouLinParams = m_ouLinChannelParams.begin()->ouLinParams;
+            }
         }
 
 

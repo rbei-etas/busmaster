@@ -15,14 +15,20 @@
     </metadata>
   </prolog>
   <body>
-    <p>Slave can respond to the Master request over LIN-bus using LIN Transmit Window. Use <b>LIN --&gt; Transmit --&gt; Configure</b> menu option, to open the LIN Transmission Window.</p>
+    <p>Master can transmit frame headers and Slave can respond to the Master requests over LIN-bus using LIN Transmit Window. Use <b>LIN --&gt; Transmit --&gt; Configure</b> menu option, to open the LIN Transmission Window.</p>
     <section>
       <image href="../images/LIN_TxWindow.bmp" placement="break"/>
+      <p>Once a LDF File is imported the Messages( DB Messages ) in LDF file will be populated in <b>Message ID/Name</b> List Box as shown in above figure.It is also possible to add Non-db Messages by typing Message id in List Box. Once the Message is selected in List Box, Click on <b>Add Message</b> Button to add it in <b>Tx Frame List</b>.</p>
+      <p><b>Configure Master Requests:</b></p>
+      <p><ul>
+          <li>Select the frame type as <b>Header</b> from the Type group</li>
+          <li>Dlc and data byte values will not be editable for frame Header</li>
+        </ul></p>
       <p><b>Configure Slave Responses:</b></p>
     </section>
     <section>
       <ul>
-        <li>Once a LDF File is imported the Messages( DB Messages ) in LDF file will be populated in <b>Message ID/Name</b> List Box as shown in above figure.It is also possible to add Non-db Messages by typing Message id in List Box. Once the Message is selected in List Box, Click on <b>Add Message</b> Button to add it in <b>Tx Frame List</b>.</li>
+        <li>Select the frame type as <b>Response</b> from the Type group</li>
         <li>The DLC and data byte values can be changed using DLC and Data Bytes edit box windows.</li>
         <li>If the Message is a DB Messages and if it has signals associated, then they will be displayed in Signal List as shown in following figure.The Raw\Physical value of the signal can be changed by double clicking the corresponding cell.</li>
       </ul>
@@ -32,11 +38,11 @@
     <section>
       <b>Cyclic Transmission of Message:</b>
     </section>
-    <section>The message can be transmitted periodically by Enabling Repetition.Cyclic Transmission will be useful to transmit the message with different data bytes periodically.</section>
+    <section>The message/frame header can be transmitted periodically by Enabling Repetition.Cyclic Transmission will be useful to transmit the message with different data bytes periodically.</section>
     <section/>
     <section>
       <b>Transmission on Event:</b>
-     </section>
-    <section>The Message can be sent to the controller on pressing key.Each message in Tx FrameList can be assigned an alpha-numeric key.</section>
+    </section>
+    <section>The Message/frame header can be sent to the controller on pressing key.Each message in Tx Frame List can be assigned an alpha-numeric key.</section>
   </body>
 </topic>

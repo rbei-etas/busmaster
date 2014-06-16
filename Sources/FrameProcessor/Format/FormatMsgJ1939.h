@@ -13,7 +13,7 @@
 class CFormatMsgJ1939: public CFormatMsgCommon
 {
 public:
-    CFormatMsgJ1939(CRefTimeKeeper & ouRefTimeKeeper);
+    CFormatMsgJ1939(CRefTimeKeeper& ouRefTimeKeeper);
     ~CFormatMsgJ1939();
 
     void vInit();

@@ -25,6 +25,8 @@
 #include "FrameProcessor_stdafx.h"
 #include "include/Struct_LIN.h"
 #include "LogObjectLIN.h"            // For CLogObjectCAN class declaration
+#include "DIL_Interface\DIL_Interface_extern.h"
+#include "DIL_Interface\BaseDIL_LIN.h"
 #include <map>
 #include <string>
 
@@ -441,16 +443,22 @@ void CLogObjectLIN::Der_SetChannelBaudRateDetails(void* controllerDetails, int n
 void CLogObjectLIN::Der_GetChannelBaudRateDetails
 (void* controllerDetails, int& nNumChannels)
 {
+    CBaseDIL_LIN* pouDilLINInterface;
+    DIL_GetInterface(LIN, (void**)&pouDilLINInterface);
+    SCONTROLLER_DETAILS_LIN pouControllerDetails[CHANNEL_ALLOWED];
+    INT nSize = 0;
+
+    pouDilLINInterface->DILL_GetConfiguration(pouControllerDetails, nSize);
     SCONTROLLER_DETAILS_LIN* pTempControllerDetails=(SCONTROLLER_DETAILS_LIN*)controllerDetails;
 
-    if (nullptr != m_pasControllerDetails && nullptr != pTempControllerDetails)
+    if (nullptr != controllerDetails && nullptr != pTempControllerDetails)
     {
-        for (int nIdx = 0; nIdx < m_nNumChannels; nIdx++)
+        for (int nIdx = 0; nIdx < nSize; nIdx++)
         {
-            pTempControllerDetails[nIdx] = m_pasControllerDetails[nIdx];
+            pTempControllerDetails[nIdx] = pouControllerDetails[nIdx];
             //  memcpy(controllerDetails + nIdx, m_pasControllerDetails + nIdx, sizeof(SCONTROLLER_DETAILS));
         }
-        nNumChannels = m_nNumChannels;
+        nNumChannels = nSize;
     }
 }
 

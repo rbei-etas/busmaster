@@ -1684,6 +1684,11 @@ BOOL CSignalDetailsDlg::bIsMaximumValueValid()
 
     if( !strSignalType.CompareNoCase(defSIGNED_INT) )
     {
+        //__int64 n64MaxVal;
+        //if(pMainFrame != nullptr)
+        //{
+        //    n64 = pMainFrame->nConvertStringToInt(m_omStrMaxVal);
+        //}
         __int64 n64MaxVal = _strtoui64(m_omStrMaxVal, nullptr, 10);
         __int64 n64MinVal   = m_odMinValue.lGetValue();
         // Extend the Sign bit
@@ -1726,6 +1731,12 @@ BOOL CSignalDetailsDlg::bIsMaximumValueValid()
         unsigned __int64 un64MaxVal = _strtoui64(m_omStrMaxVal, nullptr, 10);
         __int64 un64MinVal = m_odMinValue.lGetValue();
 
+        //int nLength = m_omStrMaxVal.GetLength();
+        //if( nLength > 16 )
+        //{
+        //     AfxMessageBox( defSTR_MAX_VAL_INVALID, MB_OK | MB_ICONINFORMATION);
+        //     bRetVal = FALSE;
+        //}
         if ( un64MaxVal < un64MinVal && bRetVal == TRUE)
         {
             AfxMessageBox(_(MSG_MAX_VAL_LESS), MB_OK|MB_ICONINFORMATION);

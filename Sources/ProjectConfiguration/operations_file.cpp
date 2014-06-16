@@ -31,7 +31,7 @@
 
 // Application version is added in the version 1.1
 #define VERSIONLINE           "/************* Version 1.1 **************/"
-#define APPLICATION_VERSION   "/************* BUSMASTER [2.3.0] ************************/"
+#define APPLICATION_VERSION   "/************* BUSMASTER [2.4.0] ************************/"
 #define OLDVERSIONLINE           "/************* Version 1.0 **************/"
 #define PROJECT_TABLE_SIG     "  PROJECT_TABLE :: PROJECT_TABLE "
 #define DB_END_SIGNATURE      "/*********** FrameFileDB_END ************/"
@@ -60,7 +60,7 @@ enum
     SECTION_FILE_INVALID
 };
 
-static bool ReadAString(FILE * pFile, std::string & ResultStr)
+static bool ReadAString(FILE* pFile, std::string& ResultStr)
 {
     bool bResult = false;
     int nLength;
@@ -156,12 +156,12 @@ int FileGetProjectCount(void)
     return g_ProjCfgManager.GetProjectCount();
 }
 
-int FileGetProjectList(std::list<std::string> & ProjectList)
+int FileGetProjectList(std::list<std::string>& ProjectList)
 {
     return g_ProjCfgManager.GetProjectList(ProjectList);
 }
 
-bool FileGetProjectData(std::string ProjectName, PROJECTDATA & ProjData)
+bool FileGetProjectData(std::string ProjectName, PROJECTDATA& ProjData)
 {
     return g_ProjCfgManager.GetProjectData(ProjectName, ProjData);
 }
@@ -174,7 +174,7 @@ int FileGetSectionCount(std::string ProjectName)
     return g_ProjCfgManager.GetSectionCount(ProjectName);
 }
 
-int FileGetSectionList(std::string ProjectName, std::list<std::string> & SectionList)
+int FileGetSectionList(std::string ProjectName, std::list<std::string>& SectionList)
 {
     return g_ProjCfgManager.GetSectionList(ProjectName, SectionList);
 }

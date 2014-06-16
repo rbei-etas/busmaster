@@ -31,7 +31,7 @@
 class CFormatMsgLIN : public CFormatMsgCommon
 {
 public:
-    CFormatMsgLIN(CRefTimeKeeper & ouRefTimeKeeper);
+    CFormatMsgLIN(CRefTimeKeeper& ouRefTimeKeeper);
     ~CFormatMsgLIN();
     void vFormatLINDataMsg(STLINDATA* pMsgLIN,
                            SFORMATTEDDATA_LIN* CurrDataLIN,
@@ -41,5 +41,5 @@ private:
     //[RS_LIN_06_07]
     void vFormatTime(BYTE bExprnFlag, SFORMATTEDDATA_LIN* CurrDataLIN);
     void vFormatDataAndId(BYTE bExprnFlag, SFORMATTEDDATA_LIN* CurrDataLIN);
-    void vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, std::string & strDesc);
+    void vGetLinEventDescription(SERROR_INFO_LIN sLinErrorInfo, std::string& strDesc);
 };

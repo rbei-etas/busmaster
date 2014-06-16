@@ -8,6 +8,7 @@
 #define IDD_FRM_TRANSMIT_MSG            101
 #define IDR_TRANSMIT_WINDOW_TEXT        101
 #define AFX_IDC_CHANGE                  101
+#define IDR_BMP_MSG                     103
 #define IDD_FLEXRAYMSGHANDLER_DIALOG    1216
 #define AFX_IDC_BROWSER                 102
 #define AFX_IDC_PRINT_DOCNAME           201
@@ -78,6 +79,9 @@
 #define AFX_IDC_SYSTEMCOLORS            1117
 #define IDC_CBTN_ADD_MSG                1122
 #define IDC_STAT_HEADER2                1124
+
+//Do not change the Id sequence
+//Starts From Here
 #define IDC_EDIT_DLC                    1125
 #define IDC_EDIT_DB1                    1126
 #define IDC_EDIT_DB2                    1127
@@ -87,6 +91,8 @@
 #define IDC_EDIT_DB6                    1131
 #define IDC_EDIT_DB7                    1132
 #define IDC_EDIT_DB8                    1133
+//End Here
+
 #define IDC_CHKB_BIT0                   1200
 #define AFX_IDC_PROPNAME                1201
 #define IDC_CHKB_BIT2                   1202
@@ -192,6 +198,8 @@
 #define ID_EDIT_DELETE                  32814
 #define ID_EDIT_UNSELECT_ALL            32879
 #define ID_EDIT_SEND                    32887
+#define IDC_TREE_LIN_SCHEDULE           32888
+#define IDD_DLG_LIN_SCHEDULE_CONFIG     32889
 #define AFX_IDS_APP_TITLE               0xE000
 #define AFX_IDS_IDLEMESSAGE             0xE001
 #define AFX_IDS_HELPMODEMESSAGE         0xE002

@@ -296,7 +296,8 @@ HRESULT CVerifyEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
         m_ouData.m_eAttributeError = WARNING;
     }
     else if((strTemp == "ERROR") || (strTemp == "ERRORS"))  // "ERRORS" to reach downward compatibility (bug in earlier versions)
-    {                                                       // delete "ERRORS" in later versions
+    {
+        // delete "ERRORS" in later versions
         m_ouData.m_eAttributeError = ERRORS;
     }
     else

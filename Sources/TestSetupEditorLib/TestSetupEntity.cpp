@@ -1102,7 +1102,7 @@ INT CTestSetupEntity::nLoadTestCases(MSXML2::IXMLDOMNodePtr& pTSDOM)
     for(int i=0; i<lCount; i++)
     {
         CTestCaseEntity odTestCaseEntity;
-        
+
         pIXMLDOMTestCase = pDOMTCNodeList->Getitem(i);
         odTestCaseEntity.GetData(pIXMLDOMTestCase);
         m_odTestCaseEntityList.AddTail(odTestCaseEntity);

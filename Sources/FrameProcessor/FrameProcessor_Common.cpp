@@ -34,7 +34,6 @@
 
 /* Log version..applicable for log files from ver 1.6.2 */
 #define VERSION_CURR    0x02
-
 /* Log version..applicable for log files before ver 1.6.2 */
 /*#define VERSION_CURR    0x01*/
 
@@ -878,12 +877,12 @@ HRESULT CFrameProcessor_Common::SetDatabaseFiles(const CStringArray& omList)
     return hResult;
 }
 
-void CFrameProcessor_Common::GetDatabaseFiles(CStringArray & /* omList */)
+void CFrameProcessor_Common::GetDatabaseFiles(CStringArray& /* omList */)
 {
 }
 
 void CFrameProcessor_Common::SetChannelBaudRateDetails(void* controllerDetails,
-    int nNumChannels, ETYPE_BUS /* eBus */)
+        int nNumChannels, ETYPE_BUS /* eBus */)
 {
     CLogObjArray* pomCurrArray = GetActiveLogObjArray();
     if (nullptr != pomCurrArray)

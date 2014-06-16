@@ -898,7 +898,15 @@ details since message length\nfor the selected message is zero!"
 #define defACCFILTERTYPE    0
 #define defBAUDRATE         "100"
 #define defPROPDELAY        "ALL"
+#define defSJW              "ALL"
+#define defBTR0             "49"
+#define defBTR1             "14"
+#define defCNF1             "7"
+#define defCNF2             "BA"
+#define defCNF3             "7"
 #define defCLOCK            "32"
+#define defSAMPLING         "1"
+#define defWARNING_LIMIT    "96"
 #define defWARNING_LIMIT_INT    96
 //if external copy simulation mode is default mode
 #ifdef EVAL_COPY_EXT
@@ -907,6 +915,7 @@ details since message length\nfor the selected message is zero!"
 #define defCONTROLLER_MODE  1 // Active mode
 # endif
 #define defMSGFILTERTYPE    0x01
+#define defDLCSIZE          8
 #define defMAX_THREAD_COUNT 30
 #define def_MSG_MAP_HASH_SIZE 257
 
@@ -1036,7 +1045,7 @@ and then restart the application."
 #define defSTR_DEFAULT_MRU_ITEM "Empty"
 #define defSTR_FILE_MENU_TEXT   "&File"
 #define defSTR_RECENT_MENU_TEXT "&Recent Configurations"
-#define defSTR_CONF_SAVE_CONFIRM    "Configuration File is modified \nDo you want to save this configuration?"
+#define defSTR_CONF_SAVE_CONFIRM    "Configuration File is modified \n Do you want to save this configuration?"
 #define defSTR_ERROR_IN_MSG_PROG   "Exception occured in Message Handler ID : 0x%X"
 #define defSTR_ERROR_IN_KEY_PROG   "Exception occured in Key Handler of '%c'"
 #define defSTR_ERROR_IN_ERR_PROG   "Exception occured in Error Handler"
@@ -1250,9 +1259,13 @@ const int LENGTH_DATASTRING = 33;
 #define defSTR_KEY_VAL_FMT_SPECIFIER      "%c"
 #define defSTR_MSG_BLOCK_TRIGGER_SEPRATOR   " | "
 
+#define defSTR_FILTER_UPDATED               "Filter list has been updated"
 #define defSTR_RELOAD_CONFIRMATION          "You have changed \"Message Block\" properties \
 or deleted message(s) from \"Active Message Block(s)\"\nThese changes can not be saved while message \
 transmission is ON.\nDo you want to revert the changes ?"
+#define defSTR_IGNORE_CHANGES_CONFIRMATION  "You have changed \"Message Block\" properties \
+or deleted message(s) from \"Active Message Block(s)\"\nThese changes can not be saved while message \
+transmission is ON.\nDo you want to ignore the changes ?"
 
 #define defSTR_EMPTY_ACTIVE_DATABASE "There is no active database. Please import database"
 
@@ -1279,6 +1292,30 @@ transmission is ON.\nDo you want to revert the changes ?"
 #define defSTR_FORMAT_BUS_LOAD_LIN              _T("%-5.2f %%")
 #define defBITS_KBUAD_RATE_LIN                  1000.0
 
+
+// These are all USB Related Definitions
+#define defSTR_DUAL_FILTERING               "\tDual Filtering\n"
+#define defSTR_WARNING_LIMIT                "\tWarning Limit\n"
+#define defSTR_UNSUPPORTED_OPTIONS_INFO     "The following unsupported setting found.\n%sDefault value will be used for these options.\nTo save changes please use File -> Configuration -> Save. Changes will be discarded otherwise."
+#define defSTR_UNSUPPORTED_OPTIONS          "Found Unsupported Options"
+#define defSTR_SOFTWARE_RESET_FAILED        "Software Reset failed"
+
+#define defSTR_SIMULATE_MENU_TEXT           "Simulate"
+
+#define defSTR_PEAK_USB_DEVICE              "pcan_usb"
+//#define defSTR_PEAK_NPNP_DEVICE             _T("peakcan")
+//#define defSTR_PEAK_USB_DEVICE_NAME         _T("PEAK USB-CAN")
+// Maximum name length is 20
+#define defSTR_PEAK_USB_HW_NET_NAME                "BUSMASTER USB Net"
+#define defSTR_PEAK_USB_SIM_NET_NAME               "BUSMASTER Sim Net"
+#define defPEAK_USB_SIM_HW_HANDLE              0
+#define defPEAK_USB_SIM_NET_HANDLE             32
+#define defPEAK_USB_MAX_HW_COUNT               32
+
+#define defUSB_PARAM_BUFFER_SIZE               1024
+#define defUSB_PARAM_READ_BUFFER_SIZE          128
+
+#define defSTR_USB_CLIENT_NAME              "BUSMASTER USB"
 #define defMAX_WAIT_TX                      2000
 
 #define defUSB_MODE_ACTIVE                     1
@@ -1298,9 +1335,18 @@ transmission is ON.\nDo you want to revert the changes ?"
 #define defCONTROLLER_PASSIVE                  2
 #define defCONTROLLER_BUSOFF                   3
 
+
 #define defSTR_MODE_MISMATCH                "No USB Hardware found. Switching to Simulation mode"
+#define defSTR_HW_TEST_SUCCESS              "Hardware Interface test passed successfully"
+#define defSTR_PP_MODE_EPP_FAILED           "Unable to set the parallel port to EPP mode"
+#define defSTR_PP_MODE_NON_EPP_FAILED       "Unable to set the parallel port to Non EPP mode"
+#define defSTR_USB_DRIVER_IS_NOT_RUNNING    "Unable to communicate with the driver or Unable to create client networks. Application will quit"
+
+#define defSTR_NET_NAME_FORAMT              "%s_%d"
+#define defMAX_VERSION_LEN                     256
 
 #define defSTR_HW_DISPLAY_FORMAT            "CAN %d"
+#define defCONNECTED_IMAGE_INDEX            1
 #define defDISCONNECTED_IMAGE_INDEX         0
 
 #define defSTR_HW_HANDLE_DISPLAY_FORMAT     "%d"
@@ -1552,9 +1598,8 @@ transmission is ON.\nDo you want to revert the changes ?"
 #define defSTR_BUSOFF_STATE_LIN                 "Bus Off"
 #define defSTR_UNKNOWN_STATE_LIN                "Unknown"
 
-
-
-
+#define defFRAME_TYPE_HEADER  "Type"
+#define defFRAME_DELAY   "Delay[ms]"
 
 #define defSTR_CONTROL_NOT_REGISTERED_MSG  "Graph component is not installed properly. Please reinstall the application!!"
 

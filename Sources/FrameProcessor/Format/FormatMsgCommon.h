@@ -36,7 +36,7 @@
 class CFormatMsgCommon
 {
 public:
-    CFormatMsgCommon(CRefTimeKeeper & ouRefTimeKeeper);
+    CFormatMsgCommon(CRefTimeKeeper& ouRefTimeKeeper);
     virtual ~CFormatMsgCommon();
 
     /**
@@ -62,10 +62,10 @@ public:
 protected:
     /** for reset log time */
     UINT64 m_qwResTime;
-    
+
     UINT64 m_qwRelBaseTime;
 
-    CRefTimeKeeper & m_ouRefTimeKeeper;
-    
+    CRefTimeKeeper& m_ouRefTimeKeeper;
+
     void vFormatTimeStamp(DWORD dwTimeStamp, char acTime[]);
 };

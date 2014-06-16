@@ -54,7 +54,7 @@ const BYTE BUS_STATS_DLG_VERSION = 0x1;
 
 //xmlNodePtr CLINBusStatisticsDlg::m_pxmlNodePtr = nullptr;
 
-CLINBusStatisticsDlg::CLINBusStatisticsDlg(CBaseBusStatisticLIN * pouBSLIN, CWnd * /* pParent */, int nChannelCount)
+CLINBusStatisticsDlg::CLINBusStatisticsDlg(CBaseBusStatisticLIN* pouBSLIN, CWnd* /* pParent */, int nChannelCount)
     : CCommonStatistics(CLINBusStatisticsDlg::IDD, LIN),
       m_pouBSLIN(pouBSLIN),
       m_omStrBusLoad(""),

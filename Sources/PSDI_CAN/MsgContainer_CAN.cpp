@@ -303,7 +303,11 @@ void CMsgContainerCAN::vProcessNewData(STCANDATA& sCanData)
         if (!bTobeBlocked(sCanData))
         {
             m_ouAppendCanBuf.WriteIntoBuffer(&m_sCANReadDataSpl);
-
+            unsigned char FDataType = m_sCANReadDataSpl.m_ucDataType;
+            if(IS_RX_MESSAGE(FDataType))
+            {
+                HRESULT h_Evaluate = EvaluateMessage(m_sCANReadDataSpl.m_uDataInfo.m_sCANMsg);
+            }
             if (nullptr != m_pRxMsgCallBack)
             {
                 m_pRxMsgCallBack((void*)&sCanData, CAN);

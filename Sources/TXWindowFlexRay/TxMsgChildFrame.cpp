@@ -9,7 +9,7 @@
 
 extern CTxMsgChildFrame* g_pomTxMsgFlexChildWindow;
 extern CTxMsgChildFrame* g_pomTxMsgLinChildWindow;
-
+extern CScheduleTableCfgDlg* g_pomLINScheduleCfgDlg;
 IMPLEMENT_DYNCREATE(CTxMsgChildFrame, CMDIChildBase)
 
 
@@ -18,6 +18,7 @@ CTxMsgChildFrame::CTxMsgChildFrame()
     // Initialise pointers
     m_pTransmitMsgView = nullptr;
     m_pLinTransmitMsgView = nullptr;
+    g_pomLINScheduleCfgDlg = nullptr;
 }
 /*******************************************************************************
   Function Name  : CTxMsgChildFrame
@@ -33,7 +34,7 @@ CTxMsgChildFrame::CTxMsgChildFrame(ETYPE_BUS eBUS) : CMDIChildBase( eBUS )
     // Initialise pointers
     m_pTransmitMsgView = nullptr;
     m_pLinTransmitMsgView = nullptr;
-
+    g_pomLINScheduleCfgDlg = nullptr;
     m_eBUS = eBUS;
 }
 

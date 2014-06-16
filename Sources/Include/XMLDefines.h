@@ -81,6 +81,10 @@
 #define DEF_Raw_Val_Column          "Raw_Val_Column"
 #define DEF_Physical_Val_Column     "Physical_Val_Column"
 #define DEF_Signal_Column           "Signal_Column"
+#define DEF_FRAME_COL_WIDTH         "Table_Column"
+#define DEF_ID_COL_WIDTH            "ID_Column"
+#define DEF_TYPE_COL_WIDTH          "Type_Column"
+#define DEF_DELAY_COL_WIDTH         "Delay_Column"
 #define DEF_CAN_SIGNAL_GRAPH        "CAN_Signal_Graph"
 #define DEF_GRAPH_PARAMETERS        "GRAPH_PARAMETERS"
 #define DEF_Buffer_Size             "Buffer_Size"
@@ -130,6 +134,9 @@
 #define DEF_LogOnConnect_For_CAN        "LogOnConnect_CAN"
 #define DEF_LogOnConnect_For_J1939      "LogOnConnect_J1939"
 #define DEF_LogOnConnect_For_LIN      "LogOnConnect_LIN"
+
+#define DEF_TRUE                    "TRUE"
+#define DEF_FALSE                   "FALSE"
 
 //Common defines
 #define DEF_FILTER                  "Filter"
@@ -205,6 +212,11 @@
 #define DEF_BOTTOM                  "Bottom"
 #define DEF_RIGHT                   "Right"
 
+#define DEF_LIN_SCHEDULE_TABLE      "LIN_Schedule_Table"
+#define DEF_CHANNEL                 "Channel"
+#define DEF_FRAMES                  "Frames"
+
+#define DEF_FRAME                   "Frame"
 #define DEF_J1939_MESS_WINDOW       "J1939_Message_Window"
 #define DEF_FLEXRAY_MESS_WINDOW     "FlexRay_Message_Window"
 
@@ -227,6 +239,7 @@
 #define DEF_TS_NAME                 "Test_Suite_Name"
 #define DEF_IS_ENABLE               "IsEnable"
 #define DEF_TEST_SUITE              "TEST_SUITE"
+#define DEF_FILE_PATH               "File_Path"
 #define DEF_TEST_CASES_SEL          "Testcases_Selected"
 #define DEF_INDEX                   "Index"
 
@@ -298,6 +311,7 @@
 #define DEF_LIN_PROTOCOLVER             "ProtocolVersion"
 #define DEF_LIN_OVERWRITE_SETTINGS      "Overwrite_Settings"
 #define DEF_LIN_TX_WINDOW               "LIN_Tx_Window"
+#define DEF_LIN_MASTER_MODE             "MasterMode"
 
 //      DEF_MSG_ID                                                  //m_ucMsgID
 //      DEF_MSGTYPE                                                 //m_ucMsgTyp
@@ -308,4 +322,10 @@
 #define DEF_REPETITION_ENABLED          "Repetition_Enabled"
 #define DEF_KEY_ENABLED                 "Key_Enabled"
 #define DEF_MESSAGE_TYPE                "Message_Type"
+
+// LIN Schedule Table
+
+#define DEF_SCHD_TABLE_CHNL         "//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Schedule_Table/Channel"
+#define DEF_SCHD_TABLE_WNDPOS       "//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Schedule_Table/Window_Position"
+#define DEF_SCHD_TABLE_COL_WIDTH    "//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Schedule_Table/COLUMN_WIDTH"
 

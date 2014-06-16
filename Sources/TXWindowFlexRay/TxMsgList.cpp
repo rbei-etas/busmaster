@@ -1067,7 +1067,7 @@ void CTxMsgList::OnNMClick(NMHDR* pNMHDR, LRESULT* pResult)
 //Date Created  :   19/09/2006
 //Modifications :   -
 //************************************************************************************/
-void CTxMsgList::OnNMDblclk(NMHDR * /* pNMHDR */, LRESULT * pResult)
+void CTxMsgList::OnNMDblclk(NMHDR* /* pNMHDR */, LRESULT* pResult)
 {
     *pResult = 0;
 }
