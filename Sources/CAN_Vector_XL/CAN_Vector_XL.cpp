@@ -2247,7 +2247,7 @@ static int nGetNoOfConnectedHardware(void)
         }
         if (!nResult)
         {
-            _tcscpy(sg_omErrStr, _T(_("No available channels found! (e.g. no CANcabs...)\r\n")));
+            _tcscpy(sg_omErrStr, _T(_("No available channels found! (e.g. no CANcabs...)")));
             xlStatus = XL_ERROR;
         }
     }

@@ -94,13 +94,15 @@ HRESULT CTestSetupHeader::ValidateEntity(CString& omStrResult)
     if(m_omDatabasePath == "")
     {
         hResult = ERR_VALID_ERROR;
-        omStrResult.Format(_("No Database File is Included\r\n"));
+        omStrResult = _("No Database File is Included");
+        omStrResult += "\r\n";
     }
     else
     {
         if(PathFileExists(m_omDatabasePath) == FALSE)
         {
-            omStrResult.Format(_("Incorrect Database File path\r\n"));
+            omStrResult = _("Incorrect Database File path");
+            omStrResult += "\r\n";
             hResult = ERR_VALID_ERROR;
         }
     }

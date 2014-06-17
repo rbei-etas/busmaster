@@ -505,7 +505,7 @@ static int nGetNoOfConnectedHardware(void)
         }
         if (!nResult)
         {
-            _tcscpy(sg_omErrStr, _T(_("No available channels found! (e.g. no LINcabs...)\r\n")));
+            _tcscpy(sg_omErrStr, _T(_("No available channels found! (e.g. no LINcabs...)")));
             xlStatus = XL_ERROR;
         }
     }

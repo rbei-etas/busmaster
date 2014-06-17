@@ -1701,7 +1701,7 @@ void CFilterConfigDlg::OnRadioMessageId()
                     {
                         if( omStrIDFrom != "" )
                         {
-                            CString omIdWithMsg = _("");
+                            CString omIdWithMsg = "";
                             omIdWithMsg.Format(_(defSTR_MSG_ID_IN_HEX), psFilter->m_dwMsgIDFrom);
                             std::ostringstream oss;
                             oss << std::hex << omIdWithMsg << omStrIDFrom;
@@ -1762,7 +1762,7 @@ void CFilterConfigDlg::OnRadioMessageId()
                     {
                         if( omStrIDFrom != "" )
                         {
-                            CString omIdWithMsg = _("");
+                            CString omIdWithMsg = "";
                             omIdWithMsg.Format(_(defSTR_MSG_ID_IN_HEX), psFilter->m_dwMsgIDFrom);
                             std::ostringstream oss;
                             oss << std::hex << omIdWithMsg << omStrIDFrom;

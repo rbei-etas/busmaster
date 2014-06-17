@@ -504,7 +504,8 @@ HRESULT CTestSetupEntity::ValidateEntity(CString& omStrResult)
 
     if(unCount <=0 )
     {
-        omStrResult += _("No TestCases Are Defined\r\n");
+        omStrResult += _("No TestCases Are Defined");
+        omStrResult += "\r\n";
         hResult = ERR_VALID_ERROR;
     }
     else

@@ -330,7 +330,8 @@ HRESULT CVerifyResponse::ValidateEntity(CString& omStrResult)
     GetSubEntryCount(unVerifyMessageCount);
     if(unVerifyMessageCount <= 0)
     {
-        omStrResult += _("Error: Has No Verify Messages\r\n");
+        omStrResult += _("Error: Has No Verify Messages");
+        omStrResult += "\r\n";
         return ERR_VALID_ERROR;
     }
     return ERR_VALID_SUCCESS;
