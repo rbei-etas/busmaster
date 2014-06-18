@@ -58,7 +58,7 @@
 #elif BOA_VERSION == BOA_VERSION_1_5
 #include "EXTERNAL/BOA 1.5/Include/OCI/ocican.h"
 #include "EXTERNAL/BOA 1.5/Include/CSI/csisfs.h"
-#elif BOA_VERSION == BOA_VERSION_2_0
+#elif BOA_VERSION >= BOA_VERSION_2_0
 #include "EXTERNAL/BOA_V2/Include/OCI/ocican.h"
 #include "EXTERNAL/BOA_V2/Include/CSI/csisfs.h"
 #else
@@ -284,7 +284,7 @@ typedef OCI_ErrorCode (*PF_OCI_CreateCANControllerVersion)(const char* uriLocati
 #define BOA_REGISTRY_LOCATION "SOFTWARE\\ETAS\\BOA\\1.5"
 #define LIB_CSL_NAME "dll-csiBind_1_5.dll"
 #define LIB_OCI_NAME "dll-ocdProxy_1_5.dll"
-#elif BOA_VERSION == BOA_VERSION_2_0
+#elif BOA_VERSION >= BOA_VERSION_2_0
 #define BOA_REGISTRY_LOCATION "SOFTWARE\\ETAS\\BOA\\2"
 #define LIB_CSL_NAME "dll-csiBind.dll"
 #define LIB_OCI_NAME "dll-ocdProxy.dll"

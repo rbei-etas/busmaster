@@ -41,7 +41,10 @@
 /* Definitions for BOA versions */
 #define BOA_VERSION_1_4 0x010400
 #define BOA_VERSION_1_5 0x010500
+#define BOA_VERSION_2   0x020000
 #define BOA_VERSION_2_0 0x020000
+#define BOA_VERSION_2_1 0x020100
+#define BOA_VERSION_2_2 0x020200
 
 /* ETAS BOA includes */
 #ifndef BOA_VERSION
@@ -53,7 +56,7 @@
 #elif BOA_VERSION == BOA_VERSION_1_5
 #include "EXTERNAL/BOA 1.5/Include/OCI/ociflx.h"
 #include "EXTERNAL/BOA 1.5/Include/CSI/csisfs.h"
-#elif BOA_VERSION == BOA_VERSION_2_0
+#elif BOA_VERSION >= BOA_VERSION_2_0
 #include "EXTERNAL/BOA_V2/Include/OCI/ociflx.h"
 #include "EXTERNAL/BOA_V2/Include/CSI/csisfs.h"
 #else
@@ -69,7 +72,7 @@
 #define BOA_REGISTRY_LOCATION "SOFTWARE\\ETAS\\BOA\\1.5"
 #define LIB_CSL_NAME    "dll-csiBind_1_5.dll"
 #define LIB_OCI_NAME    "dll-ocdProxy_1_5.dll"
-#elif BOA_VERSION == BOA_VERSION_2_0
+#elif BOA_VERSION >= BOA_VERSION_2_0
 #define BOA_REGISTRY_LOCATION "SOFTWARE\\ETAS\\BOA\\2"
 #define LIB_CSL_NAME    "dll-csiBind.dll"
 #define LIB_OCI_NAME    "dll-ocdProxy.dll"

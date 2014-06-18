@@ -113,7 +113,10 @@ typedef BOOL (*DILCALLBACK)(BYTE Argument, PSCONTROLLER_DETAILS pDatStream, int 
 /* Definitions for BOA versions */
 #define BOA_VERSION_1_4 0x010400
 #define BOA_VERSION_1_5 0x010500
+#define BOA_VERSION_2   0x020000
 #define BOA_VERSION_2_0 0x020000
+#define BOA_VERSION_2_1 0x020100
+#define BOA_VERSION_2_2 0x020200
 
 /* Selection which BOA version is used for the compilation. */
 //#define BOA_VERSION BOA_VERSION_1_4
