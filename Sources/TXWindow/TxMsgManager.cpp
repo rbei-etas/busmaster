@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      TxMsgManager.cpp
- * \brief     Implementation file for CTxMsgManager class
- * \author    Raja N
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Implementation file for CTxMsgManager class
+ * @author Raja N
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CTxMsgManager class
  */
@@ -32,19 +31,18 @@
 #include "include/CAN_Error_Defs.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
-#include "Utility\MultiLanguageSupport.h"
-//#include "../Application/GettextBusmaster.h"
+#include "Utility/MultiLanguageSupport.h"
 
-//CLient Id from the DIL
+/** CLient Id from the DIL */
 static DWORD g_dwClientID = 0;
-//DIL Interface
-static CBaseDIL_CAN* g_pouDIL_CAN_Interface = nullptr;
-// Application object declaration
-//extern CCANMonitorApp theApp;
 
-//extern HWND GUI_hDisplayWindow;
-// Flag for breaking the loop of message transmission for
-// selected message blocks
+/** DIL Interface */
+static CBaseDIL_CAN* g_pouDIL_CAN_Interface = nullptr;
+
+/**
+ * Flag for breaking the loop of message transmission for
+ * selected message blocks
+ */
 BOOL g_bStopSelectedMsgTx = TRUE;
 
 // Init Static member
@@ -52,22 +50,22 @@ CTxMsgManager* CTxMsgManager::m_spodInstance = nullptr;
 STHREADINFO CTxMsgManager::s_sUtilThread;
 CEvent CTxMsgManager::s_omState;
 CFlags CTxMsgManager::s_TxFlags;
-bool CTxMsgManager::s_bDelayBetweenBlocksOnly;          //stores the current state of delay between blocks check box
-UINT CTxMsgManager::s_unTimeDelayBtnMsgBlocks;          //stores the delay between blocks interval value
-CRITICAL_SECTION CTxMsgManager::m_csUpdationLock;       //critical section used while copying PSTXCANMSGLIST from global to local
-CEvent g_omInformStopTx = CEvent(FALSE, TRUE, "StopTxEvent"); // Indicates the stop tranmission is invoked
-//extern CRITICAL_SECTION g_CritSectDllBufferRead;
-// Key Handler proc CMap Hash table size.
-#define defKEY_HANDLER_HASH_TABLE_SIZE      17
-/*******************************************************************************
-  Function Name  : CTxMsgManager
-  Description    : Standard default constructor
-  Member of      : CTxMsgManager
-  Functionality  : This will initialise local variables
-  Author(s)      : Raja N
-  Date Created   : 19.4.2005
-  Modifications  :
-*******************************************************************************/
+
+/** stores the current state of delay between blocks check box */
+bool CTxMsgManager::s_bDelayBetweenBlocksOnly;
+
+/** stores the delay between blocks interval value */
+UINT CTxMsgManager::s_unTimeDelayBtnMsgBlocks;
+
+/** critical section used while copying PSTXCANMSGLIST from global to local */
+CRITICAL_SECTION CTxMsgManager::m_csUpdationLock;
+
+/** Indicates the stop tranmission is invoked */
+CEvent g_omInformStopTx = CEvent(FALSE, TRUE, "StopTxEvent"); 
+
+/** Key Handler proc CMap Hash table size. */
+#define defKEY_HANDLER_HASH_TABLE_SIZE 17
+
 CTxMsgManager::CTxMsgManager()
 {
     // Set some prime number
@@ -80,75 +78,26 @@ CTxMsgManager::CTxMsgManager()
     g_omInformStopTx.ResetEvent();
 }
 
-/*******************************************************************************
-  Function Name  : ~CTxMsgManager
-  Description    : Standard Destructor
-  Member of      : CTxMsgManager
-  Functionality  : -
-  Author(s)      : Raja N
-  Date Created   : 19.4.2005
-  Modifications  :
-*******************************************************************************/
 CTxMsgManager::~CTxMsgManager()
 {
-
     DeleteCriticalSection(&m_csUpdationLock);
 }
 
-/*******************************************************************************
-  Function Name  : vSetClientID
-  Description    : Assigns g_dwClientID to client ID supplied.
-  Member of      : CTxMsgManager
-  Functionality  : -
-  Author(s)      : ArunKumat K
-  Date Created   : 03.08.2010
-  Modifications  :
-*******************************************************************************/
 void CTxMsgManager::vSetClientID(DWORD dwClientID)
 {
     g_dwClientID = dwClientID;
 }
 
-/*******************************************************************************
-  Function Name  : vSetDILInterfacePtr
-  Description    : Assigns g_pouDIL_CAN_Interface variable to DIL interface pointer
-  Member of      : CTxMsgManager
-  Functionality  : -
-  Author(s)      : ArunKumat K
-  Date Created   : 03.08.2010
-  Modifications  :
-*******************************************************************************/
 void CTxMsgManager::vSetDILInterfacePtr(void* ptrDILIntrf)
 {
     g_pouDIL_CAN_Interface = (CBaseDIL_CAN*)ptrDILIntrf;
 }
 
-/*******************************************************************************
-  Function Name  : pGetDILInterfacePtr
-  Description    : Returns DIL interface pointer (g_pouDIL_CAN_Interface)
-  Member of      : CTxMsgManager
-  Functionality  : -
-  Author(s)      : ArunKumat K
-  Date Created   : 24.03.2011
-  Modifications  :
-*******************************************************************************/
 void* CTxMsgManager::pGetDILInterfacePtr()
 {
     return (void*)g_pouDIL_CAN_Interface;
 }
 
-/*******************************************************************************
-  Function Name  : s_podGetTxMsgManager
-  Input(s)       : -
-  Output         : CTxMsgManager * - Pointer to the singleton object
-  Functionality  : This function will return the pointer to the singleton object
-                   of CTxMsgManager. In case of memory allocation failure this
-                   function will return nullptr
-  Member of      : CTxMsgManager
-  Author(s)      : Raja N
-  Date Created   : 19.4.2005
-  Modifications  :
-*******************************************************************************/
 CTxMsgManager* CTxMsgManager::s_podGetTxMsgManager()
 {
     if( m_spodInstance == nullptr )
@@ -165,18 +114,6 @@ CTxMsgManager* CTxMsgManager::s_podGetTxMsgManager()
     return m_spodInstance;
 }
 
-/*******************************************************************************
-  Function Name  : s_bDeleteTxMsgManager
-  Input(s)       : -
-  Output         : BOOL - Delete result. FALSE if the object is not valid
-  Functionality  : This function will delete singleton object. If it is null
-                   then this function will return FALSE to indicate invalid
-                   operation.
-  Member of      : CTxMsgManager
-  Author(s)      : Raja N
-  Date Created   : 20.4.2005
-  Modifications  :
-*******************************************************************************/
 BOOL CTxMsgManager::s_bDeleteTxMsgManager()
 {
     BOOL bDelete = FALSE;
@@ -193,23 +130,6 @@ BOOL CTxMsgManager::s_bDeleteTxMsgManager()
     return bDelete;
 }
 
-/******************************************************************************/
-/*  Function Name    :  vStartTransmission                                    */
-/*  Input(s)         :  UCHAR ucKeyVal  : key pressed                         */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will start transmission on press ofa key*/
-/*                      and on time. This will be called from CMainFrame      */
-/*                                                                            */
-/*  Member of        :  CTxMsgManager                                         */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Modified thread creation logic to create  */
-/*                      both time and key threads if the type is set for both */
-/*                      and added a CMap search to avoid thread creation again*/
-/*                      for monoshot key block                                */
-/******************************************************************************/
 void CTxMsgManager::vStartTransmission(UCHAR ucKeyVal)
 {
     if(m_psTxMsgBlockList != nullptr )
@@ -425,25 +345,7 @@ void CTxMsgManager::vStopTransmission(UINT unMaxWaitTime)
     }
     g_omInformStopTx.ResetEvent();
 }
-/******************************************************************************/
-/*  Function Name    :  bAllocateMemoryForGlobalTxList                        */
-/*  Input(s)         :  TRUE or FALSE                                         */
-/*  Output           :                                                        */
-/*  Functionality    :  This function allocate memory to global list. Memory  */
-/*                      will be allocated only if the list is not already     */
-/*                      having the correct size. Only extra element will be   */
-/*                      added in case the count is less then m_unMsgBlockCount*/
-/*  Member of        :  CTxMsgManager                                         */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  21.01.2004, Instead of critical section, semaphore is */
-/*                                  used.                                     */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Modified the semophare maximun count to 2 */
-/*                      as key and time threads can access it simultaniously  */
-/******************************************************************************/
+
 BOOL CTxMsgManager::bAllocateMemoryForGlobalTxList()
 {
     BOOL bReturn = TRUE;
@@ -514,22 +416,6 @@ BOOL CTxMsgManager::bAllocateMemoryForGlobalTxList()
     return bReturn;
 }
 
-
-/******************************************************************************/
-/*  Function Name    :  vAssignMsgBlockList                                   */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will assign the message list pointers to*/
-/*                      global list. The pointers will be obtained from       */
-/*                      configuration block.                                  */
-/*                                                                            */
-/*  Member of        :  CTxMsgManager                                         */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
 void CTxMsgManager::vAssignMsgBlockList()
 {
     PSMSGBLOCKLIST psMsgBlock = CTxWndDataStore::ouGetTxWndDataStoreObj().psReturnMsgBlockPointer();
@@ -563,24 +449,6 @@ void CTxMsgManager::vAssignMsgBlockList()
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  vDeleteTxBlockMemory                                 */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will delete the memory allocated for    */
-/*                      global list.                                          */
-/*                                                                            */
-/*  Member of        :  CSendMultiMsgDlg                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  21.01.2004, Instead of critical section, semaphore is */
-/*                                  used.                                     */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Removed deletion of CEvent object pointer */
-/*                      as it is changed as member object                     */
-/******************************************************************************/
 void CTxMsgManager::vDeleteTxBlockMemory()
 {
     if(m_psTxMsgBlockList != nullptr )
@@ -610,20 +478,8 @@ void CTxMsgManager::vDeleteTxBlockMemory()
     }
 }
 
-/******************************************************************************
-    Function Name    :  g_unSendSelectedMsg
-    Input(s)         :  pParam - Typecasted address of PSTXMSG pointer
-    Output           :  Zero
-    Functionality    :  This is a thread control function to process
-                        transmission of selected message from the dialog.
-    Member of        :  CTxMsgManager
-    Friend of        :      -
-    Author(s)        :  Amitesh Bharti
-    Date Created     :  15.01.2004
-    Modifiecations   :  Raja N on 08.09.2004, Replaced nWriteToCAN with HIL
-                        function
-******************************************************************************/
 const int SIZE_STCAN_MSG = sizeof(STCAN_MSG);
+
 UINT CTxMsgManager::s_unSendSelectedMsg(LPVOID pParam )
 {
     s_omState.ResetEvent();
@@ -652,40 +508,6 @@ UINT CTxMsgManager::s_unSendSelectedMsg(LPVOID pParam )
     return 0;
 }
 
-/*******************************************************************************************************************
-    Function Name    :  g_unSendMsgBlockOnTime
-    Input(s)         :  pParam - Typecasted address of PSTXMSG pointer
-    Output           :  Zero
-    Functionality    :  This is a thread control function to process
-                        message block transmission on time trigger.
-    Member of        :  Global Thread Function
-    Friend of        :      -
-    Author(s)        :  Amitesh Bharti
-    Date Created     :  15.01.2004
-    Modifications    :  Amitesh Bharti
-                        21.01.2004, Instead of critical section, semaphore is
-                        used.
-    Modifications    :  Raja N on 22.07.2004
-                        Changed the event name to refer timer member. This is
-                        done to support multiple triggering of same Tx block.
-                        And added check for Global stop flag before transmission
-                        to avoid sending message even after stopping Tx.
-    Modifiecations   :  Raja N on 08.09.2004, Replaced nWriteToCAN with HIL
-                        function
-    Modifiecations   :  Raja N on 25.04.2005, Added code to check for enabled
-                        member before transmissting a message and to select
-                        next available enabled message
-    Modifications    :  Ashwin R Uchil on 22.8.2012, added code to accomodate changes for
-                        Delay between blocks. Logic is as follows:
-                        1. In delay between blocks, intially when the block is sent, the time delay
-                           is calculated as follows
-                           first block: delay between blocks * 0
-                           second block: delay betwenn blocks * 1
-                           third block:  delay between blocs * 2... so on
-                        2. Once all the blocks are sent, then we need to have a constant delay with which each block
-                           will repeat itself. It is calculated as  follows
-                           Constant delay = Total block count * delay between blocks
-*********************************************************************************************************************/
 UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
 {
     PSTXMSG psTxMsg  =  static_cast<PSTXMSG> (pParam);
@@ -942,33 +764,6 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
     return 0;
 }
 
-/******************************************************************************
-    Function Name    :  g_unSendMsgBlockOnKey
-    Input(s)         :  pParam - Typecasted address of PSTXMSG pointer
-    Output           :  Zero
-    Functionality    :  This is a thread control function to process
-                        message block transmission on key trigger.
-    Member of        :  Global Thread Function
-    Friend of        :      -
-    Author(s)        :  Amitesh Bharti
-    Date Created     :  15.01.2004
-    Modifications    :  Amitesh Bharti
-                        21.01.2004, Instead of critical section, semaphore is
-                        used.
-    Modifications    :  Raja N
-                        22.07.2004, Modified the code to check the thread handle
-                        to verify the thread's existance and added CMap
-                        structure to store monoshot key handlers so that it will
-                        not transmitter again. Removed dynamic creation of
-                        CEvent object.
-    Modifiecations   :  Raja N on 08.09.2004, Replaced nWriteToCAN with HIL
-                        function
-    Modifiecations   :  Raja N on 25.04.2005, Added code to check for enabled
-                        member before transmissting a message and to select
-                        next available enabled message
-    Modifiecations   :  ArunKumar K on 28.10.2011, Addition of delay after SendMsg(..)
-                        to reduce bus overload.
-******************************************************************************/
 UINT CTxMsgManager::s_unSendMsgBlockOnKey(LPVOID pParam )
 {
     PSTXMSG psTxMsg  =  static_cast<PSTXMSG> (pParam);
@@ -1082,19 +877,7 @@ UINT CTxMsgManager::s_unSendMsgBlockOnKey(LPVOID pParam )
                     {
                         Sleep(psTxMsg->m_unTimeInterval);
                     }
-                    if (nRet != S_OK)
-                    {
-                        //::PostMessage(GUI_hDisplayWindow, WM_ERROR,
-                        //            ERROR_DRIVER_API_FAIL, 0);
-                    }
-                    /*SDLL_MSG sTempDllMsg;
-                    memcpy(&sTempDllMsg.sRxMsg,&psTxMsgList->m_sTxMsgDetails.m_sTxMsg,SIZE_STCAN_MSG);
-                    sTempDllMsg.h_DllHandle=nullptr;*/
-                    //EnterCriticalSection(&g_CritSectDllBufferRead);
-                    //g_omLstTxCheckMsgs.AddTail(sTempDllMsg);
-                    //LeaveCriticalSection(&g_CritSectDllBufferRead);
                     ReleaseSemaphore(psTxMsg->m_hSemaphore,1,lpPreviousCount);
-                    //                    LeaveCriticalSection(&psTxMsg->m_sMsgBlocksCriticalSection);
                 }
 
                 // Go to the next node
@@ -1185,26 +968,6 @@ void CTxMsgManager::vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize)
     {
         CTxMsgManager::s_podGetTxMsgManager()->vAssignMsgBlockList();
     }
-    /*int nBlockCount = 0;
-    memcpy(&nBlockCount, pSrcBuffer, sizeof(nBlockCount));
-    pSrcBuffer += sizeof(nBlockCount);
-    PSTXMSG psTxTemp = nullptr, psTxPrev = nullptr;
-    m_psTxMsgBlockList = nullptr;
-    for (int i = 0; i < nBlockCount; i++)
-    {
-        psTxTemp = new STXMSG;
-        pSrcBuffer = psTxTemp->pbSetBlockConfigData(pSrcBuffer);
-        if (nullptr == m_psTxMsgBlockList)
-        {
-            m_psTxMsgBlockList = psTxTemp;
-            psTxPrev = psTxTemp;
-        }
-        else
-        {
-            psTxPrev->m_psNextTxMsgInfo = psTxTemp;
-            psTxPrev = psTxTemp;
-        }
-    }*/
 }
 
 void  CTxMsgManager::vSetTxWndConfigData(xmlDocPtr pDoc)
@@ -1221,25 +984,6 @@ void  CTxMsgManager::vSetTxWndConfigData(xmlDocPtr pDoc)
         CTxMsgManager::s_podGetTxMsgManager()->vAssignMsgBlockList();
     }
 }
-//BOOL CTxMsgManager::bIsTxWndConfigChanged()
-//{
-//    BOOL bReturn = TRUE;
-/**************Get the old buffer pointer and then proceed *********/
-//    BYTE* pOldConfigBuff = nullptr;
-//    int nOldBufferCount = 0;
-/**************Get the old buffer pointer and then proceed *********/
-//    BYTE* pCurrConfigBuff = nullptr;
-//    int nCurrBuffSize = 0;
-//    vGetTxWndConfigData(pCurrConfigBuff, nCurrBuffSize);
-//    if (nCurrBuffSize == nOldBufferCount)
-//    {
-//        if ( !memcmp (pCurrConfigBuff,pOldConfigBuff, nCurrBuffSize))
-//        {
-//            bReturn = FALSE;
-//    }
-//
-//    return bReturn;
-//}
 
 void CTxMsgManager::vSetTxStopFlag(BOOL bStartStop)
 {

@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      TxMsgChildFrame.cpp
- * \brief     Implementation file for CTxMsgChildFrame class
- * \author    Raja N
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Implementation file for CTxMsgChildFrame class
+ * @author Raja N
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CTxMsgChildFrame class
  */
@@ -27,12 +26,8 @@
 #include "Utility/SignalMatrix.h"  // For Signal Matrix declaration
 #include "TxMsgChildFrame.h"       // For CTxMsgChildFrame class defintions
 #include "Utility\MultiLanguageSupport.h"
-//#include "../Application/GettextBusmaster.h"
 
 extern CTxMsgChildFrame* g_pomTxMsgChildWindow;
-
-// Application object declaration
-//extern CCANMonitorApp theApp;
 
 // Local #definitions
 #define defTX_MSG_ROOTSPLITTER_ROWS 2
@@ -62,19 +57,8 @@ extern CTxMsgChildFrame* g_pomTxMsgChildWindow;
 #define defTX_DETAILS_VIEW_ROW 1
 #define defTX_DETAILS_VIEW_COL 0
 
-
-
 IMPLEMENT_DYNCREATE(CTxMsgChildFrame, CMDIChildBase)
 
-/*******************************************************************************
-  Function Name  : CTxMsgChildFrame
-  Description    : Standard default constructor
-  Member of      : CTxMsgChildFrame
-  Functionality  : This will initialise local variables
-  Author(s)      : Raja N
-  Date Created   : 19.4.2005
-  Modifications  :
-*******************************************************************************/
 CTxMsgChildFrame::CTxMsgChildFrame() : CMDIChildBase( TX_WND_PLACEMENT )
 {
     // Initialise pointers
@@ -86,26 +70,15 @@ CTxMsgChildFrame::CTxMsgChildFrame() : CMDIChildBase( TX_WND_PLACEMENT )
     m_bInit = TRUE;
 }
 
-/*******************************************************************************
-  Function Name  : ~CTxMsgChildFrame
-  Description    : Standard Destructor
-  Member of      : CTxMsgChildFrame
-  Functionality  : -
-  Author(s)      : Raja N
-  Date Created   : 19.4.2005
-  Modifications  :
-*******************************************************************************/
 CTxMsgChildFrame::~CTxMsgChildFrame()
 {
 }
 
 
 BEGIN_MESSAGE_MAP(CTxMsgChildFrame, CMDIChildBase)
-    //{{AFX_MSG_MAP(CTxMsgChildFrame)
     ON_WM_ERASEBKGND()
     ON_WM_DESTROY()
     ON_WM_CLOSE()
-    //}}AFX_MSG_MAP
     ON_MESSAGE(WM_USER_CMD,vUserCommand)
     ON_WM_SIZE()
     ON_WM_SIZING()
@@ -113,18 +86,6 @@ BEGIN_MESSAGE_MAP(CTxMsgChildFrame, CMDIChildBase)
     ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
-/*******************************************************************************
-  Function Name  : OnCreateClient
-  Input(s)       : lpcs - Create Parameters
-                   pContext - Pointer to Create Context
-  Output         : BOOL - Create Result
-  Functionality  : This function will be called to create window. This function
-                   will create splitter window and views.
-  Member of      : CTxMsgChildFrame
-  Author(s)      : Raja N
-  Date Created   : 15/04/2005
-  Modifications  :
-*******************************************************************************/
 BOOL CTxMsgChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContext)
 {
     m_bInit = TRUE;
@@ -248,17 +209,6 @@ void CTxMsgChildFrame::OnClose()
     }
 }
 
-/*******************************************************************************
-  Function Name  : vGetSplitterStatus
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will get splitter information from
-                   configuration module
-  Member of      : CTxMsgChildFrame
-  Author(s)      : Raja N
-  Date Created   : 19.4.2005
-  Modifications  :
-*******************************************************************************/
 void CTxMsgChildFrame::vGetSplitterStatus()
 {
     // Splitter data structure
@@ -275,17 +225,6 @@ void CTxMsgChildFrame::vGetSplitterStatus()
     }
 }
 
-/*******************************************************************************
-  Function Name  : vSetSplitterPostion
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will set splitter postion. This will refer
-                   member variable m_sSplitterPostion to get splitter postion
-  Member of      : CTxMsgChildFrame
-  Author(s)      : Raja N
-  Date Created   : 19.4.2005
-  Modifications  :
-*******************************************************************************/
 void CTxMsgChildFrame::vSetSplitterPostion()
 {
     // Set Parent Splitter Postion
@@ -330,19 +269,6 @@ void CTxMsgChildFrame::vSetSplitterPostion()
     m_omRightViewSplitter.RecalcLayout();
 }
 
-/*******************************************************************************
-  Function Name  : vSaveSplitterPostion
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will save splitter postion. This will get
-                   current splitter postion and will compare with
-                   m_sSplitterPostion. If current position is different it will
-                   update member varaible and configuration module.
-  Member of      : CTxMsgChildFrame
-  Author(s)      : Raja N
-  Date Created   : 19.4.2005
-  Modifications  :
-*******************************************************************************/
 void CTxMsgChildFrame::vSaveSplitterPostion()
 {
     // For First Row or Col
@@ -393,18 +319,6 @@ void CTxMsgChildFrame::vSaveSplitterPostion()
 }
 
 
-/*******************************************************************************
-  Function Name  : vUpdateWndCo_Ords
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will save window postion in to configuration
-                   module using parent class function & will also save splitter
-                   window postion.
-  Member of      : CGraphChildFrame
-  Author(s)      : Raja N
-  Date Created   : 19.4.2005
-  Modifications  :
-*******************************************************************************/
 void CTxMsgChildFrame::vUpdateWndCo_Ords()
 {
     // Call parent to save window postion
@@ -413,18 +327,6 @@ void CTxMsgChildFrame::vUpdateWndCo_Ords()
     vSaveSplitterPostion();
 }
 
-/*******************************************************************************
-  Function Name  : vUpdateWinStatus
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will set window postion and splitter postion.
-                   For setting window postion this will use parent class
-                   function and then will set splitter position.
-  Member of      : CGraphChildFrame
-  Author(s)      : Raja N
-  Date Created   : 19.4.2005
-  Modifications  :
-*******************************************************************************/
 void CTxMsgChildFrame::vUpdateWinStatus()
 {
     // Call parent window function for setting window status
@@ -435,32 +337,11 @@ void CTxMsgChildFrame::vUpdateWinStatus()
     vSetSplitterPostion();
 }
 
-/*******************************************************************************
-  Function Name  : OnEraseBkgnd
-  Input(s)       : pDC - Pointer to Device context
-  Output         : -
-  Functionality  : This function will simply return true to avoid flickering due
-                   to background erase
-  Member of      : CTxMsgChildFrame
-  Author(s)      : Raja N
-  Date Created   : 19.04.2005
-  Modifications  :
-*******************************************************************************/
 BOOL CTxMsgChildFrame::OnEraseBkgnd(CDC* /*pDC*/)
 {
     return TRUE;
 }
 
-/*******************************************************************************
-  Function Name  : OnDestroy
-  Input(s)       : -
-  Output         : -
-  Functionality  :
-  Member of      : CTxMsgChildFrame
-  Author(s)      : Raja N
-  Date Created   : 19.4.2005
-  Modifications  :
-*******************************************************************************/
 void CTxMsgChildFrame::OnDestroy()
 {
     // Save Splitter postion
@@ -470,17 +351,6 @@ void CTxMsgChildFrame::OnDestroy()
     g_pomTxMsgChildWindow = nullptr;
 }
 
-/*******************************************************************************
-  Function Name  : vSetTxMsgViewPointers
-  Input(s)       : eViewIdentity - View Identity parameter
-                   pomWnd - View Pointer
-  Output         : -
-  Functionality  : This function will set view pointer
-  Member of      : CTxMsgChildFrame
-  Author(s)      : Raja N
-  Date Created   : 20.4.2005
-  Modifications  :
-*******************************************************************************/
 void CTxMsgChildFrame::vSetTxMsgViewPointers( ETXMSGVIEWTYPE eViewIdentity,
         CWnd* pomWnd )
 {
@@ -511,33 +381,11 @@ void CTxMsgChildFrame::vSetTxMsgViewPointers( ETXMSGVIEWTYPE eViewIdentity,
     }
 }
 
-/*******************************************************************************
-  Function Name  : vSetMsgDBPtrInDetailsView
-  Input(s)       : pMsgDB - CMsgSignal Pointer
-  Output         : -
-  Functionality  : Sets the m_pouDBPtr pointer in TxMsgDetailsView to pMsgDB.
-
-  Member of      : CTxMsgChildFrame
-  Author(s)      : ArunKumar K
-  Date Created   : 04.08.2010
-  Modifications  :
-*******************************************************************************/
 void CTxMsgChildFrame::vSetMsgDBPtrInDetailsView(void* pMsgDB)
 {
     m_pomTxMsgDetailsView->vSetMsgDBPtr(pMsgDB);
 }
 
-/*******************************************************************************
-  Function Name  : pomGetTxMsgViewPointers
-  Input(s)       : eViewIdentity - View Identity parameter
-  Output         : -
-  Functionality  : This function will return view pointer spefied by the param
-                   eViewIdentity
-  Member of      : CTxMsgChildFrame
-  Author(s)      : Raja N
-  Date Created   : 20.4.2005
-  Modifications  :
-*******************************************************************************/
 CWnd* CTxMsgChildFrame::pomGetTxMsgViewPointers( ETXMSGVIEWTYPE eViewIdentity)
 const
 {
@@ -577,33 +425,7 @@ void CTxMsgChildFrame::vCallAutoUpdate()
         m_pomTxMsgBlocksView->AutoUpdateChanges();
     }
 }
-/******************************************************************************/
-/*  Function Name    :  vUserCommand                                          */
-/*  Input(s)         :  WPARAM wParam : enumerator eUSERSELCTION              */
-/*                      LPARAM lParam:  NOT USED                              */
-/*  Output           :                                                        */
-/*  Functionality    :  This function is message mapped and will be called    */
-/*                      when selects, connect/disconnect start/stop tx and    */
-/*                      hex/dec button/menu. The setting of controls will be  */
-/*                      changed accordingly.                                  */
-/*  Member of        :  CTxMsgChildFrame                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  ArunKumar K                                           */
-/*  Modification on  :  07.04.2011, Addede new case eCHANNELCOUNTUPDATED.     */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  12.05.2004, Added SetWindowText to indicate mode      */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Included  Signla List update during mode  */
-/*                      change                                                */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  01.08.2004, Included  Enable/Disable check for timer  */
-/*                      and key edit boxes with respect to selection          */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  26.04.2005, Moved this function from CSendMultiMsgDlg */
-/*                      to this class as per new GUI for Tx msg conf window   */
-/******************************************************************************/
+
 LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
 {
 
@@ -616,18 +438,12 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
         BOOL bTxON             = FALSE;
         BOOL bConnect          = FALSE;
         eUSERSELCTION eUserSel = eDATABASEIMPORTCMD;
-        //CFlags * pouFlag       = nullptr;
 
         eUserSel               = static_cast <eUSERSELCTION>(wParam);
         switch(eUserSel)
         {
             case eHEXDECCMD:
                 //// Get the flag status.
-                //pouFlag = pouGetFlagsPtr();
-                //if ( pouFlag != nullptr )
-                //{
-                //    nBase    = pouFlag->nGetFlagStatus( HEX );
-                //}
                 nBase = (INT)lParam;
                 // Check if the flag is changed and if so,
                 // change the display format.
@@ -677,12 +493,6 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                 break;
             case eTXMSGCMD:
                 // Get the flag status.
-                /*pouFlag = pouGetFlagsPtr();
-                if(pouFlag != nullptr )
-                {
-                    bTxON    =
-                        static_cast<BOOL> (pouFlag->nGetFlagStatus( SENDMESG ));
-                }*/
                 bTxON = (BOOL)lParam;
                 // If transmission is ON, user should not be able to
                 // delete any message or block.
@@ -711,8 +521,6 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                         //Check box and Key val edit box
                         if( IS_KEY_TRIGGERED (psMsgBlock->m_ucTrigger) )
                         {
-                            /*m_pomTxMsgBlocksView->m_omButtonTxAllFrame.
-                            EnableWindow(!bTxON);*/
                             m_pomTxMsgBlocksView->m_omComboAllMsgs.EnableWindow(!bTxON);
                             m_pomTxMsgBlocksView->m_omEditTrgKeyVal.
                             EnableWindow(!bTxON);
@@ -726,7 +534,6 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                         }
 
 
-                        //AUC
                         //only if DElay btn msg blocks check box is not checked den check time trigger button
                         if(((CButton*) m_pomTxMsgBlocksView->
                                 GetDlgItem(IDC_CHECK_MSG_BLOCK_DELAY))->GetCheck() == BST_UNCHECKED)
@@ -766,8 +573,6 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                         }
                         m_pomTxMsgBlocksView->m_omButtonAddMsgBlock.EnableWindow(!bTxON);
                         m_pomTxMsgBlocksView->m_omEditMsgBlockName.EnableWindow(!bTxON);
-                        /*m_pomTxMsgBlocksView->m_omButtonTriggerType.
-                                                        EnableWindow(!bTxON);*/
                     }
 
                     if( m_pomTxMsgListView->m_nSelectedMsgIndex != -1 )
@@ -792,12 +597,6 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
                 break;
             case eCONNECTCMD:
                 // Get the flag status.
-                /*pouFlag = pouGetFlagsPtr();
-                if(pouFlag != nullptr )
-                {
-                    bConnect = static_cast<BOOL>
-                                  (pouFlag->nGetFlagStatus( CONNECTED ));
-                }*/
                 bConnect = (BOOL)lParam;
                 // If the tool is disconnected, user should not be able
                 // send any message.
@@ -861,26 +660,12 @@ LRESULT CTxMsgChildFrame::vUserCommand(WPARAM wParam, LPARAM lParam)
 
     return 0;
 }
+
 void CTxMsgChildFrame::OnSize(UINT nType, int cx, int cy)
 {
     CMDIChildBase::OnSize(nType, cx, cy);
-    if ( !m_bInit )
-    {
-
-        // Splitter data structure
-        //PSTXMSGSPLITTERDATA psData = &m_sSplitterPosition;
-        //////////////////////////////////////////////////
-        //WINDOWPLACEMENT omWndSize;
-        //GetWindowPlacement( &omWndSize );
-        //CTxWndDataStore::ouGetTxWndDataStoreObj().bSetTxData(TX_WINDOW_PLACEMENT, &omWndSize);
-        //CTxWndDataStore::ouGetTxWndDataStoreObj().
-        //bGetDefaultTXSplitterPostion( omWndSize.rcNormalPosition, (void **)&psData );
-        //vSetSplitterPostion();
-    }
-    else
-    {
-    }
 }
+
 void CTxMsgChildFrame::OnSizing(UINT fwSide, LPRECT pRect)
 {
     CMDIChildBase::OnSizing( fwSide,  pRect);
@@ -888,28 +673,19 @@ void CTxMsgChildFrame::OnSizing(UINT fwSide, LPRECT pRect)
     {
         CRect cr;
         GetWindowRect(&cr);
-        //if ( nType != SIZE_MINIMIZED )
-        {
+
+        m_omRootSplitter.SetRowInfo( 0, cr.Height()*5.75/7, 0);
+
+        m_omRootSplitter.SetRowInfo( 1, cr.Height()/7, 50 );
 
 
-            m_omRootSplitter.SetRowInfo( 0, cr.Height()*5.75/7, 0);
+        m_omLeftViewSplitter.SetColumnInfo(0, cr.Width()/3.75, 0);
+        m_omLeftViewSplitter.SetColumnInfo(1, cr.Width()/2, 0);
 
-            m_omRootSplitter.SetRowInfo( 1, cr.Height()/7, 50 );
-
-
-            m_omLeftViewSplitter.SetColumnInfo(0, cr.Width()/3.75, 0);
-            m_omLeftViewSplitter.SetColumnInfo(1, cr.Width()/2, 0);
-
-            m_omRightViewSplitter.SetRowInfo(0,cr.Height()/3, 0);
-            m_omRightViewSplitter.SetRowInfo(1,cr.Height()/3, 0);
-            m_omRootSplitter.RecalcLayout();
-        }
+        m_omRightViewSplitter.SetRowInfo(0,cr.Height()/3, 0);
+        m_omRightViewSplitter.SetRowInfo(1,cr.Height()/3, 0);
+        m_omRootSplitter.RecalcLayout();
     }
-    else
-    {
-        //  m_bInit = FALSE;
-    }
-    // TODO: Add your message handler code here
 }
 
 void CTxMsgChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd)
@@ -923,8 +699,6 @@ void CTxMsgChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* p
 
 void CTxMsgChildFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 {
-    // TODO: Add your message handler code here and/or call default
-
     if(!m_bInit)
     {
         lpMMI->ptMinTrackSize.x = 850;

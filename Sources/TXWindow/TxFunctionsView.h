@@ -14,21 +14,16 @@
  */
 
 /**
- * \file      TxFunctionsView.h
- * \brief     Interface file for CTxFunctionsView class
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Interface file for CTxFunctionsView class
+ * @author Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file for CTxFunctionsView class
  */
 
 #pragma once
 
-// TxFunctionsView.h : header file
 #include "TxWindow_resource.h"
-
-/////////////////////////////////////////////////////////////////////////////
-// CTxFunctionsView form view
 
 #ifndef __AFXEXT_H__
 #include <afxext.h>
@@ -36,67 +31,140 @@
 
 class CTxFunctionsView : public CFormView
 {
-    // Form Data
 public:
-    //{{AFX_DATA(CTxFunctionsView)
     enum { IDD = IDD_DLG_TX_FUNCTIONS };
+
     CButton m_omButtonApply;
-    //}}AFX_DATA
 
-    // Attributes
-public:
-
-    // Operations
-public:
-
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CTxFunctionsView)
-public:
+    /**
+     * This function will be called by the framework during initial
+     * show of this view. This function will register iteself in to
+     * parent window class so that other views shall access it.
+     */
     virtual void OnInitialUpdate();
+
     void OnInvokeClose();
 
-protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-    //}}AFX_VIRTUAL
+    void vAccessButtonApply();
+
+    CButton m_CheckBoxAutoUpdate;
 
 protected:
-    // protected constructor used by dynamic creation
-    CTxFunctionsView();
-    DECLARE_DYNCREATE(CTxFunctionsView)
-    // Implementation
+    /**
+     * @brief DDX/DDV support
+     *
+     * This function will map DDX object with UI control for data
+     * exchange
+     *
+     * @param[in] pDX Pointer to DDX object
+     */
+    virtual void DoDataExchange(CDataExchange* pDX);
+
 protected:
+    /** protected constructor used by dynamic creation */
+    CTxFunctionsView();
     virtual ~CTxFunctionsView();
 
+    DECLARE_DYNCREATE(CTxFunctionsView)
 
 #ifdef _DEBUG
     virtual void AssertValid() const;
     virtual void Dump(CDumpContext& dc) const;
 #endif
 
-    // Generated message map functions
-    //{{AFX_MSG(CTxFunctionsView)
+    /**
+    * This function will be called by the framework during sizing
+    * of the window. This function will set the buttons position at
+    * the center of the dialog
+    *
+    * @param[in] nType Sizing mode
+    * @param[in] cx New X value
+    * @param[in] cy New Y Value
+    */
     afx_msg void OnSize(UINT nType, int cx, int cy);
+
+    /**
+     * This function is called when user press Apply button.
+     * The flags will be set and global list will be updated.
+     */
     afx_msg void OnButtonApply();
+
+    /**
+     * This button handler will be called during Close button press.
+     * This function will send WM_CLOSE message to close Tx Child
+     * window.
+     */
     afx_msg void OnBtnClose();
-    //}}AFX_MSG
+
     DECLARE_MESSAGE_MAP()
+
 private:
-    // To Update Configuration module with the changes done
+    /**
+     * @brief To Update Configuration module with the changes done
+     *
+     * This function is used to apply changes in the global shared
+     * memory
+     */
     void vApplyChanges();
-    // To reload TxMsg window with the configuration module Tx data
+
+    /**
+     * @brief To reload TxMsg window with the configuration module Tx data
+     *
+     * This function will get the Tx block data from configuration
+     * and will update the UI. This function will be called if the
+     * UI block information is not saved before transmission and
+     * the user wants to apply the changes with Tx on which would
+     * cause access violation in case of delete. To avoid that the
+     * data from configuration is reloaded.
+     */
     void vReloadData();
-    // To Get Parent window pointer. That is pointer of CTxMsgChildFrame
+
+    /**
+     * @brief To Get Parent window pointer. That is pointer of CTxMsgChildFrame
+     *
+     * This Function will return parent window pointer. That is
+     * pointer to CTxMsgChildFrame. This will return nullptr incase of
+     * failure
+     *
+     * @return Pointer to CTxMsgChildFrame
+     */
     CWnd* pomGetParentWindow() const;
-    // To Get CTxMsgBlocksView Pointer
+
+    /**
+     * @brief To Get CTxMsgBlocksView Pointer
+     *
+     * This function will return CTxMsgBlocksView pointer. This will
+     * get child window pointer to get view pointer.
+     *
+     * @return Pointer to CTxMsgBlocksView or nullptr incase of failure
+     */
     CWnd* pomGetBlocksViewPointer() const;
-    // To Get CTxMsgListView Pointer
+
+    /**
+     * @brief To Get CTxMsgListView Pointer
+     *
+     * This function will return CTxMsgListView pointer. This will
+     * get child window pointer to get view pointer.
+     *
+     * @return Pointer to CTxMsgListView or nullptr incase of failure
+     */
     CWnd* pomGetListViewPointer() const;
-    // To Get CTxMsgDetailsView Pointer
+
+    /**
+     * @brief To Get CTxMsgDetailsView Pointer
+     *
+     * This function will return CTxMsgDetailsView pointer. This
+     * will get child window pointer to get view pointer.
+     *
+     * @return Pointer to CTxMsgDetailsView or nullptr incase of failure
+     */
     CWnd* pomGetDetailsViewPointer() const;
+
     void SetUpdateBtnChanges();
+
+    /**
+     * This checkbox updates the content automaticallyan stores it in
+     * global store
+     */
     afx_msg void OnBnClickedCheckAutoUpdate();
-public:
-    void vAccessButtonApply();
-    CButton m_CheckBoxAutoUpdate;
 };

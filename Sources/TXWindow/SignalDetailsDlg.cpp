@@ -14,13 +14,13 @@
  */
 
 /**
- * \file      SignalDetailsDlg.cpp
- * \brief     This file contain definition of all function of
- * \author    Amarnath Shastry
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief This file contain definition of all function of
+ * @author Amarnath Shastry
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contain definition of all function of
  */
+
 #include "TxWindow_stdafx.h"             // Standard header
 #include "TxWindow_resource.h"
 #include "SignalDetailsDlg.h"   // for creating and editing signal details
@@ -28,16 +28,6 @@
 #include "Utility/Utility_Structs.h"
 #include "include/Basedefs.h"
 #include "Utility\MultiLanguageSupport.h"
-//#include "../Application/GettextBusmaster.h"
-
-enum eMODES
-{
-    MD_ADD          =   0,
-    MD_EDIT,
-    MD_DELETE,
-    MD_READ_ONLY,
-    MD_NONE
-};
 
 #define CHAR_BOOL               'B'
 #define CHAR_UINT               'U'
@@ -55,37 +45,28 @@ enum eMODES
 #define MSG_DUPLICATE_SG_NAME               "Signal name already exists!"
 #define MSG_MAX_VAL_LESS                    "Maximum value cannot be less than minimum value!"
 #define MSG_MIN_VAL_MORE                    "Minimum value cannot be more than maximum value!"
-/////////////////////////////////////////////////////////////////////////////
-// CSignalDetailsDlg dialog
 
-/*******************************************************************************
- Function Name    :  CSignalDetailsDlg
- Input(s)         :  eMODES eMode,
-                     int nDataFormat,
-                     CString omStrMsgName,
-                     UINT nMsgLen,
-                     CString omStrSignalType
- Output           :
- Functionality    :  Constructor
- Member of        :  CSignalDetailsDlg
- Friend of        :      -
- Author(s)        :  Amarnath Shastry
- Date Created     :  21.02.2002
- Modifications    :
-/******************************************************************************/
+enum eMODES
+{
+    MD_ADD = 0,
+        MD_EDIT,
+        MD_DELETE,
+        MD_READ_ONLY,
+        MD_NONE
+};
+
 CSignalDetailsDlg::CSignalDetailsDlg(eMODES eMode,
                                      int nDataFormat,
                                      CString omStrMsgName,
                                      UINT nMsgLen,
-                                     CString omStrSignalType/*""*/,
-                                     CString omStrMaxVal/*""*/,
-                                     CString omStrMinVal/*""*/,
-                                     CString omStrOffset/*""*/,
-                                     CString omStrScale/*""*/,
-                                     CWnd* pParent /*=nullptr*/)
-    : CDialog(CSignalDetailsDlg::IDD, pParent)
+                                     CString omStrSignalType,
+                                     CString omStrMaxVal,
+                                     CString omStrMinVal,
+                                     CString omStrOffset,
+                                     CString omStrScale,
+                                     CWnd* pParent /*=nullptr*/) :
+    CDialog(CSignalDetailsDlg::IDD, pParent)
 {
-    //{{AFX_DATA_INIT(CSignalDetailsDlg)
     m_shByteIndex = 0;
     m_unSgLen = 1;
     m_omStrSignalName = "";
@@ -99,8 +80,6 @@ CSignalDetailsDlg::CSignalDetailsDlg(eMODES eMode,
     m_unMode = eMode;
     m_nDataFormat = nDataFormat;
     m_omStrSgType = omStrSignalType;
-    //}}AFX_DATA_INIT
-
     m_omStrMaxVal = omStrMaxVal;
     m_omStrMinVal = omStrMinVal;
     m_omStrOffset = omStrOffset;
@@ -110,20 +89,6 @@ CSignalDetailsDlg::CSignalDetailsDlg(eMODES eMode,
     m_bNameChanged = FALSE;
 }
 
-/*******************************************************************************
- Function Name    :  CSignalDetailsDlg
- Input(s)         :  eMode - Mode of the View
-                     psSigInfo - Pointer to the Signal Information
-                     pParent   - Pointer to the Parent Window
- Output           :   -
- Functionality    :  Constructor
- Member of        :  CSignalDetailsDlg
- Friend of        :      -
- Author(s)        :  Raja N
- Date Created     :  22.07.2004
- Modifications    :  Raja N on 31.07.2004, Modifications as per code review
-                     comments and changed code with utility class function calls
-/******************************************************************************/
 CSignalDetailsDlg::CSignalDetailsDlg( eMODES eMode,
                                       sSIGNALS* psSigInfo,
                                       CWnd* pParent /*=nullptr*/)
@@ -184,7 +149,6 @@ CSignalDetailsDlg::CSignalDetailsDlg( eMODES eMode,
 void CSignalDetailsDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CSignalDetailsDlg)
     DDX_Control(pDX, IDC_EDIT_FACTOR, m_odScale);
     DDX_Control(pDX, IDC_EDIT_OFFSET, m_odOffset);
     DDX_Control(pDX, IDC_EDIT_MIN, m_odMinValue);
@@ -201,40 +165,7 @@ void CSignalDetailsDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_EDIT_STBIT, m_byStartBit);
     DDV_MinMaxByte(pDX, m_byStartBit, 0, 7);
     DDX_Text(pDX, IDC_EDIT_UNIT, m_omStrUnit);
-    //}}AFX_DATA_MAP
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-// CSignalDetailsDlg message handlers
-/******************************************************************************/
-/*  Function Name    :  OnInitDialog                                          */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Fills the combo box control,
-                        sets the range for spin controls
-/*  Member of        :  CSignalDetailsDlg                                     */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  21.02.2002                                            */
-/*  Modifications    :  Rajesh Kumar 04.03.2003                               */
-/*                      modified w.r.t changed min max types                  */
-/*. Modifications    :  Amitesh Bharti, 04.07.2003,                           */
-/*                        Signal length spin control will have maximum value  */
-/*                        as message length * 8                               */
-/*  Modifications    :  Raja N on 10.03.2004                                  */
-/*                      Initialised the variable to remember the previous     */
-/*                      state to avoide overwrite of signal length while      */
-/*                      selecing the same type again from signal detalis      */
-/*  Modifications    :  Raja N on 10.03.2004                                  */
-/*                      Modified init to have a read only view of the dialog  */
-/*  Modifications    :  Raja N on 22.07.2004                                  */
-/*                      Fixed the negative value problem for HEX number       */
-/*  Modifications    :  Raja N on 31.07.2004                                  */
-/*                      Implemented code review comments to check pointers    */
-/******************************************************************************/
 
 BOOL CSignalDetailsDlg::OnInitDialog()
 {
@@ -454,222 +385,18 @@ BOOL CSignalDetailsDlg::OnInitDialog()
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-
-/******************************************************************************/
-/*  Function Name    :  OnCancel                                              */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Sets a flag and calls base class function
-/*  Member of        :  CSignalDetailsDlg                                     */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  25.02.2002                                            */
-/*  Modifications    :
-/******************************************************************************/
 void CSignalDetailsDlg::OnCancel()
 {
     m_bIsCanceled = TRUE;
 
     CDialog::OnCancel();
 }
-/******************************************************************************/
-/*  Function Name    :  OnOk                                                  */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Updates the signal details to the data structure      */
-/*  Member of        :  CSignalDetailsDlg                                     */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  25.02.2002                                            */
-/*. Modifications    :  Amitesh Bharti, 05.06.2003,                           */
-/*                                  replace datatype for supporting 64bits to */
-/*                                   __int64                                  */
-/*. Modifications    :  Amitesh Bharti, 04.07.2003,                           */
-/*                        Signal length going beyond message length is        */
-/*                         validated                                          */
-/*. Modifications    :  Krishnaswamy B.N 28.08.2003,                          */
-/*                      Checking for the validity of maximum and minimum value*/
-/*  Modifications    :  Raja N.                                               */
-/*                      14.01.2004, The memory allocation failure message was */
-/*                      thrown in a wrong else condtion. Corrected            */
-/*  Modifications    :  Raja N on 10.03.2004                                  */
-/*                      Modified to get refer inactive database structure for */
-/*                      editor operation                                      */
-/*  Modifications    :  Raja N on 22.07.2004                                  */
-/*                      Added check to prevent processing data in read only   */
-/*                      mode and modified the value to extend sign bit        */
-/*  Modifications    :  Raja N on 31.07.2004, Removed hardcoded strings       */
-/******************************************************************************/
+
 void CSignalDetailsDlg::OnOK()
 {
-    BOOL bReturnFlag = TRUE;
-    if(m_unMode != MD_READ_ONLY)
-    {
-#if 0
-        UpdateData(TRUE);
-        if ( m_omStrSignalName.IsEmpty() )
-        {
-            AfxMessageBox( _(defSTR_SIGNAL_NAME_INVALID),
-                           MB_OK | MB_ICONINFORMATION );
-            GetDlgItem(IDC_EDIT_SGNAME)->SetFocus();
-            bReturnFlag = FALSE;
-        }
-        else if(bIsEditMinMaxValueValid() == FALSE)
-        {
-            bReturnFlag = FALSE;
-        }
-        else if(bReturnFlag == TRUE)
-        {
-            // Get appropriate msg structure ptr
-            CMsgSignal* pTempMsgSg = nullptr;
-
-            pTempMsgSg = m_pouMsgSgInactive;
-
-            if(pTempMsgSg != nullptr)
-            {
-                if ( m_bNameChanged &&
-                        (pTempMsgSg->bIsDuplicateSignalName( m_omStrMsgName,
-                                m_omStrSignalName)) && bReturnFlag == TRUE)
-                {
-                    AfxMessageBox( _(MSG_DUPLICATE_SG_NAME), MB_OK|MB_ICONINFORMATION);
-                    m_omStrSignalName.Empty();
-                    UpdateData(FALSE);
-                    GetDlgItem( IDC_EDIT_SGNAME )->SetFocus();
-                    m_bNameChanged = FALSE;
-                    bReturnFlag = FALSE;
-                }
-            }
-            if(!(CMsgSignal::bValidateSignal(m_nMsgLength, m_byByteIndex,
-                                             m_byStartBit, m_unSgLen,
-                                             m_nDataFormat)) &&
-                    (bReturnFlag == TRUE))
-            {
-                AfxMessageBox( _(defSTR_SIGNAL_END_BIT_INVALID),
-                               MB_OK | MB_ICONINFORMATION );
-                GetDlgItem( IDC_EDIT_SGLEN )->SetFocus();
-                bReturnFlag = FALSE;
-            }
-            // check for duplicate start bit value
-            if ( pTempMsgSg->bIsDuplicateSignalStartBitValue( m_omStrMsgName,
-                    m_byByteIndex, m_unSgLen, m_byStartBit, m_nDataFormat )
-                    && bReturnFlag == TRUE)
-            {
-                AfxMessageBox( _(defSTR_SIGNAL_DUP_START_BIT),
-                               MB_OK | MB_ICONINFORMATION );
-                GetDlgItem( IDC_EDIT_STBIT )->SetFocus();
-                bReturnFlag = FALSE;
-            }
-
-            if ( m_unMode == MD_ADD && bReturnFlag == TRUE )
-            {
-                // Allocate memory to the new signal
-                pTempMsgSg->bAddSignalToMsg( m_omStrMsgName );
-            }
-            if ( bReturnFlag == TRUE)
-            {
-
-                CMsgSignal::sSIGNALS* pSg = new CMsgSignal::sSIGNALS;
-
-                if ( pSg != nullptr )
-                {
-                    pSg->m_eFormat = m_nDataFormat;
-                    CString omStrSgType = "";
-                    m_omComboSgType.GetLBText(
-                        m_omComboSgType.GetCurSel(), omStrSgType );
-                    if ( !omStrSgType.CompareNoCase(defBOOLEAN) )
-                    {
-                        pSg->m_bySignalType = CHAR_BOOL;
-                    }
-                    else if ( !omStrSgType.CompareNoCase(defUNSIGNED_INT) )
-                    {
-                        pSg->m_bySignalType = CHAR_UINT;
-                    }
-                    else if ( !omStrSgType.CompareNoCase(defSIGNED_INT) )
-                    {
-                        pSg->m_bySignalType = CHAR_INT;
-                    }
-                    pSg->m_fSignalFactor            = m_odScale.fGetValue();
-
-                    if(pSg->m_bySignalType == CHAR_INT)
-                    {
-                        pSg->m_SignalMaxValue.n64Value   =
-                            (__int64)m_odMaxValue.lGetValue();
-                        pSg->m_SignalMinValue.n64Value   =
-                            (__int64)m_odMinValue.lGetValue();
-                        // Change the values to get app. decimal value
-                        if( m_unSgLen < defMAX_BITS )
-                        {
-                            // Extend the sign bit to actual value
-                            s_vExtendSignBit(
-                                pSg->m_SignalMaxValue.n64Value,
-                                m_unSgLen );
-                            s_vExtendSignBit(
-                                pSg->m_SignalMinValue.n64Value,
-                                m_unSgLen );
-                        }
-                    }
-                    else
-                    {
-                        pSg->m_SignalMaxValue.un64Value   =
-                            (__int64)m_odMaxValue.lGetValue();
-                        pSg->m_SignalMinValue.un64Value   =
-                            (__int64)m_odMinValue.lGetValue();
-                    }
-
-                    pSg->m_fSignalOffset            = m_odOffset.fGetValue();
-                    pSg->m_omStrSignalName          = m_omStrSignalName;
-                    pSg->m_omStrSignalUnit          = m_omStrUnit;
-                    pSg->m_unSignalLength           = m_unSgLen;
-                    pSg->m_unStartByte              = m_shByteIndex+1;
-                    pSg->m_byStartBit               = m_byStartBit;
-
-                    if ( m_unMode == MD_ADD )
-                    {
-                        m_omStrPrevSignalName = "";
-                    }
-
-                    // Fill the matrix for edited signal
-                    pTempMsgSg->vUpdateSignalDetails( m_omStrMsgName,
-                                                      m_omStrPrevSignalName,  pSg );
-
-                    // Now saved
-                    m_bIsDataSaved = TRUE;
-
-                    delete pSg;
-
-                    pSg = nullptr;
-                }
-                else
-                {
-                    AfxMessageBox(_("Insufficient Memory available"), MB_OK|MB_ICONINFORMATION);
-                }
-            }
-        }
-#endif
-    }
-    if( bReturnFlag == TRUE )
-    {
-        CDialog::OnOK();
-    }
+    CDialog::OnOK();
 }
 
-/******************************************************************************/
-/*  Function Name    :  PreTranslateMessage                                   */
-/*                                                                            */
-/*  Input(s)         :  MSG* pMsg                                             */
-/*  Output           :  BOOL                                                  */
-/*  Functionality    :  Doesn't process a space
-/*  Member of        :  CSignalDetailsDlg                                     */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Amarnath Shastry                                      */
-/*  Date Created     :  23.10.2002                                            */
-/*  Modifications    :  Raja N on 31.07.2004, Removed hardcoded strings       */
-/******************************************************************************/
 BOOL CSignalDetailsDlg::PreTranslateMessage(MSG* pMsg)
 {
     // Capture the space character and

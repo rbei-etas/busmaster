@@ -14,9 +14,8 @@
  */
 
 /**
- * \file      TxMsgManager.h
- * \brief     Interface file for CTxMsgManager class
- * \author    Ratnadip Choudhury
+ * @brief Interface file for CTxMsgManager class
+ * \author Ratnadip Choudhury
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file for CTxMsgManager class
@@ -31,65 +30,152 @@
 class CTxMsgManager
 {
 public:
-    // To get singleton Instange
+    CTxMsgManager();
+    virtual ~CTxMsgManager();
+
+    /**
+     * @brief To get singleton Instange
+     *
+     * This function will return the pointer to the singleton object
+     * of CTxMsgManager. In case of memory allocation failure this
+     * function will return nullptr
+     *
+     * @return Pointer to the singleton object
+     */
     static CTxMsgManager* s_podGetTxMsgManager();
-    // To clear memory used by the singleton object
+
+    /**
+     * @brief To clear memory used by the singleton object
+     *
+     * This function will delete singleton object. If it is null
+     * then this function will return FALSE to indicate invalid
+     * operation.
+     *
+     * @return Delete result. FALSE if the object is not valid
+     */
     static BOOL s_bDeleteTxMsgManager();
-    // Static Tx Thread Functions
-    // Thread proc for Send Selected Message Transmission
-    static UINT s_unSendSelectedMsg(LPVOID pParam );
-    // Thread proc for Timer Block Transmission
-    static UINT s_unSendMsgBlockOnTime(LPVOID pParam );
-    // Thread proc for Key Block Transmission
-    static UINT s_unSendMsgBlockOnKey(LPVOID pParam );
-    // To handle message transmission
+
+    /**
+     * @brief Tx Thread proc for Send Selected Message Transmission
+     *
+     * This is a thread control function to process
+     * transmission of selected message from the dialog.
+     *
+     * @param[in] pParam Typecasted address of PSTXMSG pointer
+     * @return Zero
+     */
+    static UINT s_unSendSelectedMsg(LPVOID pParam);
+
+    /**
+     * @brief Tx Thread proc for Timer Block Transmission
+     *
+     * This is a thread control function to process
+     * message block transmission on time trigger.
+     *
+     * @param[in] pParam Typecasted address of PSTXMSG pointer
+     * @return Zero
+     */
+    static UINT s_unSendMsgBlockOnTime(LPVOID pParam);
+
+    /**
+     * @brief Tx Thread proc for Key Block Transmission
+     *
+     * This is a thread control function to process
+     * message block transmission on key trigger.
+     *
+     * @param[in] pParam Typecasted address of PSTXMSG pointer
+     * @return Zero
+     */
+    static UINT s_unSendMsgBlockOnKey(LPVOID pParam);
+
+    /**
+     * @brief To handle message transmission
+     * This function will start transmission on press of a key
+     * and on time. This will be called from CMainFrame
+     *
+     * @param[in] ucKeyVal key pressed
+     */
     void vStartTransmission(UCHAR ucKeyVal);
-    // To allocate memory for global Tx Message structure
+
+    /**
+     * @brief To allocate memory for global Tx Message structure
+     *
+     * This function allocate memory to global list. Memory
+     * will be allocated only if the list is not already
+     * having the correct size.Only extra element will be
+     * added in case the count is less then m_unMsgBlockCount
+     */
     BOOL bAllocateMemoryForGlobalTxList();
-    // To assign message blocks from configuration module
+
+    /**
+     * @brief To assign message blocks from configuration module
+     *
+     * This function will assign the message list pointers to
+     * global list. The pointers will be obtained from
+     * configuration block.
+     */
     void vAssignMsgBlockList();
-    // To clear global memory
+
+    /**
+     * @brief To clear global memory
+     *
+     * This function will delete the memory allocated for
+     * global list.
+     */
     void vDeleteTxBlockMemory();
-    //Return the database pointer
+
+    /** Return the database pointer */
     void vStopTransmission(UINT unMaxWaitTime);
+
     void vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize);
     void vGetTxWndConfigData(xmlNodePtr pxmlNodePtr);
     void vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize);
     void vSetTxWndConfigData(xmlDocPtr pDoc);
-    //BOOL bIsTxWndConfigChanged();
     void vSetTxStopFlag(BOOL bStartStop);
     BOOL bGetTxStopFlag();
+
+    /**
+     * Assigns g_dwClientID to client ID supplied.
+     */
     void vSetClientID(DWORD dwClientID);
+
+    /**
+     * Assigns g_pouDIL_CAN_Interface variable to DIL interface pointer
+     */
     void vSetDILInterfacePtr(void* ptrDILIntrf);
 
-    // proc for getting CAN DIL Interface pointer
+    /**
+     * @brief proc for getting CAN DIL Interface pointer
+     *
+     * Returns DIL interface pointer (g_pouDIL_CAN_Interface)
+     */
     static void* pGetDILInterfacePtr();
 
-public:
+    static CFlags s_TxFlags;
+    static bool s_bDelayBetweenBlocksOnly;
+    static UINT s_unTimeDelayBtnMsgBlocks;
+    
+    /** used in delay btwn msg */
+    static PSCOMPLETEMSGINFO m_psCompleteMsgInfo;
 
-    static CFlags         s_TxFlags;
-    static bool           s_bDelayBetweenBlocksOnly;
-    static UINT           s_unTimeDelayBtnMsgBlocks;
-    static PSCOMPLETEMSGINFO    m_psCompleteMsgInfo ;   //used in delay btwn msg
-    static CRITICAL_SECTION     m_csUpdationLock;
-    // Standard Constructor and Destructor are protected to avoid
-    // multiple instances
-    CTxMsgManager();
-    virtual ~CTxMsgManager();
+    static CRITICAL_SECTION m_csUpdationLock;
+
     int nGetBlockCount();
-public:
-    // Members
-    // To store singleton instance pointer
+
+    /** To store singleton instance pointer */
     static CTxMsgManager* m_spodInstance;
-    static STHREADINFO    s_sUtilThread;
-    static CEvent         s_omState;
+    static STHREADINFO s_sUtilThread;
+    static CEvent s_omState;
 
 private:
-    // Map to store Monoshot blocks
+    /** Map to store Monoshot blocks */
     CMap<void*, void*, BOOL, BOOL> m_omMonoshotBlocks;
-    //Tx Message List Pointer
+
+    /** Tx Message List Pointer */
     PSTXMSG m_psTxMsgBlockList;
-    // Flag for breaking the loop of message transmission for message blocks
+
+    /** Flag for breaking the loop of message transmission for message blocks */
     BOOL m_bStopMsgBlockTx;
+
     int nGetSizeOfTxWndConfigData();
 };

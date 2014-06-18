@@ -14,19 +14,16 @@
  */
 
 /**
- * \file      TxFlags.h
- * \brief     Contains CFlags class definition
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Contains CFlags class definition
+ * @author Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Contains CFlags class definition
  */
 
 #pragma once
 
-// Definition of PSTOOLBARINFO structure is here
-
-// enumeration for all flags
+/** enumeration for all flags */
 typedef enum eTXWNDFLAG
 {
     TX_HEX,
@@ -37,15 +34,32 @@ typedef enum eTXWNDFLAG
 class CFlags
 {
 public:
-    int nGetFlagStatus(eTXWNDFLAG WhichFlag);
-    void vSetFlagStatus(eTXWNDFLAG WhichFlag, int nValue);
     CFlags();
     virtual ~CFlags();
+
+    /**
+     * This function returns the state of flag The eWhichFlag
+     * identified the flag.
+     *
+     * @param[in] WhichFlag Flag identifer
+     * @return State of flag
+     */
+    int nGetFlagStatus(eTXWNDFLAG WhichFlag);
+
+    /**
+     * This function set the correspoding flag whose
+     * with value passed as nValue parameter.The eWhichFlag
+     * identified the flag to be set.
+     *
+     * @param[in] WhichFlag Flag identifer
+     * @param[in] nValue value to set that flag
+     */
+    void vSetFlagStatus(eTXWNDFLAG WhichFlag, int nValue);
 
 private:
     BOOL m_bHex;
     BOOL m_bSendMsgOn;
     BOOL m_bConnected;
-private:
+
     CCriticalSection m_omFlagCritSec;
 };

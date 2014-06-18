@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      TxMsgBlocksView.cpp
- * \brief     Implementation file for CTxMsgBlocksView class
- * \author    Raja N
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Implementation file for CTxMsgBlocksView class
+ * @author Raja N
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CTxMsgBlocksView class
  */
@@ -35,37 +34,23 @@
 #include "TxMsgListView.h"      // For Tx msg List view class declaration
 #include "TxMsgChildFrame.h"    // For Parent window class declaration
 #include "TxWindow_resource.h"
-#include "Utility\MultiLanguageSupport.h"
-//#include "../Application/GettextBusmaster.h"
-
-// Global App object declaration
-//extern CCANMonitorApp theApp;
+#include "Utility/MultiLanguageSupport.h"
 
 IMPLEMENT_DYNCREATE(CTxMsgBlocksView, CFormView)
 
-/*******************************************************************************
-  Function Name  : CTxMsgBlocksView
-  Description    : Standard default constructor
-  Member of      : CTxMsgBlocksView
-  Functionality  : This will initialise local variables
-  Author(s)      : Raja N
-  Date Created   : 20.4.2005
-  Modifications  :
-*******************************************************************************/
 CTxMsgBlocksView::CTxMsgBlocksView()
     : CFormView(CTxMsgBlocksView::IDD)
 {
-    //{{AFX_DATA_INIT(CTxMsgBlocksView)
     m_omStrMsgBlockName = "";
     m_omStrTimeIntervalVal = "";
     m_omStrKeyVal = "";
-    //m_bIsMonoshot = FALSE;
-    //m_bTriggerType = FALSE;
-    //}}AFX_DATA_INIT
+
     // Number of message blocks in the Tx List
     m_unMsgBlockCount = 0;
+
     // Tx Message List Pointer
     m_psMsgBlockList = nullptr;
+
     // Selected Message Block index
     m_nSelectedMsgBlockIndex = -1;
     m_bMsgBlockDeleted = FALSE;
@@ -80,15 +65,6 @@ CTxMsgBlocksView::CTxMsgBlocksView()
     m_omTimeDelayBtwnBlocks.vSetSigned(false);
 }
 
-/*******************************************************************************
-  Function Name  : ~CTxMsgBlocksView
-  Description    : Standard Destructor
-  Member of      : CTxMsgBlocksView
-  Functionality  : -
-  Author(s)      : Raja N
-  Date Created   : 20.4.2005
-  Modifications  :
-*******************************************************************************/
 CTxMsgBlocksView::~CTxMsgBlocksView()
 {
     // Delete the allocated memory for message block
@@ -99,56 +75,34 @@ CTxMsgBlocksView::~CTxMsgBlocksView()
     }
 }
 
-/*******************************************************************************
-  Function Name  : DoDataExchange
-  Input(s)       : pDX - Pointer to DDX object
-  Output         : -
-  Functionality  : This function will map DDX object with UI control for data
-                   exchange
-  Member of      : CTxMsgBlocksView
-  Author(s)      : Raja N
-  Date Created   : 26.4.2005
-  Modifications  :
-*******************************************************************************/
 void CTxMsgBlocksView::DoDataExchange(CDataExchange* pDX)
 {
     CFormView::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CTxMsgBlocksView)
     DDX_Text(pDX, IDC_EDIT_MSG_BLOCK_NAME, m_omStrMsgBlockName);
     DDX_Text(pDX, IDC_EDIT_TRG_TIME_VAL, m_omStrTimeIntervalVal);
     DDX_Control(pDX, IDC_LSTC_MSG_BLOCKS_NAME, m_omLctrMsgBlockName);
     DDX_Control(pDX, IDC_EDIT_MSG_BLOCK_NAME, m_omEditMsgBlockName);
-    //DDX_Control(pDX, IDC_CHKB_TRIGGER_TYPE, m_omButtonTriggerType);
     DDX_Control(pDX, IDC_EDIT_TRG_TIME_VAL, m_omEditTrgTimeIntervalVal);
     DDX_Control(pDX, IDC_EDIT_TRG_KEY_VAL, m_omEditTrgKeyVal);
     DDX_Control(pDX, IDC_CHKB_ON_KEY_TRIGGER, m_omButtonKeyTrigger);
     DDX_Control(pDX, IDC_CHKB_ON_TIME_TRIGGER, m_omButtonTimeTrigger);
     DDX_Control(pDX, IDC_CBTN_ADD_MSG_BLOCK, m_omButtonAddMsgBlock);
-    //DDX_Control(pDX, IDC_CHKB_TX_ALL_FRAME, m_omButtonTxAllFrame);
     DDX_Control(pDX, IDC_CBTN_DELETE_MSG_BLOCK, m_omButtonDeleteMsgBlock);
     DDX_Control(pDX, IDC_CHECK_MSG_BLOCK_DELAY, m_omDelayBtwnBlocks);
     DDX_Control(pDX, IDC_EDIT_BLOCK_TRG_TIMER_VAL, m_omTimeDelayBtwnBlocks);
-    //DDX_Check(pDX, IDC_CHKB_TX_ALL_FRAME, m_bTXAllFrame);
-    //DDX_Check(pDX, IDC_CHK_MONO, m_bIsMonoshot);
-    //DDX_Check(pDX, IDC_CHKB_TRIGGER_TYPE, m_bTriggerType);
-    //}}AFX_DATA_MAP
     DDX_Control(pDX, IDC_COMBO_MSGS, m_omComboAllMsgs);
     DDV_MaxChars(pDX, m_omStrMsgBlockName, (defBLOCKNAME_SIZE - 1));
 }
 
-
 BEGIN_MESSAGE_MAP(CTxMsgBlocksView, CFormView)
-    //{{AFX_MSG_MAP(CTxMsgBlocksView)
     ON_BN_CLICKED(IDC_CBTN_ADD_MSG_BLOCK, OnAddMsgBlock)
     ON_BN_CLICKED(IDC_CBTN_DELETE_MSG_BLOCK, OnDeleteSelectedMsgBlock)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LSTC_MSG_BLOCKS_NAME, OnItemchangedLstcMsgBlocksName)
     ON_EN_CHANGE(IDC_EDIT_MSG_BLOCK_NAME, OnChangeEditMsgBlockName)
-    //ON_BN_CLICKED(IDC_CHKB_TRIGGER_TYPE, OnChkbTriggerType)
     ON_BN_CLICKED(IDC_CHKB_ON_TIME_TRIGGER, OnChkbOnTimeTrigger)
     ON_BN_CLICKED(IDC_CHKB_ON_KEY_TRIGGER, OnChkbOnKeyTrigger)
     ON_EN_UPDATE(IDC_EDIT_TRG_TIME_VAL, OnUpdateEditTrgTimeVal)
     ON_EN_UPDATE(IDC_EDIT_TRG_KEY_VAL, OnUpdateEditTrgKeyVal)
-    //ON_BN_CLICKED(IDC_CHKB_TX_ALL_FRAME, OnChkbTxAllFrame)
     ON_NOTIFY(NM_RCLICK, IDC_LSTC_MSG_BLOCKS_NAME, OnRclickLstcMsgBlocksName)
     ON_COMMAND(IDM_ADD_MSG_BLOCK, OnAddMsgBlock)
     ON_COMMAND(IDM_DELETE_SEL_MSG_BLOCK, OnDeleteSelectedMsgBlock)
@@ -163,7 +117,6 @@ BEGIN_MESSAGE_MAP(CTxMsgBlocksView, CFormView)
     ON_EN_KILLFOCUS(IDC_EDIT_BLOCK_TRG_TIMER_VAL, /*&CTxMsgBlocksView::*/AutoUpdateChanges)
 END_MESSAGE_MAP()
 
-
 #ifdef _DEBUG
 void CTxMsgBlocksView::AssertValid() const
 {
@@ -176,21 +129,6 @@ void CTxMsgBlocksView::Dump(CDumpContext& dc) const
 }
 #endif //_DEBUG
 
-
-/*******************************************************************************
-  Function Name  : OnInitialUpdate
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called by the framework during initial
-                   show of this view. This function will register iteself in to
-                   parent window class so that other views shall access it. This
-                   will initialise message block list control and oter edit
-                   boxes.
-  Member of      : CTxMsgBlocksView
-  Author(s)      : Raja N
-  Date Created   : 26.4.2005
-  Modifications  :
-*******************************************************************************/
 void CTxMsgBlocksView::OnInitialUpdate()
 {
     CFormView::OnInitialUpdate();
@@ -391,14 +329,6 @@ void CTxMsgBlocksView::OnInitialUpdate()
     m_bInitDlg = FALSE;
 }
 
-/**
- * \brief On Add Msg Block
- * \req RS_17_01 - Addition of a transmission block
- *
- * This function will called when user selects Add button
- * or menu. This will add a new message block and
- * initialise it.
- */
 void CTxMsgBlocksView::OnAddMsgBlock()
 {
     PSMSGBLOCKLIST psCurrentMsgBlock  = nullptr;
@@ -488,22 +418,6 @@ void CTxMsgBlocksView::OnAddMsgBlock()
     }
 }
 
-
-/******************************************************************************/
-/*  Function Name    :  bAddBlock                                             */
-/*  Input(s)         :                                                        */
-/*  Output           :  TRUE or FALSE                                         */
-/*  Functionality    :  This function will add message block at the end in the*/
-/*                      message block list. The message block will be         */
-/*                      initailised.                                          */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
 BOOL CTxMsgBlocksView::bAddBlock(SMSGBLOCKLIST*& psMsgCurrentBlock)
 {
     BOOL bReturn              = TRUE;
@@ -549,19 +463,6 @@ BOOL CTxMsgBlocksView::bAddBlock(SMSGBLOCKLIST*& psMsgCurrentBlock)
     return bReturn;
 }
 
-
-/******************************************************************************/
-/*  Function Name    :  vInitMsgBlockInfo                                     */
-/*  Input(s)         : PSMSGBLOCKLIST psMsgBlockList:current msg block pointer*/
-/*  Output           :                                                        */
-/*  Functionality    :  This function will initialise the message block       */
-/*                      element with default values                           */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/******************************************************************************/
 void CTxMsgBlocksView::vInitMsgBlockInfo(SMSGBLOCKLIST* psMsgBlockList)
 {
     if(psMsgBlockList != nullptr )
@@ -579,16 +480,6 @@ void CTxMsgBlocksView::vInitMsgBlockInfo(SMSGBLOCKLIST* psMsgBlockList)
     }
 }
 
-/**
- * \brief On Delete Selected Msg Block
- * \req RS_17_02 - Deletion of a transmission block
- *
- * This function will be called by frame work when delete
- * button or menu is selected. This will be called for
- * message block deletion. It will delete the whole block
- * by removing it from list and also all message frame in
- * the block will be deleted. Memory will be deallocated
- */
 void CTxMsgBlocksView::OnDeleteSelectedMsgBlock()
 {
     BOOL bReturn = FALSE;
@@ -661,22 +552,6 @@ void CTxMsgBlocksView::OnDeleteSelectedMsgBlock()
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  bDeleteBlock                                          */
-/*  Input(s)         :                                                        */
-/*  Output           :  TRUE or FALSE                                         */
-/*  Functionality    :  This function will delete a message block and its msg */
-/*                      list after removing node from the list. It will also  */
-/*                      delete the memory, after removing all message list and*/
-/*                      memory for message list.                              */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
 BOOL CTxMsgBlocksView::bDeleteBlock()
 {
     BOOL bReturn = FALSE;
@@ -738,22 +613,7 @@ BOOL CTxMsgBlocksView::bDeleteBlock()
     }
     return bReturn;
 }
-/******************************************************************************/
-/*  Function Name    :  psGetMsgBlockPointer                                  */
-/*  Input(s)         :  nIndexCurBlock : Index of message block in the list   */
-/*                      psCurrentMsgBlockList : header of msg block pointer   */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will return message block pointer for   */
-/*                      node at index nIndexCurBlock passed as parameter from */
-/*                      the link list of message block.                       */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
+
 SMSGBLOCKLIST* CTxMsgBlocksView::psGetMsgBlockPointer(INT nIndexCurBlock,
         SMSGBLOCKLIST* psMsgBlockList)
 {
@@ -774,26 +634,6 @@ SMSGBLOCKLIST* CTxMsgBlocksView::psGetMsgBlockPointer(INT nIndexCurBlock,
     return psMsgBlockList;
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnItemchangedLstcMsgBlocksName                        */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will be called by frame work when       */
-/*                      selection is changed in message blocks list control.  */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Added Macros to check the trigger type    */
-/*  Modification on  :  02.08.2004, Moved Enabling controls function call     */
-/*                      after update of message block details. Because that   */
-/*                      function refers message block details to update       */
-/*                      controls                                              */
-/*  Modification By  :  Anish                                                 */
-/*  Modification on  :  26.12.2006, Key trigger + update bug fixed            */
-/******************************************************************************/
 void CTxMsgBlocksView::OnItemchangedLstcMsgBlocksName(NMHDR* pNMHDR,
         LRESULT* pResult)
 {
@@ -981,25 +821,7 @@ void CTxMsgBlocksView::UpdateList(NM_LISTVIEW* /* pNMListView */)
         }
     }
 }
-/******************************************************************************/
-/*  Function Name    :  vDisplayMsgBlockDetails                               */
-/*  Input(s)         :  PSMSGBLOCKLIST psMsgBlock: current msg block pointer  */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will display the message block details  */
-/*                      in this function                                      */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Updated new check box controls and used   */
-/*                      macros to find the type of the trigger                */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  02.08.2004, Removed setting type information to timer */
-/*                      and key trigger value editboxs. Moved the code in to  */
-/*                      vSetControlProperties function                        */
-/******************************************************************************/
+
 void CTxMsgBlocksView::vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock)
 {
     if(psMsgBlock != nullptr )
@@ -1165,22 +987,6 @@ void CTxMsgBlocksView::vDisplayMsgBlockDetails(SMSGBLOCKLIST* psMsgBlock)
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  vUpdateMsgBlockDetials                                */
-/*  Input(s)         :  PSMSGBLOCKLIST psCurrentMsgBlock:current block pointer*/
-/*  Output           :                                                        */
-/*  Functionality    :  Update the message block information entered by user  */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Updated new check box controls and used   */
-/*                      macros to find the type of the trigger                */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  02.08.2004, Removed Hardcoded values                  */
-/******************************************************************************/
 void CTxMsgBlocksView::vUpdateMsgBlockDetials(SMSGBLOCKLIST* psCurrentMsgBlock)
 {
     UpdateData(TRUE);
@@ -1252,20 +1058,6 @@ void CTxMsgBlocksView::vUpdateMsgBlockDetials(SMSGBLOCKLIST* psCurrentMsgBlock)
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnChangeEditMsgBlockName                              */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will be called by frame work when user  */
-/*                      changes edit box "Message Block name"                 */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
 void CTxMsgBlocksView::OnChangeEditMsgBlockName()
 {
     CString omStrMsgBlockName = "";
@@ -1302,20 +1094,6 @@ void CTxMsgBlocksView::OnChangeEditMsgBlockName()
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnChkbTriggerType                                     */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function is called by framework whenever user    */
-/*                      selected check button for trigger type.               */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  05.08.2004, Added modified flag to indicate change    */
-/******************************************************************************/
 void CTxMsgBlocksView::OnChkbTriggerType()
 {
     if(m_nSelectedMsgBlockIndex != -1 )
@@ -1368,20 +1146,6 @@ void CTxMsgBlocksView::OnChkbTriggerType()
     }
 }
 
-/*******************************************************************************
- Function Name    : OnChkbOnTimeTrigger
- Input(s)         :
- Output           :
- Functionality    : This function is will update trigger flag and appropriate UI
-                    components
- Member of        : CTxMsgBlocksView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  : Raja N
- Modification on  : 02.08.2004, Added code update trigger value in msg block
-                    list control
-*******************************************************************************/
 void CTxMsgBlocksView::OnChkbOnTimeTrigger()
 {
     CString omStrCurrent;
@@ -1461,20 +1225,6 @@ void CTxMsgBlocksView::OnChkbOnTimeTrigger()
     AutoUpdateChanges();
 }
 
-/*******************************************************************************
- Function Name    : OnChkbOnKeyTrigger
- Input(s)         :
- Output           :
- Functionality    : This function is will update trigger flag and appropriate UI
-                    components
- Member of        : CTxMsgBlocksView
- Friend of        :  -
- Author(s)        : Raja N
- Date Created     : 19.07.2004
- Modification By  : Raja N
- Modification on  : 02.08.2004, Added code update trigger value in msg block
-                    list control
-*******************************************************************************/
 void CTxMsgBlocksView::OnChkbOnKeyTrigger()
 {
     CString omStrCurrent;
@@ -1559,23 +1309,6 @@ void CTxMsgBlocksView::OnChkbOnKeyTrigger()
     AutoUpdateChanges();
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnUpdateEditTrgTimeVal                                */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will be called by frame work when user  */
-/*                      changes is updated in edit box "time".                */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Seprated Timer and On Key Handler         */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  02.08.2004, Added code to update message block trigger*/
-/*                      information on update of timer value                  */
-/******************************************************************************/
 void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
 {
     UINT unTimeInterVal        = 0;
@@ -1695,22 +1428,6 @@ void CTxMsgBlocksView::OnUpdateEditTrgTimeVal()
     m_bNewBlock = false;
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnUpdateEditTrgKeyVal                                 */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will be called by frame work when user  */
-/*                      changes is updated in edit box "key value"            */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Seprated Timer and On Key Handler         */
-/*  Modification on  :  02.08.2004, Added code to update message block trigger*/
-/*                      information on update of Key value                    */
-/******************************************************************************/
 void CTxMsgBlocksView::OnUpdateEditTrgKeyVal()
 {
     UINT unTextLength = 0;
@@ -1806,20 +1523,6 @@ void CTxMsgBlocksView::OnUpdateEditTrgKeyVal()
     m_omEditTrgKeyVal.SetSel( 0, m_omStrKeyVal.GetLength());
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnChkbTxAllFrame                                      */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function is called by the framework when user    */
-/*                      clicks "All Messages"  check box. It will enable the  */
-/*                      Apply button.                                         */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  15.01.2004                                            */
-/*  Modifications    :                                                        */
-/*                                                                            */
-/******************************************************************************/
 void CTxMsgBlocksView::OnChkbTxAllFrame()
 {
     CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
@@ -1858,27 +1561,8 @@ void CTxMsgBlocksView::OnChkbTxAllFrame()
         }
         AutoUpdateChanges();
     }
-
 }
 
-/******************************************************************************/
-/*  Function Name    :  vEnableControls                                       */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will enable or disable the controls     */
-/*                      needed depending upon the flag bEnable condition .    */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Added new controls to the list            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  02.08.2004, Added RTR control in to the list and added*/
-/*                      checks for Timer and Key edit boxes to avoid enabling */
-/*                      if the corresponding ckeck box is not selected.       */
-/******************************************************************************/
 void CTxMsgBlocksView::vEnableControls(BOOL bEnable)
 {
     CWnd* pomWnd = nullptr;
@@ -2051,19 +1735,6 @@ void CTxMsgBlocksView::vEnableControls(BOOL bEnable)
     // Standard Radio Button
 }
 
-
-/*******************************************************************************
-  Function Name  : pomGetParentWindow
-  Input(s)       : -
-  Output         : CWnd * - Pointer to CTxMsgChildFrame
-  Functionality  : This Function will return parent window pointer. That is
-                   pointer to CTxMsgChildFrame. This will return nullptr incase of
-                   failure
-  Member of      : CTxMsgBlocksView
-  Author(s)      : Raja N
-  Date Created   : 25.4.2005
-  Modifications  :
-*******************************************************************************/
 CWnd* CTxMsgBlocksView::pomGetParentWindow() const
 {
     CWnd* pWnd = nullptr;
@@ -2083,18 +1754,6 @@ CWnd* CTxMsgBlocksView::pomGetParentWindow() const
     return pWnd;
 }
 
-/*******************************************************************************
-  Function Name  : pomGetListViewPointer
-  Input(s)       : -
-  Output         : CWnd * - Pointer to CTxMsgListView or nullptr incase of
-                   failure
-  Functionality  : This function will return CTxMsgListView pointer. This will
-                   get child window pointer to get view pointer.
-  Member of      : CTxMsgBlocksView
-  Author(s)      : Raja N
-  Date Created   : 25.4.2005
-  Modifications  :
-*******************************************************************************/
 CWnd* CTxMsgBlocksView::pomGetListViewPointer() const
 {
     CWnd* pView = nullptr;
@@ -2111,18 +1770,6 @@ CWnd* CTxMsgBlocksView::pomGetListViewPointer() const
     return pView;
 }
 
-/*******************************************************************************
-  Function Name  : pomGetDetailsViewPointer
-  Input(s)       : -
-  Output         : CWnd * - Pointer to CTxMsgDetailsView or nullptr incase of
-                   failure
-  Functionality  : This function will return CTxMsgDetailsView pointer. This
-                   will get child window pointer to get view pointer.
-  Member of      : CTxMsgBlocksView
-  Author(s)      : Raja N
-  Date Created   : 25.4.2005
-  Modifications  :
-*******************************************************************************/
 CWnd* CTxMsgBlocksView::pomGetDetailsViewPointer() const
 {
     CWnd* pView = nullptr;
@@ -2139,18 +1786,6 @@ CWnd* CTxMsgBlocksView::pomGetDetailsViewPointer() const
     return pView;
 }
 
-/*******************************************************************************
-  Function Name  : pomGetFunctionsViewPointer
-  Input(s)       : -
-  Output         : CWnd * - Pointer to CTxFunctionsView or nullptr incase of
-                   failure
-  Functionality  : This function will return CTxFunctionsView pointer. This
-                   will get child window pointer to get view pointer.
-  Member of      : CTxMsgBlocksView
-  Author(s)      : Raja N
-  Date Created   : 25.4.2005
-  Modifications  :
-*******************************************************************************/
 CWnd* CTxMsgBlocksView::pomGetFunctionsViewPointer() const
 {
     CWnd* pView = nullptr;
@@ -2167,45 +1802,19 @@ CWnd* CTxMsgBlocksView::pomGetFunctionsViewPointer() const
     return pView;
 }
 
-/******************************************************************************/
-/*  Function Name    :  vSetControlProperties                                 */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function changed the control properties for hex  */
-/*                      and decimal settings.                                 */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  01.08.2004, Added Timer value and Key value controls  */
-/******************************************************************************/
 void CTxMsgBlocksView::vSetControlProperties()
 {
     // Init Time Value Edit control
     m_omEditTrgTimeIntervalVal.vSetBase(BASE_DECIMAL);
     m_omEditTrgTimeIntervalVal.vSetSigned( FALSE );
     m_omEditTrgTimeIntervalVal.LimitText(0);
+
     // Init Key Value Edit Control
     m_omEditTrgKeyVal.vSetBase( BASE_ALPHANUMERIC);
     m_omEditTrgKeyVal.vSetSigned( FALSE );
     m_omEditTrgKeyVal.SetLimitText(1);
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnRclickLstcMsgBlocksName                             */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will call bDisplayPopMenu.              */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
 void CTxMsgBlocksView::OnRclickLstcMsgBlocksName(NMHDR* /*pNMHDR*/,
         LRESULT* pResult)
 {
@@ -2213,21 +1822,6 @@ void CTxMsgBlocksView::OnRclickLstcMsgBlocksName(NMHDR* /*pNMHDR*/,
     *pResult = 0;
 }
 
-/******************************************************************************/
-/*  Function Name    :  bDisplayPopMenu                                       */
-/*  Input(s)         :                                                        */
-/*  Output           :  TRUE or FALSE                                         */
-/*  Functionality    :  This function will display pop-up menus if selection  */
-/*                      is valid and chooses the appropriate menu for display */
-/*                                                                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  06.08.2004, Added checks to disable Add and Delete All*/
-/*                      Menu Items                                            */
-/******************************************************************************/
 BOOL CTxMsgBlocksView::bDisplayPopMenu(CListCtrl& omList,UINT nIDResource )
 {
     BOOL bReturn = FALSE;
@@ -2298,6 +1892,7 @@ BOOL CTxMsgBlocksView::bDisplayPopMenu(CListCtrl& omList,UINT nIDResource )
     }
     return bReturn;
 }
+
 void CTxMsgBlocksView::OnBnClickedRadiomonoshot()
 {
     SetDlgItemText(IDC_GROUPBOX_TRIGGER, _("Trigger (Monoshot) on event"));
@@ -2332,6 +1927,7 @@ void CTxMsgBlocksView::OnCbnSelchangeComboMsgs()
 {
     OnChkbTxAllFrame();
 }
+
 void CTxMsgBlocksView::vSaveCurrentBlockFirst()
 {
     PSMSGBLOCKLIST psCurrentMsgBlock = nullptr;
@@ -2402,19 +1998,6 @@ void CTxMsgBlocksView::vSaveCurrentBlockFirst()
     AutoUpdateChanges();
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnEnKillfocusEditMsgBlockName                         */
-/*  Input(s)         :                                                        */
-/*  Output           :  void                                                  */
-/*  Functionality    :  This function will be called when any of the EditBox  */
-/*                      in this view looses focus. We need to update the      */
-/*                      global structure each time                            */
-/*  Member of        :  CTxMsgBlocksView                                      */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Ashwin. R.Uchil                                       */
-/*  Date Created     :  25-5-2012                                             */
-/*                                                                            */
-/******************************************************************************/
 void CTxMsgBlocksView::AutoUpdateChanges()
 {
     CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
@@ -2453,6 +2036,7 @@ void CTxMsgBlocksView::AutoUpdateChanges()
         m_nTimeDelBlocks = unTimeVal;
     }
 }
+
 void CTxMsgBlocksView::OnBnClickedCheckMsgBlockDelay()
 {
     CTxFunctionsView* pomFunctionView = ( CTxFunctionsView*)
@@ -2584,6 +2168,7 @@ void CTxMsgBlocksView::OnBnClickedCheckMsgBlockDelay()
         }
     }
 }
+
 void CTxMsgBlocksView::OnEnUpdateEditBlockTrgTimerVal()
 {
     UINT                    unTimerVal;

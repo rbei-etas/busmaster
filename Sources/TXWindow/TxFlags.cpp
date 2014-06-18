@@ -14,70 +14,34 @@
  */
 
 /**
- * \file      TxFlags.cpp
- * \brief     Contains implementaion of CFlags class
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Contains implementaion of CFlags class
+ * @author Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Contains implementaion of CFlags class
  */
+
 // For all standard header file include
 #include "TxWindow_stdafx.h"
 #include "TxFlags.h"
 
-
-
-/******************************************************************************/
-/*  Function Name    :  CFlags                                                */
-/*  Input(s)         :  PSTOOLBARINFO psToolBarInfo                           */
-/*  Output           :                                                        */
-/*  Functionality    :  Constructor is called when user create an object of   */
-/*                      this class. Initialisation of all data members        */
-/*  Member of        :  CFlags                                                */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :
-/*  Date Created     :
-/******************************************************************************/
 CFlags::CFlags()
 {
-    m_bHex          = FALSE;
-    m_bSendMsgOn    = FALSE;
-    m_bConnected    = FALSE;
+    m_bHex = FALSE;
+    m_bSendMsgOn = FALSE;
+    m_bConnected = FALSE;
 }
-/******************************************************************************/
-/*  Function Name    :  ~CFlags                                               */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This destractor is called when object is getting      */
-/*                      destroyed                                             */
-/*  Member of        :  CFlags                                                */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :
-/*  Date Created     :
-/*  Modifications    :
-/*
-/******************************************************************************/
+
 CFlags::~CFlags()
 {
 
 }
-/******************************************************************************/
-/*  Function Name    :  vSetFlagStatus                                        */
-/*  Input(s)         :  Flag identifer and value to set that flag             */
-/*  Output           :                                                        */
-/*  Functionality    :  This function set the correspoding flag whose         */
-/*                      with value passed as nValue parameter.The eWhichFlag  */
-/*                      identified the flag to be set.                        */
-/*  Member of        :  CFlags                                                */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :
-/*  Date Created     :
-/******************************************************************************/
+
 void CFlags::vSetFlagStatus(eTXWNDFLAG eWhichFlag, INT nValue)
 {
     m_omFlagCritSec.Lock();
 
-    switch( eWhichFlag )
+    switch(eWhichFlag)
     {
         case TX_HEX :
             m_bHex = nValue;
@@ -90,42 +54,34 @@ void CFlags::vSetFlagStatus(eTXWNDFLAG eWhichFlag, INT nValue)
             break;
         default:
             //Invalid flag enum value
-            ASSERT ( FALSE );
+            ASSERT (FALSE);
     }
+
     m_omFlagCritSec.Unlock();
 }
-/******************************************************************************/
-/*  Function Name    :  nGetFlagStatus                                        */
-/*  Input(s)         :  Flag identifer                                        */
-/*  Output           :  State of flag                                         */
-/*  Functionality    :  This function returns the state of flag The eWhichFlag*/
-/*                      identified the flag.                                  */
-/*  Member of        :  CFlags                                                */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :
-/*  Date Created     :
-/******************************************************************************/
+
 int CFlags::nGetFlagStatus(eTXWNDFLAG eWhichFlag)
 {
     INT nRetValue = -1;
 
     m_omFlagCritSec.Lock();
 
-    switch( eWhichFlag )
+    switch(eWhichFlag)
     {
         case TX_HEX :
-            nRetValue  = m_bHex;
+            nRetValue = m_bHex;
             break;
         case TX_SENDMESG :
-            nRetValue  = m_bSendMsgOn;
+            nRetValue = m_bSendMsgOn;
             break;
         case TX_CONNECTED :
-            nRetValue  = m_bConnected;
+            nRetValue = m_bConnected;
             break;
         default:
             // Invalid flag enum value
-            ASSERT ( FALSE );
+            ASSERT(FALSE);
     }
+
     m_omFlagCritSec.Unlock();
 
     return nRetValue;

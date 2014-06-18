@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      SignalDetailsDlg.h
- * \brief     This header file contains the defintion of class
- * \author    Amarnath Shastry
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief This header file contains the defintion of class
+ * @author Amarnath Shastry
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This header file contains the defintion of class
  */
@@ -29,20 +28,10 @@
 #include "Utility/AlphanumiricEdit.h"
 #include "CMsgSignalTemp.h"
 
-/////////////////////////////////////////////////////////////////////////////
-// CSignalDetailsDlg dialog
 enum eMODES;
-//{
-//    MD_ADD          =   0,
-//    MD_EDIT,
-//    MD_DELETE,
-//    MD_READ_ONLY,
-//    MD_NONE
-//};
 
 class CSignalDetailsDlg : public CDialog
 {
-    // Construction
 public:
     CSignalDetailsDlg( eMODES eMode,
                        int nDataFormat,
@@ -54,55 +43,50 @@ public:
                        CString omStrOffset = "0",
                        CString omStrScale = "1",
                        CWnd* pParent = nullptr);   // standard constructor
+
     CSignalDetailsDlg( eMODES eMode, sSIGNALS* psSigInfo,
                        CWnd* pParent /*=nullptr*/);
-    // Dialog Data
-    //{{AFX_DATA(CSignalDetailsDlg)
+
     enum { IDD = IDD_DLG_SIGNAL };
-    CRadixEdit  m_odScale;
-    CRadixEdit  m_odOffset;
-    CRadixEdit  m_odMinValue;
-    CRadixEdit  m_odMaxValue;
+    CRadixEdit m_odScale;
+    CRadixEdit m_odOffset;
+    CRadixEdit m_odMinValue;
+    CRadixEdit m_odMaxValue;
     CSpinButtonCtrl m_omSpinLen;
     CSpinButtonCtrl m_omSpinByIndex;
     CSpinButtonCtrl m_omSpinStartBit;
-    CComboBox   m_omComboSgType;
-    SHORT    m_shByteIndex;
-    UINT    m_unSgLen;
+    CComboBox m_omComboSgType;
+    SHORT m_shByteIndex;
+    UINT m_unSgLen;
     CString m_omStrSignalName;
-    BYTE    m_byStartBit;
+    BYTE m_byStartBit;
     CString m_omStrUnit;
-    //}}AFX_DATA
 
     CAlphanumiricEdit m_odNumericEdit;
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CSignalDetailsDlg)
-public:
+
+    /** Doesn't process a space */
     virtual BOOL PreTranslateMessage(MSG* pMsg);
-protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-    //}}AFX_VIRTUAL
 
-    // Implementation
 protected:
+    /** DDX/DDV support */
+    virtual void DoDataExchange(CDataExchange* pDX);
 
-    // Generated message map functions
-    //{{AFX_MSG(CSignalDetailsDlg)
+    /**
+     * Fills the combo box control,
+     * sets the range for spin controls
+     */
     virtual BOOL OnInitDialog();
 
+    /** Sets a flag and calls base class function */
     virtual void OnCancel();
+
+    /** Updates the signal details to the data structure */
     virtual void OnOK();
 
 private:
     BOOL m_bLenChanged;
     CString m_omStrFirstSignalName;
     BOOL m_bDupliacateFound;
-    // void vCalculateMaxMinValues(long &minVal, long &maxVal);
-    //  krishnaswamy B.N 28.08.2003
-    //  Validation of minimum and maximum values in OnOk function
-
-
     CString m_omStrSgType;
     int m_nDataFormat;
     UINT m_unMode;
@@ -117,5 +101,4 @@ private:
     CString m_omStrOffset;
     CString m_omStrScale;
     BOOL m_bNameChanged;
-
 };

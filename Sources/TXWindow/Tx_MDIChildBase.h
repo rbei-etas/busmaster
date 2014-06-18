@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      Tx_MDIChildBase.h
- * \brief     Interface file for CMDIChildBase class
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief     Interface file for CMDIChildBase class
+ * @author    Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file for CMDIChildBase class
  */
@@ -28,40 +27,74 @@
 
 class CMDIChildBase : public CMDIChildWnd
 {
-    DECLARE_DYNCREATE(CMDIChildBase)
 public:
-    // Constructor with Window Identity
-    CMDIChildBase(eCONFIGDETAILS eWindowIdentity);
-    // Default constructor
     CMDIChildBase();
     virtual ~CMDIChildBase();
-    // To Update window with co-ordinates from Configuration module
-    void vUpdateWndCo_Ords();
-    // To save window co-ordinates in to Configuration module
-    void vUpdateWinStatus();
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CMDIChildBase)
-    //}}AFX_VIRTUAL
 
-    // Implementation
+    /** Constructor with Window Identity */
+    CMDIChildBase(eCONFIGDETAILS eWindowIdentity);
+
+    /**
+     * To Update window with co-ordinates from Configuration module
+     *
+     * This function will save window postion in to configuration
+     * module. This function will use private function
+     * vSaveWinStatus to save window position
+     */
+    void vUpdateWndCo_Ords();
+
+    /**
+     * To save window co-ordinates in to Configuration module
+     *
+     * This function will be called from main frame to update
+     * window status information in the configuration module while
+     * loading a configuration file and while closing the window
+     */
+    void vUpdateWinStatus();
+
 protected:
-    // helping function to Save and loading window postion from
-    // configuration module
+    /**
+     * helping function to Save window postion from
+     * configuration module
+     *
+     * This function will get window postion and will save it in to
+     * the configuration module if it is different from the
+     * previously saved value
+     */
     void vSaveWinStatus();
-    void vGetWinStatus( );
-    // Generated message map functions
-    //{{AFX_MSG(CMDIChildBase)
+
+    /**
+     * helping function to loading window postion from
+     * configuration module
+     *
+     * This function will update window postion from configuration
+     * module. This function will use m_eWindowIdentity member to
+     * denote window type.
+     */
+    void vGetWinStatus();
+
+    /**
+     * This event handler will set window postion in case of "show
+     * window" and will save window position in case of "hide
+     * window"
+     *
+     * @param[in] bShow Show or Hide command
+     * @param[in] nStatus Status of the window
+     */
     afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-    //}}AFX_MSG
+
     DECLARE_MESSAGE_MAP()
 
-    // Attributes
-    // Make members as protected so that derivation of this class shall use
-    // if it wants
-    // Window placement Attribute
+    /* Attributes */
+
+    /** Window placement Attribute */
     WINDOWPLACEMENT m_sWindowPlacement;
-    // Set the window identity parameter
+
+    /** Set the window identity parameter */
     eCONFIGDETAILS  m_eWindowIdentity;
+
+private:
+    DECLARE_DYNCREATE(CMDIChildBase)
 };

@@ -14,13 +14,13 @@
  */
 
 /**
- * \file      TxWindow_stdafx.h
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @author Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ *
+ * include file for standard system include files,
+ * or project specific include files that are used frequently, but
+ * are changed infrequently
  */
-// TxWindow_stdafx.h : include file for standard system include files,
-// or project specific include files that are used frequently, but
-// are changed infrequently
 
 #pragma once
 

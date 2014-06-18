@@ -14,18 +14,17 @@
  */
 
 /**
- * \file      TxWndDataStore.cpp
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @author Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
+
 #include "TxWindow_stdafx.h"
 #include "TxWndDataStore.h"
 #include "Include/Utils_macro.h"
 #include "include/XMLDefines.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
-#include "Utility\MultiLanguageSupport.h"
-//#include "../Application/GettextBusmaster.h"
+#include "Utility/MultiLanguageSupport.h"
 
 // Tx Window Splitter Position
 #define defTX_WND_ROOT_SPLITTER_RATIO       0.865
@@ -36,9 +35,9 @@ CTxWndDataStore CTxWndDataStore::m_sTxWndDataStoreObj;
 
 CTxWndDataStore::CTxWndDataStore(void)
 {
-    m_unNumberOfMsgBlockCount  = 0;
+    m_unNumberOfMsgBlockCount = 0;
     m_bIsConfigurationModified = FALSE;
-    m_psMsgBlockList           = nullptr;
+    m_psMsgBlockList = nullptr;
     m_sTxWndPlacement.rcNormalPosition.top = -1;
     m_sTxWndPlacement.length = 0;
     m_sTxMsgWndSplitterPos.m_nRootSplitterData[0][0] = -1;
@@ -236,6 +235,7 @@ BOOL CTxWndDataStore::bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid)
     }
     return bRetVal;
 }
+
 bool CTxWndDataStore::bSetDataToGlobal(PSMSGBLOCKLIST psMsgBlockList )
 {
     if (psMsgBlockList == nullptr)
@@ -306,17 +306,6 @@ bool CTxWndDataStore::bSetDataToGlobal(PSMSGBLOCKLIST psMsgBlockList )
     return true;
 }
 
-/******************************************************************************/
-/*  Function Name    :  CompareBlockLists                                     */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will compare 2 BlockList                */
-/*                                                                            */
-/*  Member of        :  CTxMsgManager                                         */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Ashwin R Uchil                                        */
-/*  Date Created     :  02.01.2013                                            */
-/******************************************************************************/
 int CTxWndDataStore::nCompareBlockLists(PSMSGBLOCKLIST psMsgBlockSrc)
 {
     PSMSGBLOCKLIST psMsgBlockDest = nullptr;
@@ -434,19 +423,7 @@ bool CTxWndDataStore::bDeleteMsgList(PSTXCANMSGLIST& psMsgList)
     }
     return true;
 }
-/******************************************************************************
-    Function Name    :  bCopyBlockData
 
-    Input(s)         :  PSMSGBLOCKLIST, PSMSGBLOCKLIST
-    Output           :  bool
-    Functionality    :  Copies the PSMSGBLOCKLIST from source to destination
-    Member of        :  CTxWndDataStore
-    Friend of        :      -
-
-    Author(s)        :  Ashwin R Uchil
-    Date Created     :  22.8.2012
-    Modifications    :
-******************************************************************************/
 bool CTxWndDataStore::bCopyBlockData( PSMSGBLOCKLIST psDestBlockList,  PSMSGBLOCKLIST psSrcBlockList)
 {
     strcpy_s(psDestBlockList->m_acStrBlockName, defBLOCKNAME_SIZE, psSrcBlockList->m_acStrBlockName);
@@ -474,19 +451,6 @@ bool CTxWndDataStore::bCopyBlockData( PSMSGBLOCKLIST psDestBlockList,  PSMSGBLOC
     return true;
 }
 
-/******************************************************************************
-    Function Name    :  bCopyMsgList
-
-    Input(s)         :  PSTXCANMSGLIST&, PSTXCANMSGLIST*
-    Output           :  bool
-    Functionality    :  Copies the CanMsgList from source to destination
-    Member of        :  CTxWndDataStore
-    Friend of        :      -
-
-    Author(s)        :  Ashwin R Uchil
-    Date Created     :  22.8.2012
-    Modifications    :
-******************************************************************************/
 bool CTxWndDataStore::bCopyMsgList(PSTXCANMSGLIST&  ppsDestTxCANMsgList , PSTXCANMSGLIST*  ppsSrcTxCANMsgList)
 {
     //pointer to pointer is used so that, if its the pointer that is stored in the block and all the messages are deleted,
@@ -1024,7 +988,6 @@ bool CTxWndDataStore::bGetSplitterDataFrmNode(xmlNodePtr pxmlNodePtr)
     return true;
 }
 
-
 BOOL CTxWndDataStore::pbyGetConfigData(xmlNodePtr pxmlNodePtr)
 {
     PSMSGBLOCKLIST psTempBlock = m_psMsgBlockList;
@@ -1319,39 +1282,7 @@ bool CTxWndDataStore::bSplitterConfig(xmlNodePtr pxmlNodePtr)
 
     return true;
 }
-/******************************************************************************/
-/*  Function Name    :  bGetMultiMsgInfo                                      */
-/*                                                                            */
-/*  Input(s)         :  pSendMultMsgInfo : out-param structure                */
-/*                                                                            */
-/*  Output           :  TRUE : if the method succeeds                         */
-/*                      FALSE : if memory allocation fails                    */
-/*                                                                            */
-/*  Functionality    :  This method gets the information for the multi message*/
-/*                      information. The memory for the strucutre is already  */
-/*                      allocated in the bGetData(..) method. This method     */
-/*                      allocates memory as required by the other elements in */
-/*                      this structure.                                       */
-/*                                                                            */
-/*  Member of        :  CTxWndDataStore                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Gopi                                                  */
-/*  Date Created     :  18.10.2002                                            */
-/*  Modifications By :  Amitesh Bharti                                        */
-/*  Modifications On :  05.06.2003, the name  an64SignalValues is changed to  */
-/*                      __int64 data type.                                    */
-/*  Modifications By :  Amitesh Bharti                                        */
-/*  Modifications On :  24.12.2003, the structure for holding message details */
-/*                      is changed. So new structure is adopted               */
-/*  Modifications By :  Amitesh Bharti                                        */
-/*  Modifications on :  08.01.2004, The interface for message block           */
-/*                      is changed and a new flag is introduced to get the    */
-/*                      message count.                                        */
-/*  Modifications By :  Raja N                                                */
-/*  Modifications on :  22.07.2004, The trigger value type got changed as char*/
-/*                      and removed the trigger to def from enum              */
-/******************************************************************************/
+
 BOOL CTxWndDataStore::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
 {
     BOOL bRetVal = TRUE;
@@ -1460,6 +1391,7 @@ BOOL CTxWndDataStore::bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList)
     }
     return bRetVal;
 }
+
 static void vCopyBlockDetails(PSMSGBLOCKLIST psDest, const PSMSGBLOCKLIST psSrc)
 {
     ASSERT((psDest != nullptr) && (psSrc != nullptr));
@@ -1495,34 +1427,6 @@ static void vCopyBlockDetails(PSMSGBLOCKLIST psDest, const PSMSGBLOCKLIST psSrc)
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  bSetMultiMsgInfo                                      */
-/*                                                                            */
-/*  Input(s)         :  pSendMultMsgInfo : in param structure                 */
-/*                                                                            */
-/*  Output           :  TRUE : if the method succeeds                         */
-/*                      FALSE : if memory allocation fails                    */
-/*                                                                            */
-/*  Functionality    :  This method sets the information from the input       */
-/*                      structure into the data member. This updates the      */
-/*                      information.                                          */
-/*                                                                            */
-/*  Member of        :  CTxWndDataStore                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Gopi                                                  */
-/*  Date Created     :  18.10.2002                                            */
-/*  Modifications By :  Amitesh Bharti                                        */
-/*  Modifications On :  05.06.2003, the name  an64SignalValues is changed to  */
-/*                      __int64 data type.                                    */
-/*  Modifications By :  Amitesh Bharti                                        */
-/*  Modifications on :  08.01.2004, The interface for message block           */
-/*                      is changed and a new flag is introduced to get the    */
-/*                      message count.                                        */
-/*  Modofication By  :  Raja N                                                */
-/*  Modifications on :  22.07.2004, The trigger value type got changed as char*/
-/*                      and removed the trigger to def from enum              */
-/******************************************************************************/
 BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
 {
     BOOL bRetVal = TRUE;
@@ -1545,206 +1449,9 @@ BOOL CTxWndDataStore::bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
             psTail = psTemp;
         }
     }
-    /*PSMSGBLOCKLIST psSrcMsgBlockList = psMsgBlockList;
-    PSMSGBLOCKLIST psDesMsgBlockList = m_psMsgBlockList;
-    PSTXMSG psTxMsg = m_psTxMsgBlockList;
-    if (psDesMsgBlockList == nullptr)
-    {
-        m_psMsgBlockList = new SMSGBLOCKLIST;
-        vInitialiseMsgBlock(m_psMsgBlockList);
-        if (m_psMsgBlockList == nullptr)
-        {
-            bRetVal = FALSE;
-        }
-        else
-        {
-            psDesMsgBlockList = m_psMsgBlockList;
-            m_psMsgBlockList->m_psNextMsgBlocksList = nullptr;
-            m_psMsgBlockList->m_psTxCANMsgList = nullptr;
-        }
-    }
-    if (psSrcMsgBlockList != nullptr &&
-        psDesMsgBlockList != nullptr &&
-        bRetVal == TRUE)
-    {
-        do
-        {
-            psDesMsgBlockList->m_bActive        = psSrcMsgBlockList->m_bActive;
-            psDesMsgBlockList->m_bType          = psSrcMsgBlockList->m_bType;
-            psDesMsgBlockList->m_bTxAllFrame     =
-                psSrcMsgBlockList->m_bTxAllFrame;
-            psDesMsgBlockList->m_ucTrigger       =
-                psSrcMsgBlockList->m_ucTrigger;
-
-            psDesMsgBlockList->m_ucKeyValue  = psSrcMsgBlockList->m_ucKeyValue;
-            psDesMsgBlockList->m_unMsgCount  = psSrcMsgBlockList->m_unMsgCount;
-
-            _tcscpy( psDesMsgBlockList->m_acStrBlockName,
-                psSrcMsgBlockList->m_acStrBlockName);
-
-            psDesMsgBlockList->m_unTimeInterval =
-                psSrcMsgBlockList->m_unTimeInterval;
-
-            if (psSrcMsgBlockList->m_unMsgCount>0)
-            {
-                PSTXCANMSGLIST psSrcTxMsgList =
-                    psSrcMsgBlockList->m_psTxCANMsgList;
-                PSTXCANMSGLIST psDesTxMsgList = nullptr;
-                if (psDesMsgBlockList->m_psTxCANMsgList == nullptr)
-                {
-                    psDesTxMsgList = new STXCANMSGLIST;
-                    psDesMsgBlockList->m_psTxCANMsgList = psDesTxMsgList;
-                    psDesTxMsgList->m_psNextMsgDetails  = nullptr;
-                }
-                else
-                {
-                    psDesTxMsgList = psDesMsgBlockList->m_psTxCANMsgList;
-                }
-                if (psDesTxMsgList != nullptr && psSrcTxMsgList != nullptr)
-                {
-                    LPLONG lpPreviousCount = nullptr;
-                    BOOL   bTxON = CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_SENDMESG);
-                    do
-                    {
-                        if (psTxMsg != nullptr && bTxON == TRUE)
-                        {
-                            //EnterCriticalSection(
-                            //          &psTxMsg->m_sMsgBlocksCriticalSection);
-                            //Wait for twice to block both Key and Timer threads
-                            WaitForSingleObject(psTxMsg->m_hSemaphore,
-                                INFINITE);
-                            WaitForSingleObject(psTxMsg->m_hSemaphore,
-                                INFINITE);
-                        }
-                        psDesTxMsgList->m_sTxMsgDetails =
-                            psSrcTxMsgList->m_sTxMsgDetails;
-                        if (psTxMsg != nullptr && bTxON == TRUE)
-                        {
-                            // LeaveCriticalSection(
-                            //           &psTxMsg->m_sMsgBlocksCriticalSection);
-                            //Release twice to block both Key and Timer threads
-                            ReleaseSemaphore(psTxMsg->m_hSemaphore,
-                                1,
-                                lpPreviousCount);
-                            ReleaseSemaphore(psTxMsg->m_hSemaphore,
-                                1,
-                                lpPreviousCount);
-                        }
-                        psSrcTxMsgList = psSrcTxMsgList->m_psNextMsgDetails;
-                        if (psSrcTxMsgList != nullptr)
-                        {
-                            if (psDesTxMsgList->m_psNextMsgDetails == nullptr)
-                            {
-                                psDesTxMsgList->m_psNextMsgDetails =
-                                    new STXCANMSGLIST;
-                                if (psDesTxMsgList->m_psNextMsgDetails == nullptr)
-                                {
-                                    bRetVal = FALSE;
-                                }
-                                else
-                                {
-                                    psDesTxMsgList =
-                                        psDesTxMsgList->m_psNextMsgDetails;
-                                    psDesTxMsgList->m_psNextMsgDetails = nullptr;
-                                }
-                            }
-                            else
-                            {
-                                psDesTxMsgList =
-                                    psDesTxMsgList->m_psNextMsgDetails;
-                            }
-                        }
-                    }while(psSrcTxMsgList!= nullptr  && bRetVal == TRUE);
-                    // Delete the extra element if user has reduced the size.
-                    if (psDesTxMsgList->m_psNextMsgDetails != nullptr)
-                    {
-                        PSTXCANMSGLIST psDelTxMsgList =
-                            psDesTxMsgList->m_psNextMsgDetails;
-                        psDesTxMsgList->m_psNextMsgDetails = nullptr;
-                        while(psDesTxMsgList != nullptr && psDelTxMsgList != nullptr)
-                        {
-                            psDesTxMsgList = psDelTxMsgList->m_psNextMsgDetails;
-                            delete psDelTxMsgList ;
-                            psDelTxMsgList  = nullptr;
-                            if (psDesTxMsgList != nullptr)
-                            {
-                                psDelTxMsgList =
-                                    psDesTxMsgList->m_psNextMsgDetails;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    bRetVal = FALSE;
-                }
-            }
-            if (psSrcMsgBlockList->m_psNextMsgBlocksList != nullptr)
-            {
-                if (psDesMsgBlockList->m_psNextMsgBlocksList == nullptr)
-                {
-                    psDesMsgBlockList->m_psNextMsgBlocksList =
-                        new SMSGBLOCKLIST;
-                    vInitialiseMsgBlock(
-                        psDesMsgBlockList->m_psNextMsgBlocksList);
-                    if (psDesMsgBlockList->m_psNextMsgBlocksList == nullptr)
-                    {
-                        bRetVal = FALSE;
-                    }
-                    else
-                    {
-                        psDesMsgBlockList =
-                            psDesMsgBlockList->m_psNextMsgBlocksList;
-                        psDesMsgBlockList->m_psTxCANMsgList = nullptr;
-                        psDesMsgBlockList->m_psNextMsgBlocksList = nullptr;
-                    }
-                }
-                else
-                {
-                    psDesMsgBlockList =
-                        psDesMsgBlockList->m_psNextMsgBlocksList;
-                }
-
-            }
-            psSrcMsgBlockList = psSrcMsgBlockList->m_psNextMsgBlocksList;
-            if (psTxMsg != nullptr)
-            {
-                psTxMsg = psTxMsg->m_psNextTxMsgInfo;
-            }
-        }while( psSrcMsgBlockList != nullptr
-            && bRetVal == TRUE);
-
-    }
-    else
-    {
-        bRetVal = FALSE;
-    }*/
     return bRetVal;
 }
 
-
-
-
-
-/******************************************************************************/
-/*  Function Name    :  vReleaseMultiMsgInfo                                  */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*                                                                            */
-/*  Output           :                                                        */
-/*                                                                            */
-/*  Functionality    :  This method releases all the memory allocated for the */
-/*                      send multiple message info structure.                 */
-/*                                                                            */
-/*  Member of        :  CTxWndDataStore                                        */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Gopi                                                  */
-/*  Date Created     :  18.10.2002                                            */
-/*  Modifications By :  Amitesh Bharti                                        */
-/*  Modifications on :  08.01.2004, The interface for message block           */
-/*                      is changed                                            */
-/******************************************************************************/
 void CTxWndDataStore::vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
 {
     PSMSGBLOCKLIST psNextMsgBlockList    = nullptr;
@@ -1778,6 +1485,7 @@ void CTxWndDataStore::vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList)
         while(psNextMsgBlockList != nullptr);
     }
 }
+
 void CTxWndDataStore::vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails)
 {
     if (psMsgDetails != nullptr)
@@ -1785,8 +1493,8 @@ void CTxWndDataStore::vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails)
         psMsgDetails->m_unIndex = -1;
         psMsgDetails->m_psNextMsgDetails    = nullptr;
     }
-
 }
+
 void CTxWndDataStore::vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList)
 {
     if (psMsgBlockList != nullptr)
@@ -1804,7 +1512,6 @@ void CTxWndDataStore::vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList)
         strcpy_s( psMsgBlockList->m_acStrBlockName, defBLOCKNAME_SIZE, _(defDEFAULT_MSG_BLOCK_NAME));
     }
 }
-
 
 PSMSGBLOCKLIST CTxWndDataStore::psReturnMsgBlockPointer()
 {

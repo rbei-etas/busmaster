@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      TxMsgListView.cpp
- * \brief     Implementation file for CTxMsgListView class
- * \author    Raja N
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Implementation file for CTxMsgListView class
+ * @author Raja N
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CTxMsgListView class
  */
@@ -34,73 +33,34 @@
 #include "FlexListCtrl.h"       // For editable list control implementation
 #include "TxMsgListView.h"      // For CTxMsgListView class definition
 #include "TxMsgChildFrame.h"    // For Tx Child Window definition
-#include "Utility\MultiLanguageSupport.h"
-//#include "../Application/GettextBusmaster.h"
+#include "Utility/MultiLanguageSupport.h"
 
-// For Glodal Application Object
-//extern CCANMonitorApp theApp;
-// For global stop flag for Message Transmission
+/** For global stop flag for Message Transmission */
 extern BOOL g_bStopSelectedMsgTx;
 
 IMPLEMENT_DYNCREATE(CTxMsgListView, CFormView)
 
-/*******************************************************************************
-  Function Name  : CTxMsgListView
-  Description    : Standard default constructor
-  Member of      : CTxMsgListView
-  Functionality  : This will initialise local variables
-  Author(s)      : Raja N
-  Date Created   : 20.4.2005
-  Modifications  :
-*******************************************************************************/
 CTxMsgListView::CTxMsgListView()
     : CFormView(CTxMsgListView::IDD)
 {
-    //{{AFX_DATA_INIT(CTxMsgListView)
-    // NOTE: the ClassWizard will add member initialization here
-    //}}AFX_DATA_INIT
-    m_nSelectedMsgIndex  = -1;
+    m_nSelectedMsgIndex = -1;
     m_bInitDlg = FALSE;
 }
 
-/*******************************************************************************
-  Function Name  : ~CTxMsgListView
-  Description    : Standard Destructor
-  Member of      : CTxMsgListView
-  Functionality  : -
-  Author(s)      : Raja N
-  Date Created   : 20.4.2005
-  Modifications  :
-*******************************************************************************/
 CTxMsgListView::~CTxMsgListView()
 {
 }
 
-/*******************************************************************************
-  Function Name  : DoDataExchange
-  Input(s)       : pDX - Pointer to DDX object
-  Output         : -
-  Functionality  : This function will map DDX object with UI control for data
-                   exchange
-  Member of      : CTxMsgListView
-  Author(s)      : Raja N
-  Date Created   : 27.4.2005
-  Modifications  :
-*******************************************************************************/
 void CTxMsgListView::DoDataExchange(CDataExchange* pDX)
 {
     CFormView::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CTxMsgListView)
     DDX_Control(pDX, IDC_LSTC_MSG_DETAILS, m_omLctrMsgList);
     DDX_Control(pDX, IDC_CBTN_DELETE_ALL_MSG, m_omButtonDeleteAllMsg);
     DDX_Control(pDX, IDC_CBTN_DELETE_SEL_MSG, m_omButtonDeleteSelMsg);
     DDX_Control(pDX, IDC_CBTN_SEND_MSG, m_omButtonSendMsg);
-    //}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(CTxMsgListView, CFormView)
-    //{{AFX_MSG_MAP(CTxMsgListView)
     ON_NOTIFY(LVN_COLUMNCLICK, IDC_LSTC_MSG_DETAILS, OnColumnclickLstcMsgDetails)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LSTC_MSG_DETAILS, OnItemchangedLstcMsgDetails)
     ON_BN_CLICKED(IDC_CBTN_SEND_MSG, OnSendSelectedMsg)
@@ -110,9 +70,7 @@ BEGIN_MESSAGE_MAP(CTxMsgListView, CFormView)
     ON_COMMAND(IDM_SEND_SEL_MSG, OnSendSelectedMsg)
     ON_COMMAND(IDM_DELETE_SEL_MSG, OnDeleteSelectedMsg)
     ON_NOTIFY(NM_RCLICK, IDC_LSTC_MSG_DETAILS, OnRightClickMsgDetails)
-    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
 
 #ifdef _DEBUG
 void CTxMsgListView::AssertValid() const
@@ -127,20 +85,6 @@ void CTxMsgListView::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 
-/*******************************************************************************
-  Function Name  : OnInitialUpdate
-  Input(s)       : -
-  Output         : -
-  Functionality  : This function will be called by the framework during initial
-                   show of this view. This function will register iteself in to
-                   parent window class so that other views shall access it. And
-                   this function will initialise signal list, message ID/Name
-                   combobox and other UI components
-  Member of      : CTxMsgListView
-  Author(s)      : Raja N
-  Date Created   : 27.4.2005
-  Modifications  :
-*******************************************************************************/
 void CTxMsgListView::OnInitialUpdate()
 {
     CFormView::OnInitialUpdate();
@@ -259,22 +203,6 @@ void CTxMsgListView::OnInitialUpdate()
     m_bInitDlg = FALSE;
 }
 
-/*******************************************************************************
-  Function Name  : OnColumnclickLstcMsgDetails
-  Input(s)       : pNMHDR - Pointer to List Item
-                   pResule - Pointer to Result
-  Output         : -
-  Functionality  : This function will be called by the framework when user click
-                   on List control header. This function will handle this event
-                   only if first column is clicked. In this condition this will
-                   toggle column 0 image to show checked/unchecked checkbox
-                   image and will call vSetMessageCheckValue to update message
-                   details
-  Member of      : CTxMsgListView
-  Author(s)      : Raja N
-  Date Created   : 27.4.2005
-  Modifications  :
-*******************************************************************************/
 void CTxMsgListView::OnColumnclickLstcMsgDetails(NMHDR* pNMHDR, LRESULT* pResult)
 {
     NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
@@ -325,19 +253,6 @@ void CTxMsgListView::OnColumnclickLstcMsgDetails(NMHDR* pNMHDR, LRESULT* pResult
     *pResult = 0;
 }
 
-/*******************************************************************************
-  Function Name  : vSetMessageCheckValue
-  Input(s)       : bCheck - TRUE to Enable message, FALSE to disable message for
-                   transmission
-  Output         : -
-  Functionality  : This function will update selected message with the check
-                   value. This value will be assigned to m_bEnabled member of
-                   message detail.
-  Member of      : CTxMsgListView
-  Author(s)      : Raja N
-  Date Created   : 27.4.2005
-  Modifications  :
-*******************************************************************************/
 void CTxMsgListView::vSetMessageCheckValue(BOOL bCheck)
 {
     // Get Other View Pointers
@@ -403,25 +318,6 @@ void CTxMsgListView::vSetMessageCheckValue(BOOL bCheck)
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnItemchangedLstcMsgDetails                           */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will be called by frame work when       */
-/*                      selection is changed in message details list control. */
-/*                                                                            */
-/*  Member of        :  CTxMsgListView                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Added update of signal list on selection  */
-/*                      change                                                */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  02.08.2004, Added function call vEnableAddButton to   */
-/*                      update add button status with respect to other        */
-/*                      dependent  information                                */
-/******************************************************************************/
 void CTxMsgListView::OnItemchangedLstcMsgDetails(NMHDR* pNMHDR,
         LRESULT* pResult)
 {
@@ -602,18 +498,6 @@ void  CTxMsgListView::vCheckHeaderCtrl(bool bCheck)
     }
 }
 
-/*******************************************************************************
-  Function Name  : pomGetParentWindow
-  Input(s)       : -
-  Output         : CWnd * - Pointer to CTxMsgChildFrame
-  Functionality  : This Function will return parent window pointer. That is
-                   pointer to CTxMsgChildFrame. This will return nullptr incase of
-                   failure
-  Member of      : CTxMsgListView
-  Author(s)      : Raja N
-  Date Created   : 25.4.2005
-  Modifications  :
-*******************************************************************************/
 CWnd* CTxMsgListView::pomGetParentWindow() const
 {
     CWnd* pWnd = nullptr;
@@ -640,19 +524,6 @@ CWnd* CTxMsgListView::pomGetParentWindow() const
     return pWnd;
 }
 
-
-/*******************************************************************************
-  Function Name  : pomGetBlocksViewPointer
-  Input(s)       : -
-  Output         : CWnd * - Pointer to CTxMsgBlocksView or nullptr incase of
-                   failure
-  Functionality  : This function will return CTxMsgBlocksView pointer. This will
-                   get child window pointer to get view pointer.
-  Member of      : CTxMsgListView
-  Author(s)      : Raja N
-  Date Created   : 25.4.2005
-  Modifications  :
-*******************************************************************************/
 CWnd* CTxMsgListView::pomGetBlocksViewPointer() const
 {
     CWnd* pView = nullptr;
@@ -669,18 +540,6 @@ CWnd* CTxMsgListView::pomGetBlocksViewPointer() const
     return pView;
 }
 
-/*******************************************************************************
-  Function Name  : pomGetDetailsViewPointer
-  Input(s)       : -
-  Output         : CWnd * - Pointer to CTxMsgDetailsView or nullptr incase of
-                   failure
-  Functionality  : This function will return CTxMsgDetailsView pointer. This
-                   will get child window pointer to get view pointer.
-  Member of      : CTxMsgListView
-  Author(s)      : Raja N
-  Date Created   : 25.4.2005
-  Modifications  :
-*******************************************************************************/
 CWnd* CTxMsgListView::pomGetDetailsViewPointer() const
 {
     CWnd* pView = nullptr;
@@ -697,18 +556,6 @@ CWnd* CTxMsgListView::pomGetDetailsViewPointer() const
     return pView;
 }
 
-/*******************************************************************************
-  Function Name  : pomGetFunctionsViewPointer
-  Input(s)       : -
-  Output         : CWnd * - Pointer to CTxFunctionsView or nullptr incase of
-                   failure
-  Functionality  : This function will return CTxFunctionsView pointer. This
-                   will get child window pointer to get view pointer.
-  Member of      : CTxMsgListView
-  Author(s)      : Raja N
-  Date Created   : 25.4.2005
-  Modifications  :
-*******************************************************************************/
 CWnd* CTxMsgListView::pomGetFunctionsViewPointer() const
 {
     CWnd* pView = nullptr;
@@ -725,22 +572,6 @@ CWnd* CTxMsgListView::pomGetFunctionsViewPointer() const
     return pView;
 }
 
-/******************************************************************************/
-/*  Function Name    :  psGetMsgDetailPointer                                 */
-/*  Input(s)         :  nIndex : Index of message in the list                 */
-/*                      psCurrentMsgBlockList : current msg block pointer     */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will return message list pointer for    */
-/*                      node at index nIndex passed as parameter from the link*/
-/*                      of message frame list from the current message block. */
-/*                                                                            */
-/*  Member of        :  CTxMsgListView                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
 PSTXCANMSGLIST CTxMsgListView::psGetMsgDetailPointer(INT nIndex,
         SMSGBLOCKLIST* psCurrentMsgBlockList)
 {
@@ -761,20 +592,6 @@ PSTXCANMSGLIST CTxMsgListView::psGetMsgDetailPointer(INT nIndex,
     return psTxMsgList;
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnSendSelectedMsg                                     */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function is called by frame work when user wants */
-/*                      to Transmit selected message                          */
-/*                                                                            */
-/*  Member of        :  CTxMsgListView                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
 void CTxMsgListView::OnSendSelectedMsg()
 {
     PSTXSELMSGDATA psTxCanMsg = nullptr;
@@ -862,23 +679,6 @@ void CTxMsgListView::OnSendSelectedMsg()
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnDeleteSelectedMsg                                   */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    : This function will delete the selected message frame if*/
-/*                      the user confirms the deletion action.                */
-/*                                                                            */
-/*  Member of        :  CTxMsgListView                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  30.01.2004, confirmation message changed.             */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  02.08.2004, Added code to enable add button and to    */
-/*                      set the focus to the next message in the list         */
-/******************************************************************************/
 void CTxMsgListView::OnDeleteSelectedMsg()
 {
     CTxMsgBlocksView* pomBlocksView = nullptr;
@@ -951,23 +751,6 @@ void CTxMsgListView::OnDeleteSelectedMsg()
     }
 }
 
-
-/******************************************************************************/
-/*  Function Name    :  bDeleteMsgFromBlock                                   */
-/*  Input(s)         :  psMsgCurrentBlock : Current message block pointer     */
-/*  Output           :  TRUE  or FALSE                                        */
-/*  Functionality    :  This function will delete messages selected by user   */
-/*                      from currently selected message block. Also the node  */
-/*                      for link list will be removed and the list will be    */
-/*                      updated.                                              */
-/*                                                                            */
-/*  Member of        :  CTxMsgListView                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
 BOOL CTxMsgListView::bDeleteMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock)
 {
     BOOL bReturn = FALSE;
@@ -1042,24 +825,6 @@ BOOL CTxMsgListView::bDeleteMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock)
     return bReturn;
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnDeleteAllMsg                                        */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will be called when user selects to     */
-/*                      delete all message using menu or button.              */
-/*                                                                            */
-/*  Member of        :  CTxMsgListView                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  30.01.2004, confirmation message changed.             */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  02.08.2004, Added code to update Add button status    */
-/*  Modification By  :  Anish                                                 */
-/*  Modification on  :  09.01.2007, Added code to disable send button status  */
-/******************************************************************************/
 void CTxMsgListView::OnDeleteAllMsg()
 {
     CTxMsgBlocksView* pomBlocksView = nullptr;
@@ -1127,21 +892,6 @@ void CTxMsgListView::OnDeleteAllMsg()
     }
 }
 
-/******************************************************************************/
-/*  Function Name    :  bDeleteAllMsgFromBlock                                */
-/*  Input(s)         :  psMsgCurrentBlock : pointer of current block          */
-/*  Output           :  TRUE or FALSE                                         */
-/*  Functionality    :  This function will delete all memory allocated in the */
-/*                      current message block and return TRUE on success.     */
-/*                                                                            */
-/*  Member of        :  CTxMsgListView                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  11.05.2004 Added init of index variable to -1 to      */
-/*                      indicate invalid selection after deleting all items   */
-/******************************************************************************/
 BOOL CTxMsgListView::bDeleteAllMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock)
 {
     BOOL bReturn = TRUE;
@@ -1169,26 +919,9 @@ BOOL CTxMsgListView::bDeleteAllMsgFromBlock(SMSGBLOCKLIST* psMsgCurrentBlock)
     return bReturn;
 }
 
-
-/******************************************************************************/
-/*  Function Name    :  vUpdateMsgListDisplay                                 */
-/*  Input(s)         :  sTXCANMSGDETAILS sMsgDetail: message details struct   */
-/*                      INT nCurrentIndex : Selected Index or -1 (new entry ) */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will update the list cotrol of message  */
-/*                      list at the selected item or as new item.             */
-/*                                                                            */
-/*  Member of        :  CTxMsgListView                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  22.07.2004, Updated list with DB message name         */
-/******************************************************************************/
 void CTxMsgListView::vUpdateMsgListDisplay(sTXCANMSGDETAILS sMsgDetail,
         INT nCurrentIndex)
 {
-
     CString omStrMsgID( "" );
     CString omStrMsgData( "" );
     CString omStrMsgType( "" );
@@ -1243,11 +976,6 @@ void CTxMsgListView::vUpdateMsgListDisplay(sTXCANMSGDETAILS sMsgDetail,
     {
         unImageID = 2;// Non-Database image
     }
-
-    /*if(omStrUpdatedMsgLength != "")
-    {
-        sMsgDetail.m_sTxMsg.m_ucDataLen = atoi( omStrUpdatedMsgLength );
-    }*/
 
     // Format channel ID
     omStrChannel.Format("%d", sMsgDetail.m_sTxMsg.m_ucChannel );
@@ -1332,40 +1060,12 @@ void CTxMsgListView::vUpdateMsgListDisplay(sTXCANMSGDETAILS sMsgDetail,
     m_bInitDlg = FALSE;
 }
 
-/******************************************************************************/
-/*  Function Name    :  OnRightClickMsgDetails                                */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will call bDisplayPopMenu.              */
-/*                                                                            */
-/*  Member of        :  CTxMsgListView                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
 void CTxMsgListView::OnRightClickMsgDetails(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 {
     bDisplayPopMenu(m_omLctrMsgList,IDM_SEND_OPRNS);
     *pResult = 0;
 }
 
-/******************************************************************************/
-/*  Function Name    :  bDisplayPopMenu                                       */
-/*  Input(s)         :                                                        */
-/*  Output           :  TRUE or FALSE                                         */
-/*  Functionality    :  This function will display pop-up menus if selection  */
-/*                      is valid and chooses the appropriate menu for display */
-/*                                                                            */
-/*  Member of        :  CTxMsgListView                                        */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  08.01.2004                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  06.08.2004, Added checks to disable Add and Delete All*/
-/*                      Menu Items                                            */
-/******************************************************************************/
 BOOL CTxMsgListView::bDisplayPopMenu(CListCtrl& omList,UINT nIDResource )
 {
     BOOL bReturn = FALSE;

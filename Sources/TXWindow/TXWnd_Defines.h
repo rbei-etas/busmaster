@@ -14,9 +14,8 @@
  */
 
 /**
- * \file      TXWnd_Defines.h
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @author Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
 #pragma once
@@ -24,27 +23,32 @@
 #include "include/struct_can.h"
 #define defTX_MSG_WND_BOTTOM_MARGIN     0.14
 #define defTX_MSG_WND_RIGHT_MARGIN      0.17
+
 //#define defTX_MSG_WND_VERSION         0x01 // Initial version
 #define defTX_MSG_WND_VERSION           0x03 // Added auto save option
 
-// Tx window spilitter details
+/** Tx window spilitter details */
 struct tagTxMsgSplitterData
 {
     int m_nRootSplitterData[2][2];
     int m_nLeftViewSplitterData[2][2];
     int m_nRightViewSplitterData[2][2];
 };
-
 typedef tagTxMsgSplitterData sTxMsgSplitterData;
 typedef sTxMsgSplitterData STXMSGSPLITTERDATA;
 typedef STXMSGSPLITTERDATA* PSTXMSGSPLITTERDATA;
 
-
 struct sTXCANMSGDETAILS
 {
-    BOOL m_bIsMsgDirty;          // for a database message;to Indicate user enter
-    // bytes value instead of signal value.
-    BOOL m_bEnabled;            // To indicate eligiblity of the message for Tx
+    /**
+     * for a database message;to Indicate user enter
+     * bytes value instead of signal value.
+     */
+    BOOL m_bIsMsgDirty;
+
+    /** To indicate eligiblity of the message for Tx */
+    BOOL m_bEnabled;
+
     STCAN_MSG m_sTxMsg;
 };
 typedef sTXCANMSGDETAILS STXCANMSGDETAILS;
@@ -68,22 +72,16 @@ typedef sTXCANMSGLIST* PSTXCANMSGLIST;
 
 #define defDEFAULT_MSG_BLOCK_NAME   "OnTime"
 #define defDEFAULT_TIME_VAL         100
+
 // Bit wise representation of trigger condition
 // Bit 0        - Time Trigger
 // Bit 1        - Key Trigger
-// Bit 2        -
-// Bit 3        -
-
-// Bit 4        -
-// Bit 5        -
-// Bit 6        -
-// Bit 7        -
 #define defTIME_TRIGGER     0x1
 #define MASK_DISABLE_TIME_TRIGGER ~defTIME_TRIGGER
 #define defKEY_TRIGGER      0x2
 #define MASK_DISABLE_KEY_TRIGGER ~defKEY_TRIGGER
 
-// Macros to find the type
+/* Macros to find the type */
 #define IS_TIME_TRIGGERED(x)    ( (x) & defTIME_TRIGGER ? TRUE : FALSE )
 #define IS_KEY_TRIGGERED(x)     ( (x) & defKEY_TRIGGER ? TRUE : FALSE )
 
@@ -124,14 +122,11 @@ struct sMSGBLOCKLIST
 typedef sMSGBLOCKLIST SMSGBLOCKLIST;
 typedef sMSGBLOCKLIST* PSMSGBLOCKLIST;
 
-
-
 struct sTHREAD_INFO
 {
     HANDLE m_hThread;
     void* m_pvThread;
 };
-
 typedef sTHREAD_INFO  STHREADINFO;
 typedef sTHREAD_INFO* PTHREADINFO;
 
@@ -180,15 +175,16 @@ public:
         m_psNextTxMsgInfo = nullptr;
         m_unIndex             = 0;
     }
+
     int nGetConfigSize()
     {
         int nSize = 0;
-        //Only those members which should be stored
+        // Only those members which should be stored
         nSize = sizeof(m_unTimeInterval) + sizeof (m_bType) + sizeof(m_bSendAllMessages);
-        //To store number of msg as int
+        // To store number of msg as int
         int nMsgCnt = nGetMsgCount();
         nSize += sizeof(nMsgCnt);
-        //For each message only the STXCANMSGDETAILS will be saved
+        // For each message only the STXCANMSGDETAILS will be saved
         nSize += nMsgCnt * sizeof (STXCANMSGDETAILS);
         return nSize;
     }
@@ -201,7 +197,7 @@ public:
         pDesBuffer += sizeof(m_bType);
         memcpy(pDesBuffer, &m_bSendAllMessages, sizeof(m_bSendAllMessages));
         pDesBuffer += sizeof(m_bSendAllMessages);
-        //To store number of msg as int
+        // To store number of msg as int
         int nMsgCnt = nGetMsgCount();
         memcpy(pDesBuffer, &nMsgCnt, sizeof(nMsgCnt));
         pDesBuffer += sizeof(nMsgCnt);
@@ -214,6 +210,7 @@ public:
         }
         return pDesBuffer;
     }
+
     BYTE* pbSetBlockConfigData(BYTE* pSrcBuffer)
     {
         memcpy(&m_unTimeInterval, pSrcBuffer, sizeof(m_unTimeInterval));
@@ -222,7 +219,7 @@ public:
         pSrcBuffer += sizeof(m_bType);
         memcpy(&m_bSendAllMessages, pSrcBuffer, sizeof(m_bSendAllMessages));
         pSrcBuffer += sizeof(m_bSendAllMessages);
-        //Load number of msg as int
+        // Load number of msg as int
         int nMsgCnt;
         memcpy(&nMsgCnt, pSrcBuffer, sizeof(nMsgCnt));
         pSrcBuffer += sizeof(nMsgCnt);
@@ -247,7 +244,6 @@ public:
         return pSrcBuffer;
     }
 };
-
 typedef  sTXMSGINFO   STXMSG;
 typedef  sTXMSGINFO*  PSTXMSG;
 
@@ -264,13 +260,18 @@ public:
 };
 typedef sCOMPLETEMSGINFO    SCOMPLETEMSGINFO;
 typedef sCOMPLETEMSGINFO*   PSCOMPLETEMSGINFO;
+
 struct sTXMSGDATA
 {
-    UINT  m_unCount;              // Total array element in the point m_psTxMsg
-    PSTCAN_MSG m_psTxMsg;         // pointer to array of structure for
-    // Transmitting the data.
-};
+    /** Total array element in the point m_psTxMsg */
+    UINT  m_unCount;
 
+    /**
+     * pointer to array of structure for
+     * Transmitting the data.
+     */
+    PSTCAN_MSG m_psTxMsg;
+};
 typedef sTXMSGDATA STXSELMSGDATA;
 typedef sTXMSGDATA* PSTXSELMSGDATA;
 
@@ -283,7 +284,7 @@ typedef sTXMSGDATA* PSTXSELMSGDATA;
 
 const int DATA_LENGTH_MAX                 = 8;
 
-// For Tx message views enumeration
+/** For Tx message views enumeration */
 enum tagTxViewTypes
 {
     eTxMsgBlocksView,
@@ -291,7 +292,6 @@ enum tagTxViewTypes
     eTxMsgMessageDetailsView,
     eTxMsgFunctionsView
 };
-
 typedef tagTxViewTypes eTxMsgViewType;
 typedef eTxMsgViewType ETXMSGVIEWTYPE;
 typedef ETXMSGVIEWTYPE* PETXMSGVIEWTYPE;
@@ -323,6 +323,5 @@ typedef union tagUBYTE
     BYTE        byByte;
     STRUCT_BYTE sByte;
 } UNION_BYTE;
-
 
 #define CHAR_INT                'I'

@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      TxMsgChildFrame.h
- * \brief     Interface file for CTxMsgChildFrame class
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Interface file for CTxMsgChildFrame class
+ * @author Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Interface file for CTxMsgChildFrame class
  */
@@ -30,83 +29,148 @@
 #include "TxMsgDetailsView.h"   // For CTxMsgDetailsView class defintions
 #include "TxMsgListView.h"      // For CTxMsgListView class defintions
 
-
 class CTxMsgChildFrame : public CMDIChildBase
 {
-    DECLARE_DYNCREATE(CTxMsgChildFrame)
-    // Attributes
 public:
-
-    // Operations
-public:
-    // To update window size and splitter after loading a conf file
-    void vUpdateWinStatus();
-    // To save window size and splitter postion before unloading a conf file
-    void vUpdateWndCo_Ords();
-    // Default constructor
     CTxMsgChildFrame();
-    // Standard destructor
     virtual ~CTxMsgChildFrame();
 
+    /**
+     * @brief To update window size and splitter after loading a conf file
+     *
+     * This function will set window postion and splitter postion.
+     * For setting window postion this will use parent class
+     * function and then will set splitter position.
+     */
+    void vUpdateWinStatus();
+
+    /**
+     * @brief To save window size and splitter postion before unloading a conf file
+     *
+     * This function will save window postion in to configuration
+     * module using parent class function & will also save splitter
+     * window postion.
+     */
+    void vUpdateWndCo_Ords();
+
     afx_msg void OnClose();
-    // To Set View Pointers
+
+    /**
+     * @brief To Set View Pointers
+     *
+     * This function will set view pointer
+     *
+     * @param[in] eViewIdentity View Identity parameter
+     * @param[in] pomWnd View Pointer
+     */
     void vSetTxMsgViewPointers(ETXMSGVIEWTYPE eViewIdentity, CWnd* pomWnd);
-    // To get View pointers
+
+    /**
+     * @brief To get View pointers
+     *
+     * This function will return view pointer spefied by the param
+     * eViewIdentity
+     *
+     * @param[in] eViewIdentity View Identity parameter
+     */
     CWnd* pomGetTxMsgViewPointers(ETXMSGVIEWTYPE eViewIdentity) const;
 
+    /**
+     * Sets the m_pouDBPtr pointer in TxMsgDetailsView to pMsgDB.
+     *
+     * @param[in] pMsgDB CMsgSignal Pointer
+     */
     void vSetMsgDBPtrInDetailsView(void* pMsgDB);
 
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CTxMsgChildFrame)
+    void vChangeConnectionStatus(BOOL bConnect);
+
+    afx_msg void OnSize(UINT nType, int cx, int cy);
+    afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
+    afx_msg void OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd);
+    afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
+
+    void vCallAutoUpdate();
+
 protected:
+    /**
+     * This function will be called to create window. This function
+     * will create splitter window and views.
+     *
+     * @param[in] lpcs Create Parameters
+     * @param[in] pContext Pointer to Create Context
+     * @return Create Result
+     */
     virtual BOOL OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext);
-    //}}AFX_VIRTUAL
 
-    // Implementation
-
-
-    // Generated message map functions
-    //{{AFX_MSG(CTxMsgChildFrame)
+    /**
+     * This function will simply return true to avoid flickering due
+     * to background erase
+     *
+     * @param[in] pDC Pointer to Device context
+     */
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
     afx_msg void OnDestroy();
+
+    /**
+     * This function is message mapped and will be called
+     * when selects, connect/disconnect start/stop tx and
+     * hex/dec button/menu. The setting of controls will be
+     * changed accordingly.
+     *
+     * @param[in] wParam enumerator eUSERSELCTION
+     * @param[in] lParam : NOT USED
+     */
     afx_msg LRESULT vUserCommand(WPARAM wParam, LPARAM lParam);
-    //}}AFX_MSG
+
     DECLARE_MESSAGE_MAP()
-    // Members
-protected:
+
     CSplitterWnd m_omRootSplitter;
     CSplitterWnd m_omLeftViewSplitter;
     CSplitterWnd m_omRightViewSplitter;
 
 private:
+    DECLARE_DYNCREATE(CTxMsgChildFrame)
 
-    // Attributes
-    // Structure to hold splitter window postion
+    /** Structure to hold splitter window postion */
     STXMSGSPLITTERDATA m_sSplitterPosition;
-    // Pointers to all views
+
+    /** Pointers to all views */
     CTxMsgBlocksView* m_pomTxMsgBlocksView;
-    // Message List view Pointer
+
+    /** Message List view Pointer */
     CTxMsgListView* m_pomTxMsgListView;
-    // For functions view poniter
+
+    /** For functions view poniter */
     CTxFunctionsView* m_pomFunctionsView;
-    // Message Details view pointer
+
+    /** Message Details view pointer */
     CTxMsgDetailsView* m_pomTxMsgDetailsView;
+
     BOOL m_bInit;
 
-    // Methods
-    // Function to set splitter postion.
+    /**
+     * @brief Function to set splitter postion.
+     *
+     * This function will set splitter postion. This will refer
+     * member variable m_sSplitterPostion to get splitter postion
+     */
     void vSetSplitterPostion();
-    // Function to get splitter postion from configuration file
+
+    /**
+     * @brief Function to get splitter postion from configuration file
+     *
+     * This function will get splitter information from
+     * configuration module
+     */
     void vGetSplitterStatus();
-    // To save splitter position from configuration file
+
+    /**
+     * @brief To save splitter position from configuration file
+     *
+     * This function will save splitter postion. This will get
+     * current splitter postion and will compare with
+     * m_sSplitterPostion. If current position is different it will
+     * update member varaible and configuration module.
+     */
     void vSaveSplitterPostion();
-public:
-    void vChangeConnectionStatus(BOOL bConnect);
-public:
-    afx_msg void OnSize(UINT nType, int cx, int cy);
-    afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
-    afx_msg void OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd);
-    afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
-    void vCallAutoUpdate();
 };

@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      FlexListCtrl.cpp
- * \brief     Implementation file for CFlexListCtrl
- * \author    Raja N
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Implementation file for CFlexListCtrl
+ * @author Raja N
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Implementation file for CFlexListCtrl
  */
@@ -32,26 +31,13 @@
 #include "Utility/FFListctrl.h"             // For Flicker Free List class definition
 #include "Utility/NumEdit.h"                // For Custom Numeric Edit control Impl
 #include "FlexListCtrl.h"           // Interface file for Flex List Control
-#include "Utility\MultiLanguageSupport.h"
-//#include "../Application/GettextBusmaster.h"
+#include "Utility/MultiLanguageSupport.h"
 
-// ID for Combobox
+/** ID for Combobox */
 #define IDC_CONTROL 0x12345
 
-/////////////////////////////////////////////////////////////////////////////
-// CFlexListCtrl
-/******************************************************************************
- Function Name  :   CFlexListCtrl
-
- Description    :   Standard default constructor
- Member of      :   CFlexListCtrl
- Functionality  :   Initialises data members
-
- Author(s)      :   Raja N
- Date Created   :   22.07.2004
- Modifications  :   Raja N o n 30.07.2004, Code review comments implemented
-******************************************************************************/
-CFlexListCtrl::CFlexListCtrl() : m_bSingleClickActivate(FALSE)
+CFlexListCtrl::CFlexListCtrl() :
+    m_bSingleClickActivate(FALSE)
 {
     // Init List item type has table
     // Init with some prime number to have an effient search
@@ -68,45 +54,18 @@ CFlexListCtrl::CFlexListCtrl() : m_bSingleClickActivate(FALSE)
     m_nVirtualColumnCount = defVIRTUAL_COL_COUNT;
 }
 
-/******************************************************************************
- Function Name  :   ~CFlexListCtrl
-
- Description    :   Standard destructor
- Member of      :   CFlexListCtrl
-
- Author(s)      :   Raja N
- Date Created   :   22.07.2004
- Modifications  :
-******************************************************************************/
 CFlexListCtrl::~CFlexListCtrl()
 {
 }
 
-
 BEGIN_MESSAGE_MAP(CFlexListCtrl, CListCtrl)
-    //{{AFX_MSG_MAP(CFlexListCtrl)
     ON_NOTIFY_REFLECT(LVN_ENDLABELEDIT, OnEndlabeledit)
     ON_WM_HSCROLL()
     ON_WM_VSCROLL()
     ON_NOTIFY_REFLECT(NM_DBLCLK, OnDoubleClick)
     ON_NOTIFY_REFLECT(NM_CLICK, OnClick)
-    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-/////////////////////////////////////////////////////////////////////////////
-// CFlexListCtrl message handlers
-
-/******************************************************************************
- Function Name  : OnEndlabeledit
- Description    : Notification Handler. This handler will be called after once
-                  the item editing is complete. This will update the list item
-                  text and will copy the DISPINFO data. This will set col 0 val
-                  to invoke item changed event.
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  :
-******************************************************************************/
 void CFlexListCtrl::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
 {
     LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
@@ -132,16 +91,6 @@ void CFlexListCtrl::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
     *pResult = 0;
 }
 
-/*******************************************************************************
- Function Name  : OnHScroll
- Description    : Event Handler. This handler will hide the controls if
-                  anytihng is displayed for editing. This is done by setting the
-                  focus to the list control.
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  :
-*******************************************************************************/
 void CFlexListCtrl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
     // Set the focus to list control. This will hide any controls that
@@ -154,16 +103,6 @@ void CFlexListCtrl::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
     CListCtrl::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
-/*******************************************************************************
- Function Name  : OnVScroll
- Description    : Event Handler. This handler will hide the controls if
-                  anytihng is displayed for editing. This is done by setting the
-                  focus to the list control.
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  :
-*******************************************************************************/
 void CFlexListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
     // Set the focus to list control. This will hide any controls that
@@ -178,19 +117,6 @@ void CFlexListCtrl::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
     CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
 }
 
-/*******************************************************************************
- Function Name  : OnDoubleClick
- Description    : Event Handler. This handler will show the controls to edit the
-                  selected data from the list control. This will call
-                  ShowControl function with the item and subitem indices.
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  : Raja N on 01.08.2004, Modified the function name ShowControl
-                  as vShowControl.
- Modifications  : Raja N on 08.07.2005, Modified the function send
-                  LVN_BEGINLABELEDIT before showing the UI control.
-*******************************************************************************/
 void CFlexListCtrl::OnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
     // TODO: Add your control notification handler code here
@@ -227,18 +153,6 @@ void CFlexListCtrl::OnDoubleClick(NMHDR* pNMHDR, LRESULT* pResult)
     *pResult = 0;
 }
 
-/*******************************************************************************
- Function Name  : OnClick
- Description    : Event Handler. This handler will show the controls to edit the
-                  selected data from the list control only if signle click
-                  activate property is set. This will make list control editable
-                  with a single click.
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  : Raja N on 01.08.2004, Modified the function name ShowControl
-                  as vShowControl.
-*******************************************************************************/
 void CFlexListCtrl::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
 {
     if( m_bSingleClickActivate == TRUE )
@@ -257,20 +171,6 @@ void CFlexListCtrl::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
     *pResult = 0;
 }
 
-/*******************************************************************************
- Function Name  : vSetColumnInfo
- Inputs         : nRow          - Row Index
-                  nColumn       - Column Index
-                  sInfo         - List info structure
- Output         :   -
- Description    : This function will be called to set the list item type. This
-                  will call lGetMapID to derive a unique number from row-column
-                  index. This will update the CMap with the type information.
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  :
-*******************************************************************************/
 void CFlexListCtrl::vSetColumnInfo(int nRow, int nColunm, SLISTINFO sInfo)
 {
     // Get the unique map index
@@ -279,57 +179,17 @@ void CFlexListCtrl::vSetColumnInfo(int nRow, int nColunm, SLISTINFO sInfo)
     m_omListItemType[ nIndex ] = sInfo;
 }
 
-/*******************************************************************************
- Function Name  : sGetColumnInfo
- Inputs         : nRow      - Index of the intrested Row
-                  nColumn   - Index of the intrested Column
- Output         : SLISTINFO - Column Type info
- Description    : This function will be called to get the list item type. This
-                  will call lGetMapID to derive a unique number from row-column
-                  index. This will return the value stored in the CMap
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  :
-*******************************************************************************/
 SLISTINFO CFlexListCtrl::sGetColumnInfo(int nRow, int nColunm)
 {
     return m_omListItemType [ lGetMapID(nRow, nColunm) ];
 }
 
-/*******************************************************************************
- Function Name  : lGetMapID
- Inputs         : nRow      - Index of the Row
-                  nColumn   - Index of the Column
- Output         : long      - Unique map index derived from Row & Col val
- Description    : This function will return the unique map index. This will use
-                  virtual column count to make the 2d number to linear.
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  : Modifications as per code review comment. A new member is
-                  added to the class to keep the virtual column count. This can
-                  be dynamically changed.
-*******************************************************************************/
 long CFlexListCtrl::lGetMapID(int nRow, int nCol)
 {
     // Calculate the unique value
     return nRow * m_nVirtualColumnCount + nCol;
 }
 
-/*******************************************************************************
- Function Name  : vShowControl
- Inputs         : nRow      - Index of the Row
-                  nColumn   - Index of the Column
- Output         :   -
- Description    : This function will show the UI control to change the list item
-                  text. This will get the type information from the Cmap and
-                  will call approp. function to create and show that control.
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  : Raja N on 30.07.2004, Code review comments implemented
-*******************************************************************************/
 void CFlexListCtrl::vShowControl(int nItem, int nSubItem)
 {
     // Proceed only for a valid entry
@@ -437,20 +297,6 @@ void CFlexListCtrl::vShowControl(int nItem, int nSubItem)
     }
 }
 
-/*******************************************************************************
- Function Name  : pomComboItem
- Inputs         : nRow      - Index of the Row
-                  nColumn   - Index of the Column
-                  omList    - List of strings
- Output         : CComboItem* - Pointer to the control
- Description    : This function will create and show non editable combo box.This
-                  control will be placed over the list item. The combobox will
-                  be filled with the data given the omList.
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  :
-*******************************************************************************/
 CComboItem* CFlexListCtrl::pomComboItem(int nItem,
                                         int nSubItem,
                                         const CStringArray& omList)
@@ -527,21 +373,6 @@ CComboItem* CFlexListCtrl::pomComboItem(int nItem,
     return pomCBox;
 }
 
-
-/*******************************************************************************
- Function Name  : pomComboList
- Inputs         : nRow      - Index of the Row
-                  nColumn   - Index of the Column
-                  omList    - List of strings
- Output         : CComboItem* - Pointer to the control
- Description    : This function will create and show editable combo box.This
-                  control will be placed over the list item. The combobox will
-                  be filled with the data given the omList.
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  :
-*******************************************************************************/
 CComboItem* CFlexListCtrl::pomComboList( int nItem,
         int nSubItem,
         const CStringArray& omList)
@@ -619,17 +450,6 @@ CComboItem* CFlexListCtrl::pomComboList( int nItem,
     return pomCBox;
 }
 
-/*******************************************************************************
- Function Name  : pomEditItem
- Inputs         : nRow      - Index of the Row
-                  nColumn   - Index of the Column
- Output         : CEdit * - Pointer to the control
- Description    : This function will create and show a editbox.
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  :
-*******************************************************************************/
 CEdit* CFlexListCtrl::pomEditItem(int nItem, int nSubItem)
 {
     // Item rect and Client rect
@@ -697,20 +517,6 @@ CEdit* CFlexListCtrl::pomEditItem(int nItem, int nSubItem)
     return pomEdit;
 }
 
-/*******************************************************************************
- Function Name  : pomNumItem
- Inputs         : nRow      - Index of the Row
-                  nColumn   - Index of the Column
-                  sInfo     - Numeric info like Min val, Max val, Base...
-                  Please see the structure definition to get all field info
- Output         : CEdit * - Pointer to the control
- Description    : This function will create and show a numeric edit control with
-                  or without spin control
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  :
-*******************************************************************************/
 CNumEdit* CFlexListCtrl::pomNumItem( int nItem, int nSubItem,
                                      const SNUMERICINFO& sInfo)
 {
@@ -776,19 +582,6 @@ CNumEdit* CFlexListCtrl::pomNumItem( int nItem, int nSubItem,
     return pomEdit;
 }
 
-/*******************************************************************************
- Function Name  : vSetNumericInfo
- Inputs         : nRow          - Row Index
-                  nColumn       - Column Index
-                  sInfo         - Numeric info structure
- Output         :   -
- Description    : This function will be called to set the list item numeric
-                  information. This will set the value in the numeric CMap
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  :
-*******************************************************************************/
 void CFlexListCtrl::vSetNumericInfo( int nRow, int nColunm,
                                      const SNUMERICINFO& sInfo)
 {
@@ -798,19 +591,6 @@ void CFlexListCtrl::vSetNumericInfo( int nRow, int nColunm,
     m_omNumDetails[ nIndex ] = sInfo;
 }
 
-/*******************************************************************************
- Function Name  : vSetUserProgInfo
- Inputs         : nRow          - Row Index
-                  nColumn       - Column Index
-                  sInfo         - User Program info structure
- Output         :   -
- Description    : This function will be called to set the list item user program
-                  information. This will set the value in the user prog CMap
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  :
-*******************************************************************************/
 void CFlexListCtrl::vSetUserProgInfo( int nRow, int nColunm,
                                       const SUSERPROGINFO& sUSerProgInfo)
 {
@@ -820,20 +600,6 @@ void CFlexListCtrl::vSetUserProgInfo( int nRow, int nColunm,
     m_omUserProg[ nIndex ] = sUSerProgInfo;
 }
 
-/*******************************************************************************
- Function Name  : vSetUserProgInfo
- Inputs         : rs_DispInfo   - Reference to Display Information Structure
-                  sInfo         - User Program info structure
- Output         : BOOL - Success or Failure
- Description    : This function will return the last edit item details. This is
-                  required to get the Row & Col information from the
-                  OnItemChanged handler. To avoid validation during insert it
-                  will return false telling that data is invalid.
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  :
-*******************************************************************************/
 BOOL CFlexListCtrl::sGetModificationStructure(LV_DISPINFO& rs_DispInfo)
 {
     BOOL bSuccess = TRUE;
@@ -851,39 +617,12 @@ BOOL CFlexListCtrl::sGetModificationStructure(LV_DISPINFO& rs_DispInfo)
     return bSuccess;
 }
 
-/*******************************************************************************
- Function Name  : vGoToEditMode
- Inputs         : nRow          - Row Index
-                  nColumn       - Column Index
- Output         :   -
- Description    : This function will be called to show the control to edit the
-                  item. This will be useful to show the control during invalid
-                  input entered by the user
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 22.07.2004
- Modifications  : Raja N on 30.07.2004, Renamed the function name as per code
-                  review comments.
-*******************************************************************************/
 void CFlexListCtrl::vGoToEditMode(int nItem, int nSubItem)
 {
     // Show Appropriate UI controls
     vShowControl(nItem, nSubItem);
 }
 
-/*******************************************************************************
- Function Name  : vSetMapColumnCount
- Inputs         : nColumn       - No. of expected Columns
- Output         :   -
- Description    : This function will set the virtual column count that is used
-                  to derive the lineat key from row-column index. This will
-                  clear all cmap's content as the unique key generator got
-                  modified.
- Member of      : CFlexListCtrl
- Author(s)      : Raja N
- Date Created   : 30.07.2004
- Modifications  :
-*******************************************************************************/
 void CFlexListCtrl::vSetMapColumnCount(int nColumn)
 {
     // Set the virtual column count
