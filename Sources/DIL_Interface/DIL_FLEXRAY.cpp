@@ -130,7 +130,7 @@ HMODULE CDIL_FLEXRAY::vLoadEtasBoaLibrary(Base_WrapperErrorLogger* pILog)
     if(lError==ERROR_SUCCESS)
     {
         RegCloseKey(sKey);
-        pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA 2.0..."));
+        pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA v2..."));
         return LoadLibrary("FlexRay_ETAS_BOA_2_0.dll");
     }
 
@@ -139,7 +139,7 @@ HMODULE CDIL_FLEXRAY::vLoadEtasBoaLibrary(Base_WrapperErrorLogger* pILog)
     if(lError==ERROR_SUCCESS)
     {
         RegCloseKey(sKey);
-        pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA 1.5..."));
+        pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA v1.5..."));
         return LoadLibrary("FlexRay_ETAS_BOA_1_5.dll");
     }
 
@@ -148,7 +148,7 @@ HMODULE CDIL_FLEXRAY::vLoadEtasBoaLibrary(Base_WrapperErrorLogger* pILog)
     if(lError==ERROR_SUCCESS)
     {
         RegCloseKey(sKey);
-        pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA 1.4..."));
+        pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA v1.4..."));
         return LoadLibrary("FlexRay_ETAS_BOA_1_4.dll");
     }
 

@@ -21,30 +21,29 @@
  *
  * Implementation file for main sub entry entities.
  */
+
 #include "DataTypes_stdafx.h"
 #include "MainSubEntry.h"
+#include "Utility/MultiLanguageSupport.h"
 
-// Starts SGUIPARAMS
 SGUIPARAMS::SGUIPARAMS()
 {
-    m_acTitleName[MAX_PATH - 1]     = _T('\0');
-    m_acMainListName[MAX_PATH - 1]  = _T('\0');
-    m_acUnSelListName[MAX_PATH - 1] = _T('\0');
-    m_acSelListName[MAX_PATH - 1]   = _T('\0');
+    m_acTitleName[MAX_PATH - 1] = '\0';
+    m_acMainListName[MAX_PATH - 1] = '\0';
+    m_acUnSelListName[MAX_PATH - 1] = '\0';
+    m_acSelListName[MAX_PATH - 1] = '\0';
 
-    _tcsset(m_acTitleName, _T('\0'));
-    _tcsset(m_acMainListName, _T('\0'));
-    _tcsset(m_acUnSelListName, _T('\0'));
-    _tcsset(m_acSelListName, _T('\0'));
+    _tcsset(m_acTitleName, '\0');
+    _tcsset(m_acMainListName, '\0');
+    _tcsset(m_acUnSelListName, '\0');
+    _tcsset(m_acSelListName, '\0');
 
-    m_pomImageList      = nullptr;
-    m_unUnSelIconIndex  = 0;
-    m_unSelIconIndex    = 0;
-    m_bCombine          = TRUE;
+    m_pomImageList = nullptr;
+    m_unUnSelIconIndex = 0;
+    m_unSelIconIndex = 0;
+    m_bCombine = TRUE;
 }
-// Ends SGUIPARAMS
 
-// Starts tagSubEntry
 tagSubEntry::tagSubEntry()
 {
 }
@@ -63,10 +62,7 @@ BOOL tagSubEntry::operator ==(const tagSubEntry& RefObj) const
     }
     return bResult;
 }
-// Ends tagSubEntry
 
-
-// Starts tagMainEntry structure
 tagMainEntry::tagMainEntry()
 {
     vResetAll();
@@ -107,4 +103,3 @@ BOOL tagMainEntry::operator==(const tagMainEntry& RefObj) const
     }
     return bResult;
 }
-// Ends tagMainEntry structure

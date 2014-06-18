@@ -468,7 +468,7 @@ BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData, BYTE byVersion)
         // Frame Format - Standard
         COPY_DATA_2(&m_nFrameFormat, pbyTemp, sizeof(short));
         // Element Name String
-        char acName[MAX_PATH] = {_T('\0')};
+        char acName[MAX_PATH] = { '\0' };
         COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
         m_omStrElementName.Format("%s", acName);
         // Type of the element val
@@ -489,7 +489,7 @@ BYTE* CGraphElement::pbySetConfigData(BYTE* pbyTrgData, BYTE byVersion)
         if(byVersion == 2)
         {
             //Message Name
-            char MsgName[MAX_PATH] = {_T('\0')};
+            char MsgName[MAX_PATH] = { '\0' };
             COPY_DATA_2(MsgName, pbyTemp, (sizeof(char) * MAX_PATH));
             m_strMsgName.Format("%s", MsgName);
             //Line Display type

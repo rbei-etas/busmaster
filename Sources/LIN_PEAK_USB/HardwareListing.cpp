@@ -1,45 +1,13 @@
 /*********************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  HardwareListing.Cpp
   Description   :  Interface file for CHardwareListing class
-  $Log:   X:/Archive/Sources/ConfigDialogsDIL/HardwareListing.cpv  $
-
-      Rev 1.8   06 Sep 2011 20:05:34   CANMNTTM
-   CANvas Name is changed to BUSMASTER
-
-      Rev 1.7   Jun 07 2011 15:23:36   rac2kor
-   Removed compiler warnings
-
-      Rev 1.6   06 Jun 2011 12:09:36   CANMNTTM
-   All W4 level Warnings Are removed
-
-      Rev 1.5   27 Apr 2011 19:47:58   CANMNTTM
-   No of harware use is retricted to max 2.
-
-      Rev 1.4   15 Apr 2011 18:47:18   CANMNTTM
-   Added RBEI Copyright information.
-
-      Rev 1.3   15 Apr 2011 16:02:44   CANMNTTM
-   Minor modification to remove warnings.
-
-      Rev 1.2   01 Feb 2011 19:52:38   CANMNTTM
-   Selection of single hardware is made possible.
-
-      Rev 1.1   14 Dec 2010 19:28:44   CANMNTTM
-   Improvement: Hardware details are shown even when clicking selected list.
-
-      Rev 1.0   16 Aug 2010 18:51:24   rac2kor
-
-
   Author        :  Raja N
   Date Created  :  07.09.2004
-  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
  *********************************************************************/
 
 // Standard include header
 #include "LIN_PEAK_USB_stdafx.h"
-
+#include "Utility/MultiLanguageSupport.h"
 #include "HardwareListing.h"
 
 
@@ -51,25 +19,25 @@ static char THIS_FILE[] = __FILE__;
 // Macro to find minimum number
 #define MIN(a,b)  ((a) < (b) ? (a) : (b))
 /* - Hardware Interface Layer - */
-#define defSTR_MISSING_HARDWARE _T("Required number of hardware are not present\nRequired: %2d    Available: %2d")
+#define defSTR_MISSING_HARDWARE _("Required number of hardware are not present\nRequired: %2d    Available: %2d")
 
-#define defSTR_CHANNEL_NAME                _T("Channel")
-#define defSTR_CHANNEL_NAME_FORMAT         _T("%s %d")
+#define defSTR_CHANNEL_NAME                _("Channel")
+#define defSTR_CHANNEL_NAME_FORMAT         "%s %d"
 
-#define defSTR_HARDWARE_COL_NAME           _T("Hardware")
+#define defSTR_HARDWARE_COL_NAME           _("Hardware")
 #define defSTR_CHANNEL_COL_WIDTH           90
 #define defSTR_HARDWARE_COL_WIDTH          75
 
 #define defCHANNEL_COL                     0
 #define defHARDWARE_COL                    1
 
-#define defSTR_TEMP_CLIENT_NAME            _T("TEMP_CLIENT")
-#define defSTR_TEMP_NET_NAME               _T("TEMP_NET")
+#define defSTR_TEMP_CLIENT_NAME            _("TEMP_CLIENT")
+#define defSTR_TEMP_NET_NAME               _("TEMP_NET")
 
-#define defSTR_NOT_FULLY_CONFIGURED        _T("Required number of hardware are not configured.\nApplication will use default channel association with hardware")
+#define defSTR_NOT_FULLY_CONFIGURED        _("Required number of hardware are not configured.\nApplication will use default channel association with hardware")
 #define defCONNECTED_IMAGE_INDEX            1
 #define defDISCONNECTED_IMAGE_INDEX         0
-#define defSTR_HW_DISPLAY_FORMAT            _T("LIN %d")
+#define defSTR_HW_DISPLAY_FORMAT            "LIN %d"
 #define defSIGNAL_ICON_SIZE               16
 #define WHITE_COLOR             RGB(255,255,255)
 
@@ -305,7 +273,7 @@ void CHardwareListing::vUpdateHwDetails(int nIndex)
     {
         //Driver Id
         CString omStr;
-        omStr.Format(_T("%d"), m_psHwInterface[nIndex].m_dwIdInterface);
+        omStr.Format(_("%d"), m_psHwInterface[nIndex].m_dwIdInterface);
         m_omDriverID.SetWindowText(omStr);
         //Firmware
         m_omFirmware.SetWindowText(m_psHwInterface[nIndex].m_acDeviceName.c_str());
@@ -535,7 +503,7 @@ void CHardwareListing::OnOK()
     m_nNoOfHwSelected = m_omSelectedHwList.GetItemCount();
     if (m_nNoOfHwSelected < 1)
     {
-        AfxMessageBox(_T("Please select atleast one hardware"));
+        AfxMessageBox(_("Please select atleast one hardware"));
         return;
     }
     // Number of hardware will be used
@@ -576,7 +544,7 @@ void CHardwareListing::OnOK()
     else
     {
         CString omErr;
-        omErr.Format(_T("Please select atmost %d hardwares"),  CHANNEL_ALLOWED);
+        omErr.Format(_("Please select atmost %d hardwares"),  CHANNEL_ALLOWED);
         AfxMessageBox(omErr);
         return;
     }

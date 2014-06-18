@@ -1051,14 +1051,14 @@ HRESULT CDIL_CAN_i_VIEW::CAN_LoadDriverLibrary(void)
 {
     if ( m_hDll != nullptr )
     {
-        g_pLog->vLogAMessage(A2T(__FILE__), __LINE__, _T( iVIEW_DLL " already loaded" ));
+        g_pLog->vLogAMessage(A2T(__FILE__), __LINE__, _( iVIEW_DLL " already loaded" ));
         return DLL_ALREADY_LOADED;
     }
     m_hDll = LoadLibrary( iVIEW_DLL );
 
     if ( m_hDll == nullptr )
     {
-        g_pLog->vLogAMessage(A2T(__FILE__), __LINE__, _T( iVIEW_DLL " loading failed" ));
+        g_pLog->vLogAMessage(A2T(__FILE__), __LINE__, _( iVIEW_DLL " loading failed" ));
         return ERR_LOAD_DRIVER;
     }
     m_CreateBrowser = (CreateBrowser_t)GetProcAddress(m_hDll,"CreateBrowser");

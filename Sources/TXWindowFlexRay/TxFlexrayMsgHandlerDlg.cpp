@@ -7,6 +7,7 @@
 //#include "DIL/Dil_extern.h"
 #include "TxFlexrayMsgHandlerDlg.h"
 #include "TxFlexRayDataStore.h"
+#include "Utility/MultiLanguageSupport.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -93,11 +94,11 @@ BOOL CFlexrayMsgHandlerDlg::OnInitDialog()
     m_lstcMsgList.SetExtendedStyle(LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT
                                    | LVS_EX_GRIDLINES | LVS_EX_INFOTIP);
 
-    m_lstcMsgList.InsertColumn(0, _T("Message"), LVCFMT_LEFT);
-    m_lstcMsgList.InsertColumn(1, _T("Frame Id"), LVCFMT_LEFT);
-    m_lstcMsgList.InsertColumn(2, _T("Base Cycle"), LVCFMT_LEFT);
-    m_lstcMsgList.InsertColumn(3, _T("Repetition"), LVCFMT_LEFT);
-    m_lstcMsgList.InsertColumn(4, _T("Channel"), LVCFMT_LEFT);
+    m_lstcMsgList.InsertColumn(0, _("Message"), LVCFMT_LEFT);
+    m_lstcMsgList.InsertColumn(1, _("Frame Id"), LVCFMT_LEFT);
+    m_lstcMsgList.InsertColumn(2, _("Base Cycle"), LVCFMT_LEFT);
+    m_lstcMsgList.InsertColumn(3, _("Repetition"), LVCFMT_LEFT);
+    m_lstcMsgList.InsertColumn(4, _("Channel"), LVCFMT_LEFT);
 
     RECT Rect;
     m_lstcMsgList.GetWindowRect(&Rect);

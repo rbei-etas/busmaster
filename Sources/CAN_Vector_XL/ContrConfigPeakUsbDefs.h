@@ -26,7 +26,7 @@
 
 #define defBITS_IN_BYTE         8
 
-#define defCLOCK            _T("16")
+#define defCLOCK            _("16")
 #ifdef EVAL_COPY_EXT
 #define defCONTROLLER_MODE  3 // Simulation mode
 #else
@@ -35,23 +35,23 @@
 
 #define defBASE_DEC                 10
 
-#define defSTR_CHANNEL_NAME                _T("Channel")
-#define defSTR_CHANNEL_NAME_FORMAT         _T("%s %d")
+#define defSTR_CHANNEL_NAME                _("Channel")
+#define defSTR_CHANNEL_NAME_FORMAT         "%s %d"
 
-#define defSTR_BTR0_COL_HEADING             _T("BTR0")
-#define defSTR_BTR1_COL_HEADING             _T("BTR1")
+#define defSTR_BTR0_COL_HEADING             "BTR0"
+#define defSTR_BTR1_COL_HEADING             "BTR1"
 
-#define defSTR_SAMPLE_POINT_COL_HEADING     _T("Sampling Point")
-#define defSTR_NBT_COL_HEADING              _T("NBT")
-#define defSTR_SJW_COL_HEADING              _T("SJW")
-#define defSTR_CNF1_COL_HEADING             _T("CNF1")
-#define defSTR_CNF2_COL_HEADING             _T("CNF2")
-#define defSTR_CNF3_COL_HEADING             _T("CNF3")
-#define defSTR_BRP_COL_HEADING              _T("BRP")
+#define defSTR_SAMPLE_POINT_COL_HEADING     _("Sampling Point")
+#define defSTR_NBT_COL_HEADING              "NBT"
+#define defSTR_SJW_COL_HEADING              "SJW"
+#define defSTR_CNF1_COL_HEADING             "CNF1"
+#define defSTR_CNF2_COL_HEADING             "CNF2"
+#define defSTR_CNF3_COL_HEADING             "CNF3"
+#define defSTR_BRP_COL_HEADING              "BRP"
 
 #define defCHANNEL_ICON_SIZE                24
 #define defCHANNEL_LIST_INIT_SIZE           5
 #define defCHANNEL_LIST_GROW_SIZE           1
 
-#define defSTR_MSG_ID_STANDARD              _T("Standard")
-#define defSTR_MSG_ID_EXTENDED              _T("Extended")
+#define defSTR_MSG_ID_STANDARD              _("Standard")
+#define defSTR_MSG_ID_EXTENDED              _("Extended")

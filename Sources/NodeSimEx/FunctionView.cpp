@@ -225,8 +225,8 @@ void CFunctionView::vSetFunctionToEdit(const CString& omStrFunction)
                                    omStrFunction );
             //Construct the Function Footer
             omStrFnFooter = EDITOR_BUS_FN_FOOTER;
-            omStrFnFooter.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
-            omStrFnFooter.Replace( _T("PLACE_HODLER_FOR_FUNCTIONNAME"),
+            omStrFnFooter.Replace(_("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
+            omStrFnFooter.Replace( _("PLACE_HODLER_FOR_FUNCTIONNAME"),
                                    omStrFunction );
         }
 

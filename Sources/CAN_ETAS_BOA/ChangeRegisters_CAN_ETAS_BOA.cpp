@@ -487,7 +487,7 @@ void CChangeRegisters_CAN_ETAS_BOA::vValidateBaudRate()
         {
             dBaudRate = 5000;
         }
-        omStrBaudRate.Format(_T("%ld"),/*fTempBaudRate*/(long)dBaudRate);
+        omStrBaudRate.Format(_("%ld"),/*fTempBaudRate*/(long)dBaudRate);
 
         omStrMessage.Format(_(defBAUD_RATE_MESSAGE),omStrBaudRate);
         omStrPrvBaudRate = m_omStrEditBaudRate;

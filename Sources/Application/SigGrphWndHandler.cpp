@@ -94,7 +94,7 @@ void CSigGrphHandler::vLoadSigGrph_DLL()
         FreeLibrary(m_hSigGrphHandle);
         m_hSigGrphHandle = nullptr;
     }
-    m_hSigGrphHandle = LoadLibrary(_T("SigGrphWnd.dll"));
+    m_hSigGrphHandle = LoadLibrary("SigGrphWnd.dll");
     vloadFuncPtrAddress();
 }
 

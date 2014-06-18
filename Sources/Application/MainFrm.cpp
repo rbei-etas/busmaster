@@ -158,10 +158,10 @@ BOOL CMsgSignalDBWnd::sm_bValidJ1939Wnd = FALSE;
 SMSGENTRY* CTxMsgWndJ1939::m_psMsgRoot = nullptr;
 
 #define CREATE_TOOLBAR(pParentWnd, ToolBarObj, ID, Title) {if (nCreateToolbar(pParentWnd, ToolBarObj, ID, Title) != 0){return -1;}}
-#define defCONFIGFILTER         _T("BUSMASTER Configuration files(*.cfx)|*.cfx||")
-#define defFILEEXT              _T("cfx")
+#define defCONFIGFILTER         _("BUSMASTER Configuration files(*.cfx)|*.cfx||")
+#define defFILEEXT              "cfx"
 #define defDLGFLAGS             OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST
-#define defDEFAULTDLLFILENAME   ("*.dll")
+#define defDEFAULTDLLFILENAME   "*.dll"
 #define TIMER_REFRESH_MAINGUI   0x100
 #define TIMER_REFRESH_LOG_STATUS 0x101
 #define TIMER_REFRESH_J1939_LOG_STATUS 0x102
@@ -169,7 +169,7 @@ SMSGENTRY* CTxMsgWndJ1939::m_psMsgRoot = nullptr;
 #define TIMER_REFRESH_LIN_LOG_STATUS 0x103
 #define STSBAR_REFRESH_TIME_PERIOD      1000  // in milliseconds
 #define STSBAR_REFRESH_TIME_PERIOD_LOG  1000  // in milliseconds
-#define PROFILE_CAN_MONITOR                   _T("RBEI_ECF2_CAN_Monitor")
+#define PROFILE_CAN_MONITOR "RBEI_ECF2_CAN_Monitor"
 
 const BYTE CAPL_2_C_MASK  = 0x1;
 const BYTE DBF_2_DBC_MASK = 0x2;
@@ -693,7 +693,7 @@ CMainFrame::~CMainFrame()
 void CMainFrame::vGettextBusmaster()
 {
     setlocale(LC_ALL, "");
-    bindtextdomain("BUSMASTER", getenv("LOCALDIR"));
+    bindtextdomain("BUSMASTER", "./Localization/locale/");
     textdomain("BUSMASTER");
 }
 
@@ -835,15 +835,15 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     SetWindowPlacement(&m_WinCurrStatus);
 
     // The node simulation toolbar
-    CREATE_TOOLBAR(this, m_wndToolbarNodeSimul, IDR_NODE_SIMULATION, _T(_("Node Simulation")));
-    CREATE_TOOLBAR(this, m_wndToolbarMsgWnd, IDR_MSG_WND, _T(_("Message Window")));
-    CREATE_TOOLBAR(this, m_wndToolBar, IDR_MAINFRAME, _T(_("Main")));
-    CREATE_TOOLBAR(this, m_wndToolbarConfig, IDR_TLB_CONFIGURE, _T(_("Configure")));
-    CREATE_TOOLBAR(this, m_wndToolbarJ1939, IDR_FUNCTIONS_J1939, _T(_("J1939")));
-    CREATE_TOOLBAR(this, m_wndToolbarCANDB, IDR_CAN_DATABASE, _T(_("CAN Database")));
-    CREATE_TOOLBAR(this, m_wndToolbarFlexRay, IDB_TLB_FLEXRAY, _T(_("FlexRay")));
-    CREATE_TOOLBAR(this, m_wndToolbarConfiguration, IDR_CONFIG_TOOLBAR, _T(_("Configuration")));
-    CREATE_TOOLBAR(this, m_wndToolbarLIN, IDB_LIN_IMG, _T(_("LIN")));
+    CREATE_TOOLBAR(this, m_wndToolbarNodeSimul, IDR_NODE_SIMULATION, _("Node Simulation"));
+    CREATE_TOOLBAR(this, m_wndToolbarMsgWnd, IDR_MSG_WND, _("Message Window"));
+    CREATE_TOOLBAR(this, m_wndToolBar, IDR_MAINFRAME, _("Main"));
+    CREATE_TOOLBAR(this, m_wndToolbarConfig, IDR_TLB_CONFIGURE, _("Configure"));
+    CREATE_TOOLBAR(this, m_wndToolbarJ1939, IDR_FUNCTIONS_J1939, "J1939");
+    CREATE_TOOLBAR(this, m_wndToolbarCANDB, IDR_CAN_DATABASE, _("CAN Database"));
+    CREATE_TOOLBAR(this, m_wndToolbarFlexRay, IDB_TLB_FLEXRAY, "FlexRay");
+    CREATE_TOOLBAR(this, m_wndToolbarConfiguration, IDR_CONFIG_TOOLBAR, _("Configuration"));
+    CREATE_TOOLBAR(this, m_wndToolbarLIN, IDB_LIN_IMG, "LIN");
 
     /* Set toolbar button size to small to fit default icons*/
     if ( !m_bUseAdvancedUILib )
@@ -983,11 +983,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     // So enable it and change the text top the first MRU file name
     // Then create menu for the rest of the MRU files
     DWORD dwVal;
-    theApp.bReadFromRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE1), REG_SZ, m_omStrMRU_ConfigurationFiles[0], dwVal);
-    theApp.bReadFromRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE2), REG_SZ, m_omStrMRU_ConfigurationFiles[1], dwVal);
-    theApp.bReadFromRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE3), REG_SZ, m_omStrMRU_ConfigurationFiles[2], dwVal);
-    theApp.bReadFromRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE4), REG_SZ, m_omStrMRU_ConfigurationFiles[3], dwVal);
-    theApp.bReadFromRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE5), REG_SZ, m_omStrMRU_ConfigurationFiles[4], dwVal);
+    theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE1, REG_SZ, m_omStrMRU_ConfigurationFiles[0], dwVal);
+    theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE2, REG_SZ, m_omStrMRU_ConfigurationFiles[1], dwVal);
+    theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE3, REG_SZ, m_omStrMRU_ConfigurationFiles[2], dwVal);
+    theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE4, REG_SZ, m_omStrMRU_ConfigurationFiles[3], dwVal);
+    theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE5, REG_SZ, m_omStrMRU_ConfigurationFiles[4], dwVal);
 
     // Create MRU under "Recent Configurations" menu item
     vCreateMRU_Menus();
@@ -1185,7 +1185,7 @@ database that is already open?"), MB_YESNO, MB_ICONINFORMATION);
                              nullptr );
 
         // Set Title
-        fileDlg.m_ofn.lpstrTitle  = _T(_("Select BUSMASTER Database Filename..."));
+        fileDlg.m_ofn.lpstrTitle  = _("Select BUSMASTER Database Filename...");
 
         if ( IDOK == fileDlg.DoModal() )
         {
@@ -1388,7 +1388,7 @@ void CMainFrame::OnImportDatabase()
                          nullptr );
 
     // Set Title
-    fileDlg.m_ofn.lpstrTitle  = _T(_("Select Active Database Filename..."));
+    fileDlg.m_ofn.lpstrTitle  = _("Select Active Database Filename...");
 
     if ( IDOK == fileDlg.DoModal() )
     {
@@ -1419,7 +1419,7 @@ void CMainFrame::OnImportDatabase()
         if(bAllFilesImported == FALSE)
         {
             omStrMsg += _(" not found!");
-            MessageBox(omStrMsg,_("BUSMASTER"),MB_OK|MB_ICONERROR);
+            MessageBox(omStrMsg,"BUSMASTER",MB_OK|MB_ICONERROR);
         }
 
         // Check for Warnning condition
@@ -1886,7 +1886,7 @@ void CMainFrame::OnNewDatabase()
             {
                 CFileDialog fileDlg(FALSE, DATABASE_EXTN, omStrDbName.GetBuffer(MAX_PATH),
                 OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, DATABASE_FILTER);
-                fileDlg.m_ofn.lpstrTitle  = _T(_("New Database file name..."));
+                fileDlg.m_ofn.lpstrTitle  = _("New Database file name...");
                 if (fileDlg.DoModal() == IDOK)
                 {
                     m_omStrDatabaseName = fileDlg.GetPathName();
@@ -1980,7 +1980,7 @@ void CMainFrame::OnConfigDatabaseSaveAs()
                          nullptr );
 
     // Set Title
-    fileDlg.m_ofn.lpstrTitle  = _T(_("Save As..."));
+    fileDlg.m_ofn.lpstrTitle  = _("Save As...");
 
     if ( IDOK == fileDlg.DoModal() )
     {
@@ -2053,7 +2053,7 @@ void CMainFrame::OnJ1939DBSaveAs()
                          nullptr );
 
     // Set Title
-    fileDlg.m_ofn.lpstrTitle  = _T(_("Save As..."));
+    fileDlg.m_ofn.lpstrTitle  = _("Save As...");
 
     if ( IDOK == fileDlg.DoModal() )
     {
@@ -2149,7 +2149,7 @@ void CMainFrame::OnConfigDatabaseSave()
                                     omImportedDBNames.GetAt(nDBCount))
                             {
                                 CString omText;
-                                omText.Format( _T(_("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?")),
+                                omText.Format(_("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"),
                                                m_omStrDatabaseName);
 
                                 if (MessageBox(omText, "BUSMASTER", MB_ICONQUESTION | MB_YESNO) == IDYES)
@@ -2383,13 +2383,13 @@ void CMainFrame::OnDLLBuildLoad()
     if(!bSucces)  // if the build is not successfull
     {
         int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg =_T(_("Following file(s) are either not properly build or loaded:"));
-        CString omStrErrorMsgDummy="";
+        CString omStrErrorMsg = _("Following file(s) are either not properly build or loaded:");
+        CString omStrErrorMsgDummy = "";
 
         for(int i = 0 ; i < nFailure; i++)
         {
 
-            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
             omStrErrorMsg += omStrErrorMsgDummy;
         }
         AfxMessageBox(omStrErrorMsg);
@@ -2408,13 +2408,13 @@ void CMainFrame::OnDLLBuildLoadLIN()
     if(!bSucces)  // if the build is not successfull
     {
         int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg =_T(_("Following file(s) are either not properly build or loaded:"));
-        CString omStrErrorMsgDummy="";
+        CString omStrErrorMsg = _("Following file(s) are either not properly build or loaded:");
+        CString omStrErrorMsgDummy = "";
 
         for(int i = 0 ; i < nFailure; i++)
         {
 
-            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
             omStrErrorMsg += omStrErrorMsgDummy;
         }
         AfxMessageBox(omStrErrorMsg);
@@ -2446,12 +2446,12 @@ void CMainFrame::OnDLLBuild()
     if(!bSucces)  // if the build is not successfull
     {
         int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg =_T(_("Following file(s) are not properly build:"));
-        CString omStrErrorMsgDummy="";
+        CString omStrErrorMsg =_("Following file(s) are not properly build:");
+        CString omStrErrorMsgDummy = "";
 
         for(int i = 0 ; i < nFailure; i++)
         {
-            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
             omStrErrorMsg += omStrErrorMsgDummy;
         }
         AfxMessageBox(omStrErrorMsg);
@@ -2471,12 +2471,12 @@ void CMainFrame::OnDLLBuildLIN()
     if(!bSucces)  // if the build is not successfull
     {
         int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg =_T(_("Following file(s) are not properly build:"));
-        CString omStrErrorMsgDummy="";
+        CString omStrErrorMsg = _("Following file(s) are not properly build:");
+        CString omStrErrorMsgDummy = "";
 
         for(int i = 0 ; i < nFailure; i++)
         {
-            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
             omStrErrorMsg += omStrErrorMsgDummy;
         }
         AfxMessageBox(omStrErrorMsg);
@@ -2504,13 +2504,13 @@ void CMainFrame::OnDllLoad()
     if(bSucces!=TRUE)  // if the load is not successfull
     {
         int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg =_T(_("Following file(s) are not properly loaded:"));
-        CString omStrErrorMsgDummy="";
+        CString omStrErrorMsg = _("Following file(s) are not properly loaded:");
+        CString omStrErrorMsgDummy = "";
 
         for(int i = 0 ; i < nFailure; i++)
         {
 
-            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
             omStrErrorMsg += omStrErrorMsgDummy;
         }
         AfxMessageBox(omStrErrorMsg);
@@ -2530,13 +2530,13 @@ void CMainFrame::OnDllLoadLIN()
     if(bSucces!=TRUE)  // if the load is not successfull
     {
         int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg =_T(_("Following file(s) are not properly loaded:"));
-        CString omStrErrorMsgDummy="";
+        CString omStrErrorMsg = _("Following file(s) are not properly loaded:");
+        CString omStrErrorMsgDummy = "";
 
         for(int i = 0 ; i < nFailure; i++)
         {
 
-            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
             omStrErrorMsg += omStrErrorMsgDummy;
         }
         AfxMessageBox(omStrErrorMsg);
@@ -2574,13 +2574,13 @@ void CMainFrame::OnDllUnload()
     if(bSucces!=TRUE)  // if the unload is not successfull
     {
         int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg =_T(_("Following file(s) are not properly unloaded:"));
-        CString omStrErrorMsgDummy="";
+        CString omStrErrorMsg = _("Following file(s) are not properly unloaded:");
+        CString omStrErrorMsgDummy = "";
 
         for(int i = 0 ; i < nFailure; i++)
         {
 
-            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
             omStrErrorMsg += omStrErrorMsgDummy;
         }
         AfxMessageBox(omStrErrorMsg);
@@ -2598,13 +2598,13 @@ void CMainFrame::OnDllUnloadLIN()
     if(bSucces!=TRUE)  // if the unload is not successfull
     {
         int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg =_T(_("Following file(s) are not properly unloaded:"));
-        CString omStrErrorMsgDummy="";
+        CString omStrErrorMsg = _("Following file(s) are not properly unloaded:");
+        CString omStrErrorMsgDummy = "";
 
         for(int i = 0 ; i < nFailure; i++)
         {
 
-            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
             omStrErrorMsg += omStrErrorMsgDummy;
         }
         AfxMessageBox(omStrErrorMsg);
@@ -2622,12 +2622,12 @@ void CMainFrame::OnDllUnloadJ1939()
     if(bSucces!=TRUE)  // if the unload is not successfull
     {
         int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg =_T(_("Following file(s) are not properly unloaded:"));
-        CString omStrErrorMsgDummy="";
+        CString omStrErrorMsg = _("Following file(s) are not properly unloaded:");
+        CString omStrErrorMsgDummy = "";
 
         for(int i = 0 ; i < nFailure; i++)
         {
-            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
             omStrErrorMsg += omStrErrorMsgDummy;
         }
         AfxMessageBox(omStrErrorMsg);
@@ -3786,7 +3786,7 @@ void CMainFrame::vSetNewDatabaseFlag(bool bValue)
 /******************************************************************************/
 LRESULT CMainFrame::OnErrorMessageProc(WPARAM wpParam, LPARAM lParam)
 {
-    TRACE(_("POSTED ERROR MSG"));
+    TRACE("POSTED ERROR MSG");
     SCAN_ERR ErrorMsg ;
     BOOL bToCallHandler = FALSE;
     eERROR_STATE eCurrError;
@@ -4085,7 +4085,7 @@ void CMainFrame::OnClose()
     {
         if(theApp.m_bFromAutomation == FALSE)
         {
-            UINT unMsgRetVal = AfxMessageBox(_T(_("You have made changes to the configuration.\nDo you want to save it?")),
+            UINT unMsgRetVal = AfxMessageBox(_("You have made changes to the configuration.\nDo you want to save it?"),
                                              MB_YESNOCANCEL);
 
             if ( unMsgRetVal == IDYES )
@@ -4097,7 +4097,7 @@ void CMainFrame::OnClose()
                                         _(defCONFIGFILTER), // filter
                                         nullptr        // parent wnd
                                        );
-                oCfgFileDlg.m_ofn.lpstrTitle = _T(_("Save Configuration File"));
+                oCfgFileDlg.m_ofn.lpstrTitle = _("Save Configuration File");
                 if(oCfgFileDlg.DoModal() == IDOK)
                 {
                     // get the name of the selected file
@@ -4108,7 +4108,7 @@ void CMainFrame::OnClose()
                     if (SaveConfiguration() ==
                             defCONFIG_FILE_SUCCESS )
                     {
-                        bWriteIntoRegistry(HKEY_CURRENT_USER, _(SECTION), defCONFIGFILENAME, REG_SZ, oCfgFilename);
+                        bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, oCfgFilename);
                     }
                     bSaveConfig = true;
                 }
@@ -4129,7 +4129,7 @@ void CMainFrame::OnClose()
         {
             if ( bIsConfigurationModified())
             {
-                UINT unMsgRetVal  = AfxMessageBox(_T(_("You have made changes to the configuration.\nDo you want to save it?")),
+                UINT unMsgRetVal  = AfxMessageBox(_("You have made changes to the configuration.\nDo you want to save it?"),
                                                   MB_YESNOCANCEL);
                 if ( unMsgRetVal == IDYES )
                 {
@@ -4138,7 +4138,7 @@ void CMainFrame::OnClose()
                     vSetFileStorageInfo(oCfgFilename);
                     if ( SaveConfiguration() == defCONFIG_FILE_SUCCESS )
                     {
-                        bWriteIntoRegistry(HKEY_CURRENT_USER, _(SECTION), defCONFIGFILENAME, REG_SZ, oCfgFilename);
+                        bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, oCfgFilename);
                     }
                 }
                 else if ( unMsgRetVal == IDCANCEL )
@@ -4154,7 +4154,7 @@ void CMainFrame::OnClose()
     }
 
     // Writing in to Registry
-    bWriteIntoRegistry(HKEY_CURRENT_USER, _(SECTION), defCONFIGFILENAME, REG_SZ, oCfgFilename);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, oCfgFilename);
 
     vREP_HandleConnectionStatusChange( FALSE ); //Close reply
 
@@ -5978,11 +5978,11 @@ void CMainFrame::OnDestroy()
     // If DLL is loaded, then delete threads if anything is running/waiting
     //CExecuteManager::ouGetExecuteManager().vDeleteAllNode();
     // Write the MRU file list into the registry
-    bWriteIntoRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE1), REG_SZ, m_omStrMRU_ConfigurationFiles[0]);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE2), REG_SZ, m_omStrMRU_ConfigurationFiles[1]);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE3), REG_SZ, m_omStrMRU_ConfigurationFiles[2]);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE4), REG_SZ, m_omStrMRU_ConfigurationFiles[3]);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, _(defSECTION_MRU), _(defSECTION_MRU_FILE5), REG_SZ, m_omStrMRU_ConfigurationFiles[4]);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE1, REG_SZ, m_omStrMRU_ConfigurationFiles[0]);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE2, REG_SZ, m_omStrMRU_ConfigurationFiles[1]);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE3, REG_SZ, m_omStrMRU_ConfigurationFiles[2]);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE4, REG_SZ, m_omStrMRU_ConfigurationFiles[3]);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE5, REG_SZ, m_omStrMRU_ConfigurationFiles[4]);
     // Delete memory associated with signal watch window
     vReleaseSignalWatchListMemory(m_psSignalWatchList[CAN]);
     vReleaseSignalWatchListMemory(m_psSignalWatchList[J1939]);
@@ -6312,7 +6312,7 @@ void CMainFrame::OnUpdateConfigurationFileName(CCmdUI* pCmdUI)
         if(m_omStrSavedConfigFile.IsEmpty())
         {
             omStrPage =
-                _T(_("Default Configuration loaded"));
+                _("Default Configuration loaded");
         }
         else
         {
@@ -6925,16 +6925,16 @@ void CMainFrame::OnFileConnect()
         {
             CWaitIndicator ouWaitIndicator;
             ouWaitIndicator.DisplayWindow(
-                _T(_("Trying to connect the hardware ... Please wait")), this);
+                _("Trying to connect the hardware ... Please wait"), this);
             {
                 if (g_pouDIL_CAN_Interface->DILC_StartHardware() == S_OK)
                 {
-                    ouWaitIndicator.SetWindowText(_T(_("Connected... ")));
+                    ouWaitIndicator.SetWindowText(_("Connected... "));
                     bReturn = true;
                 }
                 else
                 {
-                    ouWaitIndicator.SetWindowText(_T(_("Failed to connect the hardware... ")));
+                    ouWaitIndicator.SetWindowText(_("Failed to connect the hardware... "));
                     theApp.bWriteIntoTraceWnd(_("Failed to start the hardware"));
                 }
             }
@@ -7550,7 +7550,7 @@ void CMainFrame::OnLoadConfigFile()
                             _(defCONFIGFILTER), // filter
                             nullptr,        // parent wnd
                             _("Load"));
-    oCfgFileDlg.m_ofn.lpstrTitle = _T(_("Load Configuration Filename..."));
+    oCfgFileDlg.m_ofn.lpstrTitle = _("Load Configuration Filename...");
 
     if(oCfgFileDlg.DoModal() == IDOK)
     {
@@ -7626,7 +7626,7 @@ void CMainFrame::OnNewConfigFile()
                             nullptr,        // parent wnd
                             _("Open"));
 
-    oCfgFileDlg.m_ofn.lpstrTitle = _T(_("New Configuration Filename..."));
+    oCfgFileDlg.m_ofn.lpstrTitle = _("New Configuration Filename...");
 
     if(oCfgFileDlg.DoModal() == IDOK)
     {
@@ -7797,7 +7797,7 @@ void CMainFrame::OnSaveConfigFile()
                                 _(defCONFIGFILTER), // filter
                                 nullptr        // parent wnd
                                );
-        oCfgFileDlg.m_ofn.lpstrTitle = _T(_("Save Configuration File"));
+        oCfgFileDlg.m_ofn.lpstrTitle = _("Save Configuration File");
         if(oCfgFileDlg.DoModal() == IDOK)
         {
             // get the name of the selected file
@@ -7809,7 +7809,7 @@ void CMainFrame::OnSaveConfigFile()
                     defCONFIG_FILE_SUCCESS )
             {
                 vPushConfigFilenameDown(omStrCfgFilename);
-                bWriteIntoRegistry(HKEY_CURRENT_USER, _(SECTION), defCONFIGFILENAME, REG_SZ, omStrCfgFilename);
+                bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, omStrCfgFilename);
                 m_omStrSavedConfigFile = omStrCfgFilename;
             }
         }
@@ -7820,7 +7820,7 @@ void CMainFrame::OnSaveConfigFile()
         {
             vPushConfigFilenameDown(omStrCfgFilename);
 
-            bWriteIntoRegistry(HKEY_CURRENT_USER, _(SECTION), defCONFIGFILENAME, REG_SZ, omStrCfgFilename);
+            bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, omStrCfgFilename);
             m_omStrSavedConfigFile = omStrCfgFilename;
         }
     }
@@ -7851,7 +7851,7 @@ void CMainFrame::OnSaveAsConfigFile()
                             _(defCONFIGFILTER), // filter
                             nullptr        // parent wnd
                            );
-    oCfgFileDlg.m_ofn.lpstrTitle = _T(_("SaveAs Configuration Filename..."));
+    oCfgFileDlg.m_ofn.lpstrTitle = _("SaveAs Configuration Filename...");
 
     if(oCfgFileDlg.DoModal() == IDOK)
     {
@@ -11485,7 +11485,7 @@ HRESULT CMainFrame::InitializeFLEXRAYDIL()
                     if ( hResult == S_OK )
                     {
                         /* Register the Monitor client buffer */
-                        hResult = g_pouDIL_FLEXRAY_Interface->DILF_RegisterClient(TRUE, m_dwFLEXClientID, _T("CAN_MONITOR"));
+                        hResult = g_pouDIL_FLEXRAY_Interface->DILF_RegisterClient(TRUE, m_dwFLEXClientID, "CAN_MONITOR");
 
                         // Create the message window
                         m_podMsgWndThread->vUpdateClientID(FLEXRAY, m_dwFLEXClientID);
@@ -11698,7 +11698,7 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
                 HRESULT hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
                 if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
                 {
-                    hResult = g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, _T("CAN_MONITOR"));
+                    hResult = g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, "CAN_MONITOR");
                     if ((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS))
                     {
                         m_bNoHardwareFound = false;
@@ -11812,7 +11812,7 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
                 HRESULT hResult = g_pouDIL_LIN_Interface->DILL_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
                 if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
                 {
-                    hResult = g_pouDIL_LIN_Interface->DILL_RegisterClient(TRUE, g_dwClientID, _T("LIN_MONITOR"));
+                    hResult = g_pouDIL_LIN_Interface->DILL_RegisterClient(TRUE, g_dwClientID, "LIN_MONITOR");
                     if ((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS))
                     {
                         m_bNoHardwareFound = false;
@@ -12030,7 +12030,7 @@ void CMainFrame::vUpdateHWStatusInfo(void)
             {
                 fBaudRate /= 1000;
             }
-            omStrChannelDriver.Format(  _T("%s - %s - %.3f Kbps (Allowed channels:%d)"),
+            omStrChannelDriver.Format(  _("%s - %s - %.3f Kbps (Allowed channels:%d)"),
                                         omStrChannels, strDriverName,
                                         fBaudRate, CHANNEL_ALLOWED);
             break;
@@ -12359,7 +12359,7 @@ void CMainFrame::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
         if(pChild)
         {
             CRuntimeClass* pRunTimeClass = pChild->GetRuntimeClass();
-            if(strcmp(pRunTimeClass->m_lpszClassName,_T("CMsgFrmtWnd"))==0)
+            if(strcmp(pRunTimeClass->m_lpszClassName, "CMsgFrmtWnd")==0)
             {
                 if(m_podMsgWndThread!=nullptr)
                 {
@@ -12584,7 +12584,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             CString strVersion;
 
             // Application version
-            strVersion.Format(_("%d.%d.%d"), VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
+            strVersion.Format("%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
 
             xmlNodePtr pAppVersion = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_APPLICATION_VERSION
                                                  , BAD_CAST strVersion.GetBuffer(strVersion.GetLength()));
@@ -12592,7 +12592,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
 
             BYTE byVersion = 0x2;
 
-            char acName[MAX_PATH] = {_T('\0')};
+            char acName[MAX_PATH] = { '\0' };
             strcpy_s(acName, MAX_PATH, m_omMRU_C_Filename.GetBuffer(MAX_PATH));
 
 
@@ -12602,11 +12602,11 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             CString strIsMsgFilterEnabled = "";
             if(m_sToolBarInfo.m_byMsgFilter == TRUE)
             {
-                strIsMsgFilterEnabled = _("TRUE");
+                strIsMsgFilterEnabled = "TRUE";
             }
             else if(m_sToolBarInfo.m_byMsgFilter == FALSE)
             {
-                strIsMsgFilterEnabled = _("FALSE");
+                strIsMsgFilterEnabled = "FALSE";
             }
 
             xmlNodePtr pMsgFilterEnbld = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_IsMsgFilterEnabled
@@ -12617,11 +12617,11 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
 
             if(m_sToolBarInfo.m_byMsgFilterLin == TRUE)
             {
-                strIsMsgFilterEnabled = _("TRUE");
+                strIsMsgFilterEnabled = "TRUE";
             }
             else if(m_sToolBarInfo.m_byMsgFilterLin == FALSE)
             {
-                strIsMsgFilterEnabled = _("FALSE");
+                strIsMsgFilterEnabled = "FALSE";
             }
 
             xmlNodePtr pMsgFilterEnbldLin = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_IsMsgFilterEnabledLin
@@ -12632,11 +12632,11 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             CString strIsReplayFilterEnabled = "";
             if(m_sToolBarInfo.m_byReplayFilter == TRUE)
             {
-                strIsReplayFilterEnabled = _("TRUE");
+                strIsReplayFilterEnabled = "TRUE";
             }
             else if(m_sToolBarInfo.m_byReplayFilter == FALSE)
             {
-                strIsReplayFilterEnabled = _("FALSE");
+                strIsReplayFilterEnabled = "FALSE";
             }
             xmlNodePtr pReplayFilterEnbld = xmlNewChild(pNodePtr, nullptr, BAD_CAST "IsReplayFilterEnabled"
                                             , BAD_CAST strIsReplayFilterEnabled.GetBuffer(strIsReplayFilterEnabled.GetLength()));
@@ -12645,11 +12645,11 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             CString strIsLogFilterEnabled = "";
             if(m_sToolBarInfo.m_byLogFilter == TRUE)
             {
-                strIsLogFilterEnabled = _("TRUE");
+                strIsLogFilterEnabled = "TRUE";
             }
             else if(m_sToolBarInfo.m_byLogFilter == FALSE)
             {
-                strIsLogFilterEnabled = _("FALSE");
+                strIsLogFilterEnabled = "FALSE";
             }
 
             xmlNodePtr pLogFilterEnbld = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_IsLogFilterEnabled
@@ -12660,11 +12660,11 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             CString strIsLogFilterLINEnabled = "";
             if(m_sToolBarInfo.m_byLogFilterLIN == TRUE)
             {
-                strIsLogFilterLINEnabled = _("TRUE");
+                strIsLogFilterLINEnabled = "TRUE";
             }
             else if(m_sToolBarInfo.m_byLogFilterLIN == FALSE)
             {
-                strIsLogFilterLINEnabled = _("FALSE");
+                strIsLogFilterLINEnabled = "FALSE";
             }
 
             xmlNodePtr pLogFilterLINEnbld = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_IsLogFilterLINEnabled
@@ -12674,11 +12674,11 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             CString strIsLoggingEnabled = "";
             if(m_sToolBarInfo.m_byLogging == TRUE)
             {
-                strIsLoggingEnabled = _("TRUE");
+                strIsLoggingEnabled = "TRUE";
             }
             else if(m_sToolBarInfo.m_byLogging == FALSE)
             {
-                strIsLoggingEnabled = _("FALSE");
+                strIsLoggingEnabled = "FALSE";
             }
 
             xmlNodePtr pLoggingEnbld = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_IsLoggingEnabled
@@ -12689,11 +12689,11 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             CString strIsMsgIntepretationEnabled = "";
             if(m_sToolBarInfo.m_byMsgInterpret == TRUE)
             {
-                strIsMsgIntepretationEnabled = _("TRUE");
+                strIsMsgIntepretationEnabled = "TRUE";
             }
             else if(m_sToolBarInfo.m_byMsgInterpret == FALSE)
             {
-                strIsMsgIntepretationEnabled = _("FALSE");
+                strIsMsgIntepretationEnabled = "FALSE";
             }
 
             xmlNodePtr pMsgIntrEnbld = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_IsMsgIntepretationEnabled
@@ -12704,11 +12704,11 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             CString strIsOverWriteEnabled = "";
             if(m_sToolBarInfo.m_byOverwrite == TRUE)
             {
-                strIsOverWriteEnabled = _("TRUE");
+                strIsOverWriteEnabled = "TRUE";
             }
             else if(m_sToolBarInfo.m_byOverwrite == FALSE)
             {
-                strIsOverWriteEnabled = _("FALSE");
+                strIsOverWriteEnabled = "FALSE";
             }
 
             xmlNodePtr pOverwriteEnbld = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_IsOverWriteEnabled
@@ -12719,15 +12719,15 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             CString strDisplayTimeMode = "";
             if(m_sToolBarInfo.m_byDisplayTimeMode == eSYSTEM_MODE)
             {
-                strDisplayTimeMode = _("SYSTEM");
+                strDisplayTimeMode = "SYSTEM";
             }
             else if(m_sToolBarInfo.m_byDisplayTimeMode == eABSOLUTE_MODE)
             {
-                strDisplayTimeMode = _("ABSOLUTE");
+                strDisplayTimeMode = "ABSOLUTE";
             }
             else if(m_sToolBarInfo.m_byDisplayTimeMode == eRELATIVE_MODE)
             {
-                strDisplayTimeMode = _("RELATIVE");
+                strDisplayTimeMode = "RELATIVE";
             }
 
             xmlNodePtr pDisplayTimeMode = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_DisplayTimeMode
@@ -12738,11 +12738,11 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             CString strDisplayNumericMode = "";
             if(m_sToolBarInfo.m_byDisplayHexON == TRUE)
             {
-                strDisplayNumericMode = _("FALSE");
+                strDisplayNumericMode = "TRUE";
             }
             else if(m_sToolBarInfo.m_byDisplayHexON == FALSE)
             {
-                strDisplayNumericMode = _("TRUE");
+                strDisplayNumericMode = "FALSE";
             }
 
             xmlNodePtr pDisplayNumericMode = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_DisplayNumericMode
@@ -12753,11 +12753,11 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             CString strLogOnConnectCAN = "";
             if(m_abLogOnConnect[CAN] == TRUE)
             {
-                strLogOnConnectCAN = _("TRUE");
+                strLogOnConnectCAN = "TRUE";
             }
             else if(m_abLogOnConnect[CAN] == FALSE)
             {
-                strLogOnConnectCAN = _("FALSE");
+                strLogOnConnectCAN = "FALSE";
             }
 
             xmlNodePtr pLogOnConnectCAN = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_LogOnConnect_For_CAN
@@ -12768,11 +12768,11 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             CString strLogOnConnectJ1939 = "";
             if(m_abLogOnConnect[J1939] == TRUE)
             {
-                strLogOnConnectJ1939 = _("TRUE");
+                strLogOnConnectJ1939 = "TRUE";
             }
             else if(m_abLogOnConnect[J1939] == FALSE)
             {
-                strLogOnConnectJ1939 = _("FALSE");
+                strLogOnConnectJ1939 = "FALSE";
             }
 
             xmlNodePtr pLogOnConnectJ1939 = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_LogOnConnect_For_J1939
@@ -12783,11 +12783,11 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             CString strLogOnConnectLIN = "";
             if(m_abLogOnConnect[LIN] == TRUE)
             {
-                strLogOnConnectLIN = _("TRUE");
+                strLogOnConnectLIN = "TRUE";
             }
             else if(m_abLogOnConnect[LIN] == FALSE)
             {
-                strLogOnConnectLIN = _("FALSE");
+                strLogOnConnectLIN = "FALSE";
             }
 
             xmlNodePtr pLogOnConnectLIN = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_LogOnConnect_For_LIN
@@ -13203,7 +13203,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
                 // only if any signal is selected
                 if( unSelCount > 0 )
                 {
-                    char acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = { '\0' };
                     strcpy_s(acName, MAX_PATH, sMainEntry.m_omMainEntryName.GetBuffer(MAX_CHAR));
 
                     xmlNodePtr pMsgTagPtr = xmlNewNode(nullptr, BAD_CAST DEF_MESSAGE);
@@ -13286,7 +13286,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
 
             while (pos)
             {
-                char acName[MAX_PATH] = {_T('\0')};
+                char acName[MAX_PATH] = { '\0' };
 
                 SMAINENTRY& sMainEntry = odMainEntryList.GetNext(pos);
 
@@ -13671,7 +13671,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             //    for (UINT i = 0; i < unCount; i++)
             //    {
             //        CString omDbName = omDbNames.GetAt(i);
-            //        char acName[MAX_PATH] = {_T('\0')};
+            //        char acName[MAX_PATH] = {_('\0')};
             //        strcpy_s(acName, MAX_PATH, omDbName.GetBuffer(MAX_CHAR));
             //        COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
             //    }
@@ -14010,11 +14010,11 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
             {
                 CString strMsgFilter = ptext;
 
-                if(strMsgFilter == _("FALSE"))
+                if(strMsgFilter == "FALSE")
                 {
                     m_sToolBarInfo.m_byMsgFilter = FALSE;
                 }
-                else if(strMsgFilter == _("TRUE"))
+                else if(strMsgFilter == "TRUE")
                 {
                     m_sToolBarInfo.m_byMsgFilter = TRUE;
                 }
@@ -14028,11 +14028,11 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
             {
                 CString strMsgFilter = ptext;
 
-                if(strMsgFilter == _("FALSE"))
+                if(strMsgFilter == "FALSE")
                 {
                     m_sToolBarInfo.m_byMsgFilterLin = FALSE;
                 }
-                else if(strMsgFilter == _("TRUE"))
+                else if(strMsgFilter == "TRUE")
                 {
                     m_sToolBarInfo.m_byMsgFilterLin = TRUE;
                 }
@@ -14045,11 +14045,11 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
             if(nullptr != ptext)
             {
                 CString strReplayFilter = ptext;
-                if(strReplayFilter == _("FALSE"))
+                if(strReplayFilter == "FALSE")
                 {
                     m_sToolBarInfo.m_byReplayFilter = FALSE;
                 }
-                else if(strReplayFilter == _("TRUE"))
+                else if(strReplayFilter == "TRUE")
                 {
                     m_sToolBarInfo.m_byReplayFilter = TRUE;
                 }
@@ -14064,11 +14064,11 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
             {
                 CString strLogFilter = ptext;
 
-                if(strLogFilter == _("FALSE"))
+                if(strLogFilter == "FALSE")
                 {
                     m_sToolBarInfo.m_byLogFilter = FALSE;
                 }
-                else if(strLogFilter == _("TRUE"))
+                else if(strLogFilter == "TRUE")
                 {
                     m_sToolBarInfo.m_byLogFilter = TRUE;
                 }
@@ -14083,11 +14083,11 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
             {
                 CString strLogFilter = ptext;
 
-                if(strLogFilter == _("FALSE"))
+                if(strLogFilter == "FALSE")
                 {
                     m_sToolBarInfo.m_byLogFilterLIN = FALSE;
                 }
-                else if(strLogFilter == _("TRUE"))
+                else if(strLogFilter == "TRUE")
                 {
                     m_sToolBarInfo.m_byLogFilterLIN = TRUE;
                 }
@@ -14101,11 +14101,11 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
             {
                 CString strLogging = ptext;
 
-                if(strLogging == _("FALSE"))
+                if(strLogging == "FALSE")
                 {
                     m_sToolBarInfo.m_byLogging = FALSE;
                 }
-                else if(strLogging == _("TRUE"))
+                else if(strLogging == "TRUE")
                 {
                     m_sToolBarInfo.m_byLogging = TRUE;
                 }
@@ -14120,12 +14120,12 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
             {
                 CString strMsgInterpret = ptext;
 
-                if(strMsgInterpret == _("FALSE"))
+                if(strMsgInterpret == "FALSE")
                 {
                     m_sToolBarInfo.m_byMsgInterpret = FALSE;
                     m_bInterPretMsg = FALSE;
                 }
-                else if(strMsgInterpret == _("TRUE"))
+                else if(strMsgInterpret == "TRUE")
                 {
                     m_sToolBarInfo.m_byMsgInterpret = TRUE;
                     m_bInterPretMsg = TRUE;
@@ -14141,12 +14141,12 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
             {
                 CString strOverwrite = ptext;
 
-                if(strOverwrite == _("FALSE"))
+                if(strOverwrite == "FALSE")
                 {
                     m_sToolBarInfo.m_byOverwrite = FALSE;
                     theApp.pouGetFlagsPtr()->vSetFlagStatus(OVERWRITE, FALSE);
                 }
-                else if(strOverwrite == _("TRUE"))
+                else if(strOverwrite == "TRUE")
                 {
                     m_sToolBarInfo.m_byOverwrite = TRUE;
                     theApp.pouGetFlagsPtr()->vSetFlagStatus(OVERWRITE, TRUE);
@@ -14162,15 +14162,15 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
             {
                 CString strDisplayTimeMode = ptext;
 
-                if(strDisplayTimeMode == _("SYSTEM"))
+                if(strDisplayTimeMode == "SYSTEM")
                 {
                     m_sToolBarInfo.m_byDisplayTimeMode = eSYSTEM_MODE;
                 }
-                else if(strDisplayTimeMode == _("ABSOLUTE"))
+                else if(strDisplayTimeMode == "ABSOLUTE")
                 {
                     m_sToolBarInfo.m_byDisplayTimeMode = eABSOLUTE_MODE;
                 }
-                else if(strDisplayTimeMode == _("RELATIVE"))
+                else if(strDisplayTimeMode == "RELATIVE")
                 {
                     m_sToolBarInfo.m_byDisplayTimeMode = eRELATIVE_MODE;
                 }
@@ -14185,13 +14185,13 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
             {
                 CString strDisplayNumericON = ptext;
 
-                if(strDisplayNumericON == _("TRUE"))
+                if(strDisplayNumericON == "TRUE")
                 {
                     // Setting decimal mode
                     bSetHexDecFlags(FALSE);
                     m_sToolBarInfo.m_byDisplayHexON = FALSE;
                 }
-                else if(strDisplayNumericON == _("FALSE"))
+                else if(strDisplayNumericON == "FALSE")
                 {
                     // Setting Hex mode
                     bSetHexDecFlags(TRUE);
@@ -14208,11 +14208,11 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
             {
                 CString strLogOnConnect = ptext;
 
-                if(strLogOnConnect == _("TRUE"))
+                if(strLogOnConnect == "TRUE")
                 {
                     m_abLogOnConnect[CAN] = TRUE;
                 }
-                else if(strLogOnConnect == _("FALSE"))
+                else if(strLogOnConnect == "FALSE")
                 {
                     m_abLogOnConnect[CAN] = FALSE;
                 }
@@ -14226,11 +14226,11 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
             if(nullptr != ptext)
             {
                 CString strLogOnConnect = ptext;
-                if(strLogOnConnect == _("TRUE"))
+                if(strLogOnConnect == "TRUE")
                 {
                     m_abLogOnConnect[J1939] = TRUE;
                 }
-                else if(strLogOnConnect == _("FALSE"))
+                else if(strLogOnConnect == "FALSE")
                 {
                     m_abLogOnConnect[J1939] = FALSE;
                 }
@@ -14246,11 +14246,11 @@ void CMainFrame::vSetGlobalConfiguration(xmlNodePtr& pNodePtr)
             {
                 CString strLogOnConnect = ptext;
 
-                if(strLogOnConnect == _("TRUE"))
+                if(strLogOnConnect == "TRUE")
                 {
                     m_abLogOnConnect[LIN] = TRUE;
                 }
-                else if(strLogOnConnect == _("FALSE"))
+                else if(strLogOnConnect == "FALSE")
                 {
                     m_abLogOnConnect[LIN] = FALSE;
                 }
@@ -14269,7 +14269,7 @@ void CMainFrame::vSetWindowPositionForGraph(xmlNodePtr pNodePtr, xmlDocPtr /* pD
 
     while(pNodePtr != nullptr)
     {
-        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Visibility"))))
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Visibility")))
         {
             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
             if(nullptr != ptext)
@@ -14289,7 +14289,7 @@ void CMainFrame::vSetWindowPositionForGraph(xmlNodePtr pNodePtr, xmlDocPtr /* pD
             }
         }
 
-        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Top"))))
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Top")))
         {
             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
             if(nullptr != ptext)
@@ -14300,7 +14300,7 @@ void CMainFrame::vSetWindowPositionForGraph(xmlNodePtr pNodePtr, xmlDocPtr /* pD
             }
         }
 
-        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Bottom"))))
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Bottom")))
         {
             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
             if(nullptr != ptext)
@@ -14311,7 +14311,7 @@ void CMainFrame::vSetWindowPositionForGraph(xmlNodePtr pNodePtr, xmlDocPtr /* pD
             }
         }
 
-        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Left"))))
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Left")))
         {
             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
             if(nullptr != ptext)
@@ -14322,7 +14322,7 @@ void CMainFrame::vSetWindowPositionForGraph(xmlNodePtr pNodePtr, xmlDocPtr /* pD
             }
         }
 
-        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Right"))))
+        if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Right")))
         {
             xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
             if(nullptr != ptext)
@@ -15026,7 +15026,7 @@ int CMainFrame::nLoadXMLConfiguration()
 
                             while(pNodePtr != nullptr)
                             {
-                                if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Name"))))
+                                if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Name")))
                                 {
                                     xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
                                     if(nullptr != ptext)
@@ -15035,7 +15035,7 @@ int CMainFrame::nLoadXMLConfiguration()
                                         xmlFree(ptext);
                                     }
                                 }
-                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Message_ID"))))
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Message_ID")))
                                 {
                                     xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
                                     if(nullptr != ptext)
@@ -15044,7 +15044,7 @@ int CMainFrame::nLoadXMLConfiguration()
                                         xmlFree(ptext);
                                     }
                                 }
-                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Color"))))
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Color")))
                                 {
                                     xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
                                     if(nullptr != ptext)
@@ -15225,7 +15225,7 @@ int CMainFrame::nLoadXMLConfiguration()
 
                             while(pNodePtr != nullptr)
                             {
-                                if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Name"))))
+                                if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Name")))
                                 {
                                     xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
                                     if(nullptr != ptext)
@@ -15234,7 +15234,7 @@ int CMainFrame::nLoadXMLConfiguration()
                                         xmlFree(ptext);
                                     }
                                 }
-                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Message_ID"))))
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Message_ID")))
                                 {
                                     xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
                                     if(nullptr != ptext)
@@ -15243,7 +15243,7 @@ int CMainFrame::nLoadXMLConfiguration()
                                         xmlFree(ptext);
                                     }
                                 }
-                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Color"))))
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Color")))
                                 {
                                     xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
                                     if(nullptr != ptext)
@@ -15718,7 +15718,7 @@ int CMainFrame::nLoadXMLConfiguration()
 
                             while(pNodePtr != nullptr)
                             {
-                                if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Name"))))
+                                if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Name")))
                                 {
                                     xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
                                     if(nullptr != ptext)
@@ -15727,7 +15727,7 @@ int CMainFrame::nLoadXMLConfiguration()
                                         xmlFree(ptext);
                                     }
                                 }
-                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Message_ID"))))
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Message_ID")))
                                 {
                                     xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
                                     if(nullptr != ptext)
@@ -15736,7 +15736,7 @@ int CMainFrame::nLoadXMLConfiguration()
                                         xmlFree(ptext);
                                     }
                                 }
-                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)_("Color"))))
+                                else if((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Color")))
                                 {
                                     xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodePtr->xmlChildrenNode, 1);
                                     if(nullptr != ptext)
@@ -16622,7 +16622,7 @@ bool CMainFrame::CompareFile(CString FirstFile, CString SecFile)
             SideS = ArrSFile.GetAt(ni);
             if(SideF!=SideS)
             {
-                strTemp.Format(_T("%d"),ni);
+                strTemp.Format("%d", ni);
                 //Adds unmatching tags in an array
                 ArrDisC.Add(strTemp);
                 return true;
@@ -16680,7 +16680,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
 
                 BYTE byVersion = 0;
                 COPY_DATA_2(&byVersion, pbyTemp, sizeof(BYTE));
-                char acName[MAX_PATH] = {_T('\0')};
+                char acName[MAX_PATH] = { '\0' };
                 COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
                 m_omMRU_C_Filename.Format("%s", acName);
 
@@ -16842,7 +16842,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
-                    char acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = { '\0' };
                     COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
                     pMessageAtt[i].omStrMsgname.Format("%s", acName);
 
@@ -16919,7 +16919,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
-                    char acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = { '\0' };
                     COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
                     pMessageAtt[i].omStrMsgname.Format("%s", acName);
 
@@ -16992,7 +16992,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
-                    char acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = { '\0' };
                     COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
                     pMessageAtt[i].omStrMsgname.Format("%s", acName);
 
@@ -17066,7 +17066,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 PSMESSAGEATTR pMessageAtt = new SMESSAGEATTR[sMsgAttrib.m_usMsgCount];
                 for (UINT i = 0; i < sMsgAttrib.m_usMsgCount; i++)
                 {
-                    char acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = { '\0' };
                     COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
                     pMessageAtt[i].omStrMsgname.Format("%s", acName);
 
@@ -17122,7 +17122,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 {
                     SMAINENTRY sMainEntry;
                     COPY_DATA_2(&(sMainEntry.m_unMainEntryID),pbyTemp, (sizeof (UINT)));
-                    char acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = { '\0' };
                     COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                     sMainEntry.m_omMainEntryName.Format("%s", acName);
                     UINT nSelCount = 0;
@@ -17221,7 +17221,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 {
                     SMAINENTRY sMainEntry;
                     COPY_DATA_2(&(sMainEntry.m_unMainEntryID),pbyTemp, (sizeof (UINT)));
-                    char acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = { '\0' };
                     COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                     sMainEntry.m_omMainEntryName.Format("%s", acName);
                     UINT nSelCount = 0;
@@ -17431,7 +17431,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 COPY_DATA_2(&unCount, pbyTemp, sizeof (UINT));
                 for (UINT i = 0; i < unCount; i++)
                 {
-                    char acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = { '\0' };
                     COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                     CString omDbName;
                     omDbName.Format("%s", acName);
@@ -17477,7 +17477,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 COPY_DATA_2(&unCount, pbyTemp, sizeof (UINT));
                 for (UINT i = 0; i < unCount; i++)
                 {
-                    char acName[MAX_PATH] = {_T('\0')};
+                    char acName[MAX_PATH] = { '\0' };
                     COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
                     CString omDbName;
                     omDbName.Format("%s", acName);
@@ -17846,7 +17846,7 @@ bool CMainFrame::bUpdatePopupMenuFLEXRAYDIL(void)
 
     if (bResult == TRUE)
     {
-        CMenu* pConfigMenu = GetSubMenu(_T(_("Flex&Ray"))); // Get the Menu "F&LEXRAY"
+        CMenu* pConfigMenu = GetSubMenu("Flex&Ray"); // Get the Menu "F&LEXRAY"
         ASSERT(pConfigMenu != nullptr);
         if (pConfigMenu == nullptr)
         {
@@ -17854,7 +17854,7 @@ bool CMainFrame::bUpdatePopupMenuFLEXRAYDIL(void)
         }
         if(pConfigMenu != nullptr)
         {
-            pConfigMenu->InsertMenu(2, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pFlxDILSubMenu->m_hMenu), _T(_("Dri&ver Selection")));
+            pConfigMenu->InsertMenu(2, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pFlxDILSubMenu->m_hMenu), _("Dri&ver Selection"));
         }
     }
     if (bResult == FALSE)
@@ -17903,7 +17903,7 @@ bool CMainFrame::bUpdatePopupMenuDIL(void)
 
     if (bResult == TRUE)
     {
-        CMenu* pConfigMenu = GetSubMenu(_T(_("&CAN"))); // Get the Menu "&Hardware"
+        CMenu* pConfigMenu = GetSubMenu("&CAN"); // Get the Menu "&Hardware"
         ASSERT(pConfigMenu != nullptr);
         if (pConfigMenu == nullptr)
         {
@@ -17913,7 +17913,7 @@ bool CMainFrame::bUpdatePopupMenuDIL(void)
 
         if(pConfigMenu != nullptr)
         {
-            pConfigMenu->InsertMenu(1, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pDILSubMenu->m_hMenu), _T(_("Dri&ver Selection")));
+            pConfigMenu->InsertMenu(1, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pDILSubMenu->m_hMenu), _("Dri&ver Selection"));
         }
     }
     if (bResult == FALSE)
@@ -17991,7 +17991,7 @@ bool CMainFrame::bUpdatePopupMenuDILL(void)
 
     if (bResult == TRUE)
     {
-        CMenu* pConfigMenu = GetSubMenu(_T(_("&LIN"))); // Get the Menu "&Hardware"
+        CMenu* pConfigMenu = GetSubMenu("&LIN"); // Get the Menu "&Hardware"
         ASSERT(pConfigMenu != nullptr);
         if (pConfigMenu == nullptr)
         {
@@ -18001,7 +18001,7 @@ bool CMainFrame::bUpdatePopupMenuDILL(void)
 
         if(pConfigMenu != nullptr)
         {
-            pConfigMenu->InsertMenu(3, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pDILSubMenuLin->m_hMenu), _T(_("&Driver Selection")));
+            pConfigMenu->InsertMenu(3, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pDILSubMenuLin->m_hMenu), _("&Driver Selection"));
         }
     }
     if (bResult == FALSE)
@@ -18344,7 +18344,7 @@ void CMainFrame::vInitializeGraphWndReadBuffer()
         g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, dwClientId, CAN_MONITOR_NODE);
         if (g_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_ADD, dwClientId, &m_ouCanBuf) != S_OK)
         {
-            TRACE(_("The function vInitializeGraphWndReadBuffer() failed."));
+            TRACE("The function vInitializeGraphWndReadBuffer() failed.");
         }
     }
 }
@@ -18478,11 +18478,11 @@ void CMainFrame::OnUpdateActivateJ1939(CCmdUI* pCmdUI)
     {
         if ((nullptr == sg_pouIJ1939DIL) && (nullptr == sg_pouIJ1939Logger))
         {
-            pCmdUI->SetText(_T(_("&Activate")));
+            pCmdUI->SetText(_("&Activate"));
         }
         else
         {
-            pCmdUI->SetText(_T(_("D&eactivate")));
+            pCmdUI->SetText(_("D&eactivate"));
         }
 
         pCmdUI->Enable(TRUE);
@@ -18502,11 +18502,11 @@ void CMainFrame::OnUpdateActivateLIN(CCmdUI* pCmdUI)
     disable it if the former is successful */
     if ((nullptr == sg_pouLinDIL) && (nullptr == sg_pouLinLogger))
     {
-        pCmdUI->SetText(_T(_("&Activate")));
+        pCmdUI->SetText(_("&Activate"));
     }
     else
     {
-        pCmdUI->SetText(_T(_("D&eactivate")));
+        pCmdUI->SetText(_("D&eactivate"));
     }
 
     pCmdUI->Enable(TRUE);
@@ -18623,11 +18623,11 @@ void CMainFrame::OnUpdateActionJ1939Online(CCmdUI* pCmdUI)
         pCmdUI->Enable(TRUE);
         if (sg_pouIJ1939DIL->DILIJ_bIsOnline() == TRUE)
         {
-            pCmdUI->SetText(_T(_("&Go Offline")));
+            pCmdUI->SetText(_("&Go Offline"));
         }
         else
         {
-            pCmdUI->SetText(_T(_("&Go Online")));
+            pCmdUI->SetText(_("&Go Online"));
         }
     }
     else
@@ -19134,7 +19134,7 @@ void CMainFrame::OnJ1939DBOpen()
                          _("J1939 Database File(s)(*.dbf)|*.dbf||"),
                          nullptr );
     // Set Title
-    fileDlg.m_ofn.lpstrTitle  = _T(_("Select J1939 Database Filename..."));
+    fileDlg.m_ofn.lpstrTitle  = _("Select J1939 Database Filename...");
 
     if ( IDOK == fileDlg.DoModal() )
     {
@@ -19295,16 +19295,15 @@ void CMainFrame::OnJ1939DBAssociate()
 {
     CStringArray strFilePathArray;
     // Display a open file dialog
-    char szFilters[] = _T("BUSMASTER J1939 Database File(s)(*.dbf)|*.dbf||");
-    CFileDialog fileDlg( TRUE,      // Open File dialog
-                         "dbf",     // Default Extension,
-                         nullptr,
-                         OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-                         _(szFilters),
-                         nullptr );
+    CFileDialog fileDlg(TRUE,      // Open File dialog
+                        "dbf",     // Default Extension,
+                        nullptr,
+                        OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+                        _("BUSMASTER J1939 Database File(s)(*.dbf)|*.dbf||"),
+                        nullptr );
 
     // Set Title
-    fileDlg.m_ofn.lpstrTitle  = _T(_("Select Active Database Filename..."));
+    fileDlg.m_ofn.lpstrTitle = _("Select Active Database Filename...");
 
     if ( IDOK == fileDlg.DoModal() )
     {
@@ -19334,7 +19333,7 @@ void CMainFrame::OnJ1939DBAssociate()
         if(bAllFilesImported == FALSE)
         {
             omStrMsg += _(" not found!");
-            MessageBox(omStrMsg,_("BUSMASTER"),MB_OK|MB_ICONERROR);
+            MessageBox(omStrMsg,"BUSMASTER",MB_OK|MB_ICONERROR);
         }
         else
         {
@@ -19400,8 +19399,8 @@ void CMainFrame::OnJ1939LoadAll()
     if(bSucces!=TRUE)  // if the load is not successfull
     {
         int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg =_T(_("Following file(s) are not properly loaded:"));
-        CString omStrErrorMsgDummy="";
+        CString omStrErrorMsg = _("Following file(s) are not properly loaded:");
+        CString omStrErrorMsgDummy = "";
         for(int i = 0 ; i < nFailure; i++)
         {
 
@@ -19424,8 +19423,8 @@ void CMainFrame::OnJ1939UnloadAll()
     if(bSucces!=TRUE)  // if the unload is not successfull
     {
         int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg =_T(_("Following file(s) are not properly unloaded:"));
-        CString omStrErrorMsgDummy="";
+        CString omStrErrorMsg = _("Following file(s) are not properly unloaded:");
+        CString omStrErrorMsgDummy = "";
         for(int i = 0 ; i < nFailure; i++)
         {
 
@@ -19449,12 +19448,12 @@ void CMainFrame::OnJ1939BuildAndLoadAll()
     if(!bSucces)  // if the build is not successfull
     {
         int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg =_T(_("Following file(s) are either not properly build or loaded:"));
-        CString omStrErrorMsgDummy="";
+        CString omStrErrorMsg = _("Following file(s) are either not properly build or loaded:");
+        CString omStrErrorMsgDummy = "";
         for(int i = 0 ; i < nFailure; i++)
         {
 
-            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
             omStrErrorMsg += omStrErrorMsgDummy;
         }
         AfxMessageBox(omStrErrorMsg);
@@ -19474,12 +19473,12 @@ void CMainFrame::OnJ1939BuildAll()
     if(!bSucces)  // if the build is not successfull
     {
         int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg =_T(_("Following file(s) are either not properly build or loaded:"));
-        CString omStrErrorMsgDummy="";
+        CString omStrErrorMsg = _("Following file(s) are either not properly build or loaded:");
+        CString omStrErrorMsgDummy = "";
         for(int i = 0 ; i < nFailure; i++)
         {
 
-            omStrErrorMsgDummy.Format(_T("\n%s"), omStrBuildFiles.GetAt(i));
+            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
             omStrErrorMsg += omStrErrorMsgDummy;
         }
         AfxMessageBox(omStrErrorMsg);

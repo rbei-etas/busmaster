@@ -557,7 +557,7 @@ void CMsgReplayWnd::SetWindowFont()
     LF.lfOutPrecision = OUT_CHARACTER_PRECIS;
     LF.lfClipPrecision = CLIP_CHARACTER_PRECIS;
     LF.lfPitchAndFamily  = FIXED_PITCH | FF_SWISS;
-    lstrcpy(LF.lfFaceName, _("Courier"));
+    lstrcpy(LF.lfFaceName, "Courier");
 
     LF.lfWeight = FW_NORMAL;
     if (m_omNewFont.CreateFontIndirect(&LF) == TRUE)

@@ -657,7 +657,7 @@ HRESULT CTSExecutorLIB::GetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize
     {
         BYTE* pbyTemp = pDesBuffer;
         //TestSuite name
-        char acTestSuiteName[MAX_PATH] = {_T('\0')};
+        char acTestSuiteName[MAX_PATH] = {'\0'};
         strcpy_s(acTestSuiteName, MAX_PATH, m_omstrTestSuiteName);
         COPY_DATA(pbyTemp, acTestSuiteName, (sizeof (char) * MAX_PATH));
         //TestSuite Status
@@ -674,7 +674,7 @@ HRESULT CTSExecutorLIB::GetConfigurationData(BYTE*& pDesBuffer, UINT& unBuffSize
             CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
 
             //File Path
-            char acName[MAX_PATH] = {_T('\0')};
+            char acName[MAX_PATH] = {'\0'};
             strcpy_s(acName, MAX_PATH, ouTestSetupEntity.m_omstrCurrentTSFile.GetBuffer(MAX_PATH));
             COPY_DATA(pbyTemp, acName, (sizeof (char) * MAX_PATH));
             //Selection Status
@@ -800,7 +800,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
     {
         BYTE* pbyTemp = pSrcBuffer;
         //File Path
-        char acTestSuiteName[MAX_PATH] = {_T('\0')};
+        char acTestSuiteName[MAX_PATH] = {'\0'};
         COPY_DATA_2(acTestSuiteName, pbyTemp, (sizeof (char) * MAX_PATH));
         m_omstrTestSuiteName = acTestSuiteName;
 
@@ -817,7 +817,7 @@ HRESULT CTSExecutorLIB::SetConfigurationData(BYTE* pSrcBuffer, UINT /*unBuffSize
             //File Path
             CString omstrFileName;
             DWORD dwID;
-            char acName[MAX_PATH] = {_T('\0')};
+            char acName[MAX_PATH] = {'\0'};
             COPY_DATA_2(acName, pbyTemp, (sizeof (char) * MAX_PATH));
             omstrFileName = acName;
             if(AddTestSetup(omstrFileName, dwID) == S_OK)

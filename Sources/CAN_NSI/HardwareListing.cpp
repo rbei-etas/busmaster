@@ -37,25 +37,25 @@ static char THIS_FILE[] = __FILE__;
 // Macro to find minimum number
 #define MIN(a,b)  ((a) < (b) ? (a) : (b))
 /* - Hardware Interface Layer - */
-#define defSTR_MISSING_HARDWARE _T("Required number of hardware are not present\nRequired: %2d    Available: %2d")
+#define defSTR_MISSING_HARDWARE _("Required number of hardware are not present\nRequired: %2d    Available: %2d")
 
-#define defSTR_CHANNEL_NAME                _T("Channel")
-#define defSTR_CHANNEL_NAME_FORMAT         _T("%s %d")
+#define defSTR_CHANNEL_NAME                _("Channel")
+#define defSTR_CHANNEL_NAME_FORMAT         _("%s %d")
 
-#define defSTR_HARDWARE_COL_NAME           _T("Hardware")
+#define defSTR_HARDWARE_COL_NAME           _("Hardware")
 #define defSTR_CHANNEL_COL_WIDTH           90
 #define defSTR_HARDWARE_COL_WIDTH          75
 
 #define defCHANNEL_COL                     0
 #define defHARDWARE_COL                    1
 
-#define defSTR_TEMP_CLIENT_NAME            _T("TEMP_CLIENT")
-#define defSTR_TEMP_NET_NAME               _T("TEMP_NET")
+#define defSTR_TEMP_CLIENT_NAME            _("TEMP_CLIENT")
+#define defSTR_TEMP_NET_NAME               _("TEMP_NET")
 
-#define defSTR_NOT_FULLY_CONFIGURED        _T("Required number of hardware are not configured.\nApplication will use default channel association with hardware")
+#define defSTR_NOT_FULLY_CONFIGURED        _("Required number of hardware are not configured.\nApplication will use default channel association with hardware")
 #define defCONNECTED_IMAGE_INDEX            1
 #define defDISCONNECTED_IMAGE_INDEX         0
-#define defSTR_HW_DISPLAY_FORMAT            _T("CAN %d")
+#define defSTR_HW_DISPLAY_FORMAT            _("CAN %d")
 #define defSIGNAL_ICON_SIZE               16
 #define WHITE_COLOR             RGB(255,255,255)
 
@@ -288,7 +288,7 @@ void CHardwareListing::vUpdateHwDetails(int nIndex)
     {
         //Driver Id
         CString omStr;
-        omStr.Format(_T("%d"), m_psHwInterface[nIndex].m_dwIdInterface);
+        omStr.Format(_("%d"), m_psHwInterface[nIndex].m_dwIdInterface);
         m_omDriverID.SetWindowText(omStr);
         //Firmware
         m_omFirmware.SetWindowText(m_psHwInterface[nIndex].m_acDeviceName.c_str());
@@ -434,7 +434,7 @@ void CHardwareListing::OnOK()
     m_nNoOfHwSelected = m_omSelectedHwList.GetItemCount();
     if (m_nNoOfHwSelected < 1)
     {
-        AfxMessageBox(_T("Please select atleast one hardware"));
+        AfxMessageBox(_("Please select atleast one hardware"));
         return;
     }
     // Number of hardware will be used
@@ -475,7 +475,7 @@ void CHardwareListing::OnOK()
     else
     {
         CString omErr;
-        omErr.Format(_T("Please select atmost %d hardwares"),  CHANNEL_ALLOWED);
+        omErr.Format(_("Please select atmost %d hardwares"),  CHANNEL_ALLOWED);
         AfxMessageBox(omErr);
         return;
     }

@@ -1004,7 +1004,7 @@ void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
             omSubMenu.AppendMenu(MF_STRING, IDM_ADD_VERIFY, _("Verify"));
             omSubMenu.AppendMenu(MF_STRING, IDM_ADD_WAIT, _("Wait"));
             omSubMenu.AppendMenu(MF_STRING, IDM_ADD_VERIFYRESPONSE, _("verfiyResponse"));
-            //omSubMenu.AppendMenu(MF_STRING, IDM_ADD_REPLAY, _T("Replay"));
+            //omSubMenu.AppendMenu(MF_STRING, IDM_ADD_REPLAY, _("Replay"));
             omContextMenu.AppendMenu(MF_POPUP, (UINT_PTR)omSubMenu.m_hMenu, _("New"));
             omContextMenu.AppendMenu(MF_STRING, IDM_DELETE, _("Delete"));
         }
@@ -1368,7 +1368,7 @@ void CTreeViewEx::OnTvnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
     //CTreeCtrl &omTreeCtrl = GetTreeCtrl();
     LPNMTVDISPINFO pTVDispInfo = reinterpret_cast<LPNMTVDISPINFO>(pNMHDR);
     LPTSTR pszText = pTVDispInfo->item.pszText;
-    *pResult = ( pszText && (*pszText != _T('\0')));
+    *pResult = ( pszText && (*pszText != '\0'));
     CString omstrItemNewName(pszText);
     GetEditorWindow()->nChangeEntityTitle(nullptr, omstrItemNewName);
     m_bEditing = FALSE;

@@ -28,8 +28,7 @@
 #include "include/Utils_macro.h"
 #include "Include/LIN_Error_Defs.h"
 //#include "LIN_ISOLAR_EVE_VLIN/LIN_ISOLAR_EVE_VLIN_Defines.h"
-#include "Utility\MultiLanguageSupport.h"
-//#include "../Application/GettextBusmaster.h"
+#include "Utility/MultiLanguageSupport.h"
 
 struct sERRORMSGINFO
 {
@@ -261,14 +260,14 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
         if (RX_FLAG == pMsgLIN->m_ucDataType)
         {
             CurrDataLIN->m_eDirection = DIR_RX;
-            CurrDataLIN->m_acMsgDir[0] = _T('R');
+            CurrDataLIN->m_acMsgDir[0] = 'R';
         }
         else if (TX_FLAG == pMsgLIN->m_ucDataType)
         {
             CurrDataLIN->m_eDirection = DIR_TX;
-            CurrDataLIN->m_acMsgDir[0] = _T('T');
+            CurrDataLIN->m_acMsgDir[0] = 'T';
         }
-        CurrDataLIN->m_acMsgDir[1] = _T('x');
+        CurrDataLIN->m_acMsgDir[1] = 'x';
 
         TYPE_CHANNEL CurrChannel = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChannel;  // Assuming default LIN msg
 
@@ -284,7 +283,7 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
         //pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucMsgTyp
         //   {
         //       CurrDataLIN->m_byIDType = TYPE_ID_LIN_STANDARD;
-        //       strcpy_s(CurrDataLIN->m_acType, LENGTH_STR_DESCRIPTION_LIN, _("s"));
+        //       strcpy_s(CurrDataLIN->m_acType, LENGTH_STR_DESCRIPTION_LIN, "s");
         //   }
 
         //sprintf_s(CurrDataLIN->m_acMsgType, "%s", sg_ListDIL_MSG_TYPE[pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucMsgTyp]);
@@ -304,21 +303,21 @@ void CFormatMsgLIN::vFormatLINDataMsg(STLINDATA* pMsgLIN,
         //else
         {
             _itoa_s(pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucDataLen, CurrDataLIN->m_acDataLen, 10);
-            strcpy_s(CurrDataLIN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_LIN, "Description");
+            strcpy_s(CurrDataLIN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_LIN, _("Description"));
             CurrDataLIN->m_u64TimeStamp = pMsgLIN->m_lTickCount.QuadPart;
             CurrDataLIN->m_dwMsgID = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucMsgID;
             CurrDataLIN->m_byDataLength = pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucDataLen;
             CurrDataLIN->m_byChecksum=pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksum;
-            strcpy(CurrDataLIN->m_acType, "LIN Message");
+            strcpy(CurrDataLIN->m_acType, _("LIN Message"));
             if ( CurrDataLIN->m_dwMsgID ==0x3c || CurrDataLIN->m_dwMsgID == 0x3D )
             {
-                strcpy(CurrDataLIN->m_acType, "Diagnostic Message");
+                strcpy(CurrDataLIN->m_acType, _("Diagnostic Message"));
             }
 
-            std::string str = "Classic";
+            std::string str = _("Classic");
             if ( pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksumTyp == LIN_CHECKSUM_ENHANCED )
             {
-                str = "Enhanced";
+                str = _("Enhanced");
             }
 
             CurrDataLIN->m_byChecksumType=pMsgLIN->m_uDataInfo.m_sLINMsg.m_ucChksumTyp;

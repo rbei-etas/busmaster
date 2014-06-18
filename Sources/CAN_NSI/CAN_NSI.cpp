@@ -1249,7 +1249,7 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
     for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
     {
         sg_aodChannels[nCount].m_nChannel = sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface;
-        sprintf_s(sg_aodChannels[nCount].m_strName , _T("%s, Serial Number - %s"),
+        sprintf_s(sg_aodChannels[nCount].m_strName , _("%s, Serial Number - %s"),
                   sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDescription.c_str(),
                   sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acDeviceName.c_str());
     }
@@ -1287,12 +1287,12 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
      * Take action based on number of Hardware Available
      */
     char acNo_Of_Hw[MAX_STRING] = {0};
-    sprintf_s(acNo_Of_Hw, _T("Number of NSI hardwares Available: %d"), nChannelCount);
+    sprintf_s(acNo_Of_Hw, _("Number of NSI hardwares Available: %d"), nChannelCount);
 
     /* No Hardware found */
     if( nChannelCount == 0 )
     {
-        sprintf_s(sg_omErrStr, _T("No NSI hardwares Available.\nPlease check if NSI drivers are installed."));
+        sprintf_s(sg_omErrStr, _("No NSI hardwares Available.\nPlease check if NSI drivers are installed."));
     }
     /* Available hardware is lesser then the supported channels */
     else
@@ -1648,7 +1648,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
                 omErr.Format(_("Ic_StartChip : NSI %s"), GetCodeString(cr));
                 AfxMessageBox(omErr);
                 nReturn = -1;
-                sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Error Starting Device"));
+                sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("Error Starting Device"));
             }
             sg_byCurrState[i] = CREATE_MAP_TIMESTAMP;
         }
@@ -1667,7 +1667,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
                 omErr.Format(_("Ic_StopChip : NSI %s"), GetCodeString(cr));
                 AfxMessageBox(omErr);
                 nReturn = -1;
-                sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Error Closing Device"));
+                sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("Error Closing Device"));
             }
             sg_byCurrState[i] = CREATE_MAP_TIMESTAMP;
         }
@@ -1690,8 +1690,8 @@ static int GetNoOfConnectedHardware(void)
     cr = Ic_EnumCards(&nChannelCount, NSI_cardData, sizeof(NSI_cardData));
     if (cr != _OK )
     {
-        strcpy_s(sg_omErrStr, _T("Problem Finding Device!"));
-        //_tcscpy(sg_omErrStr, _T("Problem Finding Device!"));
+        strcpy_s(sg_omErrStr, _("Problem Finding Device!"));
+        //_tcscpy(sg_omErrStr, _("Problem Finding Device!"));
         nChannelCount = (unsigned long)-1;
     }
     /* Return the channel count */
@@ -2123,7 +2123,7 @@ HRESULT CDIL_CAN_NSI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, 
     }
     else
     {
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Error connecting to driver"));
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("Error connecting to driver"));
     }
     return hResult;
 }
@@ -2332,7 +2332,7 @@ HRESULT CDIL_CAN_NSI::CAN_StartHardware(void)
         }
         else
         {
-            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Could not start the read thread" ));
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("Could not start the read thread" ));
         }
     }
     return hResult;

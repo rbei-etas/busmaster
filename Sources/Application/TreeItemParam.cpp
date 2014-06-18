@@ -72,7 +72,7 @@ CTreeItemParam::CTreeItemParam(CWnd* pomParent,
                CLIP_DEFAULT_PRECIS,       // nClipPrecision
                DEFAULT_QUALITY,           // nQuality
                DEFAULT_PITCH | FF_ROMAN,  // nPitchAndFamily
-               _T(_("Courier New"))));
+               "Courier New"));
 
     m_odTreeCtrl.SetFont(&m_omFont, TRUE);
 }
@@ -112,7 +112,7 @@ void CTreeItemParam::vUpdateTreeValues(CStringArray& omStringArray, COLORREF Tex
                    CLIP_DEFAULT_PRECIS,       // nClipPrecision
                    DEFAULT_QUALITY,           // nQuality
                    DEFAULT_PITCH | FF_ROMAN,  // nPitchAndFamily
-                   _T(_("Courier New"))));
+                   "Courier New"));
 
         m_odTreeCtrl.SetFont(&m_omFont, TRUE);
     }

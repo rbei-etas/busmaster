@@ -29,27 +29,27 @@
 
 // Export Dialog
 
-#define defSTR_BAUD_RATE_FORMAT     _T("Channel %-2d -> %s kbps")
+#define defSTR_BAUD_RATE_FORMAT     _("Channel %-2d -> %s kbps")
 
-#define defSTR_EXPORT_DIALOG_CAPTION    _T("Select Export Filename...")
-#define defSTR_CSV_FORMAT_SPECIFIER _T("Comma Separated Values format (*.csv)|*.csv||")
-#define defSTR_CSV_FORMAT           _T("csv")
-#define defSTR_EXPORT_CREATE_SUCCESS _T("CSV report successfully generated and saved at %s")
-#define defSTR_CSV_FILE_PATH_EMPTY      _T("Please enter valid CSV report file path")
+#define defSTR_EXPORT_DIALOG_CAPTION    _("Select Export Filename...")
+#define defSTR_CSV_FORMAT_SPECIFIER _("Comma Separated Values format (*.csv)|*.csv||")
+#define defSTR_CSV_FORMAT           _("csv")
+#define defSTR_EXPORT_CREATE_SUCCESS _("CSV report successfully generated and saved at %s")
+#define defSTR_CSV_FILE_PATH_EMPTY      _("Please enter valid CSV report file path")
 
-#define defSTR_REPORT_DIALOG_CAPTION    _T("Select Report Filename...")
-#define defSTR_HTML_FORMAT_SPECIFIER _T("HTML Report Format (*.html)|*.html||")
-#define defSTR_HTML_FORMAT           _T("html")
-#define defSTR_REPORT_CREATE_SUCCESS _T("HTML report successfully generated and saved at %s")
-#define defSTR_HTML_FILE_PATH_EMPTY      _T("Please enter valid HTML report file path")
+#define defSTR_REPORT_DIALOG_CAPTION    _("Select Report Filename...")
+#define defSTR_HTML_FORMAT_SPECIFIER _("HTML Report Format (*.html)|*.html||")
+#define defSTR_HTML_FORMAT           _("html")
+#define defSTR_REPORT_CREATE_SUCCESS _("HTML report successfully generated and saved at %s")
+#define defSTR_HTML_FILE_PATH_EMPTY      _("Please enter valid HTML report file path")
 
-#define defSTR_BITMAP_DIALOG_CAPTION    _T("Select Picture Filename...")
-#define defSTR_BMP_FORMAT_SPECIFIER _T("Bitmap Picture Format (*.bmp)|*.bmp||")
-#define defSTR_BMP_FORMAT           _T("bmp")
-#define defSTR_bmp_FILE_PATH_EMPTY      _T("Please enter valid bitmap file path")
-#define defSPACE_STR            _T(" ")
+#define defSTR_BITMAP_DIALOG_CAPTION    _("Select Picture Filename...")
+#define defSTR_BMP_FORMAT_SPECIFIER _("Bitmap Picture Format (*.bmp)|*.bmp||")
+#define defSTR_BMP_FORMAT           _("bmp")
+#define defSTR_bmp_FILE_PATH_EMPTY      _("Please enter valid bitmap file path")
+#define defSPACE_STR            _(" ")
 
-#define defSTR_DEFAULT_BROWSE_LOCATION  _T("about:blank")
+#define defSTR_DEFAULT_BROWSE_LOCATION  _("about:blank")
 
 // To copy the data and advance the pointer of the target data stream
 #ifndef COPY_DATA
@@ -62,7 +62,7 @@
 #endif
 
 // Configuration
-#define defIMPORT_WARNING_GRAPH   _T("Dissociation will clear Graph element List for all buses.\nDo you want to Clear the List?")
+#define defIMPORT_WARNING_GRAPH   _("Dissociation will clear Graph element List for all buses.\nDo you want to Clear the List?")
 // Default values
 #define defDEFAULT_BUFFER_SIZE      5000   // 5000 Entries
 #define defDEFAULT_UPDATE_RATE      1000    // One Second
@@ -102,9 +102,9 @@
 #define DEFAULT_MSG_COLOUR      RGB(0, 0, 0)
 
 // Graph Left View
-#define defSTR_LIST_HEADING_CATOGORY        _T("Category")
-#define defSTR_LIST_HEADING_ELEMENT         _T("Element")
-#define defSTR_LIST_HEADING_TYPE            _T("Type")
+#define defSTR_LIST_HEADING_CATOGORY        _("Category")
+#define defSTR_LIST_HEADING_ELEMENT         _("Element")
+#define defSTR_LIST_HEADING_TYPE            _("Type")
 
 #define defCOL_CATOGORY_INDEX               0
 #define defCOL_ELEMENT_INDEX                1
@@ -118,9 +118,9 @@
 #define defELEMENT_SELECTION_ELEMENT_WIDTH      105
 #define defELEMENT_SELECTION_TYPE_WIDTH         65
 
-#define desSTR_INVALID_MAINFRAME_POINTER    _T("Invalid main frame pointer")
-#define MSG_MEMORY_CONSTRAINT   _T("Insufficient Memory available")
-#define defSTR_GRAPH_WINDOW_NAME            _T("Signal Graph")
+#define desSTR_INVALID_MAINFRAME_POINTER    _("Invalid main frame pointer")
+#define MSG_MEMORY_CONSTRAINT   _("Insufficient Memory available")
+#define defSTR_GRAPH_WINDOW_NAME            _("Signal Graph")
 
 #define defSTR_DB_MSG_NAME      "Database Messages"
 #define defSTR_STATISTICS_NAME  "Statistics"
@@ -135,13 +135,13 @@
 #define defSTR_ELEMENT_NOT_FOUND    "Element not found in the list. Please remove dead elements!!"
 
 #define defMAX_ELEMENTS_COUNT       10
-#define defSTR_MAX_ELEMENTS_EXCEEDED_MSG    _T("Only 10 graph elements are supported. Please delete existing element to add new element")
+#define defSTR_MAX_ELEMENTS_EXCEEDED_MSG    _("Only 10 graph elements are supported. Please delete existing element to add new element")
 
-#define defSTR_INVALID_RANGE        _T("Please enter valid range value")
+#define defSTR_INVALID_RANGE        _("Please enter valid range value")
 
 
-#define defSTR_SHOW_GRID        _T("Show Grid")
-#define defSTR_HIDE_GRID        _T("Hide Grid")
+#define defSTR_SHOW_GRID        _("Show Grid")
+#define defSTR_HIDE_GRID        _("Hide Grid")
 #define defUPDATE_TIMER_ID      100
 
 #define defDEFAULT_XRANGE_MAX   10
@@ -150,8 +150,8 @@
 #define defDEFAULT_YRANGE_MAX   100
 #define defDEFAULT_YRANGE_MIN   0
 
-#define defSTR_Y_AXIS_FORMAT        _T("%0.4f")
-#define defSTR_X_AXIS_FORMAT        _T("%0.3fS")
+#define defSTR_Y_AXIS_FORMAT        _("%0.4f")
+#define defSTR_X_AXIS_FORMAT        _("%0.3fS")
 
 #define WM_CONFIG_CHANGE            WM_USER + 58 // Configuration Change Event
 #define WM_NOTIFICATION_FROM_OTHER  WM_USER + 43
@@ -270,8 +270,8 @@ typedef enum eCONFIGDETAILS
 #define defGRAPH_WND_LEFT_MARGIN           0.05
 #define defGRAPH_WND_RIGHT_MARGIN          0.05
 
-#define defSTR_CHANNEL_NAME                _T("Channel")
-#define defSTR_CHANNEL_NAME_FORMAT         _T("%s %d")
+#define defSTR_CHANNEL_NAME                _("Channel")
+#define defSTR_CHANNEL_NAME_FORMAT         _("%s %d")
 
 #define WM_USER_CMD                 WM_USER + 44
 

@@ -347,7 +347,7 @@ int nGetTypeOfSymbol(int index, CString omString, CString& NumValue )
 
 CString tagFormulaCodeVarEx::omGetEnggValue(DWORD /* dwRawValue */)
 {
-    CString omEnggValue = _T("");
+    CString omEnggValue = "";
     int nLenght = m_omFormula.GetLength();
     int i = 0;
 
@@ -527,7 +527,7 @@ CSignalDef& CSignalDef::operator =(const CSignalDef& RefObj)
 
 CString CSignalDef::omSearchValueFromCompuBlks(DWORD dwRawValue)
 {
-    CString omResult = _T("");
+    CString omResult = "";
     bool bContinue = false, bResult = false;
     int nCnt = (int) m_ouCompuMethods.GetSize();
     for (int j = 0; (j < nCnt) && (!bResult); j++)
@@ -647,7 +647,7 @@ UINT64 CSignalDef::un64GetRawValue(WORD* pwData)
 
 CString CSignalDef::omGetEnggValue(DWORD dwRawValue)
 {
-    CString RetStr = _T("");
+    CString RetStr = "";
     int nCnt = (int) m_ouSigConstrnt.GetSize();
     SIG_INT_CONSTRAINT_EX ouTempSigCnst;
     bool bContinue = true;
@@ -935,7 +935,7 @@ tagFormulaCodeVarEx::~tagFormulaCodeVarEx()
 
 CString omSearchValueFromCompuBlks(SIGNAL_STRUCT& ouSignal, DWORD dwRawValue)
 {
-    CString omResult = _T("");
+    CString omResult = "";
     bool bContinue = false, bResult = false;
 
 

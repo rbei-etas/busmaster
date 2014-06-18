@@ -188,7 +188,7 @@ void CMsgSgDetView::OnInitialUpdate()
     lstrcpy(LF.lfFaceName, _("Ms Sans Serif"));
     if (!om_tFont.CreateFontIndirect(&LF))
     {
-        TRACE(_("MMI: CMainFrame::OnCreate() Could not create font for Combo Box\n"));
+        TRACE("MMI: CMainFrame::OnCreate() Could not create font for Combo Box\n");
     }
 
     // Insert column header in the signal details list control

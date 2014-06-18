@@ -890,7 +890,7 @@ UINT CTxMsgManager::s_unSendMsgBlockOnTime(LPVOID pParam )
             }
             else
             {
-                TRACE(_T(_("Tx block stopped\n")));
+                TRACE("Tx block stopped\n");
             }
 
             // Select Next Message

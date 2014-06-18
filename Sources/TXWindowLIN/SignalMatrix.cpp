@@ -25,6 +25,7 @@
 
 #include "TxWindow_stdafx.h"             // For Standard Includes
 #include "Utility/OffScreenDC.h"        // For Memory DC class Implementation
+#include "Utility/MultiLanguageSupport.h"
 #include "SignalMatrix.h"       // For CSignalMatrix class declaration
 
 #ifdef _DEBUG
@@ -40,7 +41,8 @@ static char THIS_FILE[] = __FILE__;
 #define defX_DIVISION       2
 #define defY_DIVISION       1.35
 
-#define defFORMAT_MSGID_DECIMAL _T("%d")
+#define defFORMAT_MSGID_DECIMAL "%d"
+
 /*******************************************************************************
   Function Name  : CSignalMatrix
   Description    : Standard default constructor

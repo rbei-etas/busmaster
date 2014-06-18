@@ -660,9 +660,9 @@ LONG CNetworkMgmt::lRemoveNodeConManager(DWORD dwClientId)
                 if (nullptr != pouBuffer)
                 {
                     HANDLE handle = pouBuffer->hGetNotifyingEvent();
-                    TRACE(_("Going to call bDeleteEventHandle\n"));
+                    TRACE("Going to call bDeleteEventHandle\n");
                     m_ouReadCANMsg.bDeleteEventHandle(handle);
-                    TRACE(_("Called bDeleteEventHandle\n"));
+                    TRACE("Called bDeleteEventHandle\n");
                 }
                 CString omClientName = "";
                 if (m_ConMgrArr[i]->m_dwClientID != m_dwCANMonitorNodeClientId) //Do not remove client from CAN if monitor
@@ -700,9 +700,9 @@ void CNetworkMgmt::vRemoveAllNodes(void)
             if (nullptr != pouBuffer)
             {
                 HANDLE handle = pouBuffer->hGetNotifyingEvent();
-                TRACE(_("Going to call bDeleteEventHandle\n"));
+                TRACE("Going to call bDeleteEventHandle\n");
                 m_ouReadCANMsg.bDeleteEventHandle(handle);
-                TRACE(_("Called bDeleteEventHandle\n"));
+                TRACE("Called bDeleteEventHandle\n");
             }
             CString omClientName = "";
 

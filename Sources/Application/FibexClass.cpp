@@ -28,6 +28,7 @@
 #include "FibexClass.h"
 #include "Utility/XMLUtils.h"
 #include "HashDefines.h"
+#include "Utility/MultiLanguageSupport.h"
 #define USAGE_EXPORT
 #include "FibexClass_extern.h"
 
@@ -132,15 +133,15 @@ int CPARSER_FIBEX::SetActiveVersion(std::string& omVersion)
 
     if (omReqVersion == VERSION_1)
     {
-        omExtn = _T("1_2");
+        omExtn = "1_2";
     }
     else if (omReqVersion == VERSION_2)
     {
-        omExtn = _T("2_0_1");
+        omExtn = "2_0_1";
     }
     else if ((omVersion == VERSION_3_0) || (omVersion == VERSION_3_0_0))
     {
-        omExtn = _T("3_0");
+        omExtn = "3_0";
     }
     else if (omVersion == VERSION_NONE)
     {
@@ -3877,69 +3878,69 @@ CCODING_v2::CCODING_v2()
     DoCleanup();
 
     /* INITIALISE BASE_DATA_TYPE TOKEN */
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_UINT8"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_INT8"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_UINT16"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_INT16"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_UINT32"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_INT32"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_UINT64"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_INT64"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_FLOAT32"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_FLOAT64"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_ASCIISTRING"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_UNICODE2STRING"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_BYTEFIELD"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("A_BITFIELD"));
-    BASE_DATA_TYPE::m_odUnitRef.AddTail((std::string)_T("OTHER"));
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("A_UINT8");
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("A_INT8");
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("A_UINT16");
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("A_INT16");
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("A_UINT32");
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("A_INT32");
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("A_UINT64");
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("A_INT64");
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("A_FLOAT32");
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("A_FLOAT64");
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("A_ASCIISTRING");
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("A_UNICODE2STRING");
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("A_BYTEFIELD");
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("A_BITFIELD");
+    BASE_DATA_TYPE::m_odUnitRef.AddTail("OTHER");
     /* INITIALISE CATEGORY1 TOKEN */
-    CATEGORY1::m_odUnitRef.AddTail((std::string)_T("COUNTRY"));
-    CATEGORY1::m_odUnitRef.AddTail((std::string)_T("EQUIV-UNITS"));
+    CATEGORY1::m_odUnitRef.AddTail("COUNTRY");
+    CATEGORY1::m_odUnitRef.AddTail("EQUIV-UNITS");
     /* INITIALISE CATEGORY3 TOKEN */
-    CATEGORY3::m_odUnitRef.AddTail((std::string)_T("IDENTICAL"));
-    CATEGORY3::m_odUnitRef.AddTail((std::string)_T("LINEAR"));
-    CATEGORY3::m_odUnitRef.AddTail((std::string)_T("SCALE-LINEAR"));
-    CATEGORY3::m_odUnitRef.AddTail((std::string)_T("TEXTTABLE"));
-    CATEGORY3::m_odUnitRef.AddTail((std::string)_T("TAB-NOINTP"));
-    CATEGORY3::m_odUnitRef.AddTail((std::string)_T("FORMULA"));
+    CATEGORY3::m_odUnitRef.AddTail("IDENTICAL");
+    CATEGORY3::m_odUnitRef.AddTail("LINEAR");
+    CATEGORY3::m_odUnitRef.AddTail("SCALE-LINEAR");
+    CATEGORY3::m_odUnitRef.AddTail("TEXTTABLE");
+    CATEGORY3::m_odUnitRef.AddTail("TAB-NOINTP");
+    CATEGORY3::m_odUnitRef.AddTail("FORMULA");
     /* INITIALISE CATEGORY2 TOKEN */
-    CATEGORY2::m_odUnitRef.AddTail((std::string)_T("LEADING-LENGTH-INFO-TYPE"));
-    CATEGORY2::m_odUnitRef.AddTail((std::string)_T("END-OF-PDU"));
-    CATEGORY2::m_odUnitRef.AddTail((std::string)_T("MIN-MAX-LENGTH-TYPE"));
-    CATEGORY2::m_odUnitRef.AddTail((std::string)_T("STANDARD-LENGTH-TYPE"));
+    CATEGORY2::m_odUnitRef.AddTail("LEADING-LENGTH-INFO-TYPE");
+    CATEGORY2::m_odUnitRef.AddTail("END-OF-PDU");
+    CATEGORY2::m_odUnitRef.AddTail("MIN-MAX-LENGTH-TYPE");
+    CATEGORY2::m_odUnitRef.AddTail("STANDARD-LENGTH-TYPE");
     /* INITIALISE ENCODING TOKEN */
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("SIGNED"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("UNSIGNED"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("BIT"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("IEEE-FLOATING-TYPE"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("BCD"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("DSP-FRACTIONAL"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("SM"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("BCD-P"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("BCD-UP"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("1C"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("2C"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("UTF-8"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("UCS-2"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("ISO-8859-1"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("ISO-8859-2"));
-    ENCODING::m_odUnitRef.AddTail((std::string)_T("WINDOWS-1252"));
+    ENCODING::m_odUnitRef.AddTail("SIGNED");
+    ENCODING::m_odUnitRef.AddTail("UNSIGNED");
+    ENCODING::m_odUnitRef.AddTail("BIT");
+    ENCODING::m_odUnitRef.AddTail("IEEE-FLOATING-TYPE");
+    ENCODING::m_odUnitRef.AddTail("BCD");
+    ENCODING::m_odUnitRef.AddTail("DSP-FRACTIONAL");
+    ENCODING::m_odUnitRef.AddTail("SM");
+    ENCODING::m_odUnitRef.AddTail("BCD-P");
+    ENCODING::m_odUnitRef.AddTail("BCD-UP");
+    ENCODING::m_odUnitRef.AddTail("1C");
+    ENCODING::m_odUnitRef.AddTail("2C");
+    ENCODING::m_odUnitRef.AddTail("UTF-8");
+    ENCODING::m_odUnitRef.AddTail("UCS-2");
+    ENCODING::m_odUnitRef.AddTail("ISO-8859-1");
+    ENCODING::m_odUnitRef.AddTail("ISO-8859-2");
+    ENCODING::m_odUnitRef.AddTail("WINDOWS-1252");
     /* INITIALISE TERMINATION TOKEN */
-    TERMINATION::m_odUnitRef.AddTail((std::string)_T("NONE"));
-    TERMINATION::m_odUnitRef.AddTail((std::string)_T("ZERO"));
-    TERMINATION::m_odUnitRef.AddTail((std::string)_T("HEX-FF"));
-    TERMINATION::m_odUnitRef.AddTail((std::string)_T("LENGTH"));
+    TERMINATION::m_odUnitRef.AddTail("NONE");
+    TERMINATION::m_odUnitRef.AddTail("ZERO");
+    TERMINATION::m_odUnitRef.AddTail("HEX-FF");
+    TERMINATION::m_odUnitRef.AddTail("LENGTH");
     /* INITIALISE VALIDITY TOKEN */
-    VALIDITY::m_odUnitRef.AddTail((std::string)_T("VALID"));
-    VALIDITY::m_odUnitRef.AddTail((std::string)_T("NOT-VALID"));
-    VALIDITY::m_odUnitRef.AddTail((std::string)_T("NOT-AVAILABLE"));
-    VALIDITY::m_odUnitRef.AddTail((std::string)_T("NOT-DEFINED"));
-    VALIDITY::m_odUnitRef.AddTail((std::string)_T("ERROR"));
-    VALIDITY::m_odUnitRef.AddTail((std::string)_T("OTHER"));
+    VALIDITY::m_odUnitRef.AddTail("VALID");
+    VALIDITY::m_odUnitRef.AddTail("NOT-VALID");
+    VALIDITY::m_odUnitRef.AddTail("NOT-AVAILABLE");
+    VALIDITY::m_odUnitRef.AddTail("NOT-DEFINED");
+    VALIDITY::m_odUnitRef.AddTail("ERROR");
+    VALIDITY::m_odUnitRef.AddTail("OTHER");
     /* INITIALISE INTERVAL-TYPE TOKEN */
-    INTERVAL_TYPE::m_odUnitRef.AddTail((std::string)_T("OPEN"));
-    INTERVAL_TYPE::m_odUnitRef.AddTail((std::string)_T("CLOSED"));
-    INTERVAL_TYPE::m_odUnitRef.AddTail((std::string)_T("INFINITE"));
+    INTERVAL_TYPE::m_odUnitRef.AddTail("OPEN");
+    INTERVAL_TYPE::m_odUnitRef.AddTail("CLOSED");
+    INTERVAL_TYPE::m_odUnitRef.AddTail("INFINITE");
 }
 
 CCODING_v2::~CCODING_v2()

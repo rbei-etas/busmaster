@@ -33,13 +33,13 @@
 #include "Utility/MsgInterpretation.h"  // For message interpretation
 
 //******************Anish code start**********
-#define defMESSAGE_BLOCK_NAME       _T("Name")
-#define defMESSAGE_BLOCK_TRIGGER    _T("Type")
-#define defMESSAGE_BLOCK_TRIG_VAL   _T("Value")
-#define defMSG_CYCLIC               _T("CYCLIC")
-#define defMSG_MONOSHOT             _T("MONOSHOT")
-#define defMESSAGE_TRIG_MS          _T("ms")
-#define defDEFAULT_TIMER_VAL        _T("100")
+#define defMESSAGE_BLOCK_NAME       _("Name")
+#define defMESSAGE_BLOCK_TRIGGER    _("Type")
+#define defMESSAGE_BLOCK_TRIG_VAL   _("Value")
+#define defMSG_CYCLIC               _("CYCLIC")
+#define defMSG_MONOSHOT             _("MONOSHOT")
+#define defMESSAGE_TRIG_MS          _("ms")
+#define defDEFAULT_TIMER_VAL        _("100")
 #define defDEFAULT_KEY_VAL          'A'
 #define defSTR_INVALID_MESSAGE_ID   "Invalid Message ID or Name"
 #define defSTR_INVALID_DLC          "Invalid DLC value."
@@ -54,14 +54,13 @@
 #define defSTR_UNITS                "Units"
 #define defSTR_SIGNAL_UNIT          "Unit"
 
-#define defDEL_MSG_BLOCK            _T("You are about to delete a message block.\n\n\
+#define defDEL_MSG_BLOCK            _("You are about to delete a message block.\n\n\
 Are you sure you want to delete?")
-
 
 #define defMAIN_ITEM                0
 #define defSUBITEM_MSGBLOCK_TYPE    1
 #define defSUBITEM_MSGBLOCK_TRG_VAL 2
-#define defSTR_TIMER_VAL_FMT_SPECIFIER      _T("%d")
+#define defSTR_TIMER_VAL_FMT_SPECIFIER      _("%d")
 #define defDEFAULT_TIME_VAL         100
 
 #define defMESSAGE_BLOCK_COLUMN     3
@@ -74,41 +73,19 @@ Are you sure you want to delete?")
 #define def_PHY_VALUE_COLUMN        2
 #define def_SIG_UNIT_COLUMN         3
 
-//const CSize NOANCHOR(-1,-1),
-//      TOP_LEFT(0,0), TOP_CENTER(50,0), TOP_RIGHT(100,0),
-//      MIDDLE_LEFT(0,50), MIDDLE_CENTER(50,50), MIDDLE_RIGHT(100,50),
-//      BOTTOM_LEFT(0,100), BOTTOM_CENTER(50,100), BOTTOM_RIGHT(100,100);
-
 #define MAX_EDITGRID_COL 7
-
-// CTransmitMsg form view\
 
 typedef std::basic_string<TCHAR> TString;
 
-//typedef struct tagTXWNDPARAMS
-//{
-//    //LOGPARAMS           m_sLogParams;
-//    WINDOWPLACEMENT     m_sWndPlacement;
-//    // To save Interpretation window co ordinates in Configuration
-//} TXWNDPARAMS, *PTXWNDPARAMS;
-
-//enum DATA_VIEW
-//{
-//    NONE,
-//    BYTE_VIEW,
-//    SIGNAL_VIEW,
-//};
-//Anupam Kumar Code End
-//******************Anish code start**********
-#define defMESSAGE_BLOCK_NAME       _T("Name")
-#define defMESSAGE_BLOCK_TRIGGER    _T("Type")
-#define defMESSAGE_BLOCK_TRIG_VAL   _T("Value")
-#define defMSG_CYCLIC               _T("CYCLIC")
-#define defMSG_MONOSHOT             _T("MONOSHOT")
-//#define defDEFAULT_MSG_BLOCK_NAME   _T("Group")
-#define defMESSAGE_TRIG_MS          _T("ms")
-#define defDEFAULT_MSG_BLOCK_NAME   _T("OnTime")
-#define defDEFAULT_TIMER_VAL        _T("100")
+#define defMESSAGE_BLOCK_NAME       _("Name")
+#define defMESSAGE_BLOCK_TRIGGER    _("Type")
+#define defMESSAGE_BLOCK_TRIG_VAL   _("Value")
+#define defMSG_CYCLIC               _("CYCLIC")
+#define defMSG_MONOSHOT             _("MONOSHOT")
+//#define defDEFAULT_MSG_BLOCK_NAME   _("Group")
+#define defMESSAGE_TRIG_MS          _("ms")
+#define defDEFAULT_MSG_BLOCK_NAME   _("OnTime")
+#define defDEFAULT_TIMER_VAL        _("100")
 #define defDEFAULT_KEY_VAL          'A'
 
 typedef struct tagSBYTE

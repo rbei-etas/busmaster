@@ -334,7 +334,7 @@ void CWaveFormDataHandler::vGetAllDefinedSignalsNames(CStringArray& omSignalName
                 continue;
             }
 
-            omWaveformDetails.Format(_T("%X ->%s (%s)"), ouCurrMsg.m_nMsgID,
+            omWaveformDetails.Format("%X ->%s (%s)", ouCurrMsg.m_nMsgID,
                                      ouCurrSig.m_omSigName,
                                      sWaveformInfo::omGetWaveformName(ouCurrSig.sWaveInfo.m_eSignalWaveType));
 
@@ -651,7 +651,7 @@ HRESULT CWaveFormDataHandler::SetConfigData(BYTE* pvDataStream)
                         BYTE bytTemp = 0;
                         CString strTemp;
                         COPY_DATA_2(&bytTemp, pByteTrgt, sizeof(BYTE));
-                        strTemp.Format(_T("%c"),bytTemp);
+                        strTemp.Format("%c", bytTemp);
                         objSigWaveMap.m_omSigName+=strTemp;
                     }
                     //Reading sWaveformInfo structure.

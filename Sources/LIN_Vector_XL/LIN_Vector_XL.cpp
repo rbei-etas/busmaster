@@ -505,13 +505,13 @@ static int nGetNoOfConnectedHardware(void)
         }
         if (!nResult)
         {
-            _tcscpy(sg_omErrStr, _T(_("No available channels found! (e.g. no LINcabs...)")));
+            _tcscpy(sg_omErrStr, _("No available channels found! (e.g. no LINcabs...)"));
             xlStatus = XL_ERROR;
         }
     }
     else
     {
-        _tcscpy(sg_omErrStr, _T(_("Problem Finding Device!")));
+        _tcscpy(sg_omErrStr, _("Problem Finding Device!"));
         nResult = -1;
     }
     /* Return the operation result */
@@ -576,7 +576,7 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
             }
             sg_HardwareIntr[nChannels].m_dwIdInterface = nCount;
             sg_HardwareIntr[nChannels].m_dwVendor = g_xlDrvConfig.channel[nCount].serialNumber;
-            /*sprintf(acTempStr, _T("SN: %d, Port ID: %d"), sg_HardwareIntr[nChannels].m_dwVendor,
+            /*sprintf(acTempStr, _("SN: %d, Port ID: %d"), sg_HardwareIntr[nChannels].m_dwVendor,
                                                                     sg_HardwareIntr[nChannels].m_dwIdInterface);*/
             sg_HardwareIntr[nChannels].m_acDescription = g_xlDrvConfig.channel[nCount].name;
             nChannels++;
@@ -608,7 +608,7 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
 
         sg_HardwareIntr[nCount].m_dwIdInterface = nCount;
         sg_HardwareIntr[nCount].m_dwVendor = g_xlDrvConfig.channel[sg_anSelectedItems[nCount]].serialNumber;
-        /*_stprintf(acTempStr, _T("SN: %d, Port ID: %d"), sg_HardwareIntr[nChannels].m_dwVendor,
+        /*_stprintf(acTempStr, _("SN: %d, Port ID: %d"), sg_HardwareIntr[nChannels].m_dwVendor,
                                                                 sg_HardwareIntr[nChannels].m_dwIdInterface);*/
         sg_HardwareIntr[nCount].m_acDescription = g_xlDrvConfig.channel[sg_anSelectedItems[nCount]].name;
 
@@ -752,7 +752,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_LoadDriverLibrary(void)
 
     if (hxlDll != nullptr)
     {
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("vxlapi.dll already loaded")));
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("vxlapi.dll already loaded"));
         hResult = DLL_ALREADY_LOADED;
     }
 
@@ -761,7 +761,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_LoadDriverLibrary(void)
         hxlDll = LoadLibrary("vxlapi.dll");
         if (hxlDll == nullptr)
         {
-            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("vxlapi.dll loading failed")));
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("vxlapi.dll loading failed"));
             hResult = ERR_LOAD_DRIVER;
         }
         else
@@ -822,7 +822,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_LoadDriverLibrary(void)
             {
                 FreeLibrary(hxlDll);
                 sg_pIlog->vLogAMessage(A2T(__FILE__),
-                                       __LINE__, _T(_("Getting Process address of the APIs failed")));
+                                       __LINE__, _("Getting Process address of the APIs failed"));
                 hResult = ERR_LOAD_DRIVER;
             }
         }
@@ -907,7 +907,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
     }
     else
     {
-        //sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("Error connecting to driver")));
+        //sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("Error connecting to driver"));
     }
     return hResult;
 }
@@ -1211,7 +1211,7 @@ HRESULT CDIL_LIN_VectorXL::PreStartHardware(void)
         }
         else
         {
-            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("Could not start the read thread") ));
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("Could not start the read thread"));
         }
     }
 

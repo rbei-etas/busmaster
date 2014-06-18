@@ -206,15 +206,15 @@ DWORD WINAPI ReadDILCANMsg(LPVOID pVoid)
                 }
                 else if ((dwWaitRet >= dwLLError) && (dwWaitRet <= dwULError))
                 {
-                    TRACE(_T(_("Abandoned... %X %d\n")), dwWaitRet, g_unCount++);
+                    TRACE("Abandoned... %X %d\n", dwWaitRet, g_unCount++);
                 }
                 else if ( dwWaitRet == WAIT_TIMEOUT)
                 {
-                    TRACE(_T("ReadDILCANMsg->WAIT_TIMEOUT %d\n"), g_unCount++);
+                    TRACE("ReadDILCANMsg->WAIT_TIMEOUT %d\n", g_unCount++);
                 }
                 else if (dwWaitRet == WAIT_FAILED)
                 {
-                    TRACE(_T("WAIT_FAILED... %X %d\n"), GetLastError(), g_unCount++);
+                    TRACE("WAIT_FAILED... %X %d\n", GetLastError(), g_unCount++);
                 }
                 ///// TEMP : END
             }

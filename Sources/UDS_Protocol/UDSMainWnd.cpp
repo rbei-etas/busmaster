@@ -135,8 +135,8 @@ int CUDSMainWnd::SendFirstFrame(CString omByteStr, unsigned char abByteArr[], mP
     //int numberofFrames =-1    ;
     int c_numberOfTaken= numberOfTaken;                             // It contains the number of Data bytes that can be sent in the current message
 
-    Length.Format(_T("%.3x\n"),TotalLength);                        //Prepare the first 2 bytes of a first frame of a long request
-    Length = _T("1") + _T(Length);
+    Length.Format("%.3x\n",TotalLength);                        //Prepare the first 2 bytes of a first frame of a long request
+    Length = "1" + Length;
     omTempByte = Length.Left(2);
     abByteArr[initialByte]= (BYTE)_tcstol(omTempByte, L'\0', 16);
     omTempByte = Length.Right(3);
@@ -872,7 +872,7 @@ BOOL CUDSMainWnd::OnInitDialog()
 
     /* Get CAN DIL interface */
     DIL_GetInterface(CAN, (void**)&g_pouDIL_CAN_Interface);
-    g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, _T("CAN_MONITOR"));
+    g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, _("CAN_MONITOR"));
 
     m_omCheckTP.SetCheck(BST_UNCHECKED);
     vInitializeUDSfFields();
@@ -958,7 +958,7 @@ void CUDSMainWnd::vInitializeUDSfFields()
     m_omComboChannelUDS.SetCurSel(0);
     vUpdateChannelIDInfo();
     m_omEditDLC.vSetValue(0);
-    m_Font.CreatePointFont(110, _T("Courier"));
+    m_Font.CreatePointFont(110, "Courier");
     GetDlgItem(IDC_RESPONSE_DATA)->SetFont(&m_Font);
     m_Font.CreateFont(               14,                        // nHeight
                                      5,                         // nWidth
@@ -973,13 +973,11 @@ void CUDSMainWnd::vInitializeUDSfFields()
                                      CLIP_DEFAULT_PRECIS,       // nClipPrecision
                                      DEFAULT_QUALITY,           // nQuality
                                      DEFAULT_PITCH | FF_ROMAN,  // nPitchAndFamily
-                                     _T(_("Arial")));                    // Facename
+                                     "Arial");                  // Facename
 
     GetDlgItem(IDC_DIAG_SERVICE)->SetFont(&m_Font);
-
-
-
 }
+
 //________________________________________________________________________________________________________________________________________________________________
 //________________________________________________________________________________________________________________________________________________________________
 
@@ -987,7 +985,7 @@ void CUDSMainWnd::vSetDILInterfacePtr(void* ptrDILIntrf)
 {
 
     g_pouDIL_CAN_Interface = (CBaseDIL_CAN*)ptrDILIntrf;
-    g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, _T("CAN_MONITOR"));
+    g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, _("CAN_MONITOR"));
     //g_pouDIL_CAN_Interface->DILC_ManageMsgBuf(MSGBUF_CLEAR, g_dwClientID, &m_ouMCCanBufFSE);
 }
 
@@ -1022,7 +1020,7 @@ void CUDSMainWnd::vUpdateChannelIDInfo()
         }
     }
     m_omComboChannelUDS.SetCurSel(0);
-    g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, _T("CAN_MONITOR"));
+    g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, _("CAN_MONITOR"));
 }
 
 //________________________________________________________________________________________________________________________________________________________________

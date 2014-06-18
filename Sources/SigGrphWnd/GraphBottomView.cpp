@@ -241,42 +241,42 @@ void CGraphBottomView::vCreateColumns()
     CString omTmpColTitle;
     // add columns
 
-    omTmpColTitle = _T(_("Category"));
+    omTmpColTitle = _("Category");
     lvcolumn.iSubItem = 0;
     lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH))*2;
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle)*2;
     m_lstSignalDetails.InsertColumn(0, &lvcolumn);
 
-    omTmpColTitle = _T(_("Element"));
+    omTmpColTitle = _("Element");
     lvcolumn.iSubItem = 1;
     lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH))*2;
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle)*2;
     m_lstSignalDetails.InsertColumn(1, &lvcolumn);
 
-    omTmpColTitle = _T(_("Type"));
+    omTmpColTitle = _("Type");
     lvcolumn.iSubItem = 2;
     lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH))*2;
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle)*2;
     m_lstSignalDetails.InsertColumn(2, &lvcolumn);
 
-    omTmpColTitle = _T(_("Cursor1"));
+    omTmpColTitle = _("Cursor1");
     lvcolumn.iSubItem = 3;
     lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH));
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle);
     m_lstSignalDetails.InsertColumn(3, &lvcolumn);
 
-    omTmpColTitle = _T(_("Cursor2"));
+    omTmpColTitle = _("Cursor2");
     lvcolumn.iSubItem = 4;
     lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH));
     lvcolumn.cx = nGetListCtrlTextExtent(omTmpColTitle);
     m_lstSignalDetails.InsertColumn(4, &lvcolumn);
 
-    omTmpColTitle = _T(_("Difference"));
+    omTmpColTitle = _("Difference");
     lvcolumn.iSubItem = 5;
     lvcolumn.pszText = omTmpColTitle.GetBuffer(MAX_PATH);
     lvcolumn.cchTextMax = (int)_tcslen(omTmpColTitle.GetBuffer(MAX_PATH));
@@ -421,9 +421,9 @@ void CGraphBottomView::vUpdateSignalData()
         dRound(dblValue2, 3);
         dRound(dblDiff, 3);
 
-        strValue1.Format( _T("%.3lf") ,dblValue1);
-        strValue2.Format( _T("%.3lf") ,dblValue2);
-        strDiffVal.Format(_T("%.3lf") ,dblDiff);
+        strValue1.Format( _("%.3lf") ,dblValue1);
+        strValue2.Format( _("%.3lf") ,dblValue2);
+        strDiffVal.Format(_("%.3lf") ,dblDiff);
 
         m_lstSignalDetails.SetItemText( nIndex, 3, strValue1);  //Cursor 1 value
         m_lstSignalDetails.SetItemText( nIndex, 4, strValue2);  //Cursor 2 value

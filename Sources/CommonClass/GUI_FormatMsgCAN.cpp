@@ -27,8 +27,7 @@
 #include "GUI_FormatMsgCAN.h"
 #include "include/Utils_macro.h"
 #include "Include/CAN_Error_Defs.h"
-#include "Utility\MultiLanguageSupport.h"
-//#include "../Application/GettextBusmaster.h"
+#include "Utility/MultiLanguageSupport.h"
 
 struct sERRORMSGINFO
 {
@@ -267,14 +266,14 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
     if (RX_FLAG == pMsgCAN->m_ucDataType)
     {
         CurrDataCAN->m_eDirection = DIR_RX;
-        CurrDataCAN->m_acMsgDir[0] = _T('R');
+        CurrDataCAN->m_acMsgDir[0] = 'R';
     }
     else if (TX_FLAG == pMsgCAN->m_ucDataType)
     {
         CurrDataCAN->m_eDirection = DIR_TX;
-        CurrDataCAN->m_acMsgDir[0] = _T('T');
+        CurrDataCAN->m_acMsgDir[0] = 'T';
     }
-    CurrDataCAN->m_acMsgDir[1] = _T('x');
+    CurrDataCAN->m_acMsgDir[1] = 'x';
 
     TYPE_CHANNEL CurrChannel = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucChannel;  // Assuming default CAN msg
     if (pMsgCAN->m_uDataInfo.m_sCANMsg.m_bCANFD) // Incase of CANFD msg
@@ -287,26 +286,26 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
         sprintf_s(CurrDataCAN->m_acChannel, "%d", CurrChannel);
     }
 
-    memset(CurrDataCAN->m_acType,'\0',sizeof(CurrDataCAN->m_acType));
+    memset(CurrDataCAN->m_acType, 0, sizeof(CurrDataCAN->m_acType));
     if (pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucEXTENDED != 0)
     {
         CurrDataCAN->m_byIDType = TYPE_ID_CAN_EXTENDED;
-        strcpy_s(CurrDataCAN->m_acType, LENGTH_STR_DESCRIPTION_CAN, _("x"));
+        strcpy_s(CurrDataCAN->m_acType, LENGTH_STR_DESCRIPTION_CAN, "x");
     }
     else
     {
         CurrDataCAN->m_byIDType = TYPE_ID_CAN_STANDARD;
-        strcpy_s(CurrDataCAN->m_acType, LENGTH_STR_DESCRIPTION_CAN, _("s"));
+        strcpy_s(CurrDataCAN->m_acType, LENGTH_STR_DESCRIPTION_CAN, "s");
     }
     /* If it is a CAN FD frame */
     if ( pMsgCAN->m_uDataInfo.m_sCANMsg.m_bCANFD )
     {
-        strcpy_s(&CurrDataCAN->m_acType[1], LENGTH_STR_DESCRIPTION_CAN, _("-fd"));
+        strcpy_s(&CurrDataCAN->m_acType[1], LENGTH_STR_DESCRIPTION_CAN, "-fd");
     }
     else if (pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucRTR != 0) // CANFD cannot have RTR frames
     {
         CurrDataCAN->m_byMsgType |= TYPE_MSG_CAN_RTR;
-        strcpy_s(&CurrDataCAN->m_acType[1], LENGTH_STR_DESCRIPTION_CAN, _("r"));
+        strcpy_s(&CurrDataCAN->m_acType[1], LENGTH_STR_DESCRIPTION_CAN, "r");
     }
 
     /* If it is a CAN FD frame */
@@ -324,7 +323,7 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
     //else
     {
         _itoa_s(pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen, CurrDataCAN->m_acDataLen, 10);
-        strcpy_s(CurrDataCAN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_CAN, "Description");
+        strcpy_s(CurrDataCAN->m_acMsgDesc, LENGTH_STR_DESCRIPTION_CAN, _("Description"));
         CurrDataCAN->m_u64TimeStamp = pMsgCAN->m_lTickCount.QuadPart;
         CurrDataCAN->m_dwMsgID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
         CurrDataCAN->m_byDataLength = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucDataLen;

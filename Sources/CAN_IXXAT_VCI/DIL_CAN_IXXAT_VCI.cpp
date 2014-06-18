@@ -76,7 +76,7 @@ CDIL_CAN_IXXAT_VCI::CDIL_CAN_IXXAT_VCI()
 
 
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_Base::CDIL_CAN_IXXAT_VCI\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_Base::CDIL_CAN_IXXAT_VCI\n");
 #endif
 
 }
@@ -91,7 +91,7 @@ CDIL_CAN_IXXAT_VCI::~CDIL_CAN_IXXAT_VCI()
 {
 #ifdef _IXXAT_DEBUG
     // do not log at this time because all objects were deleted at this time
-    // LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::~CDIL_CAN_IXXAT_VCI\n"));
+    // LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::~CDIL_CAN_IXXAT_VCI\n");
 #endif
 
     m_pILog = nullptr;
@@ -111,7 +111,7 @@ CDIL_CAN_IXXAT_VCI::~CDIL_CAN_IXXAT_VCI()
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_PerformInitOperations(void)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_PerformInitOperations\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_PerformInitOperations\n");
 #endif
 
     //Initialize the selected channel items array to -1
@@ -135,7 +135,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_PerformInitOperations(void)
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_PerformClosureOperations(void)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_PerformClosureOperations\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_PerformClosureOperations\n");
 #endif
 
     for (int i=0; i < CHANNEL_CAN_MAX; i++)
@@ -197,7 +197,7 @@ int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInt
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces\n");
 #endif
     HRESULT hResult = E_POINTER;
 
@@ -312,7 +312,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterf
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_SelectHwInterface\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_SelectHwInterface\n");
 #endif
 
     // absolutely necessary to call this macro
@@ -329,7 +329,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelH
             m_arrIxxatCanChannels[i].Selected(TRUE);
         }
 #ifdef _IXXAT_DEBUG
-        LogMessage( TRUE, _T("------> Selected CAN controller: %s - %s (%s)\n")
+        LogMessage( TRUE, "------> Selected CAN controller: %s - %s (%s)\n"
                     , sSelHwInterface[0].m_acDeviceName.c_str()
                     , sSelHwInterface[0].m_acNameInterface.c_str()
                     , sSelHwInterface[0].m_acDescription.c_str() );
@@ -354,7 +354,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelH
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_DeselectHwInterface(void)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_DeselectHwInterface\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_DeselectHwInterface\n");
 #endif
     return S_OK;
 }
@@ -391,7 +391,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, 
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_DisplayConfigDlg\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_DisplayConfigDlg\n");
 #endif
 
     HRESULT hrRes = E_POINTER;
@@ -438,7 +438,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, 
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_SetConfigData(PSCONTROLLER_DETAILS pInitData, int Length)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_SetConfigData\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_SetConfigData\n");
 #endif
 
     // VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
@@ -480,7 +480,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SetConfigData(PSCONTROLLER_DETAILS pInitData, in
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_StartHardware(void)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_StartHardware\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_StartHardware\n");
 #endif
 
     HRESULT hResult = E_POINTER;
@@ -520,7 +520,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_StartHardware(void)
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_StopHardware(void)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_StopHardware\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_StopHardware\n");
 #endif
 
     HRESULT hResult = E_POINTER;
@@ -555,7 +555,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_StopHardware(void)
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_GetCurrStatus\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetCurrStatus\n");
 #endif
 
     HRESULT hResult = E_POINTER;
@@ -581,7 +581,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 //HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer)
 //{
 //#ifdef _IXXAT_DEBUG
-//  LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_GetTxMsgBuffer\n"));
+//  LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetTxMsgBuffer\n");
 //#endif
 //  return  E_NOTIMPL;
 //}
@@ -606,7 +606,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_SendMsg\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_SendMsg\n");
 #endif
 
     HRESULT hResult = E_POINTER;
@@ -634,7 +634,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanT
 //HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetBoardInfo(s_BOARDINFO& BoardInfo)
 //{
 //#ifdef _IXXAT_DEBUG
-//  LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_GetBoardInfo\n"));
+//  LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetBoardInfo\n");
 //#endif
 //  return  E_NOTIMPL;
 //}
@@ -654,7 +654,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanT
 //HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetBusConfigInfo(BYTE* BusInfo)
 //{
 //#ifdef _IXXAT_DEBUG
-//  LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_GetBusConfigInfo\n"));
+//  LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetBusConfigInfo\n");
 //#endif
 //  return  E_NOTIMPL;
 //}
@@ -674,7 +674,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanT
 //HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetVersionInfo(VERSIONINFO& sVerInfo)
 //{
 //#ifdef _IXXAT_DEBUG
-//  LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_GetVersionInfo\n"));
+//  LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetVersionInfo\n");
 //#endif
 //  return  E_NOTIMPL;
 //}
@@ -697,7 +697,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanT
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetLastErrorString(std::string& acErrorStr)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_GetLastErrorString\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetLastErrorString\n");
 #endif
     return  E_NOTIMPL;
 }
@@ -721,7 +721,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetLastErrorString(std::string& acErrorStr)
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_GetControllerParams\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetControllerParams\n");
 #endif
     HRESULT hResult = S_OK;
     switch (eContrParam)
@@ -787,7 +787,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SetControllerParams(int nValue, ECONTR_PARAM eCo
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_GetErrorCount\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetErrorCount\n");
 #endif
     HRESULT hrRes = HW_INTERFACE_NO_SEL;
     if (nChannel < CHANNEL_CAN_MAX)
@@ -830,7 +830,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLo
     m_hOwnerWndHandle = hWndOwner;
 
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_SetAppParams\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_SetAppParams\n");
 #endif
     /* Initialise both the time parameters */
     GetLocalTime(&m_sCurrSysTime);
@@ -864,7 +864,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLo
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, TCHAR* pacClientName)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_RegisterClient - %s\n"), pacClientName);
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_RegisterClient - %s\n", pacClientName);
 #endif
 
     HRESULT hResult;
@@ -899,7 +899,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, 
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_GetTimeModeMapping\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetTimeModeMapping\n");
 #endif
 
     CurrSysTime = m_sCurrSysTime;
@@ -929,7 +929,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_ManageMsgBuf(BYTE byAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_ManageMsgBuf  - Action: %u  ClientID: %u\n"), byAction, ClientID);
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_ManageMsgBuf  - Action: %u  ClientID: %u\n", byAction, ClientID);
 #endif
     HRESULT hResult = S_FALSE;
     if (pBufObj)
@@ -990,7 +990,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ManageMsgBuf(BYTE byAction, DWORD ClientID, CBas
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_GetCntrlStatus\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetCntrlStatus\n");
 #endif
     return E_NOTIMPL;
 }
@@ -1010,7 +1010,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCnt
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_LoadDriverLibrary(void)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_LoadDriverLibrary\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_LoadDriverLibrary\n");
 #endif
 
     // Load VCI V3 Library
@@ -1066,7 +1066,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_LoadDriverLibrary(void)
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_UnloadDriverLibrary(void)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, _T("------> CDIL_CAN_IXXAT_VCI::CAN_UnloadDriverLibrary\n"));
+    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_UnloadDriverLibrary\n");
 #endif
 
     m_bDriverAccessLoaded = FALSE;
@@ -1143,39 +1143,39 @@ int CDIL_CAN_IXXAT_VCI::VciDeviceInfoAddToArray(int iStartPosArray, VCIDEVICEINF
                     switch (VCI_CTL_TYPE(sVciDeviceCaps.BusCtrlTypes[i]))
                     {
                         case CAN_CTRL_82527:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, _T("Intel 82527") );
+                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "Intel 82527" );
                             sSelHwInterface[iStartPosArray].m_acDescription = "Intel 82527";
                             break;
                         case CAN_CTRL_82C200:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, _T("Intel 82C200") );
+                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "Intel 82C200" );
                             sSelHwInterface[iStartPosArray].m_acDescription = "Intel 82C200";
                             break;
                         case CAN_CTRL_82C90:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, _T("Intel 82C90") );
+                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "Intel 82C90" );
                             sSelHwInterface[iStartPosArray].m_acDescription = "Intel 82C90";
                             break;
                         case CAN_CTRL_82C92:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, _T("Intel 82C92") );
+                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "Intel 82C92" );
                             sSelHwInterface[iStartPosArray].m_acDescription = "Intel 82C92";
                             break;
                         case CAN_CTRL_SJA1000:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, _T("Philips SJA 1000") );
+                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "Philips SJA 1000" );
                             sSelHwInterface[iStartPosArray].m_acDescription = "Philips SJA 1000";
                             break;
                         case CAN_CTRL_82C900:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, _T("Infinion 82C900 (TwinCAN)") );
+                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "Infinion 82C900 (TwinCAN)" );
                             sSelHwInterface[iStartPosArray].m_acDescription = "Infinion 82C900 (TwinCAN)";
                             break;
                         case CAN_CTRL_TOUCAN:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, _T("Motorola TOUCAN") );
+                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "Motorola TOUCAN" );
                             sSelHwInterface[iStartPosArray].m_acDescription = "Motorola TOUCAN";
                             break;
                         case CAN_CTRL_IFI:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, _T("IFI-CAN") );
+                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "IFI-CAN" );
                             sSelHwInterface[iStartPosArray].m_acDescription = "IFI-CAN";
                             break;
                         default:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, _T("unknown CAN controller") );
+                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, _("unknown CAN controller") );
                             sSelHwInterface[iStartPosArray].m_acDescription = "unknown CAN controller";
                             break;
                     }
@@ -1183,7 +1183,7 @@ int CDIL_CAN_IXXAT_VCI::VciDeviceInfoAddToArray(int iStartPosArray, VCIDEVICEINF
                     iStartPosArray++;
                     if (iStartPosArray >= CHANNEL_CAN_MAX)
                     {
-                        LogMessage(FALSE, _T("Too many IXXAT CAN controllers found. Abort filling hardware list!"));
+                        LogMessage(FALSE, _("Too many IXXAT CAN controllers found. Abort filling hardware list!"));
                         break;
                     }
                 }

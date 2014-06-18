@@ -199,7 +199,7 @@ HRESULT CDIL_LIN::DILL_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                  else
                  {
                      hResult = ERR_LOAD_DRIVER;
-                     pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("LIN not Active..."));
+                     pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("LIN not active..."));
                  }
                      return hResult;*/
             case DRIVER_LIN_VECTOR_XL:

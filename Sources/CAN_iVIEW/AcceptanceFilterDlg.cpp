@@ -35,6 +35,7 @@
 // Micros definitions
 #include "ContrConfigPeakUsbDefs.h"
 #include "Include/CanUsbDefs.h"
+#include "Utility/MultiLanguageSupport.h"
 
 #define defMAX_TEXT_ACCEPTANCE  2
 

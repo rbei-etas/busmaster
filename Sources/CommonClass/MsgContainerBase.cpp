@@ -21,6 +21,7 @@
 #include "CommonClass_stdafx.h"
 #include "MsgContainerBase.h"
 #include "Utility/Utility_Thread.h"
+#include "Utility/MultiLanguageSupport.h"
 
 
 /******************************************************************************
@@ -171,7 +172,7 @@ BOOL CMsgContainerBase:: bStopReadThread()
 BOOL CMsgContainerBase::bCopyStringTocharArr( char acDesStr[], CString omSrc, int MaxDesLen )
 {
     BOOL bReturn = TRUE;
-    memset (acDesStr, _T('\0'), MaxDesLen);
+    memset(acDesStr, 0, MaxDesLen);
 
     if (MaxDesLen <= omSrc.GetLength())
     {
@@ -183,4 +184,3 @@ BOOL CMsgContainerBase::bCopyStringTocharArr( char acDesStr[], CString omSrc, in
     strcpy(acDesStr, omSrc.GetBuffer(MAX_PATH));
     return bReturn;
 }
-

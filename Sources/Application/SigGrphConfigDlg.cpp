@@ -114,10 +114,10 @@ BOOL CSigGrphConfigDlg::OnInitDialog()
     // Remove Automatic Text from the color popup
 
     //Add the list of available buses.
-    m_omCmbBusType.AddString(_T("CAN"));
-    //m_omCmbBusType.AddString(_T("MCNET"));
-    //m_omCmbBusType.AddString(_T("J1939"));
-    //m_omCmbBusType.AddString(_T("FLEXRAY"));
+    m_omCmbBusType.AddString(_("CAN"));
+    //m_omCmbBusType.AddString(_("MCNET"));
+    //m_omCmbBusType.AddString(_("J1939"));
+    //m_omCmbBusType.AddString(_("FLEXRAY"));
     m_omCmbBusType.SetCurSel(0);
 
     vEnableControls(FALSE);

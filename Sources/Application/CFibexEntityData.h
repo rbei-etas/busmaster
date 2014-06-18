@@ -36,7 +36,7 @@ public:
     virtual HRESULT DoIterate_ForLoad(MSXML2::IXMLDOMNodePtr& pParent);
 };
 
-typedef CList<std::string, std::string&> CStringTokenList;
+typedef CList<std::string, std::string> CStringTokenList;
 
 enum ETYPE_ELEMENT_ENTITY
 {

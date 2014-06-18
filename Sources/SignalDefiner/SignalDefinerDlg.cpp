@@ -15,18 +15,18 @@ const float SINE_COEFF = (8 / (M_PI* M_PI));
 
 IMPLEMENT_DYNAMIC(CSignalDefinerDlg, CDialog)
 
-CSignalDefinerDlg::CSignalDefinerDlg(CWnd* pParent /*=nullptr*/)
-    : CDialog(CSignalDefinerDlg::IDD, pParent)
-    , m_fAmplitude(10)
-    , m_fFrequency(1)
-    , m_dblSamplingTimePeriod(125)
-    , m_nSelCycle(3)
-    , m_nSignalType(1)
-    ,m_bAutoCorrect(true)
+CSignalDefinerDlg::CSignalDefinerDlg(CWnd* pParent /*=nullptr*/) :
+    CDialog(CSignalDefinerDlg::IDD, pParent),
+    m_fAmplitude(10),
+    m_fFrequency(1),
+    m_dblSamplingTimePeriod(125),
+    m_nSelCycle(3),
+    m_nSignalType(1),
+    m_bAutoCorrect(true),
+    m_poDMGraphCtrl(nullptr),
+    m_strSignalName()
 {
     AfxEnableControlContainer();
-    m_poDMGraphCtrl = nullptr;
-    m_strSignalName = _T("");
 }
 
 CSignalDefinerDlg::~CSignalDefinerDlg()
@@ -308,7 +308,7 @@ void CSignalDefinerDlg::vGenerateWave()
             }
             m_dblSamplingTimePeriod = dblFrqStep;
             CString omSamplingPeriod;
-            omSamplingPeriod.Format(_T("%d"),(int)m_dblSamplingTimePeriod);
+            omSamplingPeriod.Format(TEXT("%d"), (int)m_dblSamplingTimePeriod);
             SetDlgItemText(IDC_EDIT_SIGNAL_SAMPLING_TIME, omSamplingPeriod);            //This command will call this function continously, hence the above logic.
             nPointCount = ((dblTimePeriod * 1000) + (dblFrqStep / 10)) * (m_nSelCycle+1);
         }

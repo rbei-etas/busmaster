@@ -1,7 +1,5 @@
 #pragma once
 
-#include <windows.h>
-
 /** loads the internationalization library */
 void loadInternationalizationLibrary();
 

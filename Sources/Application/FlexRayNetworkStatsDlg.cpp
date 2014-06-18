@@ -251,12 +251,12 @@ LRESULT CFlexRayNetworkStatsDlg::OnUpdateNetworkStat(WPARAM, LPARAM)
     vDisplayStats(psTxBusStats,0);
     //Total Channel A
     lTotal = psTxBusStats->m_StaticFramesChA + psTxBusStats->m_DynamicFramesChA + psTxBusStats->m_SyncFrameChA + psTxBusStats->m_NullFrameChA ;
-    sprintf(szDataValue,_T("%ld"),lTotal);
+    sprintf(szDataValue,_("%ld"),lTotal);
     m_lstNetWorkStat.SetItemText(11,SECOND_COL,szDataValue);
 
     //Total Channel B
     lTotal = psTxBusStats->m_StaticFramesChB + psTxBusStats->m_DynamicFramesChB + psTxBusStats->m_SyncFrameChB + psTxBusStats->m_NullFrameChB ;
-    sprintf(szDataValue,_T("%ld"),lTotal);
+    sprintf(szDataValue,_("%ld"),lTotal);
     m_lstNetWorkStat.SetItemText(11,THIRD_COL,szDataValue);
 
     vFillTxRxContent();
@@ -286,52 +286,52 @@ void CFlexRayNetworkStatsDlg::vDisplayStats(SSUBFLEXRAYBUSSTATISTICS* psBusStats
     //Update for Channel A
     //Static Frame count
     TCHAR szDataValue[52];
-    sprintf(szDataValue,_T("%ld"),psBusStats->m_StartUpFrameChA);
+    sprintf(szDataValue,_("%ld"),psBusStats->m_StartUpFrameChA);
     m_lstNetWorkStat.SetItemText(nStartIndex + 0,SECOND_COL,szDataValue);
 
     //Dynamic Frame count
-    sprintf(szDataValue,_T("%ld"),psBusStats->m_DynamicFramesChA);
+    sprintf(szDataValue,_("%ld"),psBusStats->m_DynamicFramesChA);
     m_lstNetWorkStat.SetItemText(nStartIndex + 1,SECOND_COL,szDataValue);
 
     //Sync Frame total
-    sprintf(szDataValue,_T("%ld"),psBusStats->m_SyncFramePerSecChA);
+    sprintf(szDataValue,_("%ld"),psBusStats->m_SyncFramePerSecChA);
     m_lstNetWorkStat.SetItemText(nStartIndex + 2,SECOND_COL,szDataValue);
 
     //Sync Frame total
-    sprintf(szDataValue,_T("%ld"),psBusStats->m_SyncFrameChA);
+    sprintf(szDataValue,_("%ld"),psBusStats->m_SyncFrameChA);
     m_lstNetWorkStat.SetItemText(nStartIndex + 3,SECOND_COL,szDataValue);
 
     //nullptr Frame count per Sec
-    sprintf(szDataValue,_T("%ld"),psBusStats->m_NullFramePerSecChA);
+    sprintf(szDataValue,_("%ld"),psBusStats->m_NullFramePerSecChA);
     m_lstNetWorkStat.SetItemText(nStartIndex + 4,SECOND_COL,szDataValue);
 
     //nullptr Frame count
-    sprintf(szDataValue,_T("%ld"),psBusStats->m_NullFrameChA);
+    sprintf(szDataValue,_("%ld"),psBusStats->m_NullFrameChA);
     m_lstNetWorkStat.SetItemText(nStartIndex + 5,SECOND_COL,szDataValue);
 
 
     //Static Frame count
-    sprintf(szDataValue,_T("%ld"),psBusStats->m_StaticFramesChB);
+    sprintf(szDataValue,_("%ld"),psBusStats->m_StaticFramesChB);
     m_lstNetWorkStat.SetItemText(nStartIndex + 0,THIRD_COL,szDataValue);
 
     //Dynamic Frame count
-    sprintf(szDataValue,_T("%ld"),psBusStats->m_DynamicFramesChB);
+    sprintf(szDataValue,_("%ld"),psBusStats->m_DynamicFramesChB);
     m_lstNetWorkStat.SetItemText(nStartIndex + 1,THIRD_COL,szDataValue);
 
     //Sync Frame total
-    sprintf(szDataValue,_T("%ld"),psBusStats->m_SyncFramePerSecChB);
+    sprintf(szDataValue,_("%ld"),psBusStats->m_SyncFramePerSecChB);
     m_lstNetWorkStat.SetItemText(nStartIndex + 2,THIRD_COL,szDataValue);
 
     //Sync Frame total
-    sprintf(szDataValue,_T("%ld"),psBusStats->m_SyncFrameChB);
+    sprintf(szDataValue,_("%ld"),psBusStats->m_SyncFrameChB);
     m_lstNetWorkStat.SetItemText(nStartIndex + 3,THIRD_COL,szDataValue);
 
     //nullptr Frame count per Sec
-    sprintf(szDataValue,_T("%ld"),psBusStats->m_NullFramePerSecChB);
+    sprintf(szDataValue,_("%ld"),psBusStats->m_NullFramePerSecChB);
     m_lstNetWorkStat.SetItemText(nStartIndex + 4,THIRD_COL,szDataValue);
 
     //nullptr Frame count
-    sprintf(szDataValue,_T("%ld"),psBusStats->m_NullFrameChB);
+    sprintf(szDataValue,_("%ld"),psBusStats->m_NullFrameChB);
     m_lstNetWorkStat.SetItemText(nStartIndex + 5,THIRD_COL,szDataValue);
 
 }

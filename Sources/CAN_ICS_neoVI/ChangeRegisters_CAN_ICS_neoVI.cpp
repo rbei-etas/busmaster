@@ -57,7 +57,7 @@ CChangeRegisters_CAN_ICS_neoVI::CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent /*=
     m_omStrEditCNF2 = "";
     m_omStrEditCNF3 = "";
     m_omStrComboSampling = "";
-    /*m_omStrEditBaudRate = _T("");*/
+    /*m_omStrEditBaudRate = "";*/
     m_omStrcombBaudRate = "";
     m_omStrComboClock = "32";
     m_omStrEditWarningLimit = "";
@@ -794,7 +794,7 @@ void CChangeRegisters_CAN_ICS_neoVI::vValidateBaudRate()
         {
             dBaudRate = 5000;
         }
-        omStrBaudRate.Format(_T("%ld"),/*fTempBaudRate*/(long)dBaudRate);
+        omStrBaudRate.Format(_("%ld"),/*fTempBaudRate*/(long)dBaudRate);
 
         omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);
         omStrPrvBaudRate = m_omStrcombBaudRate;

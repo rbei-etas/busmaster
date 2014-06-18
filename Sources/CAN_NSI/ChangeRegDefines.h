@@ -81,7 +81,7 @@
 #define  defHEXADECIMAL                   16
 #define  defWARNING_LIMIT_MIN             1
 #define  defWARNING_LIMIT_MAX             127
-#define  defWARNINGLIMIT_MSG _T("The Warning limit \"%s\" is beyond the limit %d - %d")
+#define  defWARNINGLIMIT_MSG _("The Warning limit \"%s\" is beyond the limit %d - %d")
 // Allowed valid decimal values in NBT and BRP product
 #define  defVALID_DECIMAL_VALUE          0.004
 // Maximum size of Column Headers Displayed in list box

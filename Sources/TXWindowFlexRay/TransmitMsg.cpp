@@ -41,8 +41,8 @@ const BYTE COLUMN_DATABYTE  = 0x40;
 #define BITLENGTH 16
 
 #define TARGET_RESOLUTION 1         // 1-millisecond target resolution
-#define defSTR_FORMAT_DISPLAY_DEC    _T("%-60s   [%16I64d]")
-#define defSTR_FORMAT_DISPLAY_HEX    _T("%-60s   [%16I64X]")
+#define defSTR_FORMAT_DISPLAY_DEC    _("%-60s   [%16I64d]")
+#define defSTR_FORMAT_DISPLAY_HEX    _("%-60s   [%16I64X]")
 
 HWND CTransmitMsg::m_hTransmitWnd = nullptr;
 
@@ -241,12 +241,10 @@ void CTransmitMsg::vGetStringFromValue(int nValue, std::string& strValue)
 
 void CTransmitMsg::OnInitialUpdate()
 {
-    CHAR caColumnName[defMESSAGE_BLOCK_COLUMN][defSTRING_SIZE] =
-    {
-        defMESSAGE_BLOCK_NAME,
-        defMESSAGE_BLOCK_TRIGGER,
-        defMESSAGE_BLOCK_TRIG_VAL
-    };
+    char caColumnName[defMESSAGE_BLOCK_COLUMN][defSTRING_SIZE];
+    strncpy(caColumnName[0], defMESSAGE_BLOCK_NAME, defSTRING_SIZE);
+    strncpy(caColumnName[1], defMESSAGE_BLOCK_TRIGGER, defSTRING_SIZE);
+    strncpy(caColumnName[2], defMESSAGE_BLOCK_TRIG_VAL, defSTRING_SIZE);
 
     CFormView::OnInitialUpdate();
 
@@ -310,8 +308,8 @@ void CTransmitMsg::OnInitialUpdate()
 
     TCHAR* acColData[]=
     {
-        _T("Message Name"), _T("Frame Id"), _T("Base Cycle"), _T("Repetition"),
-        _T("Channel(A\\B)"), _T("Data Length"), _T("Slot Type")
+        _("Message Name"), _("Frame Id"), _("Base Cycle"), _("Repetition"),
+        _("Channel(A\\B)"), _("Data Length"), _("Slot Type")
     };
 
     LVCOLUMN lvcolumn;
@@ -979,7 +977,7 @@ void CTransmitMsg::vRefreshTxMsgWindow()
     //            m_omLctrMsgBlockName.SetItemText(i, 1, defMSG_MONOSHOT);
     //        }
     //        //The timing value is valid for bot type of blocks
-    //        CString omTmpStr = _T("");
+    //        CString omTmpStr = "";
     //        omTmpStr.Format("%d ms", pouCurrBlock->m_unTimeInterval);
     //        m_omLctrMsgBlockName.SetItemText(i, 2, omTmpStr);
 

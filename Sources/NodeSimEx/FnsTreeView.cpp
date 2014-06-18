@@ -1598,11 +1598,11 @@ void CFnsTreeView::vEditTimerHandler(HTREEITEM hItem)
                     // Add footer
                     pDoc->m_omSourceCodeTextList.SetAt( pos,omStrFooter );
                 }
-                omStrOldFuncDecl += _(";");
+                omStrOldFuncDecl += ";";
                 pos = pDoc->m_omSourceCodeTextList.Find(omStrOldFuncDecl );
                 if( pos != nullptr )
                 {
-                    omStrNewFuncDecl += _(";");
+                    omStrNewFuncDecl += ";";
                     pDoc->m_omSourceCodeTextList.SetAt( pos,omStrNewFuncDecl );
                 }
 
@@ -2146,13 +2146,13 @@ void CFnsTreeView::vOnNewBusEventHandler()
 
                         // Form the function header
                         CString omStrHdr = BUS_FN_HDR;
-                        omStrHdr.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
-                        omStrHdr.Replace(_T("PLACE_HODLER_FOR_FUNCTIONNAME"), omStrFuncName);
+                        omStrHdr.Replace(_("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
+                        omStrHdr.Replace(_("PLACE_HODLER_FOR_FUNCTIONNAME"), omStrFuncName);
 
                         // Form the function footer
                         CString omStrFooter = BUS_FN_FOOTER;
-                        omStrFooter.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
-                        omStrFooter.Replace(_T("PLACE_HODLER_FOR_FUNCTIONNAME"), omStrFuncName);
+                        omStrFooter.Replace(_("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
+                        omStrFooter.Replace(_("PLACE_HODLER_FOR_FUNCTIONNAME"), omStrFuncName);
 
                         pDoc->m_omSourceCodeTextList.AddTail( omStrHdr );
                         // Add fn definition

@@ -31,23 +31,23 @@
 #include "TxFlexRayDataStore.h"
 
 //******************Anish code start**********
-#define defMESSAGE_BLOCK_NAME       _T("Name")
-#define defMESSAGE_BLOCK_TRIGGER    _T("Type")
-#define defMESSAGE_BLOCK_TRIG_VAL   _T("Value")
-#define defMSG_CYCLIC               _T("CYCLIC")
-#define defMSG_MONOSHOT             _T("MONOSHOT")
-#define defMESSAGE_TRIG_MS          _T("ms")
-#define defDEFAULT_TIMER_VAL        _T("100")
+#define defMESSAGE_BLOCK_NAME       _("Name")
+#define defMESSAGE_BLOCK_TRIGGER    _("Type")
+#define defMESSAGE_BLOCK_TRIG_VAL   _("Value")
+#define defMSG_CYCLIC               _("CYCLIC")
+#define defMSG_MONOSHOT             _("MONOSHOT")
+#define defMESSAGE_TRIG_MS          _("ms")
+#define defDEFAULT_TIMER_VAL        _("100")
 #define defDEFAULT_KEY_VAL          'A'
 
-#define defDEL_MSG_BLOCK            _T("You are about to delete a message block.\n\n\
+#define defDEL_MSG_BLOCK            _("You are about to delete a message block.\n\n\
 Are you sure you want to delete?")
 
 
 #define defMAIN_ITEM                0
 #define defSUBITEM_MSGBLOCK_TYPE    1
 #define defSUBITEM_MSGBLOCK_TRG_VAL 2
-#define defSTR_TIMER_VAL_FMT_SPECIFIER      _T("%d")
+#define defSTR_TIMER_VAL_FMT_SPECIFIER      _("%d")
 #define defDEFAULT_TIME_VAL         100
 
 #define defMESSAGE_BLOCK_COLUMN     3
@@ -84,15 +84,15 @@ enum DATA_VIEW
 };
 //Anupam Kumar Code End
 //******************Anish code start**********
-#define defMESSAGE_BLOCK_NAME       _T("Name")
-#define defMESSAGE_BLOCK_TRIGGER    _T("Type")
-#define defMESSAGE_BLOCK_TRIG_VAL   _T("Value")
-#define defMSG_CYCLIC               _T("CYCLIC")
-#define defMSG_MONOSHOT             _T("MONOSHOT")
-//#define defDEFAULT_MSG_BLOCK_NAME   _T("Group")
-#define defMESSAGE_TRIG_MS          _T("ms")
-#define defDEFAULT_MSG_BLOCK_NAME   _T("OnTime")
-#define defDEFAULT_TIMER_VAL        _T("100")
+#define defMESSAGE_BLOCK_NAME       _("Name")
+#define defMESSAGE_BLOCK_TRIGGER    _("Type")
+#define defMESSAGE_BLOCK_TRIG_VAL   _("Value")
+#define defMSG_CYCLIC               _("CYCLIC")
+#define defMSG_MONOSHOT             _("MONOSHOT")
+//#define defDEFAULT_MSG_BLOCK_NAME   _("Group")
+#define defMESSAGE_TRIG_MS          _("ms")
+#define defDEFAULT_MSG_BLOCK_NAME   _("OnTime")
+#define defDEFAULT_TIMER_VAL        _("100")
 #define defDEFAULT_KEY_VAL          'A'
 
 class CTransmitMsg : public CFormView

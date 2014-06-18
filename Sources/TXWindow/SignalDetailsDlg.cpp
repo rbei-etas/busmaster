@@ -645,7 +645,7 @@ void CSignalDetailsDlg::OnOK()
                 }
                 else
                 {
-                    AfxMessageBox(_T(_("Insufficient Memory available")), MB_OK|MB_ICONINFORMATION);
+                    AfxMessageBox(_("Insufficient Memory available"), MB_OK|MB_ICONINFORMATION);
                 }
             }
         }

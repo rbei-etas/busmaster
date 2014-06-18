@@ -544,7 +544,7 @@ BYTE* CTxWndDataStore::pbySetConfigData(BYTE* pbyConfigData, INT /*nConfigSize*/
         for (UINT i = 0; i < m_unNumberOfMsgBlockCount; i++)
         {
             PSMSGBLOCKLIST psTempBlock = new SMSGBLOCKLIST;
-            char acName[MAX_PATH] = {_T('\0')};
+            char acName[MAX_PATH] = { '\0' };
             COPY_DATA_2(acName, pbyTemp, (sizeof(char) * MAX_PATH));
             strcpy_s(psTempBlock->m_acStrBlockName, defBLOCKNAME_SIZE, acName);
             COPY_DATA_2(&(psTempBlock->m_ucTrigger),pbyTemp,  sizeof(UCHAR));
@@ -658,7 +658,7 @@ BYTE* CTxWndDataStore::pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize)
     while (psTempBlock != nullptr && unBlockCount > 0)
     {
         CString m_omStrBlockName;
-        char acName[MAX_PATH] = {_T('\0')};
+        char acName[MAX_PATH] = { '\0' };
         strcpy_s(acName, MAX_PATH, psTempBlock->m_acStrBlockName);
         COPY_DATA(pbyTemp, acName, (sizeof(char) * MAX_PATH));
         COPY_DATA(pbyTemp, &(psTempBlock->m_ucTrigger), sizeof(UCHAR));

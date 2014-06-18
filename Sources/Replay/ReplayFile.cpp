@@ -194,7 +194,7 @@ BYTE* CReplayFile::pbySaveConfig(BYTE* pDesBuffer)
     memcpy(pDesBuffer, &m_bInteractive, sizeof(m_bInteractive));
     pDesBuffer += sizeof(m_bInteractive);
     //Save file name size
-    char acName[MAX_PATH] = {_T('\0')};
+    char acName[MAX_PATH] = { '\0' };
     strcpy_s(acName, MAX_PATH, m_omStrFileName.GetBuffer(MAX_PATH));
     memcpy(pDesBuffer, acName, sizeof(char) * MAX_PATH);
     pDesBuffer += sizeof(char) * MAX_PATH;
@@ -329,7 +329,7 @@ BYTE* CReplayFile::pbyLoadConfig(BYTE* pSrcBuffer, INT nSectionVersion)
     memcpy(&m_bInteractive, pSrcBuffer, sizeof(m_bInteractive));
     pSrcBuffer += sizeof(m_bInteractive);
     //Save file name size
-    char acName[MAX_PATH] = {_T('\0')};
+    char acName[MAX_PATH] = { '\0' };
     memcpy(acName, pSrcBuffer, sizeof(char) * MAX_PATH);
     pSrcBuffer += (sizeof(char) * MAX_PATH);
     //Save file name

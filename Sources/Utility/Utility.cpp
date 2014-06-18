@@ -25,6 +25,7 @@
 /// All the utility function defined here
 
 #include "Utils_stdafx.h"
+#include "MultiLanguageSupport.h"
 #include <math.h>
 #include <shlwapi.h>
 #include <cstringt.h>
@@ -274,7 +275,7 @@ bool bGetSystemErrorString(HRESULT hResult, char acErrStr[256])
 {
     bool bResult = true;
 
-    memset(acErrStr, _T('\0'), _tcslen(acErrStr));
+    memset(acErrStr, 0, _tcslen(acErrStr));
     LPVOID lpMsgBuf;
     DWORD dwResult = 0;
 

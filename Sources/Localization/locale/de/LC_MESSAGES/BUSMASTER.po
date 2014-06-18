@@ -1,0 +1,3787 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: BUSMASTER\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-06-17 17:39+0200\n"
+"PO-Revision-Date: 2014-06-18 08:11+0100\n"
+"Last-Translator: Tobias Lorenz <tobias.lorenz@etas.com>\n"
+"Language-Team: Tobias Lorenz <tobias.lorenz@etas.com>\n"
+"Language: Deutsch\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: Application/BUSMASTER.cpp:213
+msgid "Fail to Intilaize OLE"
+msgstr ""
+
+#: Application/BUSMASTER.cpp:722
+msgid "C File(s)(*.c)|*.c||"
+msgstr "C-Datei(en)(*.c)|*.c||"
+
+#: Application/BUSMASTER.cpp:725
+msgid "Select BUSMASTER Source Filename..."
+msgstr "Wähle BUSMASTER Quelldateiname..."
+
+#: Application/BUSMASTER.cpp:770
+msgid "Specified filename not found!"
+msgstr "Angegebener Dateiname nicht gefunden!"
+
+#: Application/BUSMASTER.cpp:789
+msgid ""
+" while loading.\n"
+"Operation unsuccessful."
+msgstr ""
+
+#: Application/BUSMASTER.cpp:793
+msgid ""
+" while saving.\n"
+"Operation unsuccessful."
+msgstr ""
+
+#: Application/BUSMASTER.cpp:797
+msgid ""
+".\n"
+"Operation unsuccessful."
+msgstr ""
+
+#: Application/BUSMASTER.cpp:805
+msgid "File error occured"
+msgstr "Dateifehler aufgetreten"
+
+#: Application/BUSMASTER.cpp:811
+msgid "Configuration file not found"
+msgstr "Konfigurationsdatei nicht gefunden"
+
+#: Application/BUSMASTER.cpp:817
+msgid "Unable to open configuration file"
+msgstr "Öffnen der Konfigurationsdatei nicht möglich"
+
+#: Application/BUSMASTER.cpp:823
+msgid "Unable to read configuration file"
+msgstr "Lesen der Konfigurationsdatei nicht möglich"
+
+#: Application/BUSMASTER.cpp:829
+msgid "Unable to write into configuration file"
+msgstr "Schreiben in die Konfigurationsdatei nicht möglich"
+
+#: Application/BUSMASTER.cpp:835
+msgid "Unable to close configuration file successfully"
+msgstr "Schließen der Konfigurationsdatei nicht erfolgreich möglich"
+
+#: Application/BUSMASTER.cpp:841
+msgid "Invalid configuration file extension found"
+msgstr "Ungültige Konfigurationsdateierweiterung gefunden"
+
+#: Application/BUSMASTER.cpp:847
+msgid "Configuration file path not found"
+msgstr "Konfigurationsdateipfad nicht gefunden"
+
+#: Application/BUSMASTER.cpp:853
+msgid "Configuration file access was denied"
+msgstr "Zugriff auf Konfigurationsdatei wurde verweigert"
+
+#: Application/BUSMASTER.cpp:859
+msgid "Invalid file handle obtained"
+msgstr "Ungültiger Datei-Handle erhalten"
+
+#: Application/BUSMASTER.cpp:865
+msgid "Specified drive not found"
+msgstr "Angegebenes Laufwerk nicht gefunden"
+
+#: Application/BUSMASTER.cpp:871
+msgid ""
+"An attempt to edit the file has been made from outside the application.\n"
+"Corrupt configuration file found"
+msgstr ""
+"Ein Versuch die Datei zu editieren wurde von außerhalb der Anwendung "
+"gemacht.\n"
+"Beschädigte Konfigurationsdatei gefunden"
+
+#: Application/BUSMASTER.cpp:879
+msgid "Corrupt configuration file header found"
+msgstr "Beschädigter Konfigurationsdateikopf gefunden"
+
+#: Application/BUSMASTER.cpp:885
+msgid "Unknown error encountered"
+msgstr "Unbekannter Fehler aufgetreten!"
+
+#: Application/BUSMASTER.cpp:1204
+msgid "Database File: "
+msgstr "Datenbankdatei: "
+
+#: Application/BUSMASTER.cpp:1206 Application/MainFrm.cpp:1421
+#: Application/MainFrm.cpp:19335
+msgid " not found!"
+msgstr " nicht gefunden!"
+
+#: Application/BusmasterDump.cpp:64
+msgid "Unhandled exception in BUSMASTER. Would you like to save a dump file?"
+msgstr ""
+
+#: Application/BusmasterDump.cpp:83
+msgid "Saved dump file to "
+msgstr ""
+
+#: Application/BusmasterDump.cpp:88
+msgid "Failed to save dump file to "
+msgstr "Speichern der Ausgabedatei fehlgeschlagen nach "
+
+#: Application/BusmasterDump.cpp:96
+msgid "Failed to create dump file "
+msgstr "Erzeugung der Ausgabedatei fehlgeschlagen"
+
+#: Application/ConfigData.cpp:58
+msgid "The Configuration file is not Compatible"
+msgstr "Die Konfigurationsdatei ist nicht kompatibel"
+
+#: Application/ConfigData.cpp:65
+msgid "The Configuration file is not Valid"
+msgstr "Die Konfigurationsdatei ist nicht gültig"
+
+#: Application/ConfigData.cpp:72
+msgid "Configuration file changed outside the Application"
+msgstr "Konfigurationsdatei außerhalb der Anwendung geändert"
+
+#: Application/ConfigDetails.cpp:1287
+msgid "Error while updating data"
+msgstr "Fehler beim Aktualisieren der Daten"
+
+#: Application/ConfigDetails.cpp:4643
+msgid "Error while loading Signal Watch List!!"
+msgstr ""
+
+#: Application/ConfigDetails.cpp:4760
+msgid "Error while saving Simulated system List!!"
+msgstr "Fehler beim Speichern der Liste simulierter Systeme"
+
+#: Application/ConfigDetails.cpp:4810
+msgid "Error while loading Simulated system List!!"
+msgstr "Fehler beim Laden der Liste simulierter Systeme"
+
+#: Application/ConfigMsgLogDlg.cpp:86
+msgid "Configure Logging for CAN"
+msgstr "Konfiguriere Aufzeichnung für CAN"
+
+#: Application/ConfigMsgLogDlg.cpp:87 Application/ConfigMsgLogDlg.cpp:106
+msgid "Start on Reception of ID 0x"
+msgstr "Start beim Empfang von ID 0x"
+
+#: Application/ConfigMsgLogDlg.cpp:88 Application/ConfigMsgLogDlg.cpp:107
+msgid "Stop on Reception of ID 0x"
+msgstr "Stopp beim Empfang von ID 0x"
+
+#: Application/ConfigMsgLogDlg.cpp:95
+msgid "Configure Logging for J1939"
+msgstr "Konfiguriere Aufzeichnung für J1939"
+
+#: Application/ConfigMsgLogDlg.cpp:96
+msgid "Start on Reception of PGN 0x"
+msgstr "Start beim Empfang von PGN 0x"
+
+#: Application/ConfigMsgLogDlg.cpp:97
+msgid "Stop on Reception of PGN 0x"
+msgstr "Stopp beim Empfang von PGN 0x"
+
+#: Application/ConfigMsgLogDlg.cpp:105
+msgid "Configure Logging for LIN"
+msgstr "Konfiguriere Aufzeichnung bei LIN"
+
+#: Application/ConfigMsgLogDlg.cpp:815 Application/ConfigMsgLogDlg.cpp:840
+#: DataTypes/Filter_Datatypes.cpp:357 DataTypes/Filter_Datatypes.cpp:1073
+#: DataTypes/Filter_Datatypes.cpp:1090
+msgid "ALL"
+msgstr ""
+
+#: Application/ConfigMsgLogDlg.cpp:928
+msgid " - Read Only as Logging is ON"
+msgstr ""
+
+#: Application/FlexRayNetworkStatsDlg.cpp:118
+msgid "Parameters"
+msgstr "Parameter"
+
+#: Application/FlexRayNetworkStatsDlg.cpp:254
+#: Application/FlexRayNetworkStatsDlg.cpp:259
+#: Application/FlexRayNetworkStatsDlg.cpp:289
+#: Application/FlexRayNetworkStatsDlg.cpp:293
+#: Application/FlexRayNetworkStatsDlg.cpp:297
+#: Application/FlexRayNetworkStatsDlg.cpp:301
+#: Application/FlexRayNetworkStatsDlg.cpp:305
+#: Application/FlexRayNetworkStatsDlg.cpp:309
+#: Application/FlexRayNetworkStatsDlg.cpp:314
+#: Application/FlexRayNetworkStatsDlg.cpp:318
+#: Application/FlexRayNetworkStatsDlg.cpp:322
+#: Application/FlexRayNetworkStatsDlg.cpp:326
+#: Application/FlexRayNetworkStatsDlg.cpp:330
+#: Application/FlexRayNetworkStatsDlg.cpp:334
+#: CAN_ETAS_BOA/ChangeRegisters_CAN_ETAS_BOA.cpp:490
+#: CAN_ICS_neoVI/ChangeRegisters_CAN_ICS_neoVI.cpp:797
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:884
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:1057
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:1333 CAN_NSI/ChangeRegisters.cpp:919
+#: CAN_NSI/ChangeRegisters.cpp:1090 CAN_NSI/ChangeRegisters.cpp:1366
+#: CAN_Vector_XL/ChangeRegisters.cpp:887
+#: CAN_Vector_XL/ChangeRegisters.cpp:1060
+#: CAN_Vector_XL/ChangeRegisters.cpp:1337 CAN_iVIEW/ChangeRegisters.cpp:891
+#: CAN_iVIEW/ChangeRegisters.cpp:1064 CAN_iVIEW/ChangeRegisters.cpp:1341
+#, c-format
+msgid "%ld"
+msgstr ""
+
+#: Application/MainFrm.cpp:161
+msgid "BUSMASTER Configuration files(*.cfx)|*.cfx||"
+msgstr "BUSMASTER Konfigurationsdateien(*.cfx)|*.cfx||"
+
+#: Application/MainFrm.cpp:838
+msgid "Node Simulation"
+msgstr "Knotensimulation"
+
+#: Application/MainFrm.cpp:839
+msgid "Message Window"
+msgstr "Nachrichtenfenster"
+
+#: Application/MainFrm.cpp:840
+msgid "Main"
+msgstr ""
+
+#: Application/MainFrm.cpp:841
+msgid "Configure"
+msgstr ""
+
+#: Application/MainFrm.cpp:843
+msgid "CAN Database"
+msgstr "CAN-Datenbank"
+
+#: Application/MainFrm.cpp:845
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#: Application/MainFrm.cpp:883
+msgid "Failed to create status bar\n"
+msgstr "Erstellen der Statusleiste fehlgeschlagen\n"
+
+#: Application/MainFrm.cpp:1081
+msgid "Failed to create toolbar\n"
+msgstr "Erstellen der Werkzeugleiste fehlgeschlagen\n"
+
+#: Application/MainFrm.cpp:1162
+msgid ""
+"Are yor sure you want to close the \n"
+"database that is already open?"
+msgstr ""
+
+#: Application/MainFrm.cpp:1184
+msgid "BUSMASTER Database File(s)(*.dbf)|*.dbf||"
+msgstr "BUSMASTER Datenbankdatei(en)(*.dbf)|*.dbf||"
+
+#: Application/MainFrm.cpp:1188
+msgid "Select BUSMASTER Database Filename..."
+msgstr "Wähle BUSMASTER Datenbankdateiname..."
+
+#: Application/MainFrm.cpp:1225 Application/MainFrm.cpp:19172
+msgid ""
+"Specified database file is not found.\n"
+"Operation unsuccessful."
+msgstr ""
+
+#: Application/MainFrm.cpp:1245 Application/MainFrm.cpp:1942
+#: Application/MainFrm.cpp:19084 Application/MainFrm.cpp:19190
+msgid "Database Editor"
+msgstr "Datenbankeditor"
+
+#: Application/MainFrm.cpp:1251 Application/MainFrm.cpp:1947
+#: Application/MainFrm.cpp:19088
+msgid "Create BUSMASTER Database Window Failed!"
+msgstr "Erzeugung des BUSMASTER Datenbankfensters fehlgeschlagen!"
+
+#: Application/MainFrm.cpp:1308
+msgid "Do you want to save changes to the database file?"
+msgstr ""
+
+#: Application/MainFrm.cpp:1387
+msgid "BUSMASTER Datatbase File(*.dbf)|*.dbf||"
+msgstr ""
+
+#: Application/MainFrm.cpp:1391 Application/MainFrm.cpp:19306
+msgid "Select Active Database Filename..."
+msgstr ""
+
+#: Application/MainFrm.cpp:1402 Application/MainFrm.cpp:19317
+msgid ""
+"Database File: \n"
+" "
+msgstr ""
+"Datenbankdatei: \n"
+" "
+
+#: Application/MainFrm.cpp:1889
+msgid "New Database file name..."
+msgstr "Neuer Datenbankdateiname..."
+
+#: Application/MainFrm.cpp:1979 Application/MainFrm.cpp:2052
+msgid "CAN Datatbase File(*.dbf)|*.dbf||"
+msgstr ""
+
+#: Application/MainFrm.cpp:1983 Application/MainFrm.cpp:2056
+msgid "Save As..."
+msgstr "Speichern Als..."
+
+#: Application/MainFrm.cpp:2152 Application/MsgSignalDBWnd.cpp:374
+#, c-format
+msgid ""
+"File  \"%s\"  has been modified which is currently being loaded.\n"
+"Do you want to re-import it to reflect the changes?"
+msgstr ""
+
+#: Application/MainFrm.cpp:2188
+msgid "Configure Message Display- CAN"
+msgstr "Konfiguriere Nachrichtenfenster- CAN"
+
+#: Application/MainFrm.cpp:2242
+msgid "Configure Message Display- LIN"
+msgstr "Konfiguriere Nachrichtenfenster- LIN"
+
+#: Application/MainFrm.cpp:2386 Application/MainFrm.cpp:2411
+#: Application/MainFrm.cpp:19451 Application/MainFrm.cpp:19476
+msgid "Following file(s) are either not properly build or loaded:"
+msgstr ""
+"Folgende Datei(en) wurden entweder nicht richtig erstellt oder geladen:"
+
+#: Application/MainFrm.cpp:2449 Application/MainFrm.cpp:2474
+msgid "Following file(s) are not properly build:"
+msgstr "Folgende Dateien(en) wurden nicht korrekt erstellt:"
+
+#: Application/MainFrm.cpp:2507 Application/MainFrm.cpp:2533
+#: Application/MainFrm.cpp:19402
+msgid "Following file(s) are not properly loaded:"
+msgstr "Folgende Dateien(en) wurden nicht korrekt geladen:"
+
+#: Application/MainFrm.cpp:2577 Application/MainFrm.cpp:2601
+#: Application/MainFrm.cpp:2625 Application/MainFrm.cpp:19426
+msgid "Following file(s) are not properly unloaded:"
+msgstr "Folgende Dateien(en) wurden nicht korrekt entladen:"
+
+#: Application/MainFrm.cpp:4088 Application/MainFrm.cpp:4132
+msgid ""
+"You have made changes to the configuration.\n"
+"Do you want to save it?"
+msgstr ""
+
+#: Application/MainFrm.cpp:4100 Application/MainFrm.cpp:7800
+msgid "Save Configuration File"
+msgstr "Speichere Konfigurationsdatei"
+
+#: Application/MainFrm.cpp:6315
+msgid "Default Configuration loaded"
+msgstr "Vorgabekonfiguration geladen"
+
+#: Application/MainFrm.cpp:6320 Application/MainFrm.cpp:6326
+#, c-format
+msgid "Config File: %s"
+msgstr "Konfigurationsdatei: %s"
+
+#: Application/MainFrm.cpp:6928
+msgid "Trying to connect the hardware ... Please wait"
+msgstr "Versuche mit Hardware zu verbinden ... Bitte warten"
+
+#: Application/MainFrm.cpp:6932
+msgid "Connected... "
+msgstr "Verbunden..."
+
+#: Application/MainFrm.cpp:6937
+msgid "Failed to connect the hardware... "
+msgstr "Verbinden mit Hardware fehlgeschlagen... "
+
+#: Application/MainFrm.cpp:6938
+msgid "Failed to start the hardware"
+msgstr "Starten der Hardware fehlgeschlagen... "
+
+#: Application/MainFrm.cpp:7552
+msgid "Load"
+msgstr "Laden"
+
+#: Application/MainFrm.cpp:7553
+msgid "Load Configuration Filename..."
+msgstr "Lade Konfigurationsdatei..."
+
+#: Application/MainFrm.cpp:7627
+msgid "Open"
+msgstr "Öffnen"
+
+#: Application/MainFrm.cpp:7629
+msgid "New Configuration Filename..."
+msgstr "Neue Konfigurationsdatei..."
+
+#: Application/MainFrm.cpp:7854
+msgid "SaveAs Configuration Filename..."
+msgstr ""
+
+#: Application/MainFrm.cpp:11243 Application/MainFrm.cpp:11307
+msgid "BUSMASTER Format Conversions"
+msgstr "BUSMASTER Formatkonvertierungen"
+
+#: Application/MainFrm.cpp:11740 Application/MainFrm.cpp:11878
+msgid "registering client failed"
+msgstr "Registrierung des Clients fehlgeschlagen"
+
+#: Application/MainFrm.cpp:11747 Application/MainFrm.cpp:11886
+msgid "Selecting hardware interface failed"
+msgstr "Auswahl der Hardwareschnittstelle fehlgeschlagen"
+
+#: Application/MainFrm.cpp:11756 Application/MainFrm.cpp:11896
+msgid "hardware selection Cancelled. Retaining previous hardware settings.."
+msgstr ""
+
+#: Application/MainFrm.cpp:11763 Application/MainFrm.cpp:11904
+msgid "Listing hardware interfaces failed"
+msgstr "Auflistung der Hardwareschnittstellen fehlgeschlagen"
+
+#: Application/MainFrm.cpp:11773
+msgid "Driver selection failed"
+msgstr "Treiberauswahl fehlgeschlagen"
+
+#: Application/MainFrm.cpp:11872
+msgid ""
+"Information: To monitor messages associating LDF file is required for LIN "
+"ETAS BOA"
+msgstr ""
+
+#: Application/MainFrm.cpp:11915
+msgid "Driver Selection Failed"
+msgstr "Treiberauswahl fehlgeschlagen"
+
+#: Application/MainFrm.cpp:12033
+#, c-format
+msgid "%s - %s - %.3f Kbps (Allowed channels:%d)"
+msgstr ""
+
+#: Application/MainFrm.cpp:16464
+msgid "English"
+msgstr "Englisch"
+
+#: Application/MainFrm.cpp:17837
+msgid "bUpdatePopupMenuFLEXRAYDIL for driver selection failed!"
+msgstr ""
+
+#: Application/MainFrm.cpp:17842
+msgid "new CMenu() for FlexRay failed!"
+msgstr ""
+
+#: Application/MainFrm.cpp:17853
+msgid "GetSubMenu(\"Flex&Ray\") failed"
+msgstr ""
+
+#: Application/MainFrm.cpp:17857 Application/MainFrm.cpp:17916
+msgid "Dri&ver Selection"
+msgstr "Treiberauswahl"
+
+#: Application/MainFrm.cpp:17862 Application/MainFrm.cpp:17921
+#: Application/MainFrm.cpp:18009
+msgid "Could not create DIL menu items"
+msgstr "Konnte DIL Menüeinträge nicht erzeugen"
+
+#: Application/MainFrm.cpp:17894 Application/MainFrm.cpp:17982
+msgid "CreatePopupMenu for driver selection failed"
+msgstr "CreatePopupMenu für Treiberauswahl fehlgeschlagen"
+
+#: Application/MainFrm.cpp:17899 Application/MainFrm.cpp:17987
+msgid "new CMenu() failed"
+msgstr "neues CMenu() fehlgeschlagen"
+
+#: Application/MainFrm.cpp:17910
+msgid "GetSubMenu(\"&CAN\") failed"
+msgstr ""
+
+#: Application/MainFrm.cpp:17998
+msgid "GetSubMenu(\"&LIN\") failed"
+msgstr ""
+
+#: Application/MainFrm.cpp:18004
+msgid "&Driver Selection"
+msgstr "Treiberauswahl"
+
+#: Application/MainFrm.cpp:18481 Application/MainFrm.cpp:18505
+msgid "&Activate"
+msgstr "Aktivieren"
+
+#: Application/MainFrm.cpp:18485 Application/MainFrm.cpp:18509
+msgid "D&eactivate"
+msgstr "Deaktivieren"
+
+#: Application/MainFrm.cpp:18546
+msgid "DIL.J1939 network started..."
+msgstr ""
+
+#: Application/MainFrm.cpp:18584
+msgid "Network startup failed. Select a valid hardware interface."
+msgstr ""
+"Netzwerkinbetriebnahme fehlgeschlagen. Wählen sie eine gültige "
+"Hardwareschnittstelle."
+
+#: Application/MainFrm.cpp:18596
+msgid "DIL.J1939 network stopped..."
+msgstr ""
+
+#: Application/MainFrm.cpp:18626
+msgid "&Go Offline"
+msgstr "Offline gehen"
+
+#: Application/MainFrm.cpp:18630
+msgid "&Go Online"
+msgstr "Online gehen"
+
+#: Application/MainFrm.cpp:18791
+msgid "Querying DIL.J1939 ..."
+msgstr ""
+
+#: Application/MainFrm.cpp:18794
+msgid "DIL.J1939 query successful..."
+msgstr ""
+
+#: Application/MainFrm.cpp:18802
+msgid "DIL.J1939 initialisation successful..."
+msgstr ""
+
+#: Application/MainFrm.cpp:18827
+msgid "DIL.J1939 initialisation failed..."
+msgstr "DIL.J1939-Initialisierung fehlgeschlagen..."
+
+#: Application/MainFrm.cpp:18832
+msgid "DIL.J1939 client registration successful..."
+msgstr ""
+
+#: Application/MainFrm.cpp:18836
+msgid "J1939 logger query successful..."
+msgstr ""
+
+#: Application/MainFrm.cpp:18850
+msgid "J1939 logger successfully initialised..."
+msgstr ""
+
+#: Application/MainFrm.cpp:18855
+msgid "J1939 logger initialisation failed..."
+msgstr "J1939-Aufzeichnerinitialisierung fehlgeschlagen"
+
+#: Application/MainFrm.cpp:18860
+msgid "J1939 logger query failed..."
+msgstr "J1939-Aufzeichnerabfrage fehlgeschlagen..."
+
+#: Application/MainFrm.cpp:18865
+msgid "DIL.J1939 client registration failed..."
+msgstr "DIL.J1939-Clientregistrierung fehlgeschlagen..."
+
+#: Application/MainFrm.cpp:18870
+msgid "Query of DIL.J1939 failed..."
+msgstr "Abfrage der DIL.J1939 fehlgeschlagen..."
+
+#: Application/MainFrm.cpp:18884
+msgid "Stopping J1939 logging..."
+msgstr "Stoppe J1939-Aufzeichnung..."
+
+#: Application/MainFrm.cpp:18887
+msgid "Stopping J1939 logging failed..."
+msgstr "Stoppen der J1939-Aufzeichnung fehlgeschlagen..."
+
+#: Application/MainFrm.cpp:18904
+msgid "Going Offline..."
+msgstr "Gehe offline..."
+
+#: Application/MainFrm.cpp:18907
+msgid "Going Offline failed..."
+msgstr "Offline gehen fehlgeschlagen..."
+
+#: Application/MainFrm.cpp:18911
+msgid "Uninitialising DIL.J1939..."
+msgstr ""
+
+#: Application/MainFrm.cpp:18917
+msgid "Uninitialising DIL.J1939 failed..."
+msgstr ""
+
+#: Application/MainFrm.cpp:18922
+msgid "Done..."
+msgstr "Fertig..."
+
+#: Application/MainFrm.cpp:19052 Application/MainFrm.cpp:19118
+msgid ""
+"Are you sure you want to close the \n"
+"database that is already open?"
+msgstr ""
+"Sind sie sicher, dass sie die bereits\n"
+"geöffnete Datenbank schließen möchten?"
+
+#: Application/MainFrm.cpp:19134
+msgid "J1939 Database File(s)(*.dbf)|*.dbf||"
+msgstr "J1939-Datenbankdatei(en)(*.dbf)|*.dbf||"
+
+#: Application/MainFrm.cpp:19137
+msgid "Select J1939 Database Filename..."
+msgstr ""
+
+#: Application/MainFrm.cpp:19196
+msgid "Create J1939 Database Window Failed!"
+msgstr "Erzeugung des J1939-Datenbankfensters fehlgeschlagen!"
+
+#: Application/MainFrm.cpp:19302
+msgid "BUSMASTER J1939 Database File(s)(*.dbf)|*.dbf||"
+msgstr ""
+
+#: Application/MainFrm.cpp:19659
+msgid "Configure Message Display - J1939"
+msgstr ""
+
+#: Application/MainFrm.cpp:19684
+msgid "Configure Message Display - FlexRay"
+msgstr ""
+
+#: Application/MessageDetailsDlg.cpp:183
+#, c-format
+msgid "Please enter integer between 0 and %d"
+msgstr ""
+
+#: Application/MessageDetailsDlg.cpp:193
+msgid "Message Name cannot be empty!"
+msgstr "Nachrichtenname kann nicht leer sein!"
+
+#: Application/MessageDetailsDlg.cpp:214
+msgid " cannot be empty!"
+msgstr ""
+
+#: Application/MessageDetailsDlg.cpp:238 Application/MessageDetailsDlg.cpp:257
+#: Application/MessageDetailsDlg.cpp:269
+msgid "Invalid message ID!"
+msgstr "Ungültige Nachrichten-ID!"
+
+#: Application/MessageDetailsDlg.cpp:309
+msgid ""
+"You have signals defined for this message for previous message length.\n"
+"Reducing message length will delete redundent signals and associated "
+"description\n"
+"defined for this message.Do you want to delete these signals?\n"
+"\n"
+"Select \"Yes\" to delete the signal(s) and to accept new message length "
+"value.\n"
+"Select \"No\" to retain the previous message length."
+msgstr ""
+
+#: Application/MessageDetailsDlg.cpp:318
+msgid "Could not delete the signals..."
+msgstr "Konnte die Signale nicht löschen..."
+
+#: Application/MessageDetailsDlg.cpp:348
+msgid "Duplicate message name found!"
+msgstr "Doppelter Nachrichtenname gefunden!"
+
+#: Application/MessageDetailsDlg.cpp:390
+msgid "Duplicate message code found!"
+msgstr "Doppelter Nachrichtenkode gefunden!"
+
+#: Application/MessageDetailsDlg.cpp:465 Application/MsgSgDetView.cpp:846
+#: Application/MsgSgDetView.cpp:1001 Application/MsgSgDetView.cpp:1070
+#: Application/MsgSgDetView.cpp:2350
+msgid "Could not update the changes..!"
+msgstr "Konnte die Änderungen nicht aktualisieren!"
+
+#: Application/MsgFrmtWnd.cpp:392
+msgid "Not able to create the list control."
+msgstr "Erzeugung der Listenkontroll nicht möglich."
+
+#: Application/MsgFrmtWnd.cpp:1886
+msgid "Unable to Allocate Memory."
+msgstr "Speicherallokation nicht möglich."
+
+#: Application/MsgFrmtWnd.cpp:2147 Application/MsgFrmtWnd.cpp:2177
+#: Application/MsgFrmtWnd.cpp:2209 Application/MsgFrmtWnd.cpp:2246
+msgid "Time"
+msgstr "Zeit"
+
+#: Application/MsgFrmtWnd.cpp:2148 Application/MsgFrmtWnd.cpp:2178
+#: Application/MsgFrmtWnd.cpp:2210 Application/MsgFrmtWnd.cpp:2255
+msgid "Tx/Rx"
+msgstr "Tx/Rx"
+
+#: Application/MsgFrmtWnd.cpp:2149 Application/MsgFrmtWnd.cpp:2184
+#: Application/MsgFrmtWnd.cpp:2211 Application/MsgFrmtWnd.cpp:2247
+#: CAN_IXXAT_VCI/HardwareListing.cpp:43 CAN_Kvaser_CAN/HardwareListing.cpp:42
+#: CAN_NSI/HardwareListing.cpp:42 CAN_Vector_XL/HardwareListing.cpp:43
+#: LIN_ISOLAR_EVE_VLIN/HardwareListing.cpp:42
+#: LIN_PEAK_USB/HardwareListing.cpp:24 LIN_Vector_XL/HardwareListing.cpp:41
+#: TXWindowFlexRay/TransmitMsg_LIN.cpp:474
+#: TXWindowFlexRay/TxFlexrayMsgHandlerDlg.cpp:101
+#: CAN_Kvaser_CAN/ContrConfigPeakUsbDefs.h:38
+#: CAN_Vector_XL/ContrConfigPeakUsbDefs.h:38
+#: CAN_iVIEW/ContrConfigPeakUsbDefs.h:38 SigGrphWnd/SigGrphWnd_Defines.h:273
+#: TXWindowFlexRay/HashDefines.h:397
+msgid "Channel"
+msgstr "Kanal"
+
+#: Application/MsgFrmtWnd.cpp:2150 Application/MsgFrmtWnd.cpp:2251
+#: Application/MsgSgDetView.cpp:231 DataTypes/Filter_Datatypes.cpp:202
+#: SigGrphWnd/GraphBottomView.cpp:258 SigGrphWnd/SigGrphWnd_Defines.h:107
+#: TXWindowFlexRay/HashDefines.h:399 TXWindowFlexRay/TransmitMsg.h:35
+#: TXWindowFlexRay/TransmitMsg.h:88 TXWindowFlexRay/TransmitMsg_LIN.h:37
+#: TXWindowFlexRay/TransmitMsg_LIN.h:81
+msgid "Type"
+msgstr "Typ"
+
+#: Application/MsgFrmtWnd.cpp:2151 Application/MsgFrmtWnd.cpp:2212
+msgid "ID"
+msgstr ""
+
+#: Application/MsgFrmtWnd.cpp:2152 Application/MsgFrmtWnd.cpp:2213
+#: TXWindowFlexRay/TxFlexrayMsgHandlerDlg.cpp:97
+#: TXWindowFlexRay/HashDefines.h:891
+msgid "Message"
+msgstr "Nachricht"
+
+#: Application/MsgFrmtWnd.cpp:2153 TXWindowFlexRay/HashDefines.h:395
+msgid "Msg Type"
+msgstr ""
+
+#: Application/MsgFrmtWnd.cpp:2154 Application/MsgFrmtWnd.cpp:2185
+#: Application/MsgFrmtWnd.cpp:2215 Application/MsgFrmtWnd.cpp:2256
+msgid "DLC"
+msgstr ""
+
+#: Application/MsgFrmtWnd.cpp:2155 Application/MsgFrmtWnd.cpp:2186
+#: Application/MsgFrmtWnd.cpp:2216 Application/MsgFrmtWnd.cpp:2257
+msgid "Data Byte(s)"
+msgstr "Datenbyte(s)"
+
+#: Application/MsgFrmtWnd.cpp:2179 TXWindowFlexRay/TransmitMsg.cpp:311
+#: TXWindowFlexRay/TransmitMsg_LIN.cpp:474
+#: TXWindowFlexRay/TxFlexrayMsgHandlerDlg.cpp:98
+msgid "Frame Id"
+msgstr ""
+
+#: Application/MsgFrmtWnd.cpp:2180
+msgid "Frame Type"
+msgstr "Rahmentyp"
+
+#: Application/MsgFrmtWnd.cpp:2181 TXWindowFlexRay/TransmitMsg.cpp:312
+msgid "Slot Type"
+msgstr ""
+
+#: Application/MsgFrmtWnd.cpp:2182 CommonClass/GUI_FormatMsgCAN.cpp:326
+#: CommonClass/GUI_FormatMsgLIN.cpp:306
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:698
+msgid "Description"
+msgstr "Beschreibung"
+
+#: Application/MsgFrmtWnd.cpp:2183
+msgid "Cycle No"
+msgstr ""
+
+#: Application/MsgFrmtWnd.cpp:2214 TXWindowFlexRay/TransmitMsg_LIN.cpp:474
+msgid "Message Type"
+msgstr "Nachrichtentyp"
+
+#: Application/MsgFrmtWnd.cpp:2217
+msgid "Checksum"
+msgstr "Prüfsumme "
+
+#: Application/MsgFrmtWnd.cpp:2248
+msgid "CAN ID"
+msgstr ""
+
+#: Application/MsgFrmtWnd.cpp:2249
+msgid "PGN"
+msgstr ""
+
+#: Application/MsgFrmtWnd.cpp:2250
+msgid "PGN Name"
+msgstr ""
+
+#: Application/MsgFrmtWnd.cpp:2252
+msgid "Src"
+msgstr ""
+
+#: Application/MsgFrmtWnd.cpp:2253
+msgid "Dest"
+msgstr ""
+
+#: Application/MsgFrmtWnd.cpp:2254
+msgid "Priority"
+msgstr "Priorität"
+
+#: Application/MsgFrmtWnd.cpp:2339
+msgid "bl"
+msgstr ""
+
+#: Application/MsgFrmtWnd.cpp:2746
+#, c-format
+msgid "Error code: %X"
+msgstr "Fehlerkode: %X"
+
+#: Application/MsgIDAttr.cpp:130 Filter/FilterConfigDlg.cpp:2251
+#: Filter/FilterConfigDlg.cpp:2531
+msgid "Invalid Message ID"
+msgstr "Ungültige Nachrichten-ID"
+
+#: Application/MsgIDAttr.cpp:142
+msgid "Duplicate Message ID"
+msgstr "Doppelte Nachrichten-ID"
+
+#: Application/MsgIDAttr.cpp:166
+msgid "Invalid message string"
+msgstr "Ungültige Nachrichtenzeichenkette"
+
+#: Application/MsgIDAttr.cpp:229
+msgid "Add Message Display Attributes"
+msgstr ""
+
+#: Application/MsgSgDetView.cpp:188
+msgid "Ms Sans Serif"
+msgstr ""
+
+#: Application/MsgSgDetView.cpp:206 DataTypes/Filter_Datatypes.cpp:194
+#: NodeSimEx/SimSysDetView.cpp:989 TXWindowFlexRay/HashDefines.h:398
+#: TXWindowFlexRay/TransmitMsg.h:34 TXWindowFlexRay/TransmitMsg.h:87
+#: TXWindowFlexRay/TransmitMsg_LIN.h:36 TXWindowFlexRay/TransmitMsg_LIN.h:80
+msgid "Name"
+msgstr "Name"
+
+#: Application/MsgSgDetView.cpp:212
+msgid "Byte Index"
+msgstr ""
+
+#: Application/MsgSgDetView.cpp:219
+msgid "Bit No"
+msgstr ""
+
+#: Application/MsgSgDetView.cpp:225
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:3517
+msgid "Length"
+msgstr ""
+
+#: Application/MsgSgDetView.cpp:237
+msgid "Max Val"
+msgstr ""
+
+#: Application/MsgSgDetView.cpp:243
+msgid "Min Val"
+msgstr ""
+
+#: Application/MsgSgDetView.cpp:249
+msgid "Offset"
+msgstr ""
+
+#: Application/MsgSgDetView.cpp:255
+msgid "Scale Fac"
+msgstr ""
+
+#: Application/MsgSgDetView.cpp:261
+msgid "Unit"
+msgstr "Einheit"
+
+#: Application/MsgSgDetView.cpp:266
+msgid "Byte Order"
+msgstr ""
+
+#: Application/MsgSgDetView.cpp:277
+msgid "Signal Description"
+msgstr "Signalbeschreibung"
+
+#: Application/MsgSgDetView.cpp:283
+msgid "Signal Value"
+msgstr "Signalwert"
+
+#: Application/MsgSgDetView.cpp:340 CAN_Kvaser_CAN/ContrConfigPeakUsbDefs.h:57
+#: CAN_Vector_XL/ContrConfigPeakUsbDefs.h:57
+#: CAN_iVIEW/ContrConfigPeakUsbDefs.h:57
+msgid "Extended"
+msgstr "Erweitert"
+
+#: Application/MsgSgDetView.cpp:344 CAN_Kvaser_CAN/ContrConfigPeakUsbDefs.h:56
+#: CAN_Vector_XL/ContrConfigPeakUsbDefs.h:56
+#: CAN_iVIEW/ContrConfigPeakUsbDefs.h:56
+msgid "Standard"
+msgstr "Standard"
+
+#: Application/MsgSgDetView.cpp:828
+msgid "Duplicate message name!"
+msgstr "Doppelter Nachrichtenname!"
+
+#: Application/MsgSgDetView.cpp:965
+msgid "Duplicate message id!"
+msgstr "Doppelte Nachrichtenkennung!"
+
+#: Application/MsgSgDetView.cpp:986
+msgid "Invalid Hexadecimal Number!"
+msgstr "Ungültige Hexadezimalnummer!"
+
+#: Application/MsgSgDetView.cpp:1511
+msgid ""
+"Changing Signal Range will delete invalid signal description(s)\n"
+"Do you want to continue?"
+msgstr ""
+
+#: Application/MsgSgDetView.cpp:1648
+msgid "Double click on the list item to select the signal details dialog"
+msgstr ""
+
+#: Application/MsgSgDetView.cpp:2142
+msgid "No signal description selected!"
+msgstr "Keine Signalbeschreibung ausgewählt!"
+
+#: Application/MsgSgTreeView.cpp:570
+msgid "Could not delete seleceted message!"
+msgstr ""
+
+#: Application/MsgSignal.cpp:398
+msgid "Database filename is empty."
+msgstr "Datenbankdateiname ist leer."
+
+#: Application/MsgSignal.cpp:412 Application/MsgSignal.cpp:427
+msgid "Invalid database filename"
+msgstr "Ungültiger Datenbankdateiname"
+
+#: Application/MsgSignal.cpp:1194
+msgid " created successfully."
+msgstr "erfolgreich erzeugt."
+
+#: Application/MsgSignal.cpp:1423
+msgid " is not created for CAN. Please load CAN related dbf file."
+msgstr ""
+
+#: Application/MsgSignal.cpp:1434
+msgid " is not created for J1939. Please load J1939 related dbf file."
+msgstr ""
+
+#: Application/MsgSignal.cpp:1539 Application/MsgSignal.cpp:1562
+#: Application/MsgSignal.cpp:1597 Application/MsgSignal.cpp:1619
+#: Application/MsgSignal.cpp:1642 Application/MsgSignal.cpp:1654
+#: Application/MsgSignal.cpp:1674 Application/MsgSignal.cpp:1741
+#: Application/MsgSignal.cpp:1762 Application/MsgSignal.cpp:1782
+#: Application/MsgSignal.cpp:1805 Application/MsgSignal.cpp:1829
+#: Application/MsgSignal.cpp:1858 Application/MsgSignal.cpp:1888
+#: Application/MsgSignal.cpp:1919 Application/MsgSignal.cpp:1944
+#: Application/MsgSignal.cpp:1969 Application/MsgSignal.cpp:2059
+msgid "Database file corrupted"
+msgstr "Datenbankdatei beschädigt"
+
+#: Application/MsgSignal.cpp:2177 Application/MsgSignal.cpp:2574
+#, c-format
+msgid "Error in opening %s database file"
+msgstr ""
+
+#: Application/MsgSignal.cpp:2216
+msgid " Is Invalid DBF File"
+msgstr ""
+
+#: Application/MsgSignal.cpp:2220
+msgid ""
+" is not created for CAN. Since one of the message length exceeds 8 bytes."
+msgstr ""
+
+#: Application/MsgSignal.cpp:2903 Application/MsgSignal.cpp:3350
+#: Application/MsgSignal.cpp:3447 Application/MsgSignal.cpp:3543
+#: Application/MsgSignal.cpp:3674
+msgid "Insufficient Data"
+msgstr "Unzureichende Daten"
+
+#: Application/MsgSignal.cpp:2944
+msgid "Invalid message code"
+msgstr "Ungültige Nachrichtenkennung"
+
+#: Application/MsgSignalDBWnd.cpp:176
+msgid "DatabaseEditor - "
+msgstr ""
+
+#: Application/NotificWnd.cpp:91
+msgid "Tahoma"
+msgstr ""
+
+#: Application/NotificWnd.cpp:101 Replay/MsgReplayWnd.cpp:570
+msgid "Font creation unsuccessful"
+msgstr "Zeichensatzerzeugung nicht erfolgreich"
+
+#: Application/NotificWnd.cpp:230
+msgid "Trace Window"
+msgstr ""
+
+#: Application/PPageMessage.cpp:122
+msgid "Message ID"
+msgstr "Nachrichtenkennung"
+
+#: Application/PPageMessage.cpp:123
+msgid "Message Text"
+msgstr "Nachrichtentext"
+
+#: Application/RxMsgList.cpp:69
+msgid "Courier"
+msgstr ""
+
+#: Application/RxMsgList.cpp:1104
+msgid "Failed to create Memory for Sortable Column."
+msgstr "Erzeugung des Speichers für sortierbare Spalte fehlgeschlagen."
+
+#: Application/SigGrphConfigDlg.cpp:117
+msgid "CAN"
+msgstr ""
+
+#: Application/SignalDetailsDlg.cpp:726
+msgid "Minimum value field can't be empty!"
+msgstr ""
+
+#: Application/SignalDetailsDlg.cpp:734
+msgid "Maximum value field can't be empty!"
+msgstr ""
+
+#: Application/SignalDetailsDlg.cpp:748
+msgid "Factor value field can't be empty!"
+msgstr ""
+
+#: Application/SignalDetailsDlg.cpp:756
+msgid "Maximum and minimum values cannot be equal"
+msgstr ""
+
+#: Application/TxMsgWndJ1939.cpp:467 Application/TxMsgWndLIN.cpp:480
+#, c-format
+msgid "Invalid DLC value: %d, Please enter a value between 0 and %d"
+msgstr ""
+
+#: Application/TxMsgWndJ1939.cpp:503 Application/TxMsgWndLIN.cpp:516
+#, c-format
+msgid "Invalid PGN value: %x, Please enter a value between 0 and 0x%x"
+msgstr ""
+
+#: Application/TxMsgWndJ1939.cpp:793 Application/TxMsgWndJ1939.cpp:804
+#: Application/TxMsgWndJ1939.cpp:815 Application/TxMsgWndLIN.cpp:818
+#: Application/TxMsgWndLIN.cpp:829 Application/TxMsgWndLIN.cpp:840
+msgid "Address 0x"
+msgstr "Adresse 0x"
+
+#: Application/TxMsgWndJ1939.cpp:796 Application/TxMsgWndJ1939.cpp:818
+#: Application/TxMsgWndLIN.cpp:821 Application/TxMsgWndLIN.cpp:843
+msgid "ECU NAME 0x"
+msgstr ""
+
+#: Application/TxMsgWndJ1939.cpp:807 Application/TxMsgWndLIN.cpp:832
+msgid "Destination 0x"
+msgstr "Ziel 0x"
+
+#: Application/TxMsgWndJ1939.cpp:905 Application/TxMsgWndLIN.cpp:928
+msgid "Transmission started..."
+msgstr "Übertragung gestartet..."
+
+#: Application/TxMsgWndJ1939.cpp:910 Application/TxMsgWndLIN.cpp:933
+msgid "Stopping Transmission..."
+msgstr "Stoppe Übertragung..."
+
+#: Application/TxMsgWndJ1939.cpp:915 Application/TxMsgWndLIN.cpp:938
+msgid "Transmission stopped..."
+msgstr "Übertragung gestopped..."
+
+#: Application/TxMsgWndJ1939.cpp:935 Application/TxMsgWndLIN.cpp:958
+#: TXWindowFlexRay/HashDefines.h:412
+msgid "Stop"
+msgstr "Stop"
+
+#: Application/TxMsgWndJ1939.cpp:935 Application/TxMsgWndLIN.cpp:958
+msgid "Transmit"
+msgstr "Übertrage"
+
+#: Application/TxMsgWndJ1939.cpp:1069
+msgid "00"
+msgstr ""
+
+#: Application/ValueDescriptionDlg.cpp:123
+msgid "Signal Description cannot be emtpy!"
+msgstr "Signalbeschreibung kann nicht leer sein!"
+
+#: Application/ValueDescriptionDlg.cpp:132
+msgid "Signal value cannot be emtpy!"
+msgstr "Signalwert kann nicht leer sein!"
+
+#: Application/ValueDescriptionDlg.cpp:155
+msgid "Signal Descriptor already exists!"
+msgstr "Signalbeschreibung existiert bereits!"
+
+#: Application/ValueDescriptionDlg.cpp:173
+msgid "Signal Value already exists!"
+msgstr "Signalwert existiert bereits!"
+
+#: Application/ValueDescriptionDlg.cpp:234
+msgid "Could not update..."
+msgstr "Konnte nicht aktualisieren..."
+
+#: Application/ValueDescriptionDlg.cpp:308
+#, c-format
+msgid "(Decimal range %s To %s)"
+msgstr ""
+
+#: Application/WaveformSelectionDlg.cpp:328
+#, c-format
+msgid "0x%x->%s"
+msgstr ""
+
+#: Application/WaveformSelectionDlg.cpp:389
+msgid "->"
+msgstr ""
+
+#: Application/WaveformSelectionDlg.cpp:397
+msgid "("
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1025
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:584 LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:574
+msgid "could not add frame filter"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1038
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:599 LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:592
+msgid "could not add Event filter"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1051 CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1064
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1120
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:614
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:662
+msgid "could not add Error filter"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1082
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:634 LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:640
+msgid "could not remove frame filter"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1094
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:648 LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:657
+msgid "could not remove Event filter"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1107
+msgid "could not remove Error filter"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1150 CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1178
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:494
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:542 LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:510
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:532
+msgid "could not create Rx Queue"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1163 CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1188
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:525
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:553
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:2034
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:2076
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:2089
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:543
+msgid "could not create TX Queue"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1827
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1404
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:1498
+msgid "could not get OCI function pointers"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1841 CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1855
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1418
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1432
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:1512 LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:1526
+msgid ""
+"Please have a look at: https://github.com/rbei-etas/busmaster/wiki/Hardware-"
+"support"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1846
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1423
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:1517
+msgid "could not get CSI function pointers"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:1853
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1430
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:1524
+msgid " failed to load"
+msgstr "laden fehlgeschlagen"
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2232
+msgid "could not get timer resolution"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2238
+msgid "could not add filters"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2244
+msgid "could create Rx Queue"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2251
+msgid "could not open controller"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2257
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1687
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:1750 LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:2018
+msgid "could not create controller"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2289
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1719
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:1781
+msgid "could not destroy controller"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2295
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1725
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:1787
+msgid "could not close controller"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2301
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1731
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:1793
+msgid "could not destroy the queue"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2307
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1737
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:1799
+msgid "could not remove the filter"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2447
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1800
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:1977
+msgid "could not configure the controller"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2493 CAN_MHS/CAN_MHS.cpp:901
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1844
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:1861
+msgid "could not start the controller in running mode"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2500 CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2564
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1852
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1939
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:1870 LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:2078
+msgid "could not get controller mode"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2553
+#: FLEXRAY_ETAS_BOA/FLEXRAY_ETAS_BOA.cpp:1927
+#: LIN_ETAS_BOA/LIN_ETAS_BOA.cpp:2066
+msgid "could not stop the controller in suspended mode"
+msgstr ""
+
+#: CAN_ETAS_BOA/CAN_ETAS_BOA.cpp:2653 CAN_MHS/CAN_MHS.cpp:994
+#: CAN_VSCOM/CAN_VSCOM.cpp:1117
+msgid "could not write can data into bus"
+msgstr ""
+
+#: CAN_ETAS_BOA/HardwareListing.cpp:357 CAN_ICS_neoVI/HardwareListing.cpp:439
+#: CAN_IXXAT_VCI/HardwareListing.cpp:439
+#: CAN_Kvaser_CAN/HardwareListing.cpp:437 CAN_NSI/HardwareListing.cpp:437
+#: CAN_Vector_XL/HardwareListing.cpp:439 CAN_iVIEW/HardwareListing.cpp:455
+#: FLEXRAY_ETAS_BOA/HardwareListing.cpp:438
+#: LIN_ETAS_BOA/HardwareListing.cpp:438
+#: LIN_ISOLAR_EVE_VLIN/HardwareListing.cpp:516
+#: LIN_PEAK_USB/HardwareListing.cpp:506 LIN_Vector_XL/HardwareListing.cpp:515
+msgid "Please select atleast one hardware"
+msgstr ""
+
+#: CAN_ETAS_BOA/HardwareListing.cpp:398 CAN_ICS_neoVI/HardwareListing.cpp:480
+#: CAN_IXXAT_VCI/HardwareListing.cpp:480
+#: CAN_Kvaser_CAN/HardwareListing.cpp:478 CAN_NSI/HardwareListing.cpp:478
+#: CAN_Vector_XL/HardwareListing.cpp:480 CAN_iVIEW/HardwareListing.cpp:496
+#: FLEXRAY_ETAS_BOA/HardwareListing.cpp:479
+#: LIN_ETAS_BOA/HardwareListing.cpp:479
+#: LIN_ISOLAR_EVE_VLIN/HardwareListing.cpp:557
+#: LIN_PEAK_USB/HardwareListing.cpp:547 LIN_Vector_XL/HardwareListing.cpp:556
+#, c-format
+msgid "Please select atmost %d hardwares"
+msgstr ""
+
+#: CAN_IXXAT_VCI/CANControllerConfigDlg.cpp:196
+#: CAN_IXXAT_VCI/CANControllerConfigDlg.cpp:201
+msgid "User defined"
+msgstr "Benutzerdefiniert"
+
+#: CAN_IXXAT_VCI/DIL_CAN_IXXAT_VCI.cpp:1186
+msgid "Too many IXXAT CAN controllers found. Abort filling hardware list!"
+msgstr ""
+
+#: CAN_IXXAT_VCI/HardwareListing.cpp:41 CAN_Kvaser_CAN/HardwareListing.cpp:40
+#: CAN_NSI/HardwareListing.cpp:40 CAN_Vector_XL/HardwareListing.cpp:41
+#: LIN_ISOLAR_EVE_VLIN/HardwareListing.cpp:40
+#: LIN_PEAK_USB/HardwareListing.cpp:22 LIN_Vector_XL/HardwareListing.cpp:39
+#, c-format
+msgid ""
+"Required number of hardware are not present\n"
+"Required: %2d    Available: %2d"
+msgstr ""
+
+#: CAN_IXXAT_VCI/HardwareListing.cpp:44 CAN_Kvaser_CAN/HardwareListing.cpp:43
+#: CAN_NSI/HardwareListing.cpp:43 CAN_Vector_XL/HardwareListing.cpp:44
+#: LIN_ISOLAR_EVE_VLIN/HardwareListing.cpp:43
+#: LIN_Vector_XL/HardwareListing.cpp:42 SigGrphWnd/SigGrphWnd_Defines.h:274
+#, c-format
+msgid "%s %d"
+msgstr ""
+
+#: CAN_IXXAT_VCI/HardwareListing.cpp:46 CAN_Kvaser_CAN/HardwareListing.cpp:45
+#: CAN_NSI/HardwareListing.cpp:45 CAN_Vector_XL/HardwareListing.cpp:46
+#: LIN_ISOLAR_EVE_VLIN/HardwareListing.cpp:45
+#: LIN_PEAK_USB/HardwareListing.cpp:27 LIN_Vector_XL/HardwareListing.cpp:44
+msgid "Hardware"
+msgstr ""
+
+#: CAN_IXXAT_VCI/HardwareListing.cpp:53 CAN_Kvaser_CAN/HardwareListing.cpp:52
+#: CAN_NSI/HardwareListing.cpp:52 CAN_Vector_XL/HardwareListing.cpp:53
+#: LIN_ISOLAR_EVE_VLIN/HardwareListing.cpp:52
+#: LIN_PEAK_USB/HardwareListing.cpp:34 LIN_Vector_XL/HardwareListing.cpp:51
+msgid "TEMP_CLIENT"
+msgstr ""
+
+#: CAN_IXXAT_VCI/HardwareListing.cpp:54 CAN_Kvaser_CAN/HardwareListing.cpp:53
+#: CAN_NSI/HardwareListing.cpp:53 CAN_Vector_XL/HardwareListing.cpp:54
+#: LIN_ISOLAR_EVE_VLIN/HardwareListing.cpp:53
+#: LIN_PEAK_USB/HardwareListing.cpp:35 LIN_Vector_XL/HardwareListing.cpp:52
+msgid "TEMP_NET"
+msgstr ""
+
+#: CAN_IXXAT_VCI/HardwareListing.cpp:56 CAN_Kvaser_CAN/HardwareListing.cpp:55
+#: CAN_NSI/HardwareListing.cpp:55 CAN_Vector_XL/HardwareListing.cpp:56
+#: LIN_ISOLAR_EVE_VLIN/HardwareListing.cpp:55
+#: LIN_PEAK_USB/HardwareListing.cpp:37 LIN_Vector_XL/HardwareListing.cpp:54
+msgid ""
+"Required number of hardware are not configured.\n"
+"Application will use default channel association with hardware"
+msgstr ""
+
+#: CAN_IXXAT_VCI/HardwareListing.cpp:59 CAN_Kvaser_CAN/HardwareListing.cpp:58
+#: CAN_NSI/HardwareListing.cpp:58 CAN_Vector_XL/HardwareListing.cpp:59
+#: LIN_ISOLAR_EVE_VLIN/HardwareListing.cpp:58
+#, c-format
+msgid "CAN %d"
+msgstr ""
+
+#: CAN_IXXAT_VCI/HardwareListing.cpp:292
+#: CAN_Kvaser_CAN/HardwareListing.cpp:291 CAN_NSI/HardwareListing.cpp:291
+#: CAN_Vector_XL/HardwareListing.cpp:292
+#: LIN_ISOLAR_EVE_VLIN/HardwareListing.cpp:292
+#: LIN_PEAK_USB/HardwareListing.cpp:276 LIN_Vector_XL/HardwareListing.cpp:291
+#: TXWindowFlexRay/TransmitMsg.h:50 TXWindowFlexRay/TransmitMsg_LIN.h:63
+#, c-format
+msgid "%d"
+msgstr ""
+
+#: CAN_Kvaser_CAN/CAN_Kvaser_CAN.cpp:814 CAN_NSI/CAN_NSI.cpp:2126
+#: CAN_Vector_XL/CAN_Vector_XL.cpp:900 LIN_PEAK_USB/LIN_PEAK_USB.cpp:1400
+msgid "Error connecting to driver"
+msgstr ""
+
+#: CAN_Kvaser_CAN/CAN_Kvaser_CAN.cpp:1609 CAN_NSI/CAN_NSI.cpp:2335
+#: CAN_Vector_XL/CAN_Vector_XL.cpp:1682 LIN_PEAK_USB/LIN_PEAK_USB.cpp:1578
+#: LIN_Vector_XL/LIN_Vector_XL.cpp:1214
+msgid "Could not start the read thread"
+msgstr ""
+
+#: CAN_Kvaser_CAN/CAN_Kvaser_CAN.cpp:2190
+#, c-format
+msgid "Kvaser - %s, Serial Number- %ld, Firmware- %s"
+msgstr ""
+
+#: CAN_Kvaser_CAN/CAN_Kvaser_CAN.cpp:2235
+#, c-format
+msgid "%s, Serial Number: %ld, Firmware: %s"
+msgstr ""
+
+#: CAN_Kvaser_CAN/CAN_Kvaser_CAN.cpp:2265 CAN_NSI/CAN_NSI.cpp:1693
+#: CAN_Vector_XL/CAN_Vector_XL.cpp:2256 LIN_Vector_XL/LIN_Vector_XL.cpp:514
+msgid "Problem Finding Device!"
+msgstr ""
+
+#: CAN_Kvaser_CAN/CAN_Kvaser_CAN.cpp:2296
+#, c-format
+msgid "Number of Kvaser hardwares Available: %d"
+msgstr ""
+
+#: CAN_Kvaser_CAN/CAN_Kvaser_CAN.cpp:2301
+#, c-format
+msgid ""
+"No Kvaser hardwares Available.\n"
+"Please check if Kvaser drivers are installed."
+msgstr ""
+
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:875
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:951
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:958
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:1048
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:1135 CAN_NSI/ChangeRegisters.cpp:910
+#: CAN_NSI/ChangeRegisters.cpp:984 CAN_NSI/ChangeRegisters.cpp:991
+#: CAN_NSI/ChangeRegisters.cpp:1081 CAN_NSI/ChangeRegisters.cpp:1168
+#: CAN_Vector_XL/ChangeRegisters.cpp:878 CAN_Vector_XL/ChangeRegisters.cpp:954
+#: CAN_Vector_XL/ChangeRegisters.cpp:961
+#: CAN_Vector_XL/ChangeRegisters.cpp:1051
+#: CAN_Vector_XL/ChangeRegisters.cpp:1139 CAN_iVIEW/ChangeRegisters.cpp:882
+#: CAN_iVIEW/ChangeRegisters.cpp:958 CAN_iVIEW/ChangeRegisters.cpp:965
+#: CAN_iVIEW/ChangeRegisters.cpp:1055 CAN_iVIEW/ChangeRegisters.cpp:1143
+#: LIN_ISOLAR_EVE_VLIN/ChangeRegisters.cpp:960
+#: LIN_ISOLAR_EVE_VLIN/ChangeRegisters.cpp:967
+#: LIN_ISOLAR_EVE_VLIN/ChangeRegisters.cpp:1057
+#: LIN_ISOLAR_EVE_VLIN/ChangeRegisters.cpp:1145
+#: LIN_Vector_XL/ChangeRegisters.cpp:960 LIN_Vector_XL/ChangeRegisters.cpp:967
+#: LIN_Vector_XL/ChangeRegisters.cpp:1057
+#: LIN_Vector_XL/ChangeRegisters.cpp:1145
+msgid "Invalid Configuration"
+msgstr "Ungültige Konfiguration"
+
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:902 CAN_NSI/ChangeRegisters.cpp:937
+#: CAN_Vector_XL/ChangeRegisters.cpp:905 CAN_iVIEW/ChangeRegisters.cpp:909
+msgid "0x"
+msgstr ""
+
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:1090 CAN_NSI/ChangeRegisters.cpp:1124
+#: CAN_Vector_XL/ChangeRegisters.cpp:1094 CAN_iVIEW/ChangeRegisters.cpp:1098
+#, c-format
+msgid "0x%0x"
+msgstr ""
+
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:1924
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:1926
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:2020
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:2023
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:2026
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:2029
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:2033
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:2036
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:2039
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:2042 CAN_NSI/ChangeRegisters.cpp:2092
+#: CAN_NSI/ChangeRegisters.cpp:2094 CAN_NSI/ChangeRegisters.cpp:2188
+#: CAN_NSI/ChangeRegisters.cpp:2191 CAN_NSI/ChangeRegisters.cpp:2194
+#: CAN_NSI/ChangeRegisters.cpp:2197 CAN_NSI/ChangeRegisters.cpp:2201
+#: CAN_NSI/ChangeRegisters.cpp:2204 CAN_NSI/ChangeRegisters.cpp:2207
+#: CAN_NSI/ChangeRegisters.cpp:2210 CAN_Vector_XL/ChangeRegisters.cpp:1922
+#: CAN_Vector_XL/ChangeRegisters.cpp:1924
+#: CAN_Vector_XL/ChangeRegisters.cpp:2018
+#: CAN_Vector_XL/ChangeRegisters.cpp:2021
+#: CAN_Vector_XL/ChangeRegisters.cpp:2024
+#: CAN_Vector_XL/ChangeRegisters.cpp:2027
+#: CAN_Vector_XL/ChangeRegisters.cpp:2031
+#: CAN_Vector_XL/ChangeRegisters.cpp:2034
+#: CAN_Vector_XL/ChangeRegisters.cpp:2037
+#: CAN_Vector_XL/ChangeRegisters.cpp:2040 CAN_iVIEW/ChangeRegisters.cpp:1941
+#: CAN_iVIEW/ChangeRegisters.cpp:1943 CAN_iVIEW/ChangeRegisters.cpp:2037
+#: CAN_iVIEW/ChangeRegisters.cpp:2040 CAN_iVIEW/ChangeRegisters.cpp:2043
+#: CAN_iVIEW/ChangeRegisters.cpp:2046 CAN_iVIEW/ChangeRegisters.cpp:2050
+#: CAN_iVIEW/ChangeRegisters.cpp:2053 CAN_iVIEW/ChangeRegisters.cpp:2056
+#: CAN_iVIEW/ChangeRegisters.cpp:2059
+#, c-format
+msgid "%02X"
+msgstr ""
+
+#: CAN_Kvaser_CAN/ChangeRegisters.cpp:1929 CAN_NSI/ChangeRegisters.cpp:2097
+#: CAN_Vector_XL/ChangeRegisters.cpp:1927 CAN_iVIEW/ChangeRegisters.cpp:1946
+#, c-format
+msgid "%f"
+msgstr ""
+
+#: CAN_MHS/CAN_MHS.cpp:908
+msgid "error opening \"Tiny-CAN\" interface"
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:656
+#, c-format
+msgid "Ic_ConfigEvent : NSI %s"
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:973 CAN_NSI/CAN_NSI.cpp:2599 CAN_NSI/CAN_NSI.cpp:2615
+#, c-format
+msgid "NSI - %s %s"
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:1252
+#, c-format
+msgid "%s, Serial Number - %s"
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:1279
+#, c-format
+msgid "Ic_EnumCards : %s "
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:1290
+#, c-format
+msgid "Number of NSI hardwares Available: %d"
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:1295
+msgid ""
+"No NSI hardwares Available.\n"
+"Please check if NSI drivers are installed."
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:1339
+#, c-format
+msgid "Ic_InitDrv : %s %s"
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:1361
+#, c-format
+msgid "Ic_ExitDrv : %s %s"
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:1386 CAN_NSI/CAN_NSI.cpp:1500
+#, c-format
+msgid "Ic_InitChip : %s %s"
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:1411 CAN_NSI/CAN_NSI.cpp:1547
+#, c-format
+msgid "Ic_SetRxMask : %s %s"
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:1434
+#, c-format
+msgid "Ic_InitInterface : %s %s"
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:1457
+#, c-format
+msgid "Ic_InitLineDrv : %s %s"
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:1648
+#, c-format
+msgid "Ic_StartChip : NSI %s"
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:1651
+msgid "Error Starting Device"
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:1667
+#, c-format
+msgid "Ic_StopChip : NSI %s"
+msgstr ""
+
+#: CAN_NSI/CAN_NSI.cpp:1670
+msgid "Error Closing Device"
+msgstr ""
+
+#: CAN_NSI/ChangeRegisters.cpp:520
+#, c-format
+msgid ""
+"Not a valid Decimal Numerals or out of range. !!! \n"
+"\n"
+"Enter only positive Decimal Numerals up to %7.0f bps."
+msgstr ""
+
+#: CAN_STUB/CAN_STUB.cpp:303
+msgid "system error message retrieval operation failed"
+msgstr "Systemfehlernachrichtabfrageoperation fehlgeschlagen"
+
+#: CAN_STUB/CAN_STUB.cpp:505
+msgid "Null argument value(s) in SetAppParams"
+msgstr ""
+
+#: CAN_STUB/CAN_STUB.cpp:510
+msgid "Improper current state to call SetAppParams"
+msgstr ""
+
+#: CAN_STUB/CAN_STUB.cpp:613
+msgid "Unregister failed"
+msgstr ""
+
+#: CAN_STUB/CAN_STUB.cpp:791
+msgid "CAN_STUB_SetConfigData called at improper state"
+msgstr ""
+
+#: CAN_STUB/CAN_STUB.cpp:966
+msgid "Simulation"
+msgstr "Simulation"
+
+#: CAN_STUB/CAN_STUB.cpp:967 LIN_ISOLAR_EVE_VLIN/LIN_ISOLAR_EVE_VLIN.cpp:742
+msgid "A simulation engine to create a virtual bus system"
+msgstr ""
+
+#: CAN_STUB/CAN_STUB.cpp:1153
+msgid "CAN_STUB_Connect called at STATE_PRIMORDIAL"
+msgstr ""
+
+#: CAN_STUB/CAN_STUB.cpp:1159
+msgid "CAN_STUB_Connect called at improper state"
+msgstr ""
+
+#: CAN_STUB/CAN_STUB.cpp:1179
+msgid "Unable to start the reading thread"
+msgstr ""
+
+#: CAN_STUB/CAN_STUB.cpp:1192
+msgid "CAN_STUB_DeselectHwInterface called at STATE_PRIMORDIAL"
+msgstr ""
+
+#: CAN_STUB/CAN_STUB.cpp:1198
+msgid "CAN_STUB_DeselectHwInterface called at improper state"
+msgstr ""
+
+#: CAN_STUB/CAN_STUB.cpp:1237
+msgid "CAN_STUB_StopHardware called at improper state"
+msgstr ""
+
+#: CAN_STUB/CAN_STUB.cpp:1260
+msgid "CAN_STUB_StartHardware called at improper state"
+msgstr ""
+
+#: CAN_STUB/CAN_STUB.cpp:1292
+msgid "unable to register to the simulation engine"
+msgstr ""
+
+#: CAN_STUB/CAN_STUB.cpp:1316
+msgid "Can't convert from BSTR to ASCII string"
+msgstr ""
+
+#: CAN_VSCOM/CAN_VSCOM.cpp:887
+msgid "VSCAN_Read failed"
+msgstr ""
+
+#: CAN_VSCOM/CAN_VSCOM.cpp:908
+msgid "WaitForSingleObject failed"
+msgstr ""
+
+#: CAN_VSCOM/CAN_VSCOM.cpp:949
+msgid "set timestamp ioctl failed"
+msgstr ""
+
+#: CAN_VSCOM/CAN_VSCOM.cpp:955
+msgid "set filter mode ioctl failed"
+msgstr ""
+
+#: CAN_VSCOM/CAN_VSCOM.cpp:961
+msgid "set acceptance code mask ioctl failed"
+msgstr ""
+
+#: CAN_VSCOM/CAN_VSCOM.cpp:969
+msgid "set speed ioctl failed"
+msgstr ""
+
+#: CAN_VSCOM/CAN_VSCOM.cpp:977
+msgid "set btr ioctl failed"
+msgstr ""
+
+#: CAN_VSCOM/CAN_VSCOM.cpp:985
+msgid "could not create the receive event"
+msgstr ""
+
+#: CAN_VSCOM/CAN_VSCOM.cpp:991
+msgid "VSCAN_SetRcvEvent failed"
+msgstr ""
+
+#: CAN_VSCOM/CAN_VSCOM.cpp:998
+msgid "could not create the receive thread"
+msgstr ""
+
+#: CAN_VSCOM/CAN_VSCOM.cpp:1009
+msgid "error opening \"VScom CAN\" interface"
+msgstr ""
+
+#: CAN_Vector_XL/CAN_Vector_XL.cpp:678 LIN_Vector_XL/LIN_Vector_XL.cpp:755
+msgid "vxlapi.dll already loaded"
+msgstr "vxlapi.dll bereits geladen"
+
+#: CAN_Vector_XL/CAN_Vector_XL.cpp:687 LIN_Vector_XL/LIN_Vector_XL.cpp:764
+msgid "vxlapi.dll loading failed"
+msgstr "Laden der vxlapi.dll fehlgeschlagen"
+
+#: CAN_Vector_XL/CAN_Vector_XL.cpp:762 LIN_PEAK_USB/LIN_PEAK_USB.cpp:1952
+#: LIN_Vector_XL/LIN_Vector_XL.cpp:825
+msgid "Getting Process address of the APIs failed"
+msgstr ""
+
+#: CAN_Vector_XL/CAN_Vector_XL.cpp:1118
+#, c-format
+msgid "Vector - %s, Serial Number- %d"
+msgstr "Vector - %s, Seriennummer- %d"
+
+#: CAN_Vector_XL/CAN_Vector_XL.cpp:2250
+msgid "No available channels found! (e.g. no CANcabs...)"
+msgstr "Keine verfügbaren Kanäle gefunden! (z.B. keine CANcabs...)"
+
+#: CAN_Vector_XL/CAN_Vector_XL.cpp:2418
+#, c-format
+msgid "Number of Vector hardwares Available: %d"
+msgstr "Anzahl der verfügbaren Vector-Hardware: %d"
+
+#: CAN_iVIEW/CAN_i-VIEW.cpp:1054
+msgid " already loaded"
+msgstr "bereits geladen"
+
+#: CAN_iVIEW/CAN_i-VIEW.cpp:1061
+msgid " loading failed"
+msgstr "laden fehlgeschlagen"
+
+#: CommonClass/GUI_FormatMsgLIN.cpp:311
+msgid "LIN Message"
+msgstr "LIN-Nachricht"
+
+#: CommonClass/GUI_FormatMsgLIN.cpp:314
+msgid "Diagnostic Message"
+msgstr "Diagnosenachricht"
+
+#: CommonClass/GUI_FormatMsgLIN.cpp:317
+msgid "Classic"
+msgstr ""
+
+#: CommonClass/GUI_FormatMsgLIN.cpp:320
+msgid "Enhanced"
+msgstr ""
+
+#: DIL_Interface/DIL_CAN.cpp:173 DIL_Interface/DIL_FLEXRAY.cpp:133
+msgid "Using ETAS BOA v2..."
+msgstr "Nutze ETAS BOA 2.0..."
+
+#: DIL_Interface/DIL_CAN.cpp:182 DIL_Interface/DIL_FLEXRAY.cpp:142
+msgid "Using ETAS BOA v1.5..."
+msgstr "Nutze ETAS BOA 1.5..."
+
+#: DIL_Interface/DIL_CAN.cpp:191 DIL_Interface/DIL_FLEXRAY.cpp:151
+msgid "Using ETAS BOA v1.4..."
+msgstr "Nutze ETAS BOA 1.4..."
+
+#: DIL_Interface/DIL_CAN.cpp:195 DIL_Interface/DIL_FLEXRAY.cpp:155
+msgid "ETAS BOA not found in registry."
+msgstr "ETAS BOA nicht in Registrierung gefunden."
+
+#: DIL_Interface/DIL_CAN.cpp:304 DIL_Interface/DIL_CAN.cpp:329
+#: DIL_Interface/DIL_FLEXRAY.cpp:213 DIL_Interface/DIL_FLEXRAY.cpp:236
+#: DIL_Interface/DIL_LIN.cpp:224 DIL_Interface/DIL_LIN.cpp:249
+msgid "Load library failed..."
+msgstr "Laden der Bibliothek fehlgeschlagen..."
+
+#: DIL_Interface/DIL_CAN.cpp:311 DIL_Interface/DIL_FLEXRAY.cpp:217
+#: DIL_Interface/DIL_LIN.cpp:231
+msgid "Load library successful..."
+msgstr "Laden der Bibliothek erfolgreich..."
+
+#: DataTypes/Filter_Datatypes.cpp:222
+msgid "PASS"
+msgstr ""
+
+#: DataTypes/Filter_Datatypes.cpp:361 DataTypes/Filter_Datatypes.cpp:430
+#: TXWindowFlexRay/HashDefines.h:401
+msgid "Rx"
+msgstr ""
+
+#: DataTypes/Filter_Datatypes.cpp:365 DataTypes/Filter_Datatypes.cpp:426
+#: TXWindowFlexRay/HashDefines.h:400
+msgid "Tx"
+msgstr ""
+
+#: DataTypes/Filter_Datatypes.cpp:1069 DataTypes/Filter_Datatypes.cpp:1156
+msgid "EXT"
+msgstr ""
+
+#: DataTypes/Filter_Datatypes.cpp:1077 DataTypes/Filter_Datatypes.cpp:1094
+msgid "NONE"
+msgstr ""
+
+#: DataTypes/Filter_Datatypes.cpp:1081 DataTypes/Filter_Datatypes.cpp:1152
+msgid "STD"
+msgstr ""
+
+#: DataTypes/Filter_Datatypes.cpp:1086 DataTypes/Filter_Datatypes.cpp:1166
+msgid "RTR"
+msgstr ""
+
+#: DataTypes/Filter_Datatypes.cpp:1098 DataTypes/Filter_Datatypes.cpp:1170
+msgid "NONRTR"
+msgstr ""
+
+#: Filter/Filter.cpp:178
+msgid "Filter Selection Dialog"
+msgstr "Filterauswahldialog"
+
+#: Filter/Filter.cpp:179
+msgid "Bus"
+msgstr ""
+
+#: Filter/Filter.cpp:180
+msgid "Configured Filters"
+msgstr "Konfigurierte Filter"
+
+#: Filter/Filter.cpp:181
+msgid "Selected Filters"
+msgstr "Ausgewählte Filter"
+
+#: Filter/FilterConfigDlg.cpp:1040
+msgid "Filter name cannot be empty"
+msgstr "Filtername kann nicht leer sein"
+
+#: Filter/FilterConfigDlg.cpp:1058 Filter/FilterConfigDlg.cpp:1084
+msgid "Name already exist"
+msgstr "Name existiert bereits"
+
+#: Filter/FilterConfigDlg.cpp:2159
+msgid "Message ID exceeds extended ID range"
+msgstr ""
+
+#: Filter/FilterConfigDlg.cpp:2170
+msgid "Message ID exceeds standard ID range"
+msgstr ""
+
+#: Filter/FilterConfigDlg.cpp:2270
+msgid "Start range message ID exceeds extended ID range"
+msgstr ""
+
+#: Filter/FilterConfigDlg.cpp:2281
+msgid "Start range message ID exceeds standard ID range"
+msgstr ""
+
+#: Filter/FilterConfigDlg.cpp:2297
+msgid "End range message ID exceeds extended ID range"
+msgstr ""
+
+#: Filter/FilterConfigDlg.cpp:2308
+msgid "End range message ID exceeds standard ID range"
+msgstr ""
+
+#: Filter/FilterConfigDlg.cpp:2316 Filter/FilterConfigDlg.cpp:2568
+msgid "Start Range ID is greater than or equal to End Range ID"
+msgstr ""
+
+#: Filter/FilterConfigDlg.cpp:2481 Filter/FilterConfigDlg.cpp:2546
+#: Filter/FilterConfigDlg.cpp:2560
+msgid "Valid range for LIN Message ID is 0 - 0x3F"
+msgstr ""
+
+#: Filter/FilterConfigDlg.cpp:3112
+msgid "Do you want to delete all filters from the list?"
+msgstr ""
+
+#: Filter/FilterConfigDlg.cpp:3393 Filter/FilterConfigDlg.cpp:3485
+msgid "Unable to create memory for new Filter"
+msgstr ""
+
+#: Filter/FilterConfigDlg.cpp:3398 Filter/FilterConfigDlg.cpp:3490
+msgid "Unable to find unique name for the filter!!"
+msgstr ""
+
+#: FrameProcessor/FrameProcessor_J1939.cpp:140
+#, c-format
+msgid "ERR_READ_MEMORY_SHORT  nSize: %d"
+msgstr ""
+
+#: LIN_ISOLAR_EVE_VLIN/LIN_ISOLAR_EVE_VLIN.cpp:741
+msgid "ISOLAR_EVE_LIN"
+msgstr ""
+
+#: LIN_PEAK_USB/LIN_PEAK_USB.cpp:70
+msgid "LIN_MONITOR"
+msgstr ""
+
+#: LIN_PEAK_USB/LIN_PEAK_USB.cpp:830
+msgid "Failed to register net"
+msgstr "Registrierung des Netzes fehlgeschlagen"
+
+#: LIN_PEAK_USB/LIN_PEAK_USB.cpp:971
+#, c-format
+msgid "PLIN-USB Device ID - %Xh"
+msgstr ""
+
+#: LIN_PEAK_USB/LIN_PEAK_USB.cpp:1932
+msgid "PLinApi.dll already loaded"
+msgstr ""
+
+#: LIN_PEAK_USB/LIN_PEAK_USB.cpp:1938
+msgid "PLinApi.dll"
+msgstr ""
+
+#: LIN_PEAK_USB/LIN_PEAK_USB.cpp:1941
+msgid "PLinApi.dll loading failed"
+msgstr "Laden der PLinApi.dll fehlgeschlagen"
+
+#: LIN_Vector_XL/HardwareListing.cpp:57
+#, c-format
+msgid "LIN %d"
+msgstr ""
+
+#: LIN_Vector_XL/LIN_Vector_XL.cpp:508
+msgid "No available channels found! (e.g. no LINcabs...)"
+msgstr ""
+
+#: NodeSimEx/DefineTimerHandler.cpp:240
+msgid "Timer Name Should Not Be Empty"
+msgstr ""
+
+#: NodeSimEx/DefineTimerHandler.cpp:240 NodeSimEx/DefineTimerHandler.cpp:254
+msgid "Invalid Timer Name"
+msgstr ""
+
+#: NodeSimEx/DefineTimerHandler.cpp:254
+msgid "Timer Name Should Not contain spaces/special characters."
+msgstr ""
+
+#: NodeSimEx/ExecuteFunc.cpp:1158
+msgid "Input file open error:"
+msgstr ""
+
+#: NodeSimEx/ExecuteFunc.cpp:2047
+msgid "Pre_Connect"
+msgstr ""
+
+#: NodeSimEx/ExecuteFunc.cpp:2051
+msgid "Connect"
+msgstr ""
+
+#: NodeSimEx/ExecuteFunc.cpp:2055
+msgid "Disconnect"
+msgstr ""
+
+#: NodeSimEx/FnsTreeView.cpp:2149 NodeSimEx/FnsTreeView.cpp:2154
+#: NodeSimEx/FunctionEditorDoc.cpp:1686 NodeSimEx/FunctionView.cpp:228
+msgid "PLACE_HODLER_FOR_BUSNAME"
+msgstr ""
+
+#: NodeSimEx/FnsTreeView.cpp:2150 NodeSimEx/FnsTreeView.cpp:2155
+#: NodeSimEx/FunctionView.cpp:229
+msgid "PLACE_HODLER_FOR_FUNCTIONNAME"
+msgstr ""
+
+#: NodeSimEx/GlobalObj.cpp:187
+msgid "Simulation files have been modified. Do You Want to save the Changes?"
+msgstr ""
+
+#: NodeSimEx/GlobalObj.cpp:187
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:571
+msgid "Modified"
+msgstr ""
+
+#: NodeSimEx/MsgHandlerDlg.cpp:690
+msgid "message"
+msgstr ""
+
+#: NodeSimEx/MsgHandlerDlg.cpp:731
+msgid "TYPE"
+msgstr ""
+
+#: NodeSimEx/MsgHandlerDlg.cpp:732
+msgid "MESSAGENAME"
+msgstr ""
+
+#: NodeSimEx/MsgHandlerDlg.cpp:734
+msgid "In\""
+msgstr ""
+
+#: NodeSimEx/MsgHandlerDlg.cpp:734
+msgid "\" Handler"
+msgstr ""
+
+#: NodeSimEx/SimSysDetView.cpp:995
+msgid "Handler Count"
+msgstr ""
+
+#: NodeSimEx/SimSysDetView.cpp:1002
+msgid "Status"
+msgstr ""
+
+#: NodeSimEx/SimSysDetView.cpp:1060
+msgid "Handler Description"
+msgstr ""
+
+#: NodeSimEx/SimSysTreeView.cpp:581 NodeSimEx/SimSysTreeView.cpp:927
+msgid "Failed to change the text of the String"
+msgstr "Änderung des Zeichenkettentextes fehlgeschlagen"
+
+#: PSDI_CAN/MsgContainer_J1939.cpp:195
+#, c-format
+msgid "J1939 PSDI - ERR_READ_MEMORY_SHORT  nSize: %d"
+msgstr ""
+
+#: PSDI_CAN/MsgContainer_J1939.cpp:201
+msgid "J1939 PSDI - EMPTY_APP_BUFFER"
+msgstr ""
+
+#: SigGrphWnd/GraphBottomView.cpp:244 SigGrphWnd/SigGrphWnd_Defines.h:105
+msgid "Category"
+msgstr ""
+
+#: SigGrphWnd/GraphBottomView.cpp:251 SigGrphWnd/SigGrphWnd_Defines.h:106
+msgid "Element"
+msgstr ""
+
+#: SigGrphWnd/GraphBottomView.cpp:265
+msgid "Cursor1"
+msgstr ""
+
+#: SigGrphWnd/GraphBottomView.cpp:272
+msgid "Cursor2"
+msgstr ""
+
+#: SigGrphWnd/GraphBottomView.cpp:279
+msgid "Difference"
+msgstr ""
+
+#: SigGrphWnd/GraphBottomView.cpp:424 SigGrphWnd/GraphBottomView.cpp:425
+#: SigGrphWnd/GraphBottomView.cpp:426
+#, c-format
+msgid "%.3lf"
+msgstr ""
+
+#: SigGrphWnd/GraphBottomView.cpp:868
+msgid "Signal Graph - CAN"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd.cpp:182
+msgid "Signal Graph - "
+msgstr ""
+
+#: TXWindow/SignalDetailsDlg.cpp:648 TXWindowLIN/SignalDetailsDlg.cpp:650
+#: SigGrphWnd/SigGrphWnd_Defines.h:122 TXWindowFlexRay/HashDefines.h:839
+msgid "Insufficient Memory available"
+msgstr ""
+
+#: TXWindow/TxMsgBlocksView.cpp:288 TXWindow/TxMsgBlocksView.cpp:1030
+#: TXWindow/TxMsgBlocksView.cpp:1193 TXWindow/TxMsgBlocksView.cpp:1843
+#: TXWindowLIN/TxMsgBlocksView.cpp:288 TXWindowLIN/TxMsgBlocksView.cpp:1036
+#: TXWindowLIN/TxMsgBlocksView.cpp:1199 TXWindowLIN/TxMsgBlocksView.cpp:1849
+#: TXWindowFlexRay/HashDefines.h:402
+msgid "All"
+msgstr ""
+
+#: TXWindow/TxMsgBlocksView.cpp:289 TXWindow/TxMsgBlocksView.cpp:290
+#: TXWindow/TxMsgBlocksView.cpp:1034 TXWindow/TxMsgBlocksView.cpp:1110
+#: TXWindowLIN/TxMsgBlocksView.cpp:289 TXWindowLIN/TxMsgBlocksView.cpp:290
+#: TXWindowLIN/TxMsgBlocksView.cpp:1040 TXWindowLIN/TxMsgBlocksView.cpp:1116
+msgid "Single"
+msgstr ""
+
+#: TXWindow/TxMsgBlocksView.cpp:1020 TXWindow/TxMsgBlocksView.cpp:2318
+#: TXWindowLIN/TxMsgBlocksView.cpp:1026 TXWindowLIN/TxMsgBlocksView.cpp:2342
+msgid "Trigger (Cyclic) on event"
+msgstr ""
+
+#: TXWindow/TxMsgBlocksView.cpp:1024 TXWindow/TxMsgBlocksView.cpp:2303
+#: TXWindowLIN/TxMsgBlocksView.cpp:1030 TXWindowLIN/TxMsgBlocksView.cpp:2327
+msgid "Trigger (Monoshot) on event"
+msgstr ""
+
+#: TXWindowFlexRay/TransmitMsg.cpp:44 TXWindowFlexRay/TransmitMsg_LIN.cpp:47
+msgid "%-60s   [%16I64d]"
+msgstr ""
+
+#: TXWindowFlexRay/TransmitMsg.cpp:45 TXWindowFlexRay/TransmitMsg_LIN.cpp:48
+msgid "%-60s   [%16I64X]"
+msgstr ""
+
+#: TXWindowFlexRay/TransmitMsg.cpp:311 TXWindowFlexRay/TransmitMsg_LIN.cpp:474
+msgid "Message Name"
+msgstr "Nachrichtenname"
+
+#: TXWindowFlexRay/TransmitMsg.cpp:311
+#: TXWindowFlexRay/TxFlexrayMsgHandlerDlg.cpp:99
+msgid "Base Cycle"
+msgstr ""
+
+#: TXWindowFlexRay/TransmitMsg.cpp:311 TXWindowFlexRay/TransmitMsg_LIN.cpp:475
+#: TXWindowFlexRay/TxFlexrayMsgHandlerDlg.cpp:100
+msgid "Repetition"
+msgstr ""
+
+#: TXWindowFlexRay/TransmitMsg.cpp:312
+msgid "Channel(A\\B)"
+msgstr ""
+
+#: TXWindowFlexRay/TransmitMsg.cpp:312 TXWindowFlexRay/TransmitMsg_LIN.cpp:474
+msgid "Data Length"
+msgstr ""
+
+#: TXWindowFlexRay/TransmitMsg_LIN.cpp:475 TXWindowFlexRay/HashDefines.h:890
+msgid "Key"
+msgstr ""
+
+#: TXWindowFlexRay/TransmitMsg_LIN.cpp:475
+msgid "Data Bytes"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI.cpp:146
+msgid "Test Setup Editor"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:231
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:258
+msgid "Invalid Test Setup File"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:231
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:258
+#: TestSuiteExecutorGUI/TSExecutorGUI_ChildFrame.cpp:300
+#: TXWindowFlexRay/HashDefines.h:892
+msgid "Error"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:445
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2258
+#: TestSetupEditorGUI/TreeViewEx.cpp:1005
+msgid "Wait"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:462
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2266
+msgid "Replay"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:500
+msgid "Select A TestSetup File"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:523
+msgid ""
+"\n"
+"\n"
+"Copyright(c) 2011, Robert Bosch Engineering and\n"
+"Business Solutions Ltd.\n"
+"All rights reserved."
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:571
+msgid ""
+"Current List is Modified\n"
+"Do You Want to save the Changes?"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:693
+msgid "Title"
+msgstr "Titel"
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:710
+msgid "Bus Type"
+msgstr "Bustyp"
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:742
+msgid "DataBase File (*.dbf)|*.dbf||"
+msgstr "Datenbankdatei (*.dbf)|*.dbf||"
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:743
+msgid "DataBase Path"
+msgstr "Datenbankpfad"
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:754
+msgid "Text Files (*.txt)|*.txt|Html Files (*html)|*.html||"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:760
+msgid "Report File Path"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:770
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:780
+msgid "ABSOLUTE"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:771
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:776
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1401
+msgid "RELATIVE"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:772
+msgid "Time Mode"
+msgstr "Zeitmodus"
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:837
+msgid "Test Case ID"
+msgstr "Testfall-ID"
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:842
+msgid "Test Case Name"
+msgstr "Testfallname"
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:848
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:859
+msgid "CONTINUE"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:849
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:855
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1456
+msgid "EXIT"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:851
+msgid "Exception Handler"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:896
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:950
+msgid "Message Count"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:917
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1002
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1936
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1955
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2026
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2047
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2116
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2135
+msgid "[Add Message]"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:960
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:972
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1536
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1576
+msgid "WARNING"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:963
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:973
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1540
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1580
+msgid "ERROR"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:967
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:974
+msgid "FATAL"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:970
+msgid "Failure Classification"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1023
+msgid "Wait Until"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1062
+msgid "Purpose"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1067
+msgid "Delay (in msec))"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1096
+msgid "File Path"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1163
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1174
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1256
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1267
+msgid "RAW"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1167
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1175
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1260
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1268
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1617
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1686
+msgid "ENG"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1171
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1264
+msgid "Signal Unit Type"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1414
+msgid ".html"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1875
+msgid ""
+"Database Path Is Changed.All Old messages of Test Setup File will be "
+"Deleted.\n"
+"Do you Want To Continue"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:1875
+msgid "Database Path Changed"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2234
+msgid "Untitled TestCase"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2242
+#: TestSetupEditorGUI/TreeViewEx.cpp:1003
+msgid "Send"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2250
+#: TestSetupEditorGUI/TreeViewEx.cpp:1004
+msgid "Verify"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2275
+msgid "VerfiyResponse"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2478
+#, c-format
+msgid ""
+"The file '%s' has been modified\n"
+"Do you Want to save?"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2479
+msgid "BUSMASTER TestSetup Editor"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2576
+msgid "Test Automation Editor"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2580
+msgid "Test Automation Editor:: "
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:2741
+msgid "Wrong Item Selected"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:3063
+msgid "Found Some Errors\\Warnings"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:3063
+msgid "Validation Failed"
+msgstr "Validierung fehlgeschlagen"
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:3067
+msgid "No Errors\\Warnings are Found"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:3067
+msgid "Validation Success"
+msgstr ""
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:3517
+msgid "Signal"
+msgstr "Signal"
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:3517
+msgid "Byte"
+msgstr "Byte"
+
+#: TestSetupEditorGUI/TSEditorGUI_ChildFrame.cpp:3517
+msgid "StartBit"
+msgstr ""
+
+#: TestSetupEditorGUI/TreeViewEx.cpp:997
+msgid "New Test Case"
+msgstr "Neuer Testfall"
+
+#: TestSetupEditorGUI/TreeViewEx.cpp:1006
+msgid "verfiyResponse"
+msgstr ""
+
+#: TestSetupEditorGUI/TreeViewEx.cpp:1008
+msgid "New"
+msgstr "Neu"
+
+#: TestSetupEditorGUI/TreeViewEx.cpp:1009
+#: TestSetupEditorGUI/TreeViewEx.cpp:1013
+#: TestSuiteExecutorGUI/TreeViewEx.cpp:676
+msgid "Delete"
+msgstr ""
+
+#: TestSetupEditorGUI/TreeViewEx.cpp:1027
+#: TestSuiteExecutorGUI/TreeViewEx.cpp:688
+msgid "Collapse All"
+msgstr ""
+
+#: TestSetupEditorGUI/TreeViewEx.cpp:1028
+#: TestSuiteExecutorGUI/TreeViewEx.cpp:689
+msgid "Expand All"
+msgstr ""
+
+#: TestSetupEditorGUI/TreeViewEx.cpp:1030
+msgid "Background Color"
+msgstr ""
+
+#: TestSetupEditorLib/SendEntity.cpp:220
+msgid "Warning: Has No Send Messages"
+msgstr ""
+
+#: TestSetupEditorLib/TestSetupEntity.cpp:373
+msgid "<New Test SetUp>"
+msgstr ""
+
+#: TestSetupEditorLib/TestSetupEntity.cpp:507
+msgid "No TestCases Are Defined"
+msgstr ""
+
+#: TestSetupEditorLib/TestSetupEntity.cpp:727
+msgid "Unable to create XML parser object"
+msgstr ""
+
+#: TestSetupEditorLib/TestSetupEntity.cpp:1114
+msgid ""
+"1 entity without channel-information loaded.\n"
+"CAN-Channel 1 selected."
+msgstr ""
+
+#: TestSetupEditorLib/TestSetupEntity.cpp:1120
+msgid ""
+" entities without channel-information loaded.\n"
+"CAN-Channel 1 selected in each case."
+msgstr ""
+
+#: TestSetupEditorLib/TestSetupHeader.cpp:70
+msgid "Engineer Name"
+msgstr "Entwicklername"
+
+#: TestSetupEditorLib/TestSetupHeader.cpp:71
+msgid "Engineer Role"
+msgstr "Entwicklerrolle"
+
+#: TestSetupEditorLib/TestSetupHeader.cpp:72
+msgid "Module Name"
+msgstr "Modulname"
+
+#: TestSetupEditorLib/TestSetupHeader.cpp:74
+msgid "version"
+msgstr "Version"
+
+#: TestSetupEditorLib/TestSetupHeader.cpp:97
+msgid "No Database File is Included"
+msgstr ""
+
+#: TestSetupEditorLib/TestSetupHeader.cpp:104
+msgid "Incorrect Database File path"
+msgstr ""
+
+#: TestSetupEditorLib/VerifyResponse.cpp:333
+msgid "Error: Has No Verify Messages"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutionCAN.cpp:68
+msgid "In VERIFY - Before Enter\n"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutionCAN.cpp:70
+msgid "In VERIFY - After Enter\n"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutionCAN.cpp:364
+#: TestSuiteExecutorGUI/TSExecutionCAN.cpp:452
+#: TestSuiteExecutorGUI/TSExecutionCAN.cpp:497
+msgid "SUCCESS"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutionCAN.cpp:379
+#, c-format
+msgid "SUCCESS COUNT %d"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutionCAN.cpp:383
+msgid "No Message  has Recieved"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutionCAN.cpp:448
+msgid "Verifying Message "
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutionCAN.cpp:455
+#: TestSuiteExecutorGUI/TSExecutionCAN.cpp:511
+msgid "FAIL"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutionCAN.cpp:547
+msgid "Sending Message "
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorGUI.cpp:144
+msgid "Test Suite Executor"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorGUI_ChildFrame.cpp:197
+msgid "TestCase Name"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorGUI_ChildFrame.cpp:198
+msgid "Execution Step"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorGUI_ChildFrame.cpp:199
+msgid "Result"
+msgstr "Resultat"
+
+#: TestSuiteExecutorGUI/TSExecutorGUI_ChildFrame.cpp:299
+#, c-format
+msgid "The %s is Invalid File"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorLIB.cpp:1227
+msgid "Sending Messages Started"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorLIB.cpp:1233
+msgid "Verifying Started"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorLIB.cpp:1247
+#, c-format
+msgid "Waiting %d msec for %s"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorLIB.cpp:1254
+msgid "VerifyRequest Started"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:235
+msgid ""
+"\n"
+"\t\t\t\tBUSMASTER Version:: BUSMASTER "
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:236
+msgid ""
+"\n"
+"\t\t\t\tReport File For:: "
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:239
+msgid ""
+"\n"
+"\n"
+"TestSetup File Information:"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:241
+msgid ""
+"\n"
+"\tTitle: "
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:242
+msgid ""
+"\n"
+"\tModule Name:"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:243
+msgid ""
+"\n"
+"\tVersion: "
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:244
+msgid ""
+"\n"
+"\tDatabase Information:"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:247
+msgid "Engineer Info:"
+msgstr "Entwicklerinfo:"
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:249
+msgid ""
+"\n"
+"\tName: "
+msgstr ""
+"\n"
+"\tName: "
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:250
+msgid ""
+"\n"
+"\tDesignation: "
+msgstr ""
+"\n"
+"\tBezeichnung: "
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:251
+msgid ""
+"\n"
+"Results:"
+msgstr ""
+"\n"
+"Resultate:"
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:260
+msgid ""
+"\n"
+"TestCase:  "
+msgstr ""
+"\n"
+"TestFall:  "
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:264
+msgid ""
+"\n"
+"Result:\tFAILED"
+msgstr ""
+"\n"
+"Resultat:\tFEHLGESCHLAGEN"
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:268
+msgid ""
+"\n"
+"Result:\tSUCCESS"
+msgstr ""
+"\n"
+"Resultat:\tERFOLG"
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:270
+msgid ""
+"\n"
+"StratTime:"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:271
+msgid ""
+"\n"
+"EndTime:"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:283
+#, c-format
+msgid ""
+"\n"
+"\tVerify - %d (Severity - %s)"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:288
+msgid "No Message is Verified"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:359
+msgid "Sunday"
+msgstr ""
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:363
+msgid "Monday"
+msgstr "Montag"
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:367
+msgid "Tuesday"
+msgstr "Dienstag"
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:371
+msgid "Wednesday"
+msgstr "mittwoch"
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:375
+msgid "Thursday"
+msgstr "Donnerstag"
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:379
+msgid "Friday"
+msgstr "Freitag"
+
+#: TestSuiteExecutorGUI/TSExecutorResult.cpp:383
+msgid "Saturday"
+msgstr "Samstag"
+
+#: TestSuiteExecutorGUI/TreeViewEx.cpp:660
+msgid "Add..."
+msgstr "Hinzufügen..."
+
+#: TestSuiteExecutorGUI/TreeViewEx.cpp:664
+#: TestSuiteExecutorGUI/TreeViewEx.cpp:668
+msgid "Execute"
+msgstr "Ausführen"
+
+#: TestSuiteExecutorGUI/TreeViewEx.cpp:677
+msgid "Reload File"
+msgstr ""
+
+#: UDS_Protocol/UDSMainWnd.cpp:875 UDS_Protocol/UDSMainWnd.cpp:988
+#: UDS_Protocol/UDSMainWnd.cpp:1023
+msgid "CAN_MONITOR"
+msgstr ""
+
+#: Application/HashDefines.h:1281 Application/HashDefines.h:1292
+#, c-format
+msgid "%-5.2f %%"
+msgstr ""
+
+#: Application/NodeUtil_Flexray.h:9
+msgid "BM_DUMMY_2_0_PDU"
+msgstr ""
+
+#: Application/NodeUtil_Flexray.h:12
+msgid "<Empty>"
+msgstr "<leer>"
+
+#: CAN_Kvaser_CAN/ChangeRegDefines.h:82 CAN_NSI/ChangeRegDefines.h:84
+#: CAN_Vector_XL/ChangeRegDefines.h:82
+#: LIN_ISOLAR_EVE_VLIN/ChangeRegDefines.h:82
+#: LIN_Vector_XL/ChangeRegDefines.h:82
+#, c-format
+msgid "The Warning limit \"%s\" is beyond the limit %d - %d"
+msgstr ""
+
+#: CAN_Kvaser_CAN/ContrConfigPeakUsbDefs.h:29
+#: CAN_Vector_XL/ContrConfigPeakUsbDefs.h:29
+#: CAN_iVIEW/ContrConfigPeakUsbDefs.h:29
+msgid "16"
+msgstr ""
+
+#: CAN_Kvaser_CAN/ContrConfigPeakUsbDefs.h:44
+#: CAN_Vector_XL/ContrConfigPeakUsbDefs.h:44
+#: CAN_iVIEW/ContrConfigPeakUsbDefs.h:44
+msgid "Sampling Point"
+msgstr ""
+
+#: Include/Utils_macro.h:36
+#, c-format
+msgid "FLEXRAY POC State: %s"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:32
+#, c-format
+msgid "Channel %-2d -> %s kbps"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:34
+msgid "Select Export Filename..."
+msgstr "Wähle Exportdateiname..."
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:35
+msgid "Comma Separated Values format (*.csv)|*.csv||"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:36
+msgid "csv"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:37
+#, c-format
+msgid "CSV report successfully generated and saved at %s"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:38
+msgid "Please enter valid CSV report file path"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:40
+msgid "Select Report Filename..."
+msgstr "Wähle Berichtsdateiname..."
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:41
+msgid "HTML Report Format (*.html)|*.html||"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:42
+msgid "html"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:43
+#, c-format
+msgid "HTML report successfully generated and saved at %s"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:44
+msgid "Please enter valid HTML report file path"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:46
+msgid "Select Picture Filename..."
+msgstr "Wähle Bilddateiname..."
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:47
+msgid "Bitmap Picture Format (*.bmp)|*.bmp||"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:48
+msgid "bmp"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:49
+msgid "Please enter valid bitmap file path"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:50
+msgid " "
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:52
+msgid "about:blank"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:65
+msgid ""
+"Dissociation will clear Graph element List for all buses.\n"
+"Do you want to Clear the List?"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:121
+msgid "Invalid main frame pointer"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:123
+msgid "Signal Graph"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:138
+msgid ""
+"Only 10 graph elements are supported. Please delete existing element to add "
+"new element"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:140
+msgid "Please enter valid range value"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:143
+msgid "Show Grid"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:144
+msgid "Hide Grid"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:153
+#, c-format
+msgid "%0.4f"
+msgstr ""
+
+#: SigGrphWnd/SigGrphWnd_Defines.h:154
+#, c-format
+msgid "%0.3fS"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:88
+msgid "Fibex Databases..."
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:89
+msgid ""
+"Exception in Fibex object Creation\n"
+"Please Reload the DLL"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:90
+msgid "Already value description exists!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:91
+msgid "Do you want to delete?"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:92
+msgid "Data Generating..."
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:93
+msgid "Couldn't CreateDispatch on Excel"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:94
+msgid " Dll Memory Creation Error!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:95
+msgid "Node Already Exists!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:96
+msgid "Please Select the item!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:97
+msgid " Frame Added Successfully "
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:98
+msgid " Frame Already Exists!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:99
+msgid "Frame Length is not Sufficient!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:100
+msgid "Enter Frame Id!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:102
+msgid "\\ConfigurationTool\\FlexRayConfigurationTool.exe"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:103
+msgid "\\ConfigurationTool\\DefaultFlexRayConfiguration.cfg"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:104
+msgid "DefaultFlexRayConfiguration.cfg"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:105
+msgid "Enter Flexray Configuration file"
+msgstr "Gebe FlexRay-Konfigurationsdatei ein"
+
+#: TXWindowFlexRay/HashDefines.h:108
+msgid "Signal Already Exists!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:109
+msgid " Max and Min Value is Zero  "
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:110
+msgid " Do you want to close active DB?"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:114
+msgid ""
+"This Signal is referred By Frame\n"
+" You Can't Delete the Signal "
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:115
+msgid "Signal Collection is empty!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:134
+msgid "Max Value is incorrect"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:135
+msgid "Min Value is incorrect"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:136
+msgid "Project"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:137
+msgid "Frames"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:138
+msgid "Signals"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:139
+msgid "Fibex"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:140
+msgid "Given Offset is Overlapped!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:141
+msgid "Enter Byte Length between 1 and 255!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:142
+msgid "Select Signal Id!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:143
+msgid "Signal Collection is Empty!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:145
+msgid "Frame is  occupied!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:146
+msgid " Position is occupied by other Signal !"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:147
+msgid " Space is not available!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:148
+msgid ""
+" Some Signal is available in existing position.\n"
+" You can't reduce the size!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:149
+msgid " Default value is greater than Minimum Value "
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:150
+msgid " Default value is lesser than Maximum Value "
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:151
+msgid " assigned to Default Value "
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:152
+msgid ""
+" Resource Error \n"
+" Try Again!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:153
+msgid "Frame Collection is Empty!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:154
+msgid " sent to Flexcom Application"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:156
+msgid "Maximum Signal length is less than 32"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:157
+msgid "Enter Signal Id!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:158
+msgid "Enter Signal Short Name"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:159
+msgid "Enter Project Short Name"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:160
+msgid ""
+" Frame is not having any Signals\n"
+" Please add Signal reference!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:161
+msgid "Please Save the Frame before sending it FlexCom"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:163
+msgid "Enter Fibex Version!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:164 TXWindowFlexRay/HashDefines.h:167
+msgid "Fibex Structure is empty!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:165 TXWindowFlexRay/HashDefines.h:168
+msgid " File does not exist!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:166 TXWindowFlexRay/HashDefines.h:169
+msgid " Please give xml file name with .xml extension!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:170
+msgid "Enter Node Name!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:171
+msgid "Enter Node Description!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:172
+msgid "Enter Signal Value Description!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:173
+msgid "Enter Signal value for description!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:174
+msgid "Can't Save Modification Details without Change Value!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:175
+msgid "Can't Save the Company Data Details without Company Data Ref Value!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:176
+msgid "Successfully FIBEX information Saved!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:177
+msgid "You can't save FIBEX information without Project information!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:178
+msgid ""
+"Error in openning xml file!\n"
+"please load correct xml file"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:179
+msgid "Version info is not available!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:180
+msgid "Project info is not available!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:181
+msgid "Enter Database Name!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:183
+msgid "\\RecentDatabases.ini"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:184
+msgid "Error in opening ini file!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:185
+msgid "Error in opening recent file!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:186
+msgid "Properties"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:189
+msgid "FIBEXEdit-Common"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:190
+msgid "FIBEXEdit-Project"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:191
+msgid "FIBEXEdit-Frame"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:192
+msgid "FIBEXEdit-Signal"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:197
+msgid " Already Value Exists!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:201
+msgid "Transmission is going on..."
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:202
+msgid ""
+"H/W Configuration Level is  not proper(Level = Red)\n"
+"Please configure once again!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:206
+msgid "PROJECT VIEW"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:207
+msgid "FRAME VIEW"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:208
+msgid "SIGNAL VIEW"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:209
+msgid "PROPERTY VIEW"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:210
+msgid "TEST REPORT VIEW"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:212
+msgid "Invalid Fibex Database!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:221
+msgid "FRAME"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:222
+msgid "Could not convert!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:223
+msgid "Successfully converted text file to Excel File!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:224
+msgid "No fields selected!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:225
+msgid "Enter Log file details!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:226
+msgid "Enter CSV file details!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:227
+msgid "Enter Log and CSV file details!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:228
+msgid "Log file does not exist!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:229
+msgid "CSV file does not exist!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:288
+msgid ""
+"Configuration File is modified \n"
+"Do you want to save this configuration?"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:289
+msgid "Do you want to close the application?"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:309
+msgid "Do you want to remove selected log file entry?"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:310
+#, c-format
+msgid "Log file: %s is already added to the log configuration list!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:311
+#, c-format
+msgid "Replay log: %s already exists!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:318
+msgid "Select a Log file"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:319
+msgid "Log File"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:322
+msgid "Enter Period between 1 to 65535"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:323
+msgid "Hardware not connected!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:324
+msgid "No message selected in Transmit window!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:325
+msgid "No Message present in Transmit window!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:328
+msgid "INI Files(*.ini)|*.ini||"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:330
+msgid "CHI Files(*.chi)|*.chi||"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:332
+msgid "Access Database Files(*.mdb)|*.mdb||"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:334
+msgid "XML Database Files(*.xml)|*.xml||"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:336
+msgid "Data length of static messages can not be changed"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:337
+msgid "Dynamic data length is more than the set value"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:381
+msgid "Files"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:382
+msgid "ConfigFile"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:391
+msgid "Signal Name"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:392
+msgid "From"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:393
+msgid "To"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:394
+msgid "ID Type"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:396
+msgid "Direction"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:411
+msgid "Pass"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:415
+msgid "Empty"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:416
+msgid "&File"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:417
+msgid "Recent File"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:419
+msgid "MRU List"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:420
+msgid "MRU File1"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:421
+msgid "MRU File2"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:422
+msgid "MRU File3"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:423
+msgid "MRU File4"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:424
+msgid "MRU File5"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:444
+msgid "Filter"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:450
+msgid "Filter Name"
+msgstr "Filtername"
+
+#: TXWindowFlexRay/HashDefines.h:472
+#, c-format
+msgid "Failed to create %s Control"
+msgstr "Erzeugung der %s-Kontrolle fehlgeschlagen"
+
+#: TXWindowFlexRay/HashDefines.h:473
+msgid "ComboItem"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:474
+msgid "ComboLsit"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:475
+msgid "EditItem"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:476
+msgid "NumItem"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:488
+msgid "&Collapse"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:535
+msgid "Enter Valid Integer :"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:536
+msgid "Select from the List below :"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:537
+msgid "Select from the Combo box :"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:574
+msgid "/* Start FRAME generated function - PLACE_HODLER_FOR_FUNCTIONNAME */"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:577
+msgid "}/* End FRAME generated function - PLACE_HODLER_FOR_FUNCTIONNAME */"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:580
+msgid "/* Start FRAME generated function - "
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:582
+msgid "/* Start FRAME global variable */"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:583
+msgid "/* End FRAME global variable */"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:585
+msgid "/* Start FRAME include header */"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:586
+msgid "/* End FRAME include header */"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:588
+msgid "/* Start FRAME Function Prototype  */"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:589
+msgid "/* End FRAME Function Prototype  */"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:597
+msgid "File not found!"
+msgstr "Datei nicht gefunden!"
+
+#: TXWindowFlexRay/HashDefines.h:604
+msgid "Message Handlers"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:605
+msgid "Timer Handlers"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:606
+msgid "Key Handlers"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:607
+msgid "Error Handlers"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:608
+msgid "DLL Handlers"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:609
+msgid "Utility Functions"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:610
+msgid "Global Variables"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:611
+msgid "Include Headers"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:619 TXWindowFlexRay/HashDefines.h:660
+msgid "void OnTimer_TIMERNAME_TIMERVALUE( )"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:621
+msgid "/* TODO: Define and Initialise the following variables*/"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:623
+msgid "ReturnValue"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:624
+#, c-format
+msgid "Para%d"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:626
+msgid "Message handler for TYPE MESSAGENAME already exists!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:627
+msgid "Corresponding Message handler for TYPE \"MESSAGENAME\" already exists!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:628
+msgid "Timer handler already exists!"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:629
+msgid "Key handler for the key \"KEYNAME\" already exists!"
+msgstr "Schlüsselhandler für den Schlüssel \"KEYNAME\" existiert bereits!"
+
+#: TXWindowFlexRay/HashDefines.h:630
+msgid "Utility function \"FUNCTIONNAME\" already exists!"
+msgstr "Utility-Funktion \"FUNCTIONNAME\" existiert bereits!"
+
+#: TXWindowFlexRay/HashDefines.h:631
+msgid "Global variable is already defined!"
+msgstr "Globale Variable ist bereits definiert!"
+
+#: TXWindowFlexRay/HashDefines.h:632
+msgid "Unable to initialise handler functions for execution."
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:633
+msgid " The DLL \"FILENAME\" is unloaded"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:634
+msgid "Unable to allocate memory for BuildProgram module"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:635
+msgid ""
+"Message ID range:\"FROM\" field has value greater then or equal to \"TO\" "
+"field"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:647
+msgid ""
+"You are about to delete the function FUNCTION_NAME(...).\n"
+"Are you sure you want to delete?"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:651
+msgid ""
+"You are about to delete the variable.\n"
+"Do you wish to proceed?"
+msgstr ""
+"Sie sind dabe die Variable zu löschen.\n"
+"Wollen sie fortfahren?"
+
+#: TXWindowFlexRay/HashDefines.h:654
+msgid ""
+"You are about to delete the #include.\n"
+"Are you sure you want to delete?"
+msgstr ""
+"Sie sind dabei das #include zu löschen.\n"
+"Sind sie sicher, dass sie es löschen möchten?"
+
+#: TXWindowFlexRay/HashDefines.h:656 TXWindowFlexRay/HashDefines.h:689
+#, c-format
+msgid "void OnMsg%s(%s RxMsg)"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:658 TXWindowFlexRay/HashDefines.h:691
+msgid "void OnKey_KEYNAME(unsigned char KeyValue)"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:686
+msgid "SFLEXMSG"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:687
+msgid "Name_"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:692
+msgid "Please select the return type for the function."
+msgstr "Bitte wählen sie den Rückgabetyp der Funktion."
+
+#: TXWindowFlexRay/HashDefines.h:694
+msgid "// Prototypes Start"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:695
+msgid "// Prototypes End"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:707
+msgid "Message Variable List"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:713
+msgid "Duplicate timer handler name!"
+msgstr "Doppeleter Timer-Handler-Name!"
+
+#: TXWindowFlexRay/HashDefines.h:769
+#, c-format
+msgid "Error while saving file %s. Restoring old data"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:770
+#, c-format
+msgid "File %s not saved properly. Please try again"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:831 TXWindowFlexRay/HashDefines.h:842
+msgid ""
+"You are about to change all the Node details!\n"
+"\n"
+"Are you sure you want to Continue?"
+msgstr ""
+"Sie sind dabei alle Knotendetails zu ändern!\n"
+"\n"
+"Sind sie sicher, dass sie fortfahren wollen?"
+
+#: TXWindowFlexRay/HashDefines.h:832 TXWindowFlexRay/HashDefines.h:841
+msgid ""
+"You are about to Delete all the Simulated Systems.\n"
+"\n"
+"Are you sure you want to Delete?"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:833
+msgid "Do you want to save changes to the simulated system file(s)?"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:837
+msgid "Timer Handler Name"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:840
+msgid ""
+"You are about to Delete a Simulated System.\n"
+"\n"
+"Are you sure you want to Delete?"
+msgstr ""
+"Sie sind dabei ein simuliertes System zu löschen.\n"
+"\n"
+"Sind sie sicher, dass sie es löschen möchten?"
+
+#: TXWindowFlexRay/HashDefines.h:843
+msgid ""
+"You are about to Delete a Node.\n"
+"\n"
+"Are you sure you want to Delete?"
+msgstr ""
+"Sie sind dabei einen Knoten zu löschen.\n"
+"\n"
+"Sind sie sicher, dass sie es löschen möchten?"
+
+#: TXWindowFlexRay/HashDefines.h:844
+msgid ""
+"You are about to Delete all the Nodes.\n"
+"\n"
+"Are you sure you want to Delete?"
+msgstr ""
+"Sie sind dabei alle Knoten zu löschen.\n"
+"\n"
+"Sind sie sicher, dass sie sie löschen möchten?"
+
+#: TXWindowFlexRay/HashDefines.h:860
+msgid "FLEXRAY Bus"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:861
+msgid "Unable to obtain path of GCC from registry key"
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:862
+msgid "The registry value is corrupted. Please re-install."
+msgstr "Der Registrierungswert ist beschädigt. Bitte erneut installieren."
+
+#: TXWindowFlexRay/HashDefines.h:863
+msgid ""
+"The registry value is corrupted. The interface function is not available.\n"
+"Please re-install."
+msgstr ""
+
+#: TXWindowFlexRay/HashDefines.h:864
+msgid "Please Unload all the Dlls and try again"
+msgstr "Bitte alle DLLs entladen und erneut versuchen"
+
+#: TXWindowFlexRay/HashDefines.h:870
+#, c-format
+msgid "Unsupported DLL Version %d.%d"
+msgstr "Nicht unterstützte DLL-Version %d.%d"
+
+#: TXWindowFlexRay/HashDefines.h:871
+#, c-format
+msgid ""
+"%s is created with older version of the tool. Please recompile the source "
+"code to get latest version of DLL"
+msgstr ""
+"%s wurde mit einer älteren Version des Tools erstellt. Bitte kompilieren sie "
+"den Quellkode erneut, um die letzte Version der DLL zu bekommen"
+
+#: TXWindowFlexRay/HashDefines.h:874
+#, c-format
+msgid "Exception occured in Message Handler ID : 0x%X"
+msgstr "Ausnahme aufgetreten in Nachrichten-Handler ID : 0x%X"
+
+#: TXWindowFlexRay/HashDefines.h:875
+#, c-format
+msgid "Exception occured in Key Handler of '%c'"
+msgstr "Ausnahme aufgetreten in Tasten-Handler von '%c'"
+
+#: TXWindowFlexRay/HashDefines.h:876
+msgid "Exception occured in Error Handler"
+msgstr "Ausnahme aufgetreten in Fehler-Handler"
+
+#: TXWindowFlexRay/HashDefines.h:877
+msgid "Exception occured in DLL Load Handler"
+msgstr "Ausnahme aufgetreten in DLL Laden-Handler"
+
+#: TXWindowFlexRay/HashDefines.h:878
+msgid "Exception occured in DLL UnLoad Handler"
+msgstr "Ausnahme aufgetreten in DLL Entladen-Handler"
+
+#: TXWindowFlexRay/HashDefines.h:879
+#, c-format
+msgid "Exception occured in Timer Handler \"%s\""
+msgstr "Ausnahme aufgetreten in Timer-Handler \"%s\""
+
+#: TXWindowFlexRay/HashDefines.h:888
+#, c-format
+msgid "Failed to get address of %s Handlers: %s"
+msgstr "Holen der Adresse des %s-Handlers fehlgeschlagen: %s"
+
+#: TXWindowFlexRay/HashDefines.h:893
+msgid "Timer"
+msgstr "Timer"
+
+#: TXWindowFlexRay/HashDefines.h:899
+msgid "Configure simulated systems"
+msgstr "Konfiguriere simulierte Systeme"
+
+#: TXWindowFlexRay/HashDefines.h:900
+msgid "Do you want to save changes?"
+msgstr "Wollen sie Änderungen speichern?"
+
+#: TXWindowFlexRay/TransmitMsg.h:36 TXWindowFlexRay/TransmitMsg.h:89
+#: TXWindowFlexRay/TransmitMsg_LIN.h:38 TXWindowFlexRay/TransmitMsg_LIN.h:82
+msgid "Value"
+msgstr "Wert"
+
+#: TXWindowFlexRay/TransmitMsg.h:37 TXWindowFlexRay/TransmitMsg.h:90
+#: TXWindowFlexRay/TransmitMsg_LIN.h:39 TXWindowFlexRay/TransmitMsg_LIN.h:83
+msgid "CYCLIC"
+msgstr ""
+
+#: TXWindowFlexRay/TransmitMsg.h:38 TXWindowFlexRay/TransmitMsg.h:91
+#: TXWindowFlexRay/TransmitMsg_LIN.h:40 TXWindowFlexRay/TransmitMsg_LIN.h:84
+msgid "MONOSHOT"
+msgstr ""
+
+#: TXWindowFlexRay/TransmitMsg.h:39 TXWindowFlexRay/TransmitMsg.h:93
+#: TXWindowFlexRay/TransmitMsg_LIN.h:41 TXWindowFlexRay/TransmitMsg_LIN.h:86
+msgid "ms"
+msgstr ""
+
+#: TXWindowFlexRay/TransmitMsg.h:40 TXWindowFlexRay/TransmitMsg.h:95
+#: TXWindowFlexRay/TransmitMsg_LIN.h:42 TXWindowFlexRay/TransmitMsg_LIN.h:88
+msgid "100"
+msgstr ""
+
+#: TXWindowFlexRay/TransmitMsg.h:43 TXWindowFlexRay/TransmitMsg_LIN.h:57
+msgid ""
+"You are about to delete a message block.\n"
+"\n"
+"Are you sure you want to delete?"
+msgstr ""
+"Sie sind dabei einen Nachrichtenbereich zu löschen.\n"
+"\n"
+"Sind sie sicher, dass sie ihn löschen möchten?"
+
+#: TXWindowFlexRay/TransmitMsg.h:94 TXWindowFlexRay/TransmitMsg_LIN.h:87
+msgid "OnTime"
+msgstr ""

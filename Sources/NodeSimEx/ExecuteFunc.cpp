@@ -1155,8 +1155,9 @@ BOOL CExecuteFunc::bReadDefFile(CStringArray& omErrorArray)
             if (!omInTextFile.good())
             {
                 // Info file open error notification
-                omStrErrorMessage  =_T(_("Input file open error : "));
-                omStrErrorMessage +=omStrDefFileName;
+                omStrErrorMessage = _("Input file open error:");
+                omStrErrorMessage += " ";
+                omStrErrorMessage += omStrDefFileName;
                 /*AfxMessageBox(omStrErrorMessage ,
                                   MB_ICONERROR| MB_SYSTEMMODAL|MB_OK,nZERO);*/
                 omErrorArray.Add(omStrErrorMessage);
@@ -1983,7 +1984,7 @@ BOOL CExecuteFunc::bInitDLLStruct(CStringArray& omErrorArray)
                     if(pomException != nullptr )
                     {
                         char acErrorMsg[defSIZE_OF_ERROR_BUFFER];
-                        CString omStrErrorMessage =_T("");
+                        CString omStrErrorMessage ="";
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
                                                       sizeof(acErrorMsg));
@@ -2031,7 +2032,7 @@ BOOL CExecuteFunc::bInitBusEventStruct(CStringArray& omErrorArray)
                     unBusEventCount++    )
             {
                 eBUSEVEHANDLER eBusEventCode  = BUS_CONNECT ;
-                CString omStrBusEvHandlerName = _T("");
+                CString omStrBusEvHandlerName = "";
                 omStrBusEvHandlerName = m_omStrArrayBusEventHandler.GetAt(unBusEventCount);
                 TRY
                 {
@@ -2043,15 +2044,15 @@ BOOL CExecuteFunc::bInitBusEventStruct(CStringArray& omErrorArray)
                     {
                         bReturn = FALSE;
                     }
-                    if(omStrBusEvHandlerName.Find(_T("Pre_Connect")) != -1)
+                    if(omStrBusEvHandlerName.Find(_("Pre_Connect")) != -1)
                     {
                         eBusEventCode = BUS_PRE_CONNECT ;
                     }
-                    else if(omStrBusEvHandlerName.Find(_T("Connect")) != -1)
+                    else if(omStrBusEvHandlerName.Find(_("Connect")) != -1)
                     {
                         eBusEventCode = BUS_CONNECT ;
                     }
-                    else if(omStrBusEvHandlerName.Find(_T("Disconnect")) != -1)
+                    else if(omStrBusEvHandlerName.Find(_("Disconnect")) != -1)
                     {
                         eBusEventCode = BUS_DISCONNECT ;
                     }
@@ -2063,7 +2064,7 @@ BOOL CExecuteFunc::bInitBusEventStruct(CStringArray& omErrorArray)
                     if(pomException != nullptr )
                     {
                         TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
-                        CString omStrErrorMessage =_T("");
+                        CString omStrErrorMessage ="";
                         // Get the exception error message
                         pomException->GetErrorMessage(acErrorMsg,
                                                       sizeof(acErrorMsg));
@@ -2600,10 +2601,10 @@ BOOL CExecuteFunc::bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount,
 
 BOOL CExecuteFunc::bInitMsgListHandleStruct(UINT  unMsgListCount, CStringArray& omErrorArray)
 {
-    CString omStrFuncName     = _T("");
-    CString omStrMsgIDFrom    = _T("");
-    CString omStrMsgIDTo      = _T("");
-    CString omStrTemp         = _T("");
+    CString omStrFuncName     = "";
+    CString omStrMsgIDFrom    = "";
+    CString omStrMsgIDTo      = "";
+    CString omStrTemp         = "";
     UINT    unMsgIDFrom       = 0;
     UINT    unMsgIDTo         = 0;
     BOOL    bReturn           = TRUE;
@@ -2655,7 +2656,7 @@ BOOL CExecuteFunc::bInitMsgListHandleStruct(UINT  unMsgListCount, CStringArray& 
                 if(pomException != nullptr )
                 {
                     TCHAR acErrorMsg[defSIZE_OF_ERROR_BUFFER];
-                    CString omStrErrorMessage =_T("");
+                    CString omStrErrorMessage ="";
                     // Get the exception error message
                     pomException->GetErrorMessage(acErrorMsg,
                                                   sizeof(acErrorMsg));

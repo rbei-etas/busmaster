@@ -817,7 +817,7 @@ void CTreeViewEx::OnTvnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
 {
     LPNMTVDISPINFO pTVDispInfo = reinterpret_cast<LPNMTVDISPINFO>(pNMHDR);
     LPTSTR pszText = pTVDispInfo->item.pszText;
-    *pResult = ( pszText && (*pszText != _T('\0')));
+    *pResult = ( pszText && (*pszText != '\0'));
     CString omstrItemNewName(pszText);
     if(GetTreeCtrl().GetItemData(pTVDispInfo->item.hItem) == def_ID_TESTSUITE)  //Just Confirm
     {

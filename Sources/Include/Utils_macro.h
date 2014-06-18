@@ -24,16 +24,16 @@
 
 #pragma once
 
-#define FORMAT_STR_ID_HEX       _T("0x%03X")
-#define FORMAT_STR_ID_DEC       _T("%04d")
-#define FORMAT_STR_DATA_HEX     _T("%02X ")
-#define FORMAT_STR_DATA_DEC     _T("%03d")
-#define FORMAT_STR_CHECKSUM_HEX     _T("0x%02X ")
-#define FORMAT_STR_CHECKSUM_DEC     _T("%03d")
-#define FORMAT_PGN_ID_HEX       _T("0x%06X")
-#define FORMAT_PGN_ID_DEC       _T("%06d")
+#define FORMAT_STR_ID_HEX       "0x%03X"
+#define FORMAT_STR_ID_DEC       "%04d"
+#define FORMAT_STR_DATA_HEX     "%02X "
+#define FORMAT_STR_DATA_DEC     "%03d"
+#define FORMAT_STR_CHECKSUM_HEX "0x%02X "
+#define FORMAT_STR_CHECKSUM_DEC "%03d"
+#define FORMAT_PGN_ID_HEX       "0x%06X"
+#define FORMAT_PGN_ID_DEC       "%06d"
 
-#define FORMAT_FLX_CONTROLLER_STATE       _T("FLEXRAY POC State: %s")
+#define FORMAT_FLX_CONTROLLER_STATE       _("FLEXRAY POC State: %s")
 #define BIT_TM_ABS              0x01
 #define BIT_TM_REL              0x02
 #define BIT_TM_SYS              0x04

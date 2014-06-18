@@ -26,6 +26,7 @@
 #include "CAN_IXXAT_VCI.h"
 #include "vcinpl.h"
 #include "CANControllerConfigDlg.h"
+#include "Utility/MultiLanguageSupport.h"
 
 
 IMPLEMENT_DYNAMIC(CCANControllerConfigDlg, CDialog)
@@ -145,59 +146,59 @@ void CCANControllerConfigDlg::OnBnClickedButtonCancel()
  */
 void CCANControllerConfigDlg::FillBaudStruct()
 {
-    m_asBaudList[0].strName = _T("10");
+    m_asBaudList[0].strName = "10";
     m_asBaudList[0].dwBaud = 10;
     m_asBaudList[0].dwBTR0 = CAN_BT0_10KB;
     m_asBaudList[0].dwBTR1 = CAN_BT1_10KB;
 
-    m_asBaudList[1].strName = _T("20");
+    m_asBaudList[1].strName = "20";
     m_asBaudList[1].dwBaud = 20;
     m_asBaudList[1].dwBTR0 = CAN_BT0_20KB;
     m_asBaudList[1].dwBTR1 = CAN_BT1_20KB;
 
-    m_asBaudList[2].strName = _T("50");
+    m_asBaudList[2].strName = "50";
     m_asBaudList[2].dwBaud = 50;
     m_asBaudList[2].dwBTR0 = CAN_BT0_50KB;
     m_asBaudList[2].dwBTR1 = CAN_BT1_50KB;
 
-    m_asBaudList[3].strName = _T("100");
+    m_asBaudList[3].strName = "100";
     m_asBaudList[3].dwBaud = 100;
     m_asBaudList[3].dwBTR0 = CAN_BT0_100KB;
     m_asBaudList[3].dwBTR1 = CAN_BT1_100KB;
 
-    m_asBaudList[4].strName = _T("125");
+    m_asBaudList[4].strName = "125";
     m_asBaudList[4].dwBaud = 125;
     m_asBaudList[4].dwBTR0 = CAN_BT0_125KB;
     m_asBaudList[4].dwBTR1 = CAN_BT1_125KB;
 
-    m_asBaudList[5].strName = _T("250");
+    m_asBaudList[5].strName = "250";
     m_asBaudList[5].dwBaud = 250;
     m_asBaudList[5].dwBTR0 = CAN_BT0_250KB;
     m_asBaudList[5].dwBTR1 = CAN_BT1_250KB;
 
-    m_asBaudList[6].strName = _T("500");
+    m_asBaudList[6].strName = "500";
     m_asBaudList[6].dwBaud = 500;
     m_asBaudList[6].dwBTR0 = CAN_BT0_500KB;
     m_asBaudList[6].dwBTR1 = CAN_BT1_500KB;
 
-    m_asBaudList[7].strName = _T("800");
+    m_asBaudList[7].strName = "800";
     m_asBaudList[7].dwBaud = 800;
     m_asBaudList[7].dwBTR0 = CAN_BT0_800KB;
     m_asBaudList[7].dwBTR1 = CAN_BT1_800KB;
 
-    m_asBaudList[8].strName = _T("1000");
+    m_asBaudList[8].strName = "1000";
     m_asBaudList[8].dwBaud = 1000;
     m_asBaudList[8].dwBTR0 = CAN_BT0_1000KB;
     m_asBaudList[8].dwBTR1 = CAN_BT1_1000KB;
 
     // the class members m_dwBTR0 and m_dwBTR1
     // was set in the constructor
-    m_asBaudList[9].strName = _T("User defined");
+    m_asBaudList[9].strName = _("User defined");
     m_asBaudList[9].dwBaud = 0;
     m_asBaudList[9].dwBTR0 = m_dwBTR0;
     m_asBaudList[9].dwBTR1 = m_dwBTR1;
 
-    m_strSelectedBaudName = _T("User defined");
+    m_strSelectedBaudName = _("User defined");
 }
 
 /**
@@ -232,10 +233,10 @@ void CCANControllerConfigDlg::UpdateBTRFields(int iIndex)
         CString strTemp;
         // the data should used from the internal list
         // because the user has selected it by the combo box
-        strTemp.Format(_T("%.2X"), m_asBaudList[iIndex].dwBTR0);
+        strTemp.Format("%.2X", m_asBaudList[iIndex].dwBTR0);
         m_editBTR0.SetWindowText(strTemp);
 
-        strTemp.Format(_T("%.2X"), m_asBaudList[iIndex].dwBTR1);
+        strTemp.Format("%.2X", m_asBaudList[iIndex].dwBTR1);
         m_editBTR1.SetWindowText(strTemp);
 
         m_strSelectedBaudName = m_asBaudList[iIndex].strName;

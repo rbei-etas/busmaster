@@ -898,14 +898,14 @@ HRESULT CDIL_CAN_MHS::CAN_StartHardware(void)
         else
         {
             hResult = S_FALSE;
-            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("could not start the controller in running mode")));
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not start the controller in running mode"));
         }
         sg_bCurrState = STATE_CONNECTED;
     }
     else
     {
         //log the error for open port failure
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("error opening \"Tiny-CAN\" interface")));
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("error opening \"Tiny-CAN\" interface"));
         hResult = ERR_LOAD_HW_INTERFACE;
     }
     return(hResult);
@@ -991,7 +991,7 @@ HRESULT CDIL_CAN_MHS::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sMessage)
             else
             {
                 hResult = S_FALSE;
-                sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T(_("could not write can data into bus")));
+                sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not write can data into bus"));
             }
         }
         else

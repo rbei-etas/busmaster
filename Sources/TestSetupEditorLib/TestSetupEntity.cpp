@@ -1111,13 +1111,13 @@ INT CTestSetupEntity::nLoadTestCases(MSXML2::IXMLDOMNodePtr& pTSDOM)
     }
     if(lDefaultChannelUsed == 1)
     {
-        AfxMessageBox(_T("1 entity without channel-information loaded.\nCAN-Channel 1 selected."), MB_OK | MB_ICONINFORMATION );
+        AfxMessageBox(_("1 entity without channel-information loaded.\nCAN-Channel 1 selected."), MB_OK | MB_ICONINFORMATION );
     }
     else if(lDefaultChannelUsed > 1)
     {
         CString str;
         str.Format("%d", lDefaultChannelUsed);
-        AfxMessageBox(str + _T(" entities without channel-information loaded.\nCAN-Channel 1 selected in each case."), MB_OK | MB_ICONINFORMATION );
+        AfxMessageBox(str + _(" entities without channel-information loaded.\nCAN-Channel 1 selected in each case."), MB_OK | MB_ICONINFORMATION );
     }
     return S_OK;
 

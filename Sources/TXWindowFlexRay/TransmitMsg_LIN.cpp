@@ -44,8 +44,8 @@ const BYTE COLUMN_DATABYTE  = 0x40;
 #define BITLENGTH 16
 
 #define TARGET_RESOLUTION 1         // 1-millisecond target resolution
-#define defSTR_FORMAT_DISPLAY_DEC    _T("%-60s   [%16I64d]")
-#define defSTR_FORMAT_DISPLAY_HEX    _T("%-60s   [%16I64X]")
+#define defSTR_FORMAT_DISPLAY_DEC    _("%-60s   [%16I64d]")
+#define defSTR_FORMAT_DISPLAY_HEX    _("%-60s   [%16I64X]")
 #define def_MAXIMUM_TIMER_VAL       60000
 #define def_MINIMUM_TIMER_VAL       1
 HWND CTransmitMsgLIN::m_hTransmitWnd = nullptr;
@@ -404,12 +404,10 @@ void CTransmitMsgLIN::vGetStringFromValue(int nValue, std::string& strValue, boo
 
 void CTransmitMsgLIN::OnInitialUpdate()
 {
-    CHAR caColumnName[defMESSAGE_BLOCK_COLUMN][defSTRING_SIZE] =
-    {
-        defMESSAGE_BLOCK_NAME,
-        defMESSAGE_BLOCK_TRIGGER,
-        defMESSAGE_BLOCK_TRIG_VAL
-    };
+    char caColumnName[defMESSAGE_BLOCK_COLUMN][defSTRING_SIZE];
+    strncpy(caColumnName[0], defMESSAGE_BLOCK_NAME, defSTRING_SIZE);
+    strncpy(caColumnName[1], defMESSAGE_BLOCK_TRIGGER, defSTRING_SIZE);
+    strncpy(caColumnName[2], defMESSAGE_BLOCK_TRIG_VAL, defSTRING_SIZE);
 
     CFormView::OnInitialUpdate();
 
@@ -473,8 +471,8 @@ void CTransmitMsgLIN::OnInitialUpdate()
 
     TCHAR* acColData[]=
     {
-        _T("Message Name"), _T("Frame Id"), _T("Channel"), _T("Data Length"), _T("Message Type"),
-        _T("Repetition"), _T("Key"), _T("Data Bytes")
+        _("Message Name"), _("Frame Id"), _("Channel"), _("Data Length"), _("Message Type"),
+        _("Repetition"), _("Key"), _("Data Bytes")
     };
 
     LVCOLUMN lvcolumn;
@@ -644,12 +642,12 @@ void CTransmitMsgLIN::OnInitialUpdate()
 *******************************************************************************/
 void CTransmitMsgLIN::vInitSignalListCtrl()
 {
-    CHAR caColumnName[][defSIGNAL_LIST_STRING_MAX_LENGTH]
-        = { defSTR_COL_SIGNAL_NAME,
-            defSTR_RAW_COLUMN,
-            defSTR_PHYSICAL_COLUMN,
-            defSTR_SIGNAL_UNIT
-          };
+    char caColumnName[4][defSIGNAL_LIST_STRING_MAX_LENGTH];
+    strncpy(caColumnName[0], defSTR_COL_SIGNAL_NAME, defSIGNAL_LIST_STRING_MAX_LENGTH);
+    strncpy(caColumnName[1], defSTR_RAW_COLUMN, defSIGNAL_LIST_STRING_MAX_LENGTH);
+    strncpy(caColumnName[2], defSTR_PHYSICAL_COLUMN, defSIGNAL_LIST_STRING_MAX_LENGTH);
+    strncpy(caColumnName[3], defSTR_SIGNAL_UNIT, defSIGNAL_LIST_STRING_MAX_LENGTH);
+
     INT nColumnFormat[]     = { LVCFMT_LEFT,
                                 LVCFMT_CENTER,
                                 LVCFMT_CENTER,

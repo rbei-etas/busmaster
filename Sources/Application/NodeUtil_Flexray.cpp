@@ -21,6 +21,7 @@ extern MSXML2::IXMLDOMDocument2Ptr gpXMLDom;
 
 MSXML2::IXMLDOMDocument2Ptr gpXMLDom;
 HRESULT hr;
+
 CNodeUtil::CNodeUtil()
 {
 }
@@ -28,7 +29,6 @@ CNodeUtil::CNodeUtil()
 CNodeUtil::~CNodeUtil()
 {
 }
-
 
 bool CNodeUtil::bReadAttribute(MSXML2::IXMLDOMNode* iNode,
                                std::string& omAttribute, _bstr_t temp)
@@ -56,7 +56,7 @@ bool CNodeUtil::bRemoveTag(const std::string omSrcString, std::string& omDestStr
     bool bResult = TRUE;
     omDestString = "";
     int nLen = omSrcString.length();
-    int nPos = omSrcString.find(_T(':'));
+    int nPos = omSrcString.find(':');
     if (nPos < 0)
     {
         omDestString = omSrcString;
@@ -64,8 +64,6 @@ bool CNodeUtil::bRemoveTag(const std::string omSrcString, std::string& omDestStr
     }
     else
     {
-        // omDestString = omSrcString.Right(nLen - nPos - 1);
-
         omDestString = omSrcString.substr(nPos + 1, nLen - nPos - 1);
     }
     return bResult;

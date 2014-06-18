@@ -21,15 +21,15 @@
 
 #pragma once
 
-#define STRUCT_FILE                    _T("CANIncludes.h")
-#define MSG_STRUCT_NAME                _T("STCAN_MSG");
-#define MSG_STRUCT_NAME_LIN            _T("STLIN_MSG");
-#define WRAPPER_NAME                   _T("Wrapper.o");
-#define STRUCT_FILE_J1939              _T("J1939Includes.h")
-#define STRUCT_FILE_LIN                _T("LINIncludes.h")
-#define MSG_STRUCT_NAME_J1939          _T("STJ1939_MSG");
-#define WRAPPER_NAME_J1939             _T("Wrapper_J1939.o");
-#define WRAPPER_NAME_LIN             _T("Wrapper_LIN.o");
+#define STRUCT_FILE                    "CANIncludes.h"
+#define MSG_STRUCT_NAME                "STCAN_MSG";
+#define MSG_STRUCT_NAME_LIN            "STLIN_MSG";
+#define WRAPPER_NAME                   "Wrapper.o";
+#define STRUCT_FILE_J1939              "J1939Includes.h"
+#define STRUCT_FILE_LIN                "LINIncludes.h"
+#define MSG_STRUCT_NAME_J1939          "STJ1939_MSG";
+#define WRAPPER_NAME_J1939             "Wrapper_J1939.o";
+#define WRAPPER_NAME_LIN               "Wrapper_LIN.o";
 #define TOTAL_API_COUNT                18
 #define TOTAL_API_COUNT_LIN            11
 #define TOTAL_ERROR_COUNT              5

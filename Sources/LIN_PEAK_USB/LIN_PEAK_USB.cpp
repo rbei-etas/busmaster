@@ -67,7 +67,7 @@ typedef BOOL (*DILCALLBACK)(BYTE Argument, PSCONTROLLER_DETAILS pDatStream, int 
 #include "LIN_PEAK_USB_Extern.h"
 
 #define MAX_BUFF_ALLOWED 16
-#define MONITOR_NODE_NAME _T("LIN_MONITOR") // Kss to check
+#define MONITOR_NODE_NAME _("LIN_MONITOR") // Kss to check
 #define MAX_LINHW 8
 #define MAX_HLINNET 16
 
@@ -827,7 +827,7 @@ static INT nCreateNetwork(HLINHW hHw, INT nChannelIndex)
     // Create network if the net handle is 0
     if( nReturn != defERR_OK )
     {
-        sg_pIlog->vLogAMessage(__FILE__, __LINE__, _T("Failed to register net"));
+        sg_pIlog->vLogAMessage(__FILE__, __LINE__, _("Failed to register net"));
         // Break the loop
     }
     // Assign information to the channel
@@ -946,13 +946,13 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
         if ( nReturn == errOK )
         {
             // Update the handle in the array
-            TCHAR acTempStr[256] = {_T('\0')};
+            TCHAR acTempStr[256] = {'\0'};
             char cDeviceName[LIN_MAX_NAME_LENGTH] = "";
             TLINVersion sFirmwareVer;
             // Get firmware version. String is in xx.yy format where xx = major version and yy = minor version
             (*pfLIN_GetHwParam)( ucHwID, hwpFirmwareVersion, &sFirmwareVer,
                                  sizeof(TLINVersion) );
-            _stprintf(acTempStr,_T("%d.%d"), sFirmwareVer.Major, sFirmwareVer.Minor);
+            _stprintf(acTempStr, "%d.%d", sFirmwareVer.Major, sFirmwareVer.Minor);
 
             //Update global INTERFACE_HW structure
             sg_IntrHw[sg_ucNoOfHardware].m_dwIdInterface = ucHwID;
@@ -968,7 +968,7 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
             (*pfLIN_GetHwParam)( ucHwID, hwpDeviceNumber, &nDeviceID, sizeof(nDeviceID) );
             char chTemp[256];
 
-            sprintf_s(chTemp,sizeof(chTemp), _T("PLIN-USB Device ID - %Xh"), nDeviceID);
+            sprintf_s(chTemp,sizeof(chTemp), _("PLIN-USB Device ID - %Xh"), nDeviceID);
             sg_IntrHw[sg_ucNoOfHardware].m_acDescription = chTemp;
 
             sg_hHardware [ sg_ucNoOfHardware++ ] = ucHwID;
@@ -1397,12 +1397,12 @@ HRESULT CDIL_LIN_PeakUSB::LIN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterfa
         }
         else
         {
-            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Error connecting to driver"));
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("Error connecting to driver"));
         }
     }
     //else
     //{
-    //    sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Error in getting driver status"));
+    //    sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("Error in getting driver status"));
     //}
     return hResult;
 }
@@ -1511,7 +1511,7 @@ HRESULT CDIL_LIN_PeakUSB::LIN_SelectHwInterface(const INTERFACE_HW_LIST& asSelHw
     }
     /* else
      {
-         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Driver is not running..."));
+         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("Driver is not running..."));
      }*/
     return hResult;
 }
@@ -1575,7 +1575,7 @@ HRESULT CDIL_LIN_PeakUSB::StartHardware(void)
     }
     else
     {
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("Could not start the read thread") );
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("Could not start the read thread") );
     }
     //If everything is ok connect to the network
     if (hResult == S_OK)
@@ -1929,16 +1929,16 @@ HRESULT CDIL_LIN_PeakUSB::LIN_LoadDriverLibrary(void)
 
     if (sg_hLinUsbLib != NULL)
     {
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("PLinApi.dll already loaded"));
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("PLinApi.dll already loaded"));
         hResult = DLL_ALREADY_LOADED;
     }
 
     if (S_OK == hResult)
     {
-        sg_hLinUsbLib = LoadLibrary(_T("PLinApi.dll"));
+        sg_hLinUsbLib = LoadLibrary(_("PLinApi.dll"));
         if (sg_hLinUsbLib == NULL)
         {
-            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _T("PLinApi.dll loading failed"));
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("PLinApi.dll loading failed"));
             hResult = S_FALSE;
         }
         else
@@ -1949,7 +1949,7 @@ HRESULT CDIL_LIN_PeakUSB::LIN_LoadDriverLibrary(void)
                 // Log list of the function pointers non-retrievable
                 // TO DO: specific information on failure in getting function pointer
                 sg_pIlog->vLogAMessage(A2T(__FILE__),
-                                       __LINE__, _T("Getting Process address of the APIs failed"));
+                                       __LINE__, _("Getting Process address of the APIs failed"));
                 hResult = S_FALSE;
             }
         }

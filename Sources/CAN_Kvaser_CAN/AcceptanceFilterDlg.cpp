@@ -28,6 +28,7 @@
 #include "Utility/RadixEdit.h"
 // Contains structures that are common across the following
 // SW modules - Dongle Driver, DIL & Application
+#include "Utility/MultiLanguageSupport.h"
 
 // Definition of CAcceptanceFilterDlg class.
 #include "include/struct_can.h"

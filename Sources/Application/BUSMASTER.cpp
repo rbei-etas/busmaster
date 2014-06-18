@@ -215,7 +215,7 @@ BOOL CCANMonitorApp::InitInstance()
     }
     //CoInitializeEx(nullptr, COINIT_MULTITHREADED );
 
-    CBusmasterDump dump(_("BUSMASTER"));
+    CBusmasterDump dump("BUSMASTER");
     // END CHANGES MADE FOR AUTOMATION
     // Enable OLE/ActiveX objects support
     AfxEnableControlContainer();
@@ -322,7 +322,7 @@ BOOL CCANMonitorApp::InitInstance()
     {
         if(m_bFromAutomation==FALSE)
             MessageBox(nullptr,_(MSG_MEMORY_CONSTRAINT),
-                       _("BUSMASTER"), MB_OK|MB_ICONINFORMATION);
+                       "BUSMASTER", MB_OK|MB_ICONINFORMATION);
 
         ::PostQuitMessage(0);
     }
@@ -768,7 +768,7 @@ void CCANMonitorApp::OnFileOpen()
         else
         {
             MessageBox(nullptr,_("Specified filename not found!"),
-                       _("BUSMASTER"),MB_OK|MB_ICONINFORMATION);
+                       "BUSMASTER",MB_OK|MB_ICONINFORMATION);
         }
     }
 }
@@ -893,7 +893,7 @@ Corrupt configuration file found");
     if(m_bFromAutomation==FALSE)
     {
         bWriteIntoTraceWnd(m_omConfigErr.GetBuffer(MAX_PATH));
-        //MessageBox(nullptr, m_omConfigErr, _T("BUSMASTER"), unMsgboxType);
+        //MessageBox(nullptr, m_omConfigErr, _("BUSMASTER"), unMsgboxType);
     }
 }
 
@@ -952,7 +952,7 @@ void CCANMonitorApp::OnFileNew()
 
         while (bStop == FALSE)
         {
-            omStrCFileName.Format("%s%d%s","NewEd", ++unCount, _T(".c"));
+            omStrCFileName.Format("%s%d%s", "NewEd", ++unCount, ".c");
 
             // Search for the file name and if it is not present, set
             // the flag to TRUE to break the loop.
@@ -1207,7 +1207,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
 
                             if(bFromCom==FALSE)
                             {
-                                MessageBox(nullptr,omStrMsg,_("BUSMASTER"),MB_OK|MB_ICONERROR);
+                                MessageBox(nullptr,omStrMsg,"BUSMASTER",MB_OK|MB_ICONERROR);
                             }
 
                             // Remove the file name from configuration file.
@@ -1244,7 +1244,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
 
                     for (UINT i = 0; i < nCount; i++)
                     {
-                        char acName[MAX_PATH] = {_T('\0')};
+                        char acName[MAX_PATH] = { '\0' };
                         CString omDBName = aomNewDatabases.GetAt(i);
                         strcpy_s(acName, MAX_PATH, omDBName.GetBuffer(MAX_PATH));
                         COPY_DATA(pbyTemp, acName, sizeof(char) * MAX_PATH);
@@ -1268,7 +1268,7 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
                 // Display a message and quit the application
                 MessageBox(nullptr,
                            _(MSG_MEMORY_CONSTRAINT),
-                           _("BUSMASTER"),
+                           "BUSMASTER",
                            MB_OK|MB_ICONINFORMATION);
 
             bReturn = FALSE;

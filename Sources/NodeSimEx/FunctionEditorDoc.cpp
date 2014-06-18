@@ -419,7 +419,7 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
                         {
                             ReadString((LPSTR)pbyFileData, (COMMANUINT)FileLength, acFileLine, nIndex);
                             //omTextLine = A2T(acFileLine);
-                            omTextLine.Format(_T("%s"),acFileLine);
+                            omTextLine.Format("%s", acFileLine);
                             nLineLength = omTextLine.GetLength();
                             if(nLineLength > m_nMaxLineLength)
                             {
@@ -437,11 +437,11 @@ void CFunctionEditorDoc::Serialize(CArchive& ar)
                             else
                             {
                                 // Eliminate ";" OR initialisation from the string
-                                int nIndex = omTextLine.Find( _T("=") );
+                                int nIndex = omTextLine.Find("=");
 
                                 if ( nIndex == -1 )
                                 {
-                                    nIndex = omTextLine.Find( _T(";") );
+                                    nIndex = omTextLine.Find(";");
                                 }
 
                                 omTextLine = omTextLine.Left( nIndex );
@@ -985,25 +985,25 @@ void CFunctionEditorDoc::vUpdateDEFFile(CString omStrFileName)
                     o_DEF_File.WriteString(NEW_LINE);
                 }
                 //GetProgramVersion is exported to check the validity
-                CString omProgVer = _T(defNAME_FUNC_GET_PRG_VER);
+                CString omProgVer = _(defNAME_FUNC_GET_PRG_VER);
                 o_DEF_File.WriteString(omProgVer);
                 o_DEF_File.WriteString(NEW_LINE);
 
                 if (CAN == m_sBusSpecInfo.m_eBus)
                 {
-                    omProgVer = _T(NAME_FUNC_KEYPRESSED);
+                    omProgVer = _(NAME_FUNC_KEYPRESSED);
                     o_DEF_File.WriteString(omProgVer);
                     o_DEF_File.WriteString(NEW_LINE);
 
-                    CString omGetMessName = _T(NAME_FUNC_GETMESSAGENAME);
+                    CString omGetMessName = _(NAME_FUNC_GETMESSAGENAME);
                     o_DEF_File.WriteString(omGetMessName);
                     o_DEF_File.WriteString(NEW_LINE);
 
-                    CString omTimeNow = _T(NAME_FUNC_TIMENOW);
+                    CString omTimeNow = _(NAME_FUNC_TIMENOW);
                     o_DEF_File.WriteString(omTimeNow);
                     o_DEF_File.WriteString(NEW_LINE);
 
-                    CString omGetFirstCANdbName = _T(NAME_FUNC_GETFIRSTCANDBNAME);
+                    CString omGetFirstCANdbName = _(NAME_FUNC_GETFIRSTCANDBNAME);
                     o_DEF_File.WriteString(omGetFirstCANdbName);
                     o_DEF_File.WriteString(NEW_LINE);
                 }
@@ -1683,12 +1683,12 @@ BOOL CFunctionEditorDoc::bAddFunctionPrototype(CString omStrFuntion, BOOL bGCCEx
         SBUS_SPECIFIC_INFO sBusSpecInfo;
         bGetBusSpecificInfo(sBusSpecInfo);
         CString omTemp = BUS_FN_PROTOTYPE_FOOTER;
-        omTemp.Replace(_T("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
+        omTemp.Replace(_("PLACE_HODLER_FOR_BUSNAME"), sBusSpecInfo.m_omBusName);
         POSITION pos = m_omSourceCodeTextList.Find( omTemp );
 
         if ( pos != nullptr )
         {
-            CString omStrReplace = _T("");
+            CString omStrReplace = "";
             omStrReplace  = omStrFuntion;
             omStrReplace += SEMI_COLON;
             m_omSourceCodeTextList.InsertBefore(pos,omStrReplace );

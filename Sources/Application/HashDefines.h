@@ -1018,7 +1018,7 @@ and then restart the application."
 #define defSTR_FORMAT_DISPLAY_DEC    "%-60s   [%16I64d]"
 #define defSTR_FORMAT_DISPLAY_HEX    "%-60s   [%16I64X]"
 #define defSTR_FORMAT_OL_INTRP   "         %-20s %-20s"
-//#define defSTR_SIGNAL_WATCH_FMT  _T(" %-2s %-16s-> %-14s %-10s[%s]")
+//#define defSTR_SIGNAL_WATCH_FMT  _(" %-2s %-16s-> %-14s %-10s[%s]")
 #define defSTR_FORMAT_PHY_VALUE  "%.3f"
 #define defSTR_FORMAT_PHY_VALUE_WITH_UNIT  "%16s %s"
 // To have a left justified format string for interpretation to utilist visible area
@@ -1028,14 +1028,14 @@ and then restart the application."
 #define defSTR_DEFAULT_DBNAME    "None"
 #define defCOLOR_WHITE           RGB(255,255,255)
 #define defSTR_MSG_SIG_SEPERATER " -> "
-//#define defSTR_FORMAT_SW_LIST    _T("%s%s%s")
+//#define defSTR_FORMAT_SW_LIST    _("%s%s%s")
 
-//#define defSTR_SW_DELETE_ERROR   _T("Error while deleting temporary list!!!")
-//#define defSTR_SW_DELETE_SIG_ERROR  _T("Error while deleting Signal %s from Message %s !!!")
-//#define defSTR_SW_DELETE_SIG_MSGID_ERROR _T("Error while deleting Signal %s from Message ID: %x !!!")
-//#define defSTR_SW_PARSE_ERROR    _T("Parse Error in %s ")
-//#define defSTR_SW_SIGNAL_DETAIL_ERROR   _T("Signal Not Found in the Database!!\nPlease remove the Signal")
-//#define defSTR_SW_SIGNAL_GENERIC_ERROR  _T("Error showing Signal Details!!")
+//#define defSTR_SW_DELETE_ERROR   _("Error while deleting temporary list!!!")
+//#define defSTR_SW_DELETE_SIG_ERROR  _("Error while deleting Signal %s from Message %s !!!")
+//#define defSTR_SW_DELETE_SIG_MSGID_ERROR _("Error while deleting Signal %s from Message ID: %x !!!")
+//#define defSTR_SW_PARSE_ERROR    _("Parse Error in %s ")
+//#define defSTR_SW_SIGNAL_DETAIL_ERROR   _("Signal Not Found in the Database!!\nPlease remove the Signal")
+//#define defSTR_SW_SIGNAL_GENERIC_ERROR  _("Error showing Signal Details!!")
 
 #define defSTR_CLOSE_MENU_TEXT  "&Close"
 #define defSTR_SIGNAL_NAME      "Name"
@@ -1138,8 +1138,8 @@ const int LENGTH_DATASTRING = 33;
 
 // These are all not required as it is already defined as defSTR_PHYSICAL_COLUMN
 // and defSTR_RAW_COLUMN
-//#define defSTR_SIGNAL_RAW_VALUE     _T("Raw Value")
-//#define defSTR_SIGNAL_PHY_VALUE     _T("Physical Value")
+//#define defSTR_SIGNAL_RAW_VALUE     _("Raw Value")
+//#define defSTR_SIGNAL_PHY_VALUE     _("Physical Value")
 #define defSTR_SIGNAL_UNIT          "Unit"
 #define def_SIG_NAME_COLUMN         0
 #define def_RAW_VALUE_COLUMN        1
@@ -1278,7 +1278,7 @@ transmission is ON.\nDo you want to ignore the changes ?"
 #define defDIV_FACT_FOR_SECOND              10000.0
 #define defMAX_PERCENTAGE_BUS_LOAD          100.00
 #define defMAX_PERCENTAGE_BUS_LOAD_ALLOWED  99.99
-#define defSTR_FORMAT_BUS_LOAD              _T("%-5.2f %%")
+#define defSTR_FORMAT_BUS_LOAD              _("%-5.2f %%")
 #define defBITS_KBUAD_RATE                  1000.0
 
 #define defBITS_ERR_FRAME_LIN               20
@@ -1289,7 +1289,7 @@ transmission is ON.\nDo you want to ignore the changes ?"
 #define defDIV_FACT_FOR_SECOND_LIN              10000.0
 #define defMAX_PERCENTAGE_BUS_LOAD_LIN          100.00
 #define defMAX_PERCENTAGE_BUS_LOAD_ALLOWED_LIN  99.99
-#define defSTR_FORMAT_BUS_LOAD_LIN              _T("%-5.2f %%")
+#define defSTR_FORMAT_BUS_LOAD_LIN              _("%-5.2f %%")
 #define defBITS_KBUAD_RATE_LIN                  1000.0
 
 
@@ -1303,8 +1303,8 @@ transmission is ON.\nDo you want to ignore the changes ?"
 #define defSTR_SIMULATE_MENU_TEXT           "Simulate"
 
 #define defSTR_PEAK_USB_DEVICE              "pcan_usb"
-//#define defSTR_PEAK_NPNP_DEVICE             _T("peakcan")
-//#define defSTR_PEAK_USB_DEVICE_NAME         _T("PEAK USB-CAN")
+//#define defSTR_PEAK_NPNP_DEVICE             _("peakcan")
+//#define defSTR_PEAK_USB_DEVICE_NAME         _("PEAK USB-CAN")
 // Maximum name length is 20
 #define defSTR_PEAK_USB_HW_NET_NAME                "BUSMASTER USB Net"
 #define defSTR_PEAK_USB_SIM_NET_NAME               "BUSMASTER Sim Net"
@@ -1433,8 +1433,8 @@ transmission is ON.\nDo you want to ignore the changes ?"
 #define defSELECTED_LINE_WIDTH          2
 
 // Color Picker
-//#define defSTR_DEFAULT_TEXT         _T("Automatic")
-//#define defSTR_CUSTOM_TEXT          _T("More Colours...")
+//#define defSTR_DEFAULT_TEXT         _("Automatic")
+//#define defSTR_CUSTOM_TEXT          _("More Colours...")
 
 // Color Popup
 //#define defCOLOR_BOX_SIZE           18
@@ -1473,8 +1473,8 @@ transmission is ON.\nDo you want to ignore the changes ?"
 #define defSTR_BAUD_RATE_FORMAT     "Channel %-2d -> %s kbps"
 
 #define defSTR_EXPORT_DIALOG_CAPTION    "Select Export Filename..."
-//#define defSTR_CSV_FORMAT_SPECIFIER _T("Comma Separated Values format (*.csv)|*.csv||")
-//#define defSTR_EXPORT_CREATE_SUCCESS _T("CSV report successfully generated and saved at %s")
+//#define defSTR_CSV_FORMAT_SPECIFIER _("Comma Separated Values format (*.csv)|*.csv||")
+//#define defSTR_EXPORT_CREATE_SUCCESS _("CSV report successfully generated and saved at %s")
 #define defSTR_CSV_FILE_PATH_EMPTY      "Please enter valid CSV report file path"
 
 #define defSTR_REPORT_DIALOG_CAPTION    "Select Report Filename..."

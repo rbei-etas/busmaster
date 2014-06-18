@@ -598,7 +598,7 @@ void CSimSysDetView::OnButtonOpenfile()
             // Display open dialog box with *.c filter
             // and select the C file by default
             CHAR szFilters[] = "All Supported Simulation Files (*.cpp;*.c)|*.cpp; *.c|cpp File(s) (*.cpp)|*.cpp|C File(s) (*.c)|*.c||";
-            //CHAR szFilters[] = _T("C Files (*.c)|*.c |C++ Files (*.cpp)|*.cpp||");
+            //CHAR szFilters[] = _("C Files (*.c)|*.c |C++ Files (*.cpp)|*.cpp||");
             CFileDialog fileDlg( TRUE,      // Open File dialog
                                  "cpp",        // Default Extension,
                                  nullptr,
@@ -819,82 +819,6 @@ void CSimSysDetView::OnButtonOpenfile()
         }
     }
 }
-//}
-//}
-/******************************************************************************/
-/*  Function Name    :  bCreateNewFile                                        */
-/*                                                                            */
-/*  Input(s)         :   CString omStrFileName                                */
-/*  Output           :  BOOL                                                  */
-/*  Functionality    :  Constructs the new document and updates the source
-                        list.
-/*  Member of        :  CFunctionEditorDoc
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  21.02.2006                                            */
-/*  Modifications    :  Anish kumar,31.08.06
-                        bug fixed,XXX_Unions.h was not included as header
-/******************************************************************************/
-//BOOL CSimSysDetView::bCreateNewFile( CString omStrFileName )
-//{
-//    BOOL bSuccess = FALSE;
-//    FILE * pCFile = _tfopen( omStrFileName, _T("at"));
-//    CString omStrCFileName = "";
-//    CString omStr = "";
-//    if( pCFile != nullptr )
-//    {
-//        bSuccess = TRUE;
-//
-//         TCHAR buffer[2500] = BUS_INCLUDE_HDR;
-//         wcscat(buffer ,_T("\n#include <Windows.h>"));
-//         if (CGlobalObj::m_omMsgStructFile.IsEmpty())
-//         {
-//             ASSERT(false);
-//         }
-//         CString omStr;
-//         omStr.Format(STR_INCLUDE_FILE, CGlobalObj::m_omMsgStructFile);
-//       wcscat(buffer ,omStr);
-//       // Get file path of unions.h from app class
-//       // and if valid insert into the header namespace
-//        //COMMENTED BY AK****************
-//      /*CStringArray aomstrDBFiles;
-//      theApp.m_pouMsgSignal->vGetDataBaseNames(&aomstrDBFiles);
-//      int nTotalCount = aomstrDBFiles.GetCount();
-//      for(int nCount = 0 ; nCount < nTotalCount ; nCount++)
-//      {
-//          CString omStrTemp = aomstrDBFiles.GetAt(nCount);
-//          omStr = CSimSysManager::ouGetSimSysManager().omStrGetUnionFilePath(omStrTemp);
-//          if ( !omStr.IsEmpty())
-//          {
-//              omStr.Insert( 0,"#include \"");
-//              omStr += "\"";
-//          }
-//          wcscat(buffer ,omStr);
-//          wcscat(buffer ,"\n");
-//      }*/
-//       wcscat(buffer ,_T("\n/* End FRAME include header */"));
-//         wcscat(buffer ,_T("\n\n\n"));
-//         wcscat(buffer ,BUS_VAR_HDR);
-//         wcscat(buffer ,_T("\n\n"));
-//         wcscat(buffer ,BUS_VAR_FOOTER);
-//         wcscat(buffer ,_T("\n\n\n"));
-//         wcscat(buffer ,BUS_FN_PROTOTYPE_HDR);
-//         wcscat(buffer ,_T("\n"));
-//         wcscat(buffer ,BUS_FN_PROTOTYPE_FOOTER);
-//         wcscat(buffer ,_T("\n\n"));
-//         int tcsLength = _tcslen(buffer);
-//
-//       int numwritten = fwrite( buffer, sizeof( TCHAR ), tcsLength, pCFile );
-//
-//       fclose(pCFile);
-//        pCFile = nullptr;
-//    }
-//    else
-//        AfxMessageBox(_T("Error in creating c file"));
-//
-//    return bSuccess;
-//}
 
 /******************************************************************************/
 /*  Function Name    :  bUpdateNodeInfoFile
@@ -1044,10 +968,10 @@ void CSimSysDetView::OnInitialUpdate()
     LF.lfHeight = 10;
     LF.lfWeight = FW_HEAVY;
     LF.lfPitchAndFamily = VARIABLE_PITCH | FF_SWISS;
-    _tcscpy(LF.lfFaceName, _("Ms Sans Serif"));
+    _tcscpy(LF.lfFaceName, "Ms Sans Serif");
     if (!om_tFont.CreateFontIndirect(&LF))
     {
-        TRACE(_("MMI: CMainFrame::OnCreate() Could not create font for Combo Box\n"));
+        TRACE("MMI: CMainFrame::OnCreate() Could not create font for Combo Box\n");
     }
 
     // Insert column header in the signal details list control

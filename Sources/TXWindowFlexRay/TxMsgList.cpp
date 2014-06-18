@@ -19,6 +19,7 @@
 #include "TxListComboBox.h"
 //#include "DisplayMatrix/DisplayMatrixDlg.h"
 //#include "Mainfrm.h"
+#include "Utility/MultiLanguageSupport.h"
 
 
 // ID for Combobox
@@ -76,7 +77,7 @@ CTxMsgList::CTxMsgList(void)
         pDoc = ((CMainFrame*)AfxGetMainWnd())->m_pDoc;
     }
 
-    _bstr_t bstrProjCfgName = _T("");
+    _bstr_t bstrProjCfgName = "";
     IProjectCfgHandlerPtr pProjCfgHandler = nullptr;
     pProjCfgHandler = pDoc->m_oProjCfgHandler->GetProjCfgHandler();
     ASSERT(pProjCfgHandler != nullptr);
@@ -527,14 +528,14 @@ BOOL CTxMsgList::EndEdit(BOOL bCommit)
     {
         if(m_ptEditting.y == SIXTH_COL)//Check only for Data Bytes column
         {
-            CString sDataBytes = _T("");
-            CString sDataLen   = _T("");
+            CString sDataBytes = "";
+            CString sDataLen   = "";
             int nDataLen = 0;
             sDataBytes = CFlickerFreeListCtrl::GetItemText(m_ptEditting.x,SEVENTH_COL);
             sscanf(omStrData,"%d",&nDataLen); // Decimal
             if(!bValidateDynamicLength(nDataLen))
             {
-                MessageBox(DYNAMIC_MSG_DATA_LENGTH,APPLICATION_NAME,MB_OK|MB_ICONWARNING);
+                MessageBox(DYNAMIC_MSG_DATA_LENGTH, APPLICATION_NAME,MB_OK|MB_ICONWARNING);
             }
             else
             {
@@ -558,11 +559,11 @@ BOOL CTxMsgList::EndEdit(BOOL bCommit)
             CString omMsgType = CFlickerFreeListCtrl::GetItemText(m_ptEditting.x,FIRST_COL);
             if(omMsgType.CompareNoCase("static")== 0 && nChangedDataLen != nOriginalDataLen)
             {
-                MessageBox(STATIC_MSG_DATA_LENGTH,APPLICATION_NAME,MB_OK|MB_ICONWARNING);
+                MessageBox(STATIC_MSG_DATA_LENGTH, APPLICATION_NAME, MB_OK|MB_ICONWARNING);
             }
             else if(omMsgType.CompareNoCase("dynamic")==0 && bValidateDynamicLength(nChangedDataLen) == FALSE)
             {
-                MessageBox(DYNAMIC_MSG_DATA_LENGTH,APPLICATION_NAME,MB_OK|MB_ICONWARNING);
+                MessageBox(DYNAMIC_MSG_DATA_LENGTH, APPLICATION_NAME, MB_OK|MB_ICONWARNING);
             }
             else
             {
@@ -1161,7 +1162,7 @@ CComboBox* CTxMsgList::ShowCombo(int nItem, int nSubItem, const CStringArray& om
     else
     {
         CString omStrErr;
-        omStrErr.Format(defFLC_CREATE_FAILED,defCOMBO_ITEM);
+        omStrErr.Format(defFLC_CREATE_FAILED, defCOMBO_ITEM);
         AfxMessageBox( omStrErr );
     }
     // The return the pointer just for reference
@@ -1428,7 +1429,7 @@ bool CTxMsgList::bIsChangeable(int nItem, int nColumnIndex)
 //************************************************************************************/
 void CTxMsgList::vDataFormat(CString& omDataBytes,int* nDataLength,bool bFlag)
 {
-    CString omResult = _T("");
+    CString omResult = "";
     int nTempIndex = 0;
     int nLength = 0;;
 

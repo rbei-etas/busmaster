@@ -628,7 +628,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                     {
                         UINT unVal = omMsgList.GetAt(pos);
                         m_omStrMsgID.Format("%x", unVal);
-                        omStrText = _T("\"")+ m_omStrMsgID + _T("\"");
+                        omStrText = "\"" + m_omStrMsgID + "\"";
                     }
                     m_omStrSelectedItemText += m_omStrMsgID;
                     omStrText = "\""+ m_omStrMsgID + "\"";
@@ -648,7 +648,7 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                     }
                     omStrText.TrimRight("_");
                     m_omStrSelectedItemText += omStrText;
-                    omStrText = _T("\"")+ omStrText + _T("\"");
+                    omStrText = "\"" + omStrText + "\"";
                     omStrHandlerType = _(defMSG_IDLIST_TEXT);
                 }
             }
@@ -728,12 +728,10 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                                 if (omMsgList.Find(unMsgId, 0) != nullptr)
                                 {
                                     omStrMsgPro = _(defMSG_DUPL_MSG_HANDLER);
-                                    omStrMsgPro.Replace( _T(_("TYPE")),
-                                                         omStrHandlerType );
-                                    omStrMsgPro.Replace( _T(_("MESSAGENAME")),
-                                                         omStrText );
+                                    omStrMsgPro.Replace(_("TYPE"), omStrHandlerType);
+                                    omStrMsgPro.Replace(_("MESSAGENAME"), omStrText);
 
-                                    omStrMsgPro += _T("In\"") + pMsgArray->GetAt( nCount ) +_T("\" Handler");
+                                    omStrMsgPro += _("In\"") + pMsgArray->GetAt( nCount ) +_("\" Handler");
                                     // Duplicate message hanlder, shout
                                     AfxMessageBox( omStrMsgPro,
                                                    MB_OK|MB_ICONINFORMATION );

@@ -228,7 +228,7 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
             // call for MessageBox is used.
             if (m_bAutoServerMode == FALSE)
             {
-                ::MessageBox(nullptr,acErrorMsg,_("BUSMASTER") ,MB_ICONERROR|MB_OK);
+                ::MessageBox(nullptr,acErrorMsg,"BUSMASTER" ,MB_ICONERROR|MB_OK);
             }
         }
         else
@@ -365,7 +365,7 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
             // union.h file  open error notification
             if (m_bAutoServerMode == FALSE)
             {
-                ::MessageBox(nullptr,acErrorMsg,_("BUSMASTER") ,MB_ICONERROR|MB_OK);
+                ::MessageBox(nullptr,acErrorMsg,"BUSMASTER" ,MB_ICONERROR|MB_OK);
             }
         }
         // Close opened file
