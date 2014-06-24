@@ -916,6 +916,9 @@ void CTSEditorChildFrame::vDisplaySendInfo(CBaseEntityTA* pEntity)
     omTempListCtrl.InsertItem(i+1, "");
     omTempListCtrl.SetItemText(i+1, def_COLUMN_VALUE, _("[Add Message]")); //Extra Line
     omTempListCtrl.vSetColumnInfo(i+1, def_COLUMN_VALUE, sListInfo);
+
+    sListInfo.m_eType = eNoControl;
+    omTempListCtrl.vSetColumnInfo(i+1, def_COLUMN_CHANNEL, sListInfo);  // solves issue #711, 2nd bullet point
 }
 
 /******************************************************************************
@@ -974,6 +977,9 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA* pEntity, int nVerify
     sListInfo.m_omEntries.Add(_("FATAL"));
     omTempListCtrl.vSetColumnInfo(def_VERIFY_ROWNUM_FAILURE, def_COLUMN_VALUE, sListInfo);
 
+    sListInfo.m_eType = eNoControl;
+    omTempListCtrl.vSetColumnInfo(def_VERIFY_ROWNUM_FAILURE, def_COLUMN_CHANNEL, sListInfo);  // solves issue #711, 2nd bullet point
+
     sListInfo.m_eType = eComboItem;
     sListInfo.m_omEntries.RemoveAll();
     m_ouTSEntity.m_ouDataBaseManager.nFillMessageList(sListInfo.m_omEntries, TRUE);
@@ -1001,6 +1007,9 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA* pEntity, int nVerify
     omTempListCtrl.InsertItem(i+nVerifyRowIndex, "");
     omTempListCtrl.SetItemText(i+nVerifyRowIndex, def_COLUMN_VALUE, _("[Add Message]"));
     omTempListCtrl.vSetColumnInfo(i+nVerifyRowIndex, def_COLUMN_VALUE, sListInfo);
+    
+    sListInfo.m_eType = eNoControl;
+    omTempListCtrl.vSetColumnInfo(i+nVerifyRowIndex, def_COLUMN_CHANNEL, sListInfo);  // solves issue #711, 2nd bullet point
 }
 /******************************************************************************
 Function Name  :  vDisplayVerifyResponseInfo

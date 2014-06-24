@@ -98,17 +98,20 @@ HRESULT VerifyCurrentMessage(STCANDATA& sCanData, CTSExecutionCAN* pTSXCan)
                 pTSXCan->m_ouMsgInterpret.vSetMessageList(sMsgEntry);
                 pTSXCan->m_ouMsgInterpret.bInterpretMsgs(ouMsgData.m_dwMessageID, pucData, ouSignalInfo);
                 CMessageResult ouMsgResult;
-                if( pTSXCan->bVerifyCanMessage(ouMsgData, ouSignalInfo, ouMsgResult) == TRUE)
+                if( ouMsgData.m_byChannelNumber == sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel )    // solves issue #711, 4th bullet point
                 {
-                    //pTSXCan->m_nVerifyCount++;
-
-                    if(pTSXCan->m_ouVerifyResult != nullptr && pTSXCan->m_bTimeOver == FALSE)
+                    if( pTSXCan->bVerifyCanMessage(ouMsgData, ouSignalInfo, ouMsgResult) == TRUE)
                     {
-                        //pTSXCan->TSX_DisplayMessage(ouMsgData.m_omMessageName);
-                        //pTSXCan->TSX_DisplayResult(CString("SUCCESS"));
-                        pTSXCan->m_ouVerifyResult->m_MessageResultList.AddTail(ouMsgResult);
+                        //pTSXCan->m_nVerifyCount++;
+
+                        if(pTSXCan->m_ouVerifyResult != nullptr && pTSXCan->m_bTimeOver == FALSE)
+                        {
+                            //pTSXCan->TSX_DisplayMessage(ouMsgData.m_omMessageName);
+                            //pTSXCan->TSX_DisplayResult(CString("SUCCESS"));
+                            pTSXCan->m_ouVerifyResult->m_MessageResultList.AddTail(ouMsgResult);
+                        }
+                        pTSXCan->m_MsgVerifiedList.AddTail((UINT&)ouMsgData.m_dwMessageID);
                     }
-                    pTSXCan->m_MsgVerifiedList.AddTail((UINT&)ouMsgData.m_dwMessageID);
                 }
             }
         }
@@ -450,7 +453,16 @@ HRESULT CTSExecutionCAN::TSX_VerifyMessage(CBaseEntityTA* pEntity, CResultVerify
         //Verify The Signals
         CMessageResult ouMsgResult;
         omResult = _("SUCCESS");
-        if( bVerifyCanMessage(ouVerifyData, ouSignalInfo, ouMsgResult) == FALSE)
+        if( ouVerifyData.m_byChannelNumber == sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel )    // solves issue #711, 4th bullet point
+        {
+            if( bVerifyCanMessage(ouVerifyData, ouSignalInfo, ouMsgResult) == FALSE)
+            {
+
+                omResult = _("FAIL");
+                hResult = S_FALSE;
+            }
+        }
+        else
         {
             omResult = _("FAIL");
             hResult = S_FALSE;
