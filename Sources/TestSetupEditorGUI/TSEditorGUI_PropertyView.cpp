@@ -31,8 +31,8 @@
 #define def_WINDOW_GAP              18          //Looks Good
 #define def_WINDOW_SEMIGAP          9
 #define def_WIDTH_COL_CATEGORY      0.2
-#define def_WIDTH_COL_VALUE         0.65
-#define def_WIDTH_COL_CHANNEL       0.1
+#define def_WIDTH_COL_VALUE         0.62    // new dimensions, to get a nicer look of channel-column
+#define def_WIDTH_COL_CHANNEL       0.13    // solves issue #711, 1st bullet point
 // CPropertyView
 
 IMPLEMENT_DYNCREATE(CPropertyView, CFormView)
