@@ -49,7 +49,6 @@ static char THIS_FILE[] = __FILE__;
 /******************************************************************************/
 CChangeRegisters_CAN_ICS_neoVI::CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent /*=nullptr*/, PSCONTROLLER_DETAILS psControllerDetails, UINT nHardwareCount)
     : CDialog(CChangeRegisters_CAN_ICS_neoVI::IDD, pParent)
-    //, m_nClock(32)
     , m_omStrPropDelay("")
     , m_omStrSJW("")
 {
@@ -57,17 +56,15 @@ CChangeRegisters_CAN_ICS_neoVI::CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent /*=
     m_omStrEditCNF2 = "";
     m_omStrEditCNF3 = "";
     m_omStrComboSampling = "";
-    /*m_omStrEditBaudRate = "";*/
     m_omStrcombBaudRate = "";
     m_omStrComboClock = "32";
     m_omStrEditWarningLimit = "";
-    //}}AFX_DATA_INIT
     m_unCombClock      = 32;
     m_bDialogCancel    = FALSE;
-    memset(&m_sAccFilterInfo, 0, sizeof(m_sAccFilterInfo));
     m_ucWarningLimit    = defWARNING_LIMIT_MIN;
     m_ucControllerMode  = defCONTROLLER_MODE;
     m_usBTR0BTR1 = defDEFAUT_BAUDRATE;
+
     // Update controller data
     m_pControllerDetails = psControllerDetails;
     m_nPropDelay = 0;

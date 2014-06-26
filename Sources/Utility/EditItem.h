@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      EditItem.h
- * \brief     This header file contains the defintion of class EditItem.
- * \authors   Zafir Anjum
-  *
+ * @brief This header file contains the defintion of class EditItem.
+ * @authors Zafir Anjum
+ *
  * This header file contains the defintion of class EditItem.
  */
 
@@ -27,48 +26,31 @@
 
 #pragma once
 
-/////////////////////////////////////////////////////////////////////////////
-// CEditItem window
-
 class CEditItem : public CEdit
 {
-    // Construction
 public:
     CEditItem(int nItem, int nSubItem, const CString& sContent);
-
-    // Attributes
-public:
-
-    // Operations
-public:
-
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CEditItem)
-public:
-    virtual BOOL PreTranslateMessage(MSG* pMsg);
-    //}}AFX_VIRTUAL
-
-    // Implementation
-public:
     virtual ~CEditItem();
 
-    // Generated message map functions
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
+
 protected:
-    // To keep the Item index
-    int     m_nItem;
-    // To keep the SubItem index
-    int     m_nSubItem;
-    // To store the content as text
+    /** To keep the Item index */
+    int m_nItem;
+
+    /** To keep the SubItem index */
+    int m_nSubItem;
+
+    /** To store the content as text */
     CString m_sContent;
-    // Canceled through ESCAPE key
-    BOOL    m_bVK_ESCAPE;
-    //{{AFX_MSG(CEditItem)
+
+    /** Canceled through ESCAPE key */
+    BOOL m_bVK_ESCAPE;
+
     afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
     afx_msg void OnNcDestroy();
     afx_msg void OnKillFocus(CWnd* pNewWnd);
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-    //}}AFX_MSG
 
     DECLARE_MESSAGE_MAP()
 };

@@ -14,47 +14,53 @@
  */
 
 /**
- * \file      ButtonItem.h
- * \author    Venkatanarayana Makam
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @author Venkatanarayana Makam
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
 #pragma once
+
 #include "afxwin.h"
 #include "EditItem.h"
+
 class CButtonItem;
 
-class CBrowseEditItem: public CEditItem
+class CBrowseEditItem : public CEditItem
 {
-    DECLARE_MESSAGE_MAP()
-public:
-    CButtonItem* m_pomButton;
-    BOOL m_bIsButtonValid;
-    BOOL m_bKillFocus;
 public:
     CBrowseEditItem(int nItem, int nSubItem, CString& sContent, CButtonItem* pomButtonItem);
     ~CBrowseEditItem();
 
+    CButtonItem* m_pomButton;
+    BOOL m_bIsButtonValid;
+    BOOL m_bKillFocus;
+
 protected:
     afx_msg void OnKillFocus(CWnd* pNewWnd);
+
+private:
+    DECLARE_MESSAGE_MAP()
 };
 
 class CButtonItem : public CButton
 {
-    CString m_omStrDefExt;
-    CString m_omStrFilter;
 public:
-    BOOL m_bKillFocus;
-    CBrowseEditItem* m_pomEditItem;
-    BOOL    m_bIsEditValid;
-    BOOL m_bButtonclicked;
     CButtonItem(CString, CString);
     virtual ~CButtonItem(void);
+
+    BOOL m_bKillFocus;
+    CBrowseEditItem* m_pomEditItem;
+    BOOL m_bIsEditValid;
+    BOOL m_bButtonclicked;
+
     void vSetEditItem(CBrowseEditItem* pomEditItem);
+
     DECLARE_MESSAGE_MAP()
+
     afx_msg void OnKillFocus(CWnd* pNewWnd);
     afx_msg void OnBnClicked();
+
+private:
+    CString m_omStrDefExt;
+    CString m_omStrFilter;
 };
-
-
-

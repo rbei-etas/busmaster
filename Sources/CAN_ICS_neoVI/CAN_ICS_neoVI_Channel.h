@@ -66,9 +66,6 @@ public:
      */
     UCHAR  m_ucControllerState;
 
-    /** Acceptance Filter information */
-    SACC_FILTER_INFO     m_sFilter;
-
     /** Hardware Handle Associated with this channel */
     BYTE m_hHardwareHandle;
     /** Network Handle Associated with this channel */

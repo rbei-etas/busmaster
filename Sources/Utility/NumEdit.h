@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      NumEdit.h
- * \brief     Definition file for CNumEdit
- * \author    Ravi D
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Definition file for CNumEdit
+ * @author Ravi D
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition file for CNumEdit
  */
@@ -27,45 +26,39 @@
 #include "Utility_structs.h"
 #include "RadixEdit.h"
 #include "NumSpinCtrl.h"
+
 class CNumEdit : public CRadixEdit
 {
-    // Construction
 public:
     CNumEdit(int nItem, int nSubItem, CString& sContent, const SNUMERICINFO& sInfo);
 
-    // Attributes
-public:
-
-    // Operations
-public:
-
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CEditItem)
-public:
-    virtual BOOL PreTranslateMessage(MSG* pMsg);
-    //}}AFX_VIRTUAL
-
-    // Implementation
-public:
     virtual ~CNumEdit();
 
-    // Generated message map functions
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
+
 protected:
-    int     m_nItem;            // Item Index
-    int     m_nSubItem;         // Sub Item index
-    CString m_sContent;         // Initial text
-    CNumSpinCtrl* m_pomSpin;    // Pointer to Buddy control
-    BOOL    m_bVK_ESCAPE;       // To store the Cancel status
-    SNUMERICINFO    m_sInfo;    // To store numeric information
-    //{{AFX_MSG(CEditItem)
+    /** Item Index */
+    int m_nItem;
+
+    /** Sub Item index */
+    int m_nSubItem;
+
+    /** Initial text */
+    CString m_sContent;
+
+    /** Pointer to Buddy control */
+    CNumSpinCtrl* m_pomSpin;
+
+    /** To store the Cancel status */
+    BOOL m_bVK_ESCAPE;
+
+    /** To store numeric information */
+    SNUMERICINFO m_sInfo;
+
     afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
     afx_msg void OnNcDestroy();
     afx_msg void OnKillFocus(CWnd* pNewWnd);
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-
-
-    //}}AFX_MSG
 
     DECLARE_MESSAGE_MAP()
 };

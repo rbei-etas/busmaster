@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      Utility_Thread.h
- * \brief     Definition file for CPARAM_THREADPROC class.
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Definition file for CPARAM_THREADPROC class.
+ * @author Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition file for CPARAM_THREADPROC class.
  */
@@ -40,36 +39,32 @@ enum eTHREAD_ACTION
 #define THREAD_WAIT_PERIOD       200
 #define EXIT_CODE_ABNORMAL       2
 
-
 class CPARAM_THREADPROC
 {
-protected:
-    HANDLE m_hNotifyExit;    // Event to notify when the thread exits
-    HANDLE m_hThread;        // Handle of the thread
-
-    UINT   m_unPrevActionCode; // Previous action code.
-
-    void vInitialise(void);
-
 public:
-    HANDLE m_hActionEvent;   // Event on which the thread works on
-    UINT m_unActionCode;     // Action to be carried out by the thread
-    LPVOID m_pBuffer;        // Other data buffer, if any
-    HANDLE m_hThread2Owner;  // Communication event from thread to owner
-    HANDLE m_hOwner2Thread;  // Communication event from owner to thread
+    /** Event on which the thread works on */
+    HANDLE m_hActionEvent;
+
+    /** Action to be carried out by the thread */
+    UINT m_unActionCode;
+
+    /** Other data buffer, if any */
+    LPVOID m_pBuffer;
+
+    /** Communication event from thread to owner */
+    HANDLE m_hThread2Owner;
+
+    /** Communication event from owner to thread */
+    HANDLE m_hOwner2Thread;
 
     CPARAM_THREADPROC(void)
     {
         vInitialise();
         m_hNotifyExit = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-        //ASSERT(nullptr != m_hNotifyExit);
-
         m_hThread2Owner = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-        //ASSERT(nullptr != m_hThread2Owner);
-
         m_hOwner2Thread = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-        //ASSERT(nullptr != m_hOwner2Thread);
     }
+
     ~CPARAM_THREADPROC(void)
     {
         CloseHandle(m_hNotifyExit);
@@ -83,14 +78,37 @@ public:
     }
 
     BOOL bStartThread(LPTHREAD_START_ROUTINE NewThreadProc);
+
     BOOL bStartThreadEx(LPTHREAD_START_ROUTINE NewThreadProc,
                         HANDLE hActionEvent, LPVOID pvBuffer);
+
     BOOL bTerminateThread(void);
+
     HANDLE hGetExitNotifyEvent(void);
 
-    BOOL bTransitToInaction(void); // Preemptive function. This returns ONLY
-    // when the thread transits into the inactive state.
-    BOOL bTransitToActiveState(void); // This function brings the thread back
+    /**
+     * Preemptive function. This returns ONLY
+     * when the thread transits into the inactive state.
+     */
+    BOOL bTransitToInaction(void);
+
+    /**
+     * This function brings the thread back
+     * into the previous state.
+     */
+    BOOL bTransitToActiveState(void); 
+
     BOOL bForceTerminateThread();
-    // into the previous state.
+
+protected:
+  /** Event to notify when the thread exits */
+    HANDLE m_hNotifyExit;
+
+    /** Handle of the thread */
+    HANDLE m_hThread;        
+
+    /** Previous action code. */
+    UINT m_unPrevActionCode;
+
+    void vInitialise(void);
 };

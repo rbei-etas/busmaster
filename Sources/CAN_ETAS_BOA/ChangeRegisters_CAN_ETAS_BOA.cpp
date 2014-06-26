@@ -55,7 +55,6 @@ CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent, PSCO
     m_omStrEditWarningLimit = "";
     m_unCombClock      = 32;
     m_bDialogCancel    = FALSE;
-    memset(&m_sAccFilterInfo, 0, sizeof(m_sAccFilterInfo));
     m_ucWarningLimit    = defWARNING_LIMIT_MIN;
     m_ucControllerMode  = defCONTROLLER_MODE;
     m_usBTR0BTR1 = defDEFAUT_BAUDRATE;

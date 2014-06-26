@@ -14,34 +14,30 @@
  */
 
 /**
- * \file      AlphanumiricEdit.h
- * \brief     This header file contains the defintion of class
- * \author    Anish Kumar
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief This header file contains the defintion of class
+ * @author Anish Kumar
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This header file contains the defintion of class
  */
+
 #pragma once
-
-
-// CAlphanumiricEdit
 
 class CAlphanumiricEdit : public CEdit
 {
-    DECLARE_DYNAMIC(CAlphanumiricEdit)
-    int m_nRow;
-    int m_nColumn;
-    BOOL    m_bVK_ESCAPE;
 public:
     CAlphanumiricEdit(int nItem = -1, int nSubItem = -1);
     virtual ~CAlphanumiricEdit();
 
-protected:
-    DECLARE_MESSAGE_MAP()
-public:
     afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
     afx_msg void OnKillFocus(CWnd* pNewWnd);
 
+protected:
+    DECLARE_MESSAGE_MAP()
+
+private:
+    DECLARE_DYNAMIC(CAlphanumiricEdit)
+    int m_nRow;
+    int m_nColumn;
+    BOOL m_bVK_ESCAPE;
 };
-
-

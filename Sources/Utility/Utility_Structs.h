@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      Utility_Structs.h
- * \brief     This file contains definitions of utility structures
- * \authors   Ravi D., Anish Kumar
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief This file contains definitions of utility structures
+ * @authors Ravi D., Anish Kumar
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contains definitions of utility structures
  */
@@ -68,10 +67,10 @@ enum eListTypes
     eNumber,
     eKeyBuddy,
     eBuddy,
-    eComboList,     // Editable
-    eComboItem,     // Non- Editable
+    eComboList,     //< Editable
+    eComboItem,     //< Non-Editable
     eBool,
-    eUser,          // User function will be called
+    eUser,          //< User function will be called
     eBrowser,
     eAlphaNumericType,
     eNoControl
@@ -98,17 +97,25 @@ union uDN64Number
 };
 
 typedef uDN64Number UDN64NUMBER;
-//
+
 struct sNumericInfo
 {
-    BYTE    m_byBase;                       //Base value of the number
-    //Minimun, Maximun and step values in Double
-    UDN64NUMBER  m_uMinVal, m_uMaxVal, m_uDelta;
-    BYTE    m_byFlag;                       //Type flag Float, Buddy & Signed
-    short int m_nTextLimit;                 //Allowed Text width
-    short int m_nSigLength;                 //Length of the num representation.
+    /** Base value of the number */
+    BYTE    m_byBase;              
+    
+    /* Minimun, Maximun and step values in Double */
+    UDN64NUMBER m_uMinVal, m_uMaxVal, m_uDelta;
 
-    //This is required for 2s complement
+    /** Type flag Float, Buddy & Signed */
+    BYTE m_byFlag;
+
+    /** Allowed Text width */
+    short int m_nTextLimit;
+
+    /** Length of the num representation. */
+    short int m_nSigLength;
+
+    /** This is required for 2s complement */
     sNumericInfo() : m_byBase(10),
         m_byFlag(0),
         m_nTextLimit(0),
@@ -120,6 +127,5 @@ struct sNumericInfo
     }
 };
 
-
-typedef sNumericInfo  SNUMERICINFO;
-typedef CMap<int,int, SNUMERICINFO, SNUMERICINFO>   CNumericInfo;
+typedef sNumericInfo SNUMERICINFO;
+typedef CMap<int,int, SNUMERICINFO, SNUMERICINFO> CNumericInfo;

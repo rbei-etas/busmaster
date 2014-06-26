@@ -175,7 +175,6 @@ iconv.lib %(AdditionalOptions)</AdditionalOptions>
     <ClInclude Include="KeyNumEdit.h" />
     <ClInclude Include="MsgInterpretation.h" />
     <ClInclude Include="MultiLanguageSupport.h" />
-    <ClInclude Include="Network_McNet.h" />
     <ClInclude Include="NumEdit.h" />
     <ClInclude Include="NumSpinCtrl.h" />
     <ClInclude Include="OffScreenDC.h" />

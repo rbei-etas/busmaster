@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      OffScreenDC.h
- * \brief     This file contain the interface for COffScreenDC class
- * \author    Ratnadip Choudhury
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief This file contain the interface for COffScreenDC class
+ * @author Ratnadip Choudhury
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contain the interface for COffScreenDC class
  */
@@ -27,23 +26,26 @@
 class COffScreenDC : public CDC
 {
 public:
-    // Public constructor with screen DC and Screen Rectangle
     COffScreenDC(CDC* pDC, const CRect& rcBounds);
-    // Default destructor
+
     virtual ~COffScreenDC();
-    // Type casting operator
+
+    /** Type casting operator */
     inline COffScreenDC* operator->();
-    // Flag to indicate Creation status
+
+    /** Flag to indicate Creation status */
     BOOL        m_bCreateSuccess;
-protected:
 
 private:
-    // Pointer to hold the bitmap data
-    CBitmap     m_omBitmap;
-    // Pointer to store old bitmap address
-    CBitmap*    m_pOldBitmap;
-    // Pointer to store actual screen DC
-    CDC*        m_pDC;
-    // Rectangle of the screen or Drawing area
-    CRect       m_rcBounds;
+    /** Pointer to hold the bitmap data */
+    CBitmap m_omBitmap;
+
+    /** Pointer to store old bitmap address */
+    CBitmap* m_pOldBitmap;
+
+    /** Pointer to store actual screen DC */
+    CDC* m_pDC;
+
+    /** Rectangle of the screen or Drawing area */
+    CRect m_rcBounds;
 };

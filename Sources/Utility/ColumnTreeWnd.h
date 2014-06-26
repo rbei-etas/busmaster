@@ -20,12 +20,10 @@
 
 class CColumnTreeWnd : public CWnd
 {
-    DECLARE_DYNAMIC(CColumnTreeWnd)
 public:
     CColumnTreeWnd();
     virtual ~CColumnTreeWnd();
 
-public:
     enum ChildrenIDs { HeaderID = 1, TreeID = 2 };
 
     void UpdateColumns();
@@ -35,20 +33,21 @@ public:
     {
         return m_Tree;
     }
+
     CHeaderCtrl& GetHeaderCtrl()
     {
         return m_Header;
     }
 
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+
 protected:
     virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
-protected:
     void UpdateScroller();
     void RepositionControls();
     int GetMaxColumnWidth(HTREEITEM hItem, int nColumn, int nDepth, BOOL bIgnoreCollapsed);
 
-protected:
     CColumnTreeCtrl m_Tree;
     CHeaderCtrl m_Header;
     int m_cyHeader;
@@ -57,11 +56,8 @@ protected:
     int m_arrColWidths[16];
     int m_xOffset;
 
-protected:
     DECLARE_MESSAGE_MAP()
-public:
-    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-protected:
+
     afx_msg void OnPaint();
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
     afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -69,4 +65,7 @@ protected:
     afx_msg void OnHeaderItemChanged(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnHeaderDividerDblClick(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnTreeCustomDraw(NMHDR* pNMHDR, LRESULT* pResult);
+
+private:
+    DECLARE_DYNAMIC(CColumnTreeWnd)
 };

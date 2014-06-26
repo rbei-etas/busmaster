@@ -35,8 +35,6 @@
 
 #include <Windows.h>
 
-const int MAX_STRING = 256;
-
 /**
  * This structure is used for sending/reciving messages to/from the CAN network
  */
@@ -64,13 +62,19 @@ typedef struct sTCAN_MSG
     bool m_bCANFD;
 } STCAN_MSG, *PSTCAN_MSG;
 
-/** This structure holds the error and the channel number */
+/**
+ * This structure holds the error and the channel number
+ */
 typedef struct sCAN_ERR
 {
+    /** transmit error */
     unsigned char m_ucTxError;
-    unsigned char m_ucRxError;
-    unsigned char m_ucChannel;
 
+    /** receive error */
+    unsigned char m_ucRxError;
+
+    /** channel */
+    unsigned char m_ucChannel;
 } SCAN_ERR, *SPCAN_ERR;
 
 /** To copy the data and advance the pointer of the target data stream */
@@ -83,17 +87,23 @@ typedef struct sCAN_ERR
 #define COPY_DATA_2(TgtStream, SrcStream, TotBytes) { memcpy(TgtStream, SrcStream, TotBytes); SrcStream += TotBytes; }
 #endif
 
-#define defMODE_ACTIVE                         1
-#define defMODE_PASSIVE                        2
-#define defMODE_SIMULATE                       3
+enum defMODE {
+    defMODE_ACTIVE = 1,
+    defMODE_PASSIVE = 2,
+    defMODE_SIMULATE = 3
+};
 
-#define defCONTROLLER_ACTIVE                   1
-#define defCONTROLLER_PASSIVE                  2
-#define defCONTROLLER_BUSOFF                   3
+enum defCONTROLLER {
+    defCONTROLLER_ACTIVE = 1,
+    defCONTROLLER_PASSIVE = 2,
+    defCONTROLLER_BUSOFF = 3
+};
 
-#define defUSB_MODE_ACTIVE                     1
-#define defUSB_MODE_PASSIVE                    2
-#define defUSB_MODE_SIMULATE                   3
+enum defUSB_MODE {
+    defUSB_MODE_ACTIVE = 1,
+    defUSB_MODE_PASSIVE = 2,
+    defUSB_MODE_SIMULATE = 3
+};
 
 #define defWARNING_LIMIT_INT    96
 
@@ -106,7 +116,7 @@ typedef struct sCAN_ERR
  */
 enum eERROR_STATE
 {
-    ERROR_ACTIVE  =   0,
+    ERROR_ACTIVE = 0,
     ERROR_WARNING_LIMIT,
     ERROR_PASSIVE,
     ERROR_BUS_OFF,
@@ -116,7 +126,9 @@ enum eERROR_STATE
 
 const short CAN_MSG_IDS = 2;
 
-//This enum defines different filter types
+/**
+ * This enum defines different filter types
+ */
 enum eHW_FILTER_TYPES
 {
     HW_FILTER_ACCEPT_ALL = 0,
@@ -125,8 +137,9 @@ enum eHW_FILTER_TYPES
 };
 
 
-// Controller details
-// information on the baud rate
+/**
+ * Controller details
+ */
 class sCONTROLLERDETAILS
 {
 private:
@@ -474,6 +487,7 @@ public:
         chTemp[nSize] = '\0';
         m_omHardwareDesc = chTemp;
     }
+
     void GetControllerConfigSize(int& nSize)
     {
         nSize = 34 * sizeof(int);
@@ -732,6 +746,7 @@ public:
         strVar = strData.c_str();
         xmlNewChild(pNodePtr, nullptr, BAD_CAST "CANFD_CanFdTxConfig", BAD_CAST strVar);
     }
+
     void GetControllerConfigData(BYTE*& pbyTemp, int& nSize)
     {
         INT nIntSize = sizeof(INT);
@@ -946,20 +961,49 @@ typedef sCONTROLLERDETAILS*  PSCONTROLLER_DETAILS;
 
 struct sSUBBUSSTATISTICS
 {
+    /** error transmit count */
     unsigned int m_unErrorTxCount;
+
+    /** total transmit message count */
     unsigned int m_unTotalTxMsgCount;
+
+    /** transmit standard message count */
     unsigned int m_unTxSTDMsgCount;
+
+    /** total bits per second */
     unsigned int m_unTotalBitsperSec;
+
+    /** transmit extended message count */
     unsigned int m_unTxEXTDMsgCount;
+
+    /** transmit standard remote message count */
     unsigned int m_unTxSTD_RTRMsgCount;
+
+    /** transmit extended remote message count */
     unsigned int m_unTxEXTD_RTRMsgCount;
+
+    /** total receive message count */
     unsigned int m_unTotalRxMsgCount;
+
+    /** receive standard message count */
     unsigned int m_unRxSTDMsgCount;
+
+    /** receive extended message count */
     unsigned int m_unRxEXTDMsgCount;
+
+    /** receive standard remote message count */
     unsigned int m_unRxSTD_RTRMsgCount;
+
+    /** receive extended remote message count */
     unsigned int m_unRxEXTD_RTRMsgCount;
+
+    /** error total count */
     unsigned int m_unErrorTotalCount;
+
+    /** error receive count */
     unsigned int m_unErrorRxCount;
+
+    /** data length code count */
     unsigned int m_unDLCCount;
 };
 typedef sSUBBUSSTATISTICS SSUBBUSSTATISTICS;
@@ -970,53 +1014,118 @@ typedef sSUBBUSSTATISTICS* PSSUBBUSSTATISTICS;
  */
 struct sBUSSTATISTICS
 {
-    unsigned int    m_unTotalBitsperSec;
+    /** total bits per second */
+    unsigned int m_unTotalBitsperSec;
 
-    double          m_dBusLoad;
-    double          m_dPeakBusLoad;
-    unsigned int    m_unTotalMsgCount;
-    unsigned int    m_unMsgPerSecond;
+    /** bus load */
+    double m_dBusLoad;
 
-    unsigned int    m_unTotalTxMsgCount;
-    double          m_dTotalTxMsgRate;
+    /** peak bus load */
+    double m_dPeakBusLoad;
 
-    unsigned int    m_unTxSTDMsgCount;
-    double          m_dTxSTDMsgRate;
-    unsigned int    m_unTxEXTDMsgCount;
-    double          m_dTxEXTMsgRate;
-    unsigned int    m_unTxSTD_RTRMsgCount;
-    unsigned int    m_unTxEXTD_RTRMsgCount;
+    /** total message count */
+    unsigned int m_unTotalMsgCount;
 
-    unsigned int    m_unTotalRxMsgCount;
-    double          m_dTotalRxMsgRate;
+    /** messages per second */
+    unsigned int m_unMsgPerSecond;
 
-    unsigned int    m_unRxSTDMsgCount;
-    double          m_dRxSTDMsgRate;
-    unsigned int    m_unRxEXTDMsgCount;
-    double          m_dRxEXTMsgRate;
-    unsigned int    m_unRxSTD_RTRMsgCount;
-    unsigned int    m_unRxEXTD_RTRMsgCount;
+    /** total transmit message count */
+    unsigned int m_unTotalTxMsgCount;
 
-    unsigned int    m_unErrorTxCount;
-    double          m_dErrorTxRate;
-    unsigned int    m_unErrorRxCount;
-    double          m_dErrorRxRate;
-    unsigned int    m_unErrorTotalCount;
-    double          m_dErrorRate;
+    /** total transmit message rate */
+    double m_dTotalTxMsgRate;
 
-    unsigned int    m_unDLCCount;
+    /** transmit standard message count */
+    unsigned int m_unTxSTDMsgCount;
 
-    double  m_dBaudRate;
+    /** transmit standard message rate */
+    double m_dTxSTDMsgRate;
 
-    double  m_dTotalBusLoad;
-    int     m_nSamples;
-    double  m_dAvarageBusLoad;
+    /** transmit extended message count */
+    unsigned int m_unTxEXTDMsgCount;
 
-    unsigned char   m_ucTxErrorCounter;
-    unsigned char   m_ucRxErrorCounter;
-    unsigned char   m_ucTxPeakErrorCount;
-    unsigned char   m_ucRxPeakErrorCount;
-    unsigned char   m_ucStatus;
+    /** transmit extended message rate */
+    double m_dTxEXTMsgRate;
+
+    /** transmit standard remote message count */
+    unsigned int m_unTxSTD_RTRMsgCount;
+
+    /** transmit extended remote message count */
+    unsigned int m_unTxEXTD_RTRMsgCount;
+
+    /** total receive message count */
+    unsigned int m_unTotalRxMsgCount;
+
+    /** total receive message rate */
+    double m_dTotalRxMsgRate;
+
+    /** receive standard message count */
+    unsigned int m_unRxSTDMsgCount;
+
+    /** receive standard message rate */
+    double m_dRxSTDMsgRate;
+
+    /** receive extended message count */
+    unsigned int m_unRxEXTDMsgCount;
+
+    /** receive extended message rate */
+    double m_dRxEXTMsgRate;
+
+    /** receive standard remote message count */
+    unsigned int m_unRxSTD_RTRMsgCount;
+
+    /** receive extended remote message count */
+    unsigned int m_unRxEXTD_RTRMsgCount;
+
+    /** error transmit count */
+    unsigned int m_unErrorTxCount;
+
+    /** error transmit rate */
+    double m_dErrorTxRate;
+
+    /** error receive count */
+    unsigned int m_unErrorRxCount;
+
+    /** error receive rate */
+    double m_dErrorRxRate;
+
+    /** error total count */
+    unsigned int m_unErrorTotalCount;
+
+    /** error rate */
+    double m_dErrorRate;
+
+    /** data length code count */
+    unsigned int m_unDLCCount;
+
+    /** baud rate */
+    double m_dBaudRate;
+
+    /** total bus load */
+    double m_dTotalBusLoad;
+
+    /** samples */
+    int m_nSamples;
+
+    /** average bus load */
+    double m_dAvarageBusLoad;
+
+    /** transmit error counter */
+    unsigned char m_ucTxErrorCounter;
+
+    /** receive error counter */
+    unsigned char m_ucRxErrorCounter;
+
+    /** transmit peak error count */
+    unsigned char m_ucTxPeakErrorCount;
+
+    /** receive peak error count */
+    unsigned char m_ucRxPeakErrorCount;
+
+    /** status */
+    unsigned char m_ucStatus;
+
+
     sBUSSTATISTICS& operator = (sSUBBUSSTATISTICS& objRef)
     {
         m_unErrorTxCount = objRef.m_unErrorTxCount;
@@ -1055,8 +1164,13 @@ struct sERROR_INFO
     /** Stores the value of err capture register in case of bus error */
     unsigned char m_ucReg_ErrCap;
 
+    /** transmit error count */
     unsigned char m_ucTxErrCount;
+
+    /** receive error count */
     unsigned char m_ucRxErrCount;
+
+    /** channel */
     unsigned char m_ucChannel;
 
     /** added for providing Error bit details */
@@ -1064,7 +1178,6 @@ struct sERROR_INFO
 };
 typedef sERROR_INFO SERROR_INFO;
 typedef sERROR_INFO* PSERROR_INFO;
-
 
 /**
  * This structure is used for communicating between Driver and CAN Application
@@ -1074,6 +1187,7 @@ union sTDATAINFO
     /** The received / transmitted message */
     STCAN_MSG m_sCANMsg;
 
+    /** error info */
     SERROR_INFO m_sErrInfo;
 };
 typedef sTDATAINFO STDATAINFO;
@@ -1127,7 +1241,10 @@ typedef sACC_FILTER_INFO* PSACC_FILTER_INFO;
  */
 struct sERROR_CNT
 {
+    /** transmit error count */
     unsigned char m_ucTxErrCount;
+
+    /** receive error count */
     unsigned char m_ucRxErrCount;
 };
 typedef sERROR_CNT SERROR_CNT;

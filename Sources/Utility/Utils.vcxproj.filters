@@ -127,9 +127,6 @@
     <ClInclude Include="MultiLanguageSupport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Network_McNet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="NumEdit.h">
       <Filter>Header Files</Filter>
     </ClInclude>

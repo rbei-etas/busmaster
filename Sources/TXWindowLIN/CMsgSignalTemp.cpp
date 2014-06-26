@@ -27,7 +27,7 @@
 
 static CHAR s_acTraceStr[1024] = {""};
 
-/* Helper function to calculate how many bytes the signal consumes */
+/** Helper function to calculate how many bytes the signal consumes */
 UINT static nGetNoOfBytesToRead(UINT nBitNum, UINT nSigLen)
 {
     ASSERT(nSigLen > 0);
@@ -52,25 +52,7 @@ UINT static nGetNoOfBytesToRead(UINT nBitNum, UINT nSigLen)
     return nBytesToRead;
 }
 
-//{
-//    UINT nBytesToRead = 0;
-//    // First check if the BIT number is in between the byte.
-//    if (((defBITS_IN_BYTE - nBitNum) % defBITS_IN_BYTE) > 0)
-//    {
-//        nBytesToRead++;
-//    }
-//    // Add te number of bytes totally it consumes.
-//    nBytesToRead += (INT)(nSigLen / defBITS_IN_BYTE);
-//
-//    // Check for extra bits which traverse to the next byte.
-//    if (((nSigLen - (defBITS_IN_BYTE - nBitNum)) % defBITS_IN_BYTE) > 0)
-//    {
-//        nBytesToRead++;
-//    }
-//    return nBytesToRead;
-//}
-/* End of helper function nGetNoOfBytesToRead */
-/* Helper function to calculate the bit mask of a signal */
+/** Helper function to calculate the bit mask of a signal */
 BOOL CMsgSignal::bValidateSignal(UINT nDLC, UINT nByteNum, UINT nBitNum,
                                  UINT nLength, EFORMAT_DATA bDataFormat)
 {
@@ -81,6 +63,7 @@ BOOL CMsgSignal::bValidateSignal(UINT nDLC, UINT nByteNum, UINT nBitNum,
              (INT)(nByteNum - nBytesToRead) >= 0;
     return bValid;
 }
+
 BOOL CMsgSignal::bCalcBitMaskForSig(BYTE* pbyMaskByte, UINT unArrayLen,
                                     UINT nByteNum, UINT nBitNum, UINT nLength,
                                     EFORMAT_DATA bDataFormat)
@@ -126,7 +109,6 @@ BOOL CMsgSignal::bCalcBitMaskForSig(BYTE* pbyMaskByte, UINT unArrayLen,
 
     return bValid;
 }
-/* End of helper function vCalcBitMaskForSig */
 
 /******************************************************************************
   Function Name    :  unGetNumerOfMessages

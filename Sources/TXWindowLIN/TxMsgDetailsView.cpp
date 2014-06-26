@@ -24,7 +24,6 @@
 
 #include "TxWindow_stdafx.h"             // For standard includes
 #include "include/BaseDefs.h"
-#include "include/struct_can.h"
 #include "DataTypes/MsgSignal_Datatypes.h"
 #include "Utility/ComboItem.h"          // For Custom Combobox Implementation
 #include "Utility/EditItem.h"           // For Custom Editbox Implementation

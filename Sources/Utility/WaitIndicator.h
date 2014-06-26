@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      WaitIndicator.h
- * \brief     The File contain the definition of WaitIndicator
- * \author    Venkatanarayana Makam
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief The File contain the definition of WaitIndicator
+ * @author Venkatanarayana Makam
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * The File contain the definition of WaitIndicator
  */
@@ -25,45 +24,42 @@
 #pragma once
 
 // Window class name
-#define INDICATOR_CLASSNAME    "IndicatorCtrl"
+#define INDICATOR_CLASSNAME "IndicatorCtrl"
 
 class CWaitIndicator : public CWnd
 {
-    DECLARE_DYNAMIC(CWaitIndicator)
-    //Attributes
-private:
-    CString m_strTitle;
-    CFont*   m_TitleFont;
-
-    //Operations
 public:
-    //Construction
     CWaitIndicator();
 
-    //To Activater and to Show the Window
-    BOOL DisplayWindow(CString strTitle, CWnd* pParentWnd, UINT nID = 0);
-    void SetWindowText(char* acText);
-    void PaintWindow(CDC& dc);
-
-
-    //To Close the window
-    void CloseWindow();
-public:
-    //Destruction
     virtual ~CWaitIndicator();
 
-public:
+    /** To Activater and to Show the Window */
+    BOOL DisplayWindow(CString strTitle, CWnd* pParentWnd, UINT nID = 0);
+
+    void SetWindowText(char* acText);
+
+    void PaintWindow(CDC& dc);
+
+    /** To Close the window */
+    void CloseWindow();
+
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     afx_msg void OnPaint(void);
 
-private:
-    //To Move the Window to the center of Parent Window
-    void MoveToCenter(void);
-    //To Register the custom window name
-    BOOL RegisterWindowClass(void);
-    void Redraw();
 protected:
     DECLARE_MESSAGE_MAP()
+
+
+private:
+    /** To Move the Window to the center of Parent Window */
+    void MoveToCenter(void);
+
+    /** To Register the custom window name */
+    BOOL RegisterWindowClass(void);
+    void Redraw();
+
+    CString m_strTitle;
+    CFont*   m_TitleFont;
+
+    DECLARE_DYNAMIC(CWaitIndicator)
 };
-
-

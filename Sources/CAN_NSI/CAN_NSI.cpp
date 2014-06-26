@@ -157,7 +157,7 @@ BOOL CCAN_NSI::InitInstance()
  * Number of Channels
  */
 static UINT sg_nNoOfChannels = 0;
-static char sg_omErrStr[MAX_STRING] = {0};
+static char sg_omErrStr[256] = {0};
 
 // Count variables
 static UCHAR sg_ucNoOfHardware = 0;
@@ -1286,7 +1286,7 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
     /* Capture only Driver Not Running event
      * Take action based on number of Hardware Available
      */
-    char acNo_Of_Hw[MAX_STRING] = {0};
+    char acNo_Of_Hw[256] = {0};
     sprintf_s(acNo_Of_Hw, _("Number of NSI hardwares Available: %d"), nChannelCount);
 
     /* No Hardware found */

@@ -25,10 +25,6 @@
 
 #pragma once
 
-#ifndef _CRT_SECURE_NO_DEPRECATE
-#define _CRT_SECURE_NO_DEPRECATE
-#endif
-
 #define WIN32_LEAN_AND_MEAN     // Exclude rarely-used stuff from Windows headers
 // Windows Header Files:
 #include <afxwin.h>
@@ -41,5 +37,3 @@
 #include <wtypes.h>
 #include <afxtempl.h>
 #include <locale.h>
-
-// TODO: reference additional headers your program requires here

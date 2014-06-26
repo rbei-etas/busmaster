@@ -175,18 +175,6 @@ typedef sLIN_ERR* SPLIN_ERR;
 #define COPY_DATA_2(TgtStream, SrcStream, TotBytes) { memcpy(TgtStream, SrcStream, TotBytes); SrcStream += TotBytes; }
 #endif
 
-#define defMODE_ACTIVE                         1
-#define defMODE_PASSIVE                        2
-#define defMODE_SIMULATE                       3
-
-#define defCONTROLLER_ACTIVE                   1
-#define defCONTROLLER_PASSIVE                  2
-#define defCONTROLLER_BUSOFF                   3
-
-#define defUSB_MODE_ACTIVE                     1
-#define defUSB_MODE_PASSIVE                    2
-#define defUSB_MODE_SIMULATE                   3
-
 #define defWARNING_LIMIT_INT    96
 
 #define defBAUD_RATE_VAL                    500

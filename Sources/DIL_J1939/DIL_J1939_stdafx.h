@@ -1,30 +1,6 @@
-
 /******************************************************************************
-  Project       :  Frame_McNet
-  FileName      :  stdafx_DIL_McNet.h
   Description   :  Include file for precompiled header
-  $Log:   X:/Archive/Sources/DIL_J1939/DIL_J1939_stdafx.h_v  $
- *
- *    Rev 1.2   10 Jun 2011 17:31:56   CANMNTTM
- * _CRT_SECURE_NO_DEPRECATE is added
- *
- * to remove depreciation warning in vs2005
- *
- *    Rev 1.1   15 Apr 2011 18:48:36   CANMNTTM
- * Added RBEI Copyright information.
- *
- *    Rev 1.0   06 Dec 2010 18:47:20   rac2kor
- *
- *
- *    Rev 1.1   04 Jan 2010 14:46:14   mcnetpl
- *
- *
- *    Rev 1.0   02 Dec 2009 17:53:06   mcnetpl
- * Initial version
-
   Author(s)     :  Anish Kumar
-  Date Created  :  15/09/2009
-  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
 ******************************************************************************/
 
@@ -54,10 +30,6 @@
 
 #ifndef _WIN32_IE           // Allow use of features specific to IE 4.0 or later.
 #define _WIN32_IE 0x0400    // Change this to the appropriate value to target IE 5.0 or later.
-#endif
-
-#ifndef _CRT_SECURE_NO_DEPRECATE
-#define _CRT_SECURE_NO_DEPRECATE
 #endif
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS  // some CString constructors will be explicit

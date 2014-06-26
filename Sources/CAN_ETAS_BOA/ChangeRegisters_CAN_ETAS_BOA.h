@@ -107,7 +107,6 @@ private:
     PSCONTROLLER_DETAILS psMainContrDets;
     int m_nLastSelection;
     CImageList m_omChannelImageList;
-    SACC_FILTER_INFO m_sAccFilterInfo;
     USHORT  m_usBTR0BTR1;
     UCHAR   m_ucWarningLimit;
     UCHAR   m_ucControllerMode;

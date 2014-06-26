@@ -15,29 +15,28 @@
 
 #pragma once
 
-
 class CColumnTreeCtrl : public CTreeCtrl
 {
-    DECLARE_DYNAMIC(CColumnTreeCtrl)
+    friend class CColumnTreeView;
+    friend class CColumnTreeWnd;
+
 public:
     CColumnTreeCtrl();
     virtual ~CColumnTreeCtrl();
 
-protected:
-    void HandleMouse(UINT message, UINT nFlags, CPoint point);
-
-protected:
-    int m_cxFirstCol;
-    int m_cxTotal;
-
-protected:
-    DECLARE_MESSAGE_MAP()
-public:
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
     afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
     afx_msg void OnPaint();
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 
-    friend class CColumnTreeView;
-    friend class CColumnTreeWnd;
+protected:
+    void HandleMouse(UINT message, UINT nFlags, CPoint point);
+
+    int m_cxFirstCol;
+    int m_cxTotal;
+
+    DECLARE_MESSAGE_MAP()
+
+private:
+    DECLARE_DYNAMIC(CColumnTreeCtrl)
 };

@@ -64,14 +64,13 @@ UINT unGetMsgIDFromName(CString omMsgName)
 
 IMPLEMENT_DYNCREATE(CTxMsgDetailsView, CFormView)
 
-CTxMsgDetailsView::CTxMsgDetailsView() : CFormView(CTxMsgDetailsView::IDD),
+CTxMsgDetailsView::CTxMsgDetailsView() :
+    CFormView(CTxMsgDetailsView::IDD),
     m_odSignalMatrix(8)
 {
-    //{{AFX_DATA_INIT(CTxMsgDetailsView)
     m_bIsRTR = FALSE;
     m_nRBTNFrameFormat = 0;
     m_nChannelID = 0;
-    //}}AFX_DATA_INIT
     m_psSelectedMsgDetails = nullptr;
     m_bIsMsgDirty = FALSE;
 
@@ -126,15 +125,15 @@ BEGIN_MESSAGE_MAP(CTxMsgDetailsView, CFormView)
     ON_EN_UPDATE(IDC_EDIT_DB8, OnUpdateEditDataBytes)
     ON_BN_CLICKED(IDC_RBTN_MSGTYPE_EXTD, OnRbtnMsgtypeStd)
     ON_CBN_SELCHANGE(IDC_COMB_CHANNEL_ID, OnSelchangeCombChannelId)
-    ON_EN_KILLFOCUS(IDC_EDIT_DLC, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
-    ON_EN_KILLFOCUS(IDC_EDIT_DB1, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
-    ON_EN_KILLFOCUS(IDC_EDIT_DB2, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
-    ON_EN_KILLFOCUS(IDC_EDIT_DB3, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
-    ON_EN_KILLFOCUS(IDC_EDIT_DB4, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
-    ON_EN_KILLFOCUS(IDC_EDIT_DB5, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
-    ON_EN_KILLFOCUS(IDC_EDIT_DB6, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
-    ON_EN_KILLFOCUS(IDC_EDIT_DB7, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
-    ON_EN_KILLFOCUS(IDC_EDIT_DB8, /*&CTxMsgDetailsView::*/vAutoUpdateModifyChanges)
+    ON_EN_KILLFOCUS(IDC_EDIT_DLC, vAutoUpdateModifyChanges)
+    ON_EN_KILLFOCUS(IDC_EDIT_DB1, vAutoUpdateModifyChanges)
+    ON_EN_KILLFOCUS(IDC_EDIT_DB2, vAutoUpdateModifyChanges)
+    ON_EN_KILLFOCUS(IDC_EDIT_DB3, vAutoUpdateModifyChanges)
+    ON_EN_KILLFOCUS(IDC_EDIT_DB4, vAutoUpdateModifyChanges)
+    ON_EN_KILLFOCUS(IDC_EDIT_DB5, vAutoUpdateModifyChanges)
+    ON_EN_KILLFOCUS(IDC_EDIT_DB6, vAutoUpdateModifyChanges)
+    ON_EN_KILLFOCUS(IDC_EDIT_DB7, vAutoUpdateModifyChanges)
+    ON_EN_KILLFOCUS(IDC_EDIT_DB8, vAutoUpdateModifyChanges)
 END_MESSAGE_MAP()
 
 void CTxMsgDetailsView::OnInitialUpdate()
@@ -545,15 +544,14 @@ void CTxMsgDetailsView::vUpdateSignalMatrix(void)
     for ( int index = 0; index < defMAX_BYTE; index++)
     {
         int nBit = index * defBITS_IN_BYTE;
-        m_bData[ nBit ] = m_unData[ index ].sByte.Bit0;
-        m_bData[ nBit + 1] = m_unData[ index ].sByte.Bit1;
-        m_bData[ nBit + 2] = m_unData[ index ].sByte.Bit2;
-        m_bData[ nBit + 3] = m_unData[ index ].sByte.Bit3;
-
-        m_bData[ nBit + 4] = m_unData[ index ].sByte.Bit4;
-        m_bData[ nBit + 5] = m_unData[ index ].sByte.Bit5;
-        m_bData[ nBit + 6] = m_unData[ index ].sByte.Bit6;
-        m_bData[ nBit + 7] = m_unData[ index ].sByte.Bit7;
+        m_bData[nBit + 0] = m_unData[index].sByte.Bit0;
+        m_bData[nBit + 1] = m_unData[index].sByte.Bit1;
+        m_bData[nBit + 2] = m_unData[index].sByte.Bit2;
+        m_bData[nBit + 3] = m_unData[index].sByte.Bit3;
+        m_bData[nBit + 4] = m_unData[index].sByte.Bit4;
+        m_bData[nBit + 5] = m_unData[index].sByte.Bit5;
+        m_bData[nBit + 6] = m_unData[index].sByte.Bit6;
+        m_bData[nBit + 7] = m_unData[index].sByte.Bit7;
     }
 
     // Set the data value
@@ -642,15 +640,14 @@ BOOL CTxMsgDetailsView::bUpdateSignalList(STCAN_MSG sMsg)
                     for ( int index = 0; index < nMsgLen; index++)
                     {
                         int nBit = index * defBITS_IN_BYTE;
-                        m_bData[ nBit ] = m_unData[ index ].sByte.Bit0;
-                        m_bData[ nBit + 1] = m_unData[ index ].sByte.Bit1;
-                        m_bData[ nBit + 2] = m_unData[ index ].sByte.Bit2;
-                        m_bData[ nBit + 3] = m_unData[ index ].sByte.Bit3;
-
-                        m_bData[ nBit + 4] = m_unData[ index ].sByte.Bit4;
-                        m_bData[ nBit + 5] = m_unData[ index ].sByte.Bit5;
-                        m_bData[ nBit + 6] = m_unData[ index ].sByte.Bit6;
-                        m_bData[ nBit + 7] = m_unData[ index ].sByte.Bit7;
+                        m_bData[nBit + 0] = m_unData[ index ].sByte.Bit0;
+                        m_bData[nBit + 1] = m_unData[ index ].sByte.Bit1;
+                        m_bData[nBit + 2] = m_unData[ index ].sByte.Bit2;
+                        m_bData[nBit + 3] = m_unData[ index ].sByte.Bit3;
+                        m_bData[nBit + 4] = m_unData[ index ].sByte.Bit4;
+                        m_bData[nBit + 5] = m_unData[ index ].sByte.Bit5;
+                        m_bData[nBit + 6] = m_unData[ index ].sByte.Bit6;
+                        m_bData[nBit + 7] = m_unData[ index ].sByte.Bit7;
                     }
 
                     // Set the data value
@@ -1383,8 +1380,7 @@ BOOL CTxMsgDetailsView::bValidateData()
     return bIsValid;
 }
 
-BOOL CTxMsgDetailsView::bCheckIfValueIsMoreThan255(
-    USHORT usNoOfEditCtrlsToCheck )
+BOOL CTxMsgDetailsView::bCheckIfValueIsMoreThan255(USHORT usNoOfEditCtrlsToCheck)
 {
     // Assume failure
     BOOL bResult = FALSE;
@@ -2617,14 +2613,7 @@ void CTxMsgDetailsView::vUpdateDataBytes()
     CEdit* pEdit = nullptr;
     CString omStr, omStrFormatData;
 
-    if( TRUE == CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_HEX))
-    {
-        omStrFormatData = defFORMAT_DATA_HEX;
-    }
-    else
-    {
-        omStrFormatData = defFORMAT_DATA_DECIMAL;
-    }
+    omStrFormatData = (CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_HEX) == TRUE) ? defFORMAT_DATA_HEX : defFORMAT_DATA_DECIMAL;
 
     for(UINT i =0 ; i< defMAX_BYTE; i++ )
     {
@@ -2837,8 +2826,10 @@ void CTxMsgDetailsView::vSetDefaultValues()
 {
     // Set Message ID/Name
     m_omComboMsgIDorName.SetWindowText("");
+
     // Set Databytes
     CString omStrDataBytesValue;
+
     // Two digits in case of Hex mode
     // Three digits in case of Dec mode
     BOOL bIsHex = CTxMsgManager::s_TxFlags.nGetFlagStatus(TX_HEX);
@@ -2855,7 +2846,6 @@ void CTxMsgDetailsView::vSetDefaultValues()
     m_odDB2.SetWindowText( omStrDataBytesValue );
     m_odDB3.SetWindowText( omStrDataBytesValue );
     m_odDB4.SetWindowText( omStrDataBytesValue );
-
     m_odDB5.SetWindowText( omStrDataBytesValue );
     m_odDB6.SetWindowText( omStrDataBytesValue );
     m_odDB7.SetWindowText( omStrDataBytesValue );
@@ -2863,6 +2853,7 @@ void CTxMsgDetailsView::vSetDefaultValues()
 
     // Set DLC
     m_odDLC.vSetValue(8);
+
     // Set the selection to Channel 1
     m_omComboChannelID.SetCurSel(0);
     vUpdateStateDataBytes();

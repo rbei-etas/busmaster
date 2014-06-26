@@ -1,20 +1,6 @@
 /*********************************************************************
-  Project       :  Auto-SAT_Tools
-  FileName      :  SigGrphWnd_stdafx.h
   Description   :  Standard inclusion file
-  $Log:   X:/Archive/Sources/SigGrphWnd/SigGrphWnd_stdafx.h_v  $
- *
- *    Rev 1.2   10 Jun 2011 17:34:44   CANMNTTM
- * _CRT_SECURE_NO_DEPRECATE is added
- *
- * to remove depreciation warning in vs2005
- *
- *    Rev 1.1   15 Apr 2011 19:43:38   rac2kor
- * Inserted RBEI Copyright information text into the file header.
-
   Author(s)     :  Arunkumar Karri
-  Date Created  :
-  Modified By   :
   Copyright (c) 2011, Robert Bosch Engineering and Business Solutions.  All rights reserved.
  *********************************************************************/
 

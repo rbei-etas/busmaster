@@ -628,33 +628,7 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
             odChannel.m_ucWarningLimit = static_cast <UCHAR>(
                                              _tcstol( pControllerDetails[ nIndex ].m_omStrWarningLimit.c_str(),
                                                      &pcStopStr, defBASE_DEC ));
-            // Get Acceptance Filter
-            odChannel.m_sFilter.m_ucACC_Code0 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte1[0].c_str(),
-                                                            &pcStopStr, defBASE_HEX ));
-            odChannel.m_sFilter.m_ucACC_Code1 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte2[0].c_str(),
-                                                            &pcStopStr, defBASE_HEX ));
-            odChannel.m_sFilter.m_ucACC_Code2 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccCodeByte3[0].c_str(),
-                                                            &pcStopStr, defBASE_HEX ));
-            odChannel.m_sFilter.m_ucACC_Code3 = static_cast <UCHAR>(
-                                                    _tcstol(pControllerDetails[ nIndex ].m_omStrAccCodeByte4[0].c_str(),
-                                                            &pcStopStr, defBASE_HEX));
-            odChannel.m_sFilter.m_ucACC_Mask0 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte1[0].c_str(),
-                                                            &pcStopStr, defBASE_HEX));
-            odChannel.m_sFilter.m_ucACC_Mask1 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte2[0].c_str(),
-                                                            &pcStopStr, defBASE_HEX));
-            odChannel.m_sFilter.m_ucACC_Mask2 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte3[0].c_str(),
-                                                            &pcStopStr, defBASE_HEX));
-            odChannel.m_sFilter.m_ucACC_Mask3 = static_cast <UCHAR>(
-                                                    _tcstol( pControllerDetails[ nIndex ].m_omStrAccMaskByte4[0].c_str(),
-                                                            &pcStopStr, defBASE_HEX));
-            odChannel.m_sFilter.m_ucACC_Filter_Type = static_cast <UCHAR>(
-                        pControllerDetails[ nIndex ].m_bAccFilterMode );
+
             odChannel.m_bCNF1 = static_cast <UCHAR>(
                                     _tcstol( pControllerDetails[ nIndex ].m_omStrCNF1.c_str(),
                                              &pcStopStr, defBASE_HEX));
@@ -1750,16 +1724,6 @@ static int nSetWarningLimit()
 /**
  * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
  *
- * This function will set the filter information.
- */
-static int nSetFilter( )
-{
-    return 0;
-}
-
-/**
- * \return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
- *
  * This function will set all controller parameters. This will
  * set Baud rate, Filter, Warning Limit and Controller Mode. In
  * case of USB the warning limit call will be ignored.
@@ -1771,9 +1735,8 @@ static int nSetApplyConfiguration()
     // Set Hardware Mode
     if ((nReturn = nSetHardwareMode(sg_ucControllerMode)) == defERR_OK)
     {
-        // Set Filter
-        nReturn = nSetFilter();
     }
+
     // Set warning limit only for hardware network
     if ((nReturn == defERR_OK) && (sg_ucControllerMode != defUSB_MODE_SIMULATE))
     {

@@ -14,32 +14,28 @@
  */
 
 /**
- * \file      DIL_Interface/DIL_Interface.h
- * \brief     Definition file for CDILApp class.
- * \author    Pradeep Kadoor
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Definition file for CDILApp class.
+ * @author Pradeep Kadoor
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition file for CDILApp class.
  */
+
 #pragma once
 
-// CDILApp
-// See FrameProcessor.cpp for the implementation of this class
-//
 #ifndef __AFXWIN_H__
 #error include 'stdafx.h' before including this file for PCH
 #endif
 
 class CDILApp : public CWinApp
 {
-    // Overrides
 public:
     CDILApp();
     ~CDILApp();
 
-    // To be used by the read thread
     virtual BOOL InitInstance();
 
     DECLARE_MESSAGE_MAP();
+
     virtual int ExitInstance();
 };

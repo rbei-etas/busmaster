@@ -14,49 +14,31 @@
  */
 
 /**
- * \file      FFListCtrl.h
- * \brief     This file contain the definition of CFFListCtrl class
- * \author    Raja N
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief This file contain the definition of CFFListCtrl class
+ * @author Raja N
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contain the definition of CFFListCtrl class
  */
 
 #pragma once
 
-/////////////////////////////////////////////////////////////////////////////
-// CFFListCtrl window
-
 class CFFListCtrl : public CListCtrl
 {
-    // Screen Rectangle
-    CRect m_rectClient;
-    // Construction
 public:
     CFFListCtrl();
-    void vInitMemDCRect();
-    // Attributes
-public:
-
-    // Operations
-public:
-
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CFFListCtrl)
-    //}}AFX_VIRTUAL
-
-    // Implementation
-public:
     virtual ~CFFListCtrl();
 
-    // Generated message map functions
+    void vInitMemDCRect();
+
 protected:
-    //{{AFX_MSG(CFFListCtrl)
     afx_msg void OnSize(UINT nType, int cx, int cy);
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
     afx_msg void OnPaint();
-    //}}AFX_MSG
 
     DECLARE_MESSAGE_MAP()
+
+private:
+    /** Screen Rectangle */
+    CRect m_rectClient;
 };

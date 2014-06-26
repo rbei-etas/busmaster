@@ -1090,12 +1090,6 @@ static int nSetWarningLimit()
     return nReturn;
 }
 
-static int nSetFilter( )
-{
-    int nReturn = -1;
-    return nReturn;
-}
-
 /* apply controller mode and baud rate */
 static int nSetApplyConfiguration()
 {

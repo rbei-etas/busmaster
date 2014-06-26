@@ -198,7 +198,7 @@ static INT sg_anSelectedItems[CHANNEL_ALLOWED];
  */
 static UINT sg_nNoOfChannels = 0;
 
-static char sg_omErrStr[MAX_STRING] = {0};
+static char sg_omErrStr[256] = {0};
 
 // Count variables
 static UCHAR sg_ucNoOfHardware = 0;
