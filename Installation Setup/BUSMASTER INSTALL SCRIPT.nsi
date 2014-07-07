@@ -142,6 +142,21 @@ BGGradient 8080C0 0000FF FFFFFF
 ; Title of this installation
 Name "BUSMASTER"
 
+; Version Information
+; (see http://msdn.microsoft.com/en-us/library/windows/desktop/aa381058%28v=vs.85%29.aspx)
+VIProductVersion "${VERSION}.0" ; windows apps require four numbers. let's just set the fourth to zero.
+VIAddVersionKey "Comments" "Bus Monitoring and Analysis Tool"
+VIAddVersionKey "CompanyName" "Robert Bosch Engineering and Business Solutions (RBEI)"
+VIAddVersionKey "FileDescription" "BUSMASTER"
+VIAddVersionKey "FileVersion" "${VERSION}"
+VIAddVersionKey "InternalName" "BUSMASTER_Installer_Ver_${VERSION}.exe"
+VIAddVersionKey "LegalCopyright" "Copyright Robert Bosch Engineering and Business Solutions (RBEI)"
+VIAddVersionKey "LegalTrademarks" "BUSMASTER is a registered trademark of ETAS GmbH"
+VIAddVersionKey "PrivateBuild" "" ; e.g. Built by TESTER1 on \TESTBED
+VIAddVersionKey "ProductName" "BUSMASTER"
+VIAddVersionKey "ProductVersion" "${VERSION}"
+VIAddVersionKey "SpecialBuild" "" ; e.g. Private build for TESTER1 solving mouse problems on M250 and M250E computers
+
 ; Do a CRC check when initializing setup
 CRCCheck On
 
@@ -899,11 +914,19 @@ NoInstall:
 	; create desktop shortcut
 	CreateShortCut "$DESKTOP\BUSMASTER v${VERSION}.lnk" "$INSTDIR\BUSMASTER.exe" ""
 	
-    ; Registry entries
+    ; Registry entries for uninstaller
     WriteRegStr HKLM "Software\BUSMASTER_v${VERSION}" "Install_Dir" "$INSTDIR"
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "DisplayName" "BUSMASTER Ver ${VERSION}(remove only)"
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "UninstallString" '"$INSTDIR\uninst.exe"'
-
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "DisplayName" "BUSMASTER Ver ${VERSION}"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "UninstallString" "$INSTDIR\uninst.exe"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "InstallLocation " "$INSTDIR\"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "DisplayIcon" "$INSTDIR\BUSMASTER.exe"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "Publisher" "Robert Bosch Engineering and Business Solutions"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "HelpLink" "http://rbei-etas.github.io/busmaster/"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "URLUpdateInfo" "http://rbei-etas.github.io/busmaster/"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "URLInfoAbout" "http://rbei-etas.github.io/busmaster/"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "DisplayVersion" "${VERSION}"
+    WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "NoModify" "1"
+    WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "NoRepair" "1"
 
     ; Compatibility settings for Windows 7
     ReadRegStr $1 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
