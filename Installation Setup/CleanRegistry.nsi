@@ -21,7 +21,7 @@
  *
  * Source script for BUSMASTER Clean Registry
  */
- 
+
 !include "NSISHeaders.nsh"
 
 ; Title of this installation
@@ -36,13 +36,14 @@ Outfile "BUSMASTER_Cleanup_Registry.exe"
 SectionGroup "Main"
 
 Section "BUSMASTER"
-	IfFileExists Software\RBEI-ETAS\BUSMASTER_v${VERSION}\Files\ConfigFile bRegEntryExists
-	 bRegEntryExists:
-	 WriteRegStr HKCU "Software\RBEI-ETAS\BUSMASTER_v${VERSION}\Files" "ConfigFile" ""
-	 
-	IfFileExists Software\RBEI-ETAS\BUSMASTER_v${VERSION} bRegEntryMruExists
-	 bRegEntryMruExists:
-	 DeleteRegKey HKCU "Software\RBEI-ETAS\BUSMASTER_v${VERSION}\MRU List"
-	
+  IfFileExists Software\RBEI-ETAS\BUSMASTER_v${VERSION}\Files\ConfigFile bRegEntryExists
+   bRegEntryExists:
+   WriteRegStr HKCU "Software\RBEI-ETAS\BUSMASTER_v${VERSION}\Files" "ConfigFile" ""
+
+  IfFileExists Software\RBEI-ETAS\BUSMASTER_v${VERSION} bRegEntryMruExists
+   bRegEntryMruExists:
+   DeleteRegKey HKCU "Software\RBEI-ETAS\BUSMASTER_v${VERSION}\MRU List"
+
 SectionEnd
+
 SectionGroupEnd
