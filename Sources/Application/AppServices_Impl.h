@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      AppServices_Impl.h
- * \brief     Concrete class definition for the application service layer
- * \authors   Ratnadip Choudhury, Anish Kumar
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief Concrete class definition for the application service layer
+ * @authors Ratnadip Choudhury, Anish Kumar
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Concrete class definition for the application service layer
  */
@@ -29,13 +28,10 @@
 class CAppServices_Impl : public CBaseAppServices
 {
 public:
-    // Variables
-    CUIThread* m_podUIThread;
+    CAppServices_Impl();
+    ~CAppServices_Impl();
 
-public:
-    CAppServices_Impl();       // Standard constructor
-    ~CAppServices_Impl();      // Destructor
-
-    // Functions
     BOOL bWriteToTrace(char* pcTraceStr);
+
+    CUIThread* m_podUIThread;
 };

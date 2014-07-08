@@ -45,11 +45,22 @@ typedef void (CALLBACK* APPTIMERPOINTER)(UINT,UINT,DWORD,DWORD,DWORD);
 // to be stored in the main configuration file.
 struct sSIMSYSARRAY
 {
-    //  UINT m_unNoOfSimsys;                // No. of simulated systems.
-    CString m_omStrSimSysPath;          // simulated system path.
-    CString m_omStrSimSysName;          // simulated system name.
-    sSIMSYSARRAY* psNextSimsys;         // Pointer to the next simulated system.
     sSIMSYSARRAY();
+
+    /** simulated system path */
+    CString m_omStrSimSysPath;
+
+    /** simulated system name */
+    CString m_omStrSimSysName;
+
+    /** Pointer to the next simulated system */
+    sSIMSYSARRAY* psNextSimsys;
+
+    /**
+     * Copies the contents of the destination(Param) linked list into
+     * the source(Member) linked list. Source linked list will be
+     * reduced or increased if necessary.
+     */
     sSIMSYSARRAY& operator=(const sSIMSYSARRAY& RefObj);
 };
 typedef sSIMSYSARRAY SSIMSYSARRAY;
@@ -97,8 +108,6 @@ struct sNODETIMERLIST
 };
 typedef sNODETIMERLIST  SNODETIMERLIST;
 typedef SNODETIMERLIST*  PSNODETIMERLIST;
-
-
 
 // This structure stores the key value and pointer to its corresponding function
 // to be executed on press of the key.
@@ -406,7 +415,6 @@ struct sTOOLBAR_BUTTON_STATUS
 typedef sTOOLBAR_BUTTON_STATUS STOOLBARINFO;
 typedef sTOOLBAR_BUTTON_STATUS* PSTOOLBARINFO;
 
-
 struct sMSGINFORMATION
 {
     sTCANDATA   m_sCanData;
@@ -416,10 +424,6 @@ struct sMSGINFORMATION
 
 typedef sMSGINFORMATION SMSGINFORMATION;
 typedef SMSGINFORMATION* PSMSGINFORMATION;
-
-
-
-
 
 static char s_cStatus[][2] = {"|","/","-","\\"};
 
@@ -491,8 +495,6 @@ struct sPropertiesList
 
 typedef sPropertiesList SPROPERTIESLIST;
 typedef SPROPERTIESLIST* PSPROPERTIESLIST;
-
-
 
 // Tx window spilitter details
 struct tagTxMsgSplitterData
@@ -639,51 +641,6 @@ public:
     bool m_bOverwrite;
     bool m_bIsMasterMode;
 };
-
-
-//
-//class CExecuteFunc;
-////New data structure to store  node name and the "CExecuteFunc" pointer associated to that node:
-//struct sNODEOBJECT
-//{
-// CString om_NodeName;
-// CExecuteFunc* m_psExecuteFunc;
-// sNODEOBJECT* m_psNextNode;
-//};
-//typedef  sNODEOBJECT SNODEOBJECT;
-//typedef  SNODEOBJECT* PSNODEOBJECT;
-//
-////structure to store information of the thread
-////calculating the timer's execution time
-//struct sCALCEXECTIMETHREAD
-//{
-// bool  m_bThreadStop;
-// CWinThread* m_pomThreadPtr;
-// CEvent m_omExitThreadEvent;
-//};
-//typedef  sCALCEXECTIMETHREAD SCALCEXECTIMETHREAD;
-//typedef  SCALCEXECTIMETHREAD* PSCALCEXECTIMETHREAD;
-//
-//
-////The structure pass to thread function for load Fn execution
-//struct sEXECUTE_LOAD_HANDLER
-//{
-//    PFDLL_HANDLER pFDllHandler;
-//    CExecuteFunc* m_pCExecuteFunc;
-//};
-//typedef sEXECUTE_LOAD_HANDLER SEXECUTE_LOAD_HANDLER;
-//typedef sEXECUTE_LOAD_HANDLER* PSEXECUTE_LOAD_HANDLER;
-//
-////The structure to store message and hmodule for the messages
-////transmitted from a DLL
-//struct sDLL_MSG
-//{
-//    STCAN_MSG sRxMsg;
-//    HMODULE h_DllHandle;
-//};
-//typedef sDLL_MSG SDLL_MSG;
-//typedef SDLL_MSG* PSDLL_MSG;
-
 
 // Log File States enumaration
 enum eLogFileStates { LOGGING_YET_TO_START, LOGGING_STARTED, LOGGING_STOPPED } ;

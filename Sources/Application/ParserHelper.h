@@ -31,6 +31,7 @@ struct LdfSignal
     std::string m_strCompuMethodName;
     CCompuMethodEx m_ouCompuMethod;
 };
+
 struct LdfFrame
 {
     int m_nId;
@@ -38,6 +39,7 @@ struct LdfFrame
     std::string m_strTxNode;
     int nLength;
     std::map<int, std::string> m_SignalMap;
+
     void Clear()
     {
         m_nId = 0;
@@ -61,14 +63,10 @@ struct LdfCompuMethod
 
 class CParserHelper
 {
-    std::stack<eCurrentSection> m_ouSectionStack;
-    eCurrentSection m_eCurrentSection;
-    CHANNEL_CONFIG& m_ouCluster;
-    std::list<CSheduleTable> m_listScheduleTable;
-
-    std::list<CScheduleCommands> m_listTempScheduleCommands;
-
 public:
+    CParserHelper(CHANNEL_CONFIG&);
+    ~CParserHelper(void);
+
     std::string m_strMasterName;
     int m_nBaudRate;
     std::string m_strProtocol;
@@ -81,27 +79,20 @@ public:
     std::map<std::string, LdfSignal> m_LdfSignalList;
     std::list<std::string> m_LdfSporadicFrameList;
     std::map<std::string, int> m_LdfEventTriggerFrameList;
-
     std::map<std::string, LdfCompuMethod> m_LdfCompuMethodMap;
     std::map<int, LdfFrame> m_LdfFrameMap;
 
     LdfFrame m_ouDiagMasterFrame;
     LdfFrame m_ouDiagSlaveFrame;
-
     LdfFrame m_ouLdfFrame;
 
     unsigned _int64 m_unSignalVal;
-    CParserHelper(CHANNEL_CONFIG&);
-    ~CParserHelper(void);
+
     void Initialise(void);
     int OnSectionStarted(eCurrentSection ouCurrentSection);
-    //int OnSectionStarted(string strSection);
     int OnSectionClosed();
-
-
     int nOnProtocolVersion(std::string strProtocolVer);
     int nOnLinBaudRate(std::string strBaudRate);
-
     void GetStringSectionName(eCurrentSection ouCurrebtSection, std::string& strSectionName);
     int nOnSignal(LdfSignal& ouSignal);
     int nAddSignaltoFrame(std::string strName, int nAt);
@@ -110,15 +101,19 @@ public:
     int OnSporadicOrCompuType(std::string strId);
     int OnSporadicFrame(std::string strName);
     int OnEventTriggeredFrame(std::string strId, int nId);
-
     int nAddCommand (  CScheduleCommands& ouScheduleCommand );
     int nAddScheduleTable( std::string strName );
     int nUpdateEcuDetails(std::string strEcuName, Ecu_Lin_Params& );
     HRESULT nGetMessageTypeId( std::string strFrameName, int& nId, eCommandType& m_eCommandType );
-
-
     INT CreateNetwork();
+
 private:
+    std::stack<eCurrentSection> m_ouSectionStack;
+    eCurrentSection m_eCurrentSection;
+    CHANNEL_CONFIG& m_ouCluster;
+    std::list<CSheduleTable> m_listScheduleTable;
+    std::list<CScheduleCommands> m_listTempScheduleCommands;
+
     int nCreateEcus();
     int nAaddFrameToEcu(std::string& strTxNode, std::map<std::string, std::string>& ouEcuFrameMap, FRAME_STRUCT& ouFrame);
     int nCreateMapList(std::map<std::string, std::string>& strDes, std::list<std::string>& strSourceList);
@@ -126,4 +121,3 @@ private:
     eCommandType eGetCommandType(std::string& strName);
     int nFillDiagnosticDetails(CScheduleCommands& ouScheduleCommand);
 };
-

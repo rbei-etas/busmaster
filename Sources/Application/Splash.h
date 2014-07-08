@@ -14,50 +14,34 @@
  */
 
 /**
- * \file      Splash.h
- * \author    Arunkumar K.
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @author Arunkumar K.
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
 #pragma once
 
 class CSplashScreen : public CWnd
 {
-    // Construction
-protected:
-    CSplashScreen();
+    DECLARE_MESSAGE_MAP()
 
-    // Attributes:
 public:
-    CBitmap m_ouBitMapImage;
+    ~CSplashScreen();
 
-    // Operations
-public:
+    virtual void PostNcDestroy();
     static void ActivateSplashScreen(BOOL bActivate = TRUE);
     static void DisplaySplashScreen(CWnd* pParentWnd = nullptr, INT nShow = SW_SHOW);
     static BOOL PreTranslateAppMessage(MSG* pMsg);
 
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CSplashWnd)
-    //}}AFX_VIRTUAL
-
-    // Implementation
-public:
-    ~CSplashScreen();
-    virtual void PostNcDestroy();
+    CBitmap m_ouBitMapImage;
 
 protected:
+    CSplashScreen();
+
     BOOL Create(CWnd* pParentWnd = nullptr);
     static BOOL sm_bShowScreen;
     static CSplashScreen* sm_pouSplashScreen;
 
-    // Generated message map functions
-protected:
-    //{{AFX_MSG(CSplashWnd)
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     afx_msg void OnPaint();
     afx_msg void OnTimer(UINT nIDEvent);
-    //}}AFX_MSG
-    DECLARE_MESSAGE_MAP()
 };

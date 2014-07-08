@@ -14,10 +14,9 @@
  */
 
 /**
- * \file      BUSMASTER.h
- * \brief     This header file for CCANMonitorApp class
- * \authors   Amitesh Bharti, Ratnadip Choudhury, Anish kumar
- * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * @brief This header file for CCANMonitorApp class
+ * @authors Amitesh Bharti, Ratnadip Choudhury, Anish kumar
+ * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This header file for CCANMonitorApp class
  */
@@ -29,80 +28,68 @@
 #include "Flags.h"      // For CFlags
 #include "Struct.h" // Added by ClassView
 #include "ConfigDetails.h"  // Added by ClassView, reqd for CConfigDetails obj
-//#include "GettextBusmaster.h"
-#include "Utility\MultiLanguageSupport.h"
-
-/////////////////////////////////////////////////////////////////////////////
-// CCANMonitorApp:
-// See BUSMASTER.cpp for the implementation of this class
-//
+#include "Utility/MultiLanguageSupport.h"
 
 class CCANMonitorApp : public CWinApp
 {
+    DECLARE_MESSAGE_MAP()
+
 public:
-    // Wrapper around CConfigDetails::vSetConfigurationModified()
+    CCANMonitorApp();
+
+    /** Wrapper around CConfigDetails::vSetConfigurationModified() */
     void vSetConfigurationModified(BOOL bModified = TRUE);
-    // Wrapper around CConfigDetails::bIsConfigurationModified()
+
+    /** Wrapper around CConfigDetails::bIsConfigurationModified() */
     BOOL bIsConfigurationModified();
-    // wrapper around CConfigDetails::nSaveConfiguration(..)
-    //INT nSaveConfiguration (CString omStrCfgFilename/*=defDEFAULTCFGFILE*/);
-    // wrapper around CConfigDetails::nLoadConfiguration(..)
-    //INT nLoadConfiguration(CString omStrFilename ,BOOL bFromCom);
-    // wrapper around CConfigDetails::vRelease(..)
+
+    /** wrapper around CConfigDetails::vRelease(..) */
     void vRelease1(eCONFIGDETAILS eParam, LPVOID* lpDataPtr);
-    // wrapper around CConfigDetails::bGetData(..)
+
+    /** wrapper around CConfigDetails::bGetData(..) */
     BOOL bGetData1(eCONFIGDETAILS  eParam, LPVOID* lpData);
-    // wrapper around CConfigDetails::bSetData(..)
+
+    /** wrapper around CConfigDetails::bSetData(..) */
     BOOL bSetData1(eCONFIGDETAILS  eParam, LPVOID lpVoid);
+
     PSMSGBLOCKLIST psReturnMsgBlockPointer();
-    // To get Default window size
+
+    /** To get Default window size */
     BOOL bGetDefaultValue( eCONFIGDETAILS eParam, WINDOWPLACEMENT& sPosition );
-    // To get default splitter window position
+
+    /** To get default splitter window position */
     BOOL bGetDefaultSplitterPostion(eCONFIGDETAILS eParam, CRect omWindowSize,
                                     LPVOID* pData);
 
-    //PSSIMSYSARRAY psReturnSimsysArrayPtr();
-
-public:
-    //CExecutefunc
     STHREADINFO m_asUtilThread[defEVENT_TOTAL-defOFFSET_TXMSG];
     CEvent m_aomState[defEVENT_TOTAL];
     void vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode);
     void GetLoadedConfigFilename(CString& roStrCfgFile);
     bool bReadFromRegistry(HKEY hRootKey, CString strSubKey, CString strName,  DWORD dwType, CString& strValue , DWORD& dwValue);
-    //INT nNewConfiguration(CString omStrFilename);
     CString omStrGetUnionFilePath(CString omStrTemp);
     CMsgSignal* m_pouMsgSignal;
     CMsgSignal* m_pouMsgSgInactive;
-    CHAR m_acApplicationDirectory[MAX_PATH];// Specifies the application directory
 
+    /**  Specifies the application directory */
+    CHAR m_acApplicationDirectory[MAX_PATH];
 
-    CCANMonitorApp();
     void vSetHelpID(DWORD dwHelpID);
     void vPopulateCANIDList();
     CFlags* pouGetFlagsPtr();
-    //CString m_omStrUnionPath;
     BOOL m_bFromAutomation;
 
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CCANMonitorApp)
-public:
     virtual BOOL InitInstance();
     virtual void WinHelp(DWORD dwData, UINT nCmd = HELP_CONTEXT);
     virtual int ExitInstance();
     virtual CWnd* GetMainWnd();
-    //}}AFX_VIRTUAL
 
-    // Implementation
-    //{{AFX_MSG(CCANMonitorApp)
     afx_msg void OnAppAbout();
     afx_msg void OnFileOpen();
     afx_msg void OnFileNew();
-    // NOTE - the ClassWizard will add and remove member functions here.
-    //    DO NOT EDIT what you see in these blocks of generated code !
-    //}}AFX_MSG
-    DECLARE_MESSAGE_MAP()
+
+    INT COM_nSaveConfiguration(CString omStrCfgFilename);
+    BOOL bWriteIntoTraceWnd(char* omText, BOOL bTrace = TRUE);
+
 private:
     BOOL bInitialiseConfiguration(BOOL bFromCom);
     void vSetFileStorageInfo(CString oCfgFilename);
@@ -114,14 +101,7 @@ private:
     DWORD m_dwHelpID;
     CFlags* m_pouFlags;
     BOOL m_bIsMRU_CreatedInOpen;
-
     sTOOLBAR_BUTTON_STATUS m_sToolbarInfo;
     CString m_omMRU_C_FileName;
     WINDOWPLACEMENT m_sNotificWndPlacement;
-
-protected:
-    //CConfigDetails m_oConfigDetails;
-public:
-    INT COM_nSaveConfiguration(CString omStrCfgFilename);
-    BOOL bWriteIntoTraceWnd(char* omText, BOOL bTrace = TRUE);
 };

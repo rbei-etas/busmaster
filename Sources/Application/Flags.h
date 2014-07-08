@@ -27,7 +27,7 @@
 // Definition of PSTOOLBARINFO structure is here
 #include "struct.h"
 
-// enumeration for all flags
+/** enumeration for all flags */
 typedef enum eCANMONITORFLAG
 {
     LOGTODISPLAY = 0,
@@ -78,6 +78,7 @@ typedef enum eCANMONITORFLAG
     FLEXRAYSENDMSG,
     ADRESSCLAIM_J1939
 };
+
 typedef enum eFLEXRAYMONITORFLAG
 {
     FLEX_CONNECTED = 0,
@@ -86,16 +87,17 @@ typedef enum eFLEXRAYMONITORFLAG
 class CFlags
 {
 public:
-    void vSetToolbarButtonStatus(  PSTOOLBARINFO psToolBarInfo );
+    CFlags();
+    CFlags(PSTOOLBARINFO psToolBarInfo);
+    virtual ~CFlags();
+
+    void vSetToolbarButtonStatus(PSTOOLBARINFO psToolBarInfo);
     void vGetToolbarButtonStatus( PSTOOLBARINFO psToolBarInfo );
     int nGetFlagStatus(eCANMONITORFLAG WhichFlag);
     void vSetFlagStatus(eCANMONITORFLAG WhichFlag, int nValue);
     int nGetFlagStatus(eFLEXRAYMONITORFLAG WhichFlag);
     void vSetFlagStatus(eFLEXRAYMONITORFLAG WhichFlag, int nValue);
     void vInitializeFlags();
-    //CFlags(PSTOOLBARINFO psToolBarInfo);
-    //CFlags();
-    virtual ~CFlags();
     static CFlags& ouGetFlagObj(void);
 
 private:
@@ -150,7 +152,5 @@ private:
     /* FLEXRAY Flags */
     BOOL m_bFlexConnected;
     // Private constructors to make singleton class
-    CFlags();
-    CFlags(PSTOOLBARINFO psToolBarInfo);
     static CFlags sm_ouSingletonObj;
 };

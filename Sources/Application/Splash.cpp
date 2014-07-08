@@ -24,11 +24,10 @@
 
 #include "Splash.h"
 
-/////////////////////////////////////////////////////////////////////////////
-//   Splash Screen class
-
 BOOL CSplashScreen::sm_bShowScreen;
+
 CSplashScreen* CSplashScreen::sm_pouSplashScreen;
+
 CSplashScreen::CSplashScreen()
 {
 }
@@ -39,11 +38,9 @@ CSplashScreen::~CSplashScreen()
 }
 
 BEGIN_MESSAGE_MAP(CSplashScreen, CWnd)
-    //{{AFX_MSG_MAP(CSplashScreen)
     ON_WM_CREATE()
     ON_WM_PAINT()
     ON_WM_TIMER()
-    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 void CSplashScreen::ActivateSplashScreen(BOOL bActivate /*= TRUE*/)
@@ -114,6 +111,7 @@ BOOL CSplashScreen::Create(CWnd* pParentWnd /*= nullptr*/)
     }
     return bResult;
 }
+
 void CSplashScreen::PostNcDestroy()
 {
     delete this;
