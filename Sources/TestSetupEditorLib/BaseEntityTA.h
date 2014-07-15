@@ -55,7 +55,7 @@ public:
 
 
     HRESULT SearchEntityObject(DWORD dwId, CBaseEntityTA** pEnityObject);
-    HRESULT SetDatabaseFile(CString& omstrDataBasePath);
+    HRESULT SetDatabaseFile(CString& omstrDataBasePath, int nChannelNumber);
     HRESULT GetDataBaseManager(CDataBaseMsgList& ouDataBaseManager);
     static DWORD GetUniqueID(void);
     void vEnableEntity(bool bEnable);

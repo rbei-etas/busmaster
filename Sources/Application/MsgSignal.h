@@ -39,6 +39,21 @@
 //typedef HRESULT (__stdcall* GETPARSER_FIBEX)(void** ppvInterface);
 //static GETPARSER_FIBEX pfGetParser_FIBEX;
 
+////////////////////////////////////////////////////////////////////////////
+//
+//
+// Special Hashkey for String Maps
+//
+template<class ARG_KEY> 
+AFX_INLINE UINT AFXAPI HashKey (CString& strKey)
+{
+        LPCSTR key = strKey;
+        UINT nHash = 0;
+        while (*key)
+                nHash = (nHash<<5) + nHash + *key++;
+        return nHash; 
+}
+
 class CMsgSignal
 {
 public:
@@ -55,6 +70,7 @@ public:
     {
         CString m_omStrDatabasePath; // Database path
         UINT m_unMessageCount;       // Message count in the database
+        INT m_nChannelNumber;        // Channel the database belongs to
         sMESSAGE* m_psMessages;      // Pointer to the array of message structure
         sDBFileStruct* m_psNextDBFileStruct;
     };
@@ -72,9 +88,9 @@ private:
     BOOL m_bIsDatabaseActive;
     CString m_strActiveDBFileName;
     //This is pointer to the list of database structures
-    sDBFileStruct* m_psDatbaseStructList;
+    sDBFileStruct* m_psDatabaseStructList;
     //CMap to store the all the messages of all the DBs for faster searches
-    CMap <UINT, UINT, sMESSAGE*, sMESSAGE*> m_omMsgDetailsIDMap;
+    CMap <CString, CString, sMESSAGE*, sMESSAGE*> m_omMsgDetailsIDMap;
     //For shared CMap access and deletion
     CCriticalSection m_omDBMapCritSec;
     // Is application running in automation server mode
@@ -193,13 +209,13 @@ public:
     BOOL bAddMsg();
 
     // Return no of messages
-    UINT unGetNumerOfMessages();
+    UINT unGetNumberOfMessages();
 
     // Save into DB file
     BOOL bWriteIntoDatabaseFileFromDataStructure( CString strFileName, eProtocol eProtocolName = PROTOCOL_CAN);
 
     // Read from the DB file
-    BOOL bFillDataStructureFromDatabaseFile( CString strFileName, eProtocol eProtocolName = PROTOCOL_CAN);
+    BOOL bFillDataStructureFromDatabaseFile( CString strFileName, eProtocol eProtocolName = PROTOCOL_CAN, INT nCHANNELNUMBER = 0);
 
     // Get all signal names
     void vGetSignalNames( UINT unMsgID, CStringList& strSignalList);
@@ -226,12 +242,13 @@ public:
     // Free reserved memory
     BOOL bDeAllocateMemory(CString strDBName);
     //Delete the memory allocated to a particular Database
-    BOOL bDeAllocateDBMemory(sDBFileStruct* psDatbaseStructList);
+    BOOL bDeAllocateDBMemory(sDBFileStruct* psDatabaseStructList);
     //Delete the memory allocated to a Inactive Database
     BOOL bDeAllocateMemoryInactive();
     // Return the array of DB file
     void vGetDataBaseNames(CStringArray* pastrDBnames);
-    void vGetRelativeDataBaseNames(std::string& omStrBasePath, CStringArray* pastrDBnames);
+    void vGetDatabaseChannels(CStringArray* omDbChannels);
+    void vGetRelativeDataBaseNames(std::string& omStrBasePath, CStringArray* pastrDBnames/*, BYTE* byChannel*/);
     void vSetDataBaseNames(const CStringArray* pastrDBnames);
     void bAddDbNameEntry(const CString& omDbFileName);
     // Validate dupliacte start bit value

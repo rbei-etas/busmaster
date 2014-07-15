@@ -53,7 +53,7 @@ private:
     BOOL m_bIsDatabaseActive;
     CString m_strActiveDBFileName;
     //This is pointer to the list of database structures
-    sDBFileStruct* m_psDatbaseStructList;
+    sDBFileStruct* m_psDatabaseStructList;
     //CMap to store the all the messages of all the DBs for faster searches
     CMap <UINT, UINT, sMESSAGE*, sMESSAGE*> m_omMsgDetailsIDMap;
     //For shared CMap access and deletion
@@ -161,7 +161,7 @@ public:
     BOOL bAddMsg();
 
     // Return no of messages
-    UINT unGetNumerOfMessages();
+    UINT unGetNumberOfMessages();
 
     // Save into DB file
     BOOL bWriteIntoDatabaseFileFromDataStructure( CString strFileName);
@@ -194,7 +194,7 @@ public:
     // Free reserved memory
     BOOL bDeAllocateMemory(CString strDBName);
     //Delete the memory allocated to a particular Database
-    BOOL bDeAllocateDBMemory(sDBFileStruct* psDatbaseStructList);
+    BOOL bDeAllocateDBMemory(sDBFileStruct* psDatabaseStructList);
     //Delete the memory allocated to a Inactive Database
     BOOL bDeAllocateMemoryInactive();
     // Return the array of DB file

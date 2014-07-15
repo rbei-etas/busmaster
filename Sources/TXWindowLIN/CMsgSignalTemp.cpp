@@ -121,7 +121,7 @@ BOOL CMsgSignal::bCalcBitMaskForSig(BYTE* pbyMaskByte, UINT unArrayLen,
   Date Created     :  15.02.2002
   Modifications    :
 ******************************************************************************/
-UINT CMsgSignal::unGetNumerOfMessages()
+UINT CMsgSignal::unGetNumberOfMessages()
 {
     return ((UINT)m_omMsgDetailsIDMap.GetCount());
 }

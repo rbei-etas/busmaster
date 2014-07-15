@@ -28,8 +28,8 @@ class CTestSetupHeader
 public:
     //Bus Type
     eTYPE_BUS m_eBus;
-    //Database file path
-    CString m_omDatabasePath;
+    //Database file paths
+    CStringArray m_omDatabasePaths;
     //Name of the engineer
     SInfo m_sEngineerInfo1;
     //Engineer's role / designation
@@ -44,6 +44,7 @@ public:
     //Member Functions
 public:
     CTestSetupHeader(void);
+    CTestSetupHeader& operator= (const CTestSetupHeader& src);
     HRESULT InitHeaderToDefault(void);
     HRESULT ValidateEntity(CString& omStrResult);
     virtual ~CTestSetupHeader(void);

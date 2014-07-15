@@ -112,17 +112,17 @@ HRESULT CVerify_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     //Retrieving Message Channel
     bstrNodeName = def_STR_TCATTRIB_CHANNEL;
     pIDOMAttributes->getNamedItem(bstrNodeName, &pIDOMChildNode);
-    m_ouData.m_byChannelNumber = 0;                 // set default-value for the case, the number is incorrect or the whole argument is missing
+    m_ouData.m_nChannelNumber = 0;                 // set default-value for the case, the number is incorrect or the whole argument is missing
     if (NULL != pIDOMChildNode)                     // avoid crash in case XML-file -without channel-information- is loaded
     {
         pIDOMChildNode->get_nodeTypedValue(&NodeValue);
         omstrTemp = strCopyBSTRToCString(NodeValue);
-        m_ouData.m_byChannelNumber = atoi((LPCSTR)omstrTemp);
+        m_ouData.m_nChannelNumber = atoi((LPCSTR)omstrTemp);
         pIDOMChildNode->Release();
     }
-    if(m_ouData.m_byChannelNumber == 0)             // if casting fails (failure in xml)
+    if(m_ouData.m_nChannelNumber == 0)             // if casting fails (failure in xml)
     {
-        m_ouData.m_byChannelNumber = 1; // set default channel */
+        m_ouData.m_nChannelNumber = 1; // set default channel */
         m_lDefaultChannelUsed = 1;
     }
 
@@ -299,7 +299,7 @@ HRESULT CVerify_MessageEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomVerifyNod
         pIDomTSAtrrib = pIDOMDoc->createAttribute(def_STR_TCATTRIB_CHANNEL);
         if(pIDomTSAtrrib!= NULL)
         {
-            pIDomTSAtrrib->value = _bstr_t(m_ouData.m_byChannelNumber);
+            pIDomTSAtrrib->value = _bstr_t(m_ouData.m_nChannelNumber);
             pChildElement->setAttributeNode(pIDomTSAtrrib);
         }
 
@@ -358,7 +358,7 @@ Codetag        :
 ******************************************************************************/
 HRESULT CVerify_MessageEntity::SetChannel(BYTE byChannel)
 {
-    m_ouData.m_byChannelNumber = byChannel;
+    m_ouData.m_nChannelNumber = byChannel;
     return S_OK;
 }
 
@@ -390,7 +390,7 @@ INT CVerify_MessageEntity::vUpdateSignals(CVerify_MessageData& ouData)
     ouTempSignalData.m_dwMessageID = ouData.m_dwMessageID;
     ouTempSignalData.m_eSignalUnitType = ouData.m_eSignalUnitType;
     ouTempSignalData.m_omMessageName = ouData.m_omMessageName;
-    ouTempSignalData.m_byChannelNumber = ouData.m_byChannelNumber;
+    ouTempSignalData.m_nChannelNumber = ouData.m_nChannelNumber;
 
     for(UINT i = 0; i < unSignalCount; i++)
     {
@@ -531,7 +531,7 @@ CVerify_MessageData::CVerify_MessageData(void)
     m_bResult = FALSE;
     //W4 Removal
     m_dwMessageID = (DWORD)-1;
-    m_byChannelNumber = 1;
+    m_nChannelNumber = 1;
     m_eSignalUnitType = RAW;
     m_omMessageName = "";
     m_odSignalConditionList.RemoveAll();
@@ -600,7 +600,7 @@ CVerify_MessageData& CVerify_MessageData::operator=(const CVerify_MessageData& R
     m_omMessageName = RefObj.m_omMessageName;
     m_dwMessageID = RefObj.m_dwMessageID;
     m_eSignalUnitType = RefObj.m_eSignalUnitType;
-    m_byChannelNumber = RefObj.m_byChannelNumber;
+    m_nChannelNumber = RefObj.m_nChannelNumber;
     m_odSignalConditionList.RemoveAll();
 
     INT Count = (INT)RefObj.m_odSignalConditionList.GetCount();

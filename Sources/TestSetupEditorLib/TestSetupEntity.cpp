@@ -850,15 +850,21 @@ INT CTestSetupEntity::nLoadHeader(MSXML2::IXMLDOMNodePtr& pHeaderDOMNode)
         }
     }
     //Taking Database
-
-    //bstrNodeName = def_STR_LISTOFDB;
+    long lCount2 = 0;
     bstrNodeName.Assign(SysAllocString(CT2W(def_STR_LISTOFDB)));
-    pInfoNode = pHeaderDOMNode->selectSingleNode(bstrNodeName);
-    pInfoNode->get_nodeTypedValue(&NodeValue);
-    m_ouTestSetupHeader.m_omDatabasePath = strCopyBSTRToCString(NodeValue);
-    //Set The Database Path
-    SetDatabaseFile(m_ouTestSetupHeader.m_omDatabasePath);
-    pInfoNode.Release();
+    IXMLDOMNodeListPtr pIDOMSignalList = pHeaderDOMNode->selectNodes(bstrNodeName);
+    pIDOMSignalList->get_length(&lCount2);
+
+    for(INT j = 0; j < lCount2; j++)
+    {
+        IXMLDOMNode* pIDOMSChildSignal;
+        pIDOMSignalList->get_item(j, &pIDOMSChildSignal);
+        pIDOMSChildSignal->get_nodeTypedValue(&NodeValue);
+        m_ouTestSetupHeader.m_omDatabasePaths.Add(strCopyBSTRToCString(NodeValue));
+        //Set The Database Paths
+        SetDatabaseFile(strCopyBSTRToCString(NodeValue), j+1);
+    }
+   // pInfoNode.Release();
 
     //bstrNodeName = def_STR_REPORT_FORMAT;
     bstrNodeName.Assign(SysAllocString(CT2W(def_STR_REPORT_FORMAT)));
@@ -978,7 +984,10 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
 
     //Bus Type
     pInfoElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_DBPATH_NODE));
-    bAddChildToNode(pInfoElement, def_STR_DATABASE, m_ouTestSetupHeader.m_omDatabasePath);
+    for(int i = 0; i < m_ouTestSetupHeader.m_omDatabasePaths.GetSize(); i++)
+    {
+        bAddChildToNode(pInfoElement, def_STR_DATABASE, m_ouTestSetupHeader.m_omDatabasePaths[i]);
+    }
     pIDomHeaderNode->appendChild(pInfoElement);
 
 

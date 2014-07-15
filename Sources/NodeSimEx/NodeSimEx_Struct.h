@@ -111,6 +111,7 @@ typedef struct tagDbNameMsg
 {
     bool                        m_bAssociated;
     CString                     m_omDbName;
+    INT                         m_nChannelNumber;
     CMsgNameMsgCodeList         m_oMsgNameMsgCodeList;
     tagDbNameMsg()
     {

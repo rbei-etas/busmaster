@@ -57,7 +57,7 @@ public:
     //Message Name
     CString m_omMessageName;
     //Message Channel
-    BYTE m_byChannelNumber;
+    INT m_nChannelNumber;
     //Signal Type
     eTYPE_UNIT_SIGNAL m_eSignalUnitType;
     //Signal Data List
@@ -81,7 +81,7 @@ public:
     HRESULT GetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
     HRESULT SetData(MSXML2::IXMLDOMElementPtr& pIDomTestCaseNode);
     HRESULT SetEntityData(eTYPE_ENTITY eCurrEntityType, void* pvEntityData);
-    HRESULT SetChannel(BYTE byChannel);
+    HRESULT SetChannel(INT nChannel);
     HRESULT ValidateEntity(CString& /*omStrResult*/);
     eTYPE_ENTITY GetEntityType(void);
     virtual ~CSend_MessageEntity(void);

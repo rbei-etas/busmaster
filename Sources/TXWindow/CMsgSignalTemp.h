@@ -23,6 +23,21 @@
 #include "include/BaseDefs.h"
 #include "Datatypes/MsgSignal_Datatypes.h"
 
+////////////////////////////////////////////////////////////////////////////
+//
+//
+// Special Hashkey for String Maps
+//
+template<class ARG_KEY> 
+AFX_INLINE UINT AFXAPI HashKey (CString& strKey)
+{
+        LPCSTR key = strKey;
+        UINT nHash = 0;
+        while (*key)
+                nHash = (nHash<<5) + nHash + *key++;
+        return nHash; 
+}
+
 class CMsgSignal
 {
 public:
@@ -116,6 +131,9 @@ public:
     /** Get message pointer for given message ID for inactive DB */
     sMESSAGE* psGetMessagePointerInactive( UINT unMsgID);
 
+    /** Get message pointer for given message name */
+    sMESSAGE* psGetMessagePointer( CString strMsgName);
+
     /** Convert Extended To Standard Frame Format */
     void vConvertExtendedToStandardFrameFormat(int&);
 
@@ -157,7 +175,7 @@ public:
     BOOL bAddMsg();
 
     /** Returns number of messages in the DB. */
-    UINT unGetNumerOfMessages();
+    UINT unGetNumberOfMessages();
 
     /** Save into DB file */
     BOOL bWriteIntoDatabaseFileFromDataStructure( CString strFileName);
@@ -193,7 +211,7 @@ public:
     BOOL bDeAllocateMemory(CString strDBName);
 
     /** Delete the memory allocated to a particular Database */
-    BOOL bDeAllocateDBMemory(sDBFileStruct* psDatbaseStructList);
+    BOOL bDeAllocateDBMemory(sDBFileStruct* psDatabaseStructList);
 
     /** Delete the memory allocated to a Inactive Database */
     BOOL bDeAllocateMemoryInactive();
@@ -246,10 +264,10 @@ private:
     CString m_strActiveDBFileName;
 
     /** This is pointer to the list of database structures */
-    sDBFileStruct* m_psDatbaseStructList;
+    sDBFileStruct* m_psDatabaseStructList;
 
     /** CMap to store the all the messages of all the DBs for faster searches */
-    CMap <UINT, UINT, sMESSAGE*, sMESSAGE*> m_omMsgDetailsIDMap;
+    CMap <CString, CString, sMESSAGE*, sMESSAGE*> m_omMsgDetailsIDMap;
 
     /** For shared CMap access and deletion */
     CCriticalSection m_omDBMapCritSec;

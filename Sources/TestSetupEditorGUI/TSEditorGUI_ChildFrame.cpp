@@ -735,36 +735,7 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     omTempListCtrl.SetItemText(def_TS_ROWNUM_ENGINEER2, def_COLUMN_VALUE, ouHeaderInfo.m_sEngineerInfo2.m_omValue);
     omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_ENGINEER2, def_COLUMN_VALUE, sListInfo);
 
-    //DataBase - ROW7
-    sListInfo.m_eType = eBrowser;
-    sListInfo.m_omEntries.RemoveAll();
-    sListInfo.m_omEntries.Add("*.dbf");
-    sListInfo.m_omEntries.Add(_("DataBase File (*.dbf)|*.dbf||"));
-    omTempListCtrl.InsertItem(def_TS_ROWNUM_DATABASE, _("DataBase Path"));
-    omTempListCtrl.SetItemText(def_TS_ROWNUM_DATABASE, def_COLUMN_VALUE, ouHeaderInfo.m_omDatabasePath);
-    omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_DATABASE, def_COLUMN_VALUE, sListInfo);
-
-
-
-    //Report File Path - ROW8
-    CString omStrDefExt;
-    CString omStrFilter;
-
-    omStrDefExt = "*.txt";
-    omStrFilter = _("Text Files (*.txt)|*.txt|Html Files (*html)|*.html||");
-
-    sListInfo.m_eType = eBrowser;
-    sListInfo.m_omEntries.RemoveAll();
-    sListInfo.m_omEntries.Add(omStrDefExt);
-    sListInfo.m_omEntries.Add(omStrFilter);
-    omTempListCtrl.InsertItem(def_TS_ROWNUM_REPORT, _("Report File Path"));
-
-
-    omTempListCtrl.SetItemText(def_TS_ROWNUM_REPORT, def_COLUMN_VALUE, ouHeaderInfo.m_sReportFile.m_omPath);
-    omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_REPORT, def_COLUMN_VALUE, sListInfo);
-
-
-    //Time Mode - ROW9
+    //Time Mode - ROW7
     sListInfo.m_eType = eComboItem;
     sListInfo.m_omEntries.RemoveAll();
     sListInfo.m_omEntries.Add(_("ABSOLUTE"));
@@ -782,6 +753,38 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     }
     omTempListCtrl.SetItemText(def_TS_ROWNUM_TIMEMODE, def_COLUMN_VALUE, omStrTemp);
     omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_TIMEMODE, def_COLUMN_VALUE, sListInfo);
+
+
+    //Report File Path - ROW8
+    CString omStrDefExt = "*.txt";;
+    CString omStrFilter = _("Text Files (*.txt)|*.txt|Html Files (*html)|*.html||");
+    sListInfo.m_eType = eBrowser;
+    sListInfo.m_omEntries.RemoveAll();
+    sListInfo.m_omEntries.Add(omStrDefExt);
+    sListInfo.m_omEntries.Add(omStrFilter);
+    omTempListCtrl.InsertItem(def_TS_ROWNUM_REPORT, _("Report File Path"));
+    omTempListCtrl.SetItemText(def_TS_ROWNUM_REPORT, def_COLUMN_VALUE, ouHeaderInfo.m_sReportFile.m_omPath);
+    omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_REPORT, def_COLUMN_VALUE, sListInfo);
+
+    //DataBase - ROW9 to ROWn
+    CString omStrCategoryText = "DataBase Path CH";
+    sListInfo.m_eType = eBrowser;
+    sListInfo.m_omEntries.RemoveAll();
+    sListInfo.m_omEntries.Add("*.dbf");
+    sListInfo.m_omEntries.Add(_("DataBase File (*.dbf)|*.dbf||"));
+    
+    for(int i = 0; i < CHANNEL_ALLOWED; i++)
+    {
+        omStrCategoryText.Format("DataBase Path CH%d", i+1);
+        omTempListCtrl.InsertItem(def_TS_ROWNUM_DATABASE+i, omStrCategoryText);
+        if(i < ouHeaderInfo.m_omDatabasePaths.GetSize())
+        {
+            omTempListCtrl.SetItemText(def_TS_ROWNUM_DATABASE+i, def_COLUMN_VALUE, ouHeaderInfo.m_omDatabasePaths[i]);
+        }
+        omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_DATABASE+i, def_COLUMN_VALUE, sListInfo);
+    }
+
+
 
     //FileFormat - ROW10
     /*sListInfo.m_eType = eComboItem;
@@ -910,7 +913,7 @@ void CTSEditorChildFrame::vDisplaySendInfo(CBaseEntityTA* pEntity)
         omTempListCtrl.SetItemText(i+1, def_COLUMN_VALUE, odData.m_omMessageName);
         omTempListCtrl.vSetColumnInfo(i+1, 1, sListInfo);
 
-        vCreateChannelDropdown(omTempListCtrl, odData.m_byChannelNumber, m_iNumberOfActiveChannels, i); // Create channel-drop-down
+        vCreateChannelDropdown(omTempListCtrl, odData.m_nChannelNumber, m_iNumberOfActiveChannels, i); // Create channel-drop-down
 
     }
     omTempListCtrl.InsertItem(i+1, "");
@@ -1002,7 +1005,7 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA* pEntity, int nVerify
         omTempListCtrl.SetItemText(i+nVerifyRowIndex, def_COLUMN_VALUE, odData.m_omMessageName);
         omTempListCtrl.vSetColumnInfo(i+nVerifyRowIndex, def_COLUMN_VALUE, sListInfo);
 
-        vCreateChannelDropdown(omTempListCtrl, odData.m_byChannelNumber, m_iNumberOfActiveChannels, i+1);   // Create channel-drop-down
+        vCreateChannelDropdown(omTempListCtrl, odData.m_nChannelNumber, m_iNumberOfActiveChannels, i+1);   // Create channel-drop-down
     }
     omTempListCtrl.InsertItem(i+nVerifyRowIndex, "");
     omTempListCtrl.SetItemText(i+nVerifyRowIndex, def_COLUMN_VALUE, _("[Add Message]"));
@@ -1119,11 +1122,11 @@ Date Created   :  06/05/2014
 Modifications  :
 Codetag        :
 ******************************************************************************/
-void CTSEditorChildFrame::vCreateChannelDropdown(CListCtrlEx& omTempListCtrl, BYTE byChannelnumber, INT iNumberOfActiveChannels, INT iTestCaseNumber)
+void CTSEditorChildFrame::vCreateChannelDropdown(CListCtrlEx& omTempListCtrl, INT nChannelnumber, INT iNumberOfActiveChannels, INT iTestCaseNumber)
 {
     CString omstrTemp;
     SLISTINFO sListInfoChannel;
-    omstrTemp.Format("%d", byChannelnumber);    // Get current channelnumber
+    omstrTemp.Format("%d", nChannelnumber);    // Get current channelnumber
     omTempListCtrl.SetItemText(def_SMSG_ROWNUM_SDEFVALUE+iTestCaseNumber, def_COLUMN_CHANNEL, omstrTemp);   // Show current channelnumber
     sListInfoChannel.m_eType = eComboItem;  // Configure as DropDown
 
@@ -1391,7 +1394,15 @@ void CTSEditorChildFrame::vSaveHeaderInfo(INT /*nTestSetupIndex*/)
     ouHeaderInfo.m_sEngineerInfo2.m_omValue = omTempListCtrl.GetItemText(def_TS_ROWNUM_ENGINEER2, 1);
     ouHeaderInfo.m_sReportFile.m_omPath = omTempListCtrl.GetItemText(def_TS_ROWNUM_REPORT, 1);
 
-    ouHeaderInfo.m_omDatabasePath = omTempListCtrl.GetItemText(def_TS_ROWNUM_DATABASE, 1);
+    ouHeaderInfo.m_omDatabasePaths.RemoveAll();
+    for(int i = 0; i < CHANNEL_ALLOWED; i++)
+    {
+        CString tempDatabasepath = omTempListCtrl.GetItemText(def_TS_ROWNUM_DATABASE+i, 1);
+        if(tempDatabasepath != "")
+        {
+            ouHeaderInfo.m_omDatabasePaths.SetAtGrow(i,tempDatabasepath);
+        }
+    }
 
     //Bus Type
     CString omStrTemp;
@@ -1855,16 +1866,16 @@ Modifications  :
 ******************************************************************************/
 void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
 {
-    if(pNMLV->iItem == def_TS_ROWNUM_DATABASE)
+    if( (pNMLV->iItem >= def_TS_ROWNUM_DATABASE) /* && ( pNMLV->iItem < /* maxChannels )*/ )
     {
         CString omstrDatabaseName = m_odPropertyView->m_omPropertyList.GetItemText(def_TS_ROWNUM_DATABASE, 1);
         CTestSetupHeader ouHeaderInfo;
         m_ouTSEntity.GetHeaderData(ouHeaderInfo);
 
-        if(ouHeaderInfo.m_omDatabasePath == "")
+        if(ouHeaderInfo.m_omDatabasePaths.GetAt(pNMLV->iItem - def_TS_ROWNUM_DATABASE) == "")
         {
-            ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;
-            if (m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName) == FALSE)
+            ouHeaderInfo.m_omDatabasePaths.SetAt(pNMLV->iItem - def_TS_ROWNUM_DATABASE, omstrDatabaseName);
+            if (m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName, PROTOCOL_CAN, pNMLV->iItem - def_TS_ROWNUM_DATABASE + 1) == FALSE)
             {
                 // Remove the entry from the list box
                 CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
@@ -1873,7 +1884,7 @@ void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
         }
         else
         {
-            if(omstrDatabaseName != ouHeaderInfo.m_omDatabasePath)
+            if(omstrDatabaseName != ouHeaderInfo.m_omDatabasePaths.GetAt(pNMLV->iItem - def_TS_ROWNUM_DATABASE) )
             {
                 if(omstrDatabaseName == "")
                 {
@@ -1884,8 +1895,8 @@ void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
                 int nRetVal = MessageBox(_("Database Path Is Changed.All Old messages of Test Setup File will be Deleted.\nDo you Want To Continue"), _("Database Path Changed"),MB_YESNO||MB_ICONWARNING);
                 if(nRetVal == IDOK)
                 {
-                    ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;
-                    if (m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName) == FALSE)
+                    ouHeaderInfo.m_omDatabasePaths.SetAt(pNMLV->iItem - def_TS_ROWNUM_DATABASE, omstrDatabaseName);
+                    if (m_ouTSEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDatabaseName, PROTOCOL_CAN, pNMLV->iItem - def_TS_ROWNUM_DATABASE + 1) == FALSE)
                     {
                         // Remove the entry from the list box
                         CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
@@ -1929,10 +1940,10 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
     if(m_pCurrentEntity->GetEntityType() == SEND)
     {
         int item = pNMLV->iItem;
-        if(item >= defLIST_SEND_ST_ROW)      //item is with in message list     /* derka-comment: Presumably: Get Item that was updated */
+        if(item >= defLIST_SEND_ST_ROW)      //item is with in message list
         {
-            omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_VALUE);    /* derka-comment: Get value (=message-name) of entry... */
-            if(omstrTemp == _(defDELETE_MSG_SYMBOL))                            /* derka-comment: ... and check if Item should become deleted */
+            omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_VALUE);
+            if(omstrTemp == _(defDELETE_MSG_SYMBOL))
             {
                 if(item != omTempListCtrl.GetItemCount()-1) // Last Item Check.Still This
                 {
@@ -1958,7 +1969,7 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
                     odNewSendEnity.SetEntityData(SEND_MESSAGE, &odSendMsgData);
                     m_omSendEntity.AddSubEntry((CBaseEntityTA*)&odNewSendEnity);
 
-                    vCreateChannelDropdown(omTempListCtrl, odSendMsgData.m_byChannelNumber, m_iNumberOfActiveChannels, item-1); // Create Channel-Dropdown
+                    vCreateChannelDropdown(omTempListCtrl, odSendMsgData.m_nChannelNumber, m_iNumberOfActiveChannels, item-1); // Create Channel-Dropdown
 
                     omTempListCtrl.InsertItem(item+1, "");
                     omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, _("[Add Message]"));
@@ -1979,7 +1990,7 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
                     }
 
                     omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_CHANNEL);  // Read selected Channel-Number
-                    odSendMsgData.m_byChannelNumber = BYTE(atoi( omstrTemp ));  //  Save Channel-Number
+                    odSendMsgData.m_nChannelNumber = atoi( omstrTemp );  //  Save Channel-Number
                 }
                 omstrTemp.Format("%d", odSendMsgData.m_dwMessageID);
                 omTempListCtrl.DeleteItem(item);
@@ -1987,7 +1998,7 @@ void CTSEditorChildFrame::vHandleSendEntity(LPNMLISTVIEW pNMLV)
                 omTempListCtrl.SetItemText(item, def_COLUMN_VALUE, odSendMsgData.m_omMessageName);
                 omTempListCtrl.vSetColumnInfo(item, def_COLUMN_VALUE, sListInfo);
 
-                omstrTemp.Format("%d", odSendMsgData.m_byChannelNumber);
+                omstrTemp.Format("%d", odSendMsgData.m_nChannelNumber);
                 omTempListCtrl.SetItemText(item, def_COLUMN_CHANNEL, omstrTemp);    // Show Channel-Number
 
 
@@ -2050,7 +2061,7 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
                 odNewVerifyEnity.SetEntityData(VERIFY_MESSAGE, &odVerifyMsgData);
                 m_ouVerifyEntity.AddSubEntry((CBaseEntityTA*)&odNewVerifyEnity);
 
-                vCreateChannelDropdown(omTempListCtrl, odVerifyMsgData.m_byChannelNumber, m_iNumberOfActiveChannels, item-1);   // Create Channel-Dropdown
+                vCreateChannelDropdown(omTempListCtrl, odVerifyMsgData.m_nChannelNumber, m_iNumberOfActiveChannels, item-1);   // Create Channel-Dropdown
 
                 omTempListCtrl.InsertItem(item+1, "");
                 omTempListCtrl.SetItemText(item+1, def_COLUMN_VALUE, _("[Add Message]"));
@@ -2070,7 +2081,7 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
                     pEntity->SetEntityData(VERIFY_MESSAGE, &odVerifyMsgData);
                 }
                 omstrTemp  = omTempListCtrl.GetItemText(item, def_COLUMN_CHANNEL);  // Read selected Channel-Number
-                odVerifyMsgData.m_byChannelNumber = BYTE(atoi( omstrTemp ));    // Save Channel-Number
+                odVerifyMsgData.m_nChannelNumber = atoi( omstrTemp );    // Save Channel-Number
             }
             omstrTemp.Format("%d", odVerifyMsgData.m_dwMessageID);
             omTempListCtrl.DeleteItem(item);
@@ -2078,7 +2089,7 @@ void CTSEditorChildFrame::vHandleVerifyEntity(LPNMLISTVIEW pNMLV)
             omTempListCtrl.SetItemText(item, def_COLUMN_VALUE, odVerifyMsgData.m_omMessageName);
             omTempListCtrl.vSetColumnInfo(item, def_COLUMN_VALUE, sListInfo);
 
-            omstrTemp.Format("%d", odVerifyMsgData.m_byChannelNumber);
+            omstrTemp.Format("%d", odVerifyMsgData.m_nChannelNumber);
             omTempListCtrl.SetItemText(item, def_COLUMN_CHANNEL, omstrTemp);    // Show Channel-Number
         }
         UINT unCount;

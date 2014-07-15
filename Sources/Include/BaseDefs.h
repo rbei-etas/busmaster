@@ -63,6 +63,11 @@ enum eProtocol
     PROTOCOL_J1939,
     PROTOCOL_UNKNOWN
 };
+static const char* rgProtocol[] = {
+    "CAN",
+    "J1939",
+    "UNKNOWN"
+};
 
 enum eTYPE_BUS
 {

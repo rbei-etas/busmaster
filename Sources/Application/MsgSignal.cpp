@@ -149,7 +149,7 @@ CMsgSignal::CMsgSignal(const SDBPARAMS& sDbParams, BOOL bInAutoSrvMode)
     m_psMessages                = nullptr;
     m_bIsDatabaseSaved          = TRUE;
     m_bIsDatabaseActive         = FALSE;
-    m_psDatbaseStructList       = nullptr;
+    m_psDatabaseStructList       = nullptr;
     // Initialise the hash table. For best performance, the hash table size
     // should be a prime number. To minimize collisions the size should be
     // roughly 20 percent larger than the largest anticipated data set.
@@ -628,55 +628,55 @@ BOOL CMsgSignal::bDeAllocateMemory(CString strDBName)
 {
     m_omDBMapCritSec.Lock();
     BOOL bReturn = FALSE;
-    if(m_psDatbaseStructList != nullptr)
+    if(m_psDatabaseStructList != nullptr)
     {
         BOOL bFileEmpty = strDBName.IsEmpty();
         // If it is Empty delete all the database structures
         if( bFileEmpty == TRUE )
         {
-            sDBFileStruct* psTempDatbaseStructList;
-            while( m_psDatbaseStructList != nullptr )
+            sDBFileStruct* psTempDatabaseStructList;
+            while( m_psDatabaseStructList != nullptr )
             {
-                psTempDatbaseStructList = m_psDatbaseStructList;
-                m_psDatbaseStructList = m_psDatbaseStructList->m_psNextDBFileStruct;
-                bReturn = bDeAllocateDBMemory(psTempDatbaseStructList);
-                delete psTempDatbaseStructList;
-                psTempDatbaseStructList = nullptr;
+                psTempDatabaseStructList = m_psDatabaseStructList;
+                m_psDatabaseStructList = m_psDatabaseStructList->m_psNextDBFileStruct;
+                bReturn = bDeAllocateDBMemory(psTempDatabaseStructList);
+                delete psTempDatabaseStructList;
+                psTempDatabaseStructList = nullptr;
             }
         }
         else
         {
-            sDBFileStruct* psCurrDatbaseStructList;
-            sDBFileStruct* psPrevDatbaseStructList;
-            psCurrDatbaseStructList = m_psDatbaseStructList;
-            psPrevDatbaseStructList = m_psDatbaseStructList;
+            sDBFileStruct* psCurrDatabaseStructList;
+            sDBFileStruct* psPrevDatabaseStructList;
+            psCurrDatabaseStructList = m_psDatabaseStructList;
+            psPrevDatabaseStructList = m_psDatabaseStructList;
             //If it is first database
-            if( !psCurrDatbaseStructList->m_omStrDatabasePath.Compare(strDBName) )
+            if( !psCurrDatabaseStructList->m_omStrDatabasePath.Compare(strDBName) )
             {
-                m_psDatbaseStructList = m_psDatbaseStructList->m_psNextDBFileStruct;
-                bReturn = bDeAllocateDBMemory(psCurrDatbaseStructList);
-                delete psCurrDatbaseStructList;
-                psCurrDatbaseStructList = nullptr;
+                m_psDatabaseStructList = m_psDatabaseStructList->m_psNextDBFileStruct;
+                bReturn = bDeAllocateDBMemory(psCurrDatabaseStructList);
+                delete psCurrDatabaseStructList;
+                psCurrDatabaseStructList = nullptr;
             }
             //Search the Database struct for the particular DB path
             else
             {
-                while(psCurrDatbaseStructList != nullptr)
+                while(psCurrDatabaseStructList != nullptr)
                 {
-                    if(!(psCurrDatbaseStructList->m_omStrDatabasePath.Compare(strDBName)))
+                    if(!(psCurrDatabaseStructList->m_omStrDatabasePath.Compare(strDBName)))
                     {
-                        psPrevDatbaseStructList->m_psNextDBFileStruct =
-                            psCurrDatbaseStructList->m_psNextDBFileStruct;
+                        psPrevDatabaseStructList->m_psNextDBFileStruct =
+                            psCurrDatabaseStructList->m_psNextDBFileStruct;
 
-                        bReturn = bDeAllocateDBMemory(psCurrDatbaseStructList);
-                        delete psCurrDatbaseStructList;
-                        psCurrDatbaseStructList = nullptr;
+                        bReturn = bDeAllocateDBMemory(psCurrDatabaseStructList);
+                        delete psCurrDatabaseStructList;
+                        psCurrDatabaseStructList = nullptr;
                     }
                     else
                     {
-                        psPrevDatbaseStructList = psCurrDatbaseStructList;
-                        psCurrDatbaseStructList =
-                            psCurrDatbaseStructList->m_psNextDBFileStruct;
+                        psPrevDatabaseStructList = psCurrDatabaseStructList;
+                        psCurrDatabaseStructList =
+                            psCurrDatabaseStructList->m_psNextDBFileStruct;
                     }
                 }
             }
@@ -687,7 +687,7 @@ BOOL CMsgSignal::bDeAllocateMemory(CString strDBName)
     //Reset Message attrib contents
     CMessageAttrib::ouGetHandle(m_sDbParams.m_eBus).vSaveMessageAttribData();
     //If it is the last database
-    if(m_psDatbaseStructList == nullptr)
+    if(m_psDatabaseStructList == nullptr)
     {
         /*CMainFrame* pMainFrm = (CMainFrame*)AfxGetApp()->m_pMainWnd;*/
         //No database selected
@@ -722,12 +722,12 @@ BOOL CMsgSignal::bDeAllocateMemory(CString strDBName)
   Modifications    :  Anish Kumar,30.11.2006
                       The function is changed for Multi database requirement
 ******************************************************************************/
-BOOL CMsgSignal::bDeAllocateDBMemory(sDBFileStruct* psDatbaseStructList)
+BOOL CMsgSignal::bDeAllocateDBMemory(sDBFileStruct* psDatabaseStructList)
 {
-    if(psDatbaseStructList != nullptr)
+    if(psDatabaseStructList != nullptr)
     {
-        UINT unMessageCount = psDatbaseStructList->m_unMessageCount;
-        sMESSAGE* psMessages = psDatbaseStructList->m_psMessages;
+        UINT unMessageCount = psDatabaseStructList->m_unMessageCount;
+        sMESSAGE* psMessages = psDatabaseStructList->m_psMessages;
         for ( UINT nMsgIndex = 0; nMsgIndex < unMessageCount; nMsgIndex++ )
         {
             if ( &psMessages[nMsgIndex] != nullptr )
@@ -897,9 +897,9 @@ BOOL CMsgSignal::bDeAllocateMemoryInactive()
 
         m_psMessages = nullptr;
 
-        delete m_psDatbaseStructList;
+        delete m_psDatabaseStructList;
 
-        m_psDatbaseStructList = nullptr;
+        m_psDatabaseStructList = nullptr;
 
     }
 
@@ -926,10 +926,10 @@ int CMsgSignal::nGetMessageCode( CString strMsgName)
     POSITION pos = m_omMsgDetailsIDMap.GetStartPosition();
     sMESSAGE* psMsgStruct = nullptr;
     BOOL bFound = FALSE;
-    UINT unKey;
+    CString omKey;
     while (pos != nullptr && bFound != TRUE)
     {
-        m_omMsgDetailsIDMap.GetNextAssoc( pos, unKey,psMsgStruct );
+        m_omMsgDetailsIDMap.GetNextAssoc( pos, omKey,psMsgStruct );
         if(!(psMsgStruct->m_omStrMessageName.Compare(strMsgName)))
         {
             nMsgCode = (int)psMsgStruct->m_unMessageCode;
@@ -970,6 +970,25 @@ void CMsgSignal::vGetRelativeDataBaseNames(std::string& omStrBasePath, CStringAr
             std::string omStrRelativePath;
             CUtilFunctions::MakeRelativePath(omStrBasePath.c_str(), omStrTemp.GetBuffer(MAX_PATH), omStrRelativePath);
             pastrDBnames->Add(omStrRelativePath.c_str());
+        }
+    }
+}
+void CMsgSignal::vGetDatabaseChannels(CStringArray* omDbChannels)
+{   
+    sDBFileStruct* pTempDatabaseStructList = m_psDatabaseStructList;
+    if(omDbChannels != nullptr)
+    {
+        omDbChannels->RemoveAll();
+        for ( INT i = 0; i < m_omDatabaseNames.GetSize(); i++)
+        {
+            if(pTempDatabaseStructList == nullptr)
+            {
+                break;
+            }
+            CString str;
+            str.Format("%d", pTempDatabaseStructList->m_nChannelNumber);
+            omDbChannels->InsertAt(0, str);
+            pTempDatabaseStructList = pTempDatabaseStructList->m_psNextDBFileStruct;
         }
     }
 }
@@ -1315,7 +1334,7 @@ void CMsgSignal::vGetSignalNames( UINT unMsgID,
                       Initialize m_unMessageCount before operating on new DB
                       to solve bug due to invalid DB file
 ******************************************************************************/
-BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProtocol eProtocolName)
+BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProtocol eProtocolName, INT nChannelNumber)
 {
     USES_CONVERSION;
     BOOL bReturnValue   = TRUE;
@@ -1528,9 +1547,19 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                                     if ( nIndex != -1 )
                                     {
                                         // Msg Name
-                                        m_psMessages[unMsgCount].m_omStrMessageName = strTmp.Left( nIndex );
-
+                                        if(nChannelNumber > 0)
+                                        {
+                                            m_psMessages[unMsgCount].m_omStrMessageName.Format("%s%d::", rgProtocol[eProtocolName], nChannelNumber);
+                                            m_psMessages[unMsgCount].m_omStrMessageName += strTmp.Left( nIndex );
+                                        }
+                                        else    // Channel 0 does not exist - do not use channelnumber::framename-format. Useful for e.g. database editor
+                                        {
+                                            m_psMessages[unMsgCount].m_omStrMessageName = strTmp.Left( nIndex );
+                                        }
+                                        
                                         sMsgDet = strTmp.Right(strTmp.GetLength() - nIndex - 1);
+                                        m_psMessages[unMsgCount].m_byMessageChannel = nChannelNumber;  // Associate all messages of 
+                                                                                                        // this database to exactly one channel
                                     }
                                     else
                                     {
@@ -2137,12 +2166,13 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                             if(psDBStruct != nullptr)
                             {
                                 psDBStruct->m_omStrDatabasePath = strFileName;
+                                psDBStruct->m_nChannelNumber = nChannelNumber;
                                 psDBStruct->m_unMessageCount = m_unMessageCount;
                                 psDBStruct->m_psMessages = m_psMessages;
                                 //Add the structure at the begining of list so that while
                                 //making the CMap,the message id of first added DB should be present
-                                psDBStruct->m_psNextDBFileStruct = m_psDatbaseStructList;
-                                m_psDatbaseStructList = psDBStruct;
+                                psDBStruct->m_psNextDBFileStruct = m_psDatabaseStructList;
+                                m_psDatabaseStructList = psDBStruct;
                             }
                             else
                             {
@@ -2628,7 +2658,7 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
     return bRetVal;
 }
 /******************************************************************************
-  Function Name    :  unGetNumerOfMessages
+  Function Name    :  unGetNumberOfMessages
   Input(s)         :
   Output           :  UINT
   Functionality    :  Returns number of messages in the DB.
@@ -2638,7 +2668,7 @@ BOOL CMsgSignal::bWriteIntoDatabaseFileFromDataStructure( CString strFileName, e
   Date Created     :  15.02.2002
   Modifications    :
 ******************************************************************************/
-UINT CMsgSignal::unGetNumerOfMessages()
+UINT CMsgSignal::unGetNumberOfMessages()
 {
     return (m_omMsgDetailsIDMap.GetCount());
 }
@@ -3766,10 +3796,10 @@ sMESSAGE* CMsgSignal::psGetMessagePointer( CString strMsgName)
     m_omDBMapCritSec.Lock();
     POSITION pos = m_omMsgDetailsIDMap.GetStartPosition();
     sMESSAGE* psMsgStruct = nullptr;
-    UINT unKey;
+    CString omKey;
     while (pos != nullptr )
     {
-        m_omMsgDetailsIDMap.GetNextAssoc( pos, unKey,psMsgStruct );
+        m_omMsgDetailsIDMap.GetNextAssoc( pos, omKey,psMsgStruct );
         if((nullptr != psMsgStruct) && (!(psMsgStruct->m_omStrMessageName.Compare(strMsgName))))
         {
             return psMsgStruct;
@@ -3898,10 +3928,10 @@ void CMsgSignal::omStrListGetMessageNames(CStringList& omStrListMsgs)
     int nTotalMsgCount = m_omMsgDetailsIDMap.GetCount();
     POSITION pos = m_omMsgDetailsIDMap.GetStartPosition( );
     sMESSAGE* psTempMsgStruct;
-    UINT unMsgKey;
+    CString omMsgKey;
     for (int nMsgIndex = 0; nMsgIndex < nTotalMsgCount && pos != nullptr; nMsgIndex++ )
     {
-        m_omMsgDetailsIDMap.GetNextAssoc(pos,unMsgKey,psTempMsgStruct);
+        m_omMsgDetailsIDMap.GetNextAssoc(pos,omMsgKey,psTempMsgStruct);
         omStrListMsgs.AddHead( psTempMsgStruct->m_omStrMessageName);
     }
     m_omDBMapCritSec.Unlock();
@@ -4114,10 +4144,10 @@ void CMsgSignal::unListGetMessageIDs(UINT* omListId)
     int nTotalMsgCount = m_omMsgDetailsIDMap.GetCount();
     POSITION pos = m_omMsgDetailsIDMap.GetStartPosition( );
     sMESSAGE* psTempMsgStruct;
-    UINT unMsgKey;
+    CString omMsgKey;
     for (int unMsgIndex = 0; unMsgIndex < nTotalMsgCount && pos != nullptr; unMsgIndex++ )
     {
-        m_omMsgDetailsIDMap.GetNextAssoc(pos,unMsgKey,psTempMsgStruct);
+        m_omMsgDetailsIDMap.GetNextAssoc(pos,omMsgKey,psTempMsgStruct);
         omListId[unMsgIndex] = psTempMsgStruct->m_unMessageCode;
     }
     m_omDBMapCritSec.Unlock();
@@ -5109,22 +5139,22 @@ void CMsgSignal::vResetMsgMapContent()
 {
     //Remove all the elements and create fresh map
     m_omMsgDetailsIDMap.RemoveAll();
-    if(m_psDatbaseStructList != nullptr)
+    if(m_psDatabaseStructList != nullptr)
     {
-        sDBFileStruct* psTempDatbaseStructList = m_psDatbaseStructList;
-        while(psTempDatbaseStructList != nullptr)
+        sDBFileStruct* psTempDatabaseStructList = m_psDatabaseStructList;
+        while(psTempDatabaseStructList != nullptr)
         {
-            UINT unMessageCount = psTempDatbaseStructList->m_unMessageCount;
-            sMESSAGE* psMessages = psTempDatbaseStructList->m_psMessages;
+            UINT unMessageCount = psTempDatabaseStructList->m_unMessageCount;
+            sMESSAGE* psMessages = psTempDatabaseStructList->m_psMessages;
             for ( UINT nMsgIndex = 0; nMsgIndex < unMessageCount; nMsgIndex++ )
             {
                 if ( &psMessages[nMsgIndex] != nullptr )
                 {
-                    m_omMsgDetailsIDMap.SetAt(psMessages[nMsgIndex].m_unMessageCode,
+                    m_omMsgDetailsIDMap.SetAt(psMessages[nMsgIndex].m_omStrMessageName,
                                               &psMessages[nMsgIndex]);
                 }
             }
-            psTempDatbaseStructList = psTempDatbaseStructList->m_psNextDBFileStruct;
+            psTempDatabaseStructList = psTempDatabaseStructList->m_psNextDBFileStruct;
         }
     }
 }
@@ -5331,17 +5361,17 @@ void CMsgSignal::vGetSignalValidRange(CString omStrMessageCode,
 //CAPL_DB_NAME_CHANGE
 BOOL CMsgSignal::bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB)
 {
-    if(m_psDatbaseStructList != nullptr)
+    if(m_psDatabaseStructList != nullptr)
     {
         //get the database list and message structure
-        sDBFileStruct* psTempDatbaseStructList = m_psDatbaseStructList;
+        sDBFileStruct* psTempDatabaseStructList = m_psDatabaseStructList;
         odMsgNameMsgCodeListDB.RemoveAll();
         //loop through the linked list to get all the DB name ans details
-        while(psTempDatbaseStructList != nullptr)
+        while(psTempDatabaseStructList != nullptr)
         {
             SDB_NAME_MSG                    osDbNameMess;                   //DB name and details
-            UINT    unMessageCount = psTempDatbaseStructList->m_unMessageCount;
-            sMESSAGE* psMessages = psTempDatbaseStructList->m_psMessages;   //Message info
+            UINT    unMessageCount = psTempDatabaseStructList->m_unMessageCount;
+            sMESSAGE* psMessages = psTempDatabaseStructList->m_psMessages;   //Message info
 
             for ( UINT nMsgIndex = 0; nMsgIndex < unMessageCount; nMsgIndex++ )
             {
@@ -5361,12 +5391,13 @@ BOOL CMsgSignal::bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeL
                     osDbNameMess.m_oMsgNameMsgCodeList.AddTail(sMsgNameCode);
                 }
             }
-            osDbNameMess.m_omDbName = psTempDatbaseStructList->m_omStrDatabasePath;
+            osDbNameMess.m_omDbName = psTempDatabaseStructList->m_omStrDatabasePath;
+            osDbNameMess.m_nChannelNumber = psTempDatabaseStructList->m_nChannelNumber;
             odMsgNameMsgCodeListDB.AddTail(osDbNameMess);                   //add structure to output list
-            psTempDatbaseStructList = psTempDatbaseStructList->m_psNextDBFileStruct; //get nxt DB
+            psTempDatabaseStructList = psTempDatabaseStructList->m_psNextDBFileStruct; //get nxt DB
         }
     }
-    else        //if the last DB is removed then m_psDatbaseStructList will be nullptr, clear DB list as well
+    else        //if the last DB is removed then m_psDatabaseStructList will be nullptr, clear DB list as well
     {
         if(odMsgNameMsgCodeListDB.GetCount() != 0)
         {

@@ -363,7 +363,7 @@ BOOL CCANMonitorApp::InitInstance()
         //CStringArray omDatabaseArray;
         CString omSampleDatabasePath;
         omSampleDatabasePath.Format("%s\\Samples\\SampleDB.dbf",m_acApplicationDirectory);
-        DWORD dRetVal = pMainFrame->dLoadDataBaseFile(omSampleDatabasePath, FALSE);
+        DWORD dRetVal = pMainFrame->dLoadDataBaseFile(omSampleDatabasePath, FALSE, 0);
 
         if (dRetVal == S_OK)
         {
@@ -542,7 +542,7 @@ void CCANMonitorApp::vPopulateCANIDList()
     {
         CStringList omStrMsgNameList;
         UINT unNoOfMsgs =
-            m_pouMsgSignal->unGetNumerOfMessages();
+            m_pouMsgSignal->unGetNumberOfMessages();
         UINT* pIDArray = new UINT[unNoOfMsgs];
         m_pouMsgSignal->omStrListGetMessageNames(omStrMsgNameList);
 

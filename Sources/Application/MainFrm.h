@@ -312,7 +312,7 @@ public:
     bool bCreateTraceWindow();
     DWORD dLoadJ1939DBFile(CString omStrActiveDataBase, bool bFrmCom);
     // To load specified configuration File
-    DWORD dLoadDataBaseFile(CString omStrActiveDataBase, bool bFrmCom);
+    DWORD dLoadDataBaseFile(CString omStrActiveDataBase, bool bFrmCom, BYTE byChannel);
     // To clear Message Interpretation Window Content on change of Config. File
     //void vClearInterpretationWindow();
     // To get the menu pointer of the MRU list
@@ -839,7 +839,7 @@ public:
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
     virtual void WinHelp(DWORD dwData, UINT nCmd = HELP_CONTEXT);
     afx_msg void OnDissociateDatabase();
-    afx_msg void OnSaveImportDatabase();
+//    afx_msg void OnSaveImportDatabase();
     afx_msg void OnUpdateSaveImportDatabase(CCmdUI* pCmdUI);
     afx_msg void OnSaveImportJ1939Database();
     afx_msg void OnUpdateSaveImportJ1939Database(CCmdUI* pCmdUI);

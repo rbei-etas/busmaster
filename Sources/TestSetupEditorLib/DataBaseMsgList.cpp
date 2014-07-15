@@ -67,7 +67,7 @@ Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
-BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
+BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName, eProtocol eProtocolName, INT nChannelNumber)
 {
     BOOL bReturnValue   = TRUE;
     BOOL bIsFileOpen    = FALSE;
@@ -197,9 +197,19 @@ BOOL CDataBaseMsgList::bFillDataStructureFromDatabaseFile( CString strFileName)
                                     if ( nIndex != -1 )
                                     {
                                         // Msg Name
-                                        m_psMessages[unMsgCount].m_omStrMessageName = strTmp.Left( nIndex );
-
+                                        if(nChannelNumber > 0)
+                                        {
+                                            m_psMessages[unMsgCount].m_omStrMessageName = strTmp.Left( nIndex );
+                                            //m_psMessages[unMsgCount].m_omStrMessageName.Format("%s%d::", rgProtocol[eProtocolName], nChannelNumber);
+                                            //m_psMessages[unMsgCount].m_omStrMessageName += strTmp.Left( nIndex );
+                                        }
+                                        else    // Channel 0 does not exist - do not use channelnumber::framename-format. Useful for e.g. database editor
+                                        {
+                                            m_psMessages[unMsgCount].m_omStrMessageName = strTmp.Left( nIndex );
+                                        }
                                         sMsgDet = strTmp.Right(strTmp.GetLength() - nIndex - 1);
+                                        m_psMessages[unMsgCount].m_byMessageChannel = nChannelNumber;  // Associate all messages of 
+                                                                                                       // this database to exactly one channel
                                     }
                                     else
                                     {

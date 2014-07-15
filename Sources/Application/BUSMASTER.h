@@ -84,6 +84,7 @@ public:
     virtual CWnd* GetMainWnd();
 
     afx_msg void OnAppAbout();
+    afx_msg void OnChannelDatabaseAssociation(CStringArray* strFilePathArray, CFileDialog* fileDlg, INT iNumberOfActiveChannels);
     afx_msg void OnFileOpen();
     afx_msg void OnFileNew();
 

@@ -426,6 +426,7 @@ void CTxMsgDetailsView::OnEditchangeCombMsgIdName()
 {
     BOOL bIDValid = FALSE;
     INT nMsgID = -1;
+    m_omComboChannelID.EnableWindow(true);
     // Get the message ID.
     nMsgID = nGetMessageID();
     // If it is valid
@@ -1427,32 +1428,27 @@ void CTxMsgDetailsView::vPopulateMessageComboBox()
     // Get number of mesages in database
     if ( pDBptr != nullptr )
     {
-        UINT unNoOfMessages = pDBptr->unGetNumerOfMessages();
+        UINT unNoOfMessages = pDBptr->unGetNumberOfMessages();
 
         // Not zero
         if ( unNoOfMessages > 0 )
         {
-            UINT* pIDArray = new UINT[unNoOfMessages];
-
-            if (pIDArray != nullptr )
+            CStringList omStrMsgNameList;
+            pDBptr->omStrListGetMessageNames( omStrMsgNameList );
+            // Add every message name into the message list
+  
+            for(POSITION pos = omStrMsgNameList.GetHeadPosition(); pos != NULL; )
             {
-                pDBptr->unListGetMessageIDs( pIDArray );
-                sMESSAGE* pMessage = nullptr;
-                // Add every message name into the message list
-                for(UINT nCount=0 ; nCount<unNoOfMessages ; nCount++)
+                sMESSAGE* pMessage = pDBptr->psGetMessagePointer(omStrMsgNameList.GetNext(pos));
+                if(pMessage != NULL)
                 {
-                    pMessage = pDBptr->psGetMessagePointer( pIDArray[nCount] );
-                    if(pMessage != nullptr)
-                    {
-                        CString omStrMsgName = pMessage->m_omStrMessageName;
-                        CString omStrMsgId;
-                        omStrMsgId.Format(defSTR_MSG_ID_IN_HEX,pMessage->m_unMessageCode);
-                        omStrMsgName += omStrMsgId;
+                    CString omStrMsgName = pMessage->m_omStrMessageName;
+                    CString omStrMsgId;
+                    omStrMsgId.Format(defSTR_MSG_ID_IN_HEX,pMessage->m_unMessageCode);
+                    omStrMsgName += omStrMsgId;
 
-                        m_omComboMsgIDorName.AddString(omStrMsgName);
-                    }
+                    m_omComboMsgIDorName.AddString(omStrMsgName);
                 }
-                delete []pIDArray;
             }
         }
     }
@@ -1515,9 +1511,10 @@ void CTxMsgDetailsView::OnSelchangeCombMsgIdName()
         int nSelectedIndex = m_omComboMsgIDorName.GetCurSel();
         if( nSelectedIndex != -1 )
         {
-            m_omComboMsgIDorName.GetLBText( nSelectedIndex ,omStrMsgName );
+            m_omComboMsgIDorName.GetLBText( nSelectedIndex, omStrMsgName );
             m_omComboMsgIDorName.SetWindowText( omStrMsgName );
         }
+        CString omTempStrMsgName = omStrMsgName.Left(omStrMsgName.Find(_T('[')));
         // Get message Id from database in case user has selected a message name
         //if it is name [] is present
         int nIndex = omStrMsgName.Find(defMSGID_NAME_START_CHAR);
@@ -1529,11 +1526,13 @@ void CTxMsgDetailsView::OnSelchangeCombMsgIdName()
             {
                 // Check if it is a database message ID/Name
                 psMsg = pDBptr->psGetMessagePointer(nMsgID);
+                psMsg = pDBptr->psGetMessagePointer(omTempStrMsgName);
             }
 
             if(psMsg == nullptr)
             {
                 bValidMsgID = FALSE;
+                m_omComboChannelID.EnableWindow(true);
             }
             else
             {
@@ -1592,7 +1591,8 @@ void CTxMsgDetailsView::OnSelchangeCombMsgIdName()
                         }
                     }
                 }
-
+                m_omComboChannelID.SetCurSel(psMsg->m_byMessageChannel-1);
+                m_omComboChannelID.EnableWindow(false);
             }
 
             int             nCurrentIndex = -1;
@@ -2052,7 +2052,7 @@ void CTxMsgDetailsView::vUpdateAllBlocksFrmDB()
 
     pomBlockView = ( CTxMsgBlocksView* )pomGetBlocksViewPointer();
     pDBptr =  m_pouDBPtr;
-    for(int nMsgCnt =0; nMsgCnt < pDBptr->unGetNumerOfMessages(); nMsgCnt++)
+    for(int nMsgCnt =0; nMsgCnt < pDBptr->unGetNumberOfMessages(); nMsgCnt++)
     {
         psMsgCurrentBlock =  pomBlockView->m_psMsgBlockList ;
         while(psMsgCurrentBlock != nullptr)
@@ -2691,6 +2691,7 @@ void CTxMsgDetailsView::vSetValues(STXCANMSGDETAILS* psTxMsg)
             {
                 omStr.Format( defFORMAT_MSGID_HEX_STR, unMsgID);
             }
+            m_omComboChannelID.EnableWindow(true);
         }
         else
         {

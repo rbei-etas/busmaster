@@ -359,11 +359,13 @@ void CMsgSignalDBWnd::vSaveModifiedDBs(CMsgSignal**& ppTempMsgSg)
     //If yes then prompt the user whether he wants to
     //import it or not.
     CStringArray omImportedDBNames;
+    CStringArray omDbChannels;
     CMsgSignal** m_ppsMSTemp = (CMsgSignal**)(m_sDbParams.m_ppvImportedDBs);
 
     if ((*m_ppsMSTemp) != nullptr)
     {
         (*m_ppsMSTemp)->vGetDataBaseNames(&omImportedDBNames);
+        (*m_ppsMSTemp)->vGetDatabaseChannels(&omDbChannels);
         for (INT nDBCount = 0; nDBCount < omImportedDBNames.GetSize();
                 nDBCount++)
         {
@@ -379,7 +381,7 @@ void CMsgSignalDBWnd::vSaveModifiedDBs(CMsgSignal**& ppTempMsgSg)
                     {
                         case CAN:
                         {
-                            pFrame->dLoadDataBaseFile(m_sDbParams.m_omDBPath, FALSE);
+                            pFrame->dLoadDataBaseFile(m_sDbParams.m_omDBPath, FALSE, atoi(omDbChannels[nDBCount]));
                         }
                         break;
                         case J1939:

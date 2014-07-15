@@ -106,6 +106,7 @@ static char SectionName[SECTION_TOTAL][MAX_PATH] =
 #define DEF_FLEXRAY_CLUSTER_CONFIG      "FLEX_Cluster_Config"
 #define DEF_J1939_DATABASE_FILES        "J1939_Database_Files"
 #define DEF_FILE_PATH                   "FilePath"
+#define DEF_CHANNEL_NUMBER              "channelNumber"
 #define DEF_CAN_DIL_SECTION             "CAN_DIL_Section"
 #define DEF_DRIVER_NAME                 "DriverName"
 #define DEF_CONTROLLER_MODE             "ControllerMode"
