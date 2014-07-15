@@ -292,7 +292,7 @@ void CElementSelection::vPopulateDBTree( CTreeCtrl& omTree,
     if(pomDatabase != nullptr)
     {
         CString omStr;
-        UINT unNoOfMsgs = pomDatabase->unGetNumerOfMessages();
+        UINT unNoOfMsgs = pomDatabase->unGetNumberOfMessages();
         UINT* pIDArray = new UINT[unNoOfMsgs];
 
         //// Get List of database Messages

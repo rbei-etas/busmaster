@@ -1150,7 +1150,10 @@ bool CTSExecutorLIB::bExecuteTestSetup(CTestSetupEntity& ouTestSetupEntity)
     //Initialise Result Information
     ouTestSetupEntity.GetSubEntryCount(unTCCount);
     ouTestSetupEntity.GetHeaderData(m_ouResult.m_ouHeaderInfo);
-    ouTestSetupEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(m_ouResult.m_ouHeaderInfo.m_omDatabasePath);
+    for(int i = 0; i < m_ouResult.m_ouHeaderInfo.m_omDatabasePaths.GetSize(); i++)
+    {
+        ouTestSetupEntity.m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(m_ouResult.m_ouHeaderInfo.m_omDatabasePaths[i], PROTOCOL_CAN, i+1);
+    }
     m_ouResult.m_omStrTestSetupFile = ouTestSetupEntity.m_omstrTestSetupTitle;
     m_ouResult.m_odTcResultList.RemoveAll();
     for(UINT nTCIndex=0; nTCIndex<unTCCount; ++nTCIndex)

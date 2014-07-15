@@ -607,7 +607,7 @@ public:
             char acStr[_MAX_PATH] = {'\0'};
             BSTR_2_PCHAR(DBFilePath, acStr, _MAX_PATH);
             CString omFilePath(acStr);
-            hResult = pMainFrm->dLoadDataBaseFile(omFilePath, TRUE);
+            hResult = pMainFrm->dLoadDataBaseFile(omFilePath, TRUE, 0);
         }
 
         return hResult;

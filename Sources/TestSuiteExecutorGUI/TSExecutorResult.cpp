@@ -241,7 +241,10 @@ INT CResultGenerator::nGenerateTextReport(CStdioFile& omReportFile)
     omReportFile.WriteString(_("\n\tTitle: ")+ m_omStrTestSetupFile);
     omReportFile.WriteString(_("\n\tModule Name:")+m_ouHeaderInfo.m_sModuleName.m_omValue);
     omReportFile.WriteString(_("\n\tVersion: ")+m_ouHeaderInfo.m_sVersion.m_omValue);
-    omReportFile.WriteString(_("\n\tDatabase Information:")+m_ouHeaderInfo.m_omDatabasePath);
+    for(int i = 0; i < m_ouHeaderInfo.m_omDatabasePaths.GetSize(); i++ )
+    {
+        omReportFile.WriteString(_("\n\tDatabase Information:")+m_ouHeaderInfo.m_omDatabasePaths[i]);
+    }
     omReportFile.WriteString("\n\n");
 
     omReportFile.WriteString(_("Engineer Info:"));

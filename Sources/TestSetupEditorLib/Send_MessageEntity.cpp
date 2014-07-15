@@ -153,17 +153,17 @@ HRESULT CSend_MessageEntity::GetData(MSXML2::IXMLDOMNodePtr& pIDomNode)
     //Retrieving Message CHANNEL
     bstrNodeName = _(def_STR_TCATTRIB_CHANNEL);
     pIDOMAttributes->getNamedItem(bstrNodeName, &pIDOMChildNode);
-    m_ouData.m_byChannelNumber = 0; // set default-value for the case, the number is incorrect or the whole argument is missing
+    m_ouData.m_nChannelNumber = 0; // set default-value for the case, the number is incorrect or the whole argument is missing
     if (NULL != pIDOMChildNode)     // avoid crash in case XML-file -without channel-information- is loaded
     {
         pIDOMChildNode->get_nodeTypedValue(&NodeValue);
         omstrTemp = strCopyBSTRToCString(NodeValue);
-        m_ouData.m_byChannelNumber = _atoi64(omstrTemp);
+        m_ouData.m_nChannelNumber = atoi(omstrTemp);
         pIDOMChildNode->Release();
     }
-    if(m_ouData.m_byChannelNumber == 0) // if casting fails (failure in xml)
+    if(m_ouData.m_nChannelNumber == 0) // if casting fails (failure in xml)
     {
-        m_ouData.m_byChannelNumber = 1; // set default channel
+        m_ouData.m_nChannelNumber = 1; // set default channel
         m_lDefaultChannelUsed = 1;
     }
 
@@ -366,7 +366,7 @@ HRESULT CSend_MessageEntity::SetData(MSXML2::IXMLDOMElementPtr& pIDomSendNode)
         pIDomTSAtrrib = pIDOMDoc->createAttribute(_(def_STR_TCATTRIB_CHANNEL));
         if(pIDomTSAtrrib!= NULL)
         {
-            pIDomTSAtrrib->value = _bstr_t(m_ouData.m_byChannelNumber); // Save Channel-Number
+            pIDomTSAtrrib->value = _bstr_t(m_ouData.m_nChannelNumber); // Save Channel-Number
             pChildElement->setAttributeNode(pIDomTSAtrrib);
         }
 
@@ -453,9 +453,9 @@ Date Created   :  07/05/2014
 Modifications  :
 Codetag        :
 ******************************************************************************/
-HRESULT CSend_MessageEntity::SetChannel(BYTE byChannel)
+HRESULT CSend_MessageEntity::SetChannel(INT nChannel)
 {
-    m_ouData.m_byChannelNumber = byChannel;
+    m_ouData.m_nChannelNumber = nChannel;
     return S_OK;
 }
 
@@ -487,7 +487,7 @@ INT CSend_MessageEntity::nUpdateSignals(CSend_MessageData& ouData)
     ouTempSignalData.m_dwMessageID = ouData.m_dwMessageID;
     ouTempSignalData.m_eSignalUnitType = ouData.m_eSignalUnitType;
     ouTempSignalData.m_omMessageName = ouData.m_omMessageName;
-    ouTempSignalData.m_byChannelNumber = ouData.m_byChannelNumber;  // Save Channel-Number
+    ouTempSignalData.m_nChannelNumber = ouData.m_nChannelNumber;  // Save Channel-Number
     ouTempSignalData.m_uDefaultSignalValue = ouData.m_uDefaultSignalValue;
     for(UINT i = 0; i < unSignalCount; i++)
     {
@@ -685,7 +685,7 @@ CSend_MessageData::CSend_MessageData(void)
 {
     //For W4 Removal
     m_dwMessageID = (DWORD)-1;
-    m_byChannelNumber = 1;  // Set default-Channel
+    m_nChannelNumber = 1;  // Set default-Channel
     m_eSignalUnitType = ENG;        //CS027
     m_omMessageName = "";
     m_odSignalDataList.RemoveAll();
@@ -723,7 +723,7 @@ CSend_MessageData& CSend_MessageData::operator=(const CSend_MessageData& RefObj)
 {
     m_dwMessageID = RefObj.m_dwMessageID;
     m_eSignalUnitType = RefObj.m_eSignalUnitType;
-    m_byChannelNumber = RefObj.m_byChannelNumber;   //Save Channel-Number
+    m_nChannelNumber = RefObj.m_nChannelNumber;   //Save Channel-Number
     m_odSignalDataList.RemoveAll();
     //m_odSignalDataList.AddHead(&(const_cast<CSignalDataList>(RefObj.m_odSignalDataList)));
 

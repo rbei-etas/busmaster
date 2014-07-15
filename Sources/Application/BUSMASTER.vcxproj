@@ -440,6 +440,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
       </BrowseInformation>
     </ClCompile>
+    <ClCompile Include="DatabaseAssociateDlg.cpp" />
     <ClCompile Include="DatabaseDissociateDlg.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Disabled</Optimization>
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -1013,6 +1014,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="ConfigDetails.h" />
     <ClInclude Include="ConfigMsgLogDlg.h" />
     <ClInclude Include="CSignalGeneration.h" />
+    <ClInclude Include="DatabaseAssociateDlg.h" />
     <ClInclude Include="DatabaseDissociateDlg.h" />
     <ClInclude Include="DataType.h" />
     <ClInclude Include="DisplayIntMsg.h" />

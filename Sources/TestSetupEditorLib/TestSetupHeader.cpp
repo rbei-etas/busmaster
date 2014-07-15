@@ -22,6 +22,33 @@
 #include "TestSetupHeader.h"
 #include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
+
+CTestSetupHeader& CTestSetupHeader::operator= (const CTestSetupHeader& src)
+{
+    //Bus Type
+    this->m_eBus = src.m_eBus;
+    //Name of the engineer
+    this->m_sEngineerInfo1 = src.m_sEngineerInfo1;
+    //Engineer's role / designation
+    this->m_sEngineerInfo2 = src.m_sEngineerInfo2;
+    //Name of the test setup
+    this->m_sModuleName = src.m_sModuleName;
+    //Report File Path
+    this->m_sReportFile = src.m_sReportFile;
+    //Version information
+    this->m_sVersion = src.m_sVersion;
+
+    //Clean up databasefile paths
+    this->m_omDatabasePaths.RemoveAll();
+ 
+    //Store all new paths
+    for (int i = 0; i < src.m_omDatabasePaths.GetSize(); i++)
+    {
+        this->m_omDatabasePaths.Add(src.m_omDatabasePaths.GetAt(i));
+    }
+    return *this;
+}
+
 /******************************************************************************
 Function Name  :  CTestSetupHeader
 Input(s)       :
@@ -66,7 +93,7 @@ Modifications  :  CS024
 HRESULT CTestSetupHeader::InitHeaderToDefault(void)
 {
     m_eBus = CAN;
-    m_omDatabasePath = "";
+    m_omDatabasePaths.RemoveAll();
     m_sEngineerInfo1.vInitialise(_("Engineer Name"));
     m_sEngineerInfo2.vInitialise(_("Engineer Role"));
     m_sModuleName.vInitialise(_("Module Name"), "");
@@ -91,7 +118,7 @@ HRESULT CTestSetupHeader::ValidateEntity(CString& omStrResult)
 {
     HRESULT hResult = ERR_VALID_SUCCESS;
 
-    if(m_omDatabasePath == "")
+    if(m_omDatabasePaths.GetSize() < 1)
     {
         hResult = ERR_VALID_ERROR;
         omStrResult = _("No Database File is Included");
@@ -99,11 +126,14 @@ HRESULT CTestSetupHeader::ValidateEntity(CString& omStrResult)
     }
     else
     {
-        if(PathFileExists(m_omDatabasePath) == FALSE)
+        for(int i = 0; i < m_omDatabasePaths.GetSize(); i++)
         {
-            omStrResult = _("Incorrect Database File path");
-            omStrResult += "\r\n";
-            hResult = ERR_VALID_ERROR;
+            if(PathFileExists(m_omDatabasePaths[i]) == FALSE)
+            {
+                omStrResult = _("Incorrect Database File path");
+                omStrResult += "\r\n";
+                hResult = ERR_VALID_ERROR;
+            }
         }
     }
     return hResult;

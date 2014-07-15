@@ -109,7 +109,24 @@ BOOL CMsgSignal::bCalcBitMaskForSig(BYTE* pbyMaskByte, UINT unArrayLen,
     return bValid;
 }
 
-UINT CMsgSignal::unGetNumerOfMessages()
+void CMsgSignal::omStrListGetMessageNames(CStringList& omStrListMsgs)
+{
+    // Clear the list
+    omStrListMsgs.RemoveAll();
+    m_omDBMapCritSec.Lock();
+    // Clear the list
+    int nTotalMsgCount = m_omMsgDetailsIDMap.GetCount();
+    POSITION pos = m_omMsgDetailsIDMap.GetStartPosition( );
+    sMESSAGE* psTempMsgStruct;
+    CString strMsgKey;
+    for (int nMsgIndex = 0; nMsgIndex < nTotalMsgCount && pos != NULL; nMsgIndex++ )
+    {
+        m_omMsgDetailsIDMap.GetNextAssoc(pos,strMsgKey,psTempMsgStruct);
+        omStrListMsgs.AddHead( psTempMsgStruct->m_omStrMessageName);
+    }
+    m_omDBMapCritSec.Unlock();
+}
+UINT CMsgSignal::unGetNumberOfMessages()
 {
     return ((UINT)m_omMsgDetailsIDMap.GetCount());
 }
@@ -121,10 +138,10 @@ void CMsgSignal::unListGetMessageIDs(UINT* omListId)
     int nTotalMsgCount = (INT)m_omMsgDetailsIDMap.GetCount();
     POSITION pos = m_omMsgDetailsIDMap.GetStartPosition( );
     sMESSAGE* psTempMsgStruct;
-    UINT unMsgKey;
-    for (int unMsgIndex = 0; unMsgIndex < nTotalMsgCount && pos != nullptr; unMsgIndex++ )
+    CString strMsgKey;
+    for (int unMsgIndex = 0; unMsgIndex < nTotalMsgCount && pos != NULL; unMsgIndex++ )
     {
-        m_omMsgDetailsIDMap.GetNextAssoc(pos,unMsgKey,psTempMsgStruct);
+        m_omMsgDetailsIDMap.GetNextAssoc(pos,strMsgKey,psTempMsgStruct);
         omListId[unMsgIndex] = psTempMsgStruct->m_unMessageCode;
     }
     m_omDBMapCritSec.Unlock();
@@ -196,4 +213,35 @@ sMESSAGE* CMsgSignal::psGetMessagePointer( UINT unMsgID)
     sMESSAGE* psMsgStruct = nullptr;
     m_omMsgDetailsIDMap.Lookup(unMsgID,psMsgStruct);
     return psMsgStruct;
+}
+
+/******************************************************************************
+  Function Name    :  psGetMessagePointer
+  Input(s)         :  CString strMsgName
+  Output           :  sMESSAGE*
+  Functionality    :  Returns associted message pointer if found, otherwise
+                      NULL.
+  Member of        :  CMsgSignal
+  Friend of        :      -
+  Author(s)        :  Amarnath Shastry
+  Date Created     :  19.02.2002
+  Modifications    :  derka
+                      04.06.2014, pasted this function here
+******************************************************************************/
+sMESSAGE* CMsgSignal::psGetMessagePointer( CString strMsgName)
+{
+    m_omDBMapCritSec.Lock();
+    POSITION pos = m_omMsgDetailsIDMap.GetStartPosition();
+    sMESSAGE* psMsgStruct = NULL;
+    CString strKey;
+    while (pos != NULL )
+    {
+        m_omMsgDetailsIDMap.GetNextAssoc( pos, strKey, psMsgStruct );
+        if((NULL != psMsgStruct) && (!(psMsgStruct->m_omStrMessageName.Compare(strMsgName))))
+        {
+            return psMsgStruct;
+        }
+    }
+    m_omDBMapCritSec.Unlock();
+    return NULL;
 }

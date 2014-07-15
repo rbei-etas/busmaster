@@ -1264,7 +1264,7 @@ static void vPopulateMsgEntryFromDB(SMSGENTRY*& psMsgEntry,
 {
     if (pouMsgSig != nullptr)
     {
-        UINT nCount = pouMsgSig->unGetNumerOfMessages();
+        UINT nCount = pouMsgSig->unGetNumberOfMessages();
         UINT* punMsgIds = new UINT[nCount];
         pouMsgSig->unListGetMessageIDs(punMsgIds);
         for (UINT i = 0; i < nCount; i++)

@@ -24,6 +24,7 @@
 
 #include "TxWindow_stdafx.h"             // For standard includes
 #include "include/BaseDefs.h"
+#include "include/struct_can.h"
 #include "DataTypes/MsgSignal_Datatypes.h"
 #include "Utility/ComboItem.h"          // For Custom Combobox Implementation
 #include "Utility/EditItem.h"           // For Custom Editbox Implementation
@@ -1697,7 +1698,7 @@ void CTxMsgDetailsView::vPopulateMessageComboBox()
     // Get number of mesages in database
     if ( pDBptr != nullptr )
     {
-        UINT unNoOfMessages = pDBptr->unGetNumerOfMessages();
+        UINT unNoOfMessages = pDBptr->unGetNumberOfMessages();
 
         // Not zero
         if ( unNoOfMessages > 0 )
@@ -2375,7 +2376,7 @@ void CTxMsgDetailsView::vUpdateAllBlocksFrmDB()
 
     pomBlockView = ( CTxMsgBlocksView* )pomGetBlocksViewPointer();
     pDBptr =  m_pouDBPtr;
-    for(int nMsgCnt =0; nMsgCnt < pDBptr->unGetNumerOfMessages(); nMsgCnt++)
+    for(int nMsgCnt =0; nMsgCnt < pDBptr->unGetNumberOfMessages(); nMsgCnt++)
     {
         psMsgCurrentBlock =  pomBlockView->m_psMsgBlockList ;
         while(psMsgCurrentBlock != nullptr)

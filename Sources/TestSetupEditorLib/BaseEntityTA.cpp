@@ -342,9 +342,9 @@ Author(s)      :  Venkatanarayana Makam
 Date Created   :  06/04/2011
 Modifications  :
 ******************************************************************************/
-HRESULT CBaseEntityTA::SetDatabaseFile(CString& omstrDataBasePath)
+HRESULT CBaseEntityTA::SetDatabaseFile(CString& omstrDataBasePath, int nChannelNumber)
 {
-    if( TRUE == m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDataBasePath))
+    if( TRUE == m_ouDataBaseManager.bFillDataStructureFromDatabaseFile(omstrDataBasePath, PROTOCOL_CAN, nChannelNumber))
     {
         return S_OK;
     }

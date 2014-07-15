@@ -78,10 +78,10 @@
 #define def_TS_ROWNUM_MODULE            4
 #define def_TS_ROWNUM_ENGINEER1         5
 #define def_TS_ROWNUM_ENGINEER2         6
-#define def_TS_ROWNUM_DATABASE          7
+#define def_TS_ROWNUM_DATABASE          9
 #define def_TS_ROWNUM_REPORT            8
-#define def_TS_ROWNUM_TIMEMODE          9
-#define def_TS_ROWNUM_FILEFORMAT        10
+#define def_TS_ROWNUM_TIMEMODE          7
+//#define def_TS_ROWNUM_FILEFORMAT        10
 
 #define def_TC_ROWNUM_TCID              0
 #define def_TC_ROWNUM_TCNAME            1

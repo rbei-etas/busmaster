@@ -267,6 +267,9 @@
     <ClCompile Include="TxHandlerLIN.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DatabaseAssociateDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="BUSMASTER.idl">
@@ -559,6 +562,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TxHandlerLIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DatabaseAssociateDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

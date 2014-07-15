@@ -26,7 +26,7 @@
 #include "TestSetupEditorLib/TestSetupEntity.h"
 #include "TestSetupEditorLib/DataBaseMsgList.h"
 #include "TreeViewEx.h"
-#include "FrameProcessor/LogObjectCAN.h" /* derka */
+#include "FrameProcessor/LogObjectCAN.h"
 
 // CTSEditorChildFrame frame with splitter
 #define szFilter    "TestSetup Files (*.xml)|*.xml||"
@@ -102,7 +102,7 @@ private:
     void parseReplayEntity(CBaseEntityTA* pEntity, HTREEITEM hTCTreeitem);
     void parseTestCaseEntiy(CBaseEntityTA* pEntity, HTREEITEM hSubParent);
 
-    void vCreateChannelDropdown(CListCtrlEx& omTempListCtrl, BYTE byChannelnumber /*CSend_MessageData* pSubEntity*/, INT iNumberOfActiveChannels, INT iTestCaseNumber);
+    void vCreateChannelDropdown(CListCtrlEx& omTempListCtrl, INT nChannelnumber, INT iNumberOfActiveChannels, INT iTestCaseNumber);
 
     void vDisplayHeaderInfo(INT /*nTestSetupIndex*/);
     void vDisplaySendInfo(CBaseEntityTA* pEntity);

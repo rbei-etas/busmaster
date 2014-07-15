@@ -98,7 +98,7 @@ HRESULT VerifyCurrentMessage(STCANDATA& sCanData, CTSExecutionCAN* pTSXCan)
                 pTSXCan->m_ouMsgInterpret.vSetMessageList(sMsgEntry);
                 pTSXCan->m_ouMsgInterpret.bInterpretMsgs(ouMsgData.m_dwMessageID, pucData, ouSignalInfo);
                 CMessageResult ouMsgResult;
-                if( ouMsgData.m_byChannelNumber == sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel )    // solves issue #711, 4th bullet point
+                if( ouMsgData.m_nChannelNumber == sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel )    // solves issue #711, 4th bullet point
                 {
                     if( pTSXCan->bVerifyCanMessage(ouMsgData, ouSignalInfo, ouMsgResult) == TRUE)
                     {
@@ -453,7 +453,7 @@ HRESULT CTSExecutionCAN::TSX_VerifyMessage(CBaseEntityTA* pEntity, CResultVerify
         //Verify The Signals
         CMessageResult ouMsgResult;
         omResult = _("SUCCESS");
-        if( ouVerifyData.m_byChannelNumber == sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel )    // solves issue #711, 4th bullet point
+        if( ouVerifyData.m_nChannelNumber == sCanData.m_uDataInfo.m_sCANMsg.m_ucChannel )    // solves issue #711, 4th bullet point
         {
             if( bVerifyCanMessage(ouVerifyData, ouSignalInfo, ouMsgResult) == FALSE)
             {
@@ -629,7 +629,7 @@ BOOL CTSExecutionCAN::bMakeCanMessage(sMESSAGE*& pMsg, CSend_MessageData& ouSend
         psCurrSignal = psCurrSignal->m_psNextSignalList;
     }
     //Make CAN Message
-    stCanMsg.m_ucChannel = ouSendData.m_byChannelNumber;    // Get Channel-Number
+    stCanMsg.m_ucChannel = ouSendData.m_nChannelNumber;    // Get Channel-Number
     stCanMsg.m_ucDataLen = (UCHAR)pMsg->m_unMessageLength;
     stCanMsg.m_ucEXTENDED = (UCHAR)pMsg->m_bMessageFrameFormat;
     stCanMsg.m_ucRTR = (pMsg->m_unNumberOfSignals>0)? 0 : 1;        //TODO:CheckThis

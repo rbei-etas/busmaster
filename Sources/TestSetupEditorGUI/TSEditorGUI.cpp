@@ -27,6 +27,7 @@
 
 #include "TSEditorGUI_Extern.h"
 #include "TSEditorGUI_ChildFrame.h"
+#include "Application/MainFrm.h"
 #include "TSEditorGUI_resource.h"
 #include "Utility\MultiLanguageSupport.h"
 
@@ -137,6 +138,11 @@ USAGEMODE HRESULT TS_vShowTSEditorWindow(void* pParentWnd)
                                       CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS,
                                       LoadCursor(NULL, IDC_CROSS), 0,
                                       nullptr);
+            if(pParentWnd != NULL)
+            {
+                CMainFrame* pInt = static_cast<CMainFrame*>(pParentWnd);                    // cast from void* to CMainFrame*
+                g_pomTSEditorChildWindow->vSetNumberOfActiveChannels(pInt->m_nNumChannels); // store number of used channels, to show used channels only
+            }
             //TODO::Update position.
             //CRect omRect(&(sTxWndPlacement.rcNormalPosition));
             CRect omRect(63, 913, 4, 596);
@@ -171,6 +177,11 @@ USAGEMODE HRESULT TS_vShowTSEditorWindow(void* pParentWnd)
     // If already exist then activate and set the focus
     else
     {
+        if(pParentWnd != NULL)
+        {
+            CMainFrame* pInt = static_cast<CMainFrame*>(pParentWnd);                    // cast from void* to CMainFrame
+            g_pomTSEditorChildWindow->vSetNumberOfActiveChannels(pInt->m_nNumChannels); // store number of used channels, to show used channels only
+        }
         g_pomTSEditorChildWindow->ShowWindow( SW_RESTORE );
         g_pomTSEditorChildWindow->MDIActivate();
         g_pomTSEditorChildWindow->SetActiveWindow();

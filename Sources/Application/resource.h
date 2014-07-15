@@ -35,6 +35,7 @@
 #define IDR_CAN_MONITOR                 111
 #define IDI_ICON_CAN_CONNECT            112
 #define IDR_BUSMASTERINTERFACE          112
+#define IDD_DLG_CHANNEL_DATABASE_ASSOCIATION 112
 #define IDI_ICON_FILTER_ON              113
 #define IDI_ICON_LOG_FILTER             114
 #define IDI_ICON_MSG_FILTER             115
@@ -264,6 +265,7 @@
 #define IDC_EDIT_FILE_PATH              1006
 #define IDC_EDIT_REPLAY_FILE_NAME       1006
 #define IDC_BTN_REMOVE                  1006
+#define IDC_CHANNEL_DATABASE_ASSOCIATION_LIST 1006
 #define IDC_STAT_ACCEPTANCE             1007
 #define IDC_SPIN_BIT                    1007
 #define IDC_EDIT_NET_NAME               1007
@@ -1215,9 +1217,9 @@
 //
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        112
+#define _APS_NEXT_RESOURCE_VALUE        113
 #define _APS_NEXT_COMMAND_VALUE         40015
-#define _APS_NEXT_CONTROL_VALUE         1006
+#define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

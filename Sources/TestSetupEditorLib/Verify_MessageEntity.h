@@ -47,7 +47,7 @@ public:
     BOOL m_bResult;
     DWORD m_dwMessageID;
     CString m_omMessageName;
-    BYTE m_byChannelNumber;
+    INT m_nChannelNumber;
     eTYPE_UNIT_SIGNAL m_eSignalUnitType;
     CSignalConditionList m_odSignalConditionList;
     CVerify_MessageData& operator=(const CVerify_MessageData& RefObj);

@@ -138,7 +138,7 @@ BOOL CPPageMessage::OnInitDialog()
             return FALSE;
         }
 
-        unTotalDBMsgs = m_pouMsgSigBus->unGetNumerOfMessages();
+        unTotalDBMsgs = m_pouMsgSigBus->unGetNumberOfMessages();
         if (unTotalDBMsgs > 0)
         {
             punDBMsgs = new UINT[unTotalDBMsgs];

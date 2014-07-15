@@ -32,7 +32,7 @@ class CDataBaseMsgList
 public:
     CDataBaseMsgList(void);
     virtual ~CDataBaseMsgList(void);
-    BOOL bFillDataStructureFromDatabaseFile( CString strFileName);
+    BOOL bFillDataStructureFromDatabaseFile( CString strFileName, eProtocol eProtocolName = PROTOCOL_CAN, INT nChannelNumber = 0);
     BOOL bValidateDatabaseFile(CString strFileName);
     BOOL bIsValidMessageID(UINT dwMsgId);
     BOOL bFreeMessageMemory();

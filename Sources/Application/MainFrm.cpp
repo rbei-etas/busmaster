@@ -52,6 +52,7 @@
 #include "TimeManager.h"
 #include "MsgBufferConfigPage.h"    // For Message Buffer Configuration PPage
 #include "MsgFilterConfigPage.h"    // For Filter configuration page
+#include "DatabaseAssociateDlg.h"
 #include "DatabaseDissociateDlg.h"
 #include "AppServices_Impl.h"
 #include "include/utils_macro.h"
@@ -356,7 +357,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(WM_ENABLE_DISABLE_HANDLERS, vEnableDisableHandlers)
     ON_WM_HELPINFO()
     ON_COMMAND(IDM_DATABASE_DISSOCIATE_DB, OnDissociateDatabase)
-    ON_COMMAND(IDM_SAVE_IMPORT, OnSaveImportDatabase)
+//    ON_COMMAND(IDM_SAVE_IMPORT, OnSaveImportDatabase)
     ON_UPDATE_COMMAND_UI(IDM_SAVE_IMPORT, OnUpdateSaveImportDatabase)
     ON_MESSAGE(WM_GET_DB_PTR, OnProvideMsgDBPtr)
     ON_MESSAGE(WM_GET_MSG_NAME_FROM_CODE, OnProvideMsgNameFromCode)
@@ -766,7 +767,7 @@ static void vPopulateMainEntryList(CMainEntryList* podResultingList, const SMSGE
 {
     if ((podResultingList != nullptr) && (pouDatabase != nullptr))
     {
-        UINT nNoMsgs = pouDatabase->unGetNumerOfMessages();
+        UINT nNoMsgs = pouDatabase->unGetNumberOfMessages();
         UINT* pMsgIds = new UINT[nNoMsgs];
         pouDatabase->unListGetMessageIDs(pMsgIds);
         for (UINT i = 0; i < nNoMsgs; i++)
@@ -1379,6 +1380,7 @@ AUTHOR:         RBIN/EMC2 - Amarnath Shastry
 void CMainFrame::OnImportDatabase()
 {
     CStringArray strFilePathArray;
+	strFilePathArray.SetSize(m_nNumChannels);
     // Display a open file dialog
     CFileDialog fileDlg( TRUE,      // Open File dialog
                          "dbf",     // Default Extension,
@@ -1389,62 +1391,57 @@ void CMainFrame::OnImportDatabase()
 
     // Set Title
     fileDlg.m_ofn.lpstrTitle  = _("Select Active Database Filename...");
+   
+	theApp.OnChannelDatabaseAssociation(&strFilePathArray, &fileDlg, m_nNumChannels);
+    CString omStrMsg = _("Database File: \n ");
+    BOOL bAllFilesImported = TRUE;
 
-    if ( IDOK == fileDlg.DoModal() )
+    for(int nCount = 0; nCount < m_nNumChannels; nCount++)
     {
-        POSITION pos = nullptr;
-        pos = fileDlg.GetStartPosition();
-        while(nullptr != pos)
+        CString strTempFileName = strFilePathArray.GetAt(nCount);
+        //FALSE because it is not called using COM
+        if(strTempFileName != "")
         {
-            CString strTempFile = fileDlg.GetNextPathName(pos);
-            strFilePathArray.Add(strTempFile);
-        }
-        CString omStrMsg = _("Database File: \n ");
-        BOOL bAllFilesImported = TRUE;
-        int nFileCount = strFilePathArray.GetSize();
-        for(int nCount = 0; nCount < nFileCount; nCount++)
-        {
-            CString strTempFileName = strFilePathArray.GetAt(nCount);
-            //FALSE because it is not called using COM
-            DWORD dError=dLoadDataBaseFile(strTempFileName,FALSE);
+            DWORD dError=dLoadDataBaseFile(strTempFileName, FALSE, nCount+1);
             if(E_INVALIDARG==dError)
             {
                 bAllFilesImported = FALSE;
                 //Add the file name for warning display
                 omStrMsg += strTempFileName;
                 omStrMsg += defNEW_LINE;
-                strFilePathArray.RemoveAt(nCount);
+                strFilePathArray.SetAt(nCount, _T(""));
+                //strFilePathArray.RemoveAt(nCount);
             }
         }
-        if(bAllFilesImported == FALSE)
-        {
-            omStrMsg += _(" not found!");
-            MessageBox(omStrMsg,"BUSMASTER",MB_OK|MB_ICONERROR);
-        }
-
-        // Check for Warnning condition
-        CFlags* pFlags = nullptr;
-        pFlags = theApp.pouGetFlagsPtr();
-        if( pFlags != nullptr)
-        {
-            if(pFlags->nGetFlagStatus(DLLLOADED) == TRUE)
-            {
-                AfxMessageBox(_(defIMPORT_DLLLOAD_WARNNING),
-                              MB_OK|MB_ICONINFORMATION);//dll loaded unload it
-            }
-        }
-
-        HWND hWnd;
-        hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-
-        if(hWnd)
-        {
-            ::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)TRUE, 0);
-        }
-
-        //Added by Arun to update Data Handler Main entry list.
-        vUpdateMainEntryListInWaveDataHandler();
     }
+    if(bAllFilesImported == FALSE)
+    {
+        omStrMsg += _(" not found!");
+        MessageBox(omStrMsg,_("BUSMASTER"),MB_OK|MB_ICONERROR);
+    }
+
+    // Check for Warning condition
+    CFlags* pFlags = nullptr;
+    pFlags = theApp.pouGetFlagsPtr();
+    if( pFlags != nullptr)
+    {
+        if(pFlags->nGetFlagStatus(DLLLOADED) == TRUE)
+        {
+            AfxMessageBox(_(defIMPORT_DLLLOAD_WARNNING),
+                          MB_OK|MB_ICONINFORMATION);//dll loaded unload it
+        }
+    }
+
+    HWND hWnd;
+    hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+
+    if(hWnd)
+    {
+        ::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)TRUE, 0);
+    }
+
+    //Added by Arun to update Data Handler Main entry list.
+    vUpdateMainEntryListInWaveDataHandler();
 }
 
 DWORD CMainFrame::dLoadJ1939DBFile(CString omStrActiveDataBase, bool bFrmCom)
@@ -1541,7 +1538,7 @@ DESCRIPTION:    Loads a database file selected by the user
 PARAMETERS:     file name ,bFrmCom
 RETURN VALUE:   bool
 *******************************************************************************/
-DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase, bool /* bFrmCom */)
+DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase, bool /*bFrmCom*/, BYTE byChannel)
 {
     DWORD dReturn= (DWORD)E_FAIL;
     //Check for same DB path......
@@ -1585,7 +1582,7 @@ DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase, bool /* bFrmCom
         {
             // Fill data struct with new data base info
             bRetVal = theApp.m_pouMsgSignal->bFillDataStructureFromDatabaseFile(
-                          omStrActiveDataBase, PROTOCOL_CAN);
+                          omStrActiveDataBase, PROTOCOL_CAN, byChannel);
             // If dbf file loaded successfully
             if(TRUE == bRetVal)
             {
@@ -2139,9 +2136,11 @@ void CMainFrame::OnConfigDatabaseSave()
                     //If yes then prompt the user whether he wants to
                     //import it or not.
                     CStringArray omImportedDBNames;
-                    if (theApp.m_pouMsgSignal != nullptr)
+                    CStringArray omDbChannels;
+                    if (theApp.m_pouMsgSignal != NULL)
                     {
                         theApp.m_pouMsgSignal->vGetDataBaseNames(&omImportedDBNames);
+                        theApp.m_pouMsgSignal->vGetDatabaseChannels(&omDbChannels);
                         for (INT nDBCount = 0; nDBCount < omImportedDBNames.GetSize();
                                 nDBCount++)
                         {
@@ -2154,7 +2153,7 @@ void CMainFrame::OnConfigDatabaseSave()
 
                                 if (MessageBox(omText, "BUSMASTER", MB_ICONQUESTION | MB_YESNO) == IDYES)
                                 {
-                                    dLoadDataBaseFile(m_omStrDatabaseName, FALSE);
+                                    dLoadDataBaseFile(m_omStrDatabaseName, FALSE, atoi(omDbChannels[nDBCount]));
                                 }
                             }
                         }
@@ -2645,7 +2644,7 @@ void CMainFrame::vPopulateJ1939PGNList()
         CMessageAttrib& ouMsgAttr = CMessageAttrib::ouGetHandle(J1939);
         CStringList omStrMsgNameList;
         UINT unNoOfMsgs =
-            m_pouMsgSigJ1939->unGetNumerOfMessages();
+            m_pouMsgSigJ1939->unGetNumberOfMessages();
 
         UINT* pIDArray = new UINT[unNoOfMsgs];
 
@@ -2807,7 +2806,7 @@ void CMainFrame::OnAddSignalToSignalWindow()
     pomDatabase = theApp.m_pouMsgSignal;
     if( pomDatabase != nullptr )
     {
-        if( pomDatabase->unGetNumerOfMessages() > 0)
+        if( pomDatabase->unGetNumberOfMessages() > 0)
         {
             /* Test code starts*/
             CMainEntryList odResultingList;
@@ -3034,7 +3033,7 @@ static void vPopulateMsgEntryFromDB(SMSGENTRY*& psMsgEntry,
 {
     if (pouMsgSig != nullptr)
     {
-        UINT nCount = pouMsgSig->unGetNumerOfMessages();
+        UINT nCount = pouMsgSig->unGetNumberOfMessages();
         UINT* punMsgIds = new UINT[nCount];
         pouMsgSig->unListGetMessageIDs(punMsgIds);
         for (UINT i = 0; i < nCount; i++)
@@ -3259,7 +3258,7 @@ void CMainFrame::OnLogEnable()
     {
         //if(theApp.m_pouMsgSignal != nullptr)
         {
-            //if(theApp.m_pouMsgSignal->unGetNumerOfMessages() > 0)
+            //if(theApp.m_pouMsgSignal->unGetNumberOfMessages() > 0)
             //if (nullptr != sg_pouFrameProcCAN)
             {
                 //if(sg_pouFrameProcCAN->FPC_IsDataLogged() == TRUE)
@@ -3331,7 +3330,7 @@ void CMainFrame::OnLog_LIN_Enable()
     {
         //if(theApp.m_pouMsgSignal != nullptr)
         {
-            //if(theApp.m_pouMsgSignal->unGetNumerOfMessages() > 0)
+            //if(theApp.m_pouMsgSignal->unGetNumberOfMessages() > 0)
             //if (nullptr != sg_pouFrameProcCAN)
             {
                 //if(sg_pouFrameProcCAN->FPC_IsDataLogged() == TRUE)
@@ -7017,7 +7016,7 @@ void CMainFrame::OnFileConnect()
                 {
                     //if(theApp.m_pouMsgSignal != nullptr)
                     {
-                        //if(theApp.m_pouMsgSignal->unGetNumerOfMessages() > 0)
+                        //if(theApp.m_pouMsgSignal->unGetNumberOfMessages() > 0)
                         //if (nullptr != sg_pouFrameProcCAN)
                         {
                             //if(sg_pouFrameProcCAN->FPC_IsDataLogged() == TRUE)
@@ -8408,7 +8407,7 @@ void CMainFrame::vCreateMRU_Menus()
     CMenu* pMenu = pomGetMRUMenuPointer();
     if ( pMenu != nullptr )// Verify
     {
-        // if the first MRU file is empty then, "Empty" text shud be displayed
+        // if the first MRU file is empty then, "Empty" text should be displayed
         if ( m_omStrMRU_ConfigurationFiles[0] != "" &&
                 m_omStrMRU_ConfigurationFiles[0] != _(defSTR_DEFAULT_MRU_ITEM) )
         {
@@ -11352,11 +11351,11 @@ BOOL CALLBACK TerminateAppEnum( HWND hwnd, LPARAM lParam )
     Date Created     :  012.06.2009
     Modifications    :
 ******************************************************************************/
-void CMainFrame::OnSaveImportDatabase()
-{
-    OnConfigDatabaseSave();
-    dLoadDataBaseFile(m_omStrDatabaseName, FALSE);
-}
+//void CMainFrame::OnSaveImportDatabase()
+//{
+//    OnConfigDatabaseSave();
+//    dLoadDataBaseFile(m_omStrDatabaseName, FALSE, 0); /* replace 0 by e.g. function */
+//}
 
 void CMainFrame::OnUpdateSaveImportDatabase(CCmdUI* pCmdUI)
 {
@@ -13683,6 +13682,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             nSize += sizeof(BYTE);//configuration version
 
             CStringArray omDbNames;
+            CStringArray omDbChannels;
             if (theApp.m_pouMsgSignal != nullptr)
             {
                 std::string omStrBasePath;
@@ -13690,6 +13690,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
                 vGetLoadedCfgFileName(omConfigFileName);
                 CUtilFunctions::nGetBaseFolder(omConfigFileName.GetBuffer(MAX_PATH), omStrBasePath);
                 theApp.m_pouMsgSignal->vGetRelativeDataBaseNames(omStrBasePath, &omDbNames);
+                theApp.m_pouMsgSignal->vGetDatabaseChannels(&omDbChannels);
             }
 
             if(pNodePtr != nullptr)
@@ -13707,8 +13708,17 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
                         const char* strFilePath = omDbNames[nDbFileIndex];
                         xmlChar* pDBFFilePath = (xmlChar*)strFilePath;
 
-                        xmlNodePtr pNewChildPtr = xmlNewChild(pNodeDBFilePtr, nullptr, BAD_CAST DEF_FILE_PATH, BAD_CAST pDBFFilePath);
-                        xmlAddChild(pNodeDBFilePtr, pNewChildPtr);
+                        const char* strChannelNumber = omDbChannels[nDbFileIndex];  // theApp.m_pouMsgSignal->vGetDatabaseChannel(nDbFileIndex);
+                        xmlChar* pstrChannelNumber = (xmlChar*)(strChannelNumber); 
+
+                        xmlNodePtr pNodeDbFileChannelPtr = xmlNewNode(NULL, BAD_CAST DEF_CHANNEL);
+                        xmlAddChild(pNodeDBFilePtr, pNodeDbFileChannelPtr);
+
+                        xmlNodePtr pNewChildPtr = xmlNewChild(pNodeDbFileChannelPtr, nullptr, BAD_CAST DEF_FILE_PATH, BAD_CAST pDBFFilePath);
+                        xmlAddChild(pNodeDbFileChannelPtr, pNewChildPtr);
+
+                    /*xmlNodePtr*/ pNewChildPtr = xmlNewChild(pNodeDbFileChannelPtr, nullptr, BAD_CAST DEF_CHANNEL_NUMBER, BAD_CAST pstrChannelNumber);
+                        xmlAddChild(pNodeDbFileChannelPtr, pNewChildPtr);
                     }
                 }
             }
@@ -14396,38 +14406,75 @@ int CMainFrame::nLoadXMLConfiguration()
             break;
             case DATABASE_SECTION_ID:
             {
+                int iNumberOfDefinedDatabases = 0;
                 vClearDbInfo(CAN);
 
-                xmlChar* pchPath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Database_Files/FilePath";
-                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPath);
-                if( nullptr != pPathObject )
+                xmlChar* pchPathChannel = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Database_Files/Channel";
+                xmlChar* pchPathFilePath = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Database_Files/Channel/FilePath";
+                xmlChar* pchPathChannelNumber = (xmlChar*)"//BUSMASTER_CONFIGURATION/Module_Configuration/CAN_Database_Files/Channel/channelNumber";
+
+
+                pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPathChannel);  // Care about how many files must be loaded
+                if( NULL != pPathObject )
                 {
                     pNodeSet = pPathObject->nodesetval;
 
                     if(nullptr != pNodeSet)
                     {
-                        for(int i=0; i < pNodeSet->nodeNr; i++)
+                        iNumberOfDefinedDatabases = pNodeSet->nodeNr;   // Save number of active databases
+                    }
+                }
+                xmlXPathFreeObject (pPathObject);
+
+                xmlXPathObjectPtr pPathChannelNumberObject = NULL;
+                xmlNodeSetPtr pNodeChannelNumberSet = NULL;
+
+                for(int i=0; i < iNumberOfDefinedDatabases; i++)    // Do for all databases
+                {                                                                           // TODO: Create useful if's to check, if the channel-information is present
+                                                                                            //    and if it's the correct bus (CAN, FlexRay, ...)
+                    pPathObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPathFilePath); // Set pPathObject to the path of the database-file
+                    pPathChannelNumberObject = xmlUtils::pGetNodes(m_xmlConfigFiledoc, pchPathChannelNumber);
+      
+                    if(( NULL != pPathObject ) && ( NULL != pPathChannelNumberObject ))
+                    {
+                        pNodeSet = pPathObject->nodesetval;
+                        pNodeChannelNumberSet = pPathChannelNumberObject->nodesetval;
+      
+                        if (  nullptr != pNodeSet->nodeTab[i]->xmlChildrenNode )   // if path to the dbf-file is available
                         {
-                            if (  nullptr != pNodeSet->nodeTab[i]->xmlChildrenNode )
+                            xmlChar* pnChannelNumber = NULL;
+                            int nChannelNumber = 0;
+                            xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);    // take the path to the dbf-file
+  
+                            if( NULL != pNodeChannelNumberSet->nodeTab[i]->xmlChildrenNode )    // if channelNumber exists
                             {
-                                xmlChar* ptext = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeSet->nodeTab[i]->xmlChildrenNode, 1);
-                                if ( ( nullptr != ptext ) && ( theApp.m_pouMsgSignal != nullptr ) )
+                                pnChannelNumber = xmlNodeListGetString(m_xmlConfigFiledoc, pNodeChannelNumberSet->nodeTab[i]->xmlChildrenNode, 1);    // take the channel number
+                                nChannelNumber = atoi(CString(pnChannelNumber));
+
+                                if((nChannelNumber < 1) || (nChannelNumber > m_nNumChannels))    // if channelNumber is not in 1..maxConfiguredChannels...
                                 {
-                                    dLoadDataBaseFile(ptext, TRUE);
-                                    xmlFree(ptext);
+                                    continue;                                           // ...skip loading this file
                                 }
+                            }
+
+                            if ( ( nullptr != ptext ) && ( theApp.m_pouMsgSignal != nullptr ) && ( pnChannelNumber != nullptr ))
+                            {
+                                dLoadDataBaseFile(ptext, TRUE, nChannelNumber); // load the dbf-file; 
                             }
                         }
                     }
-                    else
-                    {
-                        nRetValue = S_OK;
-                    }
+                }   // End Do for all databases
+                if (pPathObject != nullptr)
+                {
                     xmlXPathFreeObject (pPathObject);
                 }
                 else
                 {
                     nRetValue = S_OK;
+                }
+                if (pPathChannelNumberObject != nullptr)
+                {
+                    xmlXPathFreeObject (pPathChannelNumberObject);
                 }
             }
             break;
@@ -17474,6 +17521,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
 
                 UINT unCount = 0;
                 CStringArray omDBNames;
+                CStringArray omDbChannels;
                 COPY_DATA_2(&unCount, pbyTemp, sizeof (UINT));
                 for (UINT i = 0; i < unCount; i++)
                 {
@@ -17486,13 +17534,14 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
 
                 if (theApp.m_pouMsgSignal != nullptr)
                 {
+                    theApp.m_pouMsgSignal->vGetDatabaseChannels(&omDbChannels);
                     for (INT i = 0; i < omDBNames.GetSize(); i++)
                     {
                         //No need to check return value. Error message will be displayed
                         // in trace window
                         //dLoadDataBaseFile will associate the database file if.
                         //it is valid.
-                        dLoadDataBaseFile(omDBNames.GetAt(i), TRUE);
+                        dLoadDataBaseFile(omDBNames.GetAt(i), TRUE, atoi(omDbChannels[i]));
                     }
                 }
             }
@@ -18068,7 +18117,7 @@ void CMainFrame::OnConfigureWaveformMessages(void)
     pomDatabase = theApp.m_pouMsgSignal;
     if( pomDatabase != nullptr )
     {
-        if( pomDatabase->unGetNumerOfMessages() > 0)
+        if( pomDatabase->unGetNumberOfMessages() > 0)
         {
             vUpdateMainEntryListInWaveDataHandler();
 
@@ -19588,7 +19637,7 @@ void CMainFrame::OnJ1939SignalwatchAdd()
     pomDatabase = m_pouMsgSigJ1939;
     if( pomDatabase != nullptr )
     {
-        if( pomDatabase->unGetNumerOfMessages() > 0)
+        if( pomDatabase->unGetNumberOfMessages() > 0)
         {
             /* Test code starts*/
             CMainEntryList odResultingList;
