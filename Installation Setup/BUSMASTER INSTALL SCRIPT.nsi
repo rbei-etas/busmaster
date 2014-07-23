@@ -418,7 +418,7 @@ Section "BUSMASTER"
   
   File ..\Sources\BIN\Release\BUSMASTER.exe
   File ..\Sources\BIN\Release\BUSMASTER.exe.manifest
-  File ..\Sources\BUSMASTER.tlb
+  File ..\Sources\Application\BUSMASTER.tlb
   File ..\Sources\Application\BUSMASTER_Interface.c
   File ..\Sources\Application\BUSMASTER_Interface.h
 
