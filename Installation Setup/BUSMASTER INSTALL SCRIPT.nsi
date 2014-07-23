@@ -481,6 +481,7 @@ Section "BUSMASTER"
   File ..\Readme.txt
 
 	; Simulated Systems Include files
+	SetOutPath "$INSTDIR\SimulatedSystems\include\"
 	File ..\Sources\Application\SimulatedSystems\include\CANIncludes.h 
 	File ..\Sources\Application\SimulatedSystems\include\LINIncludes.h
 	File ..\Sources\Application\SimulatedSystems\include\CAPLWrapper.h
@@ -490,18 +491,19 @@ Section "BUSMASTER"
 	File ..\Sources\Application\SimulatedSystems\include\Wrapper_J1939.h
 	File ..\Sources\Application\SimulatedSystems\include\J1939Includes.h
 	
-	SetOutPath "$INSTDIR\SimulatedSystems\OBJ\"
 	; Simulated Systems Library files
+	SetOutPath "$INSTDIR\SimulatedSystems\OBJ\"
 	File ..\Sources\Application\SimulatedSystems\OBJ\libWrapper_CAN.a
 	File ..\Sources\Application\SimulatedSystems\OBJ\libWrapper_LIN.a
 	File ..\Sources\Application\SimulatedSystems\OBJ\libWrapper_J1939.a
 	
 	; GCC Make Files
+	SetOutPath $INSTDIR
 	File ..\Sources\Application\GCCDLLMakeTemplate_CAN
 	File ..\Sources\Application\GCCDLLMakeTemplate_LIN
     	File ..\Sources\Application\GCCDLLMakeTemplate_J1939
 
-  SetOutPath $INSTDIR\
+  
 	
    
 	
