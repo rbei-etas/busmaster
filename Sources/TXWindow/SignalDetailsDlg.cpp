@@ -49,10 +49,10 @@
 enum eMODES
 {
     MD_ADD = 0,
-        MD_EDIT,
-        MD_DELETE,
-        MD_READ_ONLY,
-        MD_NONE
+    MD_EDIT,
+    MD_DELETE,
+    MD_READ_ONLY,
+    MD_NONE
 };
 
 CSignalDetailsDlg::CSignalDetailsDlg(eMODES eMode,

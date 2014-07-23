@@ -644,13 +644,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 2.3.0"
+            VALUE "FileVersion", "Ver 2.5.0"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 2.3.0"
+            VALUE "ProductVersion", "Ver 2.5.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -1662,11 +1662,11 @@ END
 STRINGTABLE 
 BEGIN
     AFX_IDS_PREVIEW_CLOSE   "印刷プレビューモードを取り消す\nプレビューの取り消し"
-    IDS_PROPT_FOR_EMPTY_FILENAME "データベースファイル名が空です"
+    
     IDS_INVALID_DB_PROMPT   "無効なデータベースファイル名"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "メッセージ名"
-    IDS_VERSION             "Ver 2.3.0"
+    IDS_VERSION             "Ver 2.5.0"
     IDS_HEADER              "***注意: このドキュメントを修正しないでください***\n\n\n***[ロギングセッションの開始]***\n"
     IDS_FOOTER              "***[ロギングセッションの終了]***"
     IDS_CONNECT             "&接続\tF2"

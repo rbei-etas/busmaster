@@ -14,9 +14,10 @@
  */
 
 /**
- * @brief This file contains utility function declarations
- * @authors Ratnadip Choudhury, Anish Kumar, Pradeep Kadoor
- * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file      Utility.h
+ * \brief     This file contains utility function declarations
+ * \authors   Ratnadip Choudhury, Anish Kumar, Pradeep Kadoor
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contains utility function declarations
  */
@@ -37,35 +38,35 @@ BOOL CHAR_2_WORD(WORD awWordDat[], int nWordDatLen,
 void FilterOut_NonHexChar(char acSource[]);
 int CalculateGCF(int anNumbers[], int Length);
 
-/** Top mask unwanted bit of the data */
+// Top mask unwanted bit of the data
 void vRemoveUnwantedBits(__int64& n64rData, int nLength);
 void vExtendSignBit( __int64& n64Val, int nSize);
 bool bGetSystemErrorString(HRESULT hResult, char acErrStr[256]);
 
-/** To copy the text into the clipboard */
+// To copy the text into the clipboard
 BOOL CopyTextToClipboard(LPSTR lpstrText, HWND hWND = nullptr);
 
 __int64 nConvertStringToInt(LPCTSTR omStrHexNo);
 
-/**  Top mask unwanted bit of the data */
+// Top mask unwanted bit of the data
 void s_vRemoveUnwantedBits(__int64& n64rData, int nLength);
 void s_vRemoveUnwantedBits(UINT64& n64rData, int nLength);
 void s_vExtendSignBit( __int64& n64Val, int nSize);
 
-/** To conver string to __int64. The string value could be in Hex or dec */
+// To conver string to __int64. The string value could be in Hex or dec
 BOOL bConvertStringToInt64( CString omStrHexNo,    // String
                             __int64& n64Value,     // Value
                             int nBase);
-
-                            /** Physical to value */
+//Physical to value
 unsigned int unConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScalFactor, unsigned long long int& unMaxVal, unsigned long long int& unMinVal);
 int nConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double dScalFactor, long long int& nMaxVal, long long int& nMinVal);
 
-/** Raw to Physical value */
+//Raw to Physical value
 unsigned int unConvertRawToPhysical(unsigned long long int unMaxRawVal, unsigned long long int unMinRawVal, double dOffset, double dScalFactor, double& dMaxPhyVal, double& dMinPhyVal);
 int nConvertRawToPhysical(long long int unMaxRawVal, long long int unMinRawVal, double dOffset, double dScalFactor, double& dMaxPhyVal, double& dMinPhyVal);
 
+//Helper function
 unsigned long long int unRoundOffdoubleValue(double dValue);
 
-/** to get the time elapsed */
+//to get the time elapsed
 __int64 gnGetCpuClocks();

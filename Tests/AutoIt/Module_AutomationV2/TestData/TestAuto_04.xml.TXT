@@ -1,0 +1,25 @@
+
+				BUSMASTER Version:: BUSMASTER 2.0.0
+				Report File For:: Test
+
+TestSetup File Information:
+---------------------------
+	
+	Title: Test
+	Module Name:Test Automation Editor
+	Version: 1.0
+	Database Information:D:\Trunk_AutoIt\Output\TestAuto_04.TXT
+
+Engineer Info:
+--------------
+	Name: ABC
+	Designation: XYZ
+Results:
+-------
+
+TestCase:  Test_4
+Result:	SUCCESS
+StratTime:Tuesday 2013/12/24  12:36:6:445
+EndTime:Tuesday 2013/12/24  12:36:6:447
+	Verify - 1 (Severity - SUCCESS)
+		No Message is Verified

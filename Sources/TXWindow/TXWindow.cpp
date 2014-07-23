@@ -14,16 +14,17 @@
  */
 
 /**
- * @file TXWindow.cpp
- * @author Ratnadip Choudhury
- * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- *
- * Defines the initialization routines for the DLL.
+ * \file      TXWindow.cpp
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
+// TXWindow.cpp : Defines the initialization routines for the DLL.
+//
 
 #include "TxWindow_stdafx.h"
 #include <afxdllx.h>
 #include "../Application/MultiLanguage.h"
+//#include "../Application/GettextBusmaster.h"
 #define USAGE_EXPORT
 #include "TxWnd_Extern.h"
 #include "TxMsgManager.h"
@@ -107,7 +108,10 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
     return 1;   // ok
 }
 
+//CTxMsgManager g_txMsgManager;
 CTxMsgChildFrame* g_pomTxMsgChildWindow = nullptr;
+
+//Export Function Definitions.
 
 USAGEMODE HRESULT TX_vSetMsgDBPtrInDetailsView(void* pMsgDB)
 {
@@ -202,7 +206,6 @@ USAGEMODE HRESULT TX_vSetClientID(DWORD dwClientID)
     //g_txMsgManager.vSetClientID(dwClientID);
     return S_OK;
 }
-
 USAGEMODE HRESULT TX_vSetDILInterfacePtr(void* ptrDILIntrf)
 {
     CTxMsgManager::s_podGetTxMsgManager()->vSetDILInterfacePtr(ptrDILIntrf);
@@ -273,13 +276,22 @@ USAGEMODE HRESULT TX_vStopTransmission(UINT unMaxWaitTime)
     return S_OK;
 }
 
+//USAGEMODE HRESULT TX_vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize)
+//{
+//    if(g_pomTxMsgChildWindow)
+//    {
+//        g_pomTxMsgChildWindow->vUpdateWndCo_Ords();
+//    }
+//    CTxMsgManager::s_podGetTxMsgManager()->vGetTxWndConfigData(pDesBuffer, nBuffSize);
+//    return S_OK;
+//}
 USAGEMODE HRESULT TX_vGetTxWndConfigData(xmlNodePtr pxmlNodePtr)
 {
     if(g_pomTxMsgChildWindow)
     {
         g_pomTxMsgChildWindow->vUpdateWndCo_Ords();
     }
-
+    //CTxMsgManager::s_podGetTxMsgManager()->vGetTxWndConfigData(pDesBuffer, nBuffSize);
     CTxMsgManager::s_podGetTxMsgManager()->vGetTxWndConfigData(pxmlNodePtr);
     return S_OK;
 }
@@ -295,6 +307,13 @@ USAGEMODE HRESULT TX_vSetTxWndConfigDataXML(xmlDocPtr pDoc)
     CTxMsgManager::s_podGetTxMsgManager()->vSetTxWndConfigData(pDoc);
     return S_OK;
 }
+/*USAGEMODE HRESULT TX_bIsTxWndConfigChanged()
+{
+    if(CTxMsgManager::s_podGetTxMsgManager()->bIsTxWndConfigChanged())
+        return S_OK;
+    else
+        return S_FALSE;
+}*/
 
 USAGEMODE HRESULT TX_vSetTxStopFlag(BOOL bStartStop)
 {

@@ -243,6 +243,11 @@ private:
         m_bHWTimestamps     = objRef.m_bHWTimestamps;
     }
 public:
+    sCONTROLLERDETAILSLIN()
+    {
+        m_strHwUri.reserve(100);
+        m_strProtocolVersion.reserve(100);
+    }
 
     std::string m_strHwUri;
     int m_nBaudRate;

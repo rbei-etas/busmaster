@@ -14,8 +14,9 @@
  */
 
 /**
- * @author Ratnadip Choudhury
- * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file      TxWnd_Extern.h
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
 #pragma once
@@ -45,6 +46,7 @@ extern "C" {  // only need to export C interface if used by C++ source code
     USAGEMODE HRESULT TX_vAssignMsgBlockList();
     USAGEMODE HRESULT TX_vDeleteTxBlockMemory();
     USAGEMODE HRESULT TX_vStopTransmission(UINT unMaxWaitTime);
+    //USAGEMODE HRESULT TX_vGetTxWndConfigData(BYTE*& pDesBuffer, int& nBuffSize);
     USAGEMODE HRESULT TX_vGetTxWndConfigData(xmlNodePtr pxmlNodePtr);
     USAGEMODE HRESULT TX_vSetTxWndConfigData(BYTE* pSrcBuffer, int nBuffSize);
     USAGEMODE HRESULT TX_vSetTxWndConfigDataXML(xmlDocPtr pDoc);

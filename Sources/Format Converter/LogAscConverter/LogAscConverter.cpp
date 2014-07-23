@@ -60,7 +60,7 @@ HRESULT CLogAscConverter::GettextBusmaster(void)
  *
  * Returns pchHelpText containing the help text.
  */
-HRESULT CLogAscConverter::GetHelpText(CString pchHelpText)
+HRESULT CLogAscConverter::GetHelpText(CString& pchHelpText)
 {
     pchHelpText = _("Converts the BUSMASTER CAN log file(.log) to CANoe CAN log file(.asc)");
     return S_OK;

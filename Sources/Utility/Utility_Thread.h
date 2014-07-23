@@ -96,16 +96,16 @@ public:
      * This function brings the thread back
      * into the previous state.
      */
-    BOOL bTransitToActiveState(void); 
+    BOOL bTransitToActiveState(void);
 
     BOOL bForceTerminateThread();
 
 protected:
-  /** Event to notify when the thread exits */
+    /** Event to notify when the thread exits */
     HANDLE m_hNotifyExit;
 
     /** Handle of the thread */
-    HANDLE m_hThread;        
+    HANDLE m_hThread;
 
     /** Previous action code. */
     UINT m_unPrevActionCode;

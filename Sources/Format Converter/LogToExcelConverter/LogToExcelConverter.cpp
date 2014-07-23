@@ -132,7 +132,7 @@ CLogToExcelConverter::~CLogToExcelConverter(void)
 {
 };
 
-HRESULT CLogToExcelConverter::GetHelpText(CString)
+HRESULT CLogToExcelConverter::GetHelpText(CString&)
 {
     return S_FALSE;
 }

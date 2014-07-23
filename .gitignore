@@ -8,7 +8,6 @@
 *.bak
 *.ipch
 *.opensdf
-*.manifest
 *.ncb
 *.pch
 *.pdb

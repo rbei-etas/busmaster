@@ -212,7 +212,7 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
         }
 
         //Update Message windows
-        pMainFrame->vUpdateAllMsgWndInterpretStatus(FALSE);
+        pMainFrame->vUpdateAllMsgWndInterpretStatus(m_sDbParams.m_eBus, FALSE);
 
         // Check for Graph list
         for(register int nBusID = CAN; nBusID < AVAILABLE_PROTOCOLS; nBusID++)

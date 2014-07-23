@@ -14,8 +14,9 @@
  */
 
 /**
- * @author Ratnadip Choudhury
- * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file      SectionNames.h
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
 #pragma once
@@ -47,6 +48,7 @@ enum eSECTION_ID // These IDs should be maintained with load sequence
     MSGWND_SECTION_LIN_ID,
     TXWND_SECTION_ID,
     WAVEFORMDATA_SECTION_ID,
+
     TEST_SETUP_EDITOR_SECTION_ID,
     TEST_SUITE_EXECUTOR_SECTION_ID,
     FLEXRAY_TXWND,
@@ -86,7 +88,6 @@ static char SectionName[SECTION_TOTAL][MAX_PATH] =
     "TestSetupEditorSectionName",
     "TestSuiteExecutorSectionName"
 };
-
 // XML GENERATION DEFINES
 #define DEF_BUSMASTER_INIT_CONFIG       "Busmaster_Init_Config"
 #define DEF_TOOLBAR_POSITION_DEFAULT    "Toolbar_Position_Default"
@@ -111,4 +112,6 @@ static char SectionName[SECTION_TOTAL][MAX_PATH] =
 #define DEF_CONTROLLER_MODE             "ControllerMode"
 #define DEF_CONTROLLER_SETTINGS         "ControllerSettings"
 #define DEF_CHANNEL                     "Channel"
+
 #define DEF_LIN_CLUSTER_CONFIG      "LIN_Cluster_Config"
+// XML GENERATION DEFINES END

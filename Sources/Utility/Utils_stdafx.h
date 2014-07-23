@@ -14,9 +14,10 @@
  */
 
 /**
- * @brief Include file for precompiled header
- * @author Ratnadip Choudhury
- * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file      Utils_stdafx.h
+ * \brief     Include file for precompiled header
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Include file for precompiled header
  */
@@ -24,6 +25,7 @@
 // stdafx.h : include file for standard system include files,
 // or project specific include files that are used frequently, but
 // are changed infrequently
+//
 
 #pragma once
 

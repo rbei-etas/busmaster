@@ -14,10 +14,10 @@
  */
 
 /**
- * @author Ratnadip Choudhury
- * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file      Struct.cpp
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-
 #include "stdafx.h"
 #include "Struct.h"
 
@@ -25,7 +25,15 @@ sSIMSYSARRAY::sSIMSYSARRAY()
 {
     psNextSimsys = nullptr;
 }
-
+/*******************************************************************************
+ Function Name  : operator=
+ Functionality  : Copies the contents of the destination(Param) linked list into
+                  the source(Member) linked list. Source linked list will be
+                  reduced or increased if necessary.
+ Member of      : sSIMSYSARRAY
+ Author(s)      : Pradeep Kadoor.
+ Date Created   : 28.05.2009
+*******************************************************************************/
 sSIMSYSARRAY& sSIMSYSARRAY::operator=(const sSIMSYSARRAY& RefObj)
 {
     m_omStrSimSysPath = RefObj.m_omStrSimSysPath;

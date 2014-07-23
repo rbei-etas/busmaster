@@ -14,24 +14,21 @@
  */
 
 /**
- * @brief Definition file for CFlickerFreeTree class.
- * @author Ravi D.
- * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file      FlickerFreeTree.h
+ * \brief     Definition file for CFlickerFreeTree class.
+ * \author    Ravi D.
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Definition file for CFlickerFreeTree class.
  */
 
 #pragma once
-
 #include "afxcmn.h"
-
 class CFlickerFreeTree : public CTreeCtrl
 {
 public:
     CRect m_rectClient;
-
     DECLARE_MESSAGE_MAP()
-
     afx_msg BOOL OnEraseBkgnd(CDC* pDC);
     afx_msg void OnSize(UINT nType, int cx, int cy);
     afx_msg void OnPaint();

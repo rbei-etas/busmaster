@@ -14,20 +14,20 @@
  */
 
 /**
- * @brief This file contain definition of all function of
- * @author Amarnath Shastry
- * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file      CMsgSignalTemp.cpp
+ * \brief     This file contain definition of all function of
+ * \author    Amarnath Shastry
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contain definition of all function of
  */
-
 #include "TxWindow_stdafx.h"     // Standard header include file
 #include "Include/BaseDefs.h"
 #include "CMsgSignalTemp.h"      // Class defintion file
 
 static CHAR s_acTraceStr[1024] = {""};
 
-/** Helper function to calculate how many bytes the signal consumes */
+/* Helper function to calculate how many bytes the signal consumes */
 UINT static nGetNoOfBytesToRead(UINT nBitNum, UINT nSigLen)
 {
     ASSERT(nSigLen > 0);
@@ -52,6 +52,25 @@ UINT static nGetNoOfBytesToRead(UINT nBitNum, UINT nSigLen)
     return nBytesToRead;
 }
 
+//{
+//    UINT nBytesToRead = 0;
+//    // First check if the BIT number is in between the byte.
+//    if (((defBITS_IN_BYTE - nBitNum) % defBITS_IN_BYTE) > 0)
+//    {
+//        nBytesToRead++;
+//    }
+//    // Add te number of bytes totally it consumes.
+//    nBytesToRead += (INT)(nSigLen / defBITS_IN_BYTE);
+//
+//    // Check for extra bits which traverse to the next byte.
+//    if (((nSigLen - (defBITS_IN_BYTE - nBitNum)) % defBITS_IN_BYTE) > 0)
+//    {
+//        nBytesToRead++;
+//    }
+//    return nBytesToRead;
+//}
+/* End of helper function nGetNoOfBytesToRead */
+/* Helper function to calculate the bit mask of a signal */
 BOOL CMsgSignal::bValidateSignal(UINT nDLC, UINT nByteNum, UINT nBitNum,
                                  UINT nLength, EFORMAT_DATA bDataFormat)
 {
@@ -62,7 +81,6 @@ BOOL CMsgSignal::bValidateSignal(UINT nDLC, UINT nByteNum, UINT nBitNum,
              (INT)(nByteNum - nBytesToRead) >= 0;
     return bValid;
 }
-
 BOOL CMsgSignal::bCalcBitMaskForSig(BYTE* pbyMaskByte, UINT unArrayLen,
                                     UINT nByteNum, UINT nBitNum, UINT nLength,
                                     EFORMAT_DATA bDataFormat)
@@ -108,12 +126,35 @@ BOOL CMsgSignal::bCalcBitMaskForSig(BYTE* pbyMaskByte, UINT unArrayLen,
 
     return bValid;
 }
+/* End of helper function vCalcBitMaskForSig */
 
+/******************************************************************************
+  Function Name    :  unGetNumerOfMessages
+  Input(s)         :
+  Output           :  UINT
+  Functionality    :  Returns number of messages in the DB.
+  Member of        :  CMsgSignal
+  Friend of        :      -
+  Author(s)        :  Amarnath Shastry
+  Date Created     :  15.02.2002
+  Modifications    :
+******************************************************************************/
 UINT CMsgSignal::unGetNumerOfMessages()
 {
     return ((UINT)m_omMsgDetailsIDMap.GetCount());
 }
 
+/******************************************************************************
+  Function Name    :  omStrListGetMessageIDs
+  Input(s)         :  CStringList &omStrListMsgs
+  Output           :  CStringList &omStrListMsgs
+  Functionality    :  Fills the list with all message id's
+  Member of        :  CMsgSignal
+  Friend of        :      -
+  Author(s)        :  Amarnath Shastry
+  Date Created     :  05.04.2002
+  Modifications    :
+******************************************************************************/
 void CMsgSignal::unListGetMessageIDs(UINT* omListId)
 {
     m_omDBMapCritSec.Lock();
@@ -130,6 +171,21 @@ void CMsgSignal::unListGetMessageIDs(UINT* omListId)
     m_omDBMapCritSec.Unlock();
 }
 
+/******************************************************************************
+  Function Name    :  omStrGetMessageNameFromMsgCodeInactive
+
+  Input(s)         :  UINT unMsgCode
+  Output           :  CString
+  Functionality    :  Returns message name from message code if found,
+                      otherwise empty string.
+  Member of        :  CMsgSignal
+  Friend of        :      -
+
+  Author(s)        :  Amarnath Shastry
+  Date Created     :  15.02.2002
+  Modifications    :  Anish
+                      13.12.2006,Changed code for Multiple DB concept
+******************************************************************************/
 CString CMsgSignal::omStrGetMessageNameFromMsgCodeInactive( UINT unMsgCode)
 {
     CString strMsgName = "";
@@ -152,6 +208,21 @@ CString CMsgSignal::omStrGetMessageNameFromMsgCodeInactive( UINT unMsgCode)
     return (strMsgName);
 }
 
+/******************************************************************************
+ Function Name    :  omStrGetMessageNameFromMsgCode
+
+ Input(s)         :  UINT unMsgCode
+ Output           :  CString
+ Functionality    :  Returns message name from message code if found,
+                     otherwise empty string.
+ Member of        :  CMsgSignal
+ Friend of        :      -
+
+ Author(s)        :  Amarnath Shastry
+ Date Created     :  15.02.2002
+ Modifications    :  Anish
+                 13.12.2006,Changed code for Multiple DB concept
+******************************************************************************/
 CString CMsgSignal::omStrGetMessageNameFromMsgCode( UINT unMsgCode)
 {
     CString strMsgName = "";
@@ -190,7 +261,19 @@ CString CMsgSignal::omStrGetMessageLengthFromMsgCode( UINT unMsgCode)
 
     return omstrMsgLength;
 }
-
+/******************************************************************************
+  Function Name    :  psGetMessagePointer
+  Input(s)         :  UINT unMsgID
+  Output           :  sMESSAGE*
+  Functionality    :  Returns associted message pointer if found, otherwise
+                      nullptr.
+  Member of        :  CMsgSignal
+  Friend of        :      -
+  Author(s)        :  Amitesh Bharti
+  Date Created     :  08.03.2004
+  Modifications    :  Anish
+                      13.12.2006,changes code for CMap
+******************************************************************************/
 sMESSAGE* CMsgSignal::psGetMessagePointer( UINT unMsgID)
 {
     sMESSAGE* psMsgStruct = nullptr;

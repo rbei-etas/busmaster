@@ -31,7 +31,7 @@ public:
      * @param[in] currentSystemTime current system time (granularity: milliseconds)
      * @param[in] connectTime connect time (granularity: 100 microseconds)
      */
-    void vSetTimeParams(SYSTEMTIME & currentSystemTime, UINT64 connectTime);
+    void vSetTimeParams(SYSTEMTIME& currentSystemTime, UINT64 connectTime);
 
     /**
      * get time parameters
@@ -39,7 +39,7 @@ public:
      * @param[out] referenceSystemTime_ reference system time (granularity: 100 microseconds)
      * @param[out] absoluteBasetime_ absolute base time (granularity: 100 microseconds)
      */
-    void vGetTimeParams(UINT64 & referenceSystemTime_, UINT64 & absoluteBaseTime_);
+    void vGetTimeParams(UINT64& referenceSystemTime_, UINT64& absoluteBaseTime_);
 
 protected:
     /** reference system time (granularity: 100 microseconds) */

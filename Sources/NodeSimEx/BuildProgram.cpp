@@ -126,7 +126,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
             HANDLE hStdError        = nullptr; //- Standard error handle of the child process.
 
             lError = ERROR_SUCCESS;
-            /*lError = RegQueryValueEx(sKey,_("path"),0, &ulType, acGCCPath,&dwSize);
+            /*lError = RegQueryValueEx(sKey,_T("path"),0, &ulType, acGCCPath,&dwSize);
             RegCloseKey(sKey);*/
             // Check if value is read successfully.
             if(lError !=ERROR_SUCCESS)

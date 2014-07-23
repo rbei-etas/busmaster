@@ -37,10 +37,10 @@ public:
     CSignalMatrix(int nMessageLength);
 
     virtual ~CSignalMatrix();
-    
+
     /** To set Message Length */
     void vSetMessageLength(UINT unMsgLength);
-    
+
     /**
      * Sets the values to be displayed in the Signal Matrix
      *

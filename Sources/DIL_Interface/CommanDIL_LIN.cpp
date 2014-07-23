@@ -537,7 +537,7 @@ HRESULT CCommanDIL_LIN::LIN_SetConfigData(ClusterConfig& ouConfig)
         std::list<FRAME_STRUCT> ouFrameList;
         ouConfig.m_ouFlexChannelConfig[i].m_ouClusterInfo.GetFrames(ouFrameList);
 
-        memset(m_ucConfiguredMasterDlc[i], 8, sizeof(m_ucConfiguredMasterDlc[i]));
+        memset(m_ucConfiguredMasterDlc[i], 0xFF, sizeof(m_ucConfiguredMasterDlc[i]));
 
 for ( auto& ouFrame : ouFrameList )
         {

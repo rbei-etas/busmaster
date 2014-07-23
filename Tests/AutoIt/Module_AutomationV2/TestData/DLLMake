@@ -1,0 +1,10 @@
+#Make file for building DLL
+
+DllFile.dll : ObjFile.o
+	@mingw32-g++.exe -shared -Wl,--dll  "D:\Trunk_AutoIt\TestData\EventHandlerNS_28_j1939.o"  -o "D:\Trunk_AutoIt\TestData\EventHandlerNS_28_j1939.dll"  "D:\Trunk_AutoIt\NodeSimulation_J1939\SimulatedSystems\OBJ\libWrapper_J1939.a"
+
+
+ObjFile.o : D:/Trunk_AutoIt/TestData/EventHandlerNS_28_j1939.cpp
+	g++ -x c++ -I"D:\Trunk_AutoIt\NodeSimulation_J1939\SimulatedSystems\include" -c "D:\Trunk_AutoIt\TestData\EventHandlerNS_28_j1939.cpp"   -o "D:\Trunk_AutoIt\TestData\EventHandlerNS_28_j1939.o" -mwindows 
+
+

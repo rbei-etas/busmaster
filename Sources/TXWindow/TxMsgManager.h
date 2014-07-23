@@ -154,7 +154,7 @@ public:
     static CFlags s_TxFlags;
     static bool s_bDelayBetweenBlocksOnly;
     static UINT s_unTimeDelayBtnMsgBlocks;
-    
+
     /** used in delay btwn msg */
     static PSCOMPLETEMSGINFO m_psCompleteMsgInfo;
 

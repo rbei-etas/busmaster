@@ -61,7 +61,7 @@ UINT CTxMsgManager::s_unTimeDelayBtnMsgBlocks;
 CRITICAL_SECTION CTxMsgManager::m_csUpdationLock;
 
 /** Indicates the stop tranmission is invoked */
-CEvent g_omInformStopTx = CEvent(FALSE, TRUE, "StopTxEvent"); 
+CEvent g_omInformStopTx = CEvent(FALSE, TRUE, "StopTxEvent");
 
 /** Key Handler proc CMap Hash table size. */
 #define defKEY_HANDLER_HASH_TABLE_SIZE 17

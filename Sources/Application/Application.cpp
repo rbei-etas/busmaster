@@ -14,8 +14,9 @@
  */
 
 /**
- * @author Ratnadip Choudhury
- * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file      Application.cpp
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
 #include "StdAfx.h"
@@ -77,6 +78,7 @@ BEGIN_DISPATCH_MAP(CApplication, CCmdTarget)
     DISP_FUNCTION_ID(CApplication, "GetLoggingBlock",       dispidGetLoggingBlock,          GetLoggingBlock,        VT_EMPTY, VTS_I2 VTS_PVARIANT)
     DISP_FUNCTION_ID(CApplication, "RegisterClientForRx",   dispidRegisterClientForRx,      RegisterClientForRx,    VT_EMPTY, VTS_I2 VTS_PBSTR VTS_PBSTR)
     DISP_FUNCTION_ID(CApplication, "UnRegisterClient",      dispidUnRegisterClient,         UnRegisterClient,       VT_EMPTY, VTS_I2)
+
 END_DISPATCH_MAP()
 
 BEGIN_INTERFACE_MAP(CApplication, CCmdTarget)
@@ -96,6 +98,7 @@ CApplication::CApplication(void)
     ::AfxOleLockApp();
     // enable this object for connection points
     EnableConnections();
+
 
     if ( !g_bInitCOMThread )
     {
@@ -179,12 +182,13 @@ void CApplication::ReadCOMDataBuffer()
             memcpy(sMsg.m_ucData, sCanData.m_uDataInfo.m_sCANMsg.m_ucData, sMsg.m_ucDataLen);
             sMsg.m_unMsgID = sCanData.m_uDataInfo.m_sCANMsg.m_unMsgID;
 
+            //vSendCANMsgToClients(sMsg);
+
             for ( int i = 0; i < 8 ; i++ )
             {
                 if ( g_shUniqueID[i]!= -1 )
                 {
                     bRet = WriteFile(g_hndPIPE[i], (BYTE*)&sMsg, sizeof(sMsg), &dwCount, nullptr);
-
                     /* Inform clients about data availability */
                     SetEvent(g_hndEvent[i]);
                 }
@@ -257,20 +261,17 @@ STDMETHODIMP_(ULONG) CApplication::XLocalClass::AddRef()
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->ExternalAddRef();
 }
-
 STDMETHODIMP_(ULONG) CApplication::XLocalClass::Release()
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->ExternalRelease();
 }
-
 STDMETHODIMP CApplication::XLocalClass::QueryInterface(
     REFIID iid, LPVOID* ppvObj)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->ExternalQueryInterface(&iid, ppvObj);
 }
-
 STDMETHODIMP CApplication::XLocalClass::GetTypeInfoCount(
     UINT FAR* pctinfo)
 {
@@ -279,7 +280,6 @@ STDMETHODIMP CApplication::XLocalClass::GetTypeInfoCount(
     ASSERT(lpDispatch != nullptr);
     return lpDispatch->GetTypeInfoCount(pctinfo);
 }
-
 STDMETHODIMP CApplication::XLocalClass::GetTypeInfo(
     UINT itinfo, LCID lcid, ITypeInfo FAR* FAR* pptinfo)
 {
@@ -288,7 +288,6 @@ STDMETHODIMP CApplication::XLocalClass::GetTypeInfo(
     ASSERT(lpDispatch != nullptr);
     return lpDispatch->GetTypeInfo(itinfo, lcid, pptinfo);
 }
-
 STDMETHODIMP CApplication::XLocalClass::GetIDsOfNames(
     REFIID riid, OLECHAR FAR* FAR* rgszNames, UINT cNames,
     LCID lcid, DISPID FAR* rgdispid)
@@ -299,7 +298,6 @@ STDMETHODIMP CApplication::XLocalClass::GetIDsOfNames(
     return lpDispatch->GetIDsOfNames(riid, rgszNames, cNames,
                                      lcid, rgdispid);
 }
-
 STDMETHODIMP CApplication::XLocalClass::Invoke(
     DISPID dispidMember, REFIID riid, LCID lcid, WORD wFlags,
     DISPPARAMS FAR* pdispparams, VARIANT FAR* pvarResult,
@@ -312,6 +310,8 @@ STDMETHODIMP CApplication::XLocalClass::Invoke(
                               wFlags, pdispparams, pvarResult,
                               pexcepinfo, puArgErr);
 }
+
+
 
 STDMETHODIMP CApplication::XLocalClass::Connect(BOOL bConnect)
 {
@@ -367,6 +367,30 @@ STDMETHODIMP CApplication::XLocalClass::SendKeyValue(UCHAR keyval)
     return pThis->SendKeyValue(keyval);
 }
 
+/*STDMETHODIMP CApplication::XLocalClass::GetControllerMode(eControllerMode *eMode)
+{
+    METHOD_PROLOGUE(CApplication, LocalClass)
+    return pThis->GetControllerMode(eMode);
+}
+
+STDMETHODIMP CApplication::XLocalClass::SetControllerMode(eControllerMode eMode)
+{
+    METHOD_PROLOGUE(CApplication, LocalClass)
+    return pThis->SetControllerMode(eMode);
+}
+
+STDMETHODIMP CApplication::XLocalClass::GetBaudRate(int nChannelNo, BYTE *bBTR0,BYTE *bBTR1)
+{
+    METHOD_PROLOGUE(CApplication, LocalClass)
+    return pThis->GetBaudRate(nChannelNo,bBTR0,bBTR1);
+}
+
+STDMETHODIMP CApplication::XLocalClass::SetBaudRate(int nChannelNo, BYTE bBTR0,BYTE bBTR1)
+{
+    METHOD_PROLOGUE(CApplication, LocalClass)
+    return pThis->SetBaudRate(nChannelNo,bBTR0,bBTR1);
+}*/
+
 STDMETHODIMP CApplication::XLocalClass::DisplayWindow(eWindow eWhichWindow)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
@@ -421,114 +445,119 @@ STDMETHODIMP CApplication::XLocalClass::LoadAllDll()
     return pThis->LoadAllDll();
 }
 
+/*STDMETHODIMP CApplication::XLocalClass::BuildLoadAllDll()
+{
+    METHOD_PROLOGUE(CApplication, LocalClass)
+    return pThis->BuildLoadAllDll();
+}
+
+STDMETHODIMP CApplication::XLocalClass::BuildAllDll()
+{
+    METHOD_PROLOGUE(CApplication, LocalClass)
+    return pThis->BuildAllDll();
+}
+
+STDMETHODIMP CApplication::XLocalClass::GetHwFilter(BOOL *pnExtended, double *dBeginMsgId, double *dEndMsgId)
+{
+    METHOD_PROLOGUE(CApplication, LocalClass)
+    return pThis->GetHwFilter(pnExtended, dBeginMsgId, dEndMsgId);
+}
+
+STDMETHODIMP CApplication::XLocalClass::SetHwFilter(BOOL pnExtended, double dBeginMsgId, double dEndMsgId)
+{
+    METHOD_PROLOGUE(CApplication, LocalClass)
+    return pThis->SetHwFilter(pnExtended, dBeginMsgId, dEndMsgId);
+}*/
 STDMETHODIMP CApplication::XLocalClass::SaveConfiguration()
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->SaveConfiguration();
 }
-
 STDMETHODIMP CApplication::XLocalClass::AddLoggingBlock(SLOGGINGBLOCK_USR* psLoggingBlock)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->AddLoggingBlock( psLoggingBlock );
 }
-
 STDMETHODIMP CApplication::XLocalClass::SaveConfigurationAs(BSTR ConfigPath)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->SaveConfigurationAs( ConfigPath);
 }
-
 STDMETHODIMP CApplication::XLocalClass::AddTxBlock(STXBLOCK_USR* psTxBlock)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->AddTxBlock(psTxBlock);
 }
-
 STDMETHODIMP CApplication::XLocalClass::GetTxBlockCount (USHORT* Result)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->GetTxBlockCount (Result);
 }
-
 STDMETHODIMP CApplication::XLocalClass::GetTxBlock (USHORT BlockIndex, STXBLOCK_USR* psTxBlock)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->GetTxBlock (BlockIndex, psTxBlock);
 }
-
 STDMETHODIMP CApplication::XLocalClass::DeleteTxBlock (USHORT BlockIndex)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->DeleteTxBlock (BlockIndex);
 }
-
 STDMETHODIMP CApplication::XLocalClass::ClearTxBlockList ()
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->ClearTxBlockList ();
 }
-
 STDMETHODIMP CApplication::XLocalClass::AddMsgToTxBlock (USHORT BlockIndex, CAN_MSGS* psMsg)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->AddMsgToTxBlock (BlockIndex, psMsg);
 }
-
 STDMETHODIMP CApplication::XLocalClass::GetMsgCount (USHORT BlockIndex, USHORT* Result)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->GetMsgCount (BlockIndex, Result);
 }
-
 STDMETHODIMP CApplication::XLocalClass::GetMsgFromTxBlock  ( USHORT BlockIndex, USHORT MsgIndex, CAN_MSGS* psMsg)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->GetMsgFromTxBlock  ( BlockIndex, MsgIndex, psMsg);
 }
-
 STDMETHODIMP CApplication::XLocalClass::DeleteMsgFromTxBlock (USHORT BlockIndex, USHORT FrameIndex)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->DeleteMsgFromTxBlock (BlockIndex, FrameIndex);
 }
-
 STDMETHODIMP CApplication::XLocalClass::ClearMsgList (USHORT BlockIndex)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->ClearMsgList (BlockIndex);
 }
-
 STDMETHODIMP CApplication::XLocalClass::AddFilterScheme (BSTR pcFilterName, VARIANT_BOOL  FilterType)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->AddFilterScheme (pcFilterName, FilterType);
 }
-
 STDMETHODIMP CApplication::XLocalClass::GetFilterScheme ( USHORT FilterSchINdex,BSTR pcFilterName,VARIANT_BOOL*  FilterType)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->GetFilterScheme ( FilterSchINdex, pcFilterName, FilterType);
 }
-
 STDMETHODIMP CApplication::XLocalClass::GetFilterSchCount (USHORT* pTotal)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->GetFilterSchCount (pTotal);
 }
-
 STDMETHODIMP CApplication::XLocalClass::UpdateFilterSch (USHORT FilterSchIndex,SFILTER_USR* psFilter)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->UpdateFilterSch (FilterSchIndex, psFilter);
 }
-
 STDMETHODIMP CApplication::XLocalClass::GetFilterCountInSch (USHORT FilterSchIndex, USHORT* pTotal)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->GetFilterCountInSch (FilterSchIndex, pTotal);
 }
-
 STDMETHODIMP CApplication::XLocalClass::GetFilterInFilterSch (USHORT FilterSchIndex, USHORT FilterIndex, SFILTER_USR* psFilter)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
@@ -540,7 +569,6 @@ STDMETHODIMP CApplication::XLocalClass:: DeleteFilterInSch (USHORT FilterSchInde
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis-> DeleteFilterInSch (FilterSchIndex, FilterIndex);
 }
-
 STDMETHODIMP CApplication::XLocalClass::EnableFilterSch (EFILTERMODULE eModule, BOOL Enable)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)

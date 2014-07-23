@@ -4306,7 +4306,7 @@ DWORD dwSize                 = 0;
 DWORD dwRead                 = 0;
 BOOL bReturn                 = FALSE;
 BOOL bFileOpen               = FALSE;
-CString omStrErrorMessage    = "";
+CString omStrErrorMessage    = _T("");
 TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
 
   // Open the configration file.
@@ -4390,7 +4390,7 @@ DWORD dwSize                 = 0;
 DWORD dwRead                 = 0;
 BOOL bReturn                 = FALSE;
 BOOL bFileOpen               = FALSE;
-CString omStrStrErrorMessage = "";
+CString omStrStrErrorMessage = _T("");
 TCHAR  acErrorMsg[defSIZE_OF_ERROR_BUFFER];
 
   // Open the configration file template.

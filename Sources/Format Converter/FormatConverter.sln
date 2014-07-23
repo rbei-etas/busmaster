@@ -18,12 +18,19 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LogToExcelConverter", "LogToExcelConverter\LogToExcelConverter.vcxproj", "{77E7E3DA-F9A1-4983-B094-ED128B81E5FF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "J1939DBC2DBFConverter", "J1939DBC2DBFConverter\J1939DBC2DBFConverter.vcxproj", "{7E2B0708-38A6-4994-A605-B3DC935F7797}"
+	ProjectSection(ProjectDependencies) = postProject
+		{08D2FD1A-F393-486F-9617-C8BD298906F2} = {08D2FD1A-F393-486F-9617-C8BD298906F2}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CAPL2CConverterJPN", "CAPL2CConverterJPN\CAPL2CConverterJPN.vcxproj", "{9C895A56-E1EA-4319-BAF7-EFBABFF699D8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FormatConverterJPN", "FormatConverterJPN\FormatConverterJPN.vcxproj", "{C291DB5F-41A2-49BE-83A1-954D8D3F7C4E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LogToExcelConverterJPN", "LogToExcelConverterJPN\LogToExcelConverterJPN.vcxproj", "{217B07EE-5C6B-43E4-ABC3-81A955059572}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlfLogConverter", "BlfLogConverter\BlfLogConverter.vcxproj", "{85A97836-2FCD-4D10-9F0E-22D7C89668C0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlfLibrary", "BlfLibrary\BlfLibrary.vcxproj", "{A1978274-C8FD-41F5-B9FB-BF99854D357D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +85,14 @@ Global
 		{217B07EE-5C6B-43E4-ABC3-81A955059572}.Debug|Win32.Build.0 = Debug|Win32
 		{217B07EE-5C6B-43E4-ABC3-81A955059572}.Release|Win32.ActiveCfg = Release|Win32
 		{217B07EE-5C6B-43E4-ABC3-81A955059572}.Release|Win32.Build.0 = Release|Win32
+		{85A97836-2FCD-4D10-9F0E-22D7C89668C0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{85A97836-2FCD-4D10-9F0E-22D7C89668C0}.Debug|Win32.Build.0 = Debug|Win32
+		{85A97836-2FCD-4D10-9F0E-22D7C89668C0}.Release|Win32.ActiveCfg = Release|Win32
+		{85A97836-2FCD-4D10-9F0E-22D7C89668C0}.Release|Win32.Build.0 = Release|Win32
+		{A1978274-C8FD-41F5-B9FB-BF99854D357D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A1978274-C8FD-41F5-B9FB-BF99854D357D}.Debug|Win32.Build.0 = Debug|Win32
+		{A1978274-C8FD-41F5-B9FB-BF99854D357D}.Release|Win32.ActiveCfg = Release|Win32
+		{A1978274-C8FD-41F5-B9FB-BF99854D357D}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

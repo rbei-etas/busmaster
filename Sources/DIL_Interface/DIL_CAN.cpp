@@ -171,7 +171,7 @@ HMODULE CDIL_CAN::vLoadEtasBoaLibrary(Base_WrapperErrorLogger* pILog)
     {
         RegCloseKey(sKey);
         pILog->vLogAMessage(A2T(__FILE__), __LINE__, _("Using ETAS BOA v2..."));
-        return LoadLibrary("CAN_ETAS_BOA_2_0.dll");
+        return LoadLibrary("CAN_ETAS_BOA_2.dll");
     }
 
     // Check for BOA 1.5

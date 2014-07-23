@@ -558,7 +558,6 @@ protected:
     afx_msg void OnFlexRayDBAssociate();
     afx_msg void OnUpdateFlexrayAssociate(CCmdUI* pCmdUI);
 
-    afx_msg void OnFlexRayDBDisociate();
     afx_msg void OnConfigChannelSelection();
     afx_msg void OnConfigChannelSelectionLIN();
     afx_msg void OnUpdateConfigChannelSelection(CCmdUI* pCmdUI);
@@ -825,7 +824,7 @@ public:
     void vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB);
     void vPushConfigFilenameDown ( CString omStrConfigFilename );
     void vUpdateMainEntryListInWaveDataHandler();
-    void vUpdateAllMsgWndInterpretStatus(bool bAssociate);
+    void vUpdateAllMsgWndInterpretStatus(eTYPE_BUS eBusType, bool bAssociate);
 public:
     afx_msg void OnUpdateSelectDriver(CCmdUI* pCmdUI);
     afx_msg void OnSelectDriver(UINT nID);

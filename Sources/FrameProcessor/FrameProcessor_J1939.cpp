@@ -142,7 +142,7 @@ void CFrameProcessor_J1939::vRetrieveDataFromBuffer(void)
         }
         else if (Result == EMPTY_APP_BUFFER)
         {
-            //AfxMessageBox(_("EMPTY_APP_BUFFER"));
+            //AfxMessageBox(_T("EMPTY_APP_BUFFER"));
         }
 
         if (m_bLogEnabled == TRUE)

@@ -415,7 +415,7 @@ BOOST_AUTO_TEST_CASE( J1939_CAN_Logger_Module_Stop_Editing_Session )
 BOOST_AUTO_TEST_CASE( J1939_CAN_Logger_Module_Set_Database_Files )
 {
 	CStringArray aomDataBaseFiles;
-	aomDataBaseFiles.Add("J1939_SAE_71.dbf");
+	aomDataBaseFiles.Add("J1939.dbf");
 	/* Set database information */
 	BOOST_REQUIRE ( sg_pouIJ1939Logger->FPJ1_SetDatabaseFiles(aomDataBaseFiles) == S_OK );
 	aomDataBaseFiles.RemoveAll();

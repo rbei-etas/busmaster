@@ -87,19 +87,22 @@ typedef struct sCAN_ERR
 #define COPY_DATA_2(TgtStream, SrcStream, TotBytes) { memcpy(TgtStream, SrcStream, TotBytes); SrcStream += TotBytes; }
 #endif
 
-enum defMODE {
+enum defMODE
+{
     defMODE_ACTIVE = 1,
     defMODE_PASSIVE = 2,
     defMODE_SIMULATE = 3
 };
 
-enum defCONTROLLER {
+enum defCONTROLLER
+{
     defCONTROLLER_ACTIVE = 1,
     defCONTROLLER_PASSIVE = 2,
     defCONTROLLER_BUSOFF = 3
 };
 
-enum defUSB_MODE {
+enum defUSB_MODE
+{
     defUSB_MODE_ACTIVE = 1,
     defUSB_MODE_PASSIVE = 2,
     defUSB_MODE_SIMULATE = 3

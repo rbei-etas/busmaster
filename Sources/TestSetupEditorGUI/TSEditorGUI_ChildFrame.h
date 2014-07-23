@@ -133,8 +133,6 @@ private:
     BOOL bEnablePase();
     BOOL bEnableCopy();
 
-
-
     void vCopyTreeItem(CBaseEntityTA** podCopyEntity, CBaseEntityTA* pCurrentEntity);
     void vDisplaySignalInfo(CString& omStrMsg);
     void vSetDefaultWndPlacement(void);

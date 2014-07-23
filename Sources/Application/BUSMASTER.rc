@@ -751,13 +751,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 2.4.0"
+            VALUE "FileVersion", "Ver 2.5.0"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 2.4.0"
+            VALUE "ProductVersion", "Ver 2.5.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -1846,11 +1846,10 @@ END
 STRINGTABLE
 BEGIN
     AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
-    IDS_PROPT_FOR_EMPTY_FILENAME "Database filename is empty."
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 2.4.0"
+    IDS_VERSION             "Ver 2.5.0"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
     IDS_CONNECT             "&Connect\tF2"

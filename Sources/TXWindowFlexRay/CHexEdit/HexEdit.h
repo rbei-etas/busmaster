@@ -35,7 +35,7 @@ private:
 
     //Anupam
     int m_nMaxChar;     // -1 unused, > 0 leaves the field automatically
-    char* m_nValidChar; // nullptr or a array of valid keys, eg. "0123456789" fo numeric only !
+    char* m_nValidChar; // NULL or a array of valid keys, eg. "0123456789" fo numeric only !
 
     // Generated message map functions
 protected:

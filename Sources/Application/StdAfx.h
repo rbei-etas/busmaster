@@ -79,6 +79,7 @@ const float PI = (float) 3.14159265358979323846;
 #include <comutil.h>
 #import <msxml6.dll>
 
+//2.5.0
 const BYTE VERSION_MAJOR    = 2;
-const BYTE VERSION_MINOR    = 4;
+const BYTE VERSION_MINOR    = 5;
 const BYTE VERSION_BUILD    = 0;

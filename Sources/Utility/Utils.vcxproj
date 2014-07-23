@@ -83,6 +83,7 @@
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>
       </DebugInformationFormat>
+      <ObjectFileName>$(SolutionDir)/bin/DumpFiles/$(IntDir)/OBJ/$(TargetName)/</ObjectFileName>
     </ClCompile>
     <Lib>
       <OutputFile>$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib</OutputFile>
@@ -101,6 +102,7 @@
       <DebugInformationFormat>
       </DebugInformationFormat>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(SolutionDir)/bin/DumpFiles/$(IntDir)/OBJ/$(TargetName)/</ObjectFileName>
     </ClCompile>
     <Lib>
       <AdditionalOptions>libxml2.lib
@@ -118,6 +120,7 @@ iconv.lib %(AdditionalOptions)</AdditionalOptions>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ObjectFileName>$(SolutionDir)/bin/DumpFiles/$(IntDir)/OBJ/$(TargetName)/</ObjectFileName>
     </ClCompile>
     <Lib>
       <AdditionalOptions>libxml2.lib

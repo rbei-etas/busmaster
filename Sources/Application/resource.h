@@ -1150,7 +1150,7 @@
 //UDS
 #define IDM_UDS                         40100
 #define IDD_SETTINGS_UDS                40101
-#define IDS_PROPT_FOR_EMPTY_FILENAME    61446
+//#define IDS_PROPT_FOR_EMPTY_FILENAME    61446
 #define IDS_INVALID_DB_PROMPT           61447
 #define IDC_COMB_TOOLBAR                61448
 #define ID_ACTIVE_DATABASE_NAME         61448

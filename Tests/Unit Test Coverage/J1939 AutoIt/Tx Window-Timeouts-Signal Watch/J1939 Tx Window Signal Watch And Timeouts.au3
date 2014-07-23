@@ -38,7 +38,7 @@ Send("!ja") ; J1939 -> Activate
 Send("!jfg") ; J1939 -> Functions -> Go Online
 
 ;~ ; Associate database_
-;_associateDB("&J1939","J1939_SAE.dbf")
+;_associateDB("&J1939","J1939.dbf")
 
 ; ------------------ J1939 Transmission Window ------------------------------
 

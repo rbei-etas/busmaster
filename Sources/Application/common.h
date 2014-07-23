@@ -114,7 +114,7 @@ enum
 
 #define APPLICATION_NAME             "BUSMASTER"
 #define DEFAULT_PROJECT_NAME         "BUSMASTER"
-//#define defSTR_CONF_SAVE_CONFIRM     _("Configuration File is modified \n Do you want to save this configuration?")
+//#define defSTR_CONF_SAVE_CONFIRM     _T("Configuration File is modified \n Do you want to save this configuration?")
 
 #define BUSMASTER_APPN_VERSION_6_0          6.0
 #define BUSMASTER_APPN_VERSION_6_1          6.1
@@ -133,7 +133,7 @@ enum
 #define defSECTION_MRU_FILE5     "MRU File5"
 #define defSTR_DEFAULT_MRU_ITEM  "Empty"
 #define defSTR_FILE_MENU_TEXT    "&File"
-//#define defSTR_RECENT_MENU_TEXT  _("Recent File")
+//#define defSTR_RECENT_MENU_TEXT  _T("Recent File")
 
 #define RULE_FILE_EXTENSION      "xml"
 #define RULE_FILTER              "*.xml|*.xml||"

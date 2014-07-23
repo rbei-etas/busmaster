@@ -114,7 +114,7 @@ void CColumnTreeWnd::OnPaint()
     CPaintDC dc(this);
 }
 
-BOOL CColumnTreeWnd::OnEraseBkgnd(CDC * /* pDC */)
+BOOL CColumnTreeWnd::OnEraseBkgnd(CDC* /* pDC */)
 {
     return TRUE;
 }
@@ -127,7 +127,7 @@ void CColumnTreeWnd::OnSize(UINT nType, int cx, int cy)
     RepositionControls();
 }
 
-void CColumnTreeWnd::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar * /* pScrollBar */)
+void CColumnTreeWnd::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* /* pScrollBar */)
 {
     CRect rcClient;
     GetClientRect(&rcClient);
@@ -179,14 +179,14 @@ void CColumnTreeWnd::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar * /* pScrollB
 }
 
 
-void CColumnTreeWnd::OnHeaderItemChanged(NMHDR * /* pNMHDR */, LRESULT * /* pResult */)
+void CColumnTreeWnd::OnHeaderItemChanged(NMHDR* /* pNMHDR */, LRESULT* /* pResult */)
 {
     UpdateColumns();
 
     m_Tree.Invalidate();
 }
 
-void CColumnTreeWnd::OnHeaderDividerDblClick(NMHDR* pNMHDR, LRESULT * /* pResult */)
+void CColumnTreeWnd::OnHeaderDividerDblClick(NMHDR* pNMHDR, LRESULT* /* pResult */)
 {
     NMHEADER* pNMHeader = (NMHEADER*)pNMHDR;
 

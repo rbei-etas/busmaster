@@ -14,8 +14,9 @@
  */
 
 /**
- * @author Ratnadip Choudhury
- * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file      TxWndDataStore.h
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
 #pragma once
@@ -37,108 +38,48 @@ class CTxWndDataStore
 public:
     CTxWndDataStore(void);
     ~CTxWndDataStore(void);
-
     static CTxWndDataStore& ouGetTxWndDataStoreObj();
     static CTxWndDataStore m_sTxWndDataStoreObj;
-    bool m_bAutoSavedEnabled;
-    bool m_bDelayBetweenMsgBlocks;
-    UINT m_unTimeDelayBtwnMsgBlocks;
-
+    bool                 m_bAutoSavedEnabled;
+    bool                 m_bDelayBetweenMsgBlocks;              //AUC
+    UINT                 m_unTimeDelayBtwnMsgBlocks;            //AUC
     BOOL bGetTxData(eTXWNDDETAILS  eParam, LPVOID* lpData);
-
     BOOL bSetTxData(eTXWNDDETAILS  eParam, LPVOID lpVoid);
-
-    /**
-     * @brief sets the multiple message structure data member with the info
-     *
-     * This method sets the information from the input
-     * structure into the data member. This updates the
-     * information.
-     *
-     * @param[in] pSendMultMsgInfo in param structure
-     * @return TRUE if the method succeeds. FALSE if memory allocation fails
-     */
-    BOOL bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList);
-
-    /**
-     * @brief releases the multiple message structure pointer that is passed 
-     *
-     * This method releases all the memory allocated for the
-     * send multiple message info structure.
-     */
-    void vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList);
-
-    /**
-     * @brief gets the multiple message info
-     *
-     * This method gets the information for the multi message
-     * information. The memory for the strucutre is already
-     * allocated in the bGetData(..) method. This method
-     * allocates memory as required by the other elements in
-     * this structure.
-     *
-     * @param[in] pSendMultMsgInfo out-param structure
-     * @return TRUE if the method succeeds. FALSE if memory allocation fails
-     */
-    BOOL bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList);
-
+    // sets the multiple message structure data member with the info
+    BOOL    bSetMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList);
+    // releases the multiple message structure pointer that is passed..
+    void    vReleaseMultiMsgInfo(PSMSGBLOCKLIST psMsgBlockList);
+    // gets the multiple message info ..
+    BOOL    bGetMultiMsgInfo(PSMSGBLOCKLIST psDestMsgBlockList);
     PSMSGBLOCKLIST psReturnMsgBlockPointer();
-
     BOOL bGetDefaultTXSplitterPostion(CRect omWndSize, LPVOID* psSplitterData);
-
     BYTE* pbySetConfigData(BYTE* pbyConfigData, INT nConfigSize);
-
     bool bSetDataToGlobal(PSMSGBLOCKLIST psMsgBlockList);
-
-    /**
-     * @brief Copies the data and content from one msgblock to another
-     *
-     * Copies the PSMSGBLOCKLIST from source to destination
-     */
-    bool bCopyBlockData(PSMSGBLOCKLIST psDestBlockList, PSMSGBLOCKLIST psSrcBlockList);
-
-    /** delete the massages in MsgList of a block */
+    //Copies the data and content from one msgblock to another
+    bool bCopyBlockData(PSMSGBLOCKLIST psDestBlockList,PSMSGBLOCKLIST psSrcBlockList);
+    //delete the massages in MsgList of a block
     bool bDeleteMsgList(PSTXCANMSGLIST& psMsgList);
-
-    /**
-     * @brief copy MsgList from local to global
-     *
-     * Copies the CanMsgList from source to destination
-     */
-    bool bCopyMsgList(PSTXCANMSGLIST&  ppsDestTxCANMsgList, PSTXCANMSGLIST*  ppsSrcTxCANMsgList);
-
+    //copy MsgList from local to global
+    bool bCopyMsgList(PSTXCANMSGLIST&  ppsDestTxCANMsgList , PSTXCANMSGLIST*  ppsSrcTxCANMsgList);
     BYTE* pbyGetConfigData(BYTE*& pbyConfigData, INT& nConfigSize);
-
     bool pbySetConfigData(xmlDocPtr pDoc);
-
     BOOL pbyGetConfigData(xmlNodePtr pxmlNodePtr);
-
     bool bSplitterConfig(xmlNodePtr pxmlNodePtr);
-
     bool bGetSplitterDataFrmNode(xmlNodePtr pxmlNodePtr);
-
-    /**
-     * @brief To compare 2 BlockLists
-     *
-     * This function will compare 2 BlockList
-     */
+    //To compare 2 BlockLists
     int nCompareBlockLists(PSMSGBLOCKLIST psMsgBlockSrc);
-
-    /** to compare 2 MsgLists */
+    //to compare 2 MsgLists
     int nCompareMsgList(PSTXCANMSGLIST TxCanMsgListSrc,PSTXCANMSGLIST TxCanMsgListDest);
-
 private:
-    UINT m_unNumberOfMsgBlockCount;
-    BOOL m_bIsConfigurationModified;
 
-    /**  Tx Msg Splitter Position */
+    UINT               m_unNumberOfMsgBlockCount;
+    BOOL               m_bIsConfigurationModified;
+    // Tx Msg Splitter Position
     STXMSGSPLITTERDATA m_sTxMsgWndSplitterPos;
-
-    /** Tx Child frame window placement */
+    //Tx Child frame window placement
     WINDOWPLACEMENT m_sTxWndPlacement;
-
-    /** send multiple msgs written/read from configuration */
-    PSMSGBLOCKLIST m_psMsgBlockList;
+    // send multiple msgs written/read from configuration
+    PSMSGBLOCKLIST          m_psMsgBlockList;
     void vInitialiseMsgDetails(PSTXCANMSGLIST& psMsgDetails);
     void vInitialiseMsgBlock(PSMSGBLOCKLIST& psMsgBlockList);
 };

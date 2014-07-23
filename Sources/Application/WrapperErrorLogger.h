@@ -14,9 +14,10 @@
  */
 
 /**
- * @brief Concrete data type definition file for error logger wrapper.
- * @author Ratnadip Choudhury
- * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file      WrapperErrorLogger.h
+ * \brief     Concrete data type definition file for error logger wrapper.
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * Concrete data type definition file for error logger wrapper.
  */

@@ -172,11 +172,12 @@ USAGEMODE HRESULT TS_vShowTSEditorWindow(void* pParentWnd)
     else
     {
         g_pomTSEditorChildWindow->ShowWindow( SW_RESTORE );
+        // Set the TSEditor menu
+        g_pomTSEditorChildWindow->SetTSEditorMenu();
+
         g_pomTSEditorChildWindow->MDIActivate();
         g_pomTSEditorChildWindow->SetActiveWindow();
 
-        // Set the TSEditor menu
-        g_pomTSEditorChildWindow->SetTSEditorMenu();
     }
     //Place this at the end of the export function.
     //switch back to previous resource handle.

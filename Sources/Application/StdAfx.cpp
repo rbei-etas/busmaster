@@ -14,12 +14,13 @@
  */
 
 /**
- * @author Ratnadip Choudhury
- * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
- *
- * Source file that includes just the standard includes.
- * BUSMASTER.pch will be the pre-compiled header.
- * stdafx.obj will contain the pre-compiled type information.
+ * \file      StdAfx.cpp
+ * \author    Ratnadip Choudhury
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-
+// stdafx.cpp : source file that includes just the standard includes
+//  BUSMASTER.pch will be the pre-compiled header
+//  stdafx.obj will contain the pre-compiled type information
 #include "stdafx.h"
+
+

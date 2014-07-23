@@ -1007,7 +1007,7 @@ void CTSEditorChildFrame::vDisplayVerifyInfo(CBaseEntityTA* pEntity, int nVerify
     omTempListCtrl.InsertItem(i+nVerifyRowIndex, "");
     omTempListCtrl.SetItemText(i+nVerifyRowIndex, def_COLUMN_VALUE, _("[Add Message]"));
     omTempListCtrl.vSetColumnInfo(i+nVerifyRowIndex, def_COLUMN_VALUE, sListInfo);
-    
+
     sListInfo.m_eType = eNoControl;
     omTempListCtrl.vSetColumnInfo(i+nVerifyRowIndex, def_COLUMN_CHANNEL, sListInfo);  // solves issue #711, 2nd bullet point
 }
@@ -1073,7 +1073,7 @@ void CTSEditorChildFrame::vDisplayWaitInfo(CBaseEntityTA* pEntity)
     omTempListCtrl.vSetColumnInfo(def_WAIT_ROWNUM_PURPOSE, def_COLUMN_VALUE, sListInfo);
 
     sListInfo.m_eType = eNumber;
-    omTempListCtrl.InsertItem(def_WAIT_ROWNUM_DELAY, _("Delay (in msec))"));
+    omTempListCtrl.InsertItem(def_WAIT_ROWNUM_DELAY, _("Delay (in msec)"));
     omstrTemp.Format("%d", odData.m_ushDuration);
     omTempListCtrl.SetItemText(def_WAIT_ROWNUM_DELAY, def_COLUMN_VALUE, omstrTemp);
     omTempListCtrl.vSetNumericInfo(def_WAIT_ROWNUM_DELAY, def_COLUMN_VALUE, sNumInfo);
@@ -3553,6 +3553,7 @@ void CTSEditorChildFrame::OnFileExit(void)
 {
     INT nRetVal = nPromptForSaveFile();
     CHECKEQ(nRetVal, IDCANCEL);
+    m_omMenu.DestroyMenu();
     AfxGetMainWnd()->SetMenu(m_pMainMenu);
 
     /* Make the next available MDI window active */
@@ -3603,7 +3604,12 @@ Code Tag       :
 ******************************************************************************/
 void CTSEditorChildFrame::SetTSEditorMenu()
 {
-    if(m_omMenu != nullptr)
+    if(m_omMenu == nullptr)
+    {
+        m_omMenu.LoadMenu(IDR_TSEDITORMENU);
+        m_hMenuShared = m_omMenu.GetSafeHmenu();
+    }
+    else
     {
         AfxGetMainWnd()->SetMenu(&m_omMenu);
         CString strTestSetupfile = m_omCurrentTSFile;

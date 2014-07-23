@@ -23,6 +23,16 @@
  */
 
 !include "NSISHeaders.nsh"
+!include "MUI2.nsh"
+
+!define MUI_WELCOMEFINISHPAGE_BITMAP "..\Sources\Application\Res\Splsh16SideBar.bmp"
+!define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation of BUSMASTER on your system."
+
+!define MUI_HEADERIMAGE
+!define MUI_HEADERIMAGE_BITMAP "..\Sources\Application\Res\Splsh16.bmp"
+!define MUI_HEADERIMAGE_UNBITMAP "..\Sources\Application\Res\Splsh16.bmp"
+!define MUI_ICON  "..\Sources\Application\Res\BUSMASTER.ico"
+!define MUI_UNICON "..\Sources\Application\Res\BUSMASTER.ico"
 
 !macro StrStr ResultVar String SubString
   Push `${String}`
@@ -142,7 +152,7 @@ FunctionEnd
 !define StrContains '!insertmacro "_StrContainsConstructor"'
 
 ; Show gradient background
-BGGradient 8080C0 0000FF FFFFFF
+#BGGradient 8080C0 0000FF FFFFFF
 
 ; Title of this installation
 Name "BUSMASTER"
@@ -167,6 +177,7 @@ CRCCheck On
 
 ; Output filename
 Outfile "BUSMASTER_Installer_Ver_${VERSION}.exe"
+
 
 Function .onInit
   ; the plugins dir is automatically deleted when the installer exits
@@ -290,21 +301,31 @@ Install:
 FunctionEnd
 
 ; Pages
-Page license
-Page components
-Page directory
-Page instfiles
+!insertmacro MUI_PAGE_WELCOME
+;Page license
+!insertmacro MUI_PAGE_LICENSE ../COPYING.LESSER.txt
+;Page components
+!insertmacro MUI_PAGE_COMPONENTS
+;Page directory
+!insertmacro MUI_PAGE_DIRECTORY
+;Page instfiles
+!insertmacro MUI_PAGE_INSTFILES
 Page Custom information
-UninstPage uninstConfirm
-UninstPage instfiles
+;UninstPage uninstConfirm
+!insertmacro MUI_UNPAGE_CONFIRM
+!insertmacro MUI_UNPAGE_INSTFILES
+
+;UninstPage instfiles
 
 ; Installation Types
 InstType "Typical"
 InstType "Full"
 InstType "Minimal"
 
+!insertmacro MUI_PAGE_FINISH
+!insertmacro MUI_LANGUAGE English
 ; License Text
-LicenseData ../COPYING.LESSER.txt
+;LicenseData ../COPYING.LESSER.txt
 
 SectionGroup "Main"
 
@@ -392,11 +413,17 @@ Section "BUSMASTER"
 
   ; BUSMASTER
   File ..\Sources\BIN\Release\BusEmulation.exe
+  
+  
+  
   File ..\Sources\BIN\Release\BUSMASTER.exe
   File ..\Sources\BIN\Release\BUSMASTER.exe.manifest
   File ..\Sources\BIN\Release\BUSMASTER.tlb
   File ..\Sources\Application\BUSMASTER_Interface.c
   File ..\Sources\Application\BUSMASTER_Interface.h
+
+  
+	
   File ..\Sources\BIN\Release\CAN_STUB.dll
   File ..\Sources\BIN\Release\Changelog.txt
   File ..\Sources\BIN\Release\DIL_Interface.dll
@@ -404,10 +431,7 @@ Section "BUSMASTER"
   File ..\Sources\BIN\Release\UDS_Protocol.dll
   File ..\Sources\BIN\Release\Filter.dll
   File ..\Sources\BIN\Release\FrameProcessor.dll
-  File ..\Sources\BIN\Release\GCCDLLMakeTemplate_CAN
-  File ..\Sources\BIN\Release\GCCDLLMakeTemplate_LIN
-  File ..\Sources\BIN\Release\GCCDLLMakeTemplate_J1939
-  File ..\Sources\BIN\Release\mhsbmcfg.dll
+   File ..\Sources\BIN\Release\mhsbmcfg.dll
   File ..\Sources\BIN\Release\NodeSimEx.dll
   File ..\Sources\BIN\Release\ProjectConfiguration.dll
   File ..\Sources\BIN\Release\PSDI_CAN.dll
@@ -456,23 +480,31 @@ Section "BUSMASTER"
   ; Readme
   File ..\Readme.txt
 
-  ; Simulated Systems Include files
-  SetOutPath "$INSTDIR\SimulatedSystems\include\"
-  File ..\Sources\BIN\Release\SimulatedSystems\include\CANIncludes.h
-  File ..\Sources\BIN\Release\SimulatedSystems\include\LINIncludes.h
-  File ..\Sources\BIN\Release\SimulatedSystems\include\CAPLWrapper.h
-  File ..\Sources\BIN\Release\SimulatedSystems\include\Common.h
-  File ..\Sources\BIN\Release\SimulatedSystems\include\Wrapper_CAN.h
-  File ..\Sources\BIN\Release\SimulatedSystems\include\Wrapper_LIN.h
-  File ..\Sources\BIN\Release\SimulatedSystems\include\Wrapper_J1939.h
-  File ..\Sources\BIN\Release\SimulatedSystems\include\J1939Includes.h
+	; Simulated Systems Include files
+	File ..\Sources\Application\SimulatedSystems\include\CANIncludes.h 
+	File ..\Sources\Application\SimulatedSystems\include\LINIncludes.h
+	File ..\Sources\Application\SimulatedSystems\include\CAPLWrapper.h
+	File ..\Sources\Application\SimulatedSystems\include\Common.h
+	File ..\Sources\Application\SimulatedSystems\include\Wrapper_CAN.h
+	File ..\Sources\Application\SimulatedSystems\include\Wrapper_LIN.h
+	File ..\Sources\Application\SimulatedSystems\include\Wrapper_J1939.h
+	File ..\Sources\Application\SimulatedSystems\include\J1939Includes.h
+	
+	SetOutPath "$INSTDIR\SimulatedSystems\OBJ\"
+	; Simulated Systems Library files
+	File ..\Sources\Application\SimulatedSystems\OBJ\libWrapper_CAN.a
+	File ..\Sources\Application\SimulatedSystems\OBJ\libWrapper_LIN.a
+	File ..\Sources\Application\SimulatedSystems\OBJ\libWrapper_J1939.a
+	
+	; GCC Make Files
+	File ..\Sources\Application\GCCDLLMakeTemplate_CAN
+	File ..\Sources\Application\GCCDLLMakeTemplate_LIN
+    	File ..\Sources\Application\GCCDLLMakeTemplate_J1939
 
-  ; Simulated Systems Library files
-  SetOutPath "$INSTDIR\SimulatedSystems\OBJ\"
-  File ..\Sources\BIN\Release\SimulatedSystems\OBJ\libWrapper_CAN.a
-  File ..\Sources\BIN\Release\SimulatedSystems\OBJ\libWrapper_LIN.a
-  File ..\Sources\BIN\Release\SimulatedSystems\OBJ\libWrapper_J1939.a
-
+  SetOutPath $INSTDIR\
+	
+   
+	
   ; Check if Visual Studio 2012 redistributable is already installed
   ReadRegStr $1 HKLM "Software\Microsoft\DevDiv\vc\Servicing\11.0\RuntimeMinimum" Install
   StrCmp $1 "1" NoInstall Install
@@ -511,10 +543,11 @@ NoInstall:
   WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSMASTER.exe" "RUNASADMIN"
 
 lbl:
-
+	
   ; Server registration
   ExecWait 'BusEmulation.exe /regserver'
-  ExecWait 'BUSMASTER.exe /regserver'
+  ExecWait 'BUSMASTER.exe /regserver'  
+  
 
   SetShellVarContext all
 
@@ -658,7 +691,19 @@ Section "Uninstall"
 
   ; Delete registration entries
   DeleteRegKey HKCU "Software\RBEI-ETAS\BUSMASTER_v${VERSION}"
-  DeleteRegKey HKCU "Software\RBEI-ETAS"
+  ;Remove HKCU "Software\RBEI-ETAS" if the current version is the last version under this key
+  StrCpy $0 0
+  loop:
+  EnumRegKey $1 HKCU Software\RBEI-ETAS $0
+  StrCmp $1 "" done
+  IntOp $0 $0 + 1
+  Goto loop
+  done:
+  IntCmp $0 0 is0 lessthan0 morethan0
+  lessthan0: Goto Finish
+  morethan0: Goto Finish 
+  is0: DeleteRegKey HKCU "Software\RBEI-ETAS"	
+  Finish:
   DeleteRegValue HKLM "Software\BUSMASTER_v${VERSION}" "Install_Dir"
   DeleteRegKey HKLM "Software\BUSMASTER_v${VERSION}"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}"

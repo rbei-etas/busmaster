@@ -6,15 +6,15 @@
 static HMODULE g_hLibIntl;
 
 /* get text */
-typedef char * (*PSGETTEXT)(const char * __msgid);
+typedef char* (*PSGETTEXT)(const char* __msgid);
 static PSGETTEXT g_pfGetText;
 
 /* text domain */
-typedef char * (*PSTEXTDOMAIN)(const char * __domainname);
+typedef char* (*PSTEXTDOMAIN)(const char* __domainname);
 static PSTEXTDOMAIN g_pfTextDomain;
 
 /* bind text domain */
-typedef char * (*PSBINDTEXTDOMAIN)(const char * __domainname, const char * __dirname);
+typedef char* (*PSBINDTEXTDOMAIN)(const char* __domainname, const char* __dirname);
 static PSBINDTEXTDOMAIN g_pfBindTextDomain;
 
 void loadInternationalizationLibrary()
@@ -33,7 +33,7 @@ void unloadInternationalizationLibrary()
     }
 }
 
-char * gettext(char * __msgid)
+char* gettext(char* __msgid)
 {
     /* get the function pointer */
     if (g_pfGetText == nullptr)
@@ -49,7 +49,7 @@ char * gettext(char * __msgid)
     /* call function */
     if(g_pfGetText != nullptr)
     {
-        char * pReturn = g_pfGetText(__msgid);
+        char* pReturn = g_pfGetText(__msgid);
         return pReturn;
     }
     else
@@ -58,7 +58,7 @@ char * gettext(char * __msgid)
     }
 }
 
-char * textdomain(const char * __domainname)
+char* textdomain(const char* __domainname)
 {
     /* get the function pointer */
     if (g_pfTextDomain == nullptr)
@@ -74,16 +74,16 @@ char * textdomain(const char * __domainname)
     /* call function */
     if (g_pfTextDomain != nullptr)
     {
-        char * pReturn = g_pfTextDomain(__domainname);
+        char* pReturn = g_pfTextDomain(__domainname);
         return pReturn;
     }
     else
     {
-        return (char *) __domainname;
+        return (char*) __domainname;
     }
 }
 
-char * bindtextdomain(const char * __domainname, const char * __dirname)
+char* bindtextdomain(const char* __domainname, const char* __dirname)
 {
     /* get the function pointer */
     if (g_pfBindTextDomain == nullptr)
@@ -99,11 +99,11 @@ char * bindtextdomain(const char * __domainname, const char * __dirname)
     /* call function */
     if (g_pfBindTextDomain != nullptr)
     {
-        char * pReturn = g_pfBindTextDomain(__domainname, __dirname);
+        char* pReturn = g_pfBindTextDomain(__domainname, __dirname);
         return pReturn;
     }
     else
     {
-        return (char *) __domainname;
+        return (char*) __domainname;
     }
 }

@@ -519,7 +519,7 @@ CComboItem* CFlexListCtrl::pomComboItem(int nItem,
     else
     {
         CString omStrErr;
-        omStrErr.Format(_(defFLC_CREATE_FAILED), defCOMBO_ITEM);
+        omStrErr.Format(_(defFLC_CREATE_FAILED),defCOMBO_ITEM);
         AfxMessageBox( omStrErr );
     }
     // The return the pointer just for reference
@@ -611,7 +611,7 @@ CComboItem* CFlexListCtrl::pomComboList( int nItem,
     else
     {
         CString omStrErr;
-        omStrErr.Format(_(defFLC_CREATE_FAILED), defCOMBO_LIST);
+        omStrErr.Format(_(defFLC_CREATE_FAILED),defCOMBO_LIST);
         AfxMessageBox( omStrErr );
     }
 
@@ -690,7 +690,7 @@ CEdit* CFlexListCtrl::pomEditItem(int nItem, int nSubItem)
     else
     {
         CString omStrErr;
-        omStrErr.Format(_(defFLC_CREATE_FAILED), defEDIT_ITEM);
+        omStrErr.Format( _(defFLC_CREATE_FAILED), defEDIT_ITEM );
         AfxMessageBox( omStrErr );
     }
     // Retrun the window pointer
@@ -769,7 +769,7 @@ CNumEdit* CFlexListCtrl::pomNumItem( int nItem, int nSubItem,
     else
     {
         CString omStrErr;
-        omStrErr.Format(_(defFLC_CREATE_FAILED), defNUM_ITEM);
+        omStrErr.Format( _(defFLC_CREATE_FAILED), defNUM_ITEM );
         AfxMessageBox( omStrErr );
     }
     // Return the window pointer

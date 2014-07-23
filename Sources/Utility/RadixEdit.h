@@ -14,9 +14,10 @@
  */
 
 /**
- * @brief This file contains the definition of CRadixEdit class
- * @authors Soj Thomas, Ratnadip Choudhury, Amarnath Shastry
- * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file      RadixEdit.h
+ * \brief     This file contains the definition of CRadixEdit class
+ * \authors   RBIN/EMC2 - Soj Thomas, Ratnadip Choudhury, Amarnath Shastry
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contains the definition of CRadixEdit class
  */
@@ -33,45 +34,49 @@ static const int MINUS_SIGN        = 0x2D;
 static const int BACK_SPACE        = 0x08;
 static const int DECIMAL_POINT     = 0x2E;
 
+
+/////////////////////////////////////////////////////////////////////////////
+// CRadixEdit window
+
 class CRadixEdit : public CEdit
 {
+    // Construction
 public:
     CRadixEdit();
 
+    // Overrides
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CRadixEdit)
+    //}}AFX_VIRTUAL
+
     void vSetConfigData(int CtrlID);
-
-    /** Returns floating point value */
+    // Returns floating point value
     float fGetValue();
-
-    /** Allow flaoting point number */
+    // Allow flaoting point number
     void vAcceptFloatingNum(bool);
-
-    /** Set long value */
+    // Set long value
     void vSetValue(__int64 n64NewVal);
-
-    /** Get long value */
+    // Get long value
     __int64 lGetValue();
-
-    /** Get unsigned long value */
+    // Get unsigned long value
     unsigned __int64 lGetUnsignedValue();
-
-    /** Set number base */
+    // Set number base
     void vSetBase(int nBase);
-
-    /** Get base */
-    int nGetBase();
-
-    /** Set signed / unsigned */
+    // Get base
+    int  nGetBase();
+    // Set signed / unsigned
     void vSetSigned(bool bSigned = true);
-
-    /** Check for signed integer */
+    // Check for signed integer
     bool bIsSigned();
 
     virtual ~CRadixEdit();
 
+    // Generated message map functions
 protected:
+    //{{AFX_MSG(CRadixEdit)
     afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
     afx_msg void OnChange();
+    //}}AFX_MSG
 
     DECLARE_MESSAGE_MAP()
 

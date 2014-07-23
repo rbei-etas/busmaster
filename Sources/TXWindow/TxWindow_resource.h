@@ -20,11 +20,11 @@
 #define IDC_EDIT_MAX                    1005
 #define IDC_EDIT_MIN                    1006
 #define IDC_RADIOCYCLIC                 1007
-#define IDC_SPIN_BIT                    1007
-#define IDC_RADIOMONOSHOT               1008
-#define IDC_COMB_SGTYPE                 1008
-#define IDC_COMB_CHANNEL_ID             1010
-#define IDC_COMBO_MSGS                  1010
+#define IDC_SPIN_BIT                    1008
+#define IDC_RADIOMONOSHOT               1009
+#define IDC_COMB_SGTYPE                 1010
+#define IDC_COMB_CHANNEL_ID             1011
+#define IDC_COMBO_MSGS                  1012
 #define IDC_BTN_UPDATE                  1014
 #define IDC_BTN_CLOSE                   1015
 #define IDC_STAT_SGNAME                 1019

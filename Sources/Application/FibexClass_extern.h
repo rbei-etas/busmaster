@@ -17,10 +17,10 @@ extern "C" {  // only need to export C interface if used by C++ source code
 #define USAGEMODE __declspec(dllimport)
 #endif
 
-const int FCLASS_SUCCESS = 0;
-const int FCLASS_FAILURE = -1;
-const int VERSION_NOT_SUPPORTED = 1;
-const int NO_LICENSE_FOR_USAGE  = 2;
+    const int FCLASS_SUCCESS = 0;
+    const int FCLASS_FAILURE = -1;
+    const int VERSION_NOT_SUPPORTED = 1;
+    const int NO_LICENSE_FOR_USAGE  = 2;
 
 #define VERSION_NONE ""
 #define VERSION_1 "1" //.2.0a"

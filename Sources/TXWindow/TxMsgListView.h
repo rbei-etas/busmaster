@@ -72,7 +72,7 @@ public:
      * @param[in] psCurrentMsgBlockList current msg block pointer
      */
     PSTXCANMSGLIST psGetMsgDetailPointer(INT nIndex,
-                                          SMSGBLOCKLIST* psCurrentMsgBlockList);
+                                         SMSGBLOCKLIST* psCurrentMsgBlockList);
 
     /**
      * @brief To update list with given details

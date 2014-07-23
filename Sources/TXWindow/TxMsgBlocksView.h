@@ -215,7 +215,7 @@ protected:
      * changes edit box "Message Block name"
      */
     afx_msg void OnChangeEditMsgBlockName();
- 
+
     /**
      * This function is called by framework whenever user
      * selected check button for trigger type.

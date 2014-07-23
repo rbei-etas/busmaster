@@ -14,9 +14,10 @@
  */
 
 /**
- * @brief This file contains definition of CComputeCheckSum class
- * @author Anish Kumar
- * @copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
+ * \file      ComputeCheckSum.h
+ * \brief     This file contains definition of CComputeCheckSum class
+ * \author    Anish Kumar
+ * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  *
  * This file contains definition of CComputeCheckSum class
  */
@@ -26,23 +27,20 @@
 class CComputeCheckSum
 {
 public:
+    // Default constructor
     CComputeCheckSum();
+    // Default destructor
     virtual ~CComputeCheckSum();
-
 protected:
-    /** compute the check for a buffer pass as parameter */
+    // compute the check for a buffer pass as parameter
     BOOL bComputeCheckSum(UCHAR* pcBuff,DWORD dwSize, UCHAR* pucCheckSum);
-
-    /**
-     * Get the computed checksum of file whose name is passed as parameter.
-     * Also the computed checksum and stored checksum is returned.
-     */
+    // Get the computed checksum of file whose name is passed as parameter
+    // Also the computed checksum and stored checksum is returned.
     BOOL bGetCheckSum(CString& omStrConfigFileName, UCHAR* pucCheckSum,
                       UCHAR* pucCheckSumInFile);
-
-    /** Sets the checksum at last byte location after computing it. */
+    // Sets the checksum at last byte location after computing it.
     BOOL bSetCheckSum(CString& omStrConfigFileName,UCHAR* pucCheckSum);
-
     BOOL COM_bSetCheckSum(CString& omStrConfigFileName,
                           UCHAR* pucCheckSum, CString& strError);
+
 };

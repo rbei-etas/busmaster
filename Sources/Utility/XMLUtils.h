@@ -658,7 +658,7 @@ public:
         return nRetVal;
     }
 
-    static int parseColumnInfoNode(xmlNodePtr pNode, stringList & columnList, columnInfo & /* Info */)
+    static int parseColumnInfoNode(xmlNodePtr pNode, stringList& columnList, columnInfo& /* Info */)
     {
         int nRetVal = S_OK;
         if (columnList.size() <= 0 || pNode == NULL )

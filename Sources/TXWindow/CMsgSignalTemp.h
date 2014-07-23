@@ -35,10 +35,10 @@ public:
         CString m_omStrDatabasePath;
 
         /**  Message count in the database */
-        UINT m_unMessageCount;       
+        UINT m_unMessageCount;
 
         /** Pointer to the array of message structure */
-        sMESSAGE* m_psMessages;      
+        sMESSAGE* m_psMessages;
         sDBFileStruct* m_psNextDBFileStruct;
     };
 

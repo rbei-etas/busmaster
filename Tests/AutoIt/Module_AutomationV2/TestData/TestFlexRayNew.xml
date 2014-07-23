@@ -1,0 +1,761 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<fx:FIBEX xmlns:fx="http://www.asam.net/xml/fbx" xmlns:ho="http://www.asam.net/xml" xmlns:can="http://www.asam.net/xml/fbx/can" xmlns:lin="http://www.asam.net/xml/fbx/lin" xmlns:flexray="http://www.asam.net/xml/fbx/flexray" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:vi="http://www.vector-informatik.com/xml/fbx/vector-flexray" xmlns:all="http://www.asam.net/xml/fbx/all" xsi:schemaLocation="http://www.asam.net/xml/fbx/all http://www.asam.net/xml/fbx/3_1_0/xsd/fibex4multiplatform.xsd" VERSION="3.1.0">
+  <fx:PROJECT ID="Project_1">
+    <ho:SHORT-NAME>Vehicle</ho:SHORT-NAME>
+  </fx:PROJECT>
+  <fx:ELEMENTS>
+    <fx:CLUSTERS>
+      <fx:CLUSTER ID="Cluster_1" xsi:type="flexray:CLUSTER-TYPE">
+        <ho:SHORT-NAME>New_Cluster2</ho:SHORT-NAME>
+        <fx:SPEED>10000000</fx:SPEED>
+        <fx:IS-HIGH-LOW-BIT-ORDER>true</fx:IS-HIGH-LOW-BIT-ORDER>
+        <fx:BIT-COUNTING-POLICY>SAWTOOTH</fx:BIT-COUNTING-POLICY>
+        <fx:PROTOCOL xsi:type="flexray:PROTOCOL-TYPE">FlexRay</fx:PROTOCOL>
+        <fx:PROTOCOL-VERSION>2.1</fx:PROTOCOL-VERSION>
+        <fx:CHANNEL-REFS>
+          <fx:CHANNEL-REF ID-REF="Channel_1" />
+        </fx:CHANNEL-REFS>
+        <fx:MEDIUM>ELECTRICAL</fx:MEDIUM>
+        <flexray:COLD-START-ATTEMPTS>8</flexray:COLD-START-ATTEMPTS>
+        <flexray:ACTION-POINT-OFFSET>2</flexray:ACTION-POINT-OFFSET>
+        <flexray:DYNAMIC-SLOT-IDLE-PHASE>1</flexray:DYNAMIC-SLOT-IDLE-PHASE>
+        <flexray:MINISLOT>5</flexray:MINISLOT>
+        <flexray:MINISLOT-ACTION-POINT-OFFSET>2</flexray:MINISLOT-ACTION-POINT-OFFSET>
+        <flexray:N-I-T>7</flexray:N-I-T>
+        <flexray:SAMPLE-CLOCK-PERIOD>0.012500</flexray:SAMPLE-CLOCK-PERIOD>
+        <flexray:STATIC-SLOT>24</flexray:STATIC-SLOT>
+        <flexray:SYMBOL-WINDOW>0</flexray:SYMBOL-WINDOW>
+        <flexray:T-S-S-TRANSMITTER>9</flexray:T-S-S-TRANSMITTER>
+        <flexray:WAKE-UP>
+          <flexray:WAKE-UP-SYMBOL-RX-IDLE>59</flexray:WAKE-UP-SYMBOL-RX-IDLE>
+          <flexray:WAKE-UP-SYMBOL-RX-LOW>50</flexray:WAKE-UP-SYMBOL-RX-LOW>
+          <flexray:WAKE-UP-SYMBOL-RX-WINDOW>301</flexray:WAKE-UP-SYMBOL-RX-WINDOW>
+          <flexray:WAKE-UP-SYMBOL-TX-IDLE>180</flexray:WAKE-UP-SYMBOL-TX-IDLE>
+          <flexray:WAKE-UP-SYMBOL-TX-LOW>60</flexray:WAKE-UP-SYMBOL-TX-LOW>
+        </flexray:WAKE-UP>
+        <flexray:LISTEN-NOISE>2</flexray:LISTEN-NOISE>
+        <flexray:MACRO-PER-CYCLE>3636</flexray:MACRO-PER-CYCLE>
+        <flexray:MACROTICK>1.375000</flexray:MACROTICK>
+        <flexray:MAX-INITIALIZATION-ERROR>2.648000</flexray:MAX-INITIALIZATION-ERROR>
+        <flexray:MAX-WITHOUT-CLOCK-CORRECTION-FATAL>2</flexray:MAX-WITHOUT-CLOCK-CORRECTION-FATAL>
+        <flexray:MAX-WITHOUT-CLOCK-CORRECTION-PASSIVE>2</flexray:MAX-WITHOUT-CLOCK-CORRECTION-PASSIVE>
+        <flexray:NETWORK-MANAGEMENT-VECTOR-LENGTH>0</flexray:NETWORK-MANAGEMENT-VECTOR-LENGTH>
+        <flexray:NUMBER-OF-MINISLOTS>289</flexray:NUMBER-OF-MINISLOTS>
+        <flexray:NUMBER-OF-STATIC-SLOTS>91</flexray:NUMBER-OF-STATIC-SLOTS>
+        <flexray:OFFSET-CORRECTION-START>3632</flexray:OFFSET-CORRECTION-START>
+        <flexray:PAYLOAD-LENGTH-STATIC>8</flexray:PAYLOAD-LENGTH-STATIC>
+        <flexray:SYNC-NODE-MAX>15</flexray:SYNC-NODE-MAX>
+        <flexray:CAS-RX-LOW-MAX>79</flexray:CAS-RX-LOW-MAX>
+        <flexray:BIT>0.100000</flexray:BIT>
+        <flexray:CYCLE>5000</flexray:CYCLE>
+        <flexray:CLUSTER-DRIFT-DAMPING>2</flexray:CLUSTER-DRIFT-DAMPING>
+      </fx:CLUSTER>
+    </fx:CLUSTERS>
+    <fx:CHANNELS>
+      <fx:CHANNEL ID="Channel_1" xsi:type="flexray:CHANNEL-TYPE">
+        <ho:SHORT-NAME>Channel_A</ho:SHORT-NAME>
+        <fx:FRAME-TRIGGERINGS>
+          <fx:FRAME-TRIGGERING ID="FrameTriggering_1">
+            <fx:TIMINGS>
+              <fx:ABSOLUTELY-SCHEDULED-TIMING>
+                <fx:SLOT-ID xsi:type="flexray:SLOT-ID-TYPE">1</fx:SLOT-ID>
+                <fx:BASE-CYCLE xsi:type="flexray:CYCLE-COUNTER-TYPE">0</fx:BASE-CYCLE>
+                <fx:CYCLE-REPETITION xsi:type="flexray:CYCLE-REPETITION-TYPE">1</fx:CYCLE-REPETITION>
+              </fx:ABSOLUTELY-SCHEDULED-TIMING>
+            </fx:TIMINGS>
+            <fx:FRAME-REF ID-REF="Frame_1" />
+          </fx:FRAME-TRIGGERING>
+          <fx:FRAME-TRIGGERING ID="FrameTriggering_2">
+            <fx:TIMINGS>
+              <fx:ABSOLUTELY-SCHEDULED-TIMING>
+                <fx:SLOT-ID xsi:type="flexray:SLOT-ID-TYPE">3</fx:SLOT-ID>
+                <fx:BASE-CYCLE xsi:type="flexray:CYCLE-COUNTER-TYPE">1</fx:BASE-CYCLE>
+                <fx:CYCLE-REPETITION xsi:type="flexray:CYCLE-REPETITION-TYPE">1</fx:CYCLE-REPETITION>
+              </fx:ABSOLUTELY-SCHEDULED-TIMING>
+            </fx:TIMINGS>
+            <fx:FRAME-REF ID-REF="Frame_2" />
+          </fx:FRAME-TRIGGERING>
+          <fx:FRAME-TRIGGERING ID="FrameTriggering_3">
+            <fx:TIMINGS>
+              <fx:ABSOLUTELY-SCHEDULED-TIMING>
+                <fx:SLOT-ID xsi:type="flexray:SLOT-ID-TYPE">4</fx:SLOT-ID>
+                <fx:BASE-CYCLE xsi:type="flexray:CYCLE-COUNTER-TYPE">0</fx:BASE-CYCLE>
+                <fx:CYCLE-REPETITION xsi:type="flexray:CYCLE-REPETITION-TYPE">1</fx:CYCLE-REPETITION>
+              </fx:ABSOLUTELY-SCHEDULED-TIMING>
+            </fx:TIMINGS>
+            <fx:FRAME-REF ID-REF="Frame_3" />
+          </fx:FRAME-TRIGGERING>
+          <fx:FRAME-TRIGGERING ID="FrameTriggering_4">
+            <fx:TIMINGS>
+              <fx:ABSOLUTELY-SCHEDULED-TIMING>
+                <fx:SLOT-ID xsi:type="flexray:SLOT-ID-TYPE">5</fx:SLOT-ID>
+                <fx:BASE-CYCLE xsi:type="flexray:CYCLE-COUNTER-TYPE">0</fx:BASE-CYCLE>
+                <fx:CYCLE-REPETITION xsi:type="flexray:CYCLE-REPETITION-TYPE">1</fx:CYCLE-REPETITION>
+              </fx:ABSOLUTELY-SCHEDULED-TIMING>
+            </fx:TIMINGS>
+            <fx:FRAME-REF ID-REF="Frame_4" />
+          </fx:FRAME-TRIGGERING>
+          <fx:FRAME-TRIGGERING ID="FrameTriggering_5">
+            <fx:TIMINGS>
+              <fx:ABSOLUTELY-SCHEDULED-TIMING>
+                <fx:SLOT-ID xsi:type="flexray:SLOT-ID-TYPE">6</fx:SLOT-ID>
+                <fx:BASE-CYCLE xsi:type="flexray:CYCLE-COUNTER-TYPE">0</fx:BASE-CYCLE>
+                <fx:CYCLE-REPETITION xsi:type="flexray:CYCLE-REPETITION-TYPE">1</fx:CYCLE-REPETITION>
+              </fx:ABSOLUTELY-SCHEDULED-TIMING>
+            </fx:TIMINGS>
+            <fx:FRAME-REF ID-REF="Frame_5" />
+          </fx:FRAME-TRIGGERING>
+        </fx:FRAME-TRIGGERINGS>
+        <flexray:FLEXRAY-CHANNEL-NAME>A</flexray:FLEXRAY-CHANNEL-NAME>
+      </fx:CHANNEL>
+    </fx:CHANNELS>
+    <fx:ECUS>
+      <fx:ECU ID="ECU_1">
+        <ho:SHORT-NAME>New_ECU_1</ho:SHORT-NAME>
+        <fx:CONTROLLERS>
+          <fx:CONTROLLER xsi:type="flexray:CONTROLLER-TYPE" ID="Controller_1">
+            <ho:SHORT-NAME>New_ECU_1</ho:SHORT-NAME>
+            <flexray:KEY-SLOT-USAGE>
+              <flexray:NONE />
+            </flexray:KEY-SLOT-USAGE>
+            <flexray:MAX-DYNAMIC-PAYLOAD-LENGTH>127</flexray:MAX-DYNAMIC-PAYLOAD-LENGTH>
+            <flexray:CLUSTER-DRIFT-DAMPING>2</flexray:CLUSTER-DRIFT-DAMPING>
+            <flexray:DECODING-CORRECTION>48</flexray:DECODING-CORRECTION>
+            <flexray:LISTEN-TIMEOUT>400162</flexray:LISTEN-TIMEOUT>
+            <flexray:MAX-DRIFT>81</flexray:MAX-DRIFT>
+            <flexray:EXTERN-OFFSET-CORRECTION>0</flexray:EXTERN-OFFSET-CORRECTION>
+            <flexray:EXTERN-RATE-CORRECTION>0</flexray:EXTERN-RATE-CORRECTION>
+            <flexray:LATEST-TX>249</flexray:LATEST-TX>
+            <flexray:MICRO-PER-CYCLE>200000</flexray:MICRO-PER-CYCLE>
+            <flexray:OFFSET-CORRECTION-OUT>127</flexray:OFFSET-CORRECTION-OUT>
+            <flexray:RATE-CORRECTION-OUT>81</flexray:RATE-CORRECTION-OUT>
+            <flexray:SAMPLES-PER-MICROTICK>2</flexray:SAMPLES-PER-MICROTICK>
+            <flexray:DELAY-COMPENSATION-A>1</flexray:DELAY-COMPENSATION-A>
+            <flexray:DELAY-COMPENSATION-B>1</flexray:DELAY-COMPENSATION-B>
+            <flexray:WAKE-UP-PATTERN>33</flexray:WAKE-UP-PATTERN>
+            <flexray:ALLOW-HALT-DUE-TO-CLOCK>true</flexray:ALLOW-HALT-DUE-TO-CLOCK>
+            <flexray:ALLOW-PASSIVE-TO-ACTIVE>0</flexray:ALLOW-PASSIVE-TO-ACTIVE>
+            <flexray:ACCEPTED-STARTUP-RANGE>212</flexray:ACCEPTED-STARTUP-RANGE>
+            <flexray:MACRO-INITIAL-OFFSET-A>3</flexray:MACRO-INITIAL-OFFSET-A>
+            <flexray:MACRO-INITIAL-OFFSET-B>3</flexray:MACRO-INITIAL-OFFSET-B>
+            <flexray:MICRO-INITIAL-OFFSET-A>6</flexray:MICRO-INITIAL-OFFSET-A>
+            <flexray:MICRO-INITIAL-OFFSET-B>6</flexray:MICRO-INITIAL-OFFSET-B>
+            <flexray:SINGLE-SLOT-ENABLED>false</flexray:SINGLE-SLOT-ENABLED>
+            <flexray:MICROTICK>0.025</flexray:MICROTICK>
+          </fx:CONTROLLER>
+        </fx:CONTROLLERS>
+        <fx:CONNECTORS>
+          <fx:CONNECTOR xsi:type="flexray:CONNECTOR-TYPE" ID="Connector_1">
+            <fx:CHANNEL-REF ID-REF="Channel_1" />
+            <fx:CONTROLLER-REF ID-REF="Controller_1" />
+            <fx:INPUTS>
+              <fx:INPUT-PORT ID="InputPort_1">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_1" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_15">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_3" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_20">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_4" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+            </fx:INPUTS>
+            <fx:OUTPUTS>
+              <fx:OUTPUT-PORT ID="OutputPort_1">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_1" />
+                <fx:COMPLETE-FRAME />
+              </fx:OUTPUT-PORT>
+              <fx:OUTPUT-PORT ID="OutputPort_2">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_2" />
+                <fx:COMPLETE-FRAME />
+              </fx:OUTPUT-PORT>
+              <fx:OUTPUT-PORT ID="OutputPort_3">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_3" />
+                <fx:COMPLETE-FRAME />
+              </fx:OUTPUT-PORT>
+              <fx:OUTPUT-PORT ID="OutputPort_4">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_4" />
+                <fx:COMPLETE-FRAME />
+              </fx:OUTPUT-PORT>
+              <fx:OUTPUT-PORT ID="OutputPort_5">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_5" />
+                <fx:COMPLETE-FRAME />
+              </fx:OUTPUT-PORT>
+            </fx:OUTPUTS>
+            <flexray:WAKE-UP-CHANNEL>false</flexray:WAKE-UP-CHANNEL>
+          </fx:CONNECTOR>
+        </fx:CONNECTORS>
+      </fx:ECU>
+      <fx:ECU ID="ECU_2">
+        <ho:SHORT-NAME>New_ECU_2_2</ho:SHORT-NAME>
+        <fx:CONTROLLERS>
+          <fx:CONTROLLER xsi:type="flexray:CONTROLLER-TYPE" ID="Controller_2">
+            <ho:SHORT-NAME>New_ECU_2_2</ho:SHORT-NAME>
+            <flexray:KEY-SLOT-USAGE>
+              <flexray:NONE />
+            </flexray:KEY-SLOT-USAGE>
+            <flexray:MAX-DYNAMIC-PAYLOAD-LENGTH>127</flexray:MAX-DYNAMIC-PAYLOAD-LENGTH>
+            <flexray:CLUSTER-DRIFT-DAMPING>2</flexray:CLUSTER-DRIFT-DAMPING>
+            <flexray:DECODING-CORRECTION>48</flexray:DECODING-CORRECTION>
+            <flexray:LISTEN-TIMEOUT>400162</flexray:LISTEN-TIMEOUT>
+            <flexray:MAX-DRIFT>81</flexray:MAX-DRIFT>
+            <flexray:EXTERN-OFFSET-CORRECTION>0</flexray:EXTERN-OFFSET-CORRECTION>
+            <flexray:EXTERN-RATE-CORRECTION>0</flexray:EXTERN-RATE-CORRECTION>
+            <flexray:LATEST-TX>249</flexray:LATEST-TX>
+            <flexray:MICRO-PER-CYCLE>200000</flexray:MICRO-PER-CYCLE>
+            <flexray:OFFSET-CORRECTION-OUT>127</flexray:OFFSET-CORRECTION-OUT>
+            <flexray:RATE-CORRECTION-OUT>81</flexray:RATE-CORRECTION-OUT>
+            <flexray:SAMPLES-PER-MICROTICK>2</flexray:SAMPLES-PER-MICROTICK>
+            <flexray:DELAY-COMPENSATION-A>1</flexray:DELAY-COMPENSATION-A>
+            <flexray:DELAY-COMPENSATION-B>1</flexray:DELAY-COMPENSATION-B>
+            <flexray:WAKE-UP-PATTERN>33</flexray:WAKE-UP-PATTERN>
+            <flexray:ALLOW-HALT-DUE-TO-CLOCK>true</flexray:ALLOW-HALT-DUE-TO-CLOCK>
+            <flexray:ALLOW-PASSIVE-TO-ACTIVE>0</flexray:ALLOW-PASSIVE-TO-ACTIVE>
+            <flexray:ACCEPTED-STARTUP-RANGE>212</flexray:ACCEPTED-STARTUP-RANGE>
+            <flexray:MACRO-INITIAL-OFFSET-A>3</flexray:MACRO-INITIAL-OFFSET-A>
+            <flexray:MACRO-INITIAL-OFFSET-B>3</flexray:MACRO-INITIAL-OFFSET-B>
+            <flexray:MICRO-INITIAL-OFFSET-A>6</flexray:MICRO-INITIAL-OFFSET-A>
+            <flexray:MICRO-INITIAL-OFFSET-B>6</flexray:MICRO-INITIAL-OFFSET-B>
+            <flexray:SINGLE-SLOT-ENABLED>false</flexray:SINGLE-SLOT-ENABLED>
+            <flexray:MICROTICK>0.025</flexray:MICROTICK>
+          </fx:CONTROLLER>
+        </fx:CONTROLLERS>
+        <fx:CONNECTORS>
+          <fx:CONNECTOR xsi:type="flexray:CONNECTOR-TYPE" ID="Connector_2">
+            <fx:CHANNEL-REF ID-REF="Channel_1" />
+            <fx:CONTROLLER-REF ID-REF="Controller_2" />
+            <fx:INPUTS>
+              <fx:INPUT-PORT ID="InputPort_2">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_1" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_10">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_2" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_14">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_3" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_16">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_4" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_23">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_5" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+            </fx:INPUTS>
+            <flexray:WAKE-UP-CHANNEL>false</flexray:WAKE-UP-CHANNEL>
+          </fx:CONNECTOR>
+        </fx:CONNECTORS>
+      </fx:ECU>
+      <fx:ECU ID="ECU_3">
+        <ho:SHORT-NAME>New_ECU_3_1</ho:SHORT-NAME>
+        <fx:CONTROLLERS>
+          <fx:CONTROLLER xsi:type="flexray:CONTROLLER-TYPE" ID="Controller_3">
+            <ho:SHORT-NAME>New_ECU_3_1</ho:SHORT-NAME>
+            <flexray:KEY-SLOT-USAGE>
+              <flexray:NONE />
+            </flexray:KEY-SLOT-USAGE>
+            <flexray:MAX-DYNAMIC-PAYLOAD-LENGTH>127</flexray:MAX-DYNAMIC-PAYLOAD-LENGTH>
+            <flexray:CLUSTER-DRIFT-DAMPING>2</flexray:CLUSTER-DRIFT-DAMPING>
+            <flexray:DECODING-CORRECTION>48</flexray:DECODING-CORRECTION>
+            <flexray:LISTEN-TIMEOUT>400162</flexray:LISTEN-TIMEOUT>
+            <flexray:MAX-DRIFT>81</flexray:MAX-DRIFT>
+            <flexray:EXTERN-OFFSET-CORRECTION>0</flexray:EXTERN-OFFSET-CORRECTION>
+            <flexray:EXTERN-RATE-CORRECTION>0</flexray:EXTERN-RATE-CORRECTION>
+            <flexray:LATEST-TX>249</flexray:LATEST-TX>
+            <flexray:MICRO-PER-CYCLE>200000</flexray:MICRO-PER-CYCLE>
+            <flexray:OFFSET-CORRECTION-OUT>127</flexray:OFFSET-CORRECTION-OUT>
+            <flexray:RATE-CORRECTION-OUT>81</flexray:RATE-CORRECTION-OUT>
+            <flexray:SAMPLES-PER-MICROTICK>2</flexray:SAMPLES-PER-MICROTICK>
+            <flexray:DELAY-COMPENSATION-A>1</flexray:DELAY-COMPENSATION-A>
+            <flexray:DELAY-COMPENSATION-B>1</flexray:DELAY-COMPENSATION-B>
+            <flexray:WAKE-UP-PATTERN>33</flexray:WAKE-UP-PATTERN>
+            <flexray:ALLOW-HALT-DUE-TO-CLOCK>true</flexray:ALLOW-HALT-DUE-TO-CLOCK>
+            <flexray:ALLOW-PASSIVE-TO-ACTIVE>0</flexray:ALLOW-PASSIVE-TO-ACTIVE>
+            <flexray:ACCEPTED-STARTUP-RANGE>212</flexray:ACCEPTED-STARTUP-RANGE>
+            <flexray:MACRO-INITIAL-OFFSET-A>3</flexray:MACRO-INITIAL-OFFSET-A>
+            <flexray:MACRO-INITIAL-OFFSET-B>3</flexray:MACRO-INITIAL-OFFSET-B>
+            <flexray:MICRO-INITIAL-OFFSET-A>6</flexray:MICRO-INITIAL-OFFSET-A>
+            <flexray:MICRO-INITIAL-OFFSET-B>6</flexray:MICRO-INITIAL-OFFSET-B>
+            <flexray:SINGLE-SLOT-ENABLED>false</flexray:SINGLE-SLOT-ENABLED>
+            <flexray:MICROTICK>0.025</flexray:MICROTICK>
+          </fx:CONTROLLER>
+        </fx:CONTROLLERS>
+        <fx:CONNECTORS>
+          <fx:CONNECTOR xsi:type="flexray:CONNECTOR-TYPE" ID="Connector_3">
+            <fx:CHANNEL-REF ID-REF="Channel_1" />
+            <fx:CONTROLLER-REF ID-REF="Controller_3" />
+            <fx:INPUTS>
+              <fx:INPUT-PORT ID="InputPort_3">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_1" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_6">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_2" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_13">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_3" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_17">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_4" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_24">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_5" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+            </fx:INPUTS>
+            <flexray:WAKE-UP-CHANNEL>false</flexray:WAKE-UP-CHANNEL>
+          </fx:CONNECTOR>
+        </fx:CONNECTORS>
+      </fx:ECU>
+      <fx:ECU ID="ECU_4">
+        <ho:SHORT-NAME>New_ECU_4_1</ho:SHORT-NAME>
+        <fx:CONTROLLERS>
+          <fx:CONTROLLER xsi:type="flexray:CONTROLLER-TYPE" ID="Controller_4">
+            <ho:SHORT-NAME>New_ECU_4_1</ho:SHORT-NAME>
+            <flexray:KEY-SLOT-USAGE>
+              <flexray:NONE />
+            </flexray:KEY-SLOT-USAGE>
+            <flexray:MAX-DYNAMIC-PAYLOAD-LENGTH>127</flexray:MAX-DYNAMIC-PAYLOAD-LENGTH>
+            <flexray:CLUSTER-DRIFT-DAMPING>2</flexray:CLUSTER-DRIFT-DAMPING>
+            <flexray:DECODING-CORRECTION>48</flexray:DECODING-CORRECTION>
+            <flexray:LISTEN-TIMEOUT>400162</flexray:LISTEN-TIMEOUT>
+            <flexray:MAX-DRIFT>81</flexray:MAX-DRIFT>
+            <flexray:EXTERN-OFFSET-CORRECTION>0</flexray:EXTERN-OFFSET-CORRECTION>
+            <flexray:EXTERN-RATE-CORRECTION>0</flexray:EXTERN-RATE-CORRECTION>
+            <flexray:LATEST-TX>249</flexray:LATEST-TX>
+            <flexray:MICRO-PER-CYCLE>200000</flexray:MICRO-PER-CYCLE>
+            <flexray:OFFSET-CORRECTION-OUT>127</flexray:OFFSET-CORRECTION-OUT>
+            <flexray:RATE-CORRECTION-OUT>81</flexray:RATE-CORRECTION-OUT>
+            <flexray:SAMPLES-PER-MICROTICK>2</flexray:SAMPLES-PER-MICROTICK>
+            <flexray:DELAY-COMPENSATION-A>1</flexray:DELAY-COMPENSATION-A>
+            <flexray:DELAY-COMPENSATION-B>1</flexray:DELAY-COMPENSATION-B>
+            <flexray:WAKE-UP-PATTERN>33</flexray:WAKE-UP-PATTERN>
+            <flexray:ALLOW-HALT-DUE-TO-CLOCK>true</flexray:ALLOW-HALT-DUE-TO-CLOCK>
+            <flexray:ALLOW-PASSIVE-TO-ACTIVE>0</flexray:ALLOW-PASSIVE-TO-ACTIVE>
+            <flexray:ACCEPTED-STARTUP-RANGE>212</flexray:ACCEPTED-STARTUP-RANGE>
+            <flexray:MACRO-INITIAL-OFFSET-A>3</flexray:MACRO-INITIAL-OFFSET-A>
+            <flexray:MACRO-INITIAL-OFFSET-B>3</flexray:MACRO-INITIAL-OFFSET-B>
+            <flexray:MICRO-INITIAL-OFFSET-A>6</flexray:MICRO-INITIAL-OFFSET-A>
+            <flexray:MICRO-INITIAL-OFFSET-B>6</flexray:MICRO-INITIAL-OFFSET-B>
+            <flexray:SINGLE-SLOT-ENABLED>false</flexray:SINGLE-SLOT-ENABLED>
+            <flexray:MICROTICK>0.025</flexray:MICROTICK>
+          </fx:CONTROLLER>
+        </fx:CONTROLLERS>
+        <fx:CONNECTORS>
+          <fx:CONNECTOR xsi:type="flexray:CONNECTOR-TYPE" ID="Connector_4">
+            <fx:CHANNEL-REF ID-REF="Channel_1" />
+            <fx:CONTROLLER-REF ID-REF="Controller_4" />
+            <fx:INPUTS>
+              <fx:INPUT-PORT ID="InputPort_4">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_1" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_7">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_2" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_25">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_5" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+            </fx:INPUTS>
+            <flexray:WAKE-UP-CHANNEL>false</flexray:WAKE-UP-CHANNEL>
+          </fx:CONNECTOR>
+        </fx:CONNECTORS>
+      </fx:ECU>
+      <fx:ECU ID="ECU_5">
+        <ho:SHORT-NAME>New_ECU_5</ho:SHORT-NAME>
+        <fx:CONTROLLERS>
+          <fx:CONTROLLER xsi:type="flexray:CONTROLLER-TYPE" ID="Controller_5">
+            <ho:SHORT-NAME>New_ECU_5</ho:SHORT-NAME>
+            <flexray:KEY-SLOT-USAGE>
+              <flexray:NONE />
+            </flexray:KEY-SLOT-USAGE>
+            <flexray:MAX-DYNAMIC-PAYLOAD-LENGTH>127</flexray:MAX-DYNAMIC-PAYLOAD-LENGTH>
+            <flexray:CLUSTER-DRIFT-DAMPING>2</flexray:CLUSTER-DRIFT-DAMPING>
+            <flexray:DECODING-CORRECTION>48</flexray:DECODING-CORRECTION>
+            <flexray:LISTEN-TIMEOUT>400162</flexray:LISTEN-TIMEOUT>
+            <flexray:MAX-DRIFT>81</flexray:MAX-DRIFT>
+            <flexray:EXTERN-OFFSET-CORRECTION>0</flexray:EXTERN-OFFSET-CORRECTION>
+            <flexray:EXTERN-RATE-CORRECTION>0</flexray:EXTERN-RATE-CORRECTION>
+            <flexray:LATEST-TX>249</flexray:LATEST-TX>
+            <flexray:MICRO-PER-CYCLE>200000</flexray:MICRO-PER-CYCLE>
+            <flexray:OFFSET-CORRECTION-OUT>127</flexray:OFFSET-CORRECTION-OUT>
+            <flexray:RATE-CORRECTION-OUT>81</flexray:RATE-CORRECTION-OUT>
+            <flexray:SAMPLES-PER-MICROTICK>2</flexray:SAMPLES-PER-MICROTICK>
+            <flexray:DELAY-COMPENSATION-A>1</flexray:DELAY-COMPENSATION-A>
+            <flexray:DELAY-COMPENSATION-B>1</flexray:DELAY-COMPENSATION-B>
+            <flexray:WAKE-UP-PATTERN>33</flexray:WAKE-UP-PATTERN>
+            <flexray:ALLOW-HALT-DUE-TO-CLOCK>true</flexray:ALLOW-HALT-DUE-TO-CLOCK>
+            <flexray:ALLOW-PASSIVE-TO-ACTIVE>0</flexray:ALLOW-PASSIVE-TO-ACTIVE>
+            <flexray:ACCEPTED-STARTUP-RANGE>212</flexray:ACCEPTED-STARTUP-RANGE>
+            <flexray:MACRO-INITIAL-OFFSET-A>3</flexray:MACRO-INITIAL-OFFSET-A>
+            <flexray:MACRO-INITIAL-OFFSET-B>3</flexray:MACRO-INITIAL-OFFSET-B>
+            <flexray:MICRO-INITIAL-OFFSET-A>6</flexray:MICRO-INITIAL-OFFSET-A>
+            <flexray:MICRO-INITIAL-OFFSET-B>6</flexray:MICRO-INITIAL-OFFSET-B>
+            <flexray:SINGLE-SLOT-ENABLED>false</flexray:SINGLE-SLOT-ENABLED>
+            <flexray:MICROTICK>0.025</flexray:MICROTICK>
+          </fx:CONTROLLER>
+        </fx:CONTROLLERS>
+        <fx:CONNECTORS>
+          <fx:CONNECTOR xsi:type="flexray:CONNECTOR-TYPE" ID="Connector_5">
+            <fx:CHANNEL-REF ID-REF="Channel_1" />
+            <fx:CONTROLLER-REF ID-REF="Controller_5" />
+            <fx:INPUTS>
+              <fx:INPUT-PORT ID="InputPort_5">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_1" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_8">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_2" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_11">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_3" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_18">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_4" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_21">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_5" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+            </fx:INPUTS>
+            <flexray:WAKE-UP-CHANNEL>false</flexray:WAKE-UP-CHANNEL>
+          </fx:CONNECTOR>
+        </fx:CONNECTORS>
+      </fx:ECU>
+      <fx:ECU ID="ECU_6">
+        <ho:SHORT-NAME>New_ECU_6</ho:SHORT-NAME>
+        <fx:CONTROLLERS>
+          <fx:CONTROLLER xsi:type="flexray:CONTROLLER-TYPE" ID="Controller_6">
+            <ho:SHORT-NAME>New_ECU_6</ho:SHORT-NAME>
+            <flexray:KEY-SLOT-USAGE>
+              <flexray:NONE />
+            </flexray:KEY-SLOT-USAGE>
+            <flexray:MAX-DYNAMIC-PAYLOAD-LENGTH>127</flexray:MAX-DYNAMIC-PAYLOAD-LENGTH>
+            <flexray:CLUSTER-DRIFT-DAMPING>2</flexray:CLUSTER-DRIFT-DAMPING>
+            <flexray:DECODING-CORRECTION>48</flexray:DECODING-CORRECTION>
+            <flexray:LISTEN-TIMEOUT>400162</flexray:LISTEN-TIMEOUT>
+            <flexray:MAX-DRIFT>81</flexray:MAX-DRIFT>
+            <flexray:EXTERN-OFFSET-CORRECTION>0</flexray:EXTERN-OFFSET-CORRECTION>
+            <flexray:EXTERN-RATE-CORRECTION>0</flexray:EXTERN-RATE-CORRECTION>
+            <flexray:LATEST-TX>249</flexray:LATEST-TX>
+            <flexray:MICRO-PER-CYCLE>200000</flexray:MICRO-PER-CYCLE>
+            <flexray:OFFSET-CORRECTION-OUT>127</flexray:OFFSET-CORRECTION-OUT>
+            <flexray:RATE-CORRECTION-OUT>81</flexray:RATE-CORRECTION-OUT>
+            <flexray:SAMPLES-PER-MICROTICK>2</flexray:SAMPLES-PER-MICROTICK>
+            <flexray:DELAY-COMPENSATION-A>1</flexray:DELAY-COMPENSATION-A>
+            <flexray:DELAY-COMPENSATION-B>1</flexray:DELAY-COMPENSATION-B>
+            <flexray:WAKE-UP-PATTERN>33</flexray:WAKE-UP-PATTERN>
+            <flexray:ALLOW-HALT-DUE-TO-CLOCK>true</flexray:ALLOW-HALT-DUE-TO-CLOCK>
+            <flexray:ALLOW-PASSIVE-TO-ACTIVE>0</flexray:ALLOW-PASSIVE-TO-ACTIVE>
+            <flexray:ACCEPTED-STARTUP-RANGE>212</flexray:ACCEPTED-STARTUP-RANGE>
+            <flexray:MACRO-INITIAL-OFFSET-A>3</flexray:MACRO-INITIAL-OFFSET-A>
+            <flexray:MACRO-INITIAL-OFFSET-B>3</flexray:MACRO-INITIAL-OFFSET-B>
+            <flexray:MICRO-INITIAL-OFFSET-A>6</flexray:MICRO-INITIAL-OFFSET-A>
+            <flexray:MICRO-INITIAL-OFFSET-B>6</flexray:MICRO-INITIAL-OFFSET-B>
+            <flexray:SINGLE-SLOT-ENABLED>false</flexray:SINGLE-SLOT-ENABLED>
+            <flexray:MICROTICK>0.025</flexray:MICROTICK>
+          </fx:CONTROLLER>
+        </fx:CONTROLLERS>
+        <fx:CONNECTORS>
+          <fx:CONNECTOR xsi:type="flexray:CONNECTOR-TYPE" ID="Connector_6">
+            <fx:CHANNEL-REF ID-REF="Channel_1" />
+            <fx:CONTROLLER-REF ID-REF="Controller_6" />
+            <fx:INPUTS>
+              <fx:INPUT-PORT ID="InputPort_9">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_2" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_12">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_3" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_19">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_4" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+              <fx:INPUT-PORT ID="InputPort_22">
+                <fx:FRAME-TRIGGERING-REF ID-REF="FrameTriggering_5" />
+                <fx:COMPLETE-FRAME />
+              </fx:INPUT-PORT>
+            </fx:INPUTS>
+            <flexray:WAKE-UP-CHANNEL>false</flexray:WAKE-UP-CHANNEL>
+          </fx:CONNECTOR>
+        </fx:CONNECTORS>
+      </fx:ECU>
+    </fx:ECUS>
+    <fx:PDUS>
+      <fx:PDU ID="PDU_1">
+        <ho:SHORT-NAME>New_PDU_1</ho:SHORT-NAME>
+        <fx:BYTE-LENGTH>1</fx:BYTE-LENGTH>
+        <fx:PDU-TYPE>APPLICATION</fx:PDU-TYPE>
+        <fx:SIGNAL-INSTANCES>
+          <fx:SIGNAL-INSTANCE ID="SignalInstance_1">
+            <fx:BIT-POSITION>0</fx:BIT-POSITION>
+            <fx:IS-HIGH-LOW-BYTE-ORDER>false</fx:IS-HIGH-LOW-BYTE-ORDER>
+            <fx:SIGNAL-REF ID-REF="Signal_1" />
+          </fx:SIGNAL-INSTANCE>
+        </fx:SIGNAL-INSTANCES>
+      </fx:PDU>
+      <fx:PDU ID="PDU_2">
+        <ho:SHORT-NAME>New_PDU_2</ho:SHORT-NAME>
+        <fx:BYTE-LENGTH>1</fx:BYTE-LENGTH>
+        <fx:PDU-TYPE>APPLICATION</fx:PDU-TYPE>
+        <fx:SIGNAL-INSTANCES>
+          <fx:SIGNAL-INSTANCE ID="SignalInstance_2">
+            <fx:BIT-POSITION>7</fx:BIT-POSITION>
+            <fx:IS-HIGH-LOW-BYTE-ORDER>true</fx:IS-HIGH-LOW-BYTE-ORDER>
+            <fx:SIGNAL-REF ID-REF="Signal_2" />
+          </fx:SIGNAL-INSTANCE>
+        </fx:SIGNAL-INSTANCES>
+      </fx:PDU>
+      <fx:PDU ID="PDU_3">
+        <ho:SHORT-NAME>New_PDU_3</ho:SHORT-NAME>
+        <fx:BYTE-LENGTH>1</fx:BYTE-LENGTH>
+        <fx:PDU-TYPE>APPLICATION</fx:PDU-TYPE>
+      </fx:PDU>
+      <fx:PDU ID="PDU_4">
+        <ho:SHORT-NAME>New_PDU_4</ho:SHORT-NAME>
+        <fx:BYTE-LENGTH>1</fx:BYTE-LENGTH>
+        <fx:PDU-TYPE>APPLICATION</fx:PDU-TYPE>
+        <fx:SIGNAL-INSTANCES>
+          <fx:SIGNAL-INSTANCE ID="SignalInstance_3">
+            <fx:BIT-POSITION>7</fx:BIT-POSITION>
+            <fx:IS-HIGH-LOW-BYTE-ORDER>false</fx:IS-HIGH-LOW-BYTE-ORDER>
+            <fx:SIGNAL-REF ID-REF="Signal_3" />
+          </fx:SIGNAL-INSTANCE>
+        </fx:SIGNAL-INSTANCES>
+      </fx:PDU>
+      <fx:PDU ID="PDU_5">
+        <ho:SHORT-NAME>New_PDU_5</ho:SHORT-NAME>
+        <fx:BYTE-LENGTH>1</fx:BYTE-LENGTH>
+        <fx:PDU-TYPE>APPLICATION</fx:PDU-TYPE>
+        <fx:SIGNAL-INSTANCES>
+          <fx:SIGNAL-INSTANCE ID="SignalInstance_4">
+            <fx:BIT-POSITION>0</fx:BIT-POSITION>
+            <fx:IS-HIGH-LOW-BYTE-ORDER>false</fx:IS-HIGH-LOW-BYTE-ORDER>
+            <fx:SIGNAL-REF ID-REF="Signal_4" />
+          </fx:SIGNAL-INSTANCE>
+        </fx:SIGNAL-INSTANCES>
+      </fx:PDU>
+    </fx:PDUS>
+    <fx:FRAMES>
+      <fx:FRAME ID="Frame_1">
+        <ho:SHORT-NAME>New_Frame_1</ho:SHORT-NAME>
+        <fx:BYTE-LENGTH>16</fx:BYTE-LENGTH>
+        <fx:FRAME-TYPE>APPLICATION</fx:FRAME-TYPE>
+        <fx:PDU-INSTANCES>
+          <fx:PDU-INSTANCE ID="PDUInstance_1">
+            <fx:PDU-REF ID-REF="PDU_1" />
+            <fx:BIT-POSITION>0</fx:BIT-POSITION>
+            <fx:IS-HIGH-LOW-BYTE-ORDER>false</fx:IS-HIGH-LOW-BYTE-ORDER>
+          </fx:PDU-INSTANCE>
+        </fx:PDU-INSTANCES>
+      </fx:FRAME>
+      <fx:FRAME ID="Frame_2">
+        <ho:SHORT-NAME>New_Frame_2</ho:SHORT-NAME>
+        <fx:BYTE-LENGTH>16</fx:BYTE-LENGTH>
+        <fx:FRAME-TYPE>APPLICATION</fx:FRAME-TYPE>
+        <fx:PDU-INSTANCES>
+          <fx:PDU-INSTANCE ID="PDUInstance_2">
+            <fx:PDU-REF ID-REF="PDU_2" />
+            <fx:BIT-POSITION>0</fx:BIT-POSITION>
+            <fx:IS-HIGH-LOW-BYTE-ORDER>true</fx:IS-HIGH-LOW-BYTE-ORDER>
+          </fx:PDU-INSTANCE>
+        </fx:PDU-INSTANCES>
+      </fx:FRAME>
+      <fx:FRAME ID="Frame_3">
+        <ho:SHORT-NAME>New_Frame_3</ho:SHORT-NAME>
+        <fx:BYTE-LENGTH>16</fx:BYTE-LENGTH>
+        <fx:FRAME-TYPE>APPLICATION</fx:FRAME-TYPE>
+        <fx:PDU-INSTANCES>
+          <fx:PDU-INSTANCE ID="PDUInstance_3">
+            <fx:PDU-REF ID-REF="PDU_3" />
+            <fx:BIT-POSITION>0</fx:BIT-POSITION>
+            <fx:IS-HIGH-LOW-BYTE-ORDER>true</fx:IS-HIGH-LOW-BYTE-ORDER>
+          </fx:PDU-INSTANCE>
+        </fx:PDU-INSTANCES>
+      </fx:FRAME>
+      <fx:FRAME ID="Frame_4">
+        <ho:SHORT-NAME>New_Frame_4</ho:SHORT-NAME>
+        <fx:BYTE-LENGTH>8</fx:BYTE-LENGTH>
+        <fx:FRAME-TYPE>APPLICATION</fx:FRAME-TYPE>
+        <fx:PDU-INSTANCES>
+          <fx:PDU-INSTANCE ID="PDUInstance_4">
+            <fx:PDU-REF ID-REF="PDU_4" />
+            <fx:BIT-POSITION>0</fx:BIT-POSITION>
+            <fx:IS-HIGH-LOW-BYTE-ORDER>true</fx:IS-HIGH-LOW-BYTE-ORDER>
+          </fx:PDU-INSTANCE>
+        </fx:PDU-INSTANCES>
+      </fx:FRAME>
+      <fx:FRAME ID="Frame_5">
+        <ho:SHORT-NAME>New_Frame_5</ho:SHORT-NAME>
+        <fx:BYTE-LENGTH>16</fx:BYTE-LENGTH>
+        <fx:FRAME-TYPE>APPLICATION</fx:FRAME-TYPE>
+        <fx:PDU-INSTANCES>
+          <fx:PDU-INSTANCE ID="PDUInstance_5">
+            <fx:PDU-REF ID-REF="PDU_5" />
+            <fx:BIT-POSITION>0</fx:BIT-POSITION>
+            <fx:IS-HIGH-LOW-BYTE-ORDER>false</fx:IS-HIGH-LOW-BYTE-ORDER>
+          </fx:PDU-INSTANCE>
+        </fx:PDU-INSTANCES>
+      </fx:FRAME>
+    </fx:FRAMES>
+    <fx:SIGNALS>
+      <fx:SIGNAL ID="Signal_1">
+        <ho:SHORT-NAME>New_Signal_1</ho:SHORT-NAME>
+        <fx:DEFAULT-VALUE>1</fx:DEFAULT-VALUE>
+        <fx:CODING-REF ID-REF="Coding_1" />
+      </fx:SIGNAL>
+      <fx:SIGNAL ID="Signal_2">
+        <ho:SHORT-NAME>New_Signal_2</ho:SHORT-NAME>
+        <fx:CODING-REF ID-REF="Coding_2" />
+      </fx:SIGNAL>
+      <fx:SIGNAL ID="Signal_3">
+        <ho:SHORT-NAME>New_Signal_3</ho:SHORT-NAME>
+        <fx:CODING-REF ID-REF="Coding_3" />
+      </fx:SIGNAL>
+      <fx:SIGNAL ID="Signal_4">
+        <ho:SHORT-NAME>New_Signal_4</ho:SHORT-NAME>
+        <fx:CODING-REF ID-REF="Coding_4" />
+      </fx:SIGNAL>
+    </fx:SIGNALS>
+  </fx:ELEMENTS>
+  <fx:PROCESSING-INFORMATION>
+    <fx:CODINGS>
+      <fx:CODING ID="Coding_1">
+        <ho:SHORT-NAME>New_Coding_1</ho:SHORT-NAME>
+        <ho:CODED-TYPE CATEGORY="STANDARD-LENGTH-TYPE" ho:BASE-DATA-TYPE="A_UINT8">
+          <ho:BIT-LENGTH>8</ho:BIT-LENGTH>
+        </ho:CODED-TYPE>
+        <ho:COMPU-METHODS>
+          <ho:COMPU-METHOD>
+            <ho:SHORT-NAME>New_CompuMethod_1</ho:SHORT-NAME>
+            <ho:CATEGORY>LINEAR</ho:CATEGORY>
+            <ho:PHYS-CONSTRS>
+              <ho:SCALE-CONSTR>
+                <ho:LOWER-LIMIT>2</ho:LOWER-LIMIT>
+                <ho:UPPER-LIMIT>3</ho:UPPER-LIMIT>
+              </ho:SCALE-CONSTR>
+            </ho:PHYS-CONSTRS>
+            <ho:COMPU-INTERNAL-TO-PHYS>
+              <ho:COMPU-SCALES>
+                <ho:COMPU-SCALE>
+                  <ho:COMPU-RATIONAL-COEFFS>
+                    <ho:COMPU-NUMERATOR>
+                      <ho:V>7</ho:V>
+                      <ho:V>5</ho:V>
+                    </ho:COMPU-NUMERATOR>
+                  </ho:COMPU-RATIONAL-COEFFS>
+                </ho:COMPU-SCALE>
+              </ho:COMPU-SCALES>
+            </ho:COMPU-INTERNAL-TO-PHYS>
+          </ho:COMPU-METHOD>
+        </ho:COMPU-METHODS>
+      </fx:CODING>
+      <fx:CODING ID="Coding_2">
+        <ho:SHORT-NAME>New_Coding_2</ho:SHORT-NAME>
+        <ho:CODED-TYPE CATEGORY="STANDARD-LENGTH-TYPE" ho:BASE-DATA-TYPE="A_INT8">
+          <ho:BIT-LENGTH>8</ho:BIT-LENGTH>
+        </ho:CODED-TYPE>
+        <ho:COMPU-METHODS>
+          <ho:COMPU-METHOD>
+            <ho:SHORT-NAME>New_CompuMethod_2</ho:SHORT-NAME>
+            <ho:CATEGORY>LINEAR</ho:CATEGORY>
+            <ho:PHYS-CONSTRS>
+              <ho:SCALE-CONSTR>
+                <ho:LOWER-LIMIT>7</ho:LOWER-LIMIT>
+                <ho:UPPER-LIMIT>9</ho:UPPER-LIMIT>
+              </ho:SCALE-CONSTR>
+            </ho:PHYS-CONSTRS>
+            <ho:COMPU-INTERNAL-TO-PHYS>
+              <ho:COMPU-SCALES>
+                <ho:COMPU-SCALE>
+                  <ho:COMPU-RATIONAL-COEFFS>
+                    <ho:COMPU-NUMERATOR>
+                      <ho:V>5</ho:V>
+                      <ho:V>3</ho:V>
+                    </ho:COMPU-NUMERATOR>
+                  </ho:COMPU-RATIONAL-COEFFS>
+                </ho:COMPU-SCALE>
+              </ho:COMPU-SCALES>
+            </ho:COMPU-INTERNAL-TO-PHYS>
+          </ho:COMPU-METHOD>
+        </ho:COMPU-METHODS>
+      </fx:CODING>
+      <fx:CODING ID="Coding_3">
+        <ho:SHORT-NAME>New_Coding_3</ho:SHORT-NAME>
+        <ho:CODED-TYPE CATEGORY="STANDARD-LENGTH-TYPE" ho:BASE-DATA-TYPE="A_UINT8">
+          <ho:BIT-LENGTH>8</ho:BIT-LENGTH>
+        </ho:CODED-TYPE>
+        <ho:COMPU-METHODS>
+          <ho:COMPU-METHOD>
+            <ho:SHORT-NAME>New_CompuMethod_3</ho:SHORT-NAME>
+            <ho:CATEGORY>LINEAR</ho:CATEGORY>
+            <ho:PHYS-CONSTRS>
+              <ho:SCALE-CONSTR>
+                <ho:LOWER-LIMIT>8</ho:LOWER-LIMIT>
+                <ho:UPPER-LIMIT>9</ho:UPPER-LIMIT>
+              </ho:SCALE-CONSTR>
+            </ho:PHYS-CONSTRS>
+            <ho:COMPU-INTERNAL-TO-PHYS>
+              <ho:COMPU-SCALES>
+                <ho:COMPU-SCALE>
+                  <ho:COMPU-RATIONAL-COEFFS>
+                    <ho:COMPU-NUMERATOR>
+                      <ho:V>5</ho:V>
+                      <ho:V>4</ho:V>
+                    </ho:COMPU-NUMERATOR>
+                  </ho:COMPU-RATIONAL-COEFFS>
+                </ho:COMPU-SCALE>
+              </ho:COMPU-SCALES>
+            </ho:COMPU-INTERNAL-TO-PHYS>
+          </ho:COMPU-METHOD>
+        </ho:COMPU-METHODS>
+      </fx:CODING>
+      <fx:CODING ID="Coding_4">
+        <ho:SHORT-NAME>New_Coding_4</ho:SHORT-NAME>
+        <ho:CODED-TYPE CATEGORY="STANDARD-LENGTH-TYPE" ho:BASE-DATA-TYPE="A_INT8">
+          <ho:BIT-LENGTH>8</ho:BIT-LENGTH>
+        </ho:CODED-TYPE>
+        <ho:COMPU-METHODS>
+          <ho:COMPU-METHOD>
+            <ho:SHORT-NAME>New_CompuMethod_4</ho:SHORT-NAME>
+            <ho:CATEGORY>LINEAR</ho:CATEGORY>
+            <ho:PHYS-CONSTRS>
+              <ho:SCALE-CONSTR>
+                <ho:LOWER-LIMIT>1</ho:LOWER-LIMIT>
+                <ho:UPPER-LIMIT>2</ho:UPPER-LIMIT>
+              </ho:SCALE-CONSTR>
+            </ho:PHYS-CONSTRS>
+            <ho:COMPU-INTERNAL-TO-PHYS>
+              <ho:COMPU-SCALES>
+                <ho:COMPU-SCALE>
+                  <ho:COMPU-RATIONAL-COEFFS>
+                    <ho:COMPU-NUMERATOR>
+                      <ho:V>5</ho:V>
+                      <ho:V>3</ho:V>
+                    </ho:COMPU-NUMERATOR>
+                  </ho:COMPU-RATIONAL-COEFFS>
+                </ho:COMPU-SCALE>
+              </ho:COMPU-SCALES>
+            </ho:COMPU-INTERNAL-TO-PHYS>
+          </ho:COMPU-METHOD>
+        </ho:COMPU-METHODS>
+      </fx:CODING>
+    </fx:CODINGS>
+  </fx:PROCESSING-INFORMATION>
+</fx:FIBEX>

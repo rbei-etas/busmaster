@@ -111,6 +111,7 @@ copy "$(TargetPath) " "..\..\bin\$(IntDir)ConverterPlugins\"
       <DebugInformationFormat>
       </DebugInformationFormat>
       <ShowIncludes>false</ShowIncludes>
+      <ObjectFileName>../../bin/DumpFiles/$(IntDir)/OBJ/$(ProjectName)/</ObjectFileName>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -132,6 +133,7 @@ copy "$(TargetPath) " "..\..\bin\$(IntDir)ConverterPlugins\"
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
       <IgnoreSpecificDefaultLibraries>daouuid.lib</IgnoreSpecificDefaultLibraries>
+      <ProgramDatabaseFile>../../bin/DumpFiles/$(IntDir)/PDB/$(TargetName).pdb</ProgramDatabaseFile>
     </Link>
     <PostBuildEvent>
       <Command>mkdir ..\..\bin\$(IntDir)ConverterPlugins

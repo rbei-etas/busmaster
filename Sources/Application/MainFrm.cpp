@@ -458,7 +458,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_FLEX_CFGN_SEND_MSGS, OnFlexRayTxWindow)
     ON_COMMAND(ID_FLEXRAY_CLUSTER_CONFIG, OnFlexRayDBAssociate)
     ON_UPDATE_COMMAND_UI(ID_FLEXRAY_CLUSTER_CONFIG, OnUpdateFlexrayAssociate)
-    ON_COMMAND(ID_FLEXRAY_DB_DISOCIATE, OnFlexRayDBDisociate)
     ON_UPDATE_COMMAND_UI(ID_HARDWAREINTERFACE_CUBASLIN, OnConfigBaudrateLIN)
     ON_COMMAND(ID_TRANSMIT_CONFIGURE_LIN, OnCfgSendMsgsLIN)
     ON_COMMAND(ID_LIN_CLUSTER_CONFIG, OnLinClusterConfig)
@@ -2150,7 +2149,7 @@ void CMainFrame::OnConfigDatabaseSave()
                             {
                                 CString omText;
                                 omText.Format(_("File  \"%s\"  has been modified which is currently being loaded.\nDo you want to re-import it to reflect the changes?"),
-                                               m_omStrDatabaseName);
+                                              m_omStrDatabaseName);
 
                                 if (MessageBox(omText, "BUSMASTER", MB_ICONQUESTION | MB_YESNO) == IDYES)
                                 {
@@ -4520,7 +4519,13 @@ void CMainFrame::ApplyMessagewindowOverwrite()
             //Verifying the Interpretation Check condition.
             CStringArray aomstrTempDBFiles;
             theApp.m_pouMsgSignal->vGetDataBaseNames(&aomstrTempDBFiles);
-            if (!(aomstrTempDBFiles.GetSize() > 0))
+            if(m_ouClusterConfig[LIN].m_ouFlexChannelConfig[0].m_strDataBasePath.empty() == false)
+            {
+            }
+            if (aomstrTempDBFiles.GetSize() <= 0 &&
+                    m_sExFuncPtr[J1939].m_odMsgNameMsgCodeListDB.GetCount() <= 0 &&
+                    m_ouClusterConfig[LIN].m_ouFlexChannelConfig[0].m_strDataBasePath.empty() == true &&
+                    m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[0].m_strDataBasePath.empty() == true)
             {
                 m_bInterPretMsg = FALSE;
             }
@@ -4577,7 +4582,11 @@ void CMainFrame::OnDisplayMessagewindowOverwrite()
             //Verifying the Interpretation Check condition.
             CStringArray aomstrTempDBFiles;
             theApp.m_pouMsgSignal->vGetDataBaseNames(&aomstrTempDBFiles);
-            if (!(aomstrTempDBFiles.GetSize() > 0))
+            //if (!(aomstrTempDBFiles.GetSize() > 0))
+            if (aomstrTempDBFiles.GetSize() <= 0 &&
+                    m_sExFuncPtr[J1939].m_odMsgNameMsgCodeListDB.GetCount() <= 0 &&
+                    m_ouClusterConfig[LIN].m_ouFlexChannelConfig[0].m_strDataBasePath.empty() == true &&
+                    m_ouClusterConfig[FLEXRAY].m_ouFlexChannelConfig[0].m_strDataBasePath.empty() == true)
             {
                 m_bInterPretMsg = FALSE;
             }
@@ -4651,6 +4660,8 @@ void CMainFrame::OnUpdateMessageInterpret(CCmdUI* pCmdUI)
         {
             //If fil epresent then check for other status
             HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+            ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
+            hWnd = m_podMsgWndThread->hGetHandleMsgWnd(LIN);
             ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
             if (IS_MODE_INTRP(byGetDispFlag))
             {
@@ -7170,21 +7181,21 @@ void CMainFrame::OnLINConnect()
     /* If connecton is required */
     if ( bConnected )
     {
-		if(NULL != g_pouDIL_LIN_Interface && g_pouDIL_LIN_Interface->DILL_GetSelectedDriver() == DRIVER_LIN_ISOLAR_EVE_VLIN)
-		{
-			BOOL bIsMasterMode = FALSE;
+        if(NULL != g_pouDIL_LIN_Interface && g_pouDIL_LIN_Interface->DILL_GetSelectedDriver() == DRIVER_LIN_ISOLAR_EVE_VLIN)
+        {
+            BOOL bIsMasterMode = FALSE;
 
-			for(INT nChnlIndex = 0; nChnlIndex < m_ouClusterConfig[LIN].m_nChannelsConfigured; nChnlIndex++)
-			{
-				bIsMasterMode = m_ouClusterConfig[LIN].m_ouFlexChannelConfig[nChnlIndex].m_ouLinParams.m_bIsMasterMode;
-			}
+            for(INT nChnlIndex = 0; nChnlIndex < m_ouClusterConfig[LIN].m_nChannelsConfigured; nChnlIndex++)
+            {
+                bIsMasterMode = m_ouClusterConfig[LIN].m_ouFlexChannelConfig[nChnlIndex].m_ouLinParams.m_bIsMasterMode;
+            }
 
-			if( bIsMasterMode == TRUE)
-			{
-				AfxMessageBox("Master mode is not supported for LIN ETAS ISOLAR-EVE. Disable Master mode from LIN->Cluster Configuration");
-				return;
-			}
-		}
+            if( bIsMasterMode == TRUE)
+            {
+                AfxMessageBox("Master mode is not supported for LIN ETAS ISOLAR-EVE. Disable Master mode from LIN->Cluster Configuration");
+                return;
+            }
+        }
         hResult = g_pouDIL_LIN_Interface->DILL_SetConfigData(m_ouClusterConfig[LIN]);
         hResult = g_pouDIL_LIN_Interface->DILL_PreStartHardware();
         g_pouDIL_LIN_Interface->DILL_GetConfiguration(m_sControllterlin,nsize);
@@ -7563,7 +7574,12 @@ void CMainFrame::OnLoadConfigFile()
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)FLEXRAY);
         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
 
-
+        // Deactivate J1939
+        DeselectJ1939Interfaces(FALSE);
+        GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(false);
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+        m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
+        m_wndToolbarJ1939.Invalidate();
     }
 }
 
@@ -11168,17 +11184,15 @@ void CMainFrame::OnDissociateDatabase()
     Date Created     :  05.04.11
     Modifications    :
 ******************************************************************************/
-void CMainFrame::vUpdateAllMsgWndInterpretStatus(bool /* bAssociate */)
+void CMainFrame::vUpdateAllMsgWndInterpretStatus(eTYPE_BUS eBusType, bool /* bAssociate */)
 {
+    // This is onvoked only for CAN and J1939 database disassociate calls
     HWND hWnd = nullptr;
     //Update MsgWnds
-    for(register int nBusID = CAN; nBusID < AVAILABLE_PROTOCOLS; nBusID++)
+    hWnd = m_podMsgWndThread->hGetHandleMsgWnd(eBusType);
+    if(hWnd)
     {
-        hWnd = m_podMsgWndThread->hGetHandleMsgWnd((eTYPE_BUS)nBusID);
-        if(hWnd)
-        {
-            ::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)FALSE, 0);
-        }
+        ::SendMessage(hWnd, WM_DATABASE_CHANGE, (WPARAM)FALSE, 0);
     }
 }
 
@@ -11785,10 +11799,10 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
 
 HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
 {
-    if ( m_podMsgWndThread != nullptr )
-    {
-        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)LIN);
-    }
+    /* if ( m_podMsgWndThread != nullptr )
+     {
+         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)LIN);
+     }*/
     HRESULT hResult = S_OK;
     m_bNoHardwareFound = true;
     if (g_pouDIL_LIN_Interface == nullptr)
@@ -11819,6 +11833,7 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
                         g_pouDIL_LIN_Interface->DILL_SetConfigData(m_ouClusterConfig[LIN]);
                         bInitFrameProcLIN(); // Initialize logger module
                         vReRegisterAllLINNodes();//Reinitialize node simulation
+                        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)LIN);
                         if (sg_pouSWInterface[LIN] == nullptr)//Signal watch
                         {
                             if (SW_GetInterface(LIN, (void**)&sg_pouSWInterface[LIN]) == S_OK)
@@ -12396,8 +12411,12 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
             m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)FLEXRAY);
             m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
 
-
-
+            // Deactivate J1939
+            DeselectJ1939Interfaces(FALSE);
+            GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(false);
+            m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+            m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
+            m_wndToolbarJ1939.Invalidate();
         }
         else                            //2. Load as a Binary File
         {
@@ -12432,6 +12451,13 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
             ApplyLINLogFilter();
             /*m_wndToolbarJ1939.GetToolBarCtrl().ShowWindow(SW_HIDE);
             m_wndToolbarNodeSimul.GetToolBarCtrl().ShowWindow(SW_HIDE);*/
+
+            // Deactivate J1939
+            DeselectJ1939Interfaces(FALSE);
+            GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(false);
+            m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+            m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
+            m_wndToolbarJ1939.Invalidate();
         }
     }
     else            //If Default Configuration
@@ -12738,11 +12764,11 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
             CString strDisplayNumericMode = "";
             if(m_sToolBarInfo.m_byDisplayHexON == TRUE)
             {
-                strDisplayNumericMode = "TRUE";
+                strDisplayNumericMode = "FALSE";
             }
             else if(m_sToolBarInfo.m_byDisplayHexON == FALSE)
             {
-                strDisplayNumericMode = "FALSE";
+                strDisplayNumericMode = "TRUE";
             }
 
             xmlNodePtr pDisplayNumericMode = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_DisplayNumericMode
@@ -17628,6 +17654,7 @@ void CMainFrame::OnSelectFLEXRAYDriver(UINT nID)
             {
                 m_shFLEXRAYDriverId = DAL_NONE;
                 g_pouDIL_FLEXRAY_Interface->DILF_SelectDriver(m_shFLEXRAYDriverId, m_hWnd, &m_ouWrapperLogger);
+                m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)FLEXRAY);
             }
         }
     }
@@ -19758,24 +19785,6 @@ void CMainFrame::OnFlexRayDBAssociate()
     }
 }
 
-
-
-void CMainFrame::OnFlexRayDBDisociate()
-{
-    CFlexRayDatabaseDissociateDlg odDBDialog(m_acFlexDBConfigInfo);
-    odDBDialog.DoModal();
-
-    if ( m_acFlexDBConfigInfo.m_acConfigFileName[0].empty() )
-    {
-        m_pouMsgSigFLEXRAY->vClearFIBEXContainers();
-        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY),
-                      WM_NOTIFICATION_FROM_OTHER,
-                      eLOAD_DATABASE,
-                      (LPARAM)&(m_pouMsgSigFLEXRAY));
-        /* Update message window */
-        vUpdateAllMsgWndInterpretStatus(FALSE);
-    }
-}
 void CMainFrame::OnAutomationTSExecutor(void)
 {
     m_objTSExecutorHandler.vShowTSExecutorWindow((void*)this);

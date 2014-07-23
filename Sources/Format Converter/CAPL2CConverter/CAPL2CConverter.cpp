@@ -20,7 +20,7 @@ HRESULT CCAPL2CConverter::GettextBusmaster(void)
 }
 
 
-HRESULT CCAPL2CConverter::GetHelpText(CString pchHelpText)
+HRESULT CCAPL2CConverter::GetHelpText(CString& pchHelpText)
 {
     /*if(pchHelpText != NULL)
     {

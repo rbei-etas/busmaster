@@ -300,9 +300,6 @@
     <ClInclude Include="BusStatisticsDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CExcApplication.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CFilesDefs_CAN.h">
       <Filter>Header Files</Filter>
     </ClInclude>

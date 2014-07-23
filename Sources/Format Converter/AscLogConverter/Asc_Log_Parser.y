@@ -18,7 +18,7 @@
 // Added new line
 #define	DEF_LOG_STOP_TEXT			"\n***[STOP LOGGING SESSION]***\r\n"
 
-#define	MAX_LOG_HEADER				500
+#define	MAX_LOG_HEADER				400
 
 int nLen = 0;
 int nTimeMode = TIME_MODE_ABSOLUTE;
@@ -167,7 +167,7 @@ int nAddFunctionHeader()
 
 	if ( nTimeMode == TIME_MODE_RELATIVE )
 	{
-		fprintf(yyout, "***SYSTEM MODE***\n");
+		fprintf(yyout, "***RELATIVE MODE***\n");
 	}
 	else
 	{
@@ -177,7 +177,7 @@ int nAddFunctionHeader()
 
 	fprintf(yyout,"***END OF DATABASE FILES (DBF/DBC)***\n");
 
-	fprintf(yyout,"***<Time><Tx/Rx><Channel><CAN ID><Type><DLC><DataBytes>***\n");
+	fprintf(yyout,"***<Time><Tx/Rx><Channel><CAN ID><Type><DLC><DataBytes>***");
 
     return 0;
 }

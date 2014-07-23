@@ -303,8 +303,8 @@ private:
      * @param[in] uParam User Parameter (Here it is this pointer)
      */
     static void vSignalNameHandler(CListCtrl* pList,
-                                    int nItem, int nSubItem,
-                                    void* uParam );
+                                   int nItem, int nSubItem,
+                                   void* uParam );
 
     /**
      * @brief To get signal details of selected signal in the signal list

@@ -159,7 +159,7 @@ public:
      * @return Pointer to the control
      */
     CComboItem* pomComboItem(int nItem, int nSubItem,
-                              const CStringArray& omList);
+                             const CStringArray& omList);
 
     /**
      * @brief This function will create an editbox.
@@ -196,7 +196,7 @@ public:
      * @param[in] sInfo User Program info structure
      */
     void vSetUserProgInfo(int nRow, int nColunm,
-                           const SUSERPROGINFO& sUSerProgInfo);
+                          const SUSERPROGINFO& sUSerProgInfo);
 
 protected:
     /**
