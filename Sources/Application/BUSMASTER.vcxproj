@@ -983,7 +983,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">dlldata.c</DllDataFileName>
       <InterfaceIdentifierFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">BUSMASTER_Interface.c</InterfaceIdentifierFileName>
       <MkTypLibCompatible Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">false</MkTypLibCompatible>
-      <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">.\Release/BUSMASTER.tlb</TypeLibraryName>
+      <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">BUSMASTER.tlb</TypeLibraryName>
       <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">BUSMASTER_Interface.h</HeaderFileName>
       <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">dlldata.c</DllDataFileName>
       <InterfaceIdentifierFileName Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">BUSMASTER_Interface.c</InterfaceIdentifierFileName>
