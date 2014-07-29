@@ -25,12 +25,10 @@
 !include "NSISHeaders.nsh"
 !include "MUI2.nsh"
 
-!define MUI_WELCOMEFINISHPAGE_BITMAP "..\Sources\Application\Res\Splsh16SideBar.bmp"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "welcomefinishpage.bmp"
 !define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation of BUSMASTER on your system."
-
 !define MUI_HEADERIMAGE
-!define MUI_HEADERIMAGE_BITMAP "..\Sources\Application\Res\Splsh16.bmp"
-!define MUI_HEADERIMAGE_UNBITMAP "..\Sources\Application\Res\Splsh16.bmp"
+!define MUI_HEADERIMAGE_BITMAP "headerimage.bmp"
 !define MUI_ICON  "..\Sources\Application\Res\BUSMASTER.ico"
 !define MUI_UNICON "..\Sources\Application\Res\BUSMASTER.ico"
 
@@ -151,9 +149,6 @@ FunctionEnd
 
 !define StrContains '!insertmacro "_StrContainsConstructor"'
 
-; Show gradient background
-#BGGradient 8080C0 0000FF FFFFFF
-
 ; Title of this installation
 Name "BUSMASTER"
 
@@ -178,7 +173,6 @@ CRCCheck On
 ; Output filename
 Outfile "BUSMASTER_Installer_Ver_${VERSION}.exe"
 
-
 Function .onInit
   ; the plugins dir is automatically deleted when the installer exits
   InitPluginsDir
@@ -195,9 +189,6 @@ FunctionEnd
 
 ; The default installation folder
 InstallDir "$PROGRAMFILES\BUSMASTER_v${VERSION}"
-
-; Uninstall info registry location
-;InstallDirRegKey HKLM "SOFTWARE\BUSMASTER" "Install_Dir"
 
 ; Folder selection prompt
 DirText "Please select an installation folder."
@@ -261,7 +252,7 @@ Function UpdateIcsneo40
   ; install icsneo40.dll unless the file is already installed and is newer
   IfFileExists "$SYSDIR\icsneo40.dll" icsneo40_upgrade icsneo40_install
 
-    ; compare versions
+  ; compare versions
 icsneo40_upgrade:
   GetDLLVersion "$SYSDIR\icsneo40.dll" $R0 $R1
   GetDLLVersionLocal "..\Sources\BIN\Release\icsneo40.dll" $R2 $R3
@@ -277,14 +268,14 @@ icsneo40_install:
 icsneo40_done:
 FunctionEnd
 
-;Checks for the version if it is already installed
+; Checks for the version if it is already installed
 Function CheckVersion
-  ;Read the BUSMASTER version installed
+  ; Read the BUSMASTER version installed
   ReadRegStr $1 HKLM "SOFTWARE\Wow6432Node" BUSMASTER_v${VERSION}"
   StrCmp $1 "v${VERSION}" 0 Confirm ;StrCmp str1 str2 jump_if_equal [jump_if_not_equal]
 
 Confirm:
-  ;If the version is already installed, get the the installtion path
+  ; If the version is already installed, get the the installtion path
   ReadRegStr $1 HKLM "SOFTWARE\Wow6432Node\BUSMASTER_v${VERSION}" Install_Dir
   StrCmp $1 $INSTDIR 0 Exit
   MessageBox MB_YESNO|MB_ICONEXCLAMATION  'BUSMASTER_v${VERSION} is already installed. Do you wish to overwrite ?' IDYES Install
@@ -302,30 +293,22 @@ FunctionEnd
 
 ; Pages
 !insertmacro MUI_PAGE_WELCOME
-;Page license
 !insertmacro MUI_PAGE_LICENSE ../COPYING.LESSER.txt
-;Page components
 !insertmacro MUI_PAGE_COMPONENTS
-;Page directory
 !insertmacro MUI_PAGE_DIRECTORY
-;Page instfiles
 !insertmacro MUI_PAGE_INSTFILES
 Page Custom information
-;UninstPage uninstConfirm
+!insertmacro MUI_PAGE_FINISH
+
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
 
-;UninstPage instfiles
+!insertmacro MUI_LANGUAGE English
 
 ; Installation Types
 InstType "Typical"
 InstType "Full"
 InstType "Minimal"
-
-!insertmacro MUI_PAGE_FINISH
-!insertmacro MUI_LANGUAGE English
-; License Text
-;LicenseData ../COPYING.LESSER.txt
 
 SectionGroup "Main"
 
@@ -413,17 +396,11 @@ Section "BUSMASTER"
 
   ; BUSMASTER
   File ..\Sources\BIN\Release\BusEmulation.exe
-  
-  
-  
   File ..\Sources\BIN\Release\BUSMASTER.exe
   File ..\Sources\BIN\Release\BUSMASTER.exe.manifest
   File ..\Sources\Application\BUSMASTER.tlb
   File ..\Sources\Application\BUSMASTER_Interface.c
   File ..\Sources\Application\BUSMASTER_Interface.h
-
-  
-	
   File ..\Sources\BIN\Release\CAN_STUB.dll
   File ..\Sources\BIN\Release\Changelog.txt
   File ..\Sources\BIN\Release\DIL_Interface.dll
@@ -431,7 +408,7 @@ Section "BUSMASTER"
   File ..\Sources\BIN\Release\UDS_Protocol.dll
   File ..\Sources\BIN\Release\Filter.dll
   File ..\Sources\BIN\Release\FrameProcessor.dll
-   File ..\Sources\BIN\Release\mhsbmcfg.dll
+  File ..\Sources\BIN\Release\mhsbmcfg.dll
   File ..\Sources\BIN\Release\NodeSimEx.dll
   File ..\Sources\BIN\Release\ProjectConfiguration.dll
   File ..\Sources\BIN\Release\PSDI_CAN.dll
@@ -480,33 +457,29 @@ Section "BUSMASTER"
   ; Readme
   File ..\Readme.txt
 
-	; Simulated Systems Include files
-	SetOutPath "$INSTDIR\SimulatedSystems\include\"
-	File ..\Sources\Application\SimulatedSystems\include\CANIncludes.h 
-	File ..\Sources\Application\SimulatedSystems\include\LINIncludes.h
-	File ..\Sources\Application\SimulatedSystems\include\CAPLWrapper.h
-	File ..\Sources\Application\SimulatedSystems\include\Common.h
-	File ..\Sources\Application\SimulatedSystems\include\Wrapper_CAN.h
-	File ..\Sources\Application\SimulatedSystems\include\Wrapper_LIN.h
-	File ..\Sources\Application\SimulatedSystems\include\Wrapper_J1939.h
-	File ..\Sources\Application\SimulatedSystems\include\J1939Includes.h
-	
-	; Simulated Systems Library files
-	SetOutPath "$INSTDIR\SimulatedSystems\OBJ\"
-	File ..\Sources\Application\SimulatedSystems\OBJ\libWrapper_CAN.a
-	File ..\Sources\Application\SimulatedSystems\OBJ\libWrapper_LIN.a
-	File ..\Sources\Application\SimulatedSystems\OBJ\libWrapper_J1939.a
-	
-	; GCC Make Files
-	SetOutPath $INSTDIR
-	File ..\Sources\Application\GCCDLLMakeTemplate_CAN
-	File ..\Sources\Application\GCCDLLMakeTemplate_LIN
-    	File ..\Sources\Application\GCCDLLMakeTemplate_J1939
+  ; Simulated Systems Include files
+  SetOutPath "$INSTDIR\SimulatedSystems\include\"
+  File ..\Sources\Application\SimulatedSystems\include\CANIncludes.h
+  File ..\Sources\Application\SimulatedSystems\include\LINIncludes.h
+  File ..\Sources\Application\SimulatedSystems\include\CAPLWrapper.h
+  File ..\Sources\Application\SimulatedSystems\include\Common.h
+  File ..\Sources\Application\SimulatedSystems\include\Wrapper_CAN.h
+  File ..\Sources\Application\SimulatedSystems\include\Wrapper_LIN.h
+  File ..\Sources\Application\SimulatedSystems\include\Wrapper_J1939.h
+  File ..\Sources\Application\SimulatedSystems\include\J1939Includes.h
 
-  
-	
-   
-	
+  ; Simulated Systems Library files
+  SetOutPath "$INSTDIR\SimulatedSystems\OBJ\"
+  File ..\Sources\Application\SimulatedSystems\OBJ\libWrapper_CAN.a
+  File ..\Sources\Application\SimulatedSystems\OBJ\libWrapper_LIN.a
+  File ..\Sources\Application\SimulatedSystems\OBJ\libWrapper_J1939.a
+
+  ; GCC Make Files
+  SetOutPath $INSTDIR
+  File ..\Sources\Application\GCCDLLMakeTemplate_CAN
+  File ..\Sources\Application\GCCDLLMakeTemplate_LIN
+  File ..\Sources\Application\GCCDLLMakeTemplate_J1939
+
   ; Check if Visual Studio 2012 redistributable is already installed
   ReadRegStr $1 HKLM "Software\Microsoft\DevDiv\vc\Servicing\11.0\RuntimeMinimum" Install
   StrCmp $1 "1" NoInstall Install
@@ -539,17 +512,15 @@ NoInstall:
   ; Compatibility settings for Windows 7
   ReadRegStr $1 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" CurrentVersion
   StrCmp $1 "6.1" 0 lbl ;StrCmp str1 str2 jump_if_equal [jump_if_not_equal]
-  ; WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSMASTER.exe" "WINXPSP3"
   WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSEmulation.exe" "WINXPSP3"
   WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\FormatConverter.exe" "WINXPSP3"
   WriteRegStr HKCU "Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" "$INSTDIR\BUSMASTER.exe" "RUNASADMIN"
 
 lbl:
-	
+
   ; Server registration
   ExecWait 'BusEmulation.exe /regserver'
-  ExecWait 'BUSMASTER.exe /regserver'  
-  
+  ExecWait 'BUSMASTER.exe /regserver'
 
   SetShellVarContext all
 
@@ -703,8 +674,8 @@ Section "Uninstall"
   done:
   IntCmp $0 0 is0 lessthan0 morethan0
   lessthan0: Goto Finish
-  morethan0: Goto Finish 
-  is0: DeleteRegKey HKCU "Software\RBEI-ETAS"	
+  morethan0: Goto Finish
+  is0: DeleteRegKey HKCU "Software\RBEI-ETAS"
   Finish:
   DeleteRegValue HKLM "Software\BUSMASTER_v${VERSION}" "Install_Dir"
   DeleteRegKey HKLM "Software\BUSMASTER_v${VERSION}"
