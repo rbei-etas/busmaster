@@ -1731,3 +1731,31 @@ void CMsgInterpretationLIN::vSetLINClusterInfo(ClusterConfig* ouConfig)
     m_ouLINConfig = ouConfig;
 }
 
+CMsgInterpretationETHERNET::CMsgInterpretationETHERNET()
+{
+
+}
+CMsgInterpretationETHERNET:: ~CMsgInterpretationETHERNET()
+{
+
+}
+
+int CMsgInterpretationETHERNET::GetMsgName(int nMsgCode,  char ucName[])
+{
+	char  c[5] = {'n','a','m','e'};
+	strcpy(ucName,c);
+	return true;
+	//TODO: write method GetMsgName
+}
+int CMsgInterpretationETHERNET::nGetSignalCount(CString strMsgName)
+{
+	return true;
+}
+void CMsgInterpretationETHERNET::vCopy(CMsgInterpretationETHERNET* pDest) const
+{
+
+}
+void CMsgInterpretationETHERNET::vSetMessageList(SMSGENTRY* psCurrMsgEntry)
+{
+
+}

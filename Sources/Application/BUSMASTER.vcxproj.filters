@@ -267,6 +267,9 @@
     <ClCompile Include="TxHandlerLIN.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EthernetTxHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="BUSMASTER.idl">
@@ -556,6 +559,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TxHandlerLIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EthernetTxHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

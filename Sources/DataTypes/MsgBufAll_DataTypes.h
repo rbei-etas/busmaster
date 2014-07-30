@@ -42,3 +42,5 @@ typedef CBaseMsgBufFSE<STLINDATA> CBaseLINBufFSE;
 //typedef CMsgBufCANVFSE<STCANDATA> CCANBufCANVFSE;
 typedef CBaseMsgBufFSE<s_FLXMSG> CBaseFLEXBufFSE;
 typedef CMsgBufFSE<s_FLXMSG>     CFLEXBufFSE;
+typedef CBaseMsgBufFSE<STETHERNETDATA> CBaseEthernetBufFSE;
+typedef CMsgBufFSE<STETHERNETDATA>     CEthernetBufFSE;

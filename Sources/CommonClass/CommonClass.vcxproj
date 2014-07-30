@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="GUI_FormatMsgCAN.cpp" />
     <ClCompile Include="GUI_FormatMsgCommon.cpp" />
+    <ClCompile Include="GUI_FormatMsgEthernet.cpp" />
     <ClCompile Include="GUI_FormatMsgFlexRay.cpp" />
     <ClCompile Include="GUI_FormatMsgJ1939.cpp" />
     <ClCompile Include="GUI_FormatMsgLIN.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="CommonClass_stdafx.h" />
     <ClInclude Include="GUI_FormatMsgCAN.h" />
     <ClInclude Include="GUI_FormatMsgCommon.h" />
+    <ClInclude Include="GUI_FormatMsgEthernet.h" />
     <ClInclude Include="GUI_FormatMsgFlexRay.h" />
     <ClInclude Include="GUI_FormatMsgJ1939.h" />
     <ClInclude Include="GUI_FormatMsgLIN.h" />

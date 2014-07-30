@@ -28,6 +28,7 @@
 #include "MsgContainer_LIN.h"
 #include "MsgContainer_J1939.h"
 #include "MsgContainer_FlexRay.h"
+#include "MsgContainer_ETHERNET.h"
 
 #define USAGE_EXPORT
 #include "Application/PSDI_Extern.h"
@@ -87,6 +88,7 @@ static CMsgContainerCAN* sg_pouMsgContainer_CAN = nullptr;
 static CMsgContainerLIN* sg_pouMsgContainer_LIN = nullptr;
 static CMsgContainerJ1939* sg_pouMsgContainer_J1939 = nullptr;
 static CMsgContainerFlexRay* sg_pouMsgContainer_FlexRay = nullptr;
+static CMsgContainerEthernet* sg_pouMsgContainer_Ethernet = NULL;
 
 USAGEMODE HRESULT PSDI_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
 {
@@ -151,6 +153,20 @@ if sg_pouMsgContainer_J1939 is null */
             }
             // Else the object has been existing already
             *ppvInterface = (void*) sg_pouMsgContainer_FlexRay;
+        }
+        break;
+		case ETHERNET:
+        {
+            if (NULL == sg_pouMsgContainer_Ethernet)
+            {
+                if ((sg_pouMsgContainer_Ethernet = new CMsgContainerEthernet) == NULL)
+                {
+                    ASSERT(FALSE);
+                    hResult = S_FALSE;
+                }
+            }
+            // Else the object has been existing already
+            *ppvInterface = (void*) sg_pouMsgContainer_Ethernet;
         }
         break;
         default:

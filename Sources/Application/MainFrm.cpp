@@ -67,6 +67,7 @@
 #include "DIL_Interface/BaseDIL_LIN.h"
 #include "DIL_Interface/BaseDIL_J1939.h"
 #include "DIL_Interface/BaseDIL_FLEXRAY.h"
+#include "DIL_Interface/BaseDIL_ETHERNET.h"
 #include "include/ModuleID.h"
 #include "FrameProcessor/FrameProcessor_extern.h"
 #include "FrameProcessor/BaseFrameProcessor_CAN.h"
@@ -136,6 +137,7 @@ extern UINT g_unWriteDllMsg;
 static CBaseFrameProcessor_CAN* sg_pouFrameProcCAN = nullptr; // CAN logger interface
 CBaseDIL_CAN* g_pouDIL_CAN_Interface = nullptr; // CAN DIL interface
 CBaseDIL_FLEXRAY* g_pouDIL_FLEXRAY_Interface = nullptr; // FLEXRAY DIL interface
+CBaseDIL_ETHERNET* g_pouDIL_ETHERNET_Interface = NULL; //ETHERNET DIL Interface
 static CBaseSignalWatch_CAN* sg_pouSWInterface[BUS_TOTAL] = {nullptr}; // SIGNAL WATCH INTERFACE
 
 static CBaseFrameProcessor_LIN* sg_pouFrameProcLIN = nullptr; // CAN logger interface
@@ -282,6 +284,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(ID_FLEXRAY_CONNECT, OnUpdateFlexRayConnect)
     ON_COMMAND(IDM_LIN_CONNECT, OnLINConnect)
     ON_UPDATE_COMMAND_UI(IDM_LIN_CONNECT, OnUpdateLINConnect)
+	ON_COMMAND(IDM_ETHERNET_CONNECT, OnEthernetConnect)
+    ON_UPDATE_COMMAND_UI(IDM_ETHERNET_CONNECT, OnUpdateEthernetConnect)
     ON_COMMAND(IDM_EXECUTE_KEYHANDLERS, OnExecuteKeyhandlers)
     ON_UPDATE_COMMAND_UI(IDM_EXECUTE_KEYHANDLERS, OnUpdateExecuteKeyhandlers)
     ON_COMMAND(IDM_EXECUTE_KEYHANDLERS_LIN, OnExecuteKeyhandlersLIN)
@@ -340,6 +344,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_FLEX_DRIVER,IDC_SELECT_FLEX_DRIVER + FLEXRAY_DIL_TOTAL, OnUpdateSelectFLEXRAYDriver)
     ON_COMMAND_RANGE(IDC_SELECT_LIN_DRIVER,IDC_SELECT_LIN_DRIVER + DIL_LIN_TOTAL, OnSelectLINDriver)
     ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_LIN_DRIVER,IDC_SELECT_LIN_DRIVER + DIL_LIN_TOTAL, OnUpdateSelectLINDriver)
+	ON_COMMAND_RANGE(IDC_SELECT_ETHERNET_DRIVER,IDC_SELECT_ETHERNET_DRIVER + DIL_ETHERNET_TOTAL, OnSelectEthernetDriver)
+    ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_ETHERNET_DRIVER,IDC_SELECT_ETHERNET_DRIVER + DIL_ETHERNET_TOTAL, OnUpdateSelectEthernetDriver)
     ON_COMMAND(ID_HELP_FINDER, CMDIFrameWnd::OnHelpFinder)
     ON_COMMAND(ID_HELP, CMDIFrameWnd::OnHelp)
     ON_COMMAND(ID_CONTEXT_HELP, CMDIFrameWnd::OnContextHelp)
@@ -444,6 +450,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_FLEXRAY, OnUpdateShowHideMessageWindow)
     ON_COMMAND_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_LIN, OnShowHideMessageWindow)
     ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_LIN, OnUpdateShowHideMessageWindow)
+    ON_COMMAND_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_ETHERNET, OnShowHideMessageWindow)
+    ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_ETHERNET, OnUpdateShowHideMessageWindow)
     ON_COMMAND(ID_TB_CANDATABASE, OnToolbarCandatabase)
     ON_UPDATE_COMMAND_UI(ID_TB_CANDATABASE, OnUpdateToolbarCanDatabase)
     ON_COMMAND(ID_TESTAUTOMATION_EDITOR, OnAutomationTSEditor)
@@ -457,6 +465,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(WM_J1939_TX_CLOSE_MSG, onJ1939TxWndClose)
     ON_COMMAND(IDM_FLEX_CFGN_SEND_MSGS, OnFlexRayTxWindow)
     ON_COMMAND(ID_FLEXRAY_CLUSTER_CONFIG, OnFlexRayDBAssociate)
+	ON_COMMAND(IDM_ETH_CFGN_SEND_MSGS, OnEthernetTxWindow)             //open Ethernet Message window
     ON_UPDATE_COMMAND_UI(ID_FLEXRAY_CLUSTER_CONFIG, OnUpdateFlexrayAssociate)
     ON_UPDATE_COMMAND_UI(ID_HARDWAREINTERFACE_CUBASLIN, OnConfigBaudrateLIN)
     ON_COMMAND(ID_TRANSMIT_CONFIGURE_LIN, OnCfgSendMsgsLIN)
@@ -464,6 +473,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(ID_LIN_CLUSTER_CONFIG, OnUpdateLinClusterConfig)
     ON_COMMAND(IDM_FILTER_MSGLINOFF, OnMessageFilterButtonLin)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_MSGLINOFF, OnUpdateMessageFilterButtonLin)
+	ON_COMMAND(IDM_FILTER_MSGETHERNETOFF, OnMessageFilterButtonLin)
+    ON_UPDATE_COMMAND_UI(IDM_FILTER_MSGETHERNETOFF, OnUpdateMessageFilterButtonLin)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -551,6 +562,12 @@ CMainFrame::CMainFrame()
     // Graph window status
     for(int nBUSID = CAN; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
     {
+		if(nBUSID == 5)
+		{
+			//TODO: When Signal graph for ETHERNET is implemented remove this check
+			//Skip Ethernet protocol
+			continue;
+		}
         m_sGraphWndPlacement[nBUSID].length = 0;
         m_sGraphWndPlacement[nBUSID].rcNormalPosition.top = -1;
         m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[0][0] = -1;
@@ -572,6 +589,7 @@ CMainFrame::CMainFrame()
     m_pouMsgInterpretBuffer = nullptr;
     m_objTxHandler.vLoadTx_DLL();
     m_objFlexTxHandler.vLoadTx_DLL();
+	m_objEthernetTxHandler.vLoadTx_DLL();
     m_objSigGrphHandler.vLoadSigGrph_DLL();
     m_pouMsgInterpretBuffer = m_objSigGrphHandler.vGetGraphBuffer();
 
@@ -638,6 +656,7 @@ CMainFrame::CMainFrame()
 
     m_shLINDriverId = DAL_NONE;
 
+	m_shEthernetDriverId = DAL_NONE;
     for ( int i =0; i < defNO_OF_LIN_CHANNELS; i++ )
     {
         m_asControllerDetailsLIN[i].m_strHwUri.reserve(MAX_PATH);
@@ -650,6 +669,7 @@ CMainFrame::~CMainFrame()
     m_objTxHandler.vDeleteTxBlockMemory();
     m_objFlexTxHandler.vDeleteTxBlockMemory();
     m_objTxHandlerLin.vDeleteTxBlockMemory();
+	m_objEthernetTxHandler.vDeleteTxBlockMemory();
 
     vReleaseSignalWatchListMemory(m_psSignalWatchList[CAN]);
     vReleaseSignalWatchListMemory(m_psSignalWatchList[J1939]);
@@ -1010,6 +1030,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
         DIL_GetInterface(LIN, (void**)&g_pouDIL_LIN_Interface);
     }
     m_nDILCountLin = g_pouDIL_LIN_Interface->DILL_GetDILList(false, &m_ouListLin);
+	if(g_pouDIL_ETHERNET_Interface == NULL)
+	{
+		 DIL_GetInterface(ETHERNET, (void**)&g_pouDIL_ETHERNET_Interface);
+	}
+	m_nDILCountEthernet = g_pouDIL_ETHERNET_Interface->DILE_GetDILList(false, &m_ouListEthernet);
 
     // Do initialisation for the waveform transmission object
     m_ouWaveTransmitter.vDoInitialisation(&m_objWaveformDataHandler,
@@ -4347,6 +4372,11 @@ bool CMainFrame::bCreateMsgWindow()
                                             0, nullptr);
             m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
             bCreateFlexRayMsgWindow();
+
+			//Ethernet Message Window
+			m_podMsgWndThread->CreateMsgWnd(m_hWnd, ETHERNET,
+                                            0, NULL);
+            m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)ETHERNET);
         }
         else
         {
@@ -4423,6 +4453,7 @@ void CMainFrame::OnHex_DecButon()
     }
     m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eHEXDECCMD, bHexON);
     m_objTxHandlerLin.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eHEXDECCMD, bHexON);
+	m_objEthernetTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eHEXDECCMD, bHexON);
     if (sg_pouSWInterface[CAN] != nullptr)
     {
         sg_pouSWInterface[CAN]->SW_SetDisplayMode(bHexON);
@@ -4844,6 +4875,33 @@ void CMainFrame::OnMessageFilterButtonLin()
     }
 }
 
+void CMainFrame::OnMessageFilterButtonEthernet()
+{
+	CFlags* pouFlags = NULL;
+    BOOL bMessageFilterStatus = FALSE;
+
+    pouFlags = theApp.pouGetFlagsPtr();
+    if(pouFlags != NULL )
+    {
+        bMessageFilterStatus = pouFlags->nGetFlagStatus(DISPLAYFILTERON_ETHERNET);
+        bMessageFilterStatus = bMessageFilterStatus ? FALSE : TRUE;
+        pouFlags->vSetFlagStatus(DISPLAYFILTERON_ETHERNET, bMessageFilterStatus);
+
+		::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(ETHERNET), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, NULL);
+
+        //TODO::
+        /* Modify filter icon accordingly in Main toolbar*/
+        BYTE bytTbrItemIndex = 9;
+		//TODO: toolbar  updation
+        //vModifyToolbarIcon( m_wndToolbarLIN, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
+    }
+}
+
+void CMainFrame::OnUpdateMessageFilterButtonEthernet(CCmdUI* pCmdUI)
+{
+	// Toggle message filter button status
+    pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(DISPLAYFILTERON_ETHERNET));
+}
 /**
 * \brief         Handles the J1939 tx window close notification
 * \param[in]     WPARAM, LPARAM
@@ -5216,6 +5274,16 @@ void CMainFrame::OnShowHideMessageWindow(UINT nID)
             }
         }
         break;
+		case ID_SHOWMESSAGEWINDOW_ETHERNET:
+        {
+            HWND hWnd;
+			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(ETHERNET);
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)TRUE, NULL);
+            }
+        }
+        break;
         default:
         {
             ASSERT(false);
@@ -5272,6 +5340,16 @@ void CMainFrame::OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI)
         {
             HWND hWnd;
             hWnd = m_podMsgWndThread->hGetHandleMsgWnd(LIN);
+            if(hWnd)
+            {
+                ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI);    //Set WPARAM FALSE for update UI
+            }
+        }
+        break;
+		case ID_SHOWMESSAGEWINDOW_ETHERNET:
+        {
+            HWND hWnd;
+			hWnd = m_podMsgWndThread->hGetHandleMsgWnd(ETHERNET);
             if(hWnd)
             {
                 ::SendMessage(hWnd, WM_SHOW_MESSAGE_WINDOW, (WPARAM)FALSE, (LPARAM)pCmdUI);    //Set WPARAM FALSE for update UI
@@ -10518,6 +10596,12 @@ void CMainFrame::vUpdateGraphStatsData()
 
     for(int nBusType = CAN; nBusType<AVAILABLE_PROTOCOLS; nBusType++)
     {
+		if(nBusType == 5)
+		{
+			//TODO: When Signal graph for ETHERNET is implemented remove this check
+			//Skip Ethernet protocol
+			continue;
+		}
         if(m_objSigGrphHandler.bIsWindowVisible((SHORT)nBusType) == FALSE)
         {
             continue;
@@ -11682,6 +11766,90 @@ void CMainFrame::OnUpdateFlexRayConnect(CCmdUI* pCmdUI)
         pCmdUI->Enable(0);
     }
 }
+void CMainFrame::OnEthernetConnect()
+{
+	CFlags* pouFlag  = theApp.pouGetFlagsPtr();
+	/* Toggle connect/disconnect flag */
+	BOOL bConnected = pouFlag->nGetFlagStatus(ETHERNET_CONNECTED);
+
+	//Toggle the flag to get the latest state i.e, when the flag was set earlier, if it was connected, 
+	//now the user has wants to disconnected, hence toggle the flag
+	bConnected = !bConnected;
+	HRESULT hResult = S_OK;
+	/* If connecton is required */
+	if ( bConnected )
+	{
+		if(g_pouDIL_ETHERNET_Interface == NULL)
+		{
+			AfxMessageBox("Please select an adapter first and then connect");
+			return;
+		}
+		hResult = g_pouDIL_ETHERNET_Interface->DILE_StartHardware();
+
+		/* If connect fails, return from here */
+		if ( hResult == S_FALSE )
+		{
+			return;
+		}
+		m_objEthernetTxHandler.vBusStatusChanged(ETHERNET, BUS_CONNECTED);
+		::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(ETHERNET), WM_NOTIFICATION_FROM_OTHER,
+			eWINID_START_READ, 0);
+		// Clear message window on connect
+		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(ETHERNET);
+		if(NULL != hWnd)
+		{
+			::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, NULL, NULL);
+			::SendMessage(hWnd, WM_CLEAR_SORT_COLUMN, NULL, NULL);
+		}
+		m_objEthernetTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, BUS_CONNECTED);
+	}
+	else
+	{
+		if(g_pouDIL_ETHERNET_Interface != NULL)
+            {
+                hResult = g_pouDIL_ETHERNET_Interface->DILE_StopHardware();
+            }
+		m_objEthernetTxHandler.vBusStatusChanged(ETHERNET, BUS_DISCONNECTED);
+		::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(ETHERNET), WM_NOTIFICATION_FROM_OTHER,
+                          eWINID_STOP_READ, 0);
+		m_objEthernetTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, BUS_DISCONNECTED);
+	}
+
+	 pouFlag->vSetFlagStatus(ETHERNET_CONNECTED, bConnected);
+
+}
+void CMainFrame::OnUpdateEthernetConnect(CCmdUI* pCmdUI)
+{
+    // Select the current menu text based on which one between Connect
+    // or Disconnect is currently selected. The menu text should show
+    // the next available state i.e., if currently "Connect" is displayed,
+    // next available state is Disconnect and vice versa. Texts are taken from
+    // the string table
+    CFlags* pouFlag  = theApp.pouGetFlagsPtr();
+    if(pouFlag != NULL)
+    {
+        BOOL bConnected  = pouFlag->nGetFlagStatus(ETHERNET_CONNECTED);
+        UINT unConnected = bConnected ? IDS_DISCONNECT_ETHERNET : IDS_CONNECT_ETHERNET;
+
+        // And initialise a CString with the string.
+        CString omMenuItemText("");
+        omMenuItemText.Format(unConnected);
+        // And finally set the menu text.
+        if(pCmdUI !=NULL)
+        {
+            pCmdUI->SetText(omMenuItemText);
+        }
+    }
+
+    if ( m_shEthernetDriverId != DAL_NONE )
+    {
+        pCmdUI->Enable();
+    }
+    else
+    {
+        pCmdUI->Enable(0);
+    }
+}
 HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
 {
     HRESULT hResult = S_OK;
@@ -11948,6 +12116,105 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
         m_objFlexTxHandler.vSetClientID(LIN, g_dwClientID);
     }
     return hResult;
+}
+
+/*******************************************************************************
+  Function Name  : InitializeDILEthernet
+  Input(s)       : -
+  Output         : -
+  Functionality  : Initializes Ethernet interface.
+  Member of      : CMainFrame
+  Author(s)      : Ashwin R Uchil
+  Date Created   : 24-06-2014
+  Modifications  :
+*******************************************************************************/
+HRESULT CMainFrame::InitializeDILEthernet(UINT unDefaultChannelCnt)
+{
+	if ( m_podMsgWndThread != NULL )
+	{
+		m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)ETHERNET);
+	}
+	HRESULT hResult = S_OK;
+	//m_bNoHardwareFound = true;
+	if (g_pouDIL_ETHERNET_Interface == NULL)
+	{
+		hResult = DIL_GetInterface(ETHERNET, (void**)&g_pouDIL_ETHERNET_Interface);
+	}
+	if (hResult == S_OK)
+	{
+		if ((hResult = g_pouDIL_ETHERNET_Interface->DILE_SelectDriver(m_shEthernetDriverId, m_hWnd, &m_ouWrapperLogger)) == S_OK)
+		{
+			g_pouDIL_ETHERNET_Interface->DILE_PerformInitOperations();
+			INT nCount = unDefaultChannelCnt;
+			if ((hResult = g_pouDIL_ETHERNET_Interface->DILE_ListHwInterfaces(m_asINTERFACE_HW, nCount)) == S_OK)
+            {
+                HRESULT hResult = g_pouDIL_ETHERNET_Interface->DILE_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
+                if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
+				{
+					hResult = g_pouDIL_ETHERNET_Interface->DILE_RegisterClient(TRUE, g_dwClientID, _T("ETHERNET_MONITOR"));
+                    if ((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS))
+                    {
+                        m_bNoHardwareFound = false;
+						g_pouDIL_ETHERNET_Interface->DILE_SetConfigData(NULL, NULL);  //TODO: Fill proper values 
+
+						m_podMsgWndThread->vUpdateClientID(ETHERNET, g_dwClientID);
+                        if (m_podMsgWndThread != NULL)//Msg window
+                        {
+                            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
+                                          eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize[ETHERNET]);
+                        }
+						//Update TxWindow
+                        eUSERSELCTION eUserSel = eCHANNELCOUNTUPDATED;
+						 m_objEthernetTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
+						/* Updates the number of channels selected */
+                        m_nNumChannels = nCount;
+					}
+					else
+                    {
+                        theApp.bWriteIntoTraceWnd(_("registering client failed"));
+                        m_shLINDriverId = DAL_NONE;          //select simulation
+                        InitializeDILEthernet();
+                        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)ETHERNET);
+                    }
+
+				}
+				else
+                {
+                    theApp.bWriteIntoTraceWnd(_("Selecting hardware interface failed"));
+                    m_shLINDriverId = DAL_NONE;          //select simulation
+                    InitializeDILEthernet();
+                    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)ETHERNET);
+                }
+			}
+			else
+            {
+                if ( hResult == HW_INTERFACE_NO_SEL )
+                {
+                    theApp.bWriteIntoTraceWnd(_("hardware selection Cancelled. Retaining previous hardware settings.."));
+                    /* Retain previous DIL selection */
+                    m_shLINDriverId = g_pouDIL_ETHERNET_Interface->DILE_GetSelectedDriver();
+                    m_bNoHardwareFound = false;
+                    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)ETHERNET);
+                }
+                else
+                {
+                    theApp.bWriteIntoTraceWnd(_("Listing hardware interfaces failed"));
+                    m_shLINDriverId = DAL_NONE;          //select simulation
+                    InitializeDILEthernet();
+                    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)ETHERNET);
+                }
+            }
+		}
+		else
+		{
+			theApp.bWriteIntoTraceWnd(_("Driver Selection failed"));
+			m_shLINDriverId = DAL_NONE;          //select simulation
+			m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)ETHERNET);
+		}
+		m_objEthernetTxHandler.vSetDILInterfacePtr(ETHERNET, (void*)g_pouDIL_ETHERNET_Interface);
+		m_objEthernetTxHandler.vSetClientID(ETHERNET, g_dwClientID);
+	}
+	return S_OK;
 }
 
 /*******************************************************************************
@@ -14006,6 +14273,14 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, BYTE*& /* pbyConfigD
                           (LPARAM)pFlexRayMsgWindow);
         }
         break;
+		 case ETHERNET_TXWND:
+        {
+            //changes done for XML configuration
+            xmlNodePtr pEthTxPtr = xmlNewNode(NULL, BAD_CAST DEF_ETHERNET_TX_WINDOW);
+            xmlAddChild(pNodePtr, pEthTxPtr);
+			m_objEthernetTxHandler.vGetTxWndConfigData(ETHERNET, pEthTxPtr);
+        }
+		break;
         default:
         {
             ASSERT(false);
@@ -16020,6 +16295,12 @@ int CMainFrame::nLoadXMLConfiguration()
 
                 for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
                 {
+					if(nBUSID == 5)
+					{
+						//TODO: When Signal graph for ETHERNET is implemented remove this check
+						//Skip Ethernet protocol
+						continue;
+					}
                     m_objSigGrphHandler.SetSignalListDetails((SHORT)nBUSID, &m_odGraphList[nBUSID]);
                     m_objSigGrphHandler.SetWindowSplitterPos((SHORT)nBUSID, m_sGraphWndPlacement[nBUSID],
                             m_sGraphSplitterPos[nBUSID]);
@@ -16060,6 +16341,11 @@ int CMainFrame::nLoadXMLConfiguration()
                                    eLOAD_DATABASE,
                                    (LPARAM)&(m_pouMsgSigFLEXRAY));*/
                 }
+            }
+            break;
+			case ETHERNET_TXWND:
+				{
+					m_objEthernetTxHandler.vSetTxWndConfigData(ETHERNET, m_xmlConfigFiledoc);
             }
             break;
         } //switch(eSecId)
@@ -17354,6 +17640,12 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
                 {
                     for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
                     {
+						if(nBUSID == 5)
+						{
+							//TODO: When Signal graph for ETHERNET is implemented remove this check
+							//Skip Ethernet protocol
+							continue;
+						}
                         pbyTemp = m_odGraphList[nBUSID].pbySetConfigData(pbyTemp, byVersion);
 
                         COPY_DATA_2(&m_sGraphWndPlacement[nBUSID], pbyTemp, sizeof(WINDOWPLACEMENT));
@@ -17375,6 +17667,12 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
             {
                 for(int nBUSID=0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
                 {
+					if(nBUSID == 5)
+					{
+						//TODO: When Signal graph for ETHERNET is implemented remove this check
+						//Skip Ethernet protocol
+						continue;
+					}
                     m_odGraphList[nBUSID].m_odGraphParameters.vInitialize();
                     if(m_odGraphList[nBUSID].m_omElementList.GetSize()>0)
                     {
@@ -17723,6 +18021,67 @@ void CMainFrame::OnSelectDriver(UINT nID)
     }
 }
 
+void CMainFrame::OnSelectEthernetDriver(UINT nID)
+{
+    DILINFO* psCurrDIL = psGetEthernetDILEntry(nID);
+    // Above lines have to be changed.
+
+    if (psCurrDIL != NULL)
+    {
+        m_shEthernetDriverId =  psCurrDIL->m_dwDriverID;
+
+        HRESULT hResult = InitializeDILEthernet();
+
+        /* Check if user intentionally not cancelled hardware selection */
+        if ( hResult != HW_INTERFACE_NO_SEL )
+        {
+             /* Resetting DIL to NONE */
+            if ( g_pouDIL_ETHERNET_Interface )
+            {
+                m_shFLEXRAYDriverId = DAL_NONE;
+                g_pouDIL_ETHERNET_Interface->DILE_SelectDriver(m_shEthernetDriverId, m_hWnd, &m_ouWrapperLogger);
+            }
+        }
+       
+        if(m_bNoHardwareFound == true)
+        {
+            m_shEthernetDriverId = 0;  //resetting to simulation
+        }
+    }
+}
+
+void CMainFrame::OnUpdateSelectEthernetDriver(CCmdUI* pCmdUI)
+{
+	 BOOL bSelected = FALSE;
+    // Search for the associated item in the DIL list
+    DILINFO* psCurrDIL = psGetEthernetDILEntry(pCmdUI->m_nID);
+    if (psCurrDIL != NULL)
+    {
+        if (g_pouDIL_CAN_Interface != NULL)
+        {
+            bSelected = (psCurrDIL->m_dwDriverID == g_pouDIL_ETHERNET_Interface->DILE_GetSelectedDriver());
+        }
+    }
+    CFlags* pFlag = theApp.pouGetFlagsPtr();
+    if (pFlag != NULL)
+    {
+        BOOL bConnected = pFlag->nGetFlagStatus(ETHERNET_CONNECTED);
+        if (bConnected == FALSE)
+        {
+            pCmdUI->Enable(!bSelected);
+        }
+        else
+        {
+            pCmdUI->Enable(FALSE);
+        }
+    }
+
+   if(psCurrDIL->m_dwDriverID != DAL_LIN_NONE)
+    {
+        pCmdUI->SetCheck(bSelected);
+    }
+}
+
 void CMainFrame::OnSelectLINDriver(UINT nID)
 {
     //DILINFO* psCurrDIL = psGetDILLINEntry(nID);
@@ -18039,6 +18398,70 @@ bool CMainFrame::bUpdatePopupMenuDILL(void)
     return (bResult == TRUE);
 }
 
+BOOL CMainFrame::bUpdatePopupMenuDILEthernet(void)
+{
+
+    USES_CONVERSION;
+
+    BOOL bResult = TRUE;
+
+    if (m_pDILSubMenuEthernet == NULL)
+    {
+        /* Create a new popup Menu */
+        if (bResult == ((m_pDILSubMenuEthernet = new CMenu()) != NULL))     //venkat
+        {
+            if ((bResult = m_pDILSubMenuEthernet->CreatePopupMenu()) == TRUE)
+            {
+                // Add the DIL list
+                for (int i = 0; (i < m_nDILCountEthernet) && bResult; i++)
+                {
+                    bResult = m_pDILSubMenuEthernet->AppendMenu(MF_STRING,
+                                                           IDC_SELECT_ETHERNET_DRIVER + i, _((char*)m_ouListEthernet[i].m_acName.c_str()));
+                    if (bResult == TRUE)
+                    {
+                        m_ouListEthernet[i].m_ResourceID = IDC_SELECT_ETHERNET_DRIVER + i;
+                        if (i == 0) //Disable the Deactivate menu item by default
+                        {
+                            m_pDILSubMenuEthernet->EnableMenuItem(IDC_SELECT_ETHERNET_DRIVER + i, false);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                theApp.bWriteIntoTraceWnd(_("CreatePopupMenu for driver selection failed"));
+            }
+        }
+        else
+        {
+            theApp.bWriteIntoTraceWnd(_("new CMenu() failed"));
+            ASSERT(FALSE);
+        }
+    }
+
+    if (bResult == TRUE)
+    {
+        CMenu* pConfigMenu = GetSubMenu(_T(_("&Ethernet"))); // Get the Menu "&Hardware"
+        ASSERT(pConfigMenu != NULL);
+        if (pConfigMenu == NULL)
+        {
+            theApp.bWriteIntoTraceWnd(_("GetSubMenu(\"&LIN\") failed"));
+        }
+        /*  PTV[1.6.4] */
+        // Added shortcut key
+
+        if(pConfigMenu != NULL)
+        {
+            pConfigMenu->InsertMenu(2, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pDILSubMenuEthernet->m_hMenu), _T(_("&Driver Selection")));
+        }
+    }
+    if (bResult == FALSE)
+    {
+        theApp.bWriteIntoTraceWnd(_("Could not create DIL menu items"));
+    }
+
+    return bResult;
+}
 DILINFO* CMainFrame::psGetDILEntry(UINT unKeyID, bool bKeyMenuItem)
 {
     DILINFO* psResult = nullptr;
@@ -18082,6 +18505,31 @@ DILINFO* CMainFrame::psGetDILLINEntry(UINT unKeyID, bool bKeyMenuItem)
             if (m_ouListLin[i].m_dwDriverID == unKeyID)
             {
                 psResult = &(m_ouListLin[i]);
+                break;
+            }
+        }
+    }
+    return psResult;
+}
+
+DILINFO* CMainFrame::psGetEthernetDILEntry(UINT unKeyID, BOOL bKeyMenuItem)
+{
+    DILINFO* psResult = NULL;
+    for (int i = 0; i < m_nDILCountEthernet; i++)
+    {
+        if (bKeyMenuItem == TRUE)
+        {
+            if (m_ouListEthernet[i].m_ResourceID == unKeyID)
+            {
+                psResult = &(m_ouListEthernet[i]);
+                break;
+            }
+        }
+        else
+        {
+            if (m_ouListEthernet[i].m_dwDriverID == unKeyID)
+            {
+                psResult = &(m_ouListEthernet[i]);
                 break;
             }
         }
@@ -18451,6 +18899,12 @@ void CMainFrame::vPostConfigChangeCmdToSigGrphWnds(bool bHideGraphWnd)
 {
     for(register int nBusID = CAN; nBusID < AVAILABLE_PROTOCOLS; nBusID++)
     {
+		if(nBusID == 5)
+		{
+			//TODO: When Signal graph for ETHERNET is implemented remove this check
+			//Skip Ethernet protocol
+			continue;
+		}
         m_objSigGrphHandler.vPostMessageToSGWnd((SHORT)nBusID, WM_USER_CMD,
                                                 (WPARAM)eCONFIGCHANGECMD, (LPARAM)bHideGraphWnd);
     }
@@ -19738,6 +20192,10 @@ void CMainFrame::OnFlexRayTxWindow()
     m_objFlexTxHandler.vShowConfigureMsgWindow(this, FLEXRAY);
 }
 
+void CMainFrame::OnEthernetTxWindow()
+{
+	m_objEthernetTxHandler.vShowConfigureMsgWindow(this, ETHERNET);
+}
 void CMainFrame::OnUpdateFlexrayAssociate(CCmdUI* pCmdUI)
 {
     CFlags* pouFlag  = theApp.pouGetFlagsPtr();

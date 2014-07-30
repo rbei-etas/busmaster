@@ -25,7 +25,7 @@
 #pragma once
 
 #define MAX_PROTOCOLS 20
-#define AVAILABLE_PROTOCOLS         5
+#define AVAILABLE_PROTOCOLS         6
 
 // Export Dialog
 

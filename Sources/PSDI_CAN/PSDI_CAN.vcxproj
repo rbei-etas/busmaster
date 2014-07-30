@@ -211,6 +211,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MsgContainer_CAN.cpp" />
+    <ClCompile Include="MsgContainer_Ethernet.cpp" />
     <ClCompile Include="MsgContainer_FlexRay.cpp" />
     <ClCompile Include="MsgContainer_J1939.cpp" />
     <ClCompile Include="MsgContainer_LIN.cpp" />
@@ -218,6 +219,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MsgContainer_CAN.h" />
+    <ClInclude Include="MsgContainer_Ethernet.h" />
     <ClInclude Include="MsgContainer_FlexRay.h" />
     <ClInclude Include="MsgContainer_J1939.h" />
     <ClInclude Include="MsgContainer_LIN.h" />

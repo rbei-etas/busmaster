@@ -57,6 +57,7 @@ enum eSECTION_ID // These IDs should be maintained with load sequence
     SIMSYS_SECTION_LIN_ID,
     LIN_CLUSTER_CONFIG,
     LIN_TXWND,
+	ETHERNET_TXWND,
     LIN_SCHEDULE_CONFIG,
     SECTION_TOTAL
 };

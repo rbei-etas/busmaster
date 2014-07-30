@@ -130,6 +130,9 @@
     <ClInclude Include="MsgBufLINVFSE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MsgBufEthernetVFSE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="UDS_DataTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>

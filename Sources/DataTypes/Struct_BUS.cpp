@@ -22,6 +22,7 @@
 #include "include/Struct_CAN.h"
 #include "DataTypes/Base_FlexRay_Buffer.h"
 #include "include/Struct_LIN.h"
+#include "include/Struct_ETHERNET.h"
 #include "application/hashdefines.h"
 #include "application/Common.h"
 
@@ -217,3 +218,28 @@ __int64 sTLINDATA::GetSlotID(sTLINDATA& pDatLIN)
                           sMsg.m_ucChannel );
     return n64MapIndex;
 };
+
+/*----------------------------- Ethernet Implementation -----------------------------*/
+void sTETHERNETDATA::vSetSortField(int nField)
+{
+    //m_nSortField = nField;
+}
+
+void sTETHERNETDATA::vSetSortAscending(bool bAscending)
+{
+    //m_nMFactor = bAscending ? 1 : -1;
+};
+
+int sTETHERNETDATA::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
+{
+    int Result = 0;
+    //}
+    return Result;
+};
+
+__int64 sTETHERNETDATA::GetSlotID(sTETHERNETDATA& pDatFLEX)
+{
+    return 0;
+};
+
+/*-----------------------------------------------------------------------------*/

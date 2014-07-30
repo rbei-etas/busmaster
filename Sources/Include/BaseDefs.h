@@ -26,6 +26,7 @@
 
 #include "Struct_CAN.h"
 #include "Struct_LIN.h"
+#include "Struct_ETHERNET.h"
 
 /*Maximum possible length of a CAN*/
 #define MAX_DATA_LEN_CAN 8
@@ -37,6 +38,7 @@
 #define MAX_DATA_LEN_MCNET 0x7FFF
 #define MAX_DATA_LEN_FLEXRAY 254
 #define MAX_DATA_LEN_LIN 8
+#define MAX_DATA_LEN_ETHERNET 1500
 
 typedef enum eBUSEVEHANDLER
 {
@@ -71,6 +73,7 @@ enum eTYPE_BUS
     J1939,
     FLEXRAY,
     LIN,
+	ETHERNET,
     MOST,
     BUS_TOTAL,
     BUS_INVALID
@@ -215,6 +218,18 @@ const BYTE TYPE_MSG_LIN_FD          = 0x4;
 #define LENGTH_STR_DIRECTION_LIN        4
 #define LENGTH_STR_TYPE_LIN             8
 
+#define LENGTH_STR_TIMESTAMP_ETHERNET   16
+#define LENGTH_STR_DATA_ETHERNET		1500
+#define LENGTH_STR_ID_ETHERNET          16
+#define LENGTH_STR_DESCRIPTION_ETHERNET 256
+#define LENGTH_STR_DLC_ETHERNET         9
+#define LENGTH_STR_SOURCE_IP_ETHERNET   15
+#define LENGTH_STR_DEST_IP_ETHERNET     15
+#define LENGTH_STR_SOURCE_MAC_ETHERNET  18
+#define LENGTH_STR_DEST_MAC_ETHERNET    18
+#define LENGTH_STR_CHANNEL_ETHERNET     4
+#define LENGTH_STR_DIRECTION_ETHERNET   4
+#define LENGTH_STR_TYPE_ETHERNET        8
 struct tagFormattedData_CAN
 {
     UINT64          m_u64TimeStamp;                 // Time stamp
@@ -304,7 +319,7 @@ struct sWMUpdatePtrPara
 typedef sWMUpdatePtrPara SWMUPDATEPTRPARA;
 typedef sWMUpdatePtrPara* PSWMUPDATEPTRPARA;
 
-#define MAX_MSG_WND_COL_CNT              12
+#define MAX_MSG_WND_COL_CNT              13
 
 struct sMsgWndHdrCol
 {
@@ -324,6 +339,13 @@ struct sMsgWndHdrCol
     BYTE m_byPriorityPos;
     BYTE m_byCycleNoPos;
     BYTE m_byChecksumPos;
+	//Ethernet columns
+	BYTE m_bySourceIP;
+	BYTE m_byDestIP;
+	BYTE m_bySourcePort;
+	BYTE m_byDestPort;
+	BYTE m_bySourceMAC;
+	BYTE m_byDestMAC;
 
     sMsgWndHdrCol()
     {
@@ -343,6 +365,12 @@ struct sMsgWndHdrCol
         m_byPriorityPos = (BYTE) -1;
         m_byCycleNoPos  = (BYTE) -1;
         m_byChecksumPos = (BYTE) -1;
+		m_bySourceIP	= (BYTE) -1;
+		m_byDestIP		= (BYTE) -1;
+		m_bySourcePort	= (BYTE) -1;
+		m_byDestPort		= (BYTE) -1;
+		m_bySourceMAC		= (BYTE) -1;
+		m_byDestMAC		= (BYTE) -1;
     }
 };
 typedef sMsgWndHdrCol SMSGWNDHDRCOL;
@@ -385,5 +413,46 @@ struct tagFlexMsgData
     EFRAMETYPE m_eFrameType;
     int m_nBaseCycle;
     unsigned char m_ucCycleRepetetion;
-};
+}; 
 typedef tagFlexMsgData FLXMSGDATA;
+
+struct tagFormattedData_ETHERNET
+{
+    UINT64          m_u64TimeStamp;                 // Time stamp
+    DWORD           m_dwMsgID;                      // Message identifier
+    EDIRECTION      m_eDirection;                   // Direction (Rx / Tx)
+    TYPE_CHANNEL    m_eChannel;                     // Channel
+	char			m_SourceMAC[LENGTH_STR_SOURCE_MAC_ETHERNET];
+	char			m_DestMAC[LENGTH_STR_DEST_MAC_ETHERNET];
+	char			m_SourceIP[LENGTH_STR_SOURCE_IP_ETHERNET];
+	char			m_DestIP[LENGTH_STR_DEST_IP_ETHERNET];    
+	char			m_SourcePort[4];
+	char			m_DestPort[4];
+    int             m_nDataLength;                 // Data length count
+    char            m_abData[MAX_DATA_LEN_ETHERNET];  // Message data
+    eERROR_STATE    m_eEventType;
+
+    char   m_acMsgDir[LENGTH_STR_DIRECTION_ETHERNET];     // "Tx" or "Rx"
+    char   m_acChannel[LENGTH_STR_CHANNEL_ETHERNET];      // "1" or "2"
+
+    char   m_acDataLen[LENGTH_STR_DLC_ETHERNET];          // DLC always in dec
+    char   m_acMsgDesc[LENGTH_STR_DESCRIPTION_ETHERNET];  // Message description
+
+    char   m_acMsgIDHex[LENGTH_STR_ID_CAN];          // Identifier in hex
+    char   m_acMsgIDDec[LENGTH_STR_ID_CAN];          // Identifier in dec
+
+    char   m_acDataHex[LENGTH_STR_DATA_CAN];         // Data in hex
+    char   m_acDataDec[LENGTH_STR_DATA_CAN];         // Data in dec
+
+    char   m_acTimeAbsReset[LENGTH_STR_TIMESTAMP_ETHERNET];    // Absolute time stamp Reset
+    char   m_acTimeAbs[LENGTH_STR_TIMESTAMP_ETHERNET];    // Absolute time stamp
+    char   m_acTimeRel[LENGTH_STR_TIMESTAMP_ETHERNET];    // Relative time stamp
+    char   m_acTimeSys[LENGTH_STR_TIMESTAMP_ETHERNET];    // System time stamp
+
+    __int64         m_n64MapId;                     // Map id of the message
+    COLORREF        m_ColourCode;                   // Colour code associated
+
+
+};
+
+typedef tagFormattedData_ETHERNET SFORMATTEDDATA_ETHERNET;

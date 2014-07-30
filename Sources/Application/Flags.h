@@ -84,6 +84,11 @@ typedef enum eFLEXRAYMONITORFLAG
     FLEX_CONNECTED = 0,
 };
 
+typedef enum eETHERNETMONITORFLAG
+{
+    ETHERNET_CONNECTED = 0,
+	DISPLAYFILTERON_ETHERNET
+};
 class CFlags
 {
 public:
@@ -97,12 +102,15 @@ public:
     void vSetFlagStatus(eCANMONITORFLAG WhichFlag, int nValue);
     int nGetFlagStatus(eFLEXRAYMONITORFLAG WhichFlag);
     void vSetFlagStatus(eFLEXRAYMONITORFLAG WhichFlag, int nValue);
+	 int nGetFlagStatus(eETHERNETMONITORFLAG WhichFlag);
+    void vSetFlagStatus(eETHERNETMONITORFLAG WhichFlag, int nValue);
     void vInitializeFlags();
     static CFlags& ouGetFlagObj(void);
 
 private:
     CCriticalSection m_omCriticalSec;
     CCriticalSection m_omCriticalSecFlex;
+	CCriticalSection m_omCriticalSecEthernet;
     BOOL m_bLogToWindow;
     BOOL m_bLogEnable;
     BOOL m_bLogFilterOn;
@@ -151,6 +159,9 @@ private:
 
     /* FLEXRAY Flags */
     BOOL m_bFlexConnected;
+	/*Ethernet flags*/
+	BOOL m_bIsEthernetConnected;
+	BOOL m_bIsEthernetDisplayFilterOn;
     // Private constructors to make singleton class
     static CFlags sm_ouSingletonObj;
 };

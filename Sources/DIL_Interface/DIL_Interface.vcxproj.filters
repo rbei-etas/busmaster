@@ -37,6 +37,9 @@
     <ClCompile Include="CommanDIL_LIN.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DIL_Ethernet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDIL_CAN.h">
@@ -91,6 +94,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CommanDIL_Flexray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseDIL_Ethernet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DIL_Ethernet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseDIL_Ethernet_Controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BaseDIL_LIN.h">

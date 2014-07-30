@@ -180,6 +180,7 @@
     <ClCompile Include="CommanDIL_LIN.cpp" />
     <ClCompile Include="DILL_Dummy.cpp" />
     <ClCompile Include="DIL_CAN.cpp" />
+    <ClCompile Include="DIL_Ethernet.cpp" />
     <ClCompile Include="DIL_FLEXRAY.cpp" />
     <ClCompile Include="DIL_Interface.cpp" />
     <ClCompile Include="DIL_Interface_stdafx.cpp" />
@@ -190,6 +191,8 @@
   <ItemGroup>
     <ClInclude Include="BaseDIL_CAN.h" />
     <ClInclude Include="BaseDIL_CAN_Controller.h" />
+    <ClInclude Include="BaseDIL_Ethernet.h" />
+    <ClInclude Include="BaseDIL_Ethernet_Controller.h" />
     <ClInclude Include="BaseDIL_FLEXRAY.h" />
     <ClInclude Include="BaseDIL_FLEXRAY_Controller.h" />
     <ClInclude Include="BaseDIL_J1939.h" />
@@ -199,6 +202,7 @@
     <ClInclude Include="CommanDIL_LIN.h" />
     <ClInclude Include="DILL_Dummy.h" />
     <ClInclude Include="DIL_CAN.h" />
+    <ClInclude Include="DIL_Ethernet.h" />
     <ClInclude Include="DIL_FLEXRAY.h" />
     <ClInclude Include="DIL_Interface.h" />
     <ClInclude Include="DIL_Interface_extern.h" />
