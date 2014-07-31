@@ -187,10 +187,11 @@ HRESULT CTxCusotmHeader::AddHeaderToData(STDATA& sData)
 			return S_FALSE;
 		}
 		//Convert 2 characters  to 1 byte  "FF" to 0xFF
-		for (int i = 0, j= 0; i < sData.unDataLength ; i++, j+=2)
+		for (int i = 0, j= 0; i < strDataWithHeader.length()/2 ; i++, j+=2)
 		{
 			byFinalData[i] = (hex_digit_value(strDataWithHeader[j]) << 4) | ( hex_digit_value(strDataWithHeader[j+1]));            
 		}
+		memcpy(sData.chData, byFinalData, strDataWithHeader.length()/2);
 	}
 	return S_OK;
 }

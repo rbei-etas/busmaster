@@ -126,7 +126,7 @@ BOOL CUserSelectionDlg::SaveProtocolConfiguration()
 		 xmlFreeDoc(pXMLDocPtr);
 	 }
 
-	 xmlCleanupParser();
+	 //xmlCleanupParser();
 
 	 return S_OK;
 }

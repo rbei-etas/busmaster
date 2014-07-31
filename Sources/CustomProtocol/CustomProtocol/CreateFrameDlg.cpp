@@ -131,7 +131,7 @@ void CCreateFrameDlg::AddHeaderValuesToBaseProtocol(SBASEPROTOCOL& sBaseProtocol
 	//Add header values in BYTEs to all the headers of Base protocol
 	for(int i= 0; i < sBaseProtocol.nHeaderCount; i++)
 	{
-		AddHeaderValues(sBaseProtocol.sHeaders[i], nRow);
+		AddHeaderValues(sBaseProtocol.sHeaders[i], nRow++);
 	}
 }
 

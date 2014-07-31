@@ -1369,6 +1369,7 @@ void CTransmitMsgEthernet::OnBnClickedBtnProtocolSetting()
 	if(hResult == S_OK)
 	{
 		memcpy(itrList->m_ouEthernetMessage.m_ucData, sData.chData, sData.unDataLength);
+		nUpdateMessageDetails(*itrList);
 	}
 }
 
