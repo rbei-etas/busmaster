@@ -367,5 +367,9 @@ HRESULT CDIL_ETHERNET::DILE_DeselectHwInterfaces(void)
 */
 HMODULE CDIL_ETHERNET::DILE_GetCustomProtocolHandle()
 {
+	if(m_pBaseDILEthernet_Controller == NULL)
+	{
+		return NULL;
+	}
 	return m_pBaseDILEthernet_Controller->Ethernet_GetCustomProtocolHandle();
 }

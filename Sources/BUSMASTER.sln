@@ -196,6 +196,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UDS_Protocol", "UDS_Protoco
 		{5D1AB9D9-755F-4743-AE73-83B7D5FCCD65} = {5D1AB9D9-755F-4743-AE73-83B7D5FCCD65}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CustomProtocol", "CustomProtocol\CustomProtocol\CustomProtocol.vcxproj", "{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4A20171C-51DB-4E82-BCE0-5E3EEB070566} = {4A20171C-51DB-4E82-BCE0-5E3EEB070566}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		busmaster_debug|Win32 = busmaster_debug|Win32
@@ -862,6 +867,20 @@ Global
 		{3F0EF2E6-3377-4F4E-872D-5366529CD038}.Unicode Release MinSize|Win32.ActiveCfg = Release|Win32
 		{3F0EF2E6-3377-4F4E-872D-5366529CD038}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
 		{3F0EF2E6-3377-4F4E-872D-5366529CD038}.Unicode Release|Win32.ActiveCfg = Release|Win32
+		{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}.busmaster_debug|Win32.ActiveCfg = busmaster_debug|Win32
+		{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}.busmaster_debug|Win32.Build.0 = busmaster_debug|Win32
+		{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}.Debug|Win32.Build.0 = Debug|Win32
+		{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}.Release|Win32.ActiveCfg = Release|Win32
+		{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}.Release|Win32.Build.0 = Release|Win32
+		{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}.Template|Win32.ActiveCfg = Release|Win32
+		{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}.Template|Win32.Build.0 = Release|Win32
+		{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}.Unicode Debug|Win32.ActiveCfg = Debug|Win32
+		{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}.Unicode Debug|Win32.Build.0 = Debug|Win32
+		{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}.Unicode Release MinSize|Win32.ActiveCfg = Release|Win32
+		{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
+		{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}.Unicode Release|Win32.ActiveCfg = Release|Win32
+		{8010F7C4-B7F9-4A15-B6B0-5AC4F4A90848}.Unicode Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

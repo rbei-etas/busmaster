@@ -22,6 +22,7 @@
 
 
 // CUserSelectionDlg dialog
+extern unsigned char hex_digit_value(char c);
 
 IMPLEMENT_DYNAMIC(CUserSelectionDlg, CDialog)
 
@@ -165,7 +166,7 @@ BOOL CUserSelectionDlg::AddBaseProtocolToConfig(xmlNodePtr pBaseProtocol )
 			xmlNewChild(pProtocol, NULL, BAD_CAST NO_OF_BYTES, BAD_CAST pchData);  
 
 			//Value of Header
-			sprintf(pchData, "%x",itrList->sHeaders[nHdrCnt].nHeaderLength);
+			sprintf(pchData, "%x",itrList->sHeaders[nHdrCnt].chValue);
 			xmlNewChild(pProtocol, NULL, BAD_CAST VALUE, BAD_CAST pchData);
 		}
 	}
@@ -188,6 +189,199 @@ BOOL CUserSelectionDlg::AddDerivedProtocol(xmlNodePtr pDerivedProtocol)
 		{
 			//Base Protocol name
 			xmlNewChild(pProtocol, NULL, BAD_CAST BASE_PROTOCOL, BAD_CAST itrListDerived->BaseProtocol[nBasePCnt].strName.c_str());
+		}
+	}
+	return S_OK;
+}
+
+void CUserSelectionDlg::OnBnClickedBtnLoadProtocol()
+{
+	CFileDialog oLoadFile(true,".xml","Custom Protocol",  OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT, "ProtocolConfig (*.xml)|*.xml||", this);
+	oLoadFile.m_ofn.lpstrTitle = "Load Protocol Configuration";
+	if(oLoadFile.DoModal() == IDOK)
+	{
+		string omstrFileName = oLoadFile.GetPathName();
+		LoadProtocolConfiguration(omstrFileName);
+	}
+}
+
+BOOL CUserSelectionDlg::LoadProtocolConfiguration(string omstrFileName)
+{
+	BOOL nRetValue = S_FALSE;
+	xmlDocPtr xmlConfigFiledoc;
+	xmlConfigFiledoc = xmlReadFile(omstrFileName.c_str(), "UTF-8", 0);
+
+    CString strEncoding = "UTF-8";
+
+	if ( nullptr != xmlConfigFiledoc )           //1. Try to Load as a XML file
+	{
+		nRetValue = nLoadBaseProtocol(xmlConfigFiledoc);
+		xmlFreeDoc(xmlConfigFiledoc);
+		xmlConfigFiledoc = nullptr;
+	}
+	return S_OK;
+}
+
+BOOL CUserSelectionDlg::nLoadBaseProtocol(xmlDocPtr xmlConfigFiledoc)
+{
+	xmlNodeSetPtr pNodeSet;
+	xmlXPathObjectPtr pPathObject;
+	xmlNodePtr pNode = nullptr;
+
+	// Updating Global configuration parameters in to xml
+	xmlChar* pchPath = (xmlChar*)"//Protocol_Configuration/Base_Protocols";
+	pPathObject = xmlUtils::pGetNodes(xmlConfigFiledoc, pchPath);
+
+	if( nullptr != pPathObject )
+	{
+		pNodeSet = pPathObject->nodesetval;
+		//No. of Base protocols
+		 if( nullptr != pNodeSet )
+        {
+            pNode = pNodeSet->nodeTab[0];       //Take First One only
+        }
+		 INT nCount = pNodeSet->nodeNr;
+		 for(int i = 0; i < nCount; i++)
+		 {
+			 //This node will point to the individual Protocol node
+			 //Parse it and store it Datastore
+			  LoadBaseProtocol(pNode);
+		 }
+		
+	}
+
+	// Updating Global configuration parameters in to xml
+	pchPath = (xmlChar*)"//Protocol_Configuration/Derived_Protocol";
+	pPathObject = xmlUtils::pGetNodes(xmlConfigFiledoc, pchPath);
+	if( nullptr != pPathObject )
+	{
+		pNodeSet = pPathObject->nodesetval;
+		pNodeSet = pPathObject->nodesetval;
+		//No. of Base protocols
+		 if( nullptr != pNodeSet )
+        {
+            pNode = pNodeSet->nodeTab[0];       //Take First One only
+        }
+		  INT nCount = pNodeSet->nodeNr;
+		 for(int i = 0; i < nCount; i++)
+		 {
+			 //This node will point to the individual Protocol node
+			 //Parse it and store it Datastore
+			  LoadDerivedProtocol(pNode);
+		 }
+		
+	}
+	return S_OK;
+}
+
+BOOL CUserSelectionDlg::LoadBaseProtocol(xmlNodePtr pNode)
+{
+	xmlNodePtr pChildNode = nullptr;
+	string strVar;
+	char* pchData;
+
+	if( nullptr == pNode )
+	{
+		AfxMessageBox("Configuration file has been changed manually. Base protocol data is missing");
+		return S_FALSE;
+	}
+
+	if ((!xmlStrcmp(pNode->name, (const xmlChar*)PROTOCOL))) 
+	{
+		while(pNode != nullptr)
+		{
+			pChildNode = pNode->xmlChildrenNode;
+			int nHeaderCnt = 0;
+			SBASEPROTOCOL    sBaseProtocol;
+			while (pChildNode != nullptr)           //loop through the node of "PROTOCOL"
+			{
+				
+				if (xmlUtils::GetDataFrmNode(pChildNode,NAME, strVar))
+				{
+					sBaseProtocol.strName = strVar;
+				}
+
+				if (xmlUtils::GetDataFrmNode(pChildNode,HEADER, strVar))   
+				{
+					xmlNodePtr   pChildHeader = pChildNode->xmlChildrenNode;
+					//Loop through headers and 
+					while (pChildHeader != nullptr) 
+					{
+						if (xmlUtils::GetDataFrmNode(pChildNode,HEADER_NAME, strVar))
+						{
+							sBaseProtocol.sHeaders[nHeaderCnt].strName   = strVar;
+						}
+						if (xmlUtils::GetDataFrmNode(pChildNode,NO_OF_BYTES, strVar))
+						{
+							sBaseProtocol.sHeaders[nHeaderCnt].nHeaderLength   = atoi(strVar.c_str());
+						}
+						//Get data here
+						if (xmlUtils::GetDataFrmNode(pChildNode,VALUE, strVar))
+						{
+							strcpy(pchData, strVar.c_str());
+							char* pch;
+							pch = strtok (pchData," ,.-");
+							int i =0;
+							u_char   BYTE[30];
+							while (pch != NULL)
+							{
+								 BYTE[i]= (hex_digit_value(pch[0]) << 4) | ( hex_digit_value(pch[1]));
+								pch = strtok (NULL, " ,.-");
+								i++;
+							}
+							memcpy(sBaseProtocol.sHeaders[nHeaderCnt].chValue, &BYTE, i);
+						}
+						
+						pChildHeader = pChildHeader->next;
+						nHeaderCnt++;
+					}
+				}
+				
+				pChildNode = pChildNode->next;
+			}
+			CTxCustomDataStore::ouGetTxEthernetDataStoreObj().m_BaseProtocolList.push_back(sBaseProtocol);
+			pNode = pNode->next;
+		}
+	}
+	return S_OK;
+}
+
+BOOL CUserSelectionDlg::LoadDerivedProtocol(xmlNodePtr pNode)
+{
+	xmlNodePtr pChildNode = nullptr;
+	string strVar;
+	
+
+	if( nullptr == pNode )
+	{
+		AfxMessageBox("Configuration file has been changed manually. Base protocol data is missing");
+		return S_FALSE;
+	}
+
+	if ((!xmlStrcmp(pNode->name, (const xmlChar*)PROTOCOL))) 
+	{
+		while(pNode != nullptr)
+		{
+			pChildNode = pNode->xmlChildrenNode;
+			int nHeaderCnt = 0;
+			SDERIVEDPROTOCOL    sDerivedProtocol;
+			while (pChildNode != nullptr)           //loop through the node of "CAN_Tx_Window"
+			{
+				
+				if (xmlUtils::GetDataFrmNode(pChildNode,NAME, strVar))
+				{
+					sDerivedProtocol.strName = strVar;
+				}
+
+				if (xmlUtils::GetDataFrmNode(pChildNode,BASE_PROTOCOL, strVar))
+				{
+					sDerivedProtocol.BaseProtocol[nHeaderCnt].strName   = strVar;
+				}
+				
+				pChildNode = pChildNode->next;
+			}
+			CTxCustomDataStore::ouGetTxEthernetDataStoreObj().m_DerivedProtocolList.push_back(sDerivedProtocol);
+			pNode = pNode->next;
 		}
 	}
 	return S_OK;

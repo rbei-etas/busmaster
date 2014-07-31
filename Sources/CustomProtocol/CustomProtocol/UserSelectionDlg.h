@@ -27,8 +27,13 @@ public:
 	BOOL SaveProtocolConfiguration(string omstrFileName);
 	BOOL AddBaseProtocolToConfig(xmlNodePtr pBaseProtocol );
 	BOOL AddDerivedProtocol(xmlNodePtr pDerivedProtocol);
+	BOOL LoadProtocolConfiguration(string omstrFileName);
+	BOOL nLoadBaseProtocol(xmlDocPtr xmlConfigFiledoc);
+	BOOL LoadBaseProtocol(xmlNodePtr pNode);
+	BOOL LoadDerivedProtocol(xmlNodePtr pNode);
 
 	afx_msg void OnBnClickedRadioAddPrtocol();
 	afx_msg void OnBnClickedRadioCreateFrame();
 	afx_msg void OnBnClickedBtnSaveProtocol();
+	afx_msg void OnBnClickedBtnLoadProtocol();
 };
