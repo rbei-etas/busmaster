@@ -1363,6 +1363,7 @@ void CTransmitMsgEthernet::OnBnClickedBtnProtocolSetting()
 
 	STDATA   sData;
 	sData.unDataLength = itrList->m_ouEthernetMessage.m_unDataLen;
+	sData.chData = new u_char[itrList->m_ouEthernetMessage.m_unDataLen];
 	memcpy(sData.chData, itrList->m_ouEthernetMessage.m_ucData, itrList->m_ouEthernetMessage.m_unDataLen) ;
 	HRESULT hResult = m_pBaseTxAppProtocol->AddHeaderToData(sData);
 	if(hResult == S_OK)

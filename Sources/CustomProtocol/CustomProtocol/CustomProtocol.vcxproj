@@ -151,6 +151,7 @@
       <OutputFile>$(OutDir)CustomProtocol.dll</OutputFile>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <AdditionalOptions>"$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib" %(AdditionalOptions)</AdditionalOptions>
+      <StackReserveSize>8000000</StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -175,7 +176,6 @@
     <ClInclude Include="ProtocolAdderDlg.h" />
     <ClInclude Include="CustomProtocol_resource.h" />
     <ClInclude Include="CustomProtocol_stdafx.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="UserSelectionDlg.h" />
     <ClInclude Include="Utility_Structs.h" />
     <ClInclude Include="XMLUtils.h" />

@@ -1,6 +1,7 @@
 #pragma once
-#include "CustomProtocol_resource.h"
+
 #include "CustomProtocol_stdafx.h"
+#include "CustomProtocol_resource.h"
 #include "XMLUtils.h"
 
 // CUserSelectionDlg dialog
@@ -24,7 +25,7 @@ protected:
 public:
 	int				m_nUserSelectedDerivedProtocol;
 
-	BOOL SaveProtocolConfiguration(string omstrFileName);
+	BOOL SaveProtocolConfiguration();
 	BOOL AddBaseProtocolToConfig(xmlNodePtr pBaseProtocol );
 	BOOL AddDerivedProtocol(xmlNodePtr pDerivedProtocol);
 	BOOL LoadProtocolConfiguration(string omstrFileName);
@@ -34,6 +35,6 @@ public:
 
 	afx_msg void OnBnClickedRadioAddPrtocol();
 	afx_msg void OnBnClickedRadioCreateFrame();
-	afx_msg void OnBnClickedBtnSaveProtocol();
 	afx_msg void OnBnClickedBtnLoadProtocol();
+	afx_msg void OnBnClickedBtnSaveConfig();
 };

@@ -794,6 +794,7 @@ private:
 
     DILINFO* psGetDILLINEntry(UINT unKeyID, bool bKeyMenuItem = TRUE);
     void vInitializeBusStatLIN(void);
+    void vInitializeBusStatEthernet(void);
 
     bool bStartGraphReadThread();
     bool bStopGraphReadThread();
@@ -875,6 +876,7 @@ public:
 
     afx_msg void OnStatisticsCAN();
     afx_msg void OnStatisticsLIN();
+    afx_msg void OnStatisticsEthernet();
     afx_msg void OnStatistics(ETYPE_BUS ebus);
     afx_msg void OnStatisticsUpdate(CCmdUI* pCmdUI);
 

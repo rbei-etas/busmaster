@@ -5,6 +5,7 @@
 #include "NetworkStatistics.h"
 #include "BusStatisticsDlg.h"
 #include "LINBusStatisticsDlg.h"
+#include "EthernetBusStatisticsDlg.h"
 #include "Application\InterfaceGetter.h"
 
 // CNetworkStatistics
@@ -153,6 +154,10 @@ void CNetworkStatistics::vAddPages(UINT unChnl[BUS_TOTAL])
             case LIN:
                 m_omStatistics[LIN] = new CLINBusStatisticsDlg(GetILINBusStat(), nullptr, unChnl[LIN]);
                 AddPage(m_omStatistics[LIN]);
+                break;
+            case ETHERNET:
+				m_omStatistics[ETHERNET] = new CEthernetBusStatisticsDlg(GetIEthernetBusStat(), NULL, unChnl[ETHERNET]);
+                AddPage(m_omStatistics[ETHERNET]);
                 break;
             default:
                 break;
@@ -318,6 +323,9 @@ void CNetworkStatistics::vSendMessage(ETYPE_BUS eBus, BOOL bUpdateSpecific)
         case LIN:
             m_omStatistics[LIN]->SendMessage(WM_DISPLAY_MESSAGE, 1, bUpdateSpecific);
             break;
+		case ETHERNET:
+			m_omStatistics[ETHERNET]->SendMessage(WM_DISPLAY_MESSAGE, 1, bUpdateSpecific);
+			break;
     }
 }
 

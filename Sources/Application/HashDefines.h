@@ -1564,6 +1564,9 @@ transmission is ON.\nDo you want to ignore the changes ?"
 #define defSTR_PARAMETER_PEAK_LOAD_LIN         "Peak Load"
 #define defSTR_PARAMETER_AVG_LOAD_LIN          "Average Load"
 
+#define defSTR_PARAMETER_MSG_RATE_Ethernet     "Data Bytes/sec      "
+#define defSTR_PARAMETER_PEAK_LOAD_Ethernet    "Peak Bytes/sec"
+#define defSTR_PARAMETER_AVG_LOAD_Ethernet     "Average Bytes/sec"
 #define defSTR_TX_HEADING_LIN                  "          Transmission Statistics    "
 
 #define defSTR_PARAMETER_TX_TOTAL_LIN          "Total Tx Frames"

@@ -22,6 +22,7 @@
  * Implementation of the CMainFrame class
  */
 #include "stdafx.h"             // Standard include header
+#include "BaseBusStatisticEthernet.h"
 #include "include/Struct_CAN.h"
 #include "include/Struct_LIN.h"
 #include "Include/CAN_Error_Defs.h"
@@ -313,6 +314,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_WM_TIMER()
     ON_COMMAND(IDM_NETWORK_STATISTICS_WND_CAN,OnStatisticsCAN)
     ON_COMMAND(IDM_NETWORK_STATISTICS_WND_LIN,OnStatisticsLIN)
+    ON_COMMAND(IDM_NETWORK_STATISTICS_WND_ETHERNET,OnStatisticsEthernet)
     ON_UPDATE_COMMAND_UI(IDM_NETWORK_STATISTICS_WND, OnStatisticsUpdate)
     ON_COMMAND(IDM_CONFIGURE_PASSIVE, OnConfigurePassive)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_PASSIVE, OnUpdateConfigurePassive)
@@ -3401,6 +3403,10 @@ void CMainFrame::OnStatisticsLIN()
     OnStatistics(LIN);
 }
 
+void CMainFrame::OnStatisticsEthernet()
+{
+	OnStatistics(ETHERNET);
+}
 /******************************************************************************/
 /*  Functionality    :  This function is called by framework when user clicks */
 /*                      on the network statistics window . Depending on the
@@ -3426,6 +3432,7 @@ void CMainFrame::OnStatistics(ETYPE_BUS ebus)
 
             unChnl[CAN] = unTotalChannels;
             unChnl[LIN] = unTotalChannelsLIN;
+			unChnl[ETHERNET] = 1;
             m_oNetworkStatistics = new CNetworkStatistics(unChnl);
             m_oNetworkStatistics->SetTitle("Network Statistics");
             if ( nullptr != m_oNetworkStatistics )
@@ -3439,6 +3446,10 @@ void CMainFrame::OnStatistics(ETYPE_BUS ebus)
                 else if(ebus == LIN)
                 {
                     m_oNetworkStatistics->SetActivePage(LIN_STAT_PAGE);
+                }
+				else if(ebus == ETHERNET)
+                {
+                    m_oNetworkStatistics->SetActivePage(ETHERNET_STAT_PAGE);
                 }
             }
 
@@ -3479,6 +3490,10 @@ void CMainFrame::OnStatistics(ETYPE_BUS ebus)
         else if(ebus == LIN)
         {
             m_oNetworkStatistics->SetActivePage(LIN_STAT_PAGE);
+        }
+		else if(ebus == ETHERNET)
+        {
+            m_oNetworkStatistics->SetActivePage(ETHERNET_STAT_PAGE);
         }
 
         m_oNetworkStatistics->ShowWindow(SW_SHOW);
@@ -8617,6 +8632,24 @@ void CMainFrame::OnTimer(UINT nIDEvent)
                 m_oNetworkStatistics->vSendMessage(LIN, m_bLINDisconnect);
             }
         }
+		if ((theApp.pouGetFlagsPtr()->nGetFlagStatus(ETHERNET_CONNECTED)) == TRUE)
+        {
+            // Update the bus statistics window if it exists.
+            if ( m_oNetworkStatistics != NULL &&
+                    m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
+            {
+                // Perform network statistics calculation and update of
+                // network statistics window
+                m_oNetworkStatistics->vSendMessage(ETHERNET);
+            }
+        }
+
+		bool bEthernetConnected = theApp.pouGetFlagsPtr()->nGetFlagStatus(ETHERNET_CONNECTED);
+		if ( m_oNetworkStatistics != NULL &&
+                    m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
+        {
+            m_oNetworkStatistics->vSendMessage(ETHERNET, bEthernetConnected);
+        }
     }
     if(nIDEvent == m_unTimerSBLog)
     {
@@ -11802,6 +11835,8 @@ void CMainFrame::OnEthernetConnect()
 			::SendMessage(hWnd, WM_CLEAR_SORT_COLUMN, NULL, NULL);
 		}
 		m_objEthernetTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, BUS_CONNECTED);
+		GetIEthernetBusStat()->BSL_ResetBusStatistic();
+		GetIEthernetBusStat()->BSL_bStartUpdation(TRUE);
 	}
 	else
 	{
@@ -11813,6 +11848,7 @@ void CMainFrame::OnEthernetConnect()
 		::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(ETHERNET), WM_NOTIFICATION_FROM_OTHER,
                           eWINID_STOP_READ, 0);
 		m_objEthernetTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, BUS_DISCONNECTED);
+		GetIEthernetBusStat()->BSL_bStartUpdation(FALSE);
 	}
 
 	 pouFlag->vSetFlagStatus(ETHERNET_CONNECTED, bConnected);
@@ -12168,6 +12204,7 @@ HRESULT CMainFrame::InitializeDILEthernet(UINT unDefaultChannelCnt)
 						 m_objEthernetTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel,0);
 						/* Updates the number of channels selected */
                         m_nNumChannels = nCount;
+						vInitializeBusStatEthernet();
 					}
 					else
                     {
@@ -18791,6 +18828,10 @@ void CMainFrame::vInitializeBusStatFlexRay(void)
     }*/
 }
 
+void CMainFrame::vInitializeBusStatEthernet(void)
+{
+	GetIEthernetBusStat()->BSL_DoInitialization();
+}
 
 void CMainFrame::vInitializeBusStatLIN(void)
 {

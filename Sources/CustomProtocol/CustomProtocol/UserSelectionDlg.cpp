@@ -20,7 +20,7 @@
 #define VALUE					"Value"
 #define DERIVED_PROTOCOL		"Derived_Protocol"
 
-
+static string sg_omstrSaveFileName = "";
 // CUserSelectionDlg dialog
 extern unsigned char hex_digit_value(char c);
 
@@ -45,7 +45,8 @@ void CUserSelectionDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CUserSelectionDlg, CDialog)
 	ON_BN_CLICKED(IDC_RADIO_ADD_PRTOCOL, OnBnClickedRadioAddPrtocol)
 	ON_BN_CLICKED(IDC_RADIO_CREATE_FRAME, OnBnClickedRadioCreateFrame)
-	ON_BN_CLICKED(IDC_BTN_SAVE_PROTOCOL, OnBnClickedBtnSaveProtocol)
+	//ON_BN_CLICKED(IDC_BTN_SAVE_PROTOCOL, OnBnClickedBtnSaveProtocol)
+	ON_BN_CLICKED(IDC_BTN_SAVE_CONFIG, OnBnClickedBtnSaveConfig)
 END_MESSAGE_MAP()
 
 
@@ -73,20 +74,8 @@ void CUserSelectionDlg::OnBnClickedRadioCreateFrame()
 }
 
 
-void CUserSelectionDlg::OnBnClickedBtnSaveProtocol()
-{
-	CFileDialog oSaveFile(false,".xml","Custom Protocol",  OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT, "ProtocolConfig (*.xml)|*.xml||", this);
-	oSaveFile.m_ofn.lpstrTitle = "Save Protocol Configuration";
-	if(oSaveFile.DoModal() == IDOK)
-	{
-		string omstrFileName = oSaveFile.GetPathName();
-		SaveProtocolConfiguration(omstrFileName);
 
-	}
-
-}
-
-BOOL CUserSelectionDlg::SaveProtocolConfiguration(string omstrFileName)
+BOOL CUserSelectionDlg::SaveProtocolConfiguration()
 {
 	xmlDocPtr pXMLDocPtr = NULL;       /* document pointer */
     xmlNodePtr pRtNodePtr = NULL;
@@ -132,7 +121,8 @@ BOOL CUserSelectionDlg::SaveProtocolConfiguration(string omstrFileName)
 
 	 if(pXMLDocPtr != NULL)
 	 {
-		 xmlSaveFormatFileEnc(omstrFileName.c_str(), pXMLDocPtr, "UTF-8", 1);
+		 //const string str = omstrFileName.c_str();
+		 xmlSaveFormatFileEnc(sg_omstrSaveFileName.c_str(), pXMLDocPtr, "UTF-8", 1);
 		 xmlFreeDoc(pXMLDocPtr);
 	 }
 
@@ -151,7 +141,8 @@ BOOL CUserSelectionDlg::AddBaseProtocolToConfig(xmlNodePtr pBaseProtocol )
 		xmlAddChild(pBaseProtocol, pProtocol);
 
 		//Base Protocol name
-		xmlNewChild(pProtocol, NULL, BAD_CAST NAME, BAD_CAST itrList->strName.c_str());
+		xmlNodePtr pProtocolName = xmlNewChild(pProtocol, NULL, BAD_CAST NAME, BAD_CAST itrList->strName.c_str());
+		xmlAddChild(pProtocol, pProtocolName);
 
 		xmlNodePtr pHeader = xmlNewNode(NULL, BAD_CAST HEADER);
 		xmlAddChild(pProtocol, pHeader);
@@ -159,16 +150,19 @@ BOOL CUserSelectionDlg::AddBaseProtocolToConfig(xmlNodePtr pBaseProtocol )
 		for(int nHdrCnt = 0;nHdrCnt < itrList->nHeaderCount; nHdrCnt++)
 		{
 			//Header name
-			xmlNewChild(pProtocol, NULL, BAD_CAST NAME, BAD_CAST itrList->sHeaders[nHdrCnt].strName.c_str());
-
+			xmlNodePtr pHeaderName = xmlNewChild(pProtocol, NULL, BAD_CAST NAME, BAD_CAST itrList->sHeaders[nHdrCnt].strName.c_str());
+			 xmlAddChild(pProtocol, pHeaderName);
 			//No. of bytes
 			sprintf(pchData, "%d",itrList->sHeaders[nHdrCnt].nHeaderLength);
-			xmlNewChild(pProtocol, NULL, BAD_CAST NO_OF_BYTES, BAD_CAST pchData);  
+			xmlNodePtr pNoOfBytes = xmlNewChild(pProtocol, NULL, BAD_CAST NO_OF_BYTES, BAD_CAST pchData); 
+			 xmlAddChild(pProtocol, pNoOfBytes);
 
 			//Value of Header
 			sprintf(pchData, "%x",itrList->sHeaders[nHdrCnt].chValue);
-			xmlNewChild(pProtocol, NULL, BAD_CAST VALUE, BAD_CAST pchData);
+			xmlNodePtr pValue = xmlNewChild(pProtocol, NULL, BAD_CAST VALUE, BAD_CAST pchData);
+			xmlAddChild(pProtocol, pValue);
 		}
+		itrList++;
 	}
 	return S_OK;
 }
@@ -183,13 +177,16 @@ BOOL CUserSelectionDlg::AddDerivedProtocol(xmlNodePtr pDerivedProtocol)
 		xmlAddChild(pDerivedProtocol, pProtocol);
 
 		//Derived Protocol name
-		xmlNewChild(pProtocol, NULL, BAD_CAST NAME, BAD_CAST itrListDerived->strName.c_str());
+		xmlNodePtr pDerProtocolName = xmlNewChild(pProtocol, NULL, BAD_CAST NAME, BAD_CAST itrListDerived->strName.c_str());
+		xmlAddChild(pProtocol, pDerProtocolName);
 
 		for(int nBasePCnt = 0;nBasePCnt < itrListDerived->nBaseProtocolCnt; nBasePCnt++)
 		{
 			//Base Protocol name
-			xmlNewChild(pProtocol, NULL, BAD_CAST BASE_PROTOCOL, BAD_CAST itrListDerived->BaseProtocol[nBasePCnt].strName.c_str());
+			xmlNodePtr pBaseProtocolName = xmlNewChild(pProtocol, NULL, BAD_CAST BASE_PROTOCOL, BAD_CAST itrListDerived->BaseProtocol[nBasePCnt].strName.c_str());
+			xmlAddChild(pProtocol, pBaseProtocolName);		
 		}
+		itrListDerived++;
 	}
 	return S_OK;
 }
@@ -385,4 +382,17 @@ BOOL CUserSelectionDlg::LoadDerivedProtocol(xmlNodePtr pNode)
 		}
 	}
 	return S_OK;
+}
+
+
+void CUserSelectionDlg::OnBnClickedBtnSaveConfig()
+{
+	CFileDialog oSaveFile(false,".xml","Custom Protocol",  OFN_HIDEREADONLY|OFN_OVERWRITEPROMPT, "ProtocolConfig (*.xml)|*.xml||", this);
+	oSaveFile.m_ofn.lpstrTitle = "Save Protocol Configuration";
+	if(oSaveFile.DoModal() == IDOK)
+	{
+		
+		SaveProtocolConfiguration();
+
+	}
 }

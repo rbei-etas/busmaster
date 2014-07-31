@@ -66,9 +66,6 @@
     <ClInclude Include="EditItem.h">
       <Filter>Header Files\ListCtrlHeaders</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="XMLUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>

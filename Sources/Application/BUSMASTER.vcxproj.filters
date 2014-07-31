@@ -270,6 +270,12 @@
     <ClCompile Include="EthernetTxHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BusStatisticEthernet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EthernetBusStatisticsDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="BUSMASTER.idl">
@@ -562,6 +568,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EthernetTxHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BusStatisticEthernet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EthernetBusStatisticsDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

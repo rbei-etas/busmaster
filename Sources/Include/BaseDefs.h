@@ -91,7 +91,8 @@ enum ESTATUS_BUS
 enum eNetworkStatSheet
 {
     CAN_STAT_PAGE,
-    LIN_STAT_PAGE
+    LIN_STAT_PAGE,
+	ETHERNET_STAT_PAGE
 };
 
 enum eDirection
@@ -176,6 +177,7 @@ const TYPE_CHANNEL LIN_CHANNEL_ALL = 0;     // All channel notation
 const TYPE_CHANNEL CHANNEL_LIN_MIN = 1;     // Minimum value of a LIN channel
 const TYPE_CHANNEL CHANNEL_LIN_MAX = 32;    // Maximum value of a LIN channel
 #define defNO_OF_LIN_CHANNELS CHANNEL_LIN_MAX
+#define defNO_OF_Ethernet_CHANNELS 32U
 // Starts FlexRay related bus information
 const TYPE_CHANNEL FLEXRAY_CHANNEL_AB = 65;
 
