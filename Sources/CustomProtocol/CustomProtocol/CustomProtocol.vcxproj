@@ -130,7 +130,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_AFXEXT;WINVER=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;WINVER=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <AdditionalIncludeDirectories>$(SolutionDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -138,21 +138,29 @@
       </CompileAsManaged>
       <PrecompiledHeaderFile>CustomProtocol_stdafx.h</PrecompiledHeaderFile>
       <Optimization>Disabled</Optimization>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories);lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Winmm.lib;shlwapi.lib;htmlhelp.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>
+      </OptimizeReferences>
+      <EnableCOMDATFolding>
+      </EnableCOMDATFolding>
       <ImportLibrary>$(OutDir)CustomProtocol.lib</ImportLibrary>
       <OutputFile>$(OutDir)CustomProtocol.dll</OutputFile>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <AdditionalOptions>"$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib" %(AdditionalOptions)</AdditionalOptions>
       <StackReserveSize>8000000</StackReserveSize>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Reference Include="System" />

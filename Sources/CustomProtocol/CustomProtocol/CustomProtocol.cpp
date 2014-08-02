@@ -165,7 +165,7 @@ HRESULT CTxCusotmHeader::AddHeaderToData(STDATA& sData)
 			SBASEPROTOCOL sBaseProt = itrListDerived->BaseProtocol[nBaseProtCnt];
 			for(int nHeaderCnt = 0;nHeaderCnt < sBaseProt.nHeaderCount ; nHeaderCnt++)
 			{
-				strDataWithHeader.append( sBaseProt.sHeaders[nHeaderCnt].chValue);
+				strDataWithHeader.append( sBaseProt.sHeaders[nHeaderCnt].strValue);
 			}
 		}
 
@@ -191,7 +191,15 @@ HRESULT CTxCusotmHeader::AddHeaderToData(STDATA& sData)
 		{
 			byFinalData[i] = (hex_digit_value(strDataWithHeader[j]) << 4) | ( hex_digit_value(strDataWithHeader[j+1]));            
 		}
+		if((strDataWithHeader.length()/2) != sData.unDataLength)
+		{
+			for (int i = strDataWithHeader.length()/2; i <  sData.unDataLength; i++)
+			{
+				byFinalData[i] = sData.chData[i];            
+			}
+		}
 		memcpy(sData.chData, byFinalData, strDataWithHeader.length()/2);
+		return S_OK;
 	}
-	return S_OK;
+	return S_FALSE;
 }

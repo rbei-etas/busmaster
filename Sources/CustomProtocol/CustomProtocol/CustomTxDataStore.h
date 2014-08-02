@@ -10,7 +10,13 @@ typedef struct sHeader
 {
 	int							nHeaderLength;
 	string						strName;
-	char						chValue[30];
+	string						strValue;
+	sHeader()
+	{
+		nHeaderLength			= 0;
+		strName					= "";
+		strValue				= "";
+	}
 }SHEADER;
 
 typedef struct sBaseProtocol

@@ -47,7 +47,7 @@ BOOL CCreateFrameDlg::OnInitDialog()
 	CRect rctList;
     m_CreateFrameListc.GetWindowRect(&rctList);
     int nColWidth = rctList.Width() - 2;
-    int colwidths[] = { 20, 20, 20, 40};
+    int colwidths[] = { 10, 10, 10, 30};
     int total_cx = 0;
 
     TCHAR* acColData[]=
@@ -84,7 +84,7 @@ BOOL CCreateFrameDlg::OnInitDialog()
 	list<SDERIVEDPROTOCOL>::iterator itrListDerived = CTxCustomDataStore::ouGetTxEthernetDataStoreObj().m_DerivedProtocolList.begin();
 	while( itrListDerived !=  CTxCustomDataStore::ouGetTxEthernetDataStoreObj().m_DerivedProtocolList.end() )
 	{
-		((CComboBox*)GetDlgItem(IDC_COMBO_ADD_BASE_PROTOCOL))->AddString(itrListDerived->strName.c_str());
+		((CComboBox*)GetDlgItem(IDC_COMBO_DERIVED_PROTOCOL_NAME))->AddString(itrListDerived->strName.c_str());
 		itrListDerived++;
 	}
 
@@ -97,7 +97,7 @@ void CCreateFrameDlg::OnBnClickedOk()
 	//Onclick save button this function will be called
 	SDERIVEDPROTOCOL sDerivedProtocol;
 	char chName[100];
-	((CComboBox*)GetDlgItem(IDC_COMBO_ADD_BASE_PROTOCOL))->GetWindowTextA(chName, 100);
+	((CComboBox*)GetDlgItem(IDC_COMBO_DERIVED_PROTOCOL_NAME))->GetWindowTextA(chName, 100);
 	sDerivedProtocol.strName = chName;
 
 	//Get base protocol details from list ctrl
@@ -117,6 +117,8 @@ void CCreateFrameDlg::OnBnClickedOk()
 				}
 				itrList++;
 			}
+			//Reset the iterator to the intial point so that the next base protocl search starts from the begining
+			itrList = CTxCustomDataStore::ouGetTxEthernetDataStoreObj().m_BaseProtocolList.begin();
 		}
 	}
 
@@ -137,9 +139,7 @@ void CCreateFrameDlg::AddHeaderValuesToBaseProtocol(SBASEPROTOCOL& sBaseProtocol
 
 void CCreateFrameDlg::AddHeaderValues(SHEADER& sHeader, int nRow)
 {
-	string strHeaderVal = m_CreateFrameListc.GetItemText(nRow, 3);
-
-	strcpy(sHeader.chValue, strHeaderVal.c_str());
+	sHeader.strValue = m_CreateFrameListc.GetItemText(nRow, 3);
 }
 
 void CCreateFrameDlg::OnBnClickedBtnDeleteProtocol()
@@ -200,9 +200,16 @@ int CCreateFrameDlg::nAddMessageToList( SBASEPROTOCOL sBaseProtocol, int nHeader
 		m_CreateFrameListc.SetItemText( nRow, 2, _itoa(sBaseProtocol.sHeaders[nHeaderIndex].nHeaderLength, chBytes,10 ));
 
 		string str = "";
-		for(int i = 0; i< sBaseProtocol.sHeaders[nHeaderIndex].nHeaderLength; i++ )
+		if(sBaseProtocol.sHeaders[nHeaderIndex].strValue.length() != 0)
 		{
-			str.append("00 ");
+			str = sBaseProtocol.sHeaders[nHeaderIndex].strValue;
+		}
+		else
+		{
+			for(int i = 0; i< sBaseProtocol.sHeaders[nHeaderIndex].nHeaderLength; i++ )
+			{
+				str.append("00 ");
+			}
 		}
 		ouListInfo.m_eType = eText;
 		m_CreateFrameListc.vSetColumnInfo(nRow, 3, ouListInfo);

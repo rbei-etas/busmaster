@@ -16,6 +16,8 @@
 #define PROTOCOL				"Protocol"
 #define HEADER					"Header"
 #define HEADER_NAME				"Header_Name"
+#define BASE_HEADER_COUNT		"Base_Header_Count"
+#define BASE_PROTOCOL_COUNT		"Base_Protocol_Count"
 #define NO_OF_BYTES				"NoOfBytes"
 #define VALUE					"Value"
 #define DERIVED_PROTOCOL		"Derived_Protocol"
@@ -47,6 +49,7 @@ BEGIN_MESSAGE_MAP(CUserSelectionDlg, CDialog)
 	ON_BN_CLICKED(IDC_RADIO_CREATE_FRAME, OnBnClickedRadioCreateFrame)
 	//ON_BN_CLICKED(IDC_BTN_SAVE_PROTOCOL, OnBnClickedBtnSaveProtocol)
 	ON_BN_CLICKED(IDC_BTN_SAVE_CONFIG, OnBnClickedBtnSaveConfig)
+	ON_BN_CLICKED(IDC_BTN_LOAD, OnBnClickedBtnLoadProtocol)
 END_MESSAGE_MAP()
 
 
@@ -95,7 +98,7 @@ BOOL CUserSelectionDlg::SaveProtocolConfiguration()
 	//Add last updated time
 	SYSTEMTIME sysTime;
 	GetLocalTime(&sysTime);
-	char chTime[20];
+	char* chTime = new char[40];
 	sprintf(chTime," %u/%u/%u  %u:%u:%u:%u",
                      sysTime.wYear, sysTime.wMonth, sysTime.wDay,
                      sysTime.wHour, sysTime.wMinute, sysTime.wSecond,
@@ -133,7 +136,7 @@ BOOL CUserSelectionDlg::SaveProtocolConfiguration()
 
 BOOL CUserSelectionDlg::AddBaseProtocolToConfig(xmlNodePtr pBaseProtocol )
 {
-	char pchData[1024];
+	char* pchData = new char[1024];
 	list<SBASEPROTOCOL>::iterator itrList = CTxCustomDataStore::ouGetTxEthernetDataStoreObj().m_BaseProtocolList.begin();
 	while(itrList !=  CTxCustomDataStore::ouGetTxEthernetDataStoreObj().m_BaseProtocolList.end())
 	{
@@ -141,26 +144,29 @@ BOOL CUserSelectionDlg::AddBaseProtocolToConfig(xmlNodePtr pBaseProtocol )
 		xmlAddChild(pBaseProtocol, pProtocol);
 
 		//Base Protocol name
-		xmlNodePtr pProtocolName = xmlNewChild(pProtocol, NULL, BAD_CAST NAME, BAD_CAST itrList->strName.c_str());
-		xmlAddChild(pProtocol, pProtocolName);
+		xmlNewChild(pProtocol, NULL, BAD_CAST NAME, BAD_CAST itrList->strName.c_str());
+		//xmlAddChild(pProtocol, pProtocolName);
 
-		xmlNodePtr pHeader = xmlNewNode(NULL, BAD_CAST HEADER);
-		xmlAddChild(pProtocol, pHeader);
-
+		//Header Count
+		//xmlNewChild(pProtocol, NULL, BAD_CAST BASE_HEADER_COUNT, BAD_CAST itrList->nHeaderCount);
+	  
 		for(int nHdrCnt = 0;nHdrCnt < itrList->nHeaderCount; nHdrCnt++)
 		{
+			xmlNodePtr pHeader = xmlNewNode(NULL, BAD_CAST HEADER);
+			xmlAddChild(pProtocol, pHeader);
 			//Header name
-			xmlNodePtr pHeaderName = xmlNewChild(pProtocol, NULL, BAD_CAST NAME, BAD_CAST itrList->sHeaders[nHdrCnt].strName.c_str());
-			 xmlAddChild(pProtocol, pHeaderName);
+			xmlNodePtr pHeaderName = xmlNewChild(pHeader, NULL, BAD_CAST HEADER_NAME, BAD_CAST itrList->sHeaders[nHdrCnt].strName.c_str());
+			 //xmlAddChild(pProtocol, pHeaderName);
 			//No. of bytes
 			sprintf(pchData, "%d",itrList->sHeaders[nHdrCnt].nHeaderLength);
-			xmlNodePtr pNoOfBytes = xmlNewChild(pProtocol, NULL, BAD_CAST NO_OF_BYTES, BAD_CAST pchData); 
-			 xmlAddChild(pProtocol, pNoOfBytes);
+			xmlNodePtr pNoOfBytes = xmlNewChild(pHeader, NULL, BAD_CAST NO_OF_BYTES, BAD_CAST pchData); 
+			// xmlAddChild(pProtocol, pNoOfBytes);
 
 			//Value of Header
-			sprintf(pchData, "%x",itrList->sHeaders[nHdrCnt].chValue);
-			xmlNodePtr pValue = xmlNewChild(pProtocol, NULL, BAD_CAST VALUE, BAD_CAST pchData);
-			xmlAddChild(pProtocol, pValue);
+            string strDatabytes;
+			strDatabytes = itrList->sHeaders[nHdrCnt].strValue;
+			xmlNodePtr pValue = xmlNewChild(pHeader, NULL, BAD_CAST VALUE, BAD_CAST strDatabytes.c_str());
+			//xmlAddChild(pProtocol, pValue);
 		}
 		itrList++;
 	}
@@ -169,7 +175,7 @@ BOOL CUserSelectionDlg::AddBaseProtocolToConfig(xmlNodePtr pBaseProtocol )
 
 BOOL CUserSelectionDlg::AddDerivedProtocol(xmlNodePtr pDerivedProtocol)
 {
-	char pchData[1024];
+	char* pchData = new char[1024];
 	list<SDERIVEDPROTOCOL>::iterator itrListDerived = CTxCustomDataStore::ouGetTxEthernetDataStoreObj().m_DerivedProtocolList.begin();
 	while(itrListDerived !=  CTxCustomDataStore::ouGetTxEthernetDataStoreObj().m_DerivedProtocolList.end())
 	{
@@ -177,14 +183,16 @@ BOOL CUserSelectionDlg::AddDerivedProtocol(xmlNodePtr pDerivedProtocol)
 		xmlAddChild(pDerivedProtocol, pProtocol);
 
 		//Derived Protocol name
-		xmlNodePtr pDerProtocolName = xmlNewChild(pProtocol, NULL, BAD_CAST NAME, BAD_CAST itrListDerived->strName.c_str());
-		xmlAddChild(pProtocol, pDerProtocolName);
+		xmlNewChild(pProtocol, NULL, BAD_CAST NAME, BAD_CAST itrListDerived->strName.c_str());
+
+		//Base Protocol Count
+		//xmlNewChild(pProtocol, NULL, BAD_CAST BASE_PROTOCOL_COUNT, BAD_CAST itrListDerived->nBaseProtocolCnt);
 
 		for(int nBasePCnt = 0;nBasePCnt < itrListDerived->nBaseProtocolCnt; nBasePCnt++)
 		{
 			//Base Protocol name
 			xmlNodePtr pBaseProtocolName = xmlNewChild(pProtocol, NULL, BAD_CAST BASE_PROTOCOL, BAD_CAST itrListDerived->BaseProtocol[nBasePCnt].strName.c_str());
-			xmlAddChild(pProtocol, pBaseProtocolName);		
+			//xmlAddChild(pProtocol, pBaseProtocolName);		
 		}
 		itrListDerived++;
 	}
@@ -238,33 +246,35 @@ BOOL CUserSelectionDlg::nLoadBaseProtocol(xmlDocPtr xmlConfigFiledoc)
             pNode = pNodeSet->nodeTab[0];       //Take First One only
         }
 		 INT nCount = pNodeSet->nodeNr;
+		 xmlNodePtr pChildNode;
 		 for(int i = 0; i < nCount; i++)
 		 {
 			 //This node will point to the individual Protocol node
 			 //Parse it and store it Datastore
 			  LoadBaseProtocol(pNode);
 		 }
-		
 	}
 
-	// Updating Global configuration parameters in to xml
+	pNode = pNode->next;
 	pchPath = (xmlChar*)"//Protocol_Configuration/Derived_Protocol";
 	pPathObject = xmlUtils::pGetNodes(xmlConfigFiledoc, pchPath);
 	if( nullptr != pPathObject )
 	{
 		pNodeSet = pPathObject->nodesetval;
-		pNodeSet = pPathObject->nodesetval;
+		//pNodeSet = pPathObject->nodesetval;
 		//No. of Base protocols
 		 if( nullptr != pNodeSet )
         {
             pNode = pNodeSet->nodeTab[0];       //Take First One only
         }
-		  INT nCount = pNodeSet->nodeNr;
+		INT nCount = pNodeSet->nodeNr;
+		xmlNodePtr pChildNode;
+
 		 for(int i = 0; i < nCount; i++)
 		 {
 			 //This node will point to the individual Protocol node
 			 //Parse it and store it Datastore
-			  LoadDerivedProtocol(pNode);
+			 LoadDerivedProtocol(pNode);
 		 }
 		
 	}
@@ -273,21 +283,23 @@ BOOL CUserSelectionDlg::nLoadBaseProtocol(xmlDocPtr xmlConfigFiledoc)
 
 BOOL CUserSelectionDlg::LoadBaseProtocol(xmlNodePtr pNode)
 {
+	xmlNodePtr pBaseNode = nullptr;
 	xmlNodePtr pChildNode = nullptr;
 	string strVar;
-	char* pchData;
 
 	if( nullptr == pNode )
 	{
 		AfxMessageBox("Configuration file has been changed manually. Base protocol data is missing");
 		return S_FALSE;
 	}
-
-	if ((!xmlStrcmp(pNode->name, (const xmlChar*)PROTOCOL))) 
+	
+	if ((!xmlStrcmp(pNode->name, (const xmlChar*)BASE_PROTOCOLS))) 
 	{
-		while(pNode != nullptr)
+		
+		pBaseNode = pNode->xmlChildrenNode;
+		while(pBaseNode != nullptr)
 		{
-			pChildNode = pNode->xmlChildrenNode;
+			pChildNode = pBaseNode->xmlChildrenNode;
 			int nHeaderCnt = 0;
 			SBASEPROTOCOL    sBaseProtocol;
 			while (pChildNode != nullptr)           //loop through the node of "PROTOCOL"
@@ -298,46 +310,62 @@ BOOL CUserSelectionDlg::LoadBaseProtocol(xmlNodePtr pNode)
 					sBaseProtocol.strName = strVar;
 				}
 
-				if (xmlUtils::GetDataFrmNode(pChildNode,HEADER, strVar))   
+				if (xmlUtils::GetDataFrmNode(pChildNode,BASE_HEADER_COUNT, strVar))
 				{
+					sBaseProtocol.nHeaderCount = atoi(strVar.c_str());
+				}
+
+				//if (xmlUtils::GetDataFrmNode(pChildNode,HEADER, strVar))   
+				if ((!xmlStrcmp(pChildNode->name, (const xmlChar*)HEADER))) 
+				{
+
 					xmlNodePtr   pChildHeader = pChildNode->xmlChildrenNode;
 					//Loop through headers and 
 					while (pChildHeader != nullptr) 
 					{
-						if (xmlUtils::GetDataFrmNode(pChildNode,HEADER_NAME, strVar))
+						if (xmlUtils::GetDataFrmNode(pChildHeader,HEADER_NAME, strVar))
 						{
-							sBaseProtocol.sHeaders[nHeaderCnt].strName   = strVar;
+							if(strVar.length() != 0)
+							{
+								sBaseProtocol.sHeaders[nHeaderCnt].strName   = strVar;
+							}
 						}
-						if (xmlUtils::GetDataFrmNode(pChildNode,NO_OF_BYTES, strVar))
+						if (xmlUtils::GetDataFrmNode(pChildHeader,NO_OF_BYTES, strVar))
 						{
-							sBaseProtocol.sHeaders[nHeaderCnt].nHeaderLength   = atoi(strVar.c_str());
+							if(sBaseProtocol.sHeaders[nHeaderCnt].strName.length() != 0)
+							{
+								if(strVar.length() != 0)
+								{
+									sBaseProtocol.sHeaders[nHeaderCnt].nHeaderLength   = atoi(strVar.c_str());
+								}
+							}
 						}
 						//Get data here
-						if (xmlUtils::GetDataFrmNode(pChildNode,VALUE, strVar))
+						if (xmlUtils::GetDataFrmNode(pChildHeader,VALUE, strVar))
 						{
-							strcpy(pchData, strVar.c_str());
-							char* pch;
-							pch = strtok (pchData," ,.-");
-							int i =0;
-							u_char   BYTE[30];
-							while (pch != NULL)
+							if(sBaseProtocol.sHeaders[nHeaderCnt].strName.length() != 0)
 							{
-								 BYTE[i]= (hex_digit_value(pch[0]) << 4) | ( hex_digit_value(pch[1]));
-								pch = strtok (NULL, " ,.-");
-								i++;
+								if(strVar.length() != 0)
+								{
+									sBaseProtocol.sHeaders[nHeaderCnt].strValue = strVar;
+								}
 							}
-							memcpy(sBaseProtocol.sHeaders[nHeaderCnt].chValue, &BYTE, i);
 						}
 						
 						pChildHeader = pChildHeader->next;
-						nHeaderCnt++;
+						
 					}
+					nHeaderCnt++;
 				}
 				
 				pChildNode = pChildNode->next;
 			}
-			CTxCustomDataStore::ouGetTxEthernetDataStoreObj().m_BaseProtocolList.push_back(sBaseProtocol);
-			pNode = pNode->next;
+			if(sBaseProtocol.strName.length() != 0)
+			{
+				sBaseProtocol.nHeaderCount = nHeaderCnt;
+				CTxCustomDataStore::ouGetTxEthernetDataStoreObj().m_BaseProtocolList.push_back(sBaseProtocol);
+			}
+			pBaseNode = pBaseNode->next;
 		}
 	}
 	return S_OK;
@@ -345,6 +373,7 @@ BOOL CUserSelectionDlg::LoadBaseProtocol(xmlNodePtr pNode)
 
 BOOL CUserSelectionDlg::LoadDerivedProtocol(xmlNodePtr pNode)
 {
+	xmlNodePtr pDerivedNode = nullptr;
 	xmlNodePtr pChildNode = nullptr;
 	string strVar;
 	
@@ -354,15 +383,16 @@ BOOL CUserSelectionDlg::LoadDerivedProtocol(xmlNodePtr pNode)
 		AfxMessageBox("Configuration file has been changed manually. Base protocol data is missing");
 		return S_FALSE;
 	}
-
-	if ((!xmlStrcmp(pNode->name, (const xmlChar*)PROTOCOL))) 
+	pChildNode = pNode->xmlChildrenNode;
+	if ((!xmlStrcmp(pNode->name, (const xmlChar*)DERIVED_PROTOCOL))) 
 	{
-		while(pNode != nullptr)
+		pDerivedNode = pNode->xmlChildrenNode;
+		while(pDerivedNode != nullptr)
 		{
-			pChildNode = pNode->xmlChildrenNode;
+			pChildNode = pDerivedNode->xmlChildrenNode;
 			int nHeaderCnt = 0;
 			SDERIVEDPROTOCOL    sDerivedProtocol;
-			while (pChildNode != nullptr)           //loop through the node of "CAN_Tx_Window"
+			while (pChildNode != nullptr)           //loop through the node of "Derived_Protocol"
 			{
 				
 				if (xmlUtils::GetDataFrmNode(pChildNode,NAME, strVar))
@@ -372,13 +402,17 @@ BOOL CUserSelectionDlg::LoadDerivedProtocol(xmlNodePtr pNode)
 
 				if (xmlUtils::GetDataFrmNode(pChildNode,BASE_PROTOCOL, strVar))
 				{
-					sDerivedProtocol.BaseProtocol[nHeaderCnt].strName   = strVar;
+					sDerivedProtocol.BaseProtocol[nHeaderCnt++].strName   = strVar;
 				}
 				
 				pChildNode = pChildNode->next;
 			}
-			CTxCustomDataStore::ouGetTxEthernetDataStoreObj().m_DerivedProtocolList.push_back(sDerivedProtocol);
-			pNode = pNode->next;
+			if(sDerivedProtocol.strName.length() != 0)
+			{
+				sDerivedProtocol.nBaseProtocolCnt = nHeaderCnt;
+				CTxCustomDataStore::ouGetTxEthernetDataStoreObj().m_DerivedProtocolList.push_back(sDerivedProtocol);
+			}
+			pDerivedNode = pDerivedNode->next;
 		}
 	}
 	return S_OK;
@@ -391,8 +425,10 @@ void CUserSelectionDlg::OnBnClickedBtnSaveConfig()
 	oSaveFile.m_ofn.lpstrTitle = "Save Protocol Configuration";
 	if(oSaveFile.DoModal() == IDOK)
 	{
-		
+		sg_omstrSaveFileName = oSaveFile.GetFileName();
 		SaveProtocolConfiguration();
 
 	}
 }
+
+

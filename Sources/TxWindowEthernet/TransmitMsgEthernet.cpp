@@ -217,7 +217,7 @@ void CTransmitMsgEthernet::vGetStringFromValue(int nValue, string& strValue, boo
             sprintf_s(chValue, 1024, "%X", nValue);
         }
     }*/
-	sprintf_s(chValue, 1024, "%x", nValue);
+	sprintf_s(chValue, 1024, "%.2X", nValue);
     strValue = chValue;
 }
 
@@ -1361,15 +1361,23 @@ void CTransmitMsgEthernet::OnBnClickedBtnProtocolSetting()
 	list<ETHERNET_FRAME_DATA>::iterator itrList = CTxEthernetDataStore::ouGetTxEthernetDataStoreObj().m_ouEthernet_Frame_Data.begin();
 	std::advance(itrList, nItem);
 
-	STDATA   sData;
-	sData.unDataLength = itrList->m_ouEthernetMessage.m_unDataLen;
-	sData.chData = new u_char[itrList->m_ouEthernetMessage.m_unDataLen];
-	memcpy(sData.chData, itrList->m_ouEthernetMessage.m_ucData, itrList->m_ouEthernetMessage.m_unDataLen) ;
-	HRESULT hResult = m_pBaseTxAppProtocol->AddHeaderToData(sData);
-	if(hResult == S_OK)
+	try
 	{
-		memcpy(itrList->m_ouEthernetMessage.m_ucData, sData.chData, sData.unDataLength);
-		nUpdateMessageDetails(*itrList);
+		STDATA   sData;
+		sData.unDataLength = itrList->m_ouEthernetMessage.m_unDataLen;
+		sData.chData = new u_char[itrList->m_ouEthernetMessage.m_unDataLen];
+		memcpy(sData.chData, itrList->m_ouEthernetMessage.m_ucData, itrList->m_ouEthernetMessage.m_unDataLen) ;
+		HRESULT hResult = m_pBaseTxAppProtocol->AddHeaderToData(sData);
+		if(hResult == S_OK)
+		{
+			memcpy(itrList->m_ouEthernetMessage.m_ucData, sData.chData, sData.unDataLength);
+			nUpdateMessageDetails(*itrList);
+		}
+	}
+	catch(exception e)
+	{
+		string strError = "Custom protocol dll has crashed";
+		AfxMessageBox(strError.c_str());
 	}
 }
 
