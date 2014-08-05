@@ -106,6 +106,12 @@ void CProtocolAdderDlg::OnBnClickedOk()
 	((CEdit*)GetDlgItem(IDC_EDIT_HEADER_COUNT))->GetWindowTextA(chName, 100);
 	sBaseProtocol.nHeaderCount = atoi(chName);
 
+	int nItemCnt = m_omAddHeaderList.GetItemCount();
+	if(nItemCnt != sBaseProtocol.nHeaderCount)
+	{
+		AfxMessageBox("Header count is not equal to the number of header added.");
+		return;
+	}
 	for(int i =0; i < sBaseProtocol.nHeaderCount; i++)
 	{
 		strTemp = m_omAddHeaderList.GetItemText(i, def_HEADERNAME_COL);
