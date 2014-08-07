@@ -21,13 +21,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (United States) resources
+// Englisch (USA) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -121,6 +119,16 @@ END
 //
 // Dialog
 //
+
+IDD_DLG_CHANNEL_DATABASE_ASSOCIATION DIALOGEX 0, 0, 316, 185
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Channel-Database-Association"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,205,164,50,14
+    PUSHBUTTON      "Abbrechen",IDCANCEL,259,164,50,14
+    CONTROL         "",IDC_CHANNEL_DATABASE_ASSOCIATION_LIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,302,145
+END
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 243, 130
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
@@ -775,6 +783,14 @@ END
 #ifdef APSTUDIO_INVOKED
 GUIDELINES DESIGNINFO
 BEGIN
+    IDD_DLG_CHANNEL_DATABASE_ASSOCIATION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 178
+    END
+
     IDD_ABOUTBOX, DIALOG
     BEGIN
         LEFTMARGIN, 8
@@ -1691,10 +1707,10 @@ IDB_LIN_IMG TOOLBAR 32, 32
 BEGIN
     BUTTON      IDB_LIN_IMG
     BUTTON      IDM_LIN_CONNECT
-	SEPARATOR
-	BUTTON		ID_LIN_CLUSTER_CONFIG
-	BUTTON		IDM_SCHEDULE_CONFIG_LIN
-	SEPARATOR
+    SEPARATOR
+    BUTTON      ID_LIN_CLUSTER_CONFIG
+    BUTTON      IDM_SCHEDULE_CONFIG_LIN
+    SEPARATOR
     BUTTON      ID_TRANSMIT_CONFIGURE_LIN
     BUTTON      IDM_NETWORK_STATISTICS_WND_LIN
     SEPARATOR
@@ -1877,38 +1893,62 @@ END
 STRINGTABLE
 BEGIN
     IDS_DISCONNECT_FLEXRAY  "D&isconnect\tF12"
-    //ID_LIN_CLUSTER_CONFIG   "Associate LIN Database(LDF)\nConfigure FlexRay Network"
+    ID_TRANSMIT_CONFIGURE_LIN 
+                            "Configure  messages to transmit over LIN-bus\nConfigure  messages to transmit over LIN-bus"
+    IDM_LIN_CONNECT         "Connect/Disconnect\nConnect/Disconnect"
+    ID_LIN_CLUSTER_CONFIG   "Associate LIN Database(LDF)\nConfigure LIN Network"
+    IDM_CFGN_LIN_LOG        "Configure LIN message logging\nLIN logging"
+    IDM_LOG_LIN_ON_OFF      "Start/Stop LIN Message Logging\nStart/Stop LIN Logging"
+    IDM_FILTER_LOGLINOFF    "Enable or Disable LIN Loggiing filter\nEnable or Disable LIN Logging filter"
+    IDM_FILTER_MSGLINOFF    "Enable or Disable Message Display filter For Lin\nEnable or Disable Message Display filter For LIN"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_DISCONNECT_LIN      "D&isconnect\tF11"
     IDS_CONNECT_LIN         "&Connect\tF4"
-	IDM_LOG_LIN_ON_OFF     "Start/Stop LIN Message Logging\nStart/Stop LIN Logging"
-    IDM_CFGN_LIN_LOG      "Configure LIN message logging\nLIN logging"
-	IDM_LIN_CONNECT       "Connect/Disconnect\nConnect/Disconnect"
-	IDM_FILTER_LOGLINOFF    "Enable or Disable LIN Loggiing filter\nEnable or Disable LIN Logging filter"
-		
-	ID_LIN_CLUSTER_CONFIG   "Associate LIN Database(LDF)\nConfigure LIN Network"
-	IDM_SCHEDULE_CONFIG_LIN	"Configure LIN Schedule Tables\nConfigure LIN Schedule Tables"
-	IDM_FILTER_MSGLINOFF "Enable or Disable Message Display filter For Lin\nEnable or Disable Message Display filter For LIN"
-	IDM_CONFIGURE_FILTER_LIN	"Select messages for filtering at application level\nSelect messages for filtering at application level"
-	ID_CONFIGURE_MESSAGEDISPLAY_LIN	"ConfigureLIN Message Display Attributes\nConfigure LIN Message Display Attributes"
-	IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN "Configure LIN Simulated Systems for Multinode Simulation\nConfigure LIN Simulated Systems for Multinode Simulation"
-	//IDM_NETWORK_STATISTICS_WND "NetWork Statics Window"
-
 END
 
-STRINGTABLE 
+STRINGTABLE
+BEGIN
+    ID_CONFIGURE_MESSAGEDISPLAY_LIN 
+                            "ConfigureLIN Message Display Attributes\nConfigure LIN Message Display Attributes"
+    ID_LIN_FILTER_CONFIG    "LIN Filter Configuration\nLIN Filter Configuration"
+    IDM_SCHEDULE_CONFIG_LIN "Configure LIN Schedule Tables\nConfigure LIN Schedule Tables"
+END
+
+STRINGTABLE
+BEGIN
+    IDM_CONFIGURE_FILTER_LIN 
+                            "Select messages for filtering at application level\nSelect messages for filtering at application level"
+END
+
+STRINGTABLE
+BEGIN
+    ID_CONFIGURE_MESSAGEDISPLAY_FLEXRAY 
+                            "Configure Message Display Attributes of FlexRay\nConfigure Message Display Attributes of FlexRay"
+    IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN 
+                            "Configure LIN Simulated Systems for Multinode Simulation\nConfigure LIN Simulated Systems for Multinode Simulation"
+END
+
+STRINGTABLE
 BEGIN
     IDS_MESSAGE_ID          "Message ID"
-    IDM_NETWORK_STATISTICS_WND_LIN 
-                            "Show Network Statistics Window\nShow Network Statistics Window"
-	IDM_NETWORK_STATISTICS_WND_CAN 
-                            "Show/Hide Network Statistics Window\nShow Network Statistics Window"
     IDM_CONFIGURE_PASSIVE   "Set Controller To Passive Mode\nPassive Mode"
     IDM_CONFIGURE_ACTIVE    "Set Controller To Active Mode\nActive Mode"
     IDM_TRACE_WND           "Show/Hide Trace Window\nShow/Hide Trace Window"
+END
+
+STRINGTABLE
+BEGIN
+    IDM_NETWORK_STATISTICS_WND_LIN 
+                            "Show Network Statistics Window\nShow Network Statistics Window"
+    IDM_SIGNALWATCH_ADDSIGNAL_LIN 
+                            "Add/Delete Signals to Watch window\nAdd/Delete Signals to Watch window"
+    IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN 
+                            "Show/Hide Signal Watch Window\nShow/Hide Signal Watch Windiow"
+    IDM_NETWORK_STATISTICS_WND_CAN 
+                            "Show/Hide Network Statistics Window\nShow Network Statistics Window"
 END
 
 STRINGTABLE
@@ -1949,16 +1989,13 @@ BEGIN
     33055                   "Configure Signal Graph Window\nConfigure Signal Graph Window"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDM_DELETE_SEL_MSG_BLOCK "Delete selected message block"
     IDM_CONFIGURE_DATABASE_OPENACTIVE 
                             "Open active database\nOpen active database"
     IDM_SIGNALWATCH_ADDSIGNAL 
                             "Add/Delete Signals to Watch window\nAdd/Delete Signals to Watch window"
-    
-	IDM_SIGNALWATCH_ADDSIGNAL_LIN "Add/Delete Signals to Watch window\nAdd/Delete Signals to Watch window"
-	                          
     IDM_SIGNALWATCH_CLOSE   "Show/Hide Signal Watch window\nShow/Hide Signal Watch window"
     IDM_FILTER_MESSAGE_SELECTMESSAGES 
                             "Select messages for filtering at application level\nSelect messages for filtering at application level"
@@ -1971,11 +2008,9 @@ BEGIN
     IDM_BUILD_COMPILEANDLINK "Compile and Link the current file"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDR_TOOL_BUTTON_SIGNAL_WATCH 
-                            "Show/Hide Signal Watch Window\nShow/Hide Signal Watch Windiow"
-    IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN 
                             "Show/Hide Signal Watch Window\nShow/Hide Signal Watch Windiow"
     IDR_TOOL_BUTTON_SKIP    "Skip Message\nSkip Message"
     IDR_TOOL_BUTTON_GO      "Go\nGo"
@@ -2047,7 +2082,6 @@ BEGIN
     IDM_DELETE              "Deletes current message"
     IDR_TOOL_STOPSENDMSG    "Stop sending mutilple messages\nStop sending mutilple messages"
     IDM_CFGN_SEND_MSGS      "Configure  messages to transmit over CAN-bus\nConfigure  messages to transmit over CAN-bus"
-    ID_TRANSMIT_CONFIGURE_LIN   "Configure  messages to transmit over LIN-bus\nConfigure  messages to transmit over LIN-bus"
     IDM_DELETE_SEL_MSG      "Deletes current message details"
     IDM_MSGDISPWND_MSGREP   "Show between message name and ID in the message entry"
     IDM_MSGDISPWND_DATE     "Date is displayed along with time stamp"
@@ -2166,14 +2200,7 @@ BEGIN
     ID_TOOLBAR_LIN          "Show/hide LIN Toolbar\nShow/hide LIN toolbar"
 END
 
-STRINGTABLE 
-BEGIN
-    ID_CONFIGURE_MESSAGEDISPLAY_FLEXRAY 
-                            "Configure Message Display Attributes of FlexRay\nConfigure Message Display Attributes of FlexRay"
-    ID_LIN_FILTER_CONFIG    "LIN Filter Configuration\nLIN Filter Configuration"
-END
-
-#endif    // English (U.S.) resources
+#endif    // Englisch (USA) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
