@@ -504,7 +504,7 @@ HRESULT CDIL_CAN_VSCOM::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface
     }
     else
     {
-        MessageBox(sg_hOwnerWnd, "Please use the \"Controller\" menu item to setup the device.", "Hardware Selection", MB_OK);
+        MessageBox(sg_hOwnerWnd, "Please use the \"Channel Configuration\" menu item to setup the device.", "Hardware Selection", MB_OK);
     }
 
     return(S_OK);
