@@ -850,7 +850,7 @@ static LONGLONG GetSysTimestamp(LONG Timestamp)
 
 static void CopyMsg2CanData(STCANDATA* can_data, VSCAN_MSG* msg, unsigned char flags)
 {
-    memset(can_data, 0, sizeof(can_data));
+    memset(can_data, 0, sizeof(*can_data));
     can_data->m_uDataInfo.m_sCANMsg.m_ucChannel = 1;
     can_data->m_uDataInfo.m_sCANMsg.m_unMsgID = msg->Id;
     can_data->m_uDataInfo.m_sCANMsg.m_ucDataLen = msg->Size;
