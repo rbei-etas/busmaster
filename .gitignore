@@ -66,6 +66,7 @@ Sources/DIL_J1939/Release
 Sources/EXTERNAL/*/Release
 Sources/Filter/Release
 Sources/FLEXRAY_ETAS_BOA/Release
+Sources/Format Converter/build/
 Sources/Format Converter/Release
 Sources/Format Converter/*/Release
 Sources/FrameProcessor/Release
@@ -167,6 +168,8 @@ Sources/BIN/*/CAN_VSCOM.dll
 Sources/BIN/*/Changelog.txt
 Sources/BIN/*/ConfigDialogsDIL.dll
 Sources/BIN/*/ConverterPlugins/AscLogConverter.dll
+Sources/BIN/*/ConverterPlugins/BlfLibrary.dll
+Sources/BIN/*/ConverterPlugins/BlfLogConverter.dll
 Sources/BIN/*/ConverterPlugins/CAPL2CConverter.dll
 Sources/BIN/*/ConverterPlugins/CAPL2CConverterJPN.dll
 Sources/BIN/*/ConverterPlugins/DBC2DBFConverter.dll
@@ -205,6 +208,7 @@ Sources/BIN/*/TestSetupEditorGUI.dll
 Sources/BIN/*/TestSuiteExecutorGUI.dll
 Sources/BIN/*/UDS_Protocol.dll
 Sources/BIN/*/JPN
+Sources/BIN/DumpFiles
 Sources/BIN/Libs/*/*.exp
 Sources/BIN/Libs/*/CAN_ETAS_BOA.lib
 Sources/BIN/Libs/*/CAN_ETAS_BOA_1_4.lib

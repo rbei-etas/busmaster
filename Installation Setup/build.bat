@@ -30,4 +30,5 @@ makensis "CleanRegistry.nsi"
 makensis "BUSMASTER INSTALL SCRIPT.nsi"
 
 :END
+REM pause
 exit 0

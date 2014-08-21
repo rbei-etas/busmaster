@@ -14,7 +14,7 @@ goto END
 echo Using MSBuild found in %DOTNET%
 set PATH=%DOTNET%;%PATH%
 MSBuild BUSMASTER.sln /property:Configuration=Release
-MSBuild "Format Converter\FormatConverter.sln" /property:Configuration=Release
 
 :END
+REM pause
 exit 0

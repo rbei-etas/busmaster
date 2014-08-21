@@ -439,7 +439,7 @@ Section "BUSMASTER"
   File /r ..\Sources\BIN\Release\ConverterPlugins
 
   ; Japanese lib files
-  File /r ..\Sources\BIN\Release\JPN
+  ;File /r ..\Sources\BIN\Release\JPN
 
   ; Japanese Localization folder
   File /r ..\Sources\Localization
