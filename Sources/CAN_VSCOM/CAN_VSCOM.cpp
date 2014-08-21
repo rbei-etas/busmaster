@@ -446,9 +446,8 @@ HRESULT CDIL_CAN_VSCOM::CAN_PerformInitOperations(void)
 */
 HRESULT CDIL_CAN_VSCOM::CAN_PerformClosureOperations(void)
 {
-    HRESULT hResult = S_OK;
+    HRESULT hResult = CAN_StopHardware();
 
-    hResult = CAN_StopHardware();
     // ------------------------------------
     // Close driver
     // ------------------------------------
@@ -1314,7 +1313,6 @@ static BOOL bRemoveClient(DWORD dwClientId)
     INT i;
     BOOL bResult = FALSE;
 
-    bResult = FALSE;
     if (sg_unClientCnt > 0)
     {
         UINT unClientIndex = 0;
