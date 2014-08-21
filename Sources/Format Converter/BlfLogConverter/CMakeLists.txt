@@ -13,7 +13,7 @@ set(resources
 
 add_library(BlfLogConverter SHARED ${sources} ${headers} ${resources})
 
-add_definitions(-D_AFXEXT)
+add_definitions(-D_AFXDLL)
 
 include_directories(
   ../BlfLibrary/Src
@@ -28,5 +28,5 @@ target_link_libraries(BlfLogConverter
 add_custom_command(
   TARGET BlfLogConverter
   POST_BUILD
-  COMMAND cmake ARGS -E make_directory ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/
-  COMMAND cmake ARGS -E copy ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/BlfLogConverter.dll ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/)
+  COMMAND ${CMAKE_COMMAND} ARGS -E make_directory ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/
+  COMMAND ${CMAKE_COMMAND} ARGS -E copy $<TARGET_FILE:BlfLogConverter> ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/)

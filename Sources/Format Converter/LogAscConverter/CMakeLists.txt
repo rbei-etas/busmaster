@@ -27,7 +27,7 @@ add_custom_command(OUTPUT Log_Asc_Parser.c Log_Asc_Parser.h
   DEPENDS Log_Asc_Parser.y
   WORKING_DIRECTORY ${BISON_PATH})
 
-add_definitions(-D_AFXEXT)
+add_definitions(-D_AFXDLL)
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -42,5 +42,5 @@ target_link_libraries(LogAscConverter
 add_custom_command(
   TARGET LogAscConverter
   POST_BUILD
-  COMMAND cmake ARGS -E make_directory ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/
-  COMMAND cmake ARGS -E copy ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/LogAscConverter.dll ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/)
+  COMMAND ${CMAKE_COMMAND} ARGS -E make_directory ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/
+  COMMAND ${CMAKE_COMMAND} ARGS -E copy $<TARGET_FILE:LogAscConverter> ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/)

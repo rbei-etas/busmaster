@@ -33,7 +33,7 @@ set(resources
 
 add_library(DBF2DBCConverter SHARED ${sources} ${headers} ${resources})
 
-add_definitions(-D_AFXEXT)
+add_definitions(-D_AFXDLL)
 
 include_directories(
   ${GETTEXT_INCLUDE_DIR}
@@ -46,5 +46,5 @@ target_link_libraries(DBF2DBCConverter
 add_custom_command(
   TARGET DBF2DBCConverter
   POST_BUILD
-  COMMAND cmake ARGS -E make_directory ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/
-  COMMAND cmake ARGS -E copy ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/DBF2DBCConverter.dll ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/)
+  COMMAND ${CMAKE_COMMAND} ARGS -E make_directory ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/
+  COMMAND ${CMAKE_COMMAND} ARGS -E copy $<TARGET_FILE:DBF2DBCConverter> ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/)

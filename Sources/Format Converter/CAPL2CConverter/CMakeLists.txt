@@ -34,7 +34,7 @@ add_custom_command(OUTPUT CAPL_C_Lexer.h
   ARGS -i -L -oCAPL_C_Lexer.h ${CMAKE_CURRENT_SOURCE_DIR}/lexer_rule.l
   DEPENDS lexer_rule.l)
 
-add_definitions(-D_AFXEXT)
+add_definitions(-D_AFXDLL)
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
@@ -50,5 +50,5 @@ target_link_libraries(CAPL2CConverter
 add_custom_command(
   TARGET CAPL2CConverter
   POST_BUILD
-  COMMAND cmake ARGS -E make_directory ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/
-  COMMAND cmake ARGS -E copy ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/CAPL2CConverter.dll ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/)
+  COMMAND ${CMAKE_COMMAND} ARGS -E make_directory ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/
+  COMMAND ${CMAKE_COMMAND} ARGS -E copy $<TARGET_FILE:CAPL2CConverter> ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/)

@@ -27,7 +27,7 @@ set(resources
 
 add_executable(FormatConverter WIN32 ${sources} ${headers} ${resources})
 
-add_definitions()
+add_definitions(-D_AFXDLL)
 
 include_directories(
   ${GETTEXT_INCLUDE_DIR}
@@ -40,5 +40,5 @@ target_link_libraries(FormatConverter
 add_custom_command(
   TARGET FormatConverter
   POST_BUILD
-  COMMAND cmake ARGS -E make_directory ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/
-  COMMAND cmake ARGS -E copy ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/FormatConverter.exe ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/)
+  COMMAND ${CMAKE_COMMAND} ARGS -E make_directory ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/
+  COMMAND ${CMAKE_COMMAND} ARGS -E copy $<TARGET_FILE:FormatConverter> ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/)

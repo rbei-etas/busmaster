@@ -10,7 +10,7 @@ set(headers
 
 add_library(J1939DBC2DBFConverter SHARED ${sources} ${headers})
 
-add_definitions(-D_AFXEXT)
+add_definitions(-D_AFXDLL)
 
 include_directories(
   ${GETTEXT_INCLUDE_DIR}
@@ -24,5 +24,5 @@ target_link_libraries(J1939DBC2DBFConverter
 add_custom_command(
   TARGET J1939DBC2DBFConverter
   POST_BUILD
-  COMMAND cmake ARGS -E make_directory ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/
-  COMMAND cmake ARGS -E copy ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/J1939DBC2DBFConverter.dll ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/)
+  COMMAND ${CMAKE_COMMAND} ARGS -E make_directory ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/
+  COMMAND ${CMAKE_COMMAND} ARGS -E copy $<TARGET_FILE:J1939DBC2DBFConverter> ${PROJECT_SOURCE_DIR}/../BIN/${CMAKE_BUILD_TYPE}/ConverterPlugins/)
