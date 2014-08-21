@@ -358,6 +358,13 @@ BEGIN
     CONTROL         "List1",IDC_LIST_STAT,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_OWNERDRAWFIXED | WS_BORDER | WS_TABSTOP,1,0,137,302
 END
 
+IDD_DLG_NETWORK_STATISTICS_ETHERNET DIALOGEX 0, 0, 138, 303
+STYLE DS_SETFONT | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Ethernet"
+FONT 8, "MS Sans Serif", 400, 0, 0x0
+BEGIN
+    CONTROL         "List1",IDC_LIST_STAT,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_OWNERDRAWFIXED | WS_BORDER | WS_TABSTOP,1,0,137,302
+END
 IDD_DLG_MSG_BUFFER_CONGIF DIALOG 0, 0, 214, 124
 STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION | WS_SYSMENU
 FONT 8, "MS Sans Serif"
@@ -1392,6 +1399,34 @@ BEGIN
             MENUITEM "&All Handler(s)",             IDM_EXECUTE_ALL_HANDLERS_LIN
         END
     END
+	POPUP "&Ethernet"
+    BEGIN
+		MENUITEM "&Connect",                    IDM_ETHERNET_CONNECT
+		MENUITEM SEPARATOR
+		 MENUITEM "&Network Statistics",        IDM_NETWORK_STATISTICS_WND_ETHERNET
+		 POPUP "&Message Window"
+		 BEGIN
+			MENUITEM "&Activate",                   ID_SHOWMESSAGEWINDOW_ETHERNET, CHECKED
+			MENUITEM "&Enable Filters",             IDM_FILTER_MSGETHERNETOFF, CHECKED
+   //         MENUITEM SEPARATOR
+			//MENUITEM "&Configure",                  ID_CONFIGURE_MESSAGEDISPLAY_ETH, GRAYED
+            MENUITEM SEPARATOR
+            POPUP "Time &Mode"
+            BEGIN
+                MENUITEM "&System Time",                IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME, CHECKED
+                MENUITEM "&Absolute Time",              IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, CHECKED
+                MENUITEM "&Relative Time",              IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, CHECKED
+            END
+            MENUITEM "&Overwrite",                  IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, CHECKED
+			MENUITEM "&Interpret",                  IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, CHECKED
+            MENUITEM "&Reset Columns",              IDM_MSGWND_RESET_COLUMNS
+		END
+		 MENUITEM SEPARATOR
+        POPUP "&Transmit"
+        BEGIN
+            MENUITEM "&Configure",                  IDM_ETH_CFGN_SEND_MSGS
+        END
+    END
     POPUP "&View"
     BEGIN
         MENUITEM "T&race Window",               IDM_TRACE_WND, CHECKED
@@ -1881,6 +1916,11 @@ END
 
 STRINGTABLE 
 BEGIN
+    IDS_DISCONNECT_ETHERNET  "D&isconnect\tF12"
+	IDS_CONNECT_ETHERNET     "&Connect\tF3"
+END
+STRINGTABLE 
+BEGIN
     IDS_DISCONNECT_LIN      "D&isconnect\tF11"
     IDS_CONNECT_LIN         "&Connect\tF4"
 	IDM_LOG_LIN_ON_OFF     "Start/Stop LIN Message Logging\nStart/Stop LIN Logging"
@@ -2059,6 +2099,7 @@ BEGIN
     IDM_DELETE_ALL_SEL_MSG  "Delete all selected message from the list"
     IDM_EXECUTE_KEYHANDLERS "Enable/Disable execution of all key handler(s)\nEnable/Disable all Key handler(s)"
     IDM_FLEX_CFGN_SEND_MSGS "FlexRay Message Configuration\nFlexRay Message Configuration"
+    IDM_ETH_CFGN_SEND_MSGS  "Ethernet Message Configuration\nEthernet Message Configuration"
     IDM_CONFIG_NEW          "Create new configuration file\nCreate new configuration file"
     IDM_CONFIG_LOAD         "Load configuration file\nLoad configuration file"
     IDM_SAVE_CONFIG         "Save configuration file\nSave configuration file"

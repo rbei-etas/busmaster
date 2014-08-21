@@ -34,9 +34,9 @@
 #include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
 
-static AFX_EXTENSION_MODULE SigGrphWndDLL = { false, nullptr };
-WINDOWPLACEMENT m_sGraphWndPlacement[AVAILABLE_PROTOCOLS];
-SGRAPHSPLITTERDATA m_sGraphSplitterPos[AVAILABLE_PROTOCOLS];
+static AFX_EXTENSION_MODULE SigGrphWndDLL = { NULL, NULL };
+WINDOWPLACEMENT m_sGraphWndPlacement[AVAILABLE_PROTOCOLS - 1];   //TODO: Remove -1 when Signal graph for ETHERNET is implemented
+SGRAPHSPLITTERDATA m_sGraphSplitterPos[AVAILABLE_PROTOCOLS - 1];  //TODO: Remove -1 when Signal graph for ETHERNET is implemented
 CRect g_rcParent;
 
 extern "C" int APIENTRY
@@ -95,7 +95,13 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
         new CDynLinkLibrary(SigGrphWndDLL);
 
         for(int nBUSID = 0; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
-        {
+		{
+			if(nBUSID == 5)
+			{
+				//TODO: When Signal graph for ETHERNET is implemented remove this check
+				//Skip Ethernet protocol
+				continue;
+			}
             m_sGraphWndPlacement[nBUSID].length = 0;
             m_sGraphWndPlacement[nBUSID].rcNormalPosition.top = -1;
             m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[0][0] = -1;
@@ -386,6 +392,12 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
 
     for(int nBUSId = 0; nBUSId<AVAILABLE_PROTOCOLS; nBUSId++)
     {
+		if(nBUSId == 5)
+		{
+			//TODO: When Signal graph for ETHERNET is implemented remove this check
+			//Skip Ethernet protocol
+			continue;
+		}
         if(m_pomGraphWindows[nBUSId] != nullptr)
         {
             int nRefreshTime =
@@ -549,6 +561,12 @@ DWORD WINAPI SignalDataPlotterThread(LPVOID pVoid)
 
         for(register int nBusID = 0; nBusID<AVAILABLE_PROTOCOLS; nBusID++)
         {
+			if(nBusID == 5)
+			{
+				//TODO: When Signal graph for ETHERNET is implemented remove this check
+				//Skip Ethernet protocol
+				continue;
+			}
             if(m_pomGraphWindows[nBusID] == nullptr)
             {
                 continue;

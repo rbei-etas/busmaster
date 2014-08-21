@@ -526,6 +526,22 @@ void CFlags::vSetFlagStatus(eFLEXRAYMONITORFLAG eWhichFlag, INT nValue)
     }
     m_omCriticalSecFlex.Unlock();
 }
+void CFlags::vSetFlagStatus(eETHERNETMONITORFLAG WhichFlag, int nValue)
+{
+	m_omCriticalSecEthernet.Lock();
+    switch( WhichFlag )
+    {
+        case ETHERNET_CONNECTED:
+            m_bIsEthernetConnected = nValue;
+            break;
+		case DISPLAYFILTERON_ETHERNET:
+			m_bIsEthernetDisplayFilterOn = nValue;
+			break;
+        default:
+            ASSERT(FALSE); // Invalid flag enum value
+    }
+    m_omCriticalSecEthernet.Unlock();
+}
 /******************************************************************************/
 /*  Function Name    :  nGetFlagStatus                                        */
 /*  Input(s)         :  Flag identifer                                        */
@@ -734,6 +750,27 @@ int CFlags::nGetFlagStatus(eFLEXRAYMONITORFLAG eWhichFlag)
 
     return nRetValue;
 }
+int CFlags::nGetFlagStatus(eETHERNETMONITORFLAG WhichFlag)
+{
+	INT nRetValue = -1;
+	m_omCriticalSecEthernet.Lock();
+	switch( WhichFlag )
+    {
+        case ETHERNET_CONNECTED:
+            nRetValue = m_bIsEthernetConnected;
+            break;
+		case DISPLAYFILTERON_ETHERNET:
+            nRetValue = m_bIsEthernetDisplayFilterOn;
+            break;
+        default:
+            // Invalid flag enum value
+            ASSERT ( FALSE );
+    }
+    m_omCriticalSecFlex.Unlock();
+
+    return nRetValue;
+}
+
 /******************************************************************************/
 /*  Function Name    :  vGetToolbarButtonStatus                               */
 /*  Input(s)         :  PSTOOLBARINFO psToolBarInfo                           */

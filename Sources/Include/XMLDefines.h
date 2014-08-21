@@ -146,6 +146,7 @@
 //TX window
 #define DEF_CAN_TX_WINDOW           "CAN_Tx_Window"
 #define DEF_LIN_TX_WINDOW           "LIN_Tx_Window"
+#define DEF_ETHERNET_TX_WINDOW		"Ethernet_Tx_Window"
 #define DEF_MSG_BLOCK               "Message_Block"
 #define DEF_BLOCK_NAME              "Block_Name"
 #define DEF_MSG_ENABLED             "IsEnabled"
@@ -305,6 +306,10 @@
 #define DEF_BASECYCLE                   "BaseCycle"
 #define DEF_REPETION                    "Repetion"
 
+//Ethernet specific
+#define DEF_SOURCE_MAC					"Source_MAC"
+#define DEF_DEST_MAC					"Dest_MAC"
+#define DEF_PROTOCOL_NAME				"Protocol_Name"
 
 //LIN Specific
 #define DEF_LIN_BAUDRATE                "BaudRate"

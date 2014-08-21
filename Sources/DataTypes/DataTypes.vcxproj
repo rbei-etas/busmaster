@@ -167,6 +167,7 @@
     <ClInclude Include="MainSubEntry.h" />
     <ClInclude Include="MsgBufAll_DataTypes.h" />
     <ClInclude Include="MsgBufCANVFSE.h" />
+    <ClInclude Include="MsgBufEthernetVFSE.h" />
     <ClInclude Include="MsgBufFSE.h" />
     <ClInclude Include="MsgBufLINVFSE.h" />
     <ClInclude Include="MsgBufVFSE.h" />

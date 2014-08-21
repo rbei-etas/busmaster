@@ -217,6 +217,12 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
         // Check for Graph list
         for(register int nBusID = CAN; nBusID < AVAILABLE_PROTOCOLS; nBusID++)
         {
+			if(nBusID == 5)
+			{
+				//TODO: When Signal graph for ETHERNET is implemented remove this check
+				//Skip Ethernet protocol
+				continue;
+			}
             if( pMainFrame->m_odGraphList[nBusID].m_omElementList.GetSize() > 0 )
             {
                 // Get the delete confirmation from the user
@@ -231,6 +237,12 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
                     // Clear Graph List for all buses.
                     for(register int nID = CAN; nID < AVAILABLE_PROTOCOLS; nID++)
                     {
+						if(nBusID == 5)
+						{
+							//TODO: When Signal graph for ETHERNET is implemented remove this check
+							//Skip Ethernet protocol
+							continue;
+						}
                         pMainFrame->m_odGraphList[nID].m_omElementList.RemoveAll();
                     }
 

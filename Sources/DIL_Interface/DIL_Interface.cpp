@@ -35,6 +35,7 @@
 
 #include "DILI_J1939.h"
 #include "DIL_FLEXRAY.h"
+#include "DIL_Ethernet.h"
 
 #include "DIL_Interface.h"
 
@@ -45,6 +46,7 @@ static CDIL_LIN* sg_pouDIL_LIN = nullptr;
 
 static CDILI_J1939* sg_pouDILI_J1939 = nullptr;
 static CDIL_FLEXRAY* sg_pouDIL_FLEXRAY = nullptr;
+static CDIL_ETHERNET* sg_pouDIL_ETHERNET = NULL;
 
 // CDILApp
 
@@ -174,7 +176,22 @@ if sg_pouFP_CAN is null */
             *ppvInterface = (void*) sg_pouDIL_FLEXRAY; /* Doesn't matter even if sg_pouFP_CAN is null */
         }
         break;
-
+		case ETHERNET:
+		{
+			if(NULL == sg_pouDIL_ETHERNET)
+			{
+				if ((sg_pouDIL_ETHERNET = new CDIL_ETHERNET) == NULL)
+                {
+                    ASSERT(FALSE);
+                    hResult = S_FALSE;
+                }
+                else
+                {
+                }
+			}
+			*ppvInterface = (void*) sg_pouDIL_ETHERNET;
+		}
+		break;
         default:
         {
             hResult = S_FALSE;

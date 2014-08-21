@@ -74,6 +74,7 @@
 #include "TxHandler.h"
 #include "FlexTxHandler.h"
 #include "TxHandlerLIN.h"
+#include "EthernetTxHandler.h"
 #include "WaveFormDataHandler.h"
 #include "WaveformTransmitter.h"
 #include "TxMsgWndJ1939.h"
@@ -108,6 +109,7 @@ public:
     DWORD m_dwDriverId;
     SHORT m_shFLEXRAYDriverId;
     SHORT m_shLINDriverId;
+	SHORT m_shEthernetDriverId;
     WrapperErrorLogger m_ouWrapperLogger;
     // send toolbar button
     //bool m_bEnableSendToolbarButton;
@@ -156,6 +158,7 @@ public:
     CTxHandler m_objTxHandler;
     CFlexTxHandler  m_objFlexTxHandler;
     CTxHandlerLIN m_objTxHandlerLin;
+	CEthernetTxHandler m_objEthernetTxHandler;
     CSigGrphHandler m_objSigGrphHandler;
     S_EXFUNC_PTR    m_sExFuncPtr[BUS_TOTAL];
     CTxMsgWndJ1939* m_pouTxMsgWndJ1939;
@@ -208,6 +211,7 @@ public:
     HRESULT IntializeDILL(UINT unDefaultChannelCnt = 0);
     //To initialize FLEXRAY DIL
     HRESULT InitializeFLEXRAYDIL();
+	HRESULT InitializeDILEthernet(UINT unDefaultChannelCnt = 0);
     DWORD m_dwFLEXClientID;
     /* To maintain associated FLEXRAY database/configuration list */
     FLEXRAY_CONFIG_FILES m_acFlexDBConfigInfo;
@@ -450,6 +454,8 @@ protected:
     afx_msg void OnMessageFilterButton();
     afx_msg void OnMessageFilterButtonLin();
     afx_msg void OnUpdateMessageFilterButtonLin(CCmdUI* pCmdUI);
+	afx_msg void OnMessageFilterButtonEthernet();
+    afx_msg void OnUpdateMessageFilterButtonEthernet(CCmdUI* pCmdUI);
 
 
     afx_msg void OnReplayFilter();
@@ -491,6 +497,8 @@ protected:
     afx_msg void OnUpdateFlexRayConnect(CCmdUI* pCmdUI);
     afx_msg void OnLINConnect();
     afx_msg void OnUpdateLINConnect(CCmdUI* pCmdUI);
+	afx_msg void OnEthernetConnect();
+	afx_msg void OnUpdateEthernetConnect(CCmdUI* pCmdUI);
     afx_msg void OnExecuteKeyhandlers();
     afx_msg void OnExecuteKeyhandlersLIN();
     afx_msg void OnUpdateExecuteKeyhandlers(CCmdUI* pCmdUI);
@@ -561,6 +569,7 @@ protected:
     afx_msg void OnConfigChannelSelection();
     afx_msg void OnConfigChannelSelectionLIN();
     afx_msg void OnUpdateConfigChannelSelection(CCmdUI* pCmdUI);
+	afx_msg void OnEthernetTxWindow();
 
     afx_msg LRESULT OnReceiveKeyBoardData(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnReceiveKeyDown(WPARAM wParam, LPARAM lParam);
@@ -612,6 +621,9 @@ private:
     INT             m_nFlexRayDILCount; //Count of the FlexRay driver interface layers supported
     CMenu*          m_pFlxDILSubMenu;
     CMenu* m_pDILSubMenuLin;
+	INT m_nDILCountEthernet; //Count of the driver interface layers supported in ethernet
+	CMenu* m_pDILSubMenuEthernet;
+	DILLIST m_ouListEthernet;// List of the driver interface layers supported
     CWaveFormDataHandler m_objWaveformDataHandler;
     CMainEntryList m_odResultingList;
     //CMainEntryList m_odResultingList;
@@ -776,11 +788,13 @@ private:
 
     DILINFO* psGetDILEntry(UINT unKeyID, bool bKeyMenuItem = TRUE);
     FLEXRAY_DILINFO* psGetFLEXRAYDILEntry(UINT unKeyID, bool bKeyMenuItem = TRUE);
+	DILINFO* psGetEthernetDILEntry(UINT unKeyID, BOOL bKeyMenuItem= TRUE);
     void vInitializeBusStatCAN(void);
     void vInitializeBusStatFlexRay(void);
 
     DILINFO* psGetDILLINEntry(UINT unKeyID, bool bKeyMenuItem = TRUE);
     void vInitializeBusStatLIN(void);
+    void vInitializeBusStatEthernet(void);
 
     bool bStartGraphReadThread();
     bool bStopGraphReadThread();
@@ -816,6 +830,7 @@ public:
     bool bUpdatePopupMenuDIL(void);
     bool bUpdatePopupMenuFLEXRAYDIL(void);
     bool bUpdatePopupMenuDILL(void);
+	BOOL bUpdatePopupMenuDILEthernet(void);
     CString omStrGetUnionFilePath(CString omStrTemp);
 
     void vNS_LINInitCFileFunctPtrs();
@@ -834,6 +849,8 @@ public:
 
     afx_msg void OnUpdateSelectLINDriver(CCmdUI* pCmdUI);
     afx_msg void OnSelectLINDriver(UINT nID);
+	afx_msg void OnSelectEthernetDriver(UINT nID);
+	afx_msg void OnUpdateSelectEthernetDriver(CCmdUI* pCmdUI);
     afx_msg LRESULT vKeyPressedInMsgWnd(WPARAM wParam, LPARAM lParam);
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
     virtual void WinHelp(DWORD dwData, UINT nCmd = HELP_CONTEXT);
@@ -859,6 +876,7 @@ public:
 
     afx_msg void OnStatisticsCAN();
     afx_msg void OnStatisticsLIN();
+    afx_msg void OnStatisticsEthernet();
     afx_msg void OnStatistics(ETYPE_BUS ebus);
     afx_msg void OnStatisticsUpdate(CCmdUI* pCmdUI);
 

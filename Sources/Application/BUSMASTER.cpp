@@ -385,6 +385,7 @@ BOOL CCANMonitorApp::InitInstance()
     pMainFrame->bUpdatePopupMenuDIL();
     pMainFrame->bUpdatePopupMenuFLEXRAYDIL();
     pMainFrame->bUpdatePopupMenuDILL(); //LIN modify
+	pMainFrame->bUpdatePopupMenuDILEthernet();
     // Start Logging if is enabled
     // Get the Flag Pointer
     CFlags* pomFlag =  pouGetFlagsPtr();

@@ -181,3 +181,22 @@ private:
     EFORMAT     m_eNumFormat;
     SMSGENTRY*  m_psMsgRoot;
 };
+
+class CMsgInterpretationETHERNET
+{
+
+private:
+    CFrameMap   m_ouDataSet;
+    EFORMAT     m_eNumFormat;
+    SMSGENTRY*  m_psMsgRoot;
+public:
+    CMsgInterpretationETHERNET();
+    ~CMsgInterpretationETHERNET();
+
+    //BOOL bInterpretMsgs( EFORMAT eNumFormat, STETHERNET_MSG* pMsg, SSignalInfoArray& SigInfoArray);
+	int GetMsgName(int nMsgCode,  char ucName[]);
+    int nGetSignalCount(CString strMsgName);
+    void vCopy(CMsgInterpretationETHERNET* pDest) const;
+    void vSetMessageList(SMSGENTRY* psCurrMsgEntry);
+    //void vClear();
+};

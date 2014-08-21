@@ -46,7 +46,7 @@
 #include "BUSMASTER.h"
 // Mainframe class definition
 #include "MainFrm.h"
-
+#include "InterfaceGetter.h"
 extern CCANMonitorApp theApp;
 
 
@@ -171,6 +171,19 @@ CBaseBusStatisticLIN* GetILINBusStat(void)
     return Result;
 }
 
+CBaseBusStatisticEthernet* GetIEthernetBusStat(void)
+{
+    CBaseBusStatisticEthernet* Result = nullptr;
+	if (BS_GetInterface(ETHERNET, (void**) &Result) == S_OK)
+    {
+        ASSERT(nullptr != Result);
+    }
+    else
+    {
+        ASSERT(FALSE);
+    }
+    return Result;
+}
 
 CFlexRayNetworkStats* GetIFlexRayBusStat(void)
 {

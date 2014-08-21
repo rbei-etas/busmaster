@@ -21,10 +21,12 @@
 #include "stdafx.h"             // Standard include header
 #include "BusStatisticCAN.h"
 #include "BusStatisticLIN.h"
+#include "BusStatisticEthernet.h"
 #include "FlexRayNetworkStats.h"
 #include "BusStatistics.h"
 static CBusStatisticCAN* sg_pouBS_CAN = nullptr;
 static CBusStatisticLIN* sg_pouBS_LIN = nullptr;
+static CBusStatisticEthernet* sg_pouBS_Ethernet = NULL;
 static CFlexRayNetworkStats*  sg_pouBS_FlexRay = nullptr;
 /**
  * \param[in] eBus specifies the Type of bus,Either CAN or FRAME
@@ -89,6 +91,19 @@ HRESULT BS_GetInterface(ETYPE_BUS eBus, void** ppvInterface)
 
             // Else the object has been existing already
             *ppvInterface = (void*) sg_pouBS_LIN;
+        }
+		case ETHERNET:
+        {
+			if (nullptr == sg_pouBS_Ethernet)
+            {
+				if ((sg_pouBS_Ethernet = new CBusStatisticEthernet) == nullptr)
+                {
+                    ASSERT(FALSE);
+                    hResult = S_FALSE;
+                }
+            }
+            // Else the object has been existing already
+			*ppvInterface = (void*) sg_pouBS_Ethernet;
         }
         break;
 

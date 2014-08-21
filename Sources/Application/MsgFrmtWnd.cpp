@@ -411,6 +411,12 @@ int CMsgFrmtWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
         //TODO FLEX::Test the use case
         m_podMsgIntprtnDlg->vSetCaption("LIN");
     }
+
+	if (m_eBusType == ETHERNET)
+    {
+        m_podMsgIntprtnDlg->vSetCaption("ETHERNET");
+    }
+
     m_objToolTip.Create(this);
     m_objToolTip.Activate(TRUE);
     m_objToolTip.SetMaxTipWidth(MAX_LINE_LENGTH_TOOL_TIP);
@@ -507,6 +513,16 @@ void CMsgFrmtWnd::vFitListCtrlToWindow()
             }
             int nLastColWidth = ClientWidth - nTotalWidth;
             m_lstMsg.SetColumnWidth(12, nLastColWidth);
+        }
+		else if (m_eBusType == ETHERNET)
+        {
+            int nTotalWidth = 0;
+            for (int nIdx = 0; nIdx < 13; nIdx++ )
+            {
+                nTotalWidth += m_lstMsg.GetColumnWidth(nIdx);
+            }
+            int nLastColWidth = ClientWidth - nTotalWidth;
+            m_lstMsg.SetColumnWidth(13, nLastColWidth);
         }
         m_lstMsg.MoveWindow(&sClientRect);
     }
@@ -1124,6 +1140,10 @@ void CMsgFrmtWnd::OnSendSelectedMessageEntry()
                 }
             }
         }
+		else if(m_eBusType == ETHERNET)
+		{
+			 STETHERNETDATA sEthData;
+        }
     }
 }
 
@@ -1217,7 +1237,7 @@ void CMsgFrmtWnd::OnTimer(UINT nIDEvent)
                 vGetSignalInfoArray(m_unCurrInterpretedMapIndex, SigInfoArray);
 
                 CString strName;
-                if (this->m_eBusType == FLEXRAY || this->m_eBusType == LIN )
+				if (this->m_eBusType == FLEXRAY || this->m_eBusType == LIN || this->m_eBusType == ETHERNET  )
                 {
                     strName = strGetMsgNameOrCode(m_unCurrInterpretedMapIndex);
                 }
@@ -2090,6 +2110,13 @@ CString CMsgFrmtWnd::strGetMsgNameOrCode(UINT nMsgCode)
 
         }
     }
+	else if( m_eBusType == ETHERNET )
+	{
+		/*char* cMsgName;
+		m_ouMsgInterpretEthernet.GetMsgName(nMsgCode, cMsgName);
+		omName.Format("%s",cMsgName);*/
+		omName = "name";
+	}
 
     else if (nullptr != m_ppMsgDB)
     {
@@ -2267,6 +2294,41 @@ void CMsgFrmtWnd::vSetDefaultHeaders()
             m_MsgHdrInfo.vInitializeColDetails(sHdrCtrlPos, somArrColTitle, nColCount);
 
             vRearrangeCols();
+        }
+        break;
+		case ETHERNET:
+			{
+				 int nColCount = 13;
+				sHdrCtrlPos.m_byTimePos     = 0;
+				sHdrCtrlPos.m_byRxTxPos     = 1;
+				sHdrCtrlPos.m_byIDPos       = 2;
+				sHdrCtrlPos.m_byCodeNamePos = 3;
+				sHdrCtrlPos.m_bySourceIP	= 4;
+				sHdrCtrlPos.m_byDestIP		= 5;
+				sHdrCtrlPos.m_bySourcePort	= 6;
+				sHdrCtrlPos.m_byDestPort	= 7;
+				sHdrCtrlPos.m_bySourceMAC	= 8;
+				sHdrCtrlPos.m_byDestMAC		= 9;
+				sHdrCtrlPos.m_byChannel     = 10;
+				sHdrCtrlPos.m_byDLCPos      = 11;
+				sHdrCtrlPos.m_byDataPos     = 12;
+
+				 //Set the col string
+				somArrColTitle[sHdrCtrlPos.m_byTimePos]     = _("Time              ");
+				somArrColTitle[sHdrCtrlPos.m_byRxTxPos]     = _("Tx/Rx          ");
+				somArrColTitle[sHdrCtrlPos.m_byIDPos]		= _("Frame Id         ");
+				somArrColTitle[sHdrCtrlPos.m_byCodeNamePos]	= _("Message Name     ");
+				somArrColTitle[sHdrCtrlPos.m_bySourceIP]    = _("Source IP    ");
+				somArrColTitle[sHdrCtrlPos.m_byDestIP]		= _("Destination IP    ");
+				somArrColTitle[sHdrCtrlPos.m_bySourcePort]  = _("Source Port         ");
+				somArrColTitle[sHdrCtrlPos.m_byDestPort]    = _("Destination Port    ");
+				somArrColTitle[sHdrCtrlPos.m_bySourceMAC]	= _("Source MAC Address       ");
+				somArrColTitle[sHdrCtrlPos.m_byDestMAC]     = _("Destination MAC Address  ");
+				somArrColTitle[sHdrCtrlPos.m_byChannel]		= _("Channel    ");
+				somArrColTitle[sHdrCtrlPos.m_byDLCPos]      = _("DLC    ");
+				somArrColTitle[sHdrCtrlPos.m_byDataPos]     = _("Data Byte(s)                                     ");
+				m_MsgHdrInfo.vInitializeColDetails(sHdrCtrlPos, somArrColTitle, nColCount);
+				vRearrangeCols();
         }
         break;
     }
@@ -2590,6 +2652,13 @@ void CMsgFrmtWnd::vOnRxMsg(void* pMsg)
         m_bUpdate = TRUE;
         return;
     }
+	else if(m_eBusType == ETHERNET)
+	{
+		static STETHERNETDATA sEthernetMsg;
+        m_pouMsgContainerIntrf->hReadFromOWBuffer(&sEthernetMsg, dwMapIndex);
+        m_bUpdate = TRUE;
+        return;
+    }
 
 
     static STCANDATA sCANMsg;
@@ -2833,10 +2902,12 @@ LRESULT CMsgFrmtWnd::ModifyMsgWndProperty(WPARAM wParam, LPARAM lParam)
             bToUpdate = TRUE;
         }
         vUpdateAllTreeWnd();
-
+		if(m_podMsgIntprtnDlg != NULL)
+		{
         if(m_podMsgIntprtnDlg->IsWindowVisible())
         {
             vShowUpdateMsgIntrpDlg(m_unCurrInterpretedMapIndex);
+			}
         }
     }
 
@@ -3891,6 +3962,12 @@ void CMsgFrmtWnd::vUpdateAllTreeWnd()
                         m_pouMsgContainerIntrf->hReadFromOWBuffer(&sFlexMsg, n64Temp);
                         rgbTreeItem = m_ouMsgAttr.GetCanIDColour(sFlexMsg.stcDataMsg.m_nSlotID);
                     }
+					else if (m_eBusType == ETHERNET)
+                    {
+						static STETHERNETDATA sEthernetData;
+                        m_pouMsgContainerIntrf->hReadFromOWBuffer(&sEthernetData, n64Temp);
+                        rgbTreeItem =  RGB(0,0,0);
+					}
                 }
                 else
                 {
@@ -4116,6 +4193,21 @@ void CMsgFrmtWnd::OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI)
         }
         break;
 
+		case ID_SHOWMESSAGEWINDOW_ETHERNET:
+        {
+			if(m_eBusType == ETHERNET)
+            {
+                if(IsWindowVisible())
+                {
+                    pCmdUI->SetCheck(1);
+                }
+                else
+                {
+                    pCmdUI->SetCheck(0);
+                }
+            }
+        }
+        break;
         default:
         {
             ASSERT(false);

@@ -26,6 +26,9 @@
     <ClCompile Include="MsgContainer_LIN.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MsgContainer_Ethernet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MsgContainer_CAN.h">
@@ -47,6 +50,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MsgContainer_LIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MsgContainer_Ethernet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

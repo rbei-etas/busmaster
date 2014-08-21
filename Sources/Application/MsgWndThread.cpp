@@ -41,7 +41,7 @@ CMsgWndThread::CMsgWndThread()
     g_arrstrBusNames.Add(CString(" - J1939"));
     g_arrstrBusNames.Add(CString(" - FLEXRAY"));
     g_arrstrBusNames.Add(CString(" - LIN"));
-
+	g_arrstrBusNames.Add(CString(" - ETHERNET"));
     for(short shBusID = CAN; shBusID < BUS_TOTAL; shBusID++)
     {
         m_pMsgWnd[shBusID] = nullptr;

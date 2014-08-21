@@ -351,6 +351,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
       </BrowseInformation>
     </ClCompile>
+    <ClCompile Include="BusStatisticEthernet.cpp" />
     <ClCompile Include="BusStatisticLIN.cpp" />
     <ClCompile Include="BusStatistics.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Disabled</Optimization>
@@ -487,6 +488,8 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
       </BrowseInformation>
     </ClCompile>
+    <ClCompile Include="EthernetBusStatisticsDlg.cpp" />
+    <ClCompile Include="EthernetTxHandler.cpp" />
     <ClCompile Include="FibexClass.cpp" />
     <ClCompile Include="ChannelConfigurationDlg.cpp" />
     <ClCompile Include="FIBEX_Structs.cpp" />
@@ -999,6 +1002,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="BUSMASTER.h" />
     <ClInclude Include="BusmasterDump.h" />
     <ClInclude Include="BusStatisticCAN.h" />
+    <ClInclude Include="BusStatisticEthernet.h" />
     <ClInclude Include="BusStatisticLIN.h" />
     <ClInclude Include="BusStatistics.h" />
     <ClInclude Include="BusStatisticsDlg.h" />
@@ -1017,6 +1021,8 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="DisplayIntMsg.h" />
     <ClInclude Include="DriverInfoDlg.h" />
     <ClInclude Include="ElementSelection.h" />
+    <ClInclude Include="EthernetBusStatisticsDlg.h" />
+    <ClInclude Include="EthernetTxHandler.h" />
     <ClInclude Include="FibexClass.h" />
     <ClInclude Include="FibexClass_extern.h" />
     <ClInclude Include="ChannelConfigurationDlg.h" />

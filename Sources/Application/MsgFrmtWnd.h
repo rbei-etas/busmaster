@@ -106,6 +106,7 @@ private:
     CMsgInterpretationJ1939 m_ouMsgInterpretJ1939;
     CMsgInterpretationFlexRay m_ouMsgInterpretFlexRay;
     CMsgInterpretationLIN m_ouMsgInterpretLin;
+    CMsgInterpretationETHERNET m_ouMsgInterpretEthernet;
     BOOL m_bInterPretMsg;
     CMsgSignal** m_ppMsgDB;
     CRITICAL_SECTION       m_omCritSecForMapArr;
