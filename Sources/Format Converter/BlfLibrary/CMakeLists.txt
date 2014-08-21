@@ -17,7 +17,7 @@ add_library(BlfLibrary SHARED ${sources} ${headers})
 
 add_definitions(-DBLFLIBRARY_EXPORTS -D_WINDLL)
 
-include_directories(BlfLibrary
+include_directories(
   ${ZLIB_INCLUDE_DIR})
 
 target_link_libraries(BlfLibrary

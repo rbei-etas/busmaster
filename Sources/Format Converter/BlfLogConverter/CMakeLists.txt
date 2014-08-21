@@ -13,8 +13,6 @@ set(resources
 
 add_library(BlfLogConverter SHARED ${sources} ${headers} ${resources})
 
-add_definitions(-D_AFXDLL)
-
 include_directories(
   ../BlfLibrary/Src
   ${GETTEXT_INCLUDE_DIR}

@@ -56,6 +56,7 @@ set(MFC_LIBRARIES
   ${MFC_PATH}/lib/ATL/i386/atl.lib
   ${MFC_PATH}/lib/ATL/i386/atlthunk.lib)
 set(CMAKE_MFC_FLAG 2) # shared MFC library
+add_definitions(-D_AFXDLL)
 
 # zlib
 find_path(ZLIB_PATH

@@ -27,8 +27,6 @@ add_custom_command(OUTPUT Log_Asc_Parser.c Log_Asc_Parser.h
   DEPENDS Log_Asc_Parser.y
   WORKING_DIRECTORY ${BISON_PATH})
 
-add_definitions(-D_AFXDLL)
-
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}

@@ -13,8 +13,6 @@ set(resources
 
 add_library(DBC2DBFConverter SHARED ${sources} ${headers} ${resources})
 
-add_definitions(-D_AFXDLL)
-
 include_directories(
   ../DBF2DBCConverter
   ${GETTEXT_INCLUDE_DIR}

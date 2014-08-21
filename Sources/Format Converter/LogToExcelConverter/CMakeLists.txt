@@ -19,8 +19,6 @@ set(resources
 
 add_library(LogToExcelConverter SHARED ${sources} ${headers} ${resources})
 
-add_definitions(-D_AFXDLL)
-
 include_directories(
   ${GETTEXT_INCLUDE_DIR}
   ${MFC_INCLUDE_DIRS})

@@ -33,8 +33,6 @@ set(resources
 
 add_library(DBF2DBCConverter SHARED ${sources} ${headers} ${resources})
 
-add_definitions(-D_AFXDLL)
-
 include_directories(
   ${GETTEXT_INCLUDE_DIR}
   ${MFC_INCLUDE_DIRS})

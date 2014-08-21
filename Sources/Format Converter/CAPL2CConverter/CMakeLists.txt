@@ -34,8 +34,6 @@ add_custom_command(OUTPUT CAPL_C_Lexer.h
   ARGS -i -L -oCAPL_C_Lexer.h ${CMAKE_CURRENT_SOURCE_DIR}/lexer_rule.l
   DEPENDS lexer_rule.l)
 
-add_definitions(-D_AFXDLL)
-
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}

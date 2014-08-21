@@ -10,8 +10,6 @@ set(headers
 
 add_library(J1939DBC2DBFConverter SHARED ${sources} ${headers})
 
-add_definitions(-D_AFXDLL)
-
 include_directories(
   ${GETTEXT_INCLUDE_DIR}
   ${MFC_INCLUDE_DIRS})

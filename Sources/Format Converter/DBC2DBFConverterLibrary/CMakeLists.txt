@@ -36,8 +36,6 @@ add_custom_command(OUTPUT dbc_dbf_Lexer.c
   ARGS -i -L -odbc_dbf_Lexer.c ${CMAKE_CURRENT_SOURCE_DIR}/dbc_dbf_Lexer.l
   DEPENDS dbc_dbf_Lexer.l)
 
-add_definitions(-D_AFXDLL)
-
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
   ${CMAKE_CURRENT_BINARY_DIR}
