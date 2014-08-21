@@ -446,9 +446,8 @@ HRESULT CDIL_CAN_VSCOM::CAN_PerformInitOperations(void)
 */
 HRESULT CDIL_CAN_VSCOM::CAN_PerformClosureOperations(void)
 {
-    HRESULT hResult = S_OK;
+    HRESULT hResult = CAN_StopHardware();
 
-    hResult = CAN_StopHardware();
     // ------------------------------------
     // Close driver
     // ------------------------------------
@@ -850,7 +849,7 @@ static LONGLONG GetSysTimestamp(LONG Timestamp)
 
 static void CopyMsg2CanData(STCANDATA* can_data, VSCAN_MSG* msg, unsigned char flags)
 {
-    memset(can_data, 0, sizeof(can_data));
+    memset(can_data, 0, sizeof(*can_data));
     can_data->m_uDataInfo.m_sCANMsg.m_ucChannel = 1;
     can_data->m_uDataInfo.m_sCANMsg.m_unMsgID = msg->Id;
     can_data->m_uDataInfo.m_sCANMsg.m_ucDataLen = msg->Size;
@@ -1314,7 +1313,6 @@ static BOOL bRemoveClient(DWORD dwClientId)
     INT i;
     BOOL bResult = FALSE;
 
-    bResult = FALSE;
     if (sg_unClientCnt > 0)
     {
         UINT unClientIndex = 0;
