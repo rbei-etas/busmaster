@@ -198,7 +198,6 @@ static void InitBaudrateList(void)
 static void SaveDeviceData(void)
 {
     char temp[MAX_PATH];
-    int len;
 
     // Location
     GetDlgItemText(g_hDlg, IDC_DEVICE_LIST, temp, sizeof(temp));
@@ -214,7 +213,7 @@ static void SaveDeviceData(void)
             strcat(CanCfg->szLocation, temp);
         }
         // convert COM number to upper case (not WinCE OS)
-        len = strlen(CanCfg->szLocation) - 1;
+        int len = strlen(CanCfg->szLocation) - 1;
         do
         {
             if (CanCfg->szLocation[len] == '\\')
