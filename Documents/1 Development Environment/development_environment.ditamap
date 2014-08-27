@@ -14,6 +14,7 @@
     <topicref href="topics/git.dita" type="topic"/>
   </topichead>
   <topichead navtitle="Build">
+    <topicref href="topics/cmake.dita" type="topic"/>
     <topicref href="topics/msbuild.dita" type="topic"/>
     <topicref href="topics/vc.dita" type="topic"/>
     <topicref href="topics/Build_Configurations.dita" type="topic"/>
