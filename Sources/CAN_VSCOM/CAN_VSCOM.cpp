@@ -35,7 +35,7 @@
 #include "Include/DIL_CommonDefs.h"
 #include "DIL_Interface/BaseDIL_CAN_Controller.h"
 
-#include "vs_can_api.h"
+#include "EXTERNAL/vs_can_api.h"
 
 #define USAGE_EXPORT
 #include "CAN_VSCOM_Extern.h"

@@ -43,10 +43,12 @@ include_directories(
   ${GETTEXT_INCLUDE_DIR}
   ${MFC_INCLUDE_DIRS})
 
+# linker options
 target_link_libraries(DBC2DBFConverterLibrary
   ${GETTEXT_LIBRARY}
   ${MFC_LIBRARIES} -NODEFAULTLIB:daouuid)
 
+# installer options
 add_custom_command(
   TARGET DBC2DBFConverterLibrary
   POST_BUILD

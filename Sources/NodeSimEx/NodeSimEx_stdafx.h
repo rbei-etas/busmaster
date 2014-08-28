@@ -50,9 +50,6 @@
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS  // some CString constructors will be explicit
 
-// Disable warning messages C4996
-#pragma warning(disable: 4996)
-
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 

@@ -1,5 +1,5 @@
 #include <locale.h>
 
-#include "../../localization/include/libintl.h"
+#include "libintl.h"
 
 #define _(string) gettext (string)

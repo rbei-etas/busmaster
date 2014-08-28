@@ -1,8 +1,8 @@
 #pragma once
 
-
-#include <stack>
 #include <list>
+#include <stack>
+#include <string>
 
 #include "..\DataTypes\Cluster.h"
 
@@ -54,10 +54,10 @@ struct LdfFrame
 struct LdfCompuMethod
 {
     std::string m_strName;
-    UINT m_unMin;
-    UINT m_unMax;
-    DOUBLE m_fFactor;
-    DOUBLE m_fOffset;
+    unsigned int m_unMin;
+    unsigned int m_unMax;
+    double m_fFactor;
+    double m_fOffset;
     std::string m_strUnit;
 };
 
@@ -96,7 +96,7 @@ public:
     void GetStringSectionName(eCurrentSection ouCurrebtSection, std::string& strSectionName);
     int nOnSignal(LdfSignal& ouSignal);
     int nAddSignaltoFrame(std::string strName, int nAt);
-    int nOnSignalEncoding(UINT m_unMin, UINT m_unMax, DOUBLE m_fFactor, DOUBLE m_fOffset, std::string m_strUnit);
+    int nOnSignalEncoding(unsigned int m_unMin, unsigned int m_unMax, double m_fFactor, double m_fOffset, std::string m_strUnit);
     int OnFrameStarted( std::string, int, std::string, int);
     int OnSporadicOrCompuType(std::string strId);
     int OnSporadicFrame(std::string strName);

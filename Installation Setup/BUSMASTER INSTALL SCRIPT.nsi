@@ -398,9 +398,9 @@ Section "BUSMASTER"
   File ..\Sources\BIN\Release\BusEmulation.exe
   File ..\Sources\BIN\Release\BUSMASTER.exe
   File ..\Sources\BIN\Release\BUSMASTER.exe.manifest
-  File ..\Sources\Application\BUSMASTER.tlb
-  File ..\Sources\Application\BUSMASTER_Interface.c
-  File ..\Sources\Application\BUSMASTER_Interface.h
+  File ..\Sources\BIN\Release\BUSMASTER.tlb
+  File ..\Sources\BIN\Release\BUSMASTER_Interface.c
+  File ..\Sources\BIN\Release\BUSMASTER_Interface.h
   File ..\Sources\BIN\Release\CAN_STUB.dll
   File ..\Sources\BIN\Release\Changelog.txt
   File ..\Sources\BIN\Release\DIL_Interface.dll
@@ -537,7 +537,7 @@ SectionEnd
 Section "DMGraph"
     SectionIn RO 1 2 3
     SetOutPath $INSTDIR
-    File ..\Sources\BIN\ReleaseUMinSize\DMGraph.dll
+    File ..\Sources\BIN\Release\DMGraph.dll
 SectionEnd
 
 SectionGroupEnd

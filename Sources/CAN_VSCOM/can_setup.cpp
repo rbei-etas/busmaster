@@ -29,7 +29,7 @@
 #include <windowsx.h>
 #include "CAN_VSCOM.h"
 #include "resource.h"
-#include "vs_can_api.h"
+#include "EXTERNAL/vs_can_api.h"
 
 
 #define MAX_DEVICES         256

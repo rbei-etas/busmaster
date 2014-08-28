@@ -31,8 +31,8 @@ REM define your build directory here:
 mkdir build
 cd build
 REM define your compiler/IDE here:
-cmake -G "Visual Studio 11" ..
-REM automatically compile solution the solution:
+cmake -G "Visual Studio 11 2012" ..
+REM automatically compile solution:
 MSBuild "FormatConverter.sln" /property:Configuration=Release
 
 :END

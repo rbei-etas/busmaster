@@ -40,11 +40,13 @@ include_directories(
   ${GETTEXT_INCLUDE_DIR}
   ${MFC_INCLUDE_DIRS})
 
+# linker options
 target_link_libraries(CAPL2CConverter
   DBC2DBFConverterLibrary
   ${GETTEXT_LIBRARY}
   ${MFC_LIBRARIES} -NODEFAULTLIB:atls)
 
+# installer options
 add_custom_command(
   TARGET CAPL2CConverter
   POST_BUILD

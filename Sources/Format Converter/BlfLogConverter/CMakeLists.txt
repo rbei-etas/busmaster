@@ -23,6 +23,7 @@ target_link_libraries(BlfLogConverter
   ${GETTEXT_LIBRARY}
   ${MFC_LIBRARIES})
 
+# installer options
 add_custom_command(
   TARGET BlfLogConverter
   POST_BUILD

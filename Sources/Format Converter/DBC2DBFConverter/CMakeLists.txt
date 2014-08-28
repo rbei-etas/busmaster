@@ -18,11 +18,13 @@ include_directories(
   ${GETTEXT_INCLUDE_DIR}
   ${MFC_INCLUDE_DIRS})
 
+# linker options
 target_link_libraries(DBC2DBFConverter
   DBC2DBFConverterLibrary
   ${GETTEXT_LIBRARY}
   ${MFC_LIBRARIES})
 
+# installer options
 add_custom_command(
   TARGET DBC2DBFConverter
   POST_BUILD

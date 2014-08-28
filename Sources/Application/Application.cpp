@@ -21,7 +21,7 @@
 
 #include "StdAfx.h"
 #include "Application.h"
-#include "BUSMASTER_Interface.h"
+#include "CAN_MonitorApp.h"
 
 IMPLEMENT_DYNCREATE(CApplication, CCmdTarget)
 

@@ -34,7 +34,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // TYPELIB
 //
 
-1                       TYPELIB                 "BUSMASTER.tlb"
+1                       TYPELIB                 "CAN_MonitorApp.tlb"
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -50,7 +50,7 @@ END
 2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
-    "1 TYPELIB ""BUSMASTER.tlb""\r\n"
+    "1 TYPELIB ""CAN_MonitorApp.tlb""\r\n"
     "\r\n"
     "\r\n"
     "\0"

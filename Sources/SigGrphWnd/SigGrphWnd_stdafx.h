@@ -70,4 +70,4 @@ extern CComModule _Module;
 #include <locale.h>
 
 extern void Message(HRESULT hr, IUnknown* pUnk, LPCOLESTR szFormat, ...);
-#import "..\EXTERNAL\DMGraph\DMGraph.tlb" raw_interfaces_only no_namespace named_guids
+#import "DMGraph.tlb" raw_interfaces_only no_namespace named_guids

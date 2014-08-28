@@ -45,7 +45,7 @@ find_package_handle_standard_args(GETTEXT
 
 # mfc
 find_path(MFC_PATH
-  relnote.htm
+  lib/Mfc/i386/mfc42.lib
   PATHS C:/WinDDK/7600.16385.1)
 set(MFC_INCLUDE_DIRS
   ${MFC_PATH}/inc/mfc42

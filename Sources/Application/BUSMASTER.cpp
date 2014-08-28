@@ -37,8 +37,8 @@
 #include "InterfaceGetter.h"
 
 #include "BusmasterDump.h"
-#include "BUSMASTER_Interface.h"
-#include "BUSMASTER_Interface.c"
+#include "CAN_MonitorApp.h"
+#include "CAN_MonitorApp_i.c"
 #include "../Application/MultiLanguage.h"
 #include "Utility\MultiLanguageSupport.h"
 

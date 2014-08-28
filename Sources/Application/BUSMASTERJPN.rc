@@ -13,7 +13,7 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #include "afxres.h"
-1 TYPELIB "BUSMASTER.tlb"
+1 TYPELIB "CAN_MonitorApp.tlb"
 
 
 
@@ -34,7 +34,7 @@ LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 // TYPELIB
 //
 
-1                       TYPELIB                 "BUSMASTER.tlb"
+1                       TYPELIB                 "CAN_MonitorApp.tlb"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1505,7 +1505,7 @@ END
 2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
-    "1 TYPELIB ""BUSMASTER.tlb""\r\n"
+    "1 TYPELIB ""CAN_MonitorApp.tlb""\r\n"
     "\r\n"
     "\r\n"
     "\0"

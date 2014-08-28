@@ -54,13 +54,6 @@
 // turns off ATL's hiding of some common and often safely ignored warning messages
 #define _ATL_ALL_WARNINGS
 
-#ifndef _CRT_SECURE_NO_DEPRECATE
-#define _CRT_SECURE_NO_DEPRECATE
-#endif
-
-// Disable warning messages C4996
-#pragma warning(disable: 4996)
-
 #include "resource_BusSim.h"
 #include <atlbase.h>
 #include <atlcom.h>

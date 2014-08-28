@@ -67,7 +67,7 @@ static void InitCanSetupDlg(HWND hdlg, struct TMhsCanCfg *cfg)
 	SetDlgItemText(hdlg, IDC_SNR_EDIT, cfg->CanSnrStr);
 	SetDlgItemHex(hdlg, IDC_BTR_EDIT, HEX_WORD, cfg->CanBtrValue);
 
-	FillComboBox(hdlg, IDC_CAN_SPEED, CanSpeedTabStr, CanSpeedTab,
+	FillComboBox(hdlg, IDC_CAN_SPEED, CanSpeedTabStr, (const DWORD *) CanSpeedTab,
 				 CanSpeedTabSize, cfg->CanSpeed);
 
 	// Set default value as bitrate	

@@ -159,9 +159,15 @@ void CSignalDefinerDlg::OnEnUpdateEditSignalSamplingTime()
     CWnd* pEdit = GetDlgItem(IDC_EDIT_SIGNAL_SAMPLING_TIME);
     if(pEdit != nullptr)
     {
+#ifdef _UNICODE
         CString strTime = L"";
         pEdit->GetWindowText(strTime);
         double dTime = _wtof(strTime);
+#else
+        CString strTime = "";
+        pEdit->GetWindowText(strTime);
+        double dTime = atof(strTime);
+#endif
         if(dTime > 0)
         {
             m_dblSamplingTimePeriod = dTime;

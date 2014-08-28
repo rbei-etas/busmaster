@@ -210,7 +210,7 @@ if (mem)
   memcpy(new_mem, mem, size);
   }
 else
-  new_mem = nullptr;
+  new_mem = 0;
 
 return(new_mem);
 }
@@ -315,7 +315,7 @@ while ((c = *str++))
   else
     s = search;
   }
-return(nullptr);
+return(0);
 }
 
 
@@ -337,7 +337,7 @@ struct timeval now;
 
 //clock_gettime(CLOCK_REALTIME, &now);
 //return((now.tv_sec * 1000) + (now.tv_nsec / 1000000));
-gettimeofday(&now, nullptr);
+gettimeofday(&now, 0);
 return((now.tv_sec * 1000) + (now.tv_usec / 1000));
 }
 #endif
@@ -431,13 +431,13 @@ char *s, *t, *start, *end, *item;
 if ((!str) || (!trenner))
   {
   SET_RESULT(result, -1);
-  return(nullptr);
+  return(0);
   }
 s = *str;
 if (!s)
   {
   SET_RESULT(result, -1);
-  return(nullptr);
+  return(0);
   }
 // Fuehrende Leerzeichen ueberspringen
 while (*s == ' ')
@@ -445,7 +445,7 @@ while (*s == ' ')
 if (*s == '\0')
   {
   SET_RESULT(result, -1);
-  return(nullptr);
+  return(0);
   }
 SET_RESULT(result, 0);
 end = s;
@@ -511,7 +511,7 @@ char *endptr;
 
 e = 0;
 v = 0L;
-s = get_item_as_string(str, trenner, nullptr);
+s = get_item_as_string(str, trenner, 0);
 if (!s)
   e = -1;
 else
@@ -534,7 +534,7 @@ char *endptr;
 
 e = 0;
 v = 0L;
-s = get_item_as_string(str, trenner, nullptr);
+s = get_item_as_string(str, trenner, 0);
 if (!s)
   e = -1;
 else
@@ -556,7 +556,7 @@ int e;
 
 e = 0;
 v = 0;
-s = get_item_as_string(str, trenner, nullptr);
+s = get_item_as_string(str, trenner, 0);
 if (!s)
   e = -1;
 else  
@@ -589,12 +589,12 @@ if (str)
   len = strlen(str) + 1;
   new_str = (char *)mhs_malloc(len);
   if (!new_str)
-    return(nullptr);
+    return(0);
   memcpy(new_str, str, len);
   return(new_str);
   }
 else
-  return(nullptr);
+  return(0);
 }
 
 
@@ -605,7 +605,7 @@ va_list args;
 char *s, *concat, *ptr;
 
 if (!string1)
-  return(nullptr);
+  return(0);
 
 l = 1 + strlen(string1);
 va_start(args, string1);
@@ -619,7 +619,7 @@ va_end(args);
 
 concat = (char *)mhs_malloc(l);
 if (!concat)
-  return(nullptr);
+  return(0);
 ptr = concat;
 
 ptr = mhs_stpcpy(ptr, string1);
@@ -641,26 +641,26 @@ char *get_file_name(const char *file_name)
 char *p;
 
 if (!file_name)
-  return(nullptr);
+  return(0);
 if ((p = strrchr(file_name, DIR_SEPARATOR)))
   return(p+1);
 else
-  return(nullptr);
+  return(0);
 }
 
 
 char *create_file_name(const char *dir, const char *file_name)
 {
 if ((!dir) || (!file_name))
-  return(nullptr);
+  return(0);
 if (strchr(file_name, DIR_SEPARATOR))
   return(mhs_strdup(file_name));
 else
   {
   if (dir[strlen(dir)-1] == DIR_SEPARATOR)
-    return(mhs_strconcat(dir, file_name, nullptr));
+    return(mhs_strconcat(dir, file_name, 0));
   else
-    return(mhs_strconcat(dir, DIR_SEPARATOR_STR, file_name, nullptr));
+    return(mhs_strconcat(dir, DIR_SEPARATOR_STR, file_name, 0));
   }
 }
 
@@ -671,7 +671,7 @@ int len;
 char *base;
 
 if (!file_name)
-  return(nullptr);
+  return(0);
 base = strrchr(file_name, DIR_SEPARATOR);
 if (base)
   {
@@ -681,7 +681,7 @@ if (base)
 
   base = (char *)mhs_malloc(len + 1);
   if (!base)
-    return(nullptr);
+    return(0);
   memcpy(base, file_name, len);
   base[len] = 0;
   return(base);
@@ -699,7 +699,7 @@ tmp = mhs_strdup(file_name);
 last_period = strrchr(tmp, '.');
 if (last_period)
   *last_period = '\0';
-new_filename = mhs_strconcat(tmp, ".", ext, nullptr);
+new_filename = mhs_strconcat(tmp, ".", ext, 0);
 save_free(tmp);
 return(new_filename);
 }

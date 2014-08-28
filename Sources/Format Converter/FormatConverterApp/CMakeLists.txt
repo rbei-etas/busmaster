@@ -31,10 +31,12 @@ include_directories(
   ${GETTEXT_INCLUDE_DIR}
   ${MFC_INCLUDE_DIRS})
 
+# linker options
 target_link_libraries(FormatConverter
   ${GETTEXT_LIBRARY}
   ${MFC_LIBRARIES} shlwapi.lib)
 
+# installer options
 add_custom_command(
   TARGET FormatConverter
   POST_BUILD

@@ -15,14 +15,17 @@ set(headers
 
 add_library(BlfLibrary SHARED ${sources} ${headers})
 
-add_definitions(-DBLFLIBRARY_EXPORTS -D_WINDLL)
-
 include_directories(
   ${ZLIB_INCLUDE_DIR})
 
+# compiler options
+add_definitions(-DBLFLIBRARY_EXPORTS -D_WINDLL)
+
+# linker options
 target_link_libraries(BlfLibrary
   ${ZLIB_LIBRARY})
 
+# installer options
 add_custom_command(
   TARGET BlfLibrary
   POST_BUILD
