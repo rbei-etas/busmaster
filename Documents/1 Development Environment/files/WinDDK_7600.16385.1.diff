@@ -1,6 +1,22 @@
+diff -Naur a/WinDDK/7600.16385.1/inc/atl71/atlbase.h b/WinDDK/7600.16385.1/inc/atl71/atlbase.h
+--- a/WinDDK/7600.16385.1/inc/atl71/atlbase.h	Thu Aug 28 12:16:41 2014
++++ b/WinDDK/7600.16385.1/inc/atl71/atlbase.h	Thu Aug 28 12:27:05 2014
+@@ -245,9 +245,9 @@
+ 
+ #if defined(_M_IA64) || defined(_M_IX86) || defined (_M_AMD64)
+ 
+-#pragma section("ATL$__a", read, shared)
+-#pragma section("ATL$__z", read, shared)
+-#pragma section("ATL$__m", read, shared)
++#pragma section("ATL$__a", read)
++#pragma section("ATL$__z", read)
++#pragma section("ATL$__m", read)
+ extern "C"
+ {
+ __declspec(selectany) __declspec(allocate("ATL$__a")) _ATL_OBJMAP_ENTRY* __pobjMapEntryFirst = NULL;
 diff -Naur a/WinDDK/7600.16385.1/inc/atl71/atlchecked.h b/WinDDK/7600.16385.1/inc/atl71/atlchecked.h
---- a/WinDDK/7600.16385.1/inc/atl71/atlchecked.h	2010-02-08 18:18:56.000000000 +0100
-+++ b/WinDDK/7600.16385.1/inc/atl71/atlchecked.h	2011-10-30 17:52:10.012985300 +0100
+--- a/WinDDK/7600.16385.1/inc/atl71/atlchecked.h	Thu Aug 28 12:16:55 2014
++++ b/WinDDK/7600.16385.1/inc/atl71/atlchecked.h	Thu Aug 28 12:26:18 2014
 @@ -49,6 +49,7 @@
  	return nError;
  }
@@ -10,8 +26,8 @@ diff -Naur a/WinDDK/7600.16385.1/inc/atl71/atlchecked.h b/WinDDK/7600.16385.1/in
  // Secure (Checked) CRT functions
  
 diff -Naur a/WinDDK/7600.16385.1/inc/atl71/atlexcept.h b/WinDDK/7600.16385.1/inc/atl71/atlexcept.h
---- a/WinDDK/7600.16385.1/inc/atl71/atlexcept.h	2010-02-08 18:18:58.000000000 +0100
-+++ b/WinDDK/7600.16385.1/inc/atl71/atlexcept.h	2011-10-30 17:51:44.195911900 +0100
+--- a/WinDDK/7600.16385.1/inc/atl71/atlexcept.h	Thu Aug 28 12:16:55 2014
++++ b/WinDDK/7600.16385.1/inc/atl71/atlexcept.h	Thu Aug 28 12:26:18 2014
 @@ -69,7 +69,7 @@
  	}
  	else
@@ -22,8 +38,8 @@ diff -Naur a/WinDDK/7600.16385.1/inc/atl71/atlexcept.h b/WinDDK/7600.16385.1/inc
  #else
  	throw CAtlException( hr );
 diff -Naur a/WinDDK/7600.16385.1/inc/atl71/cstringt.h b/WinDDK/7600.16385.1/inc/atl71/cstringt.h
---- a/WinDDK/7600.16385.1/inc/atl71/cstringt.h	2010-02-08 18:18:58.000000000 +0100
-+++ b/WinDDK/7600.16385.1/inc/atl71/cstringt.h	2011-10-30 17:52:21.099675600 +0100
+--- a/WinDDK/7600.16385.1/inc/atl71/cstringt.h	Thu Aug 28 12:16:55 2014
++++ b/WinDDK/7600.16385.1/inc/atl71/cstringt.h	Thu Aug 28 12:26:18 2014
 @@ -20,12 +20,8 @@
  #pragma warning (push)
  #pragma warning(disable : 4668)	// is not defined as a preprocessor macro, replacing with '0' for '#if/#elif
@@ -2703,8 +2719,8 @@ diff -Naur a/WinDDK/7600.16385.1/inc/atl71/cstringt.h b/WinDDK/7600.16385.1/inc/
  #endif	// __CSTRINGT_H__ (whole file)
 -
 diff -Naur a/WinDDK/7600.16385.1/inc/mfc42/afx.h b/WinDDK/7600.16385.1/inc/mfc42/afx.h
---- a/WinDDK/7600.16385.1/inc/mfc42/afx.h	2010-02-08 18:18:58.000000000 +0100
-+++ b/WinDDK/7600.16385.1/inc/mfc42/afx.h	2011-10-30 17:50:33.554479000 +0100
+--- a/WinDDK/7600.16385.1/inc/mfc42/afx.h	Thu Aug 28 12:16:55 2014
++++ b/WinDDK/7600.16385.1/inc/mfc42/afx.h	Thu Aug 28 12:26:19 2014
 @@ -265,13 +265,13 @@
  // Debug ASSERTs then throws. Retail throws if condition not met
  #define ENSURE_THROW(cond, exception)	\
@@ -2723,8 +2739,8 @@ diff -Naur a/WinDDK/7600.16385.1/inc/mfc42/afx.h b/WinDDK/7600.16385.1/inc/mfc42
  #define ENSURE_RETURN_HR(cond, hr)          	   \
  	do { ASSERT(cond); if (!(cond)){return hr;} } while (false)
 diff -Naur a/WinDDK/7600.16385.1/inc/mfc42/afx.inl b/WinDDK/7600.16385.1/inc/mfc42/afx.inl
---- a/WinDDK/7600.16385.1/inc/mfc42/afx.inl	2010-02-08 18:18:58.000000000 +0100
-+++ b/WinDDK/7600.16385.1/inc/mfc42/afx.inl	2011-10-30 17:50:53.710204200 +0100
+--- a/WinDDK/7600.16385.1/inc/mfc42/afx.inl	Thu Aug 28 12:16:55 2014
++++ b/WinDDK/7600.16385.1/inc/mfc42/afx.inl	Thu Aug 28 12:26:19 2014
 @@ -271,17 +271,17 @@
  _AFX_INLINE const CTimeSpan& CTimeSpan::operator=(const CTimeSpan& timeSpanSrc)
  	{ m_timeSpan = timeSpanSrc.m_timeSpan; return *this; }
@@ -2748,8 +2764,8 @@ diff -Naur a/WinDDK/7600.16385.1/inc/mfc42/afx.inl b/WinDDK/7600.16385.1/inc/mfc
  	{ return (int)(GetTotalSeconds() - GetTotalMinutes()*60); }
  _AFX_INLINE CTimeSpan CTimeSpan::operator-(CTimeSpan timeSpan) const
 diff -Naur a/WinDDK/7600.16385.1/inc/mfc42/afxdisp.h b/WinDDK/7600.16385.1/inc/mfc42/afxdisp.h
---- a/WinDDK/7600.16385.1/inc/mfc42/afxdisp.h	2010-02-08 18:19:00.000000000 +0100
-+++ b/WinDDK/7600.16385.1/inc/mfc42/afxdisp.h	2011-10-30 17:51:17.995631700 +0100
+--- a/WinDDK/7600.16385.1/inc/mfc42/afxdisp.h	Thu Aug 28 12:16:55 2014
++++ b/WinDDK/7600.16385.1/inc/mfc42/afxdisp.h	Thu Aug 28 12:26:19 2014
 @@ -576,8 +576,8 @@
  	virtual CCmdTarget* OnCreateObject();
  	virtual BOOL UpdateRegistry(BOOL bRegister);
@@ -2762,8 +2778,8 @@ diff -Naur a/WinDDK/7600.16385.1/inc/mfc42/afxdisp.h b/WinDDK/7600.16385.1/inc/m
  // Implementation
  public:
 diff -Naur a/WinDDK/7600.16385.1/inc/mfc42/atlconv.h b/WinDDK/7600.16385.1/inc/mfc42/atlconv.h
---- a/WinDDK/7600.16385.1/inc/mfc42/atlconv.h	2010-02-08 19:19:00.000000000 +0100
-+++ b/WinDDK/7600.16385.1/inc/mfc42/atlconv.h	2011-08-11 23:05:38.880697100 +0200
+--- a/WinDDK/7600.16385.1/inc/mfc42/atlconv.h	Thu Aug 28 12:16:55 2014
++++ b/WinDDK/7600.16385.1/inc/mfc42/atlconv.h	Thu Aug 28 12:26:19 2014
 @@ -4,7 +4,7 @@
  	AtlCrtErrorCheck(expr)
         
@@ -2774,8 +2790,8 @@ diff -Naur a/WinDDK/7600.16385.1/inc/mfc42/atlconv.h b/WinDDK/7600.16385.1/inc/m
  #endif
  
 diff -Naur a/WinDDK/7600.16385.1/inc/mfc42/atldef.h b/WinDDK/7600.16385.1/inc/mfc42/atldef.h
---- a/WinDDK/7600.16385.1/inc/mfc42/atldef.h	2010-02-08 19:19:00.000000000 +0100
-+++ b/WinDDK/7600.16385.1/inc/mfc42/atldef.h	2011-08-11 23:05:15.484212100 +0200
+--- a/WinDDK/7600.16385.1/inc/mfc42/atldef.h	Thu Aug 28 12:16:55 2014
++++ b/WinDDK/7600.16385.1/inc/mfc42/atldef.h	Thu Aug 28 12:26:19 2014
 @@ -1,6 +1,6 @@
  #if defined(USE_MFC6_WITH_ATL7)
  #include "..\atlmfc\atldef.h"
