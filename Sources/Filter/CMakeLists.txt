@@ -31,7 +31,7 @@ include_directories(
 add_definitions(-D_AFXEXT)
 
 # linker options
-set_target_properties(Filter PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000")
+set_target_properties(Filter PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
 target_link_libraries(Filter
   DataTypes
   Utils)

@@ -33,7 +33,7 @@ include_directories(
 add_definitions(-D_USRDLL)
 
 # linker options
-set_target_properties(LIN_PEAK_USB PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000")
+set_target_properties(LIN_PEAK_USB PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
 target_link_libraries(LIN_PEAK_USB
   DataTypes
   Utils)

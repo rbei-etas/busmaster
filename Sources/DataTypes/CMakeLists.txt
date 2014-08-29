@@ -52,8 +52,7 @@ include_directories(
   ${MFC_INCLUDE_DIRS})
 
 # compiler options
-add_definitions(-D_LIB -Od)
-remove_definitions(-GR -O2 -Ob2)
+add_definitions(-D_LIB)
 
 # linker options
 target_link_libraries(DataTypes

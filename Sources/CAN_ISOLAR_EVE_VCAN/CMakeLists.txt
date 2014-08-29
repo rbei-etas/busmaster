@@ -21,7 +21,7 @@ include_directories(
 add_definitions(-D_USRDLL)
 
 # linker options
-set_target_properties(CAN_ISOLAR_EVE_VCAN PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000")
+set_target_properties(CAN_ISOLAR_EVE_VCAN PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
 target_link_libraries(CAN_ISOLAR_EVE_VCAN
   Advapi32
   DataTypes

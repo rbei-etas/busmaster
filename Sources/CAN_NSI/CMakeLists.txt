@@ -34,7 +34,7 @@ include_directories(
 add_definitions(-D_USRDLL)
 
 # linker options
-set_target_properties(CAN_NSI PROPERTIES LINK_FLAGS "/STACK:8000000 /SAFESEH:NO")
+set_target_properties(CAN_NSI PROPERTIES LINK_FLAGS "/SAFESEH:NO")
 target_link_libraries(CAN_NSI
   ${CMAKE_CURRENT_SOURCE_DIR}/NSICANEX.lib
   DataTypes

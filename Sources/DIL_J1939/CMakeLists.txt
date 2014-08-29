@@ -33,7 +33,7 @@ include_directories(
 add_definitions(-D_USRDLL)
 
 # linker options
-set_target_properties(DIL_J1939 PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000")
+set_target_properties(DIL_J1939 PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
 target_link_libraries(DIL_J1939
   Utils
   DataTypes)

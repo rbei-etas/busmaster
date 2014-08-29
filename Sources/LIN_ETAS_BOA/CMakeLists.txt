@@ -34,9 +34,9 @@ target_compile_definitions(LIN_ETAS_BOA_1_5 PUBLIC -DBOA_VERSION=BOA_VERSION_1_5
 #target_compile_definitions(LIN_ETAS_BOA_2   PUBLIC -DBOA_VERSION=BOA_VERSION_2)
 
 # linker options
-#set_target_properties(LIN_ETAS_BOA_1_4 PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000")
-set_target_properties(LIN_ETAS_BOA_1_5 PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000")
-#set_target_properties(LIN_ETAS_BOA_2   PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000")
+#set_target_properties(LIN_ETAS_BOA_1_4 PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
+set_target_properties(LIN_ETAS_BOA_1_5 PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
+#set_target_properties(LIN_ETAS_BOA_2   PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
 #target_link_libraries(LIN_ETAS_BOA_1_4
 #  Advapi32
 #  DataTypes

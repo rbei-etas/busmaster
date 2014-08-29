@@ -67,7 +67,6 @@ include_directories(
 
 # compiler options
 add_definitions(-D_LIB)
-remove_definitions(-GR)
 
 # linker options
 target_link_libraries(Utils

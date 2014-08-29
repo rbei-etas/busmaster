@@ -214,11 +214,10 @@ add_dependencies(BUSMASTER
   BusEmulation)
 
 # compiler options
-add_definitions(-Gy -Od -GF)
-remove_definitions(-G2 -O2 -Ob2 -GR)
+add_definitions(-Od -GF)
 
 # linker options
-set_target_properties(BUSMASTER PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000 /NXCOMPAT:NO")
+set_target_properties(BUSMASTER PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
 target_link_libraries(BUSMASTER
   Winmm shlwapi htmlhelp psapi
   CommonClass

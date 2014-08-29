@@ -61,7 +61,6 @@ include_directories(
 add_definitions(-D_AFXEXT)
 
 # linker options
-set_target_properties(TXWindowFlexRay PROPERTIES LINK_FLAGS "/STACK:8000000")
 target_link_libraries(TXWindowFlexRay
   Winmm
   DIL_Interface

@@ -26,7 +26,7 @@ include_directories(
 add_definitions(-D_USRDLL)
 
 # linker options
-set_target_properties(CAN_VSCOM PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000")
+set_target_properties(CAN_VSCOM PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
 target_link_libraries(CAN_VSCOM
   ${CMAKE_CURRENT_SOURCE_DIR}/EXTERNAL/vs_can_api.lib
   DataTypes

@@ -49,7 +49,7 @@ include_directories(
 add_definitions(-D_AFXEXT)
 
 # linker options
-set_target_properties(TXWindow PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000")
+set_target_properties(TXWindow PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
 target_link_libraries(TXWindow
   Winmm
   DataTypes

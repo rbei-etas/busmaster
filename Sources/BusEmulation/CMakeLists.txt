@@ -35,7 +35,7 @@ include_directories(
 set(CMAKE_MFC_FLAG 0)
 
 # linker options
-set_target_properties(BusEmulation PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000")
+set_target_properties(BusEmulation PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
 target_link_libraries(BusEmulation
   RpcRT4
   comctl32

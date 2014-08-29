@@ -28,11 +28,10 @@ add_dependencies(SignalDefiner
   DMGraph)
 
 # compiler options
-add_definitions(-D_USRDLL -GL)
-remove_definitions(-GR)
+add_definitions(-D_USRDLL)
 
 # linker options
-set_target_properties(SignalDefiner PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /LTCG")
+set_target_properties(SignalDefiner PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
 
 # installer options
 add_custom_command(

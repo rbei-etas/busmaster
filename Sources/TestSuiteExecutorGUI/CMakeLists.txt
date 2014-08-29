@@ -57,7 +57,7 @@ add_custom_command(
 add_definitions(-D_AFXEXT)
 
 # linker options
-set_target_properties(TestSuiteExecutorGUI PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000")
+set_target_properties(TestSuiteExecutorGUI PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
 target_link_libraries(TestSuiteExecutorGUI
   DataTypes
   TestSetupEditorLib

@@ -23,7 +23,7 @@ add_dependencies(CAN_STUB
 add_definitions(-D_USRDLL)
 
 # linker options
-set_target_properties(CAN_STUB PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000")
+set_target_properties(CAN_STUB PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
 target_link_libraries(CAN_STUB
   DataTypes
   Utils)

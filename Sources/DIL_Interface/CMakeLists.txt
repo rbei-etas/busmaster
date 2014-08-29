@@ -43,10 +43,9 @@ include_directories(
 
 # compiler options
 add_definitions(-D_USRDLL -Od)
-remove_definitions(-O2)
 
 # linker options
-set_target_properties(DIL_Interface PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000")
+set_target_properties(DIL_Interface PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
 target_link_libraries(DIL_Interface
   CAN_ICS_neoVI
   CAN_Kvaser_CAN

@@ -49,11 +49,10 @@ include_directories(
   ${MFC_INCLUDE_DIRS})
 
 # compiler options
-add_definitions(-D_AFXEXT -Od)
-remove_definitions(-O2 -Ob2 -GR)
+add_definitions(-D_AFXEXT)
 
 # linker options
-set_target_properties(SigGrphWnd PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /STACK:8000000")
+set_target_properties(SigGrphWnd PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid")
 target_link_libraries(SigGrphWnd
   DMGraph
   DataTypes

@@ -29,8 +29,7 @@ include_directories(
   ${MFC_INCLUDE_DIRS})
 
 # compiler options
-add_definitions(-D_USRDLL -DLIN_ISOLAR_EVE_VLIN_EXPORTS -Gy -GL -Oi)
-remove_definitions(-O2 -Ob2 -GR)
+add_definitions(-D_USRDLL -DLIN_ISOLAR_EVE_VLIN_EXPORTS)
 
 # linker options
 set_target_properties(LIN_ISOLAR_EVE_VLIN PROPERTIES LINK_FLAGS "/NODEFAULTLIB:daouuid /FORCE")
