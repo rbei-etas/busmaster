@@ -865,8 +865,10 @@ void CGraphBottomView::vInitGraphControl()
                                             defDEFAULT_YRANGE_MIN, defDEFAULT_YRANGE_MAX    );
 
                 //Set the caption
-                BSTR bstrCaption(L"Signal Graph - CAN");
-                m_pDMGraphCtrl->put_Caption(bstrCaption);
+                CString CStringCaption = _("Signal Graph - CAN");
+                //BSTR bstrCaption(L"Graph Display - CAN");
+                //m_pDMGraphCtrl->put_Caption(bstrCaption);
+                m_pDMGraphCtrl->put_Caption(CStringCaption.AllocSysString());
             }
             // Update Local DDX Variables
             UpdateData( FALSE );

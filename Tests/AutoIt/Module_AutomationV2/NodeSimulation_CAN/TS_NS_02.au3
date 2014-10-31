@@ -29,6 +29,7 @@ if winexists($WIN_BUSMASTER) then
 	_loadConfig("cfxNSCAN_02.cfx")															; Load Configuration
 
 	$NodeSimToolbar=_CANNodeSimToolbarActive()												; Check whether CAN node simulation toolbar is active
+	ConsoleWrite("$NodeSimToolbar :"&$NodeSimToolbar&@CRLF)
 
 	if $NodeSimToolbar=0 Then
 		send("!vtcn")																		; Select View->Toolbar->CAN->Node Simulation menu

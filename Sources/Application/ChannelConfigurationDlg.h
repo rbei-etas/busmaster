@@ -53,6 +53,7 @@ private:
 
 public:
     afx_msg void OnBnClickedButtonFibexpath();
+    afx_msg void OnBnClickedButtonLDFEditor();
     afx_msg void OnCbnSelchangeComboCluster();
     afx_msg void OnCbnSelchangeComboChannel();
     afx_msg void OnCbnSelchangeComboProtocol();

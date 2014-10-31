@@ -462,6 +462,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(ID_TRANSMIT_CONFIGURE_LIN, OnCfgSendMsgsLIN)
     ON_COMMAND(ID_LIN_CLUSTER_CONFIG, OnLinClusterConfig)
     ON_UPDATE_COMMAND_UI(ID_LIN_CLUSTER_CONFIG, OnUpdateLinClusterConfig)
+    ON_COMMAND(IDM_LDF_EDITOR_LIN, OnLDFEditor)
     ON_COMMAND(IDM_FILTER_MSGLINOFF, OnMessageFilterButtonLin)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_MSGLINOFF, OnUpdateMessageFilterButtonLin)
 END_MESSAGE_MAP()
@@ -11236,6 +11237,40 @@ void CMainFrame::OnFileConverter()
             if (nSuccess != 0)
             {
                 m_hProcess = sProcessInfo.hProcess;
+            }
+        }
+    }
+    catch(...)
+    {
+    }
+
+}
+void CMainFrame::OnLDFEditor()
+{
+    try
+    {
+        // Get the working directory
+        char acPath[MAX_PATH] = "";
+        GetModuleFileName( nullptr, acPath, MAX_PATH );
+        PathRemoveFileSpec(acPath);
+        CString strPath = acPath;
+        strPath += "\\LDFEditor.exe";
+
+        if(PathFileExists(strPath) == TRUE)
+        {
+            // Launch the converter utility
+            PROCESS_INFORMATION sProcessInfo;
+            STARTUPINFO sStartInfo;
+
+            memset(&sProcessInfo, 0, sizeof(PROCESS_INFORMATION));
+            memset(&sStartInfo, 0, sizeof(STARTUPINFO));
+
+            int nSuccess = CreateProcess(strPath.GetBuffer(MAX_PATH),"",
+                                         nullptr, nullptr, false, CREATE_NO_WINDOW, nullptr, nullptr,
+                                         &sStartInfo, &sProcessInfo);
+            if(!nSuccess)
+            {
+                AfxMessageBox("Unable to launch LDF Editor.",MB_ICONSTOP|MB_OK);
             }
         }
     }

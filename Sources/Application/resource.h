@@ -264,6 +264,7 @@
 #define IDC_EDIT_FILE_PATH              1006
 #define IDC_EDIT_REPLAY_FILE_NAME       1006
 #define IDC_BTN_REMOVE                  1006
+#define IDC_BUTTON_LDF_EDIT             1006
 #define IDC_STAT_ACCEPTANCE             1007
 #define IDC_SPIN_BIT                    1007
 #define IDC_EDIT_NET_NAME               1007
@@ -1147,6 +1148,7 @@
 #define ID_CONFIGURE_MESSAGEDISPLAY_LIN 40024
 #define ID_LIN_FILTER_CONFIG            40025
 #define IDM_SCHEDULE_CONFIG_LIN         40026
+#define IDM_LDF_EDITOR_LIN              40027
 //UDS
 #define IDM_UDS                         40100
 #define IDD_SETTINGS_UDS                40101
@@ -1216,8 +1218,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        112
-#define _APS_NEXT_COMMAND_VALUE         40015
-#define _APS_NEXT_CONTROL_VALUE         1006
+#define _APS_NEXT_COMMAND_VALUE         40028
+#define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

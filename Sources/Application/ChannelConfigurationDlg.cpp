@@ -71,6 +71,7 @@ BEGIN_MESSAGE_MAP(CChannelConfigurationDlg, CDialog)
     ON_WM_PAINT()
     ON_WM_QUERYDRAGICON()
     ON_BN_CLICKED(IDC_BUTTON_FIBEXPATH, OnBnClickedButtonFibexpath)
+    ON_BN_CLICKED(IDC_BUTTON_LDF_EDIT, OnBnClickedButtonLDFEditor)
     ON_CBN_SELCHANGE(IDC_COMBO_CLUSTER, OnCbnSelchangeComboCluster)
     ON_CBN_SELCHANGE(IDC_COMBO_CHANNEL, OnCbnSelchangeComboChannel)
     ON_CBN_SELCHANGE(IDC_COMBO_LIN_PROTOCOL, OnCbnSelchangeComboProtocol)
@@ -139,7 +140,11 @@ BOOL CChannelConfigurationDlg::OnInitDialog()
 
     nDisplayProtocolSettings(0);
     nEnableControls(m_eBusType);
-
+    if(m_eBusType == LIN)
+    {
+        GetDlgItem(IDC_BUTTON_LDF_EDIT)->ShowWindow(TRUE);
+        GetDlgItem(IDC_BUTTON_LDF_EDIT)->EnableWindow(TRUE);
+    }
     return TRUE;
 }
 
@@ -355,7 +360,40 @@ void CChannelConfigurationDlg::OnBnClickedButtonFibexpath()
     }
 
 }
+void CChannelConfigurationDlg::OnBnClickedButtonLDFEditor()
+{
+    try
+    {
+        // Get the working directory
+        char acPath[MAX_PATH] = "";
+        GetModuleFileName( nullptr, acPath, MAX_PATH );
+        PathRemoveFileSpec(acPath);
+        CString strPath = acPath;
+        strPath += "\\LDFEditor.exe";
 
+        if(PathFileExists(strPath) == TRUE)
+        {
+            // Launch the converter utility
+            PROCESS_INFORMATION sProcessInfo;
+            STARTUPINFO sStartInfo;
+
+            memset(&sProcessInfo, 0, sizeof(PROCESS_INFORMATION));
+            memset(&sStartInfo, 0, sizeof(STARTUPINFO));
+            std::string strCmdline = "\""+std::string(strPath)+"\""+" "+"\"" +std::string(m_strFibexFilePath)+"\"";
+            // \" is added to allow spaces in the file path.
+            int nSuccess = CreateProcess(strPath.GetBuffer(MAX_PATH),(LPSTR)strCmdline.c_str(),
+                                         nullptr, nullptr, true, CREATE_NO_WINDOW, nullptr, nullptr,
+                                         &sStartInfo, &sProcessInfo);
+            if(!nSuccess)
+            {
+                AfxMessageBox("Unable to launch LDF Editor.",MB_ICONSTOP|MB_OK);
+            }
+        }
+    }
+    catch(...)
+    {
+    }
+}
 void CChannelConfigurationDlg::OnCbnSelchangeComboCluster()
 {
 }

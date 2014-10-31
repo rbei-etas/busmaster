@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="introduction" xml:lang="en-us">
+  <title>Event Triggered Frame</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Introduction</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title/>
+      <p><b>Creating Event Triggered Frames:</b></p>
+      <p>To create Event Triggered frame right click on the Event Triggered Frame element in the element view and click on popup menu &apos;New&apos;.Create Event Triggered Frame dialog is as shown below.</p>
+      <image href="../../images/LDF Editor/LIN_EventTrigCreate.png"/>
+      <p><ol>
+          <li>
+            <b>General Properties:</b>
+            <ul>
+              <li><b>Name:</b> Name of the frame which should follow C identifier rules and should be unique.</li>
+              <li><b>ID</b><b>:</b> Identifier of the frame [0-59]</li>
+              <li><b>Collision Resolution Table:</b> Using drop down select the Schedule table to be referred in case of Collision.</li>
+            </ul>
+          </li>
+          <li>
+            <b>Associating Frames:</b>
+            <ul>
+              <li>Check the Unconditional frames to be mapped to the Event Triggered frame from the Associated Frames list.</li>
+            </ul>
+          </li>
+        </ol></p>
+      <p/>
+      <p>The following validations are performed:<ul>
+          <li>Frame name will be checked for its uniqueness</li>
+          <li>Frame Id will be checked for its uniqueness</li>
+          <li>Checked if selected Associated frames belong to the Collision resolving table </li>
+        </ul></p>
+      <p>To discard the changes click on &apos;Cancel&apos; button.</p>
+      <p><b>Editing Event Triggered Frames:</b></p>
+      <p>To edit existing Event Triggered Frame right click on the Event Triggered frame item in the Element view and click on &apos;Edit&apos;. &apos;Edit Event Triggered Frame&apos; dialog is displayed as shown below.</p>
+      <image href="../../images/LDF Editor/LIN_EventTrigEdit.png"/>
+    </section>
+    <p><b>Deleting Event Triggered Frame:</b></p>
+    <p>To delete Event Triggered Frame, right click on the Event Triggered frame item in the Element view and click on the pop up menu &apos;Delete&apos;. A confirmation message will be displayed before deleting the frame.</p>
+    <p>To save the changes click on &apos;OK&apos; button. Errors are displayed if  validation fails.</p>
+    <p>The following validations are performed:<ul>
+        <li>Frame name will be checked for its uniqueness</li>
+        <li>Frame Id will be checked for its uniqueness</li>
+        <li>Checked if selected Associated frames belong to the Collision resolving table </li>
+      </ul></p>
+    <p>To discard the changes click on &apos;Cancel&apos; button.</p>
+  </body>
+</topic>

@@ -39,7 +39,7 @@
 #include "FrameProcessor/BaseFrameProcessor_CAN.h"
 #include "Struct.h"
 #include "Utility/Utility.h"
-#include "CAN_MonitorApp.h"
+#include "BUSMASTER_Interface.h"
 #include "BUSMASTER.h"
 #include "MainFrm.h"
 #include "DIL_interface/BaseDIL_CAN.h"

@@ -212,8 +212,8 @@ int GetMonth(char* pchValue)
 }
 %}
 
-%token HEXNUMBER NUMBER TOKHEAT STATE TOKTARGET TOKTEMPERATURE DOUBLEVAL MSGDIR DATAMSG LENGTHTOKEN BITCOUNTTOKEN EQUAL EXTID MONTH DAY FULLTIME
-%token DATETOKEN REMOTE IGNORE TEXT COLON AM_PM BASETOKEN BASE TIMESTAMPSTOKEN TIMEMODE BEGINTRIGGERTOKEN LINEEND ENDTRIGGERTOKEN
+%token HEXNUMBER NUMBER TOKHEAT STATE TOKTARGET TOKTEMPERATURE DOUBLEVAL MSGDIR DATAMSG LENGTHTOKEN BITCOUNTTOKEN EQUAL EXTID MONTH_BASE DAY FULLTIME
+%token DATETOKEN REMOTE IGNORE TEXT COLON AM_PM BASETOKEN BASE NO_INTERNAL_EVENTS_LOGGED_TOKEN TIMESTAMPSTOKEN TIMEMODE BEGINTRIGGERTOKEN LINEEND ENDTRIGGERTOKEN
 %%
 
 commands: /* empty */
@@ -232,6 +232,8 @@ command:
 	RemoteFrame
 	|
 	Base_TimeStamps
+	|
+	Base_No_Internal_Events
 	|// PTV[1.6.4]
 	End_Statement
 	// PTV[1.6.4]
@@ -250,6 +252,21 @@ command:
 Can_Data_Bytes:
 	| Can_Data_Bytes NUMBER
 	{
+		int nStrlen = strlen((char*)$2);
+		int i=0;
+		char o = '0';
+		//prefix zeros to get 3-digits per byte.
+		if(nNumericMode == NUMERIC_MODE_DEC)
+		{
+			if(nStrlen < 3)
+			{
+				for(i=0 ; i<(3-nStrlen); i++)
+				{
+					strcpy((data+nLen) ,&o);
+					nLen += 1;
+				}
+			}
+		}
 		strcpy((data+nLen) , (char*)$2);
 		nLen += strlen((char*)$2);
 		data[nLen] = ' ';
@@ -330,11 +347,11 @@ RemoteFrame:
 	}
 	
 Base_TimeStamps:
-	BASETOKEN BASE  TIMESTAMPSTOKEN TIMEMODE
+	BASETOKEN MONTH_BASE TIMESTAMPSTOKEN TIMEMODE
 	{
 		//Default
 		nTimeStampFound = 1;
-		if(strcmp("dec", (char*)$2) == 0)
+		if(_stricmp ("dec", (char*)$2) == 0)
 		{
 			nNumericMode = NUMERIC_MODE_DEC;
 			
@@ -342,7 +359,6 @@ Base_TimeStamps:
 		else
 		{
 			nNumericMode = NUMERIC_MODE_HEX;
-			
 		}
 		if(strcmp("relative", (char*)$4) == 0)
 		{
@@ -358,10 +374,28 @@ Base_TimeStamps:
 		free($3);
 		free($4);*/
 	}
+Base_No_Internal_Events:
+	BASETOKEN MONTH_BASE NO_INTERNAL_EVENTS_LOGGED_TOKEN 
+	{
+		//Default
+		nTimeStampFound = 1;
+		if(_stricmp ("dec", (char*)$2) == 0)
+		{
+			nNumericMode = NUMERIC_MODE_DEC;
+		}
+		else
+		{
+			nNumericMode = NUMERIC_MODE_HEX;
+		}
+		nTimeMode = TIME_MODE_ABSOLUTE;
+		free($1);
+		free($2);
+		free($3);
+	}
 Log_Creation_Time:
 //date Wed Dec 7 12:23:39 pm 2011
 //The Functionality has to move to single function
-	DATETOKEN DAY MONTH NUMBER FULLTIME AM_PM NUMBER
+	DATETOKEN DAY MONTH_BASE NUMBER FULLTIME AM_PM NUMBER
 	{	
 		/*date Wed Dec 7 12:23:39 pm 2011*/
 		/*8:12:2011 20:15:28:553****/
@@ -401,7 +435,7 @@ Log_Creation_Time:
 	}
 Log_Creation:
 	//date Wed Dec 7 12:23:39 2011.
-	DATETOKEN DAY MONTH NUMBER FULLTIME NUMBER
+	DATETOKEN DAY MONTH_BASE NUMBER FULLTIME NUMBER
 	{	
 		/*date Wed Dec 7 12:23:39 pm 2011*/
 		

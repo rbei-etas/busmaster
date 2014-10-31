@@ -369,6 +369,7 @@ Section "BUSMASTER"
   Delete "$INSTDIR\SignalDefiner.dll"
   RMDir /r "$INSTDIR\ConverterPlugins"
   Delete "$INSTDIR\BUSMASTER.chm"
+  Delete "$INSTDIR\LDFEditor.chm"
   Delete "$INSTDIR\COPYING.LESSER.txt"
   Delete "$INSTDIR\COPYING.txt"
   RMDir /r "$INSTDIR\SimulatedSystems"
@@ -393,14 +394,39 @@ Section "BUSMASTER"
   Delete "$INSTDIR\TXWindowLIN.dll"
   Delete "$INSTDIR\Controller_0.dll"
   Delete "$INSTDIR\Controller_1.dll"
+  Delete "$INSTDIR\LDFEditor.exe"
+  Delete "$INSTDIR\LDFViewer.exe"
+  Delete "$INSTDIR\DBManager.dll"
+  RMDir /r "$INSTDIR\platforms"
+  Delete "$INSTDIR\icudt52.dll"
+  Delete "$INSTDIR\icuin52.dll"
+  Delete "$INSTDIR\icuuc52.dll"
+  Delete "$INSTDIR\qdds.dll"
+  Delete "$INSTDIR\qgif.dll"
+  Delete "$INSTDIR\qicns.dll"
+  Delete "$INSTDIR\qico.dll"
+  Delete "$INSTDIR\qjp2.dll"
+  Delete "$INSTDIR\qjpeg.dll"
+  Delete "$INSTDIR\qminimal.dll"
+  Delete "$INSTDIR\qmng.dll"
+  Delete "$INSTDIR\qoffscreen.dll"
+  Delete "$INSTDIR\qsvg.dll"
+  Delete "$INSTDIR\Qt5Core.dll"
+  Delete "$INSTDIR\Qt5Gui.dll"
+  Delete "$INSTDIR\Qt5Widgets.dll"
+  Delete "$INSTDIR\qtaccessiblewidgets.dll"
+  Delete "$INSTDIR\qtga.dll"
+  Delete "$INSTDIR\qtiff.dll"
+  Delete "$INSTDIR\qwbmp.dll"
+  Delete "$INSTDIR\qwebp.dll"
 
   ; BUSMASTER
   File ..\Sources\BIN\Release\BusEmulation.exe
   File ..\Sources\BIN\Release\BUSMASTER.exe
   File ..\Sources\BIN\Release\BUSMASTER.exe.manifest
-  File ..\Sources\BIN\Release\BUSMASTER.tlb
-  File ..\Sources\BIN\Release\BUSMASTER_Interface.c
-  File ..\Sources\BIN\Release\BUSMASTER_Interface.h
+  File ..\Sources\Application\BUSMASTER.tlb
+  File ..\Sources\Application\BUSMASTER_Interface.c
+  File ..\Sources\Application\BUSMASTER_Interface.h
   File ..\Sources\BIN\Release\CAN_STUB.dll
   File ..\Sources\BIN\Release\Changelog.txt
   File ..\Sources\BIN\Release\DIL_Interface.dll
@@ -434,12 +460,36 @@ Section "BUSMASTER"
   File ..\Sources\BIN\Release\Controller_1.dll
   File ..\Sources\BIN\Release\LIN_Vector_XL.dll
   File ..\Sources\BIN\Release\LIN_PEAK_USB.dll
+  File ..\Sources\BIN\Release\LDFEditor.exe
+  File ..\Sources\BIN\Release\LDFViewer.exe
+  File ..\Sources\BIN\Release\DBManager.dll
+  File ..\Sources\BIN\Release\icudt52.dll
+  File ..\Sources\BIN\Release\icuin52.dll
+  File ..\Sources\BIN\Release\icuuc52.dll
+  File ..\Sources\BIN\Release\qdds.dll
+  File ..\Sources\BIN\Release\qgif.dll
+  File ..\Sources\BIN\Release\qicns.dll
+  File ..\Sources\BIN\Release\qico.dll
+  File ..\Sources\BIN\Release\qjp2.dll
+  File ..\Sources\BIN\Release\qjpeg.dll
+  File ..\Sources\BIN\Release\qminimal.dll
+  File ..\Sources\BIN\Release\qmng.dll
+  File ..\Sources\BIN\Release\qoffscreen.dll
+  File ..\Sources\BIN\Release\qsvg.dll
+  File ..\Sources\BIN\Release\Qt5Core.dll
+  File ..\Sources\BIN\Release\Qt5Gui.dll
+  File ..\Sources\BIN\Release\Qt5Widgets.dll
+  File ..\Sources\BIN\Release\qtaccessiblewidgets.dll
+  File ..\Sources\BIN\Release\qtga.dll
+  File ..\Sources\BIN\Release\qtiff.dll
+  File ..\Sources\BIN\Release\qwbmp.dll
+  File ..\Sources\BIN\Release\qwebp.dll
 
   ; Converters
   File /r ..\Sources\BIN\Release\ConverterPlugins
 
   ; Japanese lib files
-  ;File /r ..\Sources\BIN\Release\JPN
+  File /r ..\Sources\BIN\Release\JPN
 
   ; Japanese Localization folder
   File /r ..\Sources\Localization
@@ -447,6 +497,9 @@ Section "BUSMASTER"
   ; Help
   File /oname=BUSMASTER.chm "..\Documents\4 Help_new\out\help.chm"
 
+  ; LDF Editor Help
+  File /oname=LDFEditor.chm "..\Documents\4 Help_new\out\ldfeditor.chm"
+  
   ; Oxygen icons resource Dll
   File ..\Sources\BIN\Release\AdvancedUIPlugIn.dll
 
@@ -456,6 +509,8 @@ Section "BUSMASTER"
 
   ; Readme
   File ..\Readme.txt
+  
+  File /r ..\Sources\BIN\Release\platforms
 
   ; Simulated Systems Include files
   SetOutPath "$INSTDIR\SimulatedSystems\include\"
@@ -529,6 +584,9 @@ lbl:
   CreateShortCut "$SMPROGRAMS\BUSMASTER v${VERSION}\BUSMASTER v${VERSION}.lnk" "$INSTDIR\BUSMASTER.exe" "" "$INSTDIR\BUSMASTER.exe" 0
   CreateShortCut "$SMPROGRAMS\BUSMASTER v${VERSION}\BUSMASTER_Cleanup_Registry.lnk" "$INSTDIR\BUSMASTER_Cleanup_Registry.exe" "" "$INSTDIR\BUSMASTER_Cleanup_Registry.exe" 0
   CreateShortCut "$SMPROGRAMS\BUSMASTER v${VERSION}\Uninstall.lnk" "$INSTDIR\uninst.exe" "" "$INSTDIR\uninst.exe" 0
+  CreateDirectory "$SMPROGRAMS\BUSMASTER v${VERSION}\Tools"
+  CreateShortCut "$SMPROGRAMS\BUSMASTER v${VERSION}\Tools\LIN Database Editor.lnk" "$INSTDIR\LDFEditor.exe" "" "$INSTDIR\LDFEditor.exe" 0
+  CreateShortCut "$SMPROGRAMS\BUSMASTER v${VERSION}\Tools\Format Converter.lnk" "$INSTDIR\FormatConverter.exe" "" "$INSTDIR\FormatConverter.exe" 0
 
   ; Uninstaller
   WriteUninstaller "uninst.exe"
@@ -537,7 +595,7 @@ SectionEnd
 Section "DMGraph"
     SectionIn RO 1 2 3
     SetOutPath $INSTDIR
-    File ..\Sources\BIN\Release\DMGraph.dll
+    File ..\Sources\BIN\ReleaseUMinSize\DMGraph.dll
 SectionEnd
 
 SectionGroupEnd
@@ -701,6 +759,11 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\BUSMASTER v${VERSION}\Uninstall.lnk"
   Delete "$SMPROGRAMS\BUSMASTER v${VERSION}\BUSMASTER v${VERSION}.lnk"
   Delete "$SMPROGRAMS\BUSMASTER v${VERSION}\BUSMASTER_Cleanup_Registry.lnk"
+  
+  Delete "$SMPROGRAMS\BUSMASTER v${VERSION}\Tools\LIN Database Editor.lnk"
+  Delete "$SMPROGRAMS\BUSMASTER v${VERSION}\Tools\Format Converter.lnk"
+  
+  RMDir /r "$SMPROGRAMS\BUSMASTER v${VERSION}\Tools"
 
   ; Deleting If StartPrograms BUSMASTER dir exists
   RMDir /r "$SMPROGRAMS\BUSMASTER v${VERSION}"

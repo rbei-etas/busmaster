@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="busmaster_debug|Win32">
+      <Configuration>busmaster_debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4A20171C-51DB-4E82-BCE0-5E3EEB070566}</ProjectGuid>
+    <RootNamespace>Utils</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110_xp</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">$(Configuration)\</IntDir>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;$(SolutionDir)\EXTERNAL\zlib\include;$(SolutionDir)\EXTERNAL\libxml2\include;$(SolutionDir)\EXTERNAL\iconv\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;$(SolutionDir)\EXTERNAL\iconv\lib;$(SolutionDir)\EXTERNAL\libxml2\lib;$(SolutionDir)\EXTERNAL\zlib\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
+    <IncludePath>C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;$(SolutionDir)\EXTERNAL\zlib\include;$(SolutionDir)\EXTERNAL\libxml2\include;$(SolutionDir)\EXTERNAL\iconv\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;$(SolutionDir)\EXTERNAL\iconv\lib;$(SolutionDir)\EXTERNAL\libxml2\lib;$(SolutionDir)\EXTERNAL\zlib\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/I "$(SolutionDir)/Localization/include" %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;..\EXTERNAL\libxml2\include;..\EXTERNAL\iconv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;WINVER=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ObjectFileName>$(SolutionDir)/bin/DumpFiles/$(IntDir)/OBJ/$(TargetName)/</ObjectFileName>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/I "$(SolutionDir)/Localization/include" %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;..\EXTERNAL\libxml2\include;..\EXTERNAL\iconv\include;..\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;WINVER=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ObjectFileName>$(SolutionDir)/bin/DumpFiles/$(IntDir)/OBJ/$(TargetName)/</ObjectFileName>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>libxml2.lib
+iconv.lib %(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;WINVER=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ObjectFileName>$(SolutionDir)/bin/DumpFiles/$(IntDir)/OBJ/$(TargetName)/</ObjectFileName>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>libxml2.lib
+iconv.lib %(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AlphaChar.cpp" />
+    <ClCompile Include="AlphanumiricEdit.cpp" />
+    <ClCompile Include="ButtonItem.cpp" />
+    <ClCompile Include="ColorSelector.cpp" />
+    <ClCompile Include="ColumnTreeCtrl.cpp" />
+    <ClCompile Include="ColumnTreeWnd.cpp" />
+    <ClCompile Include="ComboItem.cpp" />
+    <ClCompile Include="ComputeCheckSum.cpp" />
+    <ClCompile Include="EditItem.cpp" />
+    <ClCompile Include="FFListCtrl.cpp" />
+    <ClCompile Include="FlexListCtrl.cpp" />
+    <ClCompile Include="FlickerFreeListCtrl.cpp" />
+    <ClCompile Include="FlickerFreeTree.cpp" />
+    <ClCompile Include="KeyNumEdit.cpp" />
+    <ClCompile Include="MsgInterpretation.cpp" />
+    <ClCompile Include="MultiLanguageSupport.cpp" />
+    <ClCompile Include="NumEdit.cpp" />
+    <ClCompile Include="NumSpinCtrl.cpp" />
+    <ClCompile Include="OffScreenDC.cpp" />
+    <ClCompile Include="RadixEdit.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="SignalMatrix.cpp" />
+    <ClCompile Include="UtilFunctions.cpp" />
+    <ClCompile Include="Utility.cpp" />
+    <ClCompile Include="Utility_Structs.cpp" />
+    <ClCompile Include="Utility_Thread.cpp" />
+    <ClCompile Include="WaitIndicator.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AlphaChar.h" />
+    <ClInclude Include="AlphanumiricEdit.h" />
+    <ClInclude Include="ButtonItem.h" />
+    <ClInclude Include="ColorSelector.h" />
+    <ClInclude Include="ColumnTreeCtrl.h" />
+    <ClInclude Include="ColumnTreeWnd.h" />
+    <ClInclude Include="ComboItem.h" />
+    <ClInclude Include="ComputeCheckSum.h" />
+    <ClInclude Include="EditItem.h" />
+    <ClInclude Include="FFListCtrl.h" />
+    <ClInclude Include="FlexListCtrl.h" />
+    <ClInclude Include="FlickerFreeListCtrl.h" />
+    <ClInclude Include="FlickerFreeTree.h" />
+    <ClInclude Include="KeyNumEdit.h" />
+    <ClInclude Include="MsgInterpretation.h" />
+    <ClInclude Include="MultiLanguageSupport.h" />
+    <ClInclude Include="NumEdit.h" />
+    <ClInclude Include="NumSpinCtrl.h" />
+    <ClInclude Include="OffScreenDC.h" />
+    <ClInclude Include="RadixEdit.h" />
+    <ClInclude Include="SignalMatrix.h" />
+    <ClInclude Include="UtilFunctions.h" />
+    <ClInclude Include="Utility.h" />
+    <ClInclude Include="Utility_Structs.h" />
+    <ClInclude Include="Utility_Thread.h" />
+    <ClInclude Include="Utils_stdafx.h" />
+    <ClInclude Include="WaitIndicator.h" />
+    <ClInclude Include="XMLUtils.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
