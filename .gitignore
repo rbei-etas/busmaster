@@ -12,7 +12,6 @@
 *.pch
 *.pdb
 *.sdf
-*.sln
 *.sln.cache
 *.suo
 *.vcproj.*.user
@@ -72,8 +71,6 @@ Sources/DBManager/LDFGrammerLexer.hpp
 Sources/DBManager/LDFGrammerParser.cpp
 Sources/DBManager/LDFGrammerParser.hpp
 Sources/DBManager/ANTLR3/include
-
-
 
 # Release dirs (except BIN)
 Sources/Application/Release
