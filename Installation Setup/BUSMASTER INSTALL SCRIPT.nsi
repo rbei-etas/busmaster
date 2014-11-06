@@ -372,6 +372,7 @@ Section "BUSMASTER"
   Delete "$INSTDIR\LDFEditor.chm"
   Delete "$INSTDIR\COPYING.LESSER.txt"
   Delete "$INSTDIR\COPYING.txt"
+  Delete "$INSTDIR\FTL.txt"
   RMDir /r "$INSTDIR\SimulatedSystems"
   Delete "$INSTDIR\Readme.txt"
   Delete "$INSTDIR\DMGraph.dll"
@@ -506,6 +507,7 @@ Section "BUSMASTER"
   ; License
   File ..\COPYING.LESSER.txt
   File ..\COPYING.txt
+  File ..\FTL.txt
 
   ; Readme
   File ..\Readme.txt

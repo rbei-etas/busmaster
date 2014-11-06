@@ -23,7 +23,9 @@
 	7.1. Dm Graph  		: The Complete source code can be downloaded from  http://www.codeproject.com/Articles/310494/2D-Graph-ActiveX-control-in-Cplusplus-with-ATL-no
 	7.2. Header Control	: The Complete source code can be downloaded from  http://www.sothink.com
 	7.3. MFC Tree Control : The source code can be downloaded from http://doc.mimec.org/articles/mfc/mctree/index.html
-        7.4. Qt 5.3.0: Installer can be downloaded from 
+    	7.4. Qt 5.3.0: Installer or sources for LGPL can be downloaded from 
 http://download.qt-project.org/archive/qt/5.3/5.3.0/qt-opensource-windows-x86-msvc2012_opengl-5.3.0.exe
-        7.5. Antlr3.5.2: The Complete source code can be downloaded from 
+	7.5. Free Type Library license details can be found at http://www.freetype.org/
+    	7.6. Antlr3.5.2: The Complete source code can be downloaded from 
 http://www.antlr3.org/download.html
+	
