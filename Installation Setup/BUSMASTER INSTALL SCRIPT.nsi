@@ -637,7 +637,7 @@ Section "MHS-Elektronik Tiny-CAN"
   SectionIn 1 2
   SetOutPath $INSTDIR
   File ..\Sources\BIN\Release\CAN_MHS.dll
-  File ..\Sources\BIN\Release\mhstcan.dll
+  File ..\Sources\CAN_MHS\EXTERNAL\mhstcan.dll
 SectionEnd
 
 Section "Peak USB"
