@@ -15,6 +15,12 @@
     </metadata>
   </prolog>
   <body>
+    <p><b>2.6.0</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>LIN Database editor (LDF)</li>
+        <li>Introduction of CMake for solution/project file generation</li>
+      </ul></p>
     <p><b>2.5.0</b></p>
     <p>Following features are added:</p>
     <p><ul>
