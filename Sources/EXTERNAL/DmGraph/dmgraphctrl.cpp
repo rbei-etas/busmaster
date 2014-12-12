@@ -3261,6 +3261,7 @@ STDMETHODIMP CDMGraphCtrl::ShiftDisplay(SHORT xShift,SHORT yShift)
 /****************************************/
 char* LPCTSTRToCharArray(LPCTSTR val)
 {
+#ifdef _UNICODE
     char* ansistr = nullptr;
 
     int lenW = _tcslen(val);
@@ -3278,6 +3279,11 @@ char* LPCTSTRToCharArray(LPCTSTR val)
         //...use the strings, then free their memory:
         delete[] ansistr;
     }
+#else
+    int len = _tcslen(val);
+    char* c = new char[len + 1];
+    strcpy(c, val);
+#endif
 
     return c;
 }

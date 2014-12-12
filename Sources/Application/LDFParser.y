@@ -6,17 +6,11 @@
 #include <malloc.h>
 #include "ParserHelper.h"
 
-
-
-
-
 extern "C" FILE *yyin, *yyout;
 extern "C" int yylval;
 extern "C" int yylex();
 extern "C" int yyparse(void);
 extern "C" char* yytext;
-
-
 
 CScheduleCommands g_obScheduleCommand;
 INT g_nLastInteger;
@@ -60,7 +54,7 @@ extern "C" int  nParseLDFFile(std::string strInputFile, CHANNEL_CONFIG& ouCluste
 %token BEGINLOGTOKEN ENDLOGTOKEN DATETOKEN FULLTIME BASE TIMEMODE TIMEMODE TIMEMODE NUMBER DOUBLEVAL DATE TIME STDMSG EXTMSG STDRMSG EXTRMSG MSGDIR EQUAL 
 %token LENGTHTOKEN BITCOUNTTOKEN LINEEND TIMESTAMPTOKEN ENDOFSTATEMENT KBPS
 %token LIN_DESCRIPTION_FILE LIN_PROTOCOL_VERSION LIN_LANGUAGE_VERSION LIN_SPEED EQUAL SIGNAL_REPRESENTATION LOGICAL_VALUE
-%token FLOAT CONSTANT SIGNALS DIAGNOSTIC_SIGNALS FRAMES SPORADIC_FRAMES EVENT_TRIGGERED_FRAMES DIAGNOSTIC_FRAMES SIGNAL_ENCODING_TYPES PHYSICAL_VALUE
+%token FLOATNUMBER CONSTANT SIGNALS DIAGNOSTIC_SIGNALS FRAMES SPORADIC_FRAMES EVENT_TRIGGERED_FRAMES DIAGNOSTIC_FRAMES SIGNAL_ENCODING_TYPES PHYSICAL_VALUE
 %token NODE OPENBRACE CLOSEBRACE MASTER SLAVES MS SCHEDULE_TABLES DELAY ASSIGNFRAMEID ASSIGNFRAMEIDRANGE UNASSIGNFRAMEID ASSIGNNAD FREEFORMAT
 %token CONDITIONALCHANGENAD DATADUMP SAVECONFIGURATION
 %token NODE_ATTRIBUTES LIN_PROTOCOL CONFIGURED_NAD INITIAL_NAD PRODUCT_ID RESPONSE_ERROR FAULT_STATE_SIGNALS P2_MIN ST_MIN N_AS_TIMEOUT N_CR_TIMEOUT CONFIGURABLE_FRAMES
@@ -74,7 +68,7 @@ commands: /* empty */
 real_or_integer:
 	  DECNUMBER
 	| HEXNUMBER
-	| FLOAT
+	| FLOATNUMBER
 	;
 INTEGER:
 	  DECNUMBER
@@ -165,7 +159,7 @@ LIN_language_version:
 	//fprintf(yyout, "Launguage version = %s\n", (char*)$3 );
 	}	
 LIN_Speed:
-	LIN_SPEED EQUAL FLOAT KBPS ENDOFSTATEMENT
+	LIN_SPEED EQUAL FLOATNUMBER KBPS ENDOFSTATEMENT
 	{
 		g_obParserHelper->nOnLinBaudRate((char*)$3);
 	}	
@@ -226,7 +220,7 @@ Signal_Multiple:
 		//fprintf(yyout, "Signal Definitions %s\n", $1);
 	}
 ArrayVal:
-	| ArrayVal FLOAT
+	| ArrayVal FLOATNUMBER
 	{
 		g_obParserHelper->m_unSignalVal = g_obParserHelper->m_unSignalVal * 100;
 		int nVal =  atoi((char*)$2);
@@ -361,13 +355,13 @@ Signal_Encodeing_Start:
 		g_obParserHelper->OnSectionStarted(SEC_SIGNAL_ENCODING_DEC);
 	}
 Signal_Physical_Val_dec:
-	PHYSICAL_VALUE FLOAT FLOAT FLOAT FLOAT STRING
+	PHYSICAL_VALUE FLOATNUMBER FLOATNUMBER FLOATNUMBER FLOATNUMBER STRING
 	{
 		g_obParserHelper->nOnSignalEncoding(atoi((char*)$2),atoi((char*)$3),atof((char*)$4),atof((char*)$5),(char*)$6) ;
 		//fprintf(yyout, "Signal Phyical Val%s\n", $1);
 	}	
 Signal_Logical_Val_dec:
-	LOGICAL_VALUE FLOAT STRING
+	LOGICAL_VALUE FLOATNUMBER STRING
 	{
 		//fprintf(yyout, "Signal Logical Val%s\n", $1);
 	}
@@ -406,7 +400,7 @@ command_item:
 		g_obParserHelper->nAddCommand(g_obScheduleCommand);
 	}
 	|
-	command DELAY FLOAT MS ENDOFSTATEMENT
+	command DELAY FLOATNUMBER MS ENDOFSTATEMENT
 	{
 		
 	}
@@ -694,7 +688,7 @@ fault_state_signal_list
 
 P2_min
 	:
-	| P2_MIN EQUAL FLOAT MS ENDOFSTATEMENT
+	| P2_MIN EQUAL FLOATNUMBER MS ENDOFSTATEMENT
 	{
 		g_ouLinEcuParams.m_p2Min = atof((char*)$3);
 	}
@@ -706,7 +700,7 @@ P2_min
 
 ST_min
 	: 
-	| ST_MIN EQUAL FLOAT MS ENDOFSTATEMENT
+	| ST_MIN EQUAL FLOATNUMBER MS ENDOFSTATEMENT
 	{
 		g_ouLinEcuParams.m_stMin = atof((char*)$3);
 	}
@@ -719,7 +713,7 @@ ST_min
 // new parameter with LIN 2.1
 N_As_timeout
 	:
-	| N_AS_TIMEOUT EQUAL FLOAT MS ENDOFSTATEMENT
+	| N_AS_TIMEOUT EQUAL FLOATNUMBER MS ENDOFSTATEMENT
 	{
 		g_ouLinEcuParams.m_nAsTimeout = atof((char*)$3);
 	}
@@ -732,7 +726,7 @@ N_As_timeout
 // new parameter with LIN 2.1
 N_Cr_timeout
    : /* empty */
-   | N_CR_TIMEOUT EQUAL FLOAT MS ENDOFSTATEMENT
+   | N_CR_TIMEOUT EQUAL FLOATNUMBER MS ENDOFSTATEMENT
 	{
 		g_ouLinEcuParams.m_nCrTimeout = atof((char*)$3);
 	}

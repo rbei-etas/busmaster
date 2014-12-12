@@ -70,7 +70,7 @@ BLOCKCOMMENT "/*"([^\*]|\*[^*/])*"*/"
 "}"							return CLOSEBRACE;
 [\+\-]?[0-9]+										yylval = strtoul((char*)yytext, NULL, 10);return DECNUMBER; 
 [\+\-]?(0x|0X)[0-9a-fA-F]+							yylval = strtoul((char*)yytext, NULL, 16);return HEXNUMBER; 
-[\+\-]?([0-9]*\.{1}[0-9]+)([eE]{1}[\-\+]{1}[0-9]+)? yylval = _strdup(yytext);return FLOAT; 
+[\+\-]?([0-9]*\.{1}[0-9]+)([eE]{1}[\-\+]{1}[0-9]+)? yylval = _strdup(yytext);return FLOATNUMBER;
 
 {STRINGLIT}					yylval = _strdup(yytext); return STRING;
 {ID}						yylval = _strdup(yytext);return IDENTIFIER;

@@ -184,7 +184,26 @@
         </topicref>
       </topicref>
     </topicref>
-  </topicref>
+	<topicref href="topics/LDF Editor/LIN_DatabaseEditor.dita" type="topic">
+		<topicref href="topics/LDF Editor/LIN_Editor_Introduction.dita" type="reference"/>
+		<topicref href="topics/LDF Editor/LIN_Editor_Overview.dita" type="reference"/>
+		<topicref href="topics/LDF Editor/LIN_Editor_GettingStarted.dita" type="reference"/>
+		<topicref href="topics/LDF Editor/LIN_LDFElements.dita" type="topic">
+			<topicref href="topics/LDF Editor/LIN_Editor_ClusterProps.dita" type="reference"/>
+			<topicref href="topics/LDF Editor/LIN_Editor_Master.dita" type="reference"/>
+			<topicref href="topics/LDF Editor/LIN_Editor_SlaveDialog.dita" type="reference"/>
+			<topicref href="topics/LDF Editor/LIN_Editor_UnconditionalFrame.dita" type="reference"/>
+			<topicref href="topics/LDF Editor/LIN_Editor_EventTriggeredFrame.dita" type="reference"/>
+			<topicref href="topics/LDF Editor/LIN_Editor_SporadicFrame.dita" type="reference"/>
+			<topicref href="topics/LDF Editor/LIN_Editor_DiagnosticSupport.dita" type="reference"/>
+			<topicref href="topics/LDF Editor/LIN_Editor_Signal.dita" type="reference"/>
+			<topicref href="topics/LDF Editor/LIN_Editor_SignalGroup.dita" type="reference"/>
+			<topicref href="topics/LDF Editor/LIN_Editor_Coding.dita" type="reference"/>
+			<topicref href="topics/LDF Editor/LIN_Editor_ScheduleTable.dita" type="reference"/>
+			<topicref href="topics/LDF Editor/LIN_Editor_NodeComposition.dita" type="reference"/>
+		</topicref>
+	</topicref>
+ </topicref>
   <topicref href="topics/c_library.dita" type="topic">
     <topicref href="topics/stdlib.dita" type="topic">
       <topicref href="references/stdlib/abs.dita" type="reference"/>

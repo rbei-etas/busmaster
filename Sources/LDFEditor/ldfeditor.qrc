@@ -1,0 +1,57 @@
+<RCC>
+    <qresource prefix="/LDFEditorIcons">
+      <file>Resources/icons/16x16/Application.png</file>
+      <file>Resources/icons/22x22/Application.png</file>
+      <file>Resources/icons/32x32/Application.png</file>
+
+      <file>Resources/icons/16x16/Coding.png</file>
+      <file>Resources/icons/22x22/Coding.png</file>
+      <file>Resources/icons/32x32/Coding.png</file>
+
+      <file>Resources/icons/16x16/Ecu.png</file>
+      <file>Resources/icons/22x22/Ecu.png</file>
+      <file>Resources/icons/32x32/Ecu.png</file>
+
+      <file>Resources/icons/16x16/Frame.png</file>
+      <file>Resources/icons/22x22/Frame.png</file>
+      <file>Resources/icons/32x32/Frame.png</file>
+
+      <file>Resources/icons/16x16/new.png</file>
+      <file>Resources/icons/22x22/new.png</file>
+      <file>Resources/icons/32x32/new.png</file>
+
+      <file>Resources/icons/16x16/open.png</file>
+      <file>Resources/icons/22x22/open.png</file>
+      <file>Resources/icons/32x32/open.png</file>
+
+      <file>Resources/icons/16x16/save.png</file>
+      <file>Resources/icons/22x22/save.png</file>
+      <file>Resources/icons/32x32/save.png</file>
+
+      
+      
+      <file>Resources/icons/16x16/saveas.png</file>
+      <file>Resources/icons/22x22/saveas.png</file>
+      <file>Resources/icons/32x32/saveas.png</file>
+
+     
+      <file>Resources/icons/16x16/Signals.png</file>
+      <file>Resources/icons/22x22/Signals.png</file>
+      <file>Resources/icons/32x32/Signals.png</file>
+
+      <file>Resources/icons/16x16/hex.png</file>
+      <file>Resources/icons/22x22/hex.png</file>
+      <file>Resources/icons/32x32/hex.png</file>
+
+      <file>Resources/icons/16x16/recent.png</file>
+      <file>Resources/icons/22x22/recent.png</file>
+      <file>Resources/icons/32x32/recent.png</file>
+
+      <file>Resources/icons/16x16/ScheduleTable.png</file>
+      <file>Resources/icons/22x22/ScheduleTable.png</file>
+      <file>Resources/icons/32x32/ScheduleTable.png</file>
+      
+      
+
+    </qresource>
+</RCC>

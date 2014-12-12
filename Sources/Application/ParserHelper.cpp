@@ -172,7 +172,7 @@ int CParserHelper::OnFrameStarted( std::string strName, int nID, std::string str
 }
 
 
-int CParserHelper::nOnSignalEncoding( UINT m_unMin, UINT m_unMax, DOUBLE m_fFactor, DOUBLE m_fOffset, std::string m_strUnit)
+int CParserHelper::nOnSignalEncoding( unsigned int m_unMin, unsigned int m_unMax, double m_fFactor, double m_fOffset, std::string m_strUnit)
 {
     if ( m_strLastId != "" )
     {

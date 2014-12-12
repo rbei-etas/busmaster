@@ -955,6 +955,7 @@ public:
     afx_msg void OnCfgSendMsgsLIN();
     afx_msg void OnSendMessageLIN();
     afx_msg void OnLinClusterConfig();
+    afx_msg void OnLDFEditor();
     void ApplyLogFilter();
     void ApplyLINLogFilter();
     void ApplyReplayFilter();

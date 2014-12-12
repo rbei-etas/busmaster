@@ -707,9 +707,9 @@ BEGIN
     LTEXT           "Select Channel",IDC_STATIC,103,15,48,12
     COMBOBOX        IDC_COMBO_CHANNEL,162,13,91,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     GROUPBOX        "Import Flexray Database",IDC_STATIC_DATABASE_INFO,18,35,346,249
-    EDITTEXT        IDC_EDIT_FIBEX_PATH,58,54,268,14,ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_EDIT_FIBEX_PATH,58,54,227,14,ES_AUTOHSCROLL | ES_READONLY
     LTEXT           "Fibex:",IDC_STATIC_DBNAME,31,53,21,14,SS_CENTERIMAGE,WS_EX_RIGHT
-    PUSHBUTTON      "...",IDC_BUTTON_FIBEXPATH,331,54,23,14
+    PUSHBUTTON      "...",IDC_BUTTON_FIBEXPATH,291,54,23,14
     GROUPBOX        "Cluster and ECU Selection",IDC_STATIC,28,81,325,193
     COMBOBOX        IDC_COMBO_CLUSTER,172,98,126,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Select Flexray Cluster:",IDC_STATIC_CLUSTER_INFO,89,98,74,12,SS_CENTERIMAGE
@@ -723,6 +723,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,198,168,87,10,WS_EX_TRANSPARENT
     CONTROL         "Enable Master Mode",IDC_ENABLE_MASTER_MODE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,199,147,79,10
     GROUPBOX        "                                            ",IDC_STATIC_LIN_OVERWRITE,189,168,139,60
+    PUSHBUTTON      "Edit",IDC_BUTTON_LDF_EDIT,317,54,38,14,NOT WS_VISIBLE | WS_DISABLED
 END
 
 
@@ -751,13 +752,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 2.5.0"
+            VALUE "FileVersion", "Ver 2.6.0"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 2.5.0"
+            VALUE "ProductVersion", "Ver 2.6.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -1116,8 +1117,10 @@ BEGIN
     BEGIN
         MENUITEM "&New",                        IDM_CONFIG_NEW
         MENUITEM "&Load...",                    IDM_CONFIG_LOAD
+        MENUITEM SEPARATOR
         MENUITEM "&Save",                       IDM_SAVE_CONFIG
         MENUITEM "Save &As...",                 IDM_SAVEAS_CONFIG
+        MENUITEM SEPARATOR
         POPUP "&Recent Configurations"
         BEGIN
             MENUITEM "Empty",                       IDM_REC_CFG_FILE1
@@ -1338,6 +1341,7 @@ BEGIN
         MENUITEM "Connect &LIN\tF4",            IDM_LIN_CONNECT
         MENUITEM "C&luster Configuration",      ID_LIN_CLUSTER_CONFIG
         MENUITEM "&Schedule Configuration",     IDM_SCHEDULE_CONFIG_LIN
+        MENUITEM "Database &Editor",                 IDM_LDF_EDITOR_LIN
         MENUITEM "&Filter Configuration",       IDM_CONFIGURE_FILTER_LIN
         MENUITEM SEPARATOR
         MENUITEM "&Network Statistics",         IDM_NETWORK_STATISTICS_WND_LIN
@@ -1691,10 +1695,10 @@ IDB_LIN_IMG TOOLBAR 32, 32
 BEGIN
     BUTTON      IDB_LIN_IMG
     BUTTON      IDM_LIN_CONNECT
-	SEPARATOR
-	BUTTON		ID_LIN_CLUSTER_CONFIG
-	BUTTON		IDM_SCHEDULE_CONFIG_LIN
-	SEPARATOR
+    SEPARATOR
+    BUTTON      ID_LIN_CLUSTER_CONFIG
+    BUTTON      IDM_SCHEDULE_CONFIG_LIN
+    SEPARATOR
     BUTTON      ID_TRANSMIT_CONFIGURE_LIN
     BUTTON      IDM_NETWORK_STATISTICS_WND_LIN
     SEPARATOR
@@ -1849,7 +1853,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 2.5.0"
+    IDS_VERSION             "Ver 2.6.0"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
     IDS_CONNECT             "&Connect\tF2"

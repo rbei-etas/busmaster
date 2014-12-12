@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="introduction" xml:lang="en-us">
+  <title>Codings</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2014"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Introduction</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title/>
+      <p><b>Creating Codings:</b></p>
+      <p>To create Codings right click on the Codings element in the element view and click on pop up menu &apos;<i>New</i>&apos;.A dialog Box as Shown in below image will be displayed.</p>
+      <image href="../../images/LDF Editor/New_Coding.png"/>
+      <p><ol>
+          <li>
+            <b>General Properties:</b>
+            <ul>
+              <li><b>Name:</b> Name of the Coding should follow C identifier rules and should be unique in coding list.</li>
+            </ul>
+          </li>
+          <li>Logical values and physical values can be created using Add Buttons provided in the corresponding sections.</li>
+        </ol></p>
+      <p> </p>
+      <p> </p>
+      <p><b>Editing Codings:</b></p>
+      <p>To edit existing Coding right click on the required coding item in the Element view and click on &apos;Edit&apos;. <b>Edit Coding - &lt;<i>Coding Name</i>&gt;</b> dialog will be displayed as shown below.All The values are editable</p>
+      <image href="../../images/LDF Editor/Edit_Coding.png"/>
+    </section>
+    <section>
+      <p/>
+      <p>To delete a logical element select the logical row and click on the Delete button provided in the same section.Similarly Physical values also can be deleted using the delete button provided in the same section.</p>
+    </section>
+    <section>
+      <p/>
+      <p>To save the changes click on &apos;OK&apos; button. Errors are displayed if  validation fails.</p>
+      <p>The following validations are performed:<ul>
+          <li>Coding name will be checked for its uniqueness</li>
+        </ul></p>
+      <p>To discard the changes click on &apos;Cancel&apos; button.</p>
+      <p/>
+    </section>
+    <p><b>Deleting Coding:</b></p>
+    <p>To delete any coding, right click on the coding item in the Element view and click on the pop up menu <b>Delete</b>. A confirmation message will be displayed before deleting the coding.</p>
+    <p>On deletion, coding  will be unmapped from all associated signals.</p>
+  </body>
+</topic>

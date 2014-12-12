@@ -12,12 +12,35 @@
 *.pch
 *.pdb
 *.sdf
-*.sln
 *.sln.cache
 *.suo
 *.vcproj.*.user
 *.vcxproj.user
 *.db
+*.ldf
+qwebp.dll
+qwbmp.dll
+qtaccessiblewidgets.dll
+qtiff.dll
+qtga.dll
+Qt5Widgets.dll
+qsvg.dll
+qoffscreen.dll
+Qt5Core.dll
+qmng.dll
+qminimal.dll
+Qt5Gui.dll
+qico.dll
+qdds.dll
+qjpeg.dll
+qjp2.dll
+qgif.dll
+qicns.dll
+icuuc52.dll
+icuin52.dll
+icudt52.dll
+qwindows.dll
+DBManager.dll
 Sources/Application/BUSMASTER_Interface.c
 Sources/Application/BUSMASTER_Interface.h
 Sources/Application/LDFLexer.c
@@ -43,6 +66,11 @@ Sources/Format Converter/LogAscConverter/log_asc_parser.h
 Sources/TestSuiteExecutorGUI/lexer.c
 Sources/TestSuiteExecutorGUI/parser.c
 Sources/TestSuiteExecutorGUI/parser.h
+Sources/DBManager/LDFGrammerLexer.cpp
+Sources/DBManager/LDFGrammerLexer.hpp
+Sources/DBManager/LDFGrammerParser.cpp
+Sources/DBManager/LDFGrammerParser.hpp
+Sources/DBManager/ANTLR3/include
 
 # Release dirs (except BIN)
 Sources/Application/Release
@@ -89,6 +117,9 @@ Sources/TXWindowFlexRay/Release
 Sources/TXWindowLIN/Release
 Sources/UDS_Protocol/Release
 Sources/Utility/Release
+Sources/LDFEditor/Release
+Sources/LDFViewer/Release
+Sources/DBManager/Release
 
 # Debug dirs (except BIN)
 Sources/Application/Debug
@@ -137,7 +168,13 @@ Sources/TXWindowFlexRay/Debug
 Sources/TXWindowLIN/Debug
 Sources/UDS_Protocol/Debug
 Sources/Utility/Debug
-
+Sources/LDFEditor/Debug
+Sources/LDFViewer/Debug
+Sources/DBManager/Debug
+*.user
+# build directories
+Sources/build
+Sources/Format Converter/build
 # Files in BIN (except hardware specific files)
 Sources/BIN/*/*.bmp
 Sources/BIN/*/*.c
@@ -204,6 +241,30 @@ Sources/BIN/*/TXWindowLIN.dll
 Sources/BIN/*/TestSetupEditorGUI.dll
 Sources/BIN/*/TestSuiteExecutorGUI.dll
 Sources/BIN/*/UDS_Protocol.dll
+Sources/BIN/*/qwebp.dll
+Sources/BIN/*/qwbmp.dll
+Sources/BIN/*/qtaccessiblewidgets.dll
+Sources/BIN/*/qtiff.dll
+Sources/BIN/*/qtga.dll
+Sources/BIN/*/Qt5Widgets.dll
+Sources/BIN/*/qsvg.dll
+Sources/BIN/*/qoffscreen.dll
+Sources/BIN/*/Qt5Core.dll
+Sources/BIN/*/qmng.dll
+Sources/BIN/*/qminimal.dll
+Sources/BIN/*/Qt5Gui.dll
+Sources/BIN/*/qico.dll
+Sources/BIN/*/qdds.dll
+Sources/BIN/*/qjpeg.dll
+Sources/BIN/*/qjp2.dll
+Sources/BIN/*/qgif.dll
+Sources/BIN/*/qicns.dll
+Sources/BIN/*/icuuc52.dll
+Sources/BIN/*/icuin52.dll
+Sources/BIN/*/icudt52.dll
+Sources/BIN/*/qwindows.dll
+Sources/BIN/*/platforms/qwindows.dll
+Sources/BIN/*/DBManager.dll
 Sources/BIN/*/JPN
 Sources/BIN/Libs/*/*.exp
 Sources/BIN/Libs/*/CAN_ETAS_BOA.lib
@@ -245,9 +306,38 @@ Sources/BIN/Libs/*/TestSetupEditorLib.lib
 Sources/BIN/Libs/*/TestSuiteExecutorGUI.lib
 Sources/BIN/Libs/*/UDS_Protocol.lib
 Sources/BIN/Libs/*/Utils.lib
+Sources/BIN/Libs/*/qwebp.dll
+Sources/BIN/Libs/*/qwbmp.dll
+Sources/BIN/Libs/*/qtaccessiblewidgets.dll
+Sources/BIN/Libs/*/qtiff.dll
+Sources/BIN/Libs/*/qtga.dll
+Sources/BIN/Libs/*/Qt5Widgets.dll
+Sources/BIN/Libs/*/qsvg.dll
+Sources/BIN/Libs/*/qoffscreen.dll
+Sources/BIN/Libs/*/Qt5Core.dll
+Sources/BIN/Libs/*/qmng.dll
+Sources/BIN/Libs/*/qminimal.dll
+Sources/BIN/Libs/*/Qt5Gui.dll
+Sources/BIN/Libs/*/qico.dll
+Sources/BIN/Libs/*/qdds.dll
+Sources/BIN/Libs/*/qjpeg.dll
+Sources/BIN/Libs/*/qjp2.dll
+Sources/BIN/Libs/*/qgif.dll
+Sources/BIN/Libs/*/qicns.dll
+Sources/BIN/Libs/*/icuuc52.dll
+Sources/BIN/Libs/*/icuin52.dll
+Sources/BIN/Libs/*/icudt52.dll
+Sources/BIN/Libs/*/qwindows.dll
+Sources/BIN/Libs/*/platforms/qwindows.dll
+Sources/BIN/Libs/*/DBManager.dll
+
 Sources/EXTERNAL/DmGraph/DMGraph.h
 Sources/EXTERNAL/DmGraph/DMGraph_i.c
 Sources/EXTERNAL/DmGraph/DMGraph_p.c
+
+Sources/LDFEditor/GeneratedFiles
+Sources/LDFViewer/GeneratedFiles
+Sources/LDFViewer/GeneratedFiles
 
 # Installation Setup
 Installation Setup/BUSMASTER_Cleanup_Registry.exe

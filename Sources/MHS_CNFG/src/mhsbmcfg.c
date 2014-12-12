@@ -32,7 +32,7 @@
 #include "mhsbmcfg.h"
 
 
-HINSTANCE AppHInstance = nullptr;
+HINSTANCE AppHInstance = 0;
 
 /***************************************************************/
 /*  DLL Main Funktion                                          */

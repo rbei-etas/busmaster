@@ -1282,11 +1282,7 @@ int ulGetESSerialNum(unsigned long DeviceType, int serialNumber, int nHardwareLi
 
             /* ValueCAN3 and ETAS ES581 */
         case NEODEVICE_VCAN3:
-            if (serialNumber < 50000)
-            {
-                return serialNumber;
-            }
-            else
+            if ((serialNumber >= 80000) && (serialNumber <= 119999))
             {
                 if (nHardwareLic == 8)   // Limited Version with only one channel
                 {
@@ -1296,6 +1292,10 @@ int ulGetESSerialNum(unsigned long DeviceType, int serialNumber, int nHardwareLi
                 {
                     return serialNumber-50000;
                 }
+            }
+            else
+            {
+                return serialNumber;
             }
             break;
         default:
@@ -2421,13 +2421,7 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
 
                 /* ValueCAN3 and ETAS ES581 */
             case NEODEVICE_VCAN3:
-                if (serialNumber < 50000)
-                {
-                    _stprintf(chTemp, "ValueCAN3, Serial Number %d, Network: %s",
-                              serialNumber, &netid_str[0]);
-
-                }
-                else
+                if ((serialNumber >= 80000) && (serialNumber <= 119999))
                 {
                     if (nHardwareLic == 8)   // Limited Version with only one channel
                     {
@@ -2441,6 +2435,11 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
                                   serialNumber-50000, &netid_str[0]);
 
                     }
+                }
+                else
+                {
+                    _stprintf(chTemp, "ValueCAN3, Serial Number %d, Network: %s",
+                              serialNumber, &netid_str[0]);
                 }
                 break;
 

@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="introduction" xml:lang="en-us">
+  <title>Cluster Properties</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2014"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Introduction</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title/>
+      <p>The LIN Cluster parameters can be edited by Right clicking the LIN Cluster Element in Element View and click on pop up menu &apos;<i>Edit</i>&apos;.A dialog Box as Shown in below image will be displayed.</p>
+      <p/>
+      <p><image href="../../images/LDF Editor/Edit_LinCluster.png"/></p>
+      <p><i/></p>
+      <p>1. Lin protocol and Language versions are read only sections. </p>
+    </section>
+    <section>2. Baud rate of the Lin cluster can be defined in the LIN Baud rate Section.</section>
+    <section>
+      <p>3. Channel Name can be provided in <b>Channel Name</b> section.This field is available from LDF2.1 version.</p>
+    </section>
+  </body>
+</topic>

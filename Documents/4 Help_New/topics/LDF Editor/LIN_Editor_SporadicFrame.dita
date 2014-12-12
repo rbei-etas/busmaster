@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="introduction" xml:lang="en-us">
+  <title>Sporadic Frame</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Introduction</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title/>
+      <p><b>Creating Sporadic Frames:</b></p>
+      <p>To create Sporadic frame right click on the Sporadic Frame element in the element view and click on popup menu &apos;New&apos;.&apos;Create Sporadic Frame&apos; dialog is as shown below.</p>
+      <image href="../../images/LDF Editor/LIN_SporadicFrameCreate.png"/>
+      <p><ol>
+          <li>
+            <b>General Properties:</b>
+            <ul>
+              <li><b>Name:</b> Name of the frame which should be follow C identifier rules and should be unique.</li>
+            </ul>
+          </li>
+          <li>
+            <b>Associating Frames:</b>
+            <ul>
+              <li>Check the Unconditional frames to be mapped to the Sporadic frame from the Associated Frames list.</li>
+            </ul>
+          </li>
+        </ol></p>
+      <p>To save the changes click on &apos;OK&apos; button. Errors are displayed if  validation fails.</p>
+      <p>The following validations are performed:<ul>
+          <li>Frame name will be checked for its uniqueness</li>
+        </ul></p>
+      <p>To discard the changes click on &apos;Cancel&apos; button.</p>
+      <p><b>Editing Sporadic Frames:</b></p>
+      <p>To edit existing Sporadic Frame right click on the Sporadic frame item in the Element view and click on &apos;Edit&apos;. &apos;Edit Sporadic Frame&apos; dialog is displayed as shown below.</p>
+      <image href="../../images/LDF Editor/LIN_SporadicFrameEdit.png"/>
+    </section>
+    <p><b>Deleting Sporadic Frame:</b></p>
+    <p>To delete Sporadic Frame, right click on the Sporadic item in the Element view and click on the popup menu &apos;Delete&apos;. A confirmation message will be displayed before deleting the frame.</p>
+  </body>
+</topic>

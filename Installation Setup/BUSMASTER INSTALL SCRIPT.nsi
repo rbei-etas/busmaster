@@ -369,8 +369,10 @@ Section "BUSMASTER"
   Delete "$INSTDIR\SignalDefiner.dll"
   RMDir /r "$INSTDIR\ConverterPlugins"
   Delete "$INSTDIR\BUSMASTER.chm"
+  Delete "$INSTDIR\LDFEditor.chm"
   Delete "$INSTDIR\COPYING.LESSER.txt"
   Delete "$INSTDIR\COPYING.txt"
+  Delete "$INSTDIR\FTL.txt"
   RMDir /r "$INSTDIR\SimulatedSystems"
   Delete "$INSTDIR\Readme.txt"
   Delete "$INSTDIR\DMGraph.dll"
@@ -393,6 +395,31 @@ Section "BUSMASTER"
   Delete "$INSTDIR\TXWindowLIN.dll"
   Delete "$INSTDIR\Controller_0.dll"
   Delete "$INSTDIR\Controller_1.dll"
+  Delete "$INSTDIR\LDFEditor.exe"
+  Delete "$INSTDIR\LDFViewer.exe"
+  Delete "$INSTDIR\DBManager.dll"
+  RMDir /r "$INSTDIR\platforms"
+  Delete "$INSTDIR\icudt52.dll"
+  Delete "$INSTDIR\icuin52.dll"
+  Delete "$INSTDIR\icuuc52.dll"
+  Delete "$INSTDIR\qdds.dll"
+  Delete "$INSTDIR\qgif.dll"
+  Delete "$INSTDIR\qicns.dll"
+  Delete "$INSTDIR\qico.dll"
+  Delete "$INSTDIR\qjp2.dll"
+  Delete "$INSTDIR\qjpeg.dll"
+  Delete "$INSTDIR\qminimal.dll"
+  Delete "$INSTDIR\qmng.dll"
+  Delete "$INSTDIR\qoffscreen.dll"
+  Delete "$INSTDIR\qsvg.dll"
+  Delete "$INSTDIR\Qt5Core.dll"
+  Delete "$INSTDIR\Qt5Gui.dll"
+  Delete "$INSTDIR\Qt5Widgets.dll"
+  Delete "$INSTDIR\qtaccessiblewidgets.dll"
+  Delete "$INSTDIR\qtga.dll"
+  Delete "$INSTDIR\qtiff.dll"
+  Delete "$INSTDIR\qwbmp.dll"
+  Delete "$INSTDIR\qwebp.dll"
 
   ; BUSMASTER
   File ..\Sources\BIN\Release\BusEmulation.exe
@@ -434,6 +461,30 @@ Section "BUSMASTER"
   File ..\Sources\BIN\Release\Controller_1.dll
   File ..\Sources\BIN\Release\LIN_Vector_XL.dll
   File ..\Sources\BIN\Release\LIN_PEAK_USB.dll
+  File ..\Sources\BIN\Release\LDFEditor.exe
+  File ..\Sources\BIN\Release\LDFViewer.exe
+  File ..\Sources\BIN\Release\DBManager.dll
+  File ..\Sources\BIN\Release\icudt52.dll
+  File ..\Sources\BIN\Release\icuin52.dll
+  File ..\Sources\BIN\Release\icuuc52.dll
+  File ..\Sources\BIN\Release\qdds.dll
+  File ..\Sources\BIN\Release\qgif.dll
+  File ..\Sources\BIN\Release\qicns.dll
+  File ..\Sources\BIN\Release\qico.dll
+  File ..\Sources\BIN\Release\qjp2.dll
+  File ..\Sources\BIN\Release\qjpeg.dll
+  File ..\Sources\BIN\Release\qminimal.dll
+  File ..\Sources\BIN\Release\qmng.dll
+  File ..\Sources\BIN\Release\qoffscreen.dll
+  File ..\Sources\BIN\Release\qsvg.dll
+  File ..\Sources\BIN\Release\Qt5Core.dll
+  File ..\Sources\BIN\Release\Qt5Gui.dll
+  File ..\Sources\BIN\Release\Qt5Widgets.dll
+  File ..\Sources\BIN\Release\qtaccessiblewidgets.dll
+  File ..\Sources\BIN\Release\qtga.dll
+  File ..\Sources\BIN\Release\qtiff.dll
+  File ..\Sources\BIN\Release\qwbmp.dll
+  File ..\Sources\BIN\Release\qwebp.dll
 
   ; Converters
   File /r ..\Sources\BIN\Release\ConverterPlugins
@@ -447,15 +498,21 @@ Section "BUSMASTER"
   ; Help
   File /oname=BUSMASTER.chm "..\Documents\4 Help_new\out\help.chm"
 
+  ; LDF Editor Help
+  File /oname=LDFEditor.chm "..\Documents\4 Help_new\out\ldfeditor.chm"
+  
   ; Oxygen icons resource Dll
   File ..\Sources\BIN\Release\AdvancedUIPlugIn.dll
 
   ; License
   File ..\COPYING.LESSER.txt
   File ..\COPYING.txt
+  File ..\FTL.txt
 
   ; Readme
   File ..\Readme.txt
+  
+  File /r ..\Sources\BIN\Release\platforms
 
   ; Simulated Systems Include files
   SetOutPath "$INSTDIR\SimulatedSystems\include\"
@@ -529,6 +586,9 @@ lbl:
   CreateShortCut "$SMPROGRAMS\BUSMASTER v${VERSION}\BUSMASTER v${VERSION}.lnk" "$INSTDIR\BUSMASTER.exe" "" "$INSTDIR\BUSMASTER.exe" 0
   CreateShortCut "$SMPROGRAMS\BUSMASTER v${VERSION}\BUSMASTER_Cleanup_Registry.lnk" "$INSTDIR\BUSMASTER_Cleanup_Registry.exe" "" "$INSTDIR\BUSMASTER_Cleanup_Registry.exe" 0
   CreateShortCut "$SMPROGRAMS\BUSMASTER v${VERSION}\Uninstall.lnk" "$INSTDIR\uninst.exe" "" "$INSTDIR\uninst.exe" 0
+  CreateDirectory "$SMPROGRAMS\BUSMASTER v${VERSION}\Tools"
+  CreateShortCut "$SMPROGRAMS\BUSMASTER v${VERSION}\Tools\LIN Database Editor.lnk" "$INSTDIR\LDFEditor.exe" "" "$INSTDIR\LDFEditor.exe" 0
+  CreateShortCut "$SMPROGRAMS\BUSMASTER v${VERSION}\Tools\Format Converter.lnk" "$INSTDIR\FormatConverter.exe" "" "$INSTDIR\FormatConverter.exe" 0
 
   ; Uninstaller
   WriteUninstaller "uninst.exe"
@@ -577,7 +637,7 @@ Section "MHS-Elektronik Tiny-CAN"
   SectionIn 1 2
   SetOutPath $INSTDIR
   File ..\Sources\BIN\Release\CAN_MHS.dll
-  File ..\Sources\BIN\Release\mhstcan.dll
+  File ..\Sources\CAN_MHS\EXTERNAL\mhstcan.dll
 SectionEnd
 
 Section "Peak USB"
@@ -701,6 +761,11 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\BUSMASTER v${VERSION}\Uninstall.lnk"
   Delete "$SMPROGRAMS\BUSMASTER v${VERSION}\BUSMASTER v${VERSION}.lnk"
   Delete "$SMPROGRAMS\BUSMASTER v${VERSION}\BUSMASTER_Cleanup_Registry.lnk"
+  
+  Delete "$SMPROGRAMS\BUSMASTER v${VERSION}\Tools\LIN Database Editor.lnk"
+  Delete "$SMPROGRAMS\BUSMASTER v${VERSION}\Tools\Format Converter.lnk"
+  
+  RMDir /r "$SMPROGRAMS\BUSMASTER v${VERSION}\Tools"
 
   ; Deleting If StartPrograms BUSMASTER dir exists
   RMDir /r "$SMPROGRAMS\BUSMASTER v${VERSION}"

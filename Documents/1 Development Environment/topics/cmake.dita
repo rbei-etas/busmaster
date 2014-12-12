@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="cmake" xml:lang="en-us">
+  <title>CMake - Cross Platform Make</title>
+  <prolog>
+    <author>Tobias Lorenz</author>
+    <copyright>
+      <copyryear year="2014"/>
+      <copyrholder>ETAS GmbH</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <section>
+      <title>Description</title>
+      <p>CMake automates the task to generate solution and projects files for a specific target build system or IDE.</p>
+    </section>
+    <section>
+      <title>Download</title>
+      <p>CMake is available for download at <xref href="http://www.cmake.org/cmake/resources/software.html" scope="external"/>. Download the <filepath>cmake-3.0.1-win32-x86.exe</filepath> (2014-08-25).</p>
+    </section>
+    <section>
+      <title>Installation</title>
+      <p>Just execute the installer <filepath>cmake-3.0.1-win32-x86.exe</filepath>. The standard installation folder is <filepath>%ProgramFiles%\CMake</filepath>.</p>
+    </section>
+    <section>
+      <title>Configuration</title>
+      <p>There is no specific configuration of CMake necessary.</p>
+    </section>
+    <section>
+      <title>Usage</title>
+      <p>Just execute <filepath>Sources\build.bat</filepath> to generate the Microsoft Visual Studio solution and project files and to build the project in the Release configuration. The output is created in the folder <filepath>Sources\BIN\Release</filepath>.</p>
+      <p>If you want to build in Debug configuration, you need to adjust the <filepath>Sources\build.bat</filepath> accordingly. The output is then created in the folder <filepath>Sources\BIN\Debug</filepath>.</p>
+    </section>
+  </body>
+</topic>

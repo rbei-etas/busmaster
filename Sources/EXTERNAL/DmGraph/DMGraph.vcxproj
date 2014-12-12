@@ -188,6 +188,10 @@ exit 0</Command>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <OutputFile>.\ReleaseUMinSize/DMGraph.bsc</OutputFile>
     </Bscmake>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)/bin/$(OutDir)DMGraph.dll" "$(SolutionDir)BIN/busmaster_debug/"
+copy "$(SolutionDir)/bin/$(OutDir)DMGraph.dll" "$(SolutionDir)BIN/Release/"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnnoPropPage.cpp">

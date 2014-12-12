@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="introduction" xml:lang="en-us">
+  <title>Unconditional Frame</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Introduction</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title/>
+      <p><b>Creating Unconditional Frames:</b></p>
+      <p>To create Unconditional frame right click on the Unconditional Frame element in the element view and click on popup menu &apos;New&apos;. &apos;Create Unconditional Frame&apos; dialog is shown as below.</p>
+      <image href="../../images/LDF Editor/LIN_UnconditionalFrame_Create.png"/>
+      <p><ol>
+          <li>
+            <b>General Properties:</b>
+            <ul>
+              <li><b>Name:</b> Name of the frame should follow C identifier rules and should be unique.</li>
+              <li><b>ID</b><b>:</b> Identifier of the frame [0-59]</li>
+              <li><b>Length:</b> Length of the frame [1-8] in bytes</li>
+              <li><b>Dynamic Frame</b>: If dynamic frame, the &apos;Dynamic Frame&apos; check box should be checked. More than one Unconditional frame can exist with the same Id and it is introduced from LDF version 2.0.</li>
+            </ul>
+          </li>
+          <li>
+            <b>Publisher and Subscribers:</b>
+            <ul>
+              <li>Frame publisher can be selected from the Publisher drop down which lists Master and Slave nodes</li>
+              <li>Subscribers list is read only and will get populated on mapping signals using &apos;Map Signal&apos; button</li>
+            </ul>
+          </li>
+          <li>
+            <b>Signal Mapping:</b>
+            <ul>
+              <li>To map signals to the frame click on &apos;Map Signal&apos; button. Map Signal dialog is displayed as shown below with lists signals thats belong to the publisher selected in the Publisher field.</li>
+            </ul>
+            <image href="../../images/LDF Editor/LIN_MapSignalsDlg.png"/>
+          </li>
+        </ol></p>
+      <p>To save the changes click on &apos;OK&apos; button. Errors are displayed if  validation fails.</p>
+      <p>The following validations are performed:<ul>
+          <li>Frame name will be checked for its uniqueness</li>
+          <li>If the frame is not dynamic frame, Frame Id will be checked for uniqueness</li>
+        </ul></p>
+      <p>To discard the changes click on &apos;Cancel&apos; button.</p>
+      <p><b>Editing Unconditional Frames:</b></p>
+      <p>To edit existing Unconditional Frame right click on the Unconditional frame item in the Element view and click on &apos;Edit&apos;. &apos;Edit Unconditional Frame&apos; dialog is displayed as shown below.</p>
+      <image href="../../images/LDF Editor/LIN_UnconditionalFrameEdit.png"/>
+    </section>
+    <p><b>Deleting Unconditional Frame:</b></p>
+    <p>To delete Unconditional Frame, right click on the Unconditional frame item in the Element view and click on the popup menu &apos;Delete&apos;. A confirmation message will be displayed before deleting the frame.</p>
+    <p>On deletion, deleted Unconditional frame will be unmapped from the Publisher  and the Subscribers.</p>
+  </body>
+</topic>

@@ -66,7 +66,7 @@ echo MinGW not found. Build failed!
 goto END
 
 :MSYS
-set MSYS_HOME=%MINGW_HOME%\msys\1.0
+set MSYS_HOME=C:\msys\1.0
 if exist "%MSYS_HOME%" goto BUILD
 
 :MSYS_NOT_FOUND
@@ -78,9 +78,11 @@ echo Using Java found in %JAVA_HOME%
 echo Using PMD found in %PMD_HOME%
 echo Using MSYS found in %MSYS_HOME%
 set ANT_HOME=%DITA_HOME%\tools\ant
+set ANT_OPTS=-Xmx1024m -Xms512m
 set PATH=%JAVA_HOME%\bin;%ANT_HOME%\bin;%MSYS_HOME%\bin;%PATH%
-set CLASSPATH=%CLASSPATH%;%PMD_HOME%\lib\pmd-5.0-alpha.jar
+set CLASSPATH=%CLASSPATH%;%PMD_HOME%\lib\pmd-5.0.2.jar
 call ant -Dpmd.dir="%PMD_HOME%" -v -f build.xml
 
 :END
+REM pause
 exit 0
