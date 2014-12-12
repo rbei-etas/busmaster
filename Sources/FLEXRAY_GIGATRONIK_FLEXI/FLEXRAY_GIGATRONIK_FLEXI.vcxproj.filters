@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\DIL_Interface\ClientBuffer.cpp">
+      <Filter>extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DIL_Interface\ClientList.cpp">
+      <Filter>extern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DIL_Interface\CommanDIL_Flexray.cpp">
+      <Filter>extern</Filter>
+    </ClCompile>
+    <ClCompile Include="HardwareListing.cpp">
+      <Filter>extern</Filter>
+    </ClCompile>
+    <ClCompile Include="FLEXRAY_GIGATRONIK_FLEXI_dialog_keyslot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FLEXRAY_GIGATRONIK_FLEXI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FLEXRAY_GIGATRONIK_FLEXI_extern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FLEXRAY_GIGATRONIK_FLEXI_HELPER.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FLEXRAY_GIGATRONIK_FLEXI_Log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FLEXRAY_GIGATRONIK_FLEXI_dialog_settings_tab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TAB_ACCEPTANCE_MASK.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TAB_MESSAGE_VIEW.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TAB_TRANSMISSION_MODE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\DIL_Interface\ClientBuffer.h">
+      <Filter>extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DIL_Interface\ClientList.h">
+      <Filter>extern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DIL_Interface\CommanDIL_Flexray.h">
+      <Filter>extern</Filter>
+    </ClInclude>
+    <ClInclude Include="HardwareListing.h">
+      <Filter>extern</Filter>
+    </ClInclude>
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI_HELPER.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI_extern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI_dialog_keyslot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI_GtFr_NativeInterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI_Log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>extern</Filter>
+    </ClInclude>
+    <ClInclude Include="resource1.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI_dialog_settings_tab.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TAB_ACCEPTANCE_MASK.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TAB_MESSAGE_VIEW.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TAB_TRANSMISSION_MODE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI_configuration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{33ac7a28-39f7-4db3-a336-d605f1f6d200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{50e94934-dd1a-4051-8887-70aea3291349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{a8f38cac-e487-4fd9-ba29-e0d30c6bface}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extern">
+      <UniqueIdentifier>{a7df17ca-c27a-44a2-981f-1a9287b72986}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FLEXRAY_GIGATRONIK_FLEXI.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bmp_net.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\BUSMASTERDoc.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

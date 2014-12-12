@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="busmaster_debug|Win32">
+      <Configuration>busmaster_debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\DIL_Interface\ClientBuffer.cpp" />
+    <ClCompile Include="..\DIL_Interface\ClientList.cpp" />
+    <ClCompile Include="..\DIL_Interface\CommanDIL_Flexray.cpp" />
+    <ClCompile Include="FLEXRAY_GIGATRONIK_FLEXI_dialog_keyslot.cpp" />
+    <ClCompile Include="FLEXRAY_GIGATRONIK_FLEXI_dialog_settings_tab.cpp" />
+    <ClCompile Include="FLEXRAY_GIGATRONIK_FLEXI_extern.cpp" />
+    <ClCompile Include="FLEXRAY_GIGATRONIK_FLEXI_HELPER.cpp" />
+    <ClCompile Include="FLEXRAY_GIGATRONIK_FLEXI.cpp" />
+    <ClCompile Include="FLEXRAY_GIGATRONIK_FLEXI_Log.cpp" />
+    <ClCompile Include="HardwareListing.cpp" />
+    <ClCompile Include="TAB_ACCEPTANCE_MASK.cpp" />
+    <ClCompile Include="TAB_MESSAGE_VIEW.cpp" />
+    <ClCompile Include="TAB_TRANSMISSION_MODE.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\DIL_Interface\ClientBuffer.h" />
+    <ClInclude Include="..\DIL_Interface\ClientList.h" />
+    <ClInclude Include="..\DIL_Interface\CommanDIL_Flexray.h" />
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI_configuration.h" />
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI_dialog_keyslot.h" />
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI_dialog_settings_tab.h" />
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI_Log.h" />
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI_HELPER.h" />
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI.h" />
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI_extern.h" />
+    <ClInclude Include="FLEXRAY_GIGATRONIK_FLEXI_GtFr_NativeInterface.h" />
+    <ClInclude Include="HardwareListing.h" />
+    <ClInclude Include="resource1.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TAB_ACCEPTANCE_MASK.h" />
+    <ClInclude Include="TAB_MESSAGE_VIEW.h" />
+    <ClInclude Include="TAB_TRANSMISSION_MODE.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="FLEXRAY_GIGATRONIK_FLEXI.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bmp_net.bmp" />
+    <Image Include="res\BUSMASTERDoc.ico" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9D27029C-210A-4A16-8A8B-D9BD31CC821E}</ProjectGuid>
+    <RootNamespace>FlexRay_ETAS_BOA</RootNamespace>
+    <Keyword>MFCDLLProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v110_xp</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v110_xp</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51020.3</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>Debug\</OutDir>
+    <IntDir>Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+    <IncludePath>C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;$(SolutionDir)\EXTERNAL\zlib\include;$(SolutionDir)\EXTERNAL\libxml2\include;$(SolutionDir)\EXTERNAL\iconv\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;$(SolutionDir)\EXTERNAL\iconv\lib;$(SolutionDir)\EXTERNAL\libxml2\lib;$(SolutionDir)\EXTERNAL\zlib\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
+    <OutDir>$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>true</GenerateManifest>
+    <IncludePath>C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;$(SolutionDir)\EXTERNAL\zlib\include;$(SolutionDir)\EXTERNAL\libxml2\include;$(SolutionDir)\EXTERNAL\iconv\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;$(SolutionDir)\EXTERNAL\iconv\lib;$(SolutionDir)\EXTERNAL\libxml2\lib;$(SolutionDir)\EXTERNAL\zlib\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/I "$(SolutionDir)/Localization/include" /D "BOA_VERSION=BOA_VERSION_2" %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;..\EXTERNAL\libxml2\include;..\EXTERNAL\iconv\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;WINVER=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat />
+      <ObjectFileName>$(SolutionDir)/bin/DumpFiles/$(IntDir)/OBJ/$(TargetName)/</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>"$(SolutionDir)/BIN/Libs/$(OutDir)DataTypes.lib"
+"$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib"
+"$(SolutionDir)/Localization/lib/intl.lib" %(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>$(SolutionDir)/bin/$(OutDir)FlexRay_ETAS_BOA_2.dll</OutputFile>
+      <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile />
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)FLEXRAY_ETAS_BOA_2.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+      <ProgramDatabaseFile>$(SolutionDir)/bin/DumpFiles/$(IntDir)/PDB/$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/I "$(SolutionDir)/Localization/include" /D "BOA_VERSION=BOA_VERSION_2" %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;..\EXTERNAL\libxml2\include;..\EXTERNAL\iconv\include;..\Include;EXTERNAL</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat />
+      <ObjectFileName>$(SolutionDir)/bin/DumpFiles/$(IntDir)/OBJ/$(TargetName)/</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>"$(SolutionDir)/BIN/Libs/$(OutDir)DataTypes.lib"
+"$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>Advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)/bin/$(OutDir)FlexRay_GIGATRONIK_flex-i.dll</OutputFile>
+      <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile />
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <StackReserveSize>8000000</StackReserveSize>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)FlexRay_GIGATRONIK_flex-i.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreSpecificDefaultLibraries>daouuid.lib</IgnoreSpecificDefaultLibraries>
+      <ProgramDatabaseFile>$(SolutionDir)/bin/DumpFiles/$(IntDir)/PDB/$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>
+      </AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;WINVER=0x0500;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ObjectFileName>$(SolutionDir)/bin/DumpFiles/$(IntDir)/OBJ/$(TargetName)/</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(IntDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>"$(SolutionDir)/BIN/Libs/$(OutDir)DataTypes.lib"
+"$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>Advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)/bin/$(OutDir)FlexRay_GIGATRONIK_flex-i.dll</OutputFile>
+      <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile />
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <StackReserveSize>8000000</StackReserveSize>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)FlexRay_GIGATRONIK_flex-i.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreSpecificDefaultLibraries>daouuid.lib</IgnoreSpecificDefaultLibraries>
+      <ProgramDatabaseFile>$(SolutionDir)/bin/DumpFiles/$(IntDir)/PDB/$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="FLEXRAY_GIGATRONIK_FLEXI.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
