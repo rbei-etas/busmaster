@@ -42,6 +42,8 @@ static ENTRY_DIL sg_ListDIL[] =
     {FLEXRAY_DAL_NONE,       "&Deactivate"        },
     /* ...all other drivers should be in alphabetical order */
     {FLEXRAY_DRIVER_ETAS_BOA,   "ETAS &BOA"          },
+    {FLEXRAY_DRIVER_GIGATRONIK_FLEXI,   "&GIGATRONIK flex-i"          },
+
     //{FLEXRAY_DRIVER_TZMCYCLONE, "&TZMCylone"         },
 };
 
@@ -195,7 +197,9 @@ HRESULT CDIL_FLEXRAY::DILF_SelectDriver(DWORD dwDriverID, HWND hWndParent, Base_
             case FLEXRAY_DRIVER_ETAS_BOA:
                 m_hDriverDll = vLoadEtasBoaLibrary(pILog);
                 break;
-
+            case FLEXRAY_DRIVER_GIGATRONIK_FLEXI:
+                m_hDriverDll = LoadLibrary("FlexRay_GIGATRONIK_flex-i.dll");
+                break;
             case DRIVER_CAN_STUB:
                 // m_hDriverDll = LoadLibrary("FLEXRAY_STUB.dll");
                 hResult = DAL_INVALID;
