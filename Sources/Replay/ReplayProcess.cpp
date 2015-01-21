@@ -117,9 +117,12 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
         /// Get the number of messages to play
         int nCount = pReplayDetails->m_nNoOfMessagesToPlay;
         int nOffset = pReplayDetails->m_nUserSelectionIndex;
+		
+
 
         // Time Calculation
-        CArray<UINT,UINT> omTimeDelay;
+        CArray<DOUBLE,DOUBLE> omTimeDelay;
+		double accDelay = 0;
         if( pReplayDetails->m_ouReplayFile.m_nTimeMode == defREPLAY_RETAIN_DELAY
                 && nCount > 1 )
         {
@@ -130,12 +133,8 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
                 // Get the current entry
                 omStrNext = pReplayDetails->m_omEntries[ nIndex + nOffset + 1];
                 omStrCurr = pReplayDetails->m_omEntries[ nIndex + nOffset ];
-                UINT unTime = unTimeDiffBetweenMsg( omStrNext, omStrCurr,
+                DOUBLE unTime = unTimeDiffBetweenMsg( omStrNext, omStrCurr,
                                                     pReplayDetails->m_wLogReplayTimeMode );
-                if( unTime == 0 )
-                {
-                    unTime = 1;
-                }
                 omTimeDelay.Add( unTime );
             }
         }
@@ -149,7 +148,7 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
         // Create the event object to wait for
         HANDLE hEventReplayWait = CreateEvent(nullptr, FALSE, FALSE, nullptr);
         // Assign the message delay time
-        int nDelay = pReplayDetails->m_ouReplayFile.m_unMsgTimeDelay;
+        double nDelay = (double) pReplayDetails->m_ouReplayFile.m_unMsgTimeDelay;
         // main loop for message transmission.
         for( int nIndex = 0;
                 pReplayDetails->m_bStopReplayThread == FALSE && nIndex < nCount;
@@ -163,10 +162,15 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
                 {
                     nDelay = omTimeDelay[ nIndex ];
                 }
+				accDelay += nDelay;
 
-                timeSetEvent( nDelay, time.wPeriodMin,
+				if(accDelay >= 1){
+
+					timeSetEvent( (UINT)accDelay, time.wPeriodMin,
                               (LPTIMECALLBACK) hEventReplayWait, 0,
                               TIME_CALLBACK_EVENT_SET | TIME_ONESHOT);
+					
+				}
             }
             // Send message in CAN bus if the message ID is valid
             if ( pReplayDetails->m_omMsgList[ nCurrentIndex].
@@ -201,7 +205,10 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
             else
             {
                 // Wait for the event
-                WaitForSingleObject(hEventReplayWait, INFINITE);
+				if(accDelay >= 1) {
+					WaitForSingleObject(hEventReplayWait, INFINITE);
+					accDelay -= (DOUBLE)(UINT)accDelay;
+				}
             }
         }
         if (mmResult == TIMERR_NOERROR)
@@ -257,8 +264,8 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
         int nCount = pReplayDetails->m_nNoOfMessagesToPlay;
 
         // Time Calculation
-        CArray<UINT,UINT> omTimeDelay;
-
+        CArray<DOUBLE,DOUBLE> omTimeDelay;
+		double accDelay = 0;
         CString omStrCurr;
         CString omStrNext;
         UINT unMsgDelay = pReplayDetails->m_ouReplayFile.m_unMsgTimeDelay;
@@ -278,12 +285,8 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
                 // Get the current entry
                 omStrNext = pReplayDetails->m_omEntries[ nNextIndex ];
                 omStrCurr = pReplayDetails->m_omEntries[ nCurrentIndex ];
-                UINT unTime = unTimeDiffBetweenMsg( omStrNext, omStrCurr,
+                DOUBLE unTime = unTimeDiffBetweenMsg( omStrNext, omStrCurr,
                                                     pReplayDetails->m_wLogReplayTimeMode );
-                if( unTime == 0 )
-                {
-                    unTime = 1;
-                }
                 omTimeDelay.Add( unTime );
             }
             else
@@ -315,9 +318,13 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
         {
             int nCurrentIndex = pReplayDetails->m_omSelectedIndex[ nIndex ];
             // Set the event to wait
-            timeSetEvent( omTimeDelay[ nIndex ], time.wPeriodMin,
+
+			accDelay += omTimeDelay[ nIndex ];
+			if(accDelay >= 1){
+            timeSetEvent( (UINT)accDelay, time.wPeriodMin,
                           (LPTIMECALLBACK) hEventReplayWait, 0,
                           TIME_CALLBACK_EVENT_SET | TIME_ONESHOT);
+			}
 
             // Send message in CAN bus if the message ID is valid
             if ( pReplayDetails->m_omMsgList[ nCurrentIndex ].
@@ -348,7 +355,10 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
             nIndex++;
             nIndex %= nCount;
             // Wait for the event
-            WaitForSingleObject(hEventReplayWait, INFINITE);
+			if(accDelay >= 1){
+				WaitForSingleObject(hEventReplayWait, INFINITE);
+				accDelay -= (DOUBLE)(UINT)accDelay;
+			}
         }
         if (mmResult == TIMERR_NOERROR)
         {
@@ -635,7 +645,8 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
         pReplayDetails->m_omThreadEvent.ResetEvent();
         // Replay code here
         // Time Calculation
-        CArray<UINT,UINT> omTimeDelay;
+        CArray<DOUBLE,DOUBLE> omTimeDelay;
+		double accDelay = 0;
         // Get the item count
         int nCount = (int)pReplayDetails->m_omEntries.GetSize();
 
@@ -657,12 +668,8 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
                 omStrNext = pReplayDetails->m_omEntries[ nIndex + 1 ];
                 // Get the current entry
                 omStrCurr = pReplayDetails->m_omEntries[ nIndex ];
-                UINT unTime = unTimeDiffBetweenMsg( omStrNext, omStrCurr,
+                DOUBLE unTime = unTimeDiffBetweenMsg( omStrNext, omStrCurr,
                                                     pReplayDetails->m_wLogReplayTimeMode );
-                if( unTime == 0 )
-                {
-                    unTime = 1;
-                }
                 omTimeDelay.Add( unTime );
             }
             else
@@ -693,10 +700,12 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
         while( pReplayDetails->m_bStopReplayThread == FALSE )
         {
             // Set the event to wait
-            timeSetEvent( omTimeDelay[ nIndex ], time.wPeriodMin,
-                          (LPTIMECALLBACK) hEventReplayWait, 0,
-                          TIME_CALLBACK_EVENT_SET | TIME_ONESHOT);
-
+			accDelay += omTimeDelay[ nIndex ];
+			if(accDelay >= 1){
+				timeSetEvent( (UINT)accDelay, time.wPeriodMin,
+						       (LPTIMECALLBACK) hEventReplayWait, 0,
+					          TIME_CALLBACK_EVENT_SET | TIME_ONESHOT);
+			}
             // Send message in CAN bus if the message ID is valid
             if ( pReplayDetails->m_omMsgList[ nIndex ].
                     m_uDataInfo.m_sCANMsg.m_unMsgID != -1 )
@@ -745,7 +754,12 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
             // Wait for the event
             if( pReplayDetails->m_bStopReplayThread == FALSE )
             {
-                WaitForSingleObject(hEventReplayWait, INFINITE);
+               if(accDelay >= 1){
+				    
+				WaitForSingleObject(hEventReplayWait, INFINITE);
+				accDelay -= (DOUBLE)(UINT)accDelay;
+			   }
+
             }
         }
         if (mmResult == TIMERR_NOERROR)
