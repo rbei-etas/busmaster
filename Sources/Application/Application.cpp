@@ -32,57 +32,19 @@ BEGIN_DISPATCH_MAP(CApplication, CCmdTarget)
     DISP_FUNCTION_ID(CApplication, "Connect",               dispidConnect,                  Connect,                VT_EMPTY, VTS_BOOL)
     DISP_FUNCTION_ID(CApplication, "GetMsgInfo",            dispidGetMsgInfo,               GetMsgInfo,             VT_EMPTY, VTS_BSTR VTS_PVARIANT )
     DISP_FUNCTION_ID(CApplication, "GetNetworkStatistics",  dispidGetNetworkStatistics,     GetNetworkStatistics,   VT_EMPTY, VTS_I4 VTS_PVARIANT )
-    DISP_FUNCTION_ID(CApplication, "SendCANMSg",            dispidSendCANMSg,               SendCANMSg,             VT_EMPTY, VTS_PVARIANT )
     DISP_FUNCTION_ID(CApplication, "GetErrorCounter",       dispidGetErrorCounter,          GetErrorCounter,        VT_EMPTY, VTS_UI1 VTS_UI1 VTS_I4  )
-    DISP_FUNCTION_ID(CApplication, "EnableDisableHandlers", dispidEnableDisableHandlers,    EnableDisableHandlers,  VT_EMPTY, VTS_BOOL VTS_PVARIANT )
     DISP_FUNCTION_ID(CApplication, "ImportDatabase",        dispidImportDatabase,           ImportDatabase,         VT_EMPTY, VTS_BSTR )
     DISP_FUNCTION_ID(CApplication, "LoadConfiguration",     dispidLoadConfiguration,        LoadConfiguration,      VT_EMPTY, VTS_BSTR )
-    DISP_FUNCTION_ID(CApplication, "SendKeyValue",          dispidSendKeyValue,             SendKeyValue,           VT_EMPTY, VTS_UI1 )
-    DISP_FUNCTION_ID(CApplication, "DisplayWindow",         dispidDisplayWindow,            DisplayWindow,          VT_EMPTY, VTS_I2 VTS_PVARIANT  )
-    DISP_FUNCTION_ID(CApplication, "WriteToLogFile",        dispidWriteToLogFile,           WriteToLogFile,         VT_EMPTY, VTS_I2 VTS_BSTR)
-    DISP_FUNCTION_ID(CApplication, "StopLogging",           dispidStopLogging,              StopLogging,            VT_EMPTY, VTS_NONE)
-    DISP_FUNCTION_ID(CApplication, "StartLogging",          dispidStartLogging,             StartLogging,           VT_EMPTY, VTS_NONE)
-    DISP_FUNCTION_ID(CApplication, "ResetSW",               dispidReSetSW,                  ResetSW,                VT_EMPTY, VTS_NONE)
-    DISP_FUNCTION_ID(CApplication, "StopTxMsgBlock",        dispidStopTxMsgBlock,           StopTxMsgBlock,         VT_EMPTY, VTS_NONE)
-    DISP_FUNCTION_ID(CApplication, "StartTxMsgBlock",       dispidStartTxMsgBlock,          StartTxMsgBlock,        VT_EMPTY, VTS_NONE)
-    DISP_FUNCTION_ID(CApplication, "UnLoadAllDll",          dispidUnLoadAllDll,             UnLoadAllDll,           VT_EMPTY, VTS_NONE)
-    DISP_FUNCTION_ID(CApplication, "LoadAllDll",            dispidLoadAllDll,               LoadAllDll,             VT_EMPTY, VTS_NONE)
     DISP_FUNCTION_ID(CApplication, "SaveConfiguration",     dispidSaveConfiguration,        SaveConfiguration,      VT_EMPTY, VTS_NONE)
-    DISP_FUNCTION_ID(CApplication, "AddLoggingBlock",       dispidAddLoggingBlock,          AddLoggingBlock,        VT_EMPTY, VTS_PVARIANT)
     DISP_FUNCTION_ID(CApplication, "SaveConfigurationAs",   dispidSaveConfigurationAs,      SaveConfigurationAs,    VT_EMPTY, VTS_BSTR)
-    DISP_FUNCTION_ID(CApplication, "AddTxBlock",            dispidAddTxBlock,               AddTxBlock,             VT_EMPTY, VTS_PVARIANT)
-    DISP_FUNCTION_ID(CApplication, "GetTxBlockCount",       dispidGetTxBlockCount,          GetTxBlockCount,        VT_EMPTY, VTS_PI2)
-    DISP_FUNCTION_ID(CApplication, "GetTxBlock",            dispidGetTxBlock,               GetTxBlock,             VT_EMPTY, VTS_I2 VTS_PVARIANT)
-    DISP_FUNCTION_ID(CApplication, "DeleteTxBlock",         dispidDeleteTxBlock,            DeleteTxBlock,          VT_EMPTY, VTS_I2)
-    DISP_FUNCTION_ID(CApplication, "ClearTxBlockList",      dispidClearTxBlockList,         ClearTxBlockList,       VT_EMPTY, VTS_NONE)
-    DISP_FUNCTION_ID(CApplication, "AddMsgToTxBlock",       dispidAddMsgToTxBlock,          AddMsgToTxBlock,        VT_EMPTY, VTS_I2 VTS_PVARIANT)
-    DISP_FUNCTION_ID(CApplication, "GetMsgCount",           dispidGetMsgCount,              GetMsgCount,            VT_EMPTY, VTS_I2 VTS_PI2)
-    DISP_FUNCTION_ID(CApplication, "GetMsgFromTxBlock",     dispidGetMsgFromTxBlock,        GetMsgFromTxBlock,      VT_EMPTY, VTS_I2 VTS_I2 VTS_PVARIANT)
-    DISP_FUNCTION_ID(CApplication, "DeleteMsgFromTxBlock",  dispidDeleteMsgFromTxBlock,     DeleteMsgFromTxBlock,   VT_EMPTY, VTS_I2 VTS_PI2)
-    DISP_FUNCTION_ID(CApplication, "ClearMsgList",          dispidClearMsgList,             ClearMsgList,           VT_EMPTY, VTS_I2)
-    DISP_FUNCTION_ID(CApplication, "AddFilterScheme",       dispidAddFilterScheme,          AddFilterScheme,        VT_EMPTY, VTS_BSTR VTS_BOOL)
-    DISP_FUNCTION_ID(CApplication, "GetFilterScheme",       dispidGetFilterScheme,          GetFilterScheme,        VT_EMPTY, VTS_I2 VTS_BSTR VTS_PBOOL)
-    DISP_FUNCTION_ID(CApplication, "GetFilterSchCount",     dispidGetFilterSchCount,        GetFilterSchCount,      VT_EMPTY, VTS_PI2)
-    DISP_FUNCTION_ID(CApplication, "UpdateFilterSch",       dispidUpdateFilterSch,          UpdateFilterSch,        VT_EMPTY, VTS_I2 VTS_PVARIANT)
-    DISP_FUNCTION_ID(CApplication, "GetFilterCountInSch",   dispidGetFilterCountInSch,      GetFilterCountInSch,    VT_EMPTY, VTS_I2 VTS_PI2)
-    DISP_FUNCTION_ID(CApplication, "GetFilterInFilterSch",  dispidGetFilterInFilterSch,     GetFilterInFilterSch,   VT_EMPTY, VTS_I2 VTS_I2 VTS_PVARIANT)
-    DISP_FUNCTION_ID(CApplication, "DeleteFilterInSch",     dispidDeleteFilterInSch,        DeleteFilterInSch,      VT_EMPTY, VTS_I2 VTS_I2)
-    DISP_FUNCTION_ID(CApplication, "EnableFilterSch",       dispidEnableFilterSch,          EnableFilterSch,        VT_EMPTY, VTS_PVARIANT VTS_BOOL)
-    DISP_FUNCTION_ID(CApplication, "AddSimulatedSystem",    dispidAddSimulatedSystem,       AddSimulatedSystem,     VT_EMPTY, VTS_BSTR)
-    DISP_FUNCTION_ID(CApplication, "GetSimulatedSystemCount",dispidGetSimulatedSystemCount, GetSimulatedSystemCount,VT_EMPTY, VTS_PI2)
-    DISP_FUNCTION_ID(CApplication, "GetSimulatedSystemName",dispidGetSimulatedSystemName,   GetSimulatedSystemName, VT_EMPTY, VTS_I2 VTS_PBSTR)
-    DISP_FUNCTION_ID(CApplication, "DeleteSimulatedSystem", dispidDeleteSimulatedSystem,    DeleteSimulatedSystem,  VT_EMPTY, VTS_I2)
-    DISP_FUNCTION_ID(CApplication, "RemoveLoggingBlock",    dispidRemoveLoggingBlock,       RemoveLoggingBlock,     VT_EMPTY, VTS_I2)
-    DISP_FUNCTION_ID(CApplication, "GetLoggingBlockCount",  dispidGetLoggingBlockCount,     GetLoggingBlockCount,   VT_EMPTY, VTS_PI2)
-    DISP_FUNCTION_ID(CApplication, "ClearLoggingBlockList", dispidClearLoggingBlockList,    ClearLoggingBlockList,  VT_EMPTY, VTS_NONE)
-    DISP_FUNCTION_ID(CApplication, "GetLoggingBlock",       dispidGetLoggingBlock,          GetLoggingBlock,        VT_EMPTY, VTS_I2 VTS_PVARIANT)
     DISP_FUNCTION_ID(CApplication, "RegisterClientForRx",   dispidRegisterClientForRx,      RegisterClientForRx,    VT_EMPTY, VTS_I2 VTS_PBSTR VTS_PBSTR)
     DISP_FUNCTION_ID(CApplication, "UnRegisterClient",      dispidUnRegisterClient,         UnRegisterClient,       VT_EMPTY, VTS_I2)
+    //DISP_FUNCTION_ID(CApplication, "GetApplication",      dispidGetApplication,           GetApplication,         VT_EMPTY, VTS_PVARIANT)
 
 END_DISPATCH_MAP()
 
 BEGIN_INTERFACE_MAP(CApplication, CCmdTarget)
-INTERFACE_PART(CApplication, IID_IApplication, LocalClass)
+INTERFACE_PART(CApplication, IID_IBusMasterApp, LocalClass)
 INTERFACE_PART(CApplication, IID_IConnectionPointContainer, ConnPtContainer)
 END_INTERFACE_MAP()
 
@@ -311,8 +273,6 @@ STDMETHODIMP CApplication::XLocalClass::Invoke(
                               pexcepinfo, puArgErr);
 }
 
-
-
 STDMETHODIMP CApplication::XLocalClass::Connect(BOOL bConnect)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
@@ -331,22 +291,10 @@ STDMETHODIMP CApplication::XLocalClass::GetNetworkStatistics(int nChannel, sBUSS
     return pThis->GetNetworkStatistics( nChannel,  sStat);
 }
 
-STDMETHODIMP CApplication::XLocalClass::SendCANMSg(CAN_MSGS* sMsg)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->SendCANMSg(sMsg);
-}
-
 STDMETHODIMP CApplication::XLocalClass::GetErrorCounter(UCHAR* Tx, UCHAR* Rx, INT nChannel)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->GetErrorCounter(Tx,Rx,nChannel);
-}
-
-STDMETHODIMP CApplication::XLocalClass::EnableDisableHandlers(BOOL bEnable,eHandlerType eType)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->EnableDisableHandlers( bEnable, eType);
 }
 
 STDMETHODIMP CApplication::XLocalClass::ImportDatabase(BSTR DBFilePath)
@@ -361,266 +309,16 @@ STDMETHODIMP CApplication::XLocalClass::LoadConfiguration(BSTR FileName)
     return pThis->LoadConfiguration(FileName);
 }
 
-STDMETHODIMP CApplication::XLocalClass::SendKeyValue(UCHAR keyval)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->SendKeyValue(keyval);
-}
-
-/*STDMETHODIMP CApplication::XLocalClass::GetControllerMode(eControllerMode *eMode)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetControllerMode(eMode);
-}
-
-STDMETHODIMP CApplication::XLocalClass::SetControllerMode(eControllerMode eMode)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->SetControllerMode(eMode);
-}
-
-STDMETHODIMP CApplication::XLocalClass::GetBaudRate(int nChannelNo, BYTE *bBTR0,BYTE *bBTR1)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetBaudRate(nChannelNo,bBTR0,bBTR1);
-}
-
-STDMETHODIMP CApplication::XLocalClass::SetBaudRate(int nChannelNo, BYTE bBTR0,BYTE bBTR1)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->SetBaudRate(nChannelNo,bBTR0,bBTR1);
-}*/
-
-STDMETHODIMP CApplication::XLocalClass::DisplayWindow(eWindow eWhichWindow)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->DisplayWindow(eWhichWindow);
-}
-
-STDMETHODIMP CApplication::XLocalClass::WriteToLogFile(USHORT BlockIndex, BSTR pcStr)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->WriteToLogFile(BlockIndex, pcStr);
-}
-
-STDMETHODIMP CApplication::XLocalClass::StopLogging()
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->StopLogging();
-}
-
-STDMETHODIMP CApplication::XLocalClass::StartLogging()
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->StartLogging();
-}
-
-STDMETHODIMP CApplication::XLocalClass::ResetSW()
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->ResetSW();
-}
-
-STDMETHODIMP CApplication::XLocalClass::StopTxMsgBlock()
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->StopTxMsgBlock();
-}
-
-STDMETHODIMP CApplication::XLocalClass::StartTxMsgBlock()
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->StartTxMsgBlock();
-}
-
-STDMETHODIMP CApplication::XLocalClass::UnLoadAllDll()
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->UnLoadAllDll();
-}
-
-STDMETHODIMP CApplication::XLocalClass::LoadAllDll()
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->LoadAllDll();
-}
-
-/*STDMETHODIMP CApplication::XLocalClass::BuildLoadAllDll()
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->BuildLoadAllDll();
-}
-
-STDMETHODIMP CApplication::XLocalClass::BuildAllDll()
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->BuildAllDll();
-}
-
-STDMETHODIMP CApplication::XLocalClass::GetHwFilter(BOOL *pnExtended, double *dBeginMsgId, double *dEndMsgId)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetHwFilter(pnExtended, dBeginMsgId, dEndMsgId);
-}
-
-STDMETHODIMP CApplication::XLocalClass::SetHwFilter(BOOL pnExtended, double dBeginMsgId, double dEndMsgId)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->SetHwFilter(pnExtended, dBeginMsgId, dEndMsgId);
-}*/
 STDMETHODIMP CApplication::XLocalClass::SaveConfiguration()
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->SaveConfiguration();
 }
-STDMETHODIMP CApplication::XLocalClass::AddLoggingBlock(SLOGGINGBLOCK_USR* psLoggingBlock)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->AddLoggingBlock( psLoggingBlock );
-}
+
 STDMETHODIMP CApplication::XLocalClass::SaveConfigurationAs(BSTR ConfigPath)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->SaveConfigurationAs( ConfigPath);
-}
-STDMETHODIMP CApplication::XLocalClass::AddTxBlock(STXBLOCK_USR* psTxBlock)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->AddTxBlock(psTxBlock);
-}
-STDMETHODIMP CApplication::XLocalClass::GetTxBlockCount (USHORT* Result)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetTxBlockCount (Result);
-}
-STDMETHODIMP CApplication::XLocalClass::GetTxBlock (USHORT BlockIndex, STXBLOCK_USR* psTxBlock)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetTxBlock (BlockIndex, psTxBlock);
-}
-STDMETHODIMP CApplication::XLocalClass::DeleteTxBlock (USHORT BlockIndex)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->DeleteTxBlock (BlockIndex);
-}
-STDMETHODIMP CApplication::XLocalClass::ClearTxBlockList ()
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->ClearTxBlockList ();
-}
-STDMETHODIMP CApplication::XLocalClass::AddMsgToTxBlock (USHORT BlockIndex, CAN_MSGS* psMsg)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->AddMsgToTxBlock (BlockIndex, psMsg);
-}
-STDMETHODIMP CApplication::XLocalClass::GetMsgCount (USHORT BlockIndex, USHORT* Result)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetMsgCount (BlockIndex, Result);
-}
-STDMETHODIMP CApplication::XLocalClass::GetMsgFromTxBlock  ( USHORT BlockIndex, USHORT MsgIndex, CAN_MSGS* psMsg)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetMsgFromTxBlock  ( BlockIndex, MsgIndex, psMsg);
-}
-STDMETHODIMP CApplication::XLocalClass::DeleteMsgFromTxBlock (USHORT BlockIndex, USHORT FrameIndex)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->DeleteMsgFromTxBlock (BlockIndex, FrameIndex);
-}
-STDMETHODIMP CApplication::XLocalClass::ClearMsgList (USHORT BlockIndex)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->ClearMsgList (BlockIndex);
-}
-STDMETHODIMP CApplication::XLocalClass::AddFilterScheme (BSTR pcFilterName, VARIANT_BOOL  FilterType)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->AddFilterScheme (pcFilterName, FilterType);
-}
-STDMETHODIMP CApplication::XLocalClass::GetFilterScheme ( USHORT FilterSchINdex,BSTR pcFilterName,VARIANT_BOOL*  FilterType)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetFilterScheme ( FilterSchINdex, pcFilterName, FilterType);
-}
-STDMETHODIMP CApplication::XLocalClass::GetFilterSchCount (USHORT* pTotal)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetFilterSchCount (pTotal);
-}
-STDMETHODIMP CApplication::XLocalClass::UpdateFilterSch (USHORT FilterSchIndex,SFILTER_USR* psFilter)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->UpdateFilterSch (FilterSchIndex, psFilter);
-}
-STDMETHODIMP CApplication::XLocalClass::GetFilterCountInSch (USHORT FilterSchIndex, USHORT* pTotal)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetFilterCountInSch (FilterSchIndex, pTotal);
-}
-STDMETHODIMP CApplication::XLocalClass::GetFilterInFilterSch (USHORT FilterSchIndex, USHORT FilterIndex, SFILTER_USR* psFilter)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetFilterInFilterSch (FilterSchIndex, FilterIndex, psFilter);
-}
-
-STDMETHODIMP CApplication::XLocalClass:: DeleteFilterInSch (USHORT FilterSchIndex, USHORT FilterIndex)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis-> DeleteFilterInSch (FilterSchIndex, FilterIndex);
-}
-STDMETHODIMP CApplication::XLocalClass::EnableFilterSch (EFILTERMODULE eModule, BOOL Enable)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->EnableFilterSch (eModule, Enable == TRUE);
-}
-
-STDMETHODIMP CApplication::XLocalClass::AddSimulatedSystem(BSTR pcSimPath)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->AddSimulatedSystem(pcSimPath);
-}
-
-STDMETHODIMP CApplication::XLocalClass::GetSimulatedSystemCount(USHORT* pSimTotal)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetSimulatedSystemCount(pSimTotal);
-}
-
-STDMETHODIMP CApplication::XLocalClass::GetSimulatedSystemName(USHORT SimSysIndex, BSTR* pcSimPath)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetSimulatedSystemName(SimSysIndex, pcSimPath);
-}
-
-STDMETHODIMP CApplication::XLocalClass::DeleteSimulatedSystem(USHORT SimSysIndex)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->DeleteSimulatedSystem(SimSysIndex);
-}
-
-STDMETHODIMP CApplication::XLocalClass::RemoveLoggingBlock(USHORT BlockIndex)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->RemoveLoggingBlock(BlockIndex);
-}
-
-STDMETHODIMP CApplication::XLocalClass::GetLoggingBlockCount(USHORT* BlockCount)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetLoggingBlockCount(BlockCount);
-}
-
-STDMETHODIMP CApplication::XLocalClass::ClearLoggingBlockList(void)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->ClearLoggingBlockList();
-}
-
-STDMETHODIMP CApplication::XLocalClass::GetLoggingBlock(USHORT BlockIndex, SLOGGINGBLOCK_USR* psLoggingBlock)
-{
-    METHOD_PROLOGUE(CApplication, LocalClass)
-    return pThis->GetLoggingBlock( BlockIndex, psLoggingBlock);
 }
 
 STDMETHODIMP CApplication::XLocalClass::RegisterClientForRx( USHORT usUniqueID, BSTR* pEventName, BSTR* pPIPEName )
@@ -633,4 +331,260 @@ STDMETHODIMP CApplication::XLocalClass::UnRegisterClient( USHORT usUniqueID)
 {
     METHOD_PROLOGUE(CApplication, LocalClass)
     return pThis->UnRegisterClient( usUniqueID);
+}
+
+IMPLEMENT_DYNCREATE(CCommClass, CCmdTarget)
+
+BEGIN_MESSAGE_MAP(CCommClass, CCmdTarget)
+END_MESSAGE_MAP()
+
+BEGIN_DISPATCH_MAP(CCommClass, CCmdTarget)
+    DISP_FUNCTION_ID(CCommClass, "SendCANMSg", dispidSendCANMSg, SendCANMSg, VT_EMPTY, VTS_PVARIANT )
+    DISP_FUNCTION_ID(CCommClass, "GetApplication",  dispidGetApplication,       GetApplication,     VT_EMPTY, VTS_PVARIANT)
+END_DISPATCH_MAP()
+
+BEGIN_INTERFACE_MAP(CCommClass, CCmdTarget)
+INTERFACE_PART(CCommClass, IID_ICANComm, CommClass)
+INTERFACE_PART(CCommClass, IID_IConnectionPointContainer, ConnPtContainer)
+END_INTERFACE_MAP()
+
+BEGIN_CONNECTION_MAP(CCommClass, CCmdTarget)
+CONNECTION_PART(CCommClass, IID__IAppEvents, AppEvents)
+END_CONNECTION_MAP()
+
+IMPLEMENT_OLECREATE(CCommClass, "CAN_MonitorApp.Comm", 0x1b90ca83, 0x8652, 0x41fc, 0xb2, 0x9a, 0x19, 0x1d, 0x57, 0xb4, 0x55, 0xa3)
+
+
+CCommClass::CCommClass(void)
+{
+    EnableAutomation();
+    ::AfxOleLockApp();
+    // enable this object for connection points
+    EnableConnections();
+}
+
+CCommClass::~CCommClass(void)
+{
+    ::AfxOleUnlockApp();
+}
+
+STDMETHODIMP_(ULONG) CCommClass::XCommClass::AddRef()
+{
+    METHOD_PROLOGUE(CCommClass, CommClass)
+    return pThis->ExternalAddRef();
+}
+STDMETHODIMP_(ULONG) CCommClass::XCommClass::Release()
+{
+    METHOD_PROLOGUE(CCommClass, CommClass)
+    return pThis->ExternalRelease();
+}
+STDMETHODIMP CCommClass::XCommClass::QueryInterface(
+    REFIID iid, LPVOID* ppvObj)
+{
+    METHOD_PROLOGUE(CCommClass, CommClass)
+    return pThis->ExternalQueryInterface(&iid, ppvObj);
+}
+STDMETHODIMP CCommClass::XCommClass::GetTypeInfoCount(
+    UINT FAR* pctinfo)
+{
+    METHOD_PROLOGUE(CCommClass, CommClass)
+    LPDISPATCH lpDispatch = pThis->GetIDispatch(FALSE);
+    ASSERT(lpDispatch != nullptr);
+    return lpDispatch->GetTypeInfoCount(pctinfo);
+}
+STDMETHODIMP CCommClass::XCommClass::GetTypeInfo(
+    UINT itinfo, LCID lcid, ITypeInfo FAR* FAR* pptinfo)
+{
+    METHOD_PROLOGUE(CCommClass, CommClass)
+    LPDISPATCH lpDispatch = pThis->GetIDispatch(FALSE);
+    ASSERT(lpDispatch != nullptr);
+    return lpDispatch->GetTypeInfo(itinfo, lcid, pptinfo);
+}
+STDMETHODIMP CCommClass::XCommClass::GetIDsOfNames(
+    REFIID riid, OLECHAR FAR* FAR* rgszNames, UINT cNames,
+    LCID lcid, DISPID FAR* rgdispid)
+{
+    METHOD_PROLOGUE(CCommClass, CommClass)
+    LPDISPATCH lpDispatch = pThis->GetIDispatch(FALSE);
+    ASSERT(lpDispatch != nullptr);
+    return lpDispatch->GetIDsOfNames(riid, rgszNames, cNames,
+                                     lcid, rgdispid);
+}
+STDMETHODIMP CCommClass::XCommClass::Invoke(
+    DISPID dispidMember, REFIID riid, LCID lcid, WORD wFlags,
+    DISPPARAMS FAR* pdispparams, VARIANT FAR* pvarResult,
+    EXCEPINFO FAR* pexcepinfo, UINT FAR* puArgErr)
+{
+    METHOD_PROLOGUE(CCommClass, CommClass)
+    LPDISPATCH lpDispatch = pThis->GetIDispatch(FALSE);
+    ASSERT(lpDispatch != nullptr);
+    return lpDispatch->Invoke(dispidMember, riid, lcid,
+                              wFlags, pdispparams, pvarResult,
+                              pexcepinfo, puArgErr);
+}
+
+STDMETHODIMP CCommClass::XCommClass::SendCANMSg(CAN_MSGS* sMsg)
+{
+    METHOD_PROLOGUE(CCommClass, CommClass)
+    return pThis->SendCANMSg(sMsg);
+}
+
+STDMETHODIMP CCommClass::XCommClass::GetApplication( IBusMasterApp** pApplication)
+{
+    METHOD_PROLOGUE(CCommClass, CommClass)
+    return pThis->GetApplication(pApplication);
+}
+
+IMPLEMENT_DYNCREATE(CLogClass, CCmdTarget)
+
+BEGIN_MESSAGE_MAP(CLogClass, CCmdTarget)
+END_MESSAGE_MAP()
+
+BEGIN_DISPATCH_MAP(CLogClass, CCmdTarget)
+    DISP_FUNCTION_ID(CLogClass, "StopLogging",           dispidStopLogging,              StopLogging,            VT_EMPTY, VTS_NONE)
+    DISP_FUNCTION_ID(CLogClass, "StartLogging",          dispidStartLogging,             StartLogging,           VT_EMPTY, VTS_NONE)
+    DISP_FUNCTION_ID(CLogClass, "AddLoggingBlock",       dispidAddLoggingBlock,          AddLoggingBlock,        VT_EMPTY, VTS_PVARIANT)
+    DISP_FUNCTION_ID(CLogClass, "GetLoggingBlock",       dispidGetLoggingBlock,          GetLoggingBlock,        VT_EMPTY, VTS_I2 VTS_PVARIANT)
+    DISP_FUNCTION_ID(CLogClass, "RemoveLoggingBlock",    dispidRemoveLoggingBlock,       RemoveLoggingBlock,     VT_EMPTY, VTS_I2)
+    DISP_FUNCTION_ID(CLogClass, "GetLoggingBlockCount",  dispidGetLoggingBlockCount,     GetLoggingBlockCount,   VT_EMPTY, VTS_PI2)
+    DISP_FUNCTION_ID(CLogClass, "ClearLoggingBlockList", dispidClearLoggingBlockList,    ClearLoggingBlockList,  VT_EMPTY, VTS_NONE)
+    DISP_FUNCTION_ID(CLogClass, "WriteToLogFile",        dispidWriteToLogFile,           WriteToLogFile,         VT_EMPTY, VTS_I2 VTS_BSTR)
+    DISP_FUNCTION_ID(CLogClass, "GetApplication",       dispidGetApplication,            GetApplication,         VT_EMPTY, VTS_PVARIANT)
+END_DISPATCH_MAP()
+
+BEGIN_INTERFACE_MAP(CLogClass, CCmdTarget)
+INTERFACE_PART(CLogClass, IID_ICANLog, LogClass)
+INTERFACE_PART(CLogClass, IID_IConnectionPointContainer, ConnPtContainer)
+END_INTERFACE_MAP()
+
+BEGIN_CONNECTION_MAP(CLogClass, CCmdTarget)
+CONNECTION_PART(CLogClass, IID__IAppEvents, AppEvents)
+END_CONNECTION_MAP()
+
+IMPLEMENT_OLECREATE(CLogClass, "CAN_MonitorApp.Log", 0xbadffc69, 0x8fcb, 0x4181, 0x88, 0x0c, 0x61, 0x5d, 0x09, 0x84, 0x8c, 0xd6)
+
+
+CLogClass::CLogClass(void)
+{
+    EnableAutomation();
+    ::AfxOleLockApp();
+    // enable this object for connection points
+    EnableConnections();
+}
+
+CLogClass::~CLogClass(void)
+{
+    ::AfxOleUnlockApp();
+}
+
+STDMETHODIMP_(ULONG) CLogClass::XLogClass::AddRef()
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    return pThis->ExternalAddRef();
+}
+STDMETHODIMP_(ULONG) CLogClass::XLogClass::Release()
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    return pThis->ExternalRelease();
+}
+STDMETHODIMP CLogClass::XLogClass::QueryInterface(
+    REFIID iid, LPVOID* ppvObj)
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    return pThis->ExternalQueryInterface(&iid, ppvObj);
+}
+STDMETHODIMP CLogClass::XLogClass::GetTypeInfoCount(
+    UINT FAR* pctinfo)
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    LPDISPATCH lpDispatch = pThis->GetIDispatch(FALSE);
+    ASSERT(lpDispatch != nullptr);
+    return lpDispatch->GetTypeInfoCount(pctinfo);
+}
+STDMETHODIMP CLogClass::XLogClass::GetTypeInfo(
+    UINT itinfo, LCID lcid, ITypeInfo FAR* FAR* pptinfo)
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    LPDISPATCH lpDispatch = pThis->GetIDispatch(FALSE);
+    ASSERT(lpDispatch != nullptr);
+    return lpDispatch->GetTypeInfo(itinfo, lcid, pptinfo);
+}
+STDMETHODIMP CLogClass::XLogClass::GetIDsOfNames(
+    REFIID riid, OLECHAR FAR* FAR* rgszNames, UINT cNames,
+    LCID lcid, DISPID FAR* rgdispid)
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    LPDISPATCH lpDispatch = pThis->GetIDispatch(FALSE);
+    ASSERT(lpDispatch != nullptr);
+    return lpDispatch->GetIDsOfNames(riid, rgszNames, cNames,
+                                     lcid, rgdispid);
+}
+STDMETHODIMP CLogClass::XLogClass::Invoke(
+    DISPID dispidMember, REFIID riid, LCID lcid, WORD wFlags,
+    DISPPARAMS FAR* pdispparams, VARIANT FAR* pvarResult,
+    EXCEPINFO FAR* pexcepinfo, UINT FAR* puArgErr)
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    LPDISPATCH lpDispatch = pThis->GetIDispatch(FALSE);
+    ASSERT(lpDispatch != nullptr);
+    return lpDispatch->Invoke(dispidMember, riid, lcid,
+                              wFlags, pdispparams, pvarResult,
+                              pexcepinfo, puArgErr);
+}
+
+STDMETHODIMP CLogClass::XLogClass::GetLoggingBlock(USHORT BlockIndex, SLOGGINGBLOCK_USR* psLoggingBlock)
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    return pThis->GetLoggingBlock( BlockIndex, psLoggingBlock);
+}
+
+STDMETHODIMP CLogClass::XLogClass::WriteToLogFile(USHORT BlockIndex, BSTR pcStr)
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    return pThis->WriteToLogFile(BlockIndex, pcStr);
+}
+
+STDMETHODIMP CLogClass::XLogClass::StopLogging()
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    return pThis->StopLogging();
+}
+
+STDMETHODIMP CLogClass::XLogClass::StartLogging()
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    return pThis->StartLogging();
+}
+
+STDMETHODIMP CLogClass::XLogClass::AddLoggingBlock(SLOGGINGBLOCK_USR* psLoggingBlock)
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    return pThis->AddLoggingBlock( psLoggingBlock );
+}
+
+STDMETHODIMP CLogClass::XLogClass::RemoveLoggingBlock(USHORT BlockIndex)
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    return pThis->RemoveLoggingBlock(BlockIndex);
+}
+
+STDMETHODIMP CLogClass::XLogClass::GetLoggingBlockCount(USHORT* BlockCount)
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    return pThis->GetLoggingBlockCount(BlockCount);
+}
+
+STDMETHODIMP CLogClass::XLogClass::ClearLoggingBlockList(void)
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    return pThis->ClearLoggingBlockList();
+}
+
+STDMETHODIMP CLogClass::XLogClass::GetApplication( IBusMasterApp** pApplication)
+{
+    METHOD_PROLOGUE(CLogClass, LogClass)
+    IBusMasterApp* pApp = NULL;
+    pThis->GetApplication(&pApp);
+    int i = 10;
+    return S_OK;
 }

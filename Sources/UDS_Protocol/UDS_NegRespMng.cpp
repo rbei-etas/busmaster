@@ -61,7 +61,7 @@ NEGATIVE_RESP_STRUCT NegativeResponseStructUDS[SIZE_NEG_RESP_STRUCT] =
     {0x91,        "Neg Response - Torque Converter Clutch Locked",                  RGB(255, 00,0 )},
     {0x92,        "Neg Response - Voltage Too High",                                RGB(255, 00,0 )},
     {0x93,        "Neg Response - voltageTooLow",                                   RGB(255, 00,0 )},
-    {10,          "  Positive Response",          RGB(0, 100,0 )},      //It has to be always declared here
+    {10,          "     Positive Response",          RGB(0, 100,0 )},      //It has to be always declared here
     {4,           "Negative Response",            RGB(255, 00,0 )},
 };
 
@@ -96,7 +96,7 @@ NEGATIVE_RESP_STRUCT NegativeResponseStructKWP[32] =
     {0x78,        "Neg Response - Request Correctly Received-Response Pending",         RGB(255, 00,0 ) },
     {0x79,        "Neg Response - Incorrect ByteCount During Block Transfer",           RGB(255, 00,0 ) },
     {0x80,        "Neg Response - Service Not Supported In Active Diagnostic Mode",     RGB(255, 00,0 ) },
-    {10,          "  Positive Response",       RGB(0, 100,0 )},         //It has to be always declared here
+    {10,          "     Positive Response",       RGB(0, 100,0 )},         //It has to be always declared here
     {4,           "Negative Response",         RGB(255, 00,0 )},
 };
 

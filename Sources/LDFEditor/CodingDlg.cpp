@@ -90,6 +90,7 @@ void CodingDlg::AddPhysicalRow()
     pMax->setFrame(false);
 
     LineEditWidget* pUnit = new LineEditWidget(nRowCount, ui.tablePhysicalValues);
+    pUnit->setValidator(new QRegExpValidator(QRegExp(defUnit_RegExp)));
     pUnit->setFrame(false);
 
     LineEditWidget* pTextInfo = new LineEditWidget(nRowCount, ui.tablePhysicalValues);
@@ -274,6 +275,7 @@ for ( auto itr : ouCompuMethodsProps.m_ouLinCompuMethods.m_ouPhysicalValueList )
             pMax->setText(GetString(itr.m_unMax));
 
             LineEditWidget* pUnit = new LineEditWidget(nRow, ui.tablePhysicalValues);
+            pUnit->setValidator(new QRegExpValidator(QRegExp(defUnit_RegExp)));
             pUnit->setFrame(false);
             pUnit->setText(itr.m_strTextInfo.c_str());
 

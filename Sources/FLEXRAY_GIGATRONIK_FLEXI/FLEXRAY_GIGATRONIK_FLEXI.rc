@@ -1,0 +1,349 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource1.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_FLEXI_KEYSLOT DIALOG 0, 0, 292, 97
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "GIGABOX flex-i keyslot preferences"
+FONT 8, "Ms Shell Dlg"
+BEGIN
+    LTEXT           "manual keyslot",IDC_STATIC_TEXT_CC1_MAN,193,45,48,8
+    LTEXT           "manual keyslot",IDC_STATIC_TEXT_CC0_MAN,193,26,48,8
+    GROUPBOX        "keyslot preferences",IDC_FLEXI_GROUP_KEY,8,9,274,57
+    LTEXT           "CC0",IDC_STATIC_TEXT_CC0,20,26,14,8
+    LTEXT           "CC1",IDC_STATIC_TEXT_CC1,20,45,14,8
+    COMBOBOX        IDC_FLEXI_CC0_PREF,40,24,72,55,CBS_DROPDOWNLIST | CBS_HASSTRINGS
+    COMBOBOX        IDC_FLEXI_CC0_START_SYNC,116,24,61,58,CBS_DROPDOWNLIST | CBS_HASSTRINGS
+    EDITTEXT        IDC_FLEXI_CC0_MANUAL,242,24,24,13,ES_AUTOHSCROLL | ES_NUMBER
+    COMBOBOX        IDC_FLEXI_CC1_PREF,40,42,72,48,CBS_DROPDOWNLIST | CBS_HASSTRINGS
+    COMBOBOX        IDC_FLEXI_CC1_START_SYNC,116,42,61,47,CBS_DROPDOWNLIST | CBS_HASSTRINGS
+    EDITTEXT        IDC_FLEXI_CC1_MANUAL,242,42,24,13,ES_AUTOHSCROLL | ES_NUMBER
+    DEFPUSHBUTTON   "OK",IDOK,227,74,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,171,74,50,14
+END
+
+IDD_DIALOG_FLEXI_SETTINGS DIALOGEX 0, 0, 375, 276
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "GIGABOX flex-i settings"
+FONT 8, "Ms Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "Acceptance",IDC_FLEXI_ACCEPT_1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,132,190,52,8
+    CONTROL         "Reject",IDC_FLEXI_REJECT_1,"Button",BS_AUTORADIOBUTTON,186,190,37,8
+    CONTROL         "",IDC_FLEXI_CHECK_FIFO_1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,189,12,12
+    CONTROL         "",IDC_FLEXI_CHECK_FIFO_0,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,169,14,13
+    LTEXT           "upper Limit",IDD_STATIC_TEXT_UPPER,85,156,35,8
+    LTEXT           "lower Limit",IDD_STATIC_TEXT_LOWER,40,156,34,8
+    EDITTEXT        IDC_FLEXI_LOW_LIMIT_0,38,170,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FLEXI_UPPER_LIMIT_0,85,170,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FLEXI_LOW_LIMIT_1,38,188,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FLEXI_UPPER_LIMIT_1,85,188,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FLEXI_LOW_LIMIT_2,38,208,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FLEXI_UPPER_LIMIT_2,85,208,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FLEXI_LOW_LIMIT_3,38,226,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FLEXI_UPPER_LIMIT_3,85,226,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    GROUPBOX        "FIFO filter",IDC_FLEXI_GROUP_FIFO,7,142,360,106
+    CONTROL         "Acceptance",IDC_FLEXI_ACCEPT_3,"Button",BS_AUTORADIOBUTTON | WS_GROUP,132,228,52,8
+    CONTROL         "Reject",IDC_FLEXI_REJECT_3,"Button",BS_AUTORADIOBUTTON,186,228,37,8
+    CONTROL         "Acceptance",IDC_FLEXI_ACCEPT_2,"Button",BS_AUTORADIOBUTTON | WS_GROUP,132,210,52,8
+    CONTROL         "Reject",IDC_FLEXI_REJECT_2,"Button",BS_AUTORADIOBUTTON,186,210,37,8
+    CONTROL         "",IDC_FLEXI_CHECK_FIFO_3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,225,11,13
+    CONTROL         "",IDC_FLEXI_CHECK_FIFO_2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,209,12,11
+    GROUPBOX        "receiving frames",IDC_FLEXI_GROUP_TRANS,7,89,360,46
+    GROUPBOX        "static segment",IDC_FLEXI_GROUP_SEND_STATIC,15,20,172,54
+    CONTROL         "show null frames",IDC_FLEXI_NULL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,104,68,8
+    CONTROL         "show startup/sync frames",IDC_FLEXI_STARTUP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,118,97,8
+    GROUPBOX        "sending frames",IDC_FLEXI_GROUP_SEND,7,6,360,77
+    GROUPBOX        "dynamic segment",IDC_FLEXI_GROUP_SEND_DYN,193,20,160,54
+    CONTROL         "continuous transmission mode",IDC_FLEXI_CONTINUOUS_STATIC,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,29,40,110,8
+    CONTROL         "single shot transmission mode",IDC_FLEXI_SINGLE_STATIC,
+                    "Button",BS_AUTORADIOBUTTON,29,54,109,8
+    CONTROL         "continuous transmission mode",IDC_FLEXI_CONTINUOUS_DYN,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,207,40,110,8
+    CONTROL         "single shot transmission mode",IDC_FLEXI_SINGLE_DYN,
+                    "Button",BS_AUTORADIOBUTTON,207,54,109,8
+    CONTROL         "Acceptance",IDC_FLEXI_ACCEPT_0,"Button",BS_AUTORADIOBUTTON | WS_GROUP,132,172,52,8
+    CONTROL         "Reject",IDC_FLEXI_REJECT_0,"Button",BS_AUTORADIOBUTTON,186,172,37,8
+    DEFPUSHBUTTON   "Update",IDC_FLEXI_UPDATE,321,255,46,14
+END
+
+IDD_DIALOG_FLEXI_SETTINGS_TAB DIALOGEX 0, 0, 233, 137
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "GIGABOX flex-i settings"
+FONT 8, "Ms Shell Dlg", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "Update",IDC_FLEXI_UPDATE,184,120,46,14
+    CONTROL         "",IDC_TABCONTROL,"SysTabControl32",0x0,0,0,233,118
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_BMP_NET             BITMAP                  "res\\bmp_net.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DIALOG_FLEXI_KEYSLOT, DIALOG
+    BEGIN
+    END
+
+    IDD_DIALOG_FLEXI_SETTINGS, DIALOG
+    BEGIN
+    END
+
+    IDD_DIALOG_FLEXI_SETTINGS_TAB, DIALOG
+    BEGIN
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DLG_CHANGE_REGISTERS DLGINIT
+BEGIN
+    IDC_BUT_BLINK, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_EDIT_DRIVER_ID, 0x403, 2, 0
+0x0031, 
+    IDC_EDIT_DRIVER_ID, 0x403, 2, 0
+0x0033, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_PGM_EDTYPE          ICON                    "res\\BUSMASTERDoc.ico"
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TAB_ACCEPTANCE DIALOGEX 0, 0, 223, 96
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_FLEXI_CHECK_FIFO_1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,38,12,12
+    CONTROL         "",IDC_FLEXI_CHECK_FIFO_0,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,18,14,13
+    LTEXT           "upper Limit",IDD_STATIC_TEXT_UPPER,74,6,35,8
+    LTEXT           "lower Limit",IDD_STATIC_TEXT_LOWER,29,6,34,8
+    EDITTEXT        IDC_FLEXI_LOW_LIMIT_0,27,19,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FLEXI_UPPER_LIMIT_0,74,19,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FLEXI_LOW_LIMIT_1,27,37,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FLEXI_UPPER_LIMIT_1,74,37,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FLEXI_LOW_LIMIT_2,27,57,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FLEXI_UPPER_LIMIT_2,74,57,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FLEXI_LOW_LIMIT_3,27,75,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_FLEXI_UPPER_LIMIT_3,74,75,35,13,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Acceptance",IDC_FLEXI_ACCEPT_0,"Button",BS_AUTORADIOBUTTON | WS_GROUP,121,21,52,8
+    CONTROL         "Reject",IDC_FLEXI_REJECT_0,"Button",BS_AUTORADIOBUTTON,181,21,37,8
+    CONTROL         "Acceptance",IDC_FLEXI_ACCEPT_1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,121,39,52,8
+    CONTROL         "Reject",IDC_FLEXI_REJECT_1,"Button",BS_AUTORADIOBUTTON,181,39,37,8
+    CONTROL         "Acceptance",IDC_FLEXI_ACCEPT_2,"Button",BS_AUTORADIOBUTTON | WS_GROUP,121,59,52,8
+    CONTROL         "Reject",IDC_FLEXI_REJECT_2,"Button",BS_AUTORADIOBUTTON,181,59,37,8
+    CONTROL         "Acceptance",IDC_FLEXI_ACCEPT_3,"Button",BS_AUTORADIOBUTTON | WS_GROUP,121,77,52,8
+    CONTROL         "Reject",IDC_FLEXI_REJECT_3,"Button",BS_AUTORADIOBUTTON,181,77,37,8
+    CONTROL         "",IDC_FLEXI_CHECK_FIFO_3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,74,11,13
+    CONTROL         "",IDC_FLEXI_CHECK_FIFO_2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,58,12,11
+END
+
+IDD_TAB_TRANSMISSION DIALOGEX 0, 0, 157, 99
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    GROUPBOX        "static segment",IDC_FLEXI_GROUP_SEND_STATIC,5,5,144,46
+    GROUPBOX        "dynamic segment",IDC_FLEXI_GROUP_SEND_DYN,5,55,144,43
+    CONTROL         "continuous transmission mode",IDC_FLEXI_CONTINUOUS_STATIC,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,14,20,110,8
+    CONTROL         "single shot transmission mode",IDC_FLEXI_SINGLE_STATIC,
+                    "Button",BS_AUTORADIOBUTTON,14,34,109,8
+    CONTROL         "continuous transmission mode",IDC_FLEXI_CONTINUOUS_DYN,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP,14,69,110,8
+    CONTROL         "single shot transmission mode",IDC_FLEXI_SINGLE_DYN,
+                    "Button",BS_AUTORADIOBUTTON,14,83,109,8
+END
+
+IDD_TAB_MESSAGE_VIEW DIALOGEX 0, 0, 120, 41
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    CONTROL         "show null frames",IDC_FLEXI_NULL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,10,68,8
+    CONTROL         "show startup/sync frames",IDC_FLEXI_STARTUP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,24,97,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_TAB_ACCEPTANCE, DIALOG
+    BEGIN
+        RIGHTMARGIN, 220
+        TOPMARGIN, 6
+    END
+
+    IDD_TAB_TRANSMISSION, DIALOG
+    BEGIN
+        VERTGUIDE, 14
+    END
+
+    IDD_TAB_MESSAGE_VIEW, DIALOG
+    BEGIN
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Englisch (USA) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DLG_HW_LISTING DIALOGEX 0, 0, 376, 195
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Hardware Selection"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_LSTC_HW_LIST,"SysListView32",LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,8,17,189,37
+    PUSHBUTTON      "Blink",IDC_BUT_BLINK,14,147,39,11,WS_DISABLED
+    DEFPUSHBUTTON   "&Select",IDC_BUT_SELECT,205,60,44,14
+    CONTROL         "List1",IDC_LSTC_SELECTED_HW_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,255,17,113,144
+    DEFPUSHBUTTON   "&Remove",IDC_BUT_REMOVE,205,86,44,14
+    DEFPUSHBUTTON   "&OK",IDOK,133,178,50,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,192,178,50,14
+    LTEXT           "Available FlexRay hardware",IDC_STATIC,8,5,96,9
+    GROUPBOX        "Hardware Details",IDC_STATIC,8,60,189,102
+    LTEXT           "Driver ID :",IDC_STATIC,13,73,34,9
+    LTEXT           "Firmware :",IDC_STATIC,13,86,32,9
+    LTEXT           "Description : ",IDC_STATIC,13,99,40,11
+    EDITTEXT        IDC_EDIT_DRIVER_ID,47,73,52,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_NET_NAME,56,99,135,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_FIRMWARE,49,86,100,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Configured FlexRay hardware",IDC_STATIC,257,5,105,9
+    CONTROL         "______________________________________________________________________________________________",IDC_STAT_LINE3,
+                    "Static",SS_LEFTNOWORDWRAP | WS_DISABLED | WS_GROUP,7,162,377,10
+    EDITTEXT        IDC_EDIT_NET_ADDITIONALINFO,15,113,179,32,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DLG_HW_LISTING, DIALOG
+    BEGIN
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource1.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Englisch (USA) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

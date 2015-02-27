@@ -21,13 +21,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Japanese resources
+// Japanese (Japan) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
-#ifdef _WIN32
 LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 #pragma code_page(932)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -41,7 +39,7 @@ LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 // Accelerator
 //
 
-IDR_MAINFRAME ACCELERATORS 
+IDR_MAINFRAME ACCELERATORS
 BEGIN
     VK_F1,          ID_HELP,                VIRTKEY, NOINVERT
     VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
@@ -84,13 +82,13 @@ END
 IDD_ABOUTBOX DIALOGEX 0, 0, 243, 130
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "情報"
-FONT 8, "MS UI Gothic", 0, 0, 0x0
+FONT 9, "MS UI Gothic", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "はい",IDOK,186,6,50,14
     ICON            IDR_MAINFRAME,IDC_STATIC,7,11,20,20
     LTEXT           "",IDC_STATIC_VERSION,38,14,138,8
-    LTEXT           "著作権 2011 ETAS GmbH and Robert Bosch Engineering and Business Solutions Limited",IDC_STATIC,38,27,167,18	
-    LTEXT           "_________________________________________________________________",IDC_STAT_LINE4,7,43,229,9,WS_DISABLED
+    LTEXT           "著作権 2011 ETAS GmbH and Robert Bosch Engineering and Business Solutions Limited",IDC_STATIC,38,27,167,18
+    LTEXT           "_____________________________________________________________________________________________________________",IDC_STAT_LINE4,7,43,229,9,WS_DISABLED
     LTEXT           "このプログラムはフリーウェアです：GNU Lesser General Public Licenseの下で肺胞したり自由に修正したりすることが可能です。",IDC_STATIC,38,60,167,50
 END
 
@@ -98,7 +96,7 @@ IDD_DLG_VALUE_DESCRIPTOR DIALOGEX 0, 0, 215, 103
 STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "値と値のディスクリプタを入力してください"
-FONT 8, "MS UI Gothic", 0, 0, 0x1
+FONT 9, "MS UI Gothic", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_VALUE_DESC,8,20,197,14,ES_AUTOHSCROLL,0,HIDC_EDIT_VALUE_DESC
     EDITTEXT        IDC_EDIT_VAL,8,58,197,14,ES_UPPERCASE | ES_AUTOHSCROLL,0,HIDC_EDIT_VAL
@@ -113,7 +111,7 @@ IDD_DLG_SIGNAL DIALOGEX 0, 0, 277, 142
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "シグナル詳細"
-FONT 8, "MS UI Gothic", 0, 0, 0x1
+FONT 9, "MS UI Gothic", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_SGNAME,40,7,227,14,ES_AUTOHSCROLL,0,HIDC_EDIT_SGNAME
     COMBOBOX        IDC_COMB_SGTYPE,40,31,53,48,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP,0,HIDC_COMB_SGTYPE
@@ -150,7 +148,7 @@ IDD_DLG_MSG_SG_LIST DIALOGEX 0, 0, 310, 188
 STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "メッセージチャンネルの選択"
-FONT 8, "MS UI Gothic", 0, 0, 0x1
+FONT 9, "MS UI Gothic", 0, 0, 0x1
 BEGIN
     CONTROL         "List2",IDC_LSTC_MSGS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,7,19,125,91
     DEFPUSHBUTTON   "&選択",IDC_CBTN_OK,80,167,50,14
@@ -168,7 +166,7 @@ END
 IDD_MESSAGE_DIALOG DIALOGEX 0, 0, 159, 130
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "メッセージ詳細"
-FONT 8, "MS UI Gothic", 0, 0, 0x1
+FONT 9, "MS UI Gothic", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_MSG_NAME,73,8,78,14,ES_AUTOHSCROLL,0,HIDC_EDIT_MSG_NAME
     EDITTEXT        IDC_EDIT_MSGCODE,73,31,78,14,ES_UPPERCASE | ES_AUTOHSCROLL,0,HIDC_EDIT_MSGCODE
@@ -186,10 +184,10 @@ BEGIN
     LTEXT           "0x",IDC_STATIC,63,34,8,8
 END
 
-IDD_DLG_DRIVERINFO DIALOG  0, 0, 239, 103
+IDD_DLG_DRIVERINFO DIALOG 0, 0, 239, 103
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "ドライバについて"
-FONT 8, "MS UI Gothic"
+FONT 9, "MS UI Gothic"
 BEGIN
     DEFPUSHBUTTON   "はい",IDOK,182,7,50,14
     LTEXT           "CANドライバ 1.00.D10",IDC_STAT_DRIVER_VERSION,56,16,122,8
@@ -202,7 +200,7 @@ END
 IDD_DLG_MSGSGDETVIEW DIALOGEX 0, 0, 484, 353
 STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_CHILD
 EXSTYLE WS_EX_CONTEXTHELP
-FONT 8, "MS UI Gothic", 0, 0, 0x1
+FONT 9, "MS UI Gothic", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_MSG_NAME,85,39,145,14,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_MSG_NAME
     EDITTEXT        IDC_EDIT_MSGCODE,94,58,87,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_MSGCODE
@@ -233,10 +231,10 @@ BEGIN
     RTEXT           "0x",IDC_STAT_MSG_CODE_HEX,84,58,8,8
 END
 
-IDD_DLG_WND_NOTIFIC DIALOG  0, 0, 240, 149
+IDD_DLG_WND_NOTIFIC DIALOG 0, 0, 240, 149
 STYLE DS_SETFONT | DS_CENTER | WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "お知らせ"
-FONT 11, "MS UI Gothic"
+FONT 12, "MS UI Gothic"
 BEGIN
     LISTBOX         IDC_LSTB_NOTIFIC_WND,0,0,238,149,LBS_NOINTEGRALHEIGHT | LBS_WANTKEYBOARDINPUT | NOT WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
 END
@@ -244,7 +242,7 @@ END
 IDD_DLG_INTERPRET_MSG DIALOGEX 0, 0, 222, 147
 STYLE DS_SETFONT | DS_3DLOOK | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "メッセージ解析"
-FONT 8, "MS UI Gothic", 400, 0, 0x0
+FONT 9, "MS UI Gothic", 400, 0, 0x0
 BEGIN
     LTEXT           "メッセージ",IDC_CAPTION,0,0,218,14,SS_CENTERIMAGE
     LTEXT           "シグナル",IDC_CAPTION2,0,40,218,14,SS_CENTERIMAGE
@@ -259,7 +257,7 @@ IDD_DLG_MSGID_ATTRIB DIALOGEX 0, 0, 183, 106
 STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "メッセージ表示属性の修正"
-FONT 8, "MS UI Gothic", 0, 0, 0x1
+FONT 9, "MS UI Gothic", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_CANID_STRING,79,8,96,14,ES_AUTOHSCROLL,0,HIDC_EDIT_CANID_STRING
     EDITTEXT        IDC_EDIT_CANID_VAL,79,31,96,14,ES_AUTOHSCROLL,0,HIDC_EDIT_CANID_VAL
@@ -273,7 +271,7 @@ END
 
 IDD_PPAGE_MESSAGE DIALOGEX 0, 0, 212, 154
 STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION | WS_SYSMENU
-FONT 8, "MS UI Gothic", 0, 0, 0x0
+FONT 9, "MS UI Gothic", 0, 0, 0x0
 BEGIN
     CONTROL         "List2",IDC_LIST_MESSAGE,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,7,7,138,140
     PUSHBUTTON      "追加",IDC_BUTTON_ADD,154,44,50,14
@@ -284,14 +282,22 @@ END
 IDD_DLG_NETWORK_STATISTICS DIALOGEX 0, 0, 138, 303
 STYLE DS_SETFONT | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "ネットワーク統計"
-FONT 8, "MS UI Gothic", 400, 0, 0x0
+FONT 9, "MS UI Gothic", 400, 0, 0x0
 BEGIN
     CONTROL         "List1",IDC_LIST_STAT,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_OWNERDRAWFIXED | WS_BORDER | WS_TABSTOP,1,0,137,302
 END
 
-IDD_DLG_MSG_BUFFER_CONGIF DIALOG  0, 0, 214, 124
+IDD_DLG_NETWORK_STATISTICS_LIN DIALOGEX 0, 0, 138, 303
+STYLE DS_SETFONT | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "LIN"
+FONT 9, "MS UI Gothic", 400, 0, 0x0
+BEGIN
+    CONTROL         "List1",IDC_LIST_STAT,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_OWNERDRAWFIXED | WS_BORDER | WS_TABSTOP,1,0,137,302
+END
+
+IDD_DLG_MSG_BUFFER_CONGIF DIALOG 0, 0, 214, 124
 STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION | WS_SYSMENU
-FONT 8, "MS UI Gothic"
+FONT 9, "MS UI Gothic"
 BEGIN
     GROUPBOX        "バッファサイズ",IDC_STATIC,5,5,201,53
     LTEXT           "スクロール表示サイズ",IDC_STATIC,14,18,69,11
@@ -311,7 +317,7 @@ IDD_DLG_GRAPH_EXPORT DIALOGEX 0, 0, 248, 206
 STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "エクスポート"
-FONT 8, "MS UI Gothic", 0, 0, 0x1
+FONT 9, "MS UI Gothic", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_CSV_FILE_NAME,32,16,182,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_BTN_BROWSE_CSV,216,16,16,12
@@ -338,7 +344,7 @@ IDD_DLG_GRAPH_WINDOW_CONF DIALOGEX 0, 0, 229, 166
 STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "グラフウィンドウの設定"
-FONT 8, "MS UI Gothic", 0, 0, 0x1
+FONT 9, "MS UI Gothic", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_BUFFER_SIZE,85,11,43,13,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_DISPLAY_UPDATE,85,27,43,13,ES_AUTOHSCROLL
@@ -375,7 +381,7 @@ IDD_DLG_MSG_LIST DIALOGEX 0, 0, 320, 234
 STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "エレメントの選択"
-FONT 8, "MS UI Gothic", 0, 0, 0x1
+FONT 9, "MS UI Gothic", 0, 0, 0x1
 BEGIN
     CONTROL         "Tree1",IDC_TREE_SIGNAL,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | WS_BORDER | WS_TABSTOP,3,3,131,175
     PUSHBUTTON      "追加",IDC_BTN_ADD,65,190,50,14
@@ -387,17 +393,17 @@ BEGIN
     GROUPBOX        "操作",IDC_STATIC,3,180,313,31
 END
 
-IDD_DLG_PROPERTIES DIALOG  0, 0, 193, 253
+IDD_DLG_PROPERTIES DIALOG 0, 0, 193, 253
 STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "プロパティ"
-FONT 8, "MS UI Gothic"
+FONT 9, "MS UI Gothic"
 BEGIN
     CONTROL         "Tree1",IDC_TREE_PROPERTIES,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_EDITLABELS | WS_BORDER | WS_TABSTOP,1,1,191,251
 END
 
-IDD_DLG_MSG_DISPLAY_FILTER DIALOG  0, 0, 214, 150
+IDD_DLG_MSG_DISPLAY_FILTER DIALOG 0, 0, 214, 150
 STYLE DS_SETFONT | WS_CHILD | WS_CAPTION | WS_SYSMENU
-FONT 8, "MS UI Gothic"
+FONT 9, "MS UI Gothic"
 BEGIN
     GROUPBOX        "フィルタリスト",IDC_STATIC,3,1,207,125
     CONTROL         "List1",IDC_LST_DISPLAY_FILTER_LIST,"SysListView32",LVS_REPORT | WS_BORDER | WS_TABSTOP,7,11,199,110
@@ -408,7 +414,7 @@ IDD_DLG_DISSOCIATE_DB DIALOGEX 0, 0, 202, 86
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_STATICEDGE
 CAPTION "データベースの分離"
-FONT 8, "MS UI Gothic", 400, 0, 0x1
+FONT 9, "MS UI Gothic", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "分離",IDC_CBTN_DISSOCIATE,92,67,50,14
     PUSHBUTTON      "キャンセル",IDCANCEL,144,67,50,14
@@ -417,7 +423,7 @@ END
 
 DLG_TEMPLATE_LOCKING_KEY DIALOGEX 0, 0, 223, 183
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
-FONT 8, "MS UI Gothic", 0, 0, 0x0
+FONT 9, "MS UI Gothic", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "続行",IDB_CONTINUE,164,15,50,14,WS_GROUP
     PUSHBUTTON      "入力",IDB_LICENSE,23,135,50,14,WS_GROUP
@@ -429,12 +435,12 @@ BEGIN
     GROUPBOX        "ライセンスキー",IDC_STATIC,14,70,199,86
 END
 
-IDD_DLG_CONFIG_MSG_LOG DIALOGEX 0, 0, 376, 198
+IDD_DLG_CONFIG_MSG_LOG DIALOGEX 0, 0, 376, 270
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "メッセージロギングの設定"
-FONT 8, "MS UI Gothic", 400, 0, 0x1
+FONT 9, "MS UI Gothic", 400, 0, 0x1
 BEGIN
-    PUSHBUTTON      "&追加",IDC_CBTN_ADDLOG,40,152,50,14
+    PUSHBUTTON      "&追加",IDC_CBTN_ADDLOG,40,135,50,14
     LTEXT           "&ファイルパス",IDC_STATIC,165,21,28,8,NOT WS_GROUP
     EDITTEXT        IDC_EDIT_LOGFILEPATH,195,19,147,12,ES_AUTOHSCROLL | ES_READONLY
     PUSHBUTTON      "...",IDC_CBTN_LOGFILEPATH,347,19,18,12
@@ -452,16 +458,16 @@ BEGIN
     CONTROL         "",IDC_CHKB_STARTTRIGGER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,172,116,12,8
     CONTROL         "",IDC_CHKB_STOPTRIGGER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,172,132,11,8
     CONTROL         "ツールの接続/未接続中ロギングの有効化/無効化",IDC_CHKB_ENABLE_LOG_ONCONNECT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,181,210,10
-    PUSHBUTTON      "&削除",IDC_CBTN_DELETELOG,97,152,50,14
-    DEFPUSHBUTTON   "&はい",IDOK,264,177,50,14
-    PUSHBUTTON      "&キャンセル",IDCANCEL,323,177,50,14
-    CONTROL         "",IDC_LOGBLOCK_LST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,13,17,134,132
-    GROUPBOX        "ログトリガー",IDC_STATIC,4,3,152,167
-    GROUPBOX        "ログファイルの詳細",IDC_LOGFILE_GROUP,159,3,214,166
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,256,210,10
+    PUSHBUTTON      "&削除",IDC_CBTN_DELETELOG,97,135,50,14
+    DEFPUSHBUTTON   "&はい",IDOK,264,252,50,14
+    PUSHBUTTON      "&キャンセル",IDCANCEL,323,252,50,14
+    CONTROL         "",IDC_LOGBLOCK_LST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,13,15,134,117
+    GROUPBOX        "ログトリガー",IDC_STATIC,4,3,152,149
+    GROUPBOX        "ログファイルの詳細",IDC_LOGFILE_GROUP,157,2,216,150
     EDITTEXT        IDC_EDIT_STARTMSGID,282,114,75,13,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_STOPMSGID,282,130,75,13,ES_AUTOHSCROLL
-    PUSHBUTTON      "フィルタ",IDC_LOG_FILTER,315,150,50,14
+    PUSHBUTTON      "フィルタ",IDC_LOG_FILTER,316,228,50,14
     LTEXT           "受信開始PNG 0x",IDC_STATIC_01,186,116,95,8
     LTEXT           "受信停止PNG 0x",IDC_STATIC_02,186,132,94,8
     CONTROL         "タイムスタンプのリセット",IDC_CHECK_RESET_TIMESTAMP,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,270,86,71,10
@@ -471,7 +477,7 @@ IDD_DLG_WAVEFORM_CONFIG DIALOGEX 0, 0, 385, 286
 STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "ウェーブフォーム選択リスト"
-FONT 8, "MS UI Gothic", 0, 0, 0x1
+FONT 9, "MS UI Gothic", 0, 0, 0x1
 BEGIN
     LTEXT           "メッセージリスト:",IDC_STATIC,14,12,44,8
     CONTROL         "List2",IDC_LSTC_SIGNAL,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,14,58,107,187
@@ -494,7 +500,7 @@ END
 IDD_DIALOG_CONFIG_SIG_GRPH_WND DIALOGEX 0, 0, 355, 231
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "シグナルグラフウィンドウの設定"
-FONT 8, "MS UI Gothic", 400, 0, 0x1
+FONT 9, "MS UI Gothic", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "はい",IDOK,241,209,50,14
     PUSHBUTTON      "キャンセル",IDCANCEL,295,209,50,14
@@ -523,7 +529,7 @@ IDD_DLG_TX DIALOGEX 0, 0, 381, 245
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_STATICEDGE
 CAPTION "J1939 送信メッセージウィンドウ"
-FONT 8, "MS UI Gothic", 400, 0, 0x1
+FONT 9, "MS UI Gothic", 400, 0, 0x1
 BEGIN
     GROUPBOX        "",IDC_STATIC,16,47,346,84,0,WS_EX_TRANSPARENT
     COMBOBOX        IDC_COMBO_PGN,54,63,59,102,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
@@ -568,7 +574,7 @@ END
 IDD_TIMEOUT DIALOGEX 0, 0, 138, 255
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "タイムアウト設定"
-FONT 8, "MS UI Gothic", 400, 0, 0x1
+FONT 9, "MS UI Gothic", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "適用",IDOK,36,235,46,14
     PUSHBUTTON      "キャンセル",IDCANCEL,84,235,46,14
@@ -595,7 +601,7 @@ END
 IDD_DLG_EXPORT_LOG_FILE DIALOGEX 0, 0, 304, 226
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "ログファイルのエクスポート"
-FONT 8, "MS UI Gothic", 400, 0, 0x1
+FONT 9, "MS UI Gothic", 400, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_LOG_FILE_NAME,42,15,221,13,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDC_BTN_LOG_BROWSE,267,15,17,13
@@ -616,6 +622,34 @@ BEGIN
     PUSHBUTTON      ">",IDC_BUTTON_SELECTONE,119,117,23,13
     PUSHBUTTON      "<",IDC_BUTTON_REMOVEONE,119,135,23,13
     PUSHBUTTON      "<<",IDC_BUTTON_REMOVEALL,119,152,23,13
+END
+
+IDD_DLG_FIBEX_IMPORT DIALOGEX 0, 0, 388, 317
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Cluster Configuration"
+FONT 9, "MS UI Gothic", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,229,294,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,281,294,50,14
+    LTEXT           "Select Channel",IDC_STATIC,103,15,48,12
+    COMBOBOX        IDC_COMBO_CHANNEL,162,13,91,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Import Flexray Database",IDC_STATIC_DATABASE_INFO,18,35,346,249
+    EDITTEXT        IDC_EDIT_FIBEX_PATH,58,54,268,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Fibex:",IDC_STATIC_DBNAME,31,53,21,14,SS_CENTERIMAGE,WS_EX_RIGHT
+    PUSHBUTTON      "...",IDC_BUTTON_FIBEXPATH,331,54,23,14
+    GROUPBOX        "Cluster and ECU Selection",IDC_STATIC,28,81,325,193
+    COMBOBOX        IDC_COMBO_CLUSTER,172,98,126,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Select Flexray Cluster:",IDC_STATIC_CLUSTER_INFO,89,98,74,12,SS_CENTERIMAGE
+    GROUPBOX        "Key Slot Configuration",IDC_STATIC_EXTRA_CONFIG,180,125,163,140
+    CONTROL         "",IDC_LIST_ECU,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,37,128,135,137
+    COMBOBOX        IDC_COMBO_LIN_PROTOCOL,261,184,55,56,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Protocol Version",IDC_STATIC_LIN_PROTOCOL,195,184,66,12,SS_CENTERIMAGE
+    LTEXT           "Baud Rate",IDC_STATIC_LIN_BAUDRATE,195,205,53,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_LIN_BAUDRATE,261,205,40,14,ES_AUTOHSCROLL
+    CONTROL         "Overwrite LDF Settings",IDC_CHECK_OVERWRITE_SETTINGS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,198,168,87,10,WS_EX_TRANSPARENT
+    CONTROL         "Enable Master Mode",IDC_ENABLE_MASTER_MODE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,199,147,79,10
+    GROUPBOX        "                                            ",IDC_STATIC_LIN_OVERWRITE,189,168,139,60
 END
 
 
@@ -644,13 +678,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 2.6.0"
+            VALUE "FileVersion", "Ver 2.6.1"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 2.6.0"
+            VALUE "ProductVersion", "Ver 2.6.1"
         END
     END
     BLOCK "VarFileInfo"
@@ -666,7 +700,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
@@ -746,6 +780,13 @@ BEGIN
         BOTTOMMARGIN, 270
     END
 
+    IDD_DLG_NETWORK_STATISTICS_LIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 1
+        BOTTOMMARGIN, 270
+    END
+
     IDD_DLG_MSG_BUFFER_CONGIF, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -789,6 +830,10 @@ BEGIN
         BOTTOMMARGIN, 143
     END
 
+    IDD_DLG_CONFIG_MSG_LOG, DIALOG
+    BEGIN
+    END
+
     IDD_DLG_WAVEFORM_CONFIG, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -818,6 +863,10 @@ BEGIN
         RIGHTMARGIN, 129
         TOPMARGIN, 7
         BOTTOMMARGIN, 248
+    END
+    IDD_DLG_FIBEX_IMPORT, DIALOG
+    BEGIN
+        RIGHTMARGIN, 378
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -870,16 +919,25 @@ IDR_CAN_DATABASE        BITMAP                  "res\\CANDatabase.bmp"
 IDB_CAN_DATABASE        BITMAP                  "res\\CANDatabase_Normal.bmp"
 IDB_CAN_DATABASE_HOT    BITMAP                  "Res\\CANDatabase_Hot.bmp"
 IDB_CAN_DATABASE_DISABLED BITMAP                  "Res\\CANDatabase_Disabled.bmp"
+IDB_TLB_J1939           BITMAP                  "res\\Toolbar_J1939.bmp"
+IDB_TLB_J1939_HOT       BITMAP                  "res\\Toolbar_J1939_Hot.bmp"
+IDB_TLB_J1939_DISABLED  BITMAP                  "res\\Toolbar_J1939_Disabled.bmp"
 IDB_TLB_FLEXRAY         BITMAP                  "res\\FlexRay_Toolbar.bmp"
 IDB_TLB_FLEXRAY_HOT     BITMAP                  "res\\FlexRay_Toolbar_Hot.bmp"
 IDB_TLB_FLEXRAY_DISABLED BITMAP                  "res\\FlexRay_Toolbar_Disabled.bmp"
+IDR_CONFIG_TOOLBAR      BITMAP                  "res\\Configuration_Toolbar.bmp"
+IDR_CONFIG_TOOLBAR_HOT  BITMAP                  "res\\Configuration_Toolbar_Hot.bmp"
+IDR_CONFIG_TOOLBAR_DISABLED BITMAP                  "res\\Configuration_Toolbar_Disabled.bmp"
+IDB_LIN_IMG             BITMAP                  "res\\LIN_Toolbar.bmp"
+IDB_LIN_IMGDISABLED     BITMAP                  "res\\LIN_Toolbar_Disabled.bmp"
+IDB_LIN_IMGHOT          BITMAP                  "res\\LIN_Toolbar_Hot.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
 //
 
-IDM_MSG_OPN_MENU MENU 
+IDM_MSG_OPN_MENU MENU
 BEGIN
     POPUP "メッセージ操作"
     BEGIN
@@ -889,7 +947,7 @@ BEGIN
     END
 END
 
-IDM_SG_OPN_MENU MENU 
+IDM_SG_OPN_MENU MENU
 BEGIN
     POPUP "シグナル操作"
     BEGIN
@@ -906,7 +964,7 @@ BEGIN
     END
 END
 
-IDM_SEND_OPRNS MENU 
+IDM_SEND_OPRNS MENU
 BEGIN
     POPUP "送信操作"
     BEGIN
@@ -916,7 +974,7 @@ BEGIN
     END
 END
 
-IDM_CONFIG_MSG_BLOCK MENU 
+IDM_CONFIG_MSG_BLOCK MENU
 BEGIN
     POPUP "メッセージブロックの設定"
     BEGIN
@@ -925,7 +983,7 @@ BEGIN
     END
 END
 
-IDM_MENU_TIMEMODE MENU 
+IDM_MENU_TIMEMODE MENU
 BEGIN
     POPUP "タイムモード"
     BEGIN
@@ -935,7 +993,7 @@ BEGIN
     END
 END
 
-IDM_MENU_MSG_OPRN MENU 
+IDM_MENU_MSG_OPRN MENU
 BEGIN
     POPUP "メッセージ"
     BEGIN
@@ -945,7 +1003,7 @@ BEGIN
     END
 END
 
-IDM_OPERATION_LIST MENU 
+IDM_OPERATION_LIST MENU
 BEGIN
     POPUP "お知らせのウィンドウ"
     BEGIN
@@ -956,7 +1014,7 @@ BEGIN
     END
 END
 
-IDM_MENU_SIGNAL_WATCH MENU 
+IDM_MENU_SIGNAL_WATCH MENU
 BEGIN
     POPUP "シグナル監視"
     BEGIN
@@ -978,7 +1036,7 @@ BEGIN
     END
 END
 
-IDR_MAINFRAME MENU 
+IDR_MAINFRAME MENU
 BEGIN
     POPUP "&ファイル"
     BEGIN
@@ -1108,7 +1166,12 @@ BEGIN
             MENUITEM "すべての&エラーハンドラ",                IDM_EXECUTE_ERROR_HANDLERS, CHECKED
             MENUITEM "すべて&のハンドラ",                   IDM_EXECUTE_ALL_HANDLERS
         END
-	END
+        POPUP "D&iagnostics"
+        BEGIN
+            MENUITEM "&Main Window",                IDM_UDS
+            MENUITEM "&Settings",                   IDD_SETTINGS_UDS
+        END
+    END
     POPUP "&J1939"
     BEGIN
         MENUITEM "&有効化化",                       ID_ACTIVEBUS_J1939
@@ -1125,7 +1188,7 @@ BEGIN
         MENUITEM "&タイムアウトの設定",                  ID_CONFIGURE_TIMEOUTS
         MENUITEM SEPARATOR
         POPUP "&メッセージウィンドウ"
-        BEGIN 
+        BEGIN
             MENUITEM "&活性化する",                      ID_SHOWMESSAGEWINDOW_J1939, CHECKED
             MENUITEM SEPARATOR
             MENUITEM "&設定",                         ID_CONFIGURE_MESSAGEDISPLAY_J1939
@@ -1171,10 +1234,10 @@ BEGIN
             MENUITEM "すべての&ハンドラ",                   ID_EXECUTE_ALLHANDLERS, CHECKED
         END
     END
-     POPUP "F&lexRay"
+    POPUP "Flex&Ray"
     BEGIN
         MENUITEM "&Connect",                    ID_FLEXRAY_CONNECT
-		MENUITEM "C&luster Configuration"		ID_FLEXRAY_CLUSTER_CONFIG
+        MENUITEM "C&luster Configuration",      ID_FLEXRAY_CLUSTER_CONFIG
         MENUITEM SEPARATOR
         POPUP "&メッセージウィンドウ"
         BEGIN
@@ -1193,11 +1256,68 @@ BEGIN
             MENUITEM "&コラムのリセット",                   IDM_MSGWND_RESET_COLUMNS
         END
         MENUITEM SEPARATOR
-        POPUP "&送信"
+        POPUP "&Transmit"
         BEGIN
-            MENUITEM "&有効にする",                      IDR_TOOL_FLEX_SENDMSG, CHECKED
+            MENUITEM "&Configure",                  IDM_FLEX_CFGN_SEND_MSGS
+        END
+    END
+    POPUP "&LIN"
+    BEGIN
+        MENUITEM "Connect &LIN\tF4",            IDM_LIN_CONNECT
+        MENUITEM "C&luster Configuration",      ID_LIN_CLUSTER_CONFIG
+        MENUITEM "&Schedule Configuration",     IDM_SCHEDULE_CONFIG_LIN
+        MENUITEM "&Filter Configuration",       IDM_CONFIGURE_FILTER_LIN
+        MENUITEM SEPARATOR
+        MENUITEM "&Network Statistics",         IDM_NETWORK_STATISTICS_WND_LIN
+        POPUP "&Message Window"
+        BEGIN
+            MENUITEM "&Activate",                   ID_SHOWMESSAGEWINDOW_LIN, CHECKED
+            MENUITEM "&Enable Filters",             IDM_FILTER_MSGLINOFF, CHECKED
             MENUITEM SEPARATOR
-            MENUITEM "&設定",                         IDM_FLEX_CFGN_SEND_MSGS
+            MENUITEM "&Configure",                  ID_CONFIGURE_MESSAGEDISPLAY_LIN, GRAYED
+            MENUITEM SEPARATOR
+            POPUP "Time &Mode"
+            BEGIN
+                MENUITEM "&System Time",                IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME, CHECKED
+                MENUITEM "&Absolute Time",              IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, CHECKED
+                MENUITEM "&Relative Time",              IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, CHECKED
+            END
+            MENUITEM "&Overwrite",                  IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, CHECKED
+            MENUITEM "&Interpret",                  IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, CHECKED
+            MENUITEM "&Reset Columns",              IDM_MSGWND_RESET_COLUMNS
+        END
+        POPUP "Sign&al Watch"
+        BEGIN
+            MENUITEM "&Activate",                   IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN
+            MENUITEM SEPARATOR
+            MENUITEM "&Configure",                  IDM_SIGNALWATCH_ADDSIGNAL_LIN
+        END
+        POPUP "L&ogging"
+        BEGIN
+            MENUITEM "&Activate",                   IDM_LOG_LIN_ON_OFF
+            MENUITEM "&Enable Filters",             IDM_FILTER_LOGLINOFF, CHECKED
+            MENUITEM SEPARATOR
+            MENUITEM "&Configure",                  IDM_CFGN_LIN_LOG
+        END
+        MENUITEM SEPARATOR
+        POPUP "T&ransmit"
+        BEGIN
+            MENUITEM "Confi&gure",                  ID_TRANSMIT_CONFIGURE_LIN
+        END
+        POPUP "Node Sim&ulation"
+        BEGIN
+            MENUITEM "&Configure",                  IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN
+            MENUITEM SEPARATOR
+            MENUITEM "&Load All",                   IDM_DLL_LOADALLDLL_LIN
+            MENUITEM "&Unload All",                 IDM_DLL_UNLOAD_ALL_LIN
+            MENUITEM "Build && L&oad All",          IDM_DLL_BUILDLOAD_ALL_LIN
+            MENUITEM "&Build All",                  IDM_DLL_BUILD_ALL_LIN
+            MENUITEM SEPARATOR
+            MENUITEM "All &Message Handler(s)",     IDM_EXECUTE_MESSAGEHANDLERS_LIN, CHECKED
+            MENUITEM "All &Timer Handler(s)...",    IDM_EXECUTE_TIMERHANDLER_LIN
+            MENUITEM "All &Key Handler(s)",         IDM_EXECUTE_KEYHANDLERS_LIN, CHECKED
+            MENUITEM "All &Error Handler(s)",       IDM_EXECUTE_ERROR_HANDLERS_LIN, CHECKED
+            MENUITEM "&All Handler(s)",             IDM_EXECUTE_ALL_HANDLERS_LIN
         END
     END
     POPUP "&眺める"
@@ -1206,14 +1326,20 @@ BEGIN
         MENUITEM "1&6進数",                       32839, CHECKED
         MENUITEM SEPARATOR
         POPUP "&ツールバー"
-        BEGIN            
-            MENUITEM "&メイン",                        ID_DISPLAY_MAIN, CHECKED
-            MENUITEM "&設定e",                        ID_DISPLAY_CONFIGURE, CHECKED
-            MENUITEM "&CANデータベース",                  ID_TB_CANDATABASE, CHECKED
-            MENUITEM "メ&ッセージウィンドウ",                 ID_DISPLAY_MSG_WND, CHECKED
-            MENUITEM "&ノードシミュレーション",                ID_DISPLAY_NODE_SIMULATION, CHECKED
-            MENUITEM "J1939",                       ID_TOOLBAR_J1939, CHECKED            
+        BEGIN
+            MENUITEM "Con&figuration",              ID_CONFIGURATION_TOOLBAR, CHECKED
+            MENUITEM "Message &Window",             ID_DISPLAY_MSG_WND, CHECKED
+            MENUITEM SEPARATOR
+            POPUP "CAN"
+            BEGIN
+                MENUITEM "&メイン",                        ID_DISPLAY_MAIN, CHECKED
+                MENUITEM "&設定e",                        ID_DISPLAY_CONFIGURE, CHECKED
+                MENUITEM "&CANデータベース",                  ID_TB_CANDATABASE, CHECKED
+                MENUITEM "&ノードシミュレーション",                ID_DISPLAY_NODE_SIMULATION, CHECKED
+                MENUITEM "J1939",                       ID_TOOLBAR_J1939, CHECKED
+            END
             MENUITEM "FlexRay",                     ID_FLEXRAY_TOOLBAR, CHECKED
+            MENUITEM "&LIN",                        ID_TOOLBAR_LIN, CHECKED
         END
         MENUITEM "&ステータスバー",                    ID_VIEW_STATUS_BAR
     END
@@ -1282,6 +1408,7 @@ IDI_ICON_LOG_ON         ICON                    "res\\LoggingON.ico"
 IDI_ICON_LOG_ONLIGHT    ICON                    "res\\LoggingONLIGHT.ico"
 IDI_ICON_NETWORKSTAT    ICON                    "res\\Network_Statistics.ico"
 ID_CONNECT              ICON                    "Res\\Connect.ico"
+IDI_ICON_SMSG           ICON                    "res\\DB Editor.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1387,15 +1514,12 @@ END
 // Toolbar
 //
 
-IDR_MAINFRAME TOOLBAR  32, 32
+IDR_MAINFRAME TOOLBAR 32, 32
 BEGIN
-    BUTTON      32902
-    BUTTON      IDM_CONFIG_LOAD
-    BUTTON      IDM_SAVE_CONFIG
-    SEPARATOR
+    BUTTON      ID_CAN_LOGO
     BUTTON      IDM_FILE_CONNECT
     SEPARATOR
-    BUTTON      32918
+    BUTTON      IDM_NETWORK_STATISTICS_WND_CAN
     BUTTON      32784
     SEPARATOR
     BUTTON      IDM_LOG_ON_OFF
@@ -1419,7 +1543,8 @@ BEGIN
     BUTTON      IDM_CONFIG_LOAD
     BUTTON      IDM_SAVE_CONFIG
 END
-IDR_MSG_WND TOOLBAR  32, 32
+
+IDR_MSG_WND TOOLBAR 32, 32
 BEGIN
     BUTTON      IDM_CLEAR_MSG_WINDOW
     SEPARATOR
@@ -1429,7 +1554,7 @@ BEGIN
     BUTTON      IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME
 END
 
-IDR_NODE_SIMULATION TOOLBAR  32, 32
+IDR_NODE_SIMULATION TOOLBAR 32, 32
 BEGIN
     BUTTON      ID_CAN_LOGO
     BUTTON      IDM_DLL_LOADALLDLL
@@ -1454,7 +1579,7 @@ BEGIN
     BUTTON      33064
 END
 
-IDR_TLB_CONFIGURE TOOLBAR  32, 32
+IDR_TLB_CONFIGURE TOOLBAR 32, 32
 BEGIN
     BUTTON      ID_CAN_LOGO
     BUTTON      32811
@@ -1469,7 +1594,7 @@ BEGIN
     BUTTON      33055
 END
 
-IDR_CAN_DATABASE TOOLBAR  32, 32
+IDR_CAN_DATABASE TOOLBAR 32, 32
 BEGIN
     BUTTON      ID_CAN_LOGO
     BUTTON      32815
@@ -1479,15 +1604,40 @@ BEGIN
     SEPARATOR
     BUTTON      32860
 END
+
 IDB_TLB_FLEXRAY TOOLBAR 32, 32
 BEGIN
     BUTTON      IDB_TLB_FLEXRAY
     BUTTON      ID_FLEXRAY_CONNECT
-    BUTTON      IDR_TOOL_FLEX_SENDMSG
     SEPARATOR
     BUTTON      ID_FLEXRAY_CLUSTER_CONFIG
     SEPARATOR
     BUTTON      IDM_FLEX_CFGN_SEND_MSGS
+END
+
+IDB_LIN_IMG TOOLBAR 32, 32
+BEGIN
+    BUTTON      IDB_LIN_IMG
+    BUTTON      IDM_LIN_CONNECT
+    SEPARATOR
+    BUTTON      ID_LIN_CLUSTER_CONFIG
+    BUTTON      IDM_SCHEDULE_CONFIG_LIN
+    SEPARATOR
+    BUTTON      ID_TRANSMIT_CONFIGURE_LIN
+    BUTTON      IDM_NETWORK_STATISTICS_WND_LIN
+    SEPARATOR
+    BUTTON      IDM_CFGN_LIN_LOG
+    BUTTON      IDM_LOG_LIN_ON_OFF
+    SEPARATOR
+    BUTTON      IDM_CONFIGURE_FILTER_LIN
+    BUTTON      IDM_FILTER_LOGLINOFF
+    BUTTON      IDM_FILTER_MSGLINOFF
+    SEPARATOR
+    BUTTON      IDM_SIGNALWATCH_ADDSIGNAL_LIN
+    BUTTON      IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN
+    SEPARATOR
+    BUTTON      ID_CONFIGURE_MESSAGEDISPLAY_LIN
+    BUTTON      IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN
 END
 
 
@@ -1535,7 +1685,7 @@ END
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "バスマスタ (BUSMASTER)"
     IDR_NEWEDTYPE           "\nNewEd\nNewEd\nC Files\n.c\nNewEd.Document\nNewEditor "
@@ -1543,14 +1693,14 @@ BEGIN
     IDS_ERROR_VER_MISMATCH  "インストールされているBUSMASTERのバージョンがアプリケーションのより低いです。アプリケーションを終了します"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_APP_TITLE       "バスマスタ (BUSMASTER)"
     AFX_IDS_IDLEMESSAGE     " "
     AFX_IDS_HELPMODEMESSAGE "ヘルプのためオブジェクトを選択してください。"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_INDICATOR_EXT        "EXT"
     ID_INDICATOR_CAPS       "CAP"
@@ -1560,7 +1710,7 @@ BEGIN
     ID_INDICATOR_REC        "REC"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_FILE_NEW             "新しいファンクションエディタを生成します\n新しいファンクションエディタ"
     ID_FILE_OPEN            "既存のファンクションエディタを開きます\nファンクションエディタを開く"
@@ -1573,7 +1723,7 @@ BEGIN
     ID_FILE_PRINT_PREVIEW   "全ページを表示\n印刷プレビュー"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_APP_ABOUT            "プログラム情報、バージョン番号、著作権を表示\nプログラムについて"
     ID_APP_EXIT             "アプリケーションを終了\n終了"
@@ -1584,7 +1734,7 @@ BEGIN
     ID_HELP                 "現在タスクまたは命令でのヘルプを表示\nヘルプ"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_FILE_MRU_FILE1       "このドキュメントを開く"
     ID_FILE_MRU_FILE2       "このドキュメントを開く"
@@ -1604,13 +1754,13 @@ BEGIN
     ID_FILE_MRU_FILE16      "このドキュメントを開く"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_NEXT_PANE            "次のウィンドウパネルに転換\n新しいパネル"
     ID_PREV_PANE            "以前ウィンドウパネルに戻る\n以前パネル"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_WINDOW_NEW           "アクティブドキュメントの表示のため他のウィンドウを開く\n新しいウィンドウ"
     ID_WINDOW_ARRANGE       "ウィンドウ下にあるアイコンを整理する\nアイコンの整理"
@@ -1620,7 +1770,7 @@ BEGIN
     ID_WINDOW_SPLIT         "アクティブウィンドウを並べて表示\n並べて表示"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_EDIT_CLEAR           "選択した内容を削除\n削除"
     ID_EDIT_CLEAR_ALL       "すべてを削除\nすべてを削除"
@@ -1635,13 +1785,13 @@ BEGIN
     ID_EDIT_REDO            "以前の未終了アクションを再開する\n再開"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_VIEW_TOOLBAR         "ツールバーを表示/非表示\nツールバー"
     ID_VIEW_STATUS_BAR      "ステータスバーを表示/非表示\nステータスバー"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_SCSIZE          "ウィンドウサイズを変更"
     AFX_IDS_SCMOVE          "ウィンドウ位置を変更"
@@ -1652,28 +1802,27 @@ BEGIN
     AFX_IDS_SCCLOSE         "アクティブウィンドウを終了し、ドキュメント保存をプロンプトに聞く"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_SCRESTORE       "ウィンドウを一般サイズに復帰"
     AFX_IDS_SCTASKLIST      "タスクリストを有効化"
     AFX_IDS_MDICHILD        "このウィンドウを有効化"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     AFX_IDS_PREVIEW_CLOSE   "印刷プレビューモードを取り消す\nプレビューの取り消し"
-    
     IDS_INVALID_DB_PROMPT   "無効なデータベースファイル名"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "メッセージ名"
-    IDS_VERSION             "Ver 2.6.0"
+    IDS_VERSION             "Ver 2.6.1"
     IDS_HEADER              "***注意: このドキュメントを修正しないでください***\n\n\n***[ロギングセッションの開始]***\n"
     IDS_FOOTER              "***[ロギングセッションの終了]***"
     IDS_CONNECT             "&接続\tF2"
     IDS_DISCONNECT          "&切断\tESC"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_PPAGE_TITLE_MSG_FILTER "チャンネル"
     IDS_ERR_BSTR2CHAR       "BSTRからCHARの変換にエラー"
@@ -1683,23 +1832,73 @@ BEGIN
     ID_LOG_RECORD_CAN_ICON  "CAN記録..."
     ID_LOG_RECORD_J1939_ICON "J1939記録..."
     ID_FLEXRAY_CONNECT      "Connect/Disconnect\nConnect/Disconnect"
-    ID_FLEXRAY_CLUSTER_CONFIG "Associate/Dissociate FlexRay Database\nAssociate/Dissociate FlexRay Database"
+    ID_FLEXRAY_CLUSTER_CONFIG 
+                            "Associate/Dissociate FlexRay Database\nAssociate/Dissociate FlexRay Database"
     IDS_CONNECT_FLEXRAY     "&Connect\tF3"
 END
+
 STRINGTABLE
 BEGIN
     IDS_DISCONNECT_FLEXRAY  "D&isconnect\tF12"
-END
-STRINGTABLE
-BEGIN
-    IDS_MESSAGE_ID          "メッセージID"
-    IDM_NETWORK_STATISTICS_WND "ネットワーク統計ウィンドウを表示/非表示\nネットワーク統計ウィンドウの表示/非表示"
-    IDM_CONFIGURE_PASSIVE   "コントローラをパッシブモードに更新\nパッシブモード"
-    IDM_CONFIGURE_ACTIVE    "コントローラをアクティブモードに更新\nアクティブモード"
-    IDM_TRACE_WND           "トレースウィンドウを表示/非表示\nトレースウィンドウの表示/非表示"            
+    ID_TRANSMIT_CONFIGURE_LIN 
+                            "Configure  messages to transmit over LIN-bus\nConfigure  messages to transmit over LIN-bus"
+    IDM_LIN_CONNECT         "Connect/Disconnect\nConnect/Disconnect"
+    ID_LIN_CLUSTER_CONFIG   "Associate LIN Database(LDF)\nConfigure LIN Network"
+    IDM_CFGN_LIN_LOG        "Configure LIN message logging\nLIN logging"
+    IDM_LOG_LIN_ON_OFF      "Start/Stop LIN Message Logging\nStart/Stop LIN Logging"
+    IDM_FILTER_LOGLINOFF    "Enable or Disable LIN Loggiing filter\nEnable or Disable LIN Logging filter"
+    IDM_FILTER_MSGLINOFF    "Enable or Disable Message Display filter For Lin\nEnable or Disable Message Display filter For LIN"
 END
 
-STRINGTABLE 
+STRINGTABLE
+BEGIN
+    IDS_DISCONNECT_LIN      "D&isconnect\tF11"
+    IDS_CONNECT_LIN         "&Connect\tF4"
+END
+
+STRINGTABLE
+BEGIN
+    ID_CONFIGURE_MESSAGEDISPLAY_LIN 
+                            "ConfigureLIN Message Display Attributes\nConfigure LIN Message Display Attributes"
+    ID_LIN_FILTER_CONFIG    "LIN Filter Configuration\nLIN Filter Configuration"
+    IDM_SCHEDULE_CONFIG_LIN "Configure LIN Schedule Tables\nConfigure LIN Schedule Tables"
+END
+
+STRINGTABLE
+BEGIN
+    IDM_CONFIGURE_FILTER_LIN 
+                            "Select messages for filtering at application level\nSelect messages for filtering at application level"
+END
+
+STRINGTABLE
+BEGIN
+    ID_CONFIGURE_MESSAGEDISPLAY_FLEXRAY 
+                            "Configure Message Display Attributes of FlexRay\nConfigure Message Display Attributes of FlexRay"
+    IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN 
+                            "Configure LIN Simulated Systems for Multinode Simulation\nConfigure LIN Simulated Systems for Multinode Simulation"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_MESSAGE_ID          "Message ID"
+    IDM_CONFIGURE_PASSIVE   "Set Controller To Passive Mode\nPassive Mode"
+    IDM_CONFIGURE_ACTIVE    "Set Controller To Active Mode\nActive Mode"
+    IDM_TRACE_WND           "Show/Hide Trace Window\nShow/Hide Trace Window"
+END
+
+STRINGTABLE
+BEGIN
+    IDM_NETWORK_STATISTICS_WND_LIN 
+                            "Show Network Statistics Window\nShow Network Statistics Window"
+    IDM_SIGNALWATCH_ADDSIGNAL_LIN 
+                            "Add/Delete Signals to Watch window\nAdd/Delete Signals to Watch window"
+    IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN 
+                            "Show/Hide Signal Watch Window\nShow/Hide Signal Watch Windiow"
+    IDM_NETWORK_STATISTICS_WND_CAN 
+                            "Show/Hide Network Statistics Window\nShow Network Statistics Window"
+END
+
+STRINGTABLE
 BEGIN
     IDM_DISPLAY_MESSAGEWINDOW_SCROLL "メッセージスクロールを有効化/無効化\nメッセージスクロールの有効化/無効化"
     IDM_DISPLAY_MESSAGE_HIDE "メッセージウィンドウを表示/非表示\nメッセージウィンドウ"
@@ -1716,7 +1915,7 @@ BEGIN
     ID_EXECUTE_MESSAGEHANDLERS "メッセージハンドラの有効化または無効化"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     ID_BUILD_LOADCANMONITORDLL "メッセージ解釈を有効化または無効化\nメッセージ解釈の有効化または無効化"
     33042                   "メッセージウィンドウコラム順をリセット\nメッセージウィンドウコラム順のリセット"
@@ -1734,7 +1933,7 @@ BEGIN
     33055                   "シグナルグラフウィンドウを設定\nシグナルグラフウィンドウの設定"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDM_DELETE_SEL_MSG_BLOCK "選択したメッセージブロックを削除"
     IDM_CONFIGURE_DATABASE_OPENACTIVE "アクティブデータベースを開く\nアクティブデータベースのオープン"
@@ -1751,7 +1950,7 @@ BEGIN
     IDM_BUILD_COMPILEANDLINK "現在のファイルをコンパイルしてリンクを行う"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDR_TOOL_BUTTON_SIGNAL_WATCH "シグナル監視ウィンドウを表示/非表示\nシグナル監視ウィンドウの表示/非表示"
     IDR_TOOL_BUTTON_SKIP    "スキップメッセージ\nスキップメッセージ"
@@ -1763,7 +1962,7 @@ BEGIN
     IDM_LOG_SELECTFILE      "ログファイルの選択\nログファイルの選択"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDM_REPLAY_OFF          "再生モード"
     IDM_REPLAY_SELECTFILE   "再生のためファイルを選択"
@@ -1778,7 +1977,7 @@ BEGIN
     32815                   "新しいCANデータベースを生成\n新しいCANデータベースの生成"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDM_EXECUTE_MESSAGEHANDLERS "メッセージハンドラの実行を有効化/無効化\nメッセージハンドラの実行の有効化/無効化"
     IDM_CONFIGURE_DATABASE_CLOSE "データベースGUIの終了"
@@ -1792,7 +1991,7 @@ BEGIN
     IDM_FILE_IMPORT_DATABASE "データベースを連結\nデータベースの連結"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDM_CONFIGURE_DATABASE_SAVE "データベースファイルに保存\nデータベースファイルに保存"
     32869                   "BUSMASTERバージョンと著作権の情報\nBUSMASTERバージョンと著作権の情報"
@@ -1805,7 +2004,7 @@ BEGIN
     IDM_CLEAR_MSG_WINDOW    "メッセージウィンドウを消去\nメッセージウィンドウの消去"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDM_SG_WATCH_DELETE     "選択したシグナルを削除\nシグナルの削除"
     IDM_SG_WATCH_CLEAR      "シグナルを消去\nシグナルの消去"
@@ -1821,7 +2020,7 @@ BEGIN
     IDM_MSGDISPWND_DATE     "日付をタイムスタンプとともに表示する"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDM_SHOW_DATE           "日付の表示を有効化または無効化\n日付の表示"
     IDM_SEND_SEL_MSG        "CANバスに選択したメッセージを送信する"
@@ -1839,7 +2038,7 @@ BEGIN
     IDM_EXECUTE_DLL_HANDLERS "すべてのDLLハンドラの実行を有効化/無効化\nすべてのDLLハンドラの実行の有効化/無効化"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDM_FILE_CONNECT        "接続/切断\n接続/切断"
     IDM_FILE_PROPETIES      "アクティブデータベース、ログ、再生ファイル名、ロードしたDLLを表示\nプロパティ"
@@ -1853,8 +2052,8 @@ BEGIN
     IDS_CHANNELS            "チャンネル"
 END
 
-STRINGTABLE 
-BEGIN    
+STRINGTABLE
+BEGIN
     IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME "システム時間に表示\nシステム時間"
     ID_DISPLAY_MESSAGEWINDOW_TIMEMODE_RELATIVETIME "相対時間に表示\n相対モード"
     ID_DISPLAY_MESSAGEWINDOW_TIMEMODE_ABSOLUTETIME "絶対時間に表示\n絶対モード"
@@ -1862,7 +2061,7 @@ BEGIN
     32942                   "相対時間に表示\n相対時間"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDM_DISPLAY_MESSAGEWATCHWINDOW_SCROLL "最後メッセージエントリの表示を有効化/無効化"
     IDM_GRAPH_WND           "グラフウィンドウを表示/非表示\nグラフウィンドウのを表示/非表示"
@@ -1871,7 +2070,7 @@ BEGIN
     32958                   "ログファイルのエクスポートにオプションを提供\nログファイルのエクスポートにオプションを提供"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     33010                   "保存してデータベースファイルをインポート\nデータベースファイルの保存とインポート"
     IDM_DLL_BUILD_ALL       "すべてビルド\nすべてビルド"
@@ -1882,44 +2081,53 @@ BEGIN
                             "マルチノードシミュレーションのためシミュレートシステムを設定\nマルチノードシミュレーションの設定"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDR_MESSAGE_WINDOW_TEXT "メッセージウィンドウ"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
-    33073                   "設定ツールバーを表示/非表示\n設定ツールバーの表示/非表示"
-    ID_CONFIGURE_TIMEOUTS   "フローコントロールのタイムアウトを設定\nフローコントロールのタイムアウト"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_CONFIGURE_MESSAGEDISPLAY "J1939メッセージの表示属性を設定\nJ1939メッセージの表示属性"
-END
-
-STRINGTABLE 
-BEGIN
-    ID_CONFIGURE_MESSAGEDISPLAY_J1939 "J1939メッセージの表示属性を設定\nJ1939メッセージの表示属性"
+    ID_ACTIVEBUS_J1939      "Activate/Deactivate J1939 interface\nActivate/Deactivate J1939 interface"
+    ID_J1939_CONFIG_LOG     "Configure J1939 message logging\nJ1939 logging"
+    ID_ACTION_J1939_LOG     "Start/Stop J1939 Message Logging\nStart/Stop J1939 Logging"
+    ID_ACTION_J1939_TX_MESSAGE 
+                            "Transmit J1939 messages\nTransmit J1939 messages"
+    ID_ACTION_J1939_ONLINE  "Go Online/ Offline at J1939 Bus\nOnline/Offline at J1939 Bus"
+    ID_TOOLBAR_J1939        "Show/hide J1939 Toolbar\nShow/hide J1939 toolbar"
+    ID_FLEXRAY_TOOLBAR      "Show/hide FlexRay Toolbar\nShow/hide FlexRay toolbar"
     ID_TB_CANDATABASE       "CANデータベースツールバーを表示/非表示\nCANデータベースツールバーの表示/非表示 "
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
-    33001                   "データベースの分離\nデータベースの分離"
+    ID_CONFIGURE_MESSAGEDISPLAY_J1939 "J1939メッセージの表示属性を設定\nJ1939メッセージの表示属性"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
-    ID_DATABASE_SAVE        "J1939データベースの保存"
+    33073                   "Show/hide Configure Toolbar\nShow/hide Configure toolbar"
+    ID_CONFIGURE_TIMEOUTS   "Configure flow control timeouts\nConfigure flow control timeouts"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
-    ID_CONFIGURE_MESSAGEDISPLAY_FLEXRAY 
-                            "Configure Message Display Attributes of FlexRay\nConfigure Message Display Attributes of FlexRay"
+    ID_CONFIGURE_MESSAGEDISPLAY 
+                            "Configure Message Display Attributes of J1939\nConfigure Message Display Attributes of J1939"
 END
-#endif    // Japanese resources
+
+STRINGTABLE
+BEGIN
+    33001                   "Disassociate database\nDisassociate database"
+END
+
+STRINGTABLE
+BEGIN
+    ID_DATABASE_SAVE        "Save J1939 Database"
+    ID_TOOLBAR_LIN          "Show/hide LIN Toolbar\nShow/hide LIN toolbar"
+END
+
+#endif    // Japanese (Japan) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -1937,8 +2145,8 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
 LANGUAGE 0x11, 0x01
 #pragma code_page(932)
-#include "..\Localization\l.jpn\afxres.rc"     // Standard components
-#include "..\Localization\l.jpn\afxprint.rc"       // printing/print preview resources
+#include "l.jpn\afxres.rc"     // Standard components
+#include "l.jpn\afxprint.rc"       // printing/print preview resources
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

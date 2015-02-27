@@ -14,6 +14,7 @@
 #include "DataTypes/UDS_DataTypes.h"
 #include "UDSWnd_Defines.h"
 
+
 CUDS_Protocol* UdsProtocolPtr = NULL;
 extern CUDSMainWnd* omMainWnd;
 int SSTMin;
@@ -423,7 +424,7 @@ void CUDSSettingsWnd::OnCbnSelchangeComboInterface()
     //m_omFromEdit.SetReadOnly(TRUE);
 
     m_nInterfaceIndex = m_omInterface.GetCurSel();
-    //UdsProtocolPtr->fInterface = sg_asSupportedInterface[m_nInterfaceIndex].m_eType;  //Lo coloco acá para modificar cosas en el MainWnd
+    UdsProtocolPtr->fInterface = sg_asSupportedInterface[m_nInterfaceIndex].m_eType;  //Lo coloco acá para modificar cosas en el MainWnd
     switch (sg_asSupportedInterface[m_nInterfaceIndex].m_eType)
     {
         case INTERFACE_NORMAL_11:
@@ -461,6 +462,9 @@ void CUDSSettingsWnd::OnCbnSelchangeComboInterface()
 
             StringReqBaseAddress = "600";
             StringRespBaseAddress = "600";
+
+            m_omReqCanID. LimitText(3);
+            m_omRespCanID. LimitText(3);
 
             m_omReqBaseAddress.SetReadOnly(FALSE);
             m_omRespBaseAddress.SetReadOnly(FALSE);
@@ -560,7 +564,12 @@ void CUDSSettingsWnd::OnCbnSelchangeStandardDiag()
 
 void CUDSSettingsWnd::OnBnApplyPressed()
 {
-
+    //****************************************************************
+    if(omMainWnd == NULL)
+    {
+        //DIL_UDS_ShowWnd();
+    }
+    //****************************************************************
     UpdateData();
     Prev_DiagnosticsIndex = m_nDiagnosticsIndex;
     Prev_InterfaceIndex = m_nInterfaceIndex;
@@ -577,29 +586,53 @@ void CUDSSettingsWnd::OnBnApplyPressed()
             TempReq_CanID = m_omReqCanID.lGetValue();
             TempResp_CanID = m_omRespCanID.lGetValue();
 
-            if ( StringReqCanID.GetLength() == 3  && TempReq_CanID >= 0x01 && TempReq_CanID <= 0x7FF)
+            if ( StringReqCanID.GetLength() == 3  && TempReq_CanID >= 0x001 && TempReq_CanID <= 0x7FF)
             {
-                ReqCanID = strtoul(StringReqCanID.Right(2), NULL, 16);
+                ReqCanID = strtoul(StringReqCanID.Right(3), NULL, 16);  /// 3 in loc de 2 casian
                 UdsProtocolPtr->SourceAddress = ReqCanID;
                 UdsProtocolPtr->MsgID = strtoul(StringReqCanID.Right(3), NULL, 16);
             }
             else                   // Isn't a valid CAN ID
             {
                 UdsProtocolPtr->SourceAddress = 0x00;
-                UdsProtocolPtr->MsgID = 0x000;
+                // UdsProtocolPtr->MsgID = 0x000;   ########### Casian ###########
                 UdsProtocolPtr->TargetAddress = 00;
             }
 
-            if ( StringRespCanID.GetLength() == 3 && TempResp_CanID >= 0x01 && TempResp_CanID <= 0x7FF)
+            if ( StringRespCanID.GetLength() == 3 && TempResp_CanID >= 0x001 && TempResp_CanID <= 0x7FF)
             {
-                ReqCanID = strtoul(StringRespCanID.Right(2), NULL, 16);
+                ReqCanID = strtoul(StringRespCanID.Right(3), NULL, 16); /// 3 in loc de 2 casian
                 UdsProtocolPtr->TargetAddress = ReqCanID;
                 respID = strtoul(StringRespCanID , NULL, 16);   // the StringRespCanID is updated only if the CanID is correct
+
+                //############################ casian#################################//
+                if(UdsProtocolPtr->SourceAddress == UdsProtocolPtr->TargetAddress)
+                {
+                    UdsProtocolPtr->MsgID = strtoul(StringReqCanID.Right(3), NULL, 16);
+
+                    if(strtoul(StringReqCanID.Right(3), NULL, 16) == strtoul(StringRespCanID.Right(3), NULL, 16))
+                    {
+                        //omMainWnd->m_omSendButton.EnableWindow(FALSE);
+
+
+                        UdsProtocolPtr->MsgID = 0x000;
+                        UdsProtocolPtr->SourceAddress = 0x00;
+                        UdsProtocolPtr->TargetAddress = 00;
+                        //  UdsProtocolPtr->disableButton();
+                    }
+                    else
+                    {
+                        omMainWnd->m_omSendButton.EnableWindow(TRUE);
+                    }
+                    UdsProtocolPtr->MsgID = strtoul(StringReqCanID.Right(3), NULL, 16);
+
+                }
+                //############################ casian #################################//
             }
             else                            // Isn't a valid CAN ID
             {
                 UdsProtocolPtr->SourceAddress = 0x00;
-                UdsProtocolPtr->MsgID = 0x000;
+                //  UdsProtocolPtr->MsgID = 0x000;    ########### Casian ###########
                 UdsProtocolPtr->TargetAddress = 00;
             }
         }
@@ -614,7 +647,12 @@ void CUDSSettingsWnd::OnBnApplyPressed()
 
             if ( StringReqBaseAddress.GetLength()== 3 && TempReq_BaseAddress>=0x100 && TempResp_BaseAddress<=0x700)
             {
+
                 UdsProtocolPtr->MsgID = strtoul(StringReqBaseAddress.Left(3), NULL, 16);
+
+                omMainWnd->m_omSourceAddress.vSetValue(0);  // Casian
+                omMainWnd->m_omTargetAddress.vSetValue(0);  // Casian
+
             }
             else
             {
@@ -630,6 +668,7 @@ void CUDSSettingsWnd::OnBnApplyPressed()
                 UdsProtocolPtr->MsgID = 0x000;
             }
         }
+
         break;
         case INTERFACE_NORMAL_ISO_29:                   //In this case I'm changing only the CANID
         {

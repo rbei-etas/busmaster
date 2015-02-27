@@ -8484,17 +8484,26 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 {
     if (nIDEvent == m_unTimerSB)
     {
-        if ((theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED)) == TRUE)
+
+        if ( m_oNetworkStatistics != nullptr &&
+                m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
+        {
+            // Perform network statistics calculation and update of
+            // network statistics window
+            m_oNetworkStatistics->vSendMessage(CAN);
+        }
+        if (((theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED)) == TRUE))
         {
             vUpdateGraphStatsData();
             // Update the bus statistics window if it exists.
-            if ( m_oNetworkStatistics != nullptr &&
-                    m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
-            {
-                // Perform network statistics calculation and update of
-                // network statistics window
-                m_oNetworkStatistics->vSendMessage(CAN);
-            }
+            //if ( m_oNetworkStatistics != nullptr &&
+            //        m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
+            //{
+            //    // Perform network statistics calculation and update of
+            //    // network statistics window
+            //    m_oNetworkStatistics->vSendMessage(CAN);
+            //}
+
 
             // Get Present error counter value and take
             // appropriate actions for error handler execution
@@ -8519,18 +8528,22 @@ void CMainFrame::OnTimer(UINT nIDEvent)
                 }
             }
         }
-
-        if ((theApp.pouGetFlagsPtr()->nGetFlagStatus(LIN_CONNECTED)) == TRUE)
+        if((m_oNetworkStatistics != nullptr &&
+                m_oNetworkStatistics->IsWindowVisible( ) == TRUE ))
         {
-            // Update the bus statistics window if it exists.
-            if ( m_oNetworkStatistics != nullptr &&
-                    m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
-            {
-                // Perform network statistics calculation and update of
-                // network statistics window
-                m_oNetworkStatistics->vSendMessage(LIN);
-            }
+            m_oNetworkStatistics->vSendMessage(LIN);
         }
+        //if (((theApp.pouGetFlagsPtr()->nGetFlagStatus(LIN_CONNECTED)) == TRUE))
+        //{
+        //    // Update the bus statistics window if it exists.
+        //    if ( m_oNetworkStatistics != nullptr &&
+        //            m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
+        //    {
+        //        // Perform network statistics calculation and update of
+        //        // network statistics window
+        //        m_oNetworkStatistics->vSendMessage(LIN);
+        //    }
+        //}
 
         if (m_bLINDisconnect == TRUE)
         {

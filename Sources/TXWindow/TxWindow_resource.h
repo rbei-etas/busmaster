@@ -4,7 +4,7 @@
 //
 #define IDD_DLG_TX_MSG_DETAILS          102
 #define IDD_DLG_TX_MSG_BLOCKS           103
-#define IDD_DLG_SIGNAL                  131
+#define IDD_DLG_SIGNAL                  130
 #define IDD_DLG_TX_FUNCTIONS            132
 #define IDR_BMP_MSGSGDB                 132
 #define IDM_SEND_OPRNS                  164

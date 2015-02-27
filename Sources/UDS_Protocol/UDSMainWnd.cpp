@@ -338,14 +338,57 @@ void CUDSMainWnd::PrepareFlowControl()
     //FWaitLongRespBSize = Counter_BSize;                   // Not used
     psTxCanMsgUds->m_psTxMsg->m_ucDataLen= SizeFC;      //The DLC of the FCmessage depends of the value put in the settingsWnd.
     memset(psTxCanMsgUds->m_psTxMsg->m_ucData, 0, SizeFC);
-    if(fInterface == INTERFACE_EXTENDED_11 )
+
+    // ################## Casian #############################//
+    switch(fInterface)
     {
-        psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte-1] = TargetAddress;
+        case INTERFACE_NORMAL_11 :
+        {
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte-1] = TargetAddress;
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte] = 0x30;
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+1] = BSize;
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+2] = SSTMin; //////
+            SendSimpleDiagnosticMessage();
+
+        };
+        break;
+
+        case INTERFACE_EXTENDED_11 :
+        {
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte-1] = TargetAddress;
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte] = 0x30;
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+1] = BSize;
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+2] = SSTMin;
+            SendSimpleDiagnosticMessage();
+
+        };
+        break;
+
+        case INTERFACE_NORMAL_ISO_29 :
+        {
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte-1] = TargetAddress;
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte] = 0x30;
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+1] = BSize;
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+2] = SSTMin;
+            SendSimpleDiagnosticMessage();
+
+        };
+        break;
+
+        case INTERFACE_NORMAL_J1939_29 :
+        {
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte] = 0x30;
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+1] = BSize;
+            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+2] = SSTMin;
+
+            SendSimpleDiagnosticMessage();
+
+        };
+        break;
+
     }
-    psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte] = 0x30;
-    psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+1] = BSize;
-    psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+2] = SSTMin;
-    SendSimpleDiagnosticMessage();
+    // ################## Casian #############################//
+
 }
 
 /**********************************************************************************************************
@@ -547,9 +590,10 @@ void CUDSMainWnd::OnBnClickedSendUD()
     Bytes_to_Show= ("\r\n   1 -> ");
     BytesShown_Line = 1;
     m_abDatas = " ";
+    CurrentService = m_omMsgDataEdit.Left(NO_OF_CHAR_IN_BYTE); //Baiasu
     m_omDiagService = initialEval(m_omMsgDataEdit);
     m_omBytes.vSetValue(0);
-    CurrentService = m_omMsgDataEdit.Left(NO_OF_CHAR_IN_BYTE);
+    //CurrentService = m_omMsgDataEdit.Left(NO_OF_CHAR_IN_BYTE); //moved up by Adrian
 
     UpdateData(false);
     if (psTxCanMsgUds ==NULL)
@@ -771,7 +815,9 @@ void CUDSMainWnd::OnEnChangeSA()
     //MsgID = CanID + SourceAddress;
     m_omCanID.vSetValue(CanID + SourceAddress);
     setValue();
-    if( TargetAddress == SourceAddress)
+
+    // ######################## Casian ######################
+    if( TargetAddress == 0 && SourceAddress == 0)
     {
         m_omCanID.vSetValue(0);
         m_omSendButton.EnableWindow(FALSE);
@@ -780,6 +826,7 @@ void CUDSMainWnd::OnEnChangeSA()
     {
         m_omSendButton.EnableWindow(TRUE);
     }
+    //  ######################## Casian ######################
 
 }
 //________________________________________________________________________________________________________________________________________________________________
@@ -792,7 +839,7 @@ void CUDSMainWnd::OnEnChangeTA()
     TargetAddress = m_omTargetAddress.lGetValue();
     if(fInterface == INTERFACE_EXTENDED_11 )
     {
-        respID = RespMsgID + TargetAddress;
+        respID = RespMsgID + TargetAddress; // Casian
     }
     if(fInterface == INTERFACE_NORMAL_ISO_29 )
     {
@@ -805,9 +852,11 @@ void CUDSMainWnd::OnEnChangeTA()
         MsgID = ((CanID & 0xFFFF00FF) + (TargetAddress<<8));
         CanID = MsgID;
         m_omCanID.vSetValue(MsgID);
+        m_omSendButton.EnableWindow(TRUE); // ###################### Casian ###########################
     }
 
-    if( TargetAddress == SourceAddress)
+    // ########################## Casian ##########################
+    if( TargetAddress == 0 && SourceAddress == 0)
     {
         m_omSendButton.EnableWindow(FALSE);
         m_omCanID.vSetValue(0);
@@ -817,6 +866,8 @@ void CUDSMainWnd::OnEnChangeTA()
         m_omSendButton.EnableWindow(TRUE);
         setValue();
     }
+    //########################## Casian ##########################
+
 }
 //________________________________________________________________________________________________________________________________________________________________
 //________________________________________________________________________________________________________________________________________________________________
@@ -943,11 +994,15 @@ void CUDSMainWnd::vInitializeUDSfFields()
         break;
 
     }
-    if( SourceAddress == TargetAddress)
+
+    //########################## Casian ##########################
+    if( TargetAddress == 0 && SourceAddress == 0)
     {
         m_omCanID.vSetValue(0);
         m_omSendButton.EnableWindow(FALSE);
     }
+    //########################## Casian ##########################
+
 
     for (INT_PTR i = 0; i < TotalChannel; i++)
     {
@@ -1092,21 +1147,28 @@ Modifications  :
 
 CString CUDSMainWnd::initialEval(CString Data2Send )
 {
-    int CService = strtol(CurrentService, NULL, 16);
+    int CService;
+    CService = strtol(CurrentService, NULL, 16);
     if ( CService==0x10 || CService==0x11 ||CService==0x28 ||CService==0x31 ||CService==0x3E ||CService==0x85 ||CService==0xA0)
     {
         CString SendingData = Data2Send;
-        SendingData.Replace(" ","");
+        //SendingData.Replace(" ",""); //added by Alejandra - not working
+        SendingData.Remove(' '); // added in adition to previos function not working
         SendingData = Data2Send.Right(Data2Send.GetLength() - NO_OF_CHAR_IN_BYTE);
-        CString SecondByte = SendingData.Left(1);
-        if( SecondByte == '8')
+
+        int pos;
+
+        pos = SendingData.Find('8', 0);
+
+        //CString SecondByte = SendingData.Left(1);         //added by Alejandra - not working
+        if(pos == 1) //initial if(SecondByte == '8')
         {
-            Font_Color = RGB(184,134,11 );
-            return "	No Response Required";
+            Font_Color = RGB(0,255,0 );
+            return "     No Response Required";
         }
     }
     Font_Color = RGB(184,134,11 );
-    return "  No Response Received";        // If it's the case of  No Positive Response Required return the default value
+    return "     No Response Received";        // If it's the case of  No Positive Response Required return the default value
 }
 
 //________________________________________________________________________________________________________________________________________________________________

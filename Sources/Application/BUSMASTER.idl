@@ -23,64 +23,83 @@ library CAN_MonitorApp
 	  oleautomation,
 	  dual
 	]
-	interface IApplication : IDispatch
+	interface IBusMasterApp : IDispatch
 	{
 		[id(1), helpstring("method Connect")] HRESULT Connect(BOOL bConnect);
 		[id(2), helpstring("method GetMsgInfo")] HRESULT GetMsgInfo(BSTR MsgName,sMESSAGESTRUCT  *sMsgStruct);
-		[id(3), helpstring("method GetNetworkStatistics")] HRESULT GetNetworkStatistics(int nChannel, sBUSSTATISTICS_USR *sStat);
-		[id(4), helpstring("method SendCANMSg")] HRESULT SendCANMSg(CAN_MSGS *sMsg);
-		[id(5), helpstring("method GetErrorCounter")] HRESULT GetErrorCounter(UCHAR *Tx, UCHAR *Rx, INT nChannel);
-		[id(6), helpstring("method EnableDisableHandlers")] HRESULT EnableDisableHandlers(BOOL bEnable,eHandlerType eType);
-		[id(7), helpstring("method ImportDatabase")] HRESULT ImportDatabase(BSTR DBFilePath);
-		[id(8), helpstring("method LoadConfiguration")] HRESULT LoadConfiguration(BSTR FileName);
-		[id(9), helpstring("method SendKeyValue")] HRESULT SendKeyValue(UCHAR keyval);
-		[id(10), helpstring("method DisplayWindow")] HRESULT DisplayWindow(eWindow eWhichWindow);
-		[id(11), helpstring("method WriteToLogFile")] HRESULT WriteToLogFile(USHORT BlockIndex, BSTR pcStr);
-		[id(12), helpstring("method StopLogging")] HRESULT StopLogging();
-		[id(13), helpstring("method StartLogging")] HRESULT StartLogging();
-		[id(14), helpstring("method ResetSW")] HRESULT ResetSW();
-		[id(15), helpstring("method StopTxMsgBlock")] HRESULT StopTxMsgBlock();
-		[id(16), helpstring("method StartTxMsgBlock")] HRESULT StartTxMsgBlock();
-		[id(17), helpstring("method UnLoadAllDll")] HRESULT UnLoadAllDll();
-		[id(18), helpstring("method LoadAllDll")] HRESULT LoadAllDll();
-		[id(19), helpstring("method SaveConfiguration")] HRESULT SaveConfiguration();
-		[id(20), helpstring("method AddLoggingBlock")] HRESULT AddLoggingBlock(SLOGGINGBLOCK_USR* psLoggingBlock);
-		[id(21), helpstring("method SaveConfigurationAs")] HRESULT SaveConfigurationAs(BSTR ConfigPath);
-		[id(22), helpstring("method AddTxBlock")] HRESULT AddTxBlock(STXBLOCK_USR* psTxBlock);
-		[id(23), helpstring("method GetTxBlockCount")] HRESULT GetTxBlockCount (USHORT* Result);
-		[id(24), helpstring("method GetTxBlock")] HRESULT GetTxBlock (USHORT BlockIndex, STXBLOCK_USR* psTxBlock);
-		[id(25), helpstring("method DeleteTxBlock")] HRESULT DeleteTxBlock (USHORT BlockIndex);
-		[id(26), helpstring("method ClearTxBlockList")] HRESULT ClearTxBlockList ();
-		[id(27), helpstring("method AddMsgToTxBlock")] HRESULT AddMsgToTxBlock (USHORT BlockIndex, CAN_MSGS* psMsg);
-		[id(28), helpstring("method GetMsgCount")] HRESULT GetMsgCount (USHORT BlockIndex, USHORT* Result);
-		[id(29), helpstring("method GetMsgFromTxBlock")] HRESULT GetMsgFromTxBlock  ( USHORT BlockIndex, USHORT MsgIndex, CAN_MSGS* psMsg);
-		[id(30), helpstring("method DeleteMsgFromTxBlock")] HRESULT DeleteMsgFromTxBlock (USHORT BlockIndex, USHORT FrameIndex);
-		[id(31), helpstring("method ClearMsgList")] HRESULT ClearMsgList ([in] USHORT BlockIndex);
-		[id(32), helpstring("method AddFilterScheme")] HRESULT AddFilterScheme ([in] BSTR pcFilterName, [in] VARIANT_BOOL  FilterType);
-		[id(33), helpstring("method GetFilterScheme")] HRESULT GetFilterScheme ( [in] USHORT FilterSchINdex, [in] BSTR pcFilterName, [in] VARIANT_BOOL*  FilterType);
-		[id(34), helpstring("method GetFilterSchCount")] HRESULT GetFilterSchCount ([out] USHORT* pTotal);
-		[id(35), helpstring("method UpdateFilterSch")] HRESULT UpdateFilterSch ([in] USHORT FilterSchIndex, [in] SFILTER_USR* psFilter);
-		[id(36), helpstring("method GetFilterCountInSch")] HRESULT GetFilterCountInSch ([in] USHORT FilterSchIndex, [out] USHORT* pTotal);
-		[id(37), helpstring("method GetFilterInFilterSch")] HRESULT GetFilterInFilterSch ([in] USHORT FilterSchIndex, [in] USHORT FilterIndex, [out] SFILTER_USR* psFilter);
-		[id(38), helpstring("method DeleteFilterInSch")] HRESULT DeleteFilterInSch ([in] USHORT FilterSchIndex, [in] USHORT FilterIndex);
-		[id(39), helpstring("method EnableFilterSch")] HRESULT EnableFilterSch ([in] EFILTERMODULE eModule, [in] BOOL Enable);
-		[id(40), helpstring("method AddSimulatedSystem")] HRESULT AddSimulatedSystem([in] BSTR pcSimPath);
-		[id(41), helpstring("method GetSimulatedSystemCount")] HRESULT GetSimulatedSystemCount([out] USHORT* pSimTotal);
-		[id(42), helpstring("method GetSimulatedSystemName")] HRESULT GetSimulatedSystemName([in] USHORT SimSysIndex, [out] BSTR* pcSimPath);
-		[id(43), helpstring("method DeleteSimulatedSystem")] HRESULT DeleteSimulatedSystem([in] USHORT SimSysIndex);
-		[id(44), helpstring("method RemoveLoggingBlock")] HRESULT RemoveLoggingBlock([in] USHORT BlockIndex);
-		[id(45), helpstring("method GetLoggingBlockCount")] HRESULT GetLoggingBlockCount([out] USHORT* BlockCount);
-		[id(46), helpstring("method ClearLoggingBlockList")] HRESULT ClearLoggingBlockList(void);
-		[id(47), helpstring("method GetLoggingBlock")] HRESULT GetLoggingBlock([in] USHORT BlockIndex, [out] SLOGGINGBLOCK_USR* psLoggingBlock);
-		[id(48), helpstring("method RegisterClientForRx")] HRESULT RegisterClientForRx([in] USHORT usUniqueID, [out] BSTR* pEventName, [out] BSTR* pPIPEName);
-		[id(49), helpstring("method UnRegisterClient")] HRESULT UnRegisterClient([in] USHORT usUniqueID);		
+		[id(3), helpstring("method GetNetworkStatistics")] HRESULT GetNetworkStatistics(int nChannel, sBUSSTATISTICS_USR *sStat);		
+		[id(4), helpstring("method GetErrorCounter")] HRESULT GetErrorCounter(UCHAR *Tx, UCHAR *Rx, INT nChannel);
+		[id(5), helpstring("method ImportDatabase")] HRESULT ImportDatabase(BSTR DBFilePath);
+		[id(6), helpstring("method LoadConfiguration")] HRESULT LoadConfiguration(BSTR FileName);		
+		[id(7), helpstring("method SaveConfiguration")] HRESULT SaveConfiguration();		
+		[id(8), helpstring("method SaveConfigurationAs")] HRESULT SaveConfigurationAs(BSTR ConfigPath);
+		[id(9), helpstring("method RegisterClientForRx")] HRESULT RegisterClientForRx([in] USHORT usUniqueID, [out] BSTR* pEventName, [out] BSTR* pPIPEName);
+		[id(10), helpstring("method UnRegisterClient")] HRESULT UnRegisterClient([in] USHORT usUniqueID);
+		//[id(11), helpstring("GetApplication")] HRESULT GetApplication([out] IBusMaster** pApplication);
 	};
 
 	[ uuid(92D435C1-A552-4435-AD1E-468B4C17BDC7) ]
-	coclass Application
+	coclass BusMasterApp
 	{
-		[default] interface IApplication;
-		[default, source] interface _IAppEvents;		
+		[default] interface IBusMasterApp;		
+	};	
+
+	//[ uuid(97787126-BC1A-441A-BA3B-B637C3EB4FDD),
+	//  oleautomation,
+	//  dual
+	//]
+	
+	//interface IApplication : IDispatch
+	//{
+	//	[id(1), helpstring("GetApplication")] HRESULT GetApplication([out] IBusMaster** pApplication);
+	//};
+
+	//[ uuid(505084AB-628B-4AE0-BE40-4D5E721FFADD) ]
+	//coclass Application
+	//{
+	//	[default] interface IApplication;
+	//	[default, source] interface _IAppEvents;		
+	//};
+
+	[ uuid(AF3A15D0-1444-4640-B60A-E360EFFF5051),
+	  oleautomation,
+	  dual
+	]
+	interface ICANComm : IDispatch
+	{		
+		[id(1), helpstring("method SendCANMSg")] HRESULT SendCANMSg(CAN_MSGS *sMsg);
+		[id(2), helpstring("GetApplication")] HRESULT GetApplication([out] IBusMasterApp** pApplication);
 	};
+
+	[ uuid(1B90CA83-8652-41FC-B29A-191D57B455A3) ]
+	coclass Comm
+	{
+		[default] interface ICANComm;		
+	};	
+
+	[ uuid(29AEFD20-EA16-4A3B-B0B2-6EEB6971D066),
+	  oleautomation,
+	  dual
+	]
+
+	interface ICANLog : IDispatch
+	{
+		[id(1), helpstring("method StopLogging")] HRESULT StopLogging();
+		[id(2), helpstring("method StartLogging")] HRESULT StartLogging();
+		[id(3), helpstring("method AddLoggingBlock")] HRESULT AddLoggingBlock(SLOGGINGBLOCK_USR* psLoggingBlock);
+		[id(4), helpstring("method GetLoggingBlock")] HRESULT GetLoggingBlock([in] USHORT BlockIndex, [out] SLOGGINGBLOCK_USR* psLoggingBlock);
+		[id(5), helpstring("method RemoveLoggingBlock")] HRESULT RemoveLoggingBlock([in] USHORT BlockIndex);
+		[id(6), helpstring("method GetLoggingBlockCount")] HRESULT GetLoggingBlockCount([out] USHORT* BlockCount);
+		[id(7), helpstring("method ClearLoggingBlockList")] HRESULT ClearLoggingBlockList(void);
+		[id(8), helpstring("method WriteToLogFile")] HRESULT WriteToLogFile(USHORT BlockIndex, BSTR pcStr);
+		[id(9), helpstring("GetApplication")] HRESULT GetApplication([out] IBusMasterApp** pApplication);
+	};
+
+	[ uuid(BADFFC69-8FCB-4181-880C-615D09848CD6) ]
+	coclass Log
+	{
+		[default] interface ICANLog;		
+	};	
+
 };
  

@@ -779,10 +779,10 @@ void CTransmitMsgLIN::vSetControlProperties()
         m_odDB[nIndex].vSetSigned( FALSE);
     }
 
-    GetDlgItem(IDC_LIN_MSGTYPE_HEADER)->EnableWindow(FALSE);
-    GetDlgItem(IDC_LIN_MSGTYPE_SLAVE)->EnableWindow(FALSE);
-
-    ((CButton*)(GetDlgItem(IDC_LIN_MSGTYPE_SLAVE)))->SetCheck(TRUE);
+    if(((CButton*)(GetDlgItem(IDC_LIN_MSGTYPE_HEADER)))->GetCheck() == FALSE)
+    {
+        ((CButton*)(GetDlgItem(IDC_LIN_MSGTYPE_SLAVE)))->SetCheck(TRUE);
+    }
 }
 
 void CTransmitMsgLIN::onLinSlaveTypeSelected()

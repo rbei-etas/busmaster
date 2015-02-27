@@ -21,6 +21,7 @@
     <p>Currently BUSMASTER Supports the following FlexRay Controllers.</p>
     <p><ol>
         <li> ETAS BOA Controllers.</li>
+        <li> GIGATRONIK flex-i Controller.</li>
       </ol></p>
     <p><b>Selecting Controller:</b></p>
     <p>Before Selecting the controlletr the BUSMASTER has to be configured with the proper FIBEX File.Refer <b>Cluster Configuration</b> for more information.</p>

@@ -67,8 +67,6 @@ public:
     // Get pointer to CSimSysConfigDetails class
     CSimSysConfigDetails* pomGetSimSysConfig();
 
-    xmlNodePtr m_pTEXmlNode;
-
     //Set the SimSysTreeView object
     void podSetSimSysTreeView(CSimSysTreeView* );
     // Get pointer to CSimSysTreeView class

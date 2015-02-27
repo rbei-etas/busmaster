@@ -30,7 +30,7 @@
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP "headerimage.bmp"
 !define MUI_ICON  "..\Sources\Application\Res\BUSMASTER.ico"
-!define MUI_UNICON "..\Sources\Application\Res\BUSMASTER.ico"
+!define MUI_UNICON "..\Sources\Application\Res\Uninstaller.ico"
 
 !macro StrStr ResultVar String SubString
   Push `${String}`
@@ -331,6 +331,7 @@ Section "BUSMASTER"
   Delete "$INSTDIR\FLEXRAY_ETAS_BOA_1_4.dll"
   Delete "$INSTDIR\FLEXRAY_ETAS_BOA_1_5.dll"
   Delete "$INSTDIR\FLEXRAY_ETAS_BOA_2.dll"
+  Delete "$INSTDIR\FlexRay_GIGATRONIK_flex-i.dll"
   Delete "$INSTDIR\LIN_ETAS_BOA.dll"
   Delete "$INSTDIR\TXWindowFlexRay.dll"
   Delete "$INSTDIR\LIN_Vector_XL.dll"
@@ -455,6 +456,7 @@ Section "BUSMASTER"
   File ..\Sources\BIN\Release\FLEXRAY_ETAS_BOA_1_4.dll
   File ..\Sources\BIN\Release\FLEXRAY_ETAS_BOA_1_5.dll
   File ..\Sources\BIN\Release\FLEXRAY_ETAS_BOA_2.dll
+  File ..\Sources\BIN\Release\FlexRay_GIGATRONIK_flex-i.dll
   File ..\Sources\BIN\Release\LIN_ETAS_BOA.dll
   File ..\Sources\BIN\Release\TXWindowFlexRay.dll
   File ..\Sources\BIN\Release\Controller_0.dll

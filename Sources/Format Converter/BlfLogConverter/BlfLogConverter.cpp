@@ -170,7 +170,7 @@ HRESULT CBlfLogConverter::GetOutputFileFilters(string& pchOutputDefFilters, stri
 void CBlfLogConverter::AddFunctionHeader(std::ofstream& stream, WORD day, WORD month, WORD year, WORD hour
         , WORD mins, WORD sec) const
 {
-    stream << "***BUSMASTER Ver 2.6.0***\n";
+    stream << "***BUSMASTER Ver 2.6.1***\n";
     stream << "***PROTOCOL CAN***\n";
     stream << "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n";
     stream << "***[START LOGGING SESSION]***\n";

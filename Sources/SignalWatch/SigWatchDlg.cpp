@@ -486,6 +486,7 @@ void CSigWatchDlg::OnShowWindow(BOOL bShow, UINT nStatus)
     if (bShow == TRUE )
     {
         SendMessage(WM_NCPAINT, 1, 0);
+        SendMessage(WM_REMOVE_SIGNAL,0,0);
     }
 }
 

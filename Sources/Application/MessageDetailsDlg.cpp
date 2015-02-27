@@ -219,7 +219,6 @@ void CMessageDetailsDlg::OnOK()
         bRetVal = FALSE;
     }
 
-    //KSS
     if (bIsDataModified())
     {
         if (bRetVal)
@@ -253,6 +252,15 @@ void CMessageDetailsDlg::OnOK()
             if (m_sDbParams.m_eBus == CAN)
             {
                 if((m_nFrameFormat == 0) && (unTempMsgCode >= MAX_LMT_FOR_STD_MSG_ID))    // standard frame
+                {
+                    AfxMessageBox(_("Invalid message ID!"),
+                                  MB_OK|MB_ICONINFORMATION );
+                    m_omStrMessageCode.Empty();
+                    GetDlgItem( IDC_EDIT_MSGCODE )->SetFocus();
+                    UpdateData( FALSE);
+                    return;
+                }
+                else if((m_nFrameFormat == 1) && (unTempMsgCode >= defMAX_LMT_EXTD_MSG_ID))    // Extended frame
                 {
                     AfxMessageBox(_("Invalid message ID!"),
                                   MB_OK|MB_ICONINFORMATION );

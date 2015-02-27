@@ -81,5 +81,5 @@ public:
 private:
     BOOL bStartSigWatchReadThread(void);
     INT nParseXMLColumn(xmlNodePtr pNode);
-
+    BOOL bClearFlag;
 };

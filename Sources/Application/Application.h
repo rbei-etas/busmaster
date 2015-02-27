@@ -99,52 +99,14 @@ public:
         dispidConnect                      =               1L,
         dispidGetMsgInfo                   =               2L,
         dispidGetNetworkStatistics         =               3L,
-        dispidSendCANMSg                   =               4L,
-        dispidGetErrorCounter              =               5L,
-        dispidEnableDisableHandlers        =               6L,
-        dispidImportDatabase               =               7L,
-        dispidLoadConfiguration            =               8L,
-        dispidSendKeyValue                 =               9L,
-        dispidDisplayWindow                =               10L,
-        dispidWriteToLogFile               =               11L,
-        dispidStopLogging                  =               12L,
-        dispidStartLogging                 =               13L,
-        dispidReSetSW                      =               14L,
-        dispidStopTxMsgBlock               =               15L,
-        dispidStartTxMsgBlock              =               16L,
-        dispidUnLoadAllDll                 =               17L,
-        dispidLoadAllDll                   =               18L,
-        dispidSaveConfiguration            =               19L,
-        dispidAddLoggingBlock              =               20L,
-        dispidSaveConfigurationAs          =               21L,
-        dispidAddTxBlock                   =               22L,
-        dispidGetTxBlockCount              =               23L,
-        dispidGetTxBlock                   =               24L,
-        dispidDeleteTxBlock                =               25L,
-        dispidClearTxBlockList             =               26L,
-        dispidAddMsgToTxBlock              =               27L,
-        dispidGetMsgCount                  =               28L,
-        dispidGetMsgFromTxBlock            =               29L,
-        dispidDeleteMsgFromTxBlock         =               30L,
-        dispidClearMsgList                 =               31L,
-        dispidAddFilterScheme              =               32L,
-        dispidGetFilterScheme              =               33L,
-        dispidGetFilterSchCount            =               34L,
-        dispidUpdateFilterSch              =               35L,
-        dispidGetFilterCountInSch          =               36L,
-        dispidGetFilterInFilterSch         =               37L,
-        dispidDeleteFilterInSch            =               38L,
-        dispidEnableFilterSch              =               39L,
-        dispidAddSimulatedSystem           =               40L,
-        dispidGetSimulatedSystemCount      =               41L,
-        dispidGetSimulatedSystemName       =               42L,
-        dispidDeleteSimulatedSystem        =               43L,
-        dispidRemoveLoggingBlock           =               44L,
-        dispidGetLoggingBlockCount         =               45L,
-        dispidClearLoggingBlockList        =               46L,
-        dispidGetLoggingBlock              =               47L,
-        dispidRegisterClientForRx          =               48L,
-        dispidUnRegisterClient             =               49L
+        dispidGetErrorCounter              =               4L,
+        dispidImportDatabase               =               5L,
+        dispidLoadConfiguration            =               6L,
+        dispidSaveConfiguration            =               7L,
+        dispidSaveConfigurationAs          =               8L,
+        dispidRegisterClientForRx          =               9L,
+        dispidUnRegisterClient             =               10L
+                //dispidGetApplication             =               11L
     };
 
 
@@ -251,45 +213,6 @@ public:
     }
 
     /******************************************************************************
-        Function Name    :  SendCANMSg
-
-        Input(s)         :  message details
-        Output           :  -
-        Functionality    :  sends the message
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  20.06.2006
-        Modifications    :
-    ******************************************************************************/
-    HRESULT SendCANMSg(CAN_MSGS* psMsg)
-    {
-        HRESULT hResult = E_POINTER;
-        CBaseDIL_CAN* pDIL_CAN = GetICANDIL();
-        CMainFrame* pMainFrm = GetIMainFrame();
-
-        if ((NULL != pDIL_CAN) && (NULL != psMsg))
-        {
-            STCAN_MSG sTempMsg = {'\0'};
-            sTempMsg.m_ucChannel  = psMsg->m_ucChannel;
-            sTempMsg.m_ucDataLen  = psMsg->m_ucDataLen;
-            sTempMsg.m_ucEXTENDED = psMsg->m_bEXTENDED;
-            sTempMsg.m_ucRTR      = psMsg->m_bRTR;
-            sTempMsg.m_unMsgID    = psMsg->m_unMsgID;
-
-            // Copy the data bytes
-            for (int i = 0; i < sTempMsg.m_ucDataLen; i++)
-            {
-                sTempMsg.m_ucData[i] = psMsg->m_ucData[i];
-            }
-            /* Client ID should be set to CAN_MONITOR_NODE ID */
-            hResult = pDIL_CAN->DILC_SendMsg(pMainFrm->dwGetMonitorNodeClientID()
-                                             , sTempMsg);
-        }
-
-        return hResult;
-    }
-
-    /******************************************************************************
         Function Name    :  GetMsgInfo
 
         Input(s)         :  message name
@@ -344,192 +267,52 @@ public:
 
         if ((NULL != pBusStatCAN) && (NULL != psStat))
         {
+            if (nChannel >= 1)
+            {
+                nChannel--; // To access data from 0th index
+            }
             SBUSSTATISTICS sBusStat = {'\0'};
             hResult = pBusStatCAN->BSC_GetBusStatistics((UINT) nChannel, sBusStat);
-            memcpy(psStat, &sBusStat, sizeof(SBUSSTATISTICS));
+            psStat->m_dAvarageBusLoad = sBusStat.m_dAvarageBusLoad;
+            psStat->m_dBaudRate = sBusStat.m_dBaudRate;
+            psStat->m_dBusLoad = sBusStat.m_dBusLoad;
+            psStat->m_unTotalMsgCount = sBusStat.m_unTotalMsgCount;
+            psStat->m_unTotalTxMsgCount = sBusStat.m_unTotalTxMsgCount;
+            psStat->m_unTotalRxMsgCount = sBusStat.m_unTotalRxMsgCount;
+            psStat->m_dErrorRate = sBusStat.m_dErrorRate;
+            psStat->m_dErrorRxRate = sBusStat.m_dErrorRxRate;
+            psStat->m_dErrorTxRate = sBusStat.m_dErrorTxRate;
+            psStat->m_dPeakBusLoad = sBusStat.m_dPeakBusLoad;
+            psStat->m_dRxEXTMsgRate = sBusStat.m_dRxEXTMsgRate;
+            psStat->m_dRxSTDMsgRate = sBusStat.m_dRxSTDMsgRate;
+            psStat->m_dTotalBusLoad = sBusStat.m_dTotalBusLoad;
+            psStat->m_dTotalRxMsgRate = sBusStat.m_dTotalRxMsgRate;
+            psStat->m_dTotalTxMsgRate = sBusStat.m_dTotalTxMsgRate;
+            psStat->m_dTxEXTMsgRate = sBusStat.m_dTxEXTMsgRate;
+            psStat->m_dTxSTDMsgRate = sBusStat.m_dTxSTDMsgRate;
+            psStat->m_nSamples = sBusStat.m_nSamples;
+            psStat->m_ucRxErrorCounter = sBusStat.m_ucRxErrorCounter;
+            psStat->m_ucRxPeakErrorCount = sBusStat.m_ucRxPeakErrorCount;
+            psStat->m_ucStatus = sBusStat.m_ucStatus;
+            psStat->m_ucTxErrorCounter = sBusStat.m_ucTxErrorCounter;
+            psStat->m_ucTxPeakErrorCount = sBusStat.m_ucTxPeakErrorCount;
+            psStat->m_unDLCCount = sBusStat.m_unDLCCount;
+            psStat->m_unErrorRxCount = sBusStat.m_unErrorRxCount;
+            psStat->m_unErrorTotalCount = sBusStat.m_unErrorTotalCount;
+            psStat->m_unErrorTxCount = sBusStat.m_unErrorTxCount;
+            psStat->m_unMsgPerSecond = sBusStat.m_unMsgPerSecond;
+            psStat->m_unRxEXTDMsgCount = sBusStat.m_unRxEXTDMsgCount;
+            psStat->m_unRxEXTD_RTRMsgCount = sBusStat.m_unRxEXTD_RTRMsgCount;
+            psStat->m_unTxSTDMsgCount = sBusStat.m_unTxSTDMsgCount;
+            psStat->m_unTxSTD_RTRMsgCount = sBusStat.m_unTxSTD_RTRMsgCount;
+            psStat->m_unTxEXTDMsgCount = sBusStat.m_unTxEXTDMsgCount;
+            psStat->m_unRxSTDMsgCount = sBusStat.m_unRxSTDMsgCount;
+            psStat->m_unRxSTD_RTRMsgCount = sBusStat.m_unRxSTD_RTRMsgCount;
+            /*memcpy(psStat, &sBusStat, sizeof(SBUSSTATISTICS));*/
         }
 
         return hResult;
     }
-
-    // NODE SIMULATION MODULE RELATED FUNCTIONS: START
-
-    /******************************************************************************
-        Function Name    :  LoadAllDll
-
-        Input(s)         :
-        Output           :  -
-        Functionality    :  Post the message to CMainframe LoadAllDll
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  20.06.2006
-        Modifications    :
-    ******************************************************************************/
-    HRESULT LoadAllDll()
-    {
-        HRESULT hResult = E_POINTER;
-        CMainFrame* pMainFrm = GetIMainFrame();
-
-        if (NULL != pMainFrm)
-        {
-            CStringArray omStrBuildFiles;
-
-            if (pMainFrm->COM_bDllLoad(&omStrBuildFiles))
-            {
-                hResult = S_OK;
-            }
-            else
-            {
-                hResult = E_FAIL;
-            }
-        }
-
-        return hResult;
-    }
-
-    /******************************************************************************
-        Function Name    :  UnLoadAllDll
-
-        Input(s)         :
-        Output           :  -
-        Functionality    :  Post the message to CMainframe UnLoadAllDll
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  20.06.2006
-        Modifications    :
-    ******************************************************************************/
-    HRESULT UnLoadAllDll()
-    {
-        HRESULT hResult = E_POINTER;
-        CMainFrame* pMainFrm = GetIMainFrame();
-
-        if (NULL != pMainFrm)
-        {
-            CStringArray omStrBuildFiles;
-
-            if (pMainFrm->COM_bDllUnload(&omStrBuildFiles))
-            {
-                hResult = S_OK;
-            }
-            else
-            {
-                hResult = E_FAIL;
-            }
-        }
-
-        return hResult;
-    }
-    /******************************************************************************
-        Function Name    :  SendKeyValue
-
-        Input(s)         :  Key's Ascii value
-        Output           :  -
-        Functionality    :  It post the key message to main frame
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  20.06.2006
-        Modifications    :
-    ******************************************************************************/
-    HRESULT SendKeyValue(UCHAR KeyVal)
-    {
-        HRESULT hResult = E_POINTER;
-        CMainFrame* pMainFrm = GetIMainFrame();
-
-        if (NULL != pMainFrm)
-        {
-            pMainFrm->vKeyPressedInMsgWnd((WPARAM) KeyVal, (LPARAM) 0);
-            hResult = S_OK;
-        }
-
-        return hResult;
-    }
-
-    /******************************************************************************
-        Function Name    :  EnableDisableHandlers
-
-        Input(s)         :  handler type, bool enable/disable
-        Output           :  -
-        Functionality    :
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  20.06.2006
-        Modifications    :
-    ******************************************************************************/
-    HRESULT EnableDisableHandlers(BOOL bEnable, eHandlerType eType)
-    {
-        HRESULT hResult = E_POINTER;
-        CFlags* pFlags = GetIFlags();
-        CMainFrame* pMainFrm = GetIMainFrame();
-
-        if ((NULL != pFlags) && (NULL != pMainFrm))
-        {
-            if (pFlags->nGetFlagStatus(CONNECTED))
-            {
-                switch (eType)
-                {
-                    case all:
-                    {
-                        if (pFlags->nGetFlagStatus(ALL_HANDLER) != bEnable)
-                        {
-                            pMainFrm->COM_EnableAllHandlers(bEnable == TRUE);
-                        }
-
-                        hResult = S_OK;
-                    }
-                    break;
-
-                    case timers:
-                    {
-                        // If timer button is enabled then only call the function
-                        if (pFlags->nGetFlagStatus(TIMERBUTTON) != bEnable)
-                        {
-                        }
-
-                        hResult = S_OK;
-                    }
-                    break;
-
-                    case key:
-                    {
-                        if (pFlags->nGetFlagStatus(KEY_HANDLER_ON) != bEnable)
-                        {
-                        }
-
-                        hResult = S_OK;
-                    }
-                    break;
-
-                    case message :
-                    {
-                        if (pFlags->nGetFlagStatus(MSGHANDLERBUTTON) != bEnable)
-                        {
-                        }
-
-                        hResult = S_OK;
-                    }
-                    break;
-
-                    case error :
-                    {
-                        if (pFlags->nGetFlagStatus(ERROR_HANDLER) != bEnable)
-                        {
-                        }
-
-                        hResult = S_OK;
-                    }
-                    break;
-
-                    default:
-                    {
-                        hResult = E_INVALIDARG;
-                    }
-                }
-            }
-        }
-
-        return hResult;
-    }
-    // NODE SIMULATION MODULE RELATED FUNCTIONS: END
 
     // CONFIGURATION RELATED FUNCTIONS: START
 
@@ -662,234 +445,6 @@ public:
         return hResult;
     }
     // CONFIGURATION RELATED FUNCTIONS: END
-
-    // TX BLOCK RELATED FUNCTIONS: START
-
-    /******************************************************************************
-        Function Name    :  StartTxMsgBlock
-
-        Input(s)         :
-        Output           :  -
-        Functionality    :  Starts sending messages if tool is connected
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  20.06.2006
-        Modifications    :
-    ******************************************************************************/
-    HRESULT StartTxMsgBlock()
-    {
-        HRESULT hResult = E_POINTER;
-        CMainFrame* pMainFrm = GetIMainFrame();
-
-        if (NULL != pMainFrm)
-        {
-            pMainFrm->COM_SendMessage();
-            hResult = S_OK;
-        }
-
-        return hResult;
-    }
-
-    /******************************************************************************
-        Function Name    :  StopTxMsgBlock
-
-        Input(s)         :
-        Output           :  -
-        Functionality    :  Stops sending messages
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  20.06.2006
-        Modifications    :
-    ******************************************************************************/
-    HRESULT StopTxMsgBlock()
-    {
-        return StartTxMsgBlock();
-    }
-
-    /******************************************************************************
-        Function Name    :  GetTxBlockCount
-
-        Input(s)         :  -
-        Output           :  No. of Tx blocks available
-        Functionality    :  Get Tx block count
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT GetTxBlockCount (USHORT* Result)
-    {
-        *Result = (USHORT) TX_unGetTxBlockCount();
-        return S_OK;
-    }
-
-    /******************************************************************************
-        Function Name    :  DeleteTxBlock
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Delete Tx Block
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT DeleteTxBlock (USHORT /*BlockIndex*/)
-    {
-        return TX_vDeleteTxBlockMemory();
-    }
-
-    /******************************************************************************
-        Function Name    :  ClearTxBlockList
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Clear Tx Block List
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT ClearTxBlockList(void)
-    {
-        return TX_vDeleteTxBlockMemory();
-    }
-    // TX BLOCK RELATED FUNCTIONS: END
-
-
-    // FILTERING RELATED FUNCTIONS: START
-
-    /**
-     * Enables / disables a filter scheme
-     */
-    HRESULT EnableFilterSch(EFILTERMODULE eModule, bool bEnable)
-    {
-        HRESULT hResult;
-
-        switch (eModule)
-        {
-            case Log:
-            {
-                CBaseFrameProcessor_CAN* pCANLogger = GetICANLogger();
-
-                if (NULL != pCANLogger)
-                {
-                    USHORT LogBlocks = pCANLogger->FPC_GetLoggingBlockCount();
-                    hResult = S_OK;
-
-                    for (USHORT i = 0; (i < LogBlocks) && (S_OK == hResult); i++)
-                    {
-                        hResult = pCANLogger->FPC_EnableFilter(i, bEnable);
-                    }
-                }
-                else
-                {
-                    hResult = E_POINTER;
-                }
-            }
-            break;
-
-            case Display:
-            {
-                //hResult = PSDI_EnableFilterApplied(bEnable);
-                CMsgContainerBase* pouMsgContainerIntrf = NULL;
-                PSDI_GetInterface(CAN, (void**)&pouMsgContainerIntrf);
-
-                if(pouMsgContainerIntrf)
-                {
-                    pouMsgContainerIntrf->EnableFilterApplied(bEnable);
-                }
-            }
-            break;
-
-            default:
-            {
-                hResult = E_INVALIDARG;
-                ASSERT(FALSE);
-            }
-            break;
-        }
-
-        return hResult;
-    }
-    // FILTERING RELATED FUNCTIONS: END
-
-    // LOG RELATED FUNCTIONS: START
-
-    /******************************************************************************
-        Function Name    :  StartLogging
-
-        Input(s)         :
-        Output           :  -
-        Functionality    :  Start logging if it is stopped
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  20.06.2006
-        Modifications    :
-    ******************************************************************************/
-    HRESULT StartLogging()
-    {
-        HRESULT hResult = E_POINTER;
-        CBaseFrameProcessor_CAN* pCANLogger = GetICANLogger();
-
-        if (NULL != pCANLogger)
-        {
-            hResult = pCANLogger->FPC_EnableLogging(TRUE);
-        }
-
-        return hResult;
-    }
-
-    /******************************************************************************
-        Function Name    :  StopLogging
-
-        Input(s)         :
-        Output           :  -
-        Functionality    :  disable logging of messages
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  20.06.2006
-        Modifications    :
-    ******************************************************************************/
-    HRESULT StopLogging()
-    {
-        HRESULT hResult = E_POINTER;
-        CBaseFrameProcessor_CAN* pCANLogger = GetICANLogger();
-
-        if (NULL != pCANLogger)
-        {
-            hResult = pCANLogger->FPC_EnableLogging(FALSE);
-        }
-
-        return hResult;
-    }
-
-    /******************************************************************************
-        Function Name    :  WriteToLogFile
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Writes a string to the log file specified
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT WriteToLogFile(USHORT /*BlockIndex*/, BSTR bstrStr)
-    {
-        HRESULT hResult = E_POINTER;
-        CBaseFrameProcessor_CAN* pCANLogger = GetICANLogger();
-
-        if (NULL != pCANLogger)
-        {
-            char acStr[256] = {'\0'};
-            BSTR_2_PCHAR(bstrStr, acStr, 256);
-            CString omStr(acStr);
-            hResult = pCANLogger->FPC_LogString(omStr);
-        }
-
-        return hResult;
-    }
 
     /******************************************************************************
         Function Name    :  RegisterClientForRx
@@ -1043,15 +598,225 @@ public:
     }
 
     /******************************************************************************
-        Function Name    :  GetLoggingBlockCount
+        Function Name    :  GetApplication
 
         Input(s)         :  -
         Output           :
-        Functionality    :  Returns total number of logging blocks defined
+        Functionality    :  Retrieves the application pointer
+        Member of        :  CApplication
+        Author(s)        :  Saravanan
+        Date Created     :  30.07.2014
+        Modifications    :
+    ******************************************************************************/
+    /*HRESULT GetApplication(IBusMaster** pApplication)
+    {
+        return E_NOTIMPL;
+    }*/
+
+    ////////////////////////////////////////////////////////////////////////////////
+
+    BEGIN_INTERFACE_PART(LocalClass, IBusMasterApp)
+    STDMETHOD(GetTypeInfoCount)(UINT FAR* pctinfo);
+    STDMETHOD(GetTypeInfo)(
+        UINT itinfo,
+        LCID lcid,
+        ITypeInfo FAR* FAR* pptinfo);
+    STDMETHOD(GetIDsOfNames)(
+        REFIID riid,
+        OLECHAR FAR* FAR* rgszNames,
+        UINT cNames,
+        LCID lcid,
+        DISPID FAR* rgdispid);
+    STDMETHOD(Invoke)(
+        DISPID dispidMember,
+        REFIID riid,
+        LCID lcid,
+        WORD wFlags,
+        DISPPARAMS FAR* pdispparams,
+        VARIANT FAR* pvarResult,
+        EXCEPINFO FAR* pexcepinfo,
+        UINT FAR* puArgErr);
+    // General methods
+    STDMETHOD(GetMsgInfo)(BSTR MsgName,sMESSAGESTRUCT*  sMsgStruct);
+    STDMETHOD(GetNetworkStatistics)(int nChannel, sBUSSTATISTICS_USR* sStat);
+    STDMETHOD(GetErrorCounter)(UCHAR* Tx, UCHAR* Rx, INT nChannel);
+    STDMETHOD(ImportDatabase)(BSTR DBFilePath);
+    STDMETHOD(LoadConfiguration)(BSTR FileName);
+    STDMETHOD(RegisterClientForRx)( USHORT usUniqueID, BSTR* pEventName, BSTR* pPIPEName );
+    STDMETHOD(UnRegisterClient)(USHORT usUniqueID);
+    STDMETHOD(Connect)(BOOL bConnect);
+    STDMETHOD(SaveConfiguration)();
+    STDMETHOD(SaveConfigurationAs) (BSTR ConfigPath);
+    //STDMETHOD(GetApplication) (IBusMaster** pApplication);
+    END_INTERFACE_PART(LocalClass)
+};
+
+class CCommClass : public CCmdTarget
+{
+public:
+    CCommClass(void);
+    ~CCommClass(void);
+
+    virtual void OnFinalRelease()
+    {
+        CCmdTarget::OnFinalRelease();
+    }
+
+    DECLARE_DYNCREATE(CCommClass)
+    DECLARE_MESSAGE_MAP()
+    DECLARE_OLECREATE(CCommClass)
+    DECLARE_DISPATCH_MAP()
+    DECLARE_INTERFACE_MAP()
+
+protected:
+    // Connection point for ISMCLink interface
+    BEGIN_CONNECTION_PART(CCommClass, AppEvents)
+    CONNECTION_IID(IID__IAppEvents)
+    END_CONNECTION_PART(AppEvents)
+
+    DECLARE_CONNECTION_MAP()
+
+public:
+    enum
+    {
+        dispidSendCANMSg = 1L,
+        dispidGetApplication = 2L
+    };
+
+    /******************************************************************************
+        Function Name    :  SendCANMSg
+
+        Input(s)         :  message details
+        Output           :  -
+        Functionality    :  sends the message
         Member of        :  CApplication
         Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
+        Date Created     :  20.06.2006
         Modifications    :
+    ******************************************************************************/
+    HRESULT SendCANMSg(CAN_MSGS* psMsg)
+    {
+        HRESULT hResult = E_POINTER;
+        CBaseDIL_CAN* pDIL_CAN = GetICANDIL();
+        CMainFrame* pMainFrm = GetIMainFrame();
+
+        if ((NULL != pDIL_CAN) && (NULL != psMsg))
+        {
+            STCAN_MSG sTempMsg = {'\0'};
+            sTempMsg.m_ucChannel  = psMsg->m_ucChannel;
+            sTempMsg.m_ucDataLen  = psMsg->m_ucDataLen;
+            sTempMsg.m_ucEXTENDED = psMsg->m_bEXTENDED;
+            sTempMsg.m_ucRTR      = psMsg->m_bRTR;
+            sTempMsg.m_unMsgID    = psMsg->m_unMsgID;
+
+            // Copy the data bytes
+            for (int i = 0; i < sTempMsg.m_ucDataLen; i++)
+            {
+                sTempMsg.m_ucData[i] = psMsg->m_ucData[i];
+            }
+            /* Client ID should be set to CAN_MONITOR_NODE ID */
+            hResult = pDIL_CAN->DILC_SendMsg(pMainFrm->dwGetMonitorNodeClientID()
+                                             , sTempMsg);
+        }
+
+        return hResult;
+    }
+
+    /******************************************************************************
+    Function Name    :  GetApplication
+
+    Input(s)         :  -
+    Output           :
+    Functionality    :  Retrieves the application pointer
+    Member of        :  CApplication
+    Author(s)        :  Saravanan
+    Date Created     :  30.07.2014
+    Modifications    :
+    ******************************************************************************/
+    HRESULT GetApplication(IBusMasterApp** pApplication)
+    {
+        HRESULT hResult = CoCreateInstance(CLSID_BusMasterApp, NULL,
+                                           CLSCTX_LOCAL_SERVER, IID_IBusMasterApp, (void**) &pApplication);
+
+        return hResult;
+    }
+
+    BEGIN_INTERFACE_PART(CommClass, ICANComm)
+    STDMETHOD(GetTypeInfoCount)(UINT FAR* pctinfo);
+    STDMETHOD(GetTypeInfo)(
+        UINT itinfo,
+        LCID lcid,
+        ITypeInfo FAR* FAR* pptinfo);
+    STDMETHOD(GetIDsOfNames)(
+        REFIID riid,
+        OLECHAR FAR* FAR* rgszNames,
+        UINT cNames,
+        LCID lcid,
+        DISPID FAR* rgdispid);
+    STDMETHOD(Invoke)(
+        DISPID dispidMember,
+        REFIID riid,
+        LCID lcid,
+        WORD wFlags,
+        DISPPARAMS FAR* pdispparams,
+        VARIANT FAR* pvarResult,
+        EXCEPINFO FAR* pexcepinfo,
+        UINT FAR* puArgErr);
+    STDMETHOD(SendCANMSg)(CAN_MSGS* sMsg);
+    STDMETHOD(GetApplication)(IBusMasterApp** pApplication);
+    END_INTERFACE_PART(CommClass)
+
+};
+
+class CLogClass : public CCmdTarget
+{
+public:
+    CLogClass(void);
+    ~CLogClass(void);
+
+    virtual void OnFinalRelease()
+    {
+        CCmdTarget::OnFinalRelease();
+    }
+
+    DECLARE_DYNCREATE(CLogClass)
+    DECLARE_MESSAGE_MAP()
+    DECLARE_OLECREATE(CLogClass)
+    DECLARE_DISPATCH_MAP()
+    DECLARE_INTERFACE_MAP()
+
+protected:
+    // Connection point for ISMCLink interface
+    BEGIN_CONNECTION_PART(CLogClass, AppEvents)
+    CONNECTION_IID(IID__IAppEvents)
+    END_CONNECTION_PART(AppEvents)
+
+    DECLARE_CONNECTION_MAP()
+
+public:
+    enum
+    {
+        dispidStopLogging                  =               1L,
+        dispidStartLogging                 =               2L,
+        dispidAddLoggingBlock              =               3L,
+        dispidGetLoggingBlock              =               4L,
+        dispidRemoveLoggingBlock           =               5L,
+        dispidGetLoggingBlockCount         =               6L,
+        dispidClearLoggingBlockList        =               7L,
+        dispidWriteToLogFile               =               8L,
+        dispidGetApplication               =               9L
+    };
+
+    /******************************************************************************
+       Function Name    :  GetLoggingBlockCount
+
+       Input(s)         :  -
+       Output           :
+       Functionality    :  Returns total number of logging blocks defined
+       Member of        :  CApplication
+       Author(s)        :  Anish kumar
+       Date Created     :  01.06.2010
+       Modifications    :
     ******************************************************************************/
     HRESULT GetLoggingBlockCount(USHORT* BlockCount)
     {
@@ -1117,37 +882,6 @@ public:
     // LOG RELATED FUNCTIONS: END
 
     /******************************************************************************
-        Function Name    :  ResetSW
-
-        Input(s)         :
-        Output           :  -
-        Functionality    :  REset software
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  20.06.2006
-        Modifications    :
-    ******************************************************************************/
-    HRESULT ResetSW()
-    {
-        return E_NOTIMPL;
-    }
-    /******************************************************************************
-        Function Name    :  DisplayWindow
-
-        Input(s)         :
-        Output           :  -
-        Functionality    :  Display the windows in BUSMASTER
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  20.06.2006
-        Modifications    :
-    ******************************************************************************/
-    HRESULT DisplayWindow(eWindow /*eWhichWindow*/)
-    {
-        return E_NOTIMPL;
-    }
-
-    /******************************************************************************
         Function Name    :  AddLoggingBlock
 
         Input(s)         :  Log file name,time mode,numeric mode,file mode for logging
@@ -1158,236 +892,31 @@ public:
         Date Created     :  06.10.2006
         Modifications    :
     ******************************************************************************/
-    HRESULT AddLoggingBlock(SLOGGINGBLOCK_USR* /*psLoggingBlock*/)
+    HRESULT AddLoggingBlock(SLOGGINGBLOCK_USR* psLoggingBlock)
     {
-        return E_NOTIMPL;
-    }
+        HRESULT hResult = E_POINTER;
+        CBaseFrameProcessor_CAN* pCANLogger = GetICANLogger();
+        SLOGINFO logInfo;
+        logInfo.m_eFileMode = (eMode)psLoggingBlock->m_eFileMode;
+        logInfo.m_eLogTimerMode = (eTimerMode)psLoggingBlock->m_eLogTimerMode;
+        logInfo.m_eNumFormat = (eFormat)psLoggingBlock->m_eNumFormat;
+        strncpy(logInfo.m_sLogFileName, (const char*)psLoggingBlock->m_sLogFileName, 256);
+        logInfo.m_sLogTrigger.m_unStartID = psLoggingBlock->m_sLogTrigger.m_unStartID;
+        logInfo.m_sLogTrigger.m_unStopID = psLoggingBlock->m_sLogTrigger.m_unStopID;
+        logInfo.m_sLogTrigger.m_unTriggerType = (eLogTriggerState)psLoggingBlock->m_sLogTrigger.m_unTriggerType;
 
-    /******************************************************************************
-        Function Name    :  AddTxBlock
+        if (NULL != pCANLogger)
+        {
+            hResult = pCANLogger->FPC_StartEditingSession();
+            if (S_OK == hResult)
+            {
+                hResult = pCANLogger->FPC_AddLoggingBlock(logInfo);
+            }
+            pCANLogger->FPC_StopEditingSession(true);
+        }
 
-        Input(s)         :  Tx block details
-        Output           :
-        Functionality    :  Add transmission block
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT AddTxBlock(STXBLOCK_USR* /*psTxBlock*/)
-    {
-        return E_NOTIMPL;
-    }
+        return hResult;
 
-    /******************************************************************************
-        Function Name    :  GetTxBlock
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Get Tx block details
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT GetTxBlock (USHORT /*BlockIndex*/, STXBLOCK_USR* /*psTxBlock*/)
-    {
-        return E_NOTIMPL;
-    }
-
-    /******************************************************************************
-        Function Name    :  AddMsgToTxBlock
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Add Msg To TxBlock
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT AddMsgToTxBlock(USHORT /*BlockIndex*/, CAN_MSGS* /*psMsg*/)
-    {
-        return E_NOTIMPL;
-    }
-
-    /******************************************************************************
-        Function Name    :  GetMsgCount
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Get Msg Count of a TxBlock
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT GetMsgCount(USHORT /*BlockIndex*/, USHORT* /*Result*/)
-    {
-        return E_NOTIMPL;
-    }
-
-    /******************************************************************************
-        Function Name    :  GetMsgFromTxBlock
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Get Msg info From TxBlock
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT GetMsgFromTxBlock(USHORT /*BlockIndex*/, USHORT /*MsgIndex*/, CAN_MSGS* /*psMsg*/)
-    {
-        return E_NOTIMPL;
-    }
-
-    /******************************************************************************
-        Function Name    :  DeleteMsgFromTxBlock
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Delete MsgFrom TxBlock
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT DeleteMsgFromTxBlock(USHORT /*BlockIndex*/, USHORT /*FrameIndex*/)
-    {
-        return E_NOTIMPL;
-    }
-
-    /******************************************************************************
-        Function Name    :  ClearMsgList
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Clears the Msg list in a Tx block given its index
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT ClearMsgList(USHORT /*BlockIndex*/)
-    {
-        return E_NOTIMPL;
-    }
-
-    /******************************************************************************
-        Function Name    :  AddFilterScheme
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Defines a filter scheme which is identified by its name.
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT AddFilterScheme (BSTR /*pcFilterName*/, VARIANT_BOOL /*FilterType*/)
-    {
-        return E_NOTIMPL;
-    }
-
-    /******************************************************************************
-        Function Name    :  GetFilterScheme
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Given filterscheme index provide filter scheme name and type
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT GetFilterScheme(USHORT /*FilterSchINdex*/, BSTR /*pcFilterName*/,
-                            VARIANT_BOOL* /*FilterType*/)
-    {
-        return E_NOTIMPL;
-    }
-
-    /******************************************************************************
-        Function Name    :  GetFilterSchCount
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Get Filter Scheme Count
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT GetFilterSchCount(USHORT* /*pTotal*/)
-    {
-        return E_NOTIMPL;
-    }
-
-    /******************************************************************************
-        Function Name    :  UpdateFilterSch
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Adds / sets a filter in a filter scheme
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT UpdateFilterSch(USHORT /*FilterSchIndex*/, SFILTER_USR* /*psFilter*/)
-    {
-        return E_NOTIMPL;
-    }
-
-    /******************************************************************************
-        Function Name    :  GetFilterCountInSch
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Get Filter Count In a filter Scheme
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT GetFilterCountInSch(USHORT /*FilterSchIndex*/, USHORT* /*pTotal*/)
-    {
-        return E_NOTIMPL;
-    }
-
-    /******************************************************************************
-        Function Name    :  GetFilterInFilterSch
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Getter for a filter, given index of the filter scheme
-                            and index of the filter in the filter scheme
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT GetFilterInFilterSch(USHORT /*FilterSchIndex*/, USHORT /*FilterIndex*/,
-                                 SFILTER_USR* /*psFilter*/)
-    {
-        return E_NOTIMPL;
-    }
-
-    /******************************************************************************
-        Function Name    :  DeleteFilterInSch
-
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Deletes a filter from a filter scheme
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
-    ******************************************************************************/
-    HRESULT DeleteFilterInSch(USHORT /*FilterSchIndex*/, USHORT /*FilterIndex*/)
-    {
-        return E_NOTIMPL;
     }
 
     /******************************************************************************
@@ -1407,73 +936,100 @@ public:
     }
 
     /******************************************************************************
-        Function Name    :  AddSimulatedSystem
+       Function Name    :  StartLogging
 
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Add Simulated System in the configuration
-        Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
-        Modifications    :
+       Input(s)         :
+       Output           :  -
+       Functionality    :  Start logging if it is stopped
+       Member of        :  CApplication
+       Author(s)        :  Anish kumar
+       Date Created     :  20.06.2006
+       Modifications    :
     ******************************************************************************/
-    HRESULT AddSimulatedSystem(BSTR /*pcSimPath*/)
+    HRESULT StartLogging()
     {
-        return E_NOTIMPL;
+        HRESULT hResult = E_POINTER;
+        CBaseFrameProcessor_CAN* pCANLogger = GetICANLogger();
+
+        if (NULL != pCANLogger)
+        {
+            hResult = pCANLogger->FPC_EnableLogging(TRUE);
+        }
+
+        return hResult;
     }
 
     /******************************************************************************
-        Function Name    :  GetSimulatedSystemCount
+        Function Name    :  StopLogging
 
-        Input(s)         :  -
-        Output           :
-        Functionality    :  Get Simulated System Count
+        Input(s)         :
+        Output           :  -
+        Functionality    :  disable logging of messages
         Member of        :  CApplication
         Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
+        Date Created     :  20.06.2006
         Modifications    :
     ******************************************************************************/
-    HRESULT GetSimulatedSystemCount(USHORT* /*pSimTotal*/)
+    HRESULT StopLogging()
     {
-        return E_NOTIMPL;
+        HRESULT hResult = E_POINTER;
+        CBaseFrameProcessor_CAN* pCANLogger = GetICANLogger();
+
+        if (NULL != pCANLogger)
+        {
+            hResult = pCANLogger->FPC_EnableLogging(FALSE);
+        }
+
+        return hResult;
     }
 
     /******************************************************************************
-        Function Name    :  GetSimulatedSystemName
+        Function Name    :  WriteToLogFile
 
         Input(s)         :  -
         Output           :
-        Functionality    :  Get the Simulated System Name
+        Functionality    :  Writes a string to the log file specified
         Member of        :  CApplication
         Author(s)        :  Anish kumar
         Date Created     :  01.06.2010
         Modifications    :
     ******************************************************************************/
-    HRESULT GetSimulatedSystemName(USHORT /*SimSysIndex*/, BSTR* /*pcSimPath*/)
+    HRESULT WriteToLogFile(USHORT /*BlockIndex*/, BSTR bstrStr)
     {
-        return E_NOTIMPL;
+        HRESULT hResult = E_POINTER;
+        CBaseFrameProcessor_CAN* pCANLogger = GetICANLogger();
+
+        if (NULL != pCANLogger)
+        {
+            char acStr[256] = {'\0'};
+            BSTR_2_PCHAR(bstrStr, acStr, 256);
+            CString omStr(acStr);
+            hResult = pCANLogger->FPC_LogString(omStr);
+        }
+
+        return hResult;
     }
 
     /******************************************************************************
-        Function Name    :  DeleteSimulatedSystem
+        Function Name    :  GetApplication
 
         Input(s)         :  -
         Output           :
-        Functionality    :  Delete the given Simulated System
+        Functionality    :  Retrieves the application pointer
         Member of        :  CApplication
-        Author(s)        :  Anish kumar
-        Date Created     :  01.06.2010
+        Author(s)        :  Saravanan
+        Date Created     :  30.07.2014
         Modifications    :
     ******************************************************************************/
-    HRESULT DeleteSimulatedSystem(USHORT /*SimSysIndex*/)
+    HRESULT GetApplication(IBusMasterApp** pApplication)
     {
-        return E_NOTIMPL;
+        HRESULT hResult = CoCreateInstance(CLSID_BusMasterApp, NULL,
+                                           CLSCTX_LOCAL_SERVER, IID_IBusMasterApp, (void**)&pApplication);
+
+        return hResult;
     }
 
-
-    ////////////////////////////////////////////////////////////////////////////////
-
-    BEGIN_INTERFACE_PART(LocalClass, IApplication)
+    BEGIN_INTERFACE_PART(LogClass, ICANLog)
     STDMETHOD(GetTypeInfoCount)(UINT FAR* pctinfo);
     STDMETHOD(GetTypeInfo)(
         UINT itinfo,
@@ -1494,64 +1050,14 @@ public:
         VARIANT FAR* pvarResult,
         EXCEPINFO FAR* pexcepinfo,
         UINT FAR* puArgErr);
-
-    STDMETHOD(GetMsgInfo)(BSTR MsgName,sMESSAGESTRUCT*  sMsgStruct);
-    STDMETHOD(GetNetworkStatistics)(int nChannel, sBUSSTATISTICS_USR* sStat);
-    STDMETHOD(SendCANMSg)(CAN_MSGS* sMsg);
-    STDMETHOD(GetErrorCounter)(UCHAR* Tx, UCHAR* Rx, INT nChannel);
-    STDMETHOD(EnableDisableHandlers)(BOOL bEnable,eHandlerType eType);
-    STDMETHOD(ImportDatabase)(BSTR DBFilePath);
-    STDMETHOD(LoadConfiguration)(BSTR FileName);
-    STDMETHOD(SendKeyValue)(UCHAR keyval);
-    //STDMETHOD(GetControllerMode)(eControllerMode *eMode);
-    //STDMETHOD(SetControllerMode)(eControllerMode eMode);
-    //STDMETHOD(GetBaudRate)(int nChannelNo, BYTE *bBTR0,BYTE *bBTR1);
-    //STDMETHOD(SetBaudRate)(int nChannelNo, BYTE bBTR0,BYTE bBTR1);
-    STDMETHOD(DisplayWindow)(eWindow eWhichWindow);
-    STDMETHOD(WriteToLogFile)(USHORT BlockIndex, BSTR pcStr);
     STDMETHOD(StopLogging)();
     STDMETHOD(StartLogging)();
-    STDMETHOD(ResetSW)();
-    STDMETHOD(StopTxMsgBlock)();
-    STDMETHOD(StartTxMsgBlock)();
-    STDMETHOD(UnLoadAllDll)();
-    STDMETHOD(LoadAllDll)();
-    //STDMETHOD(BuildLoadAllDll)();
-    //STDMETHOD(BuildAllDll)();
-    //STDMETHOD(GetHwFilter)(BOOL *pnExtended, double *dBeginMsgId, double *dEndMsgId);
-    //STDMETHOD(SetHwFilter)(BOOL pnExtended, double dBeginMsgId, double dEndMsgId);
-    STDMETHOD(Connect)(BOOL bConnect);
-    STDMETHOD(SaveConfiguration)();
     STDMETHOD(AddLoggingBlock)(SLOGGINGBLOCK_USR* psLoggingBlock);
-    STDMETHOD(SaveConfigurationAs) (BSTR ConfigPath);
-    STDMETHOD(AddTxBlock) (STXBLOCK_USR* psTxBlock);
-    STDMETHOD(GetTxBlockCount) (USHORT* Result);
-    STDMETHOD(GetTxBlock) (USHORT BlockIndex, STXBLOCK_USR* psTxBlock);
-    STDMETHOD(DeleteTxBlock) (USHORT BlockIndex);
-    STDMETHOD(ClearTxBlockList) ();
-    STDMETHOD(AddMsgToTxBlock) (USHORT BlockIndex, CAN_MSGS* psMsg);
-    STDMETHOD(GetMsgCount) (USHORT BlockIndex, USHORT* Result);
-    STDMETHOD(GetMsgFromTxBlock)(USHORT BlockIndex, USHORT MsgIndex, CAN_MSGS* psMsg);
-    STDMETHOD(DeleteMsgFromTxBlock) (USHORT BlockIndex, USHORT MsgIndex);
-    STDMETHOD(ClearMsgList) (USHORT BlockIndex);
-    STDMETHOD(AddFilterScheme) (BSTR pcFilterName, VARIANT_BOOL  FilterType);
-    STDMETHOD(GetFilterScheme) (USHORT FilterSchINdex, BSTR pcFilterName, VARIANT_BOOL*  FilterType);
-    STDMETHOD(GetFilterSchCount) (USHORT* pTotal);
-    STDMETHOD(UpdateFilterSch) (USHORT FilterSchIndex, SFILTER_USR* psFilter);
-    STDMETHOD(GetFilterCountInSch) (USHORT FilterSchIndex, USHORT* pTotal);
-    STDMETHOD(GetFilterInFilterSch) (USHORT FilterSchIndex, USHORT FilterIndex, SFILTER_USR* psFilter);
-    STDMETHOD(DeleteFilterInSch) (USHORT FilterSchIndex, USHORT FilterIndex);
-    STDMETHOD(EnableFilterSch) (EFILTERMODULE eModule, BOOL Enable);
-    STDMETHOD(AddSimulatedSystem)(BSTR pcSimPath);
-    STDMETHOD(GetSimulatedSystemCount)(USHORT* pSimTotal);
-    STDMETHOD(GetSimulatedSystemName)(USHORT SimSysIndex, BSTR* pcSimPath);
-    STDMETHOD(DeleteSimulatedSystem)(USHORT SimSysIndex);
+    STDMETHOD(WriteToLogFile)(USHORT BlockIndex, BSTR pcStr);
     STDMETHOD(RemoveLoggingBlock)(USHORT BlockIndex);
     STDMETHOD(GetLoggingBlockCount)(USHORT* BlockCount);
     STDMETHOD(ClearLoggingBlockList)(void);
     STDMETHOD(GetLoggingBlock)(USHORT BlockIndex, SLOGGINGBLOCK_USR* psLoggingBlock);
-    STDMETHOD(RegisterClientForRx)( USHORT usUniqueID, BSTR* pEventName, BSTR* pPIPEName );
-    STDMETHOD(UnRegisterClient)(USHORT usUniqueID);
-
-    END_INTERFACE_PART(LocalClass)
+    STDMETHOD(GetApplication)(IBusMasterApp** pApplication);
+    END_INTERFACE_PART(LogClass)
 };

@@ -54,6 +54,9 @@ bool CCompuMethodEx::omGetEnggValue(DWORD dwRawValue, CString& omEnggValue)
 {
     bool bResult = false;
 
+    // reset LowerLimit to ensure a defined value
+    m_uMethod.m_LinearCode.m_sRange.m_dwLowerLimit = 0x0;
+
     if (m_eCompuType == LINEAR_ENUM)
     {
         if (m_uMethod.m_LinearCode.m_sRange.bIsWithinRange(dwRawValue))

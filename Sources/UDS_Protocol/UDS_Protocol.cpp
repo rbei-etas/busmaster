@@ -201,7 +201,7 @@ void CUDS_Protocol::Show_ResponseData(unsigned char psMsg[], unsigned char Datal
             numberOfBytes++;
             Data_Recibida = Data_Recibida + hex;
 
-            if (BytesShown_Line == NUM_BYTES_SHOWN_RESP+1)          // It enters here when it has been shown a complete line with NUM_BYTES_SHOWN_RESP+1
+            if (BytesShown_Line == NUM_BYTES_SHOWN_RESP+1)      // It enters here when it has been shown a complete line with NUM_BYTES_SHOWN_RESP+1
             {
                 CString CstringNumberOfBytes;                       // elements  in the response data section
                 CstringNumberOfBytes.Format("%d", numberOfBytes);
@@ -238,11 +238,24 @@ USAGEMODE HRESULT EvaluateMessage( STCAN_MSG  Mensaje  )
     unsigned char psMsg[64];
     memcpy( psMsg , Mensaje.m_ucData , 64);
     unsigned char Datalen = Mensaje.m_ucDataLen;
+    UINT Check_SourceAddress;
+    UINT Check_TargetAddress;
     UINT MessageID = Mensaje.m_unMsgID;
     UINT Channel =  Mensaje.m_ucChannel;
+
+    UINT Check_MSG_received;
+
+    // -------for checking also if the SA and TA are inserted in Main window and settings window holds only the base address (0x18DA0000)- Variable used is "Check_MSG_received" - Casian
+    if(omMainWnd!=NULL)
+    {
+        Check_SourceAddress = omMainWnd->m_omSourceAddress.lGetValue()<<8;
+        Check_TargetAddress = omMainWnd->m_omTargetAddress.lGetValue();
+
+        Check_MSG_received = respID + (Check_TargetAddress) + Check_SourceAddress;
+    }
     // Datalen is the DLC of the message received
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    if(omMainWnd!=NULL && FSending && respID==MessageID  && Current_Channel== Channel)      // Evaluates the received message when: 1.MainWnd created - 2. Response to my Msg - 3.I've sent something
+    if(omMainWnd!=NULL && FSending && (respID == MessageID || Check_MSG_received == MessageID) && Current_Channel == Channel)    // -------  // Evaluates the received message when: 1.MainWnd created - 2. Response to my Msg - 3.I've sent something
     {
 
         TYPE_OF_FRAME TypeofFrame = omManagerPtr->getFrameType(psMsg[initialByte]);     // This is a general function because it uses the variable initialByte
@@ -493,6 +506,9 @@ void CUDS_Protocol::UpdateFields()
             }
             break;
         }
+        /*
+        ########################### Casian ##############################
+
         if( omMainWnd->CanID == 0 || SourceAddress==TargetAddress)
         {
             omMainWnd->m_omSendButton.EnableWindow(FALSE);
@@ -503,6 +519,8 @@ void CUDS_Protocol::UpdateFields()
         {
             omMainWnd->m_omSendButton.EnableWindow(TRUE);
         }
+        ########################### Casian ##############################
+        */
     }
 
 

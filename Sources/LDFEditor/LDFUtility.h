@@ -24,7 +24,7 @@
 #define defTREE_ITEM_NODECOMP           12
 #define defIdentifier_RegExp            "[a-zA-Z_][a-zA-Z0-9_]*"
 #define defIdentifier_RegExp_MULTIPLE   "([a-zA-Z_][a-zA-Z0-9_]*,)+"
-//#define defHex_RegExp                 "[0-9a-fA-F]*"
+#define defUnit_RegExp                  "[^\"]*"
 #define defHex_RegExp                   "(0x)?[0-9A-Fa-f][0-9A-Fa-f]*"
 
 

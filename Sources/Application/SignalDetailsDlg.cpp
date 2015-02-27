@@ -477,18 +477,12 @@ BOOL CSignalDetailsDlg::OnInitDialog()
         CString  StrDecVal = "";
         if(m_omStrSgType.CompareNoCase(defSIGNED_INT) == 0)
         {
-            __int64 n64Value = pMainFrame->nConvertStringToInt(m_omStrMaxVal);
-            __int64 n64TempValue = 1;
-            n64TempValue = n64TempValue << (m_unSgLen -1) ;
-            if(n64Value >= n64TempValue)
-            {
-                n64Value = n64Value - (2 * n64TempValue);
-            }
+            __int64 n64Value = _strtoi64(m_omStrMaxVal, nullptr, 16);
             StrDecVal.Format(defFORMAT_INT64_DECIMAL, n64Value);
         }
         else
         {
-            unsigned __int64 un64Value = pMainFrame->nConvertStringToInt(m_omStrMaxVal);
+            unsigned __int64 un64Value = _strtoui64(m_omStrMaxVal, nullptr, 16);
             StrDecVal.Format(defFORMAT_UINT64_DEC, un64Value);
         }
         m_odMaxValue.SetWindowText( StrDecVal );
@@ -496,7 +490,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
 
         if(m_omStrSgType.CompareNoCase(defSIGNED_INT) == 0)
         {
-            __int64 n64Value = pMainFrame->nConvertStringToInt(m_omStrMinVal);
+            __int64 n64Value = _strtoui64(m_omStrMinVal, nullptr, 16);
             __int64 n64TempValue = 1;
             n64TempValue = n64TempValue << (m_unSgLen -1) ;
             if(n64Value >= n64TempValue)
@@ -507,7 +501,7 @@ BOOL CSignalDetailsDlg::OnInitDialog()
         }
         else
         {
-            unsigned __int64 un64Value = pMainFrame->nConvertStringToInt(m_omStrMinVal);
+            unsigned __int64 un64Value = _strtoui64(m_omStrMinVal, nullptr, 16);
             StrDecVal.Format(defFORMAT_UINT64_DEC, un64Value);
         }
 

@@ -188,6 +188,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UDS_Protocol", "UDS_Protoco
 		{5D1AB9D9-755F-4743-AE73-83B7D5FCCD65} = {5D1AB9D9-755F-4743-AE73-83B7D5FCCD65}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FLEXRAY_GIGATRONIK_FLEXI", "FLEXRAY_GIGATRONIK_FLEXI\FLEXRAY_GIGATRONIK_FLEXI.vcxproj", "{9D27029C-210A-4A16-8A8B-D9BD31CC821E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		busmaster_debug|Win32 = busmaster_debug|Win32
@@ -826,6 +828,20 @@ Global
 		{3F0EF2E6-3377-4F4E-872D-5366529CD038}.Unicode Release MinSize|Win32.ActiveCfg = Release|Win32
 		{3F0EF2E6-3377-4F4E-872D-5366529CD038}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
 		{3F0EF2E6-3377-4F4E-872D-5366529CD038}.Unicode Release|Win32.ActiveCfg = Release|Win32
+		{9D27029C-210A-4A16-8A8B-D9BD31CC821E}.busmaster_debug|Win32.ActiveCfg = busmaster_debug|Win32
+		{9D27029C-210A-4A16-8A8B-D9BD31CC821E}.busmaster_debug|Win32.Build.0 = busmaster_debug|Win32
+		{9D27029C-210A-4A16-8A8B-D9BD31CC821E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9D27029C-210A-4A16-8A8B-D9BD31CC821E}.Debug|Win32.Build.0 = Debug|Win32
+		{9D27029C-210A-4A16-8A8B-D9BD31CC821E}.Release|Win32.ActiveCfg = Release|Win32
+		{9D27029C-210A-4A16-8A8B-D9BD31CC821E}.Release|Win32.Build.0 = Release|Win32
+		{9D27029C-210A-4A16-8A8B-D9BD31CC821E}.Template|Win32.ActiveCfg = Release|Win32
+		{9D27029C-210A-4A16-8A8B-D9BD31CC821E}.Template|Win32.Build.0 = Release|Win32
+		{9D27029C-210A-4A16-8A8B-D9BD31CC821E}.Unicode Debug|Win32.ActiveCfg = Debug|Win32
+		{9D27029C-210A-4A16-8A8B-D9BD31CC821E}.Unicode Debug|Win32.Build.0 = Debug|Win32
+		{9D27029C-210A-4A16-8A8B-D9BD31CC821E}.Unicode Release MinSize|Win32.ActiveCfg = Release|Win32
+		{9D27029C-210A-4A16-8A8B-D9BD31CC821E}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
+		{9D27029C-210A-4A16-8A8B-D9BD31CC821E}.Unicode Release|Win32.ActiveCfg = Release|Win32
+		{9D27029C-210A-4A16-8A8B-D9BD31CC821E}.Unicode Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

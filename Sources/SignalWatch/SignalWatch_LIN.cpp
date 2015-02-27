@@ -165,9 +165,8 @@ void CSignalWatch_LIN::vDisplayInSigWatchWnd(STLINDATA& sLinData)
 
             {
 
-                if ((m_pouSigWnd != nullptr) && (m_pouSigWnd->IsWindowVisible()))
+                if ((m_pouSigWnd != nullptr) && (m_pouSigWnd->IsWindowVisible()) && (sLinData.m_eLinMsgType != LIN_EVENT))
                 {
-
 
                     m_pouSigWnd->vAddMsgToWnd(&sSingnalinfo,FALSE,m_mapMsgIDtoSignallst,mID);
 

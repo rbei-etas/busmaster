@@ -43,8 +43,6 @@ CSimSysManager::CSimSysManager(ETYPE_BUS eBus) : m_ouSimSysNodeInfo(eBus),
     m_pomSimSysTreeView = nullptr;
     m_CopyJ1939SimNode = nullptr;
     m_eBus = eBus;
-
-    m_pTEXmlNode = nullptr;
 }
 
 CSimSysManager::~CSimSysManager(void)
@@ -364,26 +362,6 @@ void CSimSysManager::vLoadSimSysWndConfig(xmlDocPtr pDoc, ETYPE_BUS eBus)
         //delete SrcBuffer;
     }
 
-    if(eBus == J1939)
-    {
-        //m_bByXml = TRUE;
-        if(m_pTEXmlNode != nullptr)
-        {
-            xmlFreeNode(m_pTEXmlNode);
-            m_pTEXmlNode = nullptr;
-        }
-        xmlXPathObjectPtr pTempNode = xmlUtils::pGetNodes(pDoc, (xmlChar*)("//BUSMASTER_CONFIGURATION/Module_Configuration/J1939_Simulated_Systems"));
-
-        if(pTempNode != nullptr)
-        {
-            m_pTEXmlNode = xmlCopyNode(pTempNode->nodesetval->nodeTab[0], 1);
-        }
-        else
-        {
-            m_pTEXmlNode = nullptr;
-        }
-    }
-
     //Now Populate the tree view if it is present
     if (m_pomSimSysTreeView != nullptr)
     {
@@ -487,7 +465,9 @@ void CSimSysManager::CopySIMDataFromBuffer(xmlDocPtr pDoc, ETYPE_BUS eBus)
 
     else if(pObjectPath != nullptr && (eBus == J1939))
     {
-        m_CopyJ1939SimNode = xmlCopyNode(pObjectPath->nodesetval->nodeTab[0], 1);
+        xmlFreeNode(m_CopyJ1939SimNode);
+        m_CopyJ1939SimNode = nullptr;
+        //m_CopyJ1939SimNode = xmlCopyNode(pObjectPath->nodesetval->nodeTab[0], 1);
     }
     else
     {

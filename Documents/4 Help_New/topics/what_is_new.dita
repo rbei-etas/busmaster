@@ -15,6 +15,12 @@
     </metadata>
   </prolog>
   <body>
+    <p><b>2.6.1</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>Support for FlexRay GIGATRONIK flex-i Controller.</li>
+        <li>Bug Fixes</li>
+      </ul></p>
     <p><b>2.6.0</b></p>
     <p>Following features are added:</p>
     <p><ul>

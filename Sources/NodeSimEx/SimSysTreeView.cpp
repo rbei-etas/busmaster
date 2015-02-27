@@ -216,23 +216,6 @@ BOOL CSimSysTreeView::bPopulateTree()
     {
         PSSIMSYSINFO pSimSysInfo = pSimSysNodeInfo->psReturnSimsysInfoListPtr();
 
-        if(pSimSysInfo == nullptr)
-        {
-            if(m_eBus == J1939 && CSimSysManager::ouGetSimSysManager(m_eBus).m_pTEXmlNode != nullptr)
-            {
-                CSimSysManager::ouGetSimSysManager(m_eBus).CopySIMDataFromBuffer(CSimSysManager::ouGetSimSysManager(m_eBus).m_pTEXmlNode, m_eBus);
-                pSimSysInfo = pSimSysNodeInfo->psReturnSimsysInfoListPtr();
-
-                xmlFreeNode(CSimSysManager::ouGetSimSysManager(m_eBus).m_pTEXmlNode);
-                CSimSysManager::ouGetSimSysManager(m_eBus).m_pTEXmlNode = nullptr;
-            }
-            else
-            {
-                xmlFreeNode(CSimSysManager::ouGetSimSysManager(m_eBus).m_pTEXmlNode);
-                CSimSysManager::ouGetSimSysManager(m_eBus).m_pTEXmlNode = nullptr;
-            }
-        }
-
         while(pSimSysInfo != nullptr)
         {
             HTREEITEM hSimsys = om_tree.InsertItem( pSimSysInfo->m_omStrSimSysName, m_hRootItem  );
