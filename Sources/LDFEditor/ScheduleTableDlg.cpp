@@ -662,6 +662,7 @@ void ScheduleTableDlg::vPopulateSelFrameDetails(int nIndex)
 
         if ( nullptr != pFrame )
         {
+            eDiagType eOldType = omSchedItem.m_eDiagType;
             omSchedItem.m_nFrameId = uidElement;
             FrameProps ouFrameProps;
             pFrame->GetProperties(ouFrameProps);
@@ -712,6 +713,10 @@ void ScheduleTableDlg::vPopulateSelFrameDetails(int nIndex)
                     ui.tableFrames->item(nSelectedRow, 1)->setText(strFrameType.c_str());
                     ui.tableFrames->item(nSelectedRow, 2)->setText("8");
                 }
+            }
+            if(eOldType != omSchedItem.m_eDiagType)
+            {
+                memset(omSchedItem.m_chDataBytes, 0, sizeof(omSchedItem.m_chDataBytes));
             }
         }
 

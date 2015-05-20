@@ -37,7 +37,8 @@
     <topicref href="topics/filter.dita" type="topic"/>
     <topicref href="topics/node_simulation.dita" type="topic"/>
     <topicref href="topics/node_simulation_examples.dita" type="type"/>
-    <topicref href="topics/MinGW Installation.dita" type="topic"/>
+    <topicref href="topics/MinGW_Installation.dita" type="topic"/>
+	<topicref href="topics/MinGW_Installation_TDM.dita" type="topic"/>
     <topicref href="topics/execute_handlers.dita" type="topic"/>
     <topicref href="topics/database_editor.dita" type="topic"/>
     <topicref href="topics/message_window.dita" type="topic"/>

@@ -113,7 +113,7 @@
       <AdditionalOptions>"$(SolutionDir)/BIN/Libs/Release/DataTypes.lib"
 "$(SolutionDir)/BIN/Libs/Release/Utils.lib"
 /FORCE %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>C:\Program Files\Microsoft SDKs\Windows\v6.0A\Lib\Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)/bin/release/LIN_ISOLAR_EVE_VLIN.dll</OutputFile>
       <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\Program Files\Microsoft SDKs\Windows\v6.0A\Lib;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -141,7 +141,7 @@
       <AdditionalOptions>"$(SolutionDir)/BIN/Libs/busmaster_debug/DataTypes.lib"
 "$(SolutionDir)/BIN/Libs/busmaster_debug/Utils.lib"
 /FORCE %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>C:\Program Files\Microsoft SDKs\Windows\v6.0A\Lib\Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)/bin/busmaster_debug/LIN_ISOLAR_EVE_VLIN.dll</OutputFile>
       <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\Program Files\Microsoft SDKs\Windows\v6.0A\Lib;C:\WinDDK\7600.16385.1\lib\ATL\i386;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>

@@ -563,6 +563,12 @@ public:
         strVar = m_omStrSampling.c_str();
         xmlNewChild(pNodePtr, nullptr, BAD_CAST "Sampling", BAD_CAST strVar);
 
+        std::stringstream stream16a;
+        std::string strBTLCycles;
+        stream16a << m_unBTL_Cycles;
+        strBTLCycles = stream16a.str();
+        strVar = strBTLCycles.c_str();
+        xmlNewChild(pNodePtr, nullptr, BAD_CAST "BTLCycles", BAD_CAST strVar);
         strVar = m_omStrWarningLimit.c_str();
         xmlNewChild(pNodePtr, nullptr, BAD_CAST "Warning_Limit", BAD_CAST strVar);
 

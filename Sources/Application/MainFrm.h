@@ -597,6 +597,7 @@ public:
     bool bFillDbStructure(CMsgNameMsgCodeListDataBase& odMsgNameMsgCodeListDB);
     void vInitialiaseLINConfig(int nChannel = 0);
 private:
+    bool m_bUpdateNetworkStatistics;
     bool m_bLINDisconnect;
     HMODULE m_hModAdvancedUILib;
     bool    m_bUseAdvancedUILib;

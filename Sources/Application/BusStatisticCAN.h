@@ -29,6 +29,8 @@
 #include "DIL_Interface/BaseDIL_CAN.h"
 #include "BaseBusStatisticCAN.h"
 
+#include "Flags.h"
+
 class CBusStatisticCAN : public CBaseBusStatisticCAN
 {
     //Attributes

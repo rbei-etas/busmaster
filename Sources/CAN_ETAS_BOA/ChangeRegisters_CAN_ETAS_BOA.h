@@ -55,6 +55,7 @@ protected:
     CRadixEdit  m_omEditWarningLimit;
     CComboBox   m_omCombSampling;
     CListCtrl   m_omListCtrlBitTime;
+    CRadixEdit   m_omEditSamplePoint;
     CRadixEdit   m_omEditBaudRate;
     CString m_omStrEditBTR0;
     CString m_omStrEditBTR1;
@@ -64,7 +65,7 @@ protected:
     CString m_omStrComboSampling;
     CString m_omStrEditBaudRate;
     CString m_omStrEditWarningLimit;
-    CString m_omStrSamplePoint;
+    // CString m_omStrSamplePoint;
     CString m_omStrSJW;
     //}}AFX_DATA
     CString m_omstrBTL_Cycles;
@@ -72,7 +73,7 @@ protected:
     UINT    m_unCombClock;
     /*CAN FD Parameters */
     CString m_omstrDataBitRate;
-    CString m_omstrDataSamplePoint;
+    //CString m_omstrDataSamplePoint;
     CString m_omstrDataBTL_Cycles;
     CString m_omstrDataSJW;
     CString m_omstrTxDelayCompensationON;

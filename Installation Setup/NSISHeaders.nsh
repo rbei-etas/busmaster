@@ -25,8 +25,10 @@
 !include nsDialogs.nsh
 !include LogicLib.nsh
 !include "DotNetVer.nsh"
+!include "nsProcess.nsh"
+!include "LogicLib.nsh"
 
 !define StrStr "!insertmacro StrStr"
 
 /* BUSMASTER Version to be updated for every release */
-!define VERSION "2.6.1"
+!define VERSION "2.6.2"

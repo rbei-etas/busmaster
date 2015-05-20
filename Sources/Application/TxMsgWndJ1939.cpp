@@ -405,6 +405,8 @@ BOOL CTxMsgWndJ1939::OnInitDialog()
 
     m_omCheckCyclic.EnableWindow(FALSE);
     m_omMiliSecs.EnableWindow(FALSE);
+
+    GetDlgItem(IDC_SEND)->EnableWindow(false);
     return TRUE;
 }
 

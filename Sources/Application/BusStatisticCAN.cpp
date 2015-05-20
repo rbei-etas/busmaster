@@ -24,7 +24,8 @@
 #include "Include/Can_Error_Defs.h"
 #include "DIL_Interface/DIL_Interface_Extern.h"
 #include "TimeManager.h"
-
+#include "BUSMASTER.h"   // App class header
+extern CCANMonitorApp theApp;
 //Can interface to Bus Statistics
 void* CBusStatisticCAN:: sm_pouBSCan;
 
@@ -1137,6 +1138,13 @@ void CBusStatisticCAN::vCalculateBusParametres(void)
 {
     EnterCriticalSection(&m_omCritSecBS);
     vCalculateDiffTime();
+    CFlags* pouFlags = nullptr;
+    pouFlags = theApp.pouGetFlagsPtr();
+    BOOL bIsConnected = FALSE;
+    if (nullptr != pouFlags)
+    {
+        bIsConnected = pouFlags->nGetFlagStatus(CONNECTED);
+    }
 
     for(int nChannelIndex =0; nChannelIndex <defNO_OF_CHANNELS; nChannelIndex++)
     {
@@ -1146,76 +1154,71 @@ void CBusStatisticCAN::vCalculateBusParametres(void)
             m_sBusStatistics[ nChannelIndex ].m_unTotalTxMsgCount +
             m_sBusStatistics[ nChannelIndex ].m_unTotalRxMsgCount;
         //***** Total Message Rate *****//
-
-        m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond =
-            m_sBusStatistics[ nChannelIndex ].m_unTotalMsgCount -
-            m_sPrevStatData[ nChannelIndex ].m_unTotalMsgCount;
-
-        FLOAT msgPerSec= (m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond /(FLOAT) m_dDiffTime );
-        if( msgPerSec > 0.50 && msgPerSec < 1)
-        {
-            m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond =1;
-
-        }
-        else
+        if(bIsConnected)
         {
             m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond =
-                static_cast<UINT>
-                (m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond / m_dDiffTime );
+                m_sBusStatistics[ nChannelIndex ].m_unTotalMsgCount -
+                m_sPrevStatData[ nChannelIndex ].m_unTotalMsgCount;
 
+            FLOAT msgPerSec= (m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond /(FLOAT) m_dDiffTime );
+            if( msgPerSec > 0.50 && msgPerSec < 1)
+            {
+                m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond =1;
+            }
+            else
+            {
+                m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond =
+                    static_cast<UINT>
+                    (m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond / m_dDiffTime );
+            }
         }
-
-
-        /* m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond =
-             m_sBusStatistics[ nChannelIndex ].m_unTotalMsgCount -
-             m_sPrevStatData[ nChannelIndex ].m_unTotalMsgCount;
-         m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond =
-             static_cast<UINT>
-             (m_sBusStatistics[ nChannelIndex ].m_unMsgPerSecond / m_dDiffTime );*/
-
-
 
         // Calculate Error Count & Rate
         m_sBusStatistics[ nChannelIndex ].m_unErrorTotalCount =
             m_sBusStatistics[ nChannelIndex ].m_unErrorRxCount +
             m_sBusStatistics[ nChannelIndex ].m_unErrorTxCount;
-        m_sBusStatistics[ nChannelIndex ].m_dErrorRate =
-            m_sBusStatistics[ nChannelIndex ].m_unErrorTotalCount -
-            m_sPrevStatData[ nChannelIndex ].m_unErrorTotalCount;
-        // Transmitted messages
-        // Calculate Total Tx Message Rate
-        m_sBusStatistics[nChannelIndex].m_dTotalTxMsgRate =
-            (m_sBusStatistics[nChannelIndex].m_unTotalTxMsgCount -
-             m_sPrevStatData[nChannelIndex].m_unTotalTxMsgCount);
-        // Calculate STD Tx Message Rate
-        m_sBusStatistics[ nChannelIndex ].m_dTxSTDMsgRate =
-            (m_sBusStatistics[ nChannelIndex ].m_unTxSTDMsgCount -
-             m_sPrevStatData[ nChannelIndex ].m_unTxSTDMsgCount);
-        // Calculate Extended Tx Message Rate
-        m_sBusStatistics[ nChannelIndex ].m_dTxEXTMsgRate =
-            (m_sBusStatistics[ nChannelIndex ].m_unTxEXTDMsgCount -
-             m_sPrevStatData[ nChannelIndex ].m_unTxEXTDMsgCount);
-        // Calculate Tx Error Rate
-        m_sBusStatistics[ nChannelIndex ].m_dErrorTxRate =
-            (m_sBusStatistics[ nChannelIndex ].m_unErrorTxCount -
-             m_sPrevStatData[ nChannelIndex ].m_unErrorTxCount);
-        // Received messages
-        // Calculate Total Rx Message Rate
-        m_sBusStatistics[nChannelIndex].m_dTotalRxMsgRate =
-            (m_sBusStatistics[nChannelIndex].m_unTotalRxMsgCount -
-             m_sPrevStatData[nChannelIndex].m_unTotalRxMsgCount);
-        // Calculate STD Rx Message Rate
-        m_sBusStatistics[ nChannelIndex ].m_dRxSTDMsgRate =
-            (m_sBusStatistics[ nChannelIndex ].m_unRxSTDMsgCount -
-             m_sPrevStatData[ nChannelIndex ].m_unRxSTDMsgCount);
-        // Calculate Extended Rx Message Rate
-        m_sBusStatistics[ nChannelIndex ].m_dRxEXTMsgRate =
-            (m_sBusStatistics[ nChannelIndex ].m_unRxEXTDMsgCount -
-             m_sPrevStatData[ nChannelIndex ].m_unRxEXTDMsgCount);
-        // Calculate Rx Error Rate
-        m_sBusStatistics[ nChannelIndex ].m_dErrorRxRate =
-            (m_sBusStatistics[ nChannelIndex ].m_unErrorRxCount -
-             m_sPrevStatData[ nChannelIndex ].m_unErrorRxCount);
+
+        if(bIsConnected)
+        {
+            m_sBusStatistics[ nChannelIndex ].m_dErrorRate =
+                m_sBusStatistics[ nChannelIndex ].m_unErrorTotalCount -
+                m_sPrevStatData[ nChannelIndex ].m_unErrorTotalCount;
+            // Transmitted messages
+            // Calculate Total Tx Message Rate
+            m_sBusStatistics[nChannelIndex].m_dTotalTxMsgRate =
+                (m_sBusStatistics[nChannelIndex].m_unTotalTxMsgCount -
+                 m_sPrevStatData[nChannelIndex].m_unTotalTxMsgCount);
+            // Calculate STD Tx Message Rate
+            m_sBusStatistics[ nChannelIndex ].m_dTxSTDMsgRate =
+                (m_sBusStatistics[ nChannelIndex ].m_unTxSTDMsgCount -
+                 m_sPrevStatData[ nChannelIndex ].m_unTxSTDMsgCount);
+            // Calculate Extended Tx Message Rate
+            m_sBusStatistics[ nChannelIndex ].m_dTxEXTMsgRate =
+                (m_sBusStatistics[ nChannelIndex ].m_unTxEXTDMsgCount -
+                 m_sPrevStatData[ nChannelIndex ].m_unTxEXTDMsgCount);
+            // Calculate Tx Error Rate
+            m_sBusStatistics[ nChannelIndex ].m_dErrorTxRate =
+                (m_sBusStatistics[ nChannelIndex ].m_unErrorTxCount -
+                 m_sPrevStatData[ nChannelIndex ].m_unErrorTxCount);
+            // Received messages
+            // Calculate Total Rx Message Rate
+            m_sBusStatistics[nChannelIndex].m_dTotalRxMsgRate =
+                (m_sBusStatistics[nChannelIndex].m_unTotalRxMsgCount -
+                 m_sPrevStatData[nChannelIndex].m_unTotalRxMsgCount);
+            // Calculate STD Rx Message Rate
+            m_sBusStatistics[ nChannelIndex ].m_dRxSTDMsgRate =
+                (m_sBusStatistics[ nChannelIndex ].m_unRxSTDMsgCount -
+                 m_sPrevStatData[ nChannelIndex ].m_unRxSTDMsgCount);
+            // Calculate Extended Rx Message Rate
+            m_sBusStatistics[ nChannelIndex ].m_dRxEXTMsgRate =
+                (m_sBusStatistics[ nChannelIndex ].m_unRxEXTDMsgCount -
+                 m_sPrevStatData[ nChannelIndex ].m_unRxEXTDMsgCount);
+            // Calculate Rx Error Rate
+            m_sBusStatistics[ nChannelIndex ].m_dErrorRxRate =
+                (m_sBusStatistics[ nChannelIndex ].m_unErrorRxCount -
+                 m_sPrevStatData[ nChannelIndex ].m_unErrorRxCount);
+        }
+
         SERROR_CNT sErrorCounter;
         sErrorCounter.m_ucRxErrCount = 0;
         sErrorCounter.m_ucTxErrCount = 0;
@@ -1277,9 +1280,12 @@ void CBusStatisticCAN::vCalculateBusParametres(void)
         m_sBusStatistics[ nChannelIndex ].m_dTotalBusLoad += dBusLoad;
         // Increament samples
         // Calculate Avarage bus load
-        m_sBusStatistics[ nChannelIndex ].m_dAvarageBusLoad =
-            m_sBusStatistics[ nChannelIndex ].m_dTotalBusLoad /
-            m_sBusStatistics[ nChannelIndex ].m_nSamples;
+        if(bIsConnected)
+        {
+            m_sBusStatistics[ nChannelIndex ].m_dAvarageBusLoad =
+                m_sBusStatistics[ nChannelIndex ].m_dTotalBusLoad /
+                m_sBusStatistics[ nChannelIndex ].m_nSamples;
+        }
         // Initialise previous values with current values.
         m_unPrevStandardCount[ nChannelIndex ] =
             m_sBusStatistics[ nChannelIndex ].m_unRxSTDMsgCount +

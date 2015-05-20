@@ -1684,6 +1684,10 @@ void CSimSysTreeView::OnNewSimsys()
                 //Add to the tree view
                 hInsertAndSelectItem( oCfgFilename, GetTreeCtrl().GetRootItem());
             }
+            else
+            {
+                ::MessageBox(NULL, "Simulated System already present. Create with a different file name", "BUSMASTER", MB_ICONINFORMATION | MB_OK);
+            }
         }
     }
 }

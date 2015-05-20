@@ -260,9 +260,7 @@ CString CMsgSignal::bWriteDBHeader(CString omStrActiveDataBase)
             CString omStrcommandLine = "";
             CString omStrSigName = "";
             CString omStrdelimiter = "";
-            for ( UINT unMsgIndex = 0;
-            unMsgIndex < m_unMessageCount;
-            unMsgIndex++)
+            for ( UINT unMsgIndex = 0; unMsgIndex < m_unMessageCount; unMsgIndex++)
             {
                 // Get all signal names.
                 // signal name will be the variable name
@@ -5028,7 +5026,27 @@ BOOL CMsgSignal::bFormSigNameAndLengthJ1939(const UINT* punStartBit,
                                               pSg->m_unSignalLength);
                     }
                 }
-                omStrArraySigName.Add(omFormatString);
+
+
+                // Check if already the same signal is added in the list. Might be the scenario if more than one signal has same start bit index
+                bool bSignalExists = false;
+                if (omStrArraySigName.GetSize() > 0 )
+                {
+                    for (int nIndex = 0; nIndex < omStrArraySigName.GetSize(); nIndex++)
+                    {
+                        if (omStrArraySigName.GetAt(nIndex) == omFormatString)
+                        {
+                            bSignalExists = true;
+                        }
+                    }
+                }
+
+                // IF the signal is already added in the list, then ignore adding it again
+                if (!bSignalExists)
+                {
+                    omStrArraySigName.Add(omFormatString);
+                }
+
                 // check if there is some unsed in between two signal
                 // defined
 

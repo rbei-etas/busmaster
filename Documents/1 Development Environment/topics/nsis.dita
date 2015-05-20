@@ -24,7 +24,7 @@
     </section>
     <section>
       <title>Configuration</title>
-      <p>There is no specific configuration necessary.</p>
+      <p>Download nsProcess.zip from <xref href="http://nsis.sourceforge.net/NsProcess_plugin" scope="external">http://nsis.sourceforge.net/NsProcess_plugin</xref>. Extract and Copy nsProcess.nsh to <filepath>%ProgramFiles%\NSIS\Include.</filepath></p>
     </section>
     <section>
       <title>Usage</title>

@@ -765,7 +765,7 @@ void CRxMsgList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
                     char sColText[256];
                     lvc.pszText = sColText;
 
-                    lvc.cchTextMax = 15;    //Set the Width of Menu Items here
+                    lvc.cchTextMax = 30;    //Set the Width of Menu Items here
                     //lvc.cchTextMax = sizeof(sColText)-1;
                     VERIFY( GetColumn(i, &lvc) );
 

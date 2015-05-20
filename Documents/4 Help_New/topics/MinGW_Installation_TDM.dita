@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="what_is_new" xml:lang="en-us">
+  <title>MinGW Installation using TDM-GCC Installer</title>
+  <prolog>
+    <author>Shailesh H</author>
+    <copyright>
+      <copyryear year="2012"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>MinGW</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title>MinGW Installation</title>
+      <p>The following steps should be followed to Download and install MinGW using TDM-GCC Installer.</p>
+      <ul>
+        <li>Download the TDM-GCC from the following link <xref href="http://sourceforge.net/projects/tdm-gcc/files/TDM-GCC%20Installer/tdm-gccwebdl. exe/download" scope="external"/></li>
+        <li>Run the installer. Following image will show the first screen of the installer. </li>
+        <li>
+          <image href="../images/TDM-GCC1.PNG"/>
+        </li>
+      </ul>
+      <ul>
+        <li>Click on the create button, if you are installing the first time this will go to the following screen.</li>
+        <li>
+          <image href="../images/TDM-GCC2.PNG"/>
+        </li>
+      </ul>
+      <ul>
+        <li>Select MingW/TDM(32-bit) option and click Next, to get to the following screen.</li>
+        <li>
+          <image href="../images/TDM-GCC3.PNG"/>
+        </li>
+        <li>Click Next and provide path to install the GCC . GCC has some problems if it is installed in a folder name having space. So it is recommended to install in path like C:\MinGw. Make sure the folder was empty.</li>
+        <li>
+          <image href="../images/TDM-GCC4.PNG"/>
+        </li>
+        <li>Click Next</li>
+        <li>
+          <image href="../images/TDM-GCC5.PNG"/>
+        </li>
+        <li>Click Next and select MingW Stable, C\C++ option as shown in the below image.</li>
+        <li>
+          <image href="../images/TDM-GCC6.PNG"/>
+        </li>
+        <li>Make sure &apos;Add to path&apos; option is selected. Click to install.</li>
+        <li>
+          <image href="../images/TDM-GCC7.PNG"/>
+        </li>
+      </ul>
+    </section>
+  </body>
+</topic>

@@ -75,4 +75,6 @@
 #define CANFD_COUNT_TX_COMPATIBILITY_MODES              2
 #define CANFD_COUNT_RX_COMPATIBILITY_MODES              4
 
+// Sample point can range from 0-100, hence considering default as 50
+#define CANFD_SECONDARY_SAMPLE_POINT            50
 

@@ -44,7 +44,7 @@ public:
 
 CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent, PSCONTROLLER_DETAILS psControllerDetails, UINT nHardwareCount)
     : CDialog(CChangeRegisters_CAN_ETAS_BOA::IDD, pParent)
-    , m_omStrSamplePoint("70")
+    //, m_omStrSamplePoint("70")
     , m_omStrSJW("")
 {
     m_omStrEditCNF1 = "";
@@ -74,11 +74,11 @@ CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent, PSCO
 
     /*CAN FD Parameters */
     m_omstrDataBitRate                  = "";
-    m_omstrDataSamplePoint              = "";
+    //m_omstrDataSamplePoint              = "";
     m_omstrDataBTL_Cycles               = "";
     m_omstrDataSJW                      = "";
     m_omstrTxDelayCompensationON        = "";
-    m_omstrTxDelayCompensationQuanta    = "";
+    m_omstrTxDelayCompensationQuanta.Format("%d", CANFD_SECONDARY_SAMPLE_POINT);
 }
 
 /**
@@ -97,15 +97,16 @@ void CChangeRegisters_CAN_ETAS_BOA::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_EDIT_WARNING_LIMIT, m_omStrEditWarningLimit);
     DDX_Control(pDX, IDC_COMB_SAMPOINT, m_omCtrlSamplePoint);
     DDX_CBString(pDX, IDC_COMB_SJW, m_omStrSJW);
-    DDX_CBString(pDX,IDC_COMB_SAMPOINT, m_omStrSamplePoint);
+    //DDX_CBString(pDX,IDC_COMB_SAMPOINT, m_omStrSamplePoint);
     DDX_Control(pDX, IDC_COMB_SJW, m_omCtrlSJW);
     DDX_Check(pDX, IDC_CHECK_SELF_REC, m_bSelfReception);
     DDX_Text(pDX, IDC_EDIT_DATA_BAUD_RATE, m_omstrDataBitRate);
-    DDV_MinMaxInt(pDX,atoi(m_omstrDataBitRate.GetBuffer(0)),0,1000000);
-    DDX_CBString(pDX,IDC_COMB_DATA_SAMPOINT, m_omstrDataSamplePoint);
+    //DDV_MinMaxInt(pDX,atoi(m_omstrDataBitRate.GetBuffer(0)),0,1000000);
+    //DDX_CBString(pDX,IDC_COMB_DATA_SAMPOINT, m_omstrDataSamplePoint);
     DDX_CBString(pDX,IDC_COMB_DELAY_COMPENSATION, m_omstrTxDelayCompensationON);
-    DDX_CBString(pDX,IDC_COMB_DATA_BTL, m_omstrDataBTL_Cycles);
+    //DDX_CBString(pDX,IDC_COMB_DATA_BTL, m_omstrDataBTL_Cycles);
     DDX_Text(pDX, IDC_EDIT_COMPENSATION_QUANTA, m_omstrTxDelayCompensationQuanta);
+    DDX_Control(pDX, IDC_EDIT_COMPENSATION_QUANTA, m_omEditSamplePoint);
     DDX_CBString(pDX,IDC_COMB_DATA_SJW, m_omstrDataSJW);
 }
 
@@ -191,7 +192,19 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     CComboBox* pComboBTLCYCL = (CComboBox*)GetDlgItem(IDC_COMB_BTL);
     if (pComboBTLCYCL != nullptr)
     {
-        pComboBTLCYCL->SetCurSel (0);
+        // pComboBTLCYCL->SetCurSel (0);
+        CString omStrBTLCycles;
+        omStrBTLCycles.Format(_("%d"), m_pControllerDetails->m_unBTL_Cycles);
+        pComboBTLCYCL->SetWindowText(omStrBTLCycles);
+    }
+
+    CComboBox* pComboDataBTLCYCL = (CComboBox*)GetDlgItem(IDC_COMB_DATA_BTL);
+    if (pComboDataBTLCYCL != nullptr)
+    {
+        // pComboBTLCYCL->SetCurSel (0);
+        CString omStrDataBTLCycles;
+        omStrDataBTLCycles.Format(_("%d"), m_pControllerDetails->m_unDataBTL_Cycles);
+        pComboDataBTLCYCL->SetWindowText(omStrDataBTLCycles);
     }
 
     CButton* pCheckSelfRec = (CButton*)GetDlgItem(IDC_CHECK_SELF_REC);
@@ -203,7 +216,7 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     /* Add an entry in each of the two combo boxes FindStringExact */
     int nIndex = m_omCtrlSamplePoint.FindStringExact(-1,
                  m_pControllerDetails->m_omStrSamplePercentage.c_str());
-    m_omStrSamplePoint = m_pControllerDetails->m_omStrSamplePercentage.c_str();
+    CString omStrSamplePoint = m_pControllerDetails->m_omStrSamplePercentage.c_str();
     m_omStrSJW = m_pControllerDetails->m_omStrSjw.c_str();
     if (CB_ERR != nIndex)
     {
@@ -211,9 +224,12 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     }
     else
     {
+        m_omCtrlSamplePoint.SetCurSel(-1);
+        m_omCtrlSamplePoint.SetWindowText(omStrSamplePoint);
+
         /* Set the default selection as 70% and update the controller structure */
-        m_omCtrlSamplePoint.SetCurSel (7);
-        m_pControllerDetails->m_omStrSamplePercentage = "70";
+        /* m_omCtrlSamplePoint.SetCurSel (7);
+         m_pControllerDetails->m_omStrSamplePercentage = "70";*/
     }
 
     nIndex = m_omCtrlSJW.FindStringExact (-1, m_pControllerDetails->m_omStrSjw.c_str());
@@ -241,7 +257,7 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
         m_nSJWCurr = nSJWCurr;
     }
 
-    m_omEditWarningLimit.SetReadOnly(TRUE);
+    //m_omEditWarningLimit.SetReadOnly(TRUE);
     //Initialise the index for number of items in list box before passing it is
     //function to calculate the same.
 
@@ -339,18 +355,18 @@ void CChangeRegisters_CAN_ETAS_BOA::OnKillfocusEditBaudRate()
         {
             /* Validate for empty string and if zero value is entered. */
             DOUBLE dBaudRate = (FLOAT)_tstof(omStrBaudRate);
-            if (nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000000.0)
-            {
-                m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
-                AfxMessageBox(_(defVALIDATION_MSG_BAUD_RATE));
-                m_omEditBaudRate.SetFocus();
-                m_omEditBaudRate.SetSel(0, -1,FALSE);
-            }
-            else
+            /* if (nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000000.0)
+             {
+                 m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
+                 AfxMessageBox(_(defVALIDATION_MSG_BAUD_RATE));
+                 m_omEditBaudRate.SetFocus();
+                 m_omEditBaudRate.SetSel(0, -1,FALSE);
+             }
+             else*/
             {
 
                 m_dEditBaudRate     = (FLOAT)_tstof(m_omStrEditBaudRate);
-
+                m_omStrEditBaudRate = omStrBaudRate;
                 // Call if string is valid to validate the baud rate value and
                 // suggest  a next valid baud rate
                 //Validate only if previous value in edit control is not the
@@ -358,7 +374,8 @@ void CChangeRegisters_CAN_ETAS_BOA::OnKillfocusEditBaudRate()
                 if (m_dEditBaudRate != dBaudRate && dBaudRate>0
                         && m_dEditBaudRate > 0 )
                 {
-                    vValidateBaudRate();
+                    m_omStrEditBaudRate = omStrBaudRate;
+                    //vValidateBaudRate();
                     // Update List items only it is from edit box
                     //vChangeListBoxValues(-1);
                     CButton* pomButtonoK = (CButton*) GetDlgItem(IDC_ButtonOK);
@@ -514,7 +531,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnClickedOK()
     UpdateData(TRUE);
 
     /* Validate Baud rate and find the nearest match */
-    vValidateBaudRate();
+    //vValidateBaudRate();
 
     /* Update data members associated with the controller */
     if (bUpdateControllerDataMembers() == FALSE)
@@ -627,7 +644,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnItemchangedListChannels(NMHDR* pNMHDR, LRE
             return;
         }
         // Validate Baud rate and find the nearest match
-        vValidateBaudRate();
+        // vValidateBaudRate();
         // Save the changes in to the local data structure
         vUpdateControllerDetails();
     }
@@ -681,7 +698,9 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
     //m_omStrComboClock       = m_pControllerDetails[ nIndex ].m_omStrClock.c_str();
     m_omStrComboSampling    = m_pControllerDetails[ nIndex ].m_omStrSampling.c_str();
     m_omStrEditWarningLimit = m_pControllerDetails[ nIndex ].m_omStrWarningLimit.c_str();
-    m_omStrSamplePoint = m_pControllerDetails[ nIndex ].m_omStrSamplePercentage.c_str();
+    //m_omStrSamplePoint = m_pControllerDetails[ nIndex ].m_omStrSamplePercentage.c_str();
+
+    m_omCtrlSamplePoint.SetWindowText(m_pControllerDetails[ nIndex ].m_omStrSamplePercentage.c_str());
     m_omStrSJW = m_pControllerDetails[ nIndex ].m_omStrSjw.c_str();
     m_bSelfReception = m_pControllerDetails[ nIndex ].m_bSelfReception;
 
@@ -694,14 +713,42 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
     // TO BE FIXED LATER
     m_dEditBaudRate = (FLOAT)_tstof(m_omStrEditBaudRate);
     m_omstrBTL_Cycles.Format("%d",  m_pControllerDetails[ nIndex ].m_unBTL_Cycles);
+    CComboBox* pComboBTLCYCL = (CComboBox*)GetDlgItem(IDC_COMB_BTL);
+    if (pComboBTLCYCL != nullptr)
+    {
+        pComboBTLCYCL->SetWindowText(m_omstrBTL_Cycles);
+    }
 
 #if BOA_VERSION >= BOA_VERSION_2_0
     /*Update CAN FD parameters */
     m_omstrDataBitRate.Format("%d",     m_pControllerDetails[ nIndex ].m_unDataBitRate/1000);
-    m_omstrDataSamplePoint.Format("%d", m_pControllerDetails[ nIndex ].m_unDataSamplePoint);
-    m_omstrDataBTL_Cycles.Format("%d",  m_pControllerDetails[ nIndex ].m_unDataBTL_Cycles);
+
+    CString omDataSamplePoint;
+    omDataSamplePoint.Format("%d", m_pControllerDetails[ nIndex ].m_unDataSamplePoint);
+
+    GetDlgItem(IDC_COMB_DATA_SAMPOINT)->SetWindowText(omDataSamplePoint);
+
+    //m_omstrDataSamplePoint.Format("%d", m_pControllerDetails[ nIndex ].m_unDataSamplePoint);
+    //m_omstrDataBTL_Cycles.Format("%d",  m_pControllerDetails[ nIndex ].m_unDataBTL_Cycles);
     m_omstrDataSJW.Format("%d",         m_pControllerDetails[ nIndex ].m_unDataSJW);
 
+    CComboBox* pComboDataBTLCYCL = (CComboBox*)GetDlgItem(IDC_COMB_DATA_BTL);
+    if (pComboDataBTLCYCL != nullptr)
+    {
+        // pComboBTLCYCL->SetCurSel (0);
+        CString omStrDataBTLCycles;
+        omStrDataBTLCycles.Format(_("%d"), m_pControllerDetails[ nIndex ].m_unDataBTL_Cycles);
+        pComboDataBTLCYCL->SetWindowText(omStrDataBTLCycles);
+    }
+
+    if(m_pControllerDetails[ nIndex ].m_unTxSecondarySamplePointOffset != 0)
+    {
+        m_omstrTxDelayCompensationQuanta.Format("%d", m_pControllerDetails[ nIndex ].m_unTxSecondarySamplePointOffset);
+    }
+    else
+    {
+        m_omstrTxDelayCompensationQuanta.Format("%d", CANFD_SECONDARY_SAMPLE_POINT);
+    }
     if ( m_pControllerDetails[ nIndex ].m_bTxDelayCompensationControl )
     {
         m_omstrTxDelayCompensationON.Format(defSTR_CANFD_TX_DELAY_COMPENSATION_ON);
@@ -755,6 +802,8 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
         // Update controller information
         m_pControllerDetails[ m_nLastSelection ].m_nItemUnderFocus   =
             nItemUnderFocus;
+
+        GetDlgItem(IDC_EDIT_BAUD_RATE)->GetWindowText(m_omStrEditBaudRate);
         m_pControllerDetails[ m_nLastSelection ].m_omStrBaudrate = m_omStrEditBaudRate.GetBuffer(MAX_PATH);
         //m_pControllerDetails[ m_nLastSelection ].m_omStrClock        =
         //                                                    m_omStrComboClock;
@@ -766,25 +815,54 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
         m_pControllerDetails[m_nLastSelection].m_omStrClock = oss.str();
         m_pControllerDetails[m_nLastSelection].m_omStrSampling = m_omStrComboSampling.GetBuffer(MAX_PATH);
         m_pControllerDetails[m_nLastSelection].m_omStrWarningLimit = m_omStrEditWarningLimit.GetBuffer(MAX_PATH);
-        m_pControllerDetails[m_nLastSelection].m_omStrSamplePercentage = m_omStrSamplePoint.GetBuffer(MAX_PATH);
+
+        CString omSamplePoint;
+        m_omCtrlSamplePoint.GetWindowText(omSamplePoint);
+
+        m_pControllerDetails[m_nLastSelection].m_omStrSamplePercentage = omSamplePoint;//m_omStrSamplePoint.GetBuffer(MAX_PATH);
         m_pControllerDetails[m_nLastSelection].m_omStrSjw = m_omStrSJW.GetBuffer(MAX_PATH);
         m_pControllerDetails[m_nLastSelection].m_bSelfReception = m_bSelfReception;
+
+        CComboBox* pComboBTLCYCL = (CComboBox*)GetDlgItem(IDC_COMB_BTL);
+
+        if(nullptr != pComboBTLCYCL)
+        {
+            pComboBTLCYCL->GetWindowText(m_omstrBTL_Cycles);
+        }
+
         m_pControllerDetails[m_nLastSelection].m_unBTL_Cycles = atoi((LPCTSTR)m_omstrBTL_Cycles);
 #if BOA_VERSION >= BOA_VERSION_2_0
         /*Update CAN FD parameters */
         m_pControllerDetails[ m_nLastSelection ].m_unDataBitRate        = atoi((LPCTSTR)m_omstrDataBitRate) * 1000;
-        m_pControllerDetails[ m_nLastSelection ].m_unDataSamplePoint    = atoi((LPCTSTR)m_omstrDataSamplePoint);
-        m_pControllerDetails[ m_nLastSelection ].m_unDataBTL_Cycles     = atoi((LPCTSTR)m_omstrDataBTL_Cycles);
+
+        CString omDataSamplePoint;
+        GetDlgItem(IDC_COMB_DATA_SAMPOINT)->GetWindowText(omDataSamplePoint);
+        m_pControllerDetails[ m_nLastSelection ].m_unDataSamplePoint    = atoi((LPCTSTR)omDataSamplePoint);
+
+        //m_pControllerDetails[ m_nLastSelection ].m_unDataSamplePoint    = atoi((LPCTSTR)m_omstrDataSamplePoint);
+        //m_pControllerDetails[ m_nLastSelection ].m_unDataBTL_Cycles     = atoi((LPCTSTR)m_omstrDataBTL_Cycles);
         m_pControllerDetails[ m_nLastSelection ].m_unDataSJW            = atoi((LPCTSTR)m_omstrDataSJW);
+
+        CString omDataBTLCycles;
+        CComboBox* pComboDataBTLCYCL = (CComboBox*)GetDlgItem(IDC_COMB_DATA_BTL);
+        if (pComboDataBTLCYCL != nullptr)
+        {
+            pComboDataBTLCYCL->GetWindowText(omDataBTLCycles);
+            m_pControllerDetails[ m_nLastSelection ].m_unDataBTL_Cycles = atoi((LPCTSTR)omDataBTLCycles);
+        }
 
         if ( m_omstrTxDelayCompensationON == defSTR_CANFD_TX_DELAY_COMPENSATION_ON )
         {
             m_pControllerDetails[ m_nLastSelection ].m_bTxDelayCompensationControl = true;
+            m_pControllerDetails[ m_nLastSelection ].m_unTxSecondarySamplePointOffset = atoi((LPCTSTR)m_omstrTxDelayCompensationQuanta);
         }
         else
         {
             m_pControllerDetails[ m_nLastSelection ].m_bTxDelayCompensationControl = false;
+            m_omstrTxDelayCompensationQuanta = "";
+            m_pControllerDetails[ m_nLastSelection ].m_unTxSecondarySamplePointOffset = 0;
         }
+
 #endif
     }
     else

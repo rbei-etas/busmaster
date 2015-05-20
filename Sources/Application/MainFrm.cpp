@@ -1253,7 +1253,7 @@ Operation unsuccessful."), MB_OK|MB_ICONINFORMATION);
                         return;
                     }
 
-                    m_podMsgSgWnd->ShowWindow( SW_SHOWMAXIMIZED );
+                    m_podMsgSgWnd->ShowWindow( SW_SHOWNORMAL );
                     m_podMsgSgWnd->UpdateWindow();
 
                     // Set the flag to indicate the opening of database window
@@ -1949,7 +1949,7 @@ void CMainFrame::OnNewDatabase()
                 return;
             }
 
-            m_podMsgSgWnd->ShowWindow( SW_SHOWMAXIMIZED );
+            m_podMsgSgWnd->ShowWindow( SW_SHOWNORMAL );
 
             m_podMsgSgWnd->UpdateWindow();
             // Set the flag to indicate the opening of database window
@@ -3365,6 +3365,7 @@ void CMainFrame::OnLog_LIN_Enable()
 /******************************************************************************/
 void CMainFrame::OnStatisticsCAN()
 {
+    m_bUpdateNetworkStatistics = true;
     OnStatistics(CAN);
 }
 
@@ -3407,6 +3408,7 @@ void CMainFrame::OnStatistics(ETYPE_BUS ebus)
             if ( nullptr != m_oNetworkStatistics )
             {
                 bRet = m_oNetworkStatistics->Create(this, WS_SYSMENU | WS_POPUP | WS_CAPTION | DS_MODALFRAME);
+                m_oNetworkStatistics->SetParent(AfxGetMainWnd());
 
                 if(ebus == CAN)
                 {
@@ -3466,8 +3468,7 @@ void CMainFrame::OnStatisticsUpdate(CCmdUI* pCmdUI)
     if(pCmdUI != nullptr)
     {
         // Check for window creation
-        if( m_oNetworkStatistics != nullptr /*&&
-                m_oNetworkStatistics->IsWindowVisible() == TRUE*/ )
+        if( m_oNetworkStatistics != nullptr )
         {
             //pCmdUI->SetCheck(TRUE);
         }
@@ -4673,7 +4674,7 @@ void CMainFrame::OnUpdateMessageInterpret(CCmdUI* pCmdUI)
             {
                 // Disable the button
                 pCmdUI->Enable(FALSE);  // Disabled
-                pCmdUI->SetCheck(m_bInterPretMsg); // Retain pressed state
+                pCmdUI->SetCheck(0); // Retain pressed state
             }
             else if (IS_MODE_OVER(byGetDispFlag))
             {
@@ -8484,26 +8485,24 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 {
     if (nIDEvent == m_unTimerSB)
     {
-
+        //Update the bus statistics window once if it opened when CAN is in disconnnected state.
         if ( m_oNetworkStatistics != nullptr &&
-                m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
+                m_oNetworkStatistics->IsWindowVisible( ) == TRUE && theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED) == FALSE && m_bUpdateNetworkStatistics)
         {
-            // Perform network statistics calculation and update of
-            // network statistics window
             m_oNetworkStatistics->vSendMessage(CAN);
+            m_bUpdateNetworkStatistics = false;
         }
         if (((theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED)) == TRUE))
         {
             vUpdateGraphStatsData();
-            // Update the bus statistics window if it exists.
-            //if ( m_oNetworkStatistics != nullptr &&
-            //        m_oNetworkStatistics->IsWindowVisible( ) == TRUE )
-            //{
-            //    // Perform network statistics calculation and update of
-            //    // network statistics window
-            //    m_oNetworkStatistics->vSendMessage(CAN);
-            //}
-
+            //Update the bus statistics window if it exists.
+            if ( m_oNetworkStatistics != nullptr &&
+                    m_oNetworkStatistics->IsWindowVisible( ) == TRUE)
+            {
+                // Perform network statistics calculation and update of
+                // network statistics window
+                m_oNetworkStatistics->vSendMessage(CAN);
+            }
 
             // Get Present error counter value and take
             // appropriate actions for error handler execution
@@ -16274,6 +16273,10 @@ void CMainFrame::LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlN
         {
             sController.m_omStrSamplePercentage = strVar.c_str();
         }
+        if (xmlUtils::GetDataFrmNode(pNodePtr,"BTLCycles",strVar))
+        {
+            sController.m_unBTL_Cycles = atoi(strVar.c_str());
+        }
 
         if (xmlUtils::GetDataFrmNode(pNodePtr,"Sampling",strVar))
         {
@@ -19166,7 +19169,7 @@ void CMainFrame::OnJ1939DBNew()
             }
 
             CMsgSignalDBWnd::sm_bValidJ1939Wnd = TRUE;
-            m_podMsgSgWndJ1939->ShowWindow( SW_SHOWMAXIMIZED );
+            m_podMsgSgWndJ1939->ShowWindow( SW_SHOWNORMAL );
             m_podMsgSgWndJ1939->UpdateWindow();
 
             // Set the flag to indicate the opening of database window
@@ -19273,7 +19276,7 @@ void CMainFrame::OnJ1939DBOpen()
                     return;
                 }
                 CMsgSignalDBWnd::sm_bValidJ1939Wnd = TRUE;
-                m_podMsgSgWndJ1939->ShowWindow( SW_SHOWMAXIMIZED );
+                m_podMsgSgWndJ1939->ShowWindow( SW_SHOWNORMAL );
                 m_podMsgSgWndJ1939->UpdateWindow();
 
                 // Set the flag to indicate the opening of database window

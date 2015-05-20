@@ -2420,11 +2420,26 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PSCONTROLLER_DETAILS pInitData, int
 
         /* if controller is open, close the controller. Do not bother about return value */
         ErrCode = (*sBOA_PTRS.m_sOCI.closeCANController)(sg_asChannel[i].m_OCI_HwHandle);
-
+        OCI_CANConfiguration ociCANConfig;
         /* Now load the controller config and open the controller */
         ErrCode = (*sBOA_PTRS.m_sOCI.openCANController)(sg_asChannel[i].m_OCI_HwHandle,
                   &(sg_asChannel[i].m_OCI_CANConfig),
                   &(sg_asChannel[i].m_OCI_CntrlProp));
+        // Check if incompatible config
+        if(ErrCode == BOA_ERR_INCOMPATIBLE_CONFIG)
+        {
+            // Get the config with which channel opened
+            ErrCode = (*(sBOA_PTRS.m_sOCI.getCANConfiguration))(sg_asChannel[i].m_OCI_HwHandle, &ociCANConfig);
+
+            if(BOA_SUCCEEDED(ErrCode))
+            {
+                //Open the channel with existing configuration
+                ErrCode = (*(sBOA_PTRS.m_sOCI.openCANController))(sg_asChannel[i].m_OCI_HwHandle,
+                          &(ociCANConfig),
+                          &(sg_asChannel[i].m_OCI_CntrlProp));
+                sg_asChannel[i].m_OCI_CANConfig = ociCANConfig;
+            }
+        }
 
         /* Fill the hardware description details */
         ((PSCONTROLLER_DETAILS)pInitData)[i].m_omHardwareDesc =

@@ -719,6 +719,15 @@ SectionGroupEnd
 
 ; Uninstall section here...
 Section "Uninstall"
+  ${Do}
+  ${nsProcess::FindProcess} "BUSMASTER.exe" $R0
+  ${If} $R0 == 0
+  MessageBox MB_OK|MB_ICONSTOP "Please close all instances of BUSMASTER and Click 'OK'"
+  ${EndIf}
+  ${LoopUntil} $R0 != 0
+  ${Do}
+  ${nsProcess::FindProcess} "BusEmulation.exe" $R0
+  ${LoopUntil} $R0 != 0
   ; Unregister server
   SetOutPath $INSTDIR
   ExecWait 'BusEmulation.exe /unregserver'

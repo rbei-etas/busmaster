@@ -29,6 +29,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LogToExcelConverterJPN", "LogToExcelConverterJPN\LogToExcelConverterJPN.vcxproj", "{217B07EE-5C6B-43E4-ABC3-81A955059572}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlfLogConverter", "BlfLogConverter\BlfLogConverter.vcxproj", "{85A97836-2FCD-4D10-9F0E-22D7C89668C0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A1978274-C8FD-41F5-B9FB-BF99854D357D} = {A1978274-C8FD-41F5-B9FB-BF99854D357D}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlfLibrary", "BlfLibrary\BlfLibrary.vcxproj", "{A1978274-C8FD-41F5-B9FB-BF99854D357D}"
 EndProject

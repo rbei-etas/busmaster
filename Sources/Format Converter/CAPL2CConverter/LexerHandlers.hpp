@@ -1842,7 +1842,7 @@ void vHandleCaplEvents()
             fprintf(yyout, "%s", defSTR_ErrorPassiveStart);
             g_ouGlobalVariables.g_oucaplEventHandleState = CAPL_EVENT_ERRORPASSIVE;
 
-            CString omStrTemp = defSTR_ErrorPassiveHeader;
+            CString omStrTemp = defSTR_ErrorPassiveStart;
             omStrTemp.TrimRight(defSTR_FunctionDefinition);
 
             omStrTemp = defSTF_Extern + omStrTemp + ";";
@@ -2286,6 +2286,7 @@ void vCnvrtThis()
 */     
 void vCnvrtThisData()
 {
+	CString val = yytext;
     if( CAPL_EVENT_MESSAGE == g_ouGlobalVariables.g_oucaplEventHandleState )
     {//if message handler
         CString strVal = yytext;
@@ -2297,6 +2298,65 @@ void vCnvrtThisData()
         fprintf(yyout, strSignal);
         //fprintf(yyout,"Next");
     
+    }
+	else if( CAPL_EVENT_BUSOFF == g_ouGlobalVariables.g_oucaplEventHandleState )
+    {//if message handler
+		bool bTokenFound = false;
+		if(val.Find("this") != -1)
+		{
+			val.Replace("this", defSTR_ErrorMsg);
+		}
+		if(val.Find(defSTR_CAPLTxErrorCount) != -1)
+		{
+			bTokenFound = true;
+			val.Replace(defSTR_CAPLTxErrorCount, defSTR_TxErrorVar);
+		}
+		if(val.Find(defSTR_CAPLRxErrorCount) != -1)
+		{
+			bTokenFound = true;
+			val.Replace(defSTR_CAPLRxErrorCount, defSTR_RxErrorVar);
+		}
+		if(val.Find(defSTR_CAPLChannel) != -1)
+		{
+			bTokenFound = true;
+			val.Replace(defSTR_CAPLChannel, defSTR_ChannelVar);
+		}
+		if(bTokenFound == false)
+		{
+			fprintf(yyout, "%s.%s", defSTR_ErrorMsg, defSTR_ChannelVar);
+		}
+		else
+		{
+			fprintf(yyout, "%s", val);
+		}
+        
+    }
+    else if( ( g_ouGlobalVariables.g_oucaplEventHandleState >= CAPL_EVENT_ERRORACTIVE ) &&   
+                ( g_ouGlobalVariables.g_oucaplEventHandleState <= CAPL_EVENT_ERRORFRAME ) )
+    {//if key handler
+		bool bTokenFound = false;
+		if(val.Find("this") != -1)
+		{
+			val.Replace("this", defSTR_ErrorMsg);
+		}
+		if(val.Find(defSTR_CAPLTxErrorCount) != -1)
+		{
+			bTokenFound = true;
+			val.Replace(defSTR_CAPLTxErrorCount, defSTR_TxErrorVar);
+		}
+		if(val.Find(defSTR_CAPLRxErrorCount) != -1)
+		{
+			bTokenFound = true;
+			val.Replace(defSTR_CAPLRxErrorCount, defSTR_RxErrorVar);
+		}
+		if(bTokenFound == false)
+		{
+			fprintf(yyout, "%s.%s + %s.%s", defSTR_ErrorMsg, defSTR_TxErrorVar, defSTR_ErrorMsg, defSTR_RxErrorVar);
+		}
+		else
+		{
+			fprintf(yyout, "%s", val);
+		}
     }
 }
 
