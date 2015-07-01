@@ -1,0 +1,263 @@
+//
+// global definitions
+//
+LIN_description_file;
+LIN_protocol_version = "2.0";
+LIN_language_version = "2.0";
+LIN_speed = 19.2 kbps;
+//
+// node definition: participating nodes
+//
+Nodes {
+  Master: master, 10 ms, 0.1 ms;
+  Slaves: slave1, slave2;
+}
+//
+// signal definition: standard signals
+//
+Signals
+{
+  //
+  // Master node signals
+  //
+  // the DIP state of the Master node board
+  // masterDIPState1: DIPs 1 and 2
+  // masterDIPState2: DIPs 3 to 6
+  // masterDIPState3: DIP 7
+  // masterDIPSTate4: DIP 8
+  masterDIPState1: 2, 0, master, slave1, slave2;
+  masterDIPState2: 4, 0, master, slave1, slave2;
+  masterDIPState3: 1, 0, master, slave1, slave2;
+  masterDIPState4: 1, 0, master, slave1, slave2;
+  // slave1 node signals
+  //
+  // the DIP state of the slave1 node board
+  // slave1DIPState1: DIPs 1 and 2
+  // slave1DIPState2: DIPs 3 to 6
+  // slave1DIPState3: DIP 7
+  // slave1DIPSTate4: DIP 8
+  slave1DIPState1: 2, 0, slave1, master, slave2;
+  slave1DIPState2: 4, 0, slave1, master, slave2;
+  slave1DIPState3: 1, 0, slave1, master, slave2;
+  slave1DIPState4: 1, 0, slave1, master, slave2;
+  slave1Toggle   : 1, 0, slave1, master;
+  //
+  // slave2 node signals
+  //
+  // the DIP state of the slave1 node board
+  // slave2DIPState1: DIPs 1 and 2
+  // slave2DIPState2: DIPs 3 to 6
+  // slave2DIPState3: DIP 7
+  // slave2DIPSTate4: DIP 8
+  slave2DIPState1: 2, 0, slave2, master, slave1;
+  slave2DIPState2: 4, 0, slave2, master, slave1;
+  slave2DIPState3: 1, 0, slave2, master, slave1;
+  slave2DIPState4: 1, 0, slave2, master, slave1;
+  slave2Toggle   : 1, 0, slave2, master;
+  // error signal
+  errorSignalSlave1: 1, 0, slave1, master;
+  errorSignalSlave2: 1, 0, slave2, master;
+}
+
+//
+// signal definition: diagnostic signals
+// (optional but recommended)
+//
+Diagnostic_signals
+{
+  MasterReqB0: 8, 0;
+  MasterReqB1: 8, 0;
+  MasterReqB2: 8, 0;
+  MasterReqB3: 8, 0;
+  MasterReqB4: 8, 0;
+  MasterReqB5: 8, 0;
+  MasterReqB6: 8, 0;
+  MasterReqB7: 8, 0;
+  SlaveRespB0: 8, 0;
+  SlaveRespB1: 8, 0;
+  SlaveRespB2: 8, 0;
+  SlaveRespB3: 8, 0;
+  SlaveRespB4: 8, 0;
+  SlaveRespB5: 8, 0;
+  SlaveRespB6: 8, 0;
+  SlaveRespB7: 8, 0;
+}
+
+
+//
+// frame definition: unconditional frames
+//
+Frames
+{
+  //
+  // frames published by the master
+  //
+  frmM1: 0, master, 2
+  {
+    masterDIPState1, 0;
+  }
+  frmM2: 1, master, 1
+  {
+    masterDIPState2, 0;
+  }
+  frmM3: 2, master, 1
+  {
+    masterDIPState3, 0;
+    masterDIPState4, 1;
+  }
+
+
+  //
+  // frames published by slave1
+  //
+  frmS11: 20, slave1, 2
+  {
+    slave1DIPState1, 0;
+  }
+
+  frmS12: 21, slave1, 2
+  {
+    slave1DIPState2, 8;
+    slave1Toggle, 12;
+  }
+
+  frmS13: 22, slave1, 1
+  {
+    slave1DIPState3, 0;
+    slave1DIPState4, 1;
+    errorSignalSlave1, 2;
+  }
+
+  //
+  // frames published by slave2
+  //
+  frmS21: 40, slave2, 2
+  {
+    slave2DIPState1, 0;
+  }
+
+  frmS22: 41, slave2, 2
+  {
+    slave2DIPState2, 8;
+    slave2Toggle, 12;
+  }
+
+  frmS23: 42, slave2, 1
+  {
+    slave2DIPState3, 0;
+    slave2DIPState4, 1;
+    errorSignalSlave2, 2;
+  } 
+
+}
+
+//
+// frame definition: diagnostic frames
+// (optional but recommended)
+//
+Diagnostic_frames
+{
+	MasterReq : 60
+	{
+    MasterReqB0,  0;
+    MasterReqB1,  8;
+    MasterReqB2, 16;
+    MasterReqB3, 24;
+    MasterReqB4, 32;
+    MasterReqB5, 40;
+    MasterReqB6, 48;
+    MasterReqB7, 56;
+  	}
+
+  	SlaveResp : 61
+  	{
+    SlaveRespB0,  0;
+    SlaveRespB1,  8;
+    SlaveRespB2, 16;
+    SlaveRespB3, 24;
+    SlaveRespB4, 32;
+    SlaveRespB5, 40;
+    SlaveRespB6, 48;
+    SlaveRespB7, 56;
+	} 
+}
+
+//
+// node definition: node attributes
+//
+Node_attributes
+{
+
+	slave1 
+	{
+    LIN_protocol = 2.0;
+    // the startup diagnostic address
+    configured_NAD = 1;
+    // product id is used to uniquely identify a slave node
+    // within a cluster
+    product_id = 0x1234, 0x5678, 0x03;
+    // definition of the error signal of the slave
+    response_error = errorSignalSlave1;
+    // the list of configurable frames
+    // all frames to be processed by the slave node
+    // must get a message id in this section
+    configurable_frames
+    {
+		frmM1 = 0x01;
+		frmM2 = 0x02;
+		frmM3 = 0x03;
+        frmS11   = 0x04;
+        frmS12   = 0x05;
+		frmS13   = 0x06;
+		frmS21   = 0x08;
+		frmS22   = 0x09;
+		frmS23   = 0x10;
+	} 
+}
+
+ slave2 {
+    LIN_protocol = 1.2;
+    // the startup diagnostic address
+    configured_NAD = 2;
+ }
+
+}
+
+//
+// schedule table definitions
+//
+Schedule_tables
+{
+  //
+  // this schedule table will configure the slave1 node to
+  // participate in LIN communication
+  //
+  schTabConfig
+  {
+   AssignFrameId{slave1, frmM1   } delay 20 ms;
+   AssignFrameId{slave1, frmM2   } delay 20 ms;
+   AssignFrameId{slave1, frmM3   } delay 20 ms;
+   AssignFrameId{slave1, frmS11  } delay 20 ms;
+   AssignFrameId{slave1, frmS12  } delay 20 ms;
+   AssignFrameId{slave1, frmS13  } delay 20 ms;
+   AssignFrameId{slave1, frmS21  } delay 20 ms;
+   AssignFrameId{slave1, frmS22  } delay 20 ms;
+   AssignFrameId{slave1, frmS23  } delay 20 ms;
+}
+
+//
+// the normal signals are transferred using this schedule
+// table
+//
+schTab1
+{
+	frmM1 	delay 20 ms;
+	frmS11 	delay 20 ms;
+	frmS21 	delay 20 ms;
+	frmM2 	delay 20 ms;
+	frmM3 	delay 20 ms;
+	frmS13 	delay 20 ms;
+	frmS23  delay 20 ms;
+}
+
+}
