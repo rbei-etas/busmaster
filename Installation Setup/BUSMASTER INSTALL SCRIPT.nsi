@@ -333,6 +333,8 @@ Section "BUSMASTER"
   Delete "$INSTDIR\FLEXRAY_ETAS_BOA_2.dll"
   Delete "$INSTDIR\FlexRay_GIGATRONIK_flex-i.dll"
   Delete "$INSTDIR\LIN_ETAS_BOA.dll"
+  Delete "$INSTDIR\LIN_Kvaser.dll"
+  Delete "$INSTDIR\linlib.dll"
   Delete "$INSTDIR\TXWindowFlexRay.dll"
   Delete "$INSTDIR\LIN_Vector_XL.dll"
   Delete "$INSTDIR\LIN_PEAK_USB.dll"
@@ -458,6 +460,8 @@ Section "BUSMASTER"
   File ..\Sources\BIN\Release\FLEXRAY_ETAS_BOA_2.dll
   File ..\Sources\BIN\Release\FlexRay_GIGATRONIK_flex-i.dll
   File ..\Sources\BIN\Release\LIN_ETAS_BOA.dll
+  File ..\Sources\BIN\Release\LIN_Kvaser.dll
+  File ..\Sources\BIN\Release\linlib.dll
   File ..\Sources\BIN\Release\TXWindowFlexRay.dll
   File ..\Sources\BIN\Release\Controller_0.dll
   File ..\Sources\BIN\Release\Controller_1.dll
