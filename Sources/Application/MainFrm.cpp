@@ -1814,6 +1814,10 @@ void CMainFrame::OnConfigChannelSelection()
             //Update NW statistics window channel information
             vUpdateChannelInfo();
 
+            for(int nIndex = 0; nIndex < nCount; nIndex++)
+            {
+                m_asControllerDetails[nIndex].m_omHardwareDesc = m_asINTERFACE_HW[nIndex].m_acNameInterface;
+            }
             // Update controller information
             g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails, nCount);
         }
@@ -5810,9 +5814,24 @@ void CMainFrame::OnUpdateReplayStop(CCmdUI* pCmdUI)
 /******************************************************************************/
 void CMainFrame::vSaveWinStatus(WINDOWPLACEMENT WinCurrStatus)
 {
+    HMONITOR hMonitor = MonitorFromWindow(AfxGetMainWnd()->GetSafeHwnd(), MONITOR_DEFAULTTONEAREST);
+
+    MONITORINFO ouMonitorInfo;
+    GetMonitorInfo(hMonitor, &ouMonitorInfo);
+    int nMonitors = GetSystemMetrics(SM_CMONITORS);
+
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_DISPLAY_LEFT, REG_DWORD,"",ouMonitorInfo.rcWork.left);
+    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_DISPLAY_MONITOR, REG_DWORD,"",nMonitors);
+
     // Write the Window Flag
     bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_FLAG, REG_DWORD,"",WinCurrStatus.flags);
     // Write the show wnd command
+    // Save as "show normal" if minimized and closed BusMster as it doesn't have any use case to eopn in minimized position
+    if (WinCurrStatus.showCmd == SW_SHOWMINIMIZED)
+    {
+        WinCurrStatus.showCmd = SW_SHOWNORMAL;
+    }
+
     bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_SHOWCMD, REG_DWORD,"",WinCurrStatus.showCmd);
     // Write the X, Y position when window is in minimum position
     bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_X, REG_DWORD,"",WinCurrStatus.ptMinPosition.x);
@@ -5841,14 +5860,38 @@ void CMainFrame::vSaveWinStatus(WINDOWPLACEMENT WinCurrStatus)
 /******************************************************************************/
 void CMainFrame::vGetWinStatus(WINDOWPLACEMENT& WinCurrStatus)
 {
+    // Check if secondary monmitor is connected and check if the application is svaed in that monitor space
+    BOOL bRet = TRUE;
+    int nAvailableMonitors = GetSystemMetrics(SM_CMONITORS);
+    int nMonitorsFromConfig = 0;
+
+    HMONITOR hMonitor = MonitorFromWindow(AfxGetMainWnd()->GetSafeHwnd(), MONITOR_DEFAULTTOPRIMARY);
+
+    MONITORINFO ouMonitorInfo;
+    GetMonitorInfo(hMonitor, &ouMonitorInfo);
+
+    RECT ouDisplayRect;
+
     CString strTemp;
     // Set the length of the structure
     WinCurrStatus.length = sizeof(WINDOWPLACEMENT);
+
+    if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_DISPLAY_LEFT, REG_DWORD, strTemp, (DWORD&)ouDisplayRect.left))
+    {
+        ouDisplayRect.left = 0;
+    }
+
+    if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_DISPLAY_MONITOR, REG_DWORD, strTemp, (DWORD&)nMonitorsFromConfig))
+    {
+        ouDisplayRect.top = 0;
+    }
+
     // Get the Window Flag
     if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_FLAG, REG_DWORD, strTemp, (DWORD&)WinCurrStatus.flags))
     {
         WinCurrStatus.flags = WPF_RESTORETOMAXIMIZED;
     }
+
     // Get the show wnd command
     if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_SHOWCMD, REG_DWORD, strTemp, (DWORD&)WinCurrStatus.showCmd) )
     {
@@ -5890,6 +5933,12 @@ void CMainFrame::vGetWinStatus(WINDOWPLACEMENT& WinCurrStatus)
     if ( !theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_BOTTOM, REG_DWORD, strTemp, (DWORD&)WinCurrStatus.rcNormalPosition.bottom) )
     {
         WinCurrStatus.rcNormalPosition.bottom = 350;
+    }
+
+    if ((nAvailableMonitors <= 1) && (nMonitorsFromConfig > nAvailableMonitors) && (ouDisplayRect.left > ouMonitorInfo.rcWork.left))
+    {
+        WinCurrStatus.rcNormalPosition.left = 0;
+        WinCurrStatus.rcNormalPosition.top = 0;
     }
 }
 /******************************************************************************/
@@ -11748,6 +11797,12 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
         {
             g_pouDIL_CAN_Interface->DILC_PerformInitOperations();
             INT nCount = unDefaultChannelCnt;
+
+            if(S_FALSE == g_pouDIL_CAN_Interface->DILC_SetHardwareChannel(m_asControllerDetails,m_dwDriverId, false))
+            {
+                theApp.bWriteIntoTraceWnd(_("Channel Selection failed. Setting to default channel selection"));
+            }
+
             if ((hResult = g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount)) == S_OK)
             {
                 DeselectJ1939Interfaces();
@@ -11817,6 +11872,10 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
                     theApp.bWriteIntoTraceWnd(_("hardware selection Cancelled. Retaining previous hardware settings.."));
                     /* Retain previous DIL selection */
                     m_dwDriverId = g_pouDIL_CAN_Interface->DILC_GetSelectedDriver();
+
+                    // Setting Previous hardware selection
+                    g_pouDIL_CAN_Interface->DILC_SetHardwareChannel(m_asControllerDetails,m_dwDriverId);
+
                     m_bNoHardwareFound = false;
                 }
                 else
@@ -11835,6 +11894,13 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
                 m_dwDriverId = DRIVER_CAN_STUB;          //select simulation
                 IntializeDIL();
 
+            }
+            else
+            {
+                if(S_FALSE == g_pouDIL_CAN_Interface->DILC_SetHardwareChannel(m_asControllerDetails,m_dwDriverId))
+                {
+                    theApp.bWriteIntoTraceWnd(_("Channel Selection failed. Setting to default channel selection"));
+                }
             }
         }
         m_objTxHandler.vSetDILInterfacePtr((void*)g_pouDIL_CAN_Interface);
@@ -14454,6 +14520,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     }
                     if (m_podUIThread != nullptr)
                     {
+                        m_sNotificWndPlacement.showCmd = SW_NORMAL;
                         m_podUIThread->vUpdateWndCo_Ords(m_sNotificWndPlacement, TRUE);
                         m_podUIThread->vClearTraceContents();
                     }
@@ -14993,7 +15060,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     }
 
                     //COPY_DATA_2(m_asControllerDetails, pbyTemp, (sizeof(SCONTROLLER_DETAILS) * unChannelCount));
-                    for(int i = unChannelCount; i < defNO_OF_CHANNELS; i++)
+                    for(int i = 0; i < defNO_OF_CHANNELS; i++)
                     {
                         m_asControllerDetails[i].vInitialize(TRUE);
                     }
@@ -15018,6 +15085,9 @@ int CMainFrame::nLoadXMLConfiguration()
                     ASSERT(g_pouDIL_CAN_Interface != nullptr);
                     g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails,
                             defNO_OF_CHANNELS);
+
+                    // Set hardware selection as per configuration
+                    g_pouDIL_CAN_Interface->DILC_SetHardwareChannel(m_asControllerDetails,m_dwDriverId, true, unChannelCount);
                 }
 
                 if ((nullptr == m_xmlConfigFiledoc) || ( bProper ==  FALSE))
@@ -16413,6 +16483,10 @@ void CMainFrame::LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlN
             sController.m_enmHWFilterType[1] = (eHW_FILTER_TYPES)atoi(strVar.c_str());
         }
 
+        if (xmlUtils::GetDataFrmNode(pNodePtr,"HardwareDesc",strVar))
+        {
+            sController.m_omHardwareDesc = strVar.c_str();
+        }
         //CANFD
         if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_BaudRate",strVar))
         {
@@ -16469,7 +16543,7 @@ INT CMainFrame::nGetControllerID(std::string strDriverName)
     {
         nDriverID = DRIVER_CAN_VECTOR_XL;
     }
-    else if(strDriverName == "ETAS ES581")
+    else if(strDriverName == "ETAS ES581" || strDriverName == "ETAS ES581.3")
     {
         nDriverID = DRIVER_CAN_ETAS_ES581;
     }

@@ -257,6 +257,7 @@ static HANDLE sg_hEvent = nullptr;
 static CRITICAL_SECTION sg_DIL_CriticalSection;
 
 static INT sg_anSelectedItems[CHANNEL_ALLOWED];
+static SCONTROLLER_DETAILS sg_ControllerDetails[defNO_OF_CHANNELS];
 
 /* Timer variables */
 static SYSTEMTIME sg_CurrSysTime;
@@ -356,6 +357,7 @@ public:
     HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
+    HRESULT CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount);
 };
 
 static CDIL_CAN_ETAS_BOA* sg_pouDIL_CAN_ETAS_BOA = nullptr;
@@ -1899,6 +1901,81 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_PerformInitOperations(void)
     return S_OK;
 }
 
+unsigned int GetSelectedChannelIndex(unsigned int unIndex)
+{
+    int nSelChannel = -1;
+    for(int nChannel = 0; nChannel < defNO_OF_CHANNELS; nChannel++)
+    {
+        if((sg_HardwareList.m_omHardwareChannel[nChannel] == sg_SelectedChannels.m_omHardwareChannel[unIndex])
+                && sg_HardwareList.m_omHardwareChannel[nChannel] != "")
+        {
+            nSelChannel = nChannel;
+            break;
+        }
+    }
+    return nSelChannel;
+}
+HRESULT CDIL_CAN_ETAS_BOA::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS ouControllerDetails,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
+{
+    HRESULT hReturn = S_OK;
+
+    PSCONTROLLER_DETAILS psContrlDets = (PSCONTROLLER_DETAILS)ouControllerDetails;
+    sg_SelectedChannels.m_nChannelCount = 0;
+    sg_nNoOfChannels = 0;
+    for ( UINT i = 0; i< CHANNEL_ALLOWED; i++ )
+    {
+        sg_anSelectedItems[i] = -1;
+    }
+    for (int nChannel = 0; nChannel < defNO_OF_CHANNELS/*(sg_ControllerDetails[nChannel].m_omHardwareDesc != "") && (sg_ControllerDetails[nChannel].m_omHardwareDesc != "Simulation")*/ ; nChannel++)
+    {
+        if((psContrlDets[nChannel].m_omHardwareDesc != "") && (psContrlDets[nChannel].m_omHardwareDesc != "Simulation"))
+        {
+            sg_SelectedChannels.m_omHardwareChannel[nChannel] = psContrlDets[nChannel].m_omHardwareDesc;
+            sg_ControllerDetails[nChannel].m_omHardwareDesc = psContrlDets[nChannel].m_omHardwareDesc;
+            sg_SelectedChannels.m_nChannelCount += 1;
+            sg_nNoOfChannels++;
+        }
+    }
+    INTERFACE_HW_LIST psHWInterface;
+    bool bIsChannelSelected = false;
+    for (UINT nList = 0; nList < sg_SelectedChannels.m_nChannelCount; nList++)
+    {
+        sg_anSelectedItems[nList] = GetSelectedChannelIndex(nList);
+
+        if(sg_anSelectedItems[nList] != -1)
+        {
+            psHWInterface[nList].m_dwIdInterface = 0;
+            psHWInterface[nList].m_dwVendor = 0;
+            psHWInterface[nList].m_acDeviceName = "";
+            psHWInterface[nList].m_acNameInterface = sg_SelectedChannels.m_omHardwareChannel[nList];
+            psHWInterface[nList].m_acDescription = sg_SelectedChannels.m_omHardwareChannel[nList];
+
+            bIsChannelSelected = true;
+        }
+    }
+
+    if(true == bIsHardwareListed && false == bIsChannelSelected)
+    {
+        sg_SelectedChannels.m_nChannelCount = 1;
+        sg_anSelectedItems[0] = 0;
+
+        psHWInterface[0].m_dwIdInterface = 0;
+        psHWInterface[0].m_dwVendor = 0;
+        psHWInterface[0].m_acDeviceName = "";
+        psHWInterface[0].m_acNameInterface = sg_HardwareList.m_omHardwareChannel[0];
+        psHWInterface[0].m_acDescription = sg_HardwareList.m_omHardwareChannel[0];
+        hReturn = S_FALSE;
+    }
+
+    if(sg_SelectedChannels.m_nChannelCount > 0)
+    {
+        sg_nNoOfChannels = min(sg_SelectedChannels.m_nChannelCount, defNO_OF_CHANNELS);
+        sg_bCurrState = STATE_HW_INTERFACE_LISTED;
+        CAN_SelectHwInterface(psHWInterface, sg_SelectedChannels.m_nChannelCount);
+    }
+
+    return hReturn;
+}
 /**
  * Copies the controller config values into channel's
  * controller config structure.
@@ -1927,6 +2004,7 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
             sg_asChannel[i].m_OCI_CANConfig.SJW =
                 static_cast <UINT>(_tcstol( pControllerDetails[ i ].m_omStrSjw.c_str(),
                                             &pcStopStr, 10));
+            strcpy_s(sg_asChannel[i].m_acURI, pControllerDetails[i].m_omHardwareDesc.c_str());
             sg_asChannel[i].m_OCI_CANConfig.syncEdge = OCI_CAN_SINGLE_SYNC_EDGE;
             if( FALSE == pControllerDetails [ i ].m_bSelfReception )
             {
@@ -2059,6 +2137,7 @@ static int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW
     if ( nRet == IDOK)
     {
         nCount = HwList.nGetSelectedList(pnSelList);
+        sg_SelectedChannels.m_nChannelCount = 0;
         return 0;
     }
     else
@@ -2088,6 +2167,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             INTERFACE_HW psHWInterface[defNO_OF_CHANNELS];
             /* set the current number of channels */
             nCount = min(nCount, defNO_OF_CHANNELS);
+            sg_HardwareList.m_nChannelCount = nCount;
 
             for (INT i = 0; i < nCount; i++)
             {
@@ -2096,6 +2176,8 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
                 psHWInterface[i].m_acDeviceName = "";
                 psHWInterface[i].m_acNameInterface = acURI[i];
                 psHWInterface[i].m_acDescription = acURI[i];
+                sg_HardwareList.m_omHardwareChannel[i] = psHWInterface[i].m_acNameInterface;
+                sg_ControllerDetails[i].m_omHardwareDesc = psHWInterface[i].m_acNameInterface;
             }
 
             /* List hw interface if there are more than one hw */
@@ -2106,7 +2188,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
                 {
                     for (UINT i = 0; i < unDefaultChannelCnt; i++)
                     {
-                        sg_anSelectedItems[i] = i;
+                        sg_anSelectedItems[i] = GetSelectedChannelIndex(i);
                     }
                     nCount  = unDefaultChannelCnt;
                 }
@@ -2120,9 +2202,12 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             sg_nNoOfChannels = min(nCount, defNO_OF_CHANNELS);
             for (UINT nList = 0; nList < sg_nNoOfChannels; nList++)
             {
-                asSelHwInterface[nList].m_acNameInterface = psHWInterface[sg_anSelectedItems[nList]].m_acNameInterface;
-                asSelHwInterface[nList].m_acDescription = psHWInterface[sg_anSelectedItems[nList]].m_acDescription;
-                asSelHwInterface[nList].m_dwIdInterface = 100 + nList; // Give a dummy number
+                if(sg_anSelectedItems[nList] != -1)
+                {
+                    asSelHwInterface[nList].m_acNameInterface = psHWInterface[sg_anSelectedItems[nList]].m_acNameInterface;
+                    asSelHwInterface[nList].m_acDescription = psHWInterface[sg_anSelectedItems[nList]].m_acDescription;
+                    asSelHwInterface[nList].m_dwIdInterface = 100 + nList; // Give a dummy number
+                }
             }
 
             sg_bCurrState = STATE_HW_INTERFACE_LISTED;
@@ -2147,6 +2232,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {
         strcpy_s(sg_asChannel[i].m_acURI, asSelHwInterface[i].m_acNameInterface.c_str());
+        sg_ControllerDetails[i].m_omHardwareDesc = asSelHwInterface[i].m_acNameInterface;
     }
 
     /* Create the controller instance. */
@@ -2357,19 +2443,19 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, i
     VALIDATE_POINTER_RETURN_VAL(InitData, WARN_INITDAT_NCONFIRM);
 
     USES_CONVERSION;
-
+    unsigned int l_length = 0;
     INT Result = WARN_INITDAT_NCONFIRM;
     PSCONTROLLER_DETAILS psContrlDets = (PSCONTROLLER_DETAILS)InitData;
 
     /* First initialize with existing hw description */
-    for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++)
+    for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++, l_length++)
     {
         psContrlDets[i].m_omHardwareDesc = sg_asChannel[i].m_acURI;
     }
-    if (sg_nNoOfChannels > 0)
+    if (l_length > 0)
     {
         Result = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILBOA,
-                                         psContrlDets, sg_nNoOfChannels);
+                                         psContrlDets, l_length);
         switch (Result)
         {
             case WARNING_NOTCONFIRMED:
@@ -2409,6 +2495,10 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PSCONTROLLER_DETAILS pInitData, int
 
     BOA_ResultCode ErrCode = OCI_FAILURE;
     PSCONTROLLER_DETAILS pControllerDetails = (PSCONTROLLER_DETAILS)pInitData;
+    for (UINT i = 0; i < sg_nNoOfChannels; i++)
+    {
+        ((PSCONTROLLER_DETAILS)pControllerDetails)[i].m_omHardwareDesc = sg_ControllerDetails[i].m_omHardwareDesc;
+    }
     bLoadDataFromContr(pControllerDetails);
     for (UINT i = 0; i < sg_nNoOfChannels; i++)
     {

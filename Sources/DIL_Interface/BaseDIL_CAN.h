@@ -177,4 +177,5 @@ public:
      * Call to Get Error Counts
      */
     virtual HRESULT  DILC_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam) = 0;
+    virtual HRESULT DILC_SetHardwareChannel(PSCONTROLLER_DETAILS m_asControllerDetails, DWORD dwDriverId,bool bHardwareListed = true, unsigned int unChannelCount = defNO_OF_CHANNELS) = 0;
 };

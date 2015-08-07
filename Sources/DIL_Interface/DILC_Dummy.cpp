@@ -148,3 +148,7 @@ HRESULT CDIL_CAN_DUMMY::CAN_UnloadDriverLibrary(void)
 {
     return WARN_DUMMY_API;
 }
+HRESULT CDIL_CAN_DUMMY::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
+{
+    return WARN_DUMMY_API;
+}

@@ -1247,3 +1247,7 @@ void CDIL_CAN_IXXAT_VCI::LogMessage(BOOL bShowOnlyInDebug, LPCTSTR pFormat, ...)
 
     va_end(args);
 }
+HRESULT CDIL_CAN_IXXAT_VCI::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
+{
+    return S_OK;
+}

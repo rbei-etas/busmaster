@@ -195,6 +195,7 @@ public:
      */
     HRESULT  DILC_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam);
 
+    HRESULT DILC_SetHardwareChannel(PSCONTROLLER_DETAILS m_asControllerDetails, DWORD dwDriverId, bool bHardwareListed = true, unsigned int unChannelCount = defNO_OF_CHANNELS);
     /* HELPER FUNCTIONS START */
     void vSelectInterface_Dummy(void);
     HMODULE vLoadEtasBoaLibrary(Base_WrapperErrorLogger* pILog);

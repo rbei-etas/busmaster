@@ -1,0 +1,237 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "LIN_Kvaser_Resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "LIN_Kvaser_Resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "ConfigDialogsDIL.dll"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "ConfigDialogsDIL.dll"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_PPAGE_CONTROLLER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 149
+    END
+
+    IDD_DLG_CHANGE_REGISTERS, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        TOPMARGIN, 8
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_DLG_HW_LISTING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 369
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 154
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PPAGE_CONTROLLER DIALOGEX 0, 0, 235, 156
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Property Page"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "TODO: layout property page",IDC_STATIC,73,74,90,8
+END
+
+IDD_DLG_CHANGE_REGISTERS DIALOGEX 0, 0, 171, 96
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Configure Kvaser CAN Controller"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_BAUD_RATE,79,16,57,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "OK",IDC_ButtonOK,29,57,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,93,57,50,14
+    LTEXT           "Baud Rate:",IDC_STAT_BUAD_RATE,18,15,36,14,SS_CENTERIMAGE
+    LTEXT           "bps",IDC_STAT_KBPS,143,16,17,14,SS_CENTERIMAGE
+END
+
+IDD_DLG_HW_LISTING DIALOGEX 0, 0, 376, 157
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Hardware Selection"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_LSTC_HW_LIST,"SysListView32",LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,8,17,189,37
+    DEFPUSHBUTTON   "&Select",IDC_BUT_SELECT,204,46,44,14
+    CONTROL         "List1",IDC_LSTC_SELECTED_HW_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,255,17,113,96
+    DEFPUSHBUTTON   "&Remove",IDC_BUT_REMOVE,204,72,44,14
+    DEFPUSHBUTTON   "&OK",IDOK,133,140,50,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,192,140,50,14
+    LTEXT           "Available CAN hardware",IDC_STATIC,8,5,96,9
+    GROUPBOX        "Hardware Details",IDC_STATIC,8,60,189,64
+    LTEXT           "Driver ID :",IDC_STATIC,13,73,34,9
+    LTEXT           "Firmware :",IDC_STATIC,13,86,32,9
+    LTEXT           "Description : ",IDC_STATIC,13,99,40,11
+    EDITTEXT        IDC_EDIT_DRIVER_ID,47,73,52,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_NET_NAME,56,99,135,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_EDIT_FIRMWARE,49,86,137,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Configured CAN Hardware",IDC_STATIC,257,5,105,9
+    CONTROL         "______________________________________________________________________________________________",IDC_STAT_LINE3,
+                    "Static",SS_LEFTNOWORDWRAP | WS_DISABLED | WS_GROUP,7,124,377,10
+    //CONTROL         "Master",IDC_RADIO_MASTER,"Button",BS_AUTORADIOBUTTON,15,112,37,10
+    //CONTROL         "Slave",IDC_RADIO_SLAVE,"Button",BS_AUTORADIOBUTTON,62,112,34,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+//IDR_PGM_EDTYPE          ICON                    "res\\BUSMASTERDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_BMP_NET             BITMAP                  "res\\bmp_net.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_PATH_TOO_LONG "Path entered is too long. Please select a path of reasonable length."
+    IDS_PPAGE_CHANGE_REGISTER "Controller Configuration"
+    IDS_PPAGE_ACCEPTANCE_FILTER "Hardware Filter Configuration"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

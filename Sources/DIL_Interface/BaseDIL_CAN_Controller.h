@@ -176,4 +176,5 @@ public:
      * @return Returns S_OK for success, S_FALSE for failure
      */
     virtual HRESULT CAN_UnloadDriverLibrary(void) = 0;
+    virtual HRESULT CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCnt) = 0;
 };

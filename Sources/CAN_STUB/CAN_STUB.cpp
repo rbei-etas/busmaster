@@ -225,6 +225,7 @@ public:
     HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
+    HRESULT CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount);
 };
 
 static CDIL_CAN_STUB* sg_pouDIL_CAN_STUB = nullptr;
@@ -1376,3 +1377,7 @@ HRESULT Worker_UnregisterClient(ISimENG* pISimENG, Base_WrapperErrorLogger* /*pI
 }
 
 /* Worker function definitions: end */
+HRESULT CDIL_CAN_STUB::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
+{
+    return S_OK;
+}

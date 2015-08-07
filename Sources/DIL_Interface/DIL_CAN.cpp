@@ -644,3 +644,7 @@ HRESULT  CDIL_CAN::DILC_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECON
 {
     return m_pBaseDILCAN_Controller->CAN_GetErrorCount(sErrorCnt, nChannel, eContrParam);
 }
+HRESULT CDIL_CAN::DILC_SetHardwareChannel(PSCONTROLLER_DETAILS m_asControllerDetails, DWORD dwDriverId,bool bHardwareListed, unsigned int unChannelCount)
+{
+    return m_pBaseDILCAN_Controller->CAN_SetHardwareChannel(m_asControllerDetails, dwDriverId, bHardwareListed, unChannelCount);
+}

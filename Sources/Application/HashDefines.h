@@ -775,6 +775,9 @@ Are you sure you want to delete?"
 #define defITEM_MAIN_WND_MAXPOS_X        "MainWnd MaxPos.X"
 #define defITEM_MAIN_WND_MAXPOS_Y        "MainWnd MaxPos.Y"
 
+#define defITEM_MAIN_WND_DISPLAY_LEFT    "Display.left"
+#define defITEM_MAIN_WND_DISPLAY_MONITOR "Display.Monitors"
+
 #define defDISPLAY_BUFFER_SIZE      100
 
 #define defCAN_MONITOR_DATA_IND     0

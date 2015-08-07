@@ -1224,12 +1224,15 @@ void CPARSER_FIBEX::sCopyCompuMethod(CCompuMethodEx& ouCompuMethodEx, SCOMPU_INT
                 if (pos1 != nullptr)
                 {
                     ouCompuMethodEx.m_uMethod.m_LinearCode.m_dN0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
-                    float fCheck = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetAt(pos1);
+                    /*float fCheck = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetAt(pos1);
                     if (fCheck == 0.062525)
                     {
                         int z = 0;
+                    }*/
+                    if(nullptr != pos1)
+                    {
+                        ouCompuMethodEx.m_uMethod.m_LinearCode.m_dN1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
                     }
-                    ouCompuMethodEx.m_uMethod.m_LinearCode.m_dN1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
                 }
             }
             break;
@@ -1257,7 +1260,10 @@ void CPARSER_FIBEX::sCopyCompuMethod(CCompuMethodEx& ouCompuMethodEx, SCOMPU_INT
                 {
                     objLinearCode.m_dN0 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
 
-                    objLinearCode.m_dN1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
+                    if(nullptr != pos1)
+                    {
+                        objLinearCode.m_dN1 = tempAbsCompuScale.m_sCompuRationalCoeffs.m_faCompuNuma.GetNext(pos1);
+                    }
                 }
 
                 ouCompuMethodEx.m_uMethod.m_objScaleLinear.push_back(objLinearCode);

@@ -281,6 +281,7 @@ public:
     HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
+    HRESULT CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount);
 };
 
 CDIL_CAN_VectorXL* g_pouDIL_CAN_VectorXL = nullptr;
@@ -882,6 +883,11 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
         for (UINT i = 0; i < sg_nNoOfChannels; i++)
         {
             asSelHwInterface[i].m_dwIdInterface = i;
+
+            if(nullptr == sg_aodChannels[i].m_pXLChannelInfo)
+            {
+                return S_FALSE;
+            }
             unsigned int serialNumber = sg_aodChannels[i].m_pXLChannelInfo->serialNumber;
             std::ostringstream oss;
             oss << std::dec << serialNumber;
@@ -891,6 +897,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             oss1 << "Vector - " << sg_aodChannels[i].m_pXLChannelInfo->name << " SN - " <<serialNumber;
             oss1 << "Channel Index - " <<(int)sg_aodChannels[i].m_pXLChannelInfo->channelIndex;
             sg_ControllerDetails[i].m_omHardwareDesc = oss1.str();
+            asSelHwInterface[i].m_acNameInterface = oss1.str();
             sg_bCurrState = STATE_HW_INTERFACE_LISTED;
         }
         hResult = S_OK;
@@ -910,7 +917,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_CAN_VectorXL::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /*asSelHwInterface*/, INT /*nCount*/)
+HRESULT CDIL_CAN_VectorXL::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelHwInterface, INT /*nCount*/)
 {
     USES_CONVERSION;
 
@@ -920,6 +927,10 @@ HRESULT CDIL_CAN_VectorXL::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /*asSe
 
     /* Check for the success */
     sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
+    for (UINT nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
+    {
+        sg_ControllerDetails[nCount].m_omHardwareDesc = asSelHwInterface[nCount].m_acNameInterface;
+    }
 
     return S_OK;
 }
@@ -1107,24 +1118,25 @@ HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, i
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
     VALIDATE_POINTER_RETURN_VAL(InitData, S_FALSE);
 
+    unsigned int l_length = 0;
     HRESULT Result = S_FALSE;
 
     PSCONTROLLER_DETAILS pControllerDetails = (PSCONTROLLER_DETAILS)InitData;
     //First initialize with existing hw description
-    for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++)
+    for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++, l_length++)
     {
         //pControllerDetails[i].m_omHardwareDesc  = sg_aodChannels[i].m_strName;
         static char chName[MAX_PATH];
         sprintf(chName , _("Vector - %s, Serial Number- %d"),
                 sg_aodChannels[i].m_pXLChannelInfo->name,
                 sg_aodChannels[i].m_pXLChannelInfo->serialNumber);
-        pControllerDetails[i].m_omHardwareDesc = chName;
+        //pControllerDetails[i].m_omHardwareDesc = chName;
 
     }
-    if (sg_ucNoOfHardware > 0)
+    if (l_length > 0)
     {
         int nResult = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILTZM,
-                                              pControllerDetails, sg_ucNoOfHardware);
+                                              pControllerDetails, l_length);
         switch (nResult)
         {
             case WARNING_NOTCONFIRMED:
@@ -1302,6 +1314,21 @@ static int nSetApplyConfiguration()
     return nReturn;
 }
 
+void CAN_setHardware()
+{
+    sg_HardwareList.m_nChannelCount = g_xlDrvConfig.channelCount;
+    for (UINT nChannel = 0; nChannel < g_xlDrvConfig.channelCount; nChannel++)
+    {
+        std::ostringstream oss1;
+        oss1 << "Vector - " << sg_HardwareIntr[nChannel].m_acDescription.c_str() << " SN - " <<sg_HardwareIntr[nChannel].m_dwVendor;
+        oss1 << "Channel Index - " <<(int)nChannel;
+        std::string omHardwareChannel = oss1.str();
+        sg_HardwareList.m_omHardwareChannel[nChannel] = omHardwareChannel;
+        sg_HardwareList.m_ouChannelDetails[nChannel].m_omVendorId = g_xlDrvConfig.channel[nChannel].serialNumber;
+        sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelName = g_xlDrvConfig.channel[nChannel].name;
+        sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelIndex = g_xlDrvConfig.channel[nChannel].hwChannel;
+    }
+}
 /**
 * \brief         Sets the controller configuration data supplied by ConfigFile.
 * \param[in]     ConfigFile, is SCONTROLLER_DETAILS structure
@@ -2290,6 +2317,41 @@ int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInt
     }
 }
 
+unsigned int GetSelectedChannelIndex(unsigned int unIndex)
+{
+    int nSelChannel = -1;
+    //std::string omHardwareName;
+    for(int nChannel = 0; nChannel < defNO_OF_CHANNELS; nChannel++)
+    {
+        //omHardwareName = sg_HardwareIntr[nChannel].m_acDescription.c_str();
+        std::ostringstream ossHardwaredesc;
+        ossHardwaredesc << "Vector - " << sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelName << " SN - " << sg_HardwareList.m_ouChannelDetails[nChannel].m_omVendorId;
+        ossHardwaredesc << "Channel Index - " <<(int)nChannel;
+        std::string omHardwareChannel = ossHardwaredesc.str();
+        if(omHardwareChannel/*sg_HardwareList.m_omHardwareChannel[nChannel] */== sg_SelectedChannels.m_omHardwareChannel[unIndex]
+                && sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelName != "")
+        {
+            nSelChannel = nChannel;
+            break;
+        }
+        else
+        {
+            std::ostringstream ossHardwaredesc1;
+            ossHardwaredesc1 << "Vector - " << sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelName << ", Serial Number- " << sg_HardwareList.m_ouChannelDetails[nChannel].m_omVendorId;
+
+            omHardwareChannel = ossHardwaredesc1.str();
+
+            if(omHardwareChannel/*sg_HardwareList.m_omHardwareChannel[nChannel] */== sg_SelectedChannels.m_omHardwareChannel[unIndex]
+                    && sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelName != "")
+            {
+                nSelChannel = nChannel;
+                break;
+            }
+        }
+    }
+
+    return nSelChannel;
+}
 /**
 * \brief         This function will get the hardware selection from the user
 *                and will create essential networks.
@@ -2300,6 +2362,7 @@ int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInt
 */
 static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
 {
+    int nHardwareCountPrev = sg_ucNoOfHardware;
     int nHwCount = sg_ucNoOfHardware;
     int nChannels = 0;
     // Get Hardware Network Map
@@ -2325,28 +2388,46 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
     }
     nHwCount = nChannels;   //Reassign hardware count according to final list of channels supported.
 
+    CAN_setHardware();
     /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
     if ( unDefaultChannelCnt && nChannels >= unDefaultChannelCnt )
     {
         for (UINT i = 0; i < unDefaultChannelCnt; i++)
         {
-            sg_anSelectedItems[i] = i;
+            //sg_anSelectedItems[i] = i;
+            sg_anSelectedItems[i] = GetSelectedChannelIndex(i);
         }
         nHwCount = unDefaultChannelCnt;
     }
     else if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_VECTOR_XL, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
     {
+        sg_ucNoOfHardware = nHardwareCountPrev;
         return HW_INTERFACE_NO_SEL;
     }
     sg_ucNoOfHardware = (UCHAR)nHwCount;
     sg_nNoOfChannels = (UINT)nHwCount;
     g_xlChannelMask = 0;
+
+    /*bool bIsChannelSelected = false;*/
     //Reorder hardware interface as per the user selection
     for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
     {
-        sg_aodChannels[nCount].m_pXLChannelInfo  = &g_xlDrvConfig.channel[sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface];
-        g_xlChannelMask |= sg_aodChannels[nCount].m_pXLChannelInfo->channelMask;
+        if(sg_anSelectedItems[nCount] != -1)
+        {
+            sg_aodChannels[nCount].m_pXLChannelInfo  = &g_xlDrvConfig.channel[sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface];
+            g_xlChannelMask |= sg_aodChannels[nCount].m_pXLChannelInfo->channelMask;
+        }
     }
+
+    /*if(false == bIsChannelSelected)
+    {
+        sg_ucNoOfHardware = 1;
+        sg_nNoOfChannels = 1;
+
+        sg_aodChannels[0].m_pXLChannelInfo  = &g_xlDrvConfig.channel[sg_HardwareIntr[0].m_dwIdInterface];
+        g_xlChannelMask |= sg_aodChannels[0].m_pXLChannelInfo->channelMask;
+    }
+    */
     g_xlPermissionMask = g_xlChannelMask;
 
     return defERR_OK;
@@ -2665,4 +2746,50 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
         }
     }
     return bReturn;
+}
+
+HRESULT CDIL_CAN_VectorXL::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS ouControllerDetails,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
+{
+    PSCONTROLLER_DETAILS psContrlDets = (PSCONTROLLER_DETAILS)ouControllerDetails;
+
+    sg_SelectedChannels.m_nChannelCount = 0;
+    g_xlChannelMask = 0;
+
+    for ( UINT i = 0; i< CHANNEL_ALLOWED; i++ )
+    {
+        sg_anSelectedItems[i] = -1;
+    }
+
+    for (int nChannel = 0; nChannel < unChannelCount ; nChannel++)
+    {
+        if((psContrlDets[nChannel].m_omHardwareDesc != "") && (psContrlDets[nChannel].m_omHardwareDesc != "Simulation"))
+        {
+            sg_SelectedChannels.m_omHardwareChannel[nChannel] = psContrlDets[nChannel].m_omHardwareDesc;
+            sg_ControllerDetails[nChannel].m_omHardwareDesc = psContrlDets[nChannel].m_omHardwareDesc;
+            sg_SelectedChannels.m_nChannelCount += 1;
+        }
+    }
+
+    sg_ucNoOfHardware = (UCHAR)sg_SelectedChannels.m_nChannelCount;
+    sg_nNoOfChannels = (UINT)sg_SelectedChannels.m_nChannelCount;
+    for (int nCount = 0; nCount < sg_SelectedChannels.m_nChannelCount; nCount++)
+    {
+        sg_anSelectedItems[nCount] = GetSelectedChannelIndex(nCount);
+        if(sg_anSelectedItems[nCount] != -1)
+        {
+            sg_aodChannels[nCount].m_pXLChannelInfo  = &g_xlDrvConfig.channel[sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface];
+            g_xlChannelMask |= sg_aodChannels[nCount].m_pXLChannelInfo->channelMask;
+        }
+    }
+
+    g_xlPermissionMask = g_xlChannelMask;
+
+    if(true == bIsHardwareListed && g_xlChannelMask == 0)
+    {
+        nCreateSingleHardwareNetwork();
+
+        return S_FALSE;
+    }
+
+    return S_OK;
 }

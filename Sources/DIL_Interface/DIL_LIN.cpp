@@ -52,6 +52,7 @@ static ENTRY_DIL sg_ListDIL[] =
     {DRIVER_LIN_ISOLAR_EVE_VLIN,"ETAS &ISOLAR-EVE"},
     {DRIVER_LIN_PEAK_USB,"&PEAK USB"},
     {DRIVER_LIN_VECTOR_XL, "&Vector XL"},
+    {DRIVER_LIN_KVASER, "&Kvaser LIN"},
 };
 
 CDIL_LIN::CDIL_LIN()
@@ -210,6 +211,9 @@ HRESULT CDIL_LIN::DILL_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
                 break;
             case DRIVER_LIN_PEAK_USB:
                 m_hDll = LoadLibrary("LIN_PEAK_USB.dll");
+                break;
+            case DRIVER_LIN_KVASER:
+                m_hDll = LoadLibrary("LIN_Kvaser.dll");
                 break;
             default:
                 DILL_PerformClosureOperations();

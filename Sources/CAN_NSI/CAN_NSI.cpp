@@ -412,6 +412,7 @@ public:
     HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
+    HRESULT CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount);
 };
 
 CDIL_CAN_NSI* sg_pouDIL_CAN_NSI = nullptr;
@@ -2686,6 +2687,10 @@ HRESULT CDIL_CAN_NSI::CAN_LoadDriverLibrary(void)
 /// \date          12.10.2011 Created
 ///------------------------------------------------------
 HRESULT CDIL_CAN_NSI::CAN_UnloadDriverLibrary(void)
+{
+    return S_OK;
+}
+HRESULT CDIL_CAN_NSI::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
 {
     return S_OK;
 }

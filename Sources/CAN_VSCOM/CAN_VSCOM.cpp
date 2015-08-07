@@ -178,6 +178,7 @@ public:
     HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
+    HRESULT CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount);
 };
 
 CDIL_CAN_VSCOM* g_pouDIL_CAN_VSCOM = nullptr;
@@ -1404,4 +1405,8 @@ static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
         sg_asAckMapBuf.erase(iResult);
     }
     return bResult;
+}
+HRESULT CDIL_CAN_VSCOM::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
+{
+    return S_OK;
 }

@@ -231,6 +231,10 @@ static UCHAR sg_ucControllerMode = defUSB_MODE_ACTIVE;
 
 // Count variables
 static UCHAR sg_ucNoOfHardware = 0;
+static UCHAR sg_nNoOfChannels = 0;
+
+static DWORD m_dwDriverId = 0;
+static DWORD m_dwPrevDriverId = 0;
 
 static int nGetChannelsInNeoVI(int nDevIndex);
 static void vMapDeviceChannelIndex();
@@ -389,6 +393,7 @@ public:
     HRESULT CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus);
     HRESULT CAN_LoadDriverLibrary(void);
     HRESULT CAN_UnloadDriverLibrary(void);
+    HRESULT CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount);
 };
 static CDIL_CAN_ICSNeoVI* sg_pouDIL_CAN_ICSNeoVI = nullptr;
 
@@ -1303,6 +1308,145 @@ int ulGetESSerialNum(unsigned long DeviceType, int serialNumber, int nHardwareLi
             break;
     };
 }
+std::string omGetDeviceType(int i, unsigned long ulDeviceType, unsigned int serialNumber, int nHardwareLic, int nNetworkId)
+{
+    CHAR chTemp[MAX_PATH];
+    char netid_str[256];
+
+    switch (ulDeviceType)
+    {
+            /* neoVI Blue */
+        case NEODEVICE_BLUE:
+            /* neoVI Fire/Red */
+        case NEODEVICE_FIRE:
+            switch (nNetworkId)
+            {
+                case NETID_HSCAN:
+                    strncpy(&netid_str[0], "HSCAN", sizeof(netid_str));
+                    break;
+                case NETID_MSCAN:
+                    strncpy(&netid_str[0], "MSCAN", sizeof(netid_str));
+                    break;
+                case NETID_SWCAN:
+                    strncpy(&netid_str[0], "SW CAN", sizeof(netid_str));
+                    break;
+                case NETID_LSFTCAN:
+                    strncpy(&netid_str[0], "LSFT CAN", sizeof(netid_str));
+                    break;
+            }
+            break;
+
+            /* ValueCAN */
+        case NEODEVICE_DW_VCAN:
+            switch (nNetworkId)
+            {
+                case NETID_HSCAN:
+                    strncpy(&netid_str[0], "CAN", sizeof(netid_str));
+                    break;
+            }
+            break;
+
+            /* ValueCAN3 */
+        case NEODEVICE_VCAN3:
+            if (nHardwareLic == 8)   // Limited Version with only one channel
+            {
+                switch (nNetworkId)
+                {
+                    case NETID_HSCAN:
+                        strncpy(&netid_str[0], "CAN", sizeof(netid_str));
+                        break;
+                }
+            }
+            else     // Two channels
+            {
+                switch (nNetworkId)
+                {
+                    case NETID_HSCAN:
+                        strncpy(&netid_str[0], "CAN 1", sizeof(netid_str));
+                        break;
+                    case NETID_MSCAN:
+                        strncpy(&netid_str[0], "CAN 2", sizeof(netid_str));
+                        break;
+                }
+            }
+            break;
+    }
+
+    /* default case */
+    if (strlen(&netid_str[0]) == 0)
+    {
+        switch (nNetworkId)
+        {
+            case NETID_HSCAN:
+                strncpy(&netid_str[0], "HSCAN", sizeof(netid_str));
+                break;
+            case NETID_MSCAN:
+                strncpy(&netid_str[0], "MSCAN", sizeof(netid_str));
+                break;
+            case NETID_SWCAN:
+                strncpy(&netid_str[0], "SWCAN", sizeof(netid_str));
+                break;
+            case NETID_LSFTCAN:
+                strncpy(&netid_str[0], "LSFTCAN", sizeof(netid_str));
+                break;
+        }
+    }
+
+    switch (ulDeviceType)
+    {
+            /* neoVI Blue */
+        case NEODEVICE_BLUE:
+            sprintf_s(chTemp,"neoVI Blue, Serial Number %d, Network: %s",
+                      serialNumber, &netid_str[0]);
+
+            break;
+
+            /* ValueCAN */
+        case NEODEVICE_DW_VCAN:
+            _stprintf(chTemp, "ValueCAN, Serial Number %d, Network: %s",
+                      serialNumber, &netid_str[0]);
+
+            break;
+
+            /* neoVI Fire/Red */
+        case NEODEVICE_FIRE:
+            _stprintf(chTemp, "neoVi Fire/Red, Serial Number %d, Network: %s",
+                      serialNumber, &netid_str[0]);
+
+            break;
+
+            /* ValueCAN3 and ETAS ES581 */
+        case NEODEVICE_VCAN3:
+            if ((serialNumber >= 80000) && (serialNumber <= 119999))
+            {
+                if (nHardwareLic == 8)   // Limited Version with only one channel
+                {
+                    _stprintf(chTemp, "ES581.2, Serial Number %d, Network: %s",
+                              serialNumber-50000, &netid_str[0]);
+
+                }
+                else     // Two channels
+                {
+                    _stprintf(chTemp, "ES581.3, Serial Number %d, Network: %s",
+                              serialNumber-50000, &netid_str[0]);
+
+                }
+            }
+            else
+            {
+                _stprintf(chTemp, "ValueCAN3, Serial Number %d, Network: %s",
+                          serialNumber, &netid_str[0]);
+            }
+            break;
+
+        default:
+            _stprintf(chTemp, "Unknown, Serial Number %d", serialNumber);
+            //chTemp = "Unknown";
+            break;
+    };
+
+    return chTemp;
+}
 /**
  * This function will add channels to hardware inteface structure.
  */
@@ -1351,6 +1495,8 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
         acTempStr << "Port ID: " << sg_HardwareIntr[nChannels].m_dwIdInterface << "-CAN" << std::dec << narrNetwordID[i];
         sg_HardwareIntr[nChannels].m_acDescription = acTempStr.str();
 
+        sg_HardwareList.m_omHardwareChannel[nChannels] = omGetDeviceType(nChannels, sg_ndNeoToOpen[nDevID].DeviceType
+                , sg_ndNeoToOpen[nDevID].SerialNumber, nHardwareLic, sg_HardwareIntr[nChannels].m_bytNetworkID);
         nChannels++;
     }
 
@@ -1381,6 +1527,7 @@ static int nCreateSingleHardwareNetwork()
     // Set the number of channels
     sg_odHardwareNetwork.m_nNoOfChannels = 1;
     sg_odHardwareNetwork.m_nNoOfDevices  = 1;
+    sg_nNoOfChannels = 1;
     // Assign hardware handle
     sg_odHardwareNetwork.m_aodChannels[ 0 ].m_hHardwareHandle = (BYTE)sg_ndNeoToOpen[0].Handle;
 
@@ -1421,12 +1568,36 @@ int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInt
     }
 }
 
+unsigned int GetSelectedChannelIndex(unsigned int unIndex)
+{
+    int nSelChannel = -1;
+    std::string omHardwareName;
+    for(int nChannel = 0; nChannel < defNO_OF_CHANNELS; nChannel++)
+    {
+        /*std::ostringstream oss1;
+        oss1 << "Kvaser - " << sg_HardwareIntr[nChannel].m_acDescription.c_str() << ", Serial Number- "
+            <<sg_HardwareIntr[nChannel].m_dwVendor
+            << ", Firmware- " << sg_HardwareIntr[nChannel].m_acDeviceName.c_str();
+        omHardwareName = oss1.str();*/
+
+        if(sg_HardwareList.m_omHardwareChannel[nChannel] == sg_SelectedChannels.m_omHardwareChannel[unIndex]
+                && sg_HardwareIntr[nChannel].m_acDescription.c_str() != "")
+        {
+            nSelChannel = nChannel;
+            break;
+        }
+    }
+
+    return nSelChannel;
+}
+
 /**
  * This function will get the hardware selection from the user
  * and will create essential networks.
  */
-static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
+static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0, bool bAutoSelect = false)
 {
+    int nHardwareCountPrev = sg_ucNoOfHardware;
     int nHwCount = sg_ucNoOfHardware;
     int nChannels = 0;
     // Get Hardware Network Map
@@ -1514,20 +1685,35 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
 
     nHwCount = nChannels;   //Reassign hardware count according to final list of channels supported.
 
-    /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
-    if ( unDefaultChannelCnt && nHwCount >= unDefaultChannelCnt )
+    if(bAutoSelect == false)
     {
-        for (UINT i = 0; i < unDefaultChannelCnt; i++)
+        /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
+        if ( unDefaultChannelCnt && nHwCount >= unDefaultChannelCnt )
         {
-            sg_anSelectedItems[i] = i;
+            for (UINT i = 0; i < unDefaultChannelCnt; i++)
+            {
+                sg_anSelectedItems[i] = GetSelectedChannelIndex(i);
+            }
+            nHwCount = unDefaultChannelCnt;
         }
-        nHwCount = unDefaultChannelCnt;
+        else if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_ICS_NEOVI, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
+        {
+            sg_ucNoOfHardware = nHardwareCountPrev;
+            return HW_INTERFACE_NO_SEL;
+        }
     }
-    else if ( ListHardwareInterfaces(sg_hOwnerWnd, DRIVER_CAN_ICS_NEOVI, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
+    else
     {
-        return HW_INTERFACE_NO_SEL;
+        for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
+        {
+            sg_anSelectedItems[nCount] = GetSelectedChannelIndex(nCount);
+        }
+
+        nHwCount = sg_ucNoOfHardware;
     }
+
     sg_ucNoOfHardware = (UCHAR)nHwCount;
+    sg_nNoOfChannels = (UCHAR)nHwCount;
     //Reorder hardware interface as per the user selection
     for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
     {
@@ -2107,6 +2293,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_PerformInitOperations(void)
     for ( UINT i = 0; i< CHANNEL_ALLOWED; i++ )
     {
         sg_anSelectedItems[i] = -1;
+        sg_ControllerDetails[i].m_omHardwareDesc = "";
     }
 
     return S_OK;
@@ -2157,6 +2344,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
         if (( hResult = nConnectToDriver(nCount) ) == CAN_USB_OK)
         {
             nCount = sg_ucNoOfHardware;
+            //sg_ucNoOfHardware = sg_nNoOfChannels;
             for (UINT i = 0; i < sg_ucNoOfHardware; i++)
             {
                 asSelHwInterface[i].m_dwIdInterface = (DWORD)sg_ndNeoToOpen[i].Handle;
@@ -2164,9 +2352,13 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
                 oss << std::dec << sg_ndNeoToOpen[i].SerialNumber;
                 asSelHwInterface[i].m_acDescription = oss.str();
                 asSelHwInterface[i].m_bytNetworkID = m_bytNetworkIDs[i];
+                asSelHwInterface[i].m_acNameInterface = sg_HardwareList.m_omHardwareChannel[sg_anSelectedItems[i]].c_str();
+                sg_ControllerDetails[i].m_omHardwareDesc = sg_HardwareList.m_omHardwareChannel[sg_anSelectedItems[i]].c_str();
                 hResult = S_OK;
                 sg_bCurrState = STATE_HW_INTERFACE_LISTED;
             }
+
+            m_dwDriverId = m_dwPrevDriverId;
         }
         else
         {
@@ -2215,6 +2407,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
             sg_ndNeoToOpen[i].Handle       = (INT)asSelHwInterface[i].m_dwIdInterface;
             sg_ndNeoToOpen[i].SerialNumber = _ttoi(asSelHwInterface[i].m_acDescription.c_str());
             m_bytNetworkIDs[i]             = asSelHwInterface[i].m_bytNetworkID;
+            sg_ControllerDetails[i].m_omHardwareDesc = asSelHwInterface[i].m_acNameInterface;
         }
         //Check for the success
         sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
@@ -2258,6 +2451,63 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, in
                                "Controller configuration failed");
     }
     return hResult;
+}
+
+HRESULT CDIL_CAN_ICSNeoVI::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS ouControllerDetails,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
+{
+    if(m_dwDriverId != 0 && m_dwDriverId != dwDriverId )
+    {
+        m_dwPrevDriverId = dwDriverId;
+        return S_OK;
+    }
+
+    m_dwDriverId = dwDriverId;
+    m_dwPrevDriverId = dwDriverId;
+
+    sg_SelectedChannels.m_nChannelCount = 0;
+
+    for ( UINT i = 0; i< CHANNEL_ALLOWED; i++ )
+    {
+        sg_anSelectedItems[i] = -1;
+    }
+
+    for (int nChannel = 0; nChannel < unChannelCount/*(sg_ControllerDetails[nChannel].m_omHardwareDesc != "") && (sg_ControllerDetails[nChannel].m_omHardwareDesc != "Simulation")*/ ; nChannel++)
+    {
+        if((ouControllerDetails[nChannel].m_omHardwareDesc != "") && (ouControllerDetails[nChannel].m_omHardwareDesc != "Simulation"))
+        {
+            sg_SelectedChannels.m_omHardwareChannel[nChannel] = ouControllerDetails[nChannel].m_omHardwareDesc;
+            sg_ControllerDetails[nChannel].m_omHardwareDesc = ouControllerDetails[nChannel].m_omHardwareDesc;
+            sg_SelectedChannels.m_nChannelCount += 1;
+        }
+    }
+
+    sg_ucNoOfHardware = sg_SelectedChannels.m_nChannelCount;
+    sg_nNoOfChannels = sg_SelectedChannels.m_nChannelCount;
+
+    if(sg_ucNoOfHardware > 0)
+    {
+        int nResult = nCreateMultipleHardwareNetwork(1, true);
+
+        if(nResult != CAN_USB_OK)
+        {
+            return S_FALSE;
+        }
+    }
+
+    /*for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
+    {
+        sg_anSelectedItems[nCount] = GetSelectedChannelIndex(nCount);
+
+        if(sg_anSelectedItems[nCount] != -1)
+        {
+            sg_ndNeoToOpen[nCount].Handle       = (int)sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface;
+            sg_ndNeoToOpen[nCount].SerialNumber = (int)sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwVendor;
+            _stscanf_s(sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acNameInterface.c_str(), "%d", &sg_ndNeoToOpen[nCount].DeviceType);
+            m_bytNetworkIDs[nCount]             =  sg_HardwareIntr[sg_anSelectedItems[nCount]].m_bytNetworkID;
+        }
+    }*/
+
+    return S_OK;
 }
 
 BOOL Callback_DILTZM(BYTE /*Argument*/, PSCONTROLLER_DETAILS pDatStream, int /*Length*/)
@@ -2468,10 +2718,10 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, i
     /* Fill the hardware description details */
     hFillHardwareDesc(pControllerDetails);
 
-    if (sg_ucNoOfHardware > 0)
+    if (sg_nNoOfChannels > 0)
     {
         int nResult = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILTZM,
-                                              pControllerDetails, sg_ucNoOfHardware);
+                                              pControllerDetails, sg_nNoOfChannels);
         switch (nResult)
         {
             case WARNING_NOTCONFIRMED:

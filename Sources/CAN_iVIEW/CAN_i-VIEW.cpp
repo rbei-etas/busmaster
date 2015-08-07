@@ -1291,3 +1291,7 @@ void CDIL_CAN_i_VIEW::RxEvent(
         pClientItr->second->WriteClientBuffers(CanData);
     }
 }
+HRESULT CDIL_CAN_i_VIEW::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
+{
+    return S_OK;
+}
