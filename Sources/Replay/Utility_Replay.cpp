@@ -385,11 +385,11 @@ BOOL bIsModeMismatch( std::ifstream& omInReplayFile,
 /*  Modification By  :  Krishnaswamy B.N                                      */
 /*  Modified On      :  03.06.2004, Relative time is computed                 */
 /******************************************************************************/
-UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
+DOUBLE unTimeDiffBetweenMsg( CString& omStrNextMsg,
                            CString& omStrCurMsg,
                            WORD wLogReplyTimeMode)
 {
-    UINT unTimeDifference    = 0;
+    DOUBLE unTimeDifference    = 0;
     CString omStrMsgCurTime  ="";
     CString omStrMsgNextTime  ="";
     CString omStrTemp        ="";
@@ -445,14 +445,14 @@ UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
     {
         if(dCurTime < dNextTime)
         {
-            unTimeDifference = (UINT)(dNextTime - dCurTime + 0.5);
+            unTimeDifference = (dNextTime - dCurTime);
         }
     }
     else
     {
-        if(dNextTime >0)
+        if(dNextTime > 0)
         {
-            unTimeDifference = static_cast<UINT>(dNextTime) ;
+            unTimeDifference = dNextTime ;
         }
     }
 

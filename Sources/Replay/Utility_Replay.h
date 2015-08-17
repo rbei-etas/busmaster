@@ -33,7 +33,7 @@ void vConvStrtoByteArray(CByteArray* pomByteArrayBufTx,
                          BOOL bHexON);
 
 // To get the time differenct between two message entries
-UINT unTimeDiffBetweenMsg( CString& omStrNextMsg,
+DOUBLE unTimeDiffBetweenMsg( CString& omStrNextMsg,
                            CString& omStrCurMsg,
                            WORD wLogReplyTimeMode);
 BOOL bIsModeMismatch( std::ifstream& omInReplayFile,
