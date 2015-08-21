@@ -11943,6 +11943,12 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
                         m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
                     }
                 }
+				else if (hResult == ERR_LOAD_DRIVER){
+					theApp.bWriteIntoTraceWnd(_("Driver Selection Failed"));
+                    m_shLINDriverId = DAL_NONE;          //select simulation
+                    IntializeDILL();
+                    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)LIN);
+				}
                 else
                 {
                     theApp.bWriteIntoTraceWnd(_("Selecting hardware interface failed"));

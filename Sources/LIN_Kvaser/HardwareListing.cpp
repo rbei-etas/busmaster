@@ -429,8 +429,13 @@ void CHardwareListing::OnOK()
     m_nNoOfHwSelected = m_omSelectedHwList.GetItemCount();
     if (m_nNoOfHwSelected < 1)
     {
-        AfxMessageBox(_("Please select atleast one hardware"));
-        return;
+        //AfxMessageBox(_("Please select atleast one hardware"));
+		//return;
+		for( int nIndex = 0; (UINT)nIndex < MIN( (UINT)m_nSize, CHANNEL_ALLOWED ); nIndex++ )
+		{
+			m_anSelectedChannels[ nIndex ] = nIndex;
+		}
+		m_nNoOfHwSelected = MIN( m_nSize, CHANNEL_ALLOWED );
     }
     // Number of hardware will be used
     int nNumberOfHwUsed = MIN( m_nSize, CHANNEL_ALLOWED );
@@ -469,10 +474,15 @@ void CHardwareListing::OnOK()
     // number of hardware available!!!!!
     else
     {
-        CString omErr;
-        omErr.Format(_("Please select atmost %d hardwares"),  CHANNEL_ALLOWED);
-        AfxMessageBox(omErr);
-        return;
+        //CString omErr;
+        //omErr.Format(_("Please select atmost %d hardwares"),  CHANNEL_ALLOWED);
+        //AfxMessageBox(omErr);
+        //return;
+		for( int nIndex = 0; (UINT)nIndex < MIN( (UINT)m_nSize, CHANNEL_ALLOWED ); nIndex++ )
+		{
+			m_anSelectedChannels[ nIndex ] = nIndex;
+		}
+		m_nNoOfHwSelected = MIN( m_nSize, CHANNEL_ALLOWED );
     }
     // Call Parent class function to return from DoModal
     CDialog::OnOK();
