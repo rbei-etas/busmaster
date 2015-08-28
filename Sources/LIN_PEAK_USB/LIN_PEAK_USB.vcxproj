@@ -94,6 +94,7 @@
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;$(LibraryPath)</LibraryPath>
     <IncludePath>C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;$(IncludePath)</IncludePath>
+    <ExecutablePath>C:\iconv-1.9.2.win32\bin;C:\libxml2-2.7.8.win32\bin;C:\zlib-1.2.5\bin;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
     <OutDir>busmaster_debug\</OutDir>
