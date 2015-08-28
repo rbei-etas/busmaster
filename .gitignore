@@ -94,6 +94,7 @@ Sources/DIL_J1939/Release
 Sources/EXTERNAL/*/Release
 Sources/Filter/Release
 Sources/FLEXRAY_ETAS_BOA/Release
+Sources/FLEXRAY_GIGATRONIK_FLEXI/Release
 Sources/Format Converter/Release
 Sources/Format Converter/*/Release
 Sources/FrameProcessor/Release
@@ -101,6 +102,7 @@ Sources/LIN_ETAS_BOA/Release
 Sources/LIN_ISOLAR_EVE_VLIN/Release
 Sources/LIN_PEAK_USB/Release
 Sources/LIN_Vector_XL/Release
+Sources/LIN_Kvaser/Release
 Sources/MHS_CNFG/Release
 Sources/NodeSimEx/Release
 Sources/ProjectConfiguration/Release
@@ -152,6 +154,7 @@ Sources/LIN_ETAS_BOA/Debug
 Sources/LIN_ISOLAR_EVE_VLIN/Debug
 Sources/LIN_PEAK_USB/Debug
 Sources/LIN_Vector_XL/Debug
+Sources/LIN_Kvaser/Debug
 Sources/MHS_CNFG/Debug
 Sources/NodeSimEx/Debug
 Sources/ProjectConfiguration/Debug
@@ -171,6 +174,58 @@ Sources/Utility/Debug
 Sources/LDFEditor/Debug
 Sources/LDFViewer/Debug
 Sources/DBManager/Debug
+
+Sources/Application/busmaster_debug
+Sources/BusEmulation/busmaster_debug
+Sources/CAN_ETAS_BOA/busmaster_debug
+Sources/CAN_ICS_neoVI/busmaster_debug
+Sources/CAN_iVIEW/busmaster_debug
+Sources/CAN_ISOLAR_EVE_VCAN/busmaster_debug
+Sources/CAN_IXXAT_VCI/busmaster_debug
+Sources/CAN_Kvaser_CAN/busmaster_debug
+Sources/CAN_MHS/busmaster_debug
+Sources/CAN_NSI/busmaster_debug
+Sources/CAN_STUB/busmaster_debug
+Sources/CAN_Vector_XL/busmaster_debug
+Sources/CAN_VSCOM/busmaster_debug
+Sources/CommonClass/busmaster_debug
+Sources/ConfigDialogsDIL/busmaster_debug
+Sources/DataTypes/busmaster_debug
+Sources/DIL_Interface/busmaster_debug
+Sources/DIL_J1939/busmaster_debug
+Sources/EXTERNAL/*/busmaster_debug
+Sources/EXTERNAL/*/DebugU
+Sources/EXTERNAL/*/ReleaseUMinSize
+Sources/Filter/busmaster_debug
+Sources/FLEXRAY_ETAS_BOA/busmaster_debug
+Sources/Format Converter/busmaster_debug
+Sources/Format Converter/*/busmaster_debug
+Sources/FrameProcessor/busmaster_debug
+Sources/LIN_ETAS_BOA/busmaster_debug
+Sources/LIN_ISOLAR_EVE_VLIN/busmaster_debug
+Sources/LIN_PEAK_USB/busmaster_debug
+Sources/LIN_Vector_XL/busmaster_debug
+Sources/LIN_Kvaser/busmaster_debug
+Sources/MHS_CNFG/busmaster_debug
+Sources/NodeSimEx/busmaster_debug
+Sources/ProjectConfiguration/busmaster_debug
+Sources/PSDI_CAN/busmaster_debug
+Sources/Replay/busmaster_debug
+Sources/SigGrphWnd/busmaster_debug
+Sources/SignalDefiner/busmaster_debug
+Sources/SignalWatch/busmaster_debug
+Sources/TestSetupEditorGUI/busmaster_debug
+Sources/TestSetupEditorLib/busmaster_debug
+Sources/TestSuiteExecutorGUI/busmaster_debug
+Sources/TXWindow/busmaster_debug
+Sources/TXWindowFlexRay/busmaster_debug
+Sources/TXWindowLIN/busmaster_debug
+Sources/UDS_Protocol/busmaster_debug
+Sources/Utility/busmaster_debug
+Sources/LDFEditor/busmaster_debug
+Sources/LDFViewer/busmaster_debug
+Sources/DBManager/busmaster_debug
+
 *.user
 # build directories
 Sources/build
@@ -223,10 +278,12 @@ Sources/BIN/*/FlexRay_ETAS_BOA_1_4.dll
 Sources/BIN/*/FlexRay_ETAS_BOA_1_5.dll
 Sources/BIN/*/FlexRay_ETAS_BOA_2.dll
 Sources/BIN/*/FrameProcessor.dll
+Sources/BIN/*/FlexRay_GIGATRONIK_flex-i.dll
 Sources/BIN/*/LIN_ETAS_BOA.dll
 Sources/BIN/*/LIN_ISOLAR_EVE_VLIN.dll
 Sources/BIN/*/LIN_PEAK_USB.dll
 Sources/BIN/*/LIN_Vector_XL.dll
+Sources/BIN/*/LIN_Kvaser.dll
 Sources/BIN/*/mhsbmcfg.dll
 Sources/BIN/*/NodeSimEx.dll
 Sources/BIN/*/PSDI_CAN.dll
@@ -291,7 +348,11 @@ Sources/BIN/Libs/*/Filter.lib
 Sources/BIN/Libs/*/FlexRay_ETAS_BOA_1_4.lib
 Sources/BIN/Libs/*/FlexRay_ETAS_BOA_1_5.lib
 Sources/BIN/Libs/*/FlexRay_ETAS_BOA_2.lib
+Sources/BIN/Libs/*/FlexRay_ETAS_BOA_2.0.lib
+Sources/BIN/Libs/*/FlexRay_GIGATRONIK_flex-i.lib
 Sources/BIN/Libs/*/FrameProcessor.lib
+Sources/BIN/Libs/*/LIN_Kvaser.lib
+Sources/BIN/Libs/*/LIN_PEAK_USB.lib
 Sources/BIN/Libs/*/NodeSimEx.lib
 Sources/BIN/Libs/*/PSDI_CAN.lib
 Sources/BIN/Libs/*/ProjectConfiguration.lib
