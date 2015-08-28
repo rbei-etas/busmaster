@@ -231,6 +231,7 @@ Sources/DBManager/busmaster_debug
 Sources/build
 Sources/Format Converter/build
 # Files in BIN (except hardware specific files)
+Sources/BIN/DumpFiles
 Sources/BIN/*/*.bmp
 Sources/BIN/*/*.c
 Sources/BIN/*/*.chm
