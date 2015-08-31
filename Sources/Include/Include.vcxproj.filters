@@ -31,5 +31,8 @@
     <ClInclude Include="XMLDefines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Struct_LIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

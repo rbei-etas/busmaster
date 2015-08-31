@@ -93,9 +93,6 @@
     <ClInclude Include="CommanDIL_Flexray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BaseDIL_LIN.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

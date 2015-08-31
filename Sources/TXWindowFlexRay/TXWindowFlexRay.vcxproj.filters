@@ -66,16 +66,13 @@
     <ClCompile Include="LinFlexListCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ColumnTreeCtrl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ColumnTreeWnd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LINScheduleDataStore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScheduleTableCfgDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CCheckColumnTreeCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -140,16 +137,13 @@
     <ClInclude Include="LinFlexListCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ColumnTreeCtrl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ColumnTreeWnd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LINScheduleDataStore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ScheduleTableCfgDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CCheckColumnTreeCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -163,6 +157,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\ScheduleTable.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ico_send.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\TxWindow.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
