@@ -1,0 +1,6 @@
+; CAN_STUB.def : Declares the module parameters for the DLL.
+
+LIBRARY      "CAN_STUB"
+
+EXPORTS
+    ; Explicit exports can go here
