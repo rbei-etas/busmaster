@@ -18,6 +18,8 @@
 *.vcxproj.user
 *.db
 *.ldf
+*.tlb
+
 qwebp.dll
 qwbmp.dll
 qtaccessiblewidgets.dll
@@ -86,6 +88,7 @@ Sources/CAN_NSI/Release
 Sources/CAN_STUB/Release
 Sources/CAN_Vector_XL/Release
 Sources/CAN_VSCOM/Release
+Sources/CAN_QRCAN/Release
 Sources/CommonClass/Release
 Sources/ConfigDialogsDIL/Release
 Sources/DataTypes/Release
@@ -137,6 +140,7 @@ Sources/CAN_NSI/Debug
 Sources/CAN_STUB/Debug
 Sources/CAN_Vector_XL/Debug
 Sources/CAN_VSCOM/Debug
+Sources/CAN_QRCAN/Debug
 Sources/CommonClass/Debug
 Sources/ConfigDialogsDIL/Debug
 Sources/DataTypes/Debug
@@ -188,6 +192,7 @@ Sources/CAN_NSI/busmaster_debug
 Sources/CAN_STUB/busmaster_debug
 Sources/CAN_Vector_XL/busmaster_debug
 Sources/CAN_VSCOM/busmaster_debug
+Sources/CAN_QRCAN/busmaster_debug
 Sources/CommonClass/busmaster_debug
 Sources/ConfigDialogsDIL/busmaster_debug
 Sources/DataTypes/busmaster_debug
@@ -198,6 +203,7 @@ Sources/EXTERNAL/*/DebugU
 Sources/EXTERNAL/*/ReleaseUMinSize
 Sources/Filter/busmaster_debug
 Sources/FLEXRAY_ETAS_BOA/busmaster_debug
+Sources/FLEXRAY_GIGATRONIK_FLEXI/busmaster_debug
 Sources/Format Converter/busmaster_debug
 Sources/Format Converter/*/busmaster_debug
 Sources/FrameProcessor/busmaster_debug
@@ -257,6 +263,7 @@ Sources/BIN/*/CAN_NSI.dll
 Sources/BIN/*/CAN_STUB.dll
 Sources/BIN/*/CAN_Vector_XL.dll
 Sources/BIN/*/CAN_VSCOM.dll
+Sources/BIN/*/CAN_QRCAN.dll
 Sources/BIN/*/Changelog.txt
 Sources/BIN/*/ConfigDialogsDIL.dll
 Sources/BIN/*/ConverterPlugins/AscLogConverter.dll
@@ -340,6 +347,7 @@ Sources/BIN/Libs/*/CAN_PEAK_USB.lib
 Sources/BIN/Libs/*/CAN_STUB.lib
 Sources/BIN/Libs/*/CAN_Vector_XL.lib
 Sources/BIN/Libs/*/CAN_VSCOM.lib
+Sources/BIN/Libs/*/CAN_QRCAN.lib
 Sources/BIN/Libs/*/CommonClass.lib
 Sources/BIN/Libs/*/ConfigDialogsDIL.lib
 Sources/BIN/Libs/*/DIL_Interface.lib
