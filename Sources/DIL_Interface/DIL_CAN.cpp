@@ -68,9 +68,10 @@ static ENTRY_DIL sg_ListDIL[] =
     {DRIVER_CAN_MHS,        "&MHS Tiny-CAN"     },
     {DRIVER_CAN_NSI,        "&NSI CAN-API"      },
     {DRIVER_CAN_PEAK_USB,   "&PEAK USB"         },
+	{DRIVER_CAN_QRCAN,      "QRCAN"             },
     {DRIVER_CAN_VECTOR_XL,  "&Vector XL"        },
     {DRIVER_CAN_VSCOM,      "VScom &CAN-API"    },
-	{DRIVER_CAN_QRCAN,      "QRCAN"             },
+
 };
 
 CDIL_CAN::CDIL_CAN()

@@ -77,53 +77,9 @@ BOOL CCAN_QRCAN::InitInstance()
     return TRUE;
 }
 
-/* Parameters to relay outcome of the requested action by any thread to the
-   broker thread to the bus simulation component */
-static CRITICAL_SECTION sg_CSBroker;
-static HRESULT          sg_hResult          = S_FALSE;
-static HANDLE           sg_hNotifyFinish    = nullptr;
-static STCAN_MSG*       sg_pouCanTxMsg      = nullptr;
-static SYSTEMTIME       sg_CurrSysTime      = {'\0'};
-static LARGE_INTEGER    sg_QueryTickCount;
-static UINT64           sg_TimeStampRef     = 0x0;
-static HWND             sg_hOwnerWnd        = nullptr;
-
 /**
- * Broker thread for the bus emulation
+ * Client and Client Buffer map
  */
-static CPARAM_THREADPROC sg_sBrokerObjBusEmulation;
-
-/**
- * Different action codes
- */
-enum
-{
-    CONNECT = 0x64,
-    DISCONNECT,
-    STOP_HARDWARE,
-    START_HARDWARE,
-    SEND_MESSAGE,
-    GET_TIME_MAP,
-    REGISTER,
-    UNREGISTER,
-};
-
-/**
- * \brief Buffer to read msg from the PIPE
- *
- * This buffer include CAN Msg + 1 Byte to indicate TX/RX + UINT64 to indicate timestamp
- */
-struct tagPIPE_CANMSG
-{
-    BYTE m_byTxRxFlag;
-    UINT64 m_unTimeStamp;
-    STCAN_MSG m_sCanMsg;
-};
-typedef tagPIPE_CANMSG SPIPE_CANMSG;
-
-const int SIZE_PIPE_CANMSG = sizeof(BYTE) + sizeof(UINT64) + sizeof(STCAN_MSG);
-const BYTE SIZE_TIMESTAMP = sizeof(UINT64);
-
 #define MAX_CLIENT_ALLOWED 16
 #define MAX_BUFF_ALLOWED 16
 
@@ -155,44 +111,8 @@ public:
 };
 typedef SCLIENTBUFMAP* PSCLIENTBUFMAP;
 
-/**
- * global client count
- */
-UINT sg_unClientCnt = 0;
-static std::vector<SCLIENTBUFMAP> sg_asClientToBufMap(MAX_CLIENT_ALLOWED);
-// Forward declarations
-
-/**
- * Application buffer, logging interface and client id
- */
-static CPARAM_THREADPROC sg_sParmRThreadQrCan;
-static Base_WrapperErrorLogger* sg_pIlog   = nullptr;
-
-/* Starts definitions of static global variables */
-static USHORT sg_ushTempClientID = 0;
-static HANDLE sg_hTmpClientHandle = nullptr;
-static HANDLE sg_hTmpPipeHandle = nullptr;
-/* Ends definitions of static global variables */
-
-
-/**
- * Buffer for the driver operation related error messages
- */
-static std::string sg_acErrStr;
-
-/**
- * Starts code for the state machine
- */
-enum
-{
-    STATE_PRIMORDIAL    = 0x0,
-    STATE_RESET,
-    STATE_REGISTERED,
-    STATE_INITIALISED,
-    STATE_CONNECTED
-};
-
-BYTE sg_bCurrState = STATE_PRIMORDIAL;
+/* QRCAN Variable Declarations */
+static HWND sg_hOwnerWnd = nullptr;
 
 /* CDIL_CAN_QRCAN class definition */
 class CDIL_CAN_QRCAN : public CBaseDIL_CAN_Controller
@@ -228,7 +148,7 @@ public:
     HRESULT CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount);
 };
 
-static CDIL_CAN_QRCAN* sg_pouDIL_CAN_QRCAN = nullptr;
+static CDIL_CAN_QRCAN* g_pouDIL_CAN_QRCAN = nullptr;
 
 /**
  * \return S_OK for success, S_FALSE for failure
@@ -237,799 +157,281 @@ static CDIL_CAN_QRCAN* sg_pouDIL_CAN_QRCAN = nullptr;
  */
 USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 {
-    HRESULT hResult = S_OK;
-    if ( nullptr == sg_pouDIL_CAN_QRCAN )
+    HRESULT hResult;
+
+    hResult = S_OK;
+    if (!g_pouDIL_CAN_QRCAN)
     {
-        if ((sg_pouDIL_CAN_QRCAN = new CDIL_CAN_QRCAN) == nullptr)
+        g_pouDIL_CAN_QRCAN = new CDIL_CAN_QRCAN;
+        if (!(g_pouDIL_CAN_QRCAN))
         {
             hResult = S_FALSE;
         }
     }
-    *ppvInterface = (void*) sg_pouDIL_CAN_QRCAN;  /* Doesn't matter even if sg_pouDIL_CAN_Kvaser is null */
+    *ppvInterface = (void*)g_pouDIL_CAN_QRCAN;  /* Doesn't matter even if g_pouDIL_CAN_VSCOM is null */
 
-    return hResult;
+    return(hResult);
 }
 
-// Worker function declarations: start
-HRESULT Worker_Connect(ISimENG*, Base_WrapperErrorLogger*);
-HRESULT Worker_Disconnect(ISimENG*, Base_WrapperErrorLogger*);
-HRESULT Worker_StopHardware(ISimENG*, Base_WrapperErrorLogger*);
-HRESULT Worker_StartHardware(ISimENG*, Base_WrapperErrorLogger*);
-HRESULT Worker_SendCanMsg(ISimENG*, Base_WrapperErrorLogger*, STCAN_MSG*);
-HRESULT Worker_GetTimeModeMapping(ISimENG*, Base_WrapperErrorLogger*);
-HRESULT Worker_RegisterClient(ISimENG* pISimENG, Base_WrapperErrorLogger* pIlog);
-HRESULT Worker_UnregisterClient(ISimENG* pISimENG, Base_WrapperErrorLogger* pIlog);
-// Worker function declarations: end
-
-// Prototype declarations
-HRESULT PerformAnOperation(BYTE bActionCode);
-DWORD WINAPI BrokerThreadBusEmulation(LPVOID pVoid);
-
-BYTE GetCurrState(void)
-{
-    return sg_bCurrState;
-}
-
-void SetCurrState(BYTE bNextState)
-{
-    sg_bCurrState = bNextState;
-}
-
-/* Ends code for the state machine */
-
-
-static void vInitialiseAllData(void)
-{
-    // Initialise both the time parameters
-    sg_acErrStr = "";
-}
-
-static void GetSystemErrorString()
-{
-    LPVOID lpMsgBuf;
-    DWORD dwResult = 0;
-
-    dwResult = FormatMessage(
-                   FORMAT_MESSAGE_ALLOCATE_BUFFER |
-                   FORMAT_MESSAGE_FROM_SYSTEM |
-                   FORMAT_MESSAGE_IGNORE_INSERTS,
-                   nullptr,
-                   GetLastError(),
-                   MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-                   (LPTSTR) &lpMsgBuf,
-                   0,
-                   nullptr );
-    if (dwResult <= 0)
-    {
-        sg_acErrStr = _("system error message retrieval operation failed");
-    }
-    else
-    {
-        LPSTR pBuf = T2A((LPTSTR) lpMsgBuf);
-        sg_acErrStr = pBuf;
-        // Free the buffer.
-        LocalFree(lpMsgBuf);
-    }
-}
-
-/* USEFUL MACROS AND FUNCTIONS: END */
-
-static BOOL bGetClientObj(HANDLE hClientHandle, UINT& unClientIndex)
-{
-    BOOL bResult = FALSE;
-    for (UINT i = 0; i < sg_unClientCnt; i++)
-    {
-        if (sg_asClientToBufMap[i].hClientHandle == hClientHandle)
-        {
-            unClientIndex = i;
-            i = sg_unClientCnt; //break the loop
-            bResult = TRUE;
-        }
-    }
-    return bResult;
-}
-
-static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf)
-{
-    BOOL bExist = FALSE;
-    for (UINT i = 0; i < sClientObj.unBufCount; i++)
-    {
-        if (pBuf == sClientObj.pClientBuf[i])
-        {
-            bExist = TRUE;
-            i = sClientObj.unBufCount; //break the loop
-        }
-    }
-    return bExist;
-}
-
-/* START OF READ THREAD FUNCTION WITH ITS HELPER FUNCTION */
-#define FLAG_RX     0x0
-#define FLAG_TX     0x1 /*these definitions are expected to 
-change if there is any modifications in SimEng.cpp*/
-
-const USHORT SIZE_DAT_P = sizeof(SPIPE_CANMSG);
-static void ProcessCanMsg(HANDLE hClientHandle, UINT unIndex)
-{
-    static SPIPE_CANMSG sPipeCanMsg;
-    static STCANDATA sCanData;
-    static DWORD dwBytes = 0;
-
-    /* To be noted - there is no validation for any pointer. This is because
-    this function assumes them to have been duly validated beforehand and it
-    is so by implementation. Efficiency is the motivation behind. */
-    BYTE abyData[SIZE_DAT_P] = {'\0'};
-
-    //if (ReadFile(hClientHandle, &sPipeCanMsg, SIZE_PIPE_CANMSG, &dwBytes, nullptr))
-    if (ReadFile(hClientHandle, abyData, SIZE_DAT_P, &dwBytes, nullptr))
-    {
-        memcpy(&(sPipeCanMsg.m_byTxRxFlag), abyData, 1);
-        memcpy(&(sPipeCanMsg.m_unTimeStamp), abyData + 1, SIZE_TIMESTAMP);
-        memcpy(&(sPipeCanMsg.m_sCanMsg), abyData + 1 + SIZE_TIMESTAMP, sizeof(STCAN_MSG));
-        if (dwBytes == SIZE_PIPE_CANMSG)
-        {
-            sCanData.m_lTickCount.QuadPart = sPipeCanMsg.m_unTimeStamp;
-            sCanData.m_uDataInfo.m_sCANMsg = sPipeCanMsg.m_sCanMsg;
-            /*Set CAN FD field to false*/
-            sCanData.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
-
-            if (sPipeCanMsg.m_byTxRxFlag == FLAG_TX)
-            {
-                sCanData.m_ucDataType = TX_FLAG;
-            }
-            else
-            {
-                sCanData.m_ucDataType = RX_FLAG;
-            }
-            for (UINT i = 0; i < sg_asClientToBufMap[unIndex].unBufCount; i++)
-            {
-                sg_asClientToBufMap[unIndex].pClientBuf[i]->WriteIntoBuffer(&sCanData);
-            }
-        }
-    }
-    else
-    {
-        GetSystemErrorString();
-    }
-}
-
-DWORD WINAPI FlexMsgReadThreadProc_QrCan(LPVOID pVoid)
-{
-    VALIDATE_POINTER_RETURN_VAL(sg_pIlog, (DWORD)-1);
-
-    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
-
-    pThreadParam->m_unActionCode = CREATE_TIME_MAP;
-    // Validate certain required pointers
-
-    //Set the action event
-    if ( sg_unClientCnt > 0 )
-    {
-        pThreadParam->m_hActionEvent = sg_asClientToBufMap[0].hClientHandle;
-    }
-
-    bool bLoopON = true;
-
-    while (bLoopON)
-    {
-        static HANDLE ahClientReadHandle[MAX_CLIENT_ALLOWED] = {0};
-        for (UINT i = 0; i < sg_unClientCnt; i++)
-        {
-            ahClientReadHandle[i] = sg_asClientToBufMap[i].hClientHandle;
-        }
-        DWORD dwIndex = WaitForMultipleObjects(sg_unClientCnt, ahClientReadHandle, FALSE, INFINITE);
-
-        if (dwIndex == WAIT_FAILED)
-        {
-            GetSystemErrorString();
-        }
-        else
-        {
-            UINT Index = dwIndex - WAIT_OBJECT_0;
-            switch (pThreadParam->m_unActionCode)
-            {
-                case INVOKE_FUNCTION:
-                {
-                    // Retrieve message from the pipe
-                    ProcessCanMsg(sg_asClientToBufMap[Index].hPipeFileHandle, Index);
-                }
-                break;
-                case CREATE_TIME_MAP:
-                {
-                    PerformAnOperation(GET_TIME_MAP);
-                    ProcessCanMsg(sg_asClientToBufMap[Index].hPipeFileHandle, Index);
-                    pThreadParam->m_unActionCode = INVOKE_FUNCTION;
-                }
-                break;
-                case EXIT_THREAD:
-                {
-                    bLoopON = false;
-                }
-                break;
-                default:
-                case INACTION:
-                {
-                    // nothing right at this moment
-                }
-                break;
-            }
-        }
-    }
-    SetEvent(pThreadParam->hGetExitNotifyEvent());
-
-    return 0;
-}
-
-HRESULT PerformAnOperation(BYTE bActionCode)
-{
-    HRESULT hResult = S_FALSE;
-
-    // Lock so that no other thread may use the common resources
-    EnterCriticalSection(&sg_CSBroker);
-
-    // Identify current assignment of the broker thread
-    sg_sBrokerObjBusEmulation.m_unActionCode = bActionCode;
-    // Now release the harness
-    SetEvent(sg_sBrokerObjBusEmulation.m_hActionEvent);
-    // Wait until current assignment of broker thread is over
-    WaitForSingleObject(sg_hNotifyFinish, INFINITE);
-    // Save the result
-    hResult = sg_hResult;
-
-    // Work is over, now unlock for others to use common resources
-    LeaveCriticalSection(&sg_CSBroker);
-
-    return hResult;
-}
-
-/* END OF READ THREAD FUNCTION WITH ITS HELPER FUNCTION */
-
-/* CDIL_CAN_QRCAN function definitions */
-
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Sets the application params.
+ */
 HRESULT CDIL_CAN_QRCAN::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
-    HRESULT hResult = S_FALSE;
-
-    if (GetCurrState() == STATE_PRIMORDIAL) // Only now this operation makes sense
-    {
-        if ((pILog != nullptr))
-        {
-            sg_hOwnerWnd = hWndOwner;       // Owner window handle
-            sg_pIlog = pILog;               // Log interface pointer
-            vInitialiseAllData();           // Initialise other data
-
-            SetCurrState(STATE_RESET);      // Reset state from primordial
-            hResult = S_OK;                 // All okey
-        }
-        else
-        {
-            sg_acErrStr = _("Null argument value(s) in SetAppParams");
-        }
-    }
-    else
-    {
-        sg_acErrStr = _("Improper current state to call SetAppParams");
-    }
-
-    return hResult;
-}
-
-HRESULT CDIL_CAN_QRCAN::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS /* InitData */, int& Length)
-{
-    HRESULT Result = S_FALSE;
-    char acInitFile[MAX_PATH] = {'\0'};
-
-    // Assuming that InitData points to a CHAR array with size MAX_PATH
-    //    strcpy_s(acInitFile, MAX_PATH, InitData);
-    int nResult = WARNING_NOTCONFIRMED;//DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILQrCan,
-
-    //acInitFile, DRIVER_QRCAN);
-    switch (nResult)
-    {
-        case WARNING_NOTCONFIRMED:
-        {
-            Result = WARN_INITDAT_NCONFIRM;
-        }
-        break;
-        case INFO_INIT_DATA_CONFIRMED:
-        {
-            //            strcpy(InitData, acInitFile); // Copy init file path
-            Length = lstrlen(acInitFile) + 1;
-            Result = S_OK;
-        }
-        break;
-        case INFO_RETAINED_CONFDATA:
-        {
-            Result = INFO_INITDAT_RETAINED;
-        }
-        break;
-        case ERR_CONFIRMED_CONFIGURED: // Not to be addressed at present
-        case INFO_CONFIRMED_CONFIGURED:// Not to be addressed at present
-        default:
-        {
-            // Do nothing... default return value is S_FALSE.
-        }
-        break;
-    }
-
-    return Result;
-}
-
-static BOOL bClientExist(std::string pcClientName, INT& Index)
-{
-    for (UINT i = 0; i < sg_unClientCnt; i++)
-    {
-        if (pcClientName == sg_asClientToBufMap[i].pacClientName)
-        {
-            Index = i;
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
-
-static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
-{
-    BOOL bResult = FALSE;
-    for (UINT i = 0; i < sg_unClientCnt; i++)
-    {
-        if (sg_asClientToBufMap[i].dwClientID == dwClientID)
-        {
-            unClientIndex = i;
-            i = sg_unClientCnt; //break the loop
-            bResult = TRUE;
-        }
-    }
-    return bResult;
-}
-
-static BOOL bRemoveClient(DWORD dwClientId)
-{
-    BOOL bResult = FALSE;
-    if (sg_unClientCnt > 0)
-    {
-        UINT unClientIndex = (UINT)-1;
-        if (bGetClientObj(dwClientId, unClientIndex))
-        {
-            //clear the client first
-            sg_ushTempClientID  = (SHORT)sg_asClientToBufMap[unClientIndex].dwClientID;
-            sg_hTmpClientHandle = sg_asClientToBufMap[unClientIndex].hClientHandle;
-            sg_hTmpPipeHandle   = sg_asClientToBufMap[unClientIndex].hPipeFileHandle;
-            HRESULT hResult = PerformAnOperation(UNREGISTER);
-            if (hResult == S_OK)
-            {
-                sg_asClientToBufMap[unClientIndex].dwClientID = 0;
-                sg_asClientToBufMap[unClientIndex].hClientHandle = nullptr;
-                sg_asClientToBufMap[unClientIndex].hPipeFileHandle = nullptr;
-                sg_asClientToBufMap[unClientIndex].pacClientName = "";
-                for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
-                {
-                    sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
-                }
-                sg_asClientToBufMap[unClientIndex].unBufCount = 0;
-                bResult = TRUE;
-            }
-            else
-            {
-                sg_pIlog->vLogAMessage(__FILE__, __LINE__, _("Unregister failed"));
-            }
-
-            if (bResult == TRUE)
-            {
-                if ((unClientIndex + 1) < sg_unClientCnt)
-                {
-                    sg_asClientToBufMap[unClientIndex] = sg_asClientToBufMap[sg_unClientCnt - 1];
-                }
-                sg_unClientCnt--;
-            }
-        }
-    }
-    return bResult;
-}
-
-static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove)
-{
-    BOOL bReturn = TRUE;
-    for (UINT i = 0; i < unCount; i++)
-    {
-        if (RootBufferArray[i] == BufferToRemove)
-        {
-            if (i < (unCount - 1)) //If not the last bufffer
-            {
-                RootBufferArray[i] = RootBufferArray[unCount - 1];
-            }
-            unCount--;
-        }
-    }
-    return bReturn;
+	sg_hOwnerWnd = hWndOwner;
+    return S_OK;
 }
 
 /**
- * Register Client
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Unloads the driver library.
  */
-HRESULT CDIL_CAN_QRCAN::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, char* pacClientName)
-{
-    USES_CONVERSION;
-    HRESULT hResult = S_FALSE;
-    if (bRegister)
-    {
-        if (sg_unClientCnt < MAX_CLIENT_ALLOWED)
-        {
-            INT Index = 0;
-            if (!bClientExist(pacClientName, Index))
-            {
-                sg_asClientToBufMap[sg_unClientCnt].pacClientName = pacClientName;
-
-                if (PerformAnOperation(REGISTER) == S_OK)
-                {
-                    ClientID = sg_asClientToBufMap[sg_unClientCnt].dwClientID = sg_ushTempClientID;
-                    sg_asClientToBufMap[sg_unClientCnt].hClientHandle = sg_hTmpClientHandle;
-                    sg_asClientToBufMap[sg_unClientCnt].hPipeFileHandle = sg_hTmpPipeHandle;
-                    sg_asClientToBufMap[sg_unClientCnt].unBufCount = 0;
-                    sg_unClientCnt++;
-                    hResult = S_OK;
-                }
-            }
-            else
-            {
-                ClientID = sg_asClientToBufMap[Index].dwClientID;
-                hResult = ERR_CLIENT_EXISTS;
-            }
-        }
-        else
-        {
-            hResult = ERR_NO_MORE_CLIENT_ALLOWED;
-        }
-    }
-    else
-    {
-        if (bRemoveClient(ClientID))
-        {
-            hResult = S_OK;
-        }
-        else
-        {
-            hResult = ERR_NO_CLIENT_EXIST;
-        }
-    }
-    return hResult;
-}
-
-HRESULT CDIL_CAN_QRCAN::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
-{
-    HRESULT hResult = S_FALSE;
-    if (ClientID != 0)
-    {
-        UINT unClientIndex;
-        if (bGetClientObj(ClientID, unClientIndex))
-        {
-            SCLIENTBUFMAP& sClientObj = sg_asClientToBufMap[unClientIndex];
-            if (bAction == MSGBUF_ADD)
-            {
-                //Add msg buffer
-                if (pBufObj != nullptr)
-                {
-                    if (sClientObj.unBufCount < MAX_BUFF_ALLOWED)
-                    {
-                        if (bIsBufferExists(sClientObj, pBufObj) == FALSE)
-                        {
-                            sClientObj.pClientBuf[sClientObj.unBufCount++] = pBufObj;
-                            hResult = S_OK;
-                        }
-                        else
-                        {
-                            hResult = ERR_BUFFER_EXISTS;
-                        }
-                    }
-                }
-            }
-            else if (bAction == MSGBUF_CLEAR)
-            {
-                //clear msg buffer
-                //clear msg buffer
-                if (pBufObj != nullptr) //REmove only buffer mentioned
-                {
-                    bRemoveClientBuffer(sClientObj.pClientBuf, sClientObj.unBufCount, pBufObj);
-                }
-                else //Remove all
-                {
-                    for (UINT i = 0; i < sClientObj.unBufCount; i++)
-                    {
-                        sClientObj.pClientBuf[i] = nullptr;
-                    }
-                    sClientObj.unBufCount = 0;
-                }
-                hResult = S_OK;
-            }
-            else
-            {
-                ////ASSERT(false);
-            }
-        }
-        else
-        {
-            hResult = ERR_NO_CLIENT_EXIST;
-        }
-    }
-    else
-    {
-        if (bAction == MSGBUF_CLEAR)
-        {
-            //clear msg buffer
-            for (UINT i = 0; i < sg_unClientCnt; i++)
-            {
-                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, nullptr);
-            }
-            hResult = S_OK;
-        }
-    }
-
-    return hResult;
-}
-
-HRESULT CDIL_CAN_QRCAN::CAN_StopHardware(void)
-{
-    HRESULT hResult = PerformAnOperation(DISCONNECT);
-    if (hResult == S_OK)
-    {
-        hResult = PerformAnOperation(STOP_HARDWARE);
-    }
-    return hResult;
-}
-
-HRESULT CDIL_CAN_QRCAN::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int /*Length*/)
-{
-    switch (GetCurrState())
-    {
-        case STATE_REGISTERED:
-        case STATE_CONNECTED:
-        case STATE_INITIALISED:
-            break;
-        case STATE_PRIMORDIAL:
-        case STATE_RESET:
-        default:
-        {
-            sg_acErrStr = _("CAN_QRCAN_SetConfigData called at improper state");
-            return S_FALSE;
-        }
-        break;
-    }
-
-    /* Fill the hardware description details */
-    for (UINT nCount = 0; nCount < defNO_OF_CHANNELS; nCount++)
-    {
-        ((PSCONTROLLER_DETAILS)ConfigFile)[nCount].m_omHardwareDesc =
-            "Simulation";
-    }
-
-    // First disconnect the node
-    CAN_StopHardware();
-    return S_OK;
-}
-
-HRESULT CDIL_CAN_QRCAN::CAN_StartHardware(void)
-{
-    //First stop the hardware
-    HRESULT hResult = PerformAnOperation(CONNECT);
-    if (hResult == S_OK)
-    {
-        hResult = PerformAnOperation(START_HARDWARE);
-    }
-    return hResult;
-}
-
-HRESULT CDIL_CAN_QRCAN::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
-{
-    HRESULT hResult = S_FALSE;
-
-    // Lock so that no other thread may use the common resources
-    EnterCriticalSection(&sg_CSBroker);
-
-    // Assign parameter
-    STCAN_MSG sTmpMsg = sCanTxMsg;
-    sg_pouCanTxMsg = &sTmpMsg;
-    sg_ushTempClientID = (USHORT)dwClientID;
-    // Identify current assignment of the broker thread
-    sg_sBrokerObjBusEmulation.m_unActionCode = SEND_MESSAGE;
-    // Now release the harness
-    SetEvent(sg_sBrokerObjBusEmulation.m_hActionEvent);
-    // Wait until current assignment of broker thread is over
-    WaitForSingleObject(sg_hNotifyFinish, INFINITE);
-    // Save the result
-    hResult = sg_hResult;
-
-    // Work is over, now unlock for others to use common resources
-    LeaveCriticalSection(&sg_CSBroker);
-
-    return hResult;
-}
-
-HRESULT CDIL_CAN_QRCAN::CAN_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& unCntrlStatus)
-{
-    HRESULT hResult = S_OK;
-    //EnterCriticalSection(&sg_CSBroker);
-    switch (GetCurrState())
-    {
-        case STATE_CONNECTED:
-        {
-            unCntrlStatus = NORMAL_ACTIVE;
-        }
-        break;
-        case STATE_INITIALISED:
-        {
-            unCntrlStatus = INITIALISED;
-        }
-        break;
-        case STATE_REGISTERED:
-        {
-            unCntrlStatus = RESET_STATE;
-        }
-        break;
-        case STATE_PRIMORDIAL:
-        case STATE_RESET:
-        default:
-        {
-            hResult = S_FALSE;
-        }
-        break;
-    }
-    //LeaveCriticalSection(&sg_CSBroker);
-
-    return hResult;
-}
-
-HRESULT CDIL_CAN_QRCAN::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount)
-{
-    CurrSysTime = sg_CurrSysTime;
-    TimeStamp = sg_TimeStampRef;
-    QueryTickCount = sg_QueryTickCount;
-    return S_OK;
-}
-
-
-HRESULT CDIL_CAN_QRCAN::CAN_GetLastErrorString(std::string& acErrorStr)
-{
-    acErrorStr = sg_acErrStr;
-    return S_OK;
-}
-
-HRESULT CDIL_CAN_QRCAN::CAN_PerformInitOperations(void)
-{
-    HRESULT hResult = S_FALSE;
-
-    // Initialize the critical section
-    InitializeCriticalSection(&sg_CSBroker);
-
-    // Create the notification event
-    sg_hNotifyFinish = CreateEvent(nullptr, false, false, nullptr);
-    if (nullptr != sg_hNotifyFinish)
-    {
-        // Then create the broker worker thread
-        sg_sBrokerObjBusEmulation.m_hActionEvent = CreateEvent(nullptr, false,
-                false, nullptr);
-        ResetEvent(sg_sBrokerObjBusEmulation.m_hActionEvent);
-        sg_sBrokerObjBusEmulation.m_unActionCode = INACTION;
-        if (sg_sBrokerObjBusEmulation.bStartThread(BrokerThreadBusEmulation))
-        {
-            hResult = S_OK;
-        }
-        else
-        {
-            CloseHandle(sg_hNotifyFinish);
-            sg_hNotifyFinish = nullptr;
-        }
-    }
-
-    return hResult;
-}
-
-/**
- * Function to get Controller status
- */
-HRESULT CDIL_CAN_QRCAN::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
-{
-    StatusData.wControllerStatus = NORMAL_ACTIVE;
-    return S_OK;
-}
-
-HRESULT CDIL_CAN_QRCAN::CAN_PerformClosureOperations(void)
-{
-    //First remove all the client
-    for (UINT nCount = 0; nCount < sg_unClientCnt; nCount++)
-    {
-        CAN_RegisterClient(FALSE, sg_asClientToBufMap[nCount].dwClientID, "");
-    }
-    // First disconnect from the simulation engine
-    CAN_DeselectHwInterface();
-    // Then terminate the broker thread
-    sg_sBrokerObjBusEmulation.bTerminateThread();
-    // Close the notification event
-    if (nullptr != sg_hNotifyFinish)
-    {
-        CloseHandle(sg_hNotifyFinish);
-        sg_hNotifyFinish = nullptr;
-    }
-    // Delete the critical section
-    DeleteCriticalSection(&sg_CSBroker);
-
-    sg_pIlog = nullptr;         // Log interface pointer
-
-    SetCurrState(STATE_PRIMORDIAL);
-
-    return S_OK;
-}
-
-HRESULT CDIL_CAN_QRCAN::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
-{
-    for (UINT i = 0; i < CHANNEL_ALLOWED; i++)
-    {
-        sSelHwInterface[i].m_dwIdInterface = 0x100;
-        sSelHwInterface[i].m_acNameInterface = _("Simulation");
-        sSelHwInterface[i].m_acDescription = _("A simulation engine to create a virtual bus system");
-    }
-    nCount = CHANNEL_ALLOWED;
-    return S_OK;
-}
-
-HRESULT CDIL_CAN_QRCAN::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /*sSelHwInterface*/, INT /*nSize*/)
-{
-    SetCurrState(STATE_INITIALISED);
-    return S_OK;
-}
-
-HRESULT CDIL_CAN_QRCAN::CAN_DeselectHwInterface(void)
-{
-    return PerformAnOperation(DISCONNECT);
-}
-
-HRESULT CDIL_CAN_QRCAN::CAN_LoadDriverLibrary(void)
-{
-    return S_OK;
-}
 HRESULT CDIL_CAN_QRCAN::CAN_UnloadDriverLibrary(void)
 {
     return S_OK;
 }
 
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Registers the buffer pBufObj to the client ClientID
+ */
+HRESULT CDIL_CAN_QRCAN::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
+{
+    HRESULT hResult = S_OK;
 
+    return hResult;
+}
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Registers a client to the DIL. ClientID will have client id
+ * which will be used for further client related calls
+ */
+HRESULT CDIL_CAN_QRCAN::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, char* pacClientName)
+{
+	HRESULT hResult = S_OK;
+    return hResult;
+}
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Returns the controller status. hEvent will be registered
+ * and will be set whenever there is change in the controller
+ * status.
+ */
+HRESULT CDIL_CAN_QRCAN::CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
+{
+    HRESULT hResult = S_OK;
+	(void)unCntrlStatus;
+	(void)hEvent;
+
+    return hResult;
+}
+
+/**
+ * \return S_OK for success, S_FALSE for failure
+ *
+ * Loads BOA related libraries. Updates BOA API pointers
+ */
+HRESULT CDIL_CAN_QRCAN::CAN_LoadDriverLibrary(void)
+{
+    return S_OK;
+}
+
+/**
+* \brief         Performs intial operations.
+*                Initializes filter, queue, controller config with default values.
+* \param         void
+* \return        S_OK if the open driver call successfull otherwise S_FALSE
+*/
+HRESULT CDIL_CAN_QRCAN::CAN_PerformInitOperations(void)
+{
+    DWORD dwClientID;
+    /* Register Monitor client */
+    dwClientID = 0;
+    CAN_RegisterClient(TRUE, dwClientID, CAN_MONITOR_NODE);
+
+    return(S_OK);
+}
+
+/**
+* \brief         Performs closure operations.
+* \param         void
+* \return        S_OK if the CAN_StopHardware call successfull otherwise S_FALSE
+*/
+
+HRESULT CDIL_CAN_QRCAN::CAN_PerformClosureOperations(void)
+{
+    return S_OK;
+}
+
+/**
+* \brief         Gets the time mode mapping of the hardware. CurrSysTime
+*                will be updated with the system time ref.
+*                TimeStamp will be updated with the corresponding timestamp.
+* \param[out]    CurrSysTime, is SYSTEMTIME structure
+* \param[out]    TimeStamp, is UINT64
+* \param[out]    QueryTickCount, is LARGE_INTEGER
+* \return        S_OK for success
+*/
+HRESULT CDIL_CAN_QRCAN::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount)
+{
+    return S_OK;
+}
+
+/**
+* \brief         Lists the hardware interface available.
+* \param[out]    asSelHwInterface, is INTERFACE_HW_LIST structure
+* \param[out]    nCount , is INT contains the selected channel count.
+* \return        S_OK for success, S_FALSE for failure
+*/
+HRESULT CDIL_CAN_QRCAN::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
+{
+    return(S_OK);
+}
+
+/**
+* \brief         Selects the hardware interface selected by the user.
+* \param[out]    asSelHwInterface, is INTERFACE_HW_LIST structure
+* \param[out]    nCount , is INT contains the selected channel count.
+* \return        S_OK for success, S_FALSE for failure
+*/
+HRESULT CDIL_CAN_QRCAN::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /*sSelHwInterface*/, INT /*nSize*/)
+{
+    return S_OK;
+}
+
+/**
+* \brief         Deselects the selected hardware interface.
+* \param         void
+* \return        S_OK if CAN_ResetHardware call is success, S_FALSE for failure
+*/
+HRESULT CDIL_CAN_QRCAN::CAN_DeselectHwInterface(void)
+{
+    return S_OK;
+}
+
+/**
+* \brief         Displays the controller configuration dialog.
+* \param[out]    InitData, is SCONTROLLER_DETAILS structure
+* \param[out]    Length , is INT
+* \return        S_OK for success
+*/
+HRESULT CDIL_CAN_QRCAN::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
+{
+    HRESULT hResult = S_OK;
+
+	ShowQRCANConfig(sg_hOwnerWnd);
+
+	return hResult;
+}
+
+/**
+* \brief         Sets the controller configuration data supplied by ConfigFile.
+* \param[in]     ConfigFile, is SCONTROLLER_DETAILS structure
+* \param[in]     Length , is INT
+* \return        S_OK for success
+*/
+HRESULT CDIL_CAN_QRCAN::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int /*Length*/)
+{
+    return S_OK;
+}
+
+/**
+* \brief         connects to the channels and initiates read thread.
+* \param         void
+* \return        S_OK for success, S_FALSE for failure
+*/
+HRESULT CDIL_CAN_QRCAN::CAN_StartHardware(void)
+{
+    HRESULT hResult = S_OK;
+
+    return hResult;
+}
+
+/**
+* \brief         Stops the controller.
+* \param         void
+* \return        S_OK for success, S_FALSE for failure
+*/
+HRESULT CDIL_CAN_QRCAN::CAN_StopHardware(void)
+{
+    HRESULT hResult = S_OK;
+
+    return hResult;
+}
+
+/**
+* \brief         Function to get Controller status
+* \param[out]    StatusData, is s_STATUSMSG structure
+* \return        S_OK for success, S_FALSE for failure
+*/
+HRESULT CDIL_CAN_QRCAN::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
+{
+    return S_OK;
+}
+
+/**
+* \brief         Gets the Tx queue configured.
+* \param[out]    pouFlxTxMsgBuffer, is BYTE*
+* \return        S_OK for success, S_FALSE for failure
+*/
+HRESULT CDIL_CAN_QRCAN::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
+{
+    return(S_OK);
+}
+
+/**
+* \brief         Sends STCAN_MSG structure from the client dwClientID.
+* \param[in]     dwClientID is the client ID
+* \param[in]     sMessage is the application specific CAN message structure
+* \return        S_OK for success, S_FALSE for failure
+*/
+HRESULT CDIL_CAN_QRCAN::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
+{
+    HRESULT hResult = S_OK;
+
+    return hResult;
+}
+
+/**
+* \brief         Gets bus config info.
+* \param[out]    BusInfo, is BYTE
+* \return        S_OK for success, S_FALSE for failure
+*/
+HRESULT CDIL_CAN_QRCAN::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
+{
+    return(S_OK);
+}
+
+/**
+* \brief         Gets last occured error and puts inside acErrorStr.
+* \param[out]    acErrorStr, is CHAR contains error string
+* \param[in]     nLength, is INT
+* \return        S_OK for success, S_FALSE for failure
+*/
+HRESULT CDIL_CAN_QRCAN::CAN_GetLastErrorString(std::string& acErrorStr)
+{
+    return S_OK;
+}
+
+/**
+* \brief         Gets the controller parametes of the channel based on the request.
+* \param[out]    lParam, the value of the controller parameter requested.
+* \param[in]     nChannel, indicates channel ID
+* \param[in]     eContrParam, indicates controller parameter
+* \return        S_OK for success, S_FALSE for failure
+*/
 HRESULT CDIL_CAN_QRCAN::CAN_GetControllerParams(LONG& lParam, UINT /*nChannel*/, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult = S_OK;
-    switch (eContrParam)
-    {
-
-        case NUMBER_HW:
-        {
-            lParam = CHANNEL_ALLOWED;
-        }
-        break;
-        case NUMBER_CONNECTED_HW:
-        {
-            lParam = CHANNEL_ALLOWED;
-        }
-        break;
-        case DRIVER_STATUS:
-        {
-            lParam = TRUE;
-        }
-        break;
-        case HW_MODE:
-        {
-            lParam = defMODE_SIMULATE;
-        }
-        break;
-        case CON_TEST:
-        {
-            lParam = (LONG)-1;
-        }
-        break;
-        default:
-        {
-            hResult = S_FALSE;
-        }
-        break;
-
-    }
+    
     return hResult;
 }
 
@@ -1038,345 +440,66 @@ HRESULT CDIL_CAN_QRCAN::CAN_SetControllerParams(int /* nValue */, ECONTR_PARAM /
     return S_OK;
 }
 
+/**
+* \brief         Gets the error counter for corresponding channel.
+* \param[out]    sErrorCnt, is SERROR_CNT structure
+* \param[in]     nChannel, indicates channel ID
+* \param[in]     eContrParam, indicates controller parameter
+* \return        S_OK for success, S_FALSE for failure
+*/
 HRESULT CDIL_CAN_QRCAN::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT /* nChannel */, ECONTR_PARAM /* eContrParam */)
 {
-    memset(&sErrorCnt, 0, sizeof(SERROR_CNT));
     return S_OK;
 }
 
-DWORD WINAPI BrokerThreadBusEmulation(LPVOID pVoid)
+static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf)
 {
-    CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*) pVoid;
+    BOOL bExist = TRUE;
 
-    // Validate certain required pointers
-    //VALIDATE_POINTER_RETURN_VALUE_LOG(pThreadParam, -1);
-    //VALIDATE_POINTER_RETURN_VALUE_LOG(pThreadParam->m_hActionEvent, -1);
-
-    // Get hold of the bus simulation and error logger interfaces
-    HRESULT hResult = CoInitialize(nullptr);
-
-    ISimENG* pISimENG = nullptr;
-    hResult = CoCreateInstance(CLSID_SimENG, nullptr, CLSCTX_LOCAL_SERVER,
-                               IID_ISimENG, (LPVOID*) &pISimENG);
-    if ((S_OK != hResult) || (nullptr == pISimENG))
-    {
-        return 0L;
-    }
-
-
-    bool bLoopON = true;
-
-    while (bLoopON)
-    {
-        WaitForSingleObject(pThreadParam->m_hActionEvent, INFINITE);
-
-        switch (pThreadParam->m_unActionCode)
-        {
-            case CONNECT:
-            {
-                sg_hResult = Worker_Connect(pISimENG, sg_pIlog);
-                SetEvent(sg_hNotifyFinish);
-            }
-            break;
-            case DISCONNECT:
-            {
-                sg_hResult = Worker_Disconnect(pISimENG, sg_pIlog);
-                SetEvent(sg_hNotifyFinish);
-            }
-            break;
-            case STOP_HARDWARE:
-            {
-                sg_hResult = Worker_StopHardware(pISimENG, sg_pIlog);
-                SetEvent(sg_hNotifyFinish);
-            }
-            break;
-            case START_HARDWARE:
-            {
-                sg_hResult = Worker_StartHardware(pISimENG, sg_pIlog);
-                SetEvent(sg_hNotifyFinish);
-            }
-            break;
-            case SEND_MESSAGE:
-            {
-                sg_hResult = Worker_SendCanMsg(pISimENG, sg_pIlog, sg_pouCanTxMsg);
-                SetEvent(sg_hNotifyFinish);
-            }
-            break;
-            case GET_TIME_MAP:
-            {
-                sg_hResult = Worker_GetTimeModeMapping(pISimENG, sg_pIlog);
-                SetEvent(sg_hNotifyFinish);
-            }
-            break;
-            case REGISTER:
-            {
-                sg_hResult = Worker_RegisterClient(pISimENG, sg_pIlog);
-                SetEvent(sg_hNotifyFinish);
-            }
-            break;
-            case UNREGISTER:
-            {
-                sg_hResult = Worker_UnregisterClient(pISimENG, sg_pIlog);
-                SetEvent(sg_hNotifyFinish);
-            }
-            break;
-            case EXIT_THREAD:
-            {
-                bLoopON = false;
-            }
-            break;
-            default:
-            case INACTION:
-            {
-                // nothing right at this moment
-            }
-            break;
-        }
-    }
-
-    // Release the bus simulation & error logger out-of-proc server components
-    //pISimENG->Release();
-
-    // Reset the interface pointers
-    pISimENG = nullptr;
-
-    SetEvent(pThreadParam->hGetExitNotifyEvent());
-
-    return 0;
+    return bExist;
 }
 
-/* Worker function definitions: start */
-
-HRESULT Worker_Connect(ISimENG* pISimENGLoc, Base_WrapperErrorLogger* pIlogLoc)
+static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove)
 {
-    if (GetCurrState() == STATE_PRIMORDIAL)
-    {
-        sg_acErrStr = _("CAN_QRCAN_Connect called at STATE_PRIMORDIAL");
-        return S_FALSE;
-    }
-    else if (GetCurrState() != STATE_INITIALISED)
-    {
-        sg_pIlog->vLogAMessage(__FILE__, __LINE__,
-                               (_("CAN_QRCAN_Connect called at improper state")));
-        return S_FALSE;
-    }
+    BOOL bReturn = TRUE;
 
-    sg_sParmRThreadQrCan.m_unActionCode = INVOKE_FUNCTION;
-    if (sg_sParmRThreadQrCan.bStartThread(FlexMsgReadThreadProc_QrCan) == FALSE)
-    {
-        sg_sParmRThreadQrCan.m_hActionEvent = nullptr;
-        // Unregister from the simulation engine
-        for (UINT i = 0; i < sg_unClientCnt; i++)
-        {
-            sg_ushTempClientID  = (USHORT)sg_asClientToBufMap[i].dwClientID;
-            sg_hTmpClientHandle = sg_asClientToBufMap[i].hClientHandle;
-            sg_hTmpPipeHandle   = sg_asClientToBufMap[i].hPipeFileHandle;
-            Worker_UnregisterClient(pISimENGLoc, pIlogLoc);
-            sg_asClientToBufMap[i].dwClientID = 0;
-            sg_asClientToBufMap[i].hClientHandle = nullptr;
-            sg_asClientToBufMap[i].hPipeFileHandle = nullptr;
-        }
-        sg_pIlog->vLogAMessage(__FILE__, __LINE__,
-                               (_("Unable to start the reading thread")));
-        return S_FALSE;
-    }
-
-    // Reaching upto this point means all the necessary activities are over
-    SetCurrState(STATE_REGISTERED);
-    return S_OK;
+    return bReturn;
 }
 
-HRESULT Worker_Disconnect(ISimENG* /*pISimENGLoc*/, Base_WrapperErrorLogger* pIlogLoc)
+/**
+ * \return Returns true if found else false.
+ *
+ * unClientIndex will have index to client array which has clientId dwClientID.
+ */
+static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
 {
-    if (GetCurrState() == STATE_PRIMORDIAL)
-    {
-        sg_acErrStr = _("CAN_QRCAN_DeselectHwInterface called at STATE_PRIMORDIAL");
-        return S_FALSE;
-    }
-    else if (GetCurrState() == STATE_RESET)
-    {
-        pIlogLoc->vLogAMessage(__FILE__, __LINE__,
-                               (_("CAN_QRCAN_DeselectHwInterface called at improper state")));
-        return S_FALSE;
-    }
+    BOOL bResult = TRUE;
 
-    // Close the message reading thread
-    if(sg_unClientCnt <= 0 )
-    {
-        //Some Error Happened But Thread close is required.
-        //sg_unClientCnt = 0 means there is no data flow and thread
-        //force termination is safe.
-        sg_sParmRThreadQrCan.bForceTerminateThread();
-    }
-    else
-    {
-        sg_sParmRThreadQrCan.bTerminateThread();
-    }
-
-    return S_OK;
+    return bResult;
 }
 
-HRESULT Worker_StopHardware(ISimENG* pISimENGLoc, Base_WrapperErrorLogger* pIlogLoc)
+/**
+ * \return TRUE if client exists else FALSE
+ *
+ * Checks for the existance of the client with the name pcClientName.
+ */
+static BOOL bClientExist(std::string pcClientName, INT& Index)
 {
-    HRESULT hResult = S_FALSE;
-    if (GetCurrState() == STATE_CONNECTED)
-    {
-        // Just disconnect the node from the bus simulation
-        for (UINT i = 0; i < sg_unClientCnt; i++)
-        {
-            hResult = pISimENGLoc->DisconnectNode((USHORT)sg_asClientToBufMap[i].dwClientID);
-        }
-        if (hResult == S_OK)
-        {
-            SetCurrState(STATE_INITIALISED);
-        }
-    }
-    else
-    {
-        if ( pIlogLoc )
-            pIlogLoc->vLogAMessage(__FILE__, __LINE__,
-                                   (_("CAN_QRCAN_StopHardware called at improper state")));
-    }
-
-    return hResult;
+    return(TRUE);
 }
 
-HRESULT Worker_StartHardware(ISimENG* pISimENGLoc, Base_WrapperErrorLogger* pIlogLoc)
+/**
+ * \return TRUE if client removed else FALSE
+ *
+ * Removes the client with client id dwClientId.
+ */
+static BOOL bRemoveClient(DWORD dwClientId)
 {
-    HRESULT hResult = S_FALSE;
-    if ((GetCurrState() == STATE_INITIALISED) || (GetCurrState() == STATE_REGISTERED))
-    {
-        for (UINT i = 0; i < sg_unClientCnt; i++)
-        {
-            hResult = pISimENGLoc->ConnectNode((USHORT)sg_asClientToBufMap[i].dwClientID);
-        }
-        if (hResult == S_OK)
-        {
-            SetCurrState(STATE_CONNECTED);
-        }
-    }
-    else
-    {
-        pIlogLoc->vLogAMessage(__FILE__, __LINE__,
-                               (_("CAN_QRCAN_StartHardware called at improper state")));
-    }
-
-    return hResult;
+    BOOL bResult = TRUE;
+    
+    return bResult;
 }
 
-HRESULT Worker_SendCanMsg(ISimENG* pISimENGLoc, Base_WrapperErrorLogger* /*pIlogLoc*/,
-                          STCAN_MSG* pouCanTxMsg)
-{
-    //VALIDATE_POINTER_RETURN_VAL(pIlogLoc, S_FALSE);
-    //VALIDATE_POINTER_RETURN_VALUE_LOG(pouFlxTxMsg, S_FALSE);
-
-    return pISimENGLoc->SendMessage(sg_ushTempClientID, sizeof(STCAN_MSG), (BYTE*)pouCanTxMsg);
-}
-
-HRESULT Worker_GetTimeModeMapping(ISimENG* pISimENGLoc, Base_WrapperErrorLogger* /*pIlogLoc*/)
-{
-    return pISimENGLoc->GetTimeModeMapping(&sg_CurrSysTime, &sg_TimeStampRef, &sg_QueryTickCount);
-}
-
-HRESULT Worker_RegisterClient(ISimENG* pISimENG, Base_WrapperErrorLogger* pIlog)
-{
-    USHORT ushClientID = 0;     // Client ID issued from the simulation engine
-    BSTR PipeName;              // Name of the conduit
-    BSTR EventName;             // Name of the message notifying event
-    HRESULT hResult = S_OK;
-
-    // Register to the simulation engine
-    hResult = pISimENG->RegisterClient(CAN, sizeof (STCAN_MSG), &ushClientID, &PipeName, &EventName);
-    if (hResult != S_OK)
-    {
-        pIlog->vLogAMessage(__FILE__, __LINE__,
-                            (_("unable to register to the simulation engine")));
-        return S_FALSE;
-    }
-
-    sg_ushTempClientID = ushClientID;
-
-    // Extract the pipe and event name in normal string
-    char acPipeName[64] = {'\0'};
-    char acEventName[32] = {'\0'};
-    if (BSTR_2_PCHAR(PipeName, acPipeName, 64) == false)
-    {
-        hResult = S_FALSE;
-    }
-
-    if (BSTR_2_PCHAR(EventName, acEventName, 32) == false)
-    {
-        hResult = S_FALSE;
-    }
-
-    if (S_FALSE == hResult)
-    {
-        // Unregister from the simulation engine
-        pISimENG->UnregisterClient(ushClientID);
-        pIlog->vLogAMessage(__FILE__, __LINE__,
-                            (_("Can't convert from BSTR to ASCII string")));
-        return S_FALSE;
-    }
-
-    // Get the pipe handle
-    sg_hTmpPipeHandle = CreateFile(
-                            acPipeName,     // pipe name
-                            GENERIC_READ,   // read access
-                            0,              // no sharing
-                            nullptr,           // no security attributes
-                            OPEN_EXISTING,  // opens existing pipe
-                            0,              // default attributes
-                            nullptr);          // no template file
-
-    if (sg_hTmpPipeHandle == INVALID_HANDLE_VALUE)
-    {
-        // Unregister from the simulation engine
-        pISimENG->UnregisterClient(ushClientID);
-        GetSystemErrorString();
-        LOG_ERR_MSG();
-        return S_FALSE;
-    }
-
-    sg_hTmpClientHandle = OpenEvent(EVENT_ALL_ACCESS, FALSE, acEventName);
-    if (sg_hTmpClientHandle == nullptr)
-    {
-        CloseHandle(sg_hTmpPipeHandle);
-        sg_hTmpPipeHandle = nullptr;
-        // Unregister from the simulation engine
-        pISimENG->UnregisterClient(ushClientID);
-        GetSystemErrorString();
-        LOG_ERR_MSG();
-        return S_FALSE;
-    }
-    return hResult;
-}
-
-HRESULT Worker_UnregisterClient(ISimENG* pISimENG, Base_WrapperErrorLogger* /*pIlog*/)
-{
-    // Close reading handle of the pipe from simulation engine
-    if (nullptr != sg_hTmpPipeHandle)
-    {
-        CloseHandle(sg_hTmpPipeHandle);
-        sg_hTmpPipeHandle = nullptr;
-    }
-
-    if (nullptr != pISimENG)
-    {
-        // Unregister from the simulation engine
-        if (pISimENG->UnregisterClient(sg_ushTempClientID) == S_OK)
-        {
-            sg_ushTempClientID = 0;
-        }
-    }
-    // just make read event null, don't close it
-    sg_hTmpClientHandle = nullptr;
-
-    //SetCurrState(STATE_RESET);
-
-    return S_OK;
-}
-
-/* Worker function definitions: end */
 HRESULT CDIL_CAN_QRCAN::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
 {
     return S_OK;

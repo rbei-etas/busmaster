@@ -14,22 +14,14 @@
  */
 
 /**
- * \file      CAN_QRCAN/CAN_QRCAN.h
+ * \file      CAN_QRCAN.h
  * \author    
  * \copyright Copyright (c) ((Year)), QRTECH AB. All rights reserved.
  */
 #pragma once
 
-/*Definitions*/
-const int ERR_INVALID_PROCDIL       = -1;
-const int ERR_INVALID_PARENTHANDLE  = -2;
-const int INFO_RETAINED_CONFDATA    = 0;
-const int INFO_CHANGED_CONFDATA     = 1;
 
-const int WARNING_NOTCONFIRMED      = -3;
-const int ERR_CONFIRMED_CONFIGURED  = -4;
-const int INFO_INIT_DATA_CONFIRMED  = 2;
-const int INFO_CONFIRMED_CONFIGURED = 3;
+int WINAPI ShowQRCANConfig(HWND hwnd);
 
 /**
  * See CAN_QRCAN.cpp for the implementation of this class
