@@ -29,6 +29,13 @@
 #include "CAN_QRCAN.h"
 #include "resource.h"
 
+#include <winsock2.h>
+
+// Need to link with Ws2_32.lib, Mswsock.lib, and Advapi32.lib
+#pragma comment (lib, "Ws2_32.lib")
+//#pragma comment (lib, "Mswsock.lib")
+//#pragma comment (lib, "AdvApi32.lib")
+
 static HWND qrconfig_hDlg = nullptr;
 HANDLE q_hComm;
 
@@ -49,8 +56,7 @@ static void InitSerialPortList(void)
 	SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_ADDSTRING, 0, (LPARAM)"COM5");
 	SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_ADDSTRING, 0, (LPARAM)"COM6");
 	SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_ADDSTRING, 0, (LPARAM)"COM7");
-
-
+	
     SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_SETCURSEL, 0, 0);
 }
 
@@ -119,6 +125,92 @@ static void SendDataToSerialPort(void)
 	CloseHandle (q_hComm);	// Close the handle after the data transfer
 }
 
+static void SendDataToEtherent(void)
+{
+	WSAData wsaData;
+	SOCKET sendingSocket;
+	SOCKADDR_IN serverAddr;
+	char pcHost[20] = "";
+	unsigned int serverPort = 7;
+	char messageBuffer[1024] = "Test Data from Busmaster";
+	int bytesSent, messageLength, returnCode;
+
+	// Initialize Winsock version 2.2
+	WSAStartup(MAKEWORD(2, 2), &wsaData);
+
+	// Create a new socket to make a client connection
+	// AF_INET = 2, The Internet Protocol version 4 (IPv4) address family, TCP protocol
+	sendingSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+	if (sendingSocket == INVALID_SOCKET){
+		CString msg;
+		msg.Format(_T("%d"), WSAGetLastError());
+		AfxMessageBox(msg);
+		AfxMessageBox("Invalid Socket");
+		WSACleanup();
+		return;	
+	}
+	// Get the IP Address from GUI
+	if (GetDlgItemText(qrconfig_hDlg, IDC_IP_ADDRESS, pcHost, sizeof(pcHost)) == 0){
+		// The above function returns the number of characters copied to the buffer if success or 0 for failure
+		strcpy(pcHost, "127.0.0.1");
+	}
+
+	// Setting up SOCKADDR_IN structure that will be used to connect to a listening server on port 7.
+	serverAddr.sin_family = AF_INET;
+	serverAddr.sin_port = htons(serverPort);
+	serverAddr.sin_addr.s_addr = inet_addr(pcHost);
+
+	// Make a connection to the server with socket sendingSocket
+	returnCode = connect(sendingSocket, (SOCKADDR *) &serverAddr, sizeof(serverAddr));
+
+	if (returnCode != 0){
+		CString msg;
+		msg.Format(_T("%d"), WSAGetLastError());
+		AfxMessageBox(msg);
+		AfxMessageBox("Connection to the server failed");
+		closesocket(sendingSocket);
+		WSACleanup();
+		return;
+	}
+
+	// Send data to the Server
+	bytesSent = send(sendingSocket, messageBuffer, strlen(messageBuffer), 0);
+
+
+	if (bytesSent == SOCKET_ERROR){
+		CString msg;
+		msg.Format(_T("%d"), WSAGetLastError());
+		AfxMessageBox(msg);
+		AfxMessageBox("Sending data Failed");	
+	}
+
+	 // Shutdown connection
+	if (shutdown(sendingSocket, SD_SEND) != 0){
+		CString msg;
+		msg.Format(_T("%d"), WSAGetLastError());
+		AfxMessageBox(msg);
+		AfxMessageBox("Error during shudown");
+	}
+
+	/* Closing the socket and Cleanup throws an exception at the server: an established connection was aborted by the software in your host machine  */
+
+	//// Close the socket.
+	//if (closesocket(sendingSocket) != 0){
+	//	CString msg;
+	//	msg.Format(_T("%d"), WSAGetLastError());
+	//	AfxMessageBox(msg);
+	//	AfxMessageBox("Error during closing the socket");
+	//}
+	//// Run a cleanup
+	//if (WSACleanup() != 0){
+	//	CString msg;
+	//	msg.Format(_T("%d"), WSAGetLastError());
+	//	AfxMessageBox(msg);
+	//	AfxMessageBox("Error during WSACleanup");
+	//}
+}
+
 static BOOL CALLBACK CanSetupDlgProc(HWND hDlg, UINT uMessage, WPARAM wParam, LPARAM /* lParam */)
 {
 	int wmId, wmEvent;
@@ -145,6 +237,7 @@ static BOOL CALLBACK CanSetupDlgProc(HWND hDlg, UINT uMessage, WPARAM wParam, LP
                     return TRUE;
                 case IDC_SAVE:
 					SendDataToSerialPort();
+					SendDataToEtherent();
                     EndDialog(hDlg, TRUE);
                     return TRUE;
 				default:

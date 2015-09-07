@@ -44,7 +44,6 @@ struct _VSCanCfg
 
 int WINAPI ShowCanVsComSetup(HWND hwnd, struct _VSCanCfg* cfg);
 
-
 /**
  * See CAN_VSCOM.cpp for the implementation of this class
  */
