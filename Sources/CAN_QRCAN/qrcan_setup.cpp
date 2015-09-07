@@ -125,7 +125,7 @@ static void SendDataToSerialPort(void)
 	CloseHandle (q_hComm);	
 }
 
-static void SendDataToEtherent(void)
+static void SendDataToEthernet(void)
 {
 	WSAData wsaData;
 	SOCKET sendingSocket;
@@ -211,6 +211,16 @@ static void SendDataToEtherent(void)
 	//}
 }
 
+static void SaveConfigurationData(void){
+	// Communication Mode
+	if (IsDlgButtonChecked(qrconfig_hDlg, IDC_MODE_USB) == BST_CHECKED){
+        SendDataToSerialPort();
+    }
+	else if (IsDlgButtonChecked(qrconfig_hDlg, IDC_MODE_ETHERNET) == BST_CHECKED){
+		SendDataToEthernet();	
+	}
+}
+
 static BOOL CALLBACK CanSetupDlgProc(HWND hDlg, UINT uMessage, WPARAM wParam, LPARAM /* lParam */)
 {
 	int wmId, wmEvent;
@@ -220,7 +230,9 @@ static BOOL CALLBACK CanSetupDlgProc(HWND hDlg, UINT uMessage, WPARAM wParam, LP
         case WM_INITDIALOG:
         {
 			qrconfig_hDlg = hDlg;
-			
+			// Check USB Radio button by default
+			CheckDlgButton(hDlg, IDC_MODE_USB, BST_CHECKED);
+
 			// Scan for available serial ports and display them
 			InitSerialPortList();
         }
@@ -236,8 +248,7 @@ static BOOL CALLBACK CanSetupDlgProc(HWND hDlg, UINT uMessage, WPARAM wParam, LP
                     EndDialog(hDlg, FALSE);
                     return TRUE;
                 case IDC_SAVE:
-					SendDataToSerialPort();
-					SendDataToEtherent();
+					SaveConfigurationData();
                     EndDialog(hDlg, TRUE);
                     return TRUE;
 				default:
