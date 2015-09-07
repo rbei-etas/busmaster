@@ -49,30 +49,30 @@ static void InitSerialPortList(void)
         SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_DELETESTRING, i, 0);
     }
 
-    SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_ADDSTRING, 0, (LPARAM)"COM1");
-	SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_ADDSTRING, 0, (LPARAM)"COM2");
-	SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_ADDSTRING, 0, (LPARAM)"COM3");
-	SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_ADDSTRING, 0, (LPARAM)"COM4");
-	SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_ADDSTRING, 0, (LPARAM)"COM5");
-	SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_ADDSTRING, 0, (LPARAM)"COM6");
-	SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_ADDSTRING, 0, (LPARAM)"COM7");
-	
+	// Find all available serial ports and display it in GUI
+	TCHAR szPort[32];
+	HANDLE hComm;
+	for (UINT i=1; i<256; i++){
+		_stprintf_s(szPort, _T("\\\\.\\COM%u"), i);
+		hComm = CreateFile(szPort, GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+		if (hComm != INVALID_HANDLE_VALUE){
+			_stprintf_s(szPort, _T("COM%u"), i);
+			SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_ADDSTRING, 0, (LPARAM)szPort);
+			CloseHandle(hComm);
+		}
+	}
     SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_SETCURSEL, 0, 0);
 }
 
 static void SendDataToSerialPort(void)
 {
-		//	For Serial Communication
-	HANDLE hComm;
-
 	char serialPortName[5];
 
-	GetDlgItemText(qrconfig_hDlg, IDC_SERIAL_PORT, serialPortName, sizeof(serialPortName));	// Get the serial port selected from GUI
+	// Get the serial port selected from GUI
+	GetDlgItemText(qrconfig_hDlg, IDC_SERIAL_PORT, serialPortName, sizeof(serialPortName));	
+	q_hComm = CreateFile(serialPortName, GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
 
-	hComm = CreateFile(serialPortName, GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-	q_hComm = hComm;
-
-	if(hComm == INVALID_HANDLE_VALUE){
+	if(q_hComm == INVALID_HANDLE_VALUE){
 		if(GetLastError() == ERROR_FILE_NOT_FOUND){
 			// Inform user that serial port does not exist
 			AfxMessageBox("Serial port does not exist");
@@ -80,11 +80,11 @@ static void SendDataToSerialPort(void)
 		// Some other error occured.
 		AfxMessageBox("Unknown error occured");
 	}
-
+	
 	DCB serialParams = {0};
 	serialParams.DCBlength = sizeof(serialParams);
 
-	if (!GetCommState (hComm, &serialParams)){
+	if (!GetCommState (q_hComm, &serialParams)){
 		// Error getting state
 		AfxMessageBox("Failed to get the state of port");
 	}
@@ -94,7 +94,7 @@ static void SendDataToSerialPort(void)
 	serialParams.StopBits = ONESTOPBIT;
 	serialParams.Parity = NOPARITY;
 
-	if (!SetCommState(hComm, &serialParams)){
+	if (!SetCommState(q_hComm, &serialParams)){
 		// Error setting serial port state
 		AfxMessageBox("Failed to set the state of port");
 	}
@@ -106,7 +106,7 @@ static void SendDataToSerialPort(void)
 	timeouts.WriteTotalTimeoutConstant = 500;
 	timeouts.WriteTotalTimeoutMultiplier = 100;
 
-	if (!SetCommTimeouts(hComm, &timeouts)){
+	if (!SetCommTimeouts(q_hComm, &timeouts)){
 		// Error occured
 	}
 
@@ -121,8 +121,8 @@ static void SendDataToSerialPort(void)
 			AfxMessageBox("Failed to send data");
 		}
 	}
-
-	CloseHandle (q_hComm);	// Close the handle after the data transfer
+	// Close the handle after the data transfer
+	CloseHandle (q_hComm);	
 }
 
 static void SendDataToEtherent(void)
