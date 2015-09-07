@@ -233,6 +233,9 @@ static BOOL CALLBACK CanSetupDlgProc(HWND hDlg, UINT uMessage, WPARAM wParam, LP
 			// Check USB Radio button by default
 			CheckDlgButton(hDlg, IDC_MODE_USB, BST_CHECKED);
 
+			// Disable IP Address text box during initialization
+			EnableWindow(GetDlgItem(hDlg,IDC_IP_ADDRESS),FALSE);
+
 			// Scan for available serial ports and display them
 			InitSerialPortList();
         }
@@ -243,18 +246,33 @@ static BOOL CALLBACK CanSetupDlgProc(HWND hDlg, UINT uMessage, WPARAM wParam, LP
 
             switch (wmId)
             {
+				// For Close button
                 case IDCANCEL:
                 case IDOK:
                     EndDialog(hDlg, FALSE);
                     return TRUE;
+
+				// To save configuration when OK button is pressed
                 case IDC_SAVE:
 					SaveConfigurationData();
                     EndDialog(hDlg, TRUE);
                     return TRUE;
+				
+				// To disable IP Address box when USB is selected as mode
+				case IDC_MODE_USB:
+					EnableWindow(GetDlgItem(hDlg,IDC_IP_ADDRESS),FALSE);
+					EnableWindow(GetDlgItem(hDlg,IDC_SERIAL_PORT),TRUE);
+					return TRUE;
+				
+				// To disable Serial port drop down box when Ethernet is selected as mode
+				case IDC_MODE_ETHERNET:
+					EnableWindow(GetDlgItem(hDlg,IDC_SERIAL_PORT),FALSE);
+					EnableWindow(GetDlgItem(hDlg,IDC_IP_ADDRESS),TRUE);
+					return TRUE;
+				
 				default:
 					return FALSE;
             }
-
     }
     return FALSE;
 }
