@@ -212,11 +212,15 @@
     <ClInclude Include="CAN_QRCAN.h" />
     <ClInclude Include="CAN_QRCAN_Extern.h" />
     <ClInclude Include="CAN_QRCAN_stdafx.h" />
+    <ClInclude Include="EXTERNAL\qrcan_api.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAN_QRCAN.cpp" />
     <ClCompile Include="CAN_QRCAN_stdafx.cpp" />
+    <ClCompile Include="EXTERNAL\qrcan_api.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">..\CAN_QRCAN_stdafx.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="qrcan_setup.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -9,3 +9,4 @@
 #define IDC_IP_ADDRESS                          40002
 #define IDC_MODE_USB                            40003
 #define IDC_MODE_ETHERNET                       40004
+#define IDC_BAUDRATE                            40005

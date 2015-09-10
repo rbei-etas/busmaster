@@ -20,8 +20,31 @@
  */
 #pragma once
 
+#include "EXTERNAL/qrcan_api.h"
 
-int WINAPI ShowQRCANConfig(HWND hwnd);
+typedef struct{
+
+	QRCAN_COMM_MODE commMode;					// Communication Mode for the Hardware
+
+	HANDLE q_hComm;								// Handle for Serial Communication
+
+	SOCKET sendingSocket;						// Socket for Etherent communication
+	char pcHost[256];							// To hold IP address
+	unsigned int serverPort;					// To hold port number		
+
+} QRCAN_DEVICE;
+
+struct QRCanCfg
+{
+    QRCAN_HANDLE hCan;
+    void* canBaudRate;
+};
+
+int WINAPI ShowQRCANConfig(HWND hwnd, struct QRCanCfg* cfg);
+
+QRCAN_STATUS SendDataToHardware(char *data);
+QRCAN_STATUS CloseDevice(void);
+QRCAN_STATUS OpenDevice(void);
 
 /**
  * See CAN_QRCAN.cpp for the implementation of this class

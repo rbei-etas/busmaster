@@ -48,9 +48,12 @@
 
 #define USAGE_EXPORT
 #include "CAN_QRCAN_Extern.h"
+#include "EXTERNAL/qrcan_api.h"
 
 BEGIN_MESSAGE_MAP(CCAN_QRCAN, CWinApp)
 END_MESSAGE_MAP()
+
+static struct QRCanCfg sg_QRCanCfg;
 
 
 /**
@@ -86,33 +89,44 @@ BOOL CCAN_QRCAN::InitInstance()
 /**
  * Client and Client Buffer map
  */
-class SCLIENTBUFMAP
+typedef struct tagClientBufMap
 {
-public:
     DWORD dwClientID;
-    HANDLE hClientHandle;
-    HANDLE hPipeFileHandle;
+    BYTE hClientHandle;
     CBaseCANBufFSE* pClientBuf[MAX_BUFF_ALLOWED];
-    std::string pacClientName;
+    char pacClientName[MAX_PATH];
     UINT unBufCount;
-    SCLIENTBUFMAP()
+    tagClientBufMap()
     {
         dwClientID = 0;
-        hClientHandle = nullptr;
-        hPipeFileHandle = nullptr;
+        hClientHandle = 0;
         unBufCount = 0;
-        pacClientName = "";
-
+        memset(pacClientName, 0, sizeof (char) * MAX_PATH);
         for (int i = 0; i < MAX_BUFF_ALLOWED; i++)
         {
             pClientBuf[i] = nullptr;
         }
     }
-};
-typedef SCLIENTBUFMAP* PSCLIENTBUFMAP;
+} SCLIENTBUFMAP;
 
 /* QRCAN Variable Declarations */
 static HWND sg_hOwnerWnd = nullptr;
+static Base_WrapperErrorLogger* sg_pIlog   = nullptr;
+static HINSTANCE               hxlDll;
+static SCLIENTBUFMAP sg_asClientToBufMap[MAX_CLIENT_ALLOWED];
+static UINT sg_unClientCnt = 0;
+static UINT sg_nNoOfChannels = 0;
+static CRITICAL_SECTION sg_DIL_CriticalSection;
+static HANDLE sg_hEventRecv = nullptr;
+
+
+/**
+ * Query Tick Count
+ */
+static LARGE_INTEGER sg_QueryTickCount;
+static LARGE_INTEGER sg_lnFrequency;
+
+
 
 /* CDIL_CAN_QRCAN class definition */
 class CDIL_CAN_QRCAN : public CBaseDIL_CAN_Controller
@@ -150,6 +164,17 @@ public:
 
 static CDIL_CAN_QRCAN* g_pouDIL_CAN_QRCAN = nullptr;
 
+static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf);
+static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove);
+static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
+static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex);
+static BOOL bClientExist(std::string pcClientName, INT& Index);
+static BOOL bRemoveClient(DWORD dwClientId);
+static BOOL bClientIdExist(const DWORD& dwClientId);
+static DWORD dwGetAvailableClientSlot(void);
+//static void vMarkEntryIntoMap(const SACK_MAP& RefObj);
+//static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID);
+
 /**
  * \return S_OK for success, S_FALSE for failure
  *
@@ -174,6 +199,22 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 }
 
 /**
+ * Starts code for the state machine
+ */
+enum
+{
+    STATE_DRIVER_SELECTED    = 0x0,
+    STATE_HW_INTERFACE_LISTED,
+    STATE_HW_INTERFACE_SELECTED,
+    STATE_CONNECTED
+};
+
+BYTE sg_bCurrState = STATE_DRIVER_SELECTED;
+
+static SYSTEMTIME sg_CurrSysTime;
+static UINT64 sg_TimeStamp = 0;
+
+/**
  * \return S_OK for success, S_FALSE for failure
  *
  * Sets the application params.
@@ -181,6 +222,14 @@ USAGEMODE HRESULT GetIDIL_CAN_Controller(void** ppvInterface)
 HRESULT CDIL_CAN_QRCAN::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
 	sg_hOwnerWnd = hWndOwner;
+	sg_pIlog = pILog;
+
+	// Initialize both the time parameters
+	GetLocalTime(&sg_CurrSysTime);
+	sg_TimeStamp = 0x0;
+
+	CAN_ManageMsgBuf(MSGBUF_CLEAR, 0, nullptr);
+
     return S_OK;
 }
 
@@ -191,6 +240,12 @@ HRESULT CDIL_CAN_QRCAN::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger
  */
 HRESULT CDIL_CAN_QRCAN::CAN_UnloadDriverLibrary(void)
 {
+	if (hxlDll != nullptr)
+    {
+        FreeLibrary(hxlDll);
+        hxlDll = nullptr;
+    }
+
     return S_OK;
 }
 
@@ -201,7 +256,71 @@ HRESULT CDIL_CAN_QRCAN::CAN_UnloadDriverLibrary(void)
  */
 HRESULT CDIL_CAN_QRCAN::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANBufFSE* pBufObj)
 {
-    HRESULT hResult = S_OK;
+    HRESULT hResult = S_FALSE;
+    if (ClientID != 0)
+    {
+        UINT unClientIndex;
+        if (bGetClientObj(ClientID, unClientIndex))
+        {
+            SCLIENTBUFMAP& sClientObj = sg_asClientToBufMap[unClientIndex];
+            if (bAction == MSGBUF_ADD)
+            {
+                //Add msg buffer
+                if (pBufObj != nullptr)
+                {
+                    if (sClientObj.unBufCount < MAX_BUFF_ALLOWED)
+                    {
+                        if (bIsBufferExists(sClientObj, pBufObj) == FALSE)
+                        {
+                            sClientObj.pClientBuf[sClientObj.unBufCount++] = pBufObj;
+                            hResult = S_OK;
+                        }
+                        else
+                        {
+                            hResult = ERR_BUFFER_EXISTS;
+                        }
+                    }
+                }
+            }
+            else if (bAction == MSGBUF_CLEAR)
+            {
+                //clear msg buffer
+                if (pBufObj != nullptr) //Remove only buffer mentioned
+                {
+                    bRemoveClientBuffer(sClientObj.pClientBuf, sClientObj.unBufCount, pBufObj);
+                }
+                else //Remove all
+                {
+                    for (UINT i = 0; i < sClientObj.unBufCount; i++)
+                    {
+                        sClientObj.pClientBuf[i] = nullptr;
+                    }
+                    sClientObj.unBufCount = 0;
+                }
+                hResult = S_OK;
+            }
+            else
+            {
+                ////ASSERT(false);
+            }
+        }
+        else
+        {
+            hResult = ERR_NO_CLIENT_EXIST;
+        }
+    }
+    else
+    {
+        if (bAction == MSGBUF_CLEAR)
+        {
+            //clear msg buffer
+            for (UINT i = 0; i < sg_unClientCnt; i++)
+            {
+                CAN_ManageMsgBuf(MSGBUF_CLEAR, sg_asClientToBufMap[i].dwClientID, nullptr);
+            }
+            hResult = S_OK;
+        }
+    }
 
     return hResult;
 }
@@ -214,8 +333,67 @@ HRESULT CDIL_CAN_QRCAN::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANB
  */
 HRESULT CDIL_CAN_QRCAN::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, char* pacClientName)
 {
-	HRESULT hResult = S_OK;
-    return hResult;
+	HRESULT hResult = S_FALSE;
+    INT Index;
+
+    if (bRegister)
+    {
+        if (sg_unClientCnt < MAX_CLIENT_ALLOWED)
+        {
+            Index = 0;
+            if (!bClientExist(pacClientName, Index))
+            {
+                //Currently store the client information
+                if (_tcscmp(pacClientName, CAN_MONITOR_NODE) == 0)
+                {
+                    //First slot is reserved to monitor node
+                    ClientID = 1;
+                    _tcscpy(sg_asClientToBufMap[0].pacClientName, pacClientName);
+                    sg_asClientToBufMap[0].dwClientID = ClientID;
+                    sg_asClientToBufMap[0].unBufCount = 0;
+                }
+                else
+                {
+                    if (!bClientExist(CAN_MONITOR_NODE, Index))
+                    {
+                        Index = sg_unClientCnt + 1;
+                    }
+                    else
+                    {
+                        Index = sg_unClientCnt;
+                    }
+                    ClientID = dwGetAvailableClientSlot();
+                    _tcscpy(sg_asClientToBufMap[Index].pacClientName, pacClientName);
+
+                    sg_asClientToBufMap[Index].dwClientID = ClientID;
+                    sg_asClientToBufMap[Index].unBufCount = 0;
+                }
+                sg_unClientCnt++;
+                hResult = S_OK;
+            }
+            else
+            {
+                ClientID = sg_asClientToBufMap[Index].dwClientID;
+                hResult = ERR_CLIENT_EXISTS;
+            }
+        }
+        else
+        {
+            hResult = ERR_NO_MORE_CLIENT_ALLOWED;
+        }
+    }
+    else
+    {
+        if (bRemoveClient(ClientID))
+        {
+            hResult = S_OK;
+        }
+        else
+        {
+            hResult = ERR_NO_CLIENT_EXIST;
+        }
+    }
+    return(hResult);
 }
 
 /**
@@ -228,8 +406,6 @@ HRESULT CDIL_CAN_QRCAN::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, char*
 HRESULT CDIL_CAN_QRCAN::CAN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
 {
     HRESULT hResult = S_OK;
-	(void)unCntrlStatus;
-	(void)hEvent;
 
     return hResult;
 }
@@ -252,9 +428,14 @@ HRESULT CDIL_CAN_QRCAN::CAN_LoadDriverLibrary(void)
 */
 HRESULT CDIL_CAN_QRCAN::CAN_PerformInitOperations(void)
 {
-    DWORD dwClientID;
+	memset(&sg_QRCanCfg, 0, sizeof(sg_QRCanCfg));
+
+	/* Create critical section for ensuring thread
+    safeness of read message function */
+    InitializeCriticalSection(&sg_DIL_CriticalSection);
+
     /* Register Monitor client */
-    dwClientID = 0;
+    DWORD dwClientID = 0;
     CAN_RegisterClient(TRUE, dwClientID, CAN_MONITOR_NODE);
 
     return(S_OK);
@@ -268,7 +449,23 @@ HRESULT CDIL_CAN_QRCAN::CAN_PerformInitOperations(void)
 
 HRESULT CDIL_CAN_QRCAN::CAN_PerformClosureOperations(void)
 {
-    return S_OK;
+    HRESULT hResult = CAN_StopHardware();
+
+    // ------------------------------------
+    // Close driver
+    // ------------------------------------
+    //CanDownDriver();
+
+    // Remove all the existing clients
+    while (sg_unClientCnt > 0)
+    {
+        bRemoveClient(sg_asClientToBufMap[0].dwClientID);
+    }
+    /* Delete the critical section */
+    DeleteCriticalSection(&sg_DIL_CriticalSection);
+
+    sg_bCurrState = STATE_DRIVER_SELECTED;
+    return(hResult);
 }
 
 /**
@@ -282,6 +479,9 @@ HRESULT CDIL_CAN_QRCAN::CAN_PerformClosureOperations(void)
 */
 HRESULT CDIL_CAN_QRCAN::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount)
 {
+	CurrSysTime = sg_CurrSysTime;
+    TimeStamp = sg_TimeStamp;
+
     return S_OK;
 }
 
@@ -293,7 +493,25 @@ HRESULT CDIL_CAN_QRCAN::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& 
 */
 HRESULT CDIL_CAN_QRCAN::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
 {
-    return(S_OK);
+	USES_CONVERSION;
+	static BOOL bInit = 1;
+
+	nCount = 1;
+	// Set the current number of channels
+	sg_nNoOfChannels = 1;
+
+    sSelHwInterface[0].m_dwIdInterface = 0;
+    sSelHwInterface[0].m_acDescription = _("QRCAN Device");
+	sg_bCurrState = STATE_HW_INTERFACE_LISTED;
+
+	if (bInit){
+		bInit = FALSE;
+	}
+	else{
+		MessageBox(sg_hOwnerWnd, "Please use the \"Channel Configuration\" menu item to setup the device.", "Hardware Selection", MB_OK);
+	}
+	
+    return S_OK;
 }
 
 /**
@@ -304,6 +522,13 @@ HRESULT CDIL_CAN_QRCAN::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface,
 */
 HRESULT CDIL_CAN_QRCAN::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /*sSelHwInterface*/, INT /*nSize*/)
 {
+	USES_CONVERSION;
+
+	VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_LISTED, ERR_IMPROPER_STATE);
+
+	// Check for success
+	sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
+
     return S_OK;
 }
 
@@ -314,7 +539,13 @@ HRESULT CDIL_CAN_QRCAN::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /*sSelHwI
 */
 HRESULT CDIL_CAN_QRCAN::CAN_DeselectHwInterface(void)
 {
-    return S_OK;
+    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
+
+    HRESULT hResult = S_OK;
+
+    sg_bCurrState = STATE_HW_INTERFACE_LISTED;
+
+    return hResult;
 }
 
 /**
@@ -326,9 +557,44 @@ HRESULT CDIL_CAN_QRCAN::CAN_DeselectHwInterface(void)
 HRESULT CDIL_CAN_QRCAN::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
 {
     HRESULT hResult = S_OK;
+	SCONTROLLER_DETAILS* cntrl;
+	
+	char temp[32];
 
-	ShowQRCANConfig(sg_hOwnerWnd);
+	cntrl = (SCONTROLLER_DETAILS*)InitData;
 
+	if (ShowQRCANConfig(sg_hOwnerWnd, &sg_QRCanCfg)){
+		switch ((int)sg_QRCanCfg.canBaudRate){
+            case QRCAN_SPEED_20K:
+                cntrl[0].m_omStrBaudrate = "20";
+                break;
+            case QRCAN_SPEED_50K:
+                cntrl[0].m_omStrBaudrate = "50";
+                break;
+            case QRCAN_SPEED_100K:
+                cntrl[0].m_omStrBaudrate = "100";
+                break;
+            case QRCAN_SPEED_125K:
+                cntrl[0].m_omStrBaudrate = "125";
+                break;
+            case QRCAN_SPEED_250K:
+                cntrl[0].m_omStrBaudrate = "250";
+                break;
+            case QRCAN_SPEED_500K:
+                cntrl[0].m_omStrBaudrate = "500";
+                break;
+            case QRCAN_SPEED_800K:
+                cntrl[0].m_omStrBaudrate = "800";
+                break;
+            default:
+                cntrl[0].m_omStrBaudrate = "1000";
+                break;			
+		}
+        if ((hResult = CAN_SetConfigData(InitData, 1)) == S_OK)
+        {
+            hResult = INFO_INITDAT_CONFIRM_CONFIG;
+        }
+	}
 	return hResult;
 }
 
@@ -340,8 +606,121 @@ HRESULT CDIL_CAN_QRCAN::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int&
 */
 HRESULT CDIL_CAN_QRCAN::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int /*Length*/)
 {
+	SCONTROLLER_DETAILS* cntrl;
+	char* tmp;
+
+	cntrl = (SCONTROLLER_DETAILS*)ConfigFile;
+	switch(_tcstol(cntrl[0].m_omStrBaudrate.c_str(), &tmp, 0))
+        {
+            case 20:
+                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_20K;
+                break;
+            case 50:
+                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_50K;
+                break;
+            case 100:
+                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_100K;
+                break;
+            case 125:
+                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_125K;
+                break;
+            case 250:
+                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_250K;
+                break;
+            case 500:
+                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_500K;
+                break;
+            case 800:
+                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_800K;
+                break;
+            default:
+                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_1M;
+                break;
+        }
+
     return S_OK;
 }
+
+/**
+ * This function writes the message to the corresponding clients buffer
+ */
+static void vWriteIntoClientsBuffer(STCANDATA& sCanData, UINT unClientIndex)
+{
+    /* Write into the respective client's buffer */
+    for (UINT j = 0; j < sg_asClientToBufMap[unClientIndex].unBufCount; j++)
+    {
+        sg_asClientToBufMap[unClientIndex].pClientBuf[j]->WriteIntoBuffer(&sCanData);
+    }
+}
+
+static void CopyMsg2CanData(STCANDATA* sCanData, QRCAN_MSG* msg, unsigned char flags)
+{
+
+    memset(sCanData, 0, sizeof(*sCanData));
+    sCanData->m_uDataInfo.m_sCANMsg.m_ucChannel = 1;
+    sCanData->m_uDataInfo.m_sCANMsg.m_unMsgID = msg->Id;
+    sCanData->m_uDataInfo.m_sCANMsg.m_ucDataLen = msg->Length;
+    //sCanData->m_uDataInfo.m_sCANMsg.m_ucEXTENDED = (msg->Flags & VSCAN_FLAGS_EXTENDED)?1:0;
+    //sCanData->m_uDataInfo.m_sCANMsg.m_ucRTR = (msg->Flags & VSCAN_FLAGS_REMOTE)?1:0;
+    sCanData->m_ucDataType = flags;
+
+	 // The part that deals with display Time for each message
+    //if (flags & TX_FLAG)
+    //{
+    //    sCanData->m_lTickCount.QuadPart = GetSysTimestamp(~0) * 10;
+    //}
+    //else
+    //{
+    //    sCanData->m_lTickCount.QuadPart = GetSysTimestamp(msg->Timestamp) * 10;
+    //}
+
+    memcpy(sCanData->m_uDataInfo.m_sCANMsg.m_ucData, msg->Data, 8);
+}
+
+// RxD Event-Funktion
+static DWORD WINAPI CanRxEvent(LPVOID /* lpParam */)
+{
+    static STCANDATA sCanData;
+    sCanData.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
+    DWORD dwTemp;
+    QRCAN_MSG msg;
+
+    for (;;)
+    {
+        if (WaitForSingleObject(sg_hEventRecv, INFINITE) == WAIT_OBJECT_0)
+        {
+            for (;;)
+            {
+                if (QRCAN_Recv(sg_QRCanCfg.hCan, &msg) != QRCAN_ERR_OK)
+                {
+                    sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("QRCAN_Read failed"));
+                    Sleep(100);
+                    continue;
+                }
+
+                if (dwTemp == 1)
+                {
+                    CopyMsg2CanData(&sCanData, &msg, RX_FLAG);
+                    //Write the msg into registered client's buffer
+                    EnterCriticalSection(&sg_DIL_CriticalSection);
+                    vWriteIntoClientsBuffer(sCanData, 0);
+                    LeaveCriticalSection(&sg_DIL_CriticalSection);
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("WaitForSingleObject failed"));
+            Sleep(100);
+        }
+
+    }
+}
+
 
 /**
 * \brief         connects to the channels and initiates read thread.
@@ -350,7 +729,12 @@ HRESULT CDIL_CAN_QRCAN::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int /
 */
 HRESULT CDIL_CAN_QRCAN::CAN_StartHardware(void)
 {
+	//VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
+
     HRESULT hResult = S_OK;
+	QRCAN_Open();
+
+	sg_bCurrState = STATE_CONNECTED;
 
     return hResult;
 }
@@ -362,7 +746,15 @@ HRESULT CDIL_CAN_QRCAN::CAN_StartHardware(void)
 */
 HRESULT CDIL_CAN_QRCAN::CAN_StopHardware(void)
 {
+	VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
+
     HRESULT hResult = S_OK;
+	if (QRCAN_Close() == QRCAN_ERR_OK){
+		hResult = S_OK;
+	}
+	else{
+		hResult = S_FALSE;
+	}
 
     return hResult;
 }
@@ -374,6 +766,7 @@ HRESULT CDIL_CAN_QRCAN::CAN_StopHardware(void)
 */
 HRESULT CDIL_CAN_QRCAN::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 {
+	StatusData.wControllerStatus = NORMAL_ACTIVE;
     return S_OK;
 }
 
@@ -395,8 +788,41 @@ HRESULT CDIL_CAN_QRCAN::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 */
 HRESULT CDIL_CAN_QRCAN::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
-    HRESULT hResult = S_OK;
+    HRESULT hResult = S_FALSE;
+	QRCAN_MSG msg;
 
+	VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
+
+	if (bClientIdExist(dwClientID)){
+		if (sCanTxMsg.m_ucChannel <= sg_nNoOfChannels){
+			memset(&msg, 0, sizeof(msg));
+			msg.Id = sCanTxMsg.m_unMsgID;
+			msg.Length = sCanTxMsg.m_ucDataLen;
+			memcpy(msg.Data, &sCanTxMsg.m_ucData, msg.Length);
+
+			if (QRCAN_Send(sg_QRCanCfg.hCan, &msg) == QRCAN_ERR_OK){
+				static STCANDATA sCanData;
+                CopyMsg2CanData(&sCanData, &msg, TX_FLAG);
+
+                EnterCriticalSection(&sg_DIL_CriticalSection);
+                //Write the msg into registered client's buffer
+                vWriteIntoClientsBuffer(sCanData, 0);		// 0 to denote client number
+                LeaveCriticalSection(&sg_DIL_CriticalSection);
+                
+				hResult = S_OK;
+			}
+			else{
+				AfxMessageBox("Could not send CAN data to the hardware");
+				hResult = S_FALSE;
+			}
+		}
+		else{
+			hResult = ERR_INVALID_CHANNEL;
+		}
+	}
+	else{
+		hResult = ERR_NO_CLIENT_EXIST;
+	}
     return hResult;
 }
 
@@ -418,7 +844,7 @@ HRESULT CDIL_CAN_QRCAN::CAN_GetBusConfigInfo(BYTE* /*BusInfo*/)
 */
 HRESULT CDIL_CAN_QRCAN::CAN_GetLastErrorString(std::string& acErrorStr)
 {
-    return S_OK;
+    return WARN_DUMMY_API;
 }
 
 /**
@@ -428,10 +854,51 @@ HRESULT CDIL_CAN_QRCAN::CAN_GetLastErrorString(std::string& acErrorStr)
 * \param[in]     eContrParam, indicates controller parameter
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_QRCAN::CAN_GetControllerParams(LONG& lParam, UINT /*nChannel*/, ECONTR_PARAM eContrParam)
+HRESULT CDIL_CAN_QRCAN::CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
     HRESULT hResult = S_OK;
-    
+    switch (eContrParam)
+    {
+        case NUMBER_HW:
+        {
+            lParam = 1;
+        }
+        break;
+        case NUMBER_CONNECTED_HW:
+        {
+            lParam = 1;
+        }
+        break;
+        case DRIVER_STATUS:
+        {
+            lParam = TRUE;
+        }
+        break;
+        case HW_MODE:
+        {
+			if (nChannel < sg_nNoOfChannels)
+            {
+                lParam = defMODE_ACTIVE;
+            }
+            else
+                //unknown
+            {
+                lParam = defCONTROLLER_BUSOFF + 1;
+            }
+        }
+        break;
+        case CON_TEST:
+        {
+            lParam = TRUE;
+        }
+        break;
+        default:
+        {
+            hResult = S_FALSE;
+        }
+        break;
+
+    }
     return hResult;
 }
 
@@ -447,22 +914,45 @@ HRESULT CDIL_CAN_QRCAN::CAN_SetControllerParams(int /* nValue */, ECONTR_PARAM /
 * \param[in]     eContrParam, indicates controller parameter
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_QRCAN::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT /* nChannel */, ECONTR_PARAM /* eContrParam */)
+HRESULT CDIL_CAN_QRCAN::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
 {
-    return S_OK;
+    (void)eContrParam;
+    (void)nChannel;
+    // Tiny-CAN not support CAN-Bus Error counters
+    sErrorCnt.m_ucTxErrCount = 0;
+    sErrorCnt.m_ucRxErrCount = 0;
+    return(S_OK);
 }
 
 static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf)
 {
-    BOOL bExist = TRUE;
+    BOOL bExist = FALSE;
 
-    return bExist;
+    for (UINT i = 0; i < sClientObj.unBufCount; i++)
+    {
+        if (pBuf == sClientObj.pClientBuf[i])
+        {
+            bExist = TRUE;
+            i = sClientObj.unBufCount; //break the loop
+        }
+    }
+    return(bExist);
 }
 
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove)
 {
     BOOL bReturn = TRUE;
-
+    for (UINT i = 0; i < unCount; i++)
+    {
+        if (RootBufferArray[i] == BufferToRemove)
+        {
+            if (i < (unCount - 1)) /* If not the last bufffer */
+            {
+                RootBufferArray[i] = RootBufferArray[unCount - 1];
+            }
+            unCount--;
+        }
+    }
     return bReturn;
 }
 
@@ -473,8 +963,16 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
  */
 static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
 {
-    BOOL bResult = TRUE;
-
+    BOOL bResult = FALSE;
+    for (UINT i = 0; i < sg_unClientCnt; i++)
+    {
+        if (sg_asClientToBufMap[i].dwClientID == dwClientID)
+        {
+            unClientIndex = i;
+            i = sg_unClientCnt; // break the loop
+            bResult = TRUE;
+        }
+    }
     return bResult;
 }
 
@@ -485,7 +983,15 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
  */
 static BOOL bClientExist(std::string pcClientName, INT& Index)
 {
-    return(TRUE);
+    for (UINT i = 0; i < sg_unClientCnt; i++)
+    {
+        if (!_tcscmp(pcClientName.c_str(), sg_asClientToBufMap[i].pacClientName))
+        {
+            Index = i;
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 
 /**
@@ -495,9 +1001,68 @@ static BOOL bClientExist(std::string pcClientName, INT& Index)
  */
 static BOOL bRemoveClient(DWORD dwClientId)
 {
-    BOOL bResult = TRUE;
-    
+    BOOL bResult = FALSE;
+    if (sg_unClientCnt > 0)
+    {
+        UINT unClientIndex = 0;
+        if (bGetClientObj(dwClientId, unClientIndex))
+        {
+            sg_asClientToBufMap[unClientIndex].dwClientID = 0;
+            memset (sg_asClientToBufMap[unClientIndex].pacClientName, 0, sizeof (char) * MAX_PATH);
+            for (INT i = 0; i < MAX_BUFF_ALLOWED; i++)
+            {
+                sg_asClientToBufMap[unClientIndex].pClientBuf[i] = nullptr;
+            }
+            sg_asClientToBufMap[unClientIndex].unBufCount = 0;
+            if ((unClientIndex + 1) < sg_unClientCnt)
+            {
+                sg_asClientToBufMap[unClientIndex] = sg_asClientToBufMap[sg_unClientCnt - 1];
+            }
+            sg_unClientCnt--;
+            bResult = TRUE;
+        }
+    }
     return bResult;
+}
+
+/**
+ * \return TRUE if client exists else FALSE
+ *
+ * Searches for the client with the id dwClientId.
+ */
+static BOOL bClientIdExist(const DWORD& dwClientId)
+{
+    BOOL bReturn = FALSE;
+    for (UINT i = 0; i < sg_unClientCnt; i++)
+    {
+        if (sg_asClientToBufMap[i].dwClientID == dwClientId)
+        {
+            bReturn = TRUE;
+            i = sg_unClientCnt; // break the loop
+        }
+    }
+    return bReturn;
+}
+
+/**
+ * Returns the available slot
+ */
+static DWORD dwGetAvailableClientSlot(void)
+{
+    DWORD nClientId = 2;
+    for (int i = 0; i < MAX_CLIENT_ALLOWED; i++)
+    {
+        if (bClientIdExist(nClientId))
+        {
+            nClientId += 1;
+        }
+        else
+        {
+            i = MAX_CLIENT_ALLOWED; // break the loop
+        }
+    }
+
+    return nClientId;
 }
 
 HRESULT CDIL_CAN_QRCAN::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
