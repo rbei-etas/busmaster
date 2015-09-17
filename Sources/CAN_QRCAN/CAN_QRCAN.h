@@ -24,25 +24,26 @@
 
 typedef struct{
 
-	QRCAN_COMM_MODE commMode;					// Communication Mode for the Hardware
+    QRCAN_COMM_MODE commMode;                   // Communication Mode for the Hardware
 
-	HANDLE q_hComm;								// Handle for Serial Communication
+    HANDLE q_hComm;                             // Handle for Serial Communication
 
-	SOCKET sendingSocket;						// Socket for Etherent communication
-	char pcHost[256];							// To hold IP address
-	unsigned int serverPort;					// To hold port number		
+    SOCKET sendingSocket;                       // Socket for Etherent communication
+    char pcHost[256];                           // To hold IP address
+    unsigned int serverPort;                    // To hold port number      
 
 } QRCAN_DEVICE;
 
 struct QRCanCfg
 {
     QRCAN_HANDLE hCan;
-    void* canBaudRate;
+    char canBaudRate;
 };
 
 int WINAPI ShowQRCANConfig(HWND hwnd, struct QRCanCfg* cfg);
 
 QRCAN_STATUS SendDataToHardware(char *data);
+QRCAN_STATUS ReceiveDataFromHardware();
 QRCAN_STATUS CloseDevice(void);
 QRCAN_STATUS OpenDevice(void);
 

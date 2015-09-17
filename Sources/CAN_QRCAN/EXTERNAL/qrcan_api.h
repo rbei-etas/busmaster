@@ -55,32 +55,37 @@ typedef struct
 } QRCAN_MSG;
 
 // Status and Errors
-#define QRCAN_ERR_OK					0
-#define QRCAN_ERR_NOT_OK				-1
+#define QRCAN_ERR_OK                    0
+#define QRCAN_ERR_NOT_OK                -1
 
 // Communication Modes
-#define QRCAN_USE_USB					1
-#define QRCAN_USE_ETHERNET				2
+#define QRCAN_USE_USB                   1
+#define QRCAN_USE_ETHERNET              2
 
 // CAN Baud Rate
-#define QRCAN_SPEED_1M                  (void*)8
-#define QRCAN_SPEED_800K                (void*)7
-#define QRCAN_SPEED_500K                (void*)6
-#define QRCAN_SPEED_250K                (void*)5
-#define QRCAN_SPEED_125K                (void*)4
-#define QRCAN_SPEED_100K                (void*)3
-#define QRCAN_SPEED_50K                 (void*)2
-#define QRCAN_SPEED_20K                 (void*)1
+#define QRCAN_SPEED_1M                  '8'
+#define QRCAN_SPEED_800K                '7'
+#define QRCAN_SPEED_500K                '6'
+#define QRCAN_SPEED_250K                '5'
+#define QRCAN_SPEED_125K                '4'
+#define QRCAN_SPEED_100K                '3'
+#define QRCAN_SPEED_50K                 '2'
+#define QRCAN_SPEED_20K                 '1'
 
 // ASCII Protocol symbols
-#define QR_SEND_11BIT_ID				't'
-#define ASCII_RETURN					'\r'
+#define QRCAN_SEND_11BIT_ID                't'
+#define QRCAN_SET_BAUD_RATE                'S'
+
+#define ASCII_RETURN                    '\r'
 
 
 
 /* Function Definitions */
-// Config CAN parameters
+// Config Device parameters
 QRCAN_STATUS QRCAN_Open();
+
+// Configure CAN parameters
+QRCAN_STATUS QRCAN_Config(QRCAN_HANDLE Handle, struct QRCanCfg* cfg);
 
 // Send CAN Message from BUSMASTER
 QRCAN_STATUS QRCAN_Send(QRCAN_HANDLE Handle, QRCAN_MSG* Buf);
@@ -90,6 +95,10 @@ QRCAN_STATUS QRCAN_Recv(QRCAN_HANDLE Handle, QRCAN_MSG* Buf);
 
 QRCAN_STATUS QRCAN_Close();
 
-
+#ifdef WIN32
+    QRCAN_STATUS QRCAN_SetRcvEvent(QRCAN_HANDLE Handle, HANDLE Event);
+#else
+    QRCAN_STATUS QRCAN_SetRcvEvent(QRCAN_HANDLE Handle, sem_t* Event);
+#endif
 
 #endif

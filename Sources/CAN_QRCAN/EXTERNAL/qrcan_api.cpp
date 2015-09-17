@@ -33,46 +33,65 @@
 // Configure CAN bus
 QRCAN_STATUS QRCAN_Open(){
 
-	OpenDevice();
-	return QRCAN_ERR_OK;
+    OpenDevice();
+    return QRCAN_ERR_OK;
 
 }
 
+QRCAN_STATUS QRCAN_Config(QRCAN_HANDLE Handle, struct QRCanCfg* cfg)
+{
+    int i = 0;
+    char sendMessage[32] = "";
+
+    sendMessage[i++] = QRCAN_SET_BAUD_RATE;
+    sendMessage[i++] = cfg->canBaudRate;
+    sendMessage[i++] = ASCII_RETURN;
+
+    return SendDataToHardware(sendMessage);
+
+    return QRCAN_ERR_OK;
+}
+
+
 // Send CAN Message from BUSMASTER
 QRCAN_STATUS QRCAN_Send(QRCAN_HANDLE Handle, QRCAN_MSG* Buf){
-	int i = 0;
-	char sendMessage[32] = "";
+    int i = 0;
+    char sendMessage[32] = "";
 
-	sendMessage[i++] = QR_SEND_11BIT_ID;
-	sendMessage[i++] = (Buf->Id / 256) <= 9  ? ((Buf->Id / 256) + 48) : ((Buf->Id / 256) + 55);
-	sendMessage[i++] = ((Buf->Id % 256) / 16) <= 9  ? (((Buf->Id % 256) / 16) + 48) : (((Buf->Id % 256) / 16) + 55);
-	sendMessage[i++] = (Buf->Id % 16) <= 9  ? ((Buf->Id % 16) + 48) : ((Buf->Id % 16) + 55);
-	sendMessage[i++] = Buf->Length + 48;
+    sendMessage[i++] = QRCAN_SEND_11BIT_ID;
+    sendMessage[i++] = (Buf->Id / 256) <= 9  ? ((Buf->Id / 256) + 48) : ((Buf->Id / 256) + 55);
+    sendMessage[i++] = ((Buf->Id % 256) / 16) <= 9  ? (((Buf->Id % 256) / 16) + 48) : (((Buf->Id % 256) / 16) + 55);
+    sendMessage[i++] = (Buf->Id % 16) <= 9  ? ((Buf->Id % 16) + 48) : ((Buf->Id % 16) + 55);
+    sendMessage[i++] = Buf->Length + 48;
 
-	for (UINT8 l = 0; l < (Buf->Length); l++){
-		sendMessage[i++] = (Buf->Data[l] / 16) <= 9  ? ((Buf->Data[l] / 16) + 48) : ((Buf->Data[l] / 16) + 55);
-		sendMessage[i++] = (Buf->Data[l] % 16) <= 9  ? ((Buf->Data[l] % 16) + 48) : ((Buf->Data[l] % 16) + 55);
-	}
+    for (UINT8 l = 0; l < (Buf->Length); l++){
+        sendMessage[i++] = (Buf->Data[l] / 16) <= 9  ? ((Buf->Data[l] / 16) + 48) : ((Buf->Data[l] / 16) + 55);
+        sendMessage[i++] = (Buf->Data[l] % 16) <= 9  ? ((Buf->Data[l] % 16) + 48) : ((Buf->Data[l] % 16) + 55);
+    }
 
-	sendMessage[i++] = ASCII_RETURN;
+    sendMessage[i++] = ASCII_RETURN;
 
-	return SendDataToHardware(sendMessage);
+    return SendDataToHardware(sendMessage);
 
-	//return QRCAN_ERR_OK;
+    //return QRCAN_ERR_OK;
+}
+
+//CAN Reception Event
+QRCAN_STATUS QRCAN_SetRcvEvent(QRCAN_HANDLE Handle, HANDLE Event){
+
+    return QRCAN_ERR_OK;
 }
 
 // Receive CAN Message from Hardware
 QRCAN_STATUS QRCAN_Recv(QRCAN_HANDLE Handle, QRCAN_MSG* Buf){
 
-	return QRCAN_ERR_OK;
+    return ReceiveDataFromHardware();
+
 }
 
 // Close the QRCAN Device
 QRCAN_STATUS QRCAN_Close(){
 
-	return CloseDevice();
+    return CloseDevice();
 
 }
-
-
-

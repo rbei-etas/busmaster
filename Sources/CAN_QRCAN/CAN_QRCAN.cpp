@@ -53,7 +53,7 @@
 BEGIN_MESSAGE_MAP(CCAN_QRCAN, CWinApp)
 END_MESSAGE_MAP()
 
-static struct QRCanCfg sg_QRCanCfg;
+static struct QRCanCfg sg_QRCanCfg = {};
 
 
 /**
@@ -118,7 +118,11 @@ static UINT sg_unClientCnt = 0;
 static UINT sg_nNoOfChannels = 0;
 static CRITICAL_SECTION sg_DIL_CriticalSection;
 static HANDLE sg_hEventRecv = nullptr;
+static HANDLE sg_hReadThread = nullptr;
+static DWORD sg_dwReadThreadId = 0;
 
+#define CALLBACK_TYPE __stdcall
+static void CALLBACK_TYPE CanRxEvent(uint32_t index, struct TCanMsg* msg, int32_t count);
 
 /**
  * Query Tick Count
@@ -221,14 +225,14 @@ static UINT64 sg_TimeStamp = 0;
  */
 HRESULT CDIL_CAN_QRCAN::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger* pILog)
 {
-	sg_hOwnerWnd = hWndOwner;
-	sg_pIlog = pILog;
+    sg_hOwnerWnd = hWndOwner;
+    sg_pIlog = pILog;
 
-	// Initialize both the time parameters
-	GetLocalTime(&sg_CurrSysTime);
-	sg_TimeStamp = 0x0;
+    // Initialize both the time parameters
+    GetLocalTime(&sg_CurrSysTime);
+    sg_TimeStamp = 0x0;
 
-	CAN_ManageMsgBuf(MSGBUF_CLEAR, 0, nullptr);
+    CAN_ManageMsgBuf(MSGBUF_CLEAR, 0, nullptr);
 
     return S_OK;
 }
@@ -240,7 +244,7 @@ HRESULT CDIL_CAN_QRCAN::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger
  */
 HRESULT CDIL_CAN_QRCAN::CAN_UnloadDriverLibrary(void)
 {
-	if (hxlDll != nullptr)
+    if (hxlDll != nullptr)
     {
         FreeLibrary(hxlDll);
         hxlDll = nullptr;
@@ -333,7 +337,7 @@ HRESULT CDIL_CAN_QRCAN::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBaseCANB
  */
 HRESULT CDIL_CAN_QRCAN::CAN_RegisterClient(BOOL bRegister,DWORD& ClientID, char* pacClientName)
 {
-	HRESULT hResult = S_FALSE;
+    HRESULT hResult = S_FALSE;
     INT Index;
 
     if (bRegister)
@@ -428,9 +432,9 @@ HRESULT CDIL_CAN_QRCAN::CAN_LoadDriverLibrary(void)
 */
 HRESULT CDIL_CAN_QRCAN::CAN_PerformInitOperations(void)
 {
-	memset(&sg_QRCanCfg, 0, sizeof(sg_QRCanCfg));
+    memset(&sg_QRCanCfg, 0, sizeof(sg_QRCanCfg));
 
-	/* Create critical section for ensuring thread
+    /* Create critical section for ensuring thread
     safeness of read message function */
     InitializeCriticalSection(&sg_DIL_CriticalSection);
 
@@ -479,7 +483,7 @@ HRESULT CDIL_CAN_QRCAN::CAN_PerformClosureOperations(void)
 */
 HRESULT CDIL_CAN_QRCAN::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount)
 {
-	CurrSysTime = sg_CurrSysTime;
+    CurrSysTime = sg_CurrSysTime;
     TimeStamp = sg_TimeStamp;
 
     return S_OK;
@@ -493,24 +497,24 @@ HRESULT CDIL_CAN_QRCAN::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& 
 */
 HRESULT CDIL_CAN_QRCAN::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
 {
-	USES_CONVERSION;
-	static BOOL bInit = 1;
+    USES_CONVERSION;
+    static BOOL bInit = 1;
 
-	nCount = 1;
-	// Set the current number of channels
-	sg_nNoOfChannels = 1;
+    nCount = 1;
+    // Set the current number of channels
+    sg_nNoOfChannels = 1;
 
     sSelHwInterface[0].m_dwIdInterface = 0;
     sSelHwInterface[0].m_acDescription = _("QRCAN Device");
-	sg_bCurrState = STATE_HW_INTERFACE_LISTED;
+    sg_bCurrState = STATE_HW_INTERFACE_LISTED;
 
-	if (bInit){
-		bInit = FALSE;
-	}
-	else{
-		MessageBox(sg_hOwnerWnd, "Please use the \"Channel Configuration\" menu item to setup the device.", "Hardware Selection", MB_OK);
-	}
-	
+    if (bInit){
+        bInit = FALSE;
+    }
+    else{
+        MessageBox(sg_hOwnerWnd, "Please use the \"Channel Configuration\" menu item to setup the device.", "Hardware Selection", MB_OK);
+    }
+    
     return S_OK;
 }
 
@@ -522,12 +526,12 @@ HRESULT CDIL_CAN_QRCAN::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface,
 */
 HRESULT CDIL_CAN_QRCAN::CAN_SelectHwInterface(const INTERFACE_HW_LIST& /*sSelHwInterface*/, INT /*nSize*/)
 {
-	USES_CONVERSION;
+    USES_CONVERSION;
 
-	VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_LISTED, ERR_IMPROPER_STATE);
+    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_LISTED, ERR_IMPROPER_STATE);
 
-	// Check for success
-	sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
+    // Check for success
+    sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
 
     return S_OK;
 }
@@ -557,45 +561,18 @@ HRESULT CDIL_CAN_QRCAN::CAN_DeselectHwInterface(void)
 HRESULT CDIL_CAN_QRCAN::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
 {
     HRESULT hResult = S_OK;
-	SCONTROLLER_DETAILS* cntrl;
-	
-	char temp[32];
+    SCONTROLLER_DETAILS* cntrl;
+    
+    char temp[32];
 
-	cntrl = (SCONTROLLER_DETAILS*)InitData;
+    cntrl = (SCONTROLLER_DETAILS*)InitData;
 
-	if (ShowQRCANConfig(sg_hOwnerWnd, &sg_QRCanCfg)){
-		switch ((int)sg_QRCanCfg.canBaudRate){
-            case QRCAN_SPEED_20K:
-                cntrl[0].m_omStrBaudrate = "20";
-                break;
-            case QRCAN_SPEED_50K:
-                cntrl[0].m_omStrBaudrate = "50";
-                break;
-            case QRCAN_SPEED_100K:
-                cntrl[0].m_omStrBaudrate = "100";
-                break;
-            case QRCAN_SPEED_125K:
-                cntrl[0].m_omStrBaudrate = "125";
-                break;
-            case QRCAN_SPEED_250K:
-                cntrl[0].m_omStrBaudrate = "250";
-                break;
-            case QRCAN_SPEED_500K:
-                cntrl[0].m_omStrBaudrate = "500";
-                break;
-            case QRCAN_SPEED_800K:
-                cntrl[0].m_omStrBaudrate = "800";
-                break;
-            default:
-                cntrl[0].m_omStrBaudrate = "1000";
-                break;			
-		}
-        if ((hResult = CAN_SetConfigData(InitData, 1)) == S_OK)
-        {
+    if (ShowQRCANConfig(sg_hOwnerWnd, &sg_QRCanCfg)){
+        if ((hResult = CAN_SetConfigData(InitData, 1)) == S_OK) {
             hResult = INFO_INITDAT_CONFIRM_CONFIG;
         }
-	}
-	return hResult;
+    }
+    return hResult;
 }
 
 /**
@@ -606,38 +583,11 @@ HRESULT CDIL_CAN_QRCAN::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int&
 */
 HRESULT CDIL_CAN_QRCAN::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int /*Length*/)
 {
-	SCONTROLLER_DETAILS* cntrl;
-	char* tmp;
+    SCONTROLLER_DETAILS* cntrl;
+    char* tmp;
 
-	cntrl = (SCONTROLLER_DETAILS*)ConfigFile;
-	switch(_tcstol(cntrl[0].m_omStrBaudrate.c_str(), &tmp, 0))
-        {
-            case 20:
-                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_20K;
-                break;
-            case 50:
-                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_50K;
-                break;
-            case 100:
-                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_100K;
-                break;
-            case 125:
-                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_125K;
-                break;
-            case 250:
-                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_250K;
-                break;
-            case 500:
-                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_500K;
-                break;
-            case 800:
-                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_800K;
-                break;
-            default:
-                sg_QRCanCfg.canBaudRate = QRCAN_SPEED_1M;
-                break;
-        }
-
+    cntrl = (SCONTROLLER_DETAILS*)ConfigFile;
+    
     return S_OK;
 }
 
@@ -664,20 +614,25 @@ static void CopyMsg2CanData(STCANDATA* sCanData, QRCAN_MSG* msg, unsigned char f
     //sCanData->m_uDataInfo.m_sCANMsg.m_ucRTR = (msg->Flags & VSCAN_FLAGS_REMOTE)?1:0;
     sCanData->m_ucDataType = flags;
 
-	 // The part that deals with display Time for each message
-    //if (flags & TX_FLAG)
-    //{
-    //    sCanData->m_lTickCount.QuadPart = GetSysTimestamp(~0) * 10;
-    //}
-    //else
-    //{
-    //    sCanData->m_lTickCount.QuadPart = GetSysTimestamp(msg->Timestamp) * 10;
-    //}
+      //The part that deals with display Time for each message
+        GetSystemTime(&sg_CurrSysTime);
+        //Query Tick Count
+        QueryPerformanceCounter(&sg_QueryTickCount);
+        // Get frequency of the performance counter
+        QueryPerformanceFrequency(&sg_lnFrequency);
+        // Convert it to time stamp with the granularity of hundreds of microsecond
+        if ((sg_QueryTickCount.QuadPart * 10000) > sg_lnFrequency.QuadPart)
+        {
+            sCanData->m_lTickCount.QuadPart = (sg_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart;
+        }
+        else
+        {
+            sCanData->m_lTickCount.QuadPart = (sg_QueryTickCount.QuadPart / sg_lnFrequency.QuadPart) * 10000;
+        }
 
     memcpy(sCanData->m_uDataInfo.m_sCANMsg.m_ucData, msg->Data, 8);
 }
 
-// RxD Event-Funktion
 static DWORD WINAPI CanRxEvent(LPVOID /* lpParam */)
 {
     static STCANDATA sCanData;
@@ -717,10 +672,8 @@ static DWORD WINAPI CanRxEvent(LPVOID /* lpParam */)
             sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("WaitForSingleObject failed"));
             Sleep(100);
         }
-
     }
 }
-
 
 /**
 * \brief         connects to the channels and initiates read thread.
@@ -729,13 +682,42 @@ static DWORD WINAPI CanRxEvent(LPVOID /* lpParam */)
 */
 HRESULT CDIL_CAN_QRCAN::CAN_StartHardware(void)
 {
-	//VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
+    //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
     HRESULT hResult = S_OK;
-	QRCAN_Open();
+    QRCAN_Open();
 
-	sg_bCurrState = STATE_CONNECTED;
+    sg_bCurrState = STATE_CONNECTED;
 
+    // Send CAN baud rate selected in the GUI to hardware
+    if (QRCAN_Config(sg_QRCanCfg.hCan, &sg_QRCanCfg) != QRCAN_ERR_OK)
+    {
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("set speed ioctl failed"));
+        return (S_FALSE);
+    }            
+
+    // Create Receive Event
+    sg_hEventRecv = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+    if (sg_hEventRecv == nullptr)
+    {
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not create the receive event"));
+        hResult = S_FALSE;
+    }
+
+    if (QRCAN_SetRcvEvent(sg_QRCanCfg.hCan, sg_hEventRecv) != QRCAN_ERR_OK)
+    {
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("QRCAN_SetRcvEvent failed"));
+        hResult = S_FALSE;
+    }
+
+
+    // Thread to poll reception of CAN messages
+    sg_hReadThread = CreateThread(nullptr, 0, CanRxEvent, nullptr, 0, &sg_dwReadThreadId);
+    if (sg_hReadThread == nullptr)
+    {
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not create the receive thread"));
+        hResult = S_FALSE;
+    }
     return hResult;
 }
 
@@ -746,15 +728,15 @@ HRESULT CDIL_CAN_QRCAN::CAN_StartHardware(void)
 */
 HRESULT CDIL_CAN_QRCAN::CAN_StopHardware(void)
 {
-	VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
+    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
 
     HRESULT hResult = S_OK;
-	if (QRCAN_Close() == QRCAN_ERR_OK){
-		hResult = S_OK;
-	}
-	else{
-		hResult = S_FALSE;
-	}
+    if (QRCAN_Close() == QRCAN_ERR_OK){
+        hResult = S_OK;
+    }
+    else{
+        hResult = S_FALSE;
+    }
 
     return hResult;
 }
@@ -766,7 +748,7 @@ HRESULT CDIL_CAN_QRCAN::CAN_StopHardware(void)
 */
 HRESULT CDIL_CAN_QRCAN::CAN_GetCurrStatus(s_STATUSMSG& StatusData)
 {
-	StatusData.wControllerStatus = NORMAL_ACTIVE;
+    StatusData.wControllerStatus = NORMAL_ACTIVE;
     return S_OK;
 }
 
@@ -789,40 +771,40 @@ HRESULT CDIL_CAN_QRCAN::CAN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 HRESULT CDIL_CAN_QRCAN::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg)
 {
     HRESULT hResult = S_FALSE;
-	QRCAN_MSG msg;
+    QRCAN_MSG msg;
 
-	VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
+    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
 
-	if (bClientIdExist(dwClientID)){
-		if (sCanTxMsg.m_ucChannel <= sg_nNoOfChannels){
-			memset(&msg, 0, sizeof(msg));
-			msg.Id = sCanTxMsg.m_unMsgID;
-			msg.Length = sCanTxMsg.m_ucDataLen;
-			memcpy(msg.Data, &sCanTxMsg.m_ucData, msg.Length);
+    if (bClientIdExist(dwClientID)){
+        if (sCanTxMsg.m_ucChannel <= sg_nNoOfChannels){
+            memset(&msg, 0, sizeof(msg));
+            msg.Id = sCanTxMsg.m_unMsgID;
+            msg.Length = sCanTxMsg.m_ucDataLen;
+            memcpy(msg.Data, &sCanTxMsg.m_ucData, msg.Length);
 
-			if (QRCAN_Send(sg_QRCanCfg.hCan, &msg) == QRCAN_ERR_OK){
-				static STCANDATA sCanData;
+            if (QRCAN_Send(sg_QRCanCfg.hCan, &msg) == QRCAN_ERR_OK){
+                static STCANDATA sCanData;
                 CopyMsg2CanData(&sCanData, &msg, TX_FLAG);
 
                 EnterCriticalSection(&sg_DIL_CriticalSection);
                 //Write the msg into registered client's buffer
-                vWriteIntoClientsBuffer(sCanData, 0);		// 0 to denote client number
+                vWriteIntoClientsBuffer(sCanData, 0);       // 0 to denote client number
                 LeaveCriticalSection(&sg_DIL_CriticalSection);
                 
-				hResult = S_OK;
-			}
-			else{
-				AfxMessageBox("Could not send CAN data to the hardware");
-				hResult = S_FALSE;
-			}
-		}
-		else{
-			hResult = ERR_INVALID_CHANNEL;
-		}
-	}
-	else{
-		hResult = ERR_NO_CLIENT_EXIST;
-	}
+                hResult = S_OK;
+            }
+            else{
+                AfxMessageBox("Could not send CAN data to the hardware");
+                hResult = S_FALSE;
+            }
+        }
+        else{
+            hResult = ERR_INVALID_CHANNEL;
+        }
+    }
+    else{
+        hResult = ERR_NO_CLIENT_EXIST;
+    }
     return hResult;
 }
 
@@ -876,7 +858,7 @@ HRESULT CDIL_CAN_QRCAN::CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECO
         break;
         case HW_MODE:
         {
-			if (nChannel < sg_nNoOfChannels)
+            if (nChannel < sg_nNoOfChannels)
             {
                 lParam = defMODE_ACTIVE;
             }
