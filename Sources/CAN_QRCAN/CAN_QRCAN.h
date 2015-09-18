@@ -27,6 +27,7 @@ typedef struct{
     QRCAN_COMM_MODE commMode;                   // Communication Mode for the Hardware
 
     HANDLE q_hComm;                             // Handle for Serial Communication
+    char serialPortName[10];                    // To hold serial port name
 
     SOCKET sendingSocket;                       // Socket for Etherent communication
     char pcHost[256];                           // To hold IP address

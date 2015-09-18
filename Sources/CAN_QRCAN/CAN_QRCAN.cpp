@@ -568,6 +568,35 @@ HRESULT CDIL_CAN_QRCAN::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int&
     cntrl = (SCONTROLLER_DETAILS*)InitData;
 
     if (ShowQRCANConfig(sg_hOwnerWnd, &sg_QRCanCfg)){
+        if (sg_QRCanCfg.canBaudRate){
+            switch ((int)sg_QRCanCfg.canBaudRate)
+            {
+                case QRCAN_SPEED_20K:
+                    cntrl[0].m_omStrBaudrate = "20";
+                    break;
+                case QRCAN_SPEED_50K:
+                    cntrl[0].m_omStrBaudrate = "50";
+                    break;
+                case QRCAN_SPEED_100K:
+                    cntrl[0].m_omStrBaudrate = "100";
+                    break;
+                case QRCAN_SPEED_125K:
+                    cntrl[0].m_omStrBaudrate = "125";
+                    break;
+                case QRCAN_SPEED_250K:
+                    cntrl[0].m_omStrBaudrate = "250";
+                    break;
+                case QRCAN_SPEED_500K:
+                    cntrl[0].m_omStrBaudrate = "500";
+                    break;
+                case QRCAN_SPEED_800K:
+                    cntrl[0].m_omStrBaudrate = "800";
+                    break;
+                default:
+                    cntrl[0].m_omStrBaudrate = "1000";
+                    break;
+            }
+        }
         if ((hResult = CAN_SetConfigData(InitData, 1)) == S_OK) {
             hResult = INFO_INITDAT_CONFIRM_CONFIG;
         }
@@ -615,7 +644,7 @@ static void CopyMsg2CanData(STCANDATA* sCanData, QRCAN_MSG* msg, unsigned char f
     sCanData->m_ucDataType = flags;
 
       //The part that deals with display Time for each message
-        GetSystemTime(&sg_CurrSysTime);
+        GetLocalTime(&sg_CurrSysTime);
         //Query Tick Count
         QueryPerformanceCounter(&sg_QueryTickCount);
         // Get frequency of the performance counter

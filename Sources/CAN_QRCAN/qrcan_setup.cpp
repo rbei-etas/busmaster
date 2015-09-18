@@ -89,55 +89,14 @@ static void InitBaudRateList(void){
     SendDlgItemMessage(qrconfig_hDlg, IDC_BAUDRATE, CB_SETCURSEL, 3/*(int)CanCfg->canBaudRate*/, 0);
 }
 
-static void SetupSerialPort(void){
-    char serialPortName[10];
+static void SetupSerialPort(void){    
     // Get the serial port selected from GUI
-    if (GetDlgItemText(qrconfig_hDlg, IDC_SERIAL_PORT, serialPortName, sizeof(serialPortName)) == 0){
+    if (GetDlgItemText(qrconfig_hDlg, IDC_SERIAL_PORT, qrcanDevice.serialPortName, sizeof(qrcanDevice.serialPortName)) == 0){
         CString msg;
         msg.Format(_T("%d"), GetLastError());
         AfxMessageBox(msg);
         AfxMessageBox("Error getting Serial Port from GUI");
-    }
-    qrcanDevice.q_hComm = CreateFile(serialPortName, GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
-
-    if(qrcanDevice.q_hComm == INVALID_HANDLE_VALUE){
-        if(GetLastError() == ERROR_FILE_NOT_FOUND){
-            // Inform user that serial port does not exist
-            AfxMessageBox("Serial port does not exist");
-        }
-        // Some other error occured.
-        AfxMessageBox("Unknown error occured");
-    }
-    
-    DCB serialParams = {0};
-    serialParams.DCBlength = sizeof(serialParams);
-
-    if (!GetCommState (qrcanDevice.q_hComm, &serialParams)){
-        // Error getting state
-        AfxMessageBox("Failed to get the state of port");
-    }
-
-    serialParams.BaudRate = CBR_115200;
-    serialParams.ByteSize = 8;
-    serialParams.StopBits = ONESTOPBIT;
-    serialParams.Parity = NOPARITY;
-
-    if (!SetCommState(qrcanDevice.q_hComm, &serialParams)){
-        // Error setting serial port state
-        AfxMessageBox("Failed to set the state of port");
-    }
-
-    // The values for timeouts are in ms
-    COMMTIMEOUTS timeouts = {0};
-    timeouts.ReadIntervalTimeout = 500;
-    timeouts.ReadTotalTimeoutConstant = 500;
-    timeouts.ReadTotalTimeoutMultiplier = 100;
-    timeouts.WriteTotalTimeoutConstant = 500;
-    timeouts.WriteTotalTimeoutMultiplier = 100;
-
-    if (!SetCommTimeouts(qrcanDevice.q_hComm, &timeouts)){
-        // Error occured
-    }
+    }    
 }
 
 static void SetupEthernet(void){
@@ -234,6 +193,49 @@ QRCAN_STATUS OpenDevice(){
             WSACleanup();
             return QRCAN_ERR_NOT_OK;
         }       
+    }
+    else if (qrcanDevice.commMode == QRCAN_USE_USB){
+
+        qrcanDevice.q_hComm = CreateFile(qrcanDevice.serialPortName, GENERIC_READ | GENERIC_WRITE, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+
+        if(qrcanDevice.q_hComm == INVALID_HANDLE_VALUE){
+            if(GetLastError() == ERROR_FILE_NOT_FOUND){
+                // Inform user that serial port does not exist
+                AfxMessageBox("Serial port does not exist");
+            }
+            // Some other error occured.
+            AfxMessageBox("Unknown error occured");
+        }
+    
+        DCB serialParams = {0};
+        serialParams.DCBlength = sizeof(serialParams);
+
+        if (!GetCommState (qrcanDevice.q_hComm, &serialParams)){
+            // Error getting state
+            AfxMessageBox("Failed to get the state of port");
+        }
+
+        serialParams.BaudRate = CBR_115200;
+        serialParams.ByteSize = 8;
+        serialParams.StopBits = ONESTOPBIT;
+        serialParams.Parity = NOPARITY;
+
+        if (!SetCommState(qrcanDevice.q_hComm, &serialParams)){
+            // Error setting serial port state
+            AfxMessageBox("Failed to set the state of port");
+        }
+
+        // The values for timeouts are in ms
+        COMMTIMEOUTS timeouts = {0};
+        timeouts.ReadIntervalTimeout = 500;
+        timeouts.ReadTotalTimeoutConstant = 500;
+        timeouts.ReadTotalTimeoutMultiplier = 100;
+        timeouts.WriteTotalTimeoutConstant = 500;
+        timeouts.WriteTotalTimeoutMultiplier = 100;
+
+        if (!SetCommTimeouts(qrcanDevice.q_hComm, &timeouts)){
+            // Error occured
+        }
     }
     else{
         return QRCAN_ERR_NOT_OK;
