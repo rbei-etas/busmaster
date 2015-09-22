@@ -31,9 +31,14 @@ typedef struct{
 
     SOCKET sendingSocket;                       // Socket for Etherent communication
     char pcHost[256];                           // To hold IP address
-    unsigned int serverPort;                    // To hold port number      
+    unsigned int serverPort;                    // To hold port number   
+
+    OVERLAPPED ovRead;
+    OVERLAPPED ovWrite;
 
 } QRCAN_DEVICE;
+
+extern QRCAN_DEVICE qrcanDevice;
 
 struct QRCanCfg
 {
@@ -43,10 +48,10 @@ struct QRCanCfg
 
 int WINAPI ShowQRCANConfig(HWND hwnd, struct QRCanCfg* cfg);
 
-QRCAN_STATUS SendDataToHardware(char *data);
-QRCAN_STATUS ReceiveDataFromHardware();
-QRCAN_STATUS CloseDevice(void);
-QRCAN_STATUS OpenDevice(void);
+#define MAX_PACKET_SIZE         1000000
+#define BUFFER_SIZE             1024
+#define AVAILABLE_SERIAL_PORTS  256
+
 
 /**
  * See CAN_QRCAN.cpp for the implementation of this class

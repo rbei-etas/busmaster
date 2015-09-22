@@ -30,10 +30,87 @@
 
 #include "qrcan_api.h"
 
+QRCAN_DEVICE qrcanDevice;
+
 // Configure CAN bus
 QRCAN_STATUS QRCAN_Open(){
+    if (qrcanDevice.commMode == QRCAN_USE_ETHERNET){
 
-    OpenDevice();
+        SOCKADDR_IN serverAddr;
+
+        // Setting up SOCKADDR_IN structure that will be used to connect to a listening server on port 7.
+        serverAddr.sin_family      = AF_INET;
+        serverAddr.sin_port        = htons(qrcanDevice.serverPort);
+        serverAddr.sin_addr.s_addr = inet_addr(qrcanDevice.pcHost);
+
+        // Make a connection to the server with socket sendingSocket
+        int returnCode = connect(qrcanDevice.sendingSocket, (SOCKADDR *) &serverAddr, sizeof(serverAddr));
+
+        if (returnCode != 0){
+            CString msg;
+            msg.Format(_T("%d"), WSAGetLastError());
+            AfxMessageBox(msg);
+            AfxMessageBox("Connection to the server failed");
+            closesocket(qrcanDevice.sendingSocket);
+            WSACleanup();
+            return QRCAN_ERR_NOT_OK;
+        }       
+    }
+    else if (qrcanDevice.commMode == QRCAN_USE_USB){
+
+        qrcanDevice.q_hComm = CreateFile(qrcanDevice.serialPortName, 
+                                        GENERIC_READ | GENERIC_WRITE,
+                                        0, 
+                                        0, 
+                                        OPEN_EXISTING, 
+                                        /*FILE_FLAG_OVERLAPPED |*/ FILE_ATTRIBUTE_NORMAL,
+                                        0);
+
+        if(qrcanDevice.q_hComm == INVALID_HANDLE_VALUE){
+            if(GetLastError() == ERROR_FILE_NOT_FOUND){
+                // Inform user that serial port does not exist
+                AfxMessageBox("Serial port does not exist");
+            }
+            else{
+            // Some other error occured.
+            AfxMessageBox("Unknown error occured");
+            }
+        }
+    
+        DCB serialParams = {0};
+        serialParams.DCBlength = sizeof(serialParams);
+
+        if (!GetCommState (qrcanDevice.q_hComm, &serialParams)){
+            // Error getting state
+            AfxMessageBox("Failed to get the state of port");
+        }
+
+        serialParams.BaudRate = CBR_115200;
+        serialParams.ByteSize = 8;
+        serialParams.StopBits = ONESTOPBIT;
+        serialParams.Parity = NOPARITY;
+
+        if (!SetCommState(qrcanDevice.q_hComm, &serialParams)){
+            // Error setting serial port state
+            AfxMessageBox("Failed to set the state of port");
+        }
+
+        // The values for timeouts are in ms
+        COMMTIMEOUTS timeouts = {0};
+        timeouts.ReadIntervalTimeout = 500;
+        timeouts.ReadTotalTimeoutConstant = 500;
+        timeouts.ReadTotalTimeoutMultiplier = 100;
+        timeouts.WriteTotalTimeoutConstant = 500;
+        timeouts.WriteTotalTimeoutMultiplier = 100;
+
+        if (!SetCommTimeouts(qrcanDevice.q_hComm, &timeouts)){
+            // Error occured
+        }
+    }
+    else{
+        return QRCAN_ERR_NOT_OK;
+    }
+
     return QRCAN_ERR_OK;
 
 }
@@ -47,14 +124,14 @@ QRCAN_STATUS QRCAN_Config(QRCAN_HANDLE Handle, struct QRCanCfg* cfg)
     sendMessage[i++] = cfg->canBaudRate;
     sendMessage[i++] = ASCII_RETURN;
 
-    return SendDataToHardware(sendMessage);
+    return QRCAN_SendDataToHardware(sendMessage);
 
     return QRCAN_ERR_OK;
 }
 
 
 // Send CAN Message from BUSMASTER
-QRCAN_STATUS QRCAN_Send(QRCAN_HANDLE Handle, QRCAN_MSG* Buf){
+QRCAN_STATUS QRCAN_SendCANMessage(QRCAN_MSG* Buf){
     int i = 0;
     char sendMessage[32] = "";
 
@@ -71,27 +148,101 @@ QRCAN_STATUS QRCAN_Send(QRCAN_HANDLE Handle, QRCAN_MSG* Buf){
 
     sendMessage[i++] = ASCII_RETURN;
 
-    return SendDataToHardware(sendMessage);
+    return QRCAN_SendDataToHardware(sendMessage);
+}
 
-    //return QRCAN_ERR_OK;
+QRCAN_STATUS QRCAN_SendDataToHardware(char *data){
+    if (qrcanDevice.commMode == QRCAN_USE_ETHERNET){
+        int bytesSent;
+
+        // Send data to the Server
+        bytesSent = send(qrcanDevice.sendingSocket, data, strlen(data), 0);
+
+        if (bytesSent == SOCKET_ERROR){
+            CString msg;
+            msg.Format(_T("%d"), WSAGetLastError());
+            AfxMessageBox(msg);
+            AfxMessageBox("Sending data Failed through Ethernet");
+            return QRCAN_ERR_NOT_OK;
+        }
+
+        return QRCAN_ERR_OK; 
+    }
+
+    else if(qrcanDevice.commMode == QRCAN_USE_USB){
+        DWORD dwBytesWritten = 0;
+
+        if (!WriteFile(qrcanDevice.q_hComm, data, strlen(data) + 1, &dwBytesWritten, NULL)){
+            // Error Occured
+            AfxMessageBox("Failed to send data");
+            return QRCAN_ERR_NOT_OK;
+        }
+
+        return QRCAN_ERR_OK;
+    }
+
+    // The Communication mode is neither USB nor Ethernet
+    else{
+        AfxMessageBox("Invalid Communication Media");
+        return QRCAN_ERR_NOT_OK;
+    }
 }
 
 //CAN Reception Event
-QRCAN_STATUS QRCAN_SetRcvEvent(QRCAN_HANDLE Handle, HANDLE Event){
+QRCAN_STATUS QRCAN_SetRcvEvent(){
 
+    if (qrcanDevice.commMode == QRCAN_USE_USB){
+
+        memset(&qrcanDevice.ovRead, 0, sizeof(qrcanDevice.ovRead));
+        //  Setting COM port to create an event on data reception 
+        SetCommMask(qrcanDevice.q_hComm, EV_RXCHAR /*| EV_TXEMPTY*/);
+        qrcanDevice.ovRead.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+    }
     return QRCAN_ERR_OK;
+
 }
 
 // Receive CAN Message from Hardware
 QRCAN_STATUS QRCAN_Recv(QRCAN_HANDLE Handle, QRCAN_MSG* Buf){
 
-    return ReceiveDataFromHardware();
+    if (qrcanDevice.commMode == QRCAN_USE_ETHERNET){
+        char messageReceived[BUFFER_SIZE] = {};
+        int bytesReceived = 0;
 
+        // Something more should be added here
+        bytesReceived = recv(qrcanDevice.sendingSocket, messageReceived, MAX_PACKET_SIZE, 0);
+    
+    }
+    else if (qrcanDevice.commMode == QRCAN_USE_USB){
+        char messageReceived[BUFFER_SIZE] = {};
+        int bytesReceived = 0;
+        DWORD dwBytesRead = 0;        
+        do {
+            if (!ReadFile(qrcanDevice.q_hComm, messageReceived, strlen(messageReceived), &dwBytesRead, &qrcanDevice.ovRead/*NULL*/)){
+                // Error Occured
+                AfxMessageBox("Failed to Receive data from Serial Port");
+                return QRCAN_ERR_NOT_OK;
+            }
+        } while(dwBytesRead > 0);            
+    }
+    return QRCAN_ERR_OK;
 }
 
 // Close the QRCAN Device
 QRCAN_STATUS QRCAN_Close(){
-
-    return CloseDevice();
-
+    if (qrcanDevice.commMode == QRCAN_USE_ETHERNET){
+        // Shutdown connection
+        if (shutdown(qrcanDevice.sendingSocket, SD_SEND) != 0){
+            CString msg;
+            msg.Format(_T("%d"), WSAGetLastError());
+            AfxMessageBox(msg);
+            AfxMessageBox("Error during shutdown");
+            return QRCAN_ERR_NOT_OK;
+        }
+        return QRCAN_ERR_OK;
+    }
+    else if (qrcanDevice.commMode == QRCAN_USE_USB){
+        CloseHandle (qrcanDevice.q_hComm);
+        return QRCAN_ERR_OK;
+    }
 }

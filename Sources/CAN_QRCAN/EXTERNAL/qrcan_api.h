@@ -88,7 +88,10 @@ QRCAN_STATUS QRCAN_Open();
 QRCAN_STATUS QRCAN_Config(QRCAN_HANDLE Handle, struct QRCanCfg* cfg);
 
 // Send CAN Message from BUSMASTER
-QRCAN_STATUS QRCAN_Send(QRCAN_HANDLE Handle, QRCAN_MSG* Buf);
+QRCAN_STATUS QRCAN_SendCANMessage(QRCAN_MSG* Buf);
+
+// Handles sending data through different media
+QRCAN_STATUS QRCAN_SendDataToHardware(char *data);
 
 // Recveive CAN Message from Hardware
 QRCAN_STATUS QRCAN_Recv(QRCAN_HANDLE Handle, QRCAN_MSG* Buf);
@@ -96,7 +99,7 @@ QRCAN_STATUS QRCAN_Recv(QRCAN_HANDLE Handle, QRCAN_MSG* Buf);
 QRCAN_STATUS QRCAN_Close();
 
 #ifdef WIN32
-    QRCAN_STATUS QRCAN_SetRcvEvent(QRCAN_HANDLE Handle, HANDLE Event);
+    QRCAN_STATUS QRCAN_SetRcvEvent();
 #else
     QRCAN_STATUS QRCAN_SetRcvEvent(QRCAN_HANDLE Handle, sem_t* Event);
 #endif

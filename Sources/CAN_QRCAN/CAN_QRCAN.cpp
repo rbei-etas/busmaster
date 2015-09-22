@@ -121,8 +121,8 @@ static HANDLE sg_hEventRecv = nullptr;
 static HANDLE sg_hReadThread = nullptr;
 static DWORD sg_dwReadThreadId = 0;
 
-#define CALLBACK_TYPE __stdcall
-static void CALLBACK_TYPE CanRxEvent(uint32_t index, struct TCanMsg* msg, int32_t count);
+//#define CALLBACK_TYPE __stdcall
+//static void CALLBACK_TYPE CanRxEvent(uint32_t index, struct TCanMsg* msg, int32_t count);
 
 /**
  * Query Tick Count
@@ -231,6 +231,9 @@ HRESULT CDIL_CAN_QRCAN::CAN_SetAppParams(HWND hWndOwner, Base_WrapperErrorLogger
     // Initialize both the time parameters
     GetLocalTime(&sg_CurrSysTime);
     sg_TimeStamp = 0x0;
+
+    /* Query Tick Count */
+    sg_QueryTickCount.QuadPart = 0;
 
     CAN_ManageMsgBuf(MSGBUF_CLEAR, 0, nullptr);
 
@@ -485,6 +488,7 @@ HRESULT CDIL_CAN_QRCAN::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& 
 {
     CurrSysTime = sg_CurrSysTime;
     TimeStamp = sg_TimeStamp;
+    QueryTickCount = sg_QueryTickCount;
 
     return S_OK;
 }
@@ -643,8 +647,6 @@ static void CopyMsg2CanData(STCANDATA* sCanData, QRCAN_MSG* msg, unsigned char f
     //sCanData->m_uDataInfo.m_sCANMsg.m_ucRTR = (msg->Flags & VSCAN_FLAGS_REMOTE)?1:0;
     sCanData->m_ucDataType = flags;
 
-      //The part that deals with display Time for each message
-        GetLocalTime(&sg_CurrSysTime);
         //Query Tick Count
         QueryPerformanceCounter(&sg_QueryTickCount);
         // Get frequency of the performance counter
@@ -668,9 +670,12 @@ static DWORD WINAPI CanRxEvent(LPVOID /* lpParam */)
     sCanData.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
     DWORD dwTemp;
     QRCAN_MSG msg;
+    DWORD dwEvtMask;
 
     for (;;)
     {
+        WaitCommEvent(qrcanDevice.q_hComm, &dwEvtMask, &qrcanDevice.ovRead);
+
         if (WaitForSingleObject(sg_hEventRecv, INFINITE) == WAIT_OBJECT_0)
         {
             for (;;)
@@ -725,28 +730,20 @@ HRESULT CDIL_CAN_QRCAN::CAN_StartHardware(void)
         return (S_FALSE);
     }            
 
-    // Create Receive Event
-    sg_hEventRecv = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-    if (sg_hEventRecv == nullptr)
-    {
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not create the receive event"));
-        hResult = S_FALSE;
-    }
+    //if (QRCAN_SetRcvEvent() != QRCAN_ERR_OK)
+    //{
+    //    sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("QRCAN_SetRcvEvent failed"));
+    //    hResult = S_FALSE;
+    //}
 
-    if (QRCAN_SetRcvEvent(sg_QRCanCfg.hCan, sg_hEventRecv) != QRCAN_ERR_OK)
-    {
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("QRCAN_SetRcvEvent failed"));
-        hResult = S_FALSE;
-    }
+    // // Thread to poll reception of CAN messages
+    //sg_hReadThread = CreateThread(nullptr, 0, CanRxEvent, nullptr, 0, &sg_dwReadThreadId);
+    //if (sg_hReadThread == nullptr)
+    //{
+    //    sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not create the receive thread"));
+    //    hResult = S_FALSE;
+    //}
 
-
-    // Thread to poll reception of CAN messages
-    sg_hReadThread = CreateThread(nullptr, 0, CanRxEvent, nullptr, 0, &sg_dwReadThreadId);
-    if (sg_hReadThread == nullptr)
-    {
-        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not create the receive thread"));
-        hResult = S_FALSE;
-    }
     return hResult;
 }
 
@@ -811,7 +808,7 @@ HRESULT CDIL_CAN_QRCAN::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg
             msg.Length = sCanTxMsg.m_ucDataLen;
             memcpy(msg.Data, &sCanTxMsg.m_ucData, msg.Length);
 
-            if (QRCAN_Send(sg_QRCanCfg.hCan, &msg) == QRCAN_ERR_OK){
+            if (QRCAN_SendCANMessage(/*sg_QRCanCfg.hCan,*/ &msg) == QRCAN_ERR_OK){
                 static STCANDATA sCanData;
                 CopyMsg2CanData(&sCanData, &msg, TX_FLAG);
 
