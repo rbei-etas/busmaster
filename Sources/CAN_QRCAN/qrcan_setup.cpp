@@ -60,8 +60,9 @@ static void InitSerialPortList(void)
                            0,
                            0,
                            OPEN_EXISTING,
-                           /*FILE_FLAG_OVERLAPPED |*/ FILE_ATTRIBUTE_NORMAL,
+                           FILE_FLAG_OVERLAPPED,
                            0);
+
         if (hComm != INVALID_HANDLE_VALUE){
             _stprintf_s(szPort, _T("COM%u"), i);
             SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_ADDSTRING, 0, (LPARAM)szPort);

@@ -93,15 +93,22 @@ QRCAN_STATUS QRCAN_SendCANMessage(QRCAN_MSG* Buf);
 // Handles sending data through different media
 QRCAN_STATUS QRCAN_SendDataToHardware(char *data);
 
-// Recveive CAN Message from Hardware
-QRCAN_STATUS QRCAN_Recv(QRCAN_HANDLE Handle, QRCAN_MSG* Buf);
+// Recveive data from Hardware
+QRCAN_STATUS QRCAN_RecveiveDataFromHardware(QRCAN_MSG* Buf, DWORD* CanMsgArrived);
+
+// Converts ASCII characters to integers
+UINT8 ASCIItoInt(UINT8 asciiCharacter);
+
+
+// Receive CAN Message
+QRCAN_STATUS QRCAN_RecvCANMessage(QRCAN_MSG* Buf, char *receivedData);
 
 QRCAN_STATUS QRCAN_Close();
 
 #ifdef WIN32
-    QRCAN_STATUS QRCAN_SetRcvEvent();
+    QRCAN_STATUS QRCAN_SetEvent();
 #else
-    QRCAN_STATUS QRCAN_SetRcvEvent(QRCAN_HANDLE Handle, sem_t* Event);
+    QRCAN_STATUS QRCAN_SetEvent(QRCAN_HANDLE Handle, sem_t* Event);
 #endif
 
 #endif

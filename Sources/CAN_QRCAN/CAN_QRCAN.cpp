@@ -668,43 +668,34 @@ static DWORD WINAPI CanRxEvent(LPVOID /* lpParam */)
 {
     static STCANDATA sCanData;
     sCanData.m_uDataInfo.m_sCANMsg.m_bCANFD = false;
-    DWORD dwTemp;
+    DWORD dwTemp = 0;
     QRCAN_MSG msg;
     DWORD dwEvtMask;
+    DWORD dwRead;
 
     for (;;)
     {
-        WaitCommEvent(qrcanDevice.q_hComm, &dwEvtMask, &qrcanDevice.ovRead);
+        if (!WaitCommEvent(qrcanDevice.q_hComm, &dwEvtMask, &qrcanDevice.ovRead)) {
+            if (GetLastError() != ERROR_IO_PENDING) {
+               AfxMessageBox("Error in WaitCommEvent");
+            }       
+        }
 
-        if (WaitForSingleObject(sg_hEventRecv, INFINITE) == WAIT_OBJECT_0)
-        {
-            for (;;)
-            {
-                if (QRCAN_Recv(sg_QRCanCfg.hCan, &msg) != QRCAN_ERR_OK)
-                {
-                    sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("QRCAN_Read failed"));
-                    Sleep(100);
-                    continue;
-                }
+        if (WaitForSingleObject(qrcanDevice.ovRead.hEvent, INFINITE) == WAIT_OBJECT_0) {
+            if (QRCAN_RecveiveDataFromHardware(&msg, &dwTemp) != QRCAN_ERR_OK){
+                AfxMessageBox("QRCAN Failed");                
+            }
 
-                if (dwTemp == 1)
-                {
-                    CopyMsg2CanData(&sCanData, &msg, RX_FLAG);
-                    //Write the msg into registered client's buffer
-                    EnterCriticalSection(&sg_DIL_CriticalSection);
-                    vWriteIntoClientsBuffer(sCanData, 0);
-                    LeaveCriticalSection(&sg_DIL_CriticalSection);
-                }
-                else
-                {
-                    break;
-                }
+            if (dwTemp == 1) {
+            CopyMsg2CanData(&sCanData, &msg, RX_FLAG);
+            //Write the msg into registered client's buffer
+            EnterCriticalSection(&sg_DIL_CriticalSection);
+            vWriteIntoClientsBuffer(sCanData, 0);
+            LeaveCriticalSection(&sg_DIL_CriticalSection);
             }
         }
-        else
-        {
-            sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("WaitForSingleObject failed"));
-            Sleep(100);
+        else {
+            AfxMessageBox("WaitForSingleObject Failed");
         }
     }
 }
@@ -724,25 +715,25 @@ HRESULT CDIL_CAN_QRCAN::CAN_StartHardware(void)
     sg_bCurrState = STATE_CONNECTED;
 
     // Send CAN baud rate selected in the GUI to hardware
-    if (QRCAN_Config(sg_QRCanCfg.hCan, &sg_QRCanCfg) != QRCAN_ERR_OK)
-    {
+    if (QRCAN_Config(sg_QRCanCfg.hCan, &sg_QRCanCfg) != QRCAN_ERR_OK) {
+        AfxMessageBox("QRCAN_Config Failed");
         sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("set speed ioctl failed"));
         return (S_FALSE);
     }            
 
-    //if (QRCAN_SetRcvEvent() != QRCAN_ERR_OK)
-    //{
-    //    sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("QRCAN_SetRcvEvent failed"));
-    //    hResult = S_FALSE;
-    //}
+    if (QRCAN_SetEvent() != QRCAN_ERR_OK) {
+        AfxMessageBox("QRCAN_SetEvent Failed");
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("QRCAN_SetRcvEvent failed"));
+        hResult = S_FALSE;
+    }
 
-    // // Thread to poll reception of CAN messages
-    //sg_hReadThread = CreateThread(nullptr, 0, CanRxEvent, nullptr, 0, &sg_dwReadThreadId);
-    //if (sg_hReadThread == nullptr)
-    //{
-    //    sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not create the receive thread"));
-    //    hResult = S_FALSE;
-    //}
+     // Thread to poll reception of CAN messages
+    sg_hReadThread = CreateThread(nullptr, 0, CanRxEvent, nullptr, 0, &sg_dwReadThreadId);
+    if (sg_hReadThread == nullptr) {
+        AfxMessageBox("Could not create receive thread");
+        sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not create the receive thread"));
+        hResult = S_FALSE;
+    }
 
     return hResult;
 }
@@ -755,6 +746,18 @@ HRESULT CDIL_CAN_QRCAN::CAN_StartHardware(void)
 HRESULT CDIL_CAN_QRCAN::CAN_StopHardware(void)
 {
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_CONNECTED, ERR_IMPROPER_STATE);
+
+    if (sg_hReadThread != nullptr)
+    {
+        TerminateThread(sg_hReadThread, 0);
+        sg_hReadThread = nullptr;
+    }
+
+    if (qrcanDevice.ovRead.hEvent != nullptr)
+    {
+        CloseHandle(qrcanDevice.ovRead.hEvent);
+    }
+
 
     HRESULT hResult = S_OK;
     if (QRCAN_Close() == QRCAN_ERR_OK){

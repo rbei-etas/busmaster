@@ -49,7 +49,7 @@ struct QRCanCfg
 int WINAPI ShowQRCANConfig(HWND hwnd, struct QRCanCfg* cfg);
 
 #define MAX_PACKET_SIZE         1000000
-#define BUFFER_SIZE             1024
+#define BUFFER_SIZE             100
 #define AVAILABLE_SERIAL_PORTS  256
 
 
