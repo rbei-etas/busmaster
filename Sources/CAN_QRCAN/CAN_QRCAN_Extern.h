@@ -16,8 +16,8 @@
 /**
  * \file      CAN_QRCAN/CAN_QRCAN_Extern.h
  * \brief     Exports API functions for Simulation CAN Hardware interface
- * \author    
- * \copyright Copyright (c) ((Year)), QRTECH AB. All rights reserved.
+ * \author    Malligaraj Malleswaran
+ * \copyright Copyright (c) 2015, QRTECH AB. All rights reserved.
  *
  * Exports API functions for Simulation CAN Hardware interface
  */

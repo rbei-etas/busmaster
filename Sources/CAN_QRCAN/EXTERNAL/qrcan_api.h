@@ -1,4 +1,4 @@
-/* Copyright (c) [[[YEAR OF LAST UPDATE]]] QRTECH AB Gothenburg Sweden. All Rights Reserved.
+/* Copyright (c) 2015 QRTECH AB Gothenburg Sweden. All Rights Reserved.
 *
 * This document is provided to you in a non-exclusive agreement, and
 * shall not without QRTECH AB’s written permission be copied, imparted
@@ -20,7 +20,7 @@
 
 /**
  * \file      qrcan_api.h
- * \author    
+ * \author    Malligaraj Malleswaran
  * 
  * Implementation of QRCAN API - A wrapper for the ASCII protocol
  */
@@ -98,7 +98,6 @@ QRCAN_STATUS QRCAN_ReceiveDataFromHardware(QRCAN_MSG* Buf, DWORD* CanMsgArrived)
 
 // Converts ASCII characters to integers
 UINT8 ASCIItoInt(UINT8 asciiCharacter);
-
 
 // Receive CAN Message
 QRCAN_STATUS QRCAN_RecvCANMessage(QRCAN_MSG* Buf, char *receivedData);

@@ -15,8 +15,8 @@
 
 /**
  * \file      qrcan_setup.cpp
- * \author    
- * \copyright Copyright (c) ((Year)), QRTECH AB. All rights reserved.
+ * \author    Malligaraj Malleswaran
+ * \copyright Copyright (c) 2015, QRTECH AB. All rights reserved.
  *
  * Implementation of QRCAN
  */
@@ -38,9 +38,13 @@
 
 
 static HWND qrconfig_hDlg = nullptr;                    // Handle for Dialog box
-static struct QRCanCfg* CanCfg = nullptr; 
+static struct QRCanCfg* CanCfg = nullptr;
 
-
+/**
+*
+*   Checks the list of Serial ports available and displays it in GUI
+*
+*/
 static void InitSerialPortList(void)
 {
     int i, cnt;
@@ -73,6 +77,11 @@ static void InitSerialPortList(void)
     SendDlgItemMessage(qrconfig_hDlg, IDC_SERIAL_PORT, CB_SETCURSEL, 0, 0);
 }
 
+/**
+*
+*   Initializes available CAN baud rates in GUI
+*
+*/
 static void InitBaudRateList(void){
     int i, cnt;
 
@@ -94,6 +103,11 @@ static void InitBaudRateList(void){
     SendDlgItemMessage(qrconfig_hDlg, IDC_BAUDRATE, CB_SETCURSEL, 3/*(int)CanCfg->canBaudRate*/, 0);
 }
 
+/**
+*
+*   Gets the serial port selected from GUI and stores it for further initialization
+*
+*/
 static void SetupSerialPort(void){    
     // Get the serial port selected from GUI
     if (GetDlgItemText(qrconfig_hDlg, IDC_SERIAL_PORT, qrcanDevice.serialPortName, sizeof(qrcanDevice.serialPortName)) == 0){
@@ -104,6 +118,11 @@ static void SetupSerialPort(void){
     }
 }
 
+/**
+*
+*   Get IP address from the GUI and stores it for further initialization
+*
+*/
 static void SetupEthernet(void){
     WSAData wsaData;
     qrcanDevice.serverPort = 7; 
@@ -131,6 +150,11 @@ static void SetupEthernet(void){
     }
 }
 
+/**
+*
+*   Saves the data from the QRCAN Configuration dialog box
+*
+*/
 static void SaveDeviceData(void){
     // Selection of Communication Mode
     if (IsDlgButtonChecked(qrconfig_hDlg, IDC_MODE_USB) == BST_CHECKED){
@@ -176,6 +200,11 @@ static void SaveDeviceData(void){
 
 }
 
+/**
+*
+*   Callback function for QRCAN Configuration dialog box
+*
+*/
 static BOOL CALLBACK CanSetupDlgProc(HWND hDlg, UINT uMessage, WPARAM wParam, LPARAM /* lParam */){
     int wmId, wmEvent;
 
@@ -234,7 +263,11 @@ static BOOL CALLBACK CanSetupDlgProc(HWND hDlg, UINT uMessage, WPARAM wParam, LP
     return FALSE;
 }
 
-// Function to display QRCAN Configuration Dialog
+/**
+*
+*   To display QRCAN Configuration dialog box
+*
+*/
 int WINAPI ShowQRCANConfig(HWND hwnd, struct QRCanCfg* cfg)
 {
     MEMORY_BASIC_INFORMATION mbi;

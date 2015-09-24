@@ -15,8 +15,8 @@
 
 /**
  * \file      CAN_QRCAN.cpp
- * \author    
- * \copyright Copyright (c) ((Year)), QRTECH AB. All rights reserved.
+ * \author    Malligaraj Malleswaran
+ * \copyright Copyright (c) 2015, QRTECH AB. All rights reserved.
  *
  * Implementation of QRCAN
  */
@@ -129,8 +129,6 @@ static DWORD sg_dwReadThreadId = 0;
  */
 static LARGE_INTEGER sg_QueryTickCount;
 static LARGE_INTEGER sg_lnFrequency;
-
-
 
 /* CDIL_CAN_QRCAN class definition */
 class CDIL_CAN_QRCAN : public CBaseDIL_CAN_Controller
@@ -453,7 +451,6 @@ HRESULT CDIL_CAN_QRCAN::CAN_PerformInitOperations(void)
 * \param         void
 * \return        S_OK if the CAN_StopHardware call successfull otherwise S_FALSE
 */
-
 HRESULT CDIL_CAN_QRCAN::CAN_PerformClosureOperations(void)
 {
     HRESULT hResult = CAN_StopHardware();
@@ -636,34 +633,34 @@ static void vWriteIntoClientsBuffer(STCANDATA& sCanData, UINT unClientIndex)
     }
 }
 
+/**
+* \brief        Copies CAN message to the format accepted by the GUI
+* \param[in]    sCanData, is the data structure accecpted by GUI       
+* \param[in]    msg, CAN message in QRCAN_MSG format
+* \param[in]    flags, denotes whether a CAN message is Tx or Rx
+* return        void
+*/
 static void CopyMsg2CanData(STCANDATA* sCanData, QRCAN_MSG* msg, unsigned char flags)
 {
-
     memset(sCanData, 0, sizeof(*sCanData));
+
     sCanData->m_uDataInfo.m_sCANMsg.m_ucChannel = 1;
     sCanData->m_uDataInfo.m_sCANMsg.m_unMsgID = msg->Id;
     sCanData->m_uDataInfo.m_sCANMsg.m_ucDataLen = msg->Length;
-    //sCanData->m_uDataInfo.m_sCANMsg.m_ucEXTENDED = (msg->Flags & VSCAN_FLAGS_EXTENDED)?1:0;
-    //sCanData->m_uDataInfo.m_sCANMsg.m_ucRTR = (msg->Flags & VSCAN_FLAGS_REMOTE)?1:0;
     sCanData->m_ucDataType = flags;
 
-        //Query Tick Count
-        QueryPerformanceCounter(&sg_QueryTickCount);
-        // Get frequency of the performance counter
-        QueryPerformanceFrequency(&sg_lnFrequency);
-        // Convert it to time stamp with the granularity of hundreds of microsecond
-        if ((sg_QueryTickCount.QuadPart * 10000) > sg_lnFrequency.QuadPart)
-        {
-            sCanData->m_lTickCount.QuadPart = (sg_QueryTickCount.QuadPart * 10000) / sg_lnFrequency.QuadPart;
-        }
-        else
-        {
-            sCanData->m_lTickCount.QuadPart = (sg_QueryTickCount.QuadPart / sg_lnFrequency.QuadPart) * 10000;
-        }
+    GetLocalTime(&sg_CurrSysTime);
+    /*Query Tick Count*/
+    sCanData->m_lTickCount.QuadPart = sg_CurrSysTime.wMilliseconds / 100000;
 
     memcpy(sCanData->m_uDataInfo.m_sCANMsg.m_ucData, msg->Data, 8);
 }
 
+/**
+* \brief        Thread function that handles the Ethernet and Serial port events
+* \param
+* \return       
+*/
 static DWORD WINAPI CanRxEvent(LPVOID /* lpParam */)
 {
     static STCANDATA sCanData;
@@ -832,7 +829,7 @@ HRESULT CDIL_CAN_QRCAN::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanTxMsg
                 CopyMsg2CanData(&sCanData, &msg, TX_FLAG);
 
                 EnterCriticalSection(&sg_DIL_CriticalSection);
-                //Write the msg into registered client's buffer
+                //  Write the msg into registered client's buffer
                 vWriteIntoClientsBuffer(sCanData, 0);       // 0 to denote client number
                 LeaveCriticalSection(&sg_DIL_CriticalSection);
                 
@@ -951,6 +948,11 @@ HRESULT CDIL_CAN_QRCAN::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, 
     return(S_OK);
 }
 
+/**
+*
+*   Checks if client buffer exists
+*
+*/
 static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf)
 {
     BOOL bExist = FALSE;
@@ -966,6 +968,11 @@ static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFS
     return(bExist);
 }
 
+/**
+*
+*   Removes an existing client buffer
+*
+*/
 static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove)
 {
     BOOL bReturn = TRUE;

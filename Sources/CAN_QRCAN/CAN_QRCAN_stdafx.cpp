@@ -15,8 +15,8 @@
 
 /**
  * \file      CAN_QRCAN/CAN_QRCAN_stdafx.cpp
- * \author    
- * \copyright Copyright (c) ((Year)), QRTECH AB. All rights reserved.
+ * \author    Malligaraj Malleswaran
+ * \copyright Copyright (c) 2015, QRTECH AB. All rights reserved.
  *
  * stdafx.cpp : source file that includes just the standard includes
  * CAN_QRCAN.pch will be the pre-compiled header

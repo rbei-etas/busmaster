@@ -1,4 +1,4 @@
-/* Copyright (c) [[[YEAR OF LAST UPDATE]]] QRTECH AB Gothenburg Sweden. All Rights Reserved.
+/* Copyright (c) 2015 QRTECH AB Gothenburg Sweden. All Rights Reserved.
 *
 * This document is provided to you in a non-exclusive agreement, and
 * shall not without QRTECH AB’s written permission be copied, imparted
@@ -20,7 +20,7 @@
 
 /**
  * \file      qrcan_api.cpp
- * \author    
+ * \author    Malligaraj Malleswaran 
  * 
  * Implementation of QRCAN API - A wrapper for the ASCII protocol
  */
@@ -32,7 +32,11 @@
 
 QRCAN_DEVICE qrcanDevice;
 
-// Configure CAN bus
+/**
+*
+*   Initializes the QRCAN Device communication parameters
+*
+*/
 QRCAN_STATUS QRCAN_Open(){
     if (qrcanDevice.commMode == QRCAN_USE_ETHERNET){
 
@@ -116,6 +120,12 @@ QRCAN_STATUS QRCAN_Open(){
 
 }
 
+/**
+*
+*
+*   Configures the CAN bus parameters
+*
+*/
 QRCAN_STATUS QRCAN_Config(QRCAN_HANDLE Handle, struct QRCanCfg* cfg)
 {
     int i = 0;
@@ -130,7 +140,12 @@ QRCAN_STATUS QRCAN_Config(QRCAN_HANDLE Handle, struct QRCanCfg* cfg)
     return QRCAN_ERR_OK;
 }
 
-//  Set Serial Communication Events
+/**
+*
+*
+*   Sets Communication events
+*
+*/
 QRCAN_STATUS QRCAN_SetEvent(){
     if (qrcanDevice.commMode == QRCAN_USE_ETHERNET){
         // Creating receive event for Ethernet
@@ -182,7 +197,11 @@ QRCAN_STATUS QRCAN_SetEvent(){
     }
 }
 
-// Send CAN Message from BUSMASTER
+/**
+*
+*   Formats the CAN message to be sent from BUSMASTER to device
+*
+*/
 QRCAN_STATUS QRCAN_SendCANMessage(QRCAN_MSG* Buf){
     int i = 0;
     char sendMessage[32] = "";
@@ -203,6 +222,12 @@ QRCAN_STATUS QRCAN_SendCANMessage(QRCAN_MSG* Buf){
     return QRCAN_SendDataToHardware(sendMessage);
 }
 
+/**
+*
+*
+*   Sends data to device based on communication media chosen
+*
+*/
 QRCAN_STATUS QRCAN_SendDataToHardware(char *data){
     if (qrcanDevice.commMode == QRCAN_USE_ETHERNET){
         int bytesSent;
@@ -214,7 +239,7 @@ QRCAN_STATUS QRCAN_SendDataToHardware(char *data){
             CString msg;
             msg.Format(_T("%d"), WSAGetLastError());
             AfxMessageBox(msg);
-            AfxMessageBox("Sending data Failed through Ethernet");
+            AfxMessageBox("Sending data through Ethernet Failed");
             return QRCAN_ERR_NOT_OK;
         }
         return QRCAN_ERR_OK; 
@@ -252,7 +277,11 @@ QRCAN_STATUS QRCAN_SendDataToHardware(char *data){
     }
 }
 
-// Receive CAN Message from Hardware
+/**
+*
+*   Received data from Device based on the communication media chosen
+*
+*/
 QRCAN_STATUS QRCAN_ReceiveDataFromHardware(QRCAN_MSG* Buf, DWORD* CanMsgArrived){
     char messageReceived[BUFFER_SIZE] = {};
 
@@ -297,6 +326,11 @@ QRCAN_STATUS QRCAN_ReceiveDataFromHardware(QRCAN_MSG* Buf, DWORD* CanMsgArrived)
 
 }
 
+/**
+*
+*   Processes the received CAN message and converts it to QRCAN_MSG format
+*
+*/
 QRCAN_STATUS QRCAN_RecvCANMessage(QRCAN_MSG* Buf, char *receivedData){
     UINT32 messageId    = 0;
     UINT8 messageLength = 0;
@@ -335,25 +369,35 @@ QRCAN_STATUS QRCAN_RecvCANMessage(QRCAN_MSG* Buf, char *receivedData){
     return QRCAN_ERR_OK; 
 }
 
+/**
+*
+*   Converts received ASCII Characters 0-9 to integers. Further converts hexadecimal 
+*   values A-F to integers, Since CAN Messages can have values 0x0-0xF
+*
+*   TODO: Find a more efficient way to do this.
+*/
 UINT8 ASCIItoInt(UINT8 asciiCharacter)
 {
-  if (asciiCharacter - '0' >= 0 && asciiCharacter - '0' <= 9)
-  {
+  if (asciiCharacter - '0' >= 0 && asciiCharacter - '0' <= 9) {
     return asciiCharacter - '0';
   }
-  else if (asciiCharacter - 55 >= 10 && asciiCharacter - 55 <= 15)
-  {
-    return asciiCharacter - '0';
+  else if (asciiCharacter - 55 >= 10 && asciiCharacter - 55 <= 15) {
+    return asciiCharacter - 55;
   }
-  else 
+  else {
     AfxMessageBox("Unrecognized character in CAN Message");
+  }
 }
 
-// Close the QRCAN Device
+/**
+*
+*   Deletes the handles and resets events for closing the device correctly
+*
+*/
 QRCAN_STATUS QRCAN_Close(){
-    if (qrcanDevice.commMode == QRCAN_USE_ETHERNET){
+    if (qrcanDevice.commMode == QRCAN_USE_ETHERNET) {
         // Shutdown connection
-        if (shutdown(qrcanDevice.tcpSocket, SD_SEND) != 0){
+        if (shutdown(qrcanDevice.tcpSocket, SD_SEND) != 0) {
             CString msg;
             msg.Format(_T("%d"), WSAGetLastError());
             AfxMessageBox(msg);
@@ -366,7 +410,7 @@ QRCAN_STATUS QRCAN_Close(){
 
         return QRCAN_ERR_OK;
     }
-    else if (qrcanDevice.commMode == QRCAN_USE_USB){
+    else if (qrcanDevice.commMode == QRCAN_USE_USB) {
         if (qrcanDevice.ovRead.hEvent != nullptr) {
             CloseHandle(qrcanDevice.ovRead.hEvent);
         }
