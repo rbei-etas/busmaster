@@ -40,6 +40,7 @@
 static HWND qrconfig_hDlg = nullptr;                    // Handle for Dialog box
 static struct QRCanCfg* CanCfg = nullptr; 
 
+
 static void InitSerialPortList(void)
 {
     int i, cnt;
@@ -112,9 +113,10 @@ static void SetupEthernet(void){
 
     // Create a new socket to make a client connection
     // AF_INET = 2, The Internet Protocol version 4 (IPv4) address family, TCP protocol
-    qrcanDevice.sendingSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    qrcanDevice.tcpSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    
 
-    if (qrcanDevice.sendingSocket == INVALID_SOCKET){
+    if (qrcanDevice.tcpSocket == INVALID_SOCKET){
         CString msg;
         msg.Format(_T("%d"), WSAGetLastError());
         AfxMessageBox(msg);

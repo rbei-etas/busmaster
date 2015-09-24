@@ -94,7 +94,7 @@ QRCAN_STATUS QRCAN_SendCANMessage(QRCAN_MSG* Buf);
 QRCAN_STATUS QRCAN_SendDataToHardware(char *data);
 
 // Recveive data from Hardware
-QRCAN_STATUS QRCAN_RecveiveDataFromHardware(QRCAN_MSG* Buf, DWORD* CanMsgArrived);
+QRCAN_STATUS QRCAN_ReceiveDataFromHardware(QRCAN_MSG* Buf, DWORD* CanMsgArrived);
 
 // Converts ASCII characters to integers
 UINT8 ASCIItoInt(UINT8 asciiCharacter);

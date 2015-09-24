@@ -29,9 +29,10 @@ typedef struct{
     HANDLE q_hComm;                             // Handle for Serial Communication
     char serialPortName[10];                    // To hold serial port name
 
-    SOCKET sendingSocket;                       // Socket for Etherent communication
+    SOCKET tcpSocket;                       // Socket for Etherent communication
     char pcHost[256];                           // To hold IP address
-    unsigned int serverPort;                    // To hold port number   
+    unsigned int serverPort;                    // To hold port number
+    WSAEVENT receiveEvent;                      // Receive event for Ethernet
 
     OVERLAPPED ovRead;
     OVERLAPPED ovWrite;

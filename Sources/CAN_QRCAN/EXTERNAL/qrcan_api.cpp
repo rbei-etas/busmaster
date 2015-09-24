@@ -44,17 +44,17 @@ QRCAN_STATUS QRCAN_Open(){
         serverAddr.sin_addr.s_addr = inet_addr(qrcanDevice.pcHost);
 
         // Make a connection to the server with socket sendingSocket
-        int returnCode = connect(qrcanDevice.sendingSocket, (SOCKADDR *) &serverAddr, sizeof(serverAddr));
+        int returnCode = connect(qrcanDevice.tcpSocket, (SOCKADDR *) &serverAddr, sizeof(serverAddr));
 
         if (returnCode != 0){
             CString msg;
             msg.Format(_T("%d"), WSAGetLastError());
             AfxMessageBox(msg);
             AfxMessageBox("Connection to the server failed");
-            closesocket(qrcanDevice.sendingSocket);
+            closesocket(qrcanDevice.tcpSocket);
             WSACleanup();
             return QRCAN_ERR_NOT_OK;
-        }       
+        }
     }
     else if (qrcanDevice.commMode == QRCAN_USE_USB){
 
@@ -133,7 +133,11 @@ QRCAN_STATUS QRCAN_Config(QRCAN_HANDLE Handle, struct QRCanCfg* cfg)
 //  Set Serial Communication Events
 QRCAN_STATUS QRCAN_SetEvent(){
     if (qrcanDevice.commMode == QRCAN_USE_ETHERNET){
-        // Add the code for Ethernet
+        // Creating receive event for Ethernet
+        qrcanDevice.receiveEvent = WSACreateEvent();
+
+        // Associate events with socket
+        WSAEventSelect(qrcanDevice.tcpSocket, qrcanDevice.receiveEvent, FD_READ);
 
         return QRCAN_ERR_OK;
     }
@@ -204,7 +208,7 @@ QRCAN_STATUS QRCAN_SendDataToHardware(char *data){
         int bytesSent;
 
         // Send data to the Server
-        bytesSent = send(qrcanDevice.sendingSocket, data, strlen(data), 0);
+        bytesSent = send(qrcanDevice.tcpSocket, data, strlen(data), 0);
 
         if (bytesSent == SOCKET_ERROR){
             CString msg;
@@ -249,15 +253,14 @@ QRCAN_STATUS QRCAN_SendDataToHardware(char *data){
 }
 
 // Receive CAN Message from Hardware
-QRCAN_STATUS QRCAN_RecveiveDataFromHardware(QRCAN_MSG* Buf, DWORD* CanMsgArrived){
+QRCAN_STATUS QRCAN_ReceiveDataFromHardware(QRCAN_MSG* Buf, DWORD* CanMsgArrived){
     char messageReceived[BUFFER_SIZE] = {};
 
     if (qrcanDevice.commMode == QRCAN_USE_ETHERNET){
         int bytesReceived = 0;
 
         // Something more should be added here
-        bytesReceived = recv(qrcanDevice.sendingSocket, messageReceived, MAX_PACKET_SIZE, 0);
-    
+        bytesReceived = recv(qrcanDevice.tcpSocket, messageReceived, MAX_PACKET_SIZE, 0);    
     }
     else if (qrcanDevice.commMode == QRCAN_USE_USB){      
         DWORD dwBytesRead = 0;
@@ -350,17 +353,26 @@ UINT8 ASCIItoInt(UINT8 asciiCharacter)
 QRCAN_STATUS QRCAN_Close(){
     if (qrcanDevice.commMode == QRCAN_USE_ETHERNET){
         // Shutdown connection
-        if (shutdown(qrcanDevice.sendingSocket, SD_SEND) != 0){
+        if (shutdown(qrcanDevice.tcpSocket, SD_SEND) != 0){
             CString msg;
             msg.Format(_T("%d"), WSAGetLastError());
             AfxMessageBox(msg);
             AfxMessageBox("Error during shutdown");
             return QRCAN_ERR_NOT_OK;
         }
+
+        // Clear Ethernet events
+        WSAEventSelect(qrcanDevice.tcpSocket, qrcanDevice.receiveEvent, 0);
+
         return QRCAN_ERR_OK;
     }
     else if (qrcanDevice.commMode == QRCAN_USE_USB){
+        if (qrcanDevice.ovRead.hEvent != nullptr) {
+            CloseHandle(qrcanDevice.ovRead.hEvent);
+        }
+
         CloseHandle (qrcanDevice.q_hComm);
+        
         return QRCAN_ERR_OK;
     }
 }

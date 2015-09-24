@@ -673,29 +673,51 @@ static DWORD WINAPI CanRxEvent(LPVOID /* lpParam */)
     DWORD dwEvtMask;
     DWORD dwRead;
 
+    WSANETWORKEVENTS networkEvents;
+
     for (;;)
     {
-        if (!WaitCommEvent(qrcanDevice.q_hComm, &dwEvtMask, &qrcanDevice.ovRead)) {
-            if (GetLastError() != ERROR_IO_PENDING) {
-               AfxMessageBox("Error in WaitCommEvent");
-            }       
-        }
+        if (qrcanDevice.commMode == QRCAN_USE_ETHERNET) {
+            WSAWaitForMultipleEvents(1, &qrcanDevice.receiveEvent, FALSE, INFINITE, FALSE);
 
-        if (WaitForSingleObject(qrcanDevice.ovRead.hEvent, INFINITE) == WAIT_OBJECT_0) {
-            if (QRCAN_RecveiveDataFromHardware(&msg, &dwTemp) != QRCAN_ERR_OK){
-                AfxMessageBox("QRCAN Failed");                
+            if (WSAEnumNetworkEvents(qrcanDevice.tcpSocket, qrcanDevice.receiveEvent, &networkEvents) == SOCKET_ERROR) {
+                AfxMessageBox("WSAEnumNetworkEvents Failed");
             }
 
-            if (dwTemp == 1) {
+            if (networkEvents.lNetworkEvents == FD_READ && networkEvents.iErrorCode[FD_READ_BIT] == ERROR_SUCCESS) {
+                if (QRCAN_ReceiveDataFromHardware(&msg, &dwTemp) != QRCAN_ERR_OK){
+                    AfxMessageBox("QRCAN Reading Failed in Ethernet");
+                }
+            }        
+        }
+
+        else if (qrcanDevice.commMode == QRCAN_USE_USB) {
+            if (!WaitCommEvent(qrcanDevice.q_hComm, &dwEvtMask, &qrcanDevice.ovRead)) {
+                if (GetLastError() != ERROR_IO_PENDING) {
+                   AfxMessageBox("Error in WaitCommEvent");
+                }       
+            }
+
+            if (WaitForSingleObject(qrcanDevice.ovRead.hEvent, INFINITE) == WAIT_OBJECT_0) {
+                if (QRCAN_ReceiveDataFromHardware(&msg, &dwTemp) != QRCAN_ERR_OK){
+                    AfxMessageBox("QRCAN Reading Failed in Serial Port");                
+                }                
+            }
+            else {
+                AfxMessageBox("WaitForSingleObject Failed");
+            }        
+        }
+
+        else {
+            AfxMessageBox("Unrecognized Communication Media");       
+        }
+
+        if (dwTemp == 1) {
             CopyMsg2CanData(&sCanData, &msg, RX_FLAG);
             //Write the msg into registered client's buffer
             EnterCriticalSection(&sg_DIL_CriticalSection);
             vWriteIntoClientsBuffer(sCanData, 0);
             LeaveCriticalSection(&sg_DIL_CriticalSection);
-            }
-        }
-        else {
-            AfxMessageBox("WaitForSingleObject Failed");
         }
     }
 }
@@ -752,12 +774,6 @@ HRESULT CDIL_CAN_QRCAN::CAN_StopHardware(void)
         TerminateThread(sg_hReadThread, 0);
         sg_hReadThread = nullptr;
     }
-
-    if (qrcanDevice.ovRead.hEvent != nullptr)
-    {
-        CloseHandle(qrcanDevice.ovRead.hEvent);
-    }
-
 
     HRESULT hResult = S_OK;
     if (QRCAN_Close() == QRCAN_ERR_OK){
