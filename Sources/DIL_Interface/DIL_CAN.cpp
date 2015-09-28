@@ -68,8 +68,10 @@ static ENTRY_DIL sg_ListDIL[] =
     {DRIVER_CAN_MHS,        "&MHS Tiny-CAN"     },
     {DRIVER_CAN_NSI,        "&NSI CAN-API"      },
     {DRIVER_CAN_PEAK_USB,   "&PEAK USB"         },
+	{DRIVER_CAN_QRCAN,      "QRCAN"             },
     {DRIVER_CAN_VECTOR_XL,  "&Vector XL"        },
     {DRIVER_CAN_VSCOM,      "VScom &CAN-API"    },
+
 };
 
 CDIL_CAN::CDIL_CAN()
@@ -283,9 +285,15 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner,
             case DRIVER_CAN_VSCOM:
                 m_hDll = LoadLibrary("CAN_VSCOM.dll");
                 break;
+
+			case DRIVER_CAN_QRCAN:
+				m_hDll = LoadLibrary("CAN_QRCAN.dll");
+				break;
+
             case DRIVER_CAN_ISOLAR:
                 m_hDll = LoadLibrary("CAN_ISOLAR_EVE_VCAN.dll");
                 break;
+
             case DAL_NONE:
                 DILC_PerformClosureOperations();
                 vSelectInterface_Dummy();

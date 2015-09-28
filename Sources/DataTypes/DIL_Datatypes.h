@@ -91,6 +91,7 @@ enum
     DRIVER_CAN_NSI,
     DRIVER_CAN_IXXAT,
     DRIVER_CAN_VSCOM,
+	DRIVER_CAN_QRCAN,
     DRIVER_CAN_IVIEW,
     DRIVER_CAN_ISOLAR,
     DIL_TOTAL,          // Its value must be <= MAX_DILS
