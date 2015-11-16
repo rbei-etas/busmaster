@@ -15,6 +15,14 @@
     </metadata>
   </prolog>
   <body>
+    <p><b>2.6.4</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>Advanced log file settings</li>
+        <li>Replay optimization for CAN</li>
+        <li>Node Simulation UI Improvement</li>
+        <li>Toolbar cleanup</li>
+      </ul></p>
     <p><b>2.6.3</b></p>
     <p>Following features are added:</p>
     <p><ul>

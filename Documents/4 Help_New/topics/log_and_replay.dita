@@ -54,6 +54,24 @@
       <title>Example</title>
       <p>If the log file name is xyz.log for the first time, then for the next time the log file name will be xyz0.log.</p>
       <p>Similarly, if the log file name is xyzn.log for the first time, where n – is any number, then for the next time the log file name will be xyzm.log, where m = n + 1.</p>
+      <p><b>Create New Log File</b></p>
+      <p><b>Measurement</b> - New Log file can be created for every Bus Connect. The new log file will have a file name. Eg: BusmasterLogFile_CAN_Mn.log where &apos;n&apos; is the count, and &apos;M&apos; indicates logging is &apos;Measurement&apos; based.</p>
+      <p><b>Size</b> - New Log file can be created with log file exceeding certain file size. The new log file will have a file name. Eg: BusmasterLogFile_CAN_Sn.log where &apos;n&apos; is the count, and &apos;S&apos; indicates logging is &apos;Size&apos; based.</p>
+      <p><b>Time</b> - New Log file can be created for certain interval of time. The new log file will have a file name. Eg: BusmasterLogFile_CAN_Tn.log where &apos;n&apos; is the count, and &apos;T&apos; indicates logging is &apos;Time&apos; based.</p>
+      <p><b>Comment</b></p>
+      <p>Comments can be inserted to the header of the log file.</p>
+      <p><b>Filters</b></p>
+      <p>Filters can be added for logging.</p>
+      <p><b>Enable/Disable Logging on Tool Connect/Disconnect</b></p>
+      <p>Logging can be enabled/Disable on Connect/Disconnect to CAN bus.</p>
+      <p><b>Message Log</b></p>
+      <p>CAN messages can be logged to a file for analysis. Log file name shall be selected as described in section Logging.</p>
+      <p>To start message logging select Log Start or press the Tool Bar Button shown in the figure below. The tool bar is toggle button. Clicking on the button or selecting the menu again will stop logging. Once the logging has started, the messages received and transmitted will be logged in to the file with time of message reception.</p>
+      <p><b>Note:</b></p>
+      <p><ul>
+          <li>Logging will fail if the log file is not present in the specified location.</li>
+          <li>Logging status is stored in configuration file and logging will be started automatically during application startup if it is enabled and saved in the configuration file.</li>
+        </ul></p>
     </example>
     <section>
       <title>Replay</title>

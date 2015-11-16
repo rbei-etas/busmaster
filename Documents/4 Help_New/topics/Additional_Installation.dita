@@ -1,20 +1,20 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
-<topic id="api_listing" xml:lang="en-us">
-  <title>LIN API Listing</title>
+<topic id="c_library" xml:lang="en-us">
+  <title>Additional Installation</title>
   <prolog>
-    <author>Ratnadip Choudhury</author>
+    <author>Robin George Koshy</author>
     <copyright>
-      <copyryear year="2011"/>
+      <copyryear year="2015"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
     </copyright>
     <metadata>
       <keywords>
-        <indexterm>API Listing</indexterm>
+        <indexterm>Additional Installation</indexterm>
       </keywords>
     </metadata>
   </prolog>
   <body>
-    <p>BUSMASTER API Listing</p>
+    <p>In BUSMASTER MinGw gcc compiler is used in Node Simulation to build and generate .dll files from user created .cpp file. Therefore any of the below two MinGw must be installed.</p>
   </body>
 </topic>

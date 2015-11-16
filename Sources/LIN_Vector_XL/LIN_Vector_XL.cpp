@@ -566,8 +566,8 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
         // we take all hardware we found and
         // check that we have only CAN cabs/piggy's
         // at the moment there is no VN8910 XLAPI support!
-        if ( /*(g_xlDrvConfig.channel[nCount].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN)
-              && */(g_xlDrvConfig.channel[nCount].hwType != XL_HWTYPE_VN8900) )
+        //if ( /*(g_xlDrvConfig.channel[nCount].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN)
+        //      && */(g_xlDrvConfig.channel[nCount].hwType != XL_HWTYPE_VN8900) )
         {
             if ( /*(g_xlDrvConfig.channel[nCount].hwType == XL_HWTYPE_CANCASEXL) &&*/
                 !(g_xlDrvConfig.channel[nCount].channelBusCapabilities & XL_BUS_ACTIVE_CAP_LIN) )
@@ -640,7 +640,7 @@ static int nCreateSingleHardwareNetwork()
         // check that we have only CAN cabs/piggy's
         // at the moment there is no VN8910 XLAPI support!
         if ( (g_xlDrvConfig.channel[i].channelBusCapabilities & XL_BUS_ACTIVE_CAP_LIN)
-                && (g_xlDrvConfig.channel[i].hwType != XL_HWTYPE_VN8900) )                  //TODO
+                /* && (g_xlDrvConfig.channel[i].hwType != XL_HWTYPE_VN8900)*/ )                  //TODO
         {
             sg_aodChannels[0].m_pXLChannelInfo  = &g_xlDrvConfig.channel[i];
             g_xlChannelMask |= sg_aodChannels[0].m_pXLChannelInfo->channelMask;
@@ -1027,7 +1027,7 @@ static void vMapDeviceChannelIndex()
 */
 static int nSetBaudRate()
 {
-    XLstatus xlStatus;
+    XLstatus xlStatus = 0;
     XLaccess xlChanMaskTx = 0;
     XLlinStatPar xlLinStatusVar;
     //static int nLINMode = XL_LIN_SLAVE;
