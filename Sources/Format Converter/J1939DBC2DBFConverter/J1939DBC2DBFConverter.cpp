@@ -181,10 +181,10 @@ HRESULT CJ1939DBC2DBFConverter::ConvertFile(string& chInputFile, string& chOutpu
         }
     }
     m_pouDBC2DBFConverter->ClearMsgList();
-    INT nRetVal = m_pouDBC2DBFConverter->LoadDBCFile(chInputFile);
+    INT nRetVal = m_pouDBC2DBFConverter->LoadDBCFile(chInputFile.c_str());
     if( S_OK == nRetVal )
     {
-        m_pouDBC2DBFConverter->ConvertFile(chOutputFile);
+        m_pouDBC2DBFConverter->ConvertFile(chOutputFile.c_str());
     }
     // display final result
     char chResult[1024];

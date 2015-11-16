@@ -548,3 +548,14 @@ HRESULT CFrameProcessor_LIN::FPL_SetChannelBaudRateDetails
     SetChannelBaudRateDetails(controllerDetails, nNumChannels,eBus);
     return hResult;
 }
+void CFrameProcessor_LIN::vSetMeasurementFileName()
+{
+    USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
+    for (USHORT i = 0; i < ushBlocks; i++)
+    {
+        CBaseLogObject* pouLogObjBase = m_omLogObjectArray.GetAt(i);
+        CLogObjectLIN* pouLogObjCon = static_cast<CLogObjectLIN*> (pouLogObjBase);
+        pouLogObjCon->m_sLogInfo.m_sLogAdvStngs.m_nConnectionCount++;
+        pouLogObjCon->vSetMeasurementFileName();
+    }
+}

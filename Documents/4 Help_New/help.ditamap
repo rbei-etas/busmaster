@@ -15,6 +15,9 @@
   <topicref href="topics/getting_started.dita" type="topic"/>
   <topicref href="topics/operating_modes.dita" type="topic"/>
   <topicref href="topics/status_bar.dita" type="topic"/>
+  <topicref href="topics/General.dita" type="topic" class="- map/topicref ">
+    <topicref href="topics/configuration_file.dita" type="topic"/>
+  </topicref>
   <topicref href="topics/CAN_Introduction.dita" type="topic">
     <topicref href="topics/configuration.dita" type="topic">
       <topicref href="topics/baudrate.dita" type="topic">
@@ -25,7 +28,7 @@
       <topicref href="topics/configure_replay.dita" type="topic"/>
       <topicref href="topics/message_display.dita" type="topic"/>
       <topicref href="topics/transmit_messages.dita" type="topic"/>
-      <topicref href="topics/simulated_systems.dita" type="topic">
+      <topicref href="topics/Node_Simulation_Configuration.dita" type="topic">
         <topicref href="topics/function_editor.dita" type="topic"/>
       </topicref>
     </topicref>
@@ -35,11 +38,8 @@
       <topicref href="topics/single_run_mode.dita" type="topic"/>
     </topicref>
     <topicref href="topics/filter.dita" type="topic"/>
-    <topicref href="topics/node_simulation.dita" type="topic"/>
+    <topicref href="topics/Node_Simulation_Configuration.dita" type="topic"/>
     <topicref href="topics/node_simulation_examples.dita" type="type"/>
-    <topicref href="topics/MinGW_Installation.dita" type="topic"/>
-	<topicref href="topics/MinGW_Installation_TDM.dita" type="topic"/>
-    <topicref href="topics/execute_handlers.dita" type="topic"/>
     <topicref href="topics/database_editor.dita" type="topic"/>
     <topicref href="topics/message_window.dita" type="topic"/>
     <topicref href="topics/signal_generation.dita" type="topic"/>
@@ -52,7 +52,6 @@
       <topicref href="topics/test_suite_executor.dita" type="topic"/>
     </topicref>
 <!-- <topicref href="topics/reset_controller.dita" type="topic"/> -->    <topicref href="topics/network_statistics.dita" type="topic"/>
-    <topicref href="topics/configuration_file.dita" type="topic"/>
     <topicref href="topics/J1939.dita" type="topic"/>
     <topicref href="topics/connect.dita" type="topic"/>
     <topicref href="topics/format_converters.dita" type="topic"/>
@@ -72,9 +71,6 @@
         <topicref href="references/api_reference/StartTimer.dita" type="reference"/>
         <topicref href="references/api_reference/StopTimer.dita" type="reference"/>
         <topicref href="references/api_reference/SetTimerVal.dita" type="reference"/>
-        <topicref href="references/api_reference/EnableMsgHandlers.dita" type="reference"/>
-        <topicref href="references/api_reference/EnableErrorHandlers.dita" type="reference"/>
-        <topicref href="references/api_reference/EnableKeyHandlers.dita" type="reference"/>
         <topicref href="references/api_reference/EnableDisableMsgTx.dita" type="reference"/>
         <topicref href="references/api_reference/hGetDllHandle.dita" type="reference"/>
       </topicref>
@@ -95,9 +91,6 @@
         <topicref href="references/api_reference_J1939/StartTimer.dita" type="reference"/>
         <topicref href="references/api_reference_J1939/StopTimer.dita" type="reference"/>
         <topicref href="references/api_reference_J1939/SetTimerVal.dita" type="reference"/>
-        <topicref href="references/api_reference_J1939/EnableMsgHandlers.dita" type="reference"/>
-        <topicref href="references/api_reference_J1939/EnableErrorHandlers.dita" type="reference"/>
-        <topicref href="references/api_reference_J1939/EnableKeyHandlers.dita" type="reference"/>
         <topicref href="references/api_reference_J1939/EnableDisableMsgTx.dita" type="reference"/>
         <topicref href="references/api_reference_J1939/hGetDllHandle.dita" type="reference"/>
         <topicref href="references/api_reference_J1939/RequestPGN.dita" type="reference"/>
@@ -112,29 +105,24 @@
       <topicref href="topics/com_interface_application.dita" type="topic"/>
       <topicref href="topics/com_interface_api.dita" type="topic">
         <topicref href="references/com_interface_api/Connect.dita" type="reference"/>
-        <topicref href="references/com_interface_api/ResetHW.dita" type="reference"/>
-        <topicref href="references/com_interface_api/GetErrorCounter.dita" type="reference"/>
-        <topicref href="references/com_interface_api/SendCANMSg.dita" type="reference"/>
         <topicref href="references/com_interface_api/GetMsgInfo.dita" type="reference"/>
         <topicref href="references/com_interface_api/GetNetworkStatistics.dita" type="reference"/>
-        <topicref href="references/com_interface_api/LoadAllDll.dita" type="reference"/>
-        <topicref href="references/com_interface_api/UnLoadAllDll.dita" type="reference"/>
-        <topicref href="references/com_interface_api/SendKeyValue.dita" type="reference"/>
-        <topicref href="references/com_interface_api/EnableDisableHandlers.dita" type="reference"/>
+        <topicref href="references/com_interface_api/GetErrorCounter.dita" type="reference"/>
         <topicref href="references/com_interface_api/ImportDatabase.dita" type="reference"/>
         <topicref href="references/com_interface_api/LoadConfiguration.dita" type="reference"/>
         <topicref href="references/com_interface_api/SaveConfiguration.dita" type="reference"/>
         <topicref href="references/com_interface_api/SaveConfigurationAs.dita" type="reference"/>
-        <topicref href="references/com_interface_api/GetTxBlockCount.dita" type="reference"/>
-        <topicref href="references/com_interface_api/ClearTxBlockList.dita" type="reference"/>
-        <topicref href="references/com_interface_api/StartTxMsgBlock.dita" type="reference"/>
-        <topicref href="references/com_interface_api/StopTxMsgBlock.dita" type="reference"/>
-        <topicref href="references/com_interface_api/EnableFilterSch.dita" type="reference"/>
-        <topicref href="references/com_interface_api/GetLoggingBlockCount.dita" type="reference"/>
-        <topicref href="references/com_interface_api/RemoveLoggingBlock.dita" type="reference"/>
-        <topicref href="references/com_interface_api/ClearLoggingBlock.dita" type="reference"/>
-        <topicref href="references/com_interface_api/StartLogging.dita" type="reference"/>
+        <topicref href="references/com_interface_api/RegisterClientForRx.dita" type="reference"/>
+        <topicref href="references/com_interface_api/UnRegisterClient.dita" type="reference"/>
+        <topicref href="references/com_interface_api/SendCANMSg.dita" type="reference"/>
+        <topicref href="references/com_interface_api/GetApplication.dita" type="reference"/>
         <topicref href="references/com_interface_api/StopLogging.dita" type="reference"/>
+        <topicref href="references/com_interface_api/StartLogging.dita" type="reference"/>
+        <topicref href="references/com_interface_api/AddLoggingBlock.dita" type="reference"/>
+        <topicref href="references/com_interface_api/GetLoggingBlock.dita" type="reference"/>
+        <topicref href="references/com_interface_api/RemoveLoggingBlock.dita" type="reference"/>
+        <topicref href="references/com_interface_api/GetLoggingBlockCount.dita" type="reference"/>
+        <topicref href="references/com_interface_api/ClearLoggingBlockList.dita" type="reference"/>
         <topicref href="references/com_interface_api/WriteToLogFile.dita" type="reference"/>
       </topicref>
     </topicref>
@@ -165,9 +153,8 @@
     <topicref href="topics/app_filter_LIN.dita" type="reference"/>
     <topicref href="topics/LINmessage_display.dita" type="reference"/>
     <topicref href="topics/LIN_Node_Simulation.dita" type="topic">
-      <topicref href="topics/LIN_Node_Simulation_Configuration.dita" type="reference"/>
+      <topicref href="topics/Node_Simulation_Configuration.dita" type="reference"/>
       <topicref href="topics/LIN_Function_Editor.dita" type="reference"/>
-      <topicref href="topics/LIN_Node_Simulation_Execution.dita" type="reference"/>
       <topicref href="topics/Configure Slave Response.dita" type="topic"/>
       <topicref href="topics/LIN_api_reference.dita" type="topic">
         <topicref href="topics/stlin_struct.dita" type="topic"/>
@@ -178,10 +165,10 @@
           <topicref href="references/api_reference_LIN/Connect.dita" type="reference"/>
           <topicref href="references/api_reference_LIN/StartTimer.dita" type="reference"/>
           <topicref href="references/api_reference_LIN/StopTimer.dita" type="reference"/>
-          <topicref href="references/api_reference_LIN/EnableMsgHandlers.dita" type="reference"/>
-          <topicref href="references/api_reference_LIN/EnableErrorHandlers.dita" type="reference"/>
-          <topicref href="references/api_reference_LIN/EnableKeyHandlers.dita" type="reference"/>
           <topicref href="references/api_reference_LIN/hGetDllHandle.dita" type="reference"/>
+          <topicref href="references/api_reference_LIN/EnableLogging.dita" type="reference"/>
+          <topicref href="references/api_reference_LIN/DisableLogging.dita" type="reference"/>
+          <topicref href="references/api_reference_LIN/WriteToLogFile.dita" type="reference"/>
         </topicref>
       </topicref>
     </topicref>
@@ -395,4 +382,8 @@
     <topicref href="topics/message_logging.dita" type="topic" toc="no"/>
     <topicref href="topics/connection_details.dita" type="topic" toc="no"/>
   </topichead>
+  <topicref href="topics/Additional_Installation.dita" type="topic" class="- map/topicref ">
+    <topicref href="topics/MinGW_Installation.dita" type="topic"/>
+    <topicref href="topics/MinGW_Installation_TDM.dita" type="topic"/>
+  </topicref>
 </map>

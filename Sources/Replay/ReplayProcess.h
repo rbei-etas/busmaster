@@ -23,7 +23,7 @@
  */
 
 #pragma once
-
+#include "ReplayManager.h"
 class CBaseDIL_CAN;
 class CReplayProcess
 {
@@ -40,8 +40,21 @@ public:
     // DIL CAN interface
     static CBaseDIL_CAN* s_pouDIL_CAN_Interface;
     static DWORD s_dwClientID;
+    //To get a specific line for given line number from log file.
+    CString omStrGetMsgFromLog(DWORD dwLineNo,STCANDATA& sCanMsg,bool& bSessionFlag, bool& bEOFflag, bool& bProtocolMismatch, bool& bInvalidMsg);
+    DWORD dwGetNoOfMsgsInLog();
+    //Close handles related to Memory Map for log file.
+    void vCloseReplayFile();
+    //To get the size of vecPeg vector.
+    DWORD dwGetvecPegSize();
+    bool bGetbIsProtocolMismatch();
+    void bSetbIsProtocolMismatch(bool bIsProtocolMismatch);
+    bool bGetbIsInvalidMsg();
+    void bSetbIsInvalidMsg(bool bIsInvalidMessage);
+    //To get the specific can message from the log file
+    bool sGetCanMsg(CString omStrMessage,STCANDATA& sCanMsg);
     // To load repaly file
-    BOOL bOpenReplayFile();
+    BOOL bOpenReplayFile(BOOL bIsInteractive);
     // To start NI replay threads
     BOOL bStartNIReplay();
     // To give stop signal to running thread
@@ -70,7 +83,11 @@ private:
     HANDLE m_hThread;
     // Event for Thread Indication
     CEvent m_omThreadEvent;
-
+    //To store the location of a line(in bytes) in log file.
+    std::vector<DWORD> vecPeg;
+    //To track the sessions crossed by reading the log file.
+    std::vector<bool> vecSessionFlag;
+    std::ifstream omInReplayFile;
     // Local Variables
     BOOL m_bReplayHexON;
     //Replay flag mode
@@ -85,8 +102,13 @@ private:
     int m_nNoOfMessagesToPlay;
     // Stop Flag
     BOOL m_bStopReplayThread;
+    //Check Interactive
+    BOOL m_bIsInteractive;
     // For Error Strings
     CString m_omStrError;
+    bool m_bIsProtocolMismatch;
+    bool m_bIsInvalidMessage;
+    bool m_bIsEmptySession;
 private:
     void vFormatCANDataMsg(STCANDATA* pMsgCAN, tagSFRAMEINFO_BASIC_CAN* CurrDataCAN);
     BOOL bMessageTobeBlocked(SFRAMEINFO_BASIC_CAN& sBasicCanInfo);

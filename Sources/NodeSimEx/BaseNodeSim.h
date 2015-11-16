@@ -36,28 +36,19 @@ public:
     virtual HRESULT FE_CreateFuncEditorTemplate(HWND handle, S_EXFUNC_PTR& sExInitStruct) = 0;
     virtual HRESULT FE_OpenFunctioneditorFile(CString omStrNewCFileName, HWND hMainFrame,
             S_EXFUNC_PTR& sExInitStruct) = 0;
-    virtual void NS_EnableAllHandlers(BOOL bEnable) = 0;
-    virtual void NS_EnableAllTimers(BOOL bEnable) = 0;
-    virtual void NS_EnableAllKeyHandler(BOOL bEnable)= 0;
-    virtual void NS_EnableAllMessageHandler(BOOL bEnable)= 0;
-    virtual void NS_EnableAllErrorHandler(BOOL bEnable)= 0;
-    virtual void NS_EnableAllEventHandler(BOOL bEnable)= 0;
     virtual void NS_ManageOnKeyHandler(UCHAR ucKey) = 0;
     virtual void NS_ManageBusEventHandler(eBUSEVEHANDLER eBusEvent) = 0;
     virtual void NS_ManageOnMessageHandler(void* psRxMsgInfo) = 0;
     virtual void NS_ManageOnErrorHandler(eERROR_STATE eErrorCode,void* pvErrorVal) = 0;
-    virtual HRESULT NS_DLLBuildAll(CStringArray* pomStrErrorFiles) = 0;
-    virtual HRESULT NS_DllLoadAll(CStringArray* pomStrErrorFiles) = 0;
+    virtual HRESULT NS_DLLBuildAll() = 0;
     virtual HRESULT NS_DllUnloadAll(CStringArray* pomStrErrorFiles) = 0;
-    virtual HRESULT NS_DLLBuildLoadAll(CStringArray* pomStrErrorFiles) = 0;
+    virtual HRESULT NS_DLLBuildLoadAllEnabled() = 0;
+    virtual HRESULT NS_DLLUnloadAllEnabled() = 0;
     //Set the MSG structure name and File name containing the structure def
     virtual void NS_UpdateFuncStructsNodeSimEx(PVOID pvFuncStructs, E_UPDATE_TYPE eUpdateType) = 0;
     //Provide the helptext for all the handlers in the order mentoned above
     virtual void NS_SetHandlersHelpText(CStringArray* pomTextArray) = 0;
-    //Find the value of flags which will tell the status of toolbar item
-    virtual BOOL NS_ShouldToolBarBeEnabled(E_TB_FN_EDITOR eToolBarFlag) = 0;
-    //Find the value of flags which will tell the status of handler s
-    virtual BOOL NS_GetHandlerStatus(eSIMSYSFLAG eHandlerFlag) = 0;
+  
     //Load and save the Simsys config details in terms of bytes
     virtual void NS_GetSimSysConfigData(BYTE*& pDesBuffer, int& nBuffSize) = 0;
     virtual bool NS_GetSimSysConfigData(xmlNodePtr& pNodePtr) = 0;
@@ -67,10 +58,7 @@ public:
     virtual BOOL NS_IsSimSysConfigChanged() = 0;
     virtual int NS_nOnBusConnected(bool bConnected) = 0;
     virtual void NS_SetJ1939ActivationStatus(bool bActivated) =0;
-    // Save simulation file
-    virtual void NS_SaveSimulationSystem() = 0;
-    // Application closure operations
-    virtual void NS_PerformApplicationClosureOperation(bool bSave) = 0;
+    
     //INTERFACE FUNCTIONS ENDS
 
     // FOR Passing Cluster Config

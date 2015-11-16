@@ -30,9 +30,7 @@
     <ClCompile Include="BusEventHandlerDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utility\ComputeCheckSum.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    
     <ClCompile Include="DefineTimerHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -60,9 +58,7 @@
     <ClCompile Include="FileView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Flags.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    
     <ClCompile Include="FnsTreeView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -120,12 +116,7 @@
     <ClCompile Include="Sim_MDIChildBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SimSysConfigDetails.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SimSysDetView.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+   
     <ClCompile Include="SimSysManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -138,9 +129,7 @@
     <ClCompile Include="SimSysWnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SplFileDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    
     <ClCompile Include="UtlityDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -148,6 +137,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ErrHandlerDlgLIN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Application\CNVTCImageList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Application\CNVTCToolBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -170,9 +165,7 @@
     <ClInclude Include="BusEventHandlerDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Utility\ComputeCheckSum.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    
     <ClInclude Include="DefineTimerHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -209,9 +202,7 @@
     <ClInclude Include="FileView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Flags.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    
     <ClInclude Include="FnsTreeView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -275,12 +266,7 @@
     <ClInclude Include="Sim_MDIChildBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SimSysConfigDetails.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SimSysDetView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    
     <ClInclude Include="SimSysManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -293,9 +279,7 @@
     <ClInclude Include="SimSysWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SplFileDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+   
     <ClInclude Include="UtlityDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -303,6 +287,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ErrHandlerDlgLIN.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+     <ClInclude Include="..\Application\CNVTCImageList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\CNVTCToolBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

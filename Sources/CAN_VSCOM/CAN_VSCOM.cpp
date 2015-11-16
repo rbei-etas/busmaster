@@ -351,14 +351,15 @@ HRESULT CDIL_CAN_VSCOM::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, char
                 }
                 else
                 {
-                    if (!bClientExist(CAN_MONITOR_NODE, Index))
+                    /*if (!bClientExist(CAN_MONITOR_NODE, Index))
                     {
                         Index = sg_unClientCnt + 1;
                     }
                     else
                     {
                         Index = sg_unClientCnt;
-                    }
+                    }*/
+					Index = sg_unClientCnt;
                     ClientID = dwGetAvailableClientSlot();
                     _tcscpy(sg_asClientToBufMap[Index].m_acClientName, pacClientName);
                     sg_asClientToBufMap[Index].m_dwClientID = ClientID;

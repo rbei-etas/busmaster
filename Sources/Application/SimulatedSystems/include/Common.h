@@ -10,8 +10,8 @@
 #define GCC_EXPORT
 #endif
 
-const UINT MAX_SEND_TIME = 3; // Millisecond
-const INT ERR_INVALID_ADDRESS   = -100;
+const unsigned int MAX_SEND_TIME = 3; // Millisecond
+const int ERR_INVALID_ADDRESS   = -100;
 
 #define BMKEY_BACK          0x80
 #define BMKEY_TAB           0x81

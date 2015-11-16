@@ -355,7 +355,7 @@ void LDFElementView::vPopulateLinFrames(QTreeWidgetItem* pTopTreeItem)
     std::map< UID_ELEMENT, IElement*> ouFrameMap;
     pouLDFCluster->GetElementList(eFrameElement, ouFrameMap);
 
-    QTreeWidgetItem* pElementTopTreeItem[LIN_MAX_FRAME_TYPES];
+    QTreeWidgetItem* pElementTopTreeItem[LIN_MAX_FRAME_TYPES] = {nullptr};
     QTreeWidgetItem* pElementItem;
 
     TreeItemID ouTreeItemID;

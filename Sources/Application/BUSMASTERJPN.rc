@@ -55,7 +55,6 @@ BEGIN
     "B",            IDM_CONFIGURE_DATABASE_NEW, VIRTKEY, CONTROL, NOINVERT
     "D",            IDM_CONFIGURE_DATABASE_OPENACTIVE, VIRTKEY, CONTROL, NOINVERT
     "E",            IDM_CONFIGURE_DATABASE_SAVE, VIRTKEY, CONTROL, NOINVERT
-    "L",            IDM_DLL_BUILDLOAD_ALL,  VIRTKEY, CONTROL, NOINVERT
     "M",            IDM_FILE_IMPORT_DATABASE, VIRTKEY, CONTROL, NOINVERT
     "T",            IDM_DATABASE_DISSOCIATE_DB, VIRTKEY, CONTROL, NOINVERT
     "I",            IDM_SAVE_IMPORT,        VIRTKEY, CONTROL, NOINVERT
@@ -269,6 +268,25 @@ BEGIN
     LTEXT           "メッセージ色:",IDC_STATIC,7,58,50,8,NOT WS_GROUP
 END
 
+IDD_PROPPAGE_CONFIG_MSG_DISPLAY DIALOGEX 0, 0, 245, 98
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Configure Message Display"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    GROUPBOX        "Frame Color Setting",IDC_STATIC,6,6,95,84
+    LTEXT           "Null Frame",IDC_STATIC,14,21,34,8
+    LTEXT           "",IDC_STAT_NULLFRAME_COLOR,68,18,25,14,SS_NOTIFY | NOT WS_GROUP | WS_TABSTOP,WS_EX_DLGMODALFRAME
+    LTEXT           "Sync Frame",IDC_STATIC,14,38,38,8
+    LTEXT           "",IDC_STAT_SYNCFRAME_COLOR,68,35,25,14,SS_NOTIFY | NOT WS_GROUP | WS_TABSTOP,WS_EX_DLGMODALFRAME
+    LTEXT           "Static Frame",IDC_STATIC,14,55,41,8
+    LTEXT           "",IDC_STAT_STATICFRAME_COLOR,68,52,25,14,SS_NOTIFY | NOT WS_GROUP | WS_TABSTOP,WS_EX_DLGMODALFRAME
+    LTEXT           "Dynamic Frame",IDC_STATIC,14,74,50,8
+    LTEXT           "",IDC_STAT_DYNAMICFRAME_COLOR,68,71,25,14,SS_NOTIFY | NOT WS_GROUP | WS_TABSTOP,WS_EX_DLGMODALFRAME
+    GROUPBOX        "Message Color Setting",IDC_STATIC,104,6,136,84
+    LTEXT           "Note: The individual message color will override the static/dynamic frame color settings",IDC_STATIC,111,19,126,26
+    LTEXT           "Database Messages",IDC_STATIC,111,55,65,8
+    LTEXT           "User Defined Messages",IDC_STATIC,111,74,76,8
+END
 IDD_PPAGE_MESSAGE DIALOGEX 0, 0, 212, 154
 STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION | WS_SYSMENU
 FONT 9, "MS UI Gothic", 0, 0, 0x0
@@ -471,6 +489,23 @@ BEGIN
     LTEXT           "受信開始PNG 0x",IDC_STATIC_01,186,116,95,8
     LTEXT           "受信停止PNG 0x",IDC_STATIC_02,186,132,94,8
     CONTROL         "タイムスタンプのリセット",IDC_CHECK_RESET_TIMESTAMP,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,270,86,71,10
+    GROUPBOX        "Create New Log File",IDC_LOGTRIGGER_GROUP2,15,161,159,83
+    CONTROL         "For every Bus Connect for Transmission",IDC_CHKB_ON_TRANSMISSION,
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,22,175,139,8
+    CONTROL         "After each file size exceeding",IDC_CHKB_LOG_FILE_SIZE,
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,22,191,106,8
+    EDITTEXT        IDC_EDIT_FILE_SIZE,130,189,29,12,ES_AUTOHSCROLL | ES_NUMBER | WS_DISABLED
+    LTEXT           "MB",IDC_STATIC_MB,162,191,10,8,NOT WS_GROUP
+    CONTROL         "After every ",IDC_CHKB_LOG_ON_TIME,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,22,209,49,8
+    EDITTEXT        IDC_EDIT_HOURS,74,207,24,12,ES_AUTOHSCROLL | ES_NUMBER | WS_DISABLED
+    LTEXT           "Hr(s)",IDC_STATIC_HOUR,101,209,17,8,NOT WS_GROUP
+    EDITTEXT        IDC_EDIT_MINUTES,122,207,20,12,ES_AUTOHSCROLL | ES_NUMBER | WS_DISABLED
+    LTEXT           "Min(s)",IDC_STATIC_MINUTES,146,209,20,8,NOT WS_GROUP
+    LTEXT           "Number of files to be allowed",IDC_STATIC_NO_OF_FILES,23,227,94,8,NOT WS_GROUP
+    EDITTEXT        IDC_EDIT_NO_OF_FILES,120,225,36,12,ES_AUTOHSCROLL | ES_NUMBER | WS_DISABLED
+    EDITTEXT        IDC_EDIT_LOG_COMMENT,183,172,180,47,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN | WS_DISABLED | WS_VSCROLL | WS_HSCROLL
+    GROUPBOX        "",IDC_STATIC,7,154,366,94
+    GROUPBOX        "Insert Comment",IDC_STATIC,176,162,189,62
 END
 
 IDD_DLG_WAVEFORM_CONFIG DIALOGEX 0, 0, 385, 286
@@ -624,6 +659,14 @@ BEGIN
     PUSHBUTTON      "<<",IDC_BUTTON_REMOVEALL,119,152,23,13
 END
 
+IDD_DLG_FLEXRAY_NETWORK_STATISTICS DIALOGEX 0, 0, 257, 311
+STYLE DS_SETFONT | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Network Statistics"
+FONT 8, "MS Sans Serif", 400, 0, 0x1
+BEGIN
+    CONTROL         "List2",IDC_LSTC_FLEXRAY_NETWORK_STATISTICS,
+                    "SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_OWNERDRAWFIXED | WS_BORDER | WS_TABSTOP,1,6,254,302
+END
 IDD_DLG_FIBEX_IMPORT DIALOGEX 0, 0, 388, 317
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Cluster Configuration"
@@ -650,6 +693,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,198,168,87,10,WS_EX_TRANSPARENT
     CONTROL         "Enable Master Mode",IDC_ENABLE_MASTER_MODE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,199,147,79,10
     GROUPBOX        "                                            ",IDC_STATIC_LIN_OVERWRITE,189,168,139,60
+    PUSHBUTTON      "Edit",IDC_BUTTON_LDF_EDIT,317,54,38,14,NOT WS_VISIBLE | WS_DISABLED
 END
 
 
@@ -678,13 +722,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 2.6.3"
+            VALUE "FileVersion", "Ver 2.6.4"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 2.6.3"
+            VALUE "ProductVersion", "Ver 2.6.4"
         END
     END
     BLOCK "VarFileInfo"
@@ -830,9 +874,6 @@ BEGIN
         BOTTOMMARGIN, 143
     END
 
-    IDD_DLG_CONFIG_MSG_LOG, DIALOG
-    BEGIN
-    END
 
     IDD_DLG_WAVEFORM_CONFIG, DIALOG
     BEGIN
@@ -864,6 +905,12 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 248
     END
+    IDD_DLG_FLEXRAY_NETWORK_STATISTICS, DIALOG
+    BEGIN
+        RIGHTMARGIN, 236
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 308
+    END
     IDD_DLG_FIBEX_IMPORT, DIALOG
     BEGIN
         RIGHTMARGIN, 378
@@ -890,16 +937,9 @@ IDR_BMP_CHECKBOX        BITMAP                  "res\\bmp_chec.bmp"
 IDB_BMP_FILTER          BITMAP                  "res\\Filter.bmp"
 IDB_BMPLOGO             BITMAP                  "res\\logo.bmp"
 IDB_LICENSEDLG          BITMAP                  "LockKey.bmp"
-IDR_NODE_SIMULATION     BITMAP                  "Res\\toolbar_user_prog.bmp"
-IDB_NODE_SIMULATION     BITMAP                  "Res\\toolbar_user_prog.bmp"
-IDB_NODE_SIMULATION_HOT BITMAP                  "Res\\toolbar_user_prog_Hot.bmp"
-IDB_NODE_SIMULATION_DISABLED BITMAP                  "Res\\toolbar_user_prog_disabled.bmp"
 IDB_MAINFRAME           BITMAP                  "Res\\Toolbar.bmp"
 IDB_MAINFRAME_HOT       BITMAP                  "Res\\Toolbar_hot.bmp"
 IDB_MAINFRAME_DISABLED  BITMAP                  "Res\\Toolbar_disabled.bmp"
-IDB_MAINFRAMEDSC        BITMAP                  "Res\\ToolbarDsc.bmp"
-IDB_MAINFRAMEDSC_HOT    BITMAP                  "Res\\ToolbarDsc_hot.bmp"
-IDB_MAINFRAMEDSC_DISABLED BITMAP                  "Res\\ToolbarDsc_disabled.bmp"
 IDB_HDRDOWN             BITMAP                  "Res\\hdrdown.bmp"
 IDB_HDRUP               BITMAP                  "Res\\hdrup.bmp"
 IDB_MSG_WND_HOT         BITMAP                  "Res\\MsgWndHot.bmp"
@@ -1154,17 +1194,6 @@ BEGIN
         POPUP "&ノードシミュレーション"
         BEGIN
             MENUITEM "&設定",                         IDM_CONFIGURE_SIMULATEDSYSTEMS
-            MENUITEM SEPARATOR
-            MENUITEM "すべて&ロード",                     IDM_DLL_LOADALLDLL
-            MENUITEM "すべて&アンロード",                   IDM_DLL_UNLOAD_ALL
-            MENUITEM "すべて&をビルドしロード\tCtrl+L",        IDM_DLL_BUILDLOAD_ALL
-            MENUITEM "すべて&ビルド",                     IDM_DLL_BUILD_ALL
-            MENUITEM SEPARATOR
-            MENUITEM "&すべてのメッセージハンドラ",              IDM_EXECUTE_MESSAGEHANDLERS, CHECKED
-            MENUITEM "す&べてのタイマハンドラ",                IDM_EXECUTE_TIMERHANDLER
-            MENUITEM "すべ&てのキーハンドラ",                 IDM_EXECUTE_KEYHANDLERS, CHECKED
-            MENUITEM "すべての&エラーハンドラ",                IDM_EXECUTE_ERROR_HANDLERS, CHECKED
-            MENUITEM "すべて&のハンドラ",                   IDM_EXECUTE_ALL_HANDLERS
         END
         POPUP "D&iagnostics"
         BEGIN
@@ -1180,6 +1209,7 @@ BEGIN
             MENUITEM "&新規",                         ID_DATABASE_NEW
             MENUITEM "&開く",                         ID_DATABASE_OPEN
             MENUITEM "&終了",                         ID_DATABASE_CLOSE
+            MENUITEM SEPARATOR
             MENUITEM "&保存",                         ID_DATABASE_SAVE
             MENUITEM SEPARATOR
             MENUITEM "&連結",                         33082
@@ -1220,18 +1250,7 @@ BEGIN
         MENUITEM "&送信",                         ID_ACTION_J1939_TX_MESSAGE
         POPUP "&ノードシミュレーション"
         BEGIN
-            MENUITEM "&設定",                         ID_CONFIGURE_SIMULATEDSYSTEMS
-            MENUITEM SEPARATOR
-            MENUITEM "&すべてロード",                     ID_USERPROGRAM_LOADALL
-            MENUITEM "す&べてアンロード",                   ID_USERPROGRAM_UNLOADALL
-            MENUITEM "すべ&てをビルドしてロード",               ID_USERPROGRAM_BUILDANDLOADALL
-            MENUITEM "すべて&ビルド",                     ID_USERPROGRAM_BUILDALL
-            MENUITEM SEPARATOR
-            MENUITEM "すべて&のメッセージハンドラ",              ID_EXECUTE_ALLMESSAGEHANDLERS, CHECKED
-            MENUITEM "すべての&キーハンドラ",                 ID_EXECUTE_ALLKEYHANDLERS, CHECKED
-            MENUITEM "すべての&タイマハンドラ",                ID_EXECUTE_ALLTIMERHANDLERS, CHECKED
-            MENUITEM "すべての&イベントハンドラ",               ID_EXECUTE_ALLEVENTHANDLERS, CHECKED
-            MENUITEM "すべての&ハンドラ",                   ID_EXECUTE_ALLHANDLERS, CHECKED
+            MENUITEM "&Configure",                  ID_CONFIGURE_SIMULATEDSYSTEMS
         END
     END
     POPUP "Flex&Ray"
@@ -1266,6 +1285,7 @@ BEGIN
         MENUITEM "Connect &LIN\tF4",            IDM_LIN_CONNECT
         MENUITEM "C&luster Configuration",      ID_LIN_CLUSTER_CONFIG
         MENUITEM "&Schedule Configuration",     IDM_SCHEDULE_CONFIG_LIN
+        MENUITEM "Database &Editor",                 IDM_LDF_EDITOR_LIN
         MENUITEM "&Filter Configuration",       IDM_CONFIGURE_FILTER_LIN
         MENUITEM SEPARATOR
         MENUITEM "&Network Statistics",         IDM_NETWORK_STATISTICS_WND_LIN
@@ -1307,17 +1327,6 @@ BEGIN
         POPUP "Node Sim&ulation"
         BEGIN
             MENUITEM "&Configure",                  IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN
-            MENUITEM SEPARATOR
-            MENUITEM "&Load All",                   IDM_DLL_LOADALLDLL_LIN
-            MENUITEM "&Unload All",                 IDM_DLL_UNLOAD_ALL_LIN
-            MENUITEM "Build && L&oad All",          IDM_DLL_BUILDLOAD_ALL_LIN
-            MENUITEM "&Build All",                  IDM_DLL_BUILD_ALL_LIN
-            MENUITEM SEPARATOR
-            MENUITEM "All &Message Handler(s)",     IDM_EXECUTE_MESSAGEHANDLERS_LIN, CHECKED
-            MENUITEM "All &Timer Handler(s)...",    IDM_EXECUTE_TIMERHANDLER_LIN
-            MENUITEM "All &Key Handler(s)",         IDM_EXECUTE_KEYHANDLERS_LIN, CHECKED
-            MENUITEM "All &Error Handler(s)",       IDM_EXECUTE_ERROR_HANDLERS_LIN, CHECKED
-            MENUITEM "&All Handler(s)",             IDM_EXECUTE_ALL_HANDLERS_LIN
         END
     END
     POPUP "&眺める"
@@ -1335,10 +1344,9 @@ BEGIN
                 MENUITEM "&メイン",                        ID_DISPLAY_MAIN, CHECKED
                 MENUITEM "&設定e",                        ID_DISPLAY_CONFIGURE, CHECKED
                 MENUITEM "&CANデータベース",                  ID_TB_CANDATABASE, CHECKED
-                MENUITEM "&ノードシミュレーション",                ID_DISPLAY_NODE_SIMULATION, CHECKED
-                MENUITEM "J1939",                       ID_TOOLBAR_J1939, CHECKED
+                MENUITEM "&J1939",                      ID_TOOLBAR_J1939, CHECKED
             END
-            MENUITEM "FlexRay",                     ID_FLEXRAY_TOOLBAR, CHECKED
+            MENUITEM "Flex&Ray",                    ID_FLEXRAY_TOOLBAR, CHECKED
             MENUITEM "&LIN",                        ID_TOOLBAR_LIN, CHECKED
         END
         MENUITEM "&ステータスバー",                    ID_VIEW_STATUS_BAR
@@ -1554,20 +1562,6 @@ BEGIN
     BUTTON      IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME
 END
 
-IDR_NODE_SIMULATION TOOLBAR 32, 32
-BEGIN
-    BUTTON      ID_CAN_LOGO
-    BUTTON      IDM_DLL_LOADALLDLL
-    BUTTON      IDM_DLL_UNLOAD_ALL
-    BUTTON      IDM_DLL_BUILDLOAD_ALL
-    BUTTON      IDM_DLL_BUILD_ALL
-    SEPARATOR
-    BUTTON      IDM_EXECUTE_MESSAGEHANDLERS
-    BUTTON      IDM_EXECUTE_TIMERHANDLER
-    BUTTON      IDM_EXECUTE_KEYHANDLERS
-    BUTTON      IDM_EXECUTE_ERROR_HANDLERS
-    BUTTON      IDM_EXECUTE_ALL_HANDLERS
-END
 
 IDR_FUNCTIONS_J1939 TOOLBAR 32, 32
 BEGIN
@@ -1815,7 +1809,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "無効なデータベースファイル名"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "メッセージ名"
-    IDS_VERSION             "Ver 2.6.3"
+    IDS_VERSION             "Ver 2.6.4"
     IDS_HEADER              "***注意: このドキュメントを修正しないでください***\n\n\n***[ロギングセッションの開始]***\n"
     IDS_FOOTER              "***[ロギングセッションの終了]***"
     IDS_CONNECT             "&接続\tF2"
@@ -1833,69 +1827,46 @@ BEGIN
     ID_LOG_RECORD_J1939_ICON "J1939記録..."
     ID_FLEXRAY_CONNECT      "Connect/Disconnect\nConnect/Disconnect"
     ID_FLEXRAY_CLUSTER_CONFIG 
-                            "Associate/Dissociate FlexRay Database\nAssociate/Dissociate FlexRay Database"
+                            "Associate FlexRay Database\nConfigure FlexRay Network"
+    ID_FLEXRAY_DB_DISOCIATE "Dissociate FlexRay Database\nDissociate FlexRay Database"
     IDS_CONNECT_FLEXRAY     "&Connect\tF3"
 END
 
 STRINGTABLE
 BEGIN
     IDS_DISCONNECT_FLEXRAY  "D&isconnect\tF12"
-    ID_TRANSMIT_CONFIGURE_LIN 
-                            "Configure  messages to transmit over LIN-bus\nConfigure  messages to transmit over LIN-bus"
-    IDM_LIN_CONNECT         "Connect/Disconnect\nConnect/Disconnect"
-    ID_LIN_CLUSTER_CONFIG   "Associate LIN Database(LDF)\nConfigure LIN Network"
-    IDM_CFGN_LIN_LOG        "Configure LIN message logging\nLIN logging"
-    IDM_LOG_LIN_ON_OFF      "Start/Stop LIN Message Logging\nStart/Stop LIN Logging"
-    IDM_FILTER_LOGLINOFF    "Enable or Disable LIN Loggiing filter\nEnable or Disable LIN Logging filter"
-    IDM_FILTER_MSGLINOFF    "Enable or Disable Message Display filter For Lin\nEnable or Disable Message Display filter For LIN"
+    //ID_LIN_CLUSTER_CONFIG   "Associate LIN Database(LDF)\nConfigure FlexRay Network"
 END
 
 STRINGTABLE
 BEGIN
     IDS_DISCONNECT_LIN      "D&isconnect\tF11"
     IDS_CONNECT_LIN         "&Connect\tF4"
-END
+	IDM_LOG_LIN_ON_OFF     "Start/Stop LIN Message Logging\nStart/Stop LIN Logging"
+    IDM_CFGN_LIN_LOG      "Configure LIN message logging\nLIN logging"
+	IDM_LIN_CONNECT       "Connect/Disconnect\nConnect/Disconnect"
+	IDM_FILTER_LOGLINOFF    "Enable or Disable LIN Loggiing filter\nEnable or Disable LIN Logging filter"
+		
+	ID_LIN_CLUSTER_CONFIG   "Associate LIN Database(LDF)\nConfigure LIN Network"
+	IDM_SCHEDULE_CONFIG_LIN	"Configure LIN Schedule Tables\nConfigure LIN Schedule Tables"
+	IDM_FILTER_MSGLINOFF "Enable or Disable Message Display filter For Lin\nEnable or Disable Message Display filter For LIN"
+	IDM_CONFIGURE_FILTER_LIN	"Select messages for filtering at application level\nSelect messages for filtering at application level"
+	ID_CONFIGURE_MESSAGEDISPLAY_LIN	"ConfigureLIN Message Display Attributes\nConfigure LIN Message Display Attributes"
+	IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN "Configure LIN Simulated Systems for Multinode Simulation\nConfigure LIN Simulated Systems for Multinode Simulation"
+	//IDM_NETWORK_STATISTICS_WND "NetWork Statics Window"
 
-STRINGTABLE
-BEGIN
-    ID_CONFIGURE_MESSAGEDISPLAY_LIN 
-                            "ConfigureLIN Message Display Attributes\nConfigure LIN Message Display Attributes"
-    ID_LIN_FILTER_CONFIG    "LIN Filter Configuration\nLIN Filter Configuration"
-    IDM_SCHEDULE_CONFIG_LIN "Configure LIN Schedule Tables\nConfigure LIN Schedule Tables"
-END
-
-STRINGTABLE
-BEGIN
-    IDM_CONFIGURE_FILTER_LIN 
-                            "Select messages for filtering at application level\nSelect messages for filtering at application level"
-END
-
-STRINGTABLE
-BEGIN
-    ID_CONFIGURE_MESSAGEDISPLAY_FLEXRAY 
-                            "Configure Message Display Attributes of FlexRay\nConfigure Message Display Attributes of FlexRay"
-    IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN 
-                            "Configure LIN Simulated Systems for Multinode Simulation\nConfigure LIN Simulated Systems for Multinode Simulation"
 END
 
 STRINGTABLE
 BEGIN
     IDS_MESSAGE_ID          "Message ID"
+    IDM_NETWORK_STATISTICS_WND_LIN 
+                            "Show Network Statistics Window\nShow Network Statistics Window"
+    IDM_NETWORK_STATISTICS_WND_CAN 
+                            "Show/Hide Network Statistics Window\nShow Network Statistics Window"
     IDM_CONFIGURE_PASSIVE   "Set Controller To Passive Mode\nPassive Mode"
     IDM_CONFIGURE_ACTIVE    "Set Controller To Active Mode\nActive Mode"
     IDM_TRACE_WND           "Show/Hide Trace Window\nShow/Hide Trace Window"
-END
-
-STRINGTABLE
-BEGIN
-    IDM_NETWORK_STATISTICS_WND_LIN 
-                            "Show Network Statistics Window\nShow Network Statistics Window"
-    IDM_SIGNALWATCH_ADDSIGNAL_LIN 
-                            "Add/Delete Signals to Watch window\nAdd/Delete Signals to Watch window"
-    IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN 
-                            "Show/Hide Signal Watch Window\nShow/Hide Signal Watch Windiow"
-    IDM_NETWORK_STATISTICS_WND_CAN 
-                            "Show/Hide Network Statistics Window\nShow Network Statistics Window"
 END
 
 STRINGTABLE
@@ -1939,6 +1910,7 @@ BEGIN
     IDM_CONFIGURE_DATABASE_OPENACTIVE "アクティブデータベースを開く\nアクティブデータベースのオープン"
     IDM_SIGNALWATCH_ADDSIGNAL "監視ウィンドウにシグナルを追加/削除\n監視ウィンドウにシグナルの追加/削除"
     IDM_SIGNALWATCH_CLOSE   "シグナル監視ウィンドウを表示/非表示\nシグナル監視ウィンドウの表示/非表示"
+	IDM_SIGNALWATCH_ADDSIGNAL_LIN "Add/Delete Signals to Watch window\nAdd/Delete Signals to Watch window"
     IDM_FILTER_MESSAGE_SELECTMESSAGES 
                             "アプリケーションレベルでフィルタするメッセージを選択\nアプリケーションレベルでフィルタするメッセージの選択"
     IDM_FILTER_MESSAGE_OFF  "メッセージ表示フィルタを有効化または無効化\nメッセージ表示フィルタの有効化または無効化"
@@ -1954,6 +1926,8 @@ STRINGTABLE
 BEGIN
     IDR_TOOL_BUTTON_SIGNAL_WATCH "シグナル監視ウィンドウを表示/非表示\nシグナル監視ウィンドウの表示/非表示"
     IDR_TOOL_BUTTON_SKIP    "スキップメッセージ\nスキップメッセージ"
+    IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN 
+                            "Show/Hide Signal Watch Window\nShow/Hide Signal Watch Windiow"
     IDR_TOOL_BUTTON_GO      "実行\n実行"
     IDR_TOOL_BUTTON_MSG_DISP "メッセージ表示を表示または非表示\nメッセージ表示の表示または非表示"
     IDR_TOOL_BUTTON_LOG     "ファイルでのログメッセージを有効化または無効化\nファイルでのログメッセージを有効化または無効化"
@@ -1979,15 +1953,11 @@ END
 
 STRINGTABLE
 BEGIN
-    IDM_EXECUTE_MESSAGEHANDLERS "メッセージハンドラの実行を有効化/無効化\nメッセージハンドラの実行の有効化/無効化"
-    IDM_CONFIGURE_DATABASE_CLOSE "データベースGUIの終了"
-    IDM_EXECUTE_TIMERHANDLER "タイマハンドラを開始/停止\nタイマハンドラの開始/停止"
+    IDM_CONFIGURE_DATABASE_CLOSE "データベースGUIの終了"    
     IDM_REPLAY_MODE_SINGLE  "一回再生モード"
     IDM_REPLAY_MODE_CYCLIC  "繰り返し再生モード"
     IDM_DISPLAY_SIGNAL_ADD  "シグナルを監視ウィンドウに追加/削除"
-    IDM_DLL_UNLOAD          "ロードされているBUSMASTER生成DLLをアンロードする\nロードされているBUSMASTER生成DLLのアンロード"
-    IDM_DLL_LOADDLL         "BUSMASTER生成DLLをロードする\nBUSMASTER生成DLLのロード"
-    IDM_DLL_BUILD           "ソースファイルをDLLにビルド\nDLLのビルド"
+   
     IDM_FILE_IMPORT_DATABASE "データベースを連結\nデータベースの連結"
 END
 
@@ -1997,7 +1967,7 @@ BEGIN
     32869                   "BUSMASTERバージョンと著作権の情報\nBUSMASTERバージョンと著作権の情報"
     IDR_TOOL_SENDMSG        "メッセージ送信を開始または停止\nメッセージ送信の開始または停止"
     IDR_TOOL_FLEX_SENDMSG   "Start/Stop Sending FlexRay messages\nStart/Stop Sending FlexRay messages"
-    IDM_EXECUTE_MESSAGEHANDLERS_BUTTON "すべてのメッセージハンドラを実行\nすべてのメッセージハンドラの実行"
+    
     IDM_FILTER_MESSAGEFILTEROFF_BUTTON "表示フィルタを有効化または無効化\n表示フィルタの有効化または無効化"
     IDM_FILTER_LOGFILTEROFF_BUTTON "ログフィルタを有効化または無効化\nログフィルタの有効化または無効化"
     IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE "上書きモードを有効化または無効化\n上書きモードの有効化または無効化"
@@ -2015,6 +1985,7 @@ BEGIN
     IDM_DELETE              "現在メッセージを削除"
     IDR_TOOL_STOPSENDMSG    "複数メッセージの送信を中止\n複数メッセージの送信の中止"
     IDM_CFGN_SEND_MSGS      "CAN-バスを介して送信するメッセージを設定\nCAN-バスを介して送信するメッセージを設定"
+    ID_TRANSMIT_CONFIGURE_LIN   "Configure  messages to transmit over LIN-bus\nConfigure  messages to transmit over LIN-bus"
     IDM_DELETE_SEL_MSG      "現在メッセージ詳細を削除"
     IDM_MSGDISPWND_MSGREP   "メッセージエントリの中、メッセージ名とIDの間に表示"
     IDM_MSGDISPWND_DATE     "日付をタイムスタンプとともに表示する"
@@ -2025,16 +1996,13 @@ BEGIN
     IDM_SHOW_DATE           "日付の表示を有効化または無効化\n日付の表示"
     IDM_SEND_SEL_MSG        "CANバスに選択したメッセージを送信する"
     IDM_DELETE_ALL_SEL_MSG  "選択したすべてのメッセージをリストから削除する"
-    IDM_EXECUTE_KEYHANDLERS "すべてのキーハンドラの実行を有効化または無効化\nすべてのキーハンドラの有効化/無効化"
+    
     IDM_FLEX_CFGN_SEND_MSGS "FlexRay Message Configuration\nFlexRay Message Configuration"
     IDM_CONFIG_NEW          "新しいファンクションファイルを生成\n新しいファンクションファイルの生成"
     IDM_CONFIG_LOAD         "設定ファイルをロード\n設定ファイルのロード"
     IDM_SAVE_CONFIG         "設定ファイルを保存\n設定ファイルの保存"
     IDM_SAVEAS_CONFIG       "名前をつけて設定ファイルを保存\n名前をつけて設定ファイルを保存"
-    IDM_EXECUTE_ALL_HANDLERS 
-                            "全システム内の全ハンドラの実行を有効化/無効化\n全システム内の全ハンドラの実行を有効化/無効化"
-    IDM_EXECUTE_ERROR_HANDLERS 
-                            "すべてのエラーハンドラの実行を有効化/無効化\nすべてのエラーハンドラの実行の有効化/無効化"
+    
     IDM_EXECUTE_DLL_HANDLERS "すべてのDLLハンドラの実行を有効化/無効化\nすべてのDLLハンドラの実行の有効化/無効化"
 END
 
@@ -2073,10 +2041,7 @@ END
 STRINGTABLE
 BEGIN
     33010                   "保存してデータベースファイルをインポート\nデータベースファイルの保存とインポート"
-    IDM_DLL_BUILD_ALL       "すべてビルド\nすべてビルド"
-    IDM_DLL_BUILDLOAD_ALL   "すべてのDLLをビルとしてロード\nすべてのDLLのビルとロード"
-    IDM_DLL_LOADALLDLL      "すべてのDLLをロード\nすべてのDLLのロード"
-    IDM_DLL_UNLOAD_ALL      "すべてのDLLをアンロード\nすべてのDLLのアンロード"
+    
     IDM_CONFIGURE_SIMULATEDSYSTEMS 
                             "マルチノードシミュレーションのためシミュレートシステムを設定\nマルチノードシミュレーションの設定"
 END
@@ -2127,6 +2092,12 @@ BEGIN
     ID_TOOLBAR_LIN          "Show/hide LIN Toolbar\nShow/hide LIN toolbar"
 END
 
+STRINGTABLE 
+BEGIN
+    ID_CONFIGURE_MESSAGEDISPLAY_FLEXRAY 
+                            "Configure Message Display Attributes of FlexRay\nConfigure Message Display Attributes of FlexRay"
+    ID_LIN_FILTER_CONFIG    "LIN Filter Configuration\nLIN Filter Configuration"
+END
 #endif    // Japanese (Japan) resources
 /////////////////////////////////////////////////////////////////////////////
 

@@ -1742,14 +1742,15 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, c
                 }
                 else
                 {
-                    if (!bClientExist(CAN_MONITOR_NODE, Index))
+                    /*if (!bClientExist(CAN_MONITOR_NODE, Index))
                     {
                         Index = sg_unClientCnt + 1;
                     }
                     else
                     {
                         Index = sg_unClientCnt;
-                    }
+                    }*/
+					Index = sg_unClientCnt;
                     ClientID = dwGetAvailableClientSlot();
                     sg_asClientToBufMap[Index].m_acClientName = pacClientName;
 
@@ -2489,6 +2490,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, i
 HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PSCONTROLLER_DETAILS pInitData, int /*Length*/)
 {
     HRESULT hResult = WARNING_NOTCONFIRMED;
+    bool bIsParamAdapted = false;
 
     VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
     VALIDATE_POINTER_RETURN_VAL(pInitData, hResult);
@@ -2510,7 +2512,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PSCONTROLLER_DETAILS pInitData, int
 
         /* if controller is open, close the controller. Do not bother about return value */
         ErrCode = (*sBOA_PTRS.m_sOCI.closeCANController)(sg_asChannel[i].m_OCI_HwHandle);
-        OCI_CANConfiguration ociCANConfig;
+
         /* Now load the controller config and open the controller */
         ErrCode = (*sBOA_PTRS.m_sOCI.openCANController)(sg_asChannel[i].m_OCI_HwHandle,
                   &(sg_asChannel[i].m_OCI_CANConfig),
@@ -2518,6 +2520,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PSCONTROLLER_DETAILS pInitData, int
         // Check if incompatible config
         if(ErrCode == BOA_ERR_INCOMPATIBLE_CONFIG)
         {
+            OCI_CANConfiguration ociCANConfig;
             // Get the config with which channel opened
             ErrCode = (*(sBOA_PTRS.m_sOCI.getCANConfiguration))(sg_asChannel[i].m_OCI_HwHandle, &ociCANConfig);
 
@@ -2528,6 +2531,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PSCONTROLLER_DETAILS pInitData, int
                           &(ociCANConfig),
                           &(sg_asChannel[i].m_OCI_CntrlProp));
                 sg_asChannel[i].m_OCI_CANConfig = ociCANConfig;
+                bIsParamAdapted = true;
             }
         }
 
@@ -2551,6 +2555,10 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PSCONTROLLER_DETAILS pInitData, int
             hResult = S_FALSE;
             sg_pIlog->vLogAMessage(A2T(__FILE__), __LINE__, _("could not configure the controller"));
         }
+    }
+    if(bIsParamAdapted == true)
+    {
+        hResult = DILC_WARN_PARAM_ADAPTED;
     }
     return hResult;
 }

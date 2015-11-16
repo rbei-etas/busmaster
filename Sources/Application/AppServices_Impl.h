@@ -29,7 +29,7 @@ class CAppServices_Impl : public CBaseAppServices
 {
 public:
     CAppServices_Impl();
-    ~CAppServices_Impl();
+    virtual ~CAppServices_Impl();
 
     BOOL bWriteToTrace(char* pcTraceStr);
 

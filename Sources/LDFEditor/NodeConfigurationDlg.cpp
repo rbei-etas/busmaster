@@ -117,10 +117,10 @@ void NodeConfigurationDlg::onSelectionOk()
             if(nullptr != pLineEdit)
             {
                 qStrList = pLineEdit->text().split(',');
-for(auto itrStr : qStrList)
-                {
-                    lstLogicalNodes.push_back(itrStr.toStdString());
-                }
+				for(auto itrStr = qStrList.begin();itrStr!=qStrList.end();itrStr++)
+				{
+					lstLogicalNodes.push_back(itrStr->toStdString());
+				}
             }
 
             ouCompNode.m_strLogicalNodes = lstLogicalNodes;
@@ -167,13 +167,14 @@ ERRORCODE NodeConfigurationDlg::nValidateNodes(std::string& ouErrString)
             strCompNode = pComboBox->currentText().toStdString();
         }
 
-        LineEditWidget* pLineEdit = (LineEditWidget*)ui.tableWidget->cellWidget(nIndex, 1);
-        if(nullptr != pLineEdit)
-        {
-            qStrList = pLineEdit->text().split(',');
-for(auto itrStr : qStrList)
+		LineEditWidget* pLineEdit = (LineEditWidget*)ui.tableWidget->cellWidget(nIndex, 1);
+		if(nullptr != pLineEdit)
+		{
+			qStrList = pLineEdit->text().split(',');
+			for(auto itrStr = qStrList.begin(); itrStr != qStrList.end(); itrStr++)
+			//for(auto itrStr : qStrList)
             {
-                std::string strLogicalNode = itrStr.toStdString();
+                std::string strLogicalNode = itrStr->toStdString();
 
                 if(strLogicalNode.empty() == true)
                 {
@@ -184,28 +185,28 @@ for(auto itrStr : qStrList)
                     return EC_FAILURE;
                 }
 
-                if(m_mapCompositeNodes.find(itrStr.toStdString()) != m_mapCompositeNodes.end())
+                if(m_mapCompositeNodes.find(itrStr->toStdString()) != m_mapCompositeNodes.end())
                 {
                     std::ostringstream strStream;
-                    strStream << "Error: Logical Node <b>" << itrStr.toStdString() << "</b> not unique in Composite Node <b>"
+                    strStream << "Error: Logical Node <b>" << itrStr->toStdString() << "</b> not unique in Composite Node <b>"
                               << strCompNode << "</b> Row Number " << nIndex+1;
                     ouErrString = strStream.str();
                     return EC_FAILURE;
                 }
 
-                if(mapLogicalNodes.find(itrStr.toStdString()) != mapLogicalNodes.end())
+                if(mapLogicalNodes.find(itrStr->toStdString()) != mapLogicalNodes.end())
                 {
                     std::ostringstream strStream;
-                    strStream << "Error: Logical Node <b>" << itrStr.toStdString() << "</b> not unique in Composite Node <b>"
+                    strStream << "Error: Logical Node <b>" << itrStr->toStdString() << "</b> not unique in Composite Node <b>"
                               << strCompNode << "</b> Row Number " << nIndex+1;
                     ouErrString = strStream.str();
                     return EC_FAILURE;
                 }
 
-                if(m_logicalNodes.find(itrStr.toStdString()) != m_logicalNodes.end())
+                if(m_logicalNodes.find(itrStr->toStdString()) != m_logicalNodes.end())
                 {
                     std::ostringstream strStream;
-                    strStream << "Error: Logical Node <b>" << itrStr.toStdString() << "</b> not unique in Composite Node <b>"
+                    strStream << "Error: Logical Node <b>" << itrStr->toStdString() << "</b> not unique in Composite Node <b>"
                               << strCompNode << "</b> Row Number " << nIndex+1;
                     ouErrString = strStream.str();
                     return EC_FAILURE;
@@ -214,8 +215,8 @@ for(auto itrStr : qStrList)
                 mapLogicalNodes[strLogicalNode] = strLogicalNode;
             }
         }
-    }
-    return EC_SUCCESS;
+	}
+	return EC_SUCCESS;
 }
 
 void NodeConfigurationDlg::vPrepareUIForNew()

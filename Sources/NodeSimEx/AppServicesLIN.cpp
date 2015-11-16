@@ -105,7 +105,7 @@ BOOL gvSetControllerMode_LIN(BOOL /*bNewMode*/)
 
 BOOL gbStartStopHardware_LIN(BOOL bState)
 {
-    ::SendMessage(CGlobalObj::sm_hWndMDIParentFrame, WM_FROM_USER_DLL, (WPARAM)LIN_DIS_CONNECT,(LPARAM)bState);
+    ::PostMessage(CGlobalObj::sm_hWndMDIParentFrame, WM_FROM_USER_DLL, (WPARAM)LIN_DIS_CONNECT,(LPARAM)bState);
     return TRUE ;
 }
 /******************************************************************************
@@ -144,4 +144,24 @@ DWORD gdGetFirstLINdbName(char* cBuffer, DWORD /* size */)
     }
 
     return (DWORD)FALSE;
+}
+BOOL gbWtiteToLog_LIN(char* pcString)
+{
+    BOOL Result = FALSE;
+    if (CGlobalObj::sm_hWndMDIParentFrame != nullptr)
+    {
+        ::SendMessage(CGlobalObj::sm_hWndMDIParentFrame, WM_FROM_USER_DLL, (WPARAM)WRITE_TO_LOGFILE_LIN,(LPARAM)pcString);
+        Result = TRUE;
+    }
+    return Result;
+}
+BOOL gbEnableDisableLog_LIN(BOOL bEnable)
+{
+    BOOL Result = FALSE;
+    if (CGlobalObj::sm_hWndMDIParentFrame != nullptr)
+    {
+        ::PostMessage(CGlobalObj::sm_hWndMDIParentFrame, WM_FROM_USER_DLL, (WPARAM)LOG_ENABLE_DISABLE_LIN,(LPARAM)bEnable);
+        Result = TRUE;
+    }
+    return Result;
 }

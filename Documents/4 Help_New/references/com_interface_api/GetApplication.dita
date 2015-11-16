@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="WriteToLogFile" xml:lang="en-us">
+  <title>GetApplication : Gets pointer to BUSMASTER Application</title>
+  <refbody>
+    <section>
+      <title>Description</title>
+      <p>Gets the pointer to BUSMASTER Application using which various operation in BUSMASTER is performed.</p>
+    </section>
+    <section>
+      <title>Synopsis</title>
+      <p>HRESULT GetApplication([out] IBusMasterApp** pApplication)</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>[out] IBusMasterApp** pApplication - gets the pointer to BUSMASTER Application.</p>
+    </section>
+    <section>
+      <b>Usage in COM Client</b>
+    </section>
+    <section>IBusMasterApp** pApplication;</section>
+    <section>HRESULT hResult = GetApplication(pApplication);</section>
+    <section>
+      <title>Cause of failure</title>
+      <p>NA</p>
+    </section>
+  </refbody>
+</reference>

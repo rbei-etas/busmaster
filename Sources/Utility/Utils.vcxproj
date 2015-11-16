@@ -137,6 +137,7 @@ iconv.lib %(AdditionalOptions)</AdditionalOptions>
     <ClCompile Include="ColumnTreeWnd.cpp" />
     <ClCompile Include="ComboItem.cpp" />
     <ClCompile Include="ComputeCheckSum.cpp" />
+    <ClCompile Include="DirectoryWatcher.cpp" />
     <ClCompile Include="EditItem.cpp" />
     <ClCompile Include="FFListCtrl.cpp" />
     <ClCompile Include="FlexListCtrl.cpp" />
@@ -170,11 +171,14 @@ iconv.lib %(AdditionalOptions)</AdditionalOptions>
     <ClInclude Include="ColumnTreeWnd.h" />
     <ClInclude Include="ComboItem.h" />
     <ClInclude Include="ComputeCheckSum.h" />
+    <ClInclude Include="DirectoryWatcher.h" />
     <ClInclude Include="EditItem.h" />
     <ClInclude Include="FFListCtrl.h" />
     <ClInclude Include="FlexListCtrl.h" />
     <ClInclude Include="FlickerFreeListCtrl.h" />
     <ClInclude Include="FlickerFreeTree.h" />
+    <ClInclude Include="IDirectoryUpdate.h" />
+    <ClInclude Include="IDirectoryWatcher.h" />
     <ClInclude Include="KeyNumEdit.h" />
     <ClInclude Include="MsgInterpretation.h" />
     <ClInclude Include="MultiLanguageSupport.h" />

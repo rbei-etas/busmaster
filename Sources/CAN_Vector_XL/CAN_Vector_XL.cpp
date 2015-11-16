@@ -895,7 +895,7 @@ HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             asSelHwInterface[i].m_acDescription = strTemp;
             std::ostringstream oss1;
             oss1 << "Vector - " << sg_aodChannels[i].m_pXLChannelInfo->name << " SN - " <<serialNumber;
-            oss1 << "Channel Index - " <<(int)sg_aodChannels[i].m_pXLChannelInfo->channelIndex;
+            //oss1 << "Channel Index - " <<(int)sg_aodChannels[i].m_pXLChannelInfo->channelIndex;
             sg_ControllerDetails[i].m_omHardwareDesc = oss1.str();
             asSelHwInterface[i].m_acNameInterface = oss1.str();
             sg_bCurrState = STATE_HW_INTERFACE_LISTED;
@@ -1314,19 +1314,19 @@ static int nSetApplyConfiguration()
     return nReturn;
 }
 
-void CAN_setHardware()
+void CAN_setHardware(int nChannelCount)
 {
-    sg_HardwareList.m_nChannelCount = g_xlDrvConfig.channelCount;
-    for (UINT nChannel = 0; nChannel < g_xlDrvConfig.channelCount; nChannel++)
+    sg_HardwareList.m_nChannelCount = nChannelCount;
+    for (UINT nChannel = 0; nChannel < nChannelCount; nChannel++)
     {
         std::ostringstream oss1;
         oss1 << "Vector - " << sg_HardwareIntr[nChannel].m_acDescription.c_str() << " SN - " <<sg_HardwareIntr[nChannel].m_dwVendor;
-        oss1 << "Channel Index - " <<(int)nChannel;
+        //oss1 << "Channel Index - " <<(int)nChannel;
         std::string omHardwareChannel = oss1.str();
         sg_HardwareList.m_omHardwareChannel[nChannel] = omHardwareChannel;
-        sg_HardwareList.m_ouChannelDetails[nChannel].m_omVendorId = g_xlDrvConfig.channel[nChannel].serialNumber;
-        sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelName = g_xlDrvConfig.channel[nChannel].name;
-        sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelIndex = g_xlDrvConfig.channel[nChannel].hwChannel;
+        sg_HardwareList.m_ouChannelDetails[nChannel].m_omVendorId = g_xlDrvConfig.channel[sg_HardwareIntr[nChannel].m_dwIdInterface].serialNumber;
+        sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelName = g_xlDrvConfig.channel[sg_HardwareIntr[nChannel].m_dwIdInterface].name;
+        sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelIndex = g_xlDrvConfig.channel[sg_HardwareIntr[nChannel].m_dwIdInterface].hwChannel;
     }
 }
 /**
@@ -2260,17 +2260,17 @@ static int nGetNoOfConnectedHardware(void)
             // we take all hardware we found and
             // check that we have only CAN cabs/piggy's
             // at the moment there is no VN8910 XLAPI support!
-            if ( /*(g_xlDrvConfig.channel[i].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN)
-              &&*/ (g_xlDrvConfig.channel[i].hwType != XL_HWTYPE_VN8900) )
-            {
-                if ( (g_xlDrvConfig.channel[i].hwType == XL_HWTYPE_CANCASEXL) &&
+            //if ( /*(g_xlDrvConfig.channel[i].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN)
+            //  &&*/ (g_xlDrvConfig.channel[i].hwType != XL_HWTYPE_VN8900) )
+            //{
+                if ( /*(g_xlDrvConfig.channel[i].hwType == XL_HWTYPE_CANCASEXL) &&*/
                         !(g_xlDrvConfig.channel[i].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN) )
                 {
                     continue;
                 }
 
                 nResult++;
-            }
+           // }
         }
         if (!nResult)
         {
@@ -2320,35 +2320,35 @@ int ListHardwareInterfaces(HWND hParent, DWORD /*dwDriver*/, INTERFACE_HW* psInt
 unsigned int GetSelectedChannelIndex(unsigned int unIndex)
 {
     int nSelChannel = -1;
-    //std::string omHardwareName;
+  
     for(int nChannel = 0; nChannel < defNO_OF_CHANNELS; nChannel++)
-    {
-        //omHardwareName = sg_HardwareIntr[nChannel].m_acDescription.c_str();
+    {        
         std::ostringstream ossHardwaredesc;
         ossHardwaredesc << "Vector - " << sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelName << " SN - " << sg_HardwareList.m_ouChannelDetails[nChannel].m_omVendorId;
-        ossHardwaredesc << "Channel Index - " <<(int)nChannel;
-        std::string omHardwareChannel = ossHardwaredesc.str();
-        if(omHardwareChannel/*sg_HardwareList.m_omHardwareChannel[nChannel] */== sg_SelectedChannels.m_omHardwareChannel[unIndex]
-                && sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelName != "")
-        {
-            nSelChannel = nChannel;
-            break;
-        }
-        else
-        {
-            std::ostringstream ossHardwaredesc1;
-            ossHardwaredesc1 << "Vector - " << sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelName << ", Serial Number- " << sg_HardwareList.m_ouChannelDetails[nChannel].m_omVendorId;
+		//ossHardwaredesc << "Channel Index - " <<(int)g_xlDrvConfig.channel[sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelIndex].hwChannel;
+				
+		std::string omHardwareChannel = ossHardwaredesc.str();
+		if(omHardwareChannel == sg_SelectedChannels.m_omHardwareChannel[unIndex]
+		&& sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelName != "")
+		{
+			nSelChannel = nChannel;
+			break;
+		}
+		else
+		{
+			std::ostringstream ossHardwaredesc1;
+			ossHardwaredesc1 << "Vector - " << sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelName << ", Serial Number- " << sg_HardwareList.m_ouChannelDetails[nChannel].m_omVendorId;
 
-            omHardwareChannel = ossHardwaredesc1.str();
+			omHardwareChannel = ossHardwaredesc1.str();
 
-            if(omHardwareChannel/*sg_HardwareList.m_omHardwareChannel[nChannel] */== sg_SelectedChannels.m_omHardwareChannel[unIndex]
-                    && sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelName != "")
-            {
-                nSelChannel = nChannel;
-                break;
-            }
-        }
-    }
+			if(omHardwareChannel == sg_SelectedChannels.m_omHardwareChannel[unIndex]
+			&& sg_HardwareList.m_ouChannelDetails[nChannel].m_omChannelName != "")
+			{
+				nSelChannel = nChannel;
+				break;
+			}
+		}
+	}
 
     return nSelChannel;
 }
@@ -2371,10 +2371,10 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
         // we take all hardware we found and
         // check that we have only CAN cabs/piggy's
         // at the moment there is no VN8910 XLAPI support!
-        if ( /*(g_xlDrvConfig.channel[nCount].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN)
-              && */(g_xlDrvConfig.channel[nCount].hwType != XL_HWTYPE_VN8900) )
-        {
-            if ( (g_xlDrvConfig.channel[nCount].hwType == XL_HWTYPE_CANCASEXL) &&
+        //if ( /*(g_xlDrvConfig.channel[nCount].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN)
+        //      && */(g_xlDrvConfig.channel[nCount].hwType != XL_HWTYPE_VN8900) )
+        //{
+            if ( /*(g_xlDrvConfig.channel[nCount].hwType == XL_HWTYPE_CANCASEXL) &&*/
                     !(g_xlDrvConfig.channel[nCount].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN) )
             {
                 continue;
@@ -2384,11 +2384,11 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
 
             sg_HardwareIntr[nChannels].m_acDescription = g_xlDrvConfig.channel[nCount].name;
             nChannels++;
-        }
+        //}
     }
     nHwCount = nChannels;   //Reassign hardware count according to final list of channels supported.
 
-    CAN_setHardware();
+    CAN_setHardware(nChannels);
     /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
     if ( unDefaultChannelCnt && nChannels >= unDefaultChannelCnt )
     {
@@ -2454,7 +2454,7 @@ static int nCreateSingleHardwareNetwork()
         // check that we have only CAN cabs/piggy's
         // at the moment there is no VN8910 XLAPI support!
         if ( (g_xlDrvConfig.channel[i].channelBusCapabilities & XL_BUS_ACTIVE_CAP_CAN)
-                && (g_xlDrvConfig.channel[i].hwType != XL_HWTYPE_VN8900) )
+                /*&& (g_xlDrvConfig.channel[i].hwType != XL_HWTYPE_VN8900) */)
         {
             sg_aodChannels[0].m_pXLChannelInfo  = &g_xlDrvConfig.channel[i];
             g_xlChannelMask |= sg_aodChannels[0].m_pXLChannelInfo->channelMask;

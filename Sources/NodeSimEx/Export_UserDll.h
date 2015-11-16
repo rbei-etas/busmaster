@@ -44,22 +44,6 @@ typedef BOOL (*SETTIMERVAL) (CHAR*,UINT,HMODULE);
 // Prototype of the exported function from user-defined DLL
 typedef void (*DLLSETTIMERVAL)( SETTIMERVAL);
 
-typedef BOOL (*ENABLEDISABLEALLHANDLERS)(BOOL,HMODULE);
-// Prototype of the exported function from user-defined DLL
-typedef void (*DLLENABLEDISABLEALLHANDLERS)(ENABLEDISABLEALLHANDLERS);
-
-typedef BOOL (*ENABLEDISABLEMSGHANDLERS)(BOOL,HMODULE);
-// Prototype of the exported function from user-defined DLL
-typedef void (*DLLENABLEDISABLEMSGHANDLERS)(ENABLEDISABLEMSGHANDLERS);
-
-typedef BOOL (*ENABLEDISABLEKEYHANDLERS)(BOOL,HMODULE);
-// Prototype of the exported function from user-defined DLL
-typedef void (*DLLENABLEDISABLEKEYHANDLERS)(ENABLEDISABLEKEYHANDLERS);
-
-typedef BOOL (*ENABLEDISABLEERRORHANDLERS)(BOOL,HMODULE);
-// Prototype of the exported function from user-defined DLL
-typedef void (*DLLENABLEDISABLEERRORHANDLERS)(ENABLEDISABLEERRORHANDLERS);
-
 typedef int (*MSGTXONOFF) (BOOL,HMODULE);
 // Prototype of the exported function from user-defined DLL
 typedef void (*DLLMSGTXONOFF)(MSGTXONOFF);
@@ -74,7 +58,7 @@ typedef void (*SETKEYPRESSED)(KEYPRESSED);
 typedef int (*GETMESSAGENAME)(DWORD, DWORD , char* ,DWORD );
 typedef void (*DLLGETMESSAGENAME)(GETMESSAGENAME);
 
-typedef long long (*TIMENOW)();
+typedef unsigned int (*TIMENOW)();
 typedef void (*DLLTIMENOW)(TIMENOW);
 
 typedef DWORD (*GETFIRSTCANDBNAME)(char [], DWORD);
@@ -88,10 +72,8 @@ typedef void (*DLLGETFIRSTCANDBNAME)(GETFIRSTCANDBNAME);
 #define NAME_FUNC_START_TIMER           "vSetStartTimerProcAddress"
 #define NAME_FUNC_STOP_TIMER            "vSetStopTimerProcAddress"
 #define defNAME_FUNC_SET_TIMER_VAL      "vSetSetTimerValProcAddress"
-#define defNAME_FUNC_ALL_HANDLERS       "vSetEnableAllHandlersProcAddress"
-#define defNAME_FUNC_MSG_HANDLERS       "vSetEnableMsgHandlersProcAddress"
-#define defNAME_FUNC_KEY_HANDLERS       "vSetEnableKeyHandlersProcAddress"
-#define defNAME_FUNC_ERROR_HANDLERS     "vSetEnableErrorHandlersProcAddress"
 #define defNAME_FUNC_GET_PRG_VER        "bGetProgramVersion"
 #define NAME_FUNC_MSGTX_ON_OFF          "vSetEnableDisableMsgTxProcAddress"
 #define NAME_FUNC_SETDLLHANDLE          "vSetGetDllHandleProcAddress"
+#define NAME_FUNC_GETENGVALUE           "vSetGetEngValueProcAddress"
+#define NAME_FUNC_GETRAWVALUE           "vSetGetRawValueProcAddress"

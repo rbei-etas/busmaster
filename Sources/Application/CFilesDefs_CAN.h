@@ -30,8 +30,8 @@
 #define MSG_STRUCT_NAME_J1939          "STJ1939_MSG";
 #define WRAPPER_NAME_J1939             "Wrapper_J1939.o";
 #define WRAPPER_NAME_LIN               "Wrapper_LIN.o";
-#define TOTAL_API_COUNT                18
-#define TOTAL_API_COUNT_LIN            11
+#define TOTAL_API_COUNT                14
+#define TOTAL_API_COUNT_LIN            8
 #define TOTAL_ERROR_COUNT              5
 
 static const CString sg_omAPIFuncList[TOTAL_API_COUNT] =
@@ -46,9 +46,6 @@ static const CString sg_omAPIFuncList[TOTAL_API_COUNT] =
     "UINT StartTimer(char*, UINT)",
     "UINT StopTimer(char*)",
     "BOOL SetTimerVal(char*, UINT)",
-    "BOOL EnableMsgHandlers(BOOL)",
-    "BOOL EnableErrorHandlers(BOOL)",
-    "BOOL EnableKeyHandlers(BOOL)",
     "BOOL EnableDisableMsgTx(BOOL)",
     "UINT SendMsg(STCAN_MSG)",
     "HMODULE GetDllHandle(char*)",
@@ -67,9 +64,6 @@ static const CString sg_omAPIFuncNames[TOTAL_API_COUNT] =
     "StartTimer",
     "StopTimer",
     "SetTimerVal",
-    "EnableMsgHandlers",
-    "EnableErrorHandlers",
-    "EnableKeyHandlers",
     "EnableDisableMsgTx",
     "SendMsg",
     "GetDllHandle",
@@ -83,9 +77,6 @@ static const CString sg_omAPIFuncListLIN[TOTAL_API_COUNT_LIN] =
     "UINT StartTimer(char*, UINT)",
     "UINT StopTimer(char*)",
     "BOOL SetTimerVal(char*, UINT)",
-    "BOOL EnableMsgHandlers(BOOL)",
-    "BOOL EnableErrorHandlers(BOOL)",
-    "BOOL EnableKeyHandlers(BOOL)",
     "UINT SendMsg(STLIN_MSG)",
     "HMODULE GetDllHandle(char*)",
     "UINT Trace(char*, ...)"
@@ -98,15 +89,12 @@ static const CString sg_omAPIFuncNamesLIN[TOTAL_API_COUNT_LIN] =
     "StartTimer",
     "StopTimer",
     "SetTimerVal",
-    "EnableMsgHandlers",
-    "EnableErrorHandlers",
-    "EnableKeyHandlers",
     "SendMsg",
     "GetDllHandle",
     "Trace"
 };
 
-#define TOTAL_API_COUNT_J1939 21
+#define TOTAL_API_COUNT_J1939 18
 static const CString sg_omAPIFuncListJ1939[TOTAL_API_COUNT_J1939] =
 {
     "UINT EnableLogging()",
@@ -117,9 +105,6 @@ static const CString sg_omAPIFuncListJ1939[TOTAL_API_COUNT_J1939] =
     "UINT StartTimer(char*, UINT)",
     "UINT StopTimer(char*)",
     "BOOL SetTimerVal(char*, UINT)",
-    "BOOL EnableAllHandlers(BOOL)",
-    "BOOL EnableMsgHandlers(BOOL)",
-    "BOOL EnableKeyHandlers(BOOL)",
     "BOOL EnableDisableMsgTx(BOOL)",
     "UINT SendMsg(STJ1939_MSG* psMsg)",
     "UINT RequestPGN(UINT PGN, BYTE DestAdres, UINT Channel)",
@@ -142,9 +127,6 @@ static const CString sg_omAPIFuncNamesJ1939[TOTAL_API_COUNT_J1939] =
     "StartTimer",
     "StopTimer",
     "SetTimerVal",
-    "EnableAllHandlers",
-    "EnableMsgHandlers",
-    "EnableKeyHandlers",
     "EnableDisableMsgTx",
     "SendMsg",
     "RequestPGN",

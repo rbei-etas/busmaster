@@ -610,6 +610,11 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
 
                 /*omStrTemp= m_omStrMsgID.Tokenize(",",nCurPos);*/
                 vTokenize(m_omStrMsgID, ",", omStrTemp, nCurPos);
+                if(m_omStrMsgID == "")
+                {
+                    bReturn = FALSE;
+                    AfxMessageBox(_(defSTRMSG_ID_INVALID));
+                }
                 while (omStrTemp != "")
                 {
                     CHAR* pchTemp;
@@ -665,7 +670,13 @@ BOOL CMsgHandlerDlg::bValidateUserSelection(CFunctionEditorDoc* pDoc)
                     m_omStrSelectedItemText += m_omStrMsgIDTo;
                     unMsgIDTo    = (UINT)m_odEditMsgIDTo.lGetValue();
                     unMsgIDFrom  =(UINT) m_odEditMsgIDFrom.lGetValue();
-                    if(unMsgIDFrom < unMsgIDTo)
+                    if(m_omStrMsgIDFrom.IsEmpty() || m_omStrMsgIDTo.IsEmpty())
+                    {
+                        bReturn = FALSE;
+                        AfxMessageBox(_(defSTRMSG_RANGE_EMPTY));
+                        m_odEditMsgIDFrom.SetFocus();
+                    }
+                    else if(unMsgIDFrom < unMsgIDTo)
                     {
                         omStrText = "\""+ m_omStrMsgIDFrom;
                         omStrText += "-";
@@ -878,6 +889,7 @@ BOOL CMsgHandlerDlg::bAddMessageNameInListBox(const CStringArray* pomStrArray,
 {
     //return true;
     BOOL bReturn = TRUE;
+    UpdateData(TRUE);
     if(pomStrArray != nullptr )
     {
         UINT nCount = 0;

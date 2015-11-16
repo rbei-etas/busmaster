@@ -14,8 +14,6 @@ public:
     LDFTableWidget(QWidget* parent = 0);
     ~LDFTableWidget();
 
-public:
-    int CreateColumns(QList<QString>& strColumnNames);
 };
 
 #endif // LDFTABLEWIDGET_H

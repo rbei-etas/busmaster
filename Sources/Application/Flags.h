@@ -44,9 +44,6 @@ typedef enum eCANMONITORFLAG
     FILTERTXMSGS,
     RXMSG,
     SELECTDATABASEFILE,
-    DLLLOADED,
-    TIMERBUTTON,
-    MSGHANDLERBUTTON,
     //SIGNALWATCH,
     FUNCEDITOR,
     DBOPEN,
@@ -62,10 +59,6 @@ typedef enum eCANMONITORFLAG
     PASS_STOP_FILTER,
     CONNECTED,
     LIN_CONNECTED,
-    KEY_HANDLER_ON,
-    ERROR_HANDLER,
-    DLL_HANDLER,
-    ALL_HANDLER,
     CONTROLLER_MODE,
     PARALLEL_PORT_EPP,
     LOGHEXON,
@@ -115,14 +108,11 @@ private:
     BOOL m_bFilterUndefinedMsgs;
     BOOL m_bRxMsg;
     BOOL m_bSelectDatabaseFile;
-    BOOL m_bDllLoaded;
-    BOOL m_bTimerButtonOn;
     BOOL m_bFunctionEditorOn;
     BOOL m_bFilterTxMsg;
     BOOL m_bDbOpen;
     BOOL m_bDbOpenJ1939;
     WORD m_wReplayMode;
-    BOOL m_bMsgHandlerOn;
     WORD m_wDisplayTimeMode;
     BOOL m_bScrolling;
     BOOL m_bDisplayHexON;
@@ -134,11 +124,7 @@ private:
     BOOL m_bStopFilter;
     BOOL m_bConnected;
     BOOL m_bConnectedLin;
-    BOOL m_bKeyHandlerOn;
     WORD m_wControllerMode;
-    BOOL m_bErrorHandlerOn;
-    BOOL m_bDLLHandlerOn;
-    BOOL m_bALLHandler;
     BOOL m_bParallelPortEPP;
     BOOL m_bLogHexON;
     WORD m_wLogTimeMode;

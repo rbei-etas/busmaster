@@ -41,7 +41,9 @@ public:
     CButton m_omChkInteractive;
     CRadixEdit  m_omEditMsgDelay;
     CRadixEdit  m_omEditCycleDelay;
+    CRadixEdit  m_omEditSessionDelay;
     CButton m_omChkRetainDelay;
+    CButton m_omChkRetainSessionDelay;
     CEdit   m_omEditReplayFileName;
     CListCtrl   m_omLstcReplayFiles;
     int     m_nReplayMode;
@@ -67,7 +69,9 @@ protected:
     afx_msg void OnItemchangedListRepalyFiles(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnBtnBrowse();
     afx_msg void OnChkRetainRecordedDelay();
+    afx_msg void OnChkRetainSessionDelay();
     afx_msg void OnUpdateEditMsgDelay();
+    afx_msg void OnUpdateEditSessionDelay();
     afx_msg void OnRadioReplayModeMono();
     afx_msg void OnUpdateEditCycleDelay();
     afx_msg void OnChkInteractive();

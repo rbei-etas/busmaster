@@ -289,6 +289,8 @@ Stop:
   Quit
 
 Install:
+  
+  
 FunctionEnd
 
 ; Pages
@@ -525,7 +527,9 @@ Section "BUSMASTER"
   File ..\Sources\Application\SimulatedSystems\include\CANIncludes.h
   File ..\Sources\Application\SimulatedSystems\include\LINIncludes.h
   File ..\Sources\Application\SimulatedSystems\include\CAPLWrapper.h
+  File ..\Sources\Application\SimulatedSystems\include\CANCAPLWrapper.h
   File ..\Sources\Application\SimulatedSystems\include\Common.h
+  File ..\Sources\Application\SimulatedSystems\include\Wrapper_Common.h
   File ..\Sources\Application\SimulatedSystems\include\Wrapper_CAN.h
   File ..\Sources\Application\SimulatedSystems\include\Wrapper_LIN.h
   File ..\Sources\Application\SimulatedSystems\include\Wrapper_J1939.h
@@ -723,15 +727,17 @@ SectionGroupEnd
 
 ; Uninstall section here...
 Section "Uninstall"
-  ${Do}
+ ; Prompt user to close all instances of BUSMASTER.
   ${nsProcess::FindProcess} "BUSMASTER.exe" $R0
   ${If} $R0 == 0
   MessageBox MB_OK|MB_ICONSTOP "Please close all instances of BUSMASTER and Click 'OK'"
   ${EndIf}
-  ${LoopUntil} $R0 != 0
+  
+  ; Kill process BusEmulation if active.
   ${Do}
-  ${nsProcess::FindProcess} "BusEmulation.exe" $R0
+  ${nsProcess::KillProcess} "BusEmulation.exe" $R0
   ${LoopUntil} $R0 != 0
+  
   ; Unregister server
   SetOutPath $INSTDIR
   ExecWait 'BusEmulation.exe /unregserver'

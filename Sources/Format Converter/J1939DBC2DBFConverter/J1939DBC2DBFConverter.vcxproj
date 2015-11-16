@@ -21,7 +21,7 @@
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v90</PlatformToolset>
+    <PlatformToolset>v110_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -110,6 +110,7 @@ copy "$(TargetPath) " "..\..\bin\$(IntDir)ConverterPlugins\"
       <DebugInformationFormat>
       </DebugInformationFormat>
       <ObjectFileName>../../bin/DumpFiles/$(IntDir)/OBJ/$(ProjectName)/</ObjectFileName>
+      <StringPooling>true</StringPooling>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>

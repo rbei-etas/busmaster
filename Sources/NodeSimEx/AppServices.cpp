@@ -51,47 +51,6 @@ BOOL gbWriteToLog(char* pcString)
 }
 
 /******************************************************************************
-    Function Name    :  gbActivateDeactivateHandlers
-    Input(s)         :  bActivate -> TRUE if Activate
-    Output           :  Returned value from bActivateDeactivateHandlers
-                        function will be returned
-    Functionality    :  This function will call bActivateDeactivateHandlers which
-                        is a member function of MainFrame and pass bActivate
-                        parameter to it
-    Member of        :  None (Global function)
-    Friend of        :  None
-    Author(s)        :
-    Date Created     :
-    Modifications    :
-******************************************************************************/
-BOOL gbActivateDeactivateHandlers(BOOL bActivate, HMODULE hModule)
-{
-    BOOL Result = FALSE;
-
-    for (UINT i = 0; i < BUS_TOTAL; i++)
-    {
-        if (CExecuteManager::bIsExist((ETYPE_BUS)i) == TRUE)
-        {
-            //for removing C4800 WARNING
-            bool bActuiveTemp = false;
-            if(bActivate > 0)
-            {
-                bActuiveTemp = true;
-            }
-
-            if (CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).bActivateDeactivateHandlers(
-                        bActuiveTemp, hModule) == TRUE)
-            {
-                CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).vUpdateHandlerDetailsInDetView();
-                Result = TRUE;
-                i = BUS_TOTAL;
-            }
-        }
-    }
-    return Result;
-}
-
-/******************************************************************************
     Function Name    :  gbSetResetTimer
     Input(s)         :  pcTimerFunctionName ->Name of the timer
                         type ->Type of the timer (cyclic or
@@ -166,108 +125,6 @@ BOOL gbSetTimerVal(CHAR* pcTimerFunctionName, UINT unTimeVal,HMODULE hModule)
     return Result;
 }
 
-/******************************************************************************
-    Function Name    :  gbEnableDisableMsgHandlers
-    Input(s)         :  bEnable -> TRUE or FALSE
-    Output           :  TRUE or FALSE
-    Functionality    :  This function will call vEnableDisableHandlers which
-                        is a member function of MainFrame.
-    Member of        :  None (Global function)
-    Friend of        :  None
-    Author(s)        :
-    Date Created     :
-    Modifications    :
-******************************************************************************/
-BOOL gbEnableDisableMsgHandlers(BOOL bEnable, HMODULE hModule)
-{
-    BOOL Result = FALSE;
-    for (UINT i = 0; i < BUS_TOTAL; i++)
-    {
-        if (CExecuteManager::bIsExist((ETYPE_BUS)i) == TRUE)
-        {
-            CExecuteFunc* pmCEexecuteFunc=
-                CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
-
-            //If handler is found
-            if(pmCEexecuteFunc!=nullptr)
-            {
-                Result = pmCEexecuteFunc->bEnableDisableMsgHandlers(bEnable);
-                CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).vUpdateHandlerDetailsInDetView();
-                i = BUS_TOTAL;
-            }
-        }
-    }
-
-    return Result;
-}
-
-/******************************************************************************
-    Function Name    :  gbEnableDisableKeyHandlers
-    Input(s)         :  bEnable -> TRUE or FALSE
-    Output           :  TRUE or FALSE
-    Functionality    :  This function will call vEnableDisableHandlers which
-                        is a member function of MainFrame.
-    Member of        :  None (Global function)
-    Friend of        :  None
-    Author(s)        :
-    Date Created     :
-    Modifications    :
-******************************************************************************/
-BOOL gbEnableDisableKeyHandlers(BOOL bEnable, HMODULE hModule)
-{
-    BOOL Result = FALSE;
-    for (UINT i = 0; i < BUS_TOTAL; i++)
-    {
-        if (CExecuteManager::bIsExist((ETYPE_BUS)i) == TRUE)
-        {
-            CExecuteFunc* pmCEexecuteFunc =
-                CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
-
-            //If handler is found
-            if (pmCEexecuteFunc != nullptr)
-            {
-                Result = pmCEexecuteFunc->bEnableDisableKeyHandlers(bEnable);
-                CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).vUpdateHandlerDetailsInDetView();
-                i = BUS_TOTAL; //break the loop
-            }
-        }
-    }
-    return Result;
-}
-
-/******************************************************************************
-    Function Name    :  gbEnableDisableErrorHandlers
-    Input(s)         :  bEnable -> TRUE or FALSE
-    Output           :  TRUE or FALSE
-    Functionality    :  This function will call vEnableDisableHandlers which
-                        is a member function of MainFrame.
-    Member of        :  None (Global function)
-    Friend of        :  None
-    Author(s)        :
-    Date Created     :
-    Modifications    :
-******************************************************************************/
-BOOL gbEnableDisableErrorHandlers(BOOL bEnable, HMODULE hModule)
-{
-    BOOL Result = FALSE;
-    for (UINT i = 0; i < BUS_TOTAL; i++)
-    {
-        if (CExecuteManager::bIsExist((ETYPE_BUS)i) == TRUE)
-        {
-            CExecuteFunc* pmCEexecuteFunc =
-                CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).pmGetNodeObject(hModule);
-
-            //If handler is found
-            if (pmCEexecuteFunc != nullptr)
-            {
-                Result = pmCEexecuteFunc->bEnableDisableErrorHandlers(bEnable);
-                CExecuteManager::ouGetExecuteManager((ETYPE_BUS)i).vUpdateHandlerDetailsInDetView();
-                i = BUS_TOTAL;
-            }
-        }
-    }
-    return Result;
-}
 
 /******************************************************************************
     Function Name    :  gbMsgTransmissionOnOff
@@ -670,9 +527,9 @@ int sg_GetMessageName(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize)
     return 0;
 }
 
-long long sg_TimeNow()
+unsigned int sg_TimeNow(ETYPE_BUS ebus)
 {
-    long long lAbsoluteTime = 0;
+    unsigned int lAbsoluteTime = 0;
 
     /* check for mainframe */
     if (CGlobalObj::sm_hWndMDIParentFrame != nullptr)
@@ -685,7 +542,7 @@ long long sg_TimeNow()
 
         /* get the interface of NodeSim to get the connection time */
         CNodeSim* Result = nullptr;
-        if (NS_GetInterface(CAN, (void**) &Result) == S_OK)
+        if (NS_GetInterface(ebus, (void**) &Result) == S_OK)
         {
             if(Result->m_n64TimeElapsedSinceConnection == 0)
             {
@@ -697,4 +554,13 @@ long long sg_TimeNow()
     }
 
     return lAbsoluteTime;
+}
+
+unsigned int sg_TimeNow_CAN()
+{
+    return sg_TimeNow(CAN);
+}
+unsigned int sg_TimeNow_LIN()
+{
+    return sg_TimeNow(LIN);
 }

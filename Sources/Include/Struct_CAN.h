@@ -338,7 +338,7 @@ public:
         COPY_DATA_2(&m_enmHWFilterType[1], pbyTemp, sizeof(eHW_FILTER_TYPES));
 
         char chTemp[1024] = {'\0'};
-        int nSize;
+        int nSize = 0;
 
         COPY_DATA_2(&nSize, pbyTemp, sizeof(INT));
         COPY_DATA_2(chTemp, pbyTemp, sizeof(char)*nSize);

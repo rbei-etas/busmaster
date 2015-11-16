@@ -53,12 +53,12 @@ CDBFConverter::~CDBFConverter()
     strDBCFileName = "";
     m_listMessages.clear();
 }
-HRESULT CDBFConverter::GetMessageNameList(std::list<string>& meassageList)
+HRESULT CDBFConverter::GetMessageNameList(CStringArray& meassageList)
 {
     list<CMessage>::iterator rMsg;
     for(rMsg=m_listMessages.begin(); rMsg!=m_listMessages.end(); ++rMsg)
     {
-        meassageList.push_back((*rMsg).m_acName);
+        meassageList.Add((*rMsg).m_acName.c_str());
     }
     return S_OK;
 }
@@ -85,7 +85,7 @@ HRESULT CDBFConverter::ClearMsgList()
     return S_OK;
 }
 
-HRESULT CDBFConverter::LoadDBCFile(string strDBCFile)
+HRESULT CDBFConverter::LoadDBCFile(CString strDBCFile)
 {
     strDBCFileName = strDBCFile;
 
@@ -128,13 +128,13 @@ HRESULT CDBFConverter::GenerateImportList(/* sMESSAGE*& */)
 {
     return S_OK;
 }
-HRESULT CDBFConverter::ConvertFile(string strDBFFile)
+HRESULT CDBFConverter::ConvertFile(CString strDBFFile)
 {
     /* Reset to default value*/
     SetResultCode(CON_RC_NOERROR);
 
     fstream fileOutput;
-    fileOutput.open(strDBFFile.c_str(), fstream::out);
+    fileOutput.open(strDBFFile, fstream::out);
     if(!fileOutput.is_open())
     {
         // if output file cannot be opened the close the input file
@@ -172,33 +172,37 @@ HRESULT CDBFConverter::ConvertFile(string strDBFFile)
 
     return m_uiResultCode;
 }
-HRESULT CDBFConverter::FindMessage(string omStrMsgName, CMessage& omTemp)
+HRESULT CDBFConverter::FindMessage(CString omStrMsgName, CMessage* omTemp)
 {
+    if ( nullptr == omTemp )
+    {
+        return S_FALSE;
+    }
     list<CMessage>::iterator rMsg;
     for(rMsg=m_listMessages.begin(); rMsg!=m_listMessages.end(); ++rMsg)
     {
         // store the data
-        omTemp = *rMsg;
         // compare with message name
-        if( omStrMsgName == omTemp.m_acName)
+        if( omStrMsgName == rMsg->m_acName.c_str())
         {
+            *omTemp = *rMsg;
             // send the result
             return S_OK;
         }
     }
     // if not found then
-    omTemp.m_uiMsgID = 0xffffffff;
+    omTemp->m_uiMsgID = 0xffffffff;
     return FALSE;
 }
 
-HRESULT CDBFConverter::FindSignalAlias(string& strMsgName, string& strSignalName, string& strSignalAlias)
+HRESULT CDBFConverter::FindSignalAlias(CString& strMsgName, CString& strSignalName, CString& strSignalAlias)
 {
     list<CMessage>::iterator rMsg;
     bool bFound = false;
     for(rMsg=m_listMessages.begin(); rMsg!=m_listMessages.end(); ++rMsg)
     {
         // compare with message name
-        if( strMsgName == (*rMsg).m_acName)
+        if( strMsgName == (*rMsg).m_acName.c_str())
         {
             if( true == bGetSignalAlias(*rMsg, strSignalName, strSignalAlias) )
             {
@@ -220,14 +224,14 @@ HRESULT CDBFConverter::FindSignalAlias(string& strMsgName, string& strSignalName
         return S_OK;
     }
 }
-bool CDBFConverter::bGetSignalAlias(CMessage& ouMsg, string& strSignalName, string& strSignalAlias)
+bool CDBFConverter::bGetSignalAlias(CMessage& ouMsg, CString& strSignalName, CString& strSignalAlias)
 {
     bool bFound = false;
     int nStartBit, nWhichByte;
     list<CSignal>::iterator rSignal;
     for(rSignal = ouMsg.m_listSignals.begin(); rSignal != ouMsg.m_listSignals.end(); ++rSignal)
     {
-        if ( rSignal->m_acName == strSignalName )
+        if ( rSignal->m_acName.c_str() == strSignalName )
         {
             //if( rSignal->m_acMultiplex.length() > 0 )
             {
@@ -246,7 +250,7 @@ bool CDBFConverter::bGetSignalAlias(CMessage& ouMsg, string& strSignalName, stri
             //--rSignal;
             if ( rSignal->m_ucStartBit == nStartBit && rSignal->m_ucWhichByte == nWhichByte )
             {
-                strSignalAlias = rSignal->m_acName;
+                strSignalAlias = rSignal->m_acName.c_str();
                 bFound = true;
                 break;
             }
@@ -258,15 +262,19 @@ bool CDBFConverter::bGetSignalAlias(CMessage& ouMsg, string& strSignalName, stri
     }
     return bFound;
 }
-HRESULT CDBFConverter::FindMessage(UINT unMsgId, CMessage& omTemp)
+HRESULT CDBFConverter::FindMessage(UINT unMsgId, CMessage* omTemp)
 {
+    if ( nullptr == omTemp )
+    {
+        return S_FALSE;
+    }
     list<CMessage>::iterator rMsg;
     for(rMsg=m_listMessages.begin(); rMsg!=m_listMessages.end(); ++rMsg)
     {
         // store the data
-        omTemp = *rMsg;
+        *omTemp = *rMsg;
         // compare with message name
-        if( unMsgId == omTemp.m_uiMsgID)
+        if( unMsgId == omTemp->m_uiMsgID)
         {
             // send the result
             return S_OK;
@@ -274,7 +282,7 @@ HRESULT CDBFConverter::FindMessage(UINT unMsgId, CMessage& omTemp)
 
     }
     // if not found
-    omTemp.m_uiMsgID = 0xffffffff;
+    omTemp->m_uiMsgID = 0xffffffff;
     return S_FALSE;
 }
 
@@ -1197,7 +1205,7 @@ bool CDBFConverter::WriteToOutputFile(fstream& fileOutput)
     fileOutput << endl;
 
     //For easy replacement of version Info #define is not added
-    fileOutput<< "[BUSMASTER_VERSION] [2.6.3]"<<endl;
+    fileOutput<< "[BUSMASTER_VERSION] [2.6.4]"<<endl;
 
     // number of messages
     fileOutput << T_NUM_OF_MSG " " << dec << m_listMessages.size() << endl;

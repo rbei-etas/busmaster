@@ -320,8 +320,8 @@ void SlaveDlg::vInitialiseProtocolComboBox(double dEcuVer)
     ui.comboProtocol->clear();
     LIN_Settings ouLIN_Settings;
     m_pBaseCluster->GetProperties(eLINClusterProperties, &ouLIN_Settings);
-    char chText[5];
-    sprintf(chText, "%.1f", dEcuVer);
+    QString chText;
+    chText.sprintf("%.1f", dEcuVer);
 
     double dProtocolVer = ouLIN_Settings.m_dProtocolVers;
     if ( dEcuVer != defVersion_1_3 && dEcuVer != defVersion_2_0 && dEcuVer != defVersion_2_1 )

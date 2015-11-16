@@ -344,7 +344,6 @@ void CUDSMainWnd::PrepareFlowControl()
     {
         case INTERFACE_NORMAL_11 :
         {
-            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte-1] = TargetAddress;
             psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte] = 0x30;
             psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+1] = BSize;
             psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+2] = SSTMin; //////
@@ -366,7 +365,6 @@ void CUDSMainWnd::PrepareFlowControl()
 
         case INTERFACE_NORMAL_ISO_29 :
         {
-            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte-1] = TargetAddress;
             psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte] = 0x30;
             psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+1] = BSize;
             psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+2] = SSTMin;

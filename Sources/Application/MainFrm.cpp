@@ -192,19 +192,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_REPLAY_SKIP, OnReplaySingleSkip)
     ON_COMMAND(IDM_REPLAY_STEP, OnReplaySingleStep)
     ON_COMMAND(IDM_REPLAY_STOP, OnReplayStop)
-    ON_COMMAND(IDM_REPLAY_GO, OnReplayGo)
-    ON_COMMAND(IDM_EXECUTE_MESSAGEHANDLERS, OnActivateMessageHandler)
-    ON_COMMAND(IDM_EXECUTE_MESSAGEHANDLERS_LIN, OnActivateMessageHandlerLIN)
-    ON_COMMAND(IDM_EXECUTE_TIMERHANDLER, OnActivateTimerHandler)
-    ON_COMMAND(IDM_EXECUTE_TIMERHANDLER_LIN, OnActivateTimerHandlerLIN)
-    ON_COMMAND(IDM_DLL_BUILDLOAD_ALL, OnDLLBuildLoad)
-    ON_COMMAND(IDM_DLL_BUILDLOAD_ALL_LIN, OnDLLBuildLoadLIN)
-    ON_COMMAND(IDM_DLL_BUILD_ALL, OnDLLBuild)
-    ON_COMMAND(IDM_DLL_BUILD_ALL_LIN, OnDLLBuildLIN)
-    ON_COMMAND(IDM_DLL_LOADALLDLL, OnDllLoad)
-    ON_COMMAND(IDM_DLL_LOADALLDLL_LIN, OnDllLoadLIN)
-    ON_COMMAND(IDM_DLL_UNLOAD_ALL, OnDllUnload)
-    ON_COMMAND(IDM_DLL_UNLOAD_ALL_LIN, OnDllUnloadLIN)
+    ON_COMMAND(IDM_REPLAY_GO, OnReplayGo)    
     ON_COMMAND(IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, OnMessageInterpretation)
     ON_COMMAND(IDM_SIGNALWATCH_ADDSIGNAL, OnAddSignalToSignalWindow)
     ON_COMMAND(IDM_SIGNALWATCH_ADDSIGNAL_LIN, OnAddSignalToSignalWindow_LIN)
@@ -231,13 +219,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_DATABASE_SAVEAS, OnUpdateConfigureDatabaseSaveas)
     ON_WM_CLOSE()
     ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, OnUpdateMessageInterpret)
-    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_MESSAGEHANDLERS, OnUpdateExecuteMessagehandlers)
-    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_MESSAGEHANDLERS_LIN, OnUpdateExecuteMessagehandlersLIN)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGFILTEROFF, OnUpdateLogFilter)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_REPLAYFILTEROFF, OnUpdateReplayFilter)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_MESSAGEFILTEROFF, OnUpdateMessageFilterButton)
-    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_MESSAGEHANDLERS_BUTTON, OnUpdateExecuteMessagehandlersButton)
-    ON_COMMAND(IDM_EXECUTE_MESSAGEHANDLERS_BUTTON, OnExecuteMessagehandlersButton)
     ON_COMMAND(IDR_TOOL_SENDMSG, OnSendMessage)
     ON_COMMAND(IDR_TOOL_FLEX_SENDMSG, OnSendFlexRayMessage)
     ON_COMMAND(ID_TRANSMIT_ACTIVATE_LIN, OnSendMessageLIN)
@@ -245,16 +229,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGFILTEROFF_BUTTON, OnUpdateLogFilter)
     ON_COMMAND(IDM_FILTER_MESSAGEFILTEROFF_BUTTON, OnMessageFilterButton)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_MESSAGEFILTEROFF_BUTTON, OnUpdateMessageFilterButton)
-    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_TIMERHANDLER, OnUpdateExecuteTimerhandler)
-    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_TIMERHANDLER_LIN, OnUpdateExecuteTimerhandlerLIN)
     ON_COMMAND(IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, OnDisplayMessagewindowOverwrite)
     ON_COMMAND(IDM_CLEAR_MSG_WINDOW, OnClearMsgWindow)
-    ON_UPDATE_COMMAND_UI(IDM_DLL_BUILD_ALL, OnUpdateDllBuildAll)
-    ON_UPDATE_COMMAND_UI(IDM_DLL_BUILD_ALL_LIN, OnUpdateDllBuildAllLIN)
-    ON_UPDATE_COMMAND_UI(IDM_DLL_BUILDLOAD_ALL, OnUpdateDllBuildloadAll)
-    ON_UPDATE_COMMAND_UI(IDM_DLL_BUILDLOAD_ALL_LIN, OnUpdateDllBuildloadAllLIN)
-    ON_UPDATE_COMMAND_UI(IDM_DLL_UNLOAD_ALL, OnUpdateDllUnloadAll)
-    ON_UPDATE_COMMAND_UI(IDM_DLL_UNLOAD_ALL_LIN, OnUpdateDllUnloadAllLIN)
     ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, OnUpdateDisplayMessagewindowOverwrite)
     ON_UPDATE_COMMAND_UI(IDR_TOOL_HEXDEC, OnUpdateToolHexdec)
     ON_UPDATE_COMMAND_UI(IDM_LOG_ON_OFF, OnUpdateLogOnOff)
@@ -282,10 +258,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(ID_FLEXRAY_CONNECT, OnUpdateFlexRayConnect)
     ON_COMMAND(IDM_LIN_CONNECT, OnLINConnect)
     ON_UPDATE_COMMAND_UI(IDM_LIN_CONNECT, OnUpdateLINConnect)
-    ON_COMMAND(IDM_EXECUTE_KEYHANDLERS, OnExecuteKeyhandlers)
-    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_KEYHANDLERS, OnUpdateExecuteKeyhandlers)
-    ON_COMMAND(IDM_EXECUTE_KEYHANDLERS_LIN, OnExecuteKeyhandlersLIN)
-    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_KEYHANDLERS_LIN, OnUpdateExecuteKeyhandlersLIN)
     ON_COMMAND(IDM_CONFIG_LOAD, OnLoadConfigFile)
     ON_COMMAND(IDM_CONFIG_NEW, OnNewConfigFile)
     ON_COMMAND(IDM_SAVE_CONFIG, OnSaveConfigFile)
@@ -296,14 +268,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(IDM_SAVEAS_CONFIG, OnUpdateConfigSaveAs)
     ON_COMMAND(IDM_FILE_PROPETIES, OnFilePropeties)
     ON_WM_DROPFILES()
-    ON_COMMAND(IDM_EXECUTE_ALL_HANDLERS, OnExecuteAllHandlers)
-    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_ALL_HANDLERS, OnUpdateExecuteAllHandlers)
-    ON_COMMAND(IDM_EXECUTE_ALL_HANDLERS_LIN, OnExecuteAllHandlersLIN)
-    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_ALL_HANDLERS_LIN, OnUpdateExecuteAllHandlersLIN)
-    ON_COMMAND(IDM_EXECUTE_ERROR_HANDLERS, OnExecuteErrorHandlers)
-    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_ERROR_HANDLERS, OnUpdateExecuteErrorHandlers)
-    ON_COMMAND(IDM_EXECUTE_ERROR_HANDLERS_LIN, OnExecuteErrorHandlersLIN)
-    ON_UPDATE_COMMAND_UI(IDM_EXECUTE_ERROR_HANDLERS_LIN, OnUpdateExecuteErrorHandlersLIN)
     ON_COMMAND(IDM_CONFIGURE_ACTIVE, OnConfigureModeActive)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_ACTIVE, OnUpdateConfigureModeActive)
     ON_WM_TIMER()
@@ -332,8 +296,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(IDM_CFGN_REPLAY, OnUpdateCfgnReplay)
     ON_COMMAND(IDM_CONFIGURE_SIMULATEDSYSTEMS, OnConfigureSimulatedsystems)
     ON_COMMAND(IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN, OnConfigureSimulatedsystemsLin)
-    ON_UPDATE_COMMAND_UI(IDM_DLL_LOADALLDLL, OnUpdateDllLoadAll)
-    ON_UPDATE_COMMAND_UI(IDM_DLL_LOADALLDLL_LIN, OnUpdateLINDllLoadAll)
     ON_COMMAND_RANGE(IDC_SELECT_DRIVER,IDC_SELECT_DRIVER + DIL_TOTAL, OnSelectDriver)
     ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_DRIVER,IDC_SELECT_DRIVER + DIL_TOTAL, OnUpdateSelectDriver)
     ON_COMMAND_RANGE(IDC_SELECT_FLEX_DRIVER,IDC_SELECT_FLEX_DRIVER + FLEXRAY_DIL_TOTAL, OnSelectFLEXRAYDriver)
@@ -353,7 +315,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(WM_KEY_PRESSED_MSG_WND,vKeyPressedInMsgWnd)
     ON_MESSAGE(WM_NOTIFICATION_FROM_OTHER, vNotificationFromOtherWin)
     ON_MESSAGE(WM_CREATE_TRACEWIN, vCreateTraceWindow)
-    ON_MESSAGE(WM_ENABLE_DISABLE_HANDLERS, vEnableDisableHandlers)
     ON_WM_HELPINFO()
     ON_COMMAND(IDM_DATABASE_DISSOCIATE_DB, OnDissociateDatabase)
     ON_COMMAND(IDM_SAVE_IMPORT, OnSaveImportDatabase)
@@ -368,8 +329,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(ID_DISPLAY_MAIN, OnUpdateDisplayMain)
     ON_COMMAND(ID_DISPLAY_MSG_WND, OnDisplayMsgWnd)
     ON_UPDATE_COMMAND_UI(ID_DISPLAY_MSG_WND, OnUpdateDisplayMsgWnd)
-    ON_COMMAND(ID_DISPLAY_NODE_SIMULATION, OnDisplayNodeSim)
-    ON_UPDATE_COMMAND_UI(ID_DISPLAY_NODE_SIMULATION, OnUpdateDisplayNodeSim)
     ON_WM_ACTIVATE()
     ON_COMMAND(ID_CONFIGURE_WAVEFORM_MESSAGES, OnConfigureWaveformMessages)
     ON_COMMAND(IDR_START_SIGNAL_TRANSMISSION, OnStartSignalTransmission)
@@ -411,26 +370,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(33082, OnJ1939DBAssociate)
     ON_COMMAND(33083, OnJ1939DBDissociate)
     ON_COMMAND(ID_CONFIGURE_SIMULATEDSYSTEMS, OnJ1939CfgSimSys)
-    ON_COMMAND(33087, OnJ1939LoadAll)
-    ON_UPDATE_COMMAND_UI(33087, OnUpdateJ1939LoadAll)
-    ON_COMMAND(33088, OnJ1939UnloadAll)
-    ON_UPDATE_COMMAND_UI(33088, OnUpdateJ1939UnloadAll)
-    ON_COMMAND(33089, OnJ1939BuildAndLoadAll)
-    ON_UPDATE_COMMAND_UI(33089, OnUpdateJ1939BuildAndLoadAll)
-    ON_COMMAND(33090, OnJ1939BuildAll)
-    ON_UPDATE_COMMAND_UI(33090, OnUpdateJ1939BuildAll)
-    ON_COMMAND(33092, OnJ1939AllMessageHandlers)
-    ON_UPDATE_COMMAND_UI(33092, OnUpdateJ1939AllMessageHandlers)
-    ON_COMMAND(33093, OnJ1939AllKeyHandlers)
-    ON_UPDATE_COMMAND_UI(33093, OnUpdateJ1939AllKeyHandlers)
-    ON_COMMAND(33094, OnJ1939AllTimerHandlers)
-    ON_UPDATE_COMMAND_UI(33094, OnUpdateJ1939AllTimerHandlers)
-    ON_COMMAND(ID_EXECUTE_ALLEVENTHANDLERS, OnJ1939AllEventHandlers)
-    ON_UPDATE_COMMAND_UI(ID_EXECUTE_ALLEVENTHANDLERS, OnUpdateJ1939AllEventHandlers)
-    ON_COMMAND(33094, OnJ1939AllTimerHandlers)
-    ON_UPDATE_COMMAND_UI(33094, OnUpdateJ1939AllTimerHandlers)
-    ON_COMMAND(33096, OnJ1939AllHandlers)
-    ON_UPDATE_COMMAND_UI(33096, OnUpdateJ1939AllHandlers)
     ON_COMMAND(ID_DISPLAY_CONFIGURE, OnDisplayConfig)
     ON_UPDATE_COMMAND_UI(ID_DISPLAY_CONFIGURE, OnUpdateDisplayConfig)
     ON_UPDATE_COMMAND_UI(33085, OnUpdateJ1939CfgSimSys)
@@ -552,6 +491,7 @@ CMainFrame::CMainFrame()
     // Graph window status
     for(int nBUSID = CAN; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
     {
+        
         m_sGraphWndPlacement[nBUSID].length = 0;
         m_sGraphWndPlacement[nBUSID].rcNormalPosition.top = -1;
         m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[0][0] = -1;
@@ -835,7 +775,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     SetWindowPlacement(&m_WinCurrStatus);
 
     // The node simulation toolbar
-    CREATE_TOOLBAR(this, m_wndToolbarNodeSimul, IDR_NODE_SIMULATION, _("Node Simulation"));
     CREATE_TOOLBAR(this, m_wndToolbarMsgWnd, IDR_MSG_WND, _("Message Window"));
     CREATE_TOOLBAR(this, m_wndToolBar, IDR_MAINFRAME, _("Main"));
     CREATE_TOOLBAR(this, m_wndToolbarConfig, IDR_TLB_CONFIGURE, _("Configure"));
@@ -853,7 +792,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
         objSize.cx = 27;
         objSize.cy = 27;
         vSetToolbarButtonSize( m_wndToolBar,            objSize);
-        vSetToolbarButtonSize( m_wndToolbarNodeSimul,   objSize);
+       
         vSetToolbarButtonSize( m_wndToolbarMsgWnd,      objSize);
         vSetToolbarButtonSize( m_wndToolbarConfig,      objSize);
         vSetToolbarButtonSize( m_wndToolbarCANDB,       objSize);
@@ -863,7 +802,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
         vSetToolbarButtonSize( m_wndToolbarLIN,       objSize);
     }
 
-    m_wndToolbarNodeSimul.bLoadCNVTCToolBar(m_bytIconSize, IDB_NODE_SIMULATION,IDB_NODE_SIMULATION_HOT, IDB_NODE_SIMULATION_DISABLED);
     m_wndToolBar.bLoadCNVTCToolBar(m_bytIconSize, IDB_MAINFRAME,IDB_MAINFRAME_HOT, IDB_MAINFRAME_DISABLED);
     m_wndToolbarMsgWnd.bLoadCNVTCToolBar(m_bytIconSize, IDB_MSG_WND,IDB_MSG_WND_HOT, IDB_MSG_WND_DISABLED);
     m_wndToolbarConfig.bLoadCNVTCToolBar(m_bytIconSize, IDB_CONFIGURE,IDB_CONFIGURE_HOT, IDB_CONFIGURE_DISABLED);
@@ -872,6 +810,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_wndToolbarFlexRay.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_FLEXRAY,IDB_TLB_FLEXRAY_HOT, IDB_TLB_FLEXRAY_DISABLED);
     m_wndToolbarConfiguration.bLoadCNVTCToolBar(m_bytIconSize, IDR_CONFIG_TOOLBAR,IDR_CONFIG_TOOLBAR_HOT, IDR_CONFIG_TOOLBAR_DISABLED);
     m_wndToolbarLIN.bLoadCNVTCToolBar(m_bytIconSize, IDB_LIN_IMG,IDB_LIN_IMGHOT, IDB_LIN_IMGDISABLED);
+	
+	
 
     EnableDocking(CBRS_ALIGN_ANY);
 
@@ -982,7 +922,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     // The first sub menu is statically created and is disabled.
     // So enable it and change the text top the first MRU file name
     // Then create menu for the rest of the MRU files
-    DWORD dwVal;
+    DWORD dwVal = 0;
     theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE1, REG_SZ, m_omStrMRU_ConfigurationFiles[0], dwVal);
     theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE2, REG_SZ, m_omStrMRU_ConfigurationFiles[1], dwVal);
     theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE3, REG_SZ, m_omStrMRU_ConfigurationFiles[2], dwVal);
@@ -1033,6 +973,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     bInitFrameProcLIN(); // Initialize logger module
     //vInitializeBusStatLIN();
 
+	m_wndToolbarFlexRay.ShowWindow(SW_HIDE);
+	m_wndToolbarLIN.ShowWindow(SW_HIDE);
+
     return 0;
 }
 
@@ -1046,8 +989,7 @@ bool CMainFrame::bSetDefaultToolbarPosition()
     DockControlBarLeftOf(&m_wndToolBar,&m_wndToolbarConfiguration);        //align others next to it
     DockControlBarLeftOf(&m_wndToolbarMsgWnd,&m_wndToolBar);        //align others next to it
     DockControlBarLeftOf( &m_wndToolbarCANDB, &m_wndToolbarMsgWnd);
-    DockControlBarLeftOf( &m_wndToolbarNodeSimul, &m_wndToolbarCANDB);
-    DockControlBarLeftOf( &m_wndToolbarFlexRay,&m_wndToolbarNodeSimul);
+    
     DockControlBar(&m_wndToolbarJ1939,AFX_IDW_DOCKBAR_LEFT);        //align the toolabr to the left
     DockControlBarLeftOf( &m_wndToolbarConfig, &m_wndToolbarJ1939); //aign the next toolbar below it
     DockControlBar(&m_wndToolbarLIN,AFX_IDW_DOCKBAR_LEFT);        //align the toolabr to the left
@@ -1217,8 +1159,8 @@ database that is already open?"), MB_YESNO, MB_ICONINFORMATION);
                 {
                     // No corruption in database, display the editor
                     bDisplayEditor = TRUE;
+					m_bIsNewDatabase = FALSE;      //To declare that database as existing one
                 }
-
             }
             else
             {
@@ -1322,9 +1264,12 @@ void CMainFrame::OnCloseDatabase()
         }
         // User doesn't want to save changes nothing to process
 
+        if(nullptr != pTempMsgSg)
+        {
         // inactive data structure is no more required
         // delete previously allocated memory if any
         pTempMsgSg->bDeAllocateMemoryInactive();
+        }
         m_podMsgSgWnd->MDIDestroy();
         m_podMsgSgWnd = nullptr;
         m_bIsNewDatabase = FALSE;
@@ -1422,17 +1367,6 @@ void CMainFrame::OnImportDatabase()
             MessageBox(omStrMsg,"BUSMASTER",MB_OK|MB_ICONERROR);
         }
 
-        // Check for Warnning condition
-        CFlags* pFlags = nullptr;
-        pFlags = theApp.pouGetFlagsPtr();
-        if( pFlags != nullptr)
-        {
-            if(pFlags->nGetFlagStatus(DLLLOADED) == TRUE)
-            {
-                AfxMessageBox(_(defIMPORT_DLLLOAD_WARNNING),
-                              MB_OK|MB_ICONINFORMATION);//dll loaded unload it
-            }
-        }
 
         HWND hWnd;
         hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
@@ -1711,11 +1645,11 @@ __int64 CMainFrame::nConvertStringToInt(CString omStrHexNo)
         }
         else if ((cChar >= 'A') && (cChar <= 'F'))
         {
-            n64RetVal = n64RetVal * 16 + (cChar - 'A');
+            n64RetVal = n64RetVal * 16 + ((cChar - 'A') + 10);
         }
         else if ((cChar >= 'a') && (cChar <= 'f'))
-        {
-            n64RetVal = n64RetVal * 16 + (cChar - 'a');
+        {            
+            n64RetVal = n64RetVal * 16 + ((cChar - 'a') + 10);
         }
         else if ( cChar == '-' )
         {
@@ -2187,6 +2121,12 @@ DESCRIPTION:    #Called by the framework when user selects Configure Message...
 *******************************************************************************/
 void CMainFrame::OnConfigMessageDisplay()
 {
+    if ( nullptr == m_podMsgWndThread )
+    {
+        //if Msg Window is not created no need to configure its display.Since there
+        //is no way to get the existing details and to save the configured values
+        return;
+    }
     CPPageMessage odDBMsg(TRUE, CAN, theApp.m_pouMsgSignal);
     CPPageMessage odNDBMsg(FALSE, CAN,  theApp.m_pouMsgSignal);
     CPropertySheet omAllMessages(_("Configure Message Display- CAN"));
@@ -2241,6 +2181,12 @@ void CMainFrame::OnConfigMessageDisplay()
 
 void CMainFrame::OnConfigMessageDisplayLin()
 {
+    if ( nullptr == m_podMsgWndThread )
+    {
+        //if Msg Window is not created no need to configure its display.Since there
+        //is no way to get the existing details and to save the configured values
+        return;
+    }
     CPPageMessage odDBMsg(TRUE, LIN, &m_ouClusterConfig[LIN]);
     CPPageMessage odNDBMsg(FALSE, LIN,  &m_ouClusterConfig[LIN]);
     CPropertySheet omAllMessages(_("Configure Message Display- LIN"));
@@ -2334,97 +2280,6 @@ void CMainFrame::OnReplayGo()
 /*                      message handler                                       */
 /******************************************************************************/
 extern BOOL gbStopActiveThreads(int);
-void CMainFrame::OnActivateMessageHandler()
-{
-    //Get present status
-    BOOL bEnable = GetICANNodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON);
-    //Change the status of handler
-    GetICANNodeSim()->NS_EnableAllMessageHandler( !bEnable );
-}
-
-void CMainFrame::OnActivateMessageHandlerLIN()
-{
-    //Get present status
-    BOOL bEnable = GetILINNodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON);
-    //Change the status of handler
-    GetILINNodeSim()->NS_EnableAllMessageHandler( !bEnable );
-}
-
-/******************************************************************************/
-/*  Functionality    :  Called by frame work when user select to activate     */
-/*                      timer handler                                         */
-/******************************************************************************/
-void CMainFrame::OnActivateTimerHandler()
-{
-    //Get present status
-    BOOL bEnable = GetICANNodeSim()->NS_GetHandlerStatus(H_TIMERBUTTON);
-    //Change the status of handler
-    GetICANNodeSim()->NS_EnableAllTimers( !bEnable );
-}
-
-/******************************************************************************/
-/*  Functionality    :  Called by frame work when user select to activate     */
-/*                      timer handler                                         */
-/******************************************************************************/
-void CMainFrame::OnActivateTimerHandlerLIN()
-{
-    //Get present status
-    BOOL bEnable = GetILINNodeSim()->NS_GetHandlerStatus(H_TIMERBUTTON);
-    //Change the status of handler
-    GetILINNodeSim()->NS_EnableAllTimers( !bEnable );
-}
-
-
-/******************************************************************************/
-/*  Functionality    :  Called by frame work when user want to build and load */
-/*                       all the DLL under the configuration.                 */
-/******************************************************************************/
-void CMainFrame::OnDLLBuildLoad()
-{
-    CStringArray omStrBuildFiles;
-
-    BOOL bSucces = GetICANNodeSim()->NS_DLLBuildLoadAll(&omStrBuildFiles);
-    if(!bSucces)  // if the build is not successfull
-    {
-        int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg = _("Following file(s) are either not properly build or loaded:");
-        CString omStrErrorMsgDummy = "";
-
-        for(int i = 0 ; i < nFailure; i++)
-        {
-
-            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
-            omStrErrorMsg += omStrErrorMsgDummy;
-        }
-        AfxMessageBox(omStrErrorMsg);
-    }
-}
-
-/******************************************************************************/
-/*  Functionality    :  Called by frame work when user want to build and load */
-/*                       all the DLL under the configuration.                 */
-/******************************************************************************/
-void CMainFrame::OnDLLBuildLoadLIN()
-{
-    CStringArray omStrBuildFiles;
-
-    BOOL bSucces = GetILINNodeSim()->NS_DLLBuildLoadAll(&omStrBuildFiles);
-    if(!bSucces)  // if the build is not successfull
-    {
-        int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg = _("Following file(s) are either not properly build or loaded:");
-        CString omStrErrorMsgDummy = "";
-
-        for(int i = 0 ; i < nFailure; i++)
-        {
-
-            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
-            omStrErrorMsg += omStrErrorMsgDummy;
-        }
-        AfxMessageBox(omStrErrorMsg);
-    }
-}
-
 
 /******************************************************************************/
 /*  Input(s)         :  Stringarray                                           */
@@ -2438,114 +2293,12 @@ bool CMainFrame::bDLLBuildLoad(CStringArray* /* omStrBuildFiles */)
 }
 
 /******************************************************************************/
-/*  Functionality    :  Called by frame-work when user wants to build         */
-/*                      all the C files associated with all the simulated
-/*                      systems.                                              */
-/******************************************************************************/
-void CMainFrame::OnDLLBuild()
-{
-    CStringArray omStrBuildFiles;
-
-    BOOL bSucces = GetICANNodeSim()->NS_DLLBuildAll(&omStrBuildFiles);
-    if(!bSucces)  // if the build is not successfull
-    {
-        int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg =_("Following file(s) are not properly build:");
-        CString omStrErrorMsgDummy = "";
-
-        for(int i = 0 ; i < nFailure; i++)
-        {
-            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
-            omStrErrorMsg += omStrErrorMsgDummy;
-        }
-        AfxMessageBox(omStrErrorMsg);
-    }
-}
-
-/******************************************************************************/
-/*  Functionality    :  Called by frame-work when user wants to build         */
-/*                      all the C files associated with all the simulated
-/*                      systems.                                              */
-/******************************************************************************/
-void CMainFrame::OnDLLBuildLIN()
-{
-    CStringArray omStrBuildFiles;
-
-    BOOL bSucces = GetILINNodeSim()->NS_DLLBuildAll(&omStrBuildFiles);
-    if(!bSucces)  // if the build is not successfull
-    {
-        int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg = _("Following file(s) are not properly build:");
-        CString omStrErrorMsgDummy = "";
-
-        for(int i = 0 ; i < nFailure; i++)
-        {
-            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
-            omStrErrorMsg += omStrErrorMsgDummy;
-        }
-        AfxMessageBox(omStrErrorMsg);
-    }
-}
-
-/******************************************************************************/
 /*  Functionality    :   to build                                             */
 /*                      all the C files associated with all the simulated     */
 /******************************************************************************/
 bool CMainFrame::bDLLBuild(CStringArray* /* omStrBuildFiles */)
 {
     return false;
-}
-
-/******************************************************************************/
-/*  Functionality    :  Called by frame work when user want to  load          */
-/*                       all the DLLs under the configuration.                */
-/******************************************************************************/
-void CMainFrame::OnDllLoad()
-{
-    CStringArray omStrBuildFiles;
-
-    BOOL bSucces = GetICANNodeSim()->NS_DllLoadAll(&omStrBuildFiles);
-    if(bSucces!=TRUE)  // if the load is not successfull
-    {
-        int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg = _("Following file(s) are not properly loaded:");
-        CString omStrErrorMsgDummy = "";
-
-        for(int i = 0 ; i < nFailure; i++)
-        {
-
-            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
-            omStrErrorMsg += omStrErrorMsgDummy;
-        }
-        AfxMessageBox(omStrErrorMsg);
-    }
-
-}
-
-/******************************************************************************/
-/*  Functionality    :  Called by frame work when user want to  load          */
-/*                       all the DLLs under the configuration.                */
-/******************************************************************************/
-void CMainFrame::OnDllLoadLIN()
-{
-    CStringArray omStrBuildFiles;
-
-    BOOL bSucces = GetILINNodeSim()->NS_DllLoadAll(&omStrBuildFiles);
-    if(bSucces!=TRUE)  // if the load is not successfull
-    {
-        int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg = _("Following file(s) are not properly loaded:");
-        CString omStrErrorMsgDummy = "";
-
-        for(int i = 0 ; i < nFailure; i++)
-        {
-
-            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
-            omStrErrorMsg += omStrErrorMsgDummy;
-        }
-        AfxMessageBox(omStrErrorMsg);
-    }
-
 }
 
 /******************************************************************************/
@@ -2566,6 +2319,7 @@ bool CMainFrame::bDllUnload(CStringArray* /*omStrBuildFiles*/)
     return false;
 
 }
+
 
 /******************************************************************************/
 /*  Functionality    :  Called by frame work when user want to  unload        */
@@ -2637,6 +2391,7 @@ void CMainFrame::OnDllUnloadJ1939()
         AfxMessageBox(omStrErrorMsg);
     }
 }
+
 
 /******************************************************************************/
 /*  Functionality    :  Fills the J1939PGNList struct with dtabase message ID,
@@ -2753,7 +2508,7 @@ void CMainFrame::vPopulateSigWatchList(CMainEntryList& odFromList, SMSGENTRY*& p
             while (SigPos != nullptr)
             {
                 SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(SigPos);
-                sSIGNALS* pSig;
+                sSIGNALS* pSig = nullptr;
                 if (bIsSigExist(sSubEntry.m_omSubEntryName, pDBMsg->m_psSignals, pSig))
                 {
                     psTempSig = SMSGENTRY::psCopySignalVal(pSig);
@@ -3629,50 +3384,50 @@ void CMainFrame::vSetModuleHandleAndDLLName(HMODULE hModuleHandle, CString& omSt
 /******************************************************************************
     Functionality    :  Function will convert a byte array to CString
 ******************************************************************************/
-CString CMainFrame::omStrConvByteArrToStr(CByteArray* byteArr)
-{
-    CString strDisplay="";
-    BYTE oneByte;
-    unsigned char firstCh, secondCh;
-    for (int arrSize=0; arrSize< byteArr->GetSize(); arrSize++)
-    {
-        //Get each byte from the array
-        oneByte = byteArr->GetAt(arrSize);
-        //First char is arrived at by logical "AND"ing the byte with
-        //0xf0 and then right shifting it by 4 bits
-        firstCh = oneByte & 0xf0;
-        firstCh>>=4;
-        //Second char is arrived at by
-        //"AND"ing with 0x0f
-        secondCh = oneByte & 0x0f;
-
-        //Following piece of code converts
-        //the chars to the respective toASCII
-        //values before adding to the string
-        if ((firstCh >= 0) && (firstCh <=9))
-        {
-            firstCh+='0';
-        }
-        else
-        {
-            firstCh+=87;
-        }
-        if ((secondCh >= 0) && (secondCh <=9))
-        {
-            secondCh+='0';
-        }
-        else
-        {
-            secondCh+=87;
-        }
-        //Add the chars to the CStirng object
-        strDisplay+=firstCh;
-        strDisplay+=secondCh;
-    }
-    //The extra white space is removed here
-    strDisplay= strDisplay.Left(strDisplay.GetLength() - 1);
-    return strDisplay;
-}
+//CString CMainFrame::omStrConvByteArrToStr(CByteArray* byteArr)
+//{
+//    CString strDisplay="";
+//    BYTE oneByte;
+//    unsigned char firstCh, secondCh;
+//    for (int arrSize=0; arrSize< byteArr->GetSize(); arrSize++)
+//    {
+//        //Get each byte from the array
+//        oneByte = byteArr->GetAt(arrSize);
+//        //First char is arrived at by logical "AND"ing the byte with
+//        //0xf0 and then right shifting it by 4 bits
+//        firstCh = oneByte & 0xf0;
+//        firstCh>>=4;
+//        //Second char is arrived at by
+//        //"AND"ing with 0x0f
+//        secondCh = oneByte & 0x0f;
+//
+//        //Following piece of code converts
+//        //the chars to the respective toASCII
+//        //values before adding to the string
+//        if ((firstCh >= 0) && (firstCh <=9))
+//        {
+//            firstCh+='0';
+//        }
+//        else
+//        {
+//            firstCh+=87;
+//        }
+//        if ((secondCh >= 0) && (secondCh <=9))
+//        {
+//            secondCh+='0';
+//        }
+//        else
+//        {
+//            secondCh+=87;
+//        }
+//        //Add the chars to the CStirng object
+//        strDisplay+=firstCh;
+//        strDisplay+=secondCh;
+//    }
+//    //The extra white space is removed here
+//    strDisplay= strDisplay.Left(strDisplay.GetLength() - 1);
+//    return strDisplay;
+//}
 
 /******************************************************************************
     Functionality    :  Function will convert a string to equivalent
@@ -4164,16 +3919,11 @@ void CMainFrame::OnClose()
     vREP_HandleConnectionStatusChange( FALSE ); //Close reply
 
     OnDllUnload(); //Unload all the loaded dlls
-    //GetICANNodeSim()->NS_SetSimSysConfigData(nullptr, 0); // Reset SimSysConfig
-    GetICANNodeSim()->NS_PerformApplicationClosureOperation(bSaveConfig);
-
+   
     //Unload J1939 Node sim dll
     OnDllUnloadJ1939();
-    //GetIJ1939NodeSim()->NS_SetSimSysConfigData(nullptr, 0);
-    GetIJ1939NodeSim()->NS_PerformApplicationClosureOperation(bSaveConfig);
-
-    OnDllUnloadLIN();
-    GetILINNodeSim()->NS_PerformApplicationClosureOperation(bSaveConfig);
+   
+    OnDllUnloadLIN();   
 
     if(m_unTimerSB != 0)
     {
@@ -4696,28 +4446,6 @@ void CMainFrame::OnUpdateMessageInterpret(CCmdUI* pCmdUI)
 }
 
 /******************************************************************************
-    Functionality    :  Enable or disable execute message handler
-                        menu item
-/******************************************************************************/
-void CMainFrame::OnUpdateExecuteMessagehandlers(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON));
-    BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
-
-/******************************************************************************
-    Functionality    :  Enable or disable execute message handler
-                        menu item
-/******************************************************************************/
-void CMainFrame::OnUpdateExecuteMessagehandlersLIN(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetILINNodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON));
-    BOOL bEnable = GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
-
-/******************************************************************************
     Functionality    :  Check or uncheck log filter
                         menu item
 ******************************************************************************/
@@ -4771,27 +4499,6 @@ void CMainFrame::OnUpdateReplayFilter(CCmdUI* pCmdUI)
     // menu item
     pCmdUI->SetCheck(
         theApp.pouGetFlagsPtr()->nGetFlagStatus( REPLAYFILTER ) );
-}
-
-/******************************************************************************
-    Functionality    :  Toggle execute message handler button status
-/******************************************************************************/
-void CMainFrame::OnUpdateExecuteMessagehandlersButton(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON));
-    BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
-
-/******************************************************************************
-    Functionality    :  Calls OnActivateMessageHandler function
-******************************************************************************/
-void CMainFrame::OnExecuteMessagehandlersButton()
-{
-    //Get present status
-    BOOL bEnable = GetICANNodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON);
-    //Change the status of handler
-    GetICANNodeSim()->NS_EnableAllMessageHandler( !bEnable );
 }
 
 /******************************************************************************
@@ -5093,53 +4800,7 @@ void CMainFrame::OnUpdateMessageFilterButton(CCmdUI* pCmdUI)
     pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(DISPLAYFILTERON));
 
 }
-/******************************************************************************
-    Function Name    :  OnUpdateExecuteTimerhandler
 
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :      -
-    Functionality    :  Enable or disable execute timer handler
-                        menu item
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modification By  :  Amitesh Bharti
-    Modification on  :  23.10.2002,Enable menu/button if tool is connected
-    Modification By  :  Amitesh Bharti
-    Modification on  :  31.10.2002,Review comment incorporated.
-/******************************************************************************/
-void CMainFrame::OnUpdateExecuteTimerhandler(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_TIMERBUTTON));
-    BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
-
-/******************************************************************************
-    Function Name    :  OnUpdateExecuteTimerhandler
-
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :      -
-    Functionality    :  Enable or disable execute timer handler
-                        menu item
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  23.03.2002
-    Modification By  :  Amitesh Bharti
-    Modification on  :  23.10.2002,Enable menu/button if tool is connected
-    Modification By  :  Amitesh Bharti
-    Modification on  :  31.10.2002,Review comment incorporated.
-/******************************************************************************/
-void CMainFrame::OnUpdateExecuteTimerhandlerLIN(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetILINNodeSim()->NS_GetHandlerStatus(H_TIMERBUTTON));
-    BOOL bEnable = GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
 /******************************************************************************
     Function Name    :  OnClearMsgWindow
 
@@ -5291,81 +4952,6 @@ void CMainFrame::OnUpdateShowHideMessageWindow(CCmdUI* pCmdUI)
         break;
     }
 }
-
-/******************************************************************************
-    Function Name    :  OnUpdateDllBuildAll
-
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :  -
-    Functionality    :  Enables or Disables the menu option
-                        depending on the FUNCEDITOR flag.
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  29.03.2002
-    Modifications    :
-******************************************************************************/
-void CMainFrame::OnUpdateDllBuildAll(CCmdUI* pCmdUI)
-{
-    pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD));
-}
-
-/******************************************************************************
-    Function Name    :  OnUpdateDllBuildAll
-
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :  -
-    Functionality    :  Enables or Disables the menu option
-                        depending on the FUNCEDITOR flag.
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  29.03.2002
-    Modifications    :
-******************************************************************************/
-void CMainFrame::OnUpdateDllBuildAllLIN(CCmdUI* pCmdUI)
-{
-    pCmdUI->Enable(GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD));
-}
-/******************************************************************************
-    Function Name    :  OnUpdateDllBuildloadAll
-
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :  -
-    Functionality    :  Enables or Disables the menu option
-                        depending on the FUNCEDITOR flag
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  29.03.2002
-    Modifications    :
-******************************************************************************/
-void CMainFrame::OnUpdateDllBuildloadAll(CCmdUI* pCmdUI)
-{
-    pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD));
-}
-
-/******************************************************************************
-    Function Name    :  OnUpdateDllBuildloadAll
-
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :  -
-    Functionality    :  Enables or Disables the menu option
-                        depending on the FUNCEDITOR flag
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  29.03.2002
-    Modifications    :
-******************************************************************************/
-void CMainFrame::OnUpdateDllBuildloadAllLIN(CCmdUI* pCmdUI)
-{
-    pCmdUI->Enable(GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD));
-}
 /******************************************************************************
     Function Name    :  poGetSignalPointer
 
@@ -5427,43 +5013,6 @@ sSIGNALS* CMainFrame::poGetSignalPointer(
         }
     }
     return pSignal;
-}
-/******************************************************************************
-    Function Name    :  OnUpdateDllUnloadAll
-
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :  -
-    Functionality    :  Enables the menu if a DLL is loaded
-                        and vice-versa
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  29.03.2002
-    Modifications    :
-******************************************************************************/
-void CMainFrame::OnUpdateDllUnloadAll(CCmdUI* pCmdUI)
-{
-    pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD));
-}
-
-/******************************************************************************
-    Function Name    :  OnUpdateDllUnloadAll
-
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :  -
-    Functionality    :  Enables the menu if a DLL is loaded
-                        and vice-versa
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  29.03.2002
-    Modifications    :
-******************************************************************************/
-void CMainFrame::OnUpdateDllUnloadAllLIN(CCmdUI* pCmdUI)
-{
-    pCmdUI->Enable(GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD));
 }
 /******************************************************************************
     Function Name    :  OnUpdateDisplayMessagewindowOverwrite
@@ -6851,8 +6400,27 @@ void CMainFrame::OnFileConnect()
         g_bStopErrorHandlers    = TRUE;
         if(bConnected)
         {
+			//Build and Load Node Simulation
+			if(FALSE == GetICANNodeSim()->NS_DLLBuildLoadAllEnabled())
+			{
+				return;
+			}
+			BOOL bIsJ1939Active = theApp.pouGetFlagsPtr()->nGetFlagStatus(ACTIVATED_J1939);
+			if(bIsJ1939Active)
+			{
+				if(FALSE == GetIJ1939NodeSim()->NS_DLLBuildLoadAllEnabled())
+				{
+					return;
+				}
+			}
+
             m_objTxHandler.vSetTxStopFlag(TRUE);
+            if((pouFlags->nGetFlagStatus(LOGTOFILE) != 0 || m_abLogOnConnect[CAN] == TRUE) && sg_pouFrameProcCAN != nullptr)
+            {
+                sg_pouFrameProcCAN->vSetMeasurementFileName();
+            }
         }
+
         //g_bStopMsgBlockTx       = TRUE;
         g_bStopSelectedMsgTx    = TRUE;
         // If Tx Msg window is active post a message about connection change
@@ -6913,8 +6481,11 @@ void CMainFrame::OnFileConnect()
         if( bConnected == TRUE)
         {
             //Inform J1939TxWindow about connect change
-            ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(),
-                          WM_CONNECT_CHANGE, (WPARAM)TRUE, 0);
+            if ( nullptr != m_pouTxMsgWndJ1939 )
+            {
+                ::SendMessage(m_pouTxMsgWndJ1939->GetSafeHwnd(),
+                              WM_CONNECT_CHANGE, (WPARAM)TRUE, 0);
+            }
             //Start Graph Interpret Thread
             bStartGraphReadThread();
 
@@ -6958,6 +6529,11 @@ void CMainFrame::OnFileConnect()
             {
                 pNodeSim->NS_nOnBusConnected(TRUE);
             }
+
+			if(nullptr != sg_pouIJ1939Logger && theApp.pouGetFlagsPtr()->nGetFlagStatus(ACTIVATED_J1939) == TRUE && sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE)
+			{
+				sg_pouIJ1939Logger->vSetMeasurementFileName();
+			}
         }
         else
         {
@@ -6971,9 +6547,11 @@ void CMainFrame::OnFileConnect()
             }
             //Stop Graph Interpret Thread
             bStopGraphReadThread();
+            if ( nullptr != m_podMsgWndThread )
+            {
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
                           eWINID_STOP_READ, 0);
-
+            }
             //m_n64TimeElapsedSinceConnection =0;
 
             //send time to nodesim for calculation
@@ -7030,7 +6608,7 @@ void CMainFrame::OnFileConnect()
             else if(bLogIsON == TRUE && bConnected == TRUE)
             {
                 vStartStopLogging(bLogIsON == TRUE);
-            }
+            }		
 
             if (m_abLogOnConnect[J1939] == TRUE)
             {
@@ -7046,19 +6624,19 @@ void CMainFrame::OnFileConnect()
 
                     BYTE bytTbrItemIndex = 3;
                     vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, sg_pouIJ1939Logger->FPJ1_IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
-                }
-
+                }				
             }
             else
             {
                 if (nullptr != sg_pouIJ1939Logger)
                 {
-                    if(sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE)
-                    {
-                        bJ1939LogON = TRUE;
-                        sg_pouIJ1939Logger->FPJ1_EnableLogging(TRUE);
-                    }
-                }
+					if(sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE)
+					{
+						bJ1939LogON = TRUE;						
+
+						sg_pouIJ1939Logger->FPJ1_EnableLogging(TRUE);
+					}
+				}
             }
             //SGW Code commented by Arun 21-10-2010
             pouFlags->vSetFlagStatus(CONNECTED, bConnected);
@@ -7126,14 +6704,9 @@ void CMainFrame::OnFileConnect()
             // Reset the flags for handlers
             if(bConnected == FALSE )
             {
-                pouFlags->vSetFlagStatus(MSGHANDLERBUTTON,bConnected);
                 // Post a message to message display window to reset the flag.
                 // Changed to assignment to global variable
-                g_bMsgHandlerON = bConnected;
 
-                pouFlags->vSetFlagStatus(KEY_HANDLER_ON,bConnected);
-                pouFlags->vSetFlagStatus(ERROR_HANDLER, bConnected);
-                pouFlags->vSetFlagStatus(ALL_HANDLER, bConnected);
 
                 // Let the user configure the mgs
                 pouFlags->vSetFlagStatus( SENDMESG, FALSE );
@@ -7215,6 +6788,9 @@ void CMainFrame::OnFileConnect()
         {
             GetICANNodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
             GetIJ1939NodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
+            //Unload Node Simulation dlls.
+            GetICANNodeSim()->NS_DLLUnloadAllEnabled();
+            GetIJ1939NodeSim()->NS_DLLUnloadAllEnabled();
         }
     }
 }
@@ -7251,7 +6827,10 @@ void CMainFrame::OnLINConnect()
         hResult = g_pouDIL_LIN_Interface->DILL_PreStartHardware();
         g_pouDIL_LIN_Interface->DILL_GetConfiguration(m_sControllterlin,nsize);
 
-
+       if(FALSE == GetILINNodeSim()->NS_DLLBuildLoadAllEnabled())
+		{
+			return;
+		}
         m_objFlexTxHandler.vBusStatusChanged(LIN, BUS_PRECONNECT);
         pNodeSim = GetILINNodeSim();
         if(pNodeSim != nullptr)
@@ -7271,12 +6850,17 @@ void CMainFrame::OnLINConnect()
             return;
         }
 
-        BOOL bLogIsON;
+        BOOL bLogIsON = FALSE;
         CFlags* pFlagLog = theApp.pouGetFlagsPtr();
         if(pFlagLog != nullptr)
         {
             bLogIsON = pFlagLog->nGetFlagStatus(LOGTOFILE_LIN);
         }
+
+		if((bLogIsON == TRUE || m_abLogOnConnect[LIN] == TRUE) && sg_pouFrameProcLIN != nullptr)
+		{
+			sg_pouFrameProcLIN->vSetMeasurementFileName();
+		}
 
         if (m_abLogOnConnect[LIN] == TRUE)
         {
@@ -7285,7 +6869,7 @@ void CMainFrame::OnLINConnect()
         else if(bLogIsON == TRUE && bConnected == TRUE)
         {
             vStartStopLogging_LIN(bLogIsON == TRUE);
-        }
+        }	
 
         m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, BUS_CONNECTED);
 
@@ -7341,7 +6925,7 @@ void CMainFrame::OnLINConnect()
                           eWINID_STOP_READ, 0);
         }
         GetILINNodeSim()->NS_ManageBusEventHandler(BUS_DISCONNECT);
-
+        GetILINNodeSim()->NS_DLLUnloadAllEnabled();
         if (NS_GetInterface(LIN, (void**) &pNodeSim) == S_OK)
         {
             pNodeSim->NS_nOnBusConnected(FALSE);
@@ -7407,6 +6991,8 @@ void CMainFrame::OnUpdateLINConnect(CCmdUI* pCmdUI)
             pCmdUI->SetText(omMenuItemText);
         }
     }
+    if(nullptr != pCmdUI)
+    {
     if ( m_shLINDriverId != DAL_NONE )
     {
         pCmdUI->Enable();
@@ -7414,6 +7000,7 @@ void CMainFrame::OnUpdateLINConnect(CCmdUI* pCmdUI)
     else
     {
         pCmdUI->Enable(0);
+        }
     }
 }
 
@@ -7458,97 +7045,6 @@ void CMainFrame::OnUpdateFileConnect(CCmdUI* pCmdUI)
     }
 
 }
-/******************************************************************************/
-/*  Function Name    :  OnExecuteKeyhandlers                                  */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function is called by framework when user select */
-/*                      toolbar button/menu for key handlers                  */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  24.10.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  31.10.2002, Review comment incorporated               */
-/*  Modification By  :  Anish kumar                                           */
-/*  Modification on  :   05/01/06                                             */
-/*                   :  Inserted CExecute manger for executing handlers       */
-/******************************************************************************/
-void CMainFrame::OnExecuteKeyhandlers()
-{
-    //Get present status
-    BOOL bEnable = GetICANNodeSim()->NS_GetHandlerStatus(H_KEY_HANDLER_ON);
-    //Change the status of handler
-    GetICANNodeSim()->NS_EnableAllKeyHandler( !bEnable );
-}
-
-/******************************************************************************/
-/*  Function Name    :  OnExecuteKeyhandlers                                  */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function is called by framework when user select */
-/*                      toolbar button/menu for key handlers                  */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  24.10.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  31.10.2002, Review comment incorporated               */
-/*  Modification By  :  Anish kumar                                           */
-/*  Modification on  :   05/01/06                                             */
-/*                   :  Inserted CExecute manger for executing handlers       */
-/******************************************************************************/
-void CMainFrame::OnExecuteKeyhandlersLIN()
-{
-    //Get present status
-    BOOL bEnable = GetILINNodeSim()->NS_GetHandlerStatus(H_KEY_HANDLER_ON);
-    //Change the status of handler
-    GetILINNodeSim()->NS_EnableAllKeyHandler( !bEnable );
-}
-/******************************************************************************/
-/*  Function Name    :  OnUpdateExecuteKeyhandlers                            */
-/*  Input(s)         :  CCmdUI* pCmdU                                         */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the current GUI state of */
-/*                      the menu item / toolbar button needs to be updated,   */
-/*                      either as a result of pulling down the menu item or   */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  24.10.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  31.10.2002, Review comment incorporated               */
-/******************************************************************************/
-void CMainFrame::OnUpdateExecuteKeyhandlers(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_KEY_HANDLER_ON));
-    BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
-
-/******************************************************************************/
-/*  Function Name    :  OnUpdateExecuteKeyhandlers                            */
-/*  Input(s)         :  CCmdUI* pCmdU                                         */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the current GUI state of */
-/*                      the menu item / toolbar button needs to be updated,   */
-/*                      either as a result of pulling down the menu item or   */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  24.10.2002                                            */
-/*  Modification By  :  Amitesh Bharti                                        */
-/*  Modification on  :  31.10.2002, Review comment incorporated               */
-/******************************************************************************/
-void CMainFrame::OnUpdateExecuteKeyhandlersLIN(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetILINNodeSim()->NS_GetHandlerStatus(H_KEY_HANDLER_ON));
-    BOOL bEnable = GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
-
 /******************************************************************************/
 /*  Function Name    :  OnLoadConfigFile                                      */
 /*  Input(s)         :                                                        */
@@ -7959,12 +7455,6 @@ void CMainFrame::OnSaveAsConfigFile()
 void CMainFrame::OnClickMruList (UINT unID)
 {
     // Get the main menu
-    CFlags* pFlags = nullptr;
-    pFlags = theApp.pouGetFlagsPtr();
-    if( pFlags != nullptr)
-    {
-        if(pFlags->nGetFlagStatus(DLLLOADED) == FALSE)
-        {
             CMenu* pMenu = GetMenu();
             if ( pMenu != nullptr)
             {
@@ -8006,11 +7496,11 @@ void CMainFrame::OnClickMruList (UINT unID)
                     nLoadConfigFile(omStrName);
                 }
             }
-        }
+
         else
             AfxMessageBox(_(defIMPORT_DLLLOAD_WARNNING),
                           MB_OK|MB_ICONINFORMATION);
-    }
+
 }
 
 /******************************************************************************
@@ -8316,16 +7806,11 @@ void CMainFrame::OnFilePropeties()
     CStringArray omStrArray;
     SPROPERTIESLIST sProperties;
     CString omStrFomat( "" );
-    BOOL bDLLLoaded = FALSE;
+
     CFlags* pouFlag = nullptr;
 
     // Get the CFlag Object pointer
-    pouFlag     = theApp.pouGetFlagsPtr();
-    if(pouFlag != nullptr)
-    {
         // Get the DLL load status
-        bDLLLoaded = pouFlag->nGetFlagStatus(DLLLOADED);
-    }
 
     // Get Controller information
 
@@ -8414,9 +7899,6 @@ void CMainFrame::OnFilePropeties()
     }
 
     // Get the DLL information
-    omStrFomat = _(defSTR_DLL_NOT_LOADED);
-    if( bDLLLoaded == TRUE )
-    {
         // Get the loaded DLL names
         /* CSimSysNodeInfo* pSimSysNodeInfo = theApp.pomGetSimSysNodeInfo();
          if( pSimSysNodeInfo != nullptr)
@@ -8443,7 +7925,6 @@ void CMainFrame::OnFilePropeties()
              omStrFomat = defSTR_ERROR_GETTTING_DLL_INFO;
              sProperties.m_omDLLFile.Add(omStrFomat);
          }*/
-    }
     // Add the DLL information
     // sProperties.m_omDLLFile.Add(omStrFomat);
 
@@ -8757,214 +8238,6 @@ void CMainFrame::OnDropFiles(HDROP hDropInfo)
         }
     }
 }
-/******************************************************************************/
-/*  Function Name    :  OnExecuteAllHandlers                                  */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the user selects all     */
-/*                      handler menu item / toolbar button. The all handler   */
-/*                      will be enable/disable based on the state of this menu*/
-/*                      /toolbar. if handlers are already enable and the req. */
-/*                      is to enable again will have no effect. Similarly the */
-/*                      vice versa.                                           */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  03.03.2003                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  05.02.2004.Added function call vEnableDisalbeAllTimers*/
-/*                      to toogle timers when all handlers activated or       */
-/*                      deactivated                                           */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  29.04.2004 Replaced PostMessage with direct assignment*/
-/*                      of global variable g_bMsgHandlerON Msg Handler Enable */
-/*                      flag
-/*  Modification By  :  Anish kumar                                           */
-/*  Modification on  :   05/01/06                                             */
-/*                   :  Inserted CExecute manger for executing handlers       */
-/******************************************************************************/
-void CMainFrame::OnExecuteAllHandlers()
-{
-    //Get present status
-    BOOL bEnable = GetICANNodeSim()->NS_GetHandlerStatus(H_ALL_HANDLER);
-    //Change the status of handler
-    GetICANNodeSim()->NS_EnableAllHandlers( !bEnable );
-}
-
-/******************************************************************************/
-/*  Function Name    :  OnExecuteAllHandlers                                  */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the user selects all     */
-/*                      handler menu item / toolbar button. The all handler   */
-/*                      will be enable/disable based on the state of this menu*/
-/*                      /toolbar. if handlers are already enable and the req. */
-/*                      is to enable again will have no effect. Similarly the */
-/*                      vice versa.                                           */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  03.03.2003                                            */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  05.02.2004.Added function call vEnableDisalbeAllTimers*/
-/*                      to toogle timers when all handlers activated or       */
-/*                      deactivated                                           */
-/*  Modification By  :  Raja N                                                */
-/*  Modification on  :  29.04.2004 Replaced PostMessage with direct assignment*/
-/*                      of global variable g_bMsgHandlerON Msg Handler Enable */
-/*                      flag
-/*  Modification By  :  Anish kumar                                           */
-/*  Modification on  :   05/01/06                                             */
-/*                   :  Inserted CExecute manger for executing handlers       */
-/******************************************************************************/
-void CMainFrame::OnExecuteAllHandlersLIN()
-{
-    //Get present status
-    BOOL bEnable = GetILINNodeSim()->NS_GetHandlerStatus(H_ALL_HANDLER);
-    //Change the status of handler
-    GetILINNodeSim()->NS_EnableAllHandlers( !bEnable );
-}
-
-/******************************************************************************/
-/*  Function Name    :  OnUpdateExecuteAllHandlers                            */
-/*  Input(s)         :  CCmdUI* pCmdUI                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the current GUI state of */
-/*                      the menu item / toolbar button needs to be updated,   */
-/*                      either as a result of pulling down the menu item or   */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  03.03.2003                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
-void CMainFrame::OnUpdateExecuteAllHandlers(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_ALL_HANDLER));
-    BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
-
-/******************************************************************************/
-/*  Function Name    :  OnUpdateExecuteAllHandlers                            */
-/*  Input(s)         :  CCmdUI* pCmdUI                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the current GUI state of */
-/*                      the menu item / toolbar button needs to be updated,   */
-/*                      either as a result of pulling down the menu item or   */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  03.03.2003                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
-void CMainFrame::OnUpdateExecuteAllHandlersLIN(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetILINNodeSim()->NS_GetHandlerStatus(H_ALL_HANDLER));
-    BOOL bEnable = GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
-/******************************************************************************/
-/*  Function Name    :  OnExecuteErrorHandlers                                */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the user selects Error   */
-/*                      handler menu item / toolbar button. The error handler */
-/*                      will be enable/disable based on the state of this menu*/
-/*                      /toolbar. if handlers are already enable it will be   */
-/*                      disable and vice versa.                               */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  03.03.2003                                            */
-/*  Modification By  :  Anish kumar                                           */
-/*  Modification on  :   05/01/06                                             */
-/*                   :  Inserted CExecute manger for executing handlers       */
-/******************************************************************************/
-void CMainFrame::OnExecuteErrorHandlers()
-{
-    //Get present status
-    BOOL bEnable = GetICANNodeSim()->NS_GetHandlerStatus(H_ERROR_HANDLER);
-    //Change the status of handler
-    GetICANNodeSim()->NS_EnableAllErrorHandler( !bEnable );
-}
-
-/******************************************************************************/
-/*  Function Name    :  OnExecuteErrorHandlers                                */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the user selects Error   */
-/*                      handler menu item / toolbar button. The error handler */
-/*                      will be enable/disable based on the state of this menu*/
-/*                      /toolbar. if handlers are already enable it will be   */
-/*                      disable and vice versa.                               */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  03.03.2003                                            */
-/*  Modification By  :  Anish kumar                                           */
-/*  Modification on  :   05/01/06                                             */
-/*                   :  Inserted CExecute manger for executing handlers       */
-/******************************************************************************/
-void CMainFrame::OnExecuteErrorHandlersLIN()
-{
-    //Get present status
-    BOOL bEnable = GetILINNodeSim()->NS_GetHandlerStatus(H_ERROR_HANDLER);
-    //Change the status of handler
-    GetILINNodeSim()->NS_EnableAllErrorHandler( !bEnable );
-}
-
-/******************************************************************************/
-/*  Function Name    :  OnUpdateExecuteErrorHandlers                          */
-/*  Input(s)         :  CCmdUI* pCmdUI                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the current GUI state of */
-/*                      the menu item / toolbar button needs to be updated,   */
-/*                      either as a result of pulling down the menu item or   */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  03.03.2003                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
-void CMainFrame::OnUpdateExecuteErrorHandlers(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetICANNodeSim()->NS_GetHandlerStatus(H_ERROR_HANDLER));
-    BOOL bEnable = GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
-
-/******************************************************************************/
-/*  Function Name    :  OnUpdateExecuteErrorHandlers                          */
-/*  Input(s)         :  CCmdUI* pCmdUI                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Called by the framework when the current GUI state of */
-/*                      the menu item / toolbar button needs to be updated,   */
-/*                      either as a result of pulling down the menu item or   */
-/*                      whatever else.                                        */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Amitesh Bharti                                        */
-/*  Date Created     :  03.03.2003                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
-void CMainFrame::OnUpdateExecuteErrorHandlersLIN(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetILINNodeSim()->NS_GetHandlerStatus(H_ERROR_HANDLER));
-    BOOL bEnable = GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
 
 /******************************************************************************/
 /*  Function Name    :  OnConfigureModeActive                                 */
@@ -9007,8 +8280,11 @@ void CMainFrame::OnUpdateConfigureModeActive(CCmdUI* pCmdUI)
 {
     CFlags* pouFlag = nullptr;
     pouFlag     = theApp.pouGetFlagsPtr();
-    pCmdUI->Enable(FALSE);
-    pCmdUI->SetCheck(FALSE);
+    if(nullptr != pCmdUI)
+    {
+        pCmdUI->Enable(FALSE);
+        pCmdUI->SetCheck(FALSE);
+    }
     BOOL bConnect  = pouFlag->nGetFlagStatus(CONNECTED);
     if(pCmdUI != nullptr && bConnect == TRUE)
     {
@@ -9359,8 +8635,11 @@ void CMainFrame::OnUpdateConfigurePassive(CCmdUI* pCmdUI)
     CFlags* pouFlag = nullptr;
     pouFlag     = theApp.pouGetFlagsPtr();
     BOOL bConnect  = pouFlag->nGetFlagStatus(CONNECTED);
-    pCmdUI->Enable(FALSE);
-    pCmdUI->SetCheck(FALSE);
+    if(nullptr != pCmdUI)
+    {
+        pCmdUI->Enable(FALSE);
+        pCmdUI->SetCheck(FALSE);
+    }
     if(pCmdUI != nullptr && bConnect == TRUE)
     {
         //Tested with these hardwares only
@@ -10314,42 +9593,6 @@ CMenu* CMainFrame::pomGetMRUMenuPointer()
     return pMenu;
 }
 
-/******************************************************************************
-    Function Name    :  vEnableDisableHandlers
-    Input(s)         :  WPARAM wParam, LPARAM lParam
-    Output           :
-    Functionality    :  This function will call OnExecuteMessagehandlersButton()
-                        OnExecuteKeyhandlers() or OnExecuteErrorHandlers member
-                        function to enable or disable respective handlers. This
-                        is an user defined message mapped function.
-    Member of        :  CMainFrame
-    Friend of        :      -
-    Author(s)        :  Amitesh Bharti
-    Date Created     :  14.07.2004
-    Modifications    :
-******************************************************************************/
-LRESULT CMainFrame::vEnableDisableHandlers(WPARAM wParam, LPARAM )
-{
-    eCANMONITORFLAG eWhichFlag = (eCANMONITORFLAG)wParam;
-    switch(eWhichFlag)
-    {
-        case MSGHANDLERBUTTON:
-            OnExecuteMessagehandlersButton();
-            break;
-        case KEY_HANDLER_ON:
-            OnExecuteKeyhandlers();
-            break;
-        case ERROR_HANDLER:
-            OnExecuteErrorHandlers();
-            break;
-    }
-    return 0;
-}
-
-
-
-
-
 /******************************************************************************/
 /*  Function Name    :  vSetControllerParameters                              */
 /*  Input(s)         :    -                                                   */
@@ -10848,17 +10091,15 @@ void CMainFrame::vSetAssociatedDatabaseFiles(ETYPE_BUS eBus)
         //m_pouMsgSigLIN->vGetDataBaseNames(&linLDF);
     }
 
-    if (nullptr != sg_pouFrameProcCAN)
+    if (nullptr != sg_pouFrameProcCAN && CAN == eBus)
     {
-        if (CAN == eBus)
-        {
             sg_pouFrameProcCAN->FPC_SetDatabaseFiles(aomDataBaseFiles);
         }
-        else if (J1939 == eBus)
+    else if (sg_pouIJ1939Logger!= nullptr && J1939 == eBus)
         {
             sg_pouIJ1939Logger->FPJ1_SetDatabaseFiles(aomDataBaseFiles);
         }
-        else if (LIN == eBus)
+    else if (sg_pouFrameProcLIN != nullptr && LIN == eBus)
         {
             CStringArray m_saLDFPaths;
             std::string sLDFPath;
@@ -10874,7 +10115,7 @@ void CMainFrame::vSetAssociatedDatabaseFiles(ETYPE_BUS eBus)
 
             sg_pouFrameProcLIN->FPL_SetDatabaseFiles(m_saLDFPaths);
         }
-    }
+    
 }
 
 /*******************************************************************************
@@ -11127,29 +10368,6 @@ void CMainFrame::vNS_LINInitCFileFunctPtrs()
     m_sExFuncPtr[LIN].m_pouITraceWndPtr = &sg_ouAppServiceObj;
     //m_sExFuncPtr.m_pNetWorkMcNet = &m_odNetwork;
 
-}
-/******************************************************************************
-    Function Name    :  OnUpdateDllLoadAll
-
-    Input(s)         :  CCmdUI* pCmdUI
-    Output           :  -
-    Functionality    :  Enables or Disables the menu option
-                        depending on the FUNCEDITOR flag.
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Amarnath Shastry
-    Date Created     :  29.03.2002
-    Modifications    :
-******************************************************************************/
-void CMainFrame::OnUpdateDllLoadAll(CCmdUI* pCmdUI)
-{
-    pCmdUI->Enable(GetICANNodeSim()->NS_ShouldToolBarBeEnabled(TB_LOAD));
-}
-
-void CMainFrame::OnUpdateLINDllLoadAll(CCmdUI* pCmdUI)
-{
-    pCmdUI->Enable(GetILINNodeSim()->NS_ShouldToolBarBeEnabled(TB_LOAD));
 }
 
 /******************************************************************************
@@ -11548,7 +10766,7 @@ void CMainFrame::vReRegisterAllLINNodes(void)
     CStringArray pomErrorFiles;
     GetILINNodeSim()->NS_DllUnloadAll(&pomErrorFiles);
     GetILINNodeSim()->NS_SetSimSysConfigData(pLinSimSys);
-    vInitCFileFunctPtrs();
+    vNS_LINInitCFileFunctPtrs();
     GetILINNodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[LIN]), UPDATE_ALL);
     xmlFreeNode(pLinSimSys);
 }
@@ -11560,7 +10778,6 @@ void CMainFrame::vReRegisterAllJ1939Nodes(void)
     CStringArray pomErrorFiles;
     GetIJ1939NodeSim()->NS_DllUnloadAll(&pomErrorFiles);
     GetIJ1939NodeSim()->NS_SetSimSysConfigData(pJ1939SimSys);
-    vInitCFileFunctPtrs();
     NS_InitJ1939SpecInfo();
     GetIJ1939NodeSim()->NS_UpdateFuncStructsNodeSimEx((PVOID)&(m_sExFuncPtr[J1939]), UPDATE_ALL);
     xmlFreeNode(pJ1939SimSys);
@@ -11570,7 +10787,7 @@ HRESULT CMainFrame::InitializeFLEXRAYDIL()
     HRESULT hResult = S_OK;
     m_bNoHardwareFound = true;
     std::string  strLastError;
-    HRESULT hLastError;
+    HRESULT hLastError = S_OK;
     static char chError[256]; //TODO::For trace window
     if (g_pouDIL_FLEXRAY_Interface == nullptr)
     {
@@ -11595,7 +10812,7 @@ HRESULT CMainFrame::InitializeFLEXRAYDIL()
                     if ( hResult == S_OK )
                     {
                         /* Register the Monitor client buffer */
-                        hResult = g_pouDIL_FLEXRAY_Interface->DILF_RegisterClient(TRUE, m_dwFLEXClientID, "CAN_MONITOR");
+                        hResult = g_pouDIL_FLEXRAY_Interface->DILF_RegisterClient(TRUE, m_dwFLEXClientID, "CAN_MONITOR");					
 
                         // Create the message window
                         m_podMsgWndThread->vUpdateClientID(FLEXRAY, m_dwFLEXClientID);
@@ -11769,6 +10986,8 @@ void CMainFrame::OnUpdateFlexRayConnect(CCmdUI* pCmdUI)
             pCmdUI->SetText(omMenuItemText);
         }
     }
+    if(nullptr != pCmdUI)
+    {
     if ( m_shFLEXRAYDriverId != DAL_NONE )
     {
         pCmdUI->Enable();
@@ -11777,6 +10996,7 @@ void CMainFrame::OnUpdateFlexRayConnect(CCmdUI* pCmdUI)
     {
         pCmdUI->Enable(0);
     }
+}
 }
 HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
 {
@@ -11808,17 +11028,25 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
                 DeselectJ1939Interfaces();
                 // On Deactivate, deactivating J1939 and hiding the message window
                 GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(false);
+                if ( nullptr != m_podMsgWndThread )
+                {
                 m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+                }
                 m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
                 m_wndToolbarJ1939.Invalidate();
                 HRESULT hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
                 if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
                 {
-                    hResult = g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, "CAN_MONITOR");
+					hResult = g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, "CAN_MONITOR");
+
                     if ((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS))
                     {
                         m_bNoHardwareFound = false;
-                        g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails, nCount);
+                        HRESULT hResultCntrl = g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails, nCount);
+                        if(hResultCntrl == DILC_WARN_PARAM_ADAPTED)
+                        {
+                            theApp.bWriteIntoTraceWnd("Warning: One of the CAN channel's supplied configuration parameter(s) are adapted in a compatible manner.");
+                        }
                         bInitFrameProcCAN(); // Initialize logger module
                         vReRegisterAllCANNodes();//Reinitialize node simulation
                         if (sg_pouSWInterface[CAN] == nullptr)//Signal watch
@@ -11832,11 +11060,14 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
                         {
                             sg_pouSWInterface[CAN]->SW_DoInitialization(nullptr, nullptr);
                         }
+                        if ( nullptr != m_podMsgWndThread )
+                        {
                         m_podMsgWndThread->vUpdateClientID(CAN, g_dwClientID);
                         if (m_podMsgWndThread != nullptr)//Msg window
                         {
                             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
                                           eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize[CAN]);
+                            }
                         }
                         //initialize graph window read buffer
                         vInitializeGraphWndReadBuffer();
@@ -11917,6 +11148,7 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
          m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)LIN);
      }*/
     HRESULT hResult = S_OK;
+    WPARAM wMsgWndState = SW_HIDE;
     m_bNoHardwareFound = true;
     if (g_pouDIL_LIN_Interface == nullptr)
     {
@@ -11958,11 +11190,14 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
                         {
                             sg_pouSWInterface[LIN]->SW_DoInitialization(&m_ouMsgInterpretSW_L, &m_ouClusterConfig[LIN]);
                         }
+                        if ( nullptr != m_podMsgWndThread )
+                        {
                         m_podMsgWndThread->vUpdateClientID(LIN, g_dwClientID);
                         if (m_podMsgWndThread != nullptr)//Msg window
                         {
                             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
                                           eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize[LIN]);
+                            }
                         }
                         //initialize graph window read buffer
                         /*vInitializeGraphWndReadBuffer();*/
@@ -12268,38 +11503,9 @@ bool CMainFrame::COM_SaveConfigFileAs(CString omCfgFilePath)
     return true;
 }
 
-bool CMainFrame::COM_bDLLBuild(CStringArray* omStrBuildFiles)
-{
-    omStrBuildFiles->RemoveAll();
-    return true;
-}
-
-bool CMainFrame::COM_bDLLBuildLoad(CStringArray* omStrBuildFiles)
-{
-    omStrBuildFiles->RemoveAll();
-    return true;
-}
-
-bool CMainFrame::COM_bDllLoad(CStringArray* /*omStrBuildFiles*/)
-{
-    OnDllLoad();
-    return true;
-}
-
-bool CMainFrame::COM_bDllUnload(CStringArray* /*omStrBuildFiles*/)
-{
-    OnDllUnload();
-    return true;
-}
-
 void CMainFrame::COM_SendMessage()
 {
     OnSendMessage();
-}
-
-void CMainFrame::COM_EnableAllHandlers(bool /*bEnable*/)
-{
-    OnExecuteAllHandlers();
 }
 
 /*  function to get _Unions.h header filename from Database name*/
@@ -12458,15 +11664,7 @@ void CMainFrame::OnUpdateDisplayMsgWnd(CCmdUI* pCmdUI)
     pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarMsgWnd));
 }
 
-void CMainFrame::OnDisplayNodeSim()
-{
-    ToggleView(m_wndToolbarNodeSimul);
-}
 
-void CMainFrame::OnUpdateDisplayNodeSim(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarNodeSimul));
-}
 
 void CMainFrame::OnDisplayConfig()
 {
@@ -12588,6 +11786,18 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
     return nRetValue;
 }
 
+void CMainFrame::BuildAllNodes()
+{
+    GetICANNodeSim()->NS_DLLBuildAll();
+
+
+    vReRegisterAllJ1939Nodes();
+    GetIJ1939NodeSim()->NS_DLLBuildAll();
+
+
+    vReRegisterAllLINNodes();
+    GetILINNodeSim()->NS_DLLBuildAll();
+}
 
 INT CMainFrame::LoadConfiguration(void)
 {
@@ -15131,6 +14341,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     GetIJ1939NodeSim()->NS_SetSimSysConfigData(m_xmlConfigFiledoc);
                 }
             }
+            break;
             case SIMSYS_SECTION_LIN_ID:
             {
                 if (GetILINNodeSim() != nullptr)
@@ -16622,36 +15833,12 @@ INT CMainFrame::SaveConfiguration(void)
 {
     INT nReturn = defCONFIG_FILE_SUCCESS;
     // Save Node Simulation changes
-    GetICANNodeSim()->NS_SaveSimulationSystem();
-    GetIJ1939NodeSim()->NS_SaveSimulationSystem();
 
     vSetCurrProjInfo((FLOAT)BUSMASTER_APPN_VERSION_LATEST);
 
     vSaveXMLConfiguration();
-    //for (eSECTION_ID eSecId = DATABASE_SECTION_ID; eSecId < SECTION_TOTAL;)
-    //{
-    //    BYTE* pbyConfigData = nullptr;
-    //    UINT nSize = 0;
-    //    vGetCurrentSessionData(eSecId, pbyConfigData, nSize);
-
-    //    if (pbyConfigData != nullptr)
-    //    {
-    //        CConfigData::ouGetConfigDetailsObject().bSetData((void*)pbyConfigData, nSize, SectionName[eSecId]);
-    //All done now release the memory
-    //        delete[] pbyConfigData;
-    //        pbyConfigData = nullptr;
-    //    }
-
-    //    eSecId = static_cast<eSECTION_ID>(eSecId + 1);
-    //}
-
-    //CConfigData::ouGetConfigDetailsObject().vSaveConfigFile();
-
     return nReturn;
 }
-
-
-
 
 void CMainFrame::vClearDbInfo(ETYPE_BUS eBus)
 {
@@ -16808,8 +15995,8 @@ bool CMainFrame::bIsConfigurationModified(void)
         vSaveXMLConfiguration(strTempPath);
         bResult = CompareFile(strTempPath, oCfgFilename);
 
-        bResult |= (GetICANNodeSim()->NS_IsSimSysConfigChanged() == TRUE);
-        bResult |= (GetIJ1939NodeSim()->NS_IsSimSysConfigChanged() == TRUE);
+        /*bResult |= (GetICANNodeSim()->NS_IsSimSysConfigChanged() == TRUE);
+        bResult |= (GetIJ1939NodeSim()->NS_IsSimSysConfigChanged() == TRUE);*/
 
     }
 
@@ -16951,7 +16138,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
         {
             if (GetICANNodeSim() != nullptr)
             {
-                GetICANNodeSim()->NS_SetSimSysConfigData(pbyConfigData, nSize);
+                GetICANNodeSim()->NS_SetSimSysConfigData(nullptr, 0);
             }
         }
         break;
@@ -16959,7 +16146,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
         {
             if (GetIJ1939NodeSim() != nullptr)
             {
-                GetIJ1939NodeSim()->NS_SetSimSysConfigData(pbyConfigData, nSize);
+                GetIJ1939NodeSim()->NS_SetSimSysConfigData(nullptr, 0);
             }
         }
         break;
@@ -16967,7 +16154,7 @@ void CMainFrame::vSetCurrentSessionData(eSECTION_ID eSecId, BYTE* pbyConfigData,
         {
             if (GetILINNodeSim() != nullptr)
             {
-                GetILINNodeSim()->NS_SetSimSysConfigData(pbyConfigData, nSize);
+                GetILINNodeSim()->NS_SetSimSysConfigData(nullptr, 0);
             }
         }
         break;
@@ -17812,7 +16999,7 @@ void CMainFrame::OnUpdateSelectFLEXRAYDriver(CCmdUI* pCmdUI)
         }
     }
 
-    if(psCurrDIL->m_dwDriverID != FLEXRAY_DAL_NONE)
+    if(nullptr !=  psCurrDIL && psCurrDIL->m_dwDriverID != FLEXRAY_DAL_NONE)
     {
         pCmdUI->SetCheck(bSelected);
     }
@@ -17953,7 +17140,7 @@ void CMainFrame::OnUpdateSelectLINDriver(CCmdUI* pCmdUI)
         }
     }
 
-    if(psCurrDIL->m_dwDriverID != DAL_LIN_NONE)
+    if(nullptr != psCurrDIL && psCurrDIL->m_dwDriverID != DAL_LIN_NONE)
     {
         pCmdUI->SetCheck(bSelected);
     }
@@ -18586,13 +17773,13 @@ void CMainFrame::OnActivateJ1939()
 {
     HRESULT Result = S_FALSE;
     bool bActivateStatus = false;
-    if ((nullptr == sg_pouIJ1939DIL) && (nullptr == sg_pouIJ1939Logger))
-    {
-        Result = ProcessJ1939Interfaces();
-        GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(true);
-        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)J1939);
-        bActivateStatus = true;
-    }
+	if ((nullptr == sg_pouIJ1939DIL) && (nullptr == sg_pouIJ1939Logger))
+	{
+		Result = ProcessJ1939Interfaces();
+		GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(true);
+		m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)J1939);
+		bActivateStatus = true;	
+	}
     else
     {
         Result = DeselectJ1939Interfaces();
@@ -18601,7 +17788,7 @@ void CMainFrame::OnActivateJ1939()
     }
     /* Modify filter icon accordingly in J1939 toolbar*/
     BYTE bytTbrItemIndex = 1;
-    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, bActivateStatus, IDI_ICON_J1939_DEACTIVATE, IDI_ICON_J1939_ACTIVATE );
+    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, bActivateStatus, IDI_ICON_J1939_DEACTIVATE, IDI_ICON_J1939_ACTIVATE );	
 
     /* If J1939 is deactivated, retain the old icon set and hide J1939 Tx window */
     if ( !bActivateStatus )
@@ -18614,6 +17801,11 @@ void CMainFrame::OnActivateJ1939()
     }
     else
     {
+		if( theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED) == TRUE && sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE)
+		{
+			sg_pouIJ1939Logger->vSetMeasurementFileName();
+		}
+
         // Go online or offline
         OnActionJ1939Online();
     }
@@ -18831,6 +18023,11 @@ void CMainFrame::vJ1939StartStopLogging()
             vSetAssociatedDatabaseFiles(J1939); // Update the db file names associated
             vSetBaudRateInfo(J1939);                // Update the baud rate details
             m_unJ1939TimerSBLog = SetTimer(TIMER_REFRESH_J1939_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, nullptr);
+
+			if(nullptr != sg_pouIJ1939Logger && theApp.pouGetFlagsPtr()->nGetFlagStatus(ACTIVATED_J1939) == TRUE && theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED) == TRUE)
+			{
+				sg_pouIJ1939Logger->vSetMeasurementFileName();
+			}
         }
         sg_pouIJ1939Logger->FPJ1_EnableLogging(bEnable);
     }
@@ -19541,192 +18738,6 @@ void CMainFrame::OnJ1939CfgSimSys()
 {
     NS_InitJ1939SpecInfo();
     GetIJ1939NodeSim()->FE_CreateFuncEditorTemplate(this->GetSafeHwnd(), m_sExFuncPtr[J1939]);
-}
-
-void CMainFrame::OnJ1939LoadAll()
-{
-    CStringArray omStrBuildFiles;
-
-    BOOL bSucces = GetIJ1939NodeSim()->NS_DllLoadAll(&omStrBuildFiles);
-    if(bSucces!=TRUE)  // if the load is not successfull
-    {
-        int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg = _("Following file(s) are not properly loaded:");
-        CString omStrErrorMsgDummy = "";
-        for(int i = 0 ; i < nFailure; i++)
-        {
-
-            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
-            omStrErrorMsg += omStrErrorMsgDummy;
-        }
-        AfxMessageBox(omStrErrorMsg);
-    }
-}
-
-void CMainFrame::OnUpdateJ1939LoadAll(CCmdUI* pCmdUI)
-{
-    pCmdUI->Enable(GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_LOAD));
-}
-
-void CMainFrame::OnJ1939UnloadAll()
-{
-    CStringArray omStrBuildFiles;
-    BOOL bSucces = GetIJ1939NodeSim()->NS_DllUnloadAll(&omStrBuildFiles);
-    if(bSucces!=TRUE)  // if the unload is not successfull
-    {
-        int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg = _("Following file(s) are not properly unloaded:");
-        CString omStrErrorMsgDummy = "";
-        for(int i = 0 ; i < nFailure; i++)
-        {
-
-            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
-            omStrErrorMsg += omStrErrorMsgDummy;
-        }
-        AfxMessageBox(omStrErrorMsg);
-    }
-}
-
-void CMainFrame::OnUpdateJ1939UnloadAll(CCmdUI* pCmdUI)
-{
-    pCmdUI->Enable(GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD));
-}
-
-void CMainFrame::OnJ1939BuildAndLoadAll()
-{
-    CStringArray omStrBuildFiles;
-
-    BOOL bSucces = GetIJ1939NodeSim()->NS_DLLBuildLoadAll(&omStrBuildFiles);
-    if(!bSucces)  // if the build is not successfull
-    {
-        int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg = _("Following file(s) are either not properly build or loaded:");
-        CString omStrErrorMsgDummy = "";
-        for(int i = 0 ; i < nFailure; i++)
-        {
-
-            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
-            omStrErrorMsg += omStrErrorMsgDummy;
-        }
-        AfxMessageBox(omStrErrorMsg);
-    }
-}
-
-void CMainFrame::OnUpdateJ1939BuildAndLoadAll(CCmdUI* pCmdUI)
-{
-    pCmdUI->Enable(GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILDLOAD));
-}
-
-void CMainFrame::OnJ1939BuildAll()
-{
-    CStringArray omStrBuildFiles;
-
-    BOOL bSucces = GetIJ1939NodeSim()->NS_DLLBuildAll(&omStrBuildFiles);
-    if(!bSucces)  // if the build is not successfull
-    {
-        int nFailure = omStrBuildFiles.GetSize();
-        CString omStrErrorMsg = _("Following file(s) are either not properly build or loaded:");
-        CString omStrErrorMsgDummy = "";
-        for(int i = 0 ; i < nFailure; i++)
-        {
-
-            omStrErrorMsgDummy.Format("\n%s", omStrBuildFiles.GetAt(i));
-            omStrErrorMsg += omStrErrorMsgDummy;
-        }
-        AfxMessageBox(omStrErrorMsg);
-    }
-}
-
-void CMainFrame::OnUpdateJ1939BuildAll(CCmdUI* pCmdUI)
-{
-    pCmdUI->Enable(GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_BUILD));
-}
-
-void CMainFrame::OnJ1939AllMessageHandlers()
-{
-    //Get present status
-    BOOL bEnable = GetIJ1939NodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON);
-    //Change the status of handler
-    GetIJ1939NodeSim()->NS_EnableAllMessageHandler( !bEnable );
-}
-
-void CMainFrame::OnUpdateJ1939AllMessageHandlers(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetIJ1939NodeSim()->NS_GetHandlerStatus(H_MSGHANDLERBUTTON));
-    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
-
-void CMainFrame::OnJ1939AllKeyHandlers()
-{
-    //Get present status
-    BOOL bEnable = GetIJ1939NodeSim()->NS_GetHandlerStatus(H_KEY_HANDLER_ON);
-    //Change the status of handler
-    GetIJ1939NodeSim()->NS_EnableAllKeyHandler( !bEnable );
-}
-
-void CMainFrame::OnUpdateJ1939AllKeyHandlers(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetIJ1939NodeSim()->NS_GetHandlerStatus(H_KEY_HANDLER_ON));
-    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
-
-void CMainFrame::OnJ1939AllTimerHandlers()
-{
-    //Get present status
-    BOOL bEnable = GetIJ1939NodeSim()->NS_GetHandlerStatus(H_TIMERBUTTON);
-    //Change the status of handler
-    GetIJ1939NodeSim()->NS_EnableAllTimers( !bEnable );
-}
-
-/**
-* \brief         This function will enable all the event handlers
-* \return        void
-* \authors       Arunkumar Karri
-* \date          11.06.2012 Created
-*/
-void CMainFrame::OnJ1939AllEventHandlers()
-{
-    //Get present status
-    BOOL bEnable = GetIJ1939NodeSim()->NS_GetHandlerStatus(H_EVENT_HANDLER);
-    //Change the status of handler
-    GetIJ1939NodeSim()->NS_EnableAllEventHandler( !bEnable );
-}
-
-void CMainFrame::OnUpdateJ1939AllTimerHandlers(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetIJ1939NodeSim()->NS_GetHandlerStatus(H_TIMERBUTTON));
-    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
-
-/**
-* \brief         This function will update the enable status of event handlers
-* \param[in]     CCmdUI *pCmdUI
-* \return        void
-* \authors       Arunkumar Karri
-* \date          11.06.2012 Created
-*/
-void CMainFrame::OnUpdateJ1939AllEventHandlers(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetIJ1939NodeSim()->NS_GetHandlerStatus(H_EVENT_HANDLER));
-    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
-}
-
-void CMainFrame::OnJ1939AllHandlers()
-{
-    //Get present status
-    BOOL bEnable = GetIJ1939NodeSim()->NS_GetHandlerStatus(H_ALL_HANDLER);
-    //Change the status of handler
-    GetIJ1939NodeSim()->NS_EnableAllHandlers( !bEnable );
-}
-void CMainFrame::OnUpdateJ1939AllHandlers(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(GetIJ1939NodeSim()->NS_GetHandlerStatus(H_ALL_HANDLER));
-    BOOL bEnable = GetIJ1939NodeSim()->NS_ShouldToolBarBeEnabled(TB_UNLOAD);
-    pCmdUI->Enable(bEnable);
 }
 
 void CMainFrame::OnUpdateJ1939CfgSimSys(CCmdUI* pCmdUI)

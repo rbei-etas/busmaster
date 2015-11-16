@@ -30,8 +30,8 @@
 
 #define defCHILD_FRAME_PROP_H               0.75
 #define defOUTPUT_WND_PROP_X                0.5
-#define defTX_SIM_WND_BOTTOM_MARGIN        0.05
-#define defTX_SIM_WND_RIGHT_MARGIN         0.05
+#define defTX_SIM_WND_BOTTOM_MARGIN        0.45
+#define defTX_SIM_WND_RIGHT_MARGIN         0.78
 // Simulated system Configuration window
 #define defSTR_SIMSYS_SAVE_CONFIRMATION         "Do you want to save changes?"
 
@@ -178,7 +178,7 @@ BOOL CALLBACK EnumChildProc(HWND hwnd, LPARAM /* lParam */)
                         CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)pEditWnd->GetActiveDocument();
 
                         /* If a function editor window is modified */
-                        if ( pDoc->IsModified() )
+						if ( nullptr != pDoc && pDoc->IsModified() )
                         {
                             /* take confirmation from user for the first time only */
                             if ( g_bReqUserConfirmation )
@@ -478,7 +478,7 @@ HRESULT CGlobalObj::RegisterNodeToDIL(BOOL bRegister, PSNODEINFO pNodeInfo)
             {
                 //Set the buffer
                 hResult = CGlobalObj::GetICANDIL()->DILC_ManageMsgBuf(MSGBUF_ADD,
-                          pNodeInfo->m_dwClientId, &(pNodeInfo->m_ouCanBufFSE));
+                          pNodeInfo->m_dwClientId, (pNodeInfo->m_ouCanBufFSE));
             }
         }
         break;
@@ -493,7 +493,7 @@ HRESULT CGlobalObj::RegisterNodeToDIL(BOOL bRegister, PSNODEINFO pNodeInfo)
             {
                 //Set the buffer
                 hResult = CGlobalObj::GetIJ1939DIL()->DILIJ_ManageMsgBuf(MSGBUF_ADD,
-                          pNodeInfo->m_dwClientId, &(pNodeInfo->m_ouMsgBufVSE));
+                          pNodeInfo->m_dwClientId, (pNodeInfo->m_ouMsgBufVSE));
 
                 GetIJ1939DIL()->DILIJ_SetCallBckFuncPtr(pNodeInfo->m_dwClientId,
                                                         CLBCK_FN_LDATA_CONF, (PCLBCK_FN_LDATA_CONF)sg_vDataConfEventFnJ1939);
@@ -513,7 +513,7 @@ HRESULT CGlobalObj::RegisterNodeToDIL(BOOL bRegister, PSNODEINFO pNodeInfo)
             {
                 //Set the buffer
                 hResult = CGlobalObj::GetILINDIL()->DILL_ManageMsgBuf(MSGBUF_ADD,
-                          pNodeInfo->m_dwClientId, &(pNodeInfo->m_ouLinBufSE));
+                          pNodeInfo->m_dwClientId, (pNodeInfo->m_ouLinBufSE));
             }
         }
         break;

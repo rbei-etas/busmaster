@@ -37,11 +37,21 @@ extern "C" int nGetDayFromDate(char* pchDate, char* pchMonth, char* chWeekDay)
     int nDate, nMonth, nYear;
     char chDelim[] = ":. ";
     char* pchTemp = strtok(pchDate, chDelim);
+	nDate = nMonth = nYear = 0;
+    if (NULL != pchTemp)
+    {
     nDate = atoi(pchTemp);
+    }
     pchTemp = strtok(NULL, chDelim);
+    if (NULL != pchTemp)
+    {
     nMonth = atoi(pchTemp);
+    }
     pchTemp = strtok(NULL, chDelim);
+    if (NULL != pchTemp)
+    {
     nYear = atoi(pchTemp);
+    }
     /*sscanf(pchDate, "%d%c%d%c%d", &nDate, &chTemp, &nMonth,
         &chTemp, &nYear);*/
     CTime omTime(nYear, nMonth, nDate, 0, 0, 0, 0);

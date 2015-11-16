@@ -196,25 +196,18 @@ void CFlags::vInitializeFlags()
     m_bFilterUndefinedMsgs  = FALSE;
     m_bRxMsg                = FALSE;
     m_bSelectDatabaseFile   = FALSE;
-    m_bDllLoaded            = FALSE;
-    m_bTimerButtonOn        = FALSE;
     m_bFunctionEditorOn     = FALSE;
     m_bFilterTxMsg          = FALSE;
     m_bDbOpen               = FALSE;
     m_bDbOpenJ1939          = FALSE;
     m_wReplayMode           = FALSE;
     m_bReplayFileSelected   = FALSE;
-    m_bMsgHandlerOn         = FALSE;
     m_bScrolling            = TRUE;
     m_bMessageSelected      = FALSE;
     m_bTimeDelayReplayFile  = TRUE;
     m_bStopFilter           = TRUE;
     m_bConnected            = FALSE;
-    m_bKeyHandlerOn         = FALSE;
     m_wControllerMode       = TRUE;  // Active mode
-    m_bErrorHandlerOn       = FALSE;
-    m_bDLLHandlerOn         = FALSE;
-    m_bALLHandler           = FALSE;
     m_bLogHexON             = TRUE;
     m_wLogTimeMode          = eSYSTEM_MODE; // absolute mode
     m_nReplayMsgType        = eALL_MESSAGE; // All messages
@@ -367,15 +360,6 @@ void CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
         case SELECTDATABASEFILE :
             m_bSelectDatabaseFile = nValue ;
             break;
-        case DLLLOADED :
-            m_bDllLoaded = nValue;
-            break;
-        case TIMERBUTTON :
-            m_bTimerButtonOn = nValue;
-            break;
-        case MSGHANDLERBUTTON :
-            m_bMsgHandlerOn = nValue;
-            break;
         case FUNCEDITOR :
             m_bFunctionEditorOn = nValue;
             break;
@@ -444,21 +428,9 @@ void CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             m_bConnectedLin = nValue;
             break;
 
-        case KEY_HANDLER_ON:
-            m_bKeyHandlerOn = nValue;
-            break;
 
-        case ERROR_HANDLER:
-            m_bErrorHandlerOn = nValue;
-            break;
 
-        case DLL_HANDLER:
-            m_bDLLHandlerOn = nValue;
-            break;
 
-        case ALL_HANDLER:
-            m_bALLHandler = nValue;
-            break;
 
         case CONTROLLER_MODE:
             m_wControllerMode = static_cast<WORD>(nValue);
@@ -617,15 +589,6 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
         case SELECTDATABASEFILE :
             nRetValue = m_bSelectDatabaseFile;
             break;
-        case DLLLOADED :
-            nRetValue = m_bDllLoaded;
-            break;
-        case TIMERBUTTON :
-            nRetValue = m_bTimerButtonOn;
-            break;
-        case MSGHANDLERBUTTON :
-            nRetValue = m_bMsgHandlerOn;
-            break;
         case FUNCEDITOR :
             nRetValue = m_bFunctionEditorOn;
             break;
@@ -661,18 +624,6 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
             break;
         case LIN_CONNECTED:
             nRetValue  = m_bConnectedLin;
-            break;
-        case KEY_HANDLER_ON:
-            nRetValue  = m_bKeyHandlerOn;
-            break;
-        case ERROR_HANDLER:
-            nRetValue  = m_bErrorHandlerOn;
-            break;
-        case DLL_HANDLER:
-            nRetValue  = m_bDLLHandlerOn;
-            break;
-        case ALL_HANDLER:
-            nRetValue  = m_bALLHandler;
             break;
         case CONTROLLER_MODE:
             nRetValue  = m_wControllerMode;

@@ -42,7 +42,9 @@
 CReplayFile::CReplayFile()
     : m_omStrFileName( "" ),
       m_nTimeMode( 0 ),
+      m_nSessionMode(0),
       m_unMsgTimeDelay( 1 ),
+      m_unSessionDelay(1),
       m_nReplayMode( 0 ),
       m_unCycleTimeDelay( 1 ),
       m_bEnabled( TRUE ),
@@ -108,8 +110,12 @@ void CReplayFile::vCopyContent(const CReplayFile& ouRef)
     m_omStrFileName = ouRef.m_omStrFileName;
     // Time Mode
     m_nTimeMode = ouRef.m_nTimeMode;
+    // Session Mode
+    m_nSessionMode = ouRef.m_nSessionMode;
     // Specified Delay
     m_unMsgTimeDelay = ouRef.m_unMsgTimeDelay;
+    // Specified Session Delay
+    m_unSessionDelay = ouRef.m_unSessionDelay;
     // Repaly Mode
     m_nReplayMode = ouRef.m_nReplayMode;
     // Cyclic Delay
@@ -153,6 +159,8 @@ UINT CReplayFile::unGetConfigSizeOfCommonMembers()
     UINT unSize = 0;
     unSize += sizeof(m_nTimeMode);
     unSize += sizeof(m_unMsgTimeDelay);
+    unSize += sizeof(m_nSessionMode);
+    unSize += sizeof(m_unSessionDelay);
     unSize += sizeof(m_nReplayMode);
     unSize += sizeof(m_unCycleTimeDelay);
     unSize += sizeof(m_bEnabled);
@@ -185,6 +193,10 @@ BYTE* CReplayFile::pbySaveConfig(BYTE* pDesBuffer)
     pDesBuffer += sizeof(m_nTimeMode);
     memcpy(pDesBuffer, &m_unMsgTimeDelay, sizeof(m_unMsgTimeDelay));
     pDesBuffer += sizeof(m_unMsgTimeDelay);
+    memcpy(pDesBuffer, &m_nSessionMode, sizeof(m_nSessionMode));
+    pDesBuffer += sizeof(m_nSessionMode);
+    memcpy(pDesBuffer, &m_unSessionDelay, sizeof(m_unSessionDelay));
+    pDesBuffer += sizeof(m_unSessionDelay);
     memcpy(pDesBuffer, &m_nReplayMode, sizeof(m_nReplayMode));
     pDesBuffer += sizeof(m_nReplayMode);
     memcpy(pDesBuffer, &m_unCycleTimeDelay, sizeof(m_unCycleTimeDelay));
@@ -214,7 +226,7 @@ BOOL CReplayFile::pbySaveConfig(xmlNodePtr pxmlNodePtr)         //replay is the 
     //<Log_File_Path>path</Log_File_Path>
 
     std::string omPath, omStrConfigFolder;
-    char configPath[MAX_PATH];
+	char configPath[MAX_PATH]={0};
     AfxGetMainWnd()->SendMessage(10000, (WPARAM)configPath, 0);
     CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
     CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)m_omStrFileName.GetBuffer(MAX_PATH), omPath);
@@ -247,6 +259,19 @@ BOOL CReplayFile::pbySaveConfig(xmlNodePtr pxmlNodePtr)         //replay is the 
     omcVarChar = csMsgDelay;
     xmlNodePtr pMsgDelay = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_MSG_DELAY,BAD_CAST omcVarChar);
     xmlAddChild(pxmlNodePtr, pMsgDelay);
+    //<Retain_Recorded_Session>bool</Retain_Recorded_Session>
+    CString     csRetainSessionRec;
+    csRetainSessionRec.Format("%d",m_nSessionMode);
+    omcVarChar = csRetainSessionRec;
+    xmlNodePtr pRetainSessionRec = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_RETAIN_RECORD_SESSION,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pRetainSessionRec);
+
+    //<Session_Delay>1</Session_Delay>
+    CString     csSessionDelay;
+    csSessionDelay.Format("%u",m_unSessionDelay);
+    omcVarChar = csSessionDelay;
+    xmlNodePtr pSessionDelay = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_SESSION_DELAY,BAD_CAST omcVarChar);
+    xmlAddChild(pxmlNodePtr, pSessionDelay);
 
     // <Is_Cyclic_Mode>bool</Is_Cyclic_Mode>
     CString     csCyclicMode;
@@ -320,6 +345,10 @@ BYTE* CReplayFile::pbyLoadConfig(BYTE* pSrcBuffer, INT nSectionVersion)
     pSrcBuffer += sizeof(m_nTimeMode);
     memcpy(&m_unMsgTimeDelay, pSrcBuffer, sizeof(m_unMsgTimeDelay));
     pSrcBuffer += sizeof(m_unMsgTimeDelay);
+    memcpy(&m_nSessionMode, pSrcBuffer, sizeof(m_nSessionMode));
+    pSrcBuffer += sizeof(m_nSessionMode);
+    memcpy(&m_unSessionDelay, pSrcBuffer, sizeof(m_unSessionDelay));
+    pSrcBuffer += sizeof(m_unSessionDelay);
     memcpy(&m_nReplayMode, pSrcBuffer, sizeof(m_nReplayMode));
     pSrcBuffer += sizeof(m_nReplayMode);
     memcpy(&m_unCycleTimeDelay, pSrcBuffer, sizeof(m_unCycleTimeDelay));
@@ -362,7 +391,7 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
                 {
                     std::string omStrConfigFolder;
                     std::string omPath;
-                    char configPath[MAX_PATH];
+					char configPath[MAX_PATH]={0};
                     AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
                     CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
                     char chAbsPath[MAX_PATH];
@@ -406,7 +435,24 @@ int CReplayFile::nLoadXMLConfig(xmlNodePtr pNodePtr)
                 xmlFree(key);
             }
         }
-
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Retain_Recorded_Session")))
+        {
+            xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            if(nullptr != key)
+            {
+                m_nSessionMode = xmlUtils::bGetBooleanValue((char*)key);
+                xmlFree(key);
+            }
+        }
+        if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Session_Delay")))
+        {
+            xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+            if(nullptr != key)
+            {
+                m_unSessionDelay = atoi((char*)key);
+                xmlFree(key);
+            }
+        }
         if ((!xmlStrcmp(pNodePtr->name, (const xmlChar*)"Is_Cyclic_Mode")))
         {
             xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
@@ -544,6 +590,22 @@ BOOL CReplayFile::bisConfigChanged(BYTE*& pSrcBuffer)
             memcpy(&m_unTimeDelTmp, pSrcBuffer, sizeof(m_unTimeDelTmp));
             pSrcBuffer += sizeof(m_unTimeDelTmp);
             if (m_unMsgTimeDelay != m_unTimeDelTmp)
+            {
+                bReturn = FALSE;
+            }
+        }
+
+        memcpy(&m_nSessionModeTmp, pSrcBuffer, sizeof(m_nSessionModeTmp));
+        pSrcBuffer += sizeof(m_nSessionModeTmp);
+        if (m_nSessionMode != m_nSessionModeTmp)
+        {
+            bReturn = FALSE;
+        }
+        if (bReturn)
+        {
+            memcpy(&m_unSessionDelTmp, pSrcBuffer, sizeof(m_unSessionDelTmp));
+            pSrcBuffer += sizeof(m_unSessionDelTmp);
+            if (m_unSessionDelay != m_unSessionDelTmp)
             {
                 bReturn = FALSE;
             }

@@ -55,6 +55,8 @@ public:
 
     static INT nGetBaseFolder(const char* omConfigFileName, std::string& omStrConfigFolder);
 
+    static bool bFindLastSuffix(std::string str, std::string subStr, int& npos);
+    static void CUtilFunctions::Trim(std::string& str , char chChar);
 private:
     /* Make constructor as private so that object can not be created for this class */
     CUtilFunctions();

@@ -31,3 +31,5 @@ BOOL gvSetControllerMode_LIN(BOOL);
 BOOL gbStartStopHardware_LIN(BOOL) ;
 //to get first connected database name
 DWORD gdGetFirstLINdbName(char* , DWORD );
+BOOL gbWtiteToLog_LIN(char* pcString);
+BOOL gbEnableDisableLog_LIN(BOOL bEnable);

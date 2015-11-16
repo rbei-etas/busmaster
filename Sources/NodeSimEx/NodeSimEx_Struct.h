@@ -30,30 +30,19 @@ typedef bool (*WRITE_TO_LOG)(char*);
 enum
 {
     LOG_ENABLE_DISABLE = 0,
+    LOG_ENABLE_DISABLE_LIN,
     DIS_CONNECT,
     WRITE_TO_LOGFILE,
     RESET_HARDWARE_CONTROLLER,
     WRITE_TO_LOGFILE_J1939,
+    WRITE_TO_LOGFILE_LIN,
     LIN_DIS_CONNECT
 };
 
 //USER_DLL MESSAGES
 #define WM_FROM_USER_DLL            (WM_USER + 40)
 #define WM_GET_ABSOLUTE_TIME         WM_USER + 52
-// enumeration for all flags
-typedef enum eSIMSYSFLAG
-{
-    H_DLLLOADED,
-    H_TIMERBUTTON,
-    H_MSGHANDLERBUTTON,
-    H_FUNCEDITOR,
-    H_KEY_HANDLER_ON,
-    H_ERROR_HANDLER,
-    H_EVENT_HANDLER,
-    H_DLL_HANDLER,
-    H_ALL_HANDLER,
-    H_CONNECTED
-};
+
 // Definition of PSTOOLBARINFO structure is here
 typedef enum
 {

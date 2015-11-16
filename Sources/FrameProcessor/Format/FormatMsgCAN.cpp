@@ -175,7 +175,7 @@ void CFormatMsgCAN::vFormatCANDataMsg(STCANDATA* pMsgCAN,
 void CFormatMsgCAN::vFormatErrMsg(SERROR_INFO sErrInfo, eERROR_STATE& eErrType)
 {
     eErrType = ERROR_ACTIVE;
-    USHORT usErrorID;
+    USHORT usErrorID = ERROR_UNKNOWN;
     if (sErrInfo.m_ucErrType == ERROR_WARNING_LIMIT_REACHED)
     {
         usErrorID = sErrInfo.m_ucErrType;
@@ -194,7 +194,7 @@ void CFormatMsgCAN::vFormatErrMsg(SERROR_INFO sErrInfo, eERROR_STATE& eErrType)
             usErrorID = sErrInfo.m_ucErrType;
         }
 
-        eERROR_STATE bErrTransState;
+        eERROR_STATE bErrTransState = ERROR_INVALID;
         if(bIsTransitionInState(sErrInfo.m_ucChannel, sErrInfo.m_ucRxErrCount, sErrInfo.m_ucTxErrCount, bErrTransState))
         {
             if (usErrorID == STUFF_ERROR_RX)

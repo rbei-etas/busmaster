@@ -1,20 +1,24 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
-<reference id="GetTxBlockCount" xml:lang="en-us">
-  <title>GetTxBlockCount : Getter for current transmission block count</title>
+<reference id="WriteToLogFile" xml:lang="en-us">
+  <title>UnRegisterClient : To Unregister a Client</title>
   <refbody>
     <section>
+      <title>Synopsis</title>
+      <p>HRESULT UnRegisterClient([in] USHORT usUniqueID);</p>
+    </section>
+    <section>
       <title>Description</title>
-      <p>Getter for current transmission block count.</p>
+      <p>This function unregisters the registered Client</p>
     </section>
     <section>
       <title>Inputs</title>
-      <p>USHORT*</p>
+      <p>usUniqueID - Client Id.</p>
     </section>
     <section>
-      <title>Result</title>
-      <p>The [out] parameter to receive the result.</p>
+      <b>Usage in COM Client</b>
     </section>
+    <section>HRESULT hResult = m_IApplication-&gt;UnRegisterClient(1); //Unregisters Client with id 1;</section>
     <section>
       <title>Cause of failure</title>
       <p>NA</p>

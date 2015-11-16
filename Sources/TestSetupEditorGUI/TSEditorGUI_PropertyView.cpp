@@ -256,7 +256,12 @@ Modifications  :
 ******************************************************************************/
 void CPropertyView::OnBnClickedCancel()
 {
-    GetEditorWindow()->nCancelCurrentChanges();
+    CTSEditorChildFrame* pEditor = GetEditorWindow();
+	
+	if(nullptr != pEditor)
+	{
+		pEditor->nCancelCurrentChanges();
+	}
 }
 
 
@@ -273,7 +278,12 @@ Modifications  :
 ******************************************************************************/
 void CPropertyView::OnBnClickedConfirm()
 {
-    GetEditorWindow()->OnFileSave();
+   CTSEditorChildFrame* pEditor = GetEditorWindow();
+	
+	if(nullptr != pEditor)
+	{
+		pEditor->OnFileSave();
+	}
     //GetEditorWindow()->nConfirmCurrentChanges();
 }
 

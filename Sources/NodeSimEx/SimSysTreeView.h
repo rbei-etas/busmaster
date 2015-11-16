@@ -25,7 +25,7 @@
 #pragma once
 
 #include "Include/Basedefs.h"
-#include "SimSysConfigDetails.h"  // For CSimSysConfigDetails class decl
+#include "SimSysNodeInfo.h"
 
 class CSimSysTreeView : public CTreeView
 {
@@ -39,24 +39,12 @@ public:
     // Operations
 public:
 
-    CStringList m_omSimsysNames;
-    BOOL bSetSimsysName(CString& omStrSimsysName);
-    void vPopulateAddedSimSysInfo(CString omStrSimSysPath);
 
     void vSetAllDllloaded();
     void vSetDllLoaded();
 
     // to populate the tree view.
     BOOL bPopulateTree();
-
-    // To update the edited node details (dll path)
-    void vSetDllName(CString& omStrPrevDllName , CString& omStrNewDllName );
-
-    // To update the edited node details (dll path)
-    void vSetSimSysDllName(CString& omStrNodeName,
-                           CString& omStrNewDllName ,
-                           BOOL bIsDllLoaded);
-
 
     // Overrides
     // ClassWizard generated virtual function overrides
@@ -80,67 +68,54 @@ protected:
     // Generated message map functions
 protected:
     //{{AFX_MSG(CSimSysTreeView)
+    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
     afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
     afx_msg void OnTreeViewRightclick(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
-    afx_msg void OnKeydown(NMHDR* pNMHDR, LRESULT* pResult);
-    afx_msg void OnAddSimsys();
-    afx_msg void OnAllNodeHandlers();
-    afx_msg void OnDeleteAllSimsys();
-    afx_msg void OnDeleteNode();
+    afx_msg void OnTreeViewDblclick(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnRemoveNode();
+    afx_msg void OnConfigNode();
+    afx_msg void OnAddNode();
     afx_msg void OnEditNode();
-    afx_msg void OnNewSimsys();
-    afx_msg void OnNodeErrorhandlers();
-    afx_msg void OnNodeKeyhandlers();
-    afx_msg void OnNodeMessagehandlers();
-    afx_msg void OnNodeTimerhandlers();
-    afx_msg void OnAddnode();
-    afx_msg void OnSimsysAllErrorhandlers();
-    afx_msg void OnSimsysAllhandlers();
-    afx_msg void OnSimsysAllKeyhandlers();
-    afx_msg void OnSimsysAllMsghandlers();
-    afx_msg void OnSimsysAllTimerhandlers();
-    afx_msg void OnSimsysAllEventhandlers();
-    afx_msg void OnSimsysBuildall();
-    afx_msg void OnDeleteAllNodes();
-    afx_msg void OnDeleteSimulatedsystem();
-    afx_msg void OnSimsysLoadall();
-    afx_msg void OnSimsysSave();
-    afx_msg void OnSimsysSaveAs();
-    afx_msg void OnSimsysUnloadall();
-    afx_msg void OnSimsysSaveAll();
-    afx_msg void OnSimsysAllDllHandlers();
+    afx_msg void OnEnableDisableNode();
+    afx_msg void OnBuildNode();
+    afx_msg void OnTreeGetInfoTip(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnUpdateAddNode(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateConfigNode(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateEditNode(CCmdUI* pCmdUI);
+    afx_msg void OnUpdateBuildNode(CCmdUI* pCmdUI);
+
+    afx_msg void OnUpdateRemoveNode(CCmdUI* pCmdUI);
+    afx_msg void OnPaint();
+
+    afx_msg void OnKeyDown(UINT ch,UINT Count,UINT Flags);
+
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
     ETYPE_BUS m_eBus;
-    CMenu* pomContextMenu;
     CMenu* m_pomSubMenu;
 
     CMenu* m_pomContextMenu;
-    BOOL bCallFrmSaveAs;
-    int m_omSimsysCount;
-    BOOL m_bIsNewNode;
+    CImageList m_omImageList;
 
-    CString m_omSelectedItemText;
     CString omStrSimsysToBeDeleted;
 
-    HTREEITEM m_hRootItem;
+    HMODULE m_hModAdvancedUILib;
 
     CPoint m_omRightClickPoint;
-    CPoint m_omLeftCLickPoint;
-    HTREEITEM m_hTreeItem;
-    void vAddEditNode(BOOL bMode);
+
+
+    HTREEITEM m_hSelectedTreeItem;
+    BOOL bCreateImageList();
+
     void vSaveSimsSysIfModified(CString omSimSysName) ;
+    void vModifyToolbarIcon(BYTE bytItemIndex, bool bItemON, UINT nTBIDON, UINT nTBIDOFF);
+    PSNODEINFO GetNodeInfo(HTREEITEM hTreeItem);
+    void vDisplayRootMenu();
+    void vDisplayNodeMenu();
 
 public:
     static ETYPE_BUS CSimSysTreeView::sm_eBus;
-    void vAddSimDetFromFile(CString oCfgFilename);
-    void vDisplayRootMenu();
-    void vDisplaySimSysMenu();
-    void vDisplayNodeMenu();
-    HTREEITEM hInsertAndSelectItem(CString omItemName, HTREEITEM hParent);
-    PSSIMSYSINFO psGetCurrentSimSysInfo();
-
 };

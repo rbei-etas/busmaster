@@ -1802,7 +1802,7 @@ void CChangeRegisters::vFillControllerConfigDetails()
     CButton* pCheckSelfRec = (CButton*)GetDlgItem(IDC_CHKB_SELF_RECEPTION);
     if (pCheckSelfRec != nullptr)
     {
-        if ( m_pControllerDetails[ m_nLastSelection ].m_bSelfReception )
+        if (nullptr != m_pControllerDetails && m_pControllerDetails[ m_nLastSelection ].m_bSelfReception )
         {
             pCheckSelfRec->SetCheck(BST_CHECKED);
         }

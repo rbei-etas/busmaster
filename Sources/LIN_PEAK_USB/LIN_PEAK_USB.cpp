@@ -747,7 +747,7 @@ static int nCreateHwNetMap( HLINHW hDevices[],
         sHwNetList[ nIndex ].m_hNet = 0;
     }
     // Buffer to get Network/Hardware Param
-    char cBuff[ defUSB_PARAM_BUFFER_SIZE ];
+    char cBuff[ defUSB_PARAM_BUFFER_SIZE ] = {0};
 
     // Iterate thro list of devices
     int nDeviceNumber = 0;

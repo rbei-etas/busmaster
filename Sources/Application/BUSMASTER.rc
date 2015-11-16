@@ -98,7 +98,6 @@ BEGIN
     "B",            IDM_CONFIGURE_DATABASE_NEW, VIRTKEY, CONTROL, NOINVERT
     "D",            IDM_CONFIGURE_DATABASE_OPENACTIVE, VIRTKEY, CONTROL, NOINVERT
     "E",            IDM_CONFIGURE_DATABASE_SAVE, VIRTKEY, CONTROL, NOINVERT
-    "L",            IDM_DLL_BUILDLOAD_ALL,  VIRTKEY, CONTROL, NOINVERT
     "M",            IDM_FILE_IMPORT_DATABASE, VIRTKEY, CONTROL, NOINVERT
     "T",            IDM_DATABASE_DISSOCIATE_DB, VIRTKEY, CONTROL, NOINVERT
     "I",            IDM_SAVE_IMPORT,        VIRTKEY, CONTROL, NOINVERT
@@ -499,12 +498,12 @@ BEGIN
     GROUPBOX        " Licence Key ",IDC_STATIC,14,70,199,86
 END
 
-IDD_DLG_CONFIG_MSG_LOG DIALOGEX 0, 0, 376, 198
+IDD_DLG_CONFIG_MSG_LOG DIALOGEX 0, 0, 376, 270
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Configure Message Logging"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    PUSHBUTTON      "&Add",IDC_CBTN_ADDLOG,40,152,50,14
+    PUSHBUTTON      "&Add",IDC_CBTN_ADDLOG,40,135,50,14
     LTEXT           "&File Path",IDC_STATIC,165,21,28,8,NOT WS_GROUP
     EDITTEXT        IDC_EDIT_LOGFILEPATH,195,19,147,12,ES_AUTOHSCROLL | ES_READONLY
     PUSHBUTTON      "...",IDC_CBTN_LOGFILEPATH,347,19,18,12
@@ -522,19 +521,36 @@ BEGIN
     CONTROL         "",IDC_CHKB_STARTTRIGGER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,172,116,12,8
     CONTROL         "",IDC_CHKB_STOPTRIGGER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,172,132,11,8
     CONTROL         "&Enable/Disable Logging during tool Connect/Disconnect",IDC_CHKB_ENABLE_LOG_ONCONNECT,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,181,210,10
-    PUSHBUTTON      "&Remove",IDC_CBTN_DELETELOG,97,152,50,14
-    DEFPUSHBUTTON   "&OK",IDOK,264,177,50,14
-    PUSHBUTTON      "&Cancel",IDCANCEL,323,177,50,14
-    CONTROL         "",IDC_LOGBLOCK_LST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,13,17,134,132
-    GROUPBOX        "Log Blocks",IDC_STATIC,4,3,152,167
-    GROUPBOX        "Log File Details",IDC_LOGFILE_GROUP,159,3,214,166
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,256,210,10
+    PUSHBUTTON      "&Remove",IDC_CBTN_DELETELOG,97,135,50,14
+    DEFPUSHBUTTON   "&OK",IDOK,264,252,50,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,323,252,50,14
+    CONTROL         "",IDC_LOGBLOCK_LST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,13,15,134,117
+    GROUPBOX        "Log Blocks",IDC_STATIC,4,3,152,149
+    GROUPBOX        "Log File Details",IDC_LOGFILE_GROUP,157,2,216,150
     EDITTEXT        IDC_EDIT_STARTMSGID,282,114,75,13,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_STOPMSGID,282,130,75,13,ES_AUTOHSCROLL
-    PUSHBUTTON      "Filters",IDC_LOG_FILTER,315,150,50,14
+    PUSHBUTTON      "Filters",IDC_LOG_FILTER,316,228,50,14
     LTEXT           "Start on Reception of PNG 0x",IDC_STATIC_01,186,116,95,8
     LTEXT           "Stop on Reception of PNG 0x",IDC_STATIC_02,186,132,94,8
     CONTROL         "Reset Timestamp",IDC_CHECK_RESET_TIMESTAMP,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,270,86,71,10
+    GROUPBOX        "Create New Log File",IDC_LOGTRIGGER_GROUP2,15,161,159,83
+    CONTROL         "For every Bus Connect for Transmission",IDC_CHKB_ON_TRANSMISSION,
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,22,175,139,8
+    CONTROL         "After each file size exceeding",IDC_CHKB_LOG_FILE_SIZE,
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,22,191,106,8
+    EDITTEXT        IDC_EDIT_FILE_SIZE,130,189,29,12,ES_AUTOHSCROLL | ES_NUMBER | WS_DISABLED
+    LTEXT           "MB",IDC_STATIC_MB,162,191,10,8,NOT WS_GROUP
+    CONTROL         "After every ",IDC_CHKB_LOG_ON_TIME,"Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,22,209,49,8
+    EDITTEXT        IDC_EDIT_HOURS,74,207,24,12,ES_AUTOHSCROLL | ES_NUMBER | WS_DISABLED
+    LTEXT           "Hr(s)",IDC_STATIC_HOUR,101,209,17,8,NOT WS_GROUP
+    EDITTEXT        IDC_EDIT_MINUTES,122,207,20,12,ES_AUTOHSCROLL | ES_NUMBER | WS_DISABLED
+    LTEXT           "Min(s)",IDC_STATIC_MINUTES,146,209,20,8,NOT WS_GROUP
+    LTEXT           "Number of files to be allowed",IDC_STATIC_NO_OF_FILES,23,227,94,8,NOT WS_GROUP
+    EDITTEXT        IDC_EDIT_NO_OF_FILES,120,225,36,12,ES_AUTOHSCROLL | ES_NUMBER | WS_DISABLED
+    EDITTEXT        IDC_EDIT_LOG_COMMENT,183,172,180,47,ES_MULTILINE | ES_AUTOHSCROLL | ES_WANTRETURN | WS_DISABLED | WS_VSCROLL | WS_HSCROLL
+    GROUPBOX        "",IDC_STATIC,7,154,366,94
+    GROUPBOX        "Insert Comment",IDC_STATIC,176,162,189,62
 END
 
 IDD_DLG_WAVEFORM_CONFIG DIALOGEX 0, 0, 385, 286
@@ -752,13 +768,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 2.6.3"
+            VALUE "FileVersion", "Ver 2.6.4"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 2.6.3"
+            VALUE "ProductVersion", "Ver 2.6.4"
         END
     END
     BLOCK "VarFileInfo"
@@ -968,10 +984,6 @@ IDR_BMP_CHECKBOX        BITMAP                  "res\\bmp_chec.bmp"
 IDB_BMP_FILTER          BITMAP                  "res\\Filter.bmp"
 IDB_BMPLOGO             BITMAP                  "res\\logo.bmp"
 IDB_LICENSEDLG          BITMAP                  "LockKey.bmp"
-IDR_NODE_SIMULATION     BITMAP                  "Res\\toolbar_user_prog.bmp"
-IDB_NODE_SIMULATION     BITMAP                  "Res\\toolbar_user_prog.bmp"
-IDB_NODE_SIMULATION_HOT BITMAP                  "Res\\toolbar_user_prog_Hot.bmp"
-IDB_NODE_SIMULATION_DISABLED BITMAP                  "Res\\toolbar_user_prog_disabled.bmp"
 IDB_MAINFRAME           BITMAP                  "Res\\Toolbar.bmp"
 IDB_MAINFRAME_HOT       BITMAP                  "Res\\Toolbar_hot.bmp"
 IDB_MAINFRAME_DISABLED  BITMAP                  "Res\\Toolbar_disabled.bmp"
@@ -1228,17 +1240,6 @@ BEGIN
         POPUP "Node Sim&ulation"
         BEGIN
             MENUITEM "&Configure",                  IDM_CONFIGURE_SIMULATEDSYSTEMS
-            MENUITEM SEPARATOR
-            MENUITEM "&Load All",                   IDM_DLL_LOADALLDLL
-            MENUITEM "&Unload All",                 IDM_DLL_UNLOAD_ALL
-            MENUITEM "Build && L&oad All\tCtrl+L",  IDM_DLL_BUILDLOAD_ALL
-            MENUITEM "&Build All",                  IDM_DLL_BUILD_ALL
-            MENUITEM SEPARATOR
-            MENUITEM "All &Message Handler(s)",     IDM_EXECUTE_MESSAGEHANDLERS, CHECKED
-            MENUITEM "All &Timer Handler(s)...",    IDM_EXECUTE_TIMERHANDLER
-            MENUITEM "All &Key Handler(s)",         IDM_EXECUTE_KEYHANDLERS, CHECKED
-            MENUITEM "All &Error Handler(s)",       IDM_EXECUTE_ERROR_HANDLERS, CHECKED
-            MENUITEM "&All Handler(s)",             IDM_EXECUTE_ALL_HANDLERS
         END
         POPUP "D&iagnostics"
         BEGIN
@@ -1296,17 +1297,6 @@ BEGIN
         POPUP "&Node Simulation"
         BEGIN
             MENUITEM "&Configure",                  ID_CONFIGURE_SIMULATEDSYSTEMS
-            MENUITEM SEPARATOR
-            MENUITEM "&Load All",                   ID_USERPROGRAM_LOADALL
-            MENUITEM "&Unload All",                 ID_USERPROGRAM_UNLOADALL
-            MENUITEM "Build and L&oad All",         ID_USERPROGRAM_BUILDANDLOADALL
-            MENUITEM "&Build All",                  ID_USERPROGRAM_BUILDALL
-            MENUITEM SEPARATOR
-            MENUITEM "All &Message Handlers",       ID_EXECUTE_ALLMESSAGEHANDLERS, CHECKED
-            MENUITEM "All &Key Handlers ",          ID_EXECUTE_ALLKEYHANDLERS, CHECKED
-            MENUITEM "All &Timer Handlers",         ID_EXECUTE_ALLTIMERHANDLERS, CHECKED
-            MENUITEM "All &Event Handlers",         ID_EXECUTE_ALLEVENTHANDLERS, CHECKED
-            MENUITEM "&All Handlers",               ID_EXECUTE_ALLHANDLERS, CHECKED
         END
     END
     POPUP "Flex&Ray"
@@ -1334,7 +1324,7 @@ BEGIN
         POPUP "&Transmit"
         BEGIN
             MENUITEM "&Configure",                  IDM_FLEX_CFGN_SEND_MSGS
-        END
+        END       
     END
     POPUP "&LIN"
     BEGIN
@@ -1383,17 +1373,6 @@ BEGIN
         POPUP "Node Sim&ulation"
         BEGIN
             MENUITEM "&Configure",                  IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN
-            MENUITEM SEPARATOR
-            MENUITEM "&Load All",                   IDM_DLL_LOADALLDLL_LIN
-            MENUITEM "&Unload All",                 IDM_DLL_UNLOAD_ALL_LIN
-            MENUITEM "Build && L&oad All",          IDM_DLL_BUILDLOAD_ALL_LIN
-            MENUITEM "&Build All",                  IDM_DLL_BUILD_ALL_LIN
-            MENUITEM SEPARATOR
-            MENUITEM "All &Message Handler(s)",     IDM_EXECUTE_MESSAGEHANDLERS_LIN, CHECKED
-            MENUITEM "All &Timer Handler(s)...",    IDM_EXECUTE_TIMERHANDLER_LIN
-            MENUITEM "All &Key Handler(s)",         IDM_EXECUTE_KEYHANDLERS_LIN, CHECKED
-            MENUITEM "All &Error Handler(s)",       IDM_EXECUTE_ERROR_HANDLERS_LIN, CHECKED
-            MENUITEM "&All Handler(s)",             IDM_EXECUTE_ALL_HANDLERS_LIN
         END
     END
     POPUP "&View"
@@ -1411,7 +1390,6 @@ BEGIN
                 MENUITEM "&Main",                       ID_DISPLAY_MAIN, CHECKED
                 MENUITEM "&Configure",                  ID_DISPLAY_CONFIGURE, CHECKED
                 MENUITEM "CAN &Database",               ID_TB_CANDATABASE, CHECKED
-                MENUITEM "&Node Simulation",            ID_DISPLAY_NODE_SIMULATION, CHECKED
                 MENUITEM "&J1939",                      ID_TOOLBAR_J1939, CHECKED
             END
             MENUITEM "Flex&Ray",                    ID_FLEXRAY_TOOLBAR, CHECKED
@@ -1630,20 +1608,6 @@ BEGIN
     BUTTON      IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME
 END
 
-IDR_NODE_SIMULATION TOOLBAR 32, 32
-BEGIN
-    BUTTON      ID_CAN_LOGO
-    BUTTON      IDM_DLL_LOADALLDLL
-    BUTTON      IDM_DLL_UNLOAD_ALL
-    BUTTON      IDM_DLL_BUILDLOAD_ALL
-    BUTTON      IDM_DLL_BUILD_ALL
-    SEPARATOR
-    BUTTON      IDM_EXECUTE_MESSAGEHANDLERS
-    BUTTON      IDM_EXECUTE_TIMERHANDLER
-    BUTTON      IDM_EXECUTE_KEYHANDLERS
-    BUTTON      IDM_EXECUTE_ERROR_HANDLERS
-    BUTTON      IDM_EXECUTE_ALL_HANDLERS
-END
 
 IDR_FUNCTIONS_J1939 TOOLBAR 32, 32
 BEGIN
@@ -1853,7 +1817,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 2.6.3"
+    IDS_VERSION             "Ver 2.6.4Beta4"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
     IDS_CONNECT             "&Connect\tF2"
@@ -2007,17 +1971,10 @@ END
 
 STRINGTABLE
 BEGIN
-    IDM_EXECUTE_MESSAGEHANDLERS 
-                            "Enable/Disable execution of message handler(s)\nEnable/Disable Message handler(s)"
     IDM_CONFIGURE_DATABASE_CLOSE "Close database GUI"
-    IDM_EXECUTE_TIMERHANDLER 
-                            "Start/Stop timer handler(s)\nStart/Stop timer handler(s)"
     IDM_REPLAY_MODE_SINGLE  "Single replay mode"
     IDM_REPLAY_MODE_CYCLIC  "Cyclic replay mode"
     IDM_DISPLAY_SIGNAL_ADD  "Add/Delete Signals to the watch window"
-    IDM_DLL_UNLOAD          "Unload the loaded BUSMASTER Generated DLL\nUnload the loaded BUSMASTER Generated DLL"
-    IDM_DLL_LOADDLL         "Load BUSMASTER Generated DLL\nLoad BUSMASTER Generated DLL"
-    IDM_DLL_BUILD           "Build the source file to DLL\nBuild DLL"
     IDM_FILE_IMPORT_DATABASE "Associate database\nAssociate database"
 END
 
@@ -2028,8 +1985,6 @@ BEGIN
     32869                   "Information about BUSMASTER version and copyrights\nInformation about BUSMASTER version and copyrights"
     IDR_TOOL_SENDMSG        "start or stop sending messages\nstart or stop sending messages"
     IDR_TOOL_FLEX_SENDMSG   "Start/Stop Sending FlexRay messages\nStart/Stop Sending FlexRay messages"
-    IDM_EXECUTE_MESSAGEHANDLERS_BUTTON 
-                            "Execute all message handlers\nExecute all message handlers"
     IDM_FILTER_MESSAGEFILTEROFF_BUTTON 
                             "Enable or Disable Display filter\nEnable or Disable Display filter"
     IDM_FILTER_LOGFILTEROFF_BUTTON 
@@ -2061,16 +2016,11 @@ BEGIN
     IDM_SHOW_DATE           "Enable or Disable Display of Date\nDisplay Date"
     IDM_SEND_SEL_MSG        "Send selected message on CAN bus"
     IDM_DELETE_ALL_SEL_MSG  "Delete all selected message from the list"
-    IDM_EXECUTE_KEYHANDLERS "Enable/Disable execution of all key handler(s)\nEnable/Disable all Key handler(s)"
     IDM_FLEX_CFGN_SEND_MSGS "FlexRay Message Configuration\nFlexRay Message Configuration"
     IDM_CONFIG_NEW          "Create new configuration file\nCreate new configuration file"
     IDM_CONFIG_LOAD         "Load configuration file\nLoad configuration file"
     IDM_SAVE_CONFIG         "Save configuration file\nSave configuration file"
     IDM_SAVEAS_CONFIG       "Save configuration file with a new name\nSave configuration file with a new name"
-    IDM_EXECUTE_ALL_HANDLERS 
-                            "Enable/Disable execution of All Handler(s) of all systems\nEnable/Disable All Handler(s) of all systems"
-    IDM_EXECUTE_ERROR_HANDLERS 
-                            "Enable/Disable execution of all Error Handler(s)\nEnable/Disable all Error Handler(s)"
     IDM_EXECUTE_DLL_HANDLERS 
                             "Enable or Disable execution of DLL handler(s)\nEnable or Disable DLL handler(s)"
 END
@@ -2114,10 +2064,6 @@ END
 STRINGTABLE
 BEGIN
     33010                   "Save and import database file\nSave and import database file"
-    IDM_DLL_BUILD_ALL       "Build All \nBuild All"
-    IDM_DLL_BUILDLOAD_ALL   "Build and load All DLLs\nBuild and Load All DLLs"
-    IDM_DLL_LOADALLDLL      "Load all DLLs\nLoad all DLLs"
-    IDM_DLL_UNLOAD_ALL      "Unload all DLLs\nUnLoad all DLLs"
     IDM_CONFIGURE_SIMULATEDSYSTEMS 
                             "Configure Simulated Systems for Multinode Simulation\nConfigure Simulated Systems for Multinode Simulation"
 END

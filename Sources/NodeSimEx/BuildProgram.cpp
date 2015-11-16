@@ -28,7 +28,8 @@
 #include "Export_UserDllCAN.h"
 #include "SimSysManager.h"
 #include "GlobalObj.h"
-
+#include <sys/stat.h>
+#include <time.h>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -75,15 +76,18 @@ CBuildProgram::~CBuildProgram()
 }
 /******************************************************************************/
 /*  Function Name    :  bBuildProgram                                         */
-/*  Input(s)         :  PSNODEINFO and flag to load DLL                 */
+/*  Input(s)         :  PSNODEINFO and flag to load DLL                       */
 /*  Output           :  TRUE or FALSE                                         */
 /*  Functionality    :  Build the DLL for source file and display output      */
 /*  Member of        :  CBuildProgram                                         */
 /*  Friend of        :      -                                                 */
 /*  Author(s)        :  Amitesh Bharti                                        */
 /*  Date Created     :  07.03.2002                                            */
+/*  Modification By  :  Robin G.K.                                    */
+/*  Modified On      :  21.10.2014,  Added flag bDisplaySuccessful,           */
+/*                                   Removed setting H_DLLLOADED              */
 /******************************************************************************/
-BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
+BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL, BOOL bDisplaySuccessful)
 {
     BOOL bReturn            = FALSE;
     CString omStrFilePath   = "";
@@ -91,20 +95,24 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
     int iMajorVer = 0;
     int iMinorVer = 0;
     BOOL bVersion = FALSE ;
-    CString omFileName=psNodeInfo->m_omStrFileName;
+    CString omFileName=psNodeInfo->m_omStrCFileName;
     CString omLongFileName=omFileName;
     PROCESS_INFORMATION sProcessInfo;
     STARTUPINFO         sStartInfo;
     SECURITY_ATTRIBUTES sSecurityAttr;
     CWaitCursor omWait;
+    DWORD makeResult = -1;
     // Check if file name passed as parameter is not empty
     if(omFileName.IsEmpty()==FALSE)
     {
+        CFileFind omFileFind;
         // Remove all items in this string array before adding.
         m_omStrArray.RemoveAll();
         m_omStrArray.Add(" ");
         m_omStrArray.Add(omFileName);
         m_omStrSourceFilename = omFileName;
+        CString omStrDllFile = omFileName;
+        omStrDllFile.Replace(".cpp",".dll");
 
         LONG lError = 0;
         //HKEY sKey;
@@ -285,7 +293,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                                              omFileName.ReverseFind('\\'));
             CString omStrMakeFileName  = omStrTemp;
             omStrMakeFileName         += "\\DLLMake";
-            bReturn = bCreateMakeFile(omStrMakeFileTemplateName,
+            bReturn = bCreateMakeFile(psNodeInfo, omStrMakeFileTemplateName,
                                       omStrMakeFileName);
             char acStrShortPath[1024];
             dwConvertShortPathName(omStrMakeFileName,acStrShortPath);
@@ -316,6 +324,31 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                 CString omStrCommandParam = pucGccMakeFile ;
                 omStrCommandParam += " ";
                 omStrCommandParam += pucGccParameter;
+                char path_buffer[_MAX_PATH];
+                char drive[_MAX_DRIVE];
+                char dir[_MAX_DIR];
+                char fname[_MAX_FNAME];
+                char ext[_MAX_EXT];
+
+                _splitpath( omLongFileName, drive, dir, fname, ext );
+                PathCombine(path_buffer, drive, dir );
+
+                SetCurrentDirectory(path_buffer);
+
+                if ( psNodeInfo->m_eNodeState == NODE_REQ_CLEAN_BUILT && m_eBus == FLEXRAY  )
+                {
+                    CString StrCleanCommandPram = omStrCommandParam + " clean";
+                    INT nSuccess = CreateProcess( nullptr, StrCleanCommandPram.GetBuffer(MAX_PATH),
+                                                  nullptr, nullptr,
+                                                  true, CREATE_NO_WINDOW,
+                                                  nullptr, nullptr,
+                                                  &sStartInfo, &sProcessInfo);
+                    if (nSuccess!=0)
+                    {
+                        WaitForSingleObject(sProcessInfo.hProcess, INFINITE );
+                    }
+                }
+                psNodeInfo->m_eNodeState = NODE_NOT_BUILT;//Whether success or not move to next build step
                 INT nSuccess = CreateProcess( nullptr, omStrCommandParam.GetBuffer(MAX_PATH),
                                               nullptr, nullptr,
                                               true, CREATE_NO_WINDOW,
@@ -366,9 +399,13 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                 }
                 else
                 {
-                    WaitForSingleObject(sProcessInfo.hProcess, INFINITE );
-                }
 
+                    if (nSuccess!=0)
+                    {
+                        WaitForSingleObject(sProcessInfo.hProcess, INFINITE );
+                        GetExitCodeProcess(sProcessInfo.hProcess, &makeResult);
+                    }
+                }
                 omStrGccParamter.ReleaseBuffer(omStrGccParamter.GetLength());
                 omStrGccMakeFile.ReleaseBuffer(omStrGccMakeFile.GetLength());
                 omStrGCCPath.ReleaseBuffer(omStrGCCPath.GetLength());
@@ -385,24 +422,12 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                 // to generate a message that dll is created successfully.
                 // If there is no message in error file -> DLL created
                 // successfully
-                INT nTotalSize = (COMMANINT)m_omStrArray.GetSize();
-                CString omString;
-                BOOL bSuccess = TRUE;
-                for(INT nCount=0; nCount<nTotalSize; nCount++)
-                {
-                    omString = m_omStrArray.GetAt(nCount);
-                    // Find if the omString has keyword "Error"
-                    if ( omString.Find("Error") != -1 )
-                    {
-                        bSuccess = FALSE;
-                    }
-                }
 
                 omStrFilePath.Replace("error.txt","output.txt");
                 bAddStrToArrayFromFile(omStrFilePath,m_omStrArray);
 
                 CString omStrDLLFile = "";
-                if(bSuccess == TRUE)
+                if(makeResult == 0)
                 {
                     CString omStrFileNameInSDLLFile="";
                     CString omStrFileNameInLongFileName="";
@@ -436,7 +461,11 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                     }
                     psNodeInfo->m_omStrDllName=omLongFileName;
                     omLongFileName +=" created successfully";
-                    m_omStrArray.Add(omLongFileName);
+                    if(bDisplaySuccessful)
+                    {
+                        m_omStrArray.Add(omLongFileName);
+                        bAddString(m_omStrArray);
+                    }
                 }
                 else
                 {
@@ -446,10 +475,11 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                     omStrDLLFile += defDOT_DLL;
                     m_omStrArray.Add(omStrDLLFile);
                     bReturn = FALSE;
+                    bAddString(m_omStrArray);
                 }
                 // Add all items in CStringArray to list box attached to
                 // output window.after displaying it if not displayed
-                bAddString(m_omStrArray);
+
             }
             else
             {
@@ -538,20 +568,29 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
                 {
                     psNodeInfo->m_omStrDllName=omLongFileName;
                     psNodeInfo->m_hModuleHandle=hModuleHandle;
-                    // Set the flag for DLL loaded.
-                    CSimSysManager::ouGetSimSysManager(m_eBus).
-                    ouGetFlags().vSetFlagStatus( H_DLLLOADED, TRUE );
+                   
                     //Local array so that only loading message will be
                     //added to the COutWnd list
                     CStringArray m_omStrArray;
-                    m_omStrArray.Add(omLongFileName+ " loaded successfully");
-                    // Add string to list box attached to output window
-                    // after displaying it if not displayed already.
-                    bAddString(m_omStrArray);
+                    if(bDisplaySuccessful)
+                    {
+                        m_omStrArray.Add(omLongFileName+ " loaded successfully");
+                        // Add string to list box attached to output window
+                        // after displaying it if not displayed already.
+                        bAddString(m_omStrArray);
+                    }
                 }
             }
 
         }
+    }
+    if(bReturn)
+    {
+        psNodeInfo->m_eNodeState = NODE_BUILD_SUCCESS;
+    }
+    else
+    {
+        psNodeInfo->m_eNodeState = NODE_BUILD_FAIL;
     }
     return bReturn;
 }
@@ -572,7 +611,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL)
 /*                      pointer to CFileException object to open function by  */
 /*                      replacing it with passing a pointer to existing object*/
 /******************************************************************************/
-BOOL CBuildProgram::bCreateMakeFile(CString& omStrMakeFileTemplateName,
+BOOL CBuildProgram::bCreateMakeFile(PSNODEINFO psInfo, CString& omStrMakeFileTemplateName,
                                     CString& omStrMakeFileName          )
 {
     CStdioFile omStdiofile;

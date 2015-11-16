@@ -58,7 +58,7 @@ public:
     BOOL bGetUIStateCmdGo();
     BOOL bGetUIStateCmdStop();
     // To open and parse the repaly file
-    BOOL bOpenReplayFile();
+    BOOL bOpenReplayFile(BOOL bIsInteractive);
     // To create repaly window with list control
     BOOL bCreateReplayWindow();
     // To set running thread stop signal
@@ -107,7 +107,7 @@ private:
     CImageList m_omImageList;
     // Reply flag
     eReplayStates m_eReplayState;
-
+    DWORD m_dwsize;
     //Window placement
     WINDOWPLACEMENT m_sWndPlacement;
 };

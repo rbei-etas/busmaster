@@ -246,17 +246,20 @@ void CMsgReplayWnd::OnSize(UINT nType, int cx, int cy)
 /*                      parsing the file and use owner data list for message  */
 /*                      entries                                               */
 /******************************************************************************/
-BOOL CMsgReplayWnd::bOpenReplayFile()
+BOOL CMsgReplayWnd::bOpenReplayFile(BOOL bIsInteractive)
 {
-    BOOL bReturn = m_ouReplayDetails.bOpenReplayFile();
-
+    BOOL bReturn = m_ouReplayDetails.bOpenReplayFile(TRUE);
+    m_ouReplayDetails.bSetbIsProtocolMismatch(false);
+    m_ouReplayDetails.bSetbIsInvalidMsg(false);
+    m_dwsize = m_ouReplayDetails.dwGetNoOfMsgsInLog();
     // Update No. of Items
     if( bReturn == TRUE )
     {
-        if( m_ouReplayDetails.m_omEntries.GetSize() > 0 )
+
+        if( m_dwsize > 0 && bReturn==TRUE)
         {
-            m_omMessageList.SetItemCountEx(
-                (int)m_ouReplayDetails.m_omEntries.GetSize());
+            m_omMessageList.SetItemCount(m_dwsize);
+
             m_omMessageList.SetItemState( 0, LVIS_SELECTED | LVIS_FOCUSED,
                                           LVIS_SELECTED | LVIS_FOCUSED );
             m_eReplayState = REPLAY_TO_START;
@@ -343,30 +346,14 @@ void CMsgReplayWnd::vCmdGo()
                 m_ouReplayDetails.m_nUserSelectionIndex = 0;
             }
             // Find the next index of break point
-            int nCount = (int)m_ouReplayDetails.m_omEntries.GetSize();
+            int nCount = (int)m_ouReplayDetails.dwGetNoOfMsgsInLog();
 
             BOOL bBreakPointFound = FALSE;
-            int nIndex; //index declared outside
-            for( nIndex = m_ouReplayDetails.m_nUserSelectionIndex + 1;
-                    nIndex < nCount&& bBreakPointFound == FALSE; nIndex++ )
-            {
-                if( m_ouReplayDetails.m_omBreakPoints[ nIndex ] == TRUE )
-                {
-                    bBreakPointFound = TRUE;
-                }
-            }
 
             // Get the count
-            if( bBreakPointFound == TRUE )
-            {
-                m_ouReplayDetails.m_nNoOfMessagesToPlay = nIndex -
-                        m_ouReplayDetails.m_nUserSelectionIndex - 1;
-            }
-            else // Till the end
-            {
                 m_ouReplayDetails.m_nNoOfMessagesToPlay = nCount -
                         m_ouReplayDetails.m_nUserSelectionIndex;
-            }
+
 
             if( m_ouReplayDetails.m_nNoOfMessagesToPlay > 0 )
             {
@@ -612,6 +599,10 @@ BOOL CMsgReplayWnd::bCreateReplayWindow()
     INT nReturn = 0;
     // If the co-ordiantes are not correct, calculate the default value
     CRect omRect;
+    omRect.bottom = 629;
+    omRect.top = 173;
+    omRect.right = 878;
+    omRect.left = 146;
     if (m_sWndPlacement.length == 0)
     {
         AfxGetApp()->GetMainWnd()->GetWindowPlacement(&m_sWndPlacement);
@@ -622,7 +613,7 @@ BOOL CMsgReplayWnd::bCreateReplayWindow()
                           omStrTitle,
                           WS_CHILD   |
                           WS_VISIBLE | WS_OVERLAPPEDWINDOW,
-                          m_sWndPlacement.rcNormalPosition,
+                          omRect,
                           nullptr,
                           nullptr );
     SetWindowFont();
@@ -691,19 +682,55 @@ LRESULT CMsgReplayWnd::vHandleListControlDataReq( WPARAM wParam, LPARAM /*lParam
 {
     LV_DISPINFO* pDispInfo = (LV_DISPINFO*)wParam;
     LV_ITEM* pItem= &(pDispInfo)->item;
-
+    CString omStrText;
+    STCANDATA sCanMsg;
+    bool bSessionFlag = false;
+    bool bEOFflag = false;
+    bool bProtocolMismatch = false;
+    bool bInvalidMsg = false;
     // Text Request
     if (pItem->mask & LVIF_TEXT)
     {
         if( pItem->iSubItem == 0 &&
-                pItem->iItem < m_ouReplayDetails.m_omEntries.GetSize() )
+                pItem->iItem < m_dwsize )
         {
-            strcpy(pItem->pszText, m_ouReplayDetails.m_omEntries[ pItem->iItem]);
+            omStrText = m_ouReplayDetails.omStrGetMsgFromLog(pItem->iItem,sCanMsg,bSessionFlag,bEOFflag,bProtocolMismatch,bInvalidMsg);
+
+            if(bProtocolMismatch && !m_ouReplayDetails.bGetbIsProtocolMismatch())
+            {
+                m_ouReplayDetails.bSetbIsProtocolMismatch(true);
+                CReplayManager::ouGetReplayManager().vSendToTrace(defSTR_LOG_PRTOCOL_MISMATCH);
+            }
+            else if(bInvalidMsg && !bEOFflag)
+            {
+                m_ouReplayDetails.bSetbIsInvalidMsg(true);
+                CReplayManager::ouGetReplayManager().vSendToTrace(defSTR_LOG_INVALID_MESSAGE);
+            }
+            else
+            {
+                strcpy(pItem->pszText, omStrText);
+
+            }
+            if ((bEOFflag || bProtocolMismatch || bInvalidMsg) && !(bEOFflag && pItem->iItem == 0))
+            {
+                m_omMessageList.SetItemCount(m_ouReplayDetails.dwGetvecPegSize());
+            }
+            if((bEOFflag || bProtocolMismatch || bInvalidMsg) && pItem->iItem == 0)
+            {
+                if(bEOFflag && pItem->iItem == 0)
+                {
+                    CReplayManager::ouGetReplayManager().vSendToTrace(defSTR_REPLAY_FILE_EMPTY);
+                }
+                OnClose();
+                m_ouReplayDetails.vCloseReplayFile();
+                DestroyWindow();
+
+            }
         }
     }
 
     // Image Request
-    if(pItem->mask & LVIF_IMAGE )
+    if(pItem->mask & LVIF_IMAGE && !bProtocolMismatch && !(bEOFflag && pItem->iItem == 0))
     {
         pItem->iImage = m_ouReplayDetails.m_omBreakPoints[ pItem->iItem];
     }

@@ -89,6 +89,13 @@ public:
 
 
 private:
+    int m_nMeasurement;
+    int m_nTime;
+    int m_nSize;
+    int m_nFileSize;
+    int m_nFileCount;
+    int m_nTimeHrs;
+    int m_nTimeMin;
     // Dialog control variables
     CComboBox m_omComboChannel;
     CComboBox m_omComboTimeMode;
@@ -114,6 +121,11 @@ private:
     ETYPE_BUS m_eCurrBus;
     BOOL& m_bLogOnConnect;
     UINT m_unChannelCount;
+    CButton m_ChkLogOnMeasurement;
+    CButton m_ChkLogOnSize;
+    CButton m_ChkLogOnTime;
+    void EnablingMaxNumEdit();
+    void EnablingAdvSettings(BOOL);
 
 private:
     void vEnableDisableControls(BOOL);
@@ -150,14 +162,25 @@ protected:
     afx_msg void OnStartStopMsgIDEnChange(UINT);
     afx_msg void OnBnClickedLogFilter(void);
 
+    afx_msg void OnBnClickedLogOnMeasurement(void);
+    afx_msg void OnBnClickedLogOnSize(void);
+    afx_msg void OnBnClickedLogOnTime(void);
     virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 public:
     afx_msg void OnTimer(UINT nIDEvent);
 
+    afx_msg void OnEnChngLogFileSize();
+    afx_msg void OnEnChngLogFileTimeHrs();
+    afx_msg void OnEnChngLogFileTimeMins();
+    afx_msg void OnEnChngLogFilesAllowed();
+    afx_msg void OnEnChngLogComment();
 protected:
     CString m_omControlParam;
     CString m_omControlParam2;
 
 public:
     afx_msg void OnBnClickedOk();
+    void vAddSuffixToLogFileName(eFILENAMESUFFIX eFileNameSuffix);
+    void vRemoveSuffixFromLogFileName(eFILENAMESUFFIX eFileNameSuffix);
+    void vResetAdvLogParameters();
 };

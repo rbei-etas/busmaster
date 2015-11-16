@@ -24,7 +24,7 @@ private:
     ICluster* m_pBaseCluster;
     LDFNetworkView* m_pouLDFNetworkView;
     std::map<UID_ELEMENT, QTreeWidgetItem*> m_UidTreeWidgetMap;
-    QIcon m_ouIcons[5];
+    QIcon m_ouIcons[def_ICON_TOTAL];
     QMenu m_ouHeaderPopupMenus[eTotalHeaderPopup];
     QMenu m_ouElementPopupMenus[eTotalElementPopup];
     bool m_bDiagFrames[2];

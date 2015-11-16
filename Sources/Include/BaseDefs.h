@@ -158,6 +158,19 @@ enum eTreeItemStates
     TREESTATE_COLLAPSE
 };
 
+enum eFILENAMESUFFIX
+{
+    SUFFIX_MEASUREMENT,
+    SUFFIX_TIME,
+    SUFFIX_SIZE,
+    SUFFIX_DEFAULT
+};
+enum eNodeOperations
+{
+    NODE_ADD,
+    NODE_REMOVE,
+    NODE_REMOVEALL,
+};
 
 typedef UINT TYPE_CHANNEL;
 
@@ -215,6 +228,13 @@ const BYTE TYPE_MSG_LIN_FD          = 0x4;
 #define LENGTH_STR_DIRECTION_LIN        4
 #define LENGTH_STR_TYPE_LIN             8
 
+#define S_MEASUREMENT "_M"
+#define S_SIZE "_S"
+#define S_TIME "_T"
+#define S_DEFAULT "_"
+#define M_SUFFIX_FORMAT "_M%d%*s"
+#define S_SUFFIX_FORMAT "_S%d%*s"
+#define T_SUFFIX_FORMAT "_T%d%*s"
 struct tagFormattedData_CAN
 {
     UINT64          m_u64TimeStamp;                 // Time stamp

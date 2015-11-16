@@ -152,5 +152,6 @@ public:
     HRESULT FPJ1_SetChannelBaudRateDetails(SCONTROLLER_DETAILS* controllerDetails,
                                            int nNumChannels,ETYPE_BUS eBus);
 
+	void vSetMeasurementFileName();
     /* ENDS IMPLEMENTATION OF THE INTERFACE FUNCTIONS... */
 };

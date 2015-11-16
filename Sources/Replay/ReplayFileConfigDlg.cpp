@@ -73,7 +73,9 @@ void CReplayFileConfigDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_CHK_INTERACTIVE, m_omChkInteractive);
     DDX_Control(pDX, IDC_EDIT_MSG_DELAY, m_omEditMsgDelay);
     DDX_Control(pDX, IDC_EDIT_CYCLE_DELAY, m_omEditCycleDelay);
+    DDX_Control(pDX, IDC_EDIT_SESSION_DELAY, m_omEditSessionDelay);
     DDX_Control(pDX, IDC_CHK_RETAIN_RECORDED_DELAY, m_omChkRetainDelay);
+    DDX_Control(pDX, IDC_CHK_RETAIN_SESSION_DELAY, m_omChkRetainSessionDelay);
     DDX_Control(pDX, IDC_EDIT_REPLAY_FILE_NAME, m_omEditReplayFileName);
     DDX_Control(pDX, IDC_LIST_REPALY_FILES, m_omLstcReplayFiles);
     DDX_Radio(pDX, IDC_RADIO_REPLAY_MODE_MONO, m_nReplayMode);
@@ -88,7 +90,9 @@ BEGIN_MESSAGE_MAP(CReplayFileConfigDlg, CDialog)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_REPALY_FILES, OnItemchangedListRepalyFiles)
     ON_BN_CLICKED(IDC_BTN_BROWSE, OnBtnBrowse)
     ON_BN_CLICKED(IDC_CHK_RETAIN_RECORDED_DELAY, OnChkRetainRecordedDelay)
+    ON_BN_CLICKED(IDC_CHK_RETAIN_SESSION_DELAY, OnChkRetainSessionDelay)
     ON_EN_UPDATE(IDC_EDIT_MSG_DELAY, OnUpdateEditMsgDelay)
+    ON_EN_UPDATE(IDC_EDIT_SESSION_DELAY, OnUpdateEditSessionDelay)
     ON_BN_CLICKED(IDC_RADIO_REPLAY_MODE_MONO, OnRadioReplayModeMono)
     ON_EN_UPDATE(IDC_EDIT_CYCLE_DELAY, OnUpdateEditCycleDelay)
     ON_BN_CLICKED(IDC_CHK_INTERACTIVE, OnChkInteractive)
@@ -189,6 +193,10 @@ void CReplayFileConfigDlg::vInitReplayCopms()
     // Update Message Delay Edit box
     m_omEditMsgDelay.vSetSigned( FALSE );
     m_omEditMsgDelay.vSetBase( BASE_DECIMAL );
+
+    // Update Session Delay Edit box
+    m_omEditSessionDelay.vSetSigned( FALSE );
+    m_omEditSessionDelay.vSetBase( BASE_DECIMAL );
 
     // Update Cycle Delay Edit Box
     m_omEditCycleDelay.vSetSigned( FALSE );
@@ -388,6 +396,31 @@ void CReplayFileConfigDlg::vUpdateReplayFileComps( const CReplayFile& rouFile )
             // Invalid value
             ASSERT( FALSE );
     }
+    //Session Time Mode
+    switch( rouFile.m_nSessionMode )
+    {
+        case defREPLAY_RETAIN_SESSION_DELAY:
+        {
+            // Enable Retain session Delay Checkbox and check the item
+            m_omChkRetainSessionDelay.SetCheck( TRUE );
+            // Disable Specific session Delay option
+            m_omEditSessionDelay.EnableWindow( FALSE );
+        }
+        break;
+        case defREPLAY_SPECIFIC_SESSION_DELAY:
+        {
+            // Disable Retain session Delay Checkbox and check the item
+            m_omChkRetainSessionDelay.SetCheck( FALSE );
+            // Enable Specific session Delay option
+            m_omEditSessionDelay.EnableWindow( TRUE );
+            // Set the value
+            m_omEditSessionDelay.vSetValue( rouFile.m_unSessionDelay );
+        }
+        break;
+        default:
+            // Invalid value
+            ASSERT( FALSE );
+    }
     // Replay Mode
     // Assign the mode value
     m_nReplayMode = rouFile.m_nReplayMode;
@@ -498,6 +531,68 @@ void CReplayFileConfigDlg::OnChkRetainRecordedDelay()
     }
 }
 
+
+void CReplayFileConfigDlg::OnChkRetainSessionDelay()
+{
+    if( m_nSelecetedNamedLogIndex != -1 &&
+            m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
+    {
+        // Get Selected Item Details
+        CReplayFile& ouFile =
+            m_rouManager.m_omReplayFiles.ElementAt( m_nSelecetedNamedLogIndex );
+        // Get the check value
+
+        BOOL bValue = m_omChkRetainSessionDelay.GetCheck();
+
+        if( bValue == TRUE )
+        {
+            // Disable the Msg Delay edit control
+            m_omEditSessionDelay.EnableWindow( FALSE );
+        }
+        else
+        {
+            // Enable Msg Delay Edit control and assign the value from
+            // data
+            m_omEditSessionDelay.EnableWindow( TRUE );
+            m_omEditSessionDelay.vSetValue( ouFile.m_unSessionDelay );
+        }
+        // Update type in the data
+        ouFile.m_nSessionMode = !bValue;
+    }
+}
+
+/**
+ * This function will be called during message delay editbox
+ * change. This will update message delay value of replay file
+ */
+void CReplayFileConfigDlg::OnUpdateEditSessionDelay()
+{
+    if( m_nSelecetedNamedLogIndex != -1 &&
+            m_nSelecetedNamedLogIndex < m_rouManager.m_omReplayFiles.GetSize() )
+    {
+        // Get Selected Item Details
+        CReplayFile& ouFile =
+            m_rouManager.m_omReplayFiles.ElementAt( m_nSelecetedNamedLogIndex );
+        // Get the delay Value
+        UINT unValue = static_cast<UINT>( m_omEditSessionDelay.lGetValue() );
+        if(unValue > 60000)
+        {
+            AfxMessageBox("Time delay between sessions cannot be more than 60000 milliseconds");
+            CString  omstrDelay;
+            omstrDelay.Format("%d", unValue/10);
+            m_omEditSessionDelay.SetWindowTextA(omstrDelay);
+            m_omEditSessionDelay.SetSel(0,omstrDelay.GetLength());
+            ouFile.m_unSessionDelay = unValue/10;
+        }
+        else
+        {
+            // Update type in the data
+            ouFile.m_unSessionDelay = unValue;
+        }
+
+    }
+}
+
 /**
  * This function will be called during message delay editbox
  * change. This will update message delay value of replay file
@@ -519,9 +614,13 @@ void CReplayFileConfigDlg::OnUpdateEditMsgDelay()
             omstrDelay.Format("%d", unValue/10);
             m_omEditMsgDelay.SetWindowTextA(omstrDelay);
             m_omEditMsgDelay.SetSel(0,omstrDelay.GetLength());
+            ouFile.m_unMsgTimeDelay = unValue/10;
         }
-        // Update type in the data
-        ouFile.m_unMsgTimeDelay = unValue;
+        else
+        {
+            // Update type in the data
+            ouFile.m_unMsgTimeDelay = unValue;
+        }
     }
 }
 
@@ -577,10 +676,13 @@ void CReplayFileConfigDlg::OnUpdateEditCycleDelay()
             omstrDelay.Format("%d", unValue/10);
             m_omEditCycleDelay.SetWindowTextA(omstrDelay);
             m_omEditCycleDelay.SetSel(0,omstrDelay.GetLength());
+            ouFile.m_unCycleTimeDelay = unValue/10;
         }
-
-        // Update type in the data
-        ouFile.m_unCycleTimeDelay = unValue;
+        else
+        {
+            // Update type in the data
+            ouFile.m_unCycleTimeDelay = unValue;
+        }
     }
 }
 
@@ -723,6 +825,19 @@ void CReplayFileConfigDlg::vEnableReplayComps( BOOL bEnable )
     else
     {
         m_omEditMsgDelay.EnableWindow( bEnable );
+    }
+
+    // Session Mode
+    m_omChkRetainSessionDelay.EnableWindow( bEnable );
+    // User Specific session Delay
+    // Retain session Delay is enabled. So Disable this edit control
+    if( m_omChkRetainSessionDelay.GetCheck() == TRUE )
+    {
+        m_omEditSessionDelay.EnableWindow( FALSE );
+    }
+    else
+    {
+        m_omEditSessionDelay.EnableWindow( bEnable );
     }
 
     // Delay Between Cycles

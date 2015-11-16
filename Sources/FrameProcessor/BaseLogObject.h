@@ -33,18 +33,14 @@ private:
 
     CRITICAL_SECTION m_CritSection; // For thread synchronization
     int m_nCurrFileCnt;             // Keep the number of log file created
-    CString m_omCurrLogFile;        // Current file of the cycle
+
     DWORD m_dTotalBytes;            // To keep the current file size
     CString m_omVersion;            // Application suite version information
     bool m_bNewSession;         // For file overwriting in new session
 
     // Find the name and size of the file which will be used for logging.
     // i.e., file name which contains max file count
-    void vGetNameAndSizeOfCurrentLogFile();
     DWORD dwGetFileSize(CString omFileName); // Get size of the file
-    CString omAddGroupCountToFileName(int nCount, char FileName[]);
-    CString omRemoveGroupCountFromFileName(CString FileName);
-    void vSetNextFileName(void);
 
     /*INT nGetCurrentFileCount();
 
@@ -55,9 +51,9 @@ private:
 
     void vUpdateLogTimeForTimeTrigger(UINT64& qwRefSysTime);
 
+    int m_nMeasurement,m_nSize,m_nTime,m_nDefault;
+    void vSetNextFileName(eFILENAMESUFFIX eFileNameSuffix);
 protected:
-    //All log info
-    SLOGINFO m_sLogInfo;
 
     //File pointer
     FILE* m_pLogFile;
@@ -86,6 +82,7 @@ protected:
     virtual UINT Der_unGetBufSize(void) const = 0;
 
 public:
+    SLOGINFO m_sLogInfo;
     CBaseLogObject(CString omVersion);
     ~CBaseLogObject();
 
@@ -157,4 +154,5 @@ public:
     // To get the channel baud rate
     void GetChannelBaudRateDetails(void* controllerDetails,
                                    int& nNumChannels);
+    void vSetMeasurementFileName();
 };

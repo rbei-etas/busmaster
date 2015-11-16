@@ -26,6 +26,7 @@
 #define defFRAME_RX_ICON_INDEX          7
 #define defFRAME_TX_ICON_INDEX          8
 #define defNODE_COMPOSITION_INDEX       9
+#define def_ICON_TOTAL					10
 #define defMAX_SIGNAL_STARTBIT          63
 #define defCLASSIC_CHECKSUM     "Classic"
 #define defENHANCED_CHECKSUM    "Enhanced"

@@ -26,15 +26,13 @@
 #include "FrameProcessor_stdafx.h"
 #include "BaseLogObject.h"            // For CBaseLogObject class declaration
 #include "../DataTypes/DIL_Datatypes.h"
-//#include "CommonClass/RefTimeKeeper.h"
+#include "Utility\UtilFunctions.h"
 
+using namespace std;
 const int SIZE_CHAR = sizeof(char);
 #define ENOENT          2
 
-#define DEFAULT_FILE_SIZE_IN_MBYTES       50 //MB
-#define MB_VALUE                         1048576
-
-const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;
+#define  DEFAULT_FILE_SIZE_IN_BYTES  4294967296 //4Gb
 
 #define MAX_LOG_FILE_IN_GRP              65535
 #define FILE_COUNT_STR                    "_%d"
@@ -60,6 +58,8 @@ const UINT DEFAULT_FILE_SIZE_IN_BYTES = DEFAULT_FILE_SIZE_IN_MBYTES * MB_VALUE;
 #define BUS_LOG_BAUDRATR_END    "***END CHANNEL BAUD RATE***"
 #define BUS_LOG_CHANNEL         "***CHANNEL %d - %s - %s bps***"
 #define BUS_LOG_CHANNEL_LIN         "***CHANNEL %d - Protocol Version %s - Hardware %s - BaudRate %d bps***"
+#define BUS_LOG_COMMENT_START   "***START COMMENT***"   //arun
+#define BUS_LOG_COMMENT_END     "***END COMMENT***"
 
 #define PROTOCOL "***PROTOCOL";
 
@@ -74,12 +74,14 @@ CBaseLogObject::CBaseLogObject(CString omVersion):m_omVersion(omVersion)
 void CBaseLogObject::vResetValues(void)
 {
     m_sLogInfo.vClear();    // Initialise the logging block
-    m_omCurrLogFile = "";
     m_pLogFile = nullptr;
     m_CurrTriggerType = NONE;
     m_nCurrFileCnt = 0;
     m_dTotalBytes = 0;
     m_bNewSession = TRUE;
+    m_nMeasurement=0;
+    m_nSize=0;
+    m_nTime=0;
     InitializeCriticalSection(&m_CritSection);
 }
 
@@ -97,22 +99,10 @@ CBaseLogObject::~CBaseLogObject()
 CBaseLogObject& CBaseLogObject::operator=(const CBaseLogObject& RefObj)
 {
     RefObj.GetLogInfo(m_sLogInfo);
-    m_omCurrLogFile = RefObj.m_omCurrLogFile;
     m_nCurrFileCnt = RefObj.m_nCurrFileCnt;
     m_dTotalBytes = RefObj.m_dTotalBytes;
 
-    // Update the log file name based on the current file count to update the data
-    // This occurs when some of the config dialog members are changed
-    if (m_nCurrFileCnt > 0)
-    {
-        int nIdx = m_omCurrLogFile.Find('_');
-        if (nIdx != -1)
-        {
-            m_omCurrLogFile = m_omCurrLogFile.Left(nIdx);
-            m_omCurrLogFile += ".log";
-        }
-        m_omCurrLogFile = omAddGroupCountToFileName(m_nCurrFileCnt, m_omCurrLogFile.GetBuffer(MAX_CHAR));
-    }
+  
 
     Der_CopySpecificData(&RefObj);
 
@@ -149,10 +139,7 @@ void CBaseLogObject::GetLogInfo(SLOGINFO& sLoginfo) const
 void CBaseLogObject::SetLogInfo(const SLOGINFO& sLoginfo)
 {
     m_sLogInfo = sLoginfo;
-
-    //Now if the name of the file is changed then only search for other file
-    //in this file cycle else curr file name and size will be same
-    vGetNameAndSizeOfCurrentLogFile();
+   
 }
 
 /**
@@ -164,8 +151,7 @@ BYTE* CBaseLogObject::SetConfigData(BYTE* pvDataStream, BYTE bytLogVersion)
     pbSStream = m_sLogInfo.pbSetConfigData(pbSStream, bytLogVersion);
     pbSStream = Der_SetConfigData(pbSStream);
 
-    // The default value of current log file should be the log file name
-    m_omCurrLogFile = m_sLogInfo.m_sLogFileName;
+    
 
     return pbSStream;
 }
@@ -177,8 +163,7 @@ INT CBaseLogObject::nSetConfigData(xmlNodePtr pNode)
     {
         nRetValue = Der_SetConfigData(pNode->children);
 
-        // The default value of current log file should be the log file name
-        m_omCurrLogFile = m_sLogInfo.m_sLogFileName;
+        
     }
     return nRetValue;
 }
@@ -245,31 +230,118 @@ void CBaseLogObject::vWriteTextToFile(CString& om_LogText, ETYPE_BUS eBus)
 {
     DWORD dwBytes2Write = om_LogText.GetLength()* SIZE_CHAR; //no of bytes
 
-    if ((m_dTotalBytes + dwBytes2Write) >= DEFAULT_FILE_SIZE_IN_BYTES) //megabytes
+    // If trigger Size is specified
+    if(m_sLogInfo.m_sLogAdvStngs.m_bIsLogOnSize == TRUE)
     {
-        //triggering type is saved to be used for next file
-        ELOGTRIGGERSTATE LastTriggerType = m_CurrTriggerType;
-        bStopLogging();
-        //Set the next file name of the series
-        vSetNextFileName();
-        //If file is append mode then change it to overwrite mode bfore startlogging
-        //So that old data will be deleted
-        eMode eFileMode = m_sLogInfo.m_eFileMode;
-        //The file mode is changed to overwrite so that when the same file
-        //is opened in cycle by bStartLogging(), it should overwrite
-        if (m_sLogInfo.m_eFileMode == APPEND_MODE)
-        {
-            m_sLogInfo.m_eFileMode = OVERWRITE_MODE;
-        }
-        bStartLogging(eBus);
-        //Save the triggering type
-        m_CurrTriggerType = LastTriggerType;
-        //Revert back to the original mode
-        m_sLogInfo.m_eFileMode = eFileMode;
-        //theApp.GetDefaultLogFile();
-        m_dTotalBytes = 0;
-    }
+        ULONG64 unSpecifiedSize = atol(m_sLogInfo.m_sLogAdvStngs.m_omSizeInMB);
 
+        unSpecifiedSize = unSpecifiedSize * 1024 *1024;
+        if((m_dTotalBytes + dwBytes2Write) >= unSpecifiedSize)
+        {
+            //triggering type is saved to be used for next file
+            ELOGTRIGGERSTATE LastTriggerType = m_CurrTriggerType;
+            bStopLogging();
+
+            //Set the next file name of the series
+            vSetNextFileName(SUFFIX_SIZE);
+
+            //If file is append mode then change it to overwrite mode bfore startlogging
+            //So that old data will be deleted
+            eMode eFileMode = m_sLogInfo.m_eFileMode;
+            //The file mode is changed to overwrite so that when the same file
+            //is opened in cycle by bStartLogging(), it should overwrite
+            if (m_sLogInfo.m_eFileMode == APPEND_MODE)
+            {
+                m_sLogInfo.m_eFileMode = OVERWRITE_MODE;
+            }
+            bStartLogging(eBus);
+            //Save the triggering type
+            m_CurrTriggerType = LastTriggerType;
+            //Revert back to the original mode
+            m_sLogInfo.m_eFileMode = eFileMode;
+            //theApp.GetDefaultLogFile();
+            m_dTotalBytes = 0;
+        }
+    }
+    // If trigger time is specified
+    if(m_sLogInfo.m_sLogAdvStngs.m_bIsLogOnTime == TRUE)
+    {
+        LARGE_INTEGER stLogTime, sFrequency;
+        QueryPerformanceFrequency(&sFrequency);
+        QueryPerformanceCounter(&stLogTime);
+
+        double lfCurrentTime;
+
+        lfCurrentTime = (double)(stLogTime.QuadPart)/(double)(sFrequency.QuadPart);
+
+        INT lfDiffTime = lfCurrentTime - m_sLogInfo.m_sLogAdvStngs.m_qwLogSysTime;
+
+
+        INT nHrs = atoi(m_sLogInfo.m_sLogAdvStngs.m_omLogTimeHrs);
+        INT nMins = atoi(m_sLogInfo.m_sLogAdvStngs.m_omLogTimeMins);
+
+        // Converting in to seconds
+        nHrs = ((nHrs * 60) + nMins) * 60;
+
+        if(lfDiffTime >= nHrs)
+        {
+            //triggering type is saved to be used for next file
+            ELOGTRIGGERSTATE LastTriggerType = m_CurrTriggerType;
+            bStopLogging();
+
+            //Set the next file name of the series
+            vSetNextFileName(SUFFIX_TIME);
+
+
+            //If file is append mode then change it to overwrite mode bfore startlogging
+            //So that old data will be deleted
+            eMode eFileMode = m_sLogInfo.m_eFileMode;
+            //The file mode is changed to overwrite so that when the same file
+            //is opened in cycle by bStartLogging(), it should overwrite
+            if (m_sLogInfo.m_eFileMode == APPEND_MODE)
+            {
+                m_sLogInfo.m_eFileMode = OVERWRITE_MODE;
+            }
+            bStartLogging(eBus);
+            //Save the triggering type
+            m_CurrTriggerType = LastTriggerType;
+            //Revert back to the original mode
+            m_sLogInfo.m_eFileMode = eFileMode;
+            //theApp.GetDefaultLogFile();
+            m_dTotalBytes = 0;
+        }
+
+
+
+    }
+    if(m_sLogInfo.m_sLogAdvStngs.m_bIsLogOnMesurement == FALSE && m_sLogInfo.m_sLogAdvStngs.m_bIsLogOnTime == FALSE && m_sLogInfo.m_sLogAdvStngs.m_bIsLogOnSize == FALSE)
+    {
+        if ((m_dTotalBytes + dwBytes2Write) >= DEFAULT_FILE_SIZE_IN_BYTES)
+        {
+            //triggering type is saved to be used for next file
+            ELOGTRIGGERSTATE LastTriggerType = m_CurrTriggerType;
+            bStopLogging();
+            //Set the next file name of the series
+            vSetNextFileName(SUFFIX_DEFAULT);
+
+            //If file is append mode then change it to overwrite mode bfore startlogging
+            //So that old data will be deleted
+            eMode eFileMode = m_sLogInfo.m_eFileMode;
+            //The file mode is changed to overwrite so that when the same file
+            //is opened in cycle by bStartLogging(), it should overwrite
+            if (m_sLogInfo.m_eFileMode == APPEND_MODE)
+            {
+                m_sLogInfo.m_eFileMode = OVERWRITE_MODE;
+            }
+            bStartLogging(eBus);
+            //Save the triggering type
+            m_CurrTriggerType = LastTriggerType;
+            //Revert back to the original mode
+            m_sLogInfo.m_eFileMode = eFileMode;
+            //theApp.GetDefaultLogFile();
+            m_dTotalBytes = 0;
+        }
+    }
     EnterCriticalSection(&m_CritSection);
     if ( m_pLogFile )
     {
@@ -281,57 +353,147 @@ void CBaseLogObject::vWriteTextToFile(CString& om_LogText, ETYPE_BUS eBus)
     m_dTotalBytes += dwBytes2Write;
 }
 
-void CBaseLogObject::vSetNextFileName(void)
+void CBaseLogObject::vSetMeasurementFileName()
 {
-    //If it is not default file then remove "_File count no."
-    if (_tcscmp(m_omCurrLogFile.GetBuffer(MAX_PATH), m_sLogInfo.m_sLogFileName) &&
-            m_omCurrLogFile.GetLength() > 2)
+    if(m_sLogInfo.m_sLogAdvStngs.m_bIsLogOnMesurement == TRUE)
     {
-        m_omCurrLogFile.Left(m_omCurrLogFile.GetLength() - 2);
-    }
+        //triggering type is saved to be used for next file
+        ELOGTRIGGERSTATE LastTriggerType = m_CurrTriggerType;
 
-    if ( ++m_nCurrFileCnt > MAX_LOG_FILE_IN_GRP)
-    {
-        //If it reaches max start again
-        m_nCurrFileCnt = 0;
-        //m_sLogInfo.m_sLogAdvStngs.m_nConnectionCount = 0;// set connection count to 0 as Max number of files crossed
-        m_omCurrLogFile = m_sLogInfo.m_sLogFileName;
-    }
-    else
-    {
-        //Add the file count with "_"
-        m_omCurrLogFile = omAddGroupCountToFileName(m_nCurrFileCnt,
-                          m_sLogInfo.m_sLogFileName);
+        //Set the next file name of the series if
+        vSetNextFileName(SUFFIX_MEASUREMENT);
+
+        if (m_sLogInfo.m_eFileMode == APPEND_MODE)
+        {
+            m_sLogInfo.m_eFileMode = OVERWRITE_MODE;
+        }
+
+        //Save the triggering type
+        m_CurrTriggerType = LastTriggerType;
+        //Revert back to the original mode
 
     }
 }
-
-CString CBaseLogObject::omAddGroupCountToFileName(int nCount, char sFileName[])
+void CBaseLogObject::vSetNextFileName(eFILENAMESUFFIX eFileNameSuffix)
 {
-    CString omFileName = sFileName;
-    //Add the file count with "_"
-    CString omStrAdd;
-    omStrAdd.Format(FILE_COUNT_STR, nCount);
-    //Remove Extension
-    // Reverse find the file path for '.'
-    int nExt = omFileName.ReverseFind(L'.');
-    CString omExt = omFileName.Right(omFileName.GetLength() - nExt);
-    omFileName = omFileName.Left(nExt);
-    //Now add the file count
-    omFileName = omFileName + omStrAdd + omExt;
-    return omFileName;
-}
 
-CString CBaseLogObject::omRemoveGroupCountFromFileName(CString FileName)
-{
-    //Remove Extension
-    int nExt = FileName.Find(L'.');
-    CString omExt = FileName.Right(FileName.GetLength() - nExt);
-    FileName = FileName.Left(nExt);
-    //Now remove last 2 chars
-    FileName = FileName.Left(FileName.GetLength() - 2);
-    FileName += omExt;
-    return FileName;
+    std::string strLogFile = std::string(m_sLogInfo.m_sLogFileName);
+    std::string strSuffixSubString = "";
+    int n_pos;
+
+    switch(eFileNameSuffix)
+    {
+        case SUFFIX_MEASUREMENT:
+        {
+
+            if(!CUtilFunctions::bFindLastSuffix(strLogFile,S_MEASUREMENT,n_pos))
+            {
+                CUtilFunctions::bFindLastSuffix(strLogFile,".log",n_pos);
+                strSuffixSubString = S_MEASUREMENT+std::to_string(0)+".log";
+            }
+
+            else
+            {
+                strSuffixSubString = strLogFile.substr(n_pos,sizeof(strLogFile));
+                sscanf_s(strSuffixSubString.c_str(),M_SUFFIX_FORMAT,&m_nMeasurement);
+                std::string strCurr_M = S_MEASUREMENT+std::to_string(m_nMeasurement);
+                if(m_sLogInfo.m_sLogAdvStngs.m_nConnectionCount > 1 && m_nMeasurement == 0) //Connection count will be greater(prev log file '_M' value) than measurement for 'new' second log file with measurement.
+                {
+                    m_sLogInfo.m_sLogAdvStngs.m_nConnectionCount = 0;
+                }
+                std::string strNext_M = S_MEASUREMENT+std::to_string(m_sLogInfo.m_sLogAdvStngs.m_nConnectionCount);
+                if(m_nMeasurement >= (atoi(m_sLogInfo.m_sLogAdvStngs.m_omMaxNoOfLogFiles)-1))
+                {
+                    strNext_M = S_MEASUREMENT+std::to_string(0);
+                }
+                strSuffixSubString.replace(strSuffixSubString.find(strCurr_M),strlen(strCurr_M.c_str()),strNext_M);
+            }
+        }
+        break;
+        case SUFFIX_SIZE:
+        {
+
+            if(!CUtilFunctions::bFindLastSuffix(strLogFile,S_SIZE,n_pos))
+            {
+                CUtilFunctions::bFindLastSuffix(strLogFile,".log",n_pos);
+                strSuffixSubString = S_SIZE+std::to_string(0)+".log";
+
+            }
+            else
+            {
+                strSuffixSubString = strLogFile.substr(n_pos,sizeof(strLogFile));
+                sscanf_s(strSuffixSubString.c_str(),S_SUFFIX_FORMAT,&m_nSize);
+                std::string strCurr_S = S_SIZE+std::to_string(m_nSize);
+                std::string strNext_S = S_SIZE+std::to_string(m_nSize+1);
+                if(m_nSize >= (atoi(m_sLogInfo.m_sLogAdvStngs.m_omMaxNoOfLogFiles)-1))
+                {
+                    strNext_S = S_SIZE+std::to_string(0);
+                }
+                strSuffixSubString.replace(strSuffixSubString.find(strCurr_S),strlen(strCurr_S.c_str()),strNext_S);
+            }
+        }
+        break;
+        case SUFFIX_TIME:
+        {
+
+            if(!CUtilFunctions::bFindLastSuffix(strLogFile,S_TIME,n_pos))
+            {
+                CUtilFunctions::bFindLastSuffix(strLogFile,".log",n_pos);
+                strSuffixSubString = S_TIME+std::to_string(0)+".log";
+
+            }
+
+            else
+            {
+                strSuffixSubString = strLogFile.substr(n_pos,sizeof(strLogFile));
+                sscanf_s(strSuffixSubString.c_str(),T_SUFFIX_FORMAT,&m_nTime);
+                std::string strCurr_T = S_TIME+std::to_string(m_nTime);
+                std::string strNext_T = S_TIME+std::to_string(m_nTime+1);
+                if(m_nTime >= (atoi(m_sLogInfo.m_sLogAdvStngs.m_omMaxNoOfLogFiles)-1))
+                {
+                    strNext_T = S_TIME+std::to_string(0);
+                }
+                strSuffixSubString.replace(strSuffixSubString.find(strCurr_T),strlen(strCurr_T.c_str()),strNext_T);
+            }
+        }
+        break;
+        case SUFFIX_DEFAULT:
+        {
+
+            if(!CUtilFunctions::bFindLastSuffix(strLogFile,S_DEFAULT,n_pos))
+            {
+                CUtilFunctions::bFindLastSuffix(strLogFile,".log",n_pos);
+                strSuffixSubString = S_DEFAULT+std::to_string(1)+".log";
+
+            }
+            else
+            {
+                strSuffixSubString = strLogFile.substr(n_pos,sizeof(strLogFile));
+                if(sscanf_s(strSuffixSubString.c_str(),"_%d.log",&m_nDefault) == 0)
+                {
+                    CUtilFunctions::bFindLastSuffix(strLogFile,".log",n_pos);
+                    strSuffixSubString = S_DEFAULT+std::to_string(1)+".log";
+                }
+                else
+                {
+                    std::string strCurr_D = S_DEFAULT+std::to_string(m_nDefault);
+                    std::string strNext_D = S_DEFAULT+std::to_string(m_nDefault+1);
+                    if(m_nDefault >= MAX_LOG_FILE_IN_GRP-1)
+                    {
+                        strNext_D = "";
+                    }
+                    strSuffixSubString.replace(strSuffixSubString.find(strCurr_D),strlen(strCurr_D.c_str()),strNext_D);
+                }
+            }
+
+        }
+        break;
+
+    }
+    std::string strBaseSubString = strLogFile.substr(0,n_pos);
+    strBaseSubString.append(strSuffixSubString);
+    strcpy(m_sLogInfo.m_sLogFileName,strBaseSubString.c_str());
+
 }
 
 void CBaseLogObject::vCloseLogFile()
@@ -353,13 +515,18 @@ BOOL CBaseLogObject::bStartLogging(ETYPE_BUS eBus)
     BOOL bResult = FALSE;
     if ((m_pLogFile == nullptr) && (m_sLogInfo.m_bEnabled))
     {
+        UINT64 qwRefSysTime, qwAbsBaseTime;
+        LARGE_INTEGER stLogTime, sFrequency;
+        QueryPerformanceFrequency(&sFrequency);
+        QueryPerformanceCounter(&stLogTime);
+        m_sLogInfo.m_sLogAdvStngs.m_qwLogSysTime = ((double)(stLogTime.QuadPart))/((double)(sFrequency.QuadPart));
         // This function should be called every time logging is started
         m_CurrTriggerType = m_sLogInfo.m_sLogTrigger.m_unTriggerType;
         char Mode[2] =  " ";
         Mode[0] = (m_sLogInfo.m_eFileMode == APPEND_MODE) ? L'a' : L'w';
         EnterCriticalSection(&m_CritSection);
         //In case user has deleted the content of the file
-        m_dTotalBytes = dwGetFileSize(m_omCurrLogFile);
+        m_dTotalBytes = dwGetFileSize(m_sLogInfo.m_sLogFileName);
 
         //If it is new session always overwrite the file
         if (m_dTotalBytes >= DEFAULT_FILE_SIZE_IN_BYTES && m_bNewSession)
@@ -373,7 +540,7 @@ BOOL CBaseLogObject::bStartLogging(ETYPE_BUS eBus)
             m_dTotalBytes = 0;
         }
 
-        fopen_s(&m_pLogFile, m_omCurrLogFile, Mode);
+        fopen_s(&m_pLogFile, m_sLogInfo.m_sLogFileName, Mode);
 
         if (m_pLogFile != nullptr)
         {
@@ -433,68 +600,6 @@ bool CBaseLogObject::bStopOnlyLogging()
 
 #define MIN_NAME_LENGTH    5
 
-/**
- * Find the name and size of the file which will be used for logging.
- * ie. file name which contains max file count
- */
-void CBaseLogObject::vGetNameAndSizeOfCurrentLogFile()
-{
-    //Two conditions to search for the current file present at the main file
-    //path folder
-    //1.If logging is initialised
-    //2.if file name is modified ie.m_omCurrLogFile belongs to diff. main file cycle
-
-    //Find file only if current file is not same as main file
-    if (m_omCurrLogFile.Compare(m_sLogInfo.m_sLogFileName))
-    {
-        //Check if the curr file doesn't belong to main file group
-        if (m_omCurrLogFile.GetLength() >= MIN_NAME_LENGTH)
-        {
-            CString omTempFile = m_omCurrLogFile.Left(m_omCurrLogFile.GetLength() - 2);
-            if ( !omTempFile.Compare(m_sLogInfo.m_sLogFileName) )
-            {
-                //If curr file belongs to main file group then do nothing
-                return;
-            }
-        }
-
-        if (ENOENT != _taccess(m_sLogInfo.m_sLogFileName, 0))
-        {
-            CString strNextFile = omAddGroupCountToFileName(1, m_sLogInfo.m_sLogFileName);
-            if (ENOENT != _taccess(strNextFile, 0))
-            {
-                //If first file is not present then current file is main file
-                m_omCurrLogFile = m_sLogInfo.m_sLogFileName;
-            }
-            else
-            {
-                //Search for the file in a group with highest count
-                m_nCurrFileCnt = 0;
-                for (int i = 2; (i <= MAX_LOG_FILE_IN_GRP) && (m_nCurrFileCnt != 0); i++)
-                {
-                    strNextFile = omAddGroupCountToFileName(i, m_sLogInfo.m_sLogFileName);
-                    if (ENOENT != _taccess(strNextFile, 0))
-                    {
-                        //If this file is not found means the last file is target file
-                        m_nCurrFileCnt = --i;
-                    }
-                }
-                m_omCurrLogFile = omAddGroupCountToFileName(m_nCurrFileCnt,
-                                  m_sLogInfo.m_sLogFileName);
-            }
-            //Now find the size of the file
-            m_dTotalBytes = dwGetFileSize(m_omCurrLogFile);
-        }
-        else
-        {
-            //If main file is not present initialise the current file
-            //with main file
-            m_omCurrLogFile = m_sLogInfo.m_sLogFileName;
-            m_dTotalBytes = 0;
-            m_nCurrFileCnt = 0;
-        }
-    }
-}
 
 /**
  * Get size of the file
@@ -544,6 +649,15 @@ void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
     omHeader += L'\n';
     omHeader += BUS_LOG_START;
     omHeader += L'\n';
+    if(!m_sLogInfo.m_sLogAdvStngs.m_omLogComment.IsEmpty())
+    {
+        omHeader += BUS_LOG_COMMENT_START;
+        omHeader += L'\n';
+        omHeader += m_sLogInfo.m_sLogAdvStngs.m_omLogComment;
+        omHeader += L'\n';
+        omHeader += BUS_LOG_COMMENT_END;
+        omHeader += L'\n';
+    }
 
     // Log current date and time as the start date and time of logging process
     SYSTEMTIME CurrSysTime;
@@ -576,14 +690,14 @@ void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
             break;
     }
     omHeader += L'\n';
+    omHeader += BUS_LOG_BAUDRATE_START;
+    omHeader += L'\n';
     if(eBus == CAN || eBus == J1939)
     {
         // Update the channel and its baudrate information
         sCONTROLLERDETAILS controllerDetails[defNO_OF_CHANNELS];
         int nNumChannels = 0;
         GetChannelBaudRateDetails(controllerDetails, nNumChannels);
-        omHeader += BUS_LOG_BAUDRATE_START;
-        omHeader += L'\n';
         CString strChannelNum = "";
         for (int nChannelNum = 1; nChannelNum <= nNumChannels; nChannelNum++)
         {
@@ -607,8 +721,6 @@ void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
         sCONTROLLERDETAILSLIN controllerDetails[defNO_OF_LIN_CHANNELS];
         int nNumChannels = 0;
         GetChannelBaudRateDetails(controllerDetails, nNumChannels);
-        omHeader += BUS_LOG_BAUDRATE_START;
-        omHeader += L'\n';
         CString strChannelNum = "";
 
         for (int nChannelNum = 1; nChannelNum <= nNumChannels ; nChannelNum++)
@@ -631,7 +743,10 @@ void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
     CStringArray aomList;
     GetDatabaseFiles(aomList);
 
-
+    if(eBus == CAN || eBus == J1939)
+    {
+        omHeader += BUS_LOG_DATABASE_START;
+    }
     if(eBus == LIN)
     {
         omHeader += BUS_LOG_DATABASE_START_LIN;
@@ -646,6 +761,10 @@ void CBaseLogObject::vFormatHeader(CString& omHeader, ETYPE_BUS eBus)
         omHeader += "***" + aomList.GetAt(nIdx) + "***";
         omHeader += L'\n';
 
+    }
+    if(eBus == CAN || eBus == J1939)
+    {
+        omHeader += BUS_LOG_DATABASE_END;
     }
     if(eBus == LIN)
     {

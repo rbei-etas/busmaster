@@ -40,6 +40,8 @@ public:
     enum { IDD = IDD_NODE_DEATILS };
     CString m_omStrDllPath;
     CString m_omStrNodeName;
+    CString m_omStrNodeFilePath;
+    CString m_omStrCFile;
     //}}AFX_DATA
 
 
@@ -61,13 +63,14 @@ protected:
     virtual BOOL OnInitDialog();
     virtual void OnOK();
     afx_msg void OnBrowse();
-    afx_msg void OnClear();
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
     ETYPE_BUS m_eBus;
     PSNODEINFO m_psNodeStuctPtr;
-    void vEnableClearButton(BOOL bEnable);
+    eNODE_FILE_TYPE m_eNodeFileType;
+    void bUpdateNodeInfoFile();
+    bool bOpenfile();
 public:
     bool        m_bEdit;
     CRadixEdit m_omPreferedAddress;

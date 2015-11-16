@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="WriteToLogFile" xml:lang="en-us">
+  <title>GetLoggingBlock : To get a particular Logging Block</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <p>HRESULT GetLoggingBlock([in] USHORT BlockIndex, [out] SLOGGINGBLOCK_USR* psLoggingBlock);</p>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function gets a particular logging block</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>[in] USHORT BlockIndex - The zero based logging block index. </p>
+      <p>[out] SLOGGINGBLOCK_USR* psLoggingBlock - return pointer to Logging block.</p>
+    </section>
+    <section>
+      <b>Usage in COM Client</b>
+    </section>
+    <section>SLOGGINGBLOCK_USR* psLoggingBlock</section>
+    <section>HRESULT hResult = m_IApplication-&gt;GetLoggingBlock(0,psLoggingBlock)//Gets pointer to first logging block.</section>
+    <section>
+      <title>Cause of failure</title>
+      <p>NA</p>
+    </section>
+  </refbody>
+</reference>

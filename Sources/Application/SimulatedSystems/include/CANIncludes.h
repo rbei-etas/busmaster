@@ -6,6 +6,7 @@
 #include "Wrapper_CAN.h"
 #ifdef __cplusplus
 #include "CAPLWrapper.h"
+#include "CANCAPLWrapper.h"
 #endif
 
 #endif

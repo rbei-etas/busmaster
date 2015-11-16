@@ -1089,14 +1089,15 @@ HRESULT CDIL_ISOLAR_EVE_VLIN::LIN_RegisterClient(BOOL bRegister, DWORD& ClientID
                 }
                 else
                 {
-                    if (!bClientExist(LIN_MONITOR_NODE, Index))
+                    /*if (!bClientExist(LIN_MONITOR_NODE, Index))
                     {
                         Index = sg_unClientCnt + 1;
                     }
                     else
                     {
                         Index = sg_unClientCnt;
-                    }
+                    }*/
+					Index = sg_unClientCnt;
                     ClientID = dwGetAvailableClientSlot();
                     _tcscpy(sg_asClientToBufMap[Index].pacClientName, pacClientName);
 

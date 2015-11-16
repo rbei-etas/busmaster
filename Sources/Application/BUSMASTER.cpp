@@ -265,6 +265,7 @@ BOOL CCANMonitorApp::InitInstance()
     if ( pMainFrame == nullptr )
     {
         ::PostQuitMessage(0);
+        return FALSE;
     }
 
     if (!pMainFrame->LoadFrame(IDR_MAINFRAME))
@@ -349,6 +350,8 @@ BOOL CCANMonitorApp::InitInstance()
         }
 
         m_bIsConfigFileLoaded = TRUE;
+        //build all nodes -- Node Simulation.
+        pMainFrame->BuildAllNodes();
     }
     else
     {
@@ -1012,8 +1015,8 @@ void CCANMonitorApp::vDestroyUtilThreads(UINT unMaxWaitTime, BYTE byThreadCode)
                 PSTXSELMSGDATA psTxCanMsg = static_cast <PSTXSELMSGDATA>
                                             (m_asUtilThread[defTX_SEL_MSG_THREAD].m_pvThread);
                 delete [](psTxCanMsg->m_psTxMsg);
-                delete psTxCanMsg;
                 psTxCanMsg->m_psTxMsg = nullptr;
+                delete psTxCanMsg;
                 psTxCanMsg = nullptr;
                 m_asUtilThread[defTX_SEL_MSG_THREAD].m_pvThread = nullptr;
             }

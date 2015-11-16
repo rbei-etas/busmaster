@@ -276,6 +276,8 @@ void CExploreMsgSg::OnSelect()
                     omStrMsg = omStrMsg.Left(nIndex);
                 }
 
+				if(nullptr != pDoc)
+				{
                 // Get the Initialised string from document
                 CString omStrMsgStructure =
                     pDoc->omStrGetInitialisedMessage(unMsgID,
@@ -286,6 +288,7 @@ void CExploreMsgSg::OnSelect()
                                                omStrMsgStructure,
                                                MSG_STRUCT_VAR,
                                                defSIGNALMEMBER);
+				}
             }
             m_omStrSelectedItemText += omStrSgName;
         }

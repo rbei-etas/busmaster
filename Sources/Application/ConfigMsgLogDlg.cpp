@@ -37,6 +37,7 @@
 #include ".\configmsglogdlg.h"
 //#include "GettextBusmaster.h"
 #include "Utility\MultiLanguageSupport.h"
+#include "Utility\UtilFunctions.h"
 
 #define STR_FILTER_DIALOG_FORMAT        "Configure Filter for Log File: %s"
 #define BUSMASTER_LOG_REMOVE            "Do you want to remove selected log file entry?"
@@ -77,6 +78,15 @@ CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL&
     , m_omControlParam2("")
     , m_unChannelCount(0)
 {
+    m_pouLoggerLIN = nullptr;
+    m_psLINFilter = nullptr;
+    m_pouLoggerJ1939 = nullptr;
+    m_pouFProcCAN = nullptr;
+    m_psFilterConfigured = nullptr;
+    m_psJ1939Filter = nullptr;
+    m_nMeasurement = 0;
+    m_nSize = 0;
+    m_nTime = 0;
     switch (m_eCurrBus)
     {
         case CAN:
@@ -86,6 +96,7 @@ CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL&
             m_strCurrWndText =_("Configure Logging for CAN");
             m_omControlParam = _("Start on Reception of ID 0x");
             m_omControlParam2 = _("Stop on Reception of ID 0x");
+            vResetAdvLogParameters();
         }
         break;
         case J1939:
@@ -107,6 +118,7 @@ CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL&
             m_omControlParam2 = _("Stop on Reception of ID 0x");
 
         }
+        break;
 
         default:
             ASSERT(false);
@@ -116,6 +128,10 @@ CConfigMsgLogDlg::CConfigMsgLogDlg(ETYPE_BUS eCurrBus,void* pouBaseLogger, BOOL&
     m_bEditingON = FALSE;
     m_bLogON = FALSE;
     m_unDispUpdateTimerId = 0;
+    m_nFileSize = defDEFAULT_LOG_FILE_SIZE;
+    m_nFileCount = defDEFAULT_LOG_FILE_COUNT;
+    m_nTimeHrs = defDEFAULT_LOG_TIME_HRS;
+    m_nTimeMin = defDEFAULT_LOG_TIME_MIN;
 }
 
 CConfigMsgLogDlg::~CConfigMsgLogDlg()
@@ -136,13 +152,17 @@ void CConfigMsgLogDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_STATIC_01, m_omControlParam);
     DDX_Text(pDX, IDC_STATIC_02, m_omControlParam2);
 
-    /*DDX_Control(pDX, IDC_CHKB_ON_TRANSMISSION, m_ChkLogOnMeasurement);
+    DDX_Control(pDX, IDC_CHKB_ON_TRANSMISSION, m_ChkLogOnMeasurement);
     DDX_Control(pDX, IDC_CHKB_LOG_FILE_SIZE, m_ChkLogOnSize);
     DDX_Control(pDX, IDC_CHKB_LOG_ON_TIME, m_ChkLogOnTime);
-    DDX_Control(pDX, IDC_EDIT_FILE_SIZE, m_odLogOnSize);
-    DDX_Control(pDX, IDC_EDIT_HOURS, m_odLogOnTimeHrs);
-    DDX_Control(pDX, IDC_EDIT_MINUTES, m_odLogOnTimeMins);
-    DDX_Control(pDX, IDC_EDIT_NO_OF_FILES, m_odMaxLogFilesAllwd);*/
+    DDX_Text(pDX, IDC_EDIT_FILE_SIZE,m_nFileSize );
+    DDV_MinMaxInt(pDX,m_nFileSize,defMIN_LOG_FILE_SIZE,defMAX_LOG_FILE_SIZE);
+    DDX_Text(pDX, IDC_EDIT_HOURS, m_nTimeHrs);
+    DDV_MinMaxInt(pDX,m_nTimeHrs,defMIN_LOG_TIME_HRS,defMAX_LOG_TIME_HRS);
+    DDX_Text(pDX, IDC_EDIT_MINUTES, m_nTimeMin);
+    DDV_MinMaxInt(pDX,m_nTimeMin,defMIN_LOG_TIME_MIN,defMAX_LOG_TIME_MIN);
+    DDX_Text(pDX, IDC_EDIT_NO_OF_FILES,m_nFileCount );
+    DDV_MinMaxInt(pDX, m_nFileCount,defMIN_LOG_FILE_COUNT,defMAX_LOG_FILE_COUNT);
 }
 
 BEGIN_MESSAGE_MAP(CConfigMsgLogDlg, CDialog)
@@ -157,6 +177,14 @@ BEGIN_MESSAGE_MAP(CConfigMsgLogDlg, CDialog)
     ON_CONTROL_RANGE(EN_CHANGE, IDC_EDIT_STARTMSGID, IDC_EDIT_STOPMSGID, OnStartStopMsgIDEnChange)
     ON_BN_CLICKED(IDC_LOG_FILTER, OnBnClickedLogFilter)
 
+    ON_BN_CLICKED(IDC_CHKB_ON_TRANSMISSION, OnBnClickedLogOnMeasurement)
+    ON_BN_CLICKED(IDC_CHKB_LOG_FILE_SIZE, OnBnClickedLogOnSize)
+    ON_BN_CLICKED(IDC_CHKB_LOG_ON_TIME, OnBnClickedLogOnTime)
+    ON_EN_CHANGE(IDC_EDIT_FILE_SIZE, OnEnChngLogFileSize)
+    ON_EN_CHANGE(IDC_EDIT_HOURS, OnEnChngLogFileTimeHrs)
+    ON_EN_CHANGE(IDC_EDIT_MINUTES, OnEnChngLogFileTimeMins)
+    ON_EN_CHANGE(IDC_EDIT_NO_OF_FILES, OnEnChngLogFilesAllowed)
+    ON_EN_CHANGE(IDC_EDIT_LOG_COMMENT, OnEnChngLogComment) //arun
     ON_WM_TIMER()
     ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
@@ -347,6 +375,14 @@ void CConfigMsgLogDlg::vEnableDisableControls(BOOL bValue)
     // Indicator static text controls in trogger group box
     vEnableDisableControl(IDC_STATIC_01, STATICTEXT, bValue);
     vEnableDisableControl(IDC_STATIC_02, STATICTEXT, bValue);
+        vEnableDisableControl(IDC_CHKB_ON_TRANSMISSION, CHECKBOX, bValue);
+        vEnableDisableControl(IDC_CHKB_LOG_FILE_SIZE, CHECKBOX, bValue);
+        GetDlgItem(IDC_EDIT_FILE_SIZE)->EnableWindow(bValue);
+        GetDlgItem(IDC_EDIT_NO_OF_FILES)->EnableWindow(bValue);
+        vEnableDisableControl(IDC_CHKB_LOG_ON_TIME, CHECKBOX, bValue);
+        GetDlgItem(IDC_EDIT_HOURS)->EnableWindow(bValue);
+        GetDlgItem(IDC_EDIT_MINUTES)->EnableWindow(bValue);
+        vEnableDisableControl(IDC_EDIT_LOG_COMMENT, EDITCTRL, bValue);
 }
 
 BOOL CConfigMsgLogDlg::FoundInLogList(CString omFullPath, CString omFileName)
@@ -421,10 +457,12 @@ void CConfigMsgLogDlg::vUpdate_GUI_From_Datastore(USHORT usIndex)
     if (GetLoggingBlock(usIndex, sLogStruct) == S_OK)
     {
         vEnableDisableControls(!m_bLogON);
+        EnablingAdvSettings(!m_bLogON);
     }
     else
     {
         vEnableDisableControls(FALSE);
+        EnablingAdvSettings(FALSE);
         return;
     }
 
@@ -501,6 +539,42 @@ void CConfigMsgLogDlg::vUpdate_GUI_From_Datastore(USHORT usIndex)
         vEnableDisableControl(IDC_EDIT_STARTMSGID, EDITCTRL, FALSE);
         // Stop trigger edit control: clear and disable
         vEnableDisableControl(IDC_EDIT_STOPMSGID, EDITCTRL, FALSE);
+    }
+    // Retaining Advanced Settings
+    if(m_eCurrBus == CAN || m_eCurrBus == J1939 || m_eCurrBus == LIN)
+    {
+        if(sLogStruct.m_sLogAdvStngs.m_bIsLogOnMesurement == TRUE)
+        {
+            CheckDlgButton(IDC_CHKB_ON_TRANSMISSION, BST_CHECKED);
+        }
+        else
+        {
+            CheckDlgButton(IDC_CHKB_ON_TRANSMISSION, BST_UNCHECKED);
+        }
+
+        if(sLogStruct.m_sLogAdvStngs.m_bIsLogOnSize == TRUE)
+        {
+            CheckDlgButton(IDC_CHKB_LOG_FILE_SIZE, BST_CHECKED);
+        }
+        else
+        {
+            CheckDlgButton(IDC_CHKB_LOG_FILE_SIZE, BST_UNCHECKED);
+        }
+
+        if(sLogStruct.m_sLogAdvStngs.m_bIsLogOnTime == TRUE)
+        {
+            CheckDlgButton(IDC_CHKB_LOG_ON_TIME, BST_CHECKED);
+        }
+        else
+        {
+            CheckDlgButton(IDC_CHKB_LOG_ON_TIME, BST_UNCHECKED);
+        }
+        EnablingMaxNumEdit();
+        GetDlgItem(IDC_EDIT_FILE_SIZE)->SetWindowText(sLogStruct.m_sLogAdvStngs.m_omSizeInMB);
+        GetDlgItem(IDC_EDIT_HOURS)->SetWindowText(sLogStruct.m_sLogAdvStngs.m_omLogTimeHrs);
+        GetDlgItem(IDC_EDIT_MINUTES)->SetWindowText(sLogStruct.m_sLogAdvStngs.m_omLogTimeMins);
+        GetDlgItem(IDC_EDIT_NO_OF_FILES)->SetWindowText(sLogStruct.m_sLogAdvStngs.m_omMaxNoOfLogFiles);
+        GetDlgItem(IDC_EDIT_LOG_COMMENT)->SetWindowText(sLogStruct.m_sLogAdvStngs.m_omLogComment);//arun
     }
 }
 
@@ -605,6 +679,87 @@ void CConfigMsgLogDlg::vUpdate_Datastore_From_GUI(USHORT ushIndex, int CtrlID)
             int MaxCount = sizeof(sLogStruct.m_sLogFileName) / sizeof(char);
             (GetDlgItem(IDC_EDIT_LOGFILEPATH))->GetWindowText(
                 sLogStruct.m_sLogFileName, MaxCount);
+        }
+        break;
+        case IDC_CHKB_ON_TRANSMISSION:
+        {
+            if(m_ChkLogOnMeasurement.GetCheck() == BST_CHECKED)
+            {
+                sLogStruct.m_sLogAdvStngs.m_bIsLogOnMesurement = TRUE;
+            }
+            else if(m_ChkLogOnMeasurement.GetCheck() == BST_UNCHECKED)
+            {
+                sLogStruct.m_sLogAdvStngs.m_bIsLogOnMesurement = FALSE;
+            }
+        }
+        break;
+        case IDC_CHKB_LOG_FILE_SIZE:
+        {
+            if(m_ChkLogOnSize.GetCheck() == BST_CHECKED)
+            {
+                sLogStruct.m_sLogAdvStngs.m_bIsLogOnSize = TRUE;
+            }
+            else if(m_ChkLogOnSize.GetCheck() == BST_UNCHECKED)
+            {
+                sLogStruct.m_sLogAdvStngs.m_bIsLogOnSize = FALSE;
+            }
+        }
+        break;
+        case IDC_CHKB_LOG_ON_TIME:
+        {
+            if(m_ChkLogOnTime.GetCheck() == BST_CHECKED)
+            {
+                sLogStruct.m_sLogAdvStngs.m_bIsLogOnTime = TRUE;
+            }
+            else if(m_ChkLogOnTime.GetCheck() == BST_UNCHECKED)
+            {
+                sLogStruct.m_sLogAdvStngs.m_bIsLogOnTime = FALSE;
+            }
+        }
+        break;
+        case IDC_EDIT_FILE_SIZE:
+        {
+            CString strSize = "";
+
+            GetDlgItem(IDC_EDIT_FILE_SIZE)->GetWindowText(strSize);
+
+            sLogStruct.m_sLogAdvStngs.m_omSizeInMB = strSize;
+        }
+        break;
+        case IDC_EDIT_HOURS:
+        {
+            CString strHrs = "";
+
+            GetDlgItem(IDC_EDIT_HOURS)->GetWindowText(strHrs);
+
+            sLogStruct.m_sLogAdvStngs.m_omLogTimeHrs = strHrs;
+
+        }
+        break;
+        case IDC_EDIT_MINUTES:
+        {
+            CString strMins = "";
+
+            GetDlgItem(IDC_EDIT_MINUTES)->GetWindowText(strMins);
+
+            sLogStruct.m_sLogAdvStngs.m_omLogTimeMins = strMins;
+
+        }
+        break;
+        case IDC_EDIT_NO_OF_FILES:
+        {
+            CString strNoOfFiles = "";
+
+            GetDlgItem(IDC_EDIT_NO_OF_FILES)->GetWindowText(strNoOfFiles);
+
+            sLogStruct.m_sLogAdvStngs.m_omMaxNoOfLogFiles = strNoOfFiles;
+        }
+        break;
+        case IDC_EDIT_LOG_COMMENT:
+        {
+            CString strLogComment = "";
+            GetDlgItem(IDC_EDIT_LOG_COMMENT)->GetWindowText(strLogComment);
+            sLogStruct.m_sLogAdvStngs.m_omLogComment = strLogComment;
         }
         break;
     }
@@ -740,6 +895,8 @@ void CConfigMsgLogDlg::OnBnClickedCbtnLogFilePath(void)
         (GetDlgItem(IDC_EDIT_LOGFILEPATH))->SetWindowText(omStrLogFile);
         m_omListLogFiles.SetItemText(m_nLogIndexSel, 0, omStrLogFile);
         vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, IDC_EDIT_LOGFILEPATH);
+        vResetAdvLogParameters();
+        vAddSuffixToLogFileName(SUFFIX_DEFAULT);
     }
 }
 
@@ -778,7 +935,7 @@ void CConfigMsgLogDlg::OnLvnItemchangedLogBlockLst(NMHDR* pNMHDR, LRESULT* pResu
             m_bEditingON = FALSE;
             // Update Button Status
             vEnableDisableControls(FALSE);
-            //EnablingMaxNumEdit();
+            EnablingMaxNumEdit();
             GetDlgItem(IDC_CHECK_RESET_TIMESTAMP)->EnableWindow(FALSE);
         }
     }
@@ -924,6 +1081,7 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
 
         GetDlgItem(IDC_CBTN_ADDLOG)->EnableWindow(FALSE);
         GetDlgItem(IDC_CHECK_RESET_TIMESTAMP)->EnableWindow(FALSE);
+        GetDlgItem(IDC_EDIT_NO_OF_FILES)->EnableWindow(FALSE);
         GetWindowText(m_strCurrWndText);
         m_strCurrWndText+=_(" - Read Only as Logging is ON");
         SetWindowText(m_strCurrWndText);
@@ -957,6 +1115,50 @@ BOOL CConfigMsgLogDlg::OnInitDialog()
     return TRUE;
 }
 
+
+void CConfigMsgLogDlg::EnablingAdvSettings(BOOL bEnable)
+{
+    if(m_eCurrBus != CAN && m_eCurrBus != J1939 && m_eCurrBus != LIN)
+    {
+        bEnable = FALSE;
+    }
+    SLOGINFO sLogStruct;
+    GetLoggingBlock(m_nLogIndexSel, sLogStruct);
+
+    if(bEnable == FALSE)
+    {
+        GetDlgItem(IDC_EDIT_FILE_SIZE)->EnableWindow(bEnable);
+        GetDlgItem(IDC_EDIT_HOURS)->EnableWindow(bEnable);
+        GetDlgItem(IDC_EDIT_MINUTES)->EnableWindow(bEnable);
+        GetDlgItem(IDC_EDIT_NO_OF_FILES)->EnableWindow(bEnable);
+        EnablingMaxNumEdit();
+    }
+
+    else
+    {
+        if(sLogStruct.m_sLogAdvStngs.m_bIsLogOnSize == TRUE)
+        {
+            GetDlgItem(IDC_EDIT_FILE_SIZE)->EnableWindow(bEnable);
+        }
+        else
+        {
+            GetDlgItem(IDC_EDIT_FILE_SIZE)->EnableWindow(!bEnable);
+        }
+
+        if(sLogStruct.m_sLogAdvStngs.m_bIsLogOnTime  == BST_CHECKED)
+        {
+            GetDlgItem(IDC_EDIT_HOURS)->EnableWindow(bEnable);
+            GetDlgItem(IDC_EDIT_MINUTES)->EnableWindow(bEnable);
+        }
+        else
+        {
+            GetDlgItem(IDC_EDIT_HOURS)->EnableWindow(!bEnable);
+            GetDlgItem(IDC_EDIT_MINUTES)->EnableWindow(!bEnable);
+        }
+        EnablingMaxNumEdit();
+    }
+
+}
 // Unpunctual codes
 
 void CConfigMsgLogDlg::OnTimer(UINT nIDEvent)
@@ -980,6 +1182,7 @@ void CConfigMsgLogDlg::OnTimer(UINT nIDEvent)
             SetWindowText(m_strCurrWndText);
             bSwitchDisplay = true;
         }
+		ReleaseDC(pdc);
     }
 
     CDialog::OnTimer(nIDEvent);
@@ -1091,9 +1294,11 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
         SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(pos);
         const PSFILTERSET psTemp = SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters,
                                    psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
-        ASSERT (psTemp != nullptr);
+        if ( psTemp != nullptr )
+        {
         sFilterApplied.m_psFilters[sFilterApplied.m_ushTotal].bClone(*psTemp);
         sFilterApplied.m_ushTotal++;
+        }
     }
 }
 
@@ -1110,9 +1315,11 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_LIN* psFilterConfigured,
         SSUBENTRY& sSubEntry = sMainEntry.m_odSelEntryList.GetNext(pos);
         const PSFILTERSET psTemp = SFILTERSET::psGetFilterSetPointer(psFilterConfigured->m_psFilters,
                                    psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
-        ASSERT (psTemp != nullptr);
+        if (psTemp != nullptr)
+        {
         sFilterApplied.m_psFilters[sFilterApplied.m_ushTotal].bClone(*psTemp);
         sFilterApplied.m_ushTotal++;
+        }
     }
 }
 
@@ -1339,7 +1546,276 @@ HRESULT CConfigMsgLogDlg::GetFilteringScheme(USHORT ushLogBlk, void* psFilterObj
 
 void CConfigMsgLogDlg::OnBnClickedOk()
 {
+    CString omStrLogTimeHrs;
+    CString omStrLogTimeMin;
+    GetDlgItem(IDC_EDIT_MINUTES)->GetWindowText(omStrLogTimeMin);
+    GetDlgItem(IDC_EDIT_HOURS)->GetWindowText(omStrLogTimeHrs);
+    if(atoi(omStrLogTimeHrs) == 0 && atoi(omStrLogTimeMin) == 0 && m_ChkLogOnTime.GetCheck() == BST_CHECKED)
+    {
+        int nResult = AfxMessageBox(defSTR_LOG_TIME_ERROR,MB_ICONERROR|MB_OKCANCEL);
+        if(nResult == IDOK)
+        {
+            GetDlgItem(IDC_EDIT_MINUTES)->SetWindowText(std::to_string(defDEFAULT_LOG_TIME_MIN).c_str());
+            vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, (IDC_EDIT_MINUTES));
+            return;
+        }
+        else
+        {
+            return;
+        }
+    }
     m_bLogOnConnect = m_ChkbEnableLogOnConnect.GetCheck();
     // TODO: Add your control notification handler code here
     OnOK();
+}
+
+void CConfigMsgLogDlg::OnBnClickedLogOnMeasurement()
+{
+    vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, (IDC_CHKB_ON_TRANSMISSION));
+    EnablingAdvSettings(TRUE);
+    if(m_ChkLogOnMeasurement.GetCheck() == BST_CHECKED)
+    {
+        vAddSuffixToLogFileName(SUFFIX_MEASUREMENT);
+    }
+    else
+    {
+        vRemoveSuffixFromLogFileName(SUFFIX_MEASUREMENT);
+    }
+
+}
+
+void CConfigMsgLogDlg::OnBnClickedLogOnSize()
+{
+    vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, (IDC_CHKB_LOG_FILE_SIZE));
+
+    EnablingAdvSettings(TRUE);
+    if(m_ChkLogOnSize.GetCheck() == BST_CHECKED)
+    {
+        vAddSuffixToLogFileName(SUFFIX_SIZE);
+    }
+    else
+    {
+        vRemoveSuffixFromLogFileName(SUFFIX_SIZE);
+    }
+
+}
+
+void CConfigMsgLogDlg::OnBnClickedLogOnTime()
+{
+    vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, (IDC_CHKB_LOG_ON_TIME));
+
+    EnablingAdvSettings(TRUE);
+
+    if(m_ChkLogOnTime.GetCheck() == BST_CHECKED)
+    {
+        vAddSuffixToLogFileName(SUFFIX_TIME);
+    }
+    else
+    {
+        vRemoveSuffixFromLogFileName(SUFFIX_TIME);
+    }
+
+}
+
+void CConfigMsgLogDlg::OnEnChngLogFileSize()
+{
+
+    CString omStrFileSize;
+    GetDlgItem(IDC_EDIT_FILE_SIZE)->GetWindowText(omStrFileSize);
+    if(!UpdateData(TRUE))
+    {
+        GetDlgItem(IDC_EDIT_FILE_SIZE)->SetWindowText(std::to_string(defDEFAULT_LOG_FILE_SIZE).c_str());
+        vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, (IDC_EDIT_FILE_SIZE));
+    }
+    else
+    {
+        vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, (IDC_EDIT_FILE_SIZE));
+    }
+
+}
+
+void CConfigMsgLogDlg::OnEnChngLogFileTimeHrs()
+{
+    CString omStrLogTimeHrs;
+    CString omStrLogTimeMin;
+    GetDlgItem(IDC_EDIT_MINUTES)->GetWindowText(omStrLogTimeMin);
+    GetDlgItem(IDC_EDIT_HOURS)->GetWindowText(omStrLogTimeHrs);
+
+    if(!UpdateData(TRUE))
+    {
+        GetDlgItem(IDC_EDIT_HOURS)->SetWindowText(std::to_string(defDEFAULT_LOG_TIME_HRS).c_str());
+        vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, (IDC_EDIT_HOURS));
+    }
+    else
+    {
+        vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, (IDC_EDIT_HOURS));
+    }
+
+
+}
+
+void CConfigMsgLogDlg::OnEnChngLogFileTimeMins()
+{
+    CString omStrLogTimeMin;
+    CString omStrLogTimeHrs;
+    GetDlgItem(IDC_EDIT_MINUTES)->GetWindowText(omStrLogTimeMin);
+    GetDlgItem(IDC_EDIT_HOURS)->GetWindowText(omStrLogTimeHrs);
+    if(!UpdateData(TRUE))
+    {
+        GetDlgItem(IDC_EDIT_MINUTES)->SetWindowText(std::to_string(defDEFAULT_LOG_TIME_MIN).c_str());
+        vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, (IDC_EDIT_MINUTES));
+    }
+    else
+    {
+        vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, (IDC_EDIT_MINUTES));
+    }
+}
+
+void CConfigMsgLogDlg::OnEnChngLogFilesAllowed()
+{
+    CString omStrFileCount;
+    GetDlgItem(IDC_EDIT_NO_OF_FILES)->GetWindowText(omStrFileCount);
+    if(!UpdateData(TRUE))
+    {
+        GetDlgItem(IDC_EDIT_NO_OF_FILES)->SetWindowText(std::to_string(defDEFAULT_LOG_FILE_COUNT).c_str());
+        vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, (IDC_EDIT_NO_OF_FILES));
+    }
+    else
+    {
+        vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, (IDC_EDIT_NO_OF_FILES));
+    }
+}
+
+//arun
+void CConfigMsgLogDlg::OnEnChngLogComment()
+{
+    vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, (IDC_EDIT_LOG_COMMENT));
+}
+
+void CConfigMsgLogDlg::EnablingMaxNumEdit()
+{
+    if(m_ChkLogOnSize.GetCheck() == BST_CHECKED || m_ChkLogOnTime.GetCheck() == BST_CHECKED
+            || m_ChkLogOnMeasurement.GetCheck() == BST_CHECKED)
+    {
+        GetDlgItem(IDC_EDIT_NO_OF_FILES)->EnableWindow(TRUE);
+
+    }
+    else
+    {
+        GetDlgItem(IDC_EDIT_NO_OF_FILES)->EnableWindow(FALSE);
+    }
+}
+
+void CConfigMsgLogDlg::vAddSuffixToLogFileName(eFILENAMESUFFIX eFileNameSuffix)
+{
+    std::string strSuffix ="";
+    CString omStrFileName;
+    (GetDlgItem(IDC_EDIT_LOGFILEPATH))->GetWindowText(omStrFileName);
+    if(m_ChkLogOnMeasurement.GetCheck() == BST_CHECKED)
+    {
+        if((omStrFileName.Find(S_MEASUREMENT) != std::string::npos) && (eFileNameSuffix != SUFFIX_MEASUREMENT) && (eFileNameSuffix != SUFFIX_DEFAULT))
+        {
+            vRemoveSuffixFromLogFileName(SUFFIX_MEASUREMENT);
+        }
+        strSuffix.append(S_MEASUREMENT);
+        strSuffix.append(std::to_string(m_nMeasurement));
+    }
+    if(m_ChkLogOnSize.GetCheck() == BST_CHECKED)
+    {
+        if((omStrFileName.Find(S_SIZE) != std::string::npos) && (eFileNameSuffix != SUFFIX_SIZE) && (eFileNameSuffix != SUFFIX_DEFAULT))
+        {
+            vRemoveSuffixFromLogFileName(SUFFIX_SIZE);
+        }
+        strSuffix.append(S_SIZE);
+        strSuffix.append(std::to_string(m_nSize));
+    }
+    if(m_ChkLogOnTime.GetCheck() == BST_CHECKED)
+    {
+        if((omStrFileName.Find(S_TIME) != std::string::npos) && (eFileNameSuffix != SUFFIX_TIME) && (eFileNameSuffix != SUFFIX_DEFAULT))
+        {
+            vRemoveSuffixFromLogFileName(SUFFIX_TIME);
+        }
+        strSuffix.append(S_TIME);
+        strSuffix.append(std::to_string(m_nTime));
+    }
+
+    (GetDlgItem(IDC_EDIT_LOGFILEPATH))->GetWindowText(omStrFileName);
+    std::string strFileName = std::string(omStrFileName);
+    strFileName.replace(strFileName.find(".log"),sizeof(".log")-1,"");
+    strFileName.append(strSuffix);
+    strFileName.append(".log");
+    (GetDlgItem(IDC_EDIT_LOGFILEPATH))->SetWindowText(strFileName.c_str());
+    vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, IDC_EDIT_LOGFILEPATH);
+    m_omListLogFiles.SetItemText(m_nLogIndexSel,0,strFileName.c_str());
+
+}
+
+void CConfigMsgLogDlg::vRemoveSuffixFromLogFileName(eFILENAMESUFFIX eFileNameSuffix)
+{
+    CString omStrFileName;
+    (GetDlgItem(IDC_EDIT_LOGFILEPATH))->GetWindowText(omStrFileName);
+    std::string strFileName = std::string(omStrFileName);
+    std::string strSuffixSubString = "";
+    int n_pos = 0;
+
+    switch(eFileNameSuffix)
+    {
+        case SUFFIX_MEASUREMENT:
+        {
+
+            if(!CUtilFunctions::bFindLastSuffix(strFileName,S_MEASUREMENT,n_pos))
+            {
+
+                m_nMeasurement = 0;
+                return;
+            }
+            strSuffixSubString = strFileName.substr(n_pos,sizeof(strFileName));
+            sscanf_s(strSuffixSubString.c_str(),M_SUFFIX_FORMAT,&m_nMeasurement);
+            std::string strCurr_M = S_MEASUREMENT+std::to_string(m_nMeasurement);
+            strSuffixSubString.replace(strSuffixSubString.find(strCurr_M),strlen(strCurr_M.c_str()),"");
+
+        }
+        break;
+        case SUFFIX_SIZE:
+        {
+
+            if(!CUtilFunctions::bFindLastSuffix(strFileName,S_SIZE,n_pos))
+            {
+                m_nSize = 0;
+                return;
+            }
+
+            strSuffixSubString = strFileName.substr(n_pos,sizeof(strFileName));
+            sscanf_s(strSuffixSubString.c_str(),S_SUFFIX_FORMAT,&m_nSize);
+            std::string strCurr_S = S_SIZE+std::to_string(m_nSize);
+            strSuffixSubString.replace(strSuffixSubString.find(strCurr_S),strlen(strCurr_S.c_str()),"");
+        }
+        break;
+        case SUFFIX_TIME:
+        {
+
+            if(!CUtilFunctions::bFindLastSuffix(strFileName,S_TIME,n_pos))
+            {
+                m_nTime = 0;
+                return;
+            }
+            strSuffixSubString = strFileName.substr(n_pos,sizeof(strFileName));
+            sscanf_s(strSuffixSubString.c_str(),T_SUFFIX_FORMAT,&m_nTime);
+            std::string strCurr_T = S_TIME+std::to_string(m_nTime);
+            strSuffixSubString.replace(strSuffixSubString.find(strCurr_T),strlen(strCurr_T.c_str()),"");
+        }
+        break;
+    }
+
+    std::string strBaseSubString = strFileName.substr(0,n_pos);
+    strBaseSubString.append(strSuffixSubString);
+    (GetDlgItem(IDC_EDIT_LOGFILEPATH))->SetWindowText(strBaseSubString.c_str());
+    vUpdate_Datastore_From_GUI((USHORT) m_nLogIndexSel, IDC_EDIT_LOGFILEPATH);
+    m_omListLogFiles.SetItemText(m_nLogIndexSel,0,strBaseSubString.c_str());
+}
+void CConfigMsgLogDlg::vResetAdvLogParameters()
+{
+    m_nMeasurement = 0;
+    m_nSize = 0;
+    m_nTime = 0;
 }

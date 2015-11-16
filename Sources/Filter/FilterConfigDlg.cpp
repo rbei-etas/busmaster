@@ -348,7 +348,7 @@ BOOL CFilterConfigDlg::bCreateFilterDetailsList()
     nTotalColunmSize     = rListCtrlRect.right - rListCtrlRect.left;
     nTotalStrLengthPixel = 0;
 
-    int nColSize[ defFILTER_DETAILS_LIST_COLUMNS ];
+    int nColSize[ defFILTER_DETAILS_LIST_COLUMNS ]={0};
     if(m_eCurrBUS == LIN)
     {
         nColSize[0] = static_cast<int>(nTotalColunmSize * 0.50 );

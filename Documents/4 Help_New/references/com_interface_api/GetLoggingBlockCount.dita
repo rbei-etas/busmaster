@@ -4,6 +4,10 @@
   <title>GetLoggingBlockCount : Getter for total number of logging blocks</title>
   <refbody>
     <section>
+      <title>Synopsis</title>
+      <p>HRESULT GetLoggingBlockCount([out] USHORT* BlockCount)</p>
+    </section>
+    <section>
       <title>Description</title>
       <p>This function is a getter of logging blocks defined.</p>
     </section>

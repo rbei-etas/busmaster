@@ -28,6 +28,19 @@ CScheduleTableParser::~CScheduleTableParser(void)
 {
 }
 
+ERRORCODE CScheduleTableParser::CreateDiagnosticMessages()
+{
+	auto itrFrame = m_mapFrameUID.find("MasterReq");
+
+	if(itrFrame == m_mapFrameUID.end())
+	{
+		AddMasterReq();
+		AddSlaveResp();
+	}
+
+	return EC_SUCCESS;
+}
+
 ERRORCODE CScheduleTableParser::GetScheduleTable(IScheduleTable* pScheduleTable, ldfScheduleTable& ouScheduleTable)
 {
     //1. Set Frame Name
@@ -37,7 +50,7 @@ ERRORCODE CScheduleTableParser::GetScheduleTable(IScheduleTable* pScheduleTable,
 
     CSheduleTableItem ouTableItem;
 for (auto itr : ouScheduleTable.m_ouCommandList)
-    {
+    {		
         FillMasterTableItem(itr, ouTableItem);
         FillScheduleTableItem(itr, ouTableItem);
         ouTableProps.m_ouCSheduleTableItem.push_back(ouTableItem);
@@ -55,6 +68,11 @@ ERRORCODE CScheduleTableParser::FillScheduleTableItem(ldfScheduleTableCommand& o
     ouTableItem.vInitialiseData();
     if ( ouCommand.m_eDiagType >= eLIN_NORMAL_FRAME_ID && ouCommand.m_eDiagType < eLIN_SID_ALL )
     {
+		if(ouCommand.m_eDiagType >= eLIN_SID_ASSIGN_FRAME_ID && ouCommand.m_eDiagType < eLIN_SID_ALL )
+		{
+			CreateDiagnosticMessages();
+		}
+
         ecRetVal = (this->*m_pFillTableItem[ouCommand.m_eDiagType])(ouCommand, ouTableItem );
         ouTableItem.m_eDiagType = ouCommand.m_eDiagType;
         ouTableItem.m_dDelay = ouCommand.m_dDelay;
@@ -106,17 +124,172 @@ ERRORCODE CScheduleTableParser::FillNormalTableItem(ldfScheduleTableCommand& ouC
     return EC_NA;
 }
 
+ERRORCODE CScheduleTableParser::AddMasterReq()
+{
+	IFrame *pouFrame = nullptr;
+
+    //Slave
+    FrameProps ouFrameProps;
+
+	if(nullptr != m_pouLDFCluster)
+	{
+		m_pouLDFCluster->CreateElement(eFrameElement, (IElement**)&pouFrame);
+
+		std::string omFrameName = "MasterReq";
+		pouFrame->SetName(omFrameName);
+		pouFrame->GetProperties(ouFrameProps);
+		ouFrameProps.m_eFrameType = eLIN_Diagnostic;
+		ouFrameProps.m_ouLINDiagnosticFrameProps.m_eDiagType = eLIN_MASTER_FRAME_ID;
+		ouFrameProps.m_ouLINDiagnosticFrameProps.m_nLength = 8;
+		ouFrameProps.m_ouLINDiagnosticFrameProps.m_unId = 0x3C;
+		pouFrame->SetProperties(ouFrameProps);
+
+		std::map<UID_ELEMENT, IElement*> ouEcuMap;
+		m_pouLDFCluster->GetElementList(eEcuElement, ouEcuMap);
+		eEcuType oueEcuType;
+		UID_ELEMENT uidElement = pouFrame->GetUniqueId();
+		UID_ELEMENT uidMaster;
+		std::list<UID_ELEMENT> uidSlaveList;
+		for ( auto itrEcu : ouEcuMap )
+		{
+			eDIR oueDir;
+			IEcu* pouEcu = (IEcu*)itrEcu.second;
+			pouEcu->GetEcuType(oueEcuType);
+			if (eLIN_Master == oueEcuType)
+			{
+				uidMaster = pouEcu->GetUniqueId();
+				pouFrame->MapNode(eTx, uidMaster);
+				oueDir = eTx;
+			}
+			else
+			{
+				UID_ELEMENT uidTemp = pouEcu->GetUniqueId();
+				pouFrame->MapNode(eRx, uidTemp);
+				uidSlaveList.push_back(uidTemp);
+				oueDir = eRx;
+			}
+			pouEcu->MapFrame(oueDir, uidElement);
+		}
+		//Signals
+		ISignal* pouSignal;
+		char chName[33];
+		SignalInstanse ouSignalInstanse;
+		SignalProps ouSignalProps;
+		ouSignalProps.m_ouLINSignalProps.m_nIntialValue = 0;
+		ouSignalProps.m_ouLINSignalProps.m_nLength = 8;
+		ouSignalProps.m_ouLINSignalProps.m_ouDataType = eUnsigned;
+		ouSignalProps.m_ouLINSignalProps.m_ouEndianess = eIntel;
+		ouSignalProps.m_ouLINSignalProps.m_ouValueType = eScalar;
+		ouSignalProps.m_ouLINSignalProps.m_ouSignalType = eSignalDiag;
+
+		UID_ELEMENT uid = INVALID_UID_ELEMENT;
+		for ( int i = 0 ; i < 8; i++ )
+		{
+			m_pouLDFCluster->CreateElement(eSignalElement, (IElement**)&pouSignal);
+			ouSignalInstanse.m_nStartBit = i * 8;
+			sprintf_s(chName, "MasterReqB%d", i);
+			pouSignal->SetName(std::string(chName));
+			pouSignal->SetProperties(ouSignalProps);
+			uid = pouSignal->GetUniqueId();
+			pouFrame->MapSignal( uid, ouSignalInstanse );
+			pouSignal->MapNode(eTx, uidMaster);
+			for ( auto itr : uidSlaveList )
+			{
+				pouSignal->MapNode(eRx, itr);
+			}
+
+		}
+		m_mapFrameUID[omFrameName] = uidElement;
+	}
+    return 0;
+}
+
+int CScheduleTableParser::AddSlaveResp()
+{
+	IFrame *pouFrame = nullptr;
+
+    //Slave
+    FrameProps ouFrameProps;
+    m_pouLDFCluster->CreateElement(eFrameElement, (IElement**)&pouFrame);
+
+	std::string omFrameName = "SlaveResp";
+    pouFrame->SetName(std::string("SlaveResp"));
+    pouFrame->GetProperties(ouFrameProps);
+    ouFrameProps.m_eFrameType = eLIN_Diagnostic;
+    ouFrameProps.m_ouLINDiagnosticFrameProps.m_eDiagType = eLIN_SLAVE_FRAME_ID;
+    ouFrameProps.m_ouLINDiagnosticFrameProps.m_nLength = 8;
+    ouFrameProps.m_ouLINDiagnosticFrameProps.m_unId = 0x3D;
+    pouFrame->SetProperties(ouFrameProps);
+
+    std::map<UID_ELEMENT, IElement*> ouEcuMap;
+    m_pouLDFCluster->GetElementList(eEcuElement, ouEcuMap);
+    eEcuType oueEcuType;
+    UID_ELEMENT uidElement = pouFrame->GetUniqueId();
+    UID_ELEMENT uidMaster;
+    std::list<UID_ELEMENT> uidSlaveList;
+for ( auto itrEcu : ouEcuMap )
+    {
+        eDIR oueDir;
+        IEcu* pouEcu = (IEcu*)itrEcu.second;
+        pouEcu->GetEcuType(oueEcuType);
+        if (eLIN_Master == oueEcuType)
+        {
+            uidMaster = pouEcu->GetUniqueId();
+            pouFrame->MapNode(eRx, uidMaster);
+            oueDir = eRx;
+        }
+        else
+        {
+            UID_ELEMENT uidTemp = pouEcu->GetUniqueId();
+            pouFrame->MapNode(eTx, uidTemp);
+            uidSlaveList.push_back(uidTemp);
+            oueDir = eTx;
+        }
+        pouEcu->MapFrame(oueDir, uidElement);
+    }
+    //Signals
+    ISignal* pouSignal;
+    char chName[33];
+    SignalInstanse ouSignalInstanse;
+    SignalProps ouSignalProps;
+    ouSignalProps.m_ouLINSignalProps.m_nIntialValue = 0;
+    ouSignalProps.m_ouLINSignalProps.m_nLength = 8;
+    ouSignalProps.m_ouLINSignalProps.m_ouDataType = eUnsigned;
+    ouSignalProps.m_ouLINSignalProps.m_ouEndianess = eIntel;
+    ouSignalProps.m_ouLINSignalProps.m_ouValueType = eScalar;
+    ouSignalProps.m_ouLINSignalProps.m_ouSignalType = eSignalDiag;
+
+    UID_ELEMENT uid = INVALID_UID_ELEMENT;
+    for ( int i = 0 ; i < 8; i++ )
+    {
+        m_pouLDFCluster->CreateElement(eSignalElement, (IElement**)&pouSignal);
+        ouSignalInstanse.m_nStartBit = i * 8;
+        sprintf_s(chName, "SlaveRespB%d", i);
+        pouSignal->SetName(std::string(chName));
+        pouSignal->SetProperties(ouSignalProps);
+        uid = pouSignal->GetUniqueId();
+        pouFrame->MapSignal( uid, ouSignalInstanse );
+        pouSignal->MapNode(eRx, uidMaster);
+for ( auto itr : uidSlaveList )
+        {
+            pouSignal->MapNode(eTx, itr);
+        }
+
+    }
+
+	m_mapFrameUID[omFrameName] = uidElement;
+    return 0;
+}
 
 ERRORCODE CScheduleTableParser::FillAssignFrameIdTableItem(ldfScheduleTableCommand& ouCommand, CSheduleTableItem& ouTableItem)
 {
     IEcu* pEcuElement;
 
-
     //1. FrameId
     auto itrFrame = m_mapFrameUID.find("MasterReq");
 
     if ( m_mapFrameUID.end() == itrFrame )
-    {
+    {		
         return EC_FAILURE;
     }
 
@@ -271,7 +444,7 @@ ERRORCODE CScheduleTableParser::FillDataDumpTableItem(ldfScheduleTableCommand& o
 
     if ( m_mapFrameUID.end() == itrFrame )
     {
-        return EC_FAILURE;
+		return EC_FAILURE;
     }
 
     ouTableItem.m_nFrameId = itrFrame->second;
@@ -370,7 +543,7 @@ ERRORCODE CScheduleTableParser::FillAssignFrameRangeTableItem(ldfScheduleTableCo
     auto itrFrame = m_mapFrameUID.find("MasterReq");
 
     if ( m_mapFrameUID.end() == itrFrame )
-    {
+    {	
         return EC_FAILURE;
     }
 
@@ -438,7 +611,7 @@ ERRORCODE CScheduleTableParser::FillReadByIdentifierTableItem(ldfScheduleTableCo
 
     if ( m_mapFrameUID.end() == itrFrame )
     {
-        return EC_FAILURE;
+		return EC_FAILURE;
     }
 
     ouTableItem.m_nFrameId = itrFrame->second;

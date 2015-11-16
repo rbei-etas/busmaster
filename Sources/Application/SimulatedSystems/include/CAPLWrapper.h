@@ -1,6 +1,6 @@
 #pragma once
 #include <windows.h>
-#include "Wrapper_CAN.h"
+
 
 #define snprintf_CAPL _snprintf
 /* _max Function */
@@ -65,50 +65,54 @@ public:
     }
 };*/
 
-INT _round_CAPL(DOUBLE number);
-INT64 _round64_CAPL(DOUBLE number);
-UINT random_CAPL(UINT dwLimit);
-USHORT swapword_CAPL(USHORT shVal);
-SHORT swapint_CAPL(SHORT shVal);
-UINT swapdword_CAPL(UINT lVal);
-INT swaplong_CAPL(INT lVal);
-LONG fileclose_CAPL (UINT dwFileHandle);
-UINT openfileread_CAPL (CHAR pchFileName[], UINT dwMode);
-UINT openfilewrite_CAPL (CHAR pchFileName[], UINT dwMode);
-LONG filegetbinaryblock_CAPL (byte byBuffer[], LONG lBufferSize, UINT dwFileHandle);
-LONG filegetstring_CAPL (CHAR pchBuffer[], LONG lBuffSize, UINT dwFileHandle);
-LONG fileputstring_CAPL (CHAR pchBuffer[], LONG lBuffSize, UINT dwFileHandle);
-LONG filerewind_CAPL (UINT dwFileHandle);
-LONG filewritebinaryblock_CAPL (byte byBuffer[], LONG lBufferSize, UINT dwFileHandle);
-LONG getprofileint_CAPL (CHAR pchSection[], CHAR pchEntry[], LONG lDefVal, CHAR pchFileName[]);
-LONG getprofilestring_CAPL (CHAR pchSection[], CHAR pchEntry[], CHAR pchDefVal[],
-                            CHAR pchReturnBuff[],   LONG lBuffSize, CHAR pchFileName[] );
-LONG writeprofileint_CAPL (CHAR pchSection[], CHAR pchEntry[], LONG lVal,
-                           CHAR pchFileName[]);
-LONG writeprofilestring_CAPL(CHAR pchSection[], CHAR pchEntry[], CHAR pchVal[],
-                             CHAR pchFileName[] );
-LONG writeprofilefloat_CAPL(CHAR pchSection[], CHAR pchEntry[], float fVal,
-                            CHAR pchFileName[]);
-FLOAT getprofilefloat_CAPL( CHAR pchSection[], CHAR pchEntry[], LONG lDefVal,
-                            CHAR pchFileName[] );
-LONG getprofilearray_CAPL(CHAR pchSection[], CHAR pchEntry[],CHAR pchBuff[],
-                          LONG lBuffSize, CHAR pchFileName[]);
-VOID setwritepath_CAPL (CHAR pchRelOrAbsPath[]);
-VOID setfilepath_CAPL (CHAR pchDirPath[], UINT dwMode);
-DOUBLE atodbl_CAPL(CHAR s[]);
-VOID strncat_CAPL(CHAR pchDest[], CHAR pscSrc[], LONG nMaxLen);
-INT strncmp_CAPL ( CHAR s1[], CHAR s2[], ... );
-LONG strncmp_off_CAPL(CHAR s1[], LONG s1offset, CHAR s2[], LONG s2offset, LONG len);
-VOID strncpy_off_CAPL(CHAR dest[], LONG destOffset, CHAR src[], LONG max);
-LONG strstr_CAPL(CHAR s1[], CHAR s2[]);
-LONG strstr_off_CAPL(CHAR s1[], LONG offset, CHAR s2[]);
-VOID substr_cpy_CAPL(CHAR dest[], CHAR src[], LONG srcStart, LONG len, LONG max);
-VOID substr_cpy_off_CAPL(CHAR dest[], LONG destOffset, CHAR src[], LONG srcStart, LONG len, LONG max);
-UCHAR* byte_CAPL(STCAN_MSG* sMsg, INT nByte);
-USHORT* word_CAPL(STCAN_MSG* sMsg, INT nByte);
-ULONG* long_CAPL(STCAN_MSG* sMsg, INT nByte);
-INT output_CAPL(void* ouMsg);
-INT output_CAPL();
-int settimer_CAPL(int nTimerType, char* pchTimerName, int nTimerValue, int nNanoSec = 0);
-UINT GetCaplKeyValue(UCHAR ucKeyVal);
+GCC_EXTERN INT _round_CAPL(DOUBLE number);
+GCC_EXTERN INT64 _round64_CAPL(DOUBLE number);
+GCC_EXTERN UINT random_CAPL(UINT dwLimit);
+GCC_EXTERN USHORT swapword_CAPL(USHORT shVal);
+GCC_EXTERN SHORT swapint_CAPL(SHORT shVal);
+GCC_EXTERN UINT swapdword_CAPL(UINT lVal);
+GCC_EXTERN INT swaplong_CAPL(INT lVal);
+GCC_EXTERN LONG fileclose_CAPL (UINT dwFileHandle);
+GCC_EXTERN UINT openfileread_CAPL (CHAR pchFileName[], UINT dwMode);
+GCC_EXTERN UINT openfilewrite_CAPL (CHAR pchFileName[], UINT dwMode);
+GCC_EXTERN LONG filegetbinaryblock_CAPL (byte byBuffer[], LONG lBufferSize, UINT dwFileHandle);
+GCC_EXTERN LONG filegetstring_CAPL (CHAR pchBuffer[], LONG lBuffSize, UINT dwFileHandle);
+GCC_EXTERN LONG fileputstring_CAPL (CHAR pchBuffer[], LONG lBuffSize, UINT dwFileHandle);
+GCC_EXTERN LONG filerewind_CAPL (UINT dwFileHandle);
+GCC_EXTERN LONG filewritebinaryblock_CAPL (byte byBuffer[], LONG lBufferSize, UINT dwFileHandle);
+GCC_EXTERN LONG getprofileint_CAPL (CHAR pchSection[], CHAR pchEntry[], LONG lDefVal, CHAR pchFileName[]);
+GCC_EXTERN LONG getprofilestring_CAPL (CHAR pchSection[], CHAR pchEntry[], CHAR pchDefVal[],
+                                       CHAR pchReturnBuff[],   LONG lBuffSize, CHAR pchFileName[] );
+GCC_EXTERN LONG writeprofileint_CAPL (CHAR pchSection[], CHAR pchEntry[], LONG lVal,
+                                      CHAR pchFileName[]);
+GCC_EXTERN LONG writeprofilestring_CAPL(CHAR pchSection[], CHAR pchEntry[], CHAR pchVal[],
+                                        CHAR pchFileName[] );
+GCC_EXTERN LONG writeprofilefloat_CAPL(CHAR pchSection[], CHAR pchEntry[], float fVal,
+                                       CHAR pchFileName[]);
+GCC_EXTERN FLOAT getprofilefloat_CAPL( CHAR pchSection[], CHAR pchEntry[], LONG lDefVal,
+                                       CHAR pchFileName[] );
+GCC_EXTERN LONG getprofilearray_CAPL(CHAR pchSection[], CHAR pchEntry[],CHAR pchBuff[],
+                                     LONG lBuffSize, CHAR pchFileName[]);
+GCC_EXTERN VOID setwritepath_CAPL (CHAR pchRelOrAbsPath[]);
+GCC_EXTERN VOID setfilepath_CAPL (CHAR pchDirPath[], UINT dwMode);
+GCC_EXTERN DOUBLE atodbl_CAPL(CHAR s[]);
+GCC_EXTERN VOID strncat_CAPL(CHAR pchDest[], CHAR pscSrc[], LONG nMaxLen);
+GCC_EXTERN INT strncmp_CAPL ( CHAR s1[], CHAR s2[], ... );
+GCC_EXTERN LONG strncmp_off_CAPL(CHAR s1[], LONG s1offset, CHAR s2[], LONG s2offset, LONG len);
+GCC_EXTERN VOID strncpy_off_CAPL(CHAR dest[], LONG destOffset, CHAR src[], LONG max);
+GCC_EXTERN LONG strstr_CAPL(CHAR s1[], CHAR s2[]);
+GCC_EXTERN LONG strstr_off_CAPL(CHAR s1[], LONG offset, CHAR s2[]);
+GCC_EXTERN VOID substr_cpy_CAPL(CHAR dest[], CHAR src[], LONG srcStart, LONG len, LONG max);
+GCC_EXTERN VOID substr_cpy_off_CAPL(CHAR dest[], LONG destOffset, CHAR src[], LONG srcStart, LONG len, LONG max);
+//GCC_EXTERN INT output_CAPL();
+GCC_EXTERN int settimer_CAPL(int nTimerType, char* pchTimerName, int nTimerValue, int nNanoSec = 0);
+GCC_EXTERN UINT GetCaplKeyValue(UCHAR ucKeyVal);
+GCC_EXTERN unsigned char* byteAt_CAPL(unsigned char pchData[],int dlc, int nByte);
+GCC_EXTERN unsigned short* wordAt_CAPL(unsigned char pchData[],int dlc, int nByte);
+GCC_EXTERN unsigned long* dwordAt_CAPL(unsigned char pchData[],int dlc, int nByte);
+GCC_EXTERN unsigned long long* qwordAt_CAPL(unsigned char pchData[],int dlc, int nByte);
+GCC_EXTERN signed char* charAt_CAPL(unsigned char pchData[],int dlc, int nByte);
+GCC_EXTERN signed short* intAt_CAPL(unsigned char pchData[],int dlc, int nByte);
+GCC_EXTERN signed long* longAt_CAPL(unsigned char pchData[],int dlc, int nByte);
+GCC_EXTERN signed long long* int64At_CAPL(unsigned char pchData[],int dlc, int nByte);
 //void GetMessageName_CAPL( DWORD id, char buffer[], DWORD size);

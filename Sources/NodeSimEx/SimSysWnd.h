@@ -25,6 +25,8 @@
 #pragma once
 
 #include "Sim_MDIChildBase.h"
+#include "NodeSimEx_resource.h"
+#include "..\Application\CNVTCToolBar.h"
 
 class CSimSysWnd : public CMDIChildBase
 {
@@ -65,11 +67,11 @@ private:
     ETYPE_BUS m_eBus;
     BOOL m_bSplitWndCreated;
     CSplitterWnd m_omSplitterWnd;
-    // To calculate the splitter position when the window is resized.
-    void vCalculateSplitterPosition(CSize& cSize);
-    void vSaveSimSysFIles();
+    HMODULE m_hModAdvancedUILib;
+    int nCreateToolbar();
 
 public:
     WINDOWPLACEMENT m_wWndPlacement;
     afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+    CNVTCToolBar m_toolbar;
 };

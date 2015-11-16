@@ -145,35 +145,6 @@ HRESULT CNodeSim::FE_CreateFuncEditorTemplate(HWND handle, S_EXFUNC_PTR& sExInit
 }
 
 
-void CNodeSim::NS_EnableAllHandlers(BOOL bEnable)
-{
-    CExecuteManager::ouGetExecuteManager(m_eBus).vEnableDisableAllHandlers(bEnable);
-}
-
-void CNodeSim::NS_EnableAllTimers(BOOL bEnable)
-{
-    CExecuteManager::ouGetExecuteManager(m_eBus).vEnableDisableAllTimers(bEnable);
-}
-
-void CNodeSim::NS_EnableAllKeyHandler(BOOL bEnable)
-{
-    CExecuteManager::ouGetExecuteManager(m_eBus).vEnableAllKeyHandler(bEnable);
-}
-
-void CNodeSim::NS_EnableAllMessageHandler(BOOL bEnable)
-{
-    CExecuteManager::ouGetExecuteManager(m_eBus).vEnableAllMessageHandler(bEnable);
-}
-
-void CNodeSim::NS_EnableAllErrorHandler(BOOL bEnable)
-{
-    CExecuteManager::ouGetExecuteManager(m_eBus).vEnableAllErrorHandler(bEnable);
-}
-
-void CNodeSim::NS_EnableAllEventHandler(BOOL bEnable)
-{
-    CExecuteManager::ouGetExecuteManager(m_eBus).vEnableAllEventHandler(bEnable);
-}
 
 void CNodeSim::NS_ManageOnKeyHandler(UCHAR ucKey)
 {
@@ -197,28 +168,26 @@ void CNodeSim::NS_ManageOnErrorHandler(eERROR_STATE eErrorCode,void* pvErrorVal)
     SCAN_ERR* psCanErr = (SCAN_ERR*)pvErrorVal;
     CExecuteManager::ouGetExecuteManager(m_eBus).vManageOnErrorHandlerCAN(eErrorCode, *psCanErr, 0);
 }
-HRESULT CNodeSim::NS_DLLBuildAll(CStringArray* pomStrErrorFiles)
+HRESULT CNodeSim::NS_DLLBuildAll()
 {
     return CExecuteManager::ouGetExecuteManager(m_eBus).
-           bDLLBuildAll(pomStrErrorFiles);
+           bDLLBuildAll();
 }
-
-HRESULT CNodeSim::NS_DllLoadAll(CStringArray* pomStrErrorFiles)
-{
-    return CExecuteManager::ouGetExecuteManager(m_eBus).
-           bDllLoadAll(pomStrErrorFiles);
-}
-
 HRESULT CNodeSim::NS_DllUnloadAll(CStringArray* pomStrErrorFiles)
 {
     return CExecuteManager::ouGetExecuteManager(m_eBus).
            bDllUnloadAll(pomStrErrorFiles);
 }
 
-HRESULT CNodeSim::NS_DLLBuildLoadAll(CStringArray* pomStrErrorFiles)
+HRESULT CNodeSim::NS_DLLBuildLoadAllEnabled()
 {
     return CExecuteManager::ouGetExecuteManager(m_eBus).
-           bDLLBuildLoadAll(pomStrErrorFiles);
+           bDLLBuildLoadAllEnabled();
+}
+HRESULT CNodeSim::NS_DLLUnloadAllEnabled()
+{
+    return CExecuteManager::ouGetExecuteManager(m_eBus).
+           bDLLUnloadAllEnabled();
 }
 void CNodeSim::NS_SetHandlersHelpText(CStringArray* pomTextArray)
 {
@@ -283,50 +252,6 @@ void CNodeSim::NS_UpdateFuncStructsNodeSimEx(PVOID pvFuncStructs, E_UPDATE_TYPE 
 void CNodeSim::NS_SetJ1939ActivationStatus(bool bActivated)
 {
     CGlobalObj::ouGetObj(m_eBus).bJ1939Activated  = bActivated;
-}
-BOOL CNodeSim::NS_ShouldToolBarBeEnabled(E_TB_FN_EDITOR eToolBarFlag)
-{
-    BOOL bReturn = FALSE;
-    CSimSysNodeInfo* pSimSysNodeInfo =
-        CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-    if (pSimSysNodeInfo)
-    {
-        switch (eToolBarFlag)
-        {
-            case TB_LOAD:
-            {
-                bReturn = pSimSysNodeInfo->bIsLoadAllValid("");
-            }
-            break;
-            case TB_UNLOAD:
-            {
-                bReturn = pSimSysNodeInfo->bIsUnLoadAllValid("");
-            }
-            break;
-            case TB_BUILD:
-            {
-                bReturn = pSimSysNodeInfo->bIsBuildAllValid("");
-            }
-            break;
-            case TB_BUILDLOAD:
-            {
-                bReturn = pSimSysNodeInfo->bIsBuildAllValid("");
-            }
-            break;
-            case TB_SAVE_FILE:
-            {
-            }
-            break;
-            default:
-            {
-            }
-        }
-    }
-    return bReturn;
-}
-BOOL CNodeSim::NS_GetHandlerStatus(eSIMSYSFLAG eHandlerFlag)
-{
-    return CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags().nGetFlagStatus(eHandlerFlag);
 }
 
 void CNodeSim::NS_GetSimSysConfigData(BYTE*& pDesBuffer, int& nBuffSize)
@@ -469,16 +394,6 @@ HRESULT CNodeSim::FE_OpenFunctioneditorFile(CString omStrNewCFileName, HWND hMai
 BOOL CNodeSim::InitInstance(void)
 {
     return TRUE;
-}
-
-void CNodeSim::NS_SaveSimulationSystem()
-{
-    CSimSysManager::ouGetSimSysManager(m_eBus).vSaveAllSimSys();
-}
-
-void CNodeSim::NS_PerformApplicationClosureOperation(bool bSave)
-{
-    CSimSysManager::ouGetSimSysManager(m_eBus).vApplicationClosing(bSave);
 }
 
 void CNodeSim::NS_SetLINConfig(ClusterConfig& ouLINConfig)

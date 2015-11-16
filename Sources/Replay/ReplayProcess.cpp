@@ -37,7 +37,11 @@
 #include "DIL_Interface/DIL_Interface_extern.h"
 #include "include/CAN_Error_Defs.h"         // For Errors
 #include "Utility_Replay.h"
+#include "Utility\UtilFunctions.h"
 
+#define PEG_STEP 1
+#define BYTES_PER_LINE 54
+#define MAX_FILE_SIZE_INTERACTIVE_REPLAY 52428800 //50MB
 CBaseDIL_CAN* CReplayProcess::s_pouDIL_CAN_Interface = nullptr;
 DWORD CReplayProcess::s_dwClientID = 0;
 
@@ -62,8 +66,7 @@ CReplayProcess::CReplayProcess(const CReplayFile& ouReplayFile) :
     m_nNoOfMessagesToPlay( 0 ),
     m_bStopReplayThread( TRUE )
 {
-    m_omEntries.RemoveAll();
-    m_omMsgList.RemoveAll();
+
     m_omSelectedIndex.RemoveAll();
     //DIL related code
     DIL_GetInterface(CAN, (void**)&CReplayProcess::s_pouDIL_CAN_Interface);
@@ -100,7 +103,18 @@ CReplayProcess::~CReplayProcess()
 const int SIZE_STCAN_MSG = sizeof(STCAN_MSG);
 UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
 {
+
     CReplayProcess* pReplayDetails = (CReplayProcess*)pParam;
+    bool bNxtSessionFlag = false;
+    bool bNxtEOFflag = false;
+    bool bCurSessionFlag = false;
+    bool bCurEOFflag = false;
+    bool bCurProtocolMismatch = false;
+    bool bNxtProtocolMismatch = false;
+    bool bNxtInvalidMsg = false;
+    bool bCurInvalidMsg = false;
+    STCANDATA sNxtCanMsg;
+    STCANDATA sCurCanMsg;
 
     if( pReplayDetails != nullptr )
     {
@@ -120,25 +134,7 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
 
         // Time Calculation
         CArray<UINT,UINT> omTimeDelay;
-        if( pReplayDetails->m_ouReplayFile.m_nTimeMode == defREPLAY_RETAIN_DELAY
-                && nCount > 1 )
-        {
-            CString omStrCurr;
-            CString omStrNext;
-            for( int nIndex = 0; nIndex < nCount - 1; nIndex++ )
-            {
-                // Get the current entry
-                omStrNext = pReplayDetails->m_omEntries[ nIndex + nOffset + 1];
-                omStrCurr = pReplayDetails->m_omEntries[ nIndex + nOffset ];
-                UINT unTime = unTimeDiffBetweenMsg( omStrNext, omStrCurr,
-                                                    pReplayDetails->m_wLogReplayTimeMode );
-                if( unTime == 0 )
-                {
-                    unTime = 1;
-                }
-                omTimeDelay.Add( unTime );
-            }
-        }
+
         TIMECAPS time;
         MMRESULT mmResult = TIMERR_NOERROR;
         if (timeGetDevCaps(&time, sizeof(TIMECAPS)) == TIMERR_NOERROR)
@@ -149,32 +145,77 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
         // Create the event object to wait for
         HANDLE hEventReplayWait = CreateEvent(nullptr, FALSE, FALSE, nullptr);
         // Assign the message delay time
-        int nDelay = pReplayDetails->m_ouReplayFile.m_unMsgTimeDelay;
+
+        UINT unDelay;
+        UINT unMsgDelay = pReplayDetails->m_ouReplayFile.m_unMsgTimeDelay;
+        if( unMsgDelay == 0 )
+        {
+            unMsgDelay = 1;
+        }
+        int nIndex; //nIndex declared outside
+
+        UINT unSessionDelay = pReplayDetails->m_ouReplayFile.m_unSessionDelay;
+        if( unSessionDelay == 0 )
+        {
+            unSessionDelay = 1;
+        }
+
         // main loop for message transmission.
+        BOOL bBreakPointFlag = FALSE;
+        if(pReplayDetails->m_omBreakPoints[nOffset ] == TRUE)
+        {
+            bBreakPointFlag = TRUE;
+        }
         for( int nIndex = 0;
-                pReplayDetails->m_bStopReplayThread == FALSE && nIndex < nCount;
+                pReplayDetails->m_bStopReplayThread == FALSE &&( (pReplayDetails->m_omBreakPoints[ nIndex + nOffset ] == FALSE)||(bBreakPointFlag == TRUE));
                 nIndex++ )
         {
+            bBreakPointFlag = FALSE;
             int nCurrentIndex = nIndex + nOffset;
-            if( ( nIndex + 1 ) < nCount )
+            if( ( nIndex + 1 ) <= nCount )
             {
+                CString omStrCurr;
+                CString omStrNext;
+                omStrNext = pReplayDetails->omStrGetMsgFromLog(nIndex + nOffset + 1,sNxtCanMsg,bNxtSessionFlag, bNxtEOFflag,bNxtProtocolMismatch,bNxtInvalidMsg);
+                omStrCurr = pReplayDetails->omStrGetMsgFromLog(nIndex + nOffset,sCurCanMsg, bCurSessionFlag, bCurEOFflag,bCurProtocolMismatch,bCurInvalidMsg);
+
+                unDelay = unMsgDelay;
                 if( pReplayDetails->m_ouReplayFile.m_nTimeMode ==
                         defREPLAY_RETAIN_DELAY )
                 {
-                    nDelay = omTimeDelay[ nIndex ];
+                    if(bCurEOFflag)
+                    {
+                        pReplayDetails->m_bStopReplayThread = TRUE;
+                    }
+
+                    UINT unTime = unTimeDiffBetweenMsg( omStrNext, omStrCurr,
+                                                        pReplayDetails->m_wLogReplayTimeMode );
+                    if( unTime == 0 )
+                    {
+                        unTime = 1;
+                    }
+
+                    unDelay = unTime;
                 }
 
-                timeSetEvent( nDelay, time.wPeriodMin,
+                if(bNxtSessionFlag && (pReplayDetails->m_ouReplayFile.m_nSessionMode == defREPLAY_SPECIFIC_SESSION_DELAY))
+                {
+                    unDelay = unSessionDelay;
+                }
+
+
+                timeSetEvent( unDelay, time.wPeriodMin,
                               (LPTIMECALLBACK) hEventReplayWait, 0,
                               TIME_CALLBACK_EVENT_SET | TIME_ONESHOT);
             }
             // Send message in CAN bus if the message ID is valid
-            if ( pReplayDetails->m_omMsgList[ nCurrentIndex].
-                    m_uDataInfo.m_sCANMsg.m_unMsgID != -1 )
+
+            if ( sCurCanMsg.m_uDataInfo.m_sCANMsg.m_unMsgID != -1 )
             {
                 HRESULT hRet = 0;
                 SFRAMEINFO_BASIC_CAN sBasicCanInfo;
-                pReplayDetails->vFormatCANDataMsg(&pReplayDetails->m_omMsgList[ nIndex ], &sBasicCanInfo);
+
+                pReplayDetails->vFormatCANDataMsg(&sCurCanMsg, &sBasicCanInfo);
                 BOOL bTobeBlocked = FALSE;
                 if( pReplayDetails->m_ouReplayFile.m_sFilterApplied.m_bEnabled == TRUE)
                 {
@@ -185,8 +226,9 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
                 if(bTobeBlocked == FALSE)
                 {
                     // Use HIL Function to send CAN message
+
                     HRESULT hRet =  s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID,
-                                    pReplayDetails->m_omMsgList[ nCurrentIndex ].
+                                    sCurCanMsg.
                                     m_uDataInfo.m_sCANMsg );
                 }
 
@@ -194,7 +236,8 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
             // Increment cur sel to set to next sel
             pReplayDetails->m_nCurrentIndex = nCurrentIndex;
             // last message is already sent
-            if( nIndex + 1 == nCount )
+
+            if(bNxtEOFflag || nCount == 1)
             {
                 pReplayDetails->m_bStopReplayThread = TRUE;
             }
@@ -203,6 +246,26 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
                 // Wait for the event
                 WaitForSingleObject(hEventReplayWait, INFINITE);
             }
+
+            if(bNxtProtocolMismatch)
+            {
+                pReplayDetails->m_bStopReplayThread = TRUE;
+                if(!pReplayDetails->bGetbIsProtocolMismatch())
+                {
+                    CReplayManager::ouGetReplayManager().vSendToTrace(defSTR_LOG_PRTOCOL_MISMATCH);
+                    pReplayDetails->bSetbIsProtocolMismatch(true);
+                }
+            }
+            else if(bNxtInvalidMsg && !bNxtEOFflag)
+            {
+                pReplayDetails->m_bStopReplayThread = TRUE;
+                if(!pReplayDetails->bGetbIsInvalidMsg())
+                {
+                    CReplayManager::ouGetReplayManager().vSendToTrace(defSTR_LOG_INVALID_MESSAGE);
+                    pReplayDetails->bSetbIsProtocolMismatch(true);
+                }
+            }
+
         }
         if (mmResult == TIMERR_NOERROR)
         {
@@ -216,8 +279,7 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
             pWnd->m_eReplayState = REPLAY_TO_START;
             // Set the selection
             pReplayDetails->m_nCurrentIndex++;
-            pReplayDetails->m_nCurrentIndex %=
-                pReplayDetails->m_omEntries.GetSize();
+            pReplayDetails->m_nCurrentIndex %= pReplayDetails->dwGetvecPegSize();
             pWnd->m_omMessageList.SetItemState( pReplayDetails->m_nCurrentIndex,
                                                 LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED );
             pWnd->m_omMessageList.EnsureVisible(
@@ -241,6 +303,16 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
 UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
 {
     CReplayProcess* pReplayDetails = (CReplayProcess*)pParam;
+    bool bNxtSessionFlag = false;
+    bool bNxtEOFflag = false;
+    bool bCurSessionFlag = false;
+    bool bCurEOFflag = false;
+    bool bCurProtocolMismatch = false;
+    bool bNxtProtocolMismatch = false;
+    bool bNxtInvalidMsg = false;
+    bool bCurInvalidMsg = false;
+    STCANDATA sNxtCanMsg;
+    STCANDATA sCurCanMsg;
 
     if( pReplayDetails != nullptr )
     {
@@ -261,44 +333,26 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
 
         CString omStrCurr;
         CString omStrNext;
+        UINT unDelay;
         UINT unMsgDelay = pReplayDetails->m_ouReplayFile.m_unMsgTimeDelay;
         if( unMsgDelay == 0 )
         {
             unMsgDelay = 1;
         }
         int nIndex; //nIndex declared outside
-        for( nIndex = 0; nIndex < nCount - 1; nIndex++ )
+
+        UINT unSessionDelay = pReplayDetails->m_ouReplayFile.m_unSessionDelay;
+        if( unSessionDelay == 0 )
         {
-            if( pReplayDetails->m_ouReplayFile.m_nTimeMode ==
-                    defREPLAY_RETAIN_DELAY )
-            {
-                int nCurrentIndex = pReplayDetails->m_omSelectedIndex[ nIndex ];
-                int nNextIndex =
-                    pReplayDetails->m_omSelectedIndex[ nIndex + 1 ];
-                // Get the current entry
-                omStrNext = pReplayDetails->m_omEntries[ nNextIndex ];
-                omStrCurr = pReplayDetails->m_omEntries[ nCurrentIndex ];
-                UINT unTime = unTimeDiffBetweenMsg( omStrNext, omStrCurr,
-                                                    pReplayDetails->m_wLogReplayTimeMode );
-                if( unTime == 0 )
-                {
-                    unTime = 1;
-                }
-                omTimeDelay.Add( unTime );
-            }
-            else
-            {
-                omTimeDelay.Add( unMsgDelay );
-            }
+            unSessionDelay = 1;
         }
 
         // Add the cyclic delay at the end
-        unMsgDelay = pReplayDetails->m_ouReplayFile.m_unCycleTimeDelay;
-        if( unMsgDelay == 0 )
+        UINT unCycleDelay = pReplayDetails->m_ouReplayFile.m_unCycleTimeDelay;
+        if( unCycleDelay == 0 )
         {
-            unMsgDelay = 1;
+            unCycleDelay = 1;
         }
-        omTimeDelay.Add( unMsgDelay );
 
         TIMECAPS time;
         MMRESULT mmResult = TIMERR_NOERROR;
@@ -314,19 +368,45 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
         while( pReplayDetails->m_bStopReplayThread == FALSE )
         {
             int nCurrentIndex = pReplayDetails->m_omSelectedIndex[ nIndex ];
-            // Set the event to wait
-            timeSetEvent( omTimeDelay[ nIndex ], time.wPeriodMin,
-                          (LPTIMECALLBACK) hEventReplayWait, 0,
-                          TIME_CALLBACK_EVENT_SET | TIME_ONESHOT);
+            int nNextIndex =  pReplayDetails->m_omSelectedIndex[ (nIndex + 1)%nCount ];
+            omStrNext = pReplayDetails->omStrGetMsgFromLog(nNextIndex,sNxtCanMsg,bNxtSessionFlag,bNxtEOFflag,bNxtProtocolMismatch,bNxtInvalidMsg);
+            omStrCurr = pReplayDetails->omStrGetMsgFromLog(nCurrentIndex,sCurCanMsg,bCurSessionFlag,bCurEOFflag,bCurProtocolMismatch,bCurInvalidMsg);
+            unDelay = unMsgDelay;
+            if( pReplayDetails->m_ouReplayFile.m_nTimeMode ==
+                    defREPLAY_RETAIN_DELAY && (nIndex < nCount-1) )
+            {
 
+                UINT unTime = unTimeDiffBetweenMsg( omStrNext, omStrCurr,
+                                                    pReplayDetails->m_wLogReplayTimeMode );
+                if( unTime == 0 )
+                {
+                    unTime = 1;
+                }
+                unMsgDelay = unTime ;
+            }
+
+
+            if(bNxtSessionFlag && (pReplayDetails->m_ouReplayFile.m_nSessionMode == defREPLAY_SPECIFIC_SESSION_DELAY))
+            {
+                unDelay = unSessionDelay;
+            }
+            if(nIndex == nCount - 1)
+            {
+                unDelay = unCycleDelay;
+            }
+
+            timeSetEvent( unDelay, time.wPeriodMin,
+                          (LPTIMECALLBACK) hEventReplayWait, NULL,
+                          TIME_CALLBACK_EVENT_SET | TIME_ONESHOT);
             // Send message in CAN bus if the message ID is valid
-            if ( pReplayDetails->m_omMsgList[ nCurrentIndex ].
-                    m_uDataInfo.m_sCANMsg.m_unMsgID != -1 )
+
+            if ( sCurCanMsg.m_uDataInfo.m_sCANMsg.m_unMsgID != -1 )
             {
                 HRESULT hRet = 0;
 
                 SFRAMEINFO_BASIC_CAN sBasicCanInfo;
-                pReplayDetails->vFormatCANDataMsg(&pReplayDetails->m_omMsgList[ nIndex ], &sBasicCanInfo);
+
+                pReplayDetails->vFormatCANDataMsg(&sCurCanMsg, &sBasicCanInfo);
                 BOOL bTobeBlocked = FALSE;
 
                 EnterCriticalSection(&pReplayDetails->m_omCritSecFilter);
@@ -339,8 +419,8 @@ UINT CReplayProcess::sunReplayCyclicThreadFunc( LPVOID pParam )
                 if(bTobeBlocked == FALSE)
                 {
                     // Use HIL Function to send CAN message
-                    HRESULT hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID,
-                                   pReplayDetails->m_omMsgList[ nCurrentIndex ].m_uDataInfo.m_sCANMsg );
+
+                    HRESULT hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID,sCurCanMsg.m_uDataInfo.m_sCANMsg );
                 }
 
             }
@@ -414,7 +494,7 @@ void CReplayProcess::vFormatCANDataMsg(STCANDATA* pMsgCAN,
   Date Created   : 16.7.2005
   Modifications  : Raja N on 26.07.2005, Implementwed code review comments
 *******************************************************************************/
-BOOL CReplayProcess::bOpenReplayFile()
+BOOL CReplayProcess::bOpenReplayFile(BOOL bIsInteractive)
 {
     BOOL bReturn = TRUE;
     BOOL bModeMismatch              = FALSE;
@@ -422,15 +502,15 @@ BOOL CReplayProcess::bOpenReplayFile()
     CString     omStrTemp           = "";
     CHAR        Line[500]           = { 0 };
     CString     omStrMsgType        = " ";
-    std::ifstream    omInReplayFile;
-    int nBlockCounter = 0;
 
+    int nBlockCounter = 0;
+    m_bIsInteractive = FALSE;
     // Clear string array
     m_omEntries.RemoveAll();
     m_omMsgList.RemoveAll();
     // Clear error message
     m_omStrError = "";
-
+    m_bIsEmptySession = false;
     TRY
     {
         omInReplayFile.open( m_ouReplayFile.m_omStrFileName,
@@ -441,6 +521,13 @@ BOOL CReplayProcess::bOpenReplayFile()
             m_omStrError  = defSTR_FILE_OPEN_ERROR;
             bReturn = FALSE ;
         }
+
+        if((dwGetNoOfMsgsInLog()*BYTES_PER_LINE > MAX_FILE_SIZE_INTERACTIVE_REPLAY) && bIsInteractive && bReturn != FALSE)
+        {
+            m_omStrError = defSTR_REPLAY_FILE_SIZE_EXCEEDED;
+            bReturn = FALSE ;
+        }
+        omInReplayFile.seekg(0, std::ios::beg);
         if(bReturn != FALSE)
         {
             // Read the file line by line.
@@ -487,13 +574,13 @@ BOOL CReplayProcess::bOpenReplayFile()
                 // set the mode of reply
                 if( omStrLine.Find(HEX_MODE) == 0)
                 {
-                    m_bReplayHexON = TRUE;
+
                     bMsgModeFound = TRUE;
 
                 }
                 else if (omStrLine.Find(DEC_MODE) == 0)
                 {
-                    m_bReplayHexON = FALSE;
+
                     bMsgModeFound = TRUE;
                 }
                 if( omStrLine.Find(SYSTEM_MODE) == 0)
@@ -528,62 +615,7 @@ BOOL CReplayProcess::bOpenReplayFile()
             }
 
 
-            while (! omInReplayFile.eof() && bFileEndFlag == FALSE )
-            {
-                omInReplayFile.getline( Line, sizeof(Line));
-                omStrLine = Line;
-                omStrLine.TrimLeft();
-                omStrLine.TrimRight();
-                // Exclude empty line, line with starting string
-                // hash defined as DefSPL_LINE
-                if( omStrLine.IsEmpty()==0 &&
-                        omStrLine.Find(DefSPL_LINE) == -1 &&
-                        omStrLine.Find(omStrMsgType) != -1)
-                {
-                    // Apply Filtering
-                    STCANDATA sCanMsg;
-                    if( bGetMsgInfoFromMsgStr( omStrLine,
-                                               &sCanMsg,
-                                               m_bReplayHexON ) == TRUE )
-                    {
-                        SFRAMEINFO_BASIC_CAN sBasicCanInfo;
-                        vFormatCANDataMsg(&sCanMsg, &sBasicCanInfo);
-                        EnterCriticalSection(&m_omCritSecFilter);
-                        BOOL bTobeBlocked = m_ouReplayFile.m_sFilterApplied.bToBeBlocked(sBasicCanInfo);
-                        LeaveCriticalSection(&m_omCritSecFilter);
 
-                        // Add it to the list based on filtering result
-                        //if( bTobeBlocked == FALSE )
-                        //{
-                        // bTobeBlocked = bMessageTobeBlocked( sBasicCanInfo );
-                        //if(bTobeBlocked == FALSE)
-                        {
-                            m_omEntries.Add( omStrLine );
-                            m_omMsgList.Add(sCanMsg );
-                        }
-                        // }
-                    }
-                }
-                else if(! omStrLine.Compare(START_SESSION))
-                {
-                    bModeMismatch = bIsModeMismatch( omInReplayFile,
-                                                     m_bReplayHexON, m_wLogReplayTimeMode );
-                    if(bModeMismatch == TRUE)
-                    {
-                        nBlockCounter++;
-                        BOOL bEndBlock = FALSE;
-                        CString omStrEndBlock = END_SESSION;
-                        while (! omInReplayFile.eof() && bEndBlock == FALSE)
-                        {
-                            omInReplayFile.getline( Line, sizeof(Line));
-                            if( omStrEndBlock.Compare(Line) == 0)
-                            {
-                                bEndBlock = TRUE;
-                            }
-                        }
-                    }
-                }
-            }// while
         }
     }
     CATCH_ALL(pomException)
@@ -597,21 +629,15 @@ BOOL CReplayProcess::bOpenReplayFile()
             pomException->Delete();
         }
         bReturn = FALSE;
-        if( omInReplayFile.is_open() !=0)
-        {
-            omInReplayFile.close();
-        }
+
     }
     END_CATCH_ALL
     if(nBlockCounter >=1 )
     {
         m_omStrError.Format( defSTR_MIXED_MODE_WARNING, nBlockCounter );
     }
-    // close the file if it open
-    if( omInReplayFile.is_open() !=0 )
-    {
-        omInReplayFile.close();
-    }
+
+
     return bReturn;
 }
 
@@ -628,57 +654,44 @@ BOOL CReplayProcess::bOpenReplayFile()
 UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
 {
     CReplayProcess* pReplayDetails = (CReplayProcess*)pParam;
-
-    if( pReplayDetails != nullptr )
+    
+	if( pReplayDetails != NULL )
     {
+		pReplayDetails->bSetbIsProtocolMismatch(false);
+		pReplayDetails->bSetbIsInvalidMsg(false);
         // Reset the event
         pReplayDetails->m_omThreadEvent.ResetEvent();
         // Replay code here
         // Time Calculation
         CArray<UINT,UINT> omTimeDelay;
         // Get the item count
-        int nCount = (int)pReplayDetails->m_omEntries.GetSize();
-
-        CString omStrCurr;
-        CString omStrNext;
+        bool bSessionFlag = false;
+        bool bDetectSession = false;
+        bool bDetectEOF = false;
+        bool bEOFFlag = false;
+        CString omStrCurr = "";
+        CString omStrNext= "";
         // Init Message delay
         UINT unMsgDelay = pReplayDetails->m_ouReplayFile.m_unMsgTimeDelay;
         if( unMsgDelay == 0 )
         {
             unMsgDelay = 1;
         }
-        int nIndex; //nIndex declared outside
-        for( nIndex = 0; nIndex < nCount - 1; nIndex++ )
-        {
-            if( pReplayDetails->m_ouReplayFile.m_nTimeMode ==
-                    defREPLAY_RETAIN_DELAY )
-            {
-                // Get Next Entry
-                omStrNext = pReplayDetails->m_omEntries[ nIndex + 1 ];
-                // Get the current entry
-                omStrCurr = pReplayDetails->m_omEntries[ nIndex ];
-                UINT unTime = unTimeDiffBetweenMsg( omStrNext, omStrCurr,
-                                                    pReplayDetails->m_wLogReplayTimeMode );
-                if( unTime == 0 )
-                {
-                    unTime = 1;
-                }
-                omTimeDelay.Add( unTime );
-            }
-            else
-            {
-                omTimeDelay.Add( unMsgDelay );
-            }
-        }
+        //int nIndex; //nIndex declared outside
+
 
         // Add the cyclic delay at the end
-        unMsgDelay = pReplayDetails->m_ouReplayFile.m_unCycleTimeDelay;
-        if( unMsgDelay == 0 )
+        UINT unCycleDelay = pReplayDetails->m_ouReplayFile.m_unCycleTimeDelay;
+        if( unCycleDelay == 0 )
         {
-            unMsgDelay = 1;
+            unCycleDelay = 1;
         }
-        omTimeDelay.Add( unMsgDelay );
 
+        UINT unSessionDelay=pReplayDetails->m_ouReplayFile.m_unSessionDelay;
+        if( unSessionDelay == 0 )
+        {
+            unSessionDelay = 1;
+        }
         TIMECAPS time;
         MMRESULT mmResult = TIMERR_NOERROR;
         if (timeGetDevCaps(&time, sizeof(TIMECAPS)) == TIMERR_NOERROR)
@@ -687,25 +700,176 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
         }
 
         // Create the event object to wait for
-        HANDLE hEventReplayWait = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+        HANDLE hEventReplayWait = CreateEvent(NULL, FALSE, FALSE, NULL);
         // main loop for message transmission.
-        nIndex = 0;
+        UINT unTime;
+        pReplayDetails->omInReplayFile.clear(); // clear eof and fail bits
+        pReplayDetails->omInReplayFile.seekg(0, std::ios::beg);
+        std::string strLine;
+
         while( pReplayDetails->m_bStopReplayThread == FALSE )
         {
-            // Set the event to wait
-            timeSetEvent( omTimeDelay[ nIndex ], time.wPeriodMin,
-                          (LPTIMECALLBACK) hEventReplayWait, 0,
-                          TIME_CALLBACK_EVENT_SET | TIME_ONESHOT);
+            bool bIsProtocolMismatch = false;
+            unMsgDelay = pReplayDetails->m_ouReplayFile.m_unMsgTimeDelay;
+            if( unMsgDelay == 0 )
+            {
+                unMsgDelay = 1;
+            }
+            bSessionFlag = false;
+            bEOFFlag = false;
+            if(bDetectSession)
+            {
+                bSessionFlag = true;
+                bDetectSession = false;
+            }
+            if(bDetectEOF)
+            {
+                bEOFFlag = true;
+                bDetectEOF = false;
+            }
+            bool bIsComment = false;
+            while(getline(pReplayDetails->omInReplayFile , strLine))
+            {
+                CUtilFunctions::Trim(strLine,' ');
+                if(strLine.find(END_SESSION) != std::string::npos)
+                {
+                    bDetectSession = true ;
+                }
+                if(strLine.find(START_COMMENT) != std::string::npos)
+                {
+                    bIsComment = true;
+                }
+                if(strLine.find(END_COMMENT) != std::string::npos)
+                {
+                    bIsComment = false;
+                }
+
+                if(strLine.empty() || bIsComment)
+                {
+                    continue;
+                }
+
+                if(strLine.find("*") == std::string::npos)
+                {
+                    omStrCurr = omStrNext;
+                    omStrNext = strLine.c_str();
+                    if(omStrCurr.Compare("") == 0)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if(strLine.find("*") != std::string::npos)
+                {
+                    if( strLine.find(defSTR_PROTOCOL_USED) != std::string::npos)
+                    {
+                        // If can related log file
+                        if( strLine.find(defSTR_PROTOCOL_CAN) == std::string::npos)
+                        {
+                            pReplayDetails->m_omStrError = defSTR_LOG_PRTOCOL_MISMATCH;
+                            bIsProtocolMismatch = true;
+                            if(pReplayDetails->m_ouReplayFile.m_nReplayMode ==  defREPLAY_MODE_CYCLIC)
+                            {
+                                pReplayDetails->omInReplayFile.clear(); // clear eof and fail bits
+                                pReplayDetails->omInReplayFile.seekg(0, std::ios::beg);
+                                bDetectEOF = true;
+                            }
+                            else
+                            {
+                                pReplayDetails->m_bStopReplayThread = TRUE;
+                            }
+                            omStrCurr = omStrNext;
+                            omStrNext = "";
+                            break;
+                        }
+                    }
+
+
+                }
+            }
+            if(omStrCurr.IsEmpty() && omStrNext.IsEmpty())
+            {
+                CReplayManager::ouGetReplayManager().vSendToTrace(defSTR_REPLAY_FILE_EMPTY);
+                pReplayDetails->m_bStopReplayThread = TRUE;
+                continue;
+            }
+            if(pReplayDetails->omInReplayFile.eof())
+            {
+                omStrCurr = omStrNext;
+                omStrNext = "";
+                bDetectEOF = true;
+            }
+            STCANDATA sCanMsg,sNxtCanMsg;
+            bool bIsValidMessage = true;
+            pReplayDetails->sGetCanMsg(omStrCurr,sCanMsg);
+            if(omStrNext.IsEmpty() == FALSE)
+            {
+                bIsValidMessage = pReplayDetails->sGetCanMsg(omStrNext,sNxtCanMsg);
+            }
+            if(!bIsValidMessage)
+            {
+                pReplayDetails->m_omStrError = defSTR_LOG_INVALID_MESSAGE;
+                if(!pReplayDetails->bGetbIsInvalidMsg())
+                {
+                    CReplayManager::ouGetReplayManager().vSendToTrace(defSTR_LOG_INVALID_MESSAGE);
+                    pReplayDetails->bSetbIsInvalidMsg(true);
+                }
+                if(pReplayDetails->m_ouReplayFile.m_nReplayMode ==  defREPLAY_MODE_CYCLIC)
+                {
+                    pReplayDetails->omInReplayFile.clear(); // clear eof and fail bits
+                    pReplayDetails->omInReplayFile.seekg(0, std::ios::beg);
+                    bDetectEOF = true;
+                    omStrNext = "";
+                }
+                else
+                {
+                    pReplayDetails->m_bStopReplayThread = TRUE;
+                }
+
+
+            }
+
+
+            if( (pReplayDetails->m_ouReplayFile.m_nTimeMode ==
+                    defREPLAY_RETAIN_DELAY) && bIsValidMessage && !bIsProtocolMismatch)
+            {
+                unTime = unTimeDiffBetweenMsg( omStrNext, omStrCurr,
+                                               pReplayDetails->m_wLogReplayTimeMode );
+                if( unTime == 0 )
+                {
+                    unTime = 1;
+                }
+                unMsgDelay = unTime;
+            }
+
+            if((pReplayDetails->m_ouReplayFile.m_nSessionMode == defREPLAY_SPECIFIC_SESSION_DELAY) && bDetectSession == true)
+            {
+                unMsgDelay = unSessionDelay;
+            }
+
+            if(bDetectEOF && pReplayDetails->m_ouReplayFile.m_nReplayMode ==    defREPLAY_MODE_CYCLIC)
+            {
+                unMsgDelay = unCycleDelay;
+                pReplayDetails->omInReplayFile.clear(); // clear eof and fail bits
+                pReplayDetails->omInReplayFile.seekg(0, std::ios::beg);
+            }
 
             // Send message in CAN bus if the message ID is valid
-            if ( pReplayDetails->m_omMsgList[ nIndex ].
-                    m_uDataInfo.m_sCANMsg.m_unMsgID != -1 )
+            timeSetEvent( unMsgDelay, time.wPeriodMin,
+                          (LPTIMECALLBACK) hEventReplayWait, NULL,
+                          TIME_CALLBACK_EVENT_SET | TIME_ONESHOT);
+
+            if (sCanMsg.m_uDataInfo.m_sCANMsg.m_unMsgID != -1 )
             {
                 HRESULT hRet = 0;
 
                 SFRAMEINFO_BASIC_CAN sBasicCanInfo;
-                pReplayDetails->vFormatCANDataMsg(&pReplayDetails->m_omMsgList[ nIndex ], &sBasicCanInfo);
-                BOOL bTobeBlocked = FALSE;
+
+                pReplayDetails->vFormatCANDataMsg(&sCanMsg, &sBasicCanInfo);
+                bool bTobeBlocked = false;
                 if( pReplayDetails->m_ouReplayFile.m_sFilterApplied.m_bEnabled == TRUE)
                 {
                     EnterCriticalSection(&pReplayDetails->m_omCritSecFilter);
@@ -713,10 +877,11 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
                     LeaveCriticalSection(&pReplayDetails->m_omCritSecFilter);
                 }
 
-                if(bTobeBlocked == FALSE)
+                if(bTobeBlocked == false )
                 {
                     // Use HIL Function to send CAN message
-                    hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID, pReplayDetails->m_omMsgList[ nIndex ].m_uDataInfo.m_sCANMsg);
+
+                    hRet = s_pouDIL_CAN_Interface->DILC_SendMsg(s_dwClientID, sCanMsg.m_uDataInfo.m_sCANMsg);
                 }
 
                 if (hRet != 0)
@@ -726,26 +891,32 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
                 }
             }
             // Update the index
-            nIndex++;
             // if last message is already sent,
             // and it is a cyclic block then go to begining. Otherwise stop the
             // thread
-            if( nIndex >= nCount )
+            if( pReplayDetails->omInReplayFile.eof() )
             {
                 if( pReplayDetails->m_ouReplayFile.m_nReplayMode ==
-                        defREPLAY_MODE_CYCLIC )
-                {
-                    nIndex %= nCount;
-                }
-                else
+                        defREPLAY_MODE_MONOSHOT )
                 {
                     pReplayDetails->m_bStopReplayThread = TRUE;
                 }
+
             }
             // Wait for the event
-            if( pReplayDetails->m_bStopReplayThread == FALSE )
+            if( pReplayDetails->m_bStopReplayThread == FALSE)
             {
                 WaitForSingleObject(hEventReplayWait, INFINITE);
+            }
+
+            if(bIsProtocolMismatch && bIsValidMessage)
+            {
+                if(!pReplayDetails->bGetbIsProtocolMismatch())
+                {
+                    CReplayManager::ouGetReplayManager().vSendToTrace(defSTR_LOG_PRTOCOL_MISMATCH);
+                    pReplayDetails->bSetbIsProtocolMismatch(true);
+                }
+
             }
         }
         if (mmResult == TIMERR_NOERROR)
@@ -753,9 +924,10 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
             timeEndPeriod(time.wPeriodMin);
         }
         CloseHandle(hEventReplayWait);
-
         pReplayDetails->m_omThreadEvent.SetEvent();
+
     }
+
     return 0;
 }
 
@@ -773,19 +945,18 @@ BOOL CReplayProcess::bStartNIReplay()
 {
     BOOL bResult = FALSE;
     // Start Replay Thread
-    if( m_omEntries.GetSize() > 0 )
+
+    // Create the thread
+    CWinThread* pThread =
+        AfxBeginThread( CReplayProcess::sunNIReplayThreadFunc,
+                        this );
+    if( pThread != nullptr )
     {
-        // Create the thread
-        CWinThread* pThread =
-            AfxBeginThread( CReplayProcess::sunNIReplayThreadFunc,
-                            this );
-        if( pThread != nullptr )
-        {
-            m_hThread = pThread->m_hThread;
-            m_bStopReplayThread = FALSE;
-            bResult = TRUE;
-        }
+        m_hThread = pThread->m_hThread;
+        m_bStopReplayThread = FALSE;
+        bResult = TRUE;
     }
+
     return bResult;
 }
 /*******************************************************************************
@@ -806,6 +977,7 @@ BOOL CReplayProcess::bSetThreadStopSignal()
         m_bStopReplayThread = TRUE;
         bIsValid = TRUE;
     }
+    vCloseReplayFile();
     return bIsValid;
 }
 
@@ -850,4 +1022,241 @@ BOOL CReplayProcess::bMessageTobeBlocked( SFRAMEINFO_BASIC_CAN& sBasicCanInfo )
         bReturn = FALSE;
     }
     return bReturn;
+}
+DWORD CReplayProcess::dwGetNoOfMsgsInLog()
+{
+    omInReplayFile.seekg(0, std::ios::end);
+    DWORD dwEnd = omInReplayFile.tellg();
+    omInReplayFile.clear();
+    return dwEnd/BYTES_PER_LINE;
+}
+void CReplayProcess::vCloseReplayFile()
+{
+    omInReplayFile.clear();
+    omInReplayFile.close();
+}
+/*******************************************************************************
+  Function Name  : omStrGetMsgFromLog
+  Input(s)       : -
+  Output         : -
+  Functionality  : To get a particular message from the log file.
+  Member of      : CReplayProcess
+  Author(s)      : Robin George Koshy
+  Date Created   : 09.06.2014
+  Modifications  :
+*******************************************************************************/
+CString CReplayProcess::omStrGetMsgFromLog(DWORD dwLineNo,STCANDATA& sCanMsg,bool& bSessionFlag, bool& bEOFflag, bool& bProtocolMismatch, bool& bInvalidMsg)
+{
+    EnterCriticalSection(&m_omCritSecFilter);
+    bSessionFlag = false;
+    bEOFflag = false;
+    bProtocolMismatch = false;
+    bInvalidMsg = false;
+    DWORD dwPegOffset = dwLineNo%PEG_STEP;
+    DWORD dwPegCount = dwLineNo/PEG_STEP;
+    DWORD dwLinesNotPegged = dwLineNo - vecPeg.size()*PEG_STEP;
+    DWORD dwDepth;
+    std::string strLine = "";
+    bool bIsComment = false;
+
+    if((dwPegCount < vecPeg.size()) || dwLinesNotPegged < 0)
+    {
+        omInReplayFile.seekg(vecPeg[dwPegCount],std::ios::beg);
+        bSessionFlag = vecSessionFlag[dwPegCount];
+        for(int i=0; i<=dwPegOffset; i++)
+        {
+            do
+            {
+                getline(omInReplayFile,strLine);
+                CUtilFunctions::Trim(strLine,' ');
+                if(strLine.find(START_COMMENT) != std::string::npos)
+                {
+                    bIsComment = true;
+                }
+                if(strLine.find(END_COMMENT) != std::string::npos)
+                {
+                    bIsComment = false;
+                }
+                if(bIsComment)
+                {
+                    continue;
+                }
+                if(strLine.find("*")!=std::string::npos && dwLineNo!=0)
+                {
+                    if( strLine.find(defSTR_PROTOCOL_USED) != std::string::npos)
+                    {
+                        // If can related log file
+                        if( strLine.find(defSTR_PROTOCOL_CAN) == std::string::npos)
+                        {
+                            bProtocolMismatch = true;
+                            strLine = "";
+                        }
+                    }
+                    bSessionFlag = true;
+                }
+                if(omInReplayFile.eof())
+                {
+                    bEOFflag = true;
+                }
+            }
+            while(((strLine.find("*")!=std::string::npos || strLine.empty())&& !omInReplayFile.eof() && !bProtocolMismatch)||bIsComment);
+            //Check valid Message
+            if(strLine.find("0x")!=-1)
+            {
+                m_bReplayHexON = TRUE;
+            }
+            else
+            {
+                m_bReplayHexON = FALSE;
+            }
+            if(!bGetMsgInfoFromMsgStr( strLine.c_str(),
+                                       &sCanMsg,
+                                       m_bReplayHexON ))
+            {
+                bInvalidMsg = true;
+            }
+        }
+    }
+    else
+    {
+        if(dwLineNo==0)
+        {
+            omInReplayFile.seekg(0,std::ios::beg);
+
+        }
+        else
+        {
+            omInReplayFile.seekg(vecPeg.back(),std::ios::beg);
+
+        }
+        if(dwLinesNotPegged==0 && dwLineNo != 0)
+        {
+            dwLinesNotPegged = PEG_STEP;
+        }
+        for(int i=0; i<=dwLinesNotPegged; i++)
+        {
+            do
+            {
+                dwDepth = omInReplayFile.tellg();
+                getline(omInReplayFile,strLine);
+                CUtilFunctions::Trim(strLine,' ');
+                if(strLine.find(START_COMMENT) != std::string::npos)
+                {
+                    bIsComment = true;
+                }
+                if(strLine.find(END_COMMENT) != std::string::npos)
+                {
+                    bIsComment = false;
+                }
+                if(bIsComment)
+                {
+                    continue;
+                }
+                if(strLine.find("*")!=std::string::npos && dwLineNo!=0)
+                {
+                    if( strLine.find(defSTR_PROTOCOL_USED) != std::string::npos)
+                    {
+                        // If can related log file
+                        if( strLine.find(defSTR_PROTOCOL_CAN) == std::string::npos)
+                        {
+                            bProtocolMismatch = true;
+                            strLine = "";
+                        }
+                    }
+                    bSessionFlag = true;
+                }
+                if(omInReplayFile.eof())
+                {
+                    bEOFflag = true;
+                }
+            }
+            while(((strLine.find("*")!=std::string::npos || strLine.empty())&& !omInReplayFile.eof() && !bProtocolMismatch)||bIsComment);
+            //Check valid Message
+            if(strLine.find("0x")!=-1)
+            {
+                m_bReplayHexON = TRUE;
+            }
+            else
+            {
+                m_bReplayHexON = FALSE;
+            }
+            if(!bGetMsgInfoFromMsgStr( strLine.c_str(),
+                                       &sCanMsg,
+                                       m_bReplayHexON ))
+            {
+                strLine = "";
+                bInvalidMsg = true;
+            }
+            if(((i%PEG_STEP == 0 && i!=0) || dwLineNo == 0) && !strLine.empty())
+            {
+                vecPeg.push_back(dwDepth);
+                vecSessionFlag.push_back(bSessionFlag);
+            }
+
+        }
+    }
+
+    if(omInReplayFile.eof())
+    {
+        omInReplayFile.clear();
+    }
+
+    LeaveCriticalSection(&m_omCritSecFilter);
+
+    return strLine.c_str();
+
+
+}
+DWORD CReplayProcess::dwGetvecPegSize()
+{
+    return vecPeg.size();
+}
+bool CReplayProcess::bGetbIsProtocolMismatch()
+{
+    return m_bIsProtocolMismatch;
+}
+void CReplayProcess::bSetbIsProtocolMismatch(bool bIsProtocolMismatch)
+{
+    m_bIsProtocolMismatch = bIsProtocolMismatch;
+}
+bool CReplayProcess::bGetbIsInvalidMsg()
+{
+    return m_bIsInvalidMessage;
+}
+void CReplayProcess::bSetbIsInvalidMsg(bool bIsInvalidMessage)
+{
+    m_bIsInvalidMessage = bIsInvalidMessage;
+}
+/*******************************************************************************
+  Function Name  : sGetCanMsg
+  Input(s)       : -
+  Output         : -
+  Functionality  : To extract CAN data from a message
+  Member of      : CReplayProcess
+  Author(s)      : Robin George Koshy
+  Date Created   : 09.06.2014
+  Modifications  :
+*******************************************************************************/
+bool CReplayProcess::sGetCanMsg(CString omStrMessage,STCANDATA& sCanMsg)
+{
+    //Check whether hex or dec and set the flag appropriately.
+    if(omStrMessage.Find("0x")!=-1)
+    {
+        m_bReplayHexON = TRUE;
+    }
+    else
+    {
+        m_bReplayHexON = FALSE;
+    }
+    BOOL bIsValidMessage = bGetMsgInfoFromMsgStr( omStrMessage,
+                           &sCanMsg,
+                           m_bReplayHexON );
+    if(bIsValidMessage == TRUE)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

@@ -67,7 +67,9 @@ private:
     // Members, tmp members for config comparision so they have to be of same data type
     CString m_omStrFileName, m_omNameTmp;    // Replay File Name
     int     m_nTimeMode, m_nTimeModeTmp;        // 0 - Retain Delay, 1 - Specific Delay
-    UINT    m_unMsgTimeDelay, m_unTimeDelTmp;   // Time delay between messages in case time mode = 1
+    int     m_nSessionMode, m_nSessionModeTmp;        // 0 - Retain Session Delay, 1 - Specific Session Delay
+    UINT    m_unMsgTimeDelay,m_unSessionDelay, m_unTimeDelTmp,   //m_unTimeDelTmp - Time delay between messages in case time mode = 1
+            m_unSessionDelTmp; //m_unSessionDelTmp - Time delay between sessions in case session mode = 1
     int     m_nReplayMode, m_nRepModeTmp;      // 0 - Monoshot, 1 - Cyclic
     UINT    m_unCycleTimeDelay, m_unCycleTimeTmp; // Cyclic delay in case replay mode = 1
     //CModuleFilterArray m_sFilter; // Filter List

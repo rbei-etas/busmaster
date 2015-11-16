@@ -39,7 +39,7 @@ public:
     void saveLDFSettings();
     void readLDFSettings();
 
-    void ValidateFile();
+    //void ValidateFile();
 
     static LDFDatabaseManager* GetDatabaseManager();
     static void DeleteDatabaseManager();

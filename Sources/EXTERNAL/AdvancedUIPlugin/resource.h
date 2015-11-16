@@ -33,9 +33,6 @@
 #define IDB_CAN_DATABASE                167
 #define IDB_BMP_PROPERTIES              215
 #define IDB_BMP_BREAKPOINT              225
-#define IDB_NODE_SIMULATION             240
-#define IDB_NODE_SIMULATION_HOT         241
-#define IDB_NODE_SIMULATION_DISABLED    242
 #define IDD_DLG_REPLAY                  259
 #define IDB_CONFIGURE                   278
 #define IDB_CONFIGURE_HOT               279
@@ -79,6 +76,11 @@
 #define IDC_BTN_ADD_FILE                1262
 #define IDC_COMBO_MSG_TYPE              1266
 #define IDC_FLEXRAY_LOGO                3008
+#define IDB_NODE_SIMULATION             4010
+#define IDB_NODE_SIMULATION_HOT         4011
+#define IDB_NODE_SIMULATION_DISABLED    4012
+#define IDI_ICON_NODE_ENABLED           4013
+#define IDI_ICON_NODE_DISABLED          4014
 
 // Next default values for new objects
 //

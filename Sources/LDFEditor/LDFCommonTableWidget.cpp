@@ -64,16 +64,16 @@ int LDFCommonTableWidget::CreateColumns(QList<QString>& strColumnNames)
     int nColumnClount =strColumnNames.size();
     setColumnCount(nColumnClount);
     setRowCount(0);
-    int nColumn = 0;
+    //int nColumn = 0;
     int nWidth = (width()-10)/strColumnNames.size();
-for ( auto itr : strColumnNames )
+	for ( int nColumn = 0; nColumn < strColumnNames.size(); nColumn++)// auto itr : strColumnNames )
     {
         QTableWidgetItem* pTablewidgetitem = new QTableWidgetItem();
         pTablewidgetitem->setText(strColumnNames.at(nColumn));
         pTablewidgetitem->setTextAlignment(Qt::AlignHCenter|Qt::AlignVCenter|Qt::AlignCenter);
         pTablewidgetitem->setFont(m_ldfFont);
         setColumnWidth(nColumn, nWidth);
-        setHorizontalHeaderItem(nColumn++, pTablewidgetitem);
+        setHorizontalHeaderItem(nColumn, pTablewidgetitem);
     }
     return 0;
 }

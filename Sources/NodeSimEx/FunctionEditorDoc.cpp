@@ -198,6 +198,17 @@ BOOL CFunctionEditorDoc::bCreateNewDocument(CString& omStrFileName )
         strcat(buffer, /*T2A*/(omStr));
 
         strcat(buffer, "\n\n");
+        omStr = BUS_FN_WRAPPER_PROTOTYPE_HDR;
+        omStr.Replace("PLACE_HODLER_FOR_BUSNAME", m_sBusSpecInfo.m_omBusName);
+        strcat(buffer, /*T2A*/(omStr));
+
+        strcat(buffer, "\n");
+
+        omStr = BUS_FN_WRAPPER_PROTOTYPE_FOOTER;
+        omStr.Replace("PLACE_HODLER_FOR_BUSNAME", m_sBusSpecInfo.m_omBusName);
+        strcat(buffer, /*T2A*/(omStr));
+
+        strcat(buffer, "\n\n\n");
         int nLength = (COMMANINT)strlen(buffer);
         fwrite( buffer, sizeof( char ), nLength, pCFile );
         fclose(pCFile);
@@ -1433,10 +1444,10 @@ CString CFunctionEditorDoc::omStrGetInitialisedMessage(UINT unMsgID,
                         sMsgNameCode.m_omMsgName = itrFrame->m_strFrameName.c_str();
                         sMsgNameCode.m_unMsgLen = itrFrame->m_nLength;
 
-                        std::list<Flexray_SSIGNALINFO> lstSignalInfo;
-                        unsigned char uchBytes[254];
-                        bGetSignalInfo(*itrFrame,uchBytes,  sMsgNameCode.m_unMsgLen, lstSignalInfo);
-                        GetSignalNames(lstSignalInfo, sMsgNameCode.m_omSignalNames);
+                        /* std::list<Flexray_SSIGNALINFO> lstSignalInfo;
+                         unsigned char uchBytes[254];
+                         bGetSignalInfo(*itrFrame,uchBytes,  sMsgNameCode.m_unMsgLen, lstSignalInfo);
+                         GetSignalNames(lstSignalInfo, sMsgNameCode.m_omSignalNames);*/
                         bIsMsgFound = TRUE;
                         break;
                     }
@@ -1670,7 +1681,7 @@ BOOL CFunctionEditorDoc::bAddFunctionPrototype(CString omStrFuntion, BOOL bGCCEx
     omStrFuntion.TrimLeft(" ");
     omStrFuntion.TrimRight(" ");
 
-    if( bGCCExport == TRUE);
+    if( bGCCExport == TRUE)
     {
         bAddGCCExportPrototype(omStrFuntion);
     }

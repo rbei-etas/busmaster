@@ -27,13 +27,14 @@
 #include "SimSysWnd.h"          // Class defintion included here
 #include "SimSysManager.h"
 
+#define TOOLBAR_BUTTON_SIZE 36
+#define TOOLBAR_ICON_SIZE 32
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
 
-ETYPE_BUS CSimSysDetView::sm_eBus = CAN;
 ETYPE_BUS CSimSysTreeView::sm_eBus = CAN;
 /////////////////////////////////////////////////////////////////////////////
 // CSimSysWnd
@@ -72,7 +73,12 @@ CSimSysWnd::CSimSysWnd(ETYPE_BUS eBus) : CMDIChildBase( SIMSYS_WND_PLACEMENT )
 /******************************************************************************/
 CSimSysWnd::~CSimSysWnd()
 {
-
+    //Free Advanced UI Library used to load icons for toolbar.
+    if (m_hModAdvancedUILib )
+    {
+        ::FreeLibrary(m_hModAdvancedUILib);
+        m_hModAdvancedUILib = nullptr;
+    }
 }
 
 
@@ -128,7 +134,7 @@ BOOL CSimSysWnd::OnCreateClient(LPCREATESTRUCT , CCreateContext* pContext)
     m_bSplitWndCreated  =
         m_omSplitterWnd.CreateStatic(   this,                   // Parent Frame Window
                                         SPLT_ONE_ROWS,          // #Rows
-                                        SPLT_ONE_COLS,          // #Columns
+                                        SPLT_TWO_COLS,          // #Columns -- Its Single column
                                         WS_CHILD    |
                                         WS_VISIBLE |
                                         WS_BORDER,              // Window Style
@@ -138,18 +144,7 @@ BOOL CSimSysWnd::OnCreateClient(LPCREATESTRUCT , CCreateContext* pContext)
     // Get size of Frame wnd
     CSize om_Size(0,0);
 
-    vCalculateSplitterPosition(om_Size);
-    if ( TRUE == m_bSplitWndCreated )
-    {
-        CSimSysDetView::sm_eBus = m_eBus;
-        // Create the Right Pane for static splitter window
-        m_bSplitWndCreated  =
-            m_omSplitterWnd.CreateView( 0,                      // #Row
-                                        1,                     // #Column
-                                        RUNTIME_CLASS(CSimSysDetView),  // View associated
-                                        om_Size,                        // Sizeof Pane
-                                        pContext);
-    }
+
 
     if ( TRUE == m_bSplitWndCreated )
     {
@@ -163,6 +158,8 @@ BOOL CSimSysWnd::OnCreateClient(LPCREATESTRUCT , CCreateContext* pContext)
                                         pContext);
     }
 
+    // Create Toolbar
+    nCreateToolbar();
     return m_bSplitWndCreated;
 }
 /******************************************************************************/
@@ -224,34 +221,6 @@ void CSimSysWnd::vUpdateWinStatus()
     CMDIChildBase::vUpdateWinStatus();
 }
 
-/******************************************************************************/
-/*  Function Name    :  vCalculateSplitterPosition                            */
-/*                                                                            */
-/*  Input(s)         :  CSize &cSize                                          */
-/*  Output           :  CSize &cSize                                          */
-/*  Functionality    :  This function will calculate the position of the splitter
-given the size of the window
-/*  Member of        :  CSimSysWnd                                            */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika.M                                              */
-/*  Date Created     :  15.12.2005                                            */
-/*  Modifications    :
-/******************************************************************************/
-
-void CSimSysWnd::vCalculateSplitterPosition(CSize& cSize)
-{
-    RECT sRect;
-
-    // Get its size
-    GetWindowRect( &sRect );
-
-    // Calculate splitter position
-    cSize.cx = sRect.right / 4;
-    cSize.cy = sRect.bottom / 4;
-
-}
-
 
 void CSimSysWnd::OnShowWindow(BOOL bShow, UINT nStatus)
 {
@@ -265,4 +234,42 @@ void CSimSysWnd::OnShowWindow(BOOL bShow, UINT nStatus)
             pTempSimSysTreeView->bPopulateTree();
         }
     }
+}
+
+/*******************************************************************************
+Function Name  : nCreateToolbar
+Input(s)       : -
+Output         : -
+Functionality  : Creates toolbar for Simulated System Configuration Window.
+Member of      : CSimSysWnd
+Author(s)      : Robin G.K.
+Date Created   : 23.10.14
+Modifications  :
+*******************************************************************************/
+int CSimSysWnd::nCreateToolbar()
+{
+    int Result = 0;
+    m_hModAdvancedUILib = nullptr;
+    if (!m_toolbar.CreateEx(this,TBSTYLE_FLAT,WS_BORDER | WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER |
+                            CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC,CRect(0,0,0,0), IDR_NODE_SIMULATION) ||
+            !m_toolbar.LoadToolBar(IDR_NODE_SIMULATION))
+    {
+        TRACE0("Failed to create toolbar\n");
+        Result =  -1;      // fail to create
+    }
+    // Set the toolbar button size
+    CToolBarCtrl& Toolbar = m_toolbar.GetToolBarCtrl();
+    m_hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
+    BOOL B = FALSE;
+    if (m_hModAdvancedUILib)
+    {
+        CSize objSize;
+        //creates toolbar with button size 36 pixel and icon size 32 pixel
+        objSize.cx = TOOLBAR_BUTTON_SIZE;
+        objSize.cy = TOOLBAR_BUTTON_SIZE;
+        Toolbar.SetButtonSize(objSize);
+        m_toolbar.bLoadCNVTCToolBar(TOOLBAR_ICON_SIZE, IDB_NODE_SIMULATION,IDB_NODE_SIMULATION_HOT, IDB_NODE_SIMULATION_DISABLED);
+    }
+
+    return Result;
 }

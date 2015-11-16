@@ -138,22 +138,22 @@ std::string LDFDatabaseManager::GetLDFFilePath()
 }
 
 
-void LDFDatabaseManager::ValidateFile()
-{
-    const char* pchTempFileName = tmpnam(NULL);  // Get temp name
-    FILE* fp = fopen(pchTempFileName, "w");  // Create the file
-
-    GetLDFCluster()->SaveToFile(std::string(pchTempFileName));
-
-    ICluster* pouLDFClsuter;
-    GetCluster(LIN, &pouLDFClsuter);
-    std::list<ParsingResults> ouWarnings;
-    std::list<ParsingResults> ouErrors;
-    pouLDFClsuter->LoadFromFile(std::string(pchTempFileName), ouErrors, ouWarnings);
-
-    fclose(fp);
-    remove(pchTempFileName);
-}
+//void LDFDatabaseManager::ValidateFile()
+//{
+//    const char* pchTempFileName = tmpnam(NULL);  // Get temp name
+//    FILE* fp = fopen(pchTempFileName, "w");  // Create the file
+//
+//    GetLDFCluster()->SaveToFile(std::string(pchTempFileName));
+//
+//    ICluster* pouLDFClsuter;
+//    GetCluster(LIN, &pouLDFClsuter);
+//    std::list<ParsingResults> ouWarnings;
+//    std::list<ParsingResults> ouErrors;
+//    pouLDFClsuter->LoadFromFile(std::string(pchTempFileName), ouErrors, ouWarnings);
+//
+//    fclose(fp);
+//    remove(pchTempFileName);
+//}
 
 
 

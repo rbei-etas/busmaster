@@ -28,6 +28,7 @@
 #include "Export_UserDllCAN.h"
 #include "SimSysManager.h"
 #include "GlobalObj.h"
+#include <array>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -68,6 +69,7 @@ CExecuteManager::CExecuteManager(ETYPE_BUS eBus):
     m_eBusStatus = BUS_DISCONNECTED;
 
     m_eBus = eBus;
+    memset(arrhDirNotify, 0, sizeof(arrhDirNotify));
     //for read dll msg thread
     g_bReadDllMsg = TRUE;
     //start readDllMsg thread
@@ -229,7 +231,10 @@ BOOL CExecuteManager::vDeleteNode(const CString omStrNodeName)
         }
         else
         {
+			if(nullptr != psPrevNodeObject)
+			{
             psPrevNodeObject->m_psNextNode=psCurrNodeObject->m_psNextNode;
+			}
             if(m_psLastNodeObject==psCurrNodeObject)
             {
                 m_psLastNodeObject=psPrevNodeObject;
@@ -248,11 +253,6 @@ BOOL CExecuteManager::vDeleteNode(const CString omStrNodeName)
             bReturn=TRUE;
         }
 
-    }
-    if(m_psFirstNodeObject==nullptr)
-    {
-        CSimSysManager::ouGetSimSysManager(m_eBus).
-        ouGetFlags().vSetFlagStatus( H_DLLLOADED, FALSE );
     }
     return bReturn;
 
@@ -295,48 +295,6 @@ void CExecuteManager:: vAddNode (const PSNODEINFO psNodeInfo,CExecuteFunc* pExec
 
 }
 
-/***************************************************************************************
-    Function Name    :  vEnableDisableAllHandlers
-    Input(s)         :  bool enable/disable
-    Output           :
-    Functionality    :  enable/disable all handlers of all the nodes
-    Member of        :  CExecuteManager
-    Author(s)        :  Anish kumar
-    Date Created     :  19.12.05
-****************************************************************************************/
-void CExecuteManager::vEnableDisableAllHandlers(BOOL bState)
-{
-    CWaitCursor omWait;
-    if( bState==TRUE )
-    {
-        //start the timer threads for each node
-        vManageTimerThreads();
-        vStartTimer();
-    }
-    CFlags& ouFlag =  CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags();
-    ouFlag.vSetFlagStatus(H_ALL_HANDLER, bState);
-    ouFlag.vSetFlagStatus(H_MSGHANDLERBUTTON, bState);
-    ouFlag.vSetFlagStatus(H_KEY_HANDLER_ON, bState);
-    ouFlag.vSetFlagStatus(H_TIMERBUTTON, bState);
-    ouFlag.vSetFlagStatus(H_ERROR_HANDLER, bState);
-    ouFlag.vSetFlagStatus(H_EVENT_HANDLER, bState);
-    PSNODEOBJECT psNodeObject=m_psFirstNodeObject;
-    while(psNodeObject!=nullptr)
-    {
-        psNodeObject->m_psExecuteFunc->bActivateDeactivateHandlers(bState);
-        psNodeObject=psNodeObject->m_psNextNode;
-    }
-    vManageTimerThreads();
-    vUpdateHandlerDetailsInDetView();
-
-    //Update the All Handlers button text
-    CSimSysDetView* pSimSysDetView =
-        CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysDetView();
-    if (nullptr != pSimSysDetView)
-    {
-        pSimSysDetView->vChangeEDAllHanButtonText(bState);
-    }
-}
 
 /***************************************************************************************
     Function Name    :  vEnableDisableAllTimers
@@ -356,8 +314,6 @@ void CExecuteManager::vEnableDisableAllTimers(BOOL bState)
         vManageTimerThreads();
         vStartTimer();
     }
-    CSimSysManager::
-    ouGetSimSysManager(m_eBus).ouGetFlags().vSetFlagStatus(H_TIMERBUTTON, bState);
     PSNODEOBJECT psNodeObject=m_psFirstNodeObject;
     while(psNodeObject!=nullptr)
     {
@@ -365,287 +321,6 @@ void CExecuteManager::vEnableDisableAllTimers(BOOL bState)
         psNodeObject = psNodeObject->m_psNextNode;
     }
     vManageTimerThreads();
-    vUpdateHandlerDetailsInDetView();
-}
-
-/***************************************************************************************
-    Function Name    :  vEnableDisableNodeHandlers
-    Input(s)         :  PSNODEINFO,bool enable/disable
-    Output           :
-    Functionality    :  enable/disable all handlers of the node whose NodeInfo
-                        is passed as parameter
-    Member of        :  CExecuteManager
-    Author(s)        :  Anish kumar
-    Date Created     :  19.12.05
-****************************************************************************************/
-void CExecuteManager::vEnableDisableNodeHandlers(const PSNODEINFO psNodeInfo,BOOL bState)
-{
-    PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
-    BOOL bFound=FALSE;
-    while((!bFound) && (psTempNodeObject != nullptr))
-    {
-        if(psNodeInfo->m_omStrNodeName==psTempNodeObject->om_NodeName)
-        {
-            bFound=TRUE;
-        }
-        else
-        {
-            psTempNodeObject=psTempNodeObject->m_psNextNode;
-        }
-    }
-    if(psTempNodeObject!=nullptr)
-    {
-        vManageTimerThreads();
-        psTempNodeObject->m_psExecuteFunc->bActivateDeactivateHandlers(bState);
-    }
-
-}
-/**************************************************************************************
-    Function Name    :  vEnableNodeKeyHandler
-    Input(s)         :  PSNODEINFO,bool enable/disable
-    Output           :
-    Functionality    :  Enable disable key handlers of the node whose NOdeInfo is
-                        passed as parameter
-    Member of        :  CExecuteManager
-    Author(s)        :  Anish kumar
-    Date Created     :  19.12.05
-***************************************************************************************/
-void CExecuteManager::vEnableNodeKeyHandler(const PSNODEINFO psNodeInfo,BOOL bState)
-{
-    PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
-    BOOL bFound=FALSE;
-    while(!bFound&&psTempNodeObject!=nullptr)
-    {
-        if(!psNodeInfo->m_omStrNodeName.CompareNoCase(psTempNodeObject->om_NodeName))
-        {
-            bFound=TRUE;
-        }
-        else
-        {
-            psTempNodeObject=psTempNodeObject->m_psNextNode;
-        }
-    }
-    if(bFound)
-    {
-        psTempNodeObject->m_psExecuteFunc->bEnableDisableKeyHandlers(bState);
-    }
-
-
-}
-
-/**************************************************************************************
-    Function Name    :  vEnableAllKeyHandler
-    Input(s)         :  bool enable/disable
-    Output           :
-    Functionality    :  enable/disable all key handlers of all the nodes
-    Member of        :  CExecuteManager
-    Author(s)        :  Anish kumar
-    Date Created     :  19.12.05
-***************************************************************************************/
-void CExecuteManager::vEnableAllKeyHandler(BOOL bState)
-{
-    CWaitCursor omWait;
-    CSimSysManager::
-    ouGetSimSysManager(m_eBus).ouGetFlags().vSetFlagStatus(H_KEY_HANDLER_ON, bState);
-    PSNODEOBJECT psNodeObject=m_psFirstNodeObject;
-    while( psNodeObject != nullptr )
-    {
-        psNodeObject->m_psExecuteFunc->bEnableDisableKeyHandlers(bState);
-        psNodeObject=psNodeObject->m_psNextNode;
-    }
-    vUpdateHandlerDetailsInDetView();
-}
-
-/****************************************************************************************
-    Function Name    :  vEnableNodeMessageHandler
-    Input(s)         :  PSNODEINFO,bool enable/disable
-    Output           :
-    Functionality    :  Enable disable messaege handlers of the node whose NOdeInfo is
-                        passed as parameter
-    Member of        :  CExecuteManager
-    Author(s)        :  Anish kumar
-    Date Created     :  19.12.05
-*****************************************************************************************/
-void CExecuteManager::vEnableNodeMessageHandler(const PSNODEINFO psNodeInfo,BOOL bState)
-{
-    PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
-    BOOL bFound=FALSE;
-    while(!bFound&&psTempNodeObject!=nullptr)
-    {
-        if(!psNodeInfo->m_omStrNodeName.CompareNoCase(psTempNodeObject->om_NodeName))
-        {
-            bFound=TRUE;
-        }
-        else
-        {
-            psTempNodeObject=psTempNodeObject->m_psNextNode;
-        }
-    }
-    if(psTempNodeObject!=nullptr)
-    {
-        psTempNodeObject->m_psExecuteFunc->bEnableDisableMsgHandlers(bState);
-    }
-}
-
-/****************************************************************************************
-    Function Name    :  vEnableAllMessageHandler
-    Input(s)         :  bool enable/disable
-    Output           :
-    Functionality    :  enable/disable all message handlers of all the nodes
-    Member of        :  CExecuteManager
-    Author(s)        :  Anish kumar
-    Date Created     :  19.12.05
-*****************************************************************************************/
-void CExecuteManager::vEnableAllMessageHandler(BOOL bState)
-{
-    CWaitCursor omWait;
-    CSimSysManager::
-    ouGetSimSysManager(m_eBus).ouGetFlags().vSetFlagStatus(H_MSGHANDLERBUTTON, bState);
-    PSNODEOBJECT psNodeObject=m_psFirstNodeObject;
-    while(psNodeObject!=nullptr)
-    {
-        psNodeObject->m_psExecuteFunc->bEnableDisableMsgHandlers(bState);
-        psNodeObject=psNodeObject->m_psNextNode;
-    }
-    vUpdateHandlerDetailsInDetView();
-}
-
-
-/****************************************************************************************
-    Function Name    :  vEnableNodeErrorHandler
-    Input(s)         :  PSNODEINFO,bool enable/disable
-    Output           :
-    Functionality    :  Enable disable error handlers of the node whose NOdeInfo is
-                        passed as parameter
-    Member of        :  CExecuteManager
-    Author(s)        :  Anish kumar
-    Date Created     :  19.12.05
-*****************************************************************************************/
-void CExecuteManager::vEnableNodeErrorHandler(const PSNODEINFO psNodeInfo,BOOL bState)
-{
-    PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
-    BOOL bFound=FALSE;
-    while(!bFound&&psTempNodeObject!=nullptr)
-    {
-        if(!psNodeInfo->m_omStrNodeName.CompareNoCase(psTempNodeObject->om_NodeName))
-        {
-            bFound=TRUE;
-        }
-        else
-        {
-            psTempNodeObject=psTempNodeObject->m_psNextNode;
-        }
-    }
-    if(psTempNodeObject)
-    {
-        psTempNodeObject->m_psExecuteFunc->bEnableDisableErrorHandlers(bState);
-    }
-}
-
-/**
-* \brief         Enable disable event handlers of the node whose NOdeInfo is
-*                passed as parameter
-* \param[in]     PSNODEINFO
-* \param[in]     bool enable/disable
-* \return        void
-* \authors       Arunkumar Karri
-* \date          11.06.2012 Created
-*/
-void CExecuteManager::vEnableNodeEventHandler(const PSNODEINFO psNodeInfo,BOOL bState)
-{
-    PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
-    BOOL bFound=FALSE;
-    while(!bFound&&psTempNodeObject!=nullptr)
-    {
-        if(!psNodeInfo->m_omStrNodeName.CompareNoCase(psTempNodeObject->om_NodeName))
-        {
-            bFound=TRUE;
-        }
-        else
-        {
-            psTempNodeObject=psTempNodeObject->m_psNextNode;
-        }
-    }
-    if(psTempNodeObject)
-    {
-        psTempNodeObject->m_psExecuteFunc->bEnableDisableEventHandlers(bState);
-    }
-}
-
-/****************************************************************************************
-    Function Name    :  vEnableAllErrorHandler
-    Input(s)         :  bool enable/disable
-    Output           :
-    Functionality    :  enable/disable all error handlers of all the nodes
-    Member of        :  CExecuteManager
-    Author(s)        :  Anish kumar
-    Date Created     :  19.12.05
-*****************************************************************************************/
-void CExecuteManager::vEnableAllErrorHandler(BOOL bState)
-{
-    CWaitCursor omWait;
-    CSimSysManager::
-    ouGetSimSysManager(m_eBus).ouGetFlags().vSetFlagStatus(H_ERROR_HANDLER, bState);
-    PSNODEOBJECT psNodeObject=m_psFirstNodeObject;
-    while(psNodeObject!=nullptr)
-    {
-        psNodeObject->m_psExecuteFunc->bEnableDisableErrorHandlers(bState);
-        psNodeObject=psNodeObject->m_psNextNode;
-    }
-    vUpdateHandlerDetailsInDetView();
-}
-
-/**
-* \brief         enable/disable all event handlers of all the nodes
-* \param[in]     bool to indicate enable/disable state
-* \return        void
-* \authors       Arunkumar Karri
-* \date          11.06.2012 Created
-*/
-void CExecuteManager::vEnableAllEventHandler(BOOL bState)
-{
-    CWaitCursor omWait;
-    CSimSysManager::
-    ouGetSimSysManager(m_eBus).ouGetFlags().vSetFlagStatus(H_EVENT_HANDLER, bState);
-    PSNODEOBJECT psNodeObject=m_psFirstNodeObject;
-    while(psNodeObject!=nullptr)
-    {
-        psNodeObject->m_psExecuteFunc->bEnableDisableEventHandlers(bState);
-        psNodeObject=psNodeObject->m_psNextNode;
-    }
-    vUpdateHandlerDetailsInDetView();
-}
-
-/****************************************************************************************
-    Function Name    :  vEnableNodeTimerHandler
-    Input(s)         :  PSNODEINFO,bool enable/disable
-    Output           :
-    Functionality    :  Enable disable timer handlers of the node whose NOdeInfo is
-                        passed as parameter
-    Member of        :  CExecuteManager
-    Author(s)        :  Anish kumar
-    Date Created     :  19.12.05
-*****************************************************************************************/
-void CExecuteManager::vEnableNodeTimerHandler(const PSNODEINFO psNodeInfo,BOOL bState)
-{
-    PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
-    BOOL bFound=FALSE;
-    while((!bFound) && (psTempNodeObject!=nullptr))
-    {
-        if(!psNodeInfo->m_omStrNodeName.CompareNoCase
-                (psTempNodeObject->om_NodeName))
-        {
-            bFound=TRUE;
-        }
-        else
-        {
-            psTempNodeObject=psTempNodeObject->m_psNextNode;
-        }
-    }
-    if(bFound)
-    {
-        psTempNodeObject->m_psExecuteFunc->vEnableDisableAllTimers(bState);
-    }
 }
 
 
@@ -657,16 +332,15 @@ void CExecuteManager::vEnableNodeTimerHandler(const PSNODEINFO psNodeInfo,BOOL b
     Member of        :  CExecuteManager
     Author(s)        :  Anish kumar
     Date Created     :  19.12.05
+    Modification     :  Robin G.K.
+                     :  21.10.14, Removed dependancy on unused EXKEY_HANDLER flag.
 ***************************************************************************************/
 void CExecuteManager::vManageOnKeyHandler(UCHAR ucKey)
 {
     PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
     while(psTempNodeObject!=nullptr)
     {
-        if(psTempNodeObject->m_psExecuteFunc->bGetFlagStatus(EXKEY_HANDLER) == TRUE)
-        {
             psTempNodeObject->m_psExecuteFunc->vExecuteOnKeyHandler(ucKey);
-        }
         psTempNodeObject=psTempNodeObject->m_psNextNode;
     }
 }
@@ -702,14 +376,11 @@ void CExecuteManager::vManageOnMessageHandlerCAN_(PSTCAN_TIME_MSG sRxMsgInfo, DW
     PSNODEOBJECT psTempNodeObject = m_psFirstNodeObject;
     while(psTempNodeObject != nullptr)
     {
-        if(psTempNodeObject->m_psExecuteFunc->bGetFlagStatus(EXMSG_HANDLER) == TRUE)
-        {
             if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClientId)
             {
                 psTempNodeObject->m_psExecuteFunc->vWriteInQMsg(*sRxMsgInfo);
             }
 
-        }
         psTempNodeObject = psTempNodeObject->m_psNextNode;
     }
     LeaveCriticalSection(&m_CritSectPsNodeObject);
@@ -730,13 +401,12 @@ void CExecuteManager::vManageOnMessageHandlerLIN(PSTLIN_TIME_MSG sRxMsgInfo, DWO
     PSNODEOBJECT psTempNodeObject = m_psFirstNodeObject;
     while(psTempNodeObject != nullptr)
     {
-        if(psTempNodeObject->m_psExecuteFunc->bGetFlagStatus(EXMSG_HANDLER) == TRUE)
-        {
+        
             if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClientId)
             {
                 psTempNodeObject->m_psExecuteFunc->vWriteInQMsgLIN(*sRxMsgInfo);
             }
-        }
+        
         psTempNodeObject = psTempNodeObject->m_psNextNode;
     }
     LeaveCriticalSection(&m_CritSectPsNodeObject);
@@ -758,13 +428,10 @@ void CExecuteManager::vManageOnErrorHandlerCAN(eERROR_STATE eErrorCode,SCAN_ERR 
     {
         if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClientId)
         {
-            if(psTempNodeObject->m_psExecuteFunc->bGetFlagStatus(EXERROR_HANDLER) == TRUE)
-            {
 
                 psTempNodeObject->m_psExecuteFunc->vExecuteOnErrorHandler( eErrorCode,
                         sErrorVal);
 
-            }
         }
         psTempNodeObject=psTempNodeObject->m_psNextNode;
     }
@@ -786,11 +453,8 @@ void CExecuteManager::vManageOnErrorHandlerLIN(SERROR_INFO_LIN ouErrorInfo, DWOR
     {
         if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClientId)
         {
-            if(psTempNodeObject->m_psExecuteFunc->bGetFlagStatus(EXERROR_HANDLER) == TRUE)
-            {
                 psTempNodeObject->m_psExecuteFunc->vExecuteOnErrorHandlerLIN( ouErrorInfo);
 
-            }
         }
         psTempNodeObject=psTempNodeObject->m_psNextNode;
     }
@@ -841,12 +505,6 @@ void CExecuteManager::vManageOnAddressClaimHandlerJ1939(DWORD dwClientId, BYTE b
         if(dwClientId == sNodeInfo.m_dwClientId)
         {
             sNodeInfo.m_byPrefAddress = byAddress;
-            CSimSysDetView* pSimSysDetView = nullptr;
-            pSimSysDetView = CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysDetView();
-            if (nullptr != pSimSysDetView)
-            {
-                pSimSysDetView->vSetNodeAddress(byAddress);
-            }
             psTempNodeObject->m_psExecuteFunc->vSetNodeInfo(&sNodeInfo);
             psTempNodeObject->m_psExecuteFunc->vExecuteOnAddressClaimHandlerJ1939(byAddress);
             bContinue = FALSE;
@@ -870,7 +528,7 @@ void CExecuteManager::vManageOnAddressClaimHandlerJ1939(DWORD dwClientId, BYTE b
 /*  Modification on  :                                                        */
 /*                                                                            */
 /******************************************************************************/
-BOOL CExecuteManager::bExecuteDllBuildLoad(PSNODEINFO psNodeInfo)
+BOOL CExecuteManager::bExecuteDllBuildLoad(PSNODEINFO psNodeInfo, BOOL bDisplaySuccessful)
 {
     CStringArray omStrArray;
     //CWaitCursor omWait;
@@ -880,7 +538,7 @@ BOOL CExecuteManager::bExecuteDllBuildLoad(PSNODEINFO psNodeInfo)
     if(psNodeInfo!=nullptr)
     {
 
-        if (!psNodeInfo->m_omStrFileName.IsEmpty())
+        if (!psNodeInfo->m_omStrCFileName.IsEmpty())
         {
             // If the object is not created, create it.
             if(m_pouBuildProgram==nullptr)
@@ -890,7 +548,7 @@ BOOL CExecuteManager::bExecuteDllBuildLoad(PSNODEINFO psNodeInfo)
             if(m_pouBuildProgram!=nullptr)
             {
                 PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
-                if(psNodeInfo->m_bIsDllLoaded)
+                if(psNodeInfo->m_bIsNodeEnabled)
                 {
                     BOOL bFound=FALSE;
                     while(psTempNodeObject!=nullptr&&!bFound)
@@ -925,7 +583,7 @@ BOOL CExecuteManager::bExecuteDllBuildLoad(PSNODEINFO psNodeInfo)
                 if(bFreeLibrary == TRUE )
                 {
                     bDLLLoaded =
-                        m_pouBuildProgram->bBuildProgram( psNodeInfo,TRUE);
+                        m_pouBuildProgram->bBuildProgram( psNodeInfo,TRUE,bDisplaySuccessful);
                 }
                 else
                 {
@@ -951,7 +609,7 @@ BOOL CExecuteManager::bExecuteDllBuildLoad(PSNODEINFO psNodeInfo)
                     BOOL bInitStruct     = FALSE;
                     hModuleHandle=psNodeInfo->m_hModuleHandle;
 
-                    omStrDLLName=psNodeInfo->m_omStrFileName;
+                    omStrDLLName=psNodeInfo->m_omStrCFileName;
 
 
                     // Get the DLL name from source file name by replacing .c
@@ -986,12 +644,12 @@ BOOL CExecuteManager::bExecuteDllBuildLoad(PSNODEINFO psNodeInfo)
                             }
                             omStrArray.Add(omStrErrorMsg);
                             m_pouBuildProgram->bAddString(omStrArray);
-                            psNodeInfo->m_bIsDllLoaded=FALSE;
+                            psNodeInfo->m_bIsNodeEnabled=FALSE;
                             bReturn =FALSE;
                         }
                         else
                         {
-                            psNodeInfo->m_bIsDllLoaded=TRUE;
+                            psNodeInfo->m_bIsNodeEnabled=TRUE;
                             vAddNode(psNodeInfo,m_pouExecuteFunc);
                             m_pouExecuteFunc->vExecuteOnDLLHandler(DLL_LOAD);
                             PSTIMERHANDLERLIST psTimerListPtr=
@@ -1009,30 +667,7 @@ BOOL CExecuteManager::bExecuteDllBuildLoad(PSNODEINFO psNodeInfo)
                                                                    m_omStrNodeName,psTimerListPtr);
 
                             m_pouExecuteFunc->vStartTimerThreads();
-                            //Restore handler's status
-                            if(psNodeInfo->m_bIsAllHandlersEnabled)
-                            {
-                                m_pouExecuteFunc->bActivateDeactivateHandlers(TRUE);
-                            }
-                            else
-                            {
-                                if(psNodeInfo->m_bErrorHandlersEnabled)
-                                {
-                                    m_pouExecuteFunc->bEnableDisableErrorHandlers(TRUE);
-                                }
-                                if(psNodeInfo->m_bEventHandlersEnabled)
-                                {
-                                    m_pouExecuteFunc->bEnableDisableEventHandlers(TRUE);
-                                }
-                                if(psNodeInfo->m_bKeyHandlersEnabled)
-                                {
-                                    m_pouExecuteFunc->bEnableDisableKeyHandlers(TRUE);
-                                }
-                                if(psNodeInfo->m_bMsgHandlersEnabled)
-                                {
-                                    m_pouExecuteFunc->bEnableDisableMsgHandlers(TRUE);
-                                }
-                            }
+                            m_pouExecuteFunc->vEnableDisableAllTimers(TRUE);
 
                             psNodeInfo->bStartThreadProc();
                             bReturn =TRUE;
@@ -1062,7 +697,6 @@ BOOL CExecuteManager::bExecuteDllBuildLoad(PSNODEINFO psNodeInfo)
         vStartTimer();
     }
 
-    m_odSetResetTimer.DestroyWindow();
     return bReturn;
 }
 
@@ -1078,14 +712,14 @@ BOOL CExecuteManager::bExecuteDllBuildLoad(PSNODEINFO psNodeInfo)
     Date Created     :  19.12.05
 
 ***************************************************************************************/
-BOOL CExecuteManager::bExecuteDllBuild(PSNODEINFO psNodeInfo)
+BOOL CExecuteManager::bExecuteDllBuild(PSNODEINFO psNodeInfo, BOOL bDisplaySuccessful)
 {
     CStringArray omStrArray;
     CWaitCursor omWait;
     BOOL bReturn=FALSE;
     if(psNodeInfo!=nullptr)
     {
-        if(!psNodeInfo->m_omStrFileName.IsEmpty())
+        if(!psNodeInfo->m_omStrCFileName.IsEmpty())
         {
 
             if(m_pouBuildProgram==nullptr)
@@ -1094,7 +728,7 @@ BOOL CExecuteManager::bExecuteDllBuild(PSNODEINFO psNodeInfo)
             }
             if(m_pouBuildProgram!=nullptr)
             {
-                bReturn=m_pouBuildProgram->bBuildProgram(psNodeInfo,FALSE);
+                bReturn=m_pouBuildProgram->bBuildProgram(psNodeInfo,FALSE,bDisplaySuccessful);
             }
             else
             {
@@ -1120,7 +754,7 @@ BOOL CExecuteManager::bExecuteDllBuild(PSNODEINFO psNodeInfo)
 
 BOOL CExecuteManager::bExecuteDllUnload(PSNODEINFO psNodeInfo)
 {
-    BOOL bReturn=FALSE;
+    BOOL bReturn=TRUE;
     CStringArray omStrArray;
     CWaitCursor omWait;
     if(psNodeInfo!=nullptr)
@@ -1128,7 +762,7 @@ BOOL CExecuteManager::bExecuteDllUnload(PSNODEINFO psNodeInfo)
         BOOL bFreeLibrary;
         CString omStrMessage;
         PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
-        if(psNodeInfo->m_bIsDllLoaded)
+        if(psNodeInfo->m_bIsNodeEnabled && !psNodeInfo->m_omStrDllName.IsEmpty())
         {
 
             BOOL bFound=FALSE;
@@ -1162,11 +796,6 @@ BOOL CExecuteManager::bExecuteDllUnload(PSNODEINFO psNodeInfo)
                 else
                 {
                     psTempNodeObject->m_psExecuteFunc->vSetDllHandle(nullptr);
-                    omStrMessage  = "Successfully unloaded ";
-                    omStrMessage += psNodeInfo->m_omStrDllName;
-                    omStrArray.Add(omStrMessage);
-                    m_pouBuildProgram->bAddString(omStrArray);
-                    psNodeInfo->m_bIsDllLoaded=FALSE;
                     psNodeInfo->bTerminateThreadProc();
                     vDeleteNode(psNodeInfo->m_omStrNodeName);
                     bReturn=TRUE;
@@ -1175,7 +804,6 @@ BOOL CExecuteManager::bExecuteDllUnload(PSNODEINFO psNodeInfo)
 
         }
     }
-    m_odSetResetTimer.DestroyWindow();
     return bReturn;
 }
 
@@ -1190,7 +818,7 @@ BOOL CExecuteManager::bExecuteDllUnload(PSNODEINFO psNodeInfo)
     Date Created     :  19.12.05
 ***************************************************************************************/
 
-BOOL CExecuteManager::bExecuteDllLoad(PSNODEINFO psNodeInfo)
+BOOL CExecuteManager::bExecuteDllLoad(PSNODEINFO psNodeInfo, BOOL bDisplaySuccessful)
 {
     BOOL bFreeLibrary = TRUE;
     BOOL bReturn=FALSE;
@@ -1201,7 +829,7 @@ BOOL CExecuteManager::bExecuteDllLoad(PSNODEINFO psNodeInfo)
     CWaitCursor omWait;
     if(psNodeInfo!=nullptr)
     {
-        if(psNodeInfo->m_bIsDllLoaded)
+        if(psNodeInfo->m_bIsNodeEnabled)
         {
             PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
             BOOL bFound=FALSE;
@@ -1271,14 +899,7 @@ BOOL CExecuteManager::bExecuteDllLoad(PSNODEINFO psNodeInfo)
                             CGlobalObj::g_podNodeToDllMap->RemoveKey(psNodeInfo->m_omStrDllName);
                         }*/
                     }
-                    else
-                    {
-                        /*if (CGlobalObj::g_podNodeToDllMap != nullptr)
-                        {
-                            CGlobalObj::g_podNodeToDllMap->operator [](psNodeInfo->m_omStrDllName) = hModuleHandle;
-                            ::PostMessage(CGlobalObj::hWmdMDIParentFrame,WM_LOAD_UNLOAD, 1, 0);
-                        }*/
-                    }
+
                 }
             }
             else
@@ -1324,20 +945,24 @@ BOOL CExecuteManager::bExecuteDllLoad(PSNODEINFO psNodeInfo)
                 else
                 {
                     CString omStrErrorMsg = " ";
-                    psNodeInfo->m_bIsDllLoaded=TRUE;
-                    omStrArray.Add(omStrDLLName + " loaded successfully");
-                    m_pouBuildProgram->bAddString(omStrArray);
-                    CSimSysManager::ouGetSimSysManager(m_eBus).ouGetFlags().
-                    vSetFlagStatus( H_DLLLOADED, TRUE );
+                    psNodeInfo->m_bIsNodeEnabled=TRUE;
+                    if(bDisplaySuccessful)
+                    {
+                        omStrArray.Add(omStrDLLName + " loaded successfully");
+                        m_pouBuildProgram->bAddString(omStrArray);
+                    }
+
                     vAddNode(psNodeInfo,m_pouExecuteFunc);
                     m_pouExecuteFunc->vExecuteOnDLLHandler(DLL_LOAD);
-                    //vRestoreTimerStatus(psTimerStruct);
-                    // Set the flag for DLL loaded.
-                    psNodeInfo->bStartThreadProc();
                     PSTIMERHANDLERLIST psTimerListPtr=
                         m_pouExecuteFunc->psGetTimerListPtr();
                     m_odSetResetTimer.vAddNewNodeTimerList(psNodeInfo->
                                                            m_omStrNodeName,psTimerListPtr);
+
+                    m_pouExecuteFunc->vStartTimerThreads();
+                    m_pouExecuteFunc->vEnableDisableAllTimers(TRUE);
+
+                    psNodeInfo->bStartThreadProc();
                     bReturn=TRUE;
                 }
             }
@@ -1351,7 +976,6 @@ BOOL CExecuteManager::bExecuteDllLoad(PSNODEINFO psNodeInfo)
         vStartTimer();
     }
 
-    m_odSetResetTimer.DestroyWindow();
     return bReturn;
 }
 
@@ -1479,76 +1103,16 @@ void CExecuteManager::vManageDllMessageHandler(SDLL_MSG sDllMessages)
             HMODULE h_Module=psTempNodeObject->m_psExecuteFunc->hGetDllHandle();
             if( h_Module != sDllMessages.h_DllHandle)
             {
-                //if msg handler is enable then write into buffer
-                BOOL bMsgFlag = psTempNodeObject->m_psExecuteFunc->
-                                bGetFlagStatus(EXMSG_HANDLER);
-                if(bMsgFlag)
-                {
-                    STCAN_TIME_MSG* psRxMsgInfo = (STCAN_TIME_MSG*)sDllMessages.sRxMsg;
-                    psTempNodeObject->m_psExecuteFunc->vWriteInQMsg(*psRxMsgInfo);
-                }
+                // Write into buffer.
+                STCAN_TIME_MSG* psRxMsgInfo = (STCAN_TIME_MSG*)sDllMessages.sRxMsg;
+                psTempNodeObject->m_psExecuteFunc->vWriteInQMsg(*psRxMsgInfo);
+
             }
         }
         psTempNodeObject=psTempNodeObject->m_psNextNode;
     }
 
 }
-
-/******************************************************************************/
-/*  Function Name    :  vSetResetOnTimerHandler                               */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will invoke timer handler dialog and    */
-/*                      passthe information stored in the list of structure   */
-/*                      to the dialog class. After dialog is close with OK    */
-/*                      timers will be set.                                   */
-/*  Member of        :  CExecuteManager                                       */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Anish Kumar                                           */
-/*  Date Created     :  14.01.2006                                            */
-/******************************************************************************/
-void CExecuteManager::vSetResetOnTimerHandler(const CStringArray& omSysNode,
-        BOOL bFromSimSys)
-{
-    m_odSetResetTimer.vSetSimSysNodeArray(omSysNode,bFromSimSys);
-    vManageTimerThreads();
-    m_odSetResetTimer.DestroyWindow();
-    // A modelless dialog is created.
-    BOOL bIsTimerDialogCreated  = CSimSysManager::ouGetSimSysManager(m_eBus).
-                                  ouGetFlags().nGetFlagStatus(H_TIMERBUTTON);
-    if(FALSE == bIsTimerDialogCreated)
-    {
-        BOOL bDlgReturn = m_odSetResetTimer.Create(IDD_DLG_SET_RESET_TIMER,
-                          nullptr);
-        if(bDlgReturn != 0)
-        {
-            m_odSetResetTimer.CenterWindow();
-            m_odSetResetTimer.ShowWindow(SW_SHOW);
-            CSimSysManager::ouGetSimSysManager(m_eBus).
-            ouGetFlags().vSetFlagStatus(H_TIMERBUTTON,TRUE);
-        }
-    }
-}
-
-/******************************************************************************/
-/*  Function Name    :  vDestroyTimerDialog                                   */
-/*  Input(s)         :  void                                                  */
-/*  Output           :  void                                                  */
-/*  Functionality    :  This function is will called to Destroy Start/Stop    */
-/*                      Timer Dialog. During Disconnect if the                */
-/*                      Start/Stop Timer Dialog is visible                    */
-/*  Member of        :  CExecuteManager                                       */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Raja N                                                */
-/*  Date Created     :  05.02.2004                                            */
-/*  Modification By  :                                                        */
-/*  Modification on  :                                                        */
-/******************************************************************************/
-void CExecuteManager::vDestroyTimerDialog()
-{
-    m_odSetResetTimer.DestroyWindow();
-}
-
 
 
 /***************************************************************************************
@@ -1825,97 +1389,53 @@ void CExecuteManager::vManageTimerExecution()
     Author(s)        :  Anish kumar
     Date Created     :
 ***************************************************************************************/
-BOOL CExecuteManager::bDLLBuildAll(CStringArray* pomStrErrorFiles)
+BOOL CExecuteManager::bDLLBuildAll()
 {
     BOOL bReturn = FALSE;
     BOOL bSuccess = FALSE;
     int nFailure = 0;
-    PSSIMSYSINFO pTempSimsys =
-        CSimSysManager::ouGetSimSysManager(m_eBus).psReturnSimsysInfoPtr();
+    CSimSysNodeInfo* pSimSysNodeInfo =
+        CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     CString omStrFileName = "";
-    int nNodeCount = 0;
-    pomStrErrorFiles->RemoveAll();
+    int nNodeCount = pSimSysNodeInfo->m_unNumberOfNodesAdded;
+    CStringArray omStrBuildFiles;
+    omStrBuildFiles.RemoveAll();
     vClearOutputWnd();
-    while(pTempSimsys != nullptr)
+
+    PSNODELIST pTempNode = pSimSysNodeInfo->m_psNodesList;
+    while(pTempNode != nullptr)
     {
-        nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
+        if(pTempNode->m_sNodeInfo.m_eNodeFileType == NODE_FILE_DLL)
         {
-            if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
-            {
-                //TO find which all files are opened through Framewnd
-                CMDIFrameWnd* pMainWnd = (CMDIFrameWnd*)CWnd::FromHandle(CGlobalObj::sm_hWndMDIParentFrame);
-                if(pMainWnd != nullptr)
-                {
-                    //Get the active child wnd
-                    CWnd* pWndTemp = pMainWnd->GetActiveFrame();
-                    if(pWndTemp != nullptr)
-                    {
-                        CWnd* pWnd = pWndTemp;
-                        do
-                        {
-                            CString omStrWndName;
-                            CString omStrFileName =pTempNode->m_sNodeInfo.m_omStrFileName;
-                            int nIndex = omStrFileName.ReverseFind(defCHAR_PATH_SEPRATER);
-                            int nLength = omStrFileName.GetLength();
-                            omStrFileName = omStrFileName.Right(nLength - nIndex -1);
-                            pWnd->GetWindowText(omStrWndName);
-                            //if the file is opened save it
-                            if(!(omStrFileName.Compare(omStrWndName)))
-                            {
-                                // To check if the file is already opened
-                                CFunctionEditorDoc* pDocCheck = CGlobalObj::ouGetObj(m_eBus).pGetDocPtrOfFile(pTempNode->
-                                                                m_sNodeInfo.m_omStrFileName);
-                                if (pDocCheck != nullptr)
-                                {
-                                    //If file is opened then get its frame and activate it
-                                    {
-                                        POSITION pos = pDocCheck->GetFirstViewPosition();
-                                        if (pos)
-                                        {
-                                            pDocCheck->GetNextView(pos)->GetParentFrame()->ActivateFrame();
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    CDocument*(pDoc) = CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate->OpenDocumentFile(pTempNode->
-                                                       m_sNodeInfo.m_omStrFileName);
-                                    if(pDoc!=nullptr)
-                                    {
-                                        // If file name is not empty generate new def file
-                                        pDoc->OnSaveDocument(pTempNode->
-                                                             m_sNodeInfo.m_omStrFileName);
-                                    }
-                                    break;
-                                }
-                            }
-                            pWnd = pWnd->GetNextWindow();
-                        }
-                        while((pWndTemp != pWnd) && pWnd != nullptr);
-
-
-                        bSuccess = bExecuteDllBuild(&pTempNode->m_sNodeInfo);
-                        if(!bSuccess)
-                        {
-                            nFailure++;
-                            pomStrErrorFiles->Add(pTempNode->m_sNodeInfo.m_omStrFileName);
-                        }
-
-                    }
-                }
-            }
-            pTempNode = pTempNode->m_psNextNode;
+            pTempNode->m_sNodeInfo.m_eNodeState = NODE_BUILD_SUCCESS;
         }
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
+        else
+        {
+            pTempNode->m_sNodeInfo.m_eNodeState = NODE_NOT_BUILT;
+        }
+        if(pTempNode->m_sNodeInfo.m_omStrCFileName != "" &&
+                pTempNode->m_sNodeInfo.m_bIsNodeEnabled==TRUE)
+        {
+            //Build all modified and Enabled nodes
+            bSuccess =
+                bExecuteDllBuild(&pTempNode->m_sNodeInfo,FALSE);
+            if(!bSuccess)
+            {
+                nFailure++;
+                omStrBuildFiles.Add(pTempNode->m_sNodeInfo.m_omStrCFileName);
+            }
+
+        }
+        pTempNode = pTempNode->m_psNextNode;
     }
+
     if((nFailure == 0) || (nFailure != nNodeCount))
     {
         // if the build is successfull atleast for one.
 
         // to indicate to the tree view about the new dlls built.
         CSimSysTreeView* psSimSysTree = CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysTreeView();
+
         if(psSimSysTree != nullptr)
         {
             psSimSysTree->bPopulateTree();
@@ -1928,87 +1448,7 @@ BOOL CExecuteManager::bDLLBuildAll(CStringArray* pomStrErrorFiles)
     return bReturn;
 }
 
-/***************************************************************************************
-    Function Name    :  bDllLoadAll
-    Input(s)         :
-    Output           :
-    Functionality    :  Load all node files
-    Member of        :  CExecuteManager
-    Author(s)        :  Anish kumar
-    Date Created     :
-***************************************************************************************/
-BOOL CExecuteManager::bDllLoadAll(CStringArray* pomStrErrorFiles)
-{
-    BOOL bReturn = FALSE;
-    BOOL bSuccess = FALSE;
-    int nFailure = 0;
-    PSSIMSYSINFO pTempSimsys =
-        CSimSysManager::ouGetSimSysManager(m_eBus).psReturnSimsysInfoPtr();
-    int nNodeCount = 0;
 
-    pomStrErrorFiles->RemoveAll();
-
-    vStopTimer();
-    vClearOutputWnd();
-    while(pTempSimsys != nullptr)
-    {
-        nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_omStrDllName != "")
-            {
-                bSuccess = bExecuteDllLoad(&pTempNode->m_sNodeInfo);
-                if(!bSuccess)
-                {
-                    nFailure++;
-                    pomStrErrorFiles->Add(pTempNode->m_sNodeInfo.m_omStrDllName);
-                }
-                else
-                {
-                    // to make the status of the handlers disabled
-                    pTempNode->m_sNodeInfo.m_bDllHandlersEnabled = FALSE;
-                    pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled = FALSE;
-                    pTempNode->m_sNodeInfo.m_bEventHandlersEnabled = FALSE;
-                    pTempNode->m_sNodeInfo.m_bIsAllHandlersEnabled = FALSE;
-                    pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled = FALSE;
-                    pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled = FALSE;
-                    pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = FALSE;
-                }
-
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
-
-    }
-    if((nFailure == 0) || (nFailure != nNodeCount))
-    {
-        // if the load is successfull atleast for one dll.
-
-        // to indicate to the tree view about the dlls loaded.
-        CSimSysTreeView* psSimSysTree = CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysTreeView();
-        if(psSimSysTree != nullptr)
-        {
-            psSimSysTree->bPopulateTree();
-        }
-        //Disable all the handlers
-        CSimSysManager& ouSSysManager = CSimSysManager::ouGetSimSysManager(m_eBus);
-        ouSSysManager.ouGetFlags().vSetFlagStatus(H_ALL_HANDLER, FALSE);
-        ouSSysManager.ouGetFlags().vSetFlagStatus(H_ERROR_HANDLER, FALSE);
-        ouSSysManager.ouGetFlags().vSetFlagStatus(H_EVENT_HANDLER, FALSE);
-        ouSSysManager.ouGetFlags().vSetFlagStatus(H_KEY_HANDLER_ON, FALSE);
-        ouSSysManager.ouGetFlags().vSetFlagStatus(H_MSGHANDLERBUTTON, FALSE);
-        ouSSysManager.ouGetFlags().vSetFlagStatus(H_TIMERBUTTON, FALSE);
-    }
-
-    vStartTimer();
-    if(nFailure == 0)
-    {
-        bReturn= TRUE;
-    }
-    return bReturn;
-}
 
 /***************************************************************************************
     Function Name    :  bDllUnloadAll
@@ -2024,8 +1464,8 @@ BOOL CExecuteManager::bDllUnloadAll(CStringArray* pomStrErrorFiles)
     BOOL bReturn = FALSE;
     BOOL bSuccess = FALSE;
     int nFailure = 0;
-    PSSIMSYSINFO pTempSimsys =
-        CSimSysManager::ouGetSimSysManager(m_eBus).psReturnSimsysInfoPtr();
+    CSimSysNodeInfo* pSimSysNodeInfo =
+        CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
     int nNodeCount = 0;
 
     CStringArray omStrUnLoadFiles;
@@ -2033,13 +1473,13 @@ BOOL CExecuteManager::bDllUnloadAll(CStringArray* pomStrErrorFiles)
 
     vStopTimer();
     vClearOutputWnd();
-    while(pTempSimsys != nullptr)
+    if(pSimSysNodeInfo != nullptr)
     {
-        nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
+        nNodeCount += pSimSysNodeInfo->m_unNumberOfNodesAdded;
+        PSNODELIST pTempNode = pSimSysNodeInfo->m_psNodesList;
         while(pTempNode != nullptr)
         {
-            if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)  // if any dll is loaded
+            if(pTempNode->m_sNodeInfo.m_bIsNodeEnabled && !pTempNode->m_sNodeInfo.m_omStrDllName.IsEmpty())  // if any dll is loaded
             {
                 bSuccess = bExecuteDllUnload(&pTempNode->m_sNodeInfo);
                 if(!bSuccess)
@@ -2047,25 +1487,12 @@ BOOL CExecuteManager::bDllUnloadAll(CStringArray* pomStrErrorFiles)
                     nFailure++;
                     pomStrErrorFiles->Add(pTempNode->m_sNodeInfo.m_omStrDllName);
                 }
-                else
-                {
-                    // to make the status of the handlers disabled
-                    pTempNode->m_sNodeInfo.m_bDllHandlersEnabled = FALSE;
-                    pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled = FALSE;
-                    pTempNode->m_sNodeInfo.m_bEventHandlersEnabled = FALSE;
-                    pTempNode->m_sNodeInfo.m_bIsAllHandlersEnabled = FALSE;
-                    pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled = FALSE;
-                    pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled = FALSE;
-                    pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = FALSE;
-
-                }
-
             }
             pTempNode = pTempNode->m_psNextNode;
         }
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
-
     }
+
+
     if((nFailure == 0) || (nFailure != nNodeCount))
     {
         // if the unload is successfull atleast for one dll.
@@ -2076,14 +1503,7 @@ BOOL CExecuteManager::bDllUnloadAll(CStringArray* pomStrErrorFiles)
         {
             psSimSysTree->bPopulateTree();
         }
-        //Disable all the handlers
-        CSimSysManager& ouSSysManager = CSimSysManager::ouGetSimSysManager(m_eBus);
-        ouSSysManager.ouGetFlags().vSetFlagStatus(H_ALL_HANDLER, FALSE);
-        ouSSysManager.ouGetFlags().vSetFlagStatus(H_ERROR_HANDLER, FALSE);
-        ouSSysManager.ouGetFlags().vSetFlagStatus(H_EVENT_HANDLER, FALSE);
-        ouSSysManager.ouGetFlags().vSetFlagStatus(H_KEY_HANDLER_ON, FALSE);
-        ouSSysManager.ouGetFlags().vSetFlagStatus(H_MSGHANDLERBUTTON, FALSE);
-        ouSSysManager.ouGetFlags().vSetFlagStatus(H_TIMERBUTTON, FALSE);
+
     }
 
     vStopTimer();
@@ -2135,42 +1555,39 @@ BOOL CExecuteManager::bDLLBuildLoadAll(CStringArray* pomStrErrorFiles)
     BOOL bReturn = FALSE;
     BOOL bSuccess = FALSE;
     int nFailure=0;
-    PSSIMSYSINFO pTempSimsys =
-        CSimSysManager::ouGetSimSysManager(m_eBus).psReturnSimsysInfoPtr();
+    CSimSysNodeInfo* pSimSysNodeInfo =
+        CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
+
+    int nNodeCount = pSimSysNodeInfo->m_unNumberOfNodesAdded;
+
     vStopTimer();
     vClearOutputWnd();
     if (CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate != nullptr)
     {
         CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate->SaveAllModified();
     }
-    int nNodeCount = 0;
+
 
     pomStrErrorFiles->RemoveAll();
 
-    while(pTempSimsys != nullptr)
+
+
+    PSNODELIST pTempNode = pSimSysNodeInfo->m_psNodesList;
+
+    while(pTempNode != nullptr)
     {
-        nNodeCount += pTempSimsys->m_unNumberOfNodesAdded;
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-
-        while(pTempNode != nullptr)
+        if(pTempNode->m_sNodeInfo.m_omStrCFileName != "")
         {
-            if(pTempNode->m_sNodeInfo.m_omStrFileName != "")
+            bSuccess =
+                bExecuteDllBuildLoad(&pTempNode->m_sNodeInfo,TRUE);
+            if(!bSuccess)
             {
-                bSuccess =
-                    bExecuteDllBuildLoad(&pTempNode->m_sNodeInfo);
-                if(!bSuccess)
-                {
-                    nFailure++;
-                    pomStrErrorFiles->Add(pTempNode->m_sNodeInfo.m_omStrFileName);
-                }
+                nFailure++;
+                pomStrErrorFiles->Add(pTempNode->m_sNodeInfo.m_omStrCFileName);
             }
-            pTempNode = pTempNode->m_psNextNode;
         }
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
+        pTempNode = pTempNode->m_psNextNode;
     }
-
-
-
     if((nFailure == 0) || (nFailure != nNodeCount))
     {
         // if the build n load is successfull atleast for one.
@@ -2192,35 +1609,187 @@ BOOL CExecuteManager::bDLLBuildLoadAll(CStringArray* pomStrErrorFiles)
     return bReturn;
 }
 
-BOOL CExecuteManager::bActivateDeactivateHandlers(bool bActive,HMODULE hModule)
+/***************************************************************************************
+    Function Name    :  bDLLBuildLoadAllEnabled
+    Input(s)         :
+    Output           :  BOOL
+    Functionality    :  Build and load all node files that are enabled
+    Member of        :  CExecuteManager
+    Author(s)        :  Robin G.K.
+    Date Created     :  21.10.14
+***************************************************************************************/
+BOOL CExecuteManager::bDLLBuildLoadAllEnabled()
 {
-    BOOL bDllFound = FALSE;
-    CExecuteFunc* pmCEexecuteFunc = pmGetNodeObject(hModule);
+    BOOL bReturn = FALSE;
+    BOOL bSuccess = TRUE;
+    CStringArray omStrBuildFiles;
+    int nFailure=0;
+    CSimSysNodeInfo* pSimSysNodeInfo =
+        CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
 
-    //If handler is found
-    if(pmCEexecuteFunc!=nullptr)
+    int nNodeCount = pSimSysNodeInfo->m_unNumberOfNodesAdded;
+
+    vStopTimer();
+    vClearOutputWnd();
+    if (CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate != nullptr)
     {
-        if (bActive == TRUE)
-        {
-            vManageTimerThreads();
-            vStartTimer();
-        }
-        pmCEexecuteFunc->bActivateDeactivateHandlers(bActive);
-        bDllFound =  TRUE;
+        CGlobalObj::ouGetObj(m_eBus).m_pEditorDocTemplate->SaveAllModified();
     }
-    return bDllFound;
+    omStrBuildFiles.RemoveAll();
+    PSNODELIST pTempNode = pSimSysNodeInfo->m_psNodesList;
+
+    while(pTempNode != nullptr)
+    {
+        if(pTempNode->m_sNodeInfo.m_eNodeFileType == NODE_FILE_C_CPP &&
+                pTempNode->m_sNodeInfo.m_omStrCFileName != "" && pTempNode->m_sNodeInfo.m_bIsNodeEnabled == true
+                && pTempNode->m_sNodeInfo.m_eNodeState != NODE_BUILD_SUCCESS)
+        {
+            //Build all modified and Enabled nodes
+            bSuccess =
+                bExecuteDllBuild(&pTempNode->m_sNodeInfo,FALSE);
+            if(!bSuccess)
+            {
+                nFailure++;
+                omStrBuildFiles.Add(pTempNode->m_sNodeInfo.m_omStrCFileName);
+            }
+        }
+        pTempNode = pTempNode->m_psNextNode;
+    }
+
+
+    if(nFailure==0)
+    {
+        omStrBuildFiles.RemoveAll();
+        pTempNode = pSimSysNodeInfo->m_psNodesList;
+        while(pTempNode != nullptr)
+        {
+            if((pTempNode->m_sNodeInfo.m_omStrCFileName != ""
+                    || pTempNode->m_sNodeInfo.m_omStrDllName != "")
+                    && pTempNode->m_sNodeInfo.m_bIsNodeEnabled == true) //Build all nodes except unloaded(or disabled) nodes.
+            {
+                bSuccess =
+                    bExecuteDllLoad(&pTempNode->m_sNodeInfo,FALSE);
+                if(!bSuccess)
+                {
+                    nFailure++;
+                    omStrBuildFiles.Add(pTempNode->m_sNodeInfo.m_omStrCFileName);
+                    pTempNode->m_sNodeInfo.m_eNodeState = NODE_BUILD_FAIL;
+                }
+                else
+                {
+                    pTempNode->m_sNodeInfo.m_eNodeState = NODE_BUILD_SUCCESS;
+                }
+            }
+            pTempNode = pTempNode->m_psNextNode;
+        }
+
+    }
+    CSimSysTreeView* psSimSysTree = CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysTreeView();
+    if(psSimSysTree != nullptr)
+    {
+        psSimSysTree->bPopulateTree();
+    }
+
+    vStartTimer();
+
+    if(nFailure == 0)
+    {
+        bReturn= TRUE;
+    }
+    return bReturn;
 }
 
-void CExecuteManager::vUpdateHandlerDetailsInDetView()
+/***************************************************************************************
+    Function Name    :  bDLLUnloadAllEnabled
+    Input(s)         :
+    Output           :  BOOL
+    Functionality    :  Unload enabled nodes.
+    Member of        :  CExecuteManager
+    Author(s)        :  Robin G.K.
+    Date Created     :  21.10.14
+***************************************************************************************/
+
+BOOL CExecuteManager::bDLLUnloadAllEnabled()
 {
-    CSimSysDetView* pSimSysDetView = nullptr;
-    pSimSysDetView = CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysDetView();
-    if (nullptr != pSimSysDetView)
+    BOOL bReturn = FALSE;
+    BOOL bSuccess = FALSE;
+    int nFailure = 0;
+    CSimSysNodeInfo* pSimSysNodeInfo =
+        CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
+    int nNodeCount = 0;
+
+    CStringArray omStrUnLoadFiles;
+    omStrUnLoadFiles.RemoveAll();
+
+    vStopTimer();
+    vClearOutputWnd();
+
+    PSNODELIST pTempNode = pSimSysNodeInfo->m_psNodesList;
+    while(pTempNode != nullptr)
     {
-        pSimSysDetView->vUpdateHandlerList();
+        if(pTempNode->m_sNodeInfo.m_bIsNodeEnabled)  // if any dll is loaded
+        {
+            bSuccess = bExecuteDllUnload(&pTempNode->m_sNodeInfo);
+            if(!bSuccess)
+            {
+                nFailure++;
+                omStrUnLoadFiles.Add(pTempNode->m_sNodeInfo.m_omStrDllName);
+            }
+        }
+        pTempNode = pTempNode->m_psNextNode;
     }
+
+    vStopTimer();
+
+
+    if(nFailure == 0)
+    {
+        bReturn= TRUE;
+    }
+    return bReturn;
 }
 BOOL CExecuteManager::bIsExist(ETYPE_BUS eBus)
 {
     return (sm_pouManager[eBus] != nullptr);
+}
+
+/***************************************************************************************
+    Function Name    :  bDLLUnloadAllEnabled
+    Input(s)         :
+    Output           :
+    Functionality    :  Unload enabled nodes.
+    Member of        :  CExecuteManager
+    Author(s)        :  Robin G.K.
+    Date Created     :  21.10.14
+***************************************************************************************/
+
+void CExecuteManager::vSetNodebFileIsModified(std::string strFilePath)
+{
+    CSimSysNodeInfo* pSimSysNodeInfo =
+        CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
+    PSNODELIST pTempNode = pSimSysNodeInfo->m_psNodesList;
+    while(pTempNode != nullptr && strFilePath.find(".cpp") != std::string::npos)
+    {
+        //Node having the given file name is set as modified.
+
+        if(_stricmp(pTempNode->m_sNodeInfo.m_omStrCFileName,strFilePath.c_str()) == 0)
+        {
+            pTempNode->m_sNodeInfo.m_eNodeState = NODE_NOT_BUILT;
+        }
+        pTempNode = pTempNode->m_psNextNode;
+    }
+}
+/************************************************************************
+    Function Name    :  strGetFilePath
+    Input(s)         :  HANDLE hDir
+    Output           :  string
+    Functionality    :  Returns file path corresponding to a handle value in
+                        m_mapHandleFilePath
+    Member of        :  CExecuteManager
+    Author(s)        :  Robin G.K.
+    Date Created     :  13.11.14
+*************************************************************************/
+std::string CExecuteManager::strGetFilePath(HANDLE hDir)
+{
+    return m_mapHandleFilePath.at(hDir);
 }

@@ -125,8 +125,8 @@
       <AdditionalDependencies>EXTERNAL\Lib\MS\linlib.lib;EXTERNAL\Lib\MS\canlib32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ProgramDatabaseFile>$(SolutionDir)/bin/DumpFiles/$(IntDir)/PDB/$(TargetName).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
-      <AdditionalOptions>"$(SolutionDir)/BIN/Libs/Release/DataTypes.lib"
-"$(SolutionDir)/BIN/Libs/Release/Utils.lib" %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>"$(SolutionDir)/BIN/Libs/$(OutDir)DataTypes.lib"
+"$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib" %(AdditionalOptions)</AdditionalOptions>
       <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)$(TargetName).lib</ImportLibrary>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <StackReserveSize>8000000</StackReserveSize>

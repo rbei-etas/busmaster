@@ -469,3 +469,14 @@ HRESULT CFrameProcessor_CAN::FPC_SetChannelBaudRateDetails
     SetChannelBaudRateDetails(controllerDetails, nNumChannels,eBus);
     return hResult;
 }
+void CFrameProcessor_CAN::vSetMeasurementFileName()
+{
+    USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
+    for (USHORT i = 0; i < ushBlocks; i++)
+    {
+        CBaseLogObject* pouLogObjBase = m_omLogObjectArray.GetAt(i);
+        CLogObjectCAN* pouLogObjCon = static_cast<CLogObjectCAN*> (pouLogObjBase);
+        pouLogObjCon->m_sLogInfo.m_sLogAdvStngs.m_nConnectionCount++;
+        pouLogObjCon->vSetMeasurementFileName();
+    }
+}

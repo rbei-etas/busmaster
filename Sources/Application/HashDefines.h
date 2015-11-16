@@ -46,6 +46,8 @@
 
 #define END_SESSION     "***[STOP LOGGING SESSION]***"
 #define START_SESSION   "***[START LOGGING SESSION]***"
+#define START_COMMENT   "***START COMMENT***"
+#define END_COMMENT     "***END COMMENT***"
 #define defLOG_NOTE        "\n***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***"
 #define defINVALID_HEADER "Invalid File Header. Replay File Operation Failed"
 #define defSTR_REPLAY_FILE_MISSING      "The replay file \"%s\" does not exists !"
@@ -1820,12 +1822,36 @@ transmission is ON.\nDo you want to ignore the changes ?"
 #define defREPLAY_RETAIN_DELAY          0
 #define defREPLAY_SPECIFIC_DELAY        1
 
+#define defREPLAY_RETAIN_SESSION_DELAY          0
+#define defREPLAY_SPECIFIC_SESSION_DELAY        1
+
 #define defREPLAY_MODE_MONOSHOT          0
 #define defREPLAY_MODE_CYCLIC            1
+
+//Advance Log File Constraints
+#define defMIN_LOG_FILE_SIZE 1 //1Mb
+#define defMAX_LOG_FILE_SIZE 4096  //4k(Mb)
+#define defDEFAULT_LOG_FILE_SIZE 50 //50MB
+
+#define defMAX_LOG_FILE_COUNT 1000
+#define defMIN_LOG_FILE_COUNT 1
+#define defDEFAULT_LOG_FILE_COUNT 10
+
+#define defMAX_LOG_TIME_HRS 168
+#define defMIN_LOG_TIME_HRS 0
+#define defDEFAULT_LOG_TIME_HRS 0
+
+#define defMAX_LOG_TIME_MIN 59
+#define defMIN_LOG_TIME_MIN 0
+#define defDEFAULT_LOG_TIME_MIN 30
+
+//Advanced Log file Errors
+#define defSTR_LOG_TIME_ERROR "Minimum logging time required is 1 min. Resetting logging time to default 30 min."
 
 #define defSTR_REPLAY_FILE_SELECTION_TITLE  "Select Replay File Name"
 #define defSTR_REPLAY_ERROR         "Replay failed for: %s, %s"
 #define defSTR_REPLAY_FILE_EMPTY    "File is empty and all messages are filtered"
+#define defSTR_REPLAY_FILE_SIZE_EXCEEDED    "File size should be less than 50Mb."
 
 #define defSTR_REPLAY_WINDOW_TITLE  "Replay Window - "
 
@@ -1833,7 +1859,8 @@ transmission is ON.\nDo you want to ignore the changes ?"
 #define defSTR_BUSMASTER_VERSION_STRING    "BUSMASTER Ver "
 #define defSTR_FILE_OPEN_ERROR          "Input file open error"
 #define defSTR_LOG_FILE_UNSUPPORTED     "Unsupported version log file"
-#define defSTR_LOG_PRTOCOL_MISMATCH     "Protocol Mismatch \nSession(s) cannot be replayed"
+#define defSTR_LOG_PRTOCOL_MISMATCH     "Protocol Mismatch further Session(s) cannot be replayed"
+#define defSTR_LOG_INVALID_MESSAGE     "Invalid message found further messages cannot be replayed"
 #define defSTR_MIXED_MODE_WARNING       "Mode Mismatch\n%d session(s) cannot be replayed"
 #define defSTR_PROTOCOL_USED            "PROTOCOL "
 #define defSTR_PROTOCOL_CAN             "PROTOCOL CAN"

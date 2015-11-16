@@ -2193,7 +2193,13 @@ UINT CTSEditorChildFrame::unRepisitonEntry(DWORD dwRepositionItemID, DWORD dwIns
     m_ouTSEntity.SearchEntityObject(dwInsertAfterItemID, &ouInsertAfterItem);
     m_ouTSEntity.SearchEntityObject(dwParentID, &ouParentItem);
 
-    return ouParentItem->RepositionSubEntity(ouRepositionItem, ouInsertAfterItem);
+    HRESULT hResult = S_FALSE;
+	if( nullptr != ouParentItem)
+	{
+		hResult = ouParentItem->RepositionSubEntity(ouRepositionItem, ouInsertAfterItem);
+	}
+
+    return hResult;
 }
 
 /******************************************************************************
@@ -2227,7 +2233,7 @@ Modifications  :  CS007
 INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
 {
     CTreeViewEx& omTempTreeCtrl = (CTreeViewEx&)m_odTreeView->GetTreeCtrl();
-    CBaseEntityTA* pParentEntity, *pNewEntity;
+    CBaseEntityTA* pParentEntity = nullptr, *pNewEntity;
     m_ouTSEntity.SearchEntityObject(dwId, &pParentEntity);
     CString omStrNewItem;
     UINT unImageIndex;
@@ -2289,7 +2295,12 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
         default:
             return S_FALSE;
     }
-    pParentEntity->AddSubEntry(pNewEntity);
+
+    if(nullptr != pParentEntity)
+	{
+		pParentEntity->AddSubEntry(pNewEntity);
+	}
+
     m_odTreeView->InsertTreeItem(m_hCurrentTreeItem, omStrNewItem, nullptr, unImageIndex, unImageIndex, pNewEntity->GetID());
     m_odTreeView->RedrawWindow();
     return S_OK;
@@ -3195,7 +3206,7 @@ bool CTSEditorChildFrame::GetConfigurationData(xmlNodePtr& pxmlNodePtr)
     {
 
         std::string omPath, omStrConfigFolder;
-        char configPath[MAX_PATH];
+        char configPath[MAX_PATH]={0};
         AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
         CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
         CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)m_omCurrentTSFile.GetBuffer(MAX_PATH), omPath);
@@ -3362,7 +3373,7 @@ HRESULT CTSEditorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
                     {
                         std::string omStrConfigFolder;
                         std::string omPath;
-                        char configPath[MAX_PATH];
+                        char configPath[MAX_PATH]={0};
                         AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
                         CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
                         char chAbsPath[MAX_PATH];

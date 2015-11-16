@@ -34,14 +34,6 @@ BOOL gbEnableDisableLog(BOOL) ;
 BOOL gbWriteToLog(char*) ;
 // To write in to the trace window
 BOOL gbSendStrToTrace(char*) ;
-// To enable/disable all handlers
-BOOL gbActivateDeactivateHandlers(BOOL,HMODULE);
-// Message Handler Enable API
-BOOL gbEnableDisableMsgHandlers(BOOL,HMODULE );
-// Key Handler Enable API
-BOOL gbEnableDisableKeyHandlers(BOOL,HMODULE );
-// Error Handler Enable API
-BOOL gbEnableDisableErrorHandlers(BOOL,HMODULE );
 // Start/Stop timers
 BOOL gbSetResetTimer(char*,int,BOOL,HMODULE) ;
 // To set timer value

@@ -2051,6 +2051,12 @@ void CTxMsgDetailsView::vUpdateAllBlocksFrmDB()
     PSMSGBLOCKLIST psMsgCurrentBlock = nullptr;
 
     pomBlockView = ( CTxMsgBlocksView* )pomGetBlocksViewPointer();
+
+	if(nullptr == pomBlockView)
+	{
+		return;
+	}
+
     pDBptr =  m_pouDBPtr;
     for(int nMsgCnt =0; nMsgCnt < pDBptr->unGetNumerOfMessages(); nMsgCnt++)
     {
@@ -2904,8 +2910,11 @@ void CTxMsgDetailsView::vCallApplyChanges()
     {
         PSTXCANMSGLIST pCanMsgList = psMsgCurrentBlock->m_psTxCANMsgList;
 
-        pCanMsgList =  pomListView->psGetMsgDetailPointer(
-                           pomListView->m_nSelectedMsgIndex, psMsgCurrentBlock);
+		if(nullptr != pomListView)
+		{
+			pCanMsgList =  pomListView->psGetMsgDetailPointer(
+				pomListView->m_nSelectedMsgIndex, psMsgCurrentBlock);
+		}
         if(pCanMsgList != nullptr)
         {
             pCanMsgList->m_bModified = true;

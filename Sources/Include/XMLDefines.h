@@ -35,6 +35,14 @@
 #define DEF_FILE_PATH               "File_Path"
 #define DEF_TRGR_STRT_ID            "Trigger_Start_ID"
 #define DEF_TRGR_STP_ID             "Trigger_Stop_ID"
+#define DEF_IS_LOGON_TRANS          "IsLogOnTransmission"
+#define DEF_IS_LOGON_SIZE           "IsLogOnSize"
+#define DEF_LOGON_SIZE              "LogOnSize"
+#define DEF_FILES_ALLOWED           "FilesAllowed"
+#define DEF_COMMENTS                "Comments"
+#define DEF_IS_LOGON_TIME           "IsLogOnTime"
+#define DEF_LOGON_TIME              "LogOnTime"
+#define DEF_CURRENT_FILECOUNT       "FileCount"
 
 #define DEF_CANFILTERS              "CAN_Filters"
 #define DEF_MCNETFILTERS            "MCNET_Filters"
@@ -181,6 +189,8 @@
 #define DEF_ENABLED                 "IsEnabled"
 #define DEF_RETAIN_RECORD_TIME      "Retain_Recored_Time"
 #define DEF_MSG_DELAY               "Message_Delay"
+#define DEF_RETAIN_RECORD_SESSION   "Retain_Recorded_Session"
+#define DEF_SESSION_DELAY           "Session_Delay"
 #define DEF_CYCLIC_MODE             "Is_Cyclic_Mode"
 #define DEF_CYCLIC_DELAY            "Cyclic_Delay"
 #define DEF_INTERACTIVE             "IsInteractive"
@@ -222,7 +232,13 @@
 
 #define DEF_LIN_MESS_WINDOW         "LIN_Message_Window"
 
-#define DEF_SYS_PATH                "Sym_Path"
+#define DEF_NODE                    "Node"
+#define DEF_NODE_NAME               "Name"
+#define DEF_NODE_PREFERRED_ADDRESS  "Preferred_Address" //J1939
+#define DEF_NODE_ECU_NAME           "ECU_Name"          //J1939
+#define DEF_IS_NODE_ENABLED         "Is_Enabled"
+#define DEF_NODE_FILE_TYPE          "File_Type"
+#define DEF_NODE_FILE_PATH          "File_Path"
 
 //TEST SUITE EDITOR
 #define DEF_TS_XML_FILE_PATH        "XML_File_Path"

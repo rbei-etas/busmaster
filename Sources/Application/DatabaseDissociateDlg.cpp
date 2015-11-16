@@ -118,6 +118,10 @@ void CDatabaseDissociateDlg::OnBnClickedCbtnDissociate()
     // Get the indexes of all the selected items.
     int nCount = m_omDissociateDbLst.GetSelCount();
 
+    if ( nullptr == pMainFrame )
+    {
+        return;
+    }
     if(nCount > 0)
     {
         // Array of selected item's position

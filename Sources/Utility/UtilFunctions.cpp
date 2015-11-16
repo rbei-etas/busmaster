@@ -184,3 +184,40 @@ void CUtilFunctions::MakeRelativePath(const char* pchCurrentDir, char* pchAbsFil
     strcpy(&chRelativeFile[nReverse], &pchAbsFileName[nForword]);
     omStrRelativeParh = chRelativeFile;
 }
+bool CUtilFunctions::bFindLastSuffix(std::string str, std::string subStr, int& npos)
+{
+    int nTemp1=0;
+    int nTemp2=0;
+    if(str.find(subStr) == std::string::npos)
+    {
+        return false;
+    }
+    else
+    {
+        do
+        {
+            nTemp1=nTemp2;
+            nTemp2 = str.find(subStr,nTemp1+1);
+        }
+        while(nTemp2!=std::string::npos);
+        npos = nTemp1;
+        return true;
+    }
+}
+void CUtilFunctions::Trim(std::string& str , char chChar)
+{
+    std::string::size_type pos = str.find_last_not_of(chChar);
+    if(pos != std::string::npos)
+    {
+        str.erase(pos + 1);
+        pos = str.find_first_not_of(chChar);
+        if(pos != std::string::npos)
+        {
+            str.erase(0, pos);
+        }
+    }
+    else
+    {
+        str.erase(str.begin(), str.end());
+    }
+}

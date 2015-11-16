@@ -53,6 +53,7 @@
 //These codes are returned by DIL_nMsgWrite func
 #define DIL_ERR_WRITE_SYS               0xF001
 #define DIL_ERR_DEVICE_BUSY             0xF002
+#define DILC_WARN_PARAM_ADAPTED         0xF003
 //#define DIL_ERR_READ_BYTE_MISMATCH      0xF002
 
 

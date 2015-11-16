@@ -21,10 +21,8 @@
 // English (U.S.) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -105,43 +103,7 @@ END
 // Menu
 //
 
-IDM_SIMSYS_OPRNS MENU 
-BEGIN
-    POPUP "Sim Sys Operations"
-    BEGIN
-        MENUITEM "New Simulated System",        IDM_NEW_SIMSYS
-        MENUITEM "Add Simulated System",        IDM_ADD_SIMSYS
-        MENUITEM SEPARATOR
-        MENUITEM "Save All Systems",            IDM_SAVE_ALL_SIMSYS
-        MENUITEM "Delete All Systems",          IDM_DELETE_ALL_SIMSYS
-    END
-END
-
-IDM_SIMSYS_CONFIGMENU MENU 
-BEGIN
-    POPUP "Sim Sys Configuration"
-    BEGIN
-        MENUITEM "Save",                        IDM_SIMSYS_SAVE
-        MENUITEM "Save As",                     IDM_SIMSYS_SAVEAS
-        MENUITEM "Delete Simulated System",     IDM_SIMSYS_DELETESIMULATEDSYSTEM
-        MENUITEM SEPARATOR
-        MENUITEM "Add Node",                    IDM_SIMSYS_ADDNODE
-        MENUITEM "Remove All Nodes",            IDM_SIMSYS_DELETEALLNODES
-        MENUITEM SEPARATOR
-        MENUITEM "Build All",                   IDM_SIMSYS_BUILDALL
-        MENUITEM "Load All",                    IDM_SIMSYS_LOADALL
-        MENUITEM "UnLoad All",                  IDM_SIMSYS_UNLOADALL
-        MENUITEM SEPARATOR
-        MENUITEM "All Handlers",                IDM_SIMSYS_ALLHANDLERS, GRAYED
-        MENUITEM "All Key Handlers",            IDM_SIMSYS_ALLKEYHANDLERS, GRAYED
-        MENUITEM "All Message Handlers",        IDM_SIMSYS_ALLMSGHANDLERS, GRAYED
-        MENUITEM "All Error Handlers",          IDM_SIMSYS_ALLERRORHANDLERS, GRAYED
-        MENUITEM "All Timer Handlers",          IDM_SIMSYS_ALLTIMERHANDLERS, GRAYED
-        MENUITEM "All Event Handlers",          IDM_SIMSYS_ALLEVENTHANDLERS, GRAYED
-    END
-END
-
-IDM_FUNC_EDITOR MENU 
+IDM_FUNC_EDITOR MENU
 BEGIN
     POPUP "Function Editor"
     BEGIN
@@ -166,18 +128,24 @@ BEGIN
     END
 END
 
-IDM_NODE_OPRNS MENU 
+IDM_ROOT_MENU MENU
 BEGIN
-    POPUP "Node Operations"
+    POPUP "Root Menu"
     BEGIN
-        MENUITEM "Edit Node",                   IDM_EDIT_NODE
-        MENUITEM "Remove Node",                 IDM_DELETE_NODE
-        MENUITEM SEPARATOR
-        MENUITEM "Enable All Handlers",         IDM_ALL_NODE_HANDLERS
-        MENUITEM "Key Handler(s)",              IDM_NODE_KEYHANDLERS
-        MENUITEM "Message Handler(s)",          IDM_NODE_MESSAGEHANDLERS
-        MENUITEM "Error Handler(s)",            IDM_NODE_ERRORHANDLERS
-        MENUITEM "Timer Handler(s)",            IDM_NODE_TIMERHANDLERS
+        MENUITEM "Add",                         IDM_ADD_NODE
+        MENUITEM "Build All",                   IDM_BUILD_NODE
+        MENUITEM "Remove All",                  IDM_REMOVE_NODE
+    END
+END
+
+IDM_NODE_MENU MENU
+BEGIN
+    POPUP "Node Menu"
+    BEGIN
+        MENUITEM "Edit",                        IDM_EDIT_NODE
+        MENUITEM "Configure",                   IDM_CONFIG_NODE
+        MENUITEM "Build",                       IDM_BUILD_NODE
+        MENUITEM "Remove",                      IDM_REMOVE_NODE
     END
 END
 
@@ -191,6 +159,8 @@ END
 // remains consistent on all systems.
 IDI_ICON_FN_EDITOR      ICON                    "res\\icon2.ico"
 IDI_ICON_SIMSYS_CONFIG  ICON                    "res\\SimSysWnd.ico"
+IDI_ICON_NODE_ENABLED   ICON                    "res\\Node_Enabled.ico"
+IDI_ICON_NODE_DISABLED  ICON                    "res\\Node_Disabled.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -203,66 +173,16 @@ CAPTION "Node Details"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     LTEXT           "Node Name :",IDC_STAT_NODE_NAME,8,11,44,12
-    LTEXT           "DLL :",IDC_STATIC,9,33,19,11
+    LTEXT           "File :",IDC_STATIC,9,33,19,11
     EDITTEXT        IDC_EDIT_ANODE_NAME,54,9,80,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_DLL_PATH,53,31,260,14,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_EDIT_NODE_FILE_PATH,53,31,260,14,ES_AUTOHSCROLL | ES_READONLY
     PUSHBUTTON      "&Browse...",IDC_BTN_BROWSE,319,31,50,14
     DEFPUSHBUTTON   "OK",IDOK,54,52,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,112,52,50,14
-    PUSHBUTTON      "Clear",IDC_BTN_CLEAR,170,52,50,14,WS_DISABLED
     EDITTEXT        IDC_EDIT_ADDRESS,209,9,21,14,ES_AUTOHSCROLL | NOT WS_VISIBLE
     LTEXT           "Preferred Address : 0x",IDC_STATIC_ADDRESS,138,11,70,8,NOT WS_VISIBLE
     LTEXT           "ECU NAME : 0x",IDC_STATIC_ECU_NAME,237,11,52,8,NOT WS_VISIBLE
     EDITTEXT        IDC_EDIT_ECU_NAME,289,9,80,14,ES_AUTOHSCROLL | NOT WS_VISIBLE
-END
-
-IDD_DLG_SIMSYSDETVIEW DIALOGEX 0, 0, 482, 354
-STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_CHILD
-EXSTYLE WS_EX_CONTEXTHELP
-FONT 8, "MS Sans Serif", 0, 0, 0x1
-BEGIN
-    GROUPBOX        "Node Details",IDC_STAT_NODE_DETAILS,7,7,468,340,BS_CENTER
-    LTEXT           "Node Name : ",IDC_STAT_NODE_NAME,19,25,44,14
-    GROUPBOX        "File Details",IDC_STAT_FILEGRP,17,44,448,72
-    LTEXT           "File : ",IDC_STAT_FILE_NAME,30,60,19,13
-    EDITTEXT        IDC_EDIT_NODE_NAME,66,26,109,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_NODE_NAME
-    EDITTEXT        IDC_EDIT_FILE_NAME,51,61,409,16,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_FILE_NAME
-    PUSHBUTTON      "Add New File...",IDC_BUTTON_OPENFILE,41,87,55,15
-    PUSHBUTTON      "Edit File...",IDC_BUTTON_EDITFILE,127,87,55,15
-    PUSHBUTTON      "Build...",IDC_BUTTON_BUILD,213,87,55,15
-    PUSHBUTTON      "Build and Load",IDC_BUTTON_BUILDANDLOAD,299,87,55,15
-    PUSHBUTTON      "Load",IDC_BUTTON_LOAD,385,87,55,15
-    GROUPBOX        "Handler Details",IDC_STAT_HANGROUP,19,123,446,213
-    CONTROL         "List1",IDC_LSTC_HANDLER_DETAILS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,27,137,430,67,0,HIDC_LSTC_HANDLER_DETAILS
-    PUSHBUTTON      "Enable Handler",IDC_BUTTON_ENABLEHANDLER,148,214,69,15
-    PUSHBUTTON      "Enable All Handlers",IDC_BUTTON_ENABLEALLHANDLERS,267,214,69,15
-    CONTROL         "List2",IDC_LSTC_HANVAL,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,29,251,425,73
-    LTEXT           "Handler Name",IDC_STAT_HANDESC,31,237,86,11
-    LTEXT           "Address : 0x",IDC_STATIC_PREF_ADRES,196,25,40,8,NOT WS_VISIBLE
-    EDITTEXT        IDC_EDIT_PREF_ADRES,238,25,14,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_VISIBLE | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_PREF_ADRES
-    LTEXT           "ECU NAME : 0x ",IDC_STATIC_ECU_NAME,332,25,54,8,NOT WS_VISIBLE
-    EDITTEXT        IDC_EDIT_ECUNAME,387,25,75,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_VISIBLE | NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_EDIT_ECUNAME
-END
-
-IDD_DLG_SET_RESET_TIMER DIALOGEX 0, 0, 216, 242
-STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
-EXSTYLE WS_EX_CONTEXTHELP
-CAPTION "Start/ Stop Timers"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
-BEGIN
-    CONTROL         "List1",IDC_LSTC_TIMER_HANDLER,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,7,47,112,160
-    EDITTEXT        IDC_EDIT_TIMER_VALUE,157,109,33,13,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "Monoshot",IDC_CHCK_MONOSHOT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,131,44,10,0,HIDC_CHCK_MONOSHOT
-    PUSHBUTTON      "&Apply",IDC_BTN_APPLY,14,220,45,14
-    DEFPUSHBUTTON   "OK",IDC_BTN_OK,86,220,45,14
-    PUSHBUTTON      "Cancel",IDCANCEL,158,220,45,14
-    LTEXT           "Value :",IDC_STATIC,131,113,22,11
-    LTEXT           "Type :",IDC_STATIC,132,131,20,8
-    GROUPBOX        "Selected Timer",IDC_STATIC,124,95,83,56
-    GROUPBOX        "Timer Information ",IDC_STATIC,4,36,208,174
-    LTEXT           "ms",IDC_STATIC,194,110,10,8
-    COMBOBOX        IDC_COMB_NODENAME,5,20,112,78,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP,0,HIDC_COMB_NODENAME
-    LTEXT           "Node List:",IDC_STAT_NODE_LIST,7,9,68,9
 END
 
 IDD_DLG_SELECT_FNS DIALOGEX 0, 0, 167, 159
@@ -282,17 +202,18 @@ EXSTYLE WS_EX_CONTEXTHELP
 CAPTION "Add Message Handler"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
-    CONTROL         "Message Name",IDC_RBTN_MSG_NAME,"Button",BS_AUTORADIOBUTTON,104,30,65,10,0,HIDC_RBTN_MSG_NAME
-    CONTROL         "Message ID",IDC_RBTN_MSG_ID,"Button",BS_AUTORADIOBUTTON,15,16,54,10
+    CONTROL         "Message ID",IDC_RBTN_MSG_ID,"Button",BS_AUTORADIOBUTTON | WS_GROUP,15,16,54,10
     CONTROL         "Message ID Range",IDC_RBTN_MSG_RANGE,"Button",BS_AUTORADIOBUTTON,104,16,74,10
     CONTROL         "All Rx Message(s)",IDC_RBTN_MSG_ALL,"Button",BS_AUTORADIOBUTTON,15,30,72,10
-    LISTBOX         IDC_LSTB_MSG_HANDLER_LIST,6,139,108,85,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_DISABLED | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,0,HIDC_LSTB_MSG_HANDLER_LIST
+    CONTROL         "Message Name",IDC_RBTN_MSG_NAME,"Button",BS_AUTORADIOBUTTON,104,30,65,10,0,HIDC_RBTN_MSG_NAME
     EDITTEXT        IDC_EDIT_MSG_HANDLER_ID,56,57,52,14,ES_AUTOHSCROLL,0,HIDC_EDIT_MSG_HANDLER_ID
     EDITTEXT        IDC_EDIT_MSG_HANDLER_ID_FROM,42,98,52,14,ES_AUTOHSCROLL,0,HIDC_EDIT_MSG_HANDLER_ID_FROM
     EDITTEXT        IDC_EDIT_MSG_HANDLER_ID_TO,122,98,52,14,ES_AUTOHSCROLL,0,HIDC_EDIT_MSG_HANDLER_ID_TO
-    PUSHBUTTON      "&Close",IDC_CBTN__MSG_CANCEL,137,241,50,14
+    LISTBOX         IDC_LSTB_MSG_HANDLER_LIST,6,139,108,85,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_DISABLED | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,0,HIDC_LSTB_MSG_HANDLER_LIST
+    COMBOBOX        IDC_CMB_CHANNEL,122,147,51,40,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "&Apply",IDC_CBTN_MSG_HANDLDER_APPLY,19,241,50,14,0,0,HIDC_CBTN_MSG_HANDLDER_APPLY
     DEFPUSHBUTTON   "&OK",IDC_CBTN__MSG_OK,78,241,50,14
+    PUSHBUTTON      "&Close",IDC_CBTN__MSG_CANCEL,137,241,50,14
     LTEXT           "Database Message List:",IDC_STATIC_DB_MSG_LIST,8,128,77,8,WS_DISABLED
     LTEXT           "Message ID:",IDC_STATIC_MSG_ID,6,57,41,14,SS_CENTERIMAGE
     GROUPBOX        "Message ID Range",IDC_STATIC_MSG_ID_RANGE,6,82,185,40
@@ -300,7 +221,6 @@ BEGIN
     LTEXT           "To: 0x",IDC_STATIC,101,98,20,14,SS_CENTERIMAGE
     GROUPBOX        "Based on",IDC_STATIC,6,3,185,44
     LTEXT           "0x",IDC_STATIC,46,60,8,8
-    COMBOBOX        IDC_CMB_CHANNEL,122,147,51,40,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     GROUPBOX        "Channel",IDC_STATIC_CHANNEL,118,136,65,29
 END
 
@@ -424,9 +344,9 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,21,82,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,80,82,50,14
-    CONTROL         "Connect",IDC_CHKB_BUSEV_CONNECT_HANDLER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,47,18,43,10
+    CONTROL         "Connect",IDC_CHKB_BUSEV_CONNECT_HANDLER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,47,36,43,10
     CONTROL         "Disconnect",IDC_CHKB_BUSEV_DISCONNECT_HANDLER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,47,55,51,10
-    CONTROL         "Pre-Connect",IDC_CHKB_BUSEV_PRECONNECT_HANDLER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,47,36,56,10
+    CONTROL         "Pre-Connect",IDC_CHKB_BUSEV_PRECONNECT_HANDLER,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,47,18,56,10
 END
 
 IDD_DLG_ERR_HANDLER_LIN DIALOGEX 0, 0, 132, 100
@@ -447,18 +367,7 @@ END
 /////////////////////////////////////////////////////////////////////////////
 //
 // Dialog Info
-//
 
-IDD_DLG_SET_RESET_TIMER DLGINIT
-BEGIN
-    IDC_COMB_NODENAME, 0x403, 5, 0
-0x6554, 0x7473, "\000" 
-    IDC_COMB_NODENAME, 0x403, 6, 0
-0x4554, 0x5453, 0x0031, 
-    IDC_COMB_NODENAME, 0x403, 6, 0
-0x4554, 0x5453, 0x0036, 
-    0
-END
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -467,6 +376,11 @@ END
 //
 
 IDR_BMP_FUNC_EDITOR     BITMAP                  "res\\bmp_func.bmp"
+IDR_NODE_SIMULATION     BITMAP                  "res\\NodeSimulation.bmp"
+IDB_NODE_SIMULATION     BITMAP                  "res\\NodeSimulation.bmp"
+IDB_NODE_SIMULATION_HOT BITMAP                  "res\\NodeSimulation_hot.bmp"
+IDB_NODE_SIMULATION_DISABLED BITMAP                  "res\\NodeSimulation_Disabled.bmp"
+IDB_NODE_SIMULATION_TREEVIEW BITMAP                  "res\\NodeSimulationTreeView.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -482,22 +396,8 @@ BEGIN
         RIGHTMARGIN, 372
         TOPMARGIN, 7
         BOTTOMMARGIN, 67
-    END
 
-    IDD_DLG_SIMSYSDETVIEW, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 475
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 347
-    END
 
-    IDD_DLG_SET_RESET_TIMER, DIALOG
-    BEGIN
-        LEFTMARGIN, 5
-        RIGHTMARGIN, 212
-        TOPMARGIN, 5
-        BOTTOMMARGIN, 234
     END
 
     IDD_DLG_SELECT_FNS, DIALOG
@@ -593,7 +493,39 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
-#endif    // English (U.S.) resources
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_NODE_SIMULATION TOOLBAR 32, 32
+BEGIN
+    BUTTON      IDM_ADD_NODE
+    BUTTON      IDM_REMOVE_NODE
+    SEPARATOR
+    BUTTON      IDM_EDIT_NODE
+    BUTTON      IDM_CONFIG_NODE
+    SEPARATOR
+    BUTTON      IDM_BUILD_NODE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDM_EDIT_NODE           "Edit Node\nEdit Node"
+    IDM_CONFIG_NODE         "Configure Node\nConfigure Node"
+    IDM_BUILD_NODE          "Build Node\nBuild Node"
+    IDM_REMOVE_NODE         "Remove Node\nRemove Node"
+    IDM_ADD_NODE            "Adds a Node\nAdds a Node"
+END
+
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -601,10 +533,8 @@ END
 // Neutral (Sys. Default) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUSD)
-#ifdef _WIN32
 LANGUAGE LANG_NEUTRAL, SUBLANG_SYS_DEFAULT
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //

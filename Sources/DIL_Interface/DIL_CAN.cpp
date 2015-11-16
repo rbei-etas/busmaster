@@ -441,6 +441,11 @@ HRESULT CDIL_CAN::DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeS
  */
 HRESULT CDIL_CAN::DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
 {
+	if(nullptr == m_pBaseDILCAN_Controller)
+	{
+		return S_FALSE;
+	}
+
     HRESULT hr = m_pBaseDILCAN_Controller->CAN_ListHwInterfaces(sSelHwInterface, nCount);
 
     if ( hr != S_OK && m_hOldDll )

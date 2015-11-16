@@ -309,7 +309,7 @@ void CFrameProcessor_Common::vCloseLogFile()
     {
         pouCurrLogObj = m_omLogObjectArray.GetAt(i);
 
-        if (nullptr == pouCurrLogObj)
+        if (nullptr != pouCurrLogObj)
         {
             pouCurrLogObj->vCloseLogFile();
         }

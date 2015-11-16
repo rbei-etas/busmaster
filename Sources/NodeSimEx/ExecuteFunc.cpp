@@ -79,7 +79,8 @@ extern int sg_GetMessageName(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSiz
  *
  * @return Returns the absolute time
  */
-extern long long sg_TimeNow();
+extern unsigned int sg_TimeNow_CAN();
+extern unsigned int sg_TimeNow_LIN();
 
 extern DWORD gdGetFirstCANdbName(char cBuffer[], DWORD size);
 
@@ -130,10 +131,7 @@ CExecuteFunc::CExecuteFunc(ETYPE_BUS eBus, CONST CString& omStrDllFileName) :
     m_unWriteQMsgIndex(0),
     m_unReadQMsgIndexLIN(0),
     m_unWriteQMsgIndexLIN(0),
-    m_bStopKeyHandlers(TRUE),
-    m_bStopErrorHandlers(TRUE),
-    m_bStopEventHandlers(TRUE),
-    m_bStopDLLHandlers(TRUE),
+   
     m_pomMsgHandlerThrd(nullptr),
     m_pomMsgHandlerThrdLIN(nullptr),
     m_psFirstTimerStrList(nullptr),
@@ -182,11 +180,21 @@ CExecuteFunc::CExecuteFunc(ETYPE_BUS eBus, CONST CString& omStrDllFileName) :
     m_omMsgHandlerMapCAN.InitHashTable(def_MSG_MAP_HASH_SIZE);
     m_omMsgHandlerMap.InitHashTable(def_MSG_MAP_HASH_SIZE);
     // Initialise critical section used in buffer access
-    InitializeCriticalSection(&m_CritSectForFuncBuf);
-    InitializeCriticalSection(&m_CritSectForFuncBufLIN);
+	m_bStopMsgHandlers = FALSE;
+	m_unQMsgCountLIN = 0;
+	m_psOnEventHandlersLin = nullptr;
+
     //creating read and execute message handler thread
-    m_pomMsgHandlerThrd=AfxBeginThread(unReadNodeMsgHandlerBuffer,this);
-    m_pomMsgHandlerThrdLIN=AfxBeginThread(unReadNodeMsgHandlerBufferLIN,this);
+    if ( m_eBus == CAN )
+    {
+        m_pomMsgHandlerThrd=AfxBeginThread(unReadNodeMsgHandlerBuffer,this);
+        InitializeCriticalSection(&m_CritSectForFuncBuf);
+    }
+    if ( m_eBus == LIN )
+    {
+        m_pomMsgHandlerThrdLIN=AfxBeginThread(unReadNodeMsgHandlerBufferLIN,this);
+        InitializeCriticalSection(&m_CritSectForFuncBufLIN);
+    }
 }
 /******************************************************************************/
 /*  Function Name    :  ~CExecuteFunc                                         */
@@ -277,9 +285,17 @@ CExecuteFunc::~CExecuteFunc()
         delete []m_psOnBusEventHandlers;
         m_psOnBusEventHandlers = nullptr;
     }
-    // Free Cirical Section Resource
-    DeleteCriticalSection(&m_CritSectForFuncBuf);
-    DeleteCriticalSection(&m_CritSectForFuncBufLIN);
+
+	if ( m_eBus == CAN )
+	{
+		// Free Cirical Section Resource
+		DeleteCriticalSection(&m_CritSectForFuncBuf);
+	}
+
+	if ( m_eBus == LIN )
+	{
+		DeleteCriticalSection(&m_CritSectForFuncBufLIN);
+	}
 
 }
 /******************************************************************************/
@@ -796,12 +812,10 @@ void CExecuteFunc::vExecuteOnEventHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE by
     PSNODEINFO psNodeInfo = nullptr;
     if( pNodeInfo != nullptr )
     {
-        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(""
-                     , m_sNodeInfo.m_omStrNodeName);
+        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(m_sNodeInfo.m_omStrNodeName);
         if(psNodeInfo != nullptr)
         {
-            if(psNodeInfo->m_bEventHandlersEnabled == TRUE)
-            {
+
                 EnterCriticalSection(&csEventHandler);
                 if(m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread == nullptr )
                 {
@@ -836,7 +850,7 @@ void CExecuteFunc::vExecuteOnEventHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE by
                     }
                 }
                 LeaveCriticalSection(&csEventHandler);
-            }
+
         }
     }
 }
@@ -1110,6 +1124,9 @@ void CExecuteFunc::vExecuteOnBusEventHandler(eBUSEVEHANDLER eBusEventHandler)
         unDLLHandlerCount++;
     }
 }
+
+
+
 /******************************************************************************/
 /*  Function Name    :  bReadDefFile                                          */
 /*  Input(s)         :                                                        */
@@ -1169,73 +1186,17 @@ BOOL CExecuteFunc::bReadDefFile(CStringArray& omErrorArray)
                 {
                     omInTextFile.getline( acLine, sizeof(acLine));
                     omStrLine = acLine;
-                    int nIndex = 0;
+
                     omStrLine.TrimLeft();
                     omStrLine.TrimRight();
                     // Search for message handler function and add it to
                     // corresponding CStringArray data member.
-                    nIndex = omStrLine.Find( CGlobalObj::omGetBusSpecMsgHndlrName(m_eBus));
-                    if ( nIndex != -1 )
+                   bool bFound = bCatagoriseDefaultHandlers(omStrLine);
+                    if(!bFound && omStrLine.Find( CGlobalObj::omGetBusSpecMsgHndlrName(m_eBus)) != -1)
                     {
                         m_omStrArrayMsgHandlers.Add(omStrLine);
-                        vCatagoriseMsgHandlers(omStrLine);
+                        bFound = bCatagoriseMsgHandlers(omStrLine,CGlobalObj::omGetBusSpecMsgHndlrName(m_eBus));
                     }
-
-                    else
-                    {
-                        // Search for key handler function and add it to
-                        // corresponding CStringArray data member.
-                        nIndex = omStrLine.Find(defKEY_HANDLER);
-                        if ( nIndex != -1 )
-                        {
-                            m_omStrArrayKeyHandlers.Add(omStrLine);
-                        }
-                        else
-                        {
-                            // Search for timer handler function and add it to
-                            // corresponding CStringArray data member.
-                            nIndex = omStrLine.Find(defTIMER_HANDLER);
-                            if ( nIndex != -1 )
-                            {
-                                m_omStrArrayTimerHandlers.Add(omStrLine);
-                            }
-                            else
-                            {
-                                // Search for Error handler function and add it
-                                // to corresponding CStringArray data member.
-                                nIndex = omStrLine.Find(defERROR_HANDLER_FN);
-                                if ( nIndex != -1 )
-                                {
-                                    m_omStrArrayErrorHandlers.Add(omStrLine);
-                                }
-                                else
-                                {
-                                    // Search for Error handler function and add
-                                    // it to  corresponding CStringArray data
-                                    // member.
-                                    nIndex = omStrLine.Find(defDLL_HANDLER_FN);
-                                    if ( nIndex != -1 )
-                                    {
-                                        m_omStrArrayDLLHandlers.Add(omStrLine);
-                                    }
-                                    else
-                                    {
-                                        nIndex = omStrLine.Find(defEVENT_IND_HANDLER);
-                                        if ( nIndex != -1 )
-                                        {
-                                            m_omStrArrayEventHandlers.Add(omStrLine);
-                                        }
-                                        nIndex = omStrLine.Find(defBUSEVE_HANDLER_FN);
-                                        if ( nIndex != -1 )
-                                        {
-                                            m_omStrArrayBusEventHandler.Add(omStrLine);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
                 }// while
             }
         }
@@ -2105,9 +2066,9 @@ BOOL CExecuteFunc::bInitBusEventStruct(CStringArray& omErrorArray)
 /*  Modification By  :                                                        */
 /*  Modification on  :                                                        */
 /******************************************************************************/
-void CExecuteFunc::vCatagoriseMsgHandlers(const CString& omStrFuncName)
+bool CExecuteFunc::bCatagoriseMsgHandlers(const CString& omStrFuncName, const CString& omMsgHandlerName)
 {
-    CString omMsgHandlerName     = CGlobalObj::omGetBusSpecMsgHndlrName(m_eBus);
+    bool bReturn = false;
     CString omStrGenericHandler  = omMsgHandlerName;
     CString omStrMsgIDHandler    = omMsgHandlerName;
     CString omStrMsgNameHandler  = omMsgHandlerName;
@@ -2131,20 +2092,84 @@ void CExecuteFunc::vCatagoriseMsgHandlers(const CString& omStrFuncName)
     else if (omStrFuncType.Find(omStrMsgIDHandler) != -1 )// Msg ID Handler
     {
         m_omStrArrayMsgIDandName.Add(omStrFuncName);
+        bReturn = true;
     }
     else if (omStrFuncType.Find(omStrMsgNameHandler) != -1 )//Msg Name Handler
     {
         m_omStrArrayMsgIDandName.Add(omStrFuncName);
+        bReturn = true;
     }
     else if (omStrFuncType.Find(omStrMsgRangeHandler) != -1 )//Msg IDRange Handl
     {
         m_omStrArrayMsgRange.Add(omStrFuncName);
+        bReturn = true;
     }
     else if (omStrFuncType.Find(omStrMsgListHandler) != -1 )//Msg IDRange Handl
     {
         m_omStrArrayMsgList.Add(omStrFuncName);
+        bReturn = true;
     }
 
+    return bReturn;
+}
+
+
+bool CExecuteFunc::bCatagoriseDefaultHandlers(const CString& omStrLine)
+{
+    // Search for key handler function and add it to
+    // corresponding CStringArray data member.
+
+    bool bReturn = false;
+    if ( omStrLine.Find(defKEY_HANDLER) != -1 )
+    {
+        m_omStrArrayKeyHandlers.Add(omStrLine);
+        bReturn = true;
+    }
+    else
+    {
+        // Search for timer handler function and add it to
+        // corresponding CStringArray data member.
+        if ( omStrLine.Find(defTIMER_HANDLER) != -1 )
+        {
+            m_omStrArrayTimerHandlers.Add(omStrLine);
+            bReturn = true;
+        }
+        else
+        {
+            // Search for Error handler function and add it
+            // to corresponding CStringArray data member.
+            if ( omStrLine.Find(defERROR_HANDLER_FN) != -1 )
+            {
+                m_omStrArrayErrorHandlers.Add(omStrLine);
+                bReturn = true;
+            }
+            else
+            {
+                // Search for Error handler function and add
+                // it to  corresponding CStringArray data
+                // member.
+                if ( omStrLine.Find(defDLL_HANDLER_FN) != -1 )
+                {
+                    m_omStrArrayDLLHandlers.Add(omStrLine);
+                    bReturn = true;
+                }
+                else
+                {
+                    if ( omStrLine.Find(defEVENT_IND_HANDLER) != -1 )
+                    {
+                        m_omStrArrayEventHandlers.Add(omStrLine);
+                        bReturn = true;
+                    }
+                    if ( omStrLine.Find(defBUSEVE_HANDLER_FN) != -1 )
+                    {
+                        m_omStrArrayBusEventHandler.Add(omStrLine);
+                        bReturn = true;
+                    }
+                }
+            }
+        }
+    }
+    return bReturn;
 }
 //VENKATANARAYANA
 BOOL CExecuteFunc::bAllocateMemoryForMsgListHandler(UINT unMsgListCount )
@@ -2513,9 +2538,7 @@ BOOL CExecuteFunc::bInitMsgIDRangeHandlStruct(UINT unMsgIDRangeCount,
             omStrTemp        = omStrFuncName.Right(omStrFuncName.GetLength() -
                                                    omStrFuncName.Find("_") - 1 );
             omStrMsgIDFrom = omStrTemp.Left(omStrTemp.Find("_"));
-            omStrMsgIDTo   = omStrTemp;
-            omStrMsgIDTo.Replace(omStrMsgIDFrom,"");
-            omStrMsgIDTo.Replace("_","");
+            omStrMsgIDTo   = omStrTemp.Right(omStrTemp.GetLength() - omStrTemp.Find("_") - 1);
             char* pcStopStr = nullptr;
             UINT unMsgIDFrom  = _tcstol((LPCTSTR )omStrMsgIDFrom,&pcStopStr,16);
             UINT unMsgIDTo = _tcstol((LPCTSTR )omStrMsgIDTo,&pcStopStr,16);
@@ -2902,20 +2925,7 @@ void CExecuteFunc::vEnableDisableAllTimers(BOOL bEnable)
     }
     CExecuteManager::ouGetExecuteManager(m_eBus).
     vSetResetNodeTimers(this,bEnable);
-    //Update timer handler
-    m_sNodeInfo.m_bTimerHandlersEnabled = bEnable;
-    CSimSysNodeInfo* pNodeInfo =
-        CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-    PSNODEINFO psNodeInfo = nullptr;
-    if( pNodeInfo != nullptr )
-    {
-        psNodeInfo = pNodeInfo->psGetSimSysNodePointer("" ,
-                     m_sNodeInfo.m_omStrNodeName);
-        if(psNodeInfo != nullptr)
-        {
-            psNodeInfo->m_bTimerHandlersEnabled = bEnable;
-        }
-    }
+    
 }
 
 
@@ -2938,267 +2948,6 @@ HMODULE CExecuteFunc::hGetDllHandle()
 {
     return m_hDllModule;
 }
-/*******************************************************************************
-    Function Name    :  bActivateDeactivateHandlers
-    Input(s)         :  BOOL
-    Output           :  BOOL
-    Functionality    :  This function enable/disable all the handlers according
-                        to the input.While disabling handler it will stop the
-                        threads executing them.
-    Member of        :  CExecuteFunc
-    Author(s)        :  Anish kumar
-    Date Created     :  19.12.05
-********************************************************************************/
-BOOL CExecuteFunc::bActivateDeactivateHandlers(BOOL bCurrStatus)
-{
-    //*********** check Start/Stop Timers
-    vEnableDisableAllTimers(bCurrStatus);
-
-    BYTE byAction=0;
-    if( bCurrStatus == FALSE)
-    {
-        /// Stop all executing handlers
-
-
-        if( m_sNodeInfo.m_bMsgHandlersEnabled== TRUE)
-        {
-            m_bStopMsgHandlers = TRUE;
-            // Stop only running threads
-            // Don't call destroy threads
-            byAction |= BIT_MSG_HANDLER_THREAD;
-        }
-        if( m_sNodeInfo.m_bKeyHandlersEnabled== TRUE)
-        {
-            byAction |= BIT_KEY_HANDLER_THREAD;
-            m_bStopKeyHandlers = TRUE;
-        }
-        if( m_sNodeInfo.m_bErrorHandlersEnabled == TRUE)
-        {
-            byAction |= BIT_ERROR_HANDLER_THREAD;
-            m_bStopErrorHandlers = TRUE;
-        }
-    }
-    else
-    {
-        m_bStopMsgHandlers=FALSE;
-        m_bStopKeyHandlers=FALSE;
-        m_bStopErrorHandlers=FALSE;
-    }
-    CSimSysNodeInfo* pNodeInfo = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-    PSNODEINFO psNodeInfo = nullptr;
-    if( pNodeInfo != nullptr )
-    {
-        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(""
-                     , m_sNodeInfo.m_omStrNodeName);
-        if(psNodeInfo != nullptr)
-        {
-            psNodeInfo->m_bIsAllHandlersEnabled= bCurrStatus;
-            psNodeInfo->m_bMsgHandlersEnabled= bCurrStatus;
-            psNodeInfo->m_bKeyHandlersEnabled= bCurrStatus;
-            psNodeInfo->m_bErrorHandlersEnabled= bCurrStatus;
-            psNodeInfo->m_bTimerHandlersEnabled= bCurrStatus;
-            psNodeInfo->m_bDllHandlersEnabled=bCurrStatus;
-
-            if (psNodeInfo->m_eBus == J1939)
-            {
-                psNodeInfo->m_bEventHandlersEnabled = bCurrStatus;
-            }
-        }
-    }
-
-    m_sNodeInfo.m_bIsAllHandlersEnabled= bCurrStatus;
-    m_sNodeInfo.m_bMsgHandlersEnabled= bCurrStatus;
-    m_sNodeInfo.m_bKeyHandlersEnabled= bCurrStatus;
-    m_sNodeInfo.m_bErrorHandlersEnabled= bCurrStatus;
-    m_sNodeInfo.m_bTimerHandlersEnabled= bCurrStatus;
-    m_sNodeInfo.m_bDllHandlersEnabled=bCurrStatus;
-
-    if(psNodeInfo != nullptr)
-    {
-        if (psNodeInfo->m_eBus == J1939)
-        {
-            m_sNodeInfo.m_bEventHandlersEnabled = bCurrStatus;
-        }
-    }
-
-    //*********** check Start/Stop Timers
-
-
-    // Kill all threads now
-    if( bCurrStatus == FALSE)
-    {
-        vDestroyUtilityThreads( 500, byAction);
-    }
-    else if(m_pomMsgHandlerThrd == nullptr)
-    {
-        m_pomMsgHandlerThrd=AfxBeginThread(unReadNodeMsgHandlerBuffer,this);
-    }
-    if(psNodeInfo != nullptr)
-    {
-        if(psNodeInfo->m_eBus == LIN)
-        {
-            if(m_pomMsgHandlerThrdLIN == nullptr)
-            {
-                m_pomMsgHandlerThrdLIN=AfxBeginThread(unReadNodeMsgHandlerBufferLIN,this);
-            }
-        }
-    }
-    return true;
-
-}
-
-/**********************************************************************************
-    Function Name    :  bEnableDisableKeyHandlers
-    Input(s)         :  BOOL
-    Output           :  BOOL
-    Functionality    :  This function enable/disable all key handlers according
-                        to the input.While disabling handler it will stop the
-                        threads executing them.
-    Member of        :  CExecuteFunc
-    Author(s)        :  Anish kumar
-    Date Created     :  19.12.05
-***********************************************************************************/
-BOOL CExecuteFunc::bEnableDisableKeyHandlers(BOOL bEnable)
-{
-    if( bEnable == FALSE)
-    {
-        CWaitCursor omWait;
-        vDestroyUtilityThreads(500, BIT_KEY_HANDLER_THREAD);
-    }
-    m_sNodeInfo.m_bKeyHandlersEnabled=bEnable;
-    CSimSysNodeInfo* pNodeInfo = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-    PSNODEINFO psNodeInfo = nullptr;
-    if( pNodeInfo != nullptr )
-    {
-        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(""
-                     , m_sNodeInfo.m_omStrNodeName);
-        if(psNodeInfo != nullptr)
-        {
-            psNodeInfo->m_bKeyHandlersEnabled= bEnable;
-        }
-    }
-    return true;
-}
-
-/**************************************************************************************
-    Function Name    :  bEnableDisableErrorHandlers
-    Input(s)         :  BOOL
-    Output           :  BOOL
-    Functionality    :  This function enable/disable all error handlers according
-                        to the input.While disabling handler it will stop the
-                        threads executing them.
-    Member of        :  CExecuteFunc
-    Author(s)        :  Anish kumar
-    Date Created     :  19.12.05
-**************************************************************************************/
-BOOL CExecuteFunc::bEnableDisableErrorHandlers(BOOL bEnable)
-{
-    if( bEnable == FALSE)
-    {
-        CWaitCursor omWait;
-        // Destroy any handler if is running
-        m_bStopErrorHandlers = TRUE;
-        vDestroyUtilityThreads(500,BIT_ERROR_HANDLER_THREAD);
-    }
-    m_bStopErrorHandlers=FALSE;
-    m_sNodeInfo.m_bErrorHandlersEnabled=bEnable;
-    //for UI part
-    CSimSysNodeInfo* pNodeInfo = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-    PSNODEINFO psNodeInfo = nullptr;
-    if( pNodeInfo != nullptr )
-    {
-        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(""
-                     , m_sNodeInfo.m_omStrNodeName);
-        if(psNodeInfo != nullptr)
-        {
-            psNodeInfo->m_bErrorHandlersEnabled= bEnable;
-
-        }
-    }
-
-    return true;
-}
-
-/**
-* \brief         This function enable/disable all error handlers according
-*                to the input.While disabling handler it will stop the
-*                threads executing them.
-* \param[in]     bool to indicate enable/disable state
-* \return        BOOL
-* \authors       Arunkumar Karri
-* \date          11.06.2012 Created
-*/
-BOOL CExecuteFunc::bEnableDisableEventHandlers(BOOL bEnable)
-{
-    //if( bEnable == FALSE)
-    //{
-    //  CWaitCursor omWait;
-    //  // Destroy any handler if is running
-    //  m_bStopEventHandlers = TRUE;
-    //  vDestroyUtilityThreads(500,BIT_ERROR_HANDLER_THREAD);
-    //}
-    m_bStopEventHandlers=FALSE;
-    if (m_sNodeInfo.m_eBus == J1939)
-    {
-        m_sNodeInfo.m_bEventHandlersEnabled=bEnable;
-    }
-    //for UI part
-    CSimSysNodeInfo* pNodeInfo = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-    PSNODEINFO psNodeInfo = nullptr;
-    if( pNodeInfo != nullptr )
-    {
-        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(""
-                     , m_sNodeInfo.m_omStrNodeName);
-        if(psNodeInfo != nullptr)
-        {
-            psNodeInfo->m_bEventHandlersEnabled= bEnable;
-
-        }
-    }
-
-    return true;
-}
-
-/***************************************************************************************
-    Function Name    :  bEnableDisableMsgHandlers
-    Input(s)         :  BOOL
-    Output           :  BOOL
-    Functionality    :  This function enable/disable all message handlers according
-                        to the input.While disabling handler it will stop the
-                        threads executing them.
-    Member of        :  CExecuteFunc
-    Author(s)        :  Anish kumar
-    Date Created     :  19.12.05
-****************************************************************************************/
-BOOL CExecuteFunc::bEnableDisableMsgHandlers(BOOL bEnable)
-{
-    m_bStopMsgHandlers = !bEnable;
-    m_sNodeInfo.m_bMsgHandlersEnabled=bEnable;
-    CSimSysNodeInfo* pNodeInfo =
-        CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-    PSNODEINFO psNodeInfo = nullptr;
-    if( pNodeInfo != nullptr )
-    {
-        psNodeInfo = pNodeInfo->psGetSimSysNodePointer(""
-                     , m_sNodeInfo.m_omStrNodeName);
-        if(psNodeInfo != nullptr)
-        {
-            psNodeInfo->m_bMsgHandlersEnabled= bEnable;
-        }
-    }
-    if((TRUE == bEnable) && (m_pomMsgHandlerThrd == nullptr))
-    {
-        m_pomMsgHandlerThrd = AfxBeginThread(unReadNodeMsgHandlerBuffer,this);
-    }
-    if((TRUE == bEnable) && (m_pomMsgHandlerThrdLIN == nullptr))
-    {
-        m_pomMsgHandlerThrdLIN = AfxBeginThread(unReadNodeMsgHandlerBufferLIN,this);
-    }
-    return true;
-}
-
-
-
 /****************************************************************************************
     Function Name    :  vSetNodeInfo
     Input(s)         :  pointer to SNODEINFO structure
@@ -3213,14 +2962,8 @@ BOOL CExecuteFunc::bEnableDisableMsgHandlers(BOOL bEnable)
 void CExecuteFunc::vSetNodeInfo(PSNODEINFO psNodeInfo)
 {
     m_sNodeInfo.m_omStrNodeName         = psNodeInfo->m_omStrNodeName;
-    m_sNodeInfo.m_omStrFileName         = psNodeInfo->m_omStrFileName;
+    m_sNodeInfo.m_omStrCFileName         = psNodeInfo->m_omStrCFileName;
     m_sNodeInfo.m_omStrDllName          = psNodeInfo->m_omStrDllName;
-    m_sNodeInfo.m_bDllHandlersEnabled   = psNodeInfo->m_bDllHandlersEnabled;
-    m_sNodeInfo.m_bTimerHandlersEnabled = psNodeInfo->m_bTimerHandlersEnabled;
-    m_sNodeInfo.m_bKeyHandlersEnabled   = psNodeInfo->m_bKeyHandlersEnabled;
-    m_sNodeInfo.m_bErrorHandlersEnabled = psNodeInfo->m_bErrorHandlersEnabled;
-    m_sNodeInfo.m_bEventHandlersEnabled = psNodeInfo->m_bEventHandlersEnabled;
-    m_sNodeInfo.m_bMsgHandlersEnabled   = psNodeInfo->m_bMsgHandlersEnabled;
     m_sNodeInfo.m_dwClientId            = psNodeInfo->m_dwClientId;
     m_sNodeInfo.m_byPrefAddress         = psNodeInfo->m_byPrefAddress;
     m_sNodeInfo.m_eBus                  = psNodeInfo->m_eBus;
@@ -3230,14 +2973,8 @@ void CExecuteFunc::vSetNodeInfo(PSNODEINFO psNodeInfo)
 void CExecuteFunc::vGetNodeInfo(sNODEINFO& sNodeInfo) const
 {
     sNodeInfo.m_omStrNodeName         = m_sNodeInfo.m_omStrNodeName;
-    sNodeInfo.m_omStrFileName         = m_sNodeInfo.m_omStrFileName;
+    sNodeInfo.m_omStrCFileName         = m_sNodeInfo.m_omStrCFileName;
     sNodeInfo.m_omStrDllName          = m_sNodeInfo.m_omStrDllName;
-    sNodeInfo.m_bDllHandlersEnabled   = m_sNodeInfo.m_bDllHandlersEnabled;
-    sNodeInfo.m_bTimerHandlersEnabled = m_sNodeInfo.m_bTimerHandlersEnabled;
-    sNodeInfo.m_bKeyHandlersEnabled   = m_sNodeInfo.m_bKeyHandlersEnabled;
-    sNodeInfo.m_bErrorHandlersEnabled = m_sNodeInfo.m_bErrorHandlersEnabled;
-    sNodeInfo.m_bEventHandlersEnabled = m_sNodeInfo.m_bEventHandlersEnabled;
-    sNodeInfo.m_bMsgHandlersEnabled   = m_sNodeInfo.m_bMsgHandlersEnabled;
     sNodeInfo.m_dwClientId            = m_sNodeInfo.m_dwClientId;
     sNodeInfo.m_byPrefAddress         = m_sNodeInfo.m_byPrefAddress;
     sNodeInfo.m_eBus                  = m_sNodeInfo.m_eBus;
@@ -3248,50 +2985,6 @@ DWORD CExecuteFunc::dwGetNodeClientId()
 {
     return m_sNodeInfo.m_dwClientId;
 }
-
-
-/****************************************************************************************
-    Function Name    :  nGetFlagStatus
-    Input(s)         :  enum/ which flag's status
-    Output           :  int /flaf's status
-    Functionality    :  Returns the flag's status
-    Member of        :  CExecuteFunc
-    Author(s)        :  Anish kumar
-    Date Created     :  16.12.05
-****************************************************************************************/
-
-BOOL CExecuteFunc::bGetFlagStatus(eNODEFLAG eWhichFlag)
-{
-    BOOL bRetValue = FALSE ;
-
-    switch( eWhichFlag )
-    {
-        case EXKEY_HANDLER:
-            bRetValue = m_sNodeInfo.m_bKeyHandlersEnabled;
-            break;
-        case EXERROR_HANDLER :
-            bRetValue = m_sNodeInfo.m_bErrorHandlersEnabled;
-            break;
-        case EXEVENT_HANDLER :
-            bRetValue = m_sNodeInfo.m_bEventHandlersEnabled;
-            break;
-        case EXMSG_HANDLER :
-            bRetValue = m_sNodeInfo.m_bMsgHandlersEnabled;
-            break;
-        case EXDLL_HANDLER :
-            bRetValue = m_sNodeInfo.m_bDllHandlersEnabled;
-            break;
-        case ACTIVENODE :
-            bRetValue = m_bMsgTxOnFlag;
-            break;
-        default:
-            bRetValue = FALSE;
-    }
-    return bRetValue;
-}
-
-
-
 /****************************************************************************************
     Function Name    :  vDestroyUtilityThreads
     Input(s)         :  maximum time to wait for the threads to be destroyed
@@ -3361,7 +3054,6 @@ void CExecuteFunc::vDestroyUtilityThreads(UINT unMaxWaitTime, BYTE byThreadCode)
             m_asUtilThread[defKEY_HANDLER_THREAD].m_hThread != nullptr )
     {
         // Set the flag to exit from thread.
-        m_bStopKeyHandlers = TRUE;
         // Wait for thread to exit.
         dwResult = WaitForSingleObject(m_aomState[defKEY_HANDLER_THREAD],
                                        unMaxWaitTime);
@@ -3385,10 +3077,10 @@ void CExecuteFunc::vDestroyUtilityThreads(UINT unMaxWaitTime, BYTE byThreadCode)
         static_cast<UCHAR>( byThreadCode & BIT_DLL_UNLOAD_HANDLER_THREAD );
     // if DLL handler thread exists
     if ( bySelectThread != 0 &&
-            m_asUtilThread[defDLL_UNLOAD_HANDLER_THREAD].m_hThread != nullptr )
+            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_hThread != nullptr )
     {
         // Wait for thread to exit.
-        dwResult = WaitForSingleObject(m_aomState[defDLL_UNLOAD_HANDLER_THREAD],
+        dwResult = WaitForSingleObject(m_aomState[defBUSEVENT_HANDLER_THREAD],
                                        unMaxWaitTime);
         // If time out, terminate the thread and delete the memory
         // if it is allocated inside the thread function and not
@@ -3396,14 +3088,14 @@ void CExecuteFunc::vDestroyUtilityThreads(UINT unMaxWaitTime, BYTE byThreadCode)
         if( dwResult == WAIT_TIMEOUT )
         {
             TerminateThread(
-                m_asUtilThread[defDLL_UNLOAD_HANDLER_THREAD].m_hThread, 0 );
+                m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_hThread, 0 );
             // Set the thread handle to nullptr
-            m_asUtilThread[defDLL_UNLOAD_HANDLER_THREAD].m_hThread = nullptr;
-            if( m_asUtilThread[defDLL_UNLOAD_HANDLER_THREAD].m_pvThread !=nullptr )
+            m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_hThread = nullptr;
+            if( m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_pvThread !=nullptr )
             {
                 delete []
-                m_asUtilThread[defDLL_UNLOAD_HANDLER_THREAD].m_pvThread;
-                m_asUtilThread[defDLL_UNLOAD_HANDLER_THREAD].m_pvThread = nullptr;
+                m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_pvThread;
+                m_asUtilThread[defBUSEVENT_HANDLER_THREAD].m_pvThread = nullptr;
             }
         }
     }
@@ -3441,7 +3133,6 @@ void CExecuteFunc::vDestroyUtilityThreads(UINT unMaxWaitTime, BYTE byThreadCode)
             m_asUtilThread[defERROR_HANDLER_THREAD].m_hThread != nullptr)
     {
         // Set the flag to exit from thread.
-        m_bStopErrorHandlers = TRUE;
         // Wait for thread to exit.
         dwResult = WaitForSingleObject(m_aomState[defERROR_HANDLER_THREAD],
                                        unMaxWaitTime);
@@ -3487,39 +3178,8 @@ BOOL CExecuteFunc::bUnloadDll()
     m_bDllLoaded = FALSE;
     m_omReadFromQEvent.SetEvent();
     m_omReadFromQEventLIN.SetEvent();
-    vDestroyUtilityThreads(
-        defWAIT_DELAY_FOR_DLL_UNLOAD,
-        BIT_MSG_HANDLER_THREAD );
-    m_sNodeInfo.m_bMsgHandlersEnabled=FALSE;
-    if(   m_sNodeInfo.m_bKeyHandlersEnabled== TRUE
-            || m_sNodeInfo.m_bErrorHandlersEnabled== TRUE )
-    {
-
-        BYTE byThread = 0x0;
-
-        if (m_sNodeInfo.m_bKeyHandlersEnabled== TRUE )
-        {
-            byThread |= BIT_KEY_HANDLER_THREAD;
-            m_bStopKeyHandlers   = TRUE;
-        }
-        if (m_sNodeInfo.m_bErrorHandlersEnabled==TRUE )
-        {
-            byThread |= BIT_ERROR_HANDLER_THREAD;
-            m_bStopErrorHandlers = TRUE;
-        }
-        byThread |= BIT_DLL_LOAD_HANDLER_THREAD;
-        vDestroyUtilityThreads(500,byThread);
-        m_sNodeInfo.m_bKeyHandlersEnabled=FALSE;
-        m_sNodeInfo.m_bErrorHandlersEnabled=FALSE;
-        m_sNodeInfo.m_bEventHandlersEnabled=FALSE;
-    }
-    //vExecuteOnDLLHandler(DLL_UNLOAD);
-    //Sleep(0);
-    vDestroyUtilityThreads(
-        defWAIT_DELAY_FOR_DLL_UNLOAD,
-        BIT_DLL_UNLOAD_HANDLER_THREAD );
-
-
+    BYTE byThread = BIT_MSG_HANDLER_THREAD | BIT_KEY_HANDLER_THREAD | BIT_ERROR_HANDLER_THREAD | BIT_DLL_LOAD_HANDLER_THREAD | BIT_DLL_UNLOAD_HANDLER_THREAD;
+    vDestroyUtilityThreads(defWAIT_DELAY_FOR_DLL_UNLOAD,byThread);
     if(bFreeLibrary == TRUE)
     {
         bFreeLibrary =  FreeLibrary(m_hDllModule);
@@ -3528,7 +3188,6 @@ BOOL CExecuteFunc::bUnloadDll()
     {
         m_hDllModule = nullptr;
         // Reset DLLLoaded flag
-        m_sNodeInfo.m_bDllHandlersEnabled=FALSE;
     }
 
     return bFreeLibrary;
@@ -3547,7 +3206,7 @@ BOOL CExecuteFunc::bUnloadDll()
 
 CString CExecuteFunc::omGetPrevFileName()
 {
-    return m_sNodeInfo.m_omStrFileName;
+    return m_sNodeInfo.m_omStrCFileName;
 }
 
 
@@ -3886,37 +3545,6 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrsJ1939(HMODULE hModuleHandle)
         (*pFDllSetTimerValProc)(gbSetTimerVal) ;
     }
 
-    DLLENABLEDISABLEALLHANDLERS pFDllSetAllHandlersProc =
-        (DLLENABLEDISABLEALLHANDLERS) GetProcAddress(hModuleHandle,
-                (char*) defNAME_FUNC_ALL_HANDLERS);
-    if (pFDllSetAllHandlersProc != nullptr)
-    {
-        (*pFDllSetAllHandlersProc)(gbActivateDeactivateHandlers) ;
-    }
-
-    DLLENABLEDISABLEMSGHANDLERS pFDllSetMsgHandlersProc =
-        (DLLENABLEDISABLEMSGHANDLERS) GetProcAddress(hModuleHandle,
-                (char*) defNAME_FUNC_MSG_HANDLERS);
-    if (pFDllSetMsgHandlersProc != nullptr)
-    {
-        (*pFDllSetMsgHandlersProc)(gbEnableDisableMsgHandlers) ;
-    }
-
-    DLLENABLEDISABLEKEYHANDLERS pFDllSetKeyHandlersProc =
-        (DLLENABLEDISABLEKEYHANDLERS) GetProcAddress(hModuleHandle,
-                (char*) defNAME_FUNC_KEY_HANDLERS);
-    if (pFDllSetKeyHandlersProc != nullptr)
-    {
-        (*pFDllSetKeyHandlersProc)(gbEnableDisableKeyHandlers) ;
-    }
-
-    DLLENABLEDISABLEERRORHANDLERS pFDllSetErrorHandlersProc =
-        (DLLENABLEDISABLEERRORHANDLERS) GetProcAddress(hModuleHandle,
-                (char*) defNAME_FUNC_ERROR_HANDLERS);
-    if (pFDllSetErrorHandlersProc != nullptr)
-    {
-        (*pFDllSetErrorHandlersProc)(gbEnableDisableErrorHandlers) ;
-    }
     DLLMSGTXONOFF DllMsgOnOff = (DLLMSGTXONOFF) GetProcAddress(
                                     hModuleHandle, (char*) NAME_FUNC_MSGTX_ON_OFF);
     if (DllMsgOnOff != nullptr)
@@ -4000,21 +3628,6 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrsCAN(HMODULE hModuleHandle)
     {
         (*DllControllerModeProc)(gvSetControllerMode_CAN);
     }
-    DLLONLINEOFFLINEPROC DllOnlineProc =
-        (DLLONLINEOFFLINEPROC) GetProcAddress(hModuleHandle,
-                (char*) NAME_FUNC_ONLINE);
-    if (DllOnlineProc != nullptr)
-    {
-        (*DllOnlineProc)(gbActivateDeactivateHandlers);
-    }
-
-    DLLONLINEOFFLINEPROC DllOfflineProc =
-        (DLLONLINEOFFLINEPROC) GetProcAddress(hModuleHandle,
-                (char*) NAME_FUNC_OFFLINE);
-    if (DllOfflineProc != nullptr)
-    {
-        (*DllOfflineProc)(gbActivateDeactivateHandlers);
-    }
 
     DLLDISCONNECTPROC DllDisconnectProc = (DLLDISCONNECTPROC)
                                           GetProcAddress(hModuleHandle,
@@ -4057,29 +3670,6 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrsCAN(HMODULE hModuleHandle)
         (*pFDllSetTimerValProc)(gbSetTimerVal) ;
     }
 
-    DLLENABLEDISABLEMSGHANDLERS pFDllSetMsgHandlersProc =
-        (DLLENABLEDISABLEMSGHANDLERS) GetProcAddress(hModuleHandle,
-                (char*) defNAME_FUNC_MSG_HANDLERS);
-    if (pFDllSetMsgHandlersProc != nullptr)
-    {
-        (*pFDllSetMsgHandlersProc)(gbEnableDisableMsgHandlers) ;
-    }
-
-    DLLENABLEDISABLEKEYHANDLERS pFDllSetKeyHandlersProc =
-        (DLLENABLEDISABLEKEYHANDLERS) GetProcAddress(hModuleHandle,
-                (char*) defNAME_FUNC_KEY_HANDLERS);
-    if (pFDllSetKeyHandlersProc != nullptr)
-    {
-        (*pFDllSetKeyHandlersProc)(gbEnableDisableKeyHandlers) ;
-    }
-
-    DLLENABLEDISABLEERRORHANDLERS pFDllSetErrorHandlersProc =
-        (DLLENABLEDISABLEERRORHANDLERS) GetProcAddress(hModuleHandle,
-                (char*) defNAME_FUNC_ERROR_HANDLERS);
-    if (pFDllSetErrorHandlersProc != nullptr)
-    {
-        (*pFDllSetErrorHandlersProc)(gbEnableDisableErrorHandlers) ;
-    }
     DLLMSGTXONOFF DllMsgOnOff = (DLLMSGTXONOFF) GetProcAddress(
                                     hModuleHandle, (char*) NAME_FUNC_MSGTX_ON_OFF);
     if (DllMsgOnOff != nullptr)
@@ -4109,7 +3699,7 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrsCAN(HMODULE hModuleHandle)
                                hModuleHandle,(char*)NAME_FUNC_TIMENOW);
     if( nullptr != pfTimeNow )
     {
-        (*pfTimeNow)(sg_TimeNow);
+        (*pfTimeNow)(sg_TimeNow_CAN);
     }
 
     DLLGETFIRSTCANDBNAME pfGetFirstCANdbName = (DLLGETFIRSTCANDBNAME)GetProcAddress(
@@ -4156,7 +3746,7 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrsLIN(HMODULE hModuleHandle)
                                           (char*) NAME_FUNC_LOG_ENABLE);
     if (DllLogEnableProc != nullptr)
     {
-        (*DllLogEnableProc)((LOGENABLE)gbEnableDisableLog);
+        (*DllLogEnableProc)((LOGENABLE)gbEnableDisableLog_LIN);
     }
 
     DLLLOGPROC DllLogDisableProc = (DLLLOGPROC)
@@ -4164,7 +3754,7 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrsLIN(HMODULE hModuleHandle)
                                            (char*) NAME_FUNC_LOG_DISABLE);
     if (DllLogDisableProc != nullptr)
     {
-        (*DllLogDisableProc)((LOGENABLE)gbEnableDisableLog);
+        (*DllLogDisableProc)((LOGENABLE)gbEnableDisableLog_LIN);
     }
 
     DLLLOGFILEPROC DllLogFileProc = (DLLLOGFILEPROC)
@@ -4172,7 +3762,7 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrsLIN(HMODULE hModuleHandle)
                                             (char*) NAME_FUNC_LOG_FILE);
     if (DllLogFileProc != nullptr)
     {
-        (*DllLogFileProc)((WRITETOLOGFILE)gbWriteToLog);
+        (*DllLogFileProc)((WRITETOLOGFILE)gbWtiteToLog_LIN);
     }
 
     DLLTRACEPROC DllTraceFileProc = (DLLTRACEPROC)
@@ -4190,21 +3780,7 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrsLIN(HMODULE hModuleHandle)
     {
         (*DllControllerModeProc)(gvSetControllerMode_LIN);
     }
-    DLLONLINEOFFLINEPROC DllOnlineProc =
-        (DLLONLINEOFFLINEPROC) GetProcAddress(hModuleHandle,
-                (char*) NAME_FUNC_ONLINE);
-    if (DllOnlineProc != nullptr)
-    {
-        (*DllOnlineProc)(gbActivateDeactivateHandlers);
-    }
 
-    DLLONLINEOFFLINEPROC DllOfflineProc =
-        (DLLONLINEOFFLINEPROC) GetProcAddress(hModuleHandle,
-                (char*) NAME_FUNC_OFFLINE);
-    if (DllOfflineProc != nullptr)
-    {
-        (*DllOfflineProc)(gbActivateDeactivateHandlers);
-    }
 
     DLLDISCONNECTPROC DllDisconnectProc = (DLLDISCONNECTPROC)
                                           GetProcAddress(hModuleHandle,
@@ -4247,29 +3823,6 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrsLIN(HMODULE hModuleHandle)
         (*pFDllSetTimerValProc)(gbSetTimerVal) ;
     }
 
-    DLLENABLEDISABLEMSGHANDLERS pFDllSetMsgHandlersProc =
-        (DLLENABLEDISABLEMSGHANDLERS) GetProcAddress(hModuleHandle,
-                (char*) defNAME_FUNC_MSG_HANDLERS);
-    if (pFDllSetMsgHandlersProc != nullptr)
-    {
-        (*pFDllSetMsgHandlersProc)(gbEnableDisableMsgHandlers) ;
-    }
-
-    DLLENABLEDISABLEKEYHANDLERS pFDllSetKeyHandlersProc =
-        (DLLENABLEDISABLEKEYHANDLERS) GetProcAddress(hModuleHandle,
-                (char*) defNAME_FUNC_KEY_HANDLERS);
-    if (pFDllSetKeyHandlersProc != nullptr)
-    {
-        (*pFDllSetKeyHandlersProc)(gbEnableDisableKeyHandlers) ;
-    }
-
-    DLLENABLEDISABLEERRORHANDLERS pFDllSetErrorHandlersProc =
-        (DLLENABLEDISABLEERRORHANDLERS) GetProcAddress(hModuleHandle,
-                (char*) defNAME_FUNC_ERROR_HANDLERS);
-    if (pFDllSetErrorHandlersProc != nullptr)
-    {
-        (*pFDllSetErrorHandlersProc)(gbEnableDisableErrorHandlers) ;
-    }
     DLLMSGTXONOFF DllMsgOnOff = (DLLMSGTXONOFF) GetProcAddress(
                                     hModuleHandle, (char*) NAME_FUNC_MSGTX_ON_OFF);
     if (DllMsgOnOff != nullptr)
@@ -4299,7 +3852,7 @@ void CExecuteFunc::vInitialiseInterfaceFnPtrsLIN(HMODULE hModuleHandle)
                                hModuleHandle,(char*)NAME_FUNC_TIMENOW);
     if( nullptr != pfTimeNow )
     {
-        (*pfTimeNow)(sg_TimeNow);
+        (*pfTimeNow)(sg_TimeNow_LIN);
     }
 
     DLLGETFIRSTCANDBNAME pfGetFirstCANdbName = (DLLGETFIRSTCANDBNAME)GetProcAddress(

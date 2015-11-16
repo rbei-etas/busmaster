@@ -337,6 +337,10 @@ static void vPopulateMainSubList(ETYPE_BUS eBusType, CMainEntryList& DestList, c
 }
 static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured, SFILTERAPPLIED_CAN& sFilterApplied, CMainEntryList& SrcList)
 {
+    if ( psFilterConfigured == nullptr )
+    {
+        return;
+    }
     const SMAINENTRY& sMainEntry = SrcList.GetHead();
     int nCount  = sMainEntry.m_odSelEntryList.GetCount();
 

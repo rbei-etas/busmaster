@@ -48,7 +48,7 @@
 #include <windows.h>
 #include <stdio.h>
 #include "Common.h"
-
+#include "Wrapper_Common.h"
 
 //Structures
 typedef struct sTCAN_MSG
@@ -77,33 +77,18 @@ typedef struct sCAN_ERR
 } SCAN_ERR;
 
 //typedef
-typedef UINT (*APPFUNCPROC) (void*,HMODULE);
-typedef UINT (*LOGENABLE) (BOOL);
-typedef UINT (*WRITETOLOGFILE) (char*);
-typedef UINT (*WRITETOTRACE) (char*);
 typedef void (*RESETCONTROLLER) (BOOL);
 typedef UINT (*CONTROLLERMODE) (BOOL);
-typedef UINT (*GOONLINEOFFLINE) (BOOL,HMODULE) ;
-typedef UINT (*DISCONNECT) (BOOL) ;
-typedef UINT (*STARTSTOPTIMER) (char*,UINT,BOOL,HMODULE) ;
-typedef UINT (*SETTIMERVAL) (char*,UINT,HMODULE);
-typedef UINT (*ENABLEDISABLEMSGHANDLERS)(BOOL,HMODULE);
-typedef UINT (*ENABLEDISABLEKEYHANDLERS)(BOOL,HMODULE);
 typedef UINT (*DLLMSGTXONOFF)(BOOL,HMODULE);
-typedef UINT (*ENABLEDISABLEERRORHANDLERS)(BOOL,HMODULE);
-typedef HMODULE (*DLLGETNODEHANDLER)(char*);
+typedef UINT (*APPFUNCPROC) (void*,HMODULE);
 
 //typedef void (*GETMESSAGENAME)( DWORD id, char buffer[], DWORD size);
 //typedef void (*SETGETMESSAGENAME)(GETMESSAGENAME);
 
-typedef int (*KEYPRESSED)();
-typedef void (*SETKEYPRESSED)(KEYPRESSED);
 
 typedef int (*GETMESSAGENAME)(DWORD, DWORD , char* ,DWORD );
 typedef void (*DLLGETMESSAGENAME)(GETMESSAGENAME);
 
-typedef int (*TIMENOW)();
-typedef void (*DLLTIMENOW)(TIMENOW);
 
 typedef DWORD (*GETFIRSTCANDBNAME)(char* , DWORD );
 typedef void (*DLLGETFIRSTCANDBNAME)(GETFIRSTCANDBNAME);
@@ -114,65 +99,33 @@ typedef void (*DLLGETFIRSTCANDBNAME)(GETFIRSTCANDBNAME);
 // Prototypes Start
 GCC_EXTERN /*extern "C"*/void GCC_EXPORT OnMsgID_111(STCAN_MSG RxMsg);
 GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT SendMsg(STCAN_MSG);
-GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT EnableLogging() ;
-GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT DisableLogging() ;
-GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT WriteToLogFile(char*) ;
-GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT Trace(char*,...) ;
+
 GCC_EXTERN /*extern "C"*/ void GCC_EXPORT ResetController(BOOL) ;
 GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT SetPassiveMode() ;
 GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT SetActiveMode() ;
-GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT GoOnline() ;
-GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT GoOffline() ;
-GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT Connect() ;
-GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT Disconnect() ;
-GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT StartTimer(char*,UINT) ;
-GCC_EXTERN /*extern "C"*/ UINT GCC_EXPORT StopTimer(char*) ;
-GCC_EXTERN /*extern "C"*/ BOOL GCC_EXPORT SetTimerVal(char*,UINT);
-GCC_EXTERN /*extern "C"*/ BOOL GCC_EXPORT EnableMsgHandlers(BOOL);
-GCC_EXTERN /*extern "C"*/ BOOL GCC_EXPORT EnableErrorHandlers(BOOL);
-GCC_EXTERN /*extern "C"*/ BOOL GCC_EXPORT EnableKeyHandlers(BOOL);
-GCC_EXTERN /*extern "C"*/ BOOL GCC_EXPORT bGetProgramVersion(int* pnMajorVersion, int* pnMinorVersion,HMODULE hModuleHandle );
 GCC_EXTERN /*extern "C"*/ BOOL GCC_EXPORT EnableDisableMsgTx(BOOL);
-GCC_EXTERN /*extern "C"*/ HMODULE GCC_EXPORT GetDllHandle(char*);
 GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetSendMsgProcAddress(APPFUNCPROC pAppFunc);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetEnableLoggingProcAddress(LOGENABLE pEnableLoggingFunc);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetDisableLoggingProcAddress(LOGENABLE pDisableLoggingFunc);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetWriteToLogFileProcAddress(WRITETOLOGFILE pLogFileFunc);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetTraceProcAddress(WRITETOTRACE pTraceFunc);
 GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetResetControllerProcAddress(RESETCONTROLLER pResetFunc);
 GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetSetActiveModeProcAddress(CONTROLLERMODE pActiveModeFunc);
 GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetSetPassiveModeProcAddress(CONTROLLERMODE pPassiveModeFunc);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetGoOfflineProcAddress(GOONLINEOFFLINE pGoOffline);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetGoOnlineProcAddress(GOONLINEOFFLINE pGoOnline);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetDisconnectProcAddress(DISCONNECT pDisconnect);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetConnectProcAddress(DISCONNECT pConnect);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetStopTimerProcAddress(STARTSTOPTIMER pStopTimer);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetStartTimerProcAddress(STARTSTOPTIMER pStartTimer);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetSetTimerValProcAddress(SETTIMERVAL pSetTimerVal);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetEnableMsgHandlersProcAddress(ENABLEDISABLEMSGHANDLERS pMsgHandlers);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetEnableKeyHandlersProcAddress(ENABLEDISABLEKEYHANDLERS pKeyHandlers);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetEnableErrorHandlersProcAddress(ENABLEDISABLEERRORHANDLERS pErrorHandlers);
 GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetEnableDisableMsgTxProcAddress(DLLMSGTXONOFF pMsgTxFunc);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetGetDllHandleProcAddress(DLLGETNODEHANDLER pGetNodeHandler);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetKeyPressed(KEYPRESSED pKeyPressed);
 GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetGetMessageName(GETMESSAGENAME pGetMessageName);
-GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetTimeNow(TIMENOW pTimeNow);
 GCC_EXTERN /*extern "C"*/ void GCC_EXPORT vSetGetFirstCANdbName(GETFIRSTCANDBNAME pGetFirstCANdbName);
 GCC_EXTERN /*extern "C"*/ HMODULE GCC_EXPORT vSetGetMsgNameProcAddress(GETMESSAGENAME pGetMessageName);
 
-int keypressed_CAPL();
-int timenow_CAPL();
-int getmessagename_CAPL(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize);
-int getfirstcandbname_CAPL(char* cBuffer, DWORD size);
 
+GCC_EXTERN int getmessagename_CAPL(DWORD dID, DWORD dContext, char* pBuffer,DWORD dSize);
+GCC_EXTERN int getfirstcandbname_CAPL(char* cBuffer, DWORD size);
+#ifndef NO_INCLUDE_TEMPSTRUCT
 typedef struct _InternalStructCAN
 {
     _InternalStructCAN()
     {
-        Trace("temporary Structure");
+        char temp[] = "teporary structur";
+        Trace(temp);
     }
 } InternalStructCAN;
 _InternalStructCAN objcan;
-
+#endif
 
 // Prototypes End

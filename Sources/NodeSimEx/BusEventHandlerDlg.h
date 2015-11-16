@@ -10,9 +10,9 @@ class CBusEventHandlerDlg : public CDialog
 private:
     CFunctionEditorDoc* m_pDoc;
     BOOL m_bIsDelete;
-
+    ETYPE_BUS m_eBus;
 public:
-    CBusEventHandlerDlg(CFunctionEditorDoc* pDoc, CWnd* pParent =nullptr, BOOL bIsDelete = FALSE);   // standard constructor
+    CBusEventHandlerDlg(ETYPE_BUS eBus, CFunctionEditorDoc* pDoc, CWnd* pParent =nullptr, BOOL bIsDelete = FALSE);   // standard constructor
     CStringArray m_omStrArrayBusEventHandler;
     virtual ~CBusEventHandlerDlg();
 

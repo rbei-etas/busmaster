@@ -79,6 +79,15 @@ void tagLogInfo::vClear(void)
     m_sLogTrigger.m_unTriggerType = NONE;   // No trigger
     m_sLogTrigger.m_unStartID = 0;          // No Start-ID
     m_sLogTrigger.m_unStopID = 0;           // No Stop-ID
+    m_sLogAdvStngs.m_bIsLogOnMesurement = FALSE;
+    m_sLogAdvStngs.m_bIsLogOnSize = FALSE;
+    m_sLogAdvStngs.m_bIsLogOnTime = FALSE;
+    m_sLogAdvStngs.m_omSizeInMB = "50";
+    m_sLogAdvStngs.m_omLogTimeHrs = "0";
+    m_sLogAdvStngs.m_omLogTimeMins = "30";
+    m_sLogAdvStngs.m_omMaxNoOfLogFiles = "10";
+    m_sLogAdvStngs.m_omLogComment = "";
+    m_sLogAdvStngs.m_nConnectionCount = -1;
 }
 
 /******************************************************************************
@@ -235,7 +244,7 @@ bool tagLogInfo::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
     xmlAddChild(pxmlNodePtr, pChnlPtr);
 
     std::string omPath;
-    char configPath[MAX_PATH];
+	char configPath[MAX_PATH]={0};
     std::string omStrConfigFolder;
     AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
     CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
@@ -248,6 +257,51 @@ bool tagLogInfo::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
 
     xmlNodePtr pStpIdPtr = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_TRGR_STP_ID, BAD_CAST omcStpId);
     xmlAddChild(pxmlNodePtr, pStpIdPtr);
+    const char* omstrIsLogOnTransmission ="FALSE";
+    const char* omstrIsLogOnSize ="FALSE";
+    const char* omstrIsLogOnTime ="FALSE";
+    const char* omstrLogTime ="FALSE";
+
+
+    if(m_sLogAdvStngs.m_bIsLogOnMesurement)
+    {
+        omstrIsLogOnTransmission = "TRUE";
+    }
+
+    if(m_sLogAdvStngs.m_bIsLogOnSize)
+    {
+        omstrIsLogOnSize = "TRUE";
+    }
+
+    if(m_sLogAdvStngs.m_bIsLogOnTime)
+    {
+        omstrIsLogOnTime = "TRUE";
+    }
+    CString LogOnSize = m_sLogAdvStngs.m_omSizeInMB;
+
+    CString LogTime = m_sLogAdvStngs.m_omLogTimeHrs + "." + m_sLogAdvStngs.m_omLogTimeMins;
+    CString LogFilesAllowed = m_sLogAdvStngs.m_omMaxNoOfLogFiles;
+    CString LogComments = m_sLogAdvStngs.m_omLogComment;
+    xmlNodePtr pLogPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_IS_LOGON_TRANS, BAD_CAST omstrIsLogOnTransmission);
+    xmlAddChild(pxmlNodePtr, pLogPtr);
+
+    pLogPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_IS_LOGON_SIZE, BAD_CAST omstrIsLogOnSize);
+    xmlAddChild(pxmlNodePtr, pLogPtr);
+
+    pLogPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_LOGON_SIZE, BAD_CAST LogOnSize.GetBuffer(LogOnSize.GetLength()));
+    xmlAddChild(pxmlNodePtr, pLogPtr);
+
+    pLogPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_IS_LOGON_TIME, BAD_CAST omstrIsLogOnTime);
+    xmlAddChild(pxmlNodePtr, pLogPtr);
+
+    pLogPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_LOGON_TIME, BAD_CAST LogTime.GetBuffer(LogTime.GetLength()));
+    xmlAddChild(pxmlNodePtr, pLogPtr);
+
+    pLogPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_FILES_ALLOWED, BAD_CAST LogFilesAllowed.GetBuffer(LogFilesAllowed.GetLength()));
+    xmlAddChild(pxmlNodePtr, pLogPtr);
+
+    pLogPtr = xmlNewChild(pxmlNodePtr, NULL, BAD_CAST DEF_COMMENTS, BAD_CAST LogComments.GetBuffer(LogComments.GetLength()));
+    xmlAddChild(pxmlNodePtr, pLogPtr);
 
     return true;
 }
@@ -382,7 +436,7 @@ INT tagLogInfo::nSetConfigData(xmlNodePtr pNodePtr)
                     {
                         std::string omStrConfigFolder;
                         std::string omPath;
-                        char configPath[MAX_PATH];
+						char configPath[MAX_PATH]={0};
                         AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
                         CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
                         char chAbsPath[MAX_PATH];
@@ -417,6 +471,93 @@ INT tagLogInfo::nSetConfigData(xmlNodePtr pNodePtr)
                 if(nullptr != key)
                 {
                     m_sLogTrigger.m_unStopID = atoi((char*)key);
+                    xmlFree(key);
+                }
+            }
+            //Get XML Node value for LogOnTransmission bool and update the GUI.
+            else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"IsLogOnTransmission")))
+            {
+                xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                if(NULL != key)
+                {
+                    m_sLogAdvStngs.m_bIsLogOnMesurement = xmlUtils::bGetBooleanValue((char*)key);
+                    xmlFree(key);
+                }
+            }
+            //Get XML Node value for LogOnSize bool and update the GUI.
+            else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"IsLogOnSize")))
+            {
+                xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                if(NULL != key)
+                {
+                    m_sLogAdvStngs.m_bIsLogOnSize = xmlUtils::bGetBooleanValue((char*)key);
+                    xmlFree(key);
+                }
+            }
+
+            //Get XML Node value for LogOnSize MB value and update the GUI.
+            else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"LogOnSize")))
+            {
+                xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode,1);
+                if(NULL != key)
+                {
+                    CString stemp((char*)key);
+                    m_sLogAdvStngs.m_omSizeInMB =  stemp;
+                    xmlFree(key);
+                }
+            }
+
+            //Get XML Node value for LogOnTime bool and update the GUI.
+            else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"IsLogOnTime")))
+            {
+                xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                if(NULL != key)
+                {
+                    m_sLogAdvStngs.m_bIsLogOnTime = xmlUtils::bGetBooleanValue((char*)key);
+                    xmlFree(key);
+                }
+            }
+
+            else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"LogOnTime")))
+            {
+                xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode, 1);
+                if(NULL != key)
+                {
+                    CString stemp((char*)key);
+                    char* Hrs= strtok(stemp.GetBuffer(stemp.GetLength()) ,".");
+                    char* Min= strtok(NULL ,".");
+
+                    CString sHrs(Hrs);
+                    CString sMin(Min);
+                    m_sLogAdvStngs.m_omLogTimeHrs = sHrs;
+                    m_sLogAdvStngs.m_omLogTimeMins = sMin;
+
+                    //m_sLogAdvStngs.m_omSizeInMB =  stemp.;
+                    //strcpy_s(m_sLogAdvStngs.m_omSizeInMB ,temp.GetLength(),temp);
+                    xmlFree(key);
+                }
+            }
+
+            //Get XML Node value for LogOnSize MB value and update the GUI.
+            else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"FilesAllowed")))
+            {
+                xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode,1);
+                if(NULL != key)
+                {
+                    CString stemp((char*)key);
+                    m_sLogAdvStngs.m_omMaxNoOfLogFiles =  stemp;
+                    xmlFree(key);
+                }
+            }
+
+            //Get XML Node value for LogOnSize MB value and update the GUI.
+            else if ((!xmlStrcmp((const xmlChar*)pNodePtr->name, (const xmlChar*)"Comments")))
+            {
+                xmlChar* key = xmlNodeListGetString(pNodePtr->doc, pNodePtr->xmlChildrenNode,1);
+                if(NULL != key)
+                {
+                    CString stemp((char*)key);
+                    m_sLogAdvStngs.m_omLogComment =  stemp;
                     xmlFree(key);
                 }
             }

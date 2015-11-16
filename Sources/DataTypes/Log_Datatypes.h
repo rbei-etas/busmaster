@@ -44,7 +44,40 @@ typedef struct tagLogTrigger
     UINT             m_unStopID;      // Stop Trigger Id
 } SLOGTRIGGER,*PSLOGTRIGGER;
 //
+// Advance log file settings
+typedef struct tagLogAdvancedSettings
+{
+    // Holds Log on measurement state checked or Unchecked
+    BOOL m_bIsLogOnMesurement;
 
+    // Holds Log on size state checked or Unchecked
+    BOOL m_bIsLogOnSize;
+
+    // Holds Log on Time state checked or Unchecked
+    BOOL m_bIsLogOnTime;
+
+    // Holds Size value specified by user
+    CString m_omSizeInMB;
+
+    // Holds Hrs Time specified by user
+    CString m_omLogTimeHrs;
+
+    // Holds Mins Time specified by user
+    CString m_omLogTimeMins;
+
+    // Holds Maximum Number of log files to be incremented
+    CString m_omMaxNoOfLogFiles;
+
+    double   m_qwLogSysTime;
+
+    //Holds the number of Connections made by BM
+    int m_nConnectionCount;//Shailesh - connection count per log file (log object)
+
+    // Holds Comments specified by the user
+    CString m_omLogComment; //arun
+
+
+} SLOGADVSETTNGS;
 const USHORT ID_INVALID = (USHORT) -1;
 const USHORT ID_MAX = (USHORT) ~0;
 
@@ -63,7 +96,7 @@ typedef struct tagLogInfo
     char         m_sLogFileName[_MAX_PATH]; // Log file name with absolute path
     SLOGTRIGGER  m_sLogTrigger;      // The triggering condition
 
-    //SLOGADVSETTNGS m_sLogAdvStngs;
+    SLOGADVSETTNGS m_sLogAdvStngs;
 
     tagLogInfo();                    // Standard constructor
     void vClear(void);               // To clear the logging information

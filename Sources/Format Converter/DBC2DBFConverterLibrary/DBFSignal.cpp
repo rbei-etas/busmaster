@@ -398,8 +398,8 @@ int CSignal::Format(char* pcLine)
  */
 int CSignal::AddValueDescriptors(char* pcLine, fstream& fileInput)
 {
-    char acValue[300];
-    char acDesc[300];
+    char acValue[300] = "";
+    char acDesc[300] = "";;
     char acLine[defVTAB_MAX_LINE_LEN] = {'\0'};
     char* pcToken, *pcTok;
     bool true_end = true;

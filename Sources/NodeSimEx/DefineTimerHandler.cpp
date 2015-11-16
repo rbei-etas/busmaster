@@ -144,11 +144,10 @@ void CDefineTimerHandler::OnOK()
     {
         m_omEditTimerValue.GetWindowText( omStrTimerValue );
 
-        if (m_omEditTimerValue.lGetValue() < 1)
+        if (m_omEditTimerValue.lGetValue() < 1 || m_omEditTimerValue.lGetValue() > 60000)
         {
             bNoMoreTimer = TRUE;
-            AfxMessageBox("Please enter a value more than or equal\n\
-                          to 1 msec!", MB_OK|MB_ICONINFORMATION);
+            AfxMessageBox("Please enter a value within 1ms to 60000ms!", MB_OK|MB_ICONINFORMATION);
             m_omEditTimerValue.SetFocus();
         }
 

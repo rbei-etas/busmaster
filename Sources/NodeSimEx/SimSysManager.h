@@ -21,11 +21,8 @@
 #pragma once
 
 #include "SimSysNodeInfo.h"
-#include "SimSysDetView.h"
-#include "SimSysConfigDetails.h"
 #include "SimSysTreeView.h"
 #include "HashDefines.h"
-#include "Flags.h"
 #include "Utility/XMLUtils.h"
 #include "DataTypes\Cluster.h"
 
@@ -40,16 +37,12 @@ private:
     CSimSysNodeInfo m_ouSimSysNodeInfo;
     // Pointer to Simulated system List data structure
     PSSIMSYSARRAY m_psSimSysArray;
-    //Keeps the only detView object ptr
-    CSimSysDetView* m_pomSimSysDetView;
-    // Simulated system config objectpointer
-    CSimSysConfigDetails m_omSimSysConfig;
+    
     // Pointer to CSimSysTreeView object
     CSimSysTreeView* m_pomSimSysTreeView;
-    //POinter to Flags object
-    CFlags m_ouFlags;
+    
     //Add the file details while loading new configuration
-    void vLoadSimInfoFromConfiguration(CString omFileName);
+    void vLoadNodeInfoFromConfiguration(xmlNodePtr pNode);
 public:
     ~CSimSysManager(void);
     static CSimSysManager& ouGetSimSysManager(ETYPE_BUS eBus);
@@ -57,24 +50,12 @@ public:
     //This function is returning pointer to the only created CSimSysNodeInfo
     //object which is private variable so it can be changed later
     CSimSysNodeInfo* pomGetSimSysNodeInfo();
-    //Return
-    PSSIMSYSINFO psReturnSimsysInfoPtr();
-    //Set the det view object
-    void podSetSimSysDetView(CSimSysDetView* pDetView);
-    // Get pointer to CSimSysDetView class
-    CSimSysDetView* podGetSimSysDetView();
-
-    // Get pointer to CSimSysConfigDetails class
-    CSimSysConfigDetails* pomGetSimSysConfig();
-
     //Set the SimSysTreeView object
     void podSetSimSysTreeView(CSimSysTreeView* );
     // Get pointer to CSimSysTreeView class
     CSimSysTreeView* podGetSimSysTreeView();
     BOOL m_bFromAutomation;
 
-    //Get the flags object pointer
-    CFlags& ouGetFlags();
     //Load and store related functions
     UINT unGetStoreSIMFBufferSize();
     void SaveSIMDataIntoBuffer(BYTE* DesBuffer);
@@ -85,18 +66,18 @@ public:
     void vLoadSimSysWndConfig(xmlDocPtr, ETYPE_BUS eBus);
     void CopySIMDataFromBuffer(xmlDocPtr, ETYPE_BUS eBus);
 
-    void CopySIMDataFromBuffer(xmlNodePtr, ETYPE_BUS eBus);
+   /* HRESULT GenerateMakeFile(std::string strCppFile);
+    HRESULT GenerateMakeFile();*/
 
     void vSetConfigData(xmlNodePtr pNode);
     xmlNodePtr m_CopyJ1939SimNode;
     BOOL bIsConfigChanged();
 
-    void vApplicationClosing(bool bSave);
-    void vSaveAllSimSys();
-    void vInitailizeSimSysInfo();
-    void vSaveSimSys(CString omStrSimSysName);
 
     void vSetDatabaseConfiguration(ClusterConfig* ouLINConfig);
+    void bUpdateNodeInfoFile(PSNODELIST psNodeList);
+    void vInitailizeSimSysInfo();
+
 
     //Patch up for loading the simsys configuration
     CStringArray m_omSimsysInConfigFile;

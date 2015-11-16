@@ -101,7 +101,7 @@ void vProcessCurrErrorEntryLin(  const SERROR_INFO_LIN& EventInfo, DWORD dwClien
 void vProcessCurrErrorEntry(const SERROR_INFO& sErrInfo, DWORD dwClientId)
 {
     // Get the Error code
-    USHORT usErrorID;
+    USHORT usErrorID = ERROR_UNKNOWN;
     // Get the channel number
     CHAR nChannel = sErrInfo.m_ucChannel - 1;
     if( nChannel < 0 || nChannel >= defNO_OF_CHANNELS )
@@ -173,13 +173,13 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
         {
             case CAN:
             {
-                while (psNodeInfo->m_ouCanBufFSE.GetMsgCount() > 0)
+                while (psNodeInfo->m_ouCanBufFSE->GetMsgCount() > 0)
                 {
                     sCanData.m_ucDataType = RX_FLAG;
 
                     if(psNodeInfo != nullptr)
                     {
-                        INT Result = psNodeInfo->m_ouCanBufFSE.ReadFromBuffer(&sCanData);
+                        INT Result = psNodeInfo->m_ouCanBufFSE->ReadFromBuffer(&sCanData);
                         if (Result == ERR_READ_MEMORY_SHORT)
                         {
                             TRACE("ERR_READ_MEMORY_SHORT");
@@ -223,13 +223,13 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
             break;
             case J1939:
             {
-                while (psNodeInfo->m_ouMsgBufVSE.GetMsgCount() > 0)
+                while (psNodeInfo->m_ouMsgBufVSE->GetMsgCount() > 0)
                 {
                     static STJ1939_MSG sJ1939Msg;
                     static BYTE m_byTempData[MAX_MSG_LEN_J1939] = {0};
                     static int nType = 0;
                     int nSize = MAX_MSG_LEN_J1939;
-                    INT Result = psNodeInfo->m_ouMsgBufVSE.ReadFromBuffer(nType, m_byTempData, nSize);
+                    INT Result = psNodeInfo->m_ouMsgBufVSE->ReadFromBuffer(nType, m_byTempData, nSize);
                     if (Result == ERR_READ_MEMORY_SHORT)
                     {
                         TRACE("ERR_READ_MEMORY_SHORT");
@@ -246,10 +246,7 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                         sJ1939Msg.vSetDataStream(m_byTempData);
                         CExecuteFunc* pExecFunc = CExecuteManager::ouGetExecuteManager(psNodeInfo->m_eBus).
                                                   pouGetExecuteFunc(psNodeInfo->m_dwClientId);
-                        if ((pExecFunc != nullptr) && (pExecFunc->bGetFlagStatus(EXMSG_HANDLER) == TRUE))
-                        {
                             pExecFunc->vExecuteOnPGNHandler(&sJ1939Msg);
-                        }
 
                     }
                 }
@@ -257,13 +254,13 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
             break;
             case LIN:
             {
-                while (psNodeInfo->m_ouLinBufSE.GetMsgCount() > 0)
+                while (psNodeInfo->m_ouLinBufSE->GetMsgCount() > 0)
                 {
                     sLinData.m_ucDataType = RX_FLAG;
 
                     if(psNodeInfo != nullptr)
                     {
-                        INT Result = psNodeInfo->m_ouLinBufSE.ReadFromBuffer(&sLinData);
+                        INT Result = psNodeInfo->m_ouLinBufSE->ReadFromBuffer(&sLinData);
                         if (Result == ERR_READ_MEMORY_SHORT)
                         {
                             TRACE("ERR_READ_MEMORY_SHORT");
@@ -403,21 +400,30 @@ sNODEINFO::sNODEINFO(ETYPE_BUS eBus)
     m_eBus = eBus;
     m_byPrefAddress = ADDRESS_NULL;
     m_unEcuName     = 0x0;
-    m_ouCanBufFSE.vClearMessageBuffer();
     m_dwClientId = 0;
     m_omStrNodeName     = "";
-    m_omStrFileName     = "";
+    m_omStrCFileName     = "";
     m_omStrDllName      = "";
 
-    m_bIsDllLoaded      = FALSE;
+    m_bIsNodeEnabled      = TRUE;
 
-    m_bIsAllHandlersEnabled = FALSE;
-    m_bDllHandlersEnabled   = FALSE;
-    m_bTimerHandlersEnabled = FALSE;
-    m_bKeyHandlersEnabled   = FALSE;
-    m_bErrorHandlersEnabled = FALSE;
-    m_bEventHandlersEnabled = FALSE;
-    m_bMsgHandlersEnabled   = FALSE;
+    m_ouCanBufFSE = nullptr;
+    m_ouLinBufSE = nullptr;
+    m_ouMsgBufVSE = nullptr;
+    switch (m_eBus)
+    {
+        case CAN:
+            m_ouCanBufFSE = new CCANBufFSE();
+            break;
+        case LIN:
+            m_ouLinBufSE = new CLINBufFSE();
+            break;
+        case J1939:
+            m_ouMsgBufVSE = new CMsgBufVSE();
+            break;
+        default:
+            break;
+    }
 
     m_omStrArrayTimerHandlers.RemoveAll();
     m_omStrArrayKeyHandlers.RemoveAll();
@@ -428,26 +434,93 @@ sNODEINFO::sNODEINFO(ETYPE_BUS eBus)
     m_omStrArrayMsgIDandName.RemoveAll();
     m_omStrArrayMsgHandlers.RemoveAll();
     m_unChannel = 0;
+    m_ouLastDBChecksum = 0;
+    //Get Instance of class to monitor change in .cpp file.
+    m_pouDirectoryWatcher = CDirectoryWatcher::GetInstance();
 }
 
 sNODEINFO::~sNODEINFO()
 {
+    if ( nullptr != m_ouLinBufSE )
+    {
+        delete m_ouLinBufSE;
+        m_ouLinBufSE = nullptr;
+    }
+    if ( nullptr != m_ouMsgBufVSE )
+    {
+        delete m_ouMsgBufVSE;
+        m_ouMsgBufVSE = nullptr;
+    }
+    if ( nullptr != m_ouCanBufFSE )
+    {
+        delete m_ouCanBufFSE;
+        m_ouCanBufFSE = nullptr;
+    }
     m_ThreadProc.bTerminateThread();
+    RegisterFileToMonitor(std::string(m_omStrCFileName),false);
+    CDirectoryWatcher::ReleaseInstance();
+}
+
+sNODEINFO& sNODEINFO::operator=(const sNODEINFO& sobj)
+{
+    if (this == &sobj )
+    {
+        return *this;
+    }
+    this->m_ouCanBufFSE = sobj.m_ouCanBufFSE;
+    this->m_ouMsgBufVSE = sobj.m_ouMsgBufVSE;
+    this->m_ouLinBufSE = sobj.m_ouLinBufSE;
+    this->m_dwClientId = sobj.m_dwClientId;
+    this->m_byPrefAddress = sobj.m_byPrefAddress;
+    this->m_unEcuName = sobj.m_unEcuName;
+    this->m_ThreadProc = sobj.m_ThreadProc;
+    this->m_omStrNodeName = sobj.m_omStrNodeName;
+    this->m_omStrCFileName = sobj.m_omStrCFileName;
+    this->m_omStrDllName = sobj.m_omStrDllName;
+    this->m_hModuleHandle = sobj.m_hModuleHandle;
+    this->m_bIsNodeEnabled = sobj.m_bIsNodeEnabled;
+    this->m_eNodeState = sobj.m_eNodeState;
+    this->m_eNodeFileType = sobj.m_eNodeFileType;
+    this->m_unChannel = sobj.m_unChannel;
+    this->m_ouLastDBChecksum = sobj.m_ouLastDBChecksum;
+    this->m_omStrArrayTimerHandlers.RemoveAll();
+    this->m_omStrArrayTimerHandlers.Append( sobj.m_omStrArrayTimerHandlers);
+    this->m_omStrArrayKeyHandlers.RemoveAll();
+    this->m_omStrArrayKeyHandlers.Append(sobj.m_omStrArrayKeyHandlers);
+    this->m_omStrArrayMsgHandlers.RemoveAll();
+    this->m_omStrArrayMsgHandlers.Append(sobj.m_omStrArrayMsgHandlers);
+    this->m_omStrArrayErrorHandlers.RemoveAll();
+    this->m_omStrArrayErrorHandlers.Append(sobj.m_omStrArrayErrorHandlers);
+    this->m_omStrArrayEventHandlers.RemoveAll();
+    this->m_omStrArrayEventHandlers.Append(sobj.m_omStrArrayEventHandlers);
+    this->m_omStrArrayDLLHandlers.RemoveAll();
+    this->m_omStrArrayDLLHandlers.Append(sobj.m_omStrArrayDLLHandlers);
+    this->m_omStrArrayMsgRange.RemoveAll();
+    this->m_omStrArrayMsgRange.Append(sobj.m_omStrArrayMsgRange);
+    this->m_omStrArrayMsgIDandName.RemoveAll();
+    this->m_omStrArrayMsgIDandName.Append(sobj.m_omStrArrayMsgIDandName);
+    this->m_eBus = sobj.m_eBus;
+    return *this;
+}
+sNODEINFO::sNODEINFO ( const sNODEINFO& sobj)
+{
+    
+    *this = sobj;
 }
 BOOL sNODEINFO::bStartThreadProc()
 {
     if (m_eBus == CAN)
     {
-        m_ThreadProc.m_hActionEvent = m_ouCanBufFSE.hGetNotifyingEvent();
+        m_ThreadProc.m_hActionEvent = m_ouCanBufFSE->hGetNotifyingEvent();
     }
     else if ( m_eBus == LIN )
     {
-        m_ThreadProc.m_hActionEvent = m_ouLinBufSE.hGetNotifyingEvent();
+        m_ThreadProc.m_hActionEvent = m_ouLinBufSE->hGetNotifyingEvent();
     }
 
     else //For any other bus
     {
-        m_ThreadProc.m_hActionEvent = m_ouMsgBufVSE.hGetNotifyingEvent();
+        m_ThreadProc.m_hActionEvent = m_ouMsgBufVSE->hGetNotifyingEvent();
     }
     m_ThreadProc.m_unActionCode = INVOKE_FUNCTION;
     m_ThreadProc.m_pBuffer = this;
@@ -456,6 +529,43 @@ BOOL sNODEINFO::bStartThreadProc()
 BOOL sNODEINFO::bTerminateThreadProc()
 {
     return m_ThreadProc.bTerminateThread();
+}
+
+HRESULT sNODEINFO::RegisterFileToMonitor(std::string strFileName,bool bRegister)
+{
+    //Extract Directory
+    HRESULT hResult = PathFileExists(strFileName.c_str());
+    if(TRUE == hResult)
+    {
+        char acDirPath[MAX_PATH] = "";
+        strcpy(acDirPath, strFileName.c_str());
+        PathRemoveFileSpec(acDirPath);
+        CString omstrDirPath = acDirPath;
+
+        hResult == PathIsDirectory(omstrDirPath);
+        if(TRUE == hResult)
+        {
+            if(true == bRegister)
+            {
+                hResult = m_pouDirectoryWatcher->AddDirectoryWatch(std::string(omstrDirPath),this);
+            }
+            else
+            {
+                hResult = m_pouDirectoryWatcher->RemoveDirectoryWatch(std::string(omstrDirPath),this);
+            }
+        }
+    }
+    return hResult;
+}
+void sNODEINFO::OnFileChanged(const std::string strFileName,DWORD dwAction)
+{
+    if(0 == strFileName.compare(m_omStrCFileName))
+    {
+        if(FILE_ACTION_MODIFIED == dwAction)
+        {
+            m_eNodeState = NODE_NOT_BUILT;
+        }
+    }
 }
 
 //SNODEINFO ENDS
@@ -478,8 +588,8 @@ Function Name    :  CSimSysNodeInfo
 CSimSysNodeInfo::CSimSysNodeInfo(ETYPE_BUS eBus)
 {
     m_eBus          = eBus;
-    m_psSimSysInfo  = nullptr;
-
+    m_psNodesList = nullptr;
+    m_unNumberOfNodesAdded = 0;
 }
 /******************************************************************************
 Function Name    :  ~CSimSysNodeInfo
@@ -498,53 +608,8 @@ CSimSysNodeInfo::~CSimSysNodeInfo()
 {
 
 }
-/******************************************************************************/
-/*  Function Name    :  psReturnSimsysInfoListPtr
-/*  Input(s)         :
-/*  Output           :  PSSIMSYSINFO
-/*  Functionality    :  This method return the message block pointer
-/*  Member of        :  CSimSysConfigDetails
-/*  Friend of        :      -
-/*
-/*  Author(s)        :  Anish
-/*  Date Created     :
-/*  Modifications on :
-/******************************************************************************/
-PSSIMSYSINFO CSimSysNodeInfo::psReturnSimsysInfoListPtr()
-{
-    return m_psSimSysInfo;
-}
 
 
-/******************************************************************************
-Function Name    :  vGetActiveNodeNames
-Input(s)         :  CString omStrSimSysName , CStringArray &omStrListSimsys
-Output           :  CStringArray &omStrActiveNodeList
-Functionality    :  Fills the list with all node names whose dlls are loaded
-                    under a simulated system
-Member of        :  CSimSysNodeInfo
-Friend of        :      -
-Author(s)        :
-Date Created     :
-Modifications    :
-******************************************************************************/
-void CSimSysNodeInfo::vGetActiveNodeNames( CString omStrSimSysName,
-        CStringArray& omStrActiveNodeList)
-{
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != nullptr)
-    {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
-            {
-                omStrActiveNodeList.Add(pTempNode->m_sNodeInfo.m_omStrNodeName);
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-    }
-}
 
 /******************************************************************************
 Function Name    :  bIsDuplicateDllName
@@ -562,19 +627,14 @@ BOOL CSimSysNodeInfo::bIsDuplicateDllName( CString omStrDllName)
     BOOL bDllPresent = FALSE;
     if (!omStrDllName.IsEmpty())
     {
-        PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-        while((pTempSimsys != nullptr)  && (!bDllPresent))
+        PSNODELIST pTempNode = m_psNodesList;
+        while((pTempNode != nullptr) && (!bDllPresent))
         {
-            PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while((pTempNode != nullptr) && (!bDllPresent))
+            if( (pTempNode->m_sNodeInfo.m_omStrDllName.CompareNoCase(omStrDllName) == 0 ))
             {
-                if( (pTempNode->m_sNodeInfo.m_omStrDllName.CompareNoCase(omStrDllName) == 0 ))
-                {
-                    bDllPresent = TRUE;
-                }
-                pTempNode = pTempNode->m_psNextNode;
+                bDllPresent = TRUE;
             }
-            pTempSimsys = pTempSimsys->m_psSimsysNext;
+            pTempNode = pTempNode->m_psNextNode;
         }
     }
     return bDllPresent;
@@ -594,58 +654,48 @@ Author(s)        :  Anish Kr
 Date Created     :
 Modifications    :
 ******************************************************************************/
-BOOL CSimSysNodeInfo::bIsDuplicateCFile(CString& omStrCfile)
+BOOL CSimSysNodeInfo::bIsDuplicateCFile(CString omStrCfile)
 {
     BOOL bCFilePresent = FALSE;
     if (!omStrCfile.IsEmpty())
     {
-        PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-        while((pTempSimsys != nullptr)  && (!bCFilePresent))
+        PSNODELIST pTempNode = m_psNodesList;
+        while((pTempNode != nullptr) && (!bCFilePresent))
         {
-            PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while((pTempNode != nullptr) && (!bCFilePresent))
+            if( (pTempNode->m_sNodeInfo.m_omStrCFileName.CompareNoCase(omStrCfile) == 0 ))
             {
-                if( (pTempNode->m_sNodeInfo.m_omStrFileName.CompareNoCase(omStrCfile) == 0 ))
-                {
-                    bCFilePresent = TRUE;
-                }
-                pTempNode = pTempNode->m_psNextNode;
+                bCFilePresent = TRUE;
             }
-            pTempSimsys = pTempSimsys->m_psSimsysNext;
+            pTempNode = pTempNode->m_psNextNode;
         }
     }
     return bCFilePresent;
 }
 /******************************************************************************
 Function Name    :  bIsDuplicateNode
-Input(s)         :  CString& omStrSimSysName ,CString omStrNodeName
+Input(s)         :  CString omStrNodeName
 Output           :  BOOL
-Functionality    :  Returns TRUE if the node is already associated with a simulated
-                    system else FALSE
+Functionality    :  Returns TRUE if the node is already present in NodeList.
 Member of        :  CSimSysNodeInfo
 Friend of        :      -
 Author(s)        :  Anish Kr
 Date Created     :
-Modifications    :
+Modification     :  Robin G.K.
+                    23.10.14, Removed unused sSIMSYSINFO structure.
 ******************************************************************************/
 BOOL CSimSysNodeInfo::bIsDuplicateNode( CString omStrNodeName)
 {
     BOOL bNodePresent = FALSE;
     if (!omStrNodeName.IsEmpty())
     {
-        PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-        while((pTempSimsys != nullptr)  && (!bNodePresent))
+        PSNODELIST pTempNode = m_psNodesList;
+        while((pTempNode != nullptr) && (!bNodePresent))
         {
-            PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while((pTempNode != nullptr) && (!bNodePresent))
+            if( (pTempNode->m_sNodeInfo.m_omStrNodeName.CompareNoCase(omStrNodeName) == 0 ))
             {
-                if( (pTempNode->m_sNodeInfo.m_omStrNodeName.CompareNoCase(omStrNodeName) == 0 ))
-                {
-                    bNodePresent = TRUE;
-                }
-                pTempNode = pTempNode->m_psNextNode;
+                bNodePresent = TRUE;
             }
-            pTempSimsys = pTempSimsys->m_psSimsysNext;
+            pTempNode = pTempNode->m_psNextNode;
         }
     }
     return bNodePresent;
@@ -665,22 +715,20 @@ Modifications    :
 ******************************************************************************/
 BOOL CSimSysNodeInfo::bIsDuplicateEcuName( UINT64 un64EcuName)
 {
-    BOOL bNodePresent = FALSE;
-    PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    while((pTempSimsys != nullptr)  && (!bNodePresent))
+    BOOL bIsDuplicateECUName = FALSE;
+    PSNODELIST pTempNode = m_psNodesList;
+    while(pTempNode != nullptr)
     {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while((pTempNode != nullptr) && (!bNodePresent))
+        if(pTempNode->m_sNodeInfo.m_unEcuName == un64EcuName &&
+                !bIsDuplicateECUName)
         {
-            if(pTempNode->m_sNodeInfo.m_unEcuName == un64EcuName)
-            {
-                bNodePresent = TRUE;
-            }
-            pTempNode = pTempNode->m_psNextNode;
+            bIsDuplicateECUName = TRUE;
+            break;
         }
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
+        pTempNode = pTempNode->m_psNextNode;
     }
-    return bNodePresent;
+
+    return bIsDuplicateECUName;
 }
 /******************************************************************************
 Function Name    :  bIsDuplicateAddress
@@ -695,22 +743,20 @@ Modifications    :
 ******************************************************************************/
 BOOL CSimSysNodeInfo::bIsDuplicateAddress( BYTE byAddress)
 {
-    BOOL bNodePresent = FALSE;
-    PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    while((pTempSimsys != nullptr)  && (!bNodePresent))
+    BOOL bIsDuplicateAddress = FALSE;
+    PSNODELIST pTempNode = m_psNodesList;
+    while(pTempNode != nullptr)
     {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while((pTempNode != nullptr) && (!bNodePresent))
+        if(pTempNode->m_sNodeInfo.m_byPrefAddress == byAddress &&
+                !bIsDuplicateAddress)
         {
-            if(pTempNode->m_sNodeInfo.m_byPrefAddress == byAddress)
-            {
-                bNodePresent = TRUE;
-            }
-            pTempNode = pTempNode->m_psNextNode;
+            bIsDuplicateAddress = TRUE;
+            break;
         }
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
+        pTempNode = pTempNode->m_psNextNode;
     }
-    return bNodePresent;
+
+    return bIsDuplicateAddress;
 }
 /******************************************************************************
 Function Name    :  bIsBuildAllValid
@@ -726,33 +772,23 @@ Author(s)        :  Harika M
 Date Created     :  17.1.2006
 Modifications    :
 ******************************************************************************/
-BOOL CSimSysNodeInfo::bIsBuildAllValid(CString omStrSimSysName)
+BOOL CSimSysNodeInfo::bIsBuildAllNodesValid()
 {
-    BOOL bIsBuildValid = FALSE;
-    PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    // when any sim sys name is specified.  or
-    // when no sim sys name is specified , check for all the sim sys
-    while(pTempSimsys != nullptr)
+    BOOL bIsBuildAllValid = FALSE;
+    PSNODELIST pTempNode = m_psNodesList;
+    while(pTempNode != nullptr)
     {
-        if((pTempSimsys->m_omStrSimSysName == omStrSimSysName)
-                || (omStrSimSysName == "" ))
+        if(!pTempNode->m_sNodeInfo.m_omStrCFileName.IsEmpty() &&
+                pTempNode->m_sNodeInfo.m_bIsNodeEnabled == true &&
+                !bIsBuildAllValid)
         {
-            PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != nullptr)
-            {
-                if((pTempNode->m_sNodeInfo.m_omStrFileName != "") &&
-                        (!bIsBuildValid))
-                {
-                    bIsBuildValid = TRUE;
-                    return bIsBuildValid;
-                }
-                pTempNode = pTempNode->m_psNextNode;
-            }
+            bIsBuildAllValid = TRUE;
+            break;
         }
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
+        pTempNode = pTempNode->m_psNextNode;
     }
 
-    return bIsBuildValid;
+    return bIsBuildAllValid;
 }
 
 
@@ -770,35 +806,23 @@ Author(s)        :  Harika M
 Date Created     :  17.1.2006
 Modifications    :
 ******************************************************************************/
-BOOL CSimSysNodeInfo::bIsLoadAllValid(CString omStrSimSysName)
+BOOL CSimSysNodeInfo::bIsEnableAllNodesValid()
 {
-    BOOL bIsLoadValid = FALSE;
-    PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    // when any sim sys name is specified.  or
-    // when no sim sys name is specified , check for all the sim sys
-    while(pTempSimsys != nullptr)
-    {
-        if((pTempSimsys->m_omStrSimSysName == omStrSimSysName) ||
-                (omStrSimSysName == "" ))
-        {
-            PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != nullptr)
-            {
-                if((pTempNode->m_sNodeInfo.m_omStrDllName != "") &&
-                        (!bIsLoadValid))// if any dll is present
-                {
-                    bIsLoadValid = TRUE;
-                    return bIsLoadValid;
-                }
-                pTempNode = pTempNode->m_psNextNode;
-            }
-            bIsLoadValid = FALSE; // no node present, so LoadAll invalid
+    BOOL bIsEnableAllValid = FALSE;
+    PSNODELIST pTempNode = m_psNodesList;
 
+    while(pTempNode != nullptr)
+    {
+        if(pTempNode->m_sNodeInfo.m_bIsNodeEnabled == FALSE &&
+                !bIsEnableAllValid)// if any node is disabled.
+        {
+            bIsEnableAllValid = TRUE;
+            break;
         }
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
+        pTempNode = pTempNode->m_psNextNode;
     }
 
-    return bIsLoadValid;
+    return bIsEnableAllValid;
 }
 
 
@@ -815,210 +839,61 @@ Author(s)        :  Harika M
 Date Created     :  17.1.2006
 Modifications    :
 ******************************************************************************/
-BOOL CSimSysNodeInfo::bIsUnLoadAllValid(CString omStrSimSysName)
+BOOL CSimSysNodeInfo::bIsDisableAllNodesValid()
 {
-    BOOL bIsUnLoadValid = FALSE;
-    PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
+    BOOL bIsDisableAllValid = FALSE;
+    PSNODELIST pTempNode = m_psNodesList;
 
-    while(pTempSimsys != nullptr)
+    while(pTempNode != nullptr)
     {
-        if((pTempSimsys->m_omStrSimSysName == omStrSimSysName)
-                || (omStrSimSysName == "" ))
+        if(pTempNode->m_sNodeInfo.m_bIsNodeEnabled == TRUE &&
+                !bIsDisableAllValid)// if any node is enabled.
         {
-            PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != nullptr)
-            {
-                if((pTempNode->m_sNodeInfo.m_omStrDllName != "") &&
-                        (!bIsUnLoadValid)) // if any dll is present
-                {
-                    if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)   // if any dll is loaded
-                    {
-                        bIsUnLoadValid = TRUE;
-                        return bIsUnLoadValid;
-                    }
-
-                }
-
-                pTempNode = pTempNode->m_psNextNode;
-            }
-            bIsUnLoadValid = FALSE; // no node present, so UnLoadAll invalid
-
+            bIsDisableAllValid = TRUE;
+            break;
         }
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
-    }
-    return bIsUnLoadValid;
-}
-
-/******************************************************************************
-Function Name    :  psGetSimSysPointer
-Input(s)         :  CString omStrSimSysName
-Output           :  PSSIMSYSINFO
-Functionality    :  Returns associted sim sys pointer if found, otherwise
-nullptr.
-Member of        :  CSimSysNodeInfo
-Friend of        :      -
-Author(s)        :  Harika M
-Date Created     :  03.01.06
-Modifications    :
-******************************************************************************/
-
-PSSIMSYSINFO CSimSysNodeInfo::psGetSimSysPointer( CString omStrSimSysName)
-{
-    PSSIMSYSINFO psSelectedSimSys = nullptr;
-
-    psSelectedSimSys = m_psSimSysInfo;
-
-    while(psSelectedSimSys != nullptr)
-    {
-        if(psSelectedSimSys->m_omStrSimSysName == omStrSimSysName)
-        {
-            return psSelectedSimSys;
-        }
-        psSelectedSimSys = psSelectedSimSys->m_psSimsysNext;
+        pTempNode = pTempNode->m_psNextNode;
     }
 
-    return nullptr;   // if the simsys is not present.
+    return bIsDisableAllValid;
 }
+
 
 
 /******************************************************************************
 Function Name    :  psGetSimSysNodePointer
-Input(s)         :  CString& omStrSimsysName, CString& omStrNodeName
-Output           :  PSSIMSYSINFO
-Functionality    :  Returns node ptr for the given simulated system name
+Input(s)         :  CString omStrNodeName
+Output           :  PSNODEINFO
+Functionality    :  Returns node ptr for the given Node name.
 if found, otherwise
 nullptr.
 Member of        :  CSimSysNodeInfo
 Friend of        :      -
-Author(s)        :  Anish Kr
-Date Created     :
+Author(s)        :  Robin G.K.
+Date Created     :  23.10.14
 Modifications    :
 ******************************************************************************/
-PSNODEINFO CSimSysNodeInfo::psGetSimSysNodePointer(CString omStrSimsysName,
-        CString omStrNodeName)
+PSNODEINFO CSimSysNodeInfo::psGetSimSysNodePointer(CString omStrNodeName)
 {
     PSNODEINFO psNodeInfo = nullptr;
     if ( !omStrNodeName.IsEmpty() )
     {
-        //If simsys name is provided then searcch from through that
-        if ( !omStrSimsysName.IsEmpty())
+
+        PSNODELIST pTempNode = m_psNodesList;
+        while(pTempNode != nullptr)
         {
-            PSSIMSYSINFO pTempSimsysInfo = psGetSimSysPointer(omStrSimsysName);
-            if(pTempSimsysInfo != nullptr)
+            if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
             {
-                PSNODELIST pTempNode = pTempSimsysInfo->m_psNodesList;
-                while(pTempNode != nullptr)
-                {
-                    if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
-                    {
-                        psNodeInfo =  &(pTempNode->m_sNodeInfo);
-                    }
-                    pTempNode = pTempNode->m_psNextNode;
-                }
+                psNodeInfo =  &(pTempNode->m_sNodeInfo);
             }
+            pTempNode = pTempNode->m_psNextNode;
         }
-        else
-        {
-            //Else search in all simulated systems
-            //This is for execute func object calls where simsys name is not known
-            BOOL bFound = FALSE;
-            PSSIMSYSINFO pTempSimsysInfo = m_psSimSysInfo;
-            while((pTempSimsysInfo != nullptr) && (!bFound))
-            {
-                PSNODELIST pTempNode = pTempSimsysInfo->m_psNodesList;
-                while((pTempNode != nullptr) && (!bFound))
-                {
-                    if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
-                    {
-                        psNodeInfo =  &(pTempNode->m_sNodeInfo);
-                        bFound = TRUE;
-                    }
-                    pTempNode = pTempNode->m_psNextNode;
-                }
-                pTempSimsysInfo = pTempSimsysInfo->m_psSimsysNext;
-            }
-        }
+
     }
-    return psNodeInfo;   // if the node is not present or the simsys is not present
+    return psNodeInfo;
 }
 
 
-/******************************************************************************
-Function Name    :  bDeleteSimsysFromInfo
-Input(s)         :
-Output           :  CString omStrSimSysname
-Functionality    :  Deletes Simulated system from the datastructure if input is nullptr
-                    then deletes all the simulated systems
-Member of        :  CSimSysNodeInfo
-Friend of        :      -
-Author(s)        :  Harika M
-Date Created     :  03.01.06
-Modifications    :
-******************************************************************************/
-BOOL CSimSysNodeInfo::bDeleteSimsysFromInfo( CString omStrSimSysname )
-{
-    BOOL bReturnValue = TRUE;
-    if (omStrSimSysname == "")
-    {
-        // to delete all the Simulated systems
-
-        // Temporary list
-        PSSIMSYSINFO pNext = nullptr; //
-        PSSIMSYSINFO pPrev = nullptr; // previous list
-        pPrev = m_psSimSysInfo;
-        while(pPrev != nullptr)
-        {
-            // First delete all the nodes under each sim sys
-            bDeleteNodeFromSimSys(pPrev->m_omStrSimSysName , "" );
-            pPrev = pPrev->m_psSimsysNext;
-        }
-        //Now dalete all the simsysinfo pointers
-        pPrev = m_psSimSysInfo;
-        while(pPrev != nullptr)
-        {
-            pNext = pPrev->m_psSimsysNext;
-            CExecuteManager::ouGetExecuteManager(m_eBus).vDeleteAllNode();
-            delete pPrev;
-            pPrev = pNext;
-        }
-        m_psSimSysInfo = pPrev = nullptr;
-    }
-
-    else
-    {
-        bReturnValue = FALSE;
-        // Temporary list
-        PSSIMSYSINFO pCurr = nullptr; //
-        PSSIMSYSINFO pPrev = nullptr; // previous list
-        pCurr = m_psSimSysInfo;
-        //If first node
-        if( pCurr->m_omStrSimSysName == omStrSimSysname)
-        {
-            bDeleteNodeFromSimSys(pCurr->m_omStrSimSysName , "" );
-            m_psSimSysInfo = pCurr->m_psSimsysNext;
-            delete pCurr;
-            bReturnValue = TRUE;
-        }
-        else
-        {
-            //If other node go through the list
-            pPrev = pCurr;
-            while((pCurr != nullptr) && (!bReturnValue))
-            {
-                if(pCurr->m_omStrSimSysName == omStrSimSysname)
-                {
-                    pPrev->m_psSimsysNext = pCurr->m_psSimsysNext;
-                    bDeleteNodeFromSimSys(pCurr->m_omStrSimSysName , "" );
-                    delete pCurr;
-                    bReturnValue = TRUE;
-                }
-                pPrev = pCurr;
-                pCurr = pCurr->m_psSimsysNext;
-            }
-        }
-    }
-    return bReturnValue;
-}
 
 /******************************************************************************
 Function Name    :  bDeleteNodeFromSimSys
@@ -1032,1149 +907,70 @@ Author(s)        :  Anish Kr.
 Date Created     :
 Modifications    :
 ******************************************************************************/
-BOOL CSimSysNodeInfo::bDeleteNodeFromSimSys(CString& omStrSimsysName,
-        CString omStrNodeToBeDeleted)
+BOOL CSimSysNodeInfo::bDeleteNodeFromSimSys(CString omStrNodeToBeDeleted)
 {
     BOOL bReturnValue = FALSE;
-    PSSIMSYSINFO pTempSimSys = psGetSimSysPointer(omStrSimsysName);
-    //if simsys is present
-    if(pTempSimSys != nullptr)
-    {
-        //If the simsys is found get the nodelist pointer
-        PSNODELIST pTempNodeList = pTempSimSys->m_psNodesList;
-        //For delete all nodes
-        if (omStrNodeToBeDeleted== "")
-        {
-            PSNODELIST pTemp;
-            while(pTempNodeList != nullptr )
-            {
-                pTemp = pTempNodeList;
-                pTempNodeList = pTempNodeList->m_psNextNode;
-                CGlobalObj::ouGetObj(m_eBus).RegisterNodeToDIL(FALSE, &(pTemp->m_sNodeInfo));
-                delete pTemp;
-            }
-            bReturnValue = TRUE;
-            //If all nodes are deleted initialize it
-            pTempSimSys->m_psNodesList = nullptr;
-            pTempSimSys->m_unNumberOfNodesAdded = 0;
-        }
-        else
-        {
-            PSNODELIST pCurr = pTempNodeList;
-            PSNODELIST pPrev = pTempNodeList;
-            if(pTempNodeList->m_sNodeInfo.m_omStrNodeName == omStrNodeToBeDeleted)
-            {
-                //If first node to be deleted
-                pTempNodeList = pTempNodeList->m_psNextNode;
-                CGlobalObj::ouGetObj(m_eBus).RegisterNodeToDIL(FALSE, &(pCurr->m_sNodeInfo));
-                delete pCurr;
-                //one node is deleted
-                pTempSimSys->m_psNodesList = pTempNodeList;
-                pTempSimSys->m_unNumberOfNodesAdded -= 1;
-                bReturnValue = TRUE;
-            }
-            else
-            {
-                BOOL bFound = FALSE;
-                while( pCurr != nullptr && bFound == FALSE)
-                {
-                    if(pCurr->m_sNodeInfo.m_omStrNodeName == omStrNodeToBeDeleted)
-                    {
-                        pPrev->m_psNextNode = pCurr->m_psNextNode;
-                        CGlobalObj::ouGetObj(m_eBus).RegisterNodeToDIL(FALSE, &(pCurr->m_sNodeInfo));
-                        delete pCurr;
-                        pTempSimSys->m_unNumberOfNodesAdded -= 1;
-                        bFound = TRUE;
-                        bReturnValue = TRUE;
-                    }
-                    else
-                    {
-                        pPrev = pCurr;
-                        pCurr = pCurr->m_psNextNode;
-                    }
-                }
-            }
-        }
-    }
 
-    return bReturnValue;
 
-}
-/******************************************************************************/
-/*  Function Name    :  bAddNewSimSysInfo
-/*                                                                            */
-/*  Input(s)         :  CString omStrPathname                                 */
-/*                                                                            */
-/*  Output           :  TRUE : if the method succeeds                         */
-/*                      FALSE : if memory allocation fails                    */
-/*                                                                            */
-/*  Functionality    :  This method sets the information from the input       */
-/*                      structure into the data member. This updates the      */
-/*                      information.                                          */
-/*                                                                            */
-/*  Member of        :  CSimSysNodeInfo                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Anish
-/*  Date Created     :
-/*  Modifications By :
-/******************************************************************************/
-BOOL CSimSysNodeInfo::bAddNewSimSysInfo(CString omStrPathname)
-{
-    BOOL bMemoryError = FALSE;
-    PSSIMSYSINFO psNewSimsys = new sSIMSYSINFO;
-    if(psNewSimsys)
+    //If the simsys is found get the nodelist pointer
+    PSNODELIST pTempNodeList = m_psNodesList;
+    //For delete all nodes
+    if (omStrNodeToBeDeleted== "")
     {
-        psNewSimsys->m_omStrSimSysName = omStrPathname;
-        vAddSimSys(psNewSimsys);
-        //Now save the file with new simsysinfo detail
-        CSimSysConfigDetails* pSimsysConfig =
-            CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysConfig();
-        if (pSimsysConfig != nullptr)
+        PSNODELIST pTemp;
+        while(pTempNodeList != nullptr )
         {
-            pSimsysConfig->nSaveConfiguration(omStrPathname, psNewSimsys);
+            pTemp = pTempNodeList;
+            pTempNodeList = pTempNodeList->m_psNextNode;
+            CGlobalObj::ouGetObj(m_eBus).RegisterNodeToDIL(FALSE, &(pTemp->m_sNodeInfo));
+            delete pTemp;
         }
+        bReturnValue = TRUE;
+        //If all nodes are deleted initialize it
+        m_psNodesList = nullptr;
+        m_unNumberOfNodesAdded = 0;
     }
     else
     {
-        bMemoryError = TRUE;
-        AfxMessageBox( MSG_MEMORY_CONSTRAINT, MB_OK|MB_ICONINFORMATION);
-    }
-    return bMemoryError;
-}
-
-/******************************************************************************
-Function Name    :  unGetNumberOfSimSys
-Input(s)         :
-Output           :  UINT
-Functionality    :  Returns number of sim sys in the structure.
-Member of        :  CSimSysNodeInfo
-Friend of        :      -
-Author(s)        :  Harika M
-Date Created     :  03.01.06
-Modifications    :
-******************************************************************************/
-UINT CSimSysNodeInfo::unGetNumberOfSimSys()
-{
-    UINT unSimSysCount = 0;
-    PSSIMSYSINFO pTempSimSys = m_psSimSysInfo;
-    while (pTempSimSys != nullptr)
-    {
-        unSimSysCount++;
-        pTempSimSys = pTempSimSys->m_psSimsysNext;
-    }
-    return unSimSysCount;
-}
-
-
-/******************************************************************************/
-/*  Function Name    :  vSetEnableAllSimSysHandlers                           */
-/*                                                                            */
-/*  Input(s)         :  CString &omStrSimSysName                              */
-/*                        BOOL bIsEnabled                                     */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will enable the m_bIsAllHandlersEnabled
-/*                      member and also enables all the handler members
-/*                      of all the nodes present under the sim sys
-/*  Member of        :  CSimSysNodeInfo                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  19.01.2006                                            */
-/*  Modification     :                                                        */
-/******************************************************************************/
-void CSimSysNodeInfo::vSetEnableAllSimSysHandlers(CString omStrSimSysName, BOOL bIsEnabled )
-{
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if(pTempSimsys != nullptr)
-    {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
+        PSNODELIST pCurr = pTempNodeList;
+        PSNODELIST pPrev = pTempNodeList;
+        if(pTempNodeList->m_sNodeInfo.m_omStrNodeName == omStrNodeToBeDeleted)
         {
-            if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
+            //If first node to be deleted
+            pTempNodeList = pTempNodeList->m_psNextNode;
+            CGlobalObj::ouGetObj(m_eBus).RegisterNodeToDIL(FALSE, &(pCurr->m_sNodeInfo));
+            delete pCurr;
+            //one node is deleted
+            m_psNodesList = pTempNodeList;
+            m_unNumberOfNodesAdded -= 1;
+            bReturnValue = TRUE;
+        }
+        else
+        {
+            BOOL bFound = FALSE;
+            while( pCurr != nullptr && bFound == FALSE)
             {
-                CExecuteManager::ouGetExecuteManager(m_eBus).vEnableDisableNodeHandlers(
-                    &pTempNode->m_sNodeInfo , bIsEnabled);
-
-                pTempNode->m_sNodeInfo.m_bIsAllHandlersEnabled = bIsEnabled;
-
-                // Set all handlers are enbled in all the nodes under the sim sys
-                pTempNode->m_sNodeInfo.m_bDllHandlersEnabled = bIsEnabled;
-                pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = bIsEnabled;
-                pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled = bIsEnabled;
-                pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled = bIsEnabled;
-                pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled = bIsEnabled;
-                if (pTempNode->m_eBus == J1939)
+                if(pCurr->m_sNodeInfo.m_omStrNodeName == omStrNodeToBeDeleted)
                 {
-                    pTempNode->m_sNodeInfo.m_bEventHandlersEnabled = bIsEnabled;
-                }
-            }
-
-            pTempNode = pTempNode->m_psNextNode;
-        }
-    }
-
-
-}
-/******************************************************************************
-Function Name    :  bReturnAllHandlersStatus
-Input(s)         :  CString &omStrSimSysName
-Output           :  BOOL
-Functionality    :  Returns TRUE if all the handlers are enabled for a
-                    given simulated system else FALSE
-Member of        :  CSimSysNodeInfo
-Friend of        :      -
-Author(s)        :  Harika M
-Date Created     :  19.01.2006
-Modifications    :
-******************************************************************************/
-BOOL CSimSysNodeInfo::bReturnAllHandlersStatus(CString& omStrSimSysName)
-{
-    BOOL bIsEnabled = FALSE;
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if(pTempSimsys != nullptr )
-    {
-        UINT nActiveNodeCount = 0;
-        UINT nNoOfEnabledHan = 0;
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_bIsAllHandlersEnabled == TRUE)
-            {
-                // if all the handlers are enabled of atleast 1 node
-                // bIsEnabled = TRUE;
-                nNoOfEnabledHan++;
-            }
-            if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
-            {
-                nActiveNodeCount++;
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-        if(( nNoOfEnabledHan <= nActiveNodeCount) && (nNoOfEnabledHan != 0))
-        {
-            //If no. of node with enabled handler state is less than
-            //no. of node having dll loaded as well as
-            bIsEnabled = TRUE;
-        }
-    }
-    return bIsEnabled;
-}
-/******************************************************************************/
-/*  Function Name    :  vSetEnableAllSimSysKeyHandlers                        */
-/*                                                                            */
-/*  Input(s)         :  CString &omStrSimSysName                              */
-/*                        BOOL bIsEnabled                                     */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will enable the m_bKeyHandlersEnabled
-/*                      member of all the nodes present under the sim sys.
-/*  Member of        :  CSimSysNodeInfo                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  19.01.2006                                            */
-/*  Modification     :                                                        */
-/******************************************************************************/
-void CSimSysNodeInfo::vSetEnableAllSimSysKeyHandlers(CString& omStrSimSysName
-        , BOOL bIsEnabled)
-{
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if(pTempSimsys != nullptr)
-    {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
-            {
-                CExecuteManager::ouGetExecuteManager(m_eBus).vEnableNodeKeyHandler(
-                    &pTempNode->m_sNodeInfo , bIsEnabled);
-                // Set all handlers are enbled in all the nodes under the sim sys
-
-                pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled = bIsEnabled;
-
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-    }
-}
-/******************************************************************************
-Function Name    :  bReturnAllKeyHandlersStatus
-Input(s)         :  CString &omStrSimSysName
-Output           :  BOOL
-Functionality    :  Returns TRUE if all the key handlers are enabled for a
-                    given simulated system else FALSE
-Member of        :  CSimSysNodeInfo
-Friend of        :      -
-Author(s)        :  Harika M
-Date Created     :  19.01.2006
-Modifications    :
-******************************************************************************/
-BOOL CSimSysNodeInfo::bReturnAllKeyHandlersStatus(CString& omStrSimSysName)
-{
-    BOOL bIsEnabled = FALSE;
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if(pTempSimsys != nullptr )
-    {
-        UINT nNoOfEnabledHan = 0;
-        UINT nActiveNodeCount = 0;
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled == TRUE)
-            {
-                // if all the key handlers are enabled
-                nNoOfEnabledHan++;
-            }
-            if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
-            {
-                nActiveNodeCount++;
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-        if(( nNoOfEnabledHan <= nActiveNodeCount) && (nNoOfEnabledHan != 0))
-        {
-            bIsEnabled = TRUE;
-            // return bIsEnabled;
-        }
-    }
-    return bIsEnabled;
-}
-
-/******************************************************************************/
-/*  Function Name    :  vSetEnableAllSimSysMsgHandlers                        */
-/*                                                                            */
-/*  Input(s)         :  CString &omStrSimSysName                              */
-/*                        BOOL bIsEnabled                                     */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will enable the m_bMsgHandlersEnabled
-/*                      member of all the nodes present under the sim sys.
-/*  Member of        :  CSimSysNodeInfo                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  19.01.2006                                            */
-/*  Modification     :                                                        */
-/******************************************************************************/
-void CSimSysNodeInfo::vSetEnableAllSimSysMsgHandlers(CString& omStrSimSysName
-        , BOOL bIsEnabled)
-{
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != nullptr)
-    {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-
-            // Set all handlers are enbled in all the nodes under the sim sys
-            if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
-            {
-                pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled = bIsEnabled;
-                CExecuteManager::ouGetExecuteManager(m_eBus).vEnableNodeMessageHandler(
-                    &pTempNode->m_sNodeInfo , bIsEnabled);
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-    }
-
-
-}
-/******************************************************************************
-Function Name    :  bReturnAllMsgHandlersStatus
-Input(s)         :  CString &omStrSimSysName
-Output           :  BOOL
-Functionality    :  Returns TRUE if all the Msg handlers are enabled for a
-                    given simulated system else FALSE
-Member of        :  CSimSysNodeInfo
-Friend of        :      -
-Author(s)        :  Harika M
-Date Created     :  19.01.2006
-Modifications    :
-******************************************************************************/
-BOOL CSimSysNodeInfo::bReturnAllMsgHandlersStatus(CString& omStrSimSysName)
-{
-    BOOL bIsEnabled = FALSE;
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != nullptr )
-    {
-        UINT nNoOfEnabledHan = 0;
-        UINT nActiveNodeCount = 0;
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled == TRUE)
-            {
-                // if all the Msg handlers are enabled
-                nNoOfEnabledHan++;
-            }
-            if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
-            {
-                nActiveNodeCount++;
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-        if(( nNoOfEnabledHan <= nActiveNodeCount) && (nNoOfEnabledHan != 0))
-        {
-            bIsEnabled = TRUE;
-            // return bIsEnabled;
-        }
-    }
-    return bIsEnabled;
-}
-/******************************************************************************/
-/*  Function Name    :  vSetEnableAllSimSysErrorHandlers                      */
-/*                                                                            */
-/*  Input(s)         :  CString &omStrSimSysName                              */
-/*                        BOOL bIsEnabled                                     */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will enable the m_bErrorHandlersEnabled
-/*                      member of all the nodes present under the sim sys.
-/*  Member of        :  CSimSysNodeInfo                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  19.01.2006                                            */
-/*  Modification     :                                                        */
-/******************************************************************************/
-void CSimSysNodeInfo::vSetEnableAllSimSysErrorHandlers(CString& omStrSimSysName
-        , BOOL bIsEnabled)
-{
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != nullptr)
-    {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-
-            // Set all handlers are enbled in all the nodes under the sim sys
-            if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
-            {
-                pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled = bIsEnabled;
-                CExecuteManager::ouGetExecuteManager(m_eBus).vEnableNodeErrorHandler(
-                    &pTempNode->m_sNodeInfo , bIsEnabled);
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-    }
-
-}
-/**
-* \brief         This function will enable the m_bEventHandlersEnabled
-*                member of all the nodes present under the sim sys.
-* \param[in]     CString &omStrSimSysName
-* \param[in]     bool to indicate enable/disable state
-* \return        void
-* \authors       Arunkumar Karri
-* \date          11.06.2012 Created
-*/
-void CSimSysNodeInfo::vSetEnableAllSimSysEventHandlers(CString& omStrSimSysName
-        , BOOL bIsEnabled)
-{
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != nullptr)
-    {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-
-            // Set all handlers are enbled in all the nodes under the sim sys
-            if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
-            {
-                if (pTempNode->m_eBus == J1939)
-                {
-                    pTempNode->m_sNodeInfo.m_bEventHandlersEnabled = bIsEnabled;
-                }
-                CExecuteManager::ouGetExecuteManager(m_eBus).vEnableNodeEventHandler(
-                    &pTempNode->m_sNodeInfo , bIsEnabled);
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-    }
-
-}
-/******************************************************************************
-Function Name    :  bReturnAllErrorHandlersStatus
-Input(s)         :  CString &omStrSimSysName
-Output           :  BOOL
-Functionality    :  Returns TRUE if all the error handlers are enabled for a
-                    given simulated system else FALSE
-Member of        :  CSimSysNodeInfo
-Friend of        :      -
-Author(s)        :  Harika M
-Date Created     :  19.01.2006
-Modifications    :
-******************************************************************************/
-BOOL CSimSysNodeInfo::bReturnAllErrorHandlersStatus(CString& omStrSimSysName)
-{
-    BOOL bIsEnabled = FALSE;
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-
-    if (pTempSimsys != nullptr )
-    {
-        UINT nNoOfEnabledHan = 0;
-        UINT nActiveNodeCount = 0;
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled == TRUE)
-            {
-                // if all the error handlers are enabled
-                nNoOfEnabledHan++;
-            }
-            if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
-            {
-                nActiveNodeCount++;
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-        if(( nNoOfEnabledHan <= nActiveNodeCount) && (nNoOfEnabledHan != 0))
-        {
-            bIsEnabled = TRUE;
-        }
-    }
-    return bIsEnabled;
-}
-/**
-* \brief         Returns TRUE if all the event handlers are enabled for a
-*                given simulated system else FALSE
-* \param[in]     CString &omStrSimSysName
-* \return        BOOL
-* \authors       Arunkumar Karri
-* \date          11.06.2012 Created
-*/
-BOOL CSimSysNodeInfo::bReturnAllEventHandlersStatus(CString& omStrSimSysName)
-{
-    BOOL bIsEnabled = FALSE;
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-
-    if (pTempSimsys != nullptr )
-    {
-        UINT nNoOfEnabledHan = 0;
-        UINT nActiveNodeCount = 0;
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_bEventHandlersEnabled == TRUE)
-            {
-                // if all the error handlers are enabled
-                nNoOfEnabledHan++;
-            }
-            if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
-            {
-                nActiveNodeCount++;
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-        if(( nNoOfEnabledHan <= nActiveNodeCount) && (nNoOfEnabledHan != 0))
-        {
-            bIsEnabled = TRUE;
-        }
-    }
-    return bIsEnabled;
-}
-/******************************************************************************/
-/*  Function Name    :  vSetEnableAllSimSysTimerHandlers                      */
-/*                                                                            */
-/*  Input(s)         :  CString &omStrSimSysName                              */
-/*                        BOOL bIsEnabled                                     */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will enable the m_bTimerHandlersEnabled
-/*                      member of all the nodes present under the sim sys.
-/*  Member of        :  CSimSysNodeInfo                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  19.01.2006                                            */
-/*  Modification     :                                                        */
-/******************************************************************************/
-void CSimSysNodeInfo::vSetEnableAllSimSysTimerHandlers(CString omStrSimSysName)
-{
-    /*CStringArray omStrNodeList;
-    omStrNodeList.RemoveAll();
-
-    vGetActiveNodeNames( omStrSimSysName , omStrNodeList);
-    // Set all handlers are enabled in all the nodes under the sim sys
-    CExecuteManager::ouGetExecuteManager().vSetResetOnTimerHandler(
-                                          omStrNodeList , TRUE);*/
-
-    //Above code is commented because now the timer dialog box is not
-
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != nullptr)
-    {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            CExecuteManager::ouGetExecuteManager(m_eBus).vEnableNodeTimerHandler(
-                &pTempNode->m_sNodeInfo , TRUE);
-            // Set all timer handlers are disabled in the node
-            pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = TRUE;
-            pTempNode = pTempNode->m_psNextNode;
-        }
-    }
-
-}
-
-/******************************************************************************/
-/*  Function Name    :  vSetDisableAllSimSysTimerHandlers                     */
-/*                                                                            */
-/*  Input(s)         :  CString &omStrSimSysName                              */
-/*                        BOOL bIsEnabled                                     */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will disable the m_bTimerHandlersEnabled
-/*                      member of all the nodes present under the sim sys.
-/*  Member of        :  CSimSysNodeInfo                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  19.01.2006                                            */
-/*  Modification     :                                                        */
-/******************************************************************************/
-void CSimSysNodeInfo::vSetDisableAllSimSysTimerHandlers(CString omStrSimSysName)
-{
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != nullptr)
-    {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            CExecuteManager::ouGetExecuteManager(m_eBus).vEnableNodeTimerHandler(
-                &pTempNode->m_sNodeInfo , FALSE);
-            // Set all timer handlers are disabled in the node
-            pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = FALSE;
-            pTempNode = pTempNode->m_psNextNode;
-        }
-    }
-
-}
-/******************************************************************************
-Function Name    :  bReturnAllTimerHandlersStatus
-Input(s)         :  CString &omStrSimSysName
-Output           :  BOOL
-Functionality    :  Returns TRUE if all the timer handlers are enabled for a
-                    given simulated system else FALSE
-Member of        :  CSimSysNodeInfo
-Friend of        :      -
-Author(s)        :  Harika M
-Date Created     :  19.01.2006
-Modifications    :
-******************************************************************************/
-BOOL CSimSysNodeInfo::bReturnAllTimerHandlersStatus(CString& omStrSimSysName)
-{
-    BOOL bIsEnabled = FALSE;
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-
-    if (pTempSimsys != nullptr )
-    {
-        UINT nNoOfEnabledHan = 0;
-        UINT nActiveNodeCount = 0;
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled == TRUE)
-            {
-                // if all the timer handlers are enabled
-                nNoOfEnabledHan++;
-            }
-            if(pTempNode->m_sNodeInfo.m_bIsDllLoaded)
-            {
-                nActiveNodeCount++;
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-        if(( nNoOfEnabledHan <= nActiveNodeCount) && (nNoOfEnabledHan != 0))
-        {
-            bIsEnabled = TRUE;
-            // return bIsEnabled;
-        }
-    }
-    return bIsEnabled;
-}
-
-/********************************************************************************
- FOR NODE HANDLERS
-/******************************************************************************/
-/*  Function Name    :  vSetEnableNodeAllHandlers                             */
-/*                                                                            */
-/*  Input(s)         :  CString &omStrSimSysName , CString &omStrNodeName     */
-/*                        BOOL bIsEnabled                                     */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will enable the m_bIsAllHandlersEnabled
-/*                      member and also enables all the handler members
-/*                      ofthe node.
-/*  Member of        :  CSimSysNodeInfo                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  19.01.2006                                            */
-/*  Modification     :                                                        */
-/******************************************************************************/
-void CSimSysNodeInfo::vSetEnableNodeAllHandlers(CString omStrSimSysName ,
-        CString& omStrNodeName ,
-        BOOL bIsEnabled)
-{
-    PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    while(pTempSimsys != nullptr)
-    {
-        if((pTempSimsys->m_omStrSimSysName == omStrSimSysName)||
-                ( omStrSimSysName == ""))
-        {
-            PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != nullptr)
-            {
-                if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
-                {
-                    CExecuteManager::ouGetExecuteManager(m_eBus).vEnableDisableNodeHandlers(
-                        &pTempNode->m_sNodeInfo , bIsEnabled);
-
-                    pTempNode->m_sNodeInfo.m_bIsAllHandlersEnabled = bIsEnabled;
-
-                    // Set all handlers are enbled in the node
-                    pTempNode->m_sNodeInfo.m_bDllHandlersEnabled = bIsEnabled;
-                    pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = bIsEnabled;
-                    pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled = bIsEnabled;
-                    pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled = bIsEnabled;
-                    pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled = bIsEnabled;
-                    if (pTempNode->m_eBus == J1939)
-                    {
-                        pTempNode->m_sNodeInfo.m_bEventHandlersEnabled = bIsEnabled;
-                    }
-                }
-
-
-                pTempNode = pTempNode->m_psNextNode;
-            }
-
-        }
-
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
-    }
-
-
-}
-/******************************************************************************
-Function Name    :  bReturnNodeAllHandlersStatus
-Input(s)         :  CString &omStrSimSysName , CString &omStrNodeName
-Output           :  BOOL
-Functionality    :  Returns TRUE if all the handlers are enabled for a
-                    given node else FALSE
-Member of        :  CSimSysNodeInfo
-Friend of        :      -
-Author(s)        :  Harika M
-Date Created     :  19.01.2006
-Modifications    :
-******************************************************************************/
-BOOL CSimSysNodeInfo::bReturnNodeAllHandlersStatus(CString& omStrSimSysName ,
-        CString& omStrNodeName)
-{
-    BOOL bIsEnabled = FALSE;
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != nullptr )
-    {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
-            {
-                bIsEnabled = pTempNode->m_sNodeInfo.m_bIsAllHandlersEnabled;
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-    }
-    return bIsEnabled;
-}
-/******************************************************************************/
-/*  Function Name    :  vSetEnableNodeKeyHandlers                             */
-/*                                                                            */
-/*  Input(s)         :  CString &omStrSimSysName , CString &omStrNodeName     */
-/*                        BOOL bIsEnabled                                     */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will enable the m_bKeyHandlersEnabled
-/*                      member of the nodes.
-/*  Member of        :  CSimSysNodeInfo                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  19.01.2006                                            */
-/*  Modification     :                                                        */
-/******************************************************************************/
-void CSimSysNodeInfo::vSetEnableNodeKeyHandlers(CString omStrSimSysName ,
-        CString& omStrNodeName  , BOOL bIsEnabled)
-{
-    PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    while(pTempSimsys != nullptr)
-    {
-        if((pTempSimsys->m_omStrSimSysName == omStrSimSysName) ||
-                ( omStrSimSysName == ""))
-        {
-            PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != nullptr)
-            {
-                if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
-                {
-                    CExecuteManager::ouGetExecuteManager(m_eBus).vEnableNodeKeyHandler(
-                        &pTempNode->m_sNodeInfo , bIsEnabled);
-                    // Set all key handlers are enabled in the node
-
-                    pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled = bIsEnabled;
-                }
-
-
-                pTempNode = pTempNode->m_psNextNode;
-            }
-
-        }
-
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
-    }
-
-
-}
-/******************************************************************************
-Function Name    :  bReturnNodeKeyHandlersStatus
-Input(s)         :  CString &omStrSimSysName , CString &omStrNodeName
-Output           :  BOOL
-Functionality    :  Returns TRUE if all the key handlers are enabled for a
-                    given node else FALSE
-Member of        :  CSimSysNodeInfo
-Friend of        :      -
-Author(s)        :  Harika M
-Date Created     :  19.01.2006
-Modifications    :
-******************************************************************************/
-BOOL CSimSysNodeInfo::bReturnNodeKeyHandlersStatus(CString& omStrSimSysName ,
-        CString& omStrNodeName )
-{
-    BOOL bIsEnabled = FALSE;
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != nullptr )
-    {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
-            {
-                bIsEnabled = pTempNode->m_sNodeInfo.m_bKeyHandlersEnabled;
-                //  return bIsEnabled;
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-    }
-    return bIsEnabled;
-}
-
-/******************************************************************************/
-/*  Function Name    :  vSetEnableAllSimSysMsgHandlers                        */
-/*                                                                            */
-/*  Input(s)         :  CString &omStrSimSysName , CString &omStrNodeName     */
-/*                        BOOL bIsEnabled                                     */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will enable the m_bMsgHandlersEnabled
-/*                      member of the node.
-/*  Member of        :  CSimSysNodeInfo                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  19.01.2006                                            */
-/*  Modification     :                                                        */
-/******************************************************************************/
-void CSimSysNodeInfo::vSetEnableNodeMsgHandlers(CString omStrSimSysName ,
-        CString& omStrNodeName , BOOL bIsEnabled)
-{
-    PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    while(pTempSimsys != nullptr)
-    {
-        if((pTempSimsys->m_omStrSimSysName == omStrSimSysName) ||
-                ( omStrSimSysName == ""))
-        {
-            PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != nullptr)
-            {
-                if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
-                {
-                    CExecuteManager::ouGetExecuteManager(m_eBus).vEnableNodeMessageHandler(
-                        &pTempNode->m_sNodeInfo , bIsEnabled);
-                    // Set all msg handlers are enabled in the node
-
-                    pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled = bIsEnabled;
-                }
-
-
-                pTempNode = pTempNode->m_psNextNode;
-            }
-
-        }
-
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
-    }
-
-
-}
-/******************************************************************************
-Function Name    :  bReturnNodeMsgHandlersStatus
-Input(s)         :  CString &omStrSimSysName , CString &omStrNodeName
-Output           :  BOOL
-Functionality    :  Returns TRUE if all the Msg handlers are enabled for a
-                    given node else FALSE
-Member of        :  CSimSysNodeInfo
-Friend of        :      -
-Author(s)        :  Harika M
-Date Created     :  19.01.2006
-Modifications    :
-******************************************************************************/
-BOOL CSimSysNodeInfo::bReturnNodeMsgHandlersStatus(CString& omStrSimSysName ,
-        CString& omStrNodeName )
-{
-    BOOL bIsEnabled = FALSE;
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != nullptr  )
-    {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
-            {
-                bIsEnabled = pTempNode->m_sNodeInfo.m_bMsgHandlersEnabled;
-                // return bIsEnabled;
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-    }
-    return bIsEnabled;
-}
-/******************************************************************************/
-/*  Function Name    :  vSetEnableNodeErrorHandlers                           */
-/*                                                                            */
-/*  Input(s)         :  CString &omStrSimSysName , CString &omStrNodeName     */
-/*                        BOOL bIsEnabled                                     */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will enable the m_bErrorHandlersEnabled
-/*                      member of the node.
-/*  Member of        :  CSimSysNodeInfo                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  19.01.2006                                            */
-/*  Modification     :                                                        */
-/******************************************************************************/
-void CSimSysNodeInfo::vSetEnableNodeErrorHandlers(CString omStrSimSysName ,
-        CString& omStrNodeName , BOOL bIsEnabled)
-{
-    PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    while(pTempSimsys != nullptr)
-    {
-        if((pTempSimsys->m_omStrSimSysName == omStrSimSysName) ||
-                ( omStrSimSysName == ""))
-        {
-            PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != nullptr)
-            {
-                if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
-                {
-                    CExecuteManager::ouGetExecuteManager(m_eBus).vEnableNodeErrorHandler(
-                        &pTempNode->m_sNodeInfo , bIsEnabled);
-                    // Set all error handlers are enabled in the node
-
-                    pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled = bIsEnabled;
-                }
-
-
-                pTempNode = pTempNode->m_psNextNode;
-            }
-
-        }
-
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
-    }
-}
-
-/**
-* \brief         This function will enable the m_bEventHandlersEnabled
-*                member of the node.
-* \param[in]     CString &omStrSimSysName
-* \param[in]     CString &omStrNodeName
-* \param[in]     BOOL bIsEnabled
-* \return        void
-* \authors       Arunkumar Karri
-* \date          11.06.2012 Created
-*/
-void CSimSysNodeInfo::vSetEnableNodeEventHandlers(CString omStrSimSysName ,
-        CString& omStrNodeName , BOOL bIsEnabled)
-{
-    PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    while(pTempSimsys != nullptr)
-    {
-        if((pTempSimsys->m_omStrSimSysName == omStrSimSysName) ||
-                ( omStrSimSysName == ""))
-        {
-            PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while(pTempNode != nullptr)
-            {
-                if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
-                {
-                    CExecuteManager::ouGetExecuteManager(m_eBus).vEnableNodeEventHandler(
-                        &pTempNode->m_sNodeInfo , bIsEnabled);
-                    // Set all event handlers as enabled in the node
-                    if (pTempNode->m_eBus == J1939)
-                    {
-                        pTempNode->m_sNodeInfo.m_bEventHandlersEnabled = bIsEnabled;
-                    }
-                }
-                pTempNode = pTempNode->m_psNextNode;
-            }
-        }
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
-    }
-}
-
-/******************************************************************************
-Function Name    :  bReturnNodeErrorHandlersStatus
-Input(s)         :  CString &omStrSimSysName , CString &omStrNodeName
-Output           :  BOOL
-Functionality    :  Returns TRUE if all the error handlers are enabled for a
-                    given node else FALSE
-Member of        :  CSimSysNodeInfo
-Friend of        :      -
-Author(s)        :  Harika M
-Date Created     :  19.01.2006
-Modifications    :
-******************************************************************************/
-BOOL CSimSysNodeInfo::bReturnNodeErrorHandlersStatus(CString& omStrSimSysName ,
-        CString& omStrNodeName)
-{
-    BOOL bIsEnabled = FALSE;
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != nullptr  )
-    {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
-            {
-                bIsEnabled = pTempNode->m_sNodeInfo.m_bErrorHandlersEnabled;
-                //  return bIsEnabled;
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-    }
-    return bIsEnabled;
-}
-/**
-* \brief         Returns TRUE if all the event handlers are enabled for a
-*                given node else FALSE
-* \param[in]     CString &omStrSimSysName
-* \param[in]     CString &omStrNodeName
-* \param[in]     BOOL bIsEnabled
-* \return        void
-* \authors       Arunkumar Karri
-* \date          11.06.2012 Created
-*/
-BOOL CSimSysNodeInfo::bReturnNodeEventHandlersStatus(CString& omStrSimSysName ,
-        CString& omStrNodeName)
-{
-    BOOL bIsEnabled = FALSE;
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != nullptr  )
-    {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
-            {
-                bIsEnabled = pTempNode->m_sNodeInfo.m_bEventHandlersEnabled;
-                //  return bIsEnabled;
-            }
-            pTempNode = pTempNode->m_psNextNode;
-        }
-    }
-    return bIsEnabled;
-}
-/******************************************************************************/
-/*  Function Name    :  vSetEnableNodeTimerHandlers                           */
-/*                                                                            */
-/*  Input(s)         :  CString &omStrSimSysName , CString &omStrNodeName     */
-/*                        BOOL bIsEnabled                                     */
-/*  Output           :                                                        */
-/*  Functionality    :  This function will enable the m_bTimerHandlersEnabled
-/*                      member of the dll present under the node.
-/*  Member of        :  CSimSysNodeInfo                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  19.01.2006                                            */
-/*  Modification     :                                                        */
-/******************************************************************************/
-void CSimSysNodeInfo::vSetEnableNodeTimerHandlers(CString omStrSimSysName ,
-        CString& omStrNodeName ,
-        BOOL bIsEnabled)
-{
-    CStringArray omStrNodeList;
-    PSSIMSYSINFO pTempSimsys = m_psSimSysInfo;
-    BOOL bFound = FALSE;
-    while((pTempSimsys != nullptr) && (TRUE != bFound))
-    {
-        if((pTempSimsys->m_omStrSimSysName == omStrSimSysName) ||
-                ( omStrSimSysName == ""))
-        {
-            PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-            while((pTempNode != nullptr) && (TRUE != bFound))
-            {
-                if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
-                {
-                    omStrNodeList.Add( omStrNodeName );
-                    CExecuteManager::ouGetExecuteManager(m_eBus).
-                    vEnableNodeTimerHandler(&pTempNode->m_sNodeInfo, bIsEnabled);
-                    /*CExecuteManager::ouGetExecuteManager().vSetResetOnTimerHandler(
-                                                           omStrNodeList , TRUE );*/
-                    pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled = bIsEnabled;
-                    if(bIsEnabled == TRUE)          // need to start the thread in case of first time enabling
-                    {
-                        CExecuteManager::ouGetExecuteManager(m_eBus).vManageTimerThreads();
-                    }
+                    pPrev->m_psNextNode = pCurr->m_psNextNode;
+                    CGlobalObj::ouGetObj(m_eBus).RegisterNodeToDIL(FALSE, &(pCurr->m_sNodeInfo));
+                    delete pCurr;
+                    m_unNumberOfNodesAdded -= 1;
                     bFound = TRUE;
+                    bReturnValue = TRUE;
                 }
-
-
-                pTempNode = pTempNode->m_psNextNode;
+                else
+                {
+                    pPrev = pCurr;
+                    pCurr = pCurr->m_psNextNode;
+                }
             }
-
-        }
-
-        pTempSimsys = pTempSimsys->m_psSimsysNext;
-    }
-
-
-}
-/******************************************************************************
-Function Name    :  bReturnNodeTimerHandlersStatus
-Input(s)         :  CString &omStrSimSysName , CString &omStrNodeName
-Output           :  BOOL
-Functionality    :  Returns TRUE if all the timer handlers are enabled for a
-                    given node else FALSE
-Member of        :  CSimSysNodeInfo
-Friend of        :      -
-Author(s)        :  Harika M
-Date Created     :  19.01.2006
-Modifications    :
-******************************************************************************/
-BOOL CSimSysNodeInfo::bReturnNodeTimerHandlersStatus(CString& omStrSimSysName ,
-        CString& omStrNodeName )
-{
-    BOOL bIsEnabled = FALSE;
-    PSSIMSYSINFO pTempSimsys = psGetSimSysPointer(omStrSimSysName);
-    if (pTempSimsys != nullptr  )
-    {
-        PSNODELIST pTempNode = pTempSimsys->m_psNodesList;
-        while(pTempNode != nullptr)
-        {
-            if(pTempNode->m_sNodeInfo.m_omStrNodeName == omStrNodeName)
-            {
-                bIsEnabled = pTempNode->m_sNodeInfo.m_bTimerHandlersEnabled;
-                //  return bIsEnabled;
-            }
-            pTempNode = pTempNode->m_psNextNode;
         }
     }
-    return bIsEnabled;
+
+
+    return bReturnValue;
+
 }
 
 /******************************************************************************/
@@ -2194,162 +990,57 @@ BOOL CSimSysNodeInfo::bReturnNodeTimerHandlersStatus(CString& omStrSimSysName ,
 /*  Date Created     :  22.12.2005                                            */
 /*  Modifications By :
 /******************************************************************************/
-void CSimSysNodeInfo::vReleaseSimSysInfo()
+void CSimSysNodeInfo::vReleaseNodeList()
 {
-    PSSIMSYSINFO psNextSimSysInfo    = nullptr;
     PSNODELIST psNextNodeList    = nullptr;
-    PSSIMSYSINFO psCurrentSimSysInfo = nullptr;
+
     PSNODELIST psCurrentNodeList = nullptr;
-    PSSIMSYSINFO psTempSimSysInfo = m_psSimSysInfo;
-    if(psTempSimSysInfo != nullptr )
+
+    if(m_unNumberOfNodesAdded > 0 )
     {
-        psCurrentSimSysInfo = psTempSimSysInfo;
+        psCurrentNodeList =  m_psNodesList;
         do
         {
-            if(psCurrentSimSysInfo->m_unNumberOfNodesAdded > 0 )
-            {
-                psCurrentNodeList =
-                    psCurrentSimSysInfo->m_psNodesList;
-                do
-                {
-                    psNextNodeList = psCurrentNodeList->m_psNextNode;
-                    delete psCurrentNodeList;
-                    psCurrentNodeList = psNextNodeList;
-                }
-                while(psNextNodeList != nullptr );
-
-            }
-            psNextSimSysInfo = psCurrentSimSysInfo->m_psSimsysNext;
-            delete psCurrentSimSysInfo;
-            psCurrentSimSysInfo = psNextSimSysInfo;
+            psNextNodeList = psCurrentNodeList->m_psNextNode;
+            delete psCurrentNodeList;
+            psCurrentNodeList = psNextNodeList;
+            m_unNumberOfNodesAdded--;
         }
-        while(psNextSimSysInfo != nullptr );
+        while(psNextNodeList != nullptr );
+        m_psNodesList = nullptr;
     }
-    psTempSimSysInfo = nullptr;
-    m_psSimSysInfo = nullptr;
-
 }
-
-BOOL CSimSysNodeInfo::bIsSimSysPresent(CString omStrSimsysPath)
+/******************************************************************************
+Function Name    :  vAddNodeToList
+Input(s)         :  PSNODELIST pNode
+Output           :  -
+Functionality    :  Adds a Node to Node List.
+Member of        :  CSimSysNodeInfo
+Friend of        :      -
+Author(s)        :  Robin G.K.
+Date Created     :  23.10.14
+Modification     :
+******************************************************************************/
+void CSimSysNodeInfo::vAddNodeToList(PSNODELIST pNode)
 {
-    BOOL bReturn = FALSE;
-    PSSIMSYSINFO psSimSys = m_psSimSysInfo;
-    while(psSimSys != nullptr)
+    if (pNode != nullptr)
     {
-        if(psSimSys->m_omStrSimSysName == omStrSimsysPath)
+        pNode->m_psNextNode = nullptr;
+        if(m_psNodesList == nullptr)
         {
-            bReturn = TRUE;
-        }
-        psSimSys = psSimSys->m_psSimsysNext;
-    }
-
-    return bReturn;
-}
-
-void CSimSysNodeInfo::vAddSimSys(PSSIMSYSINFO psSimSys)
-{
-    if (psSimSys != nullptr)
-    {
-        if (m_psSimSysInfo == nullptr)
-        {
-            //If the list is empty add to the start
-            m_psSimSysInfo = psSimSys;
-            m_psSimSysInfo->m_psSimsysNext = nullptr;
+            //If list is empty add to the first node
+            m_psNodesList = pNode;
         }
         else
         {
-            //Else add to the end of the list
-            PSSIMSYSINFO psTempSimSys = m_psSimSysInfo;
-            while (psTempSimSys->m_psSimsysNext != nullptr)
+            //Else add to the last
+            PSNODELIST pTempNode = m_psNodesList;
+            while (pTempNode->m_psNextNode != nullptr)
             {
-                psTempSimSys = psTempSimSys->m_psSimsysNext;
+                pTempNode = pTempNode->m_psNextNode;
             }
-            psTempSimSys->m_psSimsysNext = psSimSys;
+            pTempNode->m_psNextNode = pNode;
         }
+        m_unNumberOfNodesAdded++;
     }
-}
-
-/******************************************************************************
-  Function Name    :  bIsAnyInfoInSimsysPreExist
-
-  Input(s)         :
-  Output           :
-  Functionality    : checks if any info in the given simsys is already present
-                     in the configuration
-  Member of        :
-  Friend of        :      -
-
-  Author(s)        :  Anish Kr.
-  Date Created     :  01.03.09
-  Modification     :
-/******************************************************************************/
-BOOL CSimSysNodeInfo::bIsAnyInfoInSimsysPreExist(sSIMSYSINFO* pSimsys)
-{
-    BOOL bDuplicate = FALSE;
-    if (pSimsys != nullptr)
-    {
-        CString omError = "";
-        PSNODELIST psTempNode =  pSimsys->m_psNodesList;
-        while ((psTempNode != nullptr) && (!bDuplicate) )
-        {
-            // Checks if the node name is a duplicate
-            bDuplicate = bIsDuplicateNode( psTempNode->m_sNodeInfo.m_omStrNodeName);
-            if (!bDuplicate)
-            {
-                // Checks if the file name is a duplicate
-                bDuplicate =  bIsDuplicateCFile( psTempNode->m_sNodeInfo.m_omStrFileName);
-                if (!bDuplicate)
-                {
-                    // Checks if the dll name is a duplicate
-                    bDuplicate =  bIsDuplicateDllName( psTempNode->m_sNodeInfo.m_omStrDllName);
-                    if (bDuplicate)
-                    {
-                        omError = DefDUPDLLINSYS;
-                    }
-                }
-                else
-                {
-                    omError = DefDUPDLLINSYS;
-                }
-            }
-            else
-            {
-                omError = DefDUPNODEINSYS;
-            }
-            psTempNode = psTempNode->m_psNextNode;
-        }
-        if (bDuplicate)
-        {
-            AfxMessageBox(omError);
-        }
-    }
-    return bDuplicate;
-}
-
-/******************************************************************************
-  Function Name    :  bIsAnySimSysModified
-
-  Input(s)         :
-  Output           :
-  Functionality    : checks if any simsys info is modified
-  Member of        :
-  Friend of        :      -
-
-  Author(s)        :  Anish Kr.
-  Date Created     :  01.03.09
-  Modification     :
-/******************************************************************************/
-BOOL CSimSysNodeInfo::bIsAnySimSysModified()
-{
-    BOOL bModified = FALSE;
-    PSSIMSYSINFO psTempSimSys = m_psSimSysInfo;
-    while ((psTempSimSys != nullptr) && (!bModified))
-    {
-        if (psTempSimSys->m_bIsSimSysModified)
-        {
-            bModified = TRUE;
-        }
-        psTempSimSys = psTempSimSys->m_psSimsysNext;
-    }
-    return bModified;
 }

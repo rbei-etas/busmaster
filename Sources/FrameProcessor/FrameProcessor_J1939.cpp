@@ -451,3 +451,15 @@ HRESULT CFrameProcessor_J1939::FPJ1_SetChannelBaudRateDetails
     SetChannelBaudRateDetails(controllerDetails, nNumChannels,eBus);
     return hResult;
 }
+
+void CFrameProcessor_J1939::vSetMeasurementFileName()
+{
+    USHORT ushBlocks = (USHORT) (m_omLogObjectArray.GetSize());
+    for (USHORT i = 0; i < ushBlocks; i++)
+    {
+        CBaseLogObject* pouLogObjBase = m_omLogObjectArray.GetAt(i);
+        CLogObjectJ1939* pouLogObjCon = static_cast<CLogObjectJ1939*> (pouLogObjBase);
+        pouLogObjCon->m_sLogInfo.m_sLogAdvStngs.m_nConnectionCount++;
+        pouLogObjCon->vSetMeasurementFileName();
+    }
+}

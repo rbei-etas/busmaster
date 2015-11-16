@@ -16,7 +16,7 @@
 #define _WRAPPER_J1939_H_
 
 #include "Common.h"
-
+#include "Wrapper_Common.h"
 enum ETYPE_TIMEOUT
 {
     TYPE_TO_BROADCAST = 0,
@@ -141,59 +141,26 @@ typedef UINT    (*APPRQSTADDRESS_J) (UINT, HMODULE);
 typedef UINT    (*APPCMDADDRESS_J) (UINT64, BYTE, UINT, HMODULE);
 typedef UINT    (*APPSETTIMEOUT_J) (BYTE, UINT, HMODULE);
 typedef UINT    (*APPONLINEOFFLINE_J) (BOOL, HMODULE);
-typedef UINT    (*LOGENABLE) (BOOL);
-typedef UINT    (*WRITETOLOGFILE) (char*);
-typedef UINT    (*WRITETOTRACE) (char*);
 typedef UINT    (*GOONLINEOFFLINE) (BOOL, HMODULE) ;
-typedef UINT    (*STARTSTOPTIMER) (char*,UINT,BOOL,HMODULE) ;
-typedef UINT    (*SETTIMERVAL) (char*,UINT,HMODULE);
-typedef BOOL    (*ENABLEDISABLEALLHANDLERS)(BOOL, HMODULE);
-typedef BOOL    (*ENABLEDISABLEMSGHANDLERS)(BOOL, HMODULE);
-typedef BOOL    (*ENABLEDISABLEKEYHANDLERS)(BOOL, HMODULE);
-typedef BOOL    (*ENABLEDISABLEERRORHANDLERS)(BOOL, HMODULE);
 typedef BOOL    (*MSGTXONOFF)(BOOL, HMODULE);
-typedef HMODULE (*GETNODEHANDLER)(char*);
+
 
 // Please insert any new wrapper prototype here
 // Prototypes Start
 
-GCC_EXTERN UINT GCC_EXPORT EnableLogging() ;
-GCC_EXTERN UINT GCC_EXPORT DisableLogging() ;
-GCC_EXTERN UINT GCC_EXPORT WriteToLogFile(char*) ;
-GCC_EXTERN UINT GCC_EXPORT Trace(char*,...) ;
+
+//J1939 specific functions
 GCC_EXTERN UINT GCC_EXPORT GoOnline() ;
 GCC_EXTERN UINT GCC_EXPORT GoOffline() ;
-GCC_EXTERN UINT GCC_EXPORT StartTimer(char*,UINT) ;
-GCC_EXTERN UINT GCC_EXPORT StopTimer(char*) ;
-GCC_EXTERN BOOL GCC_EXPORT SetTimerVal(char*,UINT);
-GCC_EXTERN BOOL GCC_EXPORT EnableAllHandlers(BOOL);
-GCC_EXTERN BOOL GCC_EXPORT EnableMsgHandlers(BOOL);
-GCC_EXTERN BOOL GCC_EXPORT EnableErrorHandlers(BOOL);
-GCC_EXTERN BOOL GCC_EXPORT EnableKeyHandlers(BOOL);
-GCC_EXTERN BOOL GCC_EXPORT bGetProgramVersion(int* pnMajorVersion, int* pnMinorVersion,HMODULE hModuleHandle );
 GCC_EXTERN BOOL GCC_EXPORT EnableDisableMsgTx(BOOL);
-GCC_EXTERN HMODULE GCC_EXPORT GetDllHandle(char*);
 
 
 GCC_EXTERN void GCC_EXPORT vSetSendMsgProcAddress(APPSENDPROC_J pAppFunc);
-GCC_EXTERN void GCC_EXPORT vSetEnableLoggingProcAddress(LOGENABLE pEnableLoggingFunc);
-GCC_EXTERN void GCC_EXPORT vSetDisableLoggingProcAddress(LOGENABLE pDisableLoggingFunc);
-GCC_EXTERN void GCC_EXPORT vSetWriteToLogFileProcAddress(WRITETOLOGFILE pLogFileFunc);
-GCC_EXTERN void GCC_EXPORT vSetTraceProcAddress(WRITETOTRACE pTraceFunc);
 GCC_EXTERN void GCC_EXPORT vSetGoOfflineProcAddress(GOONLINEOFFLINE pGoOffline);
 GCC_EXTERN void GCC_EXPORT vSetGoOnlineProcAddress(GOONLINEOFFLINE pGoOnline);
-GCC_EXTERN void GCC_EXPORT vSetStopTimerProcAddress(STARTSTOPTIMER pStopTimer);
-GCC_EXTERN void GCC_EXPORT vSetStartTimerProcAddress(STARTSTOPTIMER pStartTimer);
-GCC_EXTERN void GCC_EXPORT vSetSetTimerValProcAddress(SETTIMERVAL pSetTimerVal);
-GCC_EXTERN void GCC_EXPORT vSetEnableMsgHandlersProcAddress(ENABLEDISABLEMSGHANDLERS pMsgHandlers);
-GCC_EXTERN void GCC_EXPORT vSetEnableKeyHandlersProcAddress(ENABLEDISABLEKEYHANDLERS pKeyHandlers);
 GCC_EXTERN void GCC_EXPORT vSetEnableDisableMsgTxProcAddress(MSGTXONOFF pMsgTxFunc);
-GCC_EXTERN void GCC_EXPORT vSetGetDllHandleProcAddress(GETNODEHANDLER pGetNodeHandler);
-//J1939 specific functions
-GCC_EXTERN void GCC_EXPORT vSetEnableAllHandlersProcAddress(ENABLEDISABLEALLHANDLERS pAllHandlers);
 GCC_EXTERN void GCC_EXPORT vSetClaimAddressProcAddress(APPCLAIMADDRESS_J pClaimAddress);
 GCC_EXTERN void GCC_EXPORT vSetCommandAddressProcAddress(APPCMDADDRESS_J pCommandAddress);
-GCC_EXTERN void GCC_EXPORT vSetEnableErrorHandlersProcAddress(ENABLEDISABLEERRORHANDLERS pErrorHandlers);
 GCC_EXTERN void GCC_EXPORT vSetRequestPGNProcAddress(APPREQUESTPGN_J pRequestPGN);
 GCC_EXTERN void GCC_EXPORT vSetRequestAddressProcAddress(APPRQSTADDRESS_J pRequestAddress);
 GCC_EXTERN void GCC_EXPORT vSetSendAckMsgProcAddress(APPACKMSG_J pSendAckMsg);
@@ -207,6 +174,7 @@ GCC_EXTERN UINT GCC_EXPORT CommandAddress(UINT64, BYTE, UINT);
 GCC_EXTERN UINT GCC_EXPORT SetTimout(BYTE, UINT);
 
 // Prototypes End
+#ifndef NO_INCLUDE_TEMPSTRUCT
 typedef struct _InternalStructJ1939
 {
     _InternalStructJ1939()
@@ -215,5 +183,5 @@ typedef struct _InternalStructJ1939
     }
 } InternalStructJ1939;
 _InternalStructJ1939 obj1939;
-
+#endif
 #endif // _WRAPPER_J1939_H_

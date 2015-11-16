@@ -841,6 +841,8 @@ void CFnsTreeView::OnTreeViewRightclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                 }
                 else
                 {
+                    if(nullptr != pomSubMenu)
+                    {
                     //This itself is the parent
                     //Disable all except Save
                     pomSubMenu->EnableMenuItem(IDM_DEL_HAND,
@@ -859,6 +861,7 @@ void CFnsTreeView::OnTreeViewRightclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                             m_omRightClickPoint.y,
                             this,
                             nullptr);
+                        }
                     }
                 }
                 delete pomContextMenu;
@@ -1049,7 +1052,7 @@ void CFnsTreeView::OnDeleteHandle()
         else if(omStrSelectedText == BUSEVENT_HANDLERS)
         {
             // Invoke Dialog to delete DLL handlers
-            CBusEventHandlerDlg od_Dlg(pDoc, nullptr, TRUE);
+            CBusEventHandlerDlg od_Dlg(m_eBus, pDoc, nullptr, TRUE);
             int nUserOption = (COMMANINT)od_Dlg.DoModal();
             if(nUserOption == IDOK)
             {
@@ -1309,6 +1312,7 @@ BOOL CFnsTreeView::bDeleteHandler( CString omStrFuncName,
 
     return bReturn;
 }
+
 /******************************************************************************/
 /*  Function Name    :  bDeleteALineFromHeader                                */
 /*                                                                            */
@@ -1325,9 +1329,10 @@ BOOL CFnsTreeView::bDeleteALineFromHeader(CString omStrHeader,
     CString omStrLine = "";
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
     SBUS_SPECIFIC_INFO sBusSpecInfo;
-    pDoc->bGetBusSpecificInfo(sBusSpecInfo);
+    
     if (pDoc != nullptr)
     {
+		pDoc->bGetBusSpecificInfo(sBusSpecInfo);
         // Seek to the start of global variable definition
         POSITION pos =
             pDoc->m_omSourceCodeTextList.Find( omStrHeader );
@@ -1793,7 +1798,7 @@ void CFnsTreeView::vOnNewErrorHandler()
             {
                 if(pErrorArray->GetSize()< 5 )
                 {
-                    CErrHandlerDlg od_Dlg(nullptr, FALSE);
+                    CErrHandlerDlg od_Dlg(pDoc, FALSE);
 
                     if ( od_Dlg.DoModal() == IDOK )
                     {
@@ -2125,7 +2130,7 @@ void CFnsTreeView::vOnNewBusEventHandler()
         {
             if(pDLLArray->GetSize()< defBUSEV_HANDLER_NUMBER )
             {
-                CBusEventHandlerDlg od_Dlg(pDoc);
+                CBusEventHandlerDlg od_Dlg(m_eBus,pDoc);
                 if ( od_Dlg.DoModal() == IDOK )
                 {
                     int nCount = (COMMANINT)od_Dlg.m_omStrArrayBusEventHandler.GetSize();
@@ -2388,9 +2393,10 @@ void CFnsTreeView::vEditIncludeHeader(HTREEITEM hItem)
             // Get the document
 
             SBUS_SPECIFIC_INFO sBusSpecInfo;
-            pDoc->bGetBusSpecificInfo(sBusSpecInfo);
+            
             if ( pDoc != nullptr )
             {
+				pDoc->bGetBusSpecificInfo(sBusSpecInfo);
                 CString omTemp = BUS_INCLUDE_HDR;
                 omTemp.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
                 POSITION pos =

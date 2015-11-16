@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="WriteToLogFile" xml:lang="en-us">
+  <title>RegisterClientForRx : To register Client for receiving messages</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <p>HRESULT RegisterClientForRx([in] USHORT usUniqueID, [out] BSTR* pEventName, [out] BSTR* pPIPEName);</p>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function registers a client for receiving messages.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>[in]usUniqueId - The unquie Id the Client needs to  provides while registering.</p>
+      <p>[out]pEventName - The event which gets notified on reception of a message. Client needs to wait on this event.</p>
+      <p>[out]pPIPEName -  The Buffer on which the Rx messages will be written for the client.</p>
+    </section>
+    <section>
+      <b>Usage in COM Client</b>
+    </section>
+    <section>BSTR* pEventName;</section>
+    <section>BSTR* pPIPEName;</section>
+    <section>HRESULT hResult = m_IApplication-&gt;RegisterClientForRx(1,pEventName,pPipeName); </section>
+    <section>/*If HRESULT is S_OK the Client is registered with a client id of 1*/</section>
+    <section>
+      <title>Cause of failure</title>
+      <p>NA</p>
+    </section>
+  </refbody>
+</reference>

@@ -11,7 +11,7 @@
 
 IMPLEMENT_DYNAMIC(CBusEventHandlerDlg, CDialog)
 
-CBusEventHandlerDlg::CBusEventHandlerDlg(CFunctionEditorDoc* pDoc, CWnd* pParent /*=nullptr*/, BOOL bIsDelete /*FALSE*/)
+CBusEventHandlerDlg::CBusEventHandlerDlg(ETYPE_BUS eBus, CFunctionEditorDoc* pDoc, CWnd* pParent /*=nullptr*/, BOOL bIsDelete /*FALSE*/)
     : CDialog(CBusEventHandlerDlg::IDD, pParent)
     , m_bChkBusEventConnect(FALSE)
     ,m_bChkBusEventPreConnect(FALSE)
@@ -19,6 +19,7 @@ CBusEventHandlerDlg::CBusEventHandlerDlg(CFunctionEditorDoc* pDoc, CWnd* pParent
 {
     m_pDoc = pDoc;
     m_bIsDelete = bIsDelete;
+    m_eBus = eBus;
 }
 
 CBusEventHandlerDlg::~CBusEventHandlerDlg()
@@ -46,7 +47,10 @@ BOOL CBusEventHandlerDlg::OnInitDialog()
 
     CStringArray* pomStrArrayHandlerName = nullptr;
     CDialog::OnInitDialog();
-
+    if(m_eBus == LIN)
+    {
+        GetDlgItem(IDC_CHKB_BUSEV_PRECONNECT_HANDLER)->ShowWindow(TRUE);
+    }
     if( m_pDoc != nullptr )
     {
         CButton* pomButton       = nullptr;
@@ -69,6 +73,7 @@ BOOL CBusEventHandlerDlg::OnInitDialog()
                         pomButton->GetWindowText(omStrControl);
                         omStrControl.Replace(' ','_');
                         omStrControl.Replace('-','_');
+                        omStrControl = "OnBus_"+ omStrControl;
                         // The find the control text in added handlers text
                         if( omStrHandlerName.Find(omStrControl) != -1 )
                         {

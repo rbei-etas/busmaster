@@ -107,7 +107,7 @@ public:
     //! Constructor.
     BlfLibrary();
     //! Destructor.
-    ~BlfLibrary();
+    virtual ~BlfLibrary();
 
 public:
     virtual bool EnableLogging(const std::string& sLogFilePath);

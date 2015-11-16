@@ -27,7 +27,6 @@
 #include "GlobalObj.h"
 #include "utlitydlg.h"
 #include "SimSysManager.h"
-#include "SimSysDetView.h"
 #include "UtlityDlg.h"
 
 #ifdef _DEBUG
@@ -164,8 +163,7 @@ void CUtlityDlg::OnOk()
                         omStrSelDataType += m_omStrUtilsFunText;
                         omStrSelDataType +=m_omStrFunctionName;
                         m_omStrFunPrototype = omStrSelDataType;
-                        if(m_bChangeUtilFunc != TRUE)
-                        {
+
                             // Check for duplicate selection
                             // Get key handler array from the document
                             if (m_pDoc != nullptr)
@@ -203,7 +201,7 @@ void CUtlityDlg::OnOk()
                                     }
                                 }
                             }
-                        }
+
                     }
                     else
                     {

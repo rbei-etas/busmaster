@@ -77,14 +77,7 @@ public:
 
     void vInitialiseInterfaceFnPtrs(HMODULE);//from mainframe
 
-    void vSetActivePassiveNode(BOOL ActiveNode); //used for Dll
-    BOOL bEnableDisableMsgHandlers(BOOL bEnable );//frm main frm
-    BOOL bEnableDisableErrorHandlers(BOOL bEnable);
-    BOOL bEnableDisableEventHandlers(BOOL bEnable);
-    BOOL bActivateDeactivateHandlers(BOOL bActivate);
-    BOOL bEnableDisableKeyHandlers(BOOL bEnable);
     HMODULE hGetDllHandle();
-    BOOL bGetFlagStatus(eNODEFLAG eWhichFlag);
     BOOL bUnloadDll();//it is called from BL & UL  to stop handler execution
     CString omGetPrevFileName();
     void vSetDllHandle(HMODULE hModuleHandle);
@@ -145,7 +138,8 @@ private:
     // Allocate memory for handler info structure
     BOOL bAllocateMemory(UINT unMsgRangeCount );
     BOOL bAllocateMemoryForMsgListHandler(UINT unMsgListCount );
-    void vCatagoriseMsgHandlers(const CString& omStrFuncName);
+    bool bCatagoriseMsgHandlers(const CString& omStrFuncName,const CString& omMsgHandlerName);
+    bool  bCatagoriseDefaultHandlers(const CString& omStrLine);
     // Initialise timer structure
     BOOL bInitTimerStruct(CStringArray& omErrorArray);
     // Initialise timer structure
@@ -217,10 +211,6 @@ private:
     UINT m_unWriteQMsgIndexLIN;        //index at which message is to be written
 
     BOOL m_bDllLoaded;
-    BOOL m_bStopKeyHandlers;
-    BOOL m_bStopErrorHandlers;
-    BOOL m_bStopEventHandlers;
-    BOOL m_bStopDLLHandlers;
     CWinThread* m_pomMsgHandlerThrd;
     CWinThread* m_pomMsgHandlerThrdLIN;
     PSTIMERHANDLERLIST m_psFirstTimerStrList;

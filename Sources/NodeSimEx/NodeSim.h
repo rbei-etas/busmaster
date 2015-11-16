@@ -38,28 +38,18 @@ public:
     HRESULT FE_CreateFuncEditorTemplate(HWND handle, S_EXFUNC_PTR& sExInitStruct);
     HRESULT FE_OpenFunctioneditorFile(CString omStrNewCFileName, HWND hMainFrame,
                                       S_EXFUNC_PTR& sExInitStruct);
-    void NS_EnableAllHandlers(BOOL bEnable);
-    void NS_EnableAllTimers(BOOL bEnable);
-    void NS_EnableAllKeyHandler(BOOL bEnable);
-    void NS_EnableAllMessageHandler(BOOL bEnable);
-    void NS_EnableAllErrorHandler(BOOL bEnable);
-    void NS_EnableAllEventHandler(BOOL bEnable);
     void NS_ManageOnKeyHandler(UCHAR ucKey);
     void NS_ManageBusEventHandler(eBUSEVEHANDLER eBusEvent);
     void NS_ManageOnMessageHandler(void* psRxMsgInfo);
     void NS_ManageOnErrorHandler(eERROR_STATE eErrorCode,void* pvErrorVal);
-    HRESULT NS_DLLBuildAll(CStringArray* pomStrErrorFiles);
-    HRESULT NS_DllLoadAll(CStringArray* pomStrErrorFiles);
+    HRESULT NS_DLLBuildAll();
     HRESULT NS_DllUnloadAll(CStringArray* pomStrErrorFiles);
-    HRESULT NS_DLLBuildLoadAll(CStringArray* pomStrErrorFiles);
+    HRESULT NS_DLLBuildLoadAllEnabled();
+    HRESULT NS_DLLUnloadAllEnabled();
     //Set the MSG structure name and File name containing the structure def
     void NS_UpdateFuncStructsNodeSimEx(PVOID pvFuncStructs, E_UPDATE_TYPE eUpdateType);
     //Provide the helptext for all the handlers in the order mentoned above
     void NS_SetHandlersHelpText(CStringArray* pomTextArray);
-    //Find the value of flags which will tell the status of toolbar item
-    BOOL NS_ShouldToolBarBeEnabled(E_TB_FN_EDITOR eToolBarFlag);
-    //Find the value of flags which will tell the status of handler s
-    BOOL NS_GetHandlerStatus(eSIMSYSFLAG eHandlerFlag);
     //Load and save the Simsys config details in terms of bytes
     void NS_GetSimSysConfigData(BYTE*& pDesBuffer, int& nBuffSize);
     bool NS_GetSimSysConfigData(xmlNodePtr& pNodePtr);
@@ -70,8 +60,6 @@ public:
     int NS_nOnBusConnected( bool bConnected);
     void NS_SetJ1939ActivationStatus(bool bActivated);
     // Save simulation file
-    void NS_SaveSimulationSystem();
-    void NS_PerformApplicationClosureOperation(bool bSave);
 
     void NS_SetLINConfig(ClusterConfig& ouLINConfig);
     //INTERFACE FUNCTIONS ENDS

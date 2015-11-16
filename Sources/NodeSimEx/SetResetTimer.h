@@ -29,7 +29,7 @@
 
 class CTransmitMsg;
 
-typedef struct tagSCALCEXECTIMETHREAD
+typedef struct tagSCALCEXECTIMERTHREAD
 {
     bool            m_bThreadStop;
     CWinThread*     m_pomThreadPtr;
@@ -37,7 +37,7 @@ typedef struct tagSCALCEXECTIMETHREAD
     CTransmitMsg*   m_pTransmitMsg;
     ETYPE_BUS       m_eBus; //Added for issue #356
 
-    tagSCALCEXECTIMETHREAD()
+    tagSCALCEXECTIMERTHREAD()
     {
         m_bThreadStop  = FALSE;
         m_pomThreadPtr = nullptr;
@@ -45,81 +45,36 @@ typedef struct tagSCALCEXECTIMETHREAD
         m_eBus = CAN;
     }
 
-} SCALCEXECTIMETHREAD,*PSCALCEXECTIMETHREAD;
+} SCALCEXECTIMERTHREAD,*PSCALCEXECTIMERTHREAD;
 
 /////////////////////////////////////////////////////////////////////////////
 // CSetResetTimer dialog
 
-class CSetResetTimer : public CDialog
+class CSetResetTimer
 {
     // Construction
 public:
-    CSetResetTimer(ETYPE_BUS eBus, CWnd* pParent = nullptr); // standard constructor
+    CSetResetTimer(ETYPE_BUS eBus); // standard constructor
     void vSetResetAllTimers(CString om_StrNode,BOOL bEnable);
-    void vTimerStatusChanged();
-    PSTIMERHANDLER GetPointerOfHandler(PSTIMERHANDLERLIST psTimerHandl,
-                                       int nSelectedItem);
     void vStopTimer();
     void vStartTimer();
     void vAddNewNodeTimerList(CString om_NodeName,PSTIMERHANDLERLIST psTimerStrList);
     void vDeleteNodeTimerList(CString om_NodeName);
-    void vSetSimSysNodeArray(const CStringArray&,BOOL);
     void vRestoreTimerStatus(CString omNodeName,
                              PSTIMERHANDLERLIST psTimerListPtr);
-    // Dialog Data
-    //{{AFX_DATA(CSetResetTimer)
-    enum { IDD = IDD_DLG_SET_RESET_TIMER };
-    CComboBox   m_omComboNodeName;
-    CListCtrl   m_omTimerList;
-    CString m_omStrNodeName;
-    //}}AFX_DATA
 
-
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CSetResetTimer)
-public:
-    virtual BOOL DestroyWindow();
-protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-    //}}AFX_VIRTUAL
-
-    // Implementation
-protected:
-
-    // Generated message map functions
-    //{{AFX_MSG(CSetResetTimer)
-    virtual BOOL OnInitDialog();
-    afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
-    afx_msg void OnBtnApply();
-    afx_msg void OnChckMonoshot();
-    afx_msg void OnUpdateEditTimerValue();
-    afx_msg void OnBtnOk();
-    virtual void OnCancel();
-    afx_msg void OnItemchangedLstcTimerHandler(NMHDR* pNMHDR, LRESULT* pResult);
-    afx_msg void OnSelchangeNodeList();
-    //}}AFX_MSG
-    DECLARE_MESSAGE_MAP()
 private:
-    void vSaveUpdatedTimerInformation();
-    void vUpdateTimerInformation(PSTIMERHANDLERLIST ps_CurrTimeHandler,
-                                 int nSelectedItem);
     void vDeleteTimerListOfNode(PSTIMERHANDLERLIST psListOfTimer);
 
     ETYPE_BUS m_eBus;
     PSNODETIMERLIST m_psFirstNodeTimerList;
     PSNODETIMERLIST m_psLastNodeTimerList;
-    BOOL m_bApplyButtonPressed;
-    BOOL m_bDialogGettingInit;
     //For storing the ID of timer
     UINT m_unTimerID;
     CWinThread* ExecuteThread1 ;
-    PSTIMERHANDLERLIST m_psSelectedNodeTimerListPtr;
-    int m_nSelectedNode;
     CStringArray m_omSysNodeName;          //store node from simulated system
     BOOL m_bSimSysNodes;                   //if dialog box from simsys or mainframe
-    BOOL m_bNodeNameChanged ;
-    PSCALCEXECTIMETHREAD m_psCalTimerThreadStruct;
+    PSCALCEXECTIMERTHREAD m_psCalTimerThreadStruct;
 public:
     static ETYPE_BUS sm_eBus;
 };

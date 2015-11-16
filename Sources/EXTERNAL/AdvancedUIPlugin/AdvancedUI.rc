@@ -49,9 +49,9 @@ END
 // Bitmap
 //
 
-IDB_NODE_SIMULATION_HOT BITMAP                  "Res\\toolbar_user_prog_Hot.bmp"
-IDB_NODE_SIMULATION_DISABLED BITMAP                  "Res\\toolbar_user_prog_disabled.bmp"
-IDB_NODE_SIMULATION     BITMAP                  "Res\\toolbar_user_prog.bmp"
+IDB_NODE_SIMULATION_HOT BITMAP                  "Res\\NodeSimulation_Hot.bmp"
+IDB_NODE_SIMULATION_DISABLED BITMAP             "Res\\NodeSimulation_Disabled.bmp"
+IDB_NODE_SIMULATION     BITMAP                  "Res\\NodeSimulation.bmp"
 IDB_MSG_WND_HOT         BITMAP                  "Res\\MsgWndHot.bmp"
 IDB_MSG_WND_DISABLED    BITMAP                  "Res\\MsgWndDisabled.bmp"
 IDB_MSG_WND             BITMAP                  "Res\\MsgWnd.bmp"
@@ -106,6 +106,8 @@ IDI_ICON_NETWORKSTAT    ICON                    "res\\Network_Statistics.ico"
 IDI_ICON_SIGNALWATCH    ICON                    "res\\Signal_Watch.ico"
 IDI_ICO_TX_WINDOW       ICON                    "res\\TxWindow.ico"
 IDC_FLEXRAY_LOGO		ICON					"res\\FlexRay_Logo.ico"
+IDI_ICON_NODE_ENABLED   ICON                    "res\\Node_Enabled.ico"
+IDI_ICON_NODE_DISABLED  ICON                    "res\\Node_Disabled.ico"
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 

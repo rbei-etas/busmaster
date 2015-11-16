@@ -202,7 +202,7 @@ void CReplayManager::vShowInteractiveReplayWindows()
             {
                 m_omReplayWindowArray.Add( pWnd );
                 pWnd->bCreateReplayWindow();
-                pWnd->bOpenReplayFile();
+                pWnd->bOpenReplayFile(TRUE);
             }
         }
     }
@@ -235,12 +235,13 @@ void CReplayManager::vStartNonInteractiveReplays()
             if( pNewProcess != nullptr )
             {
                 // Load the replay file
-                BOOL bResult = pNewProcess->bOpenReplayFile();
+                BOOL bResult = pNewProcess->bOpenReplayFile(FALSE);
                 // if loading is success
                 if( bResult == TRUE )
                 {
                     // check for empty replay file
-                    if( pNewProcess->m_omEntries.GetSize()  == 0 )
+
+                    /*if( pNewProcess->dwGetNoOfMsgsInLog()== 0 )
                     {
                         // Show the message in Trace Window
                         CString omStrErr;
@@ -252,10 +253,10 @@ void CReplayManager::vStartNonInteractiveReplays()
                         bResult = FALSE;
                     }
                     else
-                    {
-                        // Add the replay process to the list
-                        m_omReplayProcess.Add( pNewProcess );
-                    }
+                    {*/
+                    // Add the replay process to the list
+                    m_omReplayProcess.Add( pNewProcess );
+                    //}
                 }
                 else
                 {
@@ -279,9 +280,11 @@ void CReplayManager::vStartNonInteractiveReplays()
     }
     // Start all replay threads
     nSize = (int)m_omReplayProcess.GetSize();
-    for(nIndex = 0; nIndex < nSize; nIndex++ )
+    for(int i = 0; i < nSize; i++ )
     {
-        m_omReplayProcess[ nIndex ]->bStartNIReplay();
+        EnterCriticalSection(&m_omReplayProcess[i]->m_omCritSecFilter);
+        m_omReplayProcess[i]->bStartNIReplay();
+        LeaveCriticalSection(&m_omReplayProcess[i]->m_omCritSecFilter);
     }
 }
 

@@ -36,10 +36,8 @@
 //INstantiation of singleton class
 CSimSysManager* CSimSysManager::sm_pouSimSysManager[BUS_TOTAL] = {nullptr};
 
-CSimSysManager::CSimSysManager(ETYPE_BUS eBus) : m_ouSimSysNodeInfo(eBus),
-    m_omSimSysConfig(eBus)
+CSimSysManager::CSimSysManager(ETYPE_BUS eBus) : m_ouSimSysNodeInfo(eBus)
 {
-    m_pomSimSysDetView = nullptr;
     m_pomSimSysTreeView = nullptr;
     m_CopyJ1939SimNode = nullptr;
     m_eBus = eBus;
@@ -47,42 +45,8 @@ CSimSysManager::CSimSysManager(ETYPE_BUS eBus) : m_ouSimSysNodeInfo(eBus),
 
 CSimSysManager::~CSimSysManager(void)
 {
-    m_ouSimSysNodeInfo.bDeleteSimsysFromInfo("");
 }
 
-void CSimSysManager::vApplicationClosing(bool bSave)
-{
-    if (bSave && m_ouSimSysNodeInfo.bIsAnySimSysModified())
-    {
-        vSaveAllSimSys();
-    }
-
-    m_ouSimSysNodeInfo.bDeleteSimsysFromInfo("");
-}
-void CSimSysManager::vSaveAllSimSys()
-{
-    PSSIMSYSINFO psSimSys = m_ouSimSysNodeInfo.psReturnSimsysInfoListPtr();
-    while (psSimSys != nullptr)
-    {
-        m_omSimSysConfig.nSaveConfiguration(psSimSys->m_omStrSimSysName,
-                                            psSimSys );
-        psSimSys = psSimSys->m_psSimsysNext;
-    }
-}
-
-void CSimSysManager::vSaveSimSys(CString omStrSimSysName)
-{
-    PSSIMSYSINFO psSimSys = m_ouSimSysNodeInfo.psReturnSimsysInfoListPtr();
-    while (psSimSys != nullptr)
-    {
-        if ( omStrSimSysName.Compare(psSimSys->m_omStrSimSysName) == 0 )
-        {
-            m_omSimSysConfig.nSaveConfiguration(psSimSys->m_omStrSimSysName,
-                                                psSimSys );
-        }
-        psSimSys = psSimSys->m_psSimsysNext;
-    }
-}
 
 CSimSysManager& CSimSysManager::ouGetSimSysManager(ETYPE_BUS eBus)
 {
@@ -108,33 +72,6 @@ CSimSysNodeInfo* CSimSysManager::pomGetSimSysNodeInfo()
 }
 
 
-PSSIMSYSINFO CSimSysManager::psReturnSimsysInfoPtr()
-{
-    return m_ouSimSysNodeInfo.psReturnSimsysInfoListPtr();
-}
-/*
-CString CSimSysManager::omStrGetUnionFilePath(CString omStrTemp)
-{
-    CString omStrHeaderFileName = omStrTemp.Left(omStrTemp.ReverseFind('.'));
-    omStrHeaderFileName += defHEADER_FILE_NAME;
-    return omStrHeaderFileName;
-}
-*/
-
-CSimSysConfigDetails* CSimSysManager::pomGetSimSysConfig()
-{
-    return &m_omSimSysConfig;
-}
-
-void CSimSysManager::podSetSimSysDetView(CSimSysDetView* pDetView)
-{
-    m_pomSimSysDetView = pDetView;
-}
-
-CSimSysDetView* CSimSysManager::podGetSimSysDetView()
-{
-    return(m_pomSimSysDetView);
-}
 
 CSimSysTreeView* CSimSysManager::podGetSimSysTreeView()
 {
@@ -146,10 +83,6 @@ void CSimSysManager::podSetSimSysTreeView(CSimSysTreeView* pTreeView)
     m_pomSimSysTreeView = pTreeView;
 }
 
-CFlags& CSimSysManager::ouGetFlags()
-{
-    return m_ouFlags;
-}
 
 
 /******************************************************************************
@@ -207,25 +140,8 @@ bool CSimSysManager::bGetConfigData(xmlNodePtr pNodePtr)
 {
 
     const char* omcVarChar ;
-    UINT unCount = m_ouSimSysNodeInfo.unGetNumberOfSimSys();
-    PSSIMSYSINFO pSimSysInfo = m_ouSimSysNodeInfo.psReturnSimsysInfoListPtr();
-    for (UINT i = 0; (i < unCount) && (pSimSysInfo != nullptr); i++)
-    {
-        CString omTmp = pSimSysInfo->m_omStrSimSysName;
 
-        std::string omPath, omStrConfigFolder;
-        char configPath[MAX_PATH];
-        AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
-        CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
-        CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)omTmp.GetBuffer(MAX_PATH), omPath);
-
-
-        omcVarChar = omPath.c_str();
-        xmlNodePtr pColName = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_SYS_PATH,BAD_CAST omcVarChar);
-        xmlAddChild(pNodePtr, pColName);
-
-        pSimSysInfo = pSimSysInfo->m_psSimsysNext;
-    }
+    PSNODELIST pTempNode = m_ouSimSysNodeInfo.m_psNodesList;
 
 
     //window placement
@@ -244,47 +160,77 @@ bool CSimSysManager::bGetConfigData(xmlNodePtr pNodePtr)
         xmlUtils::CreateXMLNodeFrmWindowsPlacement(pNodeWindowsPos,CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
     }
 
-    ////visibility
-    //CString csVisibility;
-    //csVisibility.Format("%d",  sWndPlacement.flags);
-    //omcVarChar = csVisibility;
-    //xmlNodePtr pVisibility = xmlNewChild(pNodeWindowsPos, nullptr, BAD_CAST DEF_VISIBILITY,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeWindowsPos, pVisibility);
+    while(pTempNode != nullptr)
+    {
+        //Node
+        xmlNodePtr pSimSysNode = xmlNewNode(nullptr, BAD_CAST DEF_NODE);
+        xmlAddChild(pNodePtr, pSimSysNode);
 
-    ////WindowPlacement
-    //CString csWindowPlacement;
-    //csWindowPlacement.Format("%d",  sWndPlacement.flags);
-    //omcVarChar = csWindowPlacement;
-    //xmlNodePtr pWindowPlacement = xmlNewChild(pNodeWindowsPos, nullptr, BAD_CAST DEF_MWND_PLACEMENT,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeWindowsPos, pWindowPlacement);
+        //Name
+        omcVarChar = pTempNode->m_sNodeInfo.m_omStrNodeName;
+        xmlNodePtr pSimSysNodeName = xmlNewChild(pSimSysNode, nullptr, BAD_CAST DEF_NODE_NAME,BAD_CAST omcVarChar);
+        xmlAddChild(pSimSysNode, pSimSysNodeName);
 
-    ////Top
-    //CString csTop;
-    //csTop.Format("%d",  sWndPlacement.rcNormalPosition.top);
-    //omcVarChar = csTop;
-    //xmlNodePtr pTop= xmlNewChild(pNodeWindowsPos, nullptr, BAD_CAST DEF_MWND_TOP,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeWindowsPos, pTop);
+        if(m_eBus == J1939)
+        {
+            //Preferred_Address
+            CString omStrPrefAddr;
+            omStrPrefAddr.Format("%u", pTempNode->m_sNodeInfo.m_byPrefAddress);
+            omcVarChar = omStrPrefAddr;
+            xmlNodePtr pSimSysPrefAddr = xmlNewChild(pSimSysNode, nullptr, BAD_CAST DEF_NODE_PREFERRED_ADDRESS,BAD_CAST omcVarChar);
+            xmlAddChild(pSimSysNode, pSimSysPrefAddr);
 
-    ////Left
-    //CString csLeft;
-    //csLeft.Format("%d",  sWndPlacement.rcNormalPosition.left);
-    //omcVarChar = csLeft;
-    //xmlNodePtr pLeft = xmlNewChild(pNodeWindowsPos, nullptr, BAD_CAST DEF_MWND_LEFT,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeWindowsPos, pLeft);
+            //ECU_Name
+            CString omStrECUName;
+            omStrECUName.Format("%llu",pTempNode->m_sNodeInfo.m_unEcuName);
+            omcVarChar = omStrECUName;
+            xmlNodePtr pSimSysECUName = xmlNewChild(pSimSysNode, nullptr, BAD_CAST DEF_NODE_ECU_NAME,BAD_CAST omcVarChar);
+            xmlAddChild(pSimSysNode, pSimSysECUName);
+        }
 
-    ////Bottom
-    //CString csBottom;
-    //csBottom.Format("%d",  sWndPlacement.rcNormalPosition.bottom);
-    //omcVarChar = csBottom;
-    //xmlNodePtr pBottom= xmlNewChild(pNodeWindowsPos, nullptr, BAD_CAST DEF_BOTTOM,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeWindowsPos, pBottom);
+        //Is_Enabled
+        if(pTempNode->m_sNodeInfo.m_bIsNodeEnabled)
+        {
+            omcVarChar = "TRUE";
+        }
+        else
+        {
+            omcVarChar = "FALSE";
+        }
+        xmlNodePtr pSimSysIsNodeEnabled = xmlNewChild(pSimSysNode, nullptr, BAD_CAST DEF_IS_NODE_ENABLED,BAD_CAST omcVarChar);
+        xmlAddChild(pSimSysNode, pSimSysIsNodeEnabled);
 
-    ////Right
-    //CString csRight;
-    //csRight.Format("%d",  sWndPlacement.rcNormalPosition.right);
-    //omcVarChar = csRight;
-    //xmlNodePtr pRight = xmlNewChild(pNodeWindowsPos, nullptr, BAD_CAST DEF_RIGHT,BAD_CAST omcVarChar);
-    //xmlAddChild(pNodeWindowsPos, pRight);
+        //File_Type
+        if(pTempNode->m_sNodeInfo.m_eNodeFileType == NODE_FILE_C_CPP)
+        {
+            omcVarChar = "C_CPP_FILE";
+        }
+        else if(pTempNode->m_sNodeInfo.m_eNodeFileType == NODE_FILE_DLL)
+        {
+            omcVarChar = "DLL_FILE";
+        }
+        xmlNodePtr pSimSysIsDLL = xmlNewChild(pSimSysNode, nullptr, BAD_CAST DEF_NODE_FILE_TYPE,BAD_CAST omcVarChar);
+        xmlAddChild(pSimSysNode, pSimSysIsDLL);
+
+        //File_Path
+        std::string omPath, omStrConfigFolder;
+		char configPath[MAX_PATH]={0};
+        AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+        CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
+        if(pTempNode->m_sNodeInfo.m_eNodeFileType == NODE_FILE_DLL)
+        {
+            CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)pTempNode->m_sNodeInfo.m_omStrDllName.GetBuffer(MAX_PATH), omPath);
+        }
+        else if(pTempNode->m_sNodeInfo.m_eNodeFileType == NODE_FILE_C_CPP)
+        {
+            CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)pTempNode->m_sNodeInfo.m_omStrCFileName.GetBuffer(MAX_PATH), omPath);
+        }
+        omcVarChar = omPath.c_str();
+        xmlNodePtr pColName = xmlNewChild(pSimSysNode, nullptr, BAD_CAST DEF_NODE_FILE_PATH,BAD_CAST omcVarChar);
+        xmlAddChild(pSimSysNode, pColName);
+
+        pTempNode = pTempNode->m_psNextNode;
+    }
 
     return true;
 }
@@ -303,7 +249,7 @@ UINT CSimSysManager::unGetStoreSIMFBufferSize()
 {
     //Size for SIM Filenames
 
-    UINT nCount = m_ouSimSysNodeInfo.unGetNumberOfSimSys();
+    UINT nCount = m_ouSimSysNodeInfo.m_unNumberOfNodesAdded;
     UINT unTotalSize = 0;
     unTotalSize += sizeof(BYTE);//Configuration version
     unTotalSize += sizeof(WINDOWPLACEMENT);
@@ -335,18 +281,8 @@ void CSimSysManager::SaveSIMDataIntoBuffer(BYTE* DesBuffer)
 
     COPY_DATA(tempBuffAddress, &WndPlacement, sizeof(WINDOWPLACEMENT));
 
-    UINT unCount = m_ouSimSysNodeInfo.unGetNumberOfSimSys();
+    UINT unCount = m_ouSimSysNodeInfo.m_unNumberOfNodesAdded;
     COPY_DATA(tempBuffAddress, &unCount, sizeof (UINT));
-    PSSIMSYSINFO pSimSysInfo = m_ouSimSysNodeInfo.psReturnSimsysInfoListPtr();
-    for (UINT i = 0; (i < unCount) && (pSimSysInfo != nullptr); i++)
-    {
-        UINT unSize = 0;
-        CString omTmp = pSimSysInfo->m_omStrSimSysName;
-        char acFilename[MAX_PATH];
-        _tcscpy(acFilename, omTmp.GetBuffer(MAX_PATH));
-        COPY_DATA(tempBuffAddress, acFilename, sizeof(char) * MAX_PATH);
-        pSimSysInfo = pSimSysInfo->m_psSimsysNext;
-    }
 
 }
 
@@ -370,70 +306,6 @@ void CSimSysManager::vLoadSimSysWndConfig(xmlDocPtr pDoc, ETYPE_BUS eBus)
             m_pomSimSysTreeView->bPopulateTree();
         }
     }
-}
-void CSimSysManager::CopySIMDataFromBuffer(xmlNodePtr pDoc, ETYPE_BUS /* eBus */)
-{
-    xmlNodePtr pNode = pDoc;
-    //if( nullptr != pObjectPath )
-    {
-        //xmlNodeSetPtr pNodeSet = pObjectPath->nodesetval;
-        //if( nullptr != pNodeSet )
-        //{
-        //  pNode = pNodeSet->nodeTab[0];       //Take First One only
-        //}
-        if( nullptr != pNode )
-        {
-            pNode = pNode->xmlChildrenNode;
-            while (pNode != nullptr)
-            {
-                if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Window_Position")))
-                {
-                    xmlUtils::ParseWindowsPlacement(pNode, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
-                }
-                if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Sym_Path")))
-                {
-                    xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
-                    if(nullptr != key)
-                    {
-                        CString omStrFileName;
-                        if(PathIsRelative((char*)key) == TRUE)
-                        {
-                            std::string omStrConfigFolder;
-                            std::string omPath;
-                            char configPath[MAX_PATH];
-                            AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
-                            CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
-                            char chAbsPath[MAX_PATH];
-                            PathCombine(chAbsPath, omStrConfigFolder.c_str(), (char*)key);
-                            omStrFileName = chAbsPath;
-                        }
-                        else
-                        {
-                            omStrFileName = (char*)key;
-                        }
-                        vLoadSimInfoFromConfiguration(omStrFileName.GetBuffer(MAX_PATH));
-                        xmlFree(key);
-                    }
-                }
-                pNode = pNode->next;
-            }
-        }
-        //xmlXPathFreeObject(pObjectPath);
-    }
-    /*
-    COPY_DATA_2(&CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement, tempBuffAddress, sizeof(WINDOWPLACEMENT));
-    UINT UnCount = 0;
-    COPY_DATA_2(&UnCount, tempBuffAddress, sizeof(UINT));
-
-    CString omTmp = "";
-    for (UINT i = 0; i < UnCount; i++)
-    {
-        char acFilename[MAX_PATH] = {'\0'};
-        COPY_DATA_2(acFilename, tempBuffAddress, sizeof (char) * MAX_PATH);
-        omTmp.Format("%s", acFilename);
-        //Add the simsys file details
-        vLoadSimInfoFromConfiguration(omTmp);
-    }*/
 }
 
 void CSimSysManager::CopySIMDataFromBuffer(xmlDocPtr pDoc, ETYPE_BUS eBus)
@@ -494,41 +366,19 @@ void CSimSysManager::CopySIMDataFromBuffer(xmlDocPtr pDoc, ETYPE_BUS eBus)
 void CSimSysManager::vSetConfigData(xmlNodePtr pNode)
 {
     INT nWndPos = S_FALSE;
-    vInitailizeSimSysInfo();
     if( nullptr != pNode )
     {
         pNode = pNode->xmlChildrenNode;
-
+        m_ouSimSysNodeInfo.vReleaseNodeList();
         while (pNode != nullptr)
         {
             if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Window_Position")))
             {
                 nWndPos =  xmlUtils::ParseWindowsPlacement(pNode, CGlobalObj::ouGetObj(m_eBus).m_wWindowPlacement);
             }
-            if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Sym_Path")))
+            if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Node")))
             {
-                xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
-                if(nullptr != key)
-                {
-                    CString omStrFileName;
-                    if(PathIsRelative((char*)key) == TRUE)
-                    {
-                        std::string omStrConfigFolder;
-                        std::string omPath;
-                        char configPath[MAX_PATH];
-                        AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
-                        CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
-                        char chAbsPath[MAX_PATH];
-                        PathCombine(chAbsPath, omStrConfigFolder.c_str(), (char*)key);
-                        omStrFileName = chAbsPath;
-                    }
-                    else
-                    {
-                        omStrFileName = (char*)key;
-                    }
-                    vLoadSimInfoFromConfiguration((char*)omStrFileName.GetBuffer(MAX_PATH));
-                    xmlFree(key);
-                }
+                vLoadNodeInfoFromConfiguration(pNode);
             }
             pNode = pNode->next;
         }
@@ -590,44 +440,6 @@ void CSimSysManager :: vLoadSimSysWndConfig()
 
 
 /******************************************************************************
-    Function Name    :  vInitailizeSimSysInfo
-    Input(s)         :  -
-    Output           :  -
-    Functionality    :  It initialize the simulated sys info
-    Member of        :  CSimSysManager
-    Friend of        :
-    Author(s)        :  Anish Kr
-    Date Created     :  04.03.2009
-    Modification     :
-/*****************************************************************************/
-void CSimSysManager ::vInitailizeSimSysInfo()
-{
-    if (m_ouSimSysNodeInfo.bIsAnySimSysModified())
-    {
-        int nReturn = AfxMessageBox(ASK_SIMSYS_SAVE_PROMPT,
-                                    MB_YESNO|MB_ICONQUESTION);
-        if (nReturn == IDYES)
-        {
-            vSaveAllSimSys();
-        }
-    }
-    //if(m_CopyJ1939SimNode == nullptr)
-    {
-        m_ouSimSysNodeInfo.bDeleteSimsysFromInfo("");
-    }
-    //Now Populate the tree view if it is present
-    //SSH + commneted to resolve issue #392 'Duplicate simulated systems'
-    /*if (m_pomSimSysTreeView != nullptr)
-    {
-        if (m_pomSimSysTreeView->IsWindowVisible())
-        {
-            m_pomSimSysTreeView->bPopulateTree();
-        }
-    }*/
-    //SSH -
-}
-
-/******************************************************************************
     Function Name    :  CopyNFDataFromBuffer
     Input(s)         :  -
     Output           :  -
@@ -653,30 +465,164 @@ void CSimSysManager :: CopySIMDataFromBuffer(BYTE* SrcBuffer)
         char acFilename[MAX_PATH] = {'\0'};
         COPY_DATA_2(acFilename, tempBuffAddress, sizeof (char) * MAX_PATH);
         omTmp.Format("%s", acFilename);
-        //Add the simsys file details
-        vLoadSimInfoFromConfiguration(omTmp);
     }
 }
+//
+//HRESULT CSimSysManager::GenerateMakeFile(std::string strCppFile)
+//{
+//    if ( nullptr != CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig )
+//    {
+//        return CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->GenerateMakeFile(m_eBus, strCppFile);
+//    }
+//    return S_OK;
+//}
+//
+//HRESULT CSimSysManager::GenerateMakeFile()
+//{
+//    if ( nullptr != CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig )
+//    {
+//        PSNODELIST pNodeList =  m_ouSimSysNodeInfo.m_psNodesList;
+//
+//        while ( nullptr != pNodeList )
+//        {
+//            CGlobalObj::ouGetObj(m_eBus).m_ouClusterConfig->GenerateMakeFile(m_eBus, pNodeList->m_sNodeInfo.m_omStrCFileName.GetBuffer(0));
+//            pNodeList = pNodeList->m_psNextNode;
+//        }
+//    }
+//    return S_OK;
+//}
+
 
 /******************************************************************************
-    Function Name    :  vLoadSimInfoFromConfiguration
+    Function Name    :  vLoadNodeInfoFromConfiguration
     Input(s)         :  -
     Output           :  -
-    Functionality    :  Copies simulation file details to simsysnode info
+    Functionality    :  Copies Node info from Configuration
     Member of        :  CSimSysManager
     Friend of        :
-    Author(s)        :  Anish
-    Date Created     :  27.02.2009
+    Author(s)        :  Robin G.K.
+    Date Created     :  21.10.14
     Modification     :
 /*****************************************************************************/
-void CSimSysManager ::vLoadSimInfoFromConfiguration(CString omFileName)
+void CSimSysManager :: vLoadNodeInfoFromConfiguration(xmlNodePtr pNode)
 {
-    PSSIMSYSINFO pSimsys = nullptr;
-    int nReturn = m_omSimSysConfig.nLoadConfiguration(omFileName, pSimsys);
-    if((nReturn == defCONFIG_FILE_SUCCESS) && (pSimsys != nullptr))
+    PSNODELIST pTempNode = new SNODELIST(m_eBus);
+    pNode = pNode->children;
+    while (pNode != nullptr && pTempNode != nullptr)
     {
-        m_ouSimSysNodeInfo.vAddSimSys(pSimsys);
+
+        if ((!xmlStrcmp(pNode->name, (const xmlChar*)DEF_NODE_NAME)))
+        {
+            xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
+            if(nullptr != key)
+            {
+                CString omStrKey = (char*)key;
+                pTempNode->m_sNodeInfo.m_omStrNodeName = omStrKey;
+                //Set Node File is modified.
+                pTempNode->m_sNodeInfo.m_eNodeState = NODE_REQ_CLEAN_BUILT;
+                pTempNode->m_sNodeInfo.m_ouLastDBChecksum = 0;
+                xmlFree(key);
+            }
+        }
+        if ((!xmlStrcmp(pNode->name, (const xmlChar*)DEF_NODE_PREFERRED_ADDRESS)) && m_eBus == J1939)
+        {
+            xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
+            if(nullptr != key)
+            {
+                CString omStrKey = (char*)key;
+                pTempNode->m_sNodeInfo.m_byPrefAddress = atoi(omStrKey);
+                xmlFree(key);
+            }
+        }
+        if ((!xmlStrcmp(pNode->name, (const xmlChar*)DEF_NODE_ECU_NAME)) && m_eBus == J1939)
+        {
+            xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
+            if(nullptr != key)
+            {
+                std::string strKey = (char*)key;
+                std::stringstream sstr(strKey);
+                sstr >> pTempNode->m_sNodeInfo.m_unEcuName;
+                xmlFree(key);
+            }
+        }
+        if ((!xmlStrcmp(pNode->name, (const xmlChar*)DEF_IS_NODE_ENABLED)))
+        {
+            xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
+            if(nullptr != key)
+            {
+                CString omStrKey = (char*)key;
+                if(omStrKey == "TRUE")
+                {
+                    pTempNode->m_sNodeInfo.m_bIsNodeEnabled = TRUE;
+                }
+                else
+                {
+                    pTempNode->m_sNodeInfo.m_bIsNodeEnabled = FALSE;
+                }
+                xmlFree(key);
+            }
+        }
+        if ((!xmlStrcmp(pNode->name, (const xmlChar*)DEF_NODE_FILE_TYPE)))
+        {
+            xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
+            if(nullptr != key)
+            {
+                CString omStrKey = (char*)key;
+                if(omStrKey == "C_CPP_FILE")
+                {
+                    pTempNode->m_sNodeInfo.m_eNodeFileType = NODE_FILE_C_CPP;
+                }
+                else if(omStrKey == "DLL_FILE")
+                {
+                    pTempNode->m_sNodeInfo.m_eNodeFileType = NODE_FILE_DLL;
+                }
+                xmlFree(key);
+            }
+        }
+        if ((!xmlStrcmp(pNode->name, (const xmlChar*)DEF_NODE_FILE_PATH)))
+        {
+            xmlChar* key = xmlNodeListGetString(pNode->doc, pNode->xmlChildrenNode, 1);
+            if(nullptr != key)
+            {
+                CString omStrFileName = (char*)key;
+                if(PathIsRelative((char*)key) == TRUE && !omStrFileName.IsEmpty())
+                {
+                    std::string omStrConfigFolder;
+                    std::string omPath;
+					char configPath[MAX_PATH]={0};
+                    AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+                    CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
+                    char chAbsPath[MAX_PATH];
+                    PathCombine(chAbsPath, omStrConfigFolder.c_str(), (char*)key);
+                    omStrFileName = chAbsPath;
+                }
+                else
+                {
+                    omStrFileName = (char*)key;
+                }
+                if(pTempNode->m_sNodeInfo.m_eNodeFileType == NODE_FILE_DLL)
+                {
+                    pTempNode->m_sNodeInfo.m_omStrDllName = omStrFileName;
+                }
+                else if(pTempNode->m_sNodeInfo.m_eNodeFileType == NODE_FILE_C_CPP)
+                {
+                    pTempNode->m_sNodeInfo.m_omStrCFileName = omStrFileName;
+                }
+
+                xmlFree(key);
+
+            }
+        }
+        pNode = pNode->next;
     }
+    if(pTempNode != nullptr)
+    {
+        m_ouSimSysNodeInfo.vAddNodeToList(pTempNode);
+        CGlobalObj::ouGetObj(m_eBus).RegisterNodeToDIL(TRUE, &pTempNode->m_sNodeInfo);
+        bUpdateNodeInfoFile(pTempNode);
+
+    }
+    pTempNode = nullptr;
 }
 
 /******************************************************************************
@@ -703,12 +649,11 @@ BOOL CSimSysManager :: bIsConfigChanged()
         //
         UINT unCount = 0;
         memcpy(&unCount, tempBuffAddress, sizeof(UINT));
-        bReturn = (unCount == m_ouSimSysNodeInfo.unGetNumberOfSimSys());
+        bReturn = (unCount == m_ouSimSysNodeInfo.m_unNumberOfNodesAdded);
         tempBuffAddress += sizeof(UINT);
         if (bReturn)
         {
-            PSSIMSYSINFO pSimSysInfo = m_ouSimSysNodeInfo.psReturnSimsysInfoListPtr();
-            for (UINT i = 0; (i < unCount) && (pSimSysInfo != nullptr); i++)
+            for (UINT i = 0; (i < unCount) ; i++)
             {
                 UINT nSize = 0;
                 memcpy(&nSize, tempBuffAddress, sizeof(UINT));
@@ -718,27 +663,10 @@ BOOL CSimSysManager :: bIsConfigChanged()
                 memcpy(pFileLen, tempBuffAddress, sizeof(char) * nSize);
                 tempBuffAddress += sizeof(char) * nSize;
                 omTmp = pFileLen;
-                if (pSimSysInfo->m_omStrSimSysName != omTmp)
-                {
-                    bReturn = false;
-                    i = unCount;
-                }
-                pSimSysInfo = pSimSysInfo->m_psSimsysNext;
                 delete [] pFileLen;
             }
         }
-        //
-        //delete SrcBuffer;
     }
-    else
-    {
-        CSimSysNodeInfo* pSimSysNodeInfo = CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
-        if (nullptr != pSimSysNodeInfo)
-        {
-            return pSimSysNodeInfo->bIsAnySimSysModified();
-        }
-    }
-
     return !bReturn;
 }
 
@@ -750,4 +678,81 @@ void CSimSysManager::vSetDatabaseConfiguration(ClusterConfig* ouLINConfig)
     {
         strDbName = ouLINConfig.m_ouFlexChannelConfig[nIndex].m_strDataBasePath;
     }*/
+}
+
+/******************************************************************************
+    Function Name    :  bUpdateNodeInfoFile
+    Input(s)         :  -
+    Output           :  -
+    Functionality    :  Associates .cpp(or .c) file and .dll file to the node.
+    Member of        :  CSimSysManager
+    Friend of        :
+    Author(s)        :  Robin G.K.
+    Date Created     :  21.10.14
+    Modification     :
+/*****************************************************************************/
+void CSimSysManager::bUpdateNodeInfoFile(PSNODELIST psNodeList)
+{
+    CSimSysTreeView* pSimSysTreeView =
+        CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysTreeView();
+    CSimSysNodeInfo* pSimSysNodeInf =
+        CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
+    CString omStrFileName;
+    if(psNodeList->m_sNodeInfo.m_omStrDllName.IsEmpty() || psNodeList->m_sNodeInfo.m_omStrCFileName.IsEmpty())
+    {
+        if(psNodeList->m_sNodeInfo.m_eNodeFileType == NODE_FILE_DLL)
+        {
+            omStrFileName = psNodeList->m_sNodeInfo.m_omStrDllName;
+        }
+        else if(psNodeList->m_sNodeInfo.m_eNodeFileType == NODE_FILE_C_CPP)
+        {
+            omStrFileName = psNodeList->m_sNodeInfo.m_omStrCFileName;
+        }
+    }
+    int nIndex = omStrFileName.ReverseFind('.');
+    if( nIndex >= 0 )
+    {
+        omStrFileName = omStrFileName.Left(nIndex);
+
+    }
+    CString omStrDllFile = omStrFileName + defDOT_DLL;
+    // file-attribute information
+    _tfinddata_t fileinfo;
+    if (_tfindfirst( omStrDllFile.GetBuffer(MAX_PATH), &fileinfo) != -1L)
+    {
+        psNodeList->m_sNodeInfo.m_omStrDllName = omStrDllFile;
+    }
+
+    CString omStrCPPFile = omStrFileName + defDOT_CPP;
+    if(_tfindfirst( omStrCPPFile.GetBuffer(MAX_PATH), &fileinfo) != -1L)
+    {
+        //Unregister the previously monitoring file
+        psNodeList->m_sNodeInfo.RegisterFileToMonitor(std::string(psNodeList->m_sNodeInfo.m_omStrCFileName),false);
+        psNodeList->m_sNodeInfo.m_omStrCFileName = omStrCPPFile;
+        //Register the new monitoring file.
+        psNodeList->m_sNodeInfo.RegisterFileToMonitor(std::string(psNodeList->m_sNodeInfo.m_omStrCFileName),true);
+    }
+
+    CString omStrCFile = omStrFileName + defDOT_C;
+    if(_tfindfirst( omStrCFile.GetBuffer(MAX_PATH), &fileinfo) != -1L)
+    {
+        psNodeList->m_sNodeInfo.m_omStrCFileName = omStrCFile;
+    }
+}
+/******************************************************************************
+    Function Name    :  vInitailizeSimSysInfo
+    Input(s)         :  -
+    Output           :  -
+    Functionality    :  It initialize the simulated sys info
+    Member of        :  CSimSysManager
+    Friend of        :
+    Author(s)        :  Anish Kr
+    Date Created     :  04.03.2009
+    Modification     :  Robin G.K. changes due to removed .sim file
+/*****************************************************************************/
+void CSimSysManager ::vInitailizeSimSysInfo()
+{
+
+    //Delete Node.
+    m_ouSimSysNodeInfo.bDeleteNodeFromSimSys("");
 }

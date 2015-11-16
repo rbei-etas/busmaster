@@ -1011,8 +1011,11 @@ CWnd* CListCtrlEx::pomBrowserIem(int nItem, int nSubItem, CStringArray& omList)
             //ID is not required
             m_pomDBRowButton->Create("...", dwStyle, omButtonRect, this, 0);
         }
-        //Edit box will have the focus first
-        m_pomDBRowEdit->SetFocus();
+        if(nullptr != m_pomDBRowEdit)
+		{
+			//Edit box will have the focus first
+			m_pomDBRowEdit->SetFocus();
+		}
     }
 
     return nullptr;

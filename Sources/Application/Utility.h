@@ -52,7 +52,6 @@ extern CEvent g_momDllMsgEvent;
 BOOL g_bReadDllMsg;
 //read dll msg thread pointer
 CWinThread* g_pomReadDllThrd;
-BOOL g_bMsgHandlerON;
 // Critical Section for Signal Watch List
 //CRITICAL_SECTION g_CritSectionForSW;
 CRITICAL_SECTION g_CritSectionForTimer;

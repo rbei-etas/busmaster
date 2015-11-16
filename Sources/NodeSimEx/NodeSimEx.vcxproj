@@ -252,20 +252,14 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Application\CNVTCImageList.cpp" />
+    <ClCompile Include="..\Application\CNVTCToolBar.cpp" />
     <ClCompile Include="AppServices.cpp" />
     <ClCompile Include="AppServicesCAN.cpp" />
     <ClCompile Include="AppServicesJ1939.cpp" />
     <ClCompile Include="AppServicesLIN.cpp" />
     <ClCompile Include="BuildProgram.cpp" />
     <ClCompile Include="BusEventHandlerDlg.cpp" />
-    <ClCompile Include="..\Utility\ComputeCheckSum.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
-      </PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="DefineTimerHandler.cpp" />
     <ClCompile Include="DLLHandlerDlg.cpp" />
     <ClCompile Include="EditFrameWnd.cpp" />
@@ -276,7 +270,7 @@
     <ClCompile Include="ExecuteManager.cpp" />
     <ClCompile Include="ExploreMsgSg.cpp" />
     <ClCompile Include="FileView.cpp" />
-    <ClCompile Include="Flags.cpp" />
+   
     <ClCompile Include="FnsTreeView.cpp" />
     <ClCompile Include="FunctionEditorBase.cpp" />
     <ClCompile Include="FunctionEditorDoc.cpp" />
@@ -306,23 +300,16 @@
     <ClCompile Include="SelectFunctions.cpp" />
     <ClCompile Include="SetResetTimer.cpp" />
     <ClCompile Include="Sim_MDIChildBase.cpp" />
-    <ClCompile Include="SimSysConfigDetails.cpp" />
-    <ClCompile Include="SimSysDetView.cpp" />
     <ClCompile Include="SimSysManager.cpp" />
     <ClCompile Include="SimSysNodeInfo.cpp" />
     <ClCompile Include="SimSysTreeView.cpp" />
     <ClCompile Include="SimSysWnd.cpp" />
-    <ClCompile Include="SplFileDlg.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NodeSimEx_stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NodeSimEx_stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">NodeSimEx_stdafx.h</PrecompiledHeaderFile>
-    </ClCompile>
+    
     <ClCompile Include="UtlityDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Application\CNVTCImageList.h" />
+    <ClInclude Include="..\Application\CNVTCToolBar.h" />
     <ClInclude Include="AppServices.h" />
     <ClInclude Include="AppServicesCAN.h" />
     <ClInclude Include="AppServicesJ1939.h" />
@@ -330,7 +317,6 @@
     <ClInclude Include="BaseNodeSim.h" />
     <ClInclude Include="BuildProgram.h" />
     <ClInclude Include="BusEventHandlerDlg.h" />
-    <ClInclude Include="..\Utility\ComputeCheckSum.h" />
     <ClInclude Include="DefineTimerHandler.h" />
     <ClInclude Include="DLLHandlerDlg.h" />
     <ClInclude Include="EditFrameWnd.h" />
@@ -344,7 +330,7 @@
     <ClInclude Include="Export_UserDllCAN.h" />
     <ClInclude Include="Export_UserDllJ1939.h" />
     <ClInclude Include="FileView.h" />
-    <ClInclude Include="Flags.h" />
+   
     <ClInclude Include="FnsTreeView.h" />
     <ClInclude Include="FunctionEditorBase.h" />
     <ClInclude Include="FunctionEditorDoc.h" />
@@ -352,6 +338,7 @@
     <ClInclude Include="FunctionView.h" />
     <ClInclude Include="GlobalObj.h" />
     <ClInclude Include="HandlerFunc.h" />
+    <ClInclude Include="HashDefines.h" />
     <ClInclude Include="IncludeHeaderDlg.h" />
     <ClInclude Include="KeyValue.h" />
     <ClInclude Include="MsgHandlerDlg.h" />
@@ -366,13 +353,11 @@
     <ClInclude Include="SelectFunctions.h" />
     <ClInclude Include="SetResetTimer.h" />
     <ClInclude Include="Sim_MDIChildBase.h" />
-    <ClInclude Include="SimSysConfigDetails.h" />
-    <ClInclude Include="SimSysDetView.h" />
     <ClInclude Include="SimSysManager.h" />
     <ClInclude Include="SimSysNodeInfo.h" />
     <ClInclude Include="SimSysTreeView.h" />
     <ClInclude Include="SimSysWnd.h" />
-    <ClInclude Include="SplFileDlg.h" />
+    
     <ClInclude Include="UtlityDlg.h" />
   </ItemGroup>
   <ItemGroup>

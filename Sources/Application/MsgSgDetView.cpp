@@ -562,7 +562,7 @@ void CMsgSgDetView::OnRclickLstSignalDetails(NMHDR* /*pNMHDR*/, LRESULT* pResult
                 {
                     nMaxBits = defMAX_BITS;
                 }
-                if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
+                if(nullptr != pMsg && (nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits))//check for total  Bits used
                 {
                     // Disable "New Signal" button
                     pomSubMenu->EnableMenuItem(IDM_NEW_SIGNAL,
@@ -577,8 +577,13 @@ void CMsgSgDetView::OnRclickLstSignalDetails(NMHDR* /*pNMHDR*/, LRESULT* pResult
             }
             else if(m_sDbParams.m_eBus == J1939)
             {
-                INT nMaxBits = (pMsg->m_unMessageLength * 8);
-                if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
+                INT nMaxBits = 0;
+				
+				if(nullptr != pMsg)
+				{
+					nMaxBits = (pMsg->m_unMessageLength * 8);
+				}
+                if(nullptr != pMsg && nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
                 {
                     // Disable "New Signal" button
                     pomSubMenu->EnableMenuItem(IDM_NEW_SIGNAL,

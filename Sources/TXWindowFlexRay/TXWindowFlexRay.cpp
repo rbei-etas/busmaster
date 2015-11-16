@@ -234,7 +234,7 @@ int nShowTxWindow( void* pParentWnd, ETYPE_BUS eBUS )
         pFrameWindow->MDIActivate();
         pFrameWindow->SetActiveWindow();
     }
-
+	return S_OK;
 }
 
 

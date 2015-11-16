@@ -485,7 +485,13 @@ void CTreeViewEx::DragEnd(void)
     //W4 Removal
     UINT unNewID = GetEditorWindow()->unRepisitonEntry((DWORD)dwRepositionItemID, (DWORD)dwInsertAfterItemID, (DWORD)omTempTreeCtrl.GetItemData(hParent));
     omTempTreeCtrl.SetItemData(m_hDraggingItemgedItem, unNewID);
-    GetEditorWindow()->vSetFileSavedFlag(FALSE);
+
+    CTSEditorChildFrame *pEditor = GetEditorWindow();
+	
+	if(nullptr != pEditor)
+	{
+		pEditor->vSetFileSavedFlag(FALSE);
+	}
 }
 
 /******************************************************************************
@@ -988,7 +994,16 @@ void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     if(hItem && (flags & TVHT_ONITEM) && !(flags & TVHT_ONITEMRIGHT))
     {
         omTempTreeCtrl.SelectItem(hItem);
-        eTYPE_ENTITY eEnityType = GetEditorWindow()->eGetCurrentEntityType();
+
+        CTSEditorChildFrame* pEditor = GetEditorWindow();
+		
+		eTYPE_ENTITY eEnityType = BASE_ENTITY;
+
+		if(nullptr != pEditor)
+		{
+			eEnityType = pEditor->eGetCurrentEntityType();
+		}
+
         CMenu omContextMenu;
 
         VERIFY(omContextMenu.CreatePopupMenu());
@@ -1370,7 +1385,12 @@ void CTreeViewEx::OnTvnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult)
     LPTSTR pszText = pTVDispInfo->item.pszText;
     *pResult = ( pszText && (*pszText != '\0'));
     CString omstrItemNewName(pszText);
-    GetEditorWindow()->nChangeEntityTitle(nullptr, omstrItemNewName);
+   CTSEditorChildFrame *pChildFrame = GetEditorWindow();
+
+	if(nullptr != pChildFrame)
+	{
+		pChildFrame->nChangeEntityTitle(nullptr, omstrItemNewName);
+	}
     m_bEditing = FALSE;
 }
 

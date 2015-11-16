@@ -39,10 +39,12 @@ public:
     afx_msg void OnBnClickedBtnOutput();
     afx_msg void OnBnClickedBtnConvert();
     afx_msg void OnBnClickedViewLog();
+    afx_msg void UpdateUI();
     CString m_omStrInputFilePath;
     CString m_omStrOutputFilePath;
     afx_msg void OnCbnSelchangeComboConversions();
     CString m_omstrConversionComment;
     CString m_omstrEditHelp;
     CString m_omstrLogFilePath;
+    CBaseConverter* m_pouConverter;
 };

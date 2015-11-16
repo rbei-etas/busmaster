@@ -27,6 +27,7 @@
 #include "BuildProgram.h"
 #include "SetResetTimer.h"
 #include "ExecuteFunc.h"
+#define defMAX_NO_OF_HANDLES 16 //Max no. of Nodes = 15 + Event to trigger on 
 
 class CExecuteManager
 {
@@ -41,18 +42,7 @@ public:
     void vAddNode (const PSNODEINFO psNodeInfo,CExecuteFunc* pExecuteFunc);
     BOOL vDeleteNode(const CString omStrNodeName);
     //void vDeleteAllNode(void);
-    void vEnableDisableAllHandlers(BOOL bState);
-    void vEnableDisableNodeHandlers(const PSNODEINFO psNodeInfo,BOOL bState);
     void vEnableDisableAllTimers(BOOL bState);
-    void vEnableAllKeyHandler(BOOL bState);
-    void vEnableAllMessageHandler(BOOL bState);
-    void vEnableAllErrorHandler(BOOL bState);
-    void vEnableAllEventHandler(BOOL bState);
-    void vEnableNodeKeyHandler(const PSNODEINFO psNodeInfo,BOOL bState);
-    void vEnableNodeMessageHandler(const PSNODEINFO psNodeInfo,BOOL bState);
-    void vEnableNodeErrorHandler(const PSNODEINFO psNodeInfo,BOOL bState);
-    void vEnableNodeEventHandler(const PSNODEINFO psNodeInfo,BOOL bState);
-    void vEnableNodeTimerHandler(const PSNODEINFO psNodeInfo,BOOL bState);
     void vManageOnKeyHandler(UCHAR ucKey);
     void vManageBusEventHandler(eBUSEVEHANDLER eBusEvent);
     void vManageOnMessageHandlerCAN_(PSTCAN_TIME_MSG sRxMsgInfo, DWORD& dwClientId);
@@ -67,10 +57,10 @@ public:
 
     const HMODULE hReturnDllHandle(const CString NodeName);
     BOOL bDllLoaded;//if any one dll is loaded
-    BOOL bExecuteDllBuildLoad(PSNODEINFO psNodeInfo);
-    BOOL bExecuteDllBuild(PSNODEINFO psNodeInfo);
+    BOOL bExecuteDllBuildLoad(PSNODEINFO psNodeInfo,BOOL bDisplaySuccessful);
+    BOOL bExecuteDllBuild(PSNODEINFO psNodeInfo,BOOL bDisplaySuccessful);
     BOOL bExecuteDllUnload(PSNODEINFO psNodeInfo);//It can be called for delete system
-    BOOL bExecuteDllLoad(PSNODEINFO psNodeInfo);
+    BOOL bExecuteDllLoad(PSNODEINFO psNodeInfo,BOOL bDisplaySuccessful);
     //manage starting of timers
     void vManageTimerThreads();
     //provide the node object list to reset the timer structures of the CExecuteFunc
@@ -80,11 +70,8 @@ public:
     CExecuteFunc* pmGetNodeObject(HMODULE hModule);
     //manage the message handlers for messages coming from DLL
     void vManageDllMessageHandler(SDLL_MSG sDllMessages);
-    //Destroy timer dialog
-    void vDestroyTimerDialog();
 
     //On clicking timer handler
-    void vSetResetOnTimerHandler(const CStringArray& omSysNode,BOOL bFromSimSys);
     //deleting all node application is closed
     void vDeleteAllNode();
     //Copy the timer informations from each node to the local memory of
@@ -99,22 +86,28 @@ public:
     void vClearOutputWnd();
     //start dll read thread
     void vStartDllReadThread();
+    //Set bIsModified flag of the Node having given source file path.
+    void vSetNodebFileIsModified(std::string strFilePath);
+    //Add or remove handle from arrhDirNotify array
     //stop threads
     void vStopThreads();
     void vStopTimer();
     void vStartTimer();
     void vManageTimerExecution();
     //Building and loading of all the nodes
-    BOOL bDLLBuildAll(CStringArray* pomStrErrorFiles);
+    BOOL bDLLBuildAll();
     BOOL bDllLoadAll(CStringArray* pomStrErrorFiles);
     BOOL bDllUnloadAll(CStringArray* pomStrErrorFiles);
     BOOL bDLLBuildLoadAll(CStringArray* pomStrErrorFiles);
-    ///////////////////
-    BOOL bActivateDeactivateHandlers(bool bActive,HMODULE hModule);
-    void vUpdateHandlerDetailsInDetView();
+    BOOL bDLLBuildLoadAllEnabled();
+    BOOL bDLLUnloadAllEnabled();
+
+    std::string strGetFilePath(HANDLE hDir);
     CExecuteFunc* pouGetExecuteFunc(DWORD dwClient);
     CEvent m_omDllMsgEvent;
     ETYPE_BUS m_eBus;
+    HANDLE arrhDirNotify[defMAX_NO_OF_HANDLES];
+    std::map<HANDLE,std::string> m_mapHandleFilePath;
 private:
     CExecuteManager(ETYPE_BUS eBus);
     static CExecuteManager* sm_pouManager[BUS_TOTAL];
@@ -126,4 +119,6 @@ private:
     CWinThread* m_pomReadDllThrd;
     //event for terminating read dll msg thread
     CRITICAL_SECTION m_CritSectPsNodeObject;
+    CPARAM_THREADPROC m_MonitorNodeFileThreadProc;
+    HANDLE m_hThread;
 };

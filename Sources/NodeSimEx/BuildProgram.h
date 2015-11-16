@@ -31,7 +31,7 @@ class CBuildProgram
 {
 public:
     // Build the DLL from the source file and call function to display the output
-    BOOL bBuildProgram(PSNODEINFO psNodeInfo,BOOL bLoadDLL);
+    BOOL bBuildProgram(PSNODEINFO psNodeInfo,BOOL bLoadDLL, BOOL bDisplaySuccessful);
     // Default contructor
     CBuildProgram(ETYPE_BUS eBus, HMODULE hModuleHandle =nullptr);
     // Default destructor
@@ -53,7 +53,7 @@ private:
     BOOL bAddStrToArrayFromFile (CString& omStrTextFileName,
                                  CStringArray& omStrArray );
     // Create a make file from makefile template
-    BOOL bCreateMakeFile(CString& omStrMakeFileTemplateName,
+    BOOL bCreateMakeFile(PSNODEINFO psInfo, CString& omStrMakeFileTemplateName,
                          CString& omStrMakeFileName);
     // Source file name to be built to DLL
     CString m_omStrSourceFilename;

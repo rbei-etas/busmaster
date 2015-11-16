@@ -43,15 +43,15 @@ class CDBFConverter:public CDBCConverterBase
 public:
     CDBFConverter(eBUS_TYPE eBus);
 
-    HRESULT LoadDBCFile(string strDBCFile);
+    HRESULT LoadDBCFile(CString strDBCFile);
     HRESULT GenerateImportList(/* sMESSAGE*& */);
-    HRESULT ConvertFile(string strDBFFile);
-    HRESULT FindMessage(string strMsgName, CMessage& );
-    HRESULT FindMessage(UINT unMsgId, CMessage& );
-    HRESULT FindSignalAlias(string& strMsgName, string& strSignalName, string& strSignalAlias);
-    HRESULT GetResultString(char*);
+    HRESULT ConvertFile(CString strDBFFile);
+    HRESULT FindMessage(CString strMsgName, CMessage* );
+    HRESULT FindMessage(UINT unMsgId, CMessage* );
+    HRESULT GetResultString(char* pchResult);
+    HRESULT FindSignalAlias(CString& strMsgName, CString& strSignalName, CString& strSignalAlias);
     HRESULT ClearMsgList();
-    HRESULT GetMessageNameList(std::list<string>& meassageList);
+    HRESULT GetMessageNameList(CStringArray& meassageList);
     virtual ~CDBFConverter();
 
     static unsigned char ucMsg_DLC;
@@ -61,7 +61,7 @@ private:
     unsigned int m_uiResultCode;
     static const char* m_pacResultStrings[];
     unsigned int Convert(string sCanoeFile, string sCanMonFile);
-    bool bGetSignalAlias(CMessage& ouMsg, string& strSignalName, string& strSignalAlias);
+    bool bGetSignalAlias(CMessage& ouMsg, CString& strSignalName, CString& strSignalAlias);
     void CreateLogFile(fstream& fileLog);
     bool WriteToOutputFile(fstream& fileOutput);
     void GenerateMessageList(fstream& fileInput);

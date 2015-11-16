@@ -78,7 +78,7 @@ int nGetLogTimeStamp(char* pchAscTime, char* pchLogTime)
 	int nHours, nMin, nSec;
 	unsigned int unSeconds;
 	double fMilli = 0;
-	chMilliSeconds[5] = '\0';
+	chMilliSeconds[4] = '\0';
 	memset(chMilliSeconds, 0x30, 4);
 	pchTemp = strtok(pchAscTime, chSeparators);
 	unSeconds = strtoul(pchTemp, NULL, 10);

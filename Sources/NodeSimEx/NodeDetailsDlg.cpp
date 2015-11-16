@@ -34,6 +34,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#define defNODE_CONFIG_FILTER "All Supported Simulation Files (*.cpp)|*.cpp;*.dll|Cpp File(s) (*.cpp)|*.cpp|Dll File(s) (*.dll)|*.dll||"
 /////////////////////////////////////////////////////////////////////////////
 // CNodeDetailsDlg dialog
 
@@ -61,6 +62,7 @@ CNodeDetailsDlg::CNodeDetailsDlg(ETYPE_BUS eBus, PSNODEINFO pNode /*=nullptr*/,
     m_bIsNodeModified = FALSE;
     m_eBus = eBus;
     m_bEdit = FALSE;
+    m_eNodeFileType = NODE_FILE_C_CPP;
 }
 
 
@@ -68,7 +70,7 @@ void CNodeDetailsDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CNodeDetailsDlg)
-    DDX_Text(pDX, IDC_EDIT_DLL_PATH, m_omStrDllPath);
+    DDX_Text(pDX, IDC_EDIT_NODE_FILE_PATH, m_omStrNodeFilePath);
     DDX_Text(pDX, IDC_EDIT_ANODE_NAME, m_omStrNodeName);
     //}}AFX_DATA_MAP
     DDX_Control(pDX, IDC_EDIT_ADDRESS, m_omPreferedAddress);
@@ -79,7 +81,6 @@ void CNodeDetailsDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CNodeDetailsDlg, CDialog)
     //{{AFX_MSG_MAP(CNodeDetailsDlg)
     ON_BN_CLICKED(IDC_BTN_BROWSE, OnBrowse)
-    ON_BN_CLICKED(IDC_BTN_CLEAR, OnClear)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -147,15 +148,25 @@ BOOL CNodeDetailsDlg::OnInitDialog()
     {
         m_omStrNodeName  = m_psNodeStuctPtr->m_omStrNodeName;
         m_omStrDllPath   = m_psNodeStuctPtr->m_omStrDllName;
+        m_omStrCFile     = m_psNodeStuctPtr->m_omStrCFileName;
         m_omPreferedAddress.vSetValue(m_psNodeStuctPtr->m_byPrefAddress);
         m_omEcuName.vSetValue(m_psNodeStuctPtr->m_unEcuName);
-    }
 
-    if(!m_omStrDllPath.IsEmpty())
-    {
-        vEnableClearButton(TRUE);
-    }
 
+        if(m_psNodeStuctPtr->m_eNodeFileType == NODE_FILE_DLL && !m_omStrDllPath.IsEmpty())
+        {
+            m_omStrNodeFilePath =  m_omStrDllPath;
+            m_eNodeFileType = NODE_FILE_DLL;
+        }
+        else if((m_psNodeStuctPtr->m_eNodeFileType == NODE_FILE_C_CPP) && !m_omStrCFile.IsEmpty())
+        {
+            m_omStrNodeFilePath =  m_omStrCFile;
+        }
+        else
+        {
+            m_omStrNodeFilePath = "";
+        }
+    }
     UpdateData(FALSE);
 
     return TRUE;
@@ -236,57 +247,24 @@ void CNodeDetailsDlg::OnOK()
                 }
             }
         }
-        //Check for duplicate dll
-        if( (!m_omStrDllPath.IsEmpty()) &&
-                (m_psNodeStuctPtr->m_omStrDllName != m_omStrDllPath))
+        if ((!m_omStrCFile.IsEmpty() && m_psNodeStuctPtr->m_omStrCFileName != m_omStrCFile && pSimSysNodeInfo->bIsDuplicateCFile( m_omStrCFile ))
+                || (!m_omStrDllPath.IsEmpty() && m_psNodeStuctPtr->m_omStrDllName != m_omStrDllPath && pSimSysNodeInfo->bIsDuplicateDllName( m_omStrDllPath )))
         {
-            if (pSimSysNodeInfo->bIsDuplicateDllName( m_omStrDllPath ))
-            {
-                AfxMessageBox( "Duplicate Dll found!", MB_OK|MB_ICONINFORMATION );
-                GetDlgItem(IDC_EDIT_DLL_PATH)->SetFocus();
-                bRetVal = FALSE;
-            }
+            AfxMessageBox( "Duplicate File found!", MB_OK|MB_ICONINFORMATION );
+            GetDlgItem(IDC_EDIT_NODE_FILE_PATH)->SetFocus();
+            bRetVal = FALSE;
+        }
+        else
+        {
+            m_psNodeStuctPtr->m_eNodeFileType = m_eNodeFileType;
         }
     }
-    if ( bRetVal == TRUE )
+    if ( bRetVal == TRUE)
     {
-        //If name is changed
         if (m_psNodeStuctPtr->m_omStrNodeName != m_omStrNodeName)
         {
             m_bIsNodeModified = TRUE;
             m_psNodeStuctPtr->m_omStrNodeName = m_omStrNodeName;
-        }
-        if ((m_psNodeStuctPtr->m_omStrDllName  != m_omStrDllPath) || (m_omStrDllPath.IsEmpty() == TRUE))
-        {
-            //If dll is changed
-            m_bIsNodeModified = TRUE;
-            //If no error then update the node details and close the dialog box
-            m_psNodeStuctPtr->m_omStrDllName  = m_omStrDllPath;
-            // Now search for respective *.c file and change it
-            CString omStrFilename = m_psNodeStuctPtr->m_omStrDllName;
-            omStrFilename.Replace(defDOT_DLL ,defDOT_SMALL_C);
-            // file-attribute information
-            struct _tfinddata_t fileinfo;
-            // Check if file exists
-            if (_tfindfirst( omStrFilename.GetBuffer(MAX_PATH), &fileinfo) != -1L)
-            {
-                m_psNodeStuctPtr->m_omStrFileName = omStrFilename;
-            }
-            else // If "C" file is not found then search for "C++" file
-            {
-                omStrFilename = m_psNodeStuctPtr->m_omStrDllName;
-                omStrFilename.Replace(defDOT_DLL ,defDOT_SMALL_CPP);
-                if (_tfindfirst( omStrFilename.GetBuffer(MAX_PATH), &fileinfo) != -1L)
-                {
-                    m_psNodeStuctPtr->m_omStrFileName = omStrFilename;
-                }
-                // If the file name is empty
-                else if(omStrFilename.IsEmpty() == TRUE)
-                {
-                    // If the file name is empty
-                    m_psNodeStuctPtr->m_omStrFileName = omStrFilename;
-                }
-            }
         }
         if (m_psNodeStuctPtr->m_byPrefAddress !=
                 (BYTE)(m_omPreferedAddress.lGetValue()))
@@ -300,6 +278,35 @@ void CNodeDetailsDlg::OnOK()
             m_bIsNodeModified = TRUE;
             m_psNodeStuctPtr->m_unEcuName = (UINT64)(m_omEcuName.lGetValue());
         }
+        if(!m_omStrNodeFilePath.IsEmpty())
+        {
+            int nReturnVal = IDYES;
+
+            if(m_psNodeStuctPtr->m_omStrCFileName != m_omStrCFile && !m_psNodeStuctPtr->m_omStrCFileName.IsEmpty())
+            {
+                nReturnVal = AfxMessageBox(ALL_NODE_EDIT_CONFMN, MB_YESNO|MB_ICONQUESTION);
+            }
+            if(nReturnVal)
+            {
+                bRetVal = FALSE;
+                if(m_eNodeFileType == NODE_FILE_C_CPP  && !m_omStrCFile.IsEmpty())
+                {
+                    if(bOpenfile())
+                    {
+                        bUpdateNodeInfoFile();
+                        bRetVal = TRUE;
+                    }
+                }
+                else
+                {
+                    bUpdateNodeInfoFile();
+                    bRetVal = TRUE;
+                }
+            }
+        }
+    }
+    if(bRetVal == TRUE)
+    {
         CDialog::OnOK();
     }
 }
@@ -355,72 +362,293 @@ BOOL CNodeDetailsDlg::PreTranslateMessage(MSG* pMsg)
 /******************************************************************************/
 void CNodeDetailsDlg::OnBrowse()
 {
-    //AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    // Display open file dialog
-    // which will allow the user to select
-    // only .dll files
-    if((m_psNodeStuctPtr != nullptr) &&(m_psNodeStuctPtr->m_bIsDllLoaded))
-    {
-        AfxMessageBox("Dll is already Loaded! Unload it first and try again.",
-                      MB_OK|MB_ICONINFORMATION);
-    }
-    else
-    {
-        CFileDialog om_Dlg( TRUE,  //open an existing file
-                            nullptr,  //extension to file
-                            "",  //initial file name
-                            OFN_FILEMUSTEXIST| OFN_HIDEREADONLY|
-                            OFN_PATHMUSTEXIST,
-                            "Dll Files(*.dll)|*.dll||",
-                            nullptr );
-        // Set caption text
-        om_Dlg.m_ofn.lpstrTitle = "Select the Dll";
+    CFileDialog om_Dlg( TRUE,  //open an existing file
+                        "cpp",  //extension to file
+                        nullptr,  //initial file name
+                        OFN_HIDEREADONLY|
+                        OFN_PATHMUSTEXIST|OFN_OVERWRITEPROMPT,
+                        defNODE_CONFIG_FILTER,
+                        nullptr );
+    // Set caption text
+    om_Dlg.m_ofn.lpstrTitle = "Select the File";
 
-        if ( om_Dlg.DoModal() == IDOK )
+    if ( om_Dlg.DoModal() == IDOK )
+    {
+        CString strExtName  = om_Dlg.GetFileExt();
+        // Display selected file name
+        if(strExtName == "dll")
         {
-            // Display selected file name
-            m_omStrDllPath = om_Dlg.GetPathName();
-            // to enable the clear button
-            vEnableClearButton(TRUE);
-            //UpdateData(FALSE);
-            SetDlgItemText( IDC_EDIT_DLL_PATH, m_omStrDllPath);
+            m_omStrCFile = "";
+            m_omStrDllPath ="";
+            CString omStrFilePath = om_Dlg.GetPathName();
+            omStrFilePath.Replace(".dll",".cpp");
+            CFileFind omFileFind;
+            /*if the .cpp file corresponding to the .dll file is found in the folder
+            containing the .dll file then we consider it as .cpp file and the file(.cpp)
+            is associated to the .dll and the .cpp file can be edited as well as built.
+            Else the .dll is simply used for loading
+            and cant be edited or build*/
+            if(omFileFind.FindFile(omStrFilePath) == 0)
+            {
+                m_omStrDllPath = om_Dlg.GetPathName();
+                m_eNodeFileType = NODE_FILE_DLL;
+            }
+            else
+            {
+                m_omStrCFile = omStrFilePath;
+                m_eNodeFileType = NODE_FILE_C_CPP;
+            }
+            SetDlgItemText( IDC_EDIT_NODE_FILE_PATH, om_Dlg.GetPathName());
+        }
+        else if(strExtName == "cpp" || strExtName == "c")
+        {
+            m_eNodeFileType = NODE_FILE_C_CPP;
+            m_omStrCFile = om_Dlg.GetPathName();;
+            SetDlgItemText( IDC_EDIT_NODE_FILE_PATH, m_omStrCFile);
+
         }
     }
 }
+
 /******************************************************************************/
-/*  Function Name    :  OnClear                                               */
-/*                                                                            */
-/*  Input(s)         :                                                        */
-/*  Output           :                                                        */
-/*  Functionality    :  Clears the Dll Path Edit box.
-/*  Member of        :  CNodeDetailsDlg                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  16-1-2006                                            */
-/*  Modifications    :
-/******************************************************************************/
-void CNodeDetailsDlg::OnClear()
+/*  Function Name    :  bOpenfile
+/*  Input(s)         :  -
+/*  Output           :  -
+/*  Functionality    :  Calls  function, Enables the user to (associate)
+                        open an existing C file or create a new file on button press
+/*  Member of        :  CSimSysDetView
+/*  Friend of        :      -
+/*
+/*  Author(s)        :  Harika M
+/*  Date Created     :  21.12.2005
+/*  Modification     :  Robin G.K.
+                        21.10.14, Moved this functionality from CSimSysDetView
+                        to CNodeDetailsDlg.
+/*****************************************************************************/
+bool CNodeDetailsDlg::bOpenfile()
 {
-    m_omStrDllPath.Empty();
-    GetDlgItem(IDC_EDIT_DLL_PATH)->SetWindowText(m_omStrDllPath);
-    vEnableClearButton(FALSE);
+    if(m_eBus == J1939)
+    {
+        if(CGlobalObj::ouGetObj(m_eBus).bJ1939Activated == false)
+        {
+            AfxMessageBox("J1939 is not Activated, activate it and then try.");
+            return false;
+        }
+    }
+    /*int nReturnVal = IDYES;
+
+    if(m_psNodeStuctPtr->m_omStrCFileName != m_omStrCFile && !m_psNodeStuctPtr->m_omStrCFileName.IsEmpty())
+    {
+        nReturnVal = AfxMessageBox(ALL_NODE_EDIT_CONFMN, MB_YESNO|MB_ICONQUESTION);
+    }
+    if ( nReturnVal == IDYES )
+    {*/
+
+    /*Getting the Protocol from the .c file*/
+    // For File I/O
+    CStdioFile o_File;
+
+    // Open File
+    BOOL bIsFileOpen = FALSE;
+
+    // Opening the file
+    bIsFileOpen = o_File.Open(
+                      m_omStrCFile, CFile::modeRead|CFile::typeText );
+    if(bIsFileOpen != FALSE )
+    {
+        // read subsequent info from the file
+        /* Read Database version number*/
+        int nIndex = -1;
+        CString strProtocolInfo;
+
+        CString omstrBusName;
+
+        omstrBusName.Empty();
+
+        if(m_eBus == CAN)
+        {
+            // If CAN
+            omstrBusName = "CAN";
+        }
+        else if(m_eBus == J1939)
+        {
+            // If J1939
+            omstrBusName = "J1939";
+        }
+        else if(m_eBus == LIN)
+        {
+            // If LIN
+            omstrBusName = "LIN";
+        }
+        
+
+        // If Bus is selected
+        if(omstrBusName.IsEmpty() == FALSE)
+        {
+            nIndex = -1;
+            CString omstrProtocolValue;
+
+            // Check if the PROTOCOL tag exists in the .c file
+            while( nIndex == -1 && o_File.ReadString( omstrProtocolValue ))
+            {
+                // Checking if the .c file is of which Protocol
+                nIndex = omstrProtocolValue.Find(PROTOCOL_TAB);
+            }
+
+            if(nIndex != -1)
+            {
+                int nPlaceLeftParanth = omstrProtocolValue.Find('[');
+                int nPlaceRightParanth = omstrProtocolValue.Find(']');
+                if(nPlaceLeftParanth != -1 && nPlaceRightParanth != -1)
+                {
+                    omstrProtocolValue = omstrProtocolValue.Mid(nPlaceLeftParanth+1, (nPlaceRightParanth - nPlaceLeftParanth -1));
+
+                    // If CAN protocol is selected
+                    if(omstrProtocolValue == "CAN" || omstrProtocolValue == "LIN" || omstrProtocolValue == "FLEXRAY")
+                    {
+                        if(m_eBus == J1939)
+                        {
+                            // If the .c file is not related to J1939
+                            AfxMessageBox("File " + m_omStrCFile + " s not created for J1939.\r\nPlease open the .cpp file created for J1939.");
+                            return false;
+                        }
+                    }
+
+                    // If J1939 protocol is selected
+                    if(omstrProtocolValue == "J1939" || omstrProtocolValue == "LIN" || omstrProtocolValue == "FLEXRAY")
+                    {
+                        // If CAN protocol is selected
+                        if(m_eBus == CAN)
+                        {
+                            // If the .c file is not related to CAN
+                            AfxMessageBox("File " + m_omStrCFile + " is not created for CAN.\r\nPlease open the .cpp file created for CAN.");
+                            return false;
+                        }
+                    }
+
+                    // If LIN protocol is selected
+                    if(omstrProtocolValue == "CAN" || omstrProtocolValue == "J1939" || omstrProtocolValue == "FLEXRAY")
+                    {
+                        // If Lin protocol is slected
+                        if(m_eBus == LIN)
+                        {
+                            // If the .c file is not related to LIN
+                            AfxMessageBox("File " + m_omStrCFile + " is not created for LIN.\r\nPlease open the .cpp file created for LIN.");
+                            return false;
+                        }
+                    }
+
+                    
+                }
+
+                // Closing the file opened
+                o_File.Close();
+            }
+            else
+            {
+                o_File.SeekToBegin();
+
+                CString omTemp1 = BUS_INCLUDE_HDR;
+                // Preparing the header to be searched for in .c file
+                // to get the Protocol name
+                omTemp1.Replace("PLACE_HODLER_FOR_BUSNAME", omstrBusName);
+
+                nIndex = -1;
+
+                while( nIndex == -1 && o_File.ReadString( strProtocolInfo ))
+                {
+                    // Checking if the .c file is of which Protocol
+                    nIndex = strProtocolInfo.Find(omTemp1);
+                }
+
+                // Closing the file opened
+                o_File.Close();
+
+                if (nIndex == -1)
+                {
+                    // If CAN protocol is selected
+                    if(m_eBus == CAN)
+                    {
+                        // If the .cpp file is not related to CAN
+                        AfxMessageBox("File " + m_omStrCFile + " is not created for CAN.\r\nPlease open the .cpp file created for CAN.");
+                        return false;
+                    }
+                    // If J1939 protocol is selected
+                    else if(m_eBus == J1939)
+                    {
+                        // If the .cpp file is not related to J1939
+                        AfxMessageBox("File " + m_omStrCFile + " s not created for J1939.\r\nPlease open the .cpp file created for J1939.");
+                        return false;
+                    }
+                    // If LIN protocol is selected
+                    else if(m_eBus == LIN)
+                    {
+                        // If the .cpp file is not related to LIN
+                        AfxMessageBox("File " + m_omStrCFile + " s not created for LIN.\r\nPlease open the .cpp file created for LIN.");
+                        return false;
+                    }
+                   
+                   
+                }
+            }
+        }
+    }
+
+    if( !m_omStrCFile.IsEmpty() )
+    {
+        CGlobalObj::ouGetObj(m_eBus).bOpenFunctioneditorfile(m_omStrCFile);
+    }
+
+    return true;
 
 }
-/******************************************************************************/
-/*  Function Name    :  vEnableClearButton                                    */
-/*                                                                            */
-/*  Input(s)         :  BOOL bEnable                                          */
-/*  Output           :                                                        */
-/*  Functionality    :  Enables or disables the Clear button.
-/*  Member of        :  CNodeDetailsDlg                                       */
-/*  Friend of        :      -                                                 */
-/*                                                                            */
-/*  Author(s)        :  Harika M                                              */
-/*  Date Created     :  16-1-2006                                             */
-/*  Modifications    :
-/******************************************************************************/
-void CNodeDetailsDlg::vEnableClearButton(BOOL bEnable)
+/*********************************************************************************/
+/*  Function Name    :  bUpdateNodeInfoFile
+/*  Input(s)         :  CString omStrCFile
+/*  Output           :  -
+/*  Functionality    : If <FilePath>.dll is entered in Node dialog then it associates
+                        <FilePath>.cpp(or <FilePath>.c) to the node, and vice versa.
+/*  Member of        :  CSimSysDetView
+/*  Friend of        :      -
+/*  Author(s)        :  Harika M
+/*  Date Created     :  21.12.2005
+/*  Modification     :  Robin G.K.
+                        21.10.14, Moved this from CSimSysDetView to CNodeDetailsDlg.
+                        Optimisied the functionality.                           */
+/********************************************************************************/
+void CNodeDetailsDlg::bUpdateNodeInfoFile()
 {
-    GetDlgItem(IDC_BTN_CLEAR)->EnableWindow(bEnable);
+    CString omStrFileName = m_omStrNodeFilePath;
+    CSimSysTreeView* pSimSysTreeView =
+        CSimSysManager::ouGetSimSysManager(m_eBus).podGetSimSysTreeView();
+    CSimSysNodeInfo* pSimSysNodeInf =
+        CSimSysManager::ouGetSimSysManager(m_eBus).pomGetSimSysNodeInfo();
+
+    int nIndex = omStrFileName.ReverseFind('.');
+    if( nIndex >= 0 )
+    {
+        omStrFileName = omStrFileName.Left(nIndex);
+
+    }
+    CString omStrDllFile = omStrFileName + defDOT_DLL;
+    // file-attribute information
+    _tfinddata_t fileinfo;
+    if (_tfindfirst( omStrDllFile.GetBuffer(MAX_PATH), &fileinfo) != -1L)
+    {
+        m_psNodeStuctPtr->m_omStrDllName = omStrDllFile;
+    }
+
+    CString omStrCPPFile = omStrFileName + defDOT_CPP;
+    if(_tfindfirst( omStrCPPFile.GetBuffer(MAX_PATH), &fileinfo) != -1L)
+    {
+        m_psNodeStuctPtr->RegisterFileToMonitor(std::string(m_psNodeStuctPtr->m_omStrCFileName),false);
+        m_psNodeStuctPtr->m_omStrCFileName = omStrCPPFile;
+        m_psNodeStuctPtr->RegisterFileToMonitor(std::string(m_psNodeStuctPtr->m_omStrCFileName),true);
+    }
+
+    CString omStrCFile = omStrFileName + defDOT_C;
+    if(_tfindfirst( omStrCFile.GetBuffer(MAX_PATH), &fileinfo) != -1L)
+    {
+        m_psNodeStuctPtr->m_omStrCFileName = omStrCFile;
+    }
 }

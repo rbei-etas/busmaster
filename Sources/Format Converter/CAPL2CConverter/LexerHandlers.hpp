@@ -172,6 +172,8 @@ void vStoreTimers()
 			//vTokenize(omStrTimers, ",;", omStrTemp, nStart);
 			
 			char *chTemp = new char[omStrTimers.GetLength()+1];
+			if (NULL != chTemp)
+			{
 			strcpy(chTemp, (LPCSTR)omStrTimers);
 			char* token = strtok( chTemp, ",;" );
 			while( token != NULL )
@@ -190,6 +192,7 @@ void vStoreTimers()
 				token = strtok( NULL, ",;" );
 			    //omStrTemp.Empty();
 				//vTokenize(omStrTimers, ",;", omStrTemp, nStart);
+				}
 		    }
 			if (NULL != chTemp)
 			{
@@ -581,14 +584,16 @@ int onGlobalVariables()
 */
 int onLocalVariables()
 {
+	HRESULT hResult = S_FALSE;
     CString omStrValues = yytext;
     if( S_OK == ConvertToBMVariableDec(omStrValues, false) )
     {
         INT nLen = omStrValues.GetLength();
         fprintf(yyout, "static %s\n", omStrValues.GetBuffer(MAX_PATH));
 
-        return S_OK;
+        hResult = S_OK;
     }
+	return hResult;
 }
 
 /**
@@ -1595,11 +1600,11 @@ void vHandleUtilityFun()
         {
             omStrText = yytext;
             CString omStrThisText;
-            if(g_ouGlobalVariables.g_oucaplEventHandleState = CAPL_EVENT_KEY)
+            if(g_ouGlobalVariables.g_oucaplEventHandleState == CAPL_EVENT_KEY)
             {
                 omStrThisText = defSTR_KeyValue;
             }
-            else if(g_ouGlobalVariables.g_oucaplEventHandleState = CAPL_EVENT_MESSAGE)
+            else if(g_ouGlobalVariables.g_oucaplEventHandleState == CAPL_EVENT_MESSAGE)
             {
                 omStrThisText = defSTR_RxMsg;
             }
@@ -1976,19 +1981,19 @@ void vHandleByte(CString val)
     if( type == defSTR_long ) 
     {
         //if long
-        fprintf(yyout,defSTR_LongCnvrt,name,index);
+			fprintf(yyout,defSTR_LongCnvrt, (LPCSTR)name,(LPCSTR)name,(LPCSTR)index);
     }
 
     if( type == defSTR_byte )
     {
         //if byte
-        fprintf(yyout,defSTR_ByteCnvrt,name,index);
+			fprintf(yyout,defSTR_ByteCnvrt, (LPCSTR)name,(LPCSTR)name,(LPCSTR)index);
     }
 
     if( type == defSTR_word )
     {
         //if word
-        fprintf(yyout,defSTR_WordCnvrt,name,index);
+			fprintf(yyout,defSTR_WordCnvrt, (LPCSTR)name,(LPCSTR)name,(LPCSTR)index);
     }
     }
     catch(...)
@@ -2099,7 +2104,7 @@ void vHandleDot()
     // yytext -- "Msg.Signal"
 
     CString omStrVal;
-    string omStrMsg, omStrSignal;
+		CString omStrMsg, omStrSignal;
     int nIndex;
     omStrVal = yytext;
 
@@ -2122,11 +2127,11 @@ void vHandleDot()
 
         omStrVal = defSTR_RxMsg ;
     }
-    string omStrSignalAlias;
+    CString omStrSignalAlias;
     CString omStrMsgType;
-    if( bGetMessageObjType(omStrMsg.c_str(), omStrMsgType) ==  TRUE)
+    if( bGetMessageObjType(omStrMsg, omStrMsgType) ==  TRUE)
     {
-        string strMsgType = omStrMsgType.GetBuffer(MAX_PATH);
+				CString strMsgType = omStrMsgType.GetBuffer(MAX_PATH);
         //TODO::Check
         g_ouGlobalVariables.g_ouDBC2DBFConverter->FindSignalAlias( strMsgType, omStrSignal, omStrSignalAlias);
         char chWarning[1024];
@@ -2134,13 +2139,13 @@ void vHandleDot()
         if( omStrSignal != omStrSignalAlias )
         {
             sprintf(chWarning, "(Multiplexed Signal): signal <%s::%s> is Replaced with <%s::%s>", \
-                strMsgType.c_str(), omStrSignal.c_str(), strMsgType.c_str(), omStrSignalAlias.c_str());
+						(LPCSTR)strMsgType, (LPCSTR)omStrSignal, (LPCSTR)strMsgType, (LPCSTR)omStrSignalAlias);
             g_ouGlobalVariables.g_ouWarningStrings.insert(chWarning);
-            fprintf(yyout,defSTR_MWBitAlias,omStrMsg.c_str(), omStrSignal.c_str(), omStrSignalAlias.c_str());
+					fprintf(yyout,defSTR_MWBitAlias,(LPCSTR)omStrMsg, (LPCSTR)omStrSignal, (LPCSTR)omStrSignalAlias);
         }
         else
         {
-            fprintf(yyout,defSTR_MWBit,omStrMsg.c_str(), omStrSignal.c_str());
+					fprintf(yyout,defSTR_MWBit,(LPCSTR)omStrMsg, (LPCSTR)omStrSignal);
         }
     }
     else
@@ -2681,7 +2686,7 @@ void vMsgDecl(CString& omStrValue, MsgVariables& ouMsgVariable)
 		ident.TrimRight("' ");
         decid = ident[0];
         flag = 1;
-        g_ouGlobalVariables.g_ouDBC2DBFConverter->FindMessage(decid, msg);
+        g_ouGlobalVariables.g_ouDBC2DBFConverter->FindMessage(decid, &msg);
     }
     else if( isdigit( ident[0]) )
     {//if message is declared with id then
@@ -2720,7 +2725,7 @@ void vMsgDecl(CString& omStrValue, MsgVariables& ouMsgVariable)
     }
     else
     {//message is declared with name
-		g_ouGlobalVariables.g_ouDBC2DBFConverter->FindMessage(ident.GetBuffer(MAX_PATH),msg);
+		g_ouGlobalVariables.g_ouDBC2DBFConverter->FindMessage(ident.GetBuffer(MAX_PATH),&msg);
     }
     
    // ouMsgVariable.m_omStrMsgType = msg.m_acName;

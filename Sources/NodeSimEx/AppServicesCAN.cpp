@@ -95,7 +95,7 @@ BOOL gvSetControllerMode_CAN(BOOL /*bNewMode*/)
 
 BOOL gbStartStopHardware_CAN(BOOL bState)
 {
-    ::SendMessage(CGlobalObj::sm_hWndMDIParentFrame, WM_FROM_USER_DLL, (WPARAM)DIS_CONNECT,(LPARAM)bState);
+    ::PostMessage(CGlobalObj::sm_hWndMDIParentFrame, WM_FROM_USER_DLL, (WPARAM)DIS_CONNECT,(LPARAM)bState);
     return TRUE ;
 }
 /******************************************************************************
