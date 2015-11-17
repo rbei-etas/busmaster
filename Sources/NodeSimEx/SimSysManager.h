@@ -37,10 +37,10 @@ private:
     CSimSysNodeInfo m_ouSimSysNodeInfo;
     // Pointer to Simulated system List data structure
     PSSIMSYSARRAY m_psSimSysArray;
-    
+
     // Pointer to CSimSysTreeView object
     CSimSysTreeView* m_pomSimSysTreeView;
-    
+
     //Add the file details while loading new configuration
     void vLoadNodeInfoFromConfiguration(xmlNodePtr pNode);
 public:
@@ -66,8 +66,8 @@ public:
     void vLoadSimSysWndConfig(xmlDocPtr, ETYPE_BUS eBus);
     void CopySIMDataFromBuffer(xmlDocPtr, ETYPE_BUS eBus);
 
-   /* HRESULT GenerateMakeFile(std::string strCppFile);
-    HRESULT GenerateMakeFile();*/
+    /* HRESULT GenerateMakeFile(std::string strCppFile);
+     HRESULT GenerateMakeFile();*/
 
     void vSetConfigData(xmlNodePtr pNode);
     xmlNodePtr m_CopyJ1939SimNode;

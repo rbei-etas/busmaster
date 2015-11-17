@@ -158,5 +158,5 @@ public:
     HRESULT FPL_SetChannelBaudRateDetails(SCONTROLLER_DETAILS_LIN* controllerDetails,
                                           int nNumChannels,ETYPE_BUS eBus);
 
-	void vSetMeasurementFileName();
+    void vSetMeasurementFileName();
 };

@@ -192,7 +192,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_REPLAY_SKIP, OnReplaySingleSkip)
     ON_COMMAND(IDM_REPLAY_STEP, OnReplaySingleStep)
     ON_COMMAND(IDM_REPLAY_STOP, OnReplayStop)
-    ON_COMMAND(IDM_REPLAY_GO, OnReplayGo)    
+    ON_COMMAND(IDM_REPLAY_GO, OnReplayGo)
     ON_COMMAND(IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, OnMessageInterpretation)
     ON_COMMAND(IDM_SIGNALWATCH_ADDSIGNAL, OnAddSignalToSignalWindow)
     ON_COMMAND(IDM_SIGNALWATCH_ADDSIGNAL_LIN, OnAddSignalToSignalWindow_LIN)
@@ -491,7 +491,7 @@ CMainFrame::CMainFrame()
     // Graph window status
     for(int nBUSID = CAN; nBUSID<AVAILABLE_PROTOCOLS; nBUSID++)
     {
-        
+
         m_sGraphWndPlacement[nBUSID].length = 0;
         m_sGraphWndPlacement[nBUSID].rcNormalPosition.top = -1;
         m_sGraphSplitterPos[nBUSID].m_nRootSplitterData[0][0] = -1;
@@ -792,7 +792,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
         objSize.cx = 27;
         objSize.cy = 27;
         vSetToolbarButtonSize( m_wndToolBar,            objSize);
-       
+
         vSetToolbarButtonSize( m_wndToolbarMsgWnd,      objSize);
         vSetToolbarButtonSize( m_wndToolbarConfig,      objSize);
         vSetToolbarButtonSize( m_wndToolbarCANDB,       objSize);
@@ -810,8 +810,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_wndToolbarFlexRay.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_FLEXRAY,IDB_TLB_FLEXRAY_HOT, IDB_TLB_FLEXRAY_DISABLED);
     m_wndToolbarConfiguration.bLoadCNVTCToolBar(m_bytIconSize, IDR_CONFIG_TOOLBAR,IDR_CONFIG_TOOLBAR_HOT, IDR_CONFIG_TOOLBAR_DISABLED);
     m_wndToolbarLIN.bLoadCNVTCToolBar(m_bytIconSize, IDB_LIN_IMG,IDB_LIN_IMGHOT, IDB_LIN_IMGDISABLED);
-	
-	
+
+
 
     EnableDocking(CBRS_ALIGN_ANY);
 
@@ -973,8 +973,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     bInitFrameProcLIN(); // Initialize logger module
     //vInitializeBusStatLIN();
 
-	m_wndToolbarFlexRay.ShowWindow(SW_HIDE);
-	m_wndToolbarLIN.ShowWindow(SW_HIDE);
+    m_wndToolbarFlexRay.ShowWindow(SW_HIDE);
+    m_wndToolbarLIN.ShowWindow(SW_HIDE);
 
     return 0;
 }
@@ -989,7 +989,7 @@ bool CMainFrame::bSetDefaultToolbarPosition()
     DockControlBarLeftOf(&m_wndToolBar,&m_wndToolbarConfiguration);        //align others next to it
     DockControlBarLeftOf(&m_wndToolbarMsgWnd,&m_wndToolBar);        //align others next to it
     DockControlBarLeftOf( &m_wndToolbarCANDB, &m_wndToolbarMsgWnd);
-    
+
     DockControlBar(&m_wndToolbarJ1939,AFX_IDW_DOCKBAR_LEFT);        //align the toolabr to the left
     DockControlBarLeftOf( &m_wndToolbarConfig, &m_wndToolbarJ1939); //aign the next toolbar below it
     DockControlBar(&m_wndToolbarLIN,AFX_IDW_DOCKBAR_LEFT);        //align the toolabr to the left
@@ -1159,7 +1159,7 @@ database that is already open?"), MB_YESNO, MB_ICONINFORMATION);
                 {
                     // No corruption in database, display the editor
                     bDisplayEditor = TRUE;
-					m_bIsNewDatabase = FALSE;      //To declare that database as existing one
+                    m_bIsNewDatabase = FALSE;      //To declare that database as existing one
                 }
             }
             else
@@ -1266,9 +1266,9 @@ void CMainFrame::OnCloseDatabase()
 
         if(nullptr != pTempMsgSg)
         {
-        // inactive data structure is no more required
-        // delete previously allocated memory if any
-        pTempMsgSg->bDeAllocateMemoryInactive();
+            // inactive data structure is no more required
+            // delete previously allocated memory if any
+            pTempMsgSg->bDeAllocateMemoryInactive();
         }
         m_podMsgSgWnd->MDIDestroy();
         m_podMsgSgWnd = nullptr;
@@ -1648,7 +1648,7 @@ __int64 CMainFrame::nConvertStringToInt(CString omStrHexNo)
             n64RetVal = n64RetVal * 16 + ((cChar - 'A') + 10);
         }
         else if ((cChar >= 'a') && (cChar <= 'f'))
-        {            
+        {
             n64RetVal = n64RetVal * 16 + ((cChar - 'a') + 10);
         }
         else if ( cChar == '-' )
@@ -3919,11 +3919,11 @@ void CMainFrame::OnClose()
     vREP_HandleConnectionStatusChange( FALSE ); //Close reply
 
     OnDllUnload(); //Unload all the loaded dlls
-   
+
     //Unload J1939 Node sim dll
     OnDllUnloadJ1939();
-   
-    OnDllUnloadLIN();   
+
+    OnDllUnloadLIN();
 
     if(m_unTimerSB != 0)
     {
@@ -6400,19 +6400,19 @@ void CMainFrame::OnFileConnect()
         g_bStopErrorHandlers    = TRUE;
         if(bConnected)
         {
-			//Build and Load Node Simulation
-			if(FALSE == GetICANNodeSim()->NS_DLLBuildLoadAllEnabled())
-			{
-				return;
-			}
-			BOOL bIsJ1939Active = theApp.pouGetFlagsPtr()->nGetFlagStatus(ACTIVATED_J1939);
-			if(bIsJ1939Active)
-			{
-				if(FALSE == GetIJ1939NodeSim()->NS_DLLBuildLoadAllEnabled())
-				{
-					return;
-				}
-			}
+            //Build and Load Node Simulation
+            if(FALSE == GetICANNodeSim()->NS_DLLBuildLoadAllEnabled())
+            {
+                return;
+            }
+            BOOL bIsJ1939Active = theApp.pouGetFlagsPtr()->nGetFlagStatus(ACTIVATED_J1939);
+            if(bIsJ1939Active)
+            {
+                if(FALSE == GetIJ1939NodeSim()->NS_DLLBuildLoadAllEnabled())
+                {
+                    return;
+                }
+            }
 
             m_objTxHandler.vSetTxStopFlag(TRUE);
             if((pouFlags->nGetFlagStatus(LOGTOFILE) != 0 || m_abLogOnConnect[CAN] == TRUE) && sg_pouFrameProcCAN != nullptr)
@@ -6530,10 +6530,10 @@ void CMainFrame::OnFileConnect()
                 pNodeSim->NS_nOnBusConnected(TRUE);
             }
 
-			if(nullptr != sg_pouIJ1939Logger && theApp.pouGetFlagsPtr()->nGetFlagStatus(ACTIVATED_J1939) == TRUE && sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE)
-			{
-				sg_pouIJ1939Logger->vSetMeasurementFileName();
-			}
+            if(nullptr != sg_pouIJ1939Logger && theApp.pouGetFlagsPtr()->nGetFlagStatus(ACTIVATED_J1939) == TRUE && sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE)
+            {
+                sg_pouIJ1939Logger->vSetMeasurementFileName();
+            }
         }
         else
         {
@@ -6549,8 +6549,8 @@ void CMainFrame::OnFileConnect()
             bStopGraphReadThread();
             if ( nullptr != m_podMsgWndThread )
             {
-            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
-                          eWINID_STOP_READ, 0);
+                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
+                              eWINID_STOP_READ, 0);
             }
             //m_n64TimeElapsedSinceConnection =0;
 
@@ -6608,7 +6608,7 @@ void CMainFrame::OnFileConnect()
             else if(bLogIsON == TRUE && bConnected == TRUE)
             {
                 vStartStopLogging(bLogIsON == TRUE);
-            }		
+            }
 
             if (m_abLogOnConnect[J1939] == TRUE)
             {
@@ -6624,19 +6624,19 @@ void CMainFrame::OnFileConnect()
 
                     BYTE bytTbrItemIndex = 3;
                     vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, sg_pouIJ1939Logger->FPJ1_IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
-                }				
+                }
             }
             else
             {
                 if (nullptr != sg_pouIJ1939Logger)
                 {
-					if(sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE)
-					{
-						bJ1939LogON = TRUE;						
+                    if(sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE)
+                    {
+                        bJ1939LogON = TRUE;
 
-						sg_pouIJ1939Logger->FPJ1_EnableLogging(TRUE);
-					}
-				}
+                        sg_pouIJ1939Logger->FPJ1_EnableLogging(TRUE);
+                    }
+                }
             }
             //SGW Code commented by Arun 21-10-2010
             pouFlags->vSetFlagStatus(CONNECTED, bConnected);
@@ -6827,10 +6827,10 @@ void CMainFrame::OnLINConnect()
         hResult = g_pouDIL_LIN_Interface->DILL_PreStartHardware();
         g_pouDIL_LIN_Interface->DILL_GetConfiguration(m_sControllterlin,nsize);
 
-       if(FALSE == GetILINNodeSim()->NS_DLLBuildLoadAllEnabled())
-		{
-			return;
-		}
+        if(FALSE == GetILINNodeSim()->NS_DLLBuildLoadAllEnabled())
+        {
+            return;
+        }
         m_objFlexTxHandler.vBusStatusChanged(LIN, BUS_PRECONNECT);
         pNodeSim = GetILINNodeSim();
         if(pNodeSim != nullptr)
@@ -6857,10 +6857,10 @@ void CMainFrame::OnLINConnect()
             bLogIsON = pFlagLog->nGetFlagStatus(LOGTOFILE_LIN);
         }
 
-		if((bLogIsON == TRUE || m_abLogOnConnect[LIN] == TRUE) && sg_pouFrameProcLIN != nullptr)
-		{
-			sg_pouFrameProcLIN->vSetMeasurementFileName();
-		}
+        if((bLogIsON == TRUE || m_abLogOnConnect[LIN] == TRUE) && sg_pouFrameProcLIN != nullptr)
+        {
+            sg_pouFrameProcLIN->vSetMeasurementFileName();
+        }
 
         if (m_abLogOnConnect[LIN] == TRUE)
         {
@@ -6869,7 +6869,7 @@ void CMainFrame::OnLINConnect()
         else if(bLogIsON == TRUE && bConnected == TRUE)
         {
             vStartStopLogging_LIN(bLogIsON == TRUE);
-        }	
+        }
 
         m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCONNECTCMD, BUS_CONNECTED);
 
@@ -6993,13 +6993,13 @@ void CMainFrame::OnUpdateLINConnect(CCmdUI* pCmdUI)
     }
     if(nullptr != pCmdUI)
     {
-    if ( m_shLINDriverId != DAL_NONE )
-    {
-        pCmdUI->Enable();
-    }
-    else
-    {
-        pCmdUI->Enable(0);
+        if ( m_shLINDriverId != DAL_NONE )
+        {
+            pCmdUI->Enable();
+        }
+        else
+        {
+            pCmdUI->Enable(0);
         }
     }
 }
@@ -7455,51 +7455,51 @@ void CMainFrame::OnSaveAsConfigFile()
 void CMainFrame::OnClickMruList (UINT unID)
 {
     // Get the main menu
-            CMenu* pMenu = GetMenu();
-            if ( pMenu != nullptr)
+    CMenu* pMenu = GetMenu();
+    if ( pMenu != nullptr)
+    {
+        // Get the string associated with the selected menu item
+        CString omStrName("");
+        pMenu->GetMenuString( unID, omStrName, MF_BYCOMMAND);
+        // Let the selected filename be the first file name in the MRU
+        if (!omStrName.IsEmpty() && omStrName != _(defSTR_DEFAULT_MRU_ITEM) )
+        {
+            // Check if any previous configuration file is loaded
+            // and changes are being made to it
+            if ( bIsConfigurationModified() == TRUE )
             {
-                // Get the string associated with the selected menu item
-                CString omStrName("");
-                pMenu->GetMenuString( unID, omStrName, MF_BYCOMMAND);
-                // Let the selected filename be the first file name in the MRU
-                if (!omStrName.IsEmpty() && omStrName != _(defSTR_DEFAULT_MRU_ITEM) )
+                // Yes, there is a loaded config and changes have been made to
+                // it Hence display save confirmation message dialog
+                if (AfxMessageBox( _(defSTR_CONF_SAVE_CONFIRM),
+                                   MB_YESNO | MB_ICONQUESTION ) == IDYES )
                 {
-                    // Check if any previous configuration file is loaded
-                    // and changes are being made to it
-                    if ( bIsConfigurationModified() == TRUE )
-                    {
-                        // Yes, there is a loaded config and changes have been made to
-                        // it Hence display save confirmation message dialog
-                        if (AfxMessageBox( _(defSTR_CONF_SAVE_CONFIRM),
-                                           MB_YESNO | MB_ICONQUESTION ) == IDYES )
-                        {
-                            // Save
-                            OnSaveConfigFile();
-                        }
-                    }
-                    // Get the flag status and stop logging if it already started
-                    BOOL bLogON = FALSE;
-                    // Get the main menu
-                    CFlags* pFlag = nullptr;
-                    pFlag = theApp.pouGetFlagsPtr();
-                    if(pFlag != nullptr)
-                    {
-                        bLogON = pFlag->nGetFlagStatus(LOGTOFILE);
-                        if( bLogON == TRUE )
-                        {
-                            vStartStopLogging( FALSE );
-                            //pFlag->vSetFlagStatus( LOGTOFILE, FALSE );
-                        }
-                    }
-
-                    // Call Configuration Load
-                    nLoadConfigFile(omStrName);
+                    // Save
+                    OnSaveConfigFile();
+                }
+            }
+            // Get the flag status and stop logging if it already started
+            BOOL bLogON = FALSE;
+            // Get the main menu
+            CFlags* pFlag = nullptr;
+            pFlag = theApp.pouGetFlagsPtr();
+            if(pFlag != nullptr)
+            {
+                bLogON = pFlag->nGetFlagStatus(LOGTOFILE);
+                if( bLogON == TRUE )
+                {
+                    vStartStopLogging( FALSE );
+                    //pFlag->vSetFlagStatus( LOGTOFILE, FALSE );
                 }
             }
 
-        else
-            AfxMessageBox(_(defIMPORT_DLLLOAD_WARNNING),
-                          MB_OK|MB_ICONINFORMATION);
+            // Call Configuration Load
+            nLoadConfigFile(omStrName);
+        }
+    }
+
+    else
+        AfxMessageBox(_(defIMPORT_DLLLOAD_WARNNING),
+                      MB_OK|MB_ICONINFORMATION);
 
 }
 
@@ -7810,7 +7810,7 @@ void CMainFrame::OnFilePropeties()
     CFlags* pouFlag = nullptr;
 
     // Get the CFlag Object pointer
-        // Get the DLL load status
+    // Get the DLL load status
 
     // Get Controller information
 
@@ -7899,32 +7899,32 @@ void CMainFrame::OnFilePropeties()
     }
 
     // Get the DLL information
-        // Get the loaded DLL names
-        /* CSimSysNodeInfo* pSimSysNodeInfo = theApp.pomGetSimSysNodeInfo();
-         if( pSimSysNodeInfo != nullptr)
-         {
-             pSimSysNodeInfo->vGetLoadedDlls( sProperties.m_omDLLFile );
+    // Get the loaded DLL names
+    /* CSimSysNodeInfo* pSimSysNodeInfo = theApp.pomGetSimSysNodeInfo();
+     if( pSimSysNodeInfo != nullptr)
+     {
+         pSimSysNodeInfo->vGetLoadedDlls( sProperties.m_omDLLFile );
 
-         }*/
+     }*/
 
-        /*  theApp.bGetData( MRU_DLL_FILE_NAME, (void**)&pomStrFileName );
-          // IF success
-          if( pomStrFileName != nullptr )
+    /*  theApp.bGetData( MRU_DLL_FILE_NAME, (void**)&pomStrFileName );
+      // IF success
+      if( pomStrFileName != nullptr )
+      {
+          // It is a valid name
+          if( (*pomStrFileName).IsEmpty() == FALSE )
           {
-              // It is a valid name
-              if( (*pomStrFileName).IsEmpty() == FALSE )
-              {
-                  // Assign the file name
-                  omStrFomat = *pomStrFileName;
-              }
-              // Clear the memory allocated to get DLL file name
-              theApp.vRelease(MRU_DLL_FILE_NAME,(void**)&pomStrFileName);
-          }*/
-        /*else
-         {
-             omStrFomat = defSTR_ERROR_GETTTING_DLL_INFO;
-             sProperties.m_omDLLFile.Add(omStrFomat);
-         }*/
+              // Assign the file name
+              omStrFomat = *pomStrFileName;
+          }
+          // Clear the memory allocated to get DLL file name
+          theApp.vRelease(MRU_DLL_FILE_NAME,(void**)&pomStrFileName);
+      }*/
+    /*else
+     {
+         omStrFomat = defSTR_ERROR_GETTTING_DLL_INFO;
+         sProperties.m_omDLLFile.Add(omStrFomat);
+     }*/
     // Add the DLL information
     // sProperties.m_omDLLFile.Add(omStrFomat);
 
@@ -10093,29 +10093,29 @@ void CMainFrame::vSetAssociatedDatabaseFiles(ETYPE_BUS eBus)
 
     if (nullptr != sg_pouFrameProcCAN && CAN == eBus)
     {
-            sg_pouFrameProcCAN->FPC_SetDatabaseFiles(aomDataBaseFiles);
-        }
+        sg_pouFrameProcCAN->FPC_SetDatabaseFiles(aomDataBaseFiles);
+    }
     else if (sg_pouIJ1939Logger!= nullptr && J1939 == eBus)
-        {
-            sg_pouIJ1939Logger->FPJ1_SetDatabaseFiles(aomDataBaseFiles);
-        }
+    {
+        sg_pouIJ1939Logger->FPJ1_SetDatabaseFiles(aomDataBaseFiles);
+    }
     else if (sg_pouFrameProcLIN != nullptr && LIN == eBus)
+    {
+        CStringArray m_saLDFPaths;
+        std::string sLDFPath;
+
+        for(int i = 0; i < defNO_OF_LIN_CHANNELS; i++)
         {
-            CStringArray m_saLDFPaths;
-            std::string sLDFPath;
-
-            for(int i = 0; i < defNO_OF_LIN_CHANNELS; i++)
+            sLDFPath=m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_strDataBasePath;
+            if((sLDFPath !=""))
             {
-                sLDFPath=m_ouClusterConfig[LIN].m_ouFlexChannelConfig[i].m_strDataBasePath;
-                if((sLDFPath !=""))
-                {
-                    m_saLDFPaths.Add(sLDFPath.c_str());
-                }
+                m_saLDFPaths.Add(sLDFPath.c_str());
             }
-
-            sg_pouFrameProcLIN->FPL_SetDatabaseFiles(m_saLDFPaths);
         }
-    
+
+        sg_pouFrameProcLIN->FPL_SetDatabaseFiles(m_saLDFPaths);
+    }
+
 }
 
 /*******************************************************************************
@@ -10812,7 +10812,7 @@ HRESULT CMainFrame::InitializeFLEXRAYDIL()
                     if ( hResult == S_OK )
                     {
                         /* Register the Monitor client buffer */
-                        hResult = g_pouDIL_FLEXRAY_Interface->DILF_RegisterClient(TRUE, m_dwFLEXClientID, "CAN_MONITOR");					
+                        hResult = g_pouDIL_FLEXRAY_Interface->DILF_RegisterClient(TRUE, m_dwFLEXClientID, "CAN_MONITOR");
 
                         // Create the message window
                         m_podMsgWndThread->vUpdateClientID(FLEXRAY, m_dwFLEXClientID);
@@ -10988,15 +10988,15 @@ void CMainFrame::OnUpdateFlexRayConnect(CCmdUI* pCmdUI)
     }
     if(nullptr != pCmdUI)
     {
-    if ( m_shFLEXRAYDriverId != DAL_NONE )
-    {
-        pCmdUI->Enable();
+        if ( m_shFLEXRAYDriverId != DAL_NONE )
+        {
+            pCmdUI->Enable();
+        }
+        else
+        {
+            pCmdUI->Enable(0);
+        }
     }
-    else
-    {
-        pCmdUI->Enable(0);
-    }
-}
 }
 HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
 {
@@ -11030,14 +11030,14 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
                 GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(false);
                 if ( nullptr != m_podMsgWndThread )
                 {
-                m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
+                    m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_HIDE, (LONG)J1939);
                 }
                 m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
                 m_wndToolbarJ1939.Invalidate();
                 HRESULT hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
                 if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
                 {
-					hResult = g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, "CAN_MONITOR");
+                    hResult = g_pouDIL_CAN_Interface->DILC_RegisterClient(TRUE, g_dwClientID, "CAN_MONITOR");
 
                     if ((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS))
                     {
@@ -11062,11 +11062,11 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
                         }
                         if ( nullptr != m_podMsgWndThread )
                         {
-                        m_podMsgWndThread->vUpdateClientID(CAN, g_dwClientID);
-                        if (m_podMsgWndThread != nullptr)//Msg window
-                        {
-                            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
-                                          eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize[CAN]);
+                            m_podMsgWndThread->vUpdateClientID(CAN, g_dwClientID);
+                            if (m_podMsgWndThread != nullptr)//Msg window
+                            {
+                                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
+                                              eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize[CAN]);
                             }
                         }
                         //initialize graph window read buffer
@@ -11192,11 +11192,11 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
                         }
                         if ( nullptr != m_podMsgWndThread )
                         {
-                        m_podMsgWndThread->vUpdateClientID(LIN, g_dwClientID);
-                        if (m_podMsgWndThread != nullptr)//Msg window
-                        {
-                            ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
-                                          eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize[LIN]);
+                            m_podMsgWndThread->vUpdateClientID(LIN, g_dwClientID);
+                            if (m_podMsgWndThread != nullptr)//Msg window
+                            {
+                                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_NOTIFICATION_FROM_OTHER,
+                                              eWINID_MSG_WND_GET_BUFFER_DETAILS, (LPARAM)m_anMsgBuffSize[LIN]);
                             }
                         }
                         //initialize graph window read buffer
@@ -17773,13 +17773,13 @@ void CMainFrame::OnActivateJ1939()
 {
     HRESULT Result = S_FALSE;
     bool bActivateStatus = false;
-	if ((nullptr == sg_pouIJ1939DIL) && (nullptr == sg_pouIJ1939Logger))
-	{
-		Result = ProcessJ1939Interfaces();
-		GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(true);
-		m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)J1939);
-		bActivateStatus = true;	
-	}
+    if ((nullptr == sg_pouIJ1939DIL) && (nullptr == sg_pouIJ1939Logger))
+    {
+        Result = ProcessJ1939Interfaces();
+        GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(true);
+        m_podMsgWndThread->PostThreadMessage(WM_MODIFY_VISIBILITY, SW_SHOW, (LONG)J1939);
+        bActivateStatus = true;
+    }
     else
     {
         Result = DeselectJ1939Interfaces();
@@ -17788,7 +17788,7 @@ void CMainFrame::OnActivateJ1939()
     }
     /* Modify filter icon accordingly in J1939 toolbar*/
     BYTE bytTbrItemIndex = 1;
-    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, bActivateStatus, IDI_ICON_J1939_DEACTIVATE, IDI_ICON_J1939_ACTIVATE );	
+    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, bActivateStatus, IDI_ICON_J1939_DEACTIVATE, IDI_ICON_J1939_ACTIVATE );
 
     /* If J1939 is deactivated, retain the old icon set and hide J1939 Tx window */
     if ( !bActivateStatus )
@@ -17801,10 +17801,10 @@ void CMainFrame::OnActivateJ1939()
     }
     else
     {
-		if( theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED) == TRUE && sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE)
-		{
-			sg_pouIJ1939Logger->vSetMeasurementFileName();
-		}
+        if( theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED) == TRUE && sg_pouIJ1939Logger->FPJ1_IsLoggingON() == TRUE)
+        {
+            sg_pouIJ1939Logger->vSetMeasurementFileName();
+        }
 
         // Go online or offline
         OnActionJ1939Online();
@@ -18024,10 +18024,10 @@ void CMainFrame::vJ1939StartStopLogging()
             vSetBaudRateInfo(J1939);                // Update the baud rate details
             m_unJ1939TimerSBLog = SetTimer(TIMER_REFRESH_J1939_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, nullptr);
 
-			if(nullptr != sg_pouIJ1939Logger && theApp.pouGetFlagsPtr()->nGetFlagStatus(ACTIVATED_J1939) == TRUE && theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED) == TRUE)
-			{
-				sg_pouIJ1939Logger->vSetMeasurementFileName();
-			}
+            if(nullptr != sg_pouIJ1939Logger && theApp.pouGetFlagsPtr()->nGetFlagStatus(ACTIVATED_J1939) == TRUE && theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED) == TRUE)
+            {
+                sg_pouIJ1939Logger->vSetMeasurementFileName();
+            }
         }
         sg_pouIJ1939Logger->FPJ1_EnableLogging(bEnable);
     }

@@ -384,9 +384,9 @@ void CSimSysTreeView::vDisplayRootMenu()
     {
         m_pomContextMenu->DestroyMenu();
         m_pomContextMenu->LoadMenu(IDM_ROOT_MENU);
-		m_pomSubMenu = m_pomContextMenu->GetSubMenu(0);
+        m_pomSubMenu = m_pomContextMenu->GetSubMenu(0);
     }
-    
+
     if(m_pomSubMenu != nullptr)
     {
         //Add Node is enabled if Bus is disconnected.
@@ -452,9 +452,9 @@ void CSimSysTreeView::vDisplayNodeMenu()
     {
         m_pomContextMenu->DestroyMenu();
         m_pomContextMenu->LoadMenu(IDM_NODE_MENU);
-		m_pomSubMenu = m_pomContextMenu->GetSubMenu(0);
+        m_pomSubMenu = m_pomContextMenu->GetSubMenu(0);
     }
-    
+
     if(m_pomSubMenu != nullptr)
     {
         //Initialise "Edit", "Build", "Enable/Disable", "Configure", "Remove" node to Enabled state.

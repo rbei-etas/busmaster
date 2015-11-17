@@ -568,7 +568,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL, BOOL bDi
                 {
                     psNodeInfo->m_omStrDllName=omLongFileName;
                     psNodeInfo->m_hModuleHandle=hModuleHandle;
-                   
+
                     //Local array so that only loading message will be
                     //added to the COutWnd list
                     CStringArray m_omStrArray;

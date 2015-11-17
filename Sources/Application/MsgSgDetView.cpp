@@ -578,11 +578,11 @@ void CMsgSgDetView::OnRclickLstSignalDetails(NMHDR* /*pNMHDR*/, LRESULT* pResult
             else if(m_sDbParams.m_eBus == J1939)
             {
                 INT nMaxBits = 0;
-				
-				if(nullptr != pMsg)
-				{
-					nMaxBits = (pMsg->m_unMessageLength * 8);
-				}
+
+                if(nullptr != pMsg)
+                {
+                    nMaxBits = (pMsg->m_unMessageLength * 8);
+                }
                 if(nullptr != pMsg && nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
                 {
                     // Disable "New Signal" button

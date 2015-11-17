@@ -48,7 +48,7 @@ public:
     virtual void NS_UpdateFuncStructsNodeSimEx(PVOID pvFuncStructs, E_UPDATE_TYPE eUpdateType) = 0;
     //Provide the helptext for all the handlers in the order mentoned above
     virtual void NS_SetHandlersHelpText(CStringArray* pomTextArray) = 0;
-  
+
     //Load and save the Simsys config details in terms of bytes
     virtual void NS_GetSimSysConfigData(BYTE*& pDesBuffer, int& nBuffSize) = 0;
     virtual bool NS_GetSimSysConfigData(xmlNodePtr& pNodePtr) = 0;
@@ -58,7 +58,7 @@ public:
     virtual BOOL NS_IsSimSysConfigChanged() = 0;
     virtual int NS_nOnBusConnected(bool bConnected) = 0;
     virtual void NS_SetJ1939ActivationStatus(bool bActivated) =0;
-    
+
     //INTERFACE FUNCTIONS ENDS
 
     // FOR Passing Cluster Config

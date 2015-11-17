@@ -241,7 +241,7 @@ bool BlfLibrary::ReadAndUncompressBlfLogContainer(BinHelper& file, std::vector<c
     // Read container data
     EM_INFO("Read container data");
     BlfObject_LogContainer logContainer;
-	memset(&logContainer, 0, sizeof(BlfObject_LogContainer));
+    memset(&logContainer, 0, sizeof(BlfObject_LogContainer));
     bool isOk = file.GetData(&logContainer.m_Header, sizeof(BlfObject_LogContainer));
 
     // Get compressed data

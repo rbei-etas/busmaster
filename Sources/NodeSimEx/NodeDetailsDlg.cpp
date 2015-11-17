@@ -480,7 +480,7 @@ bool CNodeDetailsDlg::bOpenfile()
             // If LIN
             omstrBusName = "LIN";
         }
-        
+
 
         // If Bus is selected
         if(omstrBusName.IsEmpty() == FALSE)
@@ -538,7 +538,7 @@ bool CNodeDetailsDlg::bOpenfile()
                         }
                     }
 
-                    
+
                 }
 
                 // Closing the file opened
@@ -587,8 +587,8 @@ bool CNodeDetailsDlg::bOpenfile()
                         AfxMessageBox("File " + m_omStrCFile + " s not created for LIN.\r\nPlease open the .cpp file created for LIN.");
                         return false;
                     }
-                   
-                   
+
+
                 }
             }
         }

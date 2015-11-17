@@ -164,43 +164,43 @@ void CUtlityDlg::OnOk()
                         omStrSelDataType +=m_omStrFunctionName;
                         m_omStrFunPrototype = omStrSelDataType;
 
-                            // Check for duplicate selection
-                            // Get key handler array from the document
-                            if (m_pDoc != nullptr)
+                        // Check for duplicate selection
+                        // Get key handler array from the document
+                        if (m_pDoc != nullptr)
+                        {
+                            CStringArray* pArray =
+                                m_pDoc->omStrGetUtilityFunctionPrototypes();
+
+                            if (pArray)
                             {
-                                CStringArray* pArray =
-                                    m_pDoc->omStrGetUtilityFunctionPrototypes();
-
-                                if (pArray)
+                                CString omStrMsgPro = "";
+                                for (int nCount = 0;
+                                        nCount < pArray->GetSize(); nCount++)
                                 {
-                                    CString omStrMsgPro = "";
-                                    for (int nCount = 0;
-                                            nCount < pArray->GetSize(); nCount++)
+                                    omStrMsgPro =
+                                        pArray->GetAt( nCount );
+
+                                    if ( omStrMsgPro.
+                                            Find(m_omStrFunctionName) !=
+                                            -1 )
                                     {
+                                        // Form the message to be dispalyed
                                         omStrMsgPro =
-                                            pArray->GetAt( nCount );
+                                            defMSG_DUPL_UTIL_FUNC;
+                                        omStrMsgPro.Replace(
+                                            "FUNCTIONNAME",
+                                            m_omStrUtilsFunText+m_omStrFunctionName );
 
-                                        if ( omStrMsgPro.
-                                                Find(m_omStrFunctionName) !=
-                                                -1 )
-                                        {
-                                            // Form the message to be dispalyed
-                                            omStrMsgPro =
-                                                defMSG_DUPL_UTIL_FUNC;
-                                            omStrMsgPro.Replace(
-                                                "FUNCTIONNAME",
-                                                m_omStrUtilsFunText+m_omStrFunctionName );
-
-                                            // Duplicate message hanlder, shout
-                                            AfxMessageBox(
-                                                omStrMsgPro,
-                                                MB_OK|MB_ICONINFORMATION );
-                                            nCount = (COMMANINT)pArray->GetSize();
-                                            bRetVal = FALSE;
-                                        }
+                                        // Duplicate message hanlder, shout
+                                        AfxMessageBox(
+                                            omStrMsgPro,
+                                            MB_OK|MB_ICONINFORMATION );
+                                        nCount = (COMMANINT)pArray->GetSize();
+                                        bRetVal = FALSE;
                                     }
                                 }
                             }
+                        }
 
                     }
                     else

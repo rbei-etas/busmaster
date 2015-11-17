@@ -117,10 +117,10 @@ void NodeConfigurationDlg::onSelectionOk()
             if(nullptr != pLineEdit)
             {
                 qStrList = pLineEdit->text().split(',');
-				for(auto itrStr = qStrList.begin();itrStr!=qStrList.end();itrStr++)
-				{
-					lstLogicalNodes.push_back(itrStr->toStdString());
-				}
+                for(auto itrStr = qStrList.begin(); itrStr!=qStrList.end(); itrStr++)
+                {
+                    lstLogicalNodes.push_back(itrStr->toStdString());
+                }
             }
 
             ouCompNode.m_strLogicalNodes = lstLogicalNodes;
@@ -167,12 +167,12 @@ ERRORCODE NodeConfigurationDlg::nValidateNodes(std::string& ouErrString)
             strCompNode = pComboBox->currentText().toStdString();
         }
 
-		LineEditWidget* pLineEdit = (LineEditWidget*)ui.tableWidget->cellWidget(nIndex, 1);
-		if(nullptr != pLineEdit)
-		{
-			qStrList = pLineEdit->text().split(',');
-			for(auto itrStr = qStrList.begin(); itrStr != qStrList.end(); itrStr++)
-			//for(auto itrStr : qStrList)
+        LineEditWidget* pLineEdit = (LineEditWidget*)ui.tableWidget->cellWidget(nIndex, 1);
+        if(nullptr != pLineEdit)
+        {
+            qStrList = pLineEdit->text().split(',');
+            for(auto itrStr = qStrList.begin(); itrStr != qStrList.end(); itrStr++)
+                //for(auto itrStr : qStrList)
             {
                 std::string strLogicalNode = itrStr->toStdString();
 
@@ -215,8 +215,8 @@ ERRORCODE NodeConfigurationDlg::nValidateNodes(std::string& ouErrString)
                 mapLogicalNodes[strLogicalNode] = strLogicalNode;
             }
         }
-	}
-	return EC_SUCCESS;
+    }
+    return EC_SUCCESS;
 }
 
 void NodeConfigurationDlg::vPrepareUIForNew()

@@ -231,10 +231,10 @@ BOOL CExecuteManager::vDeleteNode(const CString omStrNodeName)
         }
         else
         {
-			if(nullptr != psPrevNodeObject)
-			{
-            psPrevNodeObject->m_psNextNode=psCurrNodeObject->m_psNextNode;
-			}
+            if(nullptr != psPrevNodeObject)
+            {
+                psPrevNodeObject->m_psNextNode=psCurrNodeObject->m_psNextNode;
+            }
             if(m_psLastNodeObject==psCurrNodeObject)
             {
                 m_psLastNodeObject=psPrevNodeObject;
@@ -340,7 +340,7 @@ void CExecuteManager::vManageOnKeyHandler(UCHAR ucKey)
     PSNODEOBJECT psTempNodeObject=m_psFirstNodeObject;
     while(psTempNodeObject!=nullptr)
     {
-            psTempNodeObject->m_psExecuteFunc->vExecuteOnKeyHandler(ucKey);
+        psTempNodeObject->m_psExecuteFunc->vExecuteOnKeyHandler(ucKey);
         psTempNodeObject=psTempNodeObject->m_psNextNode;
     }
 }
@@ -376,10 +376,10 @@ void CExecuteManager::vManageOnMessageHandlerCAN_(PSTCAN_TIME_MSG sRxMsgInfo, DW
     PSNODEOBJECT psTempNodeObject = m_psFirstNodeObject;
     while(psTempNodeObject != nullptr)
     {
-            if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClientId)
-            {
-                psTempNodeObject->m_psExecuteFunc->vWriteInQMsg(*sRxMsgInfo);
-            }
+        if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClientId)
+        {
+            psTempNodeObject->m_psExecuteFunc->vWriteInQMsg(*sRxMsgInfo);
+        }
 
         psTempNodeObject = psTempNodeObject->m_psNextNode;
     }
@@ -401,12 +401,12 @@ void CExecuteManager::vManageOnMessageHandlerLIN(PSTLIN_TIME_MSG sRxMsgInfo, DWO
     PSNODEOBJECT psTempNodeObject = m_psFirstNodeObject;
     while(psTempNodeObject != nullptr)
     {
-        
-            if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClientId)
-            {
-                psTempNodeObject->m_psExecuteFunc->vWriteInQMsgLIN(*sRxMsgInfo);
-            }
-        
+
+        if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClientId)
+        {
+            psTempNodeObject->m_psExecuteFunc->vWriteInQMsgLIN(*sRxMsgInfo);
+        }
+
         psTempNodeObject = psTempNodeObject->m_psNextNode;
     }
     LeaveCriticalSection(&m_CritSectPsNodeObject);
@@ -429,8 +429,8 @@ void CExecuteManager::vManageOnErrorHandlerCAN(eERROR_STATE eErrorCode,SCAN_ERR 
         if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClientId)
         {
 
-                psTempNodeObject->m_psExecuteFunc->vExecuteOnErrorHandler( eErrorCode,
-                        sErrorVal);
+            psTempNodeObject->m_psExecuteFunc->vExecuteOnErrorHandler( eErrorCode,
+                    sErrorVal);
 
         }
         psTempNodeObject=psTempNodeObject->m_psNextNode;
@@ -453,7 +453,7 @@ void CExecuteManager::vManageOnErrorHandlerLIN(SERROR_INFO_LIN ouErrorInfo, DWOR
     {
         if (psTempNodeObject->m_psExecuteFunc->dwGetNodeClientId() == dwClientId)
         {
-                psTempNodeObject->m_psExecuteFunc->vExecuteOnErrorHandlerLIN( ouErrorInfo);
+            psTempNodeObject->m_psExecuteFunc->vExecuteOnErrorHandlerLIN( ouErrorInfo);
 
         }
         psTempNodeObject=psTempNodeObject->m_psNextNode;

@@ -18,7 +18,7 @@ struct DIR_INFO
 class CDirectoryWatcher : public IDirectoryWatcher
 {
 private:
-	bool m_bThreadIsAlive;
+    bool m_bThreadIsAlive;
     static CDirectoryWatcher* m_psDirWatcher;
     static int m_nReferenceCount;
     HANDLE m_hIOCPort;

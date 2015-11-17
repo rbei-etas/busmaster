@@ -234,7 +234,7 @@ CMsgFrmtWnd::CMsgFrmtWnd(ETYPE_BUS eBusType): m_sCurrEntry(sDummy0002), m_ouMsgA
     //m_ouPsdiHandler.vLoadPSDI_Dll(m_eBusType);
     if ( nullptr != m_pouMsgContainerIntrf )
     {
-    m_pouMsgContainerIntrf->vSetRxMsgCallBkPtr(CMsgFrmtWnd::vRxMsgCallBk);
+        m_pouMsgContainerIntrf->vSetRxMsgCallBkPtr(CMsgFrmtWnd::vRxMsgCallBk);
     }
     m_bConnected = FALSE;
     m_pExpandedMapIndexes = nullptr;
@@ -1922,17 +1922,17 @@ LRESULT CMsgFrmtWnd::vSortMsgWndColumn(WPARAM wParam, LPARAM lParam)
         {
             __int64 nMapIndex;
 
-			if(nullptr != m_pouMsgContainerIntrf)
-			{
-				m_pouMsgContainerIntrf->GetMapIndexAtID(i, nMapIndex);
-				m_omMgsIndexVec[i] = nMapIndex;
-				SMSGDISPMAPENTRY sDispEntry;
-				if (m_omMsgDispMap.Lookup(nMapIndex, sDispEntry ))
-				{
-					sDispEntry.m_nBufferIndex = i;
-					m_omMsgDispMap.SetAt(nMapIndex, sDispEntry);
-				}
-			}
+            if(nullptr != m_pouMsgContainerIntrf)
+            {
+                m_pouMsgContainerIntrf->GetMapIndexAtID(i, nMapIndex);
+                m_omMgsIndexVec[i] = nMapIndex;
+                SMSGDISPMAPENTRY sDispEntry;
+                if (m_omMsgDispMap.Lookup(nMapIndex, sDispEntry ))
+                {
+                    sDispEntry.m_nBufferIndex = i;
+                    m_omMsgDispMap.SetAt(nMapIndex, sDispEntry);
+                }
+            }
         }
         vCreateAllMsgTree();
 

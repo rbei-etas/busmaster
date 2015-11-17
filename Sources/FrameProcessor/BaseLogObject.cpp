@@ -102,7 +102,7 @@ CBaseLogObject& CBaseLogObject::operator=(const CBaseLogObject& RefObj)
     m_nCurrFileCnt = RefObj.m_nCurrFileCnt;
     m_dTotalBytes = RefObj.m_dTotalBytes;
 
-  
+
 
     Der_CopySpecificData(&RefObj);
 
@@ -139,7 +139,7 @@ void CBaseLogObject::GetLogInfo(SLOGINFO& sLoginfo) const
 void CBaseLogObject::SetLogInfo(const SLOGINFO& sLoginfo)
 {
     m_sLogInfo = sLoginfo;
-   
+
 }
 
 /**
@@ -151,7 +151,7 @@ BYTE* CBaseLogObject::SetConfigData(BYTE* pvDataStream, BYTE bytLogVersion)
     pbSStream = m_sLogInfo.pbSetConfigData(pbSStream, bytLogVersion);
     pbSStream = Der_SetConfigData(pbSStream);
 
-    
+
 
     return pbSStream;
 }
@@ -163,7 +163,7 @@ INT CBaseLogObject::nSetConfigData(xmlNodePtr pNode)
     {
         nRetValue = Der_SetConfigData(pNode->children);
 
-        
+
     }
     return nRetValue;
 }

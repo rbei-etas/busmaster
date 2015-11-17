@@ -654,11 +654,11 @@ BOOL CReplayProcess::bOpenReplayFile(BOOL bIsInteractive)
 UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
 {
     CReplayProcess* pReplayDetails = (CReplayProcess*)pParam;
-    
-	if( pReplayDetails != NULL )
+
+    if( pReplayDetails != NULL )
     {
-		pReplayDetails->bSetbIsProtocolMismatch(false);
-		pReplayDetails->bSetbIsInvalidMsg(false);
+        pReplayDetails->bSetbIsProtocolMismatch(false);
+        pReplayDetails->bSetbIsInvalidMsg(false);
         // Reset the event
         pReplayDetails->m_omThreadEvent.ResetEvent();
         // Replay code here

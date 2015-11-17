@@ -375,14 +375,14 @@ void CConfigMsgLogDlg::vEnableDisableControls(BOOL bValue)
     // Indicator static text controls in trogger group box
     vEnableDisableControl(IDC_STATIC_01, STATICTEXT, bValue);
     vEnableDisableControl(IDC_STATIC_02, STATICTEXT, bValue);
-        vEnableDisableControl(IDC_CHKB_ON_TRANSMISSION, CHECKBOX, bValue);
-        vEnableDisableControl(IDC_CHKB_LOG_FILE_SIZE, CHECKBOX, bValue);
-        GetDlgItem(IDC_EDIT_FILE_SIZE)->EnableWindow(bValue);
-        GetDlgItem(IDC_EDIT_NO_OF_FILES)->EnableWindow(bValue);
-        vEnableDisableControl(IDC_CHKB_LOG_ON_TIME, CHECKBOX, bValue);
-        GetDlgItem(IDC_EDIT_HOURS)->EnableWindow(bValue);
-        GetDlgItem(IDC_EDIT_MINUTES)->EnableWindow(bValue);
-        vEnableDisableControl(IDC_EDIT_LOG_COMMENT, EDITCTRL, bValue);
+    vEnableDisableControl(IDC_CHKB_ON_TRANSMISSION, CHECKBOX, bValue);
+    vEnableDisableControl(IDC_CHKB_LOG_FILE_SIZE, CHECKBOX, bValue);
+    GetDlgItem(IDC_EDIT_FILE_SIZE)->EnableWindow(bValue);
+    GetDlgItem(IDC_EDIT_NO_OF_FILES)->EnableWindow(bValue);
+    vEnableDisableControl(IDC_CHKB_LOG_ON_TIME, CHECKBOX, bValue);
+    GetDlgItem(IDC_EDIT_HOURS)->EnableWindow(bValue);
+    GetDlgItem(IDC_EDIT_MINUTES)->EnableWindow(bValue);
+    vEnableDisableControl(IDC_EDIT_LOG_COMMENT, EDITCTRL, bValue);
 }
 
 BOOL CConfigMsgLogDlg::FoundInLogList(CString omFullPath, CString omFileName)
@@ -1182,7 +1182,7 @@ void CConfigMsgLogDlg::OnTimer(UINT nIDEvent)
             SetWindowText(m_strCurrWndText);
             bSwitchDisplay = true;
         }
-		ReleaseDC(pdc);
+        ReleaseDC(pdc);
     }
 
     CDialog::OnTimer(nIDEvent);
@@ -1296,8 +1296,8 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_CAN* psFilterConfigured,
                                    psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
         if ( psTemp != nullptr )
         {
-        sFilterApplied.m_psFilters[sFilterApplied.m_ushTotal].bClone(*psTemp);
-        sFilterApplied.m_ushTotal++;
+            sFilterApplied.m_psFilters[sFilterApplied.m_ushTotal].bClone(*psTemp);
+            sFilterApplied.m_ushTotal++;
         }
     }
 }
@@ -1317,8 +1317,8 @@ static void vPopulateFilterApplied(const SFILTERAPPLIED_LIN* psFilterConfigured,
                                    psFilterConfigured->m_ushTotal, sSubEntry.m_omSubEntryName.GetBuffer(MAX_PATH));
         if (psTemp != nullptr)
         {
-        sFilterApplied.m_psFilters[sFilterApplied.m_ushTotal].bClone(*psTemp);
-        sFilterApplied.m_ushTotal++;
+            sFilterApplied.m_psFilters[sFilterApplied.m_ushTotal].bClone(*psTemp);
+            sFilterApplied.m_ushTotal++;
         }
     }
 }

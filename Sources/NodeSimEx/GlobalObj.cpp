@@ -178,7 +178,7 @@ BOOL CALLBACK EnumChildProc(HWND hwnd, LPARAM /* lParam */)
                         CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)pEditWnd->GetActiveDocument();
 
                         /* If a function editor window is modified */
-						if ( nullptr != pDoc && pDoc->IsModified() )
+                        if ( nullptr != pDoc && pDoc->IsModified() )
                         {
                             /* take confirmation from user for the first time only */
                             if ( g_bReqUserConfirmation )

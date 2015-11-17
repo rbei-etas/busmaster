@@ -192,7 +192,7 @@ HRESULT CAscLogConverter::ConvertFile(string& chInputFile, string& chOutputFile)
         {
             m_omstrConversionStatus = _("Output File path is not found");
             hResult = ERR_OUTPUT_FILE_NOTFOUND;
-			fclose(fpInputFile);
+            fclose(fpInputFile);
         }
     }
     else

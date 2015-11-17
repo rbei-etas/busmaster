@@ -471,35 +471,35 @@ for ( auto itr : ouFrameUidList )
 }
 void LDFAdditionalView::onConfigFrameEditChange(const QString& strText )
 {
-	if(currentRow() >= 0 && m_pCurrentEcu != nullptr)
-	{
-		int nRow = currentRow();
-		EcuProperties ouEcuProps;
-		m_pCurrentEcu->GetProperties(ouEcuProps);
-		auto itrFrame = ouEcuProps.m_ouSlavePros.m_nConfiurableFrameIdList.begin();
-		std::advance(itrFrame, nRow);
-		if ( itrFrame != ouEcuProps.m_ouSlavePros.m_nConfiurableFrameIdList.end())
-		{
-			itrFrame->m_unConfigMsgId =  GetUnsignedInt(strText);
-			if ( itrFrame->m_unConfigMsgId > 0xFFFE )
-			{
-				itrFrame->m_unConfigMsgId = 0;
-			}
+    if(currentRow() >= 0 && m_pCurrentEcu != nullptr)
+    {
+        int nRow = currentRow();
+        EcuProperties ouEcuProps;
+        m_pCurrentEcu->GetProperties(ouEcuProps);
+        auto itrFrame = ouEcuProps.m_ouSlavePros.m_nConfiurableFrameIdList.begin();
+        std::advance(itrFrame, nRow);
+        if ( itrFrame != ouEcuProps.m_ouSlavePros.m_nConfiurableFrameIdList.end())
+        {
+            itrFrame->m_unConfigMsgId =  GetUnsignedInt(strText);
+            if ( itrFrame->m_unConfigMsgId > 0xFFFE )
+            {
+                itrFrame->m_unConfigMsgId = 0;
+            }
 
-			ConfigFrameDetails ouDetails = *itrFrame;
-			QVariant qVar;
-			qVar.setValue(ouDetails);
-			auto rowItem = item(currentRow(), 0);
-			if ( nullptr != rowItem )
-			{
-				rowItem->setData(Qt::UserRole, qVar);
-			}
-			LDFDatabaseManager::GetDatabaseManager()->GetLDFCluster()->EnableEventNotofications(false);
-			m_pCurrentEcu->SetProperties(ouEcuProps);   //No clients need to know about this changes.
-			LDFDatabaseManager::GetDatabaseManager()->GetLDFCluster()->EnableEventNotofications(true);
-			LDFDatabaseManager::GetDatabaseManager()->setDocumentModified(true);
-		}
-	}
+            ConfigFrameDetails ouDetails = *itrFrame;
+            QVariant qVar;
+            qVar.setValue(ouDetails);
+            auto rowItem = item(currentRow(), 0);
+            if ( nullptr != rowItem )
+            {
+                rowItem->setData(Qt::UserRole, qVar);
+            }
+            LDFDatabaseManager::GetDatabaseManager()->GetLDFCluster()->EnableEventNotofications(false);
+            m_pCurrentEcu->SetProperties(ouEcuProps);   //No clients need to know about this changes.
+            LDFDatabaseManager::GetDatabaseManager()->GetLDFCluster()->EnableEventNotofications(true);
+            LDFDatabaseManager::GetDatabaseManager()->setDocumentModified(true);
+        }
+    }
 
 }
 

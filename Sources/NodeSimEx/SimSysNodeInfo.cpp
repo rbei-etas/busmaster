@@ -246,7 +246,7 @@ int ReadNodeDataBuffer(PSNODEINFO psNodeInfo)
                         sJ1939Msg.vSetDataStream(m_byTempData);
                         CExecuteFunc* pExecFunc = CExecuteManager::ouGetExecuteManager(psNodeInfo->m_eBus).
                                                   pouGetExecuteFunc(psNodeInfo->m_dwClientId);
-                            pExecFunc->vExecuteOnPGNHandler(&sJ1939Msg);
+                        pExecFunc->vExecuteOnPGNHandler(&sJ1939Msg);
 
                     }
                 }
@@ -504,7 +504,7 @@ sNODEINFO& sNODEINFO::operator=(const sNODEINFO& sobj)
 }
 sNODEINFO::sNODEINFO ( const sNODEINFO& sobj)
 {
-    
+
     *this = sobj;
 }
 BOOL sNODEINFO::bStartThreadProc()

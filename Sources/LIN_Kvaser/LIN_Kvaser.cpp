@@ -754,10 +754,10 @@ HRESULT CDIL_LIN_Kvaser::LIN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterfac
 */
 HRESULT CDIL_LIN_Kvaser::LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount)
 {
-	if(nCount==0)
-	{
-		return ERR_LOAD_DRIVER;
-	}
+    if(nCount==0)
+    {
+        return ERR_LOAD_DRIVER;
+    }
     return S_OK;
 }
 

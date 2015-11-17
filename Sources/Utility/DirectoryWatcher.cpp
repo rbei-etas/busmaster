@@ -92,10 +92,10 @@ CDirectoryWatcher::~CDirectoryWatcher()
         UnWatchDirectory(itr->first);
     }
 
-	if(true==m_bThreadIsAlive)
-	{
-		WaitForSingleObject(m_ouMonitorDirectoryThread.hGetExitNotifyEvent(),INFINITE);
-	}
+    if(true==m_bThreadIsAlive)
+    {
+        WaitForSingleObject(m_ouMonitorDirectoryThread.hGetExitNotifyEvent(),INFINITE);
+    }
     m_ouMonitorDirectoryThread.bTerminateThread();
     CloseHandle( m_hIOCPort );
     m_hIOCPort = nullptr;
@@ -113,7 +113,7 @@ CDirectoryWatcher::~CDirectoryWatcher()
 ***************************************************************************************/
 void CDirectoryWatcher::Initialize()
 {
-	m_bThreadIsAlive=false;
+    m_bThreadIsAlive=false;
     m_CKey=0;
     m_hIOCPort = nullptr;
     m_unActionCode = INACTION;
@@ -286,7 +286,7 @@ HRESULT CDirectoryWatcher::WatchDirectory(std::string strDirName)
                 SetEvent(m_ouMonitorDirectoryThread.m_hActionEvent);
                 if(TRUE == m_ouMonitorDirectoryThread.bStartThread(MonitorDirectoryThreadProc))
                 {
-					m_bThreadIsAlive=true;
+                    m_bThreadIsAlive=true;
                     hResult = S_OK;
                 }
             }
@@ -392,7 +392,7 @@ HRESULT CDirectoryWatcher::NotifyDirectoryHandler(ULONG_PTR CKey)
                 }
             }
         }
-		if (nullptr != fni && fni->NextEntryOffset == 0)
+        if (nullptr != fni && fni->NextEntryOffset == 0)
         {
             break;
         }

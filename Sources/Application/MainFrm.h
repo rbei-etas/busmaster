@@ -397,7 +397,7 @@ protected:
     afx_msg void OnReplaySingleStep();
     afx_msg void OnReplayStop();
     afx_msg void OnReplayGo();
-  
+
     afx_msg void OnDllUnload();
     afx_msg void OnDllUnloadLIN();
     afx_msg void OnDllUnloadJ1939();
@@ -429,7 +429,7 @@ protected:
     afx_msg void OnUpdateLINScheduleTableConfig(CCmdUI* pCmdUI);
     afx_msg void OnUpdateReplayFilter(CCmdUI* pCmdUI);
     //afx_msg void OnUpdateMessageFilter(CCmdUI* pCmdUI);
-    
+
     afx_msg void OnSendMessage();
     afx_msg void OnSendFlexRayMessage();
     //afx_msg void OnLogFilterButton();
@@ -445,7 +445,7 @@ protected:
     afx_msg void OnDisplayMessagewindowOverwrite();
     void ApplyMessagewindowOverwrite();
     afx_msg void OnClearMsgWindow();
-  
+
     afx_msg void OnUpdateDisplayMessagewindowOverwrite(CCmdUI* pCmdUI);
     afx_msg void OnUpdateToolHexdec(CCmdUI* pCmdUI);
     afx_msg void OnUpdateLogOnOff(CCmdUI* pCmdUI);
@@ -471,7 +471,7 @@ protected:
     afx_msg void OnUpdateFlexRayConnect(CCmdUI* pCmdUI);
     afx_msg void OnLINConnect();
     afx_msg void OnUpdateLINConnect(CCmdUI* pCmdUI);
-   
+
     afx_msg void OnLoadConfigFile();
     afx_msg void OnNewConfigFile();
     afx_msg void OnSaveConfigFile();
@@ -512,7 +512,7 @@ protected:
     afx_msg void OnUpdateCfgnReplay(CCmdUI* pCmdUI);
     afx_msg void OnConfigureSimulatedsystems();
 
-	//LIN
+    //LIN
     afx_msg void OnConfigureSimulatedsystemsLin();
     afx_msg void OnUpdateLinClusterConfig(CCmdUI* pCmdUI);
     //UDS
@@ -770,7 +770,7 @@ public:
     void vPopulateJ1939PGNList();
     INT ReadGraphDataBuffer(bool bCalcTime);
     INT nLoadConfigFile(CString omConfigFileName);
-	void BuildAllNodes();
+    void BuildAllNodes();
     int  COM_ConnectTool();
     bool COM_SaveConfigFile();
     bool COM_SaveConfigFileAs(CString omCfgFilePath);
@@ -779,8 +779,8 @@ public:
     bool COM_bDllLoad(CStringArray* omStrBuildFiles);
     bool COM_bDllUnload(CStringArray* omStrBuildFiles);
     void COM_SendMessage();
-    
-	bool bUpdatePopupMenuDIL(void);
+
+    bool bUpdatePopupMenuDIL(void);
     bool bUpdatePopupMenuFLEXRAYDIL(void);
     bool bUpdatePopupMenuDILL(void);
     CString omStrGetUnionFilePath(CString omStrTemp);
@@ -884,7 +884,7 @@ public:
     afx_msg void OnJ1939DBAssociate();
     afx_msg void OnJ1939DBDissociate();
     afx_msg void OnJ1939CfgSimSys();
-     
+
     afx_msg void OnUpdateJ1939CfgSimSys(CCmdUI* pCmdUI);
     afx_msg void OnJ1939SignalwatchAdd();
     afx_msg void OnJ1939SignalwatchShow();

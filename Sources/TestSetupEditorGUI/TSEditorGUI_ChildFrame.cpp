@@ -2194,10 +2194,10 @@ UINT CTSEditorChildFrame::unRepisitonEntry(DWORD dwRepositionItemID, DWORD dwIns
     m_ouTSEntity.SearchEntityObject(dwParentID, &ouParentItem);
 
     HRESULT hResult = S_FALSE;
-	if( nullptr != ouParentItem)
-	{
-		hResult = ouParentItem->RepositionSubEntity(ouRepositionItem, ouInsertAfterItem);
-	}
+    if( nullptr != ouParentItem)
+    {
+        hResult = ouParentItem->RepositionSubEntity(ouRepositionItem, ouInsertAfterItem);
+    }
 
     return hResult;
 }
@@ -2297,9 +2297,9 @@ INT CTSEditorChildFrame::nAddNewEntity(DWORD dwId, eTYPE_ENTITY eEntityType)
     }
 
     if(nullptr != pParentEntity)
-	{
-		pParentEntity->AddSubEntry(pNewEntity);
-	}
+    {
+        pParentEntity->AddSubEntry(pNewEntity);
+    }
 
     m_odTreeView->InsertTreeItem(m_hCurrentTreeItem, omStrNewItem, nullptr, unImageIndex, unImageIndex, pNewEntity->GetID());
     m_odTreeView->RedrawWindow();
@@ -3206,7 +3206,7 @@ bool CTSEditorChildFrame::GetConfigurationData(xmlNodePtr& pxmlNodePtr)
     {
 
         std::string omPath, omStrConfigFolder;
-        char configPath[MAX_PATH]={0};
+        char configPath[MAX_PATH]= {0};
         AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
         CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
         CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)m_omCurrentTSFile.GetBuffer(MAX_PATH), omPath);
@@ -3373,7 +3373,7 @@ HRESULT CTSEditorChildFrame::SetConfigurationData(xmlNodePtr pXmlNode)
                     {
                         std::string omStrConfigFolder;
                         std::string omPath;
-                        char configPath[MAX_PATH]={0};
+                        char configPath[MAX_PATH]= {0};
                         AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
                         CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
                         char chAbsPath[MAX_PATH];

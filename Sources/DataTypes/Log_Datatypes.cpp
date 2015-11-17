@@ -244,7 +244,7 @@ bool tagLogInfo::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
     xmlAddChild(pxmlNodePtr, pChnlPtr);
 
     std::string omPath;
-	char configPath[MAX_PATH]={0};
+    char configPath[MAX_PATH]= {0};
     std::string omStrConfigFolder;
     AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
     CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
@@ -436,7 +436,7 @@ INT tagLogInfo::nSetConfigData(xmlNodePtr pNodePtr)
                     {
                         std::string omStrConfigFolder;
                         std::string omPath;
-						char configPath[MAX_PATH]={0};
+                        char configPath[MAX_PATH]= {0};
                         AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
                         CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
                         char chAbsPath[MAX_PATH];

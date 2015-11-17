@@ -431,11 +431,11 @@ void COutWnd::OnDbClick()
                         if(unLineNumber!=0)
                         {
                             CFileView* pFileView = CGlobalObj::ouGetObj(m_eBus).podGetFileViewPtr();
-							if(nullptr != pFileView)
-							{
-                            pFileView->vDisplayWarningLineNumber(OUTWND,
-                                                                 unLineNumber);
-							}
+                            if(nullptr != pFileView)
+                            {
+                                pFileView->vDisplayWarningLineNumber(OUTWND,
+                                                                     unLineNumber);
+                            }
                         }
                     }
                 }

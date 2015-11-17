@@ -351,8 +351,8 @@ void CMsgReplayWnd::vCmdGo()
             BOOL bBreakPointFound = FALSE;
 
             // Get the count
-                m_ouReplayDetails.m_nNoOfMessagesToPlay = nCount -
-                        m_ouReplayDetails.m_nUserSelectionIndex;
+            m_ouReplayDetails.m_nNoOfMessagesToPlay = nCount -
+                    m_ouReplayDetails.m_nUserSelectionIndex;
 
 
             if( m_ouReplayDetails.m_nNoOfMessagesToPlay > 0 )

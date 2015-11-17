@@ -164,14 +164,14 @@ void EventFrameEditDlg::vAddFrameToTable(IFrame* pFrame, std::map<UID_ELEMENT, U
     std::list<IEcu*> ouEcuList;
     pFrame->GetFrameType(ouFrameType);
     pFrame->GetEcus(eTx, ouEcuList);
-	auto itrTxEcu  = ouEcuList.begin();
+    auto itrTxEcu  = ouEcuList.begin();
 
-	if ( itrTxEcu == ouEcuList.end() )
-	{
-		return;
-	}
+    if ( itrTxEcu == ouEcuList.end() )
+    {
+        return;
+    }
 
-	((IEcu*)*itrTxEcu)->GetProperties(ouEcuProps);
+    ((IEcu*)*itrTxEcu)->GetProperties(ouEcuProps);
 
     if ( eLIN_Unconditional == ouFrameType && ouEcuProps.m_eEcuType == eLIN_Slave )
     {

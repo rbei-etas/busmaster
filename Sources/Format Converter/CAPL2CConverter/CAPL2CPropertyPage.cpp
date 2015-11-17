@@ -674,7 +674,7 @@ void CCAPL2CPropertyPage::OnConvert()
             ouWaitIndicator.SetWindowText(_("Database Conversion is Going on... Please Wait"));
             for( int i = 0; i < nCount; i++)
             {
-				CString omStrDBCFile = m_omDBCList.GetItemText(i, 0).GetBuffer(MAX_PATH);
+                CString omStrDBCFile = m_omDBCList.GetItemText(i, 0).GetBuffer(MAX_PATH);
                 m_pouDBC2DBFConverter->ClearMsgList();
                 m_pouDBC2DBFConverter->LoadDBCFile(omStrDBCFile);
                 m_pouDBC2DBFConverter->ConvertFile(m_omDBCList.GetItemText(i, 1).GetBuffer(MAX_PATH));

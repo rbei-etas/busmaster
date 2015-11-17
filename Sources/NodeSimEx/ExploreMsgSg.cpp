@@ -276,19 +276,19 @@ void CExploreMsgSg::OnSelect()
                     omStrMsg = omStrMsg.Left(nIndex);
                 }
 
-				if(nullptr != pDoc)
-				{
-                // Get the Initialised string from document
-                CString omStrMsgStructure =
-                    pDoc->omStrGetInitialisedMessage(unMsgID,
-                                                     omStrMsg,
-                                                     MSG_STRUCT_VAR,TRUE,ucChannelId);
-                // Form the declaration and signal access statements
-                m_omStrSelectedItemText.Format(defFNS_INIT_SIG_FORMAT,
-                                               omStrMsgStructure,
-                                               MSG_STRUCT_VAR,
-                                               defSIGNALMEMBER);
-				}
+                if(nullptr != pDoc)
+                {
+                    // Get the Initialised string from document
+                    CString omStrMsgStructure =
+                        pDoc->omStrGetInitialisedMessage(unMsgID,
+                                                         omStrMsg,
+                                                         MSG_STRUCT_VAR,TRUE,ucChannelId);
+                    // Form the declaration and signal access statements
+                    m_omStrSelectedItemText.Format(defFNS_INIT_SIG_FORMAT,
+                                                   omStrMsgStructure,
+                                                   MSG_STRUCT_VAR,
+                                                   defSIGNALMEMBER);
+                }
             }
             m_omStrSelectedItemText += omStrSgName;
         }

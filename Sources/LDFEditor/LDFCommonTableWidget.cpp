@@ -66,7 +66,7 @@ int LDFCommonTableWidget::CreateColumns(QList<QString>& strColumnNames)
     setRowCount(0);
     //int nColumn = 0;
     int nWidth = (width()-10)/strColumnNames.size();
-	for ( int nColumn = 0; nColumn < strColumnNames.size(); nColumn++)// auto itr : strColumnNames )
+    for ( int nColumn = 0; nColumn < strColumnNames.size(); nColumn++)// auto itr : strColumnNames )
     {
         QTableWidgetItem* pTablewidgetitem = new QTableWidgetItem();
         pTablewidgetitem->setText(strColumnNames.at(nColumn));

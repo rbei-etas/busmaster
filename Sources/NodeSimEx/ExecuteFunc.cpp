@@ -131,7 +131,7 @@ CExecuteFunc::CExecuteFunc(ETYPE_BUS eBus, CONST CString& omStrDllFileName) :
     m_unWriteQMsgIndex(0),
     m_unReadQMsgIndexLIN(0),
     m_unWriteQMsgIndexLIN(0),
-   
+
     m_pomMsgHandlerThrd(nullptr),
     m_pomMsgHandlerThrdLIN(nullptr),
     m_psFirstTimerStrList(nullptr),
@@ -180,9 +180,9 @@ CExecuteFunc::CExecuteFunc(ETYPE_BUS eBus, CONST CString& omStrDllFileName) :
     m_omMsgHandlerMapCAN.InitHashTable(def_MSG_MAP_HASH_SIZE);
     m_omMsgHandlerMap.InitHashTable(def_MSG_MAP_HASH_SIZE);
     // Initialise critical section used in buffer access
-	m_bStopMsgHandlers = FALSE;
-	m_unQMsgCountLIN = 0;
-	m_psOnEventHandlersLin = nullptr;
+    m_bStopMsgHandlers = FALSE;
+    m_unQMsgCountLIN = 0;
+    m_psOnEventHandlersLin = nullptr;
 
     //creating read and execute message handler thread
     if ( m_eBus == CAN )
@@ -286,16 +286,16 @@ CExecuteFunc::~CExecuteFunc()
         m_psOnBusEventHandlers = nullptr;
     }
 
-	if ( m_eBus == CAN )
-	{
-		// Free Cirical Section Resource
-		DeleteCriticalSection(&m_CritSectForFuncBuf);
-	}
+    if ( m_eBus == CAN )
+    {
+        // Free Cirical Section Resource
+        DeleteCriticalSection(&m_CritSectForFuncBuf);
+    }
 
-	if ( m_eBus == LIN )
-	{
-		DeleteCriticalSection(&m_CritSectForFuncBufLIN);
-	}
+    if ( m_eBus == LIN )
+    {
+        DeleteCriticalSection(&m_CritSectForFuncBufLIN);
+    }
 
 }
 /******************************************************************************/
@@ -816,40 +816,40 @@ void CExecuteFunc::vExecuteOnEventHandlerJ1939(UINT32 unPGN, BYTE bySrc, BYTE by
         if(psNodeInfo != nullptr)
         {
 
-                EnterCriticalSection(&csEventHandler);
-                if(m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread == nullptr )
+            EnterCriticalSection(&csEventHandler);
+            if(m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread == nullptr )
+            {
+                while((unEventCount < unEventHandlerCount) && (bEventHandlerExecuted != TRUE))
                 {
-                    while((unEventCount < unEventHandlerCount) && (bEventHandlerExecuted != TRUE))
+                    if(m_psOnEventHandlers[unEventCount].m_byEventType == byType)
                     {
-                        if(m_psOnEventHandlers[unEventCount].m_byEventType == byType)
+                        if(m_psOnEventHandlers[unEventCount].m_pFEventHandlers!=nullptr)
                         {
-                            if(m_psOnEventHandlers[unEventCount].m_pFEventHandlers!=nullptr)
+                            m_psOnEventHandlers[unEventCount].m_unPGN       = unPGN;
+                            m_psOnEventHandlers[unEventCount].m_bySrc       = bySrc;
+                            m_psOnEventHandlers[unEventCount].m_byDest      = byDest;
+                            m_psOnEventHandlers[unEventCount].m_bSuccess    = bSuccess;
+
+                            //pass the pointer to this object to access thread
+                            m_psOnEventHandlers[unEventCount].m_pCExecuteFunc=this;
+                            // Get handle of thread and assign it to pulic data member
+                            // in app class. This will be used to terminate the thread.
+
+                            CWinThread* pomThread = nullptr ;
+                            pomThread = AfxBeginThread(unEventHandlerProc,
+                                                       &m_psOnEventHandlers[unEventCount] );
+                            /*if(pomThread != nullptr )
                             {
-                                m_psOnEventHandlers[unEventCount].m_unPGN       = unPGN;
-                                m_psOnEventHandlers[unEventCount].m_bySrc       = bySrc;
-                                m_psOnEventHandlers[unEventCount].m_byDest      = byDest;
-                                m_psOnEventHandlers[unEventCount].m_bSuccess    = bSuccess;
-
-                                //pass the pointer to this object to access thread
-                                m_psOnEventHandlers[unEventCount].m_pCExecuteFunc=this;
-                                // Get handle of thread and assign it to pulic data member
-                                // in app class. This will be used to terminate the thread.
-
-                                CWinThread* pomThread = nullptr ;
-                                pomThread = AfxBeginThread(unEventHandlerProc,
-                                                           &m_psOnEventHandlers[unEventCount] );
-                                /*if(pomThread != nullptr )
-                                {
-                                    m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread
-                                        = pomThread->m_hThread;
-                                }*/
-                            }
-                            bEventHandlerExecuted = TRUE;
+                                m_asUtilThread[defEVENT_HANDLER_THREAD].m_hThread
+                                    = pomThread->m_hThread;
+                            }*/
                         }
-                        unEventCount++;
+                        bEventHandlerExecuted = TRUE;
                     }
+                    unEventCount++;
                 }
-                LeaveCriticalSection(&csEventHandler);
+            }
+            LeaveCriticalSection(&csEventHandler);
 
         }
     }
@@ -1191,7 +1191,7 @@ BOOL CExecuteFunc::bReadDefFile(CStringArray& omErrorArray)
                     omStrLine.TrimRight();
                     // Search for message handler function and add it to
                     // corresponding CStringArray data member.
-                   bool bFound = bCatagoriseDefaultHandlers(omStrLine);
+                    bool bFound = bCatagoriseDefaultHandlers(omStrLine);
                     if(!bFound && omStrLine.Find( CGlobalObj::omGetBusSpecMsgHndlrName(m_eBus)) != -1)
                     {
                         m_omStrArrayMsgHandlers.Add(omStrLine);
@@ -2925,7 +2925,7 @@ void CExecuteFunc::vEnableDisableAllTimers(BOOL bEnable)
     }
     CExecuteManager::ouGetExecuteManager(m_eBus).
     vSetResetNodeTimers(this,bEnable);
-    
+
 }
 
 

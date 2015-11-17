@@ -30,8 +30,8 @@ private:
     ERRORCODE FillReadByIdentifierTableItem(ldfScheduleTableCommand& ouCommand, CSheduleTableItem& ouTableItem);
     unsigned char ucCalculatePID(unsigned char ucId);
 
-	ERRORCODE CreateDiagnosticMessages();
-	ERRORCODE AddMasterReq();
-	ERRORCODE AddSlaveResp();
+    ERRORCODE CreateDiagnosticMessages();
+    ERRORCODE AddMasterReq();
+    ERRORCODE AddSlaveResp();
 };
 

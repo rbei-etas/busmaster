@@ -734,7 +734,7 @@ HRESULT CTSExecutorLIB::GetConfigurationData(xmlNodePtr pxmlNodePtr)
         CTestSetupEntity& ouTestSetupEntity = m_ouTestSetupEntityList.GetAt(pos);
 
         std::string omPath, omStrConfigFolder;
-        char configPath[MAX_PATH]={0};
+        char configPath[MAX_PATH]= {0};
         AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
         CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
         CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)ouTestSetupEntity.m_omstrCurrentTSFile.GetBuffer(MAX_PATH), omPath);
@@ -984,7 +984,7 @@ int CTSExecutorLIB::nParseTestSuite(xmlNodePtr pXmlNode, sTestSuiteConfigInfo& s
             {
                 std::string omStrConfigFolder;
                 std::string omPath;
-                char configPath[MAX_PATH]={0};
+                char configPath[MAX_PATH]= {0};
                 AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
                 CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
                 char chAbsPath[MAX_PATH];

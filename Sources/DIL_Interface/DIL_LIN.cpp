@@ -373,10 +373,10 @@ HRESULT CDIL_LIN::DILL_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeS
  */
 HRESULT CDIL_LIN::DILL_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
 {
-	if(nullptr == m_pBaseDILLIN_Controller)
-	{
-		return S_FALSE;
-	}
+    if(nullptr == m_pBaseDILLIN_Controller)
+    {
+        return S_FALSE;
+    }
 
     HRESULT hr = m_pBaseDILLIN_Controller->LIN_ListHwInterfaces(sSelHwInterface, nCount);
 

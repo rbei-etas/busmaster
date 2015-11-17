@@ -1750,7 +1750,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_RegisterClient(BOOL bRegister, DWORD& ClientID, c
                     {
                         Index = sg_unClientCnt;
                     }*/
-					Index = sg_unClientCnt;
+                    Index = sg_unClientCnt;
                     ClientID = dwGetAvailableClientSlot();
                     sg_asClientToBufMap[Index].m_acClientName = pacClientName;
 

@@ -214,7 +214,7 @@ bool CSimSysManager::bGetConfigData(xmlNodePtr pNodePtr)
 
         //File_Path
         std::string omPath, omStrConfigFolder;
-		char configPath[MAX_PATH]={0};
+        char configPath[MAX_PATH]= {0};
         AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
         CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
         if(pTempNode->m_sNodeInfo.m_eNodeFileType == NODE_FILE_DLL)
@@ -589,7 +589,7 @@ void CSimSysManager :: vLoadNodeInfoFromConfiguration(xmlNodePtr pNode)
                 {
                     std::string omStrConfigFolder;
                     std::string omPath;
-					char configPath[MAX_PATH]={0};
+                    char configPath[MAX_PATH]= {0};
                     AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
                     CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
                     char chAbsPath[MAX_PATH];

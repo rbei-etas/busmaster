@@ -843,24 +843,24 @@ void CFnsTreeView::OnTreeViewRightclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
                 {
                     if(nullptr != pomSubMenu)
                     {
-                    //This itself is the parent
-                    //Disable all except Save
-                    pomSubMenu->EnableMenuItem(IDM_DEL_HAND,
-                                               MF_BYCOMMAND | MF_DISABLED |MF_GRAYED );
-                    pomSubMenu->EnableMenuItem(IDM_ADD_HAND,
-                                               MF_BYCOMMAND | MF_DISABLED |MF_GRAYED );
-                    pomSubMenu->EnableMenuItem(IDM_EDIT_HAND,
-                                               MF_BYCOMMAND | MF_DISABLED |MF_GRAYED );
+                        //This itself is the parent
+                        //Disable all except Save
+                        pomSubMenu->EnableMenuItem(IDM_DEL_HAND,
+                                                   MF_BYCOMMAND | MF_DISABLED |MF_GRAYED );
+                        pomSubMenu->EnableMenuItem(IDM_ADD_HAND,
+                                                   MF_BYCOMMAND | MF_DISABLED |MF_GRAYED );
+                        pomSubMenu->EnableMenuItem(IDM_EDIT_HAND,
+                                                   MF_BYCOMMAND | MF_DISABLED |MF_GRAYED );
 
-                    if( bHide != TRUE)
-                    {
-                        ClientToScreen(&m_omRightClickPoint);
-                        pomSubMenu->TrackPopupMenu(
-                            TPM_LEFTALIGN |TPM_RIGHTBUTTON,
-                            m_omRightClickPoint.x,
-                            m_omRightClickPoint.y,
-                            this,
-                            nullptr);
+                        if( bHide != TRUE)
+                        {
+                            ClientToScreen(&m_omRightClickPoint);
+                            pomSubMenu->TrackPopupMenu(
+                                TPM_LEFTALIGN |TPM_RIGHTBUTTON,
+                                m_omRightClickPoint.x,
+                                m_omRightClickPoint.y,
+                                this,
+                                nullptr);
                         }
                     }
                 }
@@ -1329,10 +1329,10 @@ BOOL CFnsTreeView::bDeleteALineFromHeader(CString omStrHeader,
     CString omStrLine = "";
     CFunctionEditorDoc* pDoc = (CFunctionEditorDoc*)CView::GetDocument();
     SBUS_SPECIFIC_INFO sBusSpecInfo;
-    
+
     if (pDoc != nullptr)
     {
-		pDoc->bGetBusSpecificInfo(sBusSpecInfo);
+        pDoc->bGetBusSpecificInfo(sBusSpecInfo);
         // Seek to the start of global variable definition
         POSITION pos =
             pDoc->m_omSourceCodeTextList.Find( omStrHeader );
@@ -2393,10 +2393,10 @@ void CFnsTreeView::vEditIncludeHeader(HTREEITEM hItem)
             // Get the document
 
             SBUS_SPECIFIC_INFO sBusSpecInfo;
-            
+
             if ( pDoc != nullptr )
             {
-				pDoc->bGetBusSpecificInfo(sBusSpecInfo);
+                pDoc->bGetBusSpecificInfo(sBusSpecInfo);
                 CString omTemp = BUS_INCLUDE_HDR;
                 omTemp.Replace("PLACE_HODLER_FOR_BUSNAME", sBusSpecInfo.m_omBusName);
                 POSITION pos =

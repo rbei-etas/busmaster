@@ -870,10 +870,10 @@ void Flexi_Helper::callback_EventQueueOverflow(GtFr_QueueOverflowArgsType overFl
  */
 void Flexi_Helper::callback_EventQueue(GtFr_EventQueueStatusType EventQueueStatus, GtFr_EventType* events)
 {
-	if(nullptr == g_pouDIL_FLEXRAY_GIGATRONIK_FLEXI)
-	{
-		return;
-	}
+    if(nullptr == g_pouDIL_FLEXRAY_GIGATRONIK_FLEXI)
+    {
+        return;
+    }
 
     /* define data struct to store the relevant event data */
     s_FLXMSG FlexData;

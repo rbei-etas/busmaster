@@ -241,10 +241,10 @@ void CSetResetTimer::vDeleteNodeTimerList(CString om_NodeName)
             }
             if(psCurrNodeList!=nullptr)
             {
-				if(nullptr != psPrevNodeList)
-				{
-                psPrevNodeList->psNextTimerListPtr=psCurrNodeList->psNextTimerListPtr;
-				}
+                if(nullptr != psPrevNodeList)
+                {
+                    psPrevNodeList->psNextTimerListPtr=psCurrNodeList->psNextTimerListPtr;
+                }
                 if(psCurrNodeList==m_psLastNodeTimerList)
                 {
                     m_psLastNodeTimerList=psPrevNodeList;
