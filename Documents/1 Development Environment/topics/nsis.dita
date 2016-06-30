@@ -24,7 +24,7 @@
     </section>
     <section>
       <title>Configuration</title>
-      <p>Download nsProcess.zip from <xref href="http://nsis.sourceforge.net/NsProcess_plugin" scope="external">http://nsis.sourceforge.net/NsProcess_plugin</xref>. Extract and Copy nsProcess.nsh to <filepath>%ProgramFiles%\NSIS\Include.</filepath></p>
+      <p>Download nsProcess.zip from <xref href="http://nsis.sourceforge.net/NsProcess_plugin" scope="external">http://nsis.sourceforge.net/NsProcess_plugin</xref>. Extract and Copy NsProcess\Include\nsProcess.nsh to <filepath>%ProgramFiles%\NSIS\Include and copy nsProcess.dll and nsProcessW.dll from NsProcess\Plugin to %ProgramFiles%\NSIS\Plugins.</filepath></p>
     </section>
     <section>
       <title>Usage</title>

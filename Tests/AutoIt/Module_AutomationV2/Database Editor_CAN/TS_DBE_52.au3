@@ -34,6 +34,10 @@ If winexists($WIN_BUSMASTER) then
 
 	_openCANDB("testDBE_52.DBF")																		; Open the DB
 
+	;------Maximize Child Window DatabaseEditor - CAN---------------
+	_Maximize_childWindow("DatabaseEditor - CAN")
+	sleep(1000)
+
 	$DBTreeVwHWD = ControlGetHandle($WIN_DBEditor_CAN, "", $TVC_DBFile_DBEditor) 						; Fetch tree view control handle
 	$childHWD = _GUICtrlTreeView_GetNext($DBTreeVwHWD, 0)
 	_GUICtrlTreeView_ClickItem($DBTreeVwHWD, $childHWD, "Right") 										; Right Click on the msg node

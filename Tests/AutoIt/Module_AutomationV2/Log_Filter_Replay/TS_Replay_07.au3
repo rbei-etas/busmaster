@@ -2,16 +2,16 @@
 ; Critical (C)		:		Y
 ; TestCase No.		:		TS_Replay_07
 ; TestCases			:		Replay a log file in Single mode with no messages in the log file
-; Test Data			:		
+; Test Data			:
 ; Test Setup		:		1. Select "Configure-> Replay".
-;~ 							2. A Dialog Box will appear. 
+;~ 							2. A Dialog Box will appear.
 ;~ 							3. Select a replay file and select time delay between messages as 50ms.
 ;~ 							4. Select Mode of Replay as "Single"
 ;~ 							5. Select a Log file name
 ;~ 							6. Select OK. Replay Window with message in log file will appear
 ;~ 							7. Select "File -> Connect" menu option or select "Connect" tool bar button
-;~ 							8. Enable logging 
-;~ 							9. Repeat the test case after editing the log file having four message 
+;~ 							8. Enable logging
+;~ 							9. Repeat the test case after editing the log file having four message
 ;~ 							10. Select Go button
 
 ; Expected Results  : 		Replay window should close.
@@ -41,7 +41,8 @@ if winexists($WIN_BUSMASTER) then
 
 	ControlClick($WIN_CANReplayConfig,"",$BTN_OK_CANReplayConfig)								; Click on 'OK' button
 
-	_ConnectDisconnect()																		; Connect the tool
+	;_ConnectDisconnect()																		; Connect the tool
+	_Connect_CAN_Menu()
 	sleep(10000)
 
 	_ConnectDisconnect()																		; Disconnect the tool

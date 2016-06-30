@@ -40,6 +40,11 @@ If winexists($WIN_BUSMASTER) then
 
 	_createJ1939DB("testJ1939DBE_45")																	; Create New Database File
 
+	;------Maximize Child Window DatabaseEditor - J1939---------------
+	_Maximize_childWindow("DatabaseEditor - J1939")
+	sleep(1000)
+
+
 	_J1939DBmessage("n")																				; Select 'New Message' from right click menu
 
 	_addMsgDetails("Msg1",15,8)

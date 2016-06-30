@@ -17,9 +17,12 @@ _RunMe()
 ; Create the HTML table to save the result
 _StartoHTMLTable("Test Automation CAN Module Test Report")
 
-#include "TS_TestAuto_04.au3"
-; "TS_TestAuto_05 and "TS_TestAuto_06" covered in "TS_TestAuto_04.au3"
 #include "TS_TestAuto_01.au3"
+
+#include "TS_TestAuto_04.au3"
+
+; "TS_TestAuto_05 and "TS_TestAuto_06" covered in "TS_TestAuto_04.au3"
+;#include "TS_TestAuto_01.au3"
 ; "TS_TestAuto_02" covered in "TS_TestAuto_04.au3"
 ; "TS_TestAuto_03" is P3
 #include "TS_TestAuto_07.au3"
@@ -32,3 +35,5 @@ _EndoHTMLTable()
 _SaveHTMLReport()
 
 _IEQuit($oIE)
+
+_ExcelBookClose($oExcel, 1, 0)

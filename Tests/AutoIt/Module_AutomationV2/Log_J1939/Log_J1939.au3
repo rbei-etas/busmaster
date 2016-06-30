@@ -21,6 +21,7 @@ _StartoHTMLTable("J1939 Log Module Test Report")
 ; J1939 Log P1 Case's
 
 #include "TS_J1939Log_01.au3"
+
 #include "TS_J1939Log_02.au3"
 #include "TS_J1939Log_03.au3"
 ;~ ; "TS_J1939Log_04" and "TS_J1939Log_05" are P2 case's
@@ -51,3 +52,5 @@ _EndoHTMLTable()
 _SaveHTMLReport()
 
 _IEQuit($oIE)
+
+_ExcelBookClose($oExcel, 1, 0)

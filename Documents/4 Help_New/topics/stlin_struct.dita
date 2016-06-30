@@ -16,25 +16,69 @@
   </prolog>
   <body>
     <p>STLIN_MSG Structure Definition</p>
-    <codeblock>struct sTLIN_MSG
+    <codeblock>class STLIN_MSG
 {
-    unsigned char m_ucMsgTyp;       // Header - 0, Slave Response - 1
-    unsigned char m_ucChksumTyp;    // Checksum Type (0 - Classical / 1 - Enhanced)
-    unsigned char m_ucDataLen;      // Data length (0..8)
-    unsigned char m_ucMsgID;        // LIN Identifier
+    unsigned char messagetype;       // Header - 0, Slave Response - 1
+    unsigned char checksumtype;      // Checksum Type (0 - Classical / 1 - Enhanced)
+    unsigned char dlc;               // Data length (0..8)
+    unsigned char id;                // LIN Identifier
     
-    union
-    {
-        UCHAR m_aucData[8];                 // Byte Data
-        USHORT m_auwData[4];                // Word Data
-        UINT m_aulData[2];                  // Long Data
-    } m_sWhichBit;                          // Data access member
-    unsigned long m_ulTimeStamp;
-    unsigned char m_ucChannel;              // Channel Number 
-    unsigned char m_ucCRC;                  // Checksum - Read Only
+    unsigned char data[8];           // Data access member
+    unsigned long timeStamp;
+    unsigned char cluster;           // Channel Number 
+    unsigned char crc;               // Checksum - Read Only
 
 } STLIN_MSG;</codeblock>
     <p>Required Include header file is LINIncludes.h</p>
+    <p><table frame="all">
+        <title/>
+        <tgroup cols="2">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <tbody>
+            <row>
+              <entry>
+                <b>Member</b>
+              </entry>
+              <entry>
+                <b>Description</b>
+              </entry>
+            </row>
+            <row>
+              <entry>messagetype</entry>
+              <entry>To configure frame as Master request or Slave. 0 - Master request/header </entry>
+            </row>
+            <row>
+              <entry>checksumtype</entry>
+              <entry>To set checksum type as Classic or Enhanced. 0 - Classic 1-Enhanced</entry>
+            </row>
+            <row>
+              <entry>dlc</entry>
+              <entry>Data Length in bytes. Possible values [0-8]</entry>
+            </row>
+            <row>
+              <entry>id</entry>
+              <entry>LIN message identifier is a unsigned integer in decimal or hexadecimal (0x) to identify the message</entry>
+            </row>
+            <row>
+              <entry>data[8]</entry>
+              <entry>Message data. [0-7] bytes</entry>
+            </row>
+            <row>
+              <entry>timeStamp</entry>
+              <entry>Received frame absolute timestamp in 100&apos;s of microseconds</entry>
+            </row>
+            <row>
+              <entry>cluster</entry>
+              <entry>channel on which the frame is received or to be transmitted</entry>
+            </row>
+            <row>
+              <entry>crc</entry>
+              <entry>Checksum value of the received message</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
     <p><b>Input Parameters:</b></p>
     <p><b>m_ucMsgTyp</b></p>
     <p>0 - Sets message type as Header</p>

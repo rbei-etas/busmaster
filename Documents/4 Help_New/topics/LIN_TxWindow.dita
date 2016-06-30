@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
 <topic id="transmit_messages" xml:lang="en-us">
-  <title>Transmit Messages</title>
+  <title>LIN Transmit Window</title>
   <prolog>
     <author/>
     <copyright>
@@ -15,10 +15,11 @@
     </metadata>
   </prolog>
   <body>
-    <p>Master can transmit frame headers and Slave can respond to the Master requests over LIN-bus using LIN Transmit Window. Use <b>LIN --&gt; Transmit --&gt; Configure</b> menu option, to open the LIN Transmission Window.</p>
+    <p>BUSMASTER LIN Transmit Window (Tx Window) can be used to transmit  frame headers (If BUSMASTER is configured as Master. Check section <xref href="LIN_Cluster_Configuration.dita">LIN Cluster Configuration</xref> for more information)and Slave data. Use <b>LIN --&gt; Transmit --&gt; Configure</b> menu option, to open the LIN Transmission Window.</p>
     <section>
       <image href="../images/LIN_TxWindow.bmp" placement="break"/>
-      <p>Once a LDF File is imported the Messages( DB Messages ) in LDF file will be populated in <b>Message ID/Name</b> List Box as shown in above figure.It is also possible to add Non-db Messages by typing Message id in List Box. Once the Message is selected in List Box, Click on <b>Add Message</b> Button to add it in <b>Tx Frame List</b>.</p>
+      <p><b>Configuring Messages:</b></p>
+      <p>Once a LDF File is imported the Messages( DB Messages ) in LDF file will be populated in <b>Tx Frame list</b> column.Double Click on <b>[Add Message]</b> to select  data base message.It is also possible to add Non-db Messages by typing Message id.</p>
       <p><b>Configure Master Requests:</b></p>
       <p><ul>
           <li>Select the frame type as <b>Header</b> from the Type group</li>
@@ -30,6 +31,13 @@
       <ul>
         <li>Select the frame type as <b>Response</b> from the Type group</li>
         <li>The DLC and data byte values can be changed using DLC and Data Bytes edit box windows.</li>
+      </ul>
+    </section>
+    <section>
+      <b>Updating Signal Values:</b>
+    </section>
+    <section>
+      <ul>
         <li>If the Message is a DB Messages and if it has signals associated, then they will be displayed in Signal List as shown in following figure.The Raw\Physical value of the signal can be changed by double clicking the corresponding cell.</li>
       </ul>
       <image href="../images/LIN_TxWindow_SignalDisplay.bmp"/>

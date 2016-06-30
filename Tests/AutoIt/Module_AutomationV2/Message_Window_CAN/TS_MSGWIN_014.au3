@@ -21,32 +21,59 @@ WinActivate($WIN_BUSMASTER)
 if winexists($WIN_BUSMASTER) then
 
 	_loadConfig("cfxCANMsgWin_01")
-    _DeleteMsgBlock()
+
+	;_DeleteMsgBlock()
+
 	sleep(1000)
-;~      _EnableInterpretMode()
+;~  _EnableInterpretMode()
       Sleep(500)
 	WinActivate($WIN_CANMsgWind)
 	 Sleep(500)
 	$HWD=_GetCANMsgWinHWD()
-   _ConfigCANTXBlockDetails("Monoshot","No","","No","","","Yes",2000)								      ; Configure TX block details
+	;_ConfigCANTXBlockDetails("Monoshot","No","","No","","","Yes",2000)								      ; Configure TX block details
+	;_AddMsg2TxList(0)																			      ; Add the first msg to Tx list
+	 ;Sleep(500)
+	;_AddMsg2TxList(1)
+	_TxMsgMenu()
+	sleep(1000)
+	;_CloseTxWindow()
+	Opt("WinDetectHiddenText", 0)
+	Opt("WinSearchChildren", 1)
+	Opt("WinTitleMatchMode", 1)
+	WinWait("Configure Transmission Messages - CAN")
+	WinClose("Configure Transmission Messages - CAN","")
 
-	_AddMsg2TxList(0)																			      ; Add the first msg to Tx list
-	 Sleep(500)
-	_AddMsg2TxList(1)
-	_CloseTxWindow()
-	_ConnectDisconnect()																		     ; Connect the tool
+
+	_ConnectDisconnect()																		     ; Connect the tooll
 
 	_TransmitMsgsMenu()																			     ; Transmit normal blocks
 	Sleep(4000)
 	$count1= _GetCANMsgWinItemCount()
 	Sleep(500)
 ;~ 	_DisableOverwriteMode()
-	_GUICtrlListView_ClickItem($HWD,3,"right")                                              ;send third message by right clik
-	Sleep(500)
-	Send("{DOWN}")                                                                          ;Press down arrow key
+;--------------------Select Rx message and right click on it,then send----------------
+	$countmsg =0
+	for $i=0 to 3
+		$Msg=_GetMsgWinCANInfo($i)
+		ConsoleWrite("$Msg[1]="&$Msg[1])
+		ConsoleWrite("$countmsg = "&$countmsg)
+		if  $Msg[1] = "Rx" and $countmsg=0 Then
+			ConsoleWrite("Rx - - -")
+			_GUICtrlListView_ClickItem($HWD,$i,"right")                                              ;send third message by right clik
+			Sleep(500)
+			Send("{DOWN}")
+			Send("{ENTER}")
+			sleep(500)
+			$countmsg = $countmsg + 1
+		EndIf
+	Next
+;-----------------------------------------------------------------
+	;_GUICtrlListView_ClickItem($HWD,3,"right")                                              ;send third message by right clik
+	;Sleep(500)
+;~ 	Send("{DOWN}")                                                                          ;Press down arrow key
 ;~ 	Send("{DOWN}")                                                                          ;Press down arrow key
 ;~ 	Send("{DOWN}")
-	Send("{ENTER}")
+;~ 	Send("{ENTER}")
 	$count2= _GetCANMsgWinItemCount()
 	ConsoleWrite("$count1" & $count1 & @CRLF)
 	ConsoleWrite("$count2" & $count2 & @CRLF)

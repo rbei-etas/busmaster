@@ -89,6 +89,9 @@ If winexists($WIN_BUSMASTER) then
 	_CreateConfig("cfxj1939DB_30.cfx")																	; Create Configuration
 
 	_openJ1939DB("testJ1939DBE_30.DBF")																		; Open the DB
+	;------Maximize Child Window DatabaseEditor - J1939---------------
+	_Maximize_childWindow("DatabaseEditor - J1939")
+	sleep(1000)
 
 	ControlClick($WIN_DBEditor_J1939,"",$BTN_NewSignal_DBEditor)											; Click on 'New Signal'
 

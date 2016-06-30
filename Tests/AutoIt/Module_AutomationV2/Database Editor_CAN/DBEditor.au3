@@ -21,6 +21,7 @@ _StartoHTMLTable("CAN Database Editor Module Test Report")
 ; CAN DB P1 Case's
 
 #include "TS_DBE_01.au3"
+
 #include "TS_DBE_02.au3"
 #include "TS_DBE_03.au3"
 #include "TS_DBE_04.au3"
@@ -83,3 +84,5 @@ _EndoHTMLTable()
 _SaveHTMLReport()
 
 _IEQuit($oIE)
+
+_ExcelBookClose($oExcel, 1, 0)

@@ -34,6 +34,10 @@ If winexists($WIN_BUSMASTER) then
 
 	_createCANDB("testDBE_44")																			; Create New Database File
 
+	;------Maximize Child Window DatabaseEditor - CAN---------------
+	_Maximize_childWindow("DatabaseEditor - CAN")
+	sleep(1000)
+
 	_DBmessage("n")																						; Select 'New Message' from right click menu
 
 	_addMsgDetails("Msg1",15,8)

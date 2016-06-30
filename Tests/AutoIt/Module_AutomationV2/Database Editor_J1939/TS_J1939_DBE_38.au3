@@ -47,6 +47,10 @@ If winexists($WIN_BUSMASTER) then
 
 	_openJ1939DB("testj1939DBE_38.DBF")																		; Open the DB
 
+	;------Maximize Child Window DatabaseEditor - J1939---------------
+	_Maximize_childWindow("DatabaseEditor - J1939")
+	sleep(1000)
+
 	$sigDetlvhwd=controlgethandle($WIN_BUSMASTER,"",$LVC_SigDet_DBeditor)								; Get handle of signal details list view
 	_GUICtrlListView_ClickItem($sigDetlvhwd,0)
 	sleep(500)

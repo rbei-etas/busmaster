@@ -30,7 +30,7 @@ if winexists($WIN_BUSMASTER) Then
 
 	$path=_TestDataPath()
 
-	$handle=ControlGetHandle($WIN_BUSMASTER,"","[CLASS:msctls_statusbar32; INSTANCE:2]")
+	$handle=ControlGetHandle($WIN_BUSMASTER,"",$statusBar)
 	ConsoleWrite("handle" & $handle & @CRLF)
 	$text=_GUICtrlStatusBar_GetText($handle,1)
 	ConsoleWrite("text" & $text & @CRLF)

@@ -63,6 +63,10 @@ if winexists($WIN_BUSMASTER) then
 	    next
         $FirstMsgTime1=StringSplit($MonoData1[0],":")                                                             ;Split time as hours minutes and seconds
     	$FifthMsgTime1=StringSplit($MonoData5[0],":")
+
+		ConsoleWrite("$FifthMsgTime1[3] :" &$FifthMsgTime1[3] & @CRLF)
+		ConsoleWrite("$FirstMsgTime1[3] :" &$FirstMsgTime1[3] & @CRLF)
+
     	If ($FifthMsgTime1[3]>$FirstMsgTime1[3]) Then                                                             ;Compare first message time and fifth message time in seconds to get time difference or delay
 			$timeDiff=$FifthMsgTime1[3]-$FirstMsgTime1[3]
 		ElseIf($FifthMsgTime1[3]<$FirstMsgTime1[3]) Then
@@ -108,6 +112,9 @@ if winexists($WIN_BUSMASTER) then
 	    next
         $FirstMsgTime1=StringSplit($MonoData1[0],":")                                                             ;Split time as hours minutes and seconds
 	    $FifthMsgTime1=StringSplit($MonoData5[0],":")
+
+		ConsoleWrite("$FifthMsgTime1[3] :" &$FifthMsgTime1[3] & @CRLF)
+		ConsoleWrite("$FirstMsgTime1[3] :" &$FirstMsgTime1[3] & @CRLF)
 
 	    If ($FifthMsgTime1[3]>$FirstMsgTime1[3]) Then                                                             ;Compare first message time and fifth message time in seconds to get time difference or delay
 	    	 $timeDiff1=$FifthMsgTime1[3]-$FirstMsgTime1[3]

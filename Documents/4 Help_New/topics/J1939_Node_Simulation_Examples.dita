@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="stcan_struct" xml:lang="en-us">
+  <title>Examples</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>J1939_MSG Structure</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p><b>Message Transmission:</b></p>
+    <example>
+      <codeblock>J1939_MSG objMsg;
+objMsg.id = 0x1cfefefe;
+objMsg.dlc = 215;
+for(int i =0; i &lt; objMsg.dlc; i++)
+{
+objMsg.byteAt(i, i*2);
+}
+SendMsg(objMsg);</codeblock>
+    </example>
+    <p/>
+    <p><b>Database message transmission: </b></p>
+    <p><codeblock>// Message Declaration
+DBMsg sMsgStruct; // DBMsg is a database message
+
+// Use signal member
+// Sig1
+sMsgStruct.Sig_1 = 10; // for setting signal raw value
+// Sig2
+sMsgStruct.Sig_2 = 20;
+// Sig3
+sMsgStruct.Sig_3 = 30;
+// Send the message now
+SendMsg(sMsgStruct));</codeblock></p>
+    <p/>
+    <p><b>Setting J1939 Specific parameters:</b></p>
+    <p><codeblock>J1939_MSG objMsg;
+objMsg.id.setPGN(0xfefe);
+objMsg.id.setSourceAddress(0xfe);
+objMsg.id.setPriority(7);
+objMsg.dlc = 215;
+for(int i =0; i &lt; objMsg.dlc; i++)
+{
+objMsg.byteAt(i, i*2);
+}
+SendMsg(objMsg);</codeblock></p>
+    <p/>
+    <p><b>Accessing J1939 Specific Parameters:</b></p>
+    <p><codeblock>J1939_MSG objMsg;
+unsigned int nPGN = objMsg.id.getPGN();
+char nPduSpecific = objMsg.id.getSourceAddress();
+unsigned char dataPage = id.getDataPage();
+objMsg.id.getPriority();</codeblock></p>
+    <p/>
+    <p><b>Accessing signal values:</b><codeblock>// Message Declaration
+DBMsg sMsgStruct;
+
+// Use signal member
+// Sig1
+int sig1Value = sMsgStruct.Sig_1;   // Type &apos;int&apos; to be changed as per signal type
+// Sig2
+int sig2Value = sMsgStruct.Sig_2;
+// Sig3
+int sig3Value = sMsgStruct.Sig_3;
+
+         (OR)
+
+int sig1Rawvalue = sMsgStruct.sig1.rawvalue();
+
+         (OR)
+
+double sig1PhyValue = sMsgStruct.sig1.physicalvalue();</codeblock></p>
+    <p/>
+    <p><b>Updating database message signal values:</b></p>
+    <p>Database message structures can be meaningfully interpreted. Database message structures will have signal members as defined in the database. Signal raw value can be directly assigned by using member of database message structure with the signal name.</p>
+    <example>DBMsg is a database message that has signals Sig1, Sig2 and Sig3. Each signal is 2 bytes of length. To assign raw value of a signal use message name structure and use signal name as member.<codeblock>// Message Declaration
+DBMsg sMsgStruct;
+
+// Use signal member
+// Sig1
+sMsgStruct..Sig_1 = 10; 
+// Sig2
+sMsgStruct.Sig_2 = 20;
+// Sig3
+sMsgStruct.Sig_3 = 30;
+
+         (OR)
+
+sMsgStruct.sig1.rawvalue(10);
+
+         (OR)
+
+sMsgStruct.sig1.physicalvalue(12.4);
+</codeblock></example>
+    <p/>
+    <note>
+      <ul>
+        <li>Right click on edit area of function editor. Select &quot;Insert Message&quot; or &quot;Insert Signal&quot; option to insert message structure or signal structure. Select the option &quot;Yes, I want to declare selected message structure variable&quot; option in the &quot;Message and Signal List&quot; to initialise message with its struct definition.</li>
+      </ul>
+    </note>
+  </body>
+</topic>

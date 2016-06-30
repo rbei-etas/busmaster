@@ -19,9 +19,12 @@ _StartoHTMLTable("Trace Window Module Test Report")
 
 #include "TS_TraceWin_01.au3"
 #include "TS_TraceWin_02.au3"
+#include "TS_TraceWin_01.au3"
 
 _EndoHTMLTable()
 
 _SaveHTMLReport()
 
 _IEQuit($oIE)
+
+_ExcelBookClose($oExcel, 1, 0)

@@ -26,7 +26,7 @@
             <image href="../images/Signal_Watch_LIN.bmp"/>
           </li>
           <li>Select a message and select associated signal from the Signal list. Check the signals to move the selected signal in to Watch List. Multiple signals can be checked. All signals belonging to a message can be added in to the watch list by checking the message check-box.</li>
-          <li>Signal from the Watch List can be deleted by unchecking the entry.</li>
+          <li>Uncheck the signal to delete it from the signal watch.</li>
           <li>Signal Watch List can be cleared by selecting Delete All button.</li>
           <li>Changes will be saved and applied on selection of Ok. Cancel will ignore the changes.</li>
           <li>The Signal Watch List will be saved in the configuration file and will be reloaded during the load of that configuration file.</li>
@@ -34,6 +34,9 @@
     </section>
     <section>
       <title>Show Signal Watch Window</title>
+    </section>
+    <section>To pop up signal watch window, select the tool-bar button explained in the previous section or the menu <b>CAN-&gt;Signal Watch-&gt;Activate</b>. This will show the Signal Watch Window.</section>
+    <section>
       <p><image href="../images/Signal_Watch_LIN_Activate.bmp"/></p>
       <p>After receiving a message BUSMASTER will update the signal watch window if the signals of received message are included in the signal watch list. The signal watch list will show Raw and Physical value of the signal with the Unit along with Message and Signal name.</p>
     </section>

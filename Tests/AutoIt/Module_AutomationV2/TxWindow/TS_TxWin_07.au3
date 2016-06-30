@@ -37,7 +37,7 @@ if winexists($WIN_BUSMASTER) then
 	_TransmitMsgsMenu()																			    ; Transmit normal blocks
 	Sleep(5000)
 
-	send("{a}")                                                                                     ;Press key 'c'
+	send("{a}")                                                                                     ;Press key 'a'
 
 	sleep(4000)
 	 _ConnectDisconnect()
@@ -142,7 +142,7 @@ if winexists($WIN_BUSMASTER) then
 	    	ConsoleWrite("MonoData8 :" &$MonoData8_all[$i] & @CRLF)
 	    	ConsoleWrite("MonoData9 :" &$MonoData9_all[$i] & @CRLF)
          next
-		If ($MonoData1_all[4]=0x025 And $MonoData3_all[4]=0x066 And $MonoData5_all[4]=0x025 And $MonoData7_all[4]=0x066) Then
+		If ($MonoData1_all[4]=0x025 And $MonoData3_all[4]=0x066 And $MonoData5_all[4]=0x025 And $MonoData7_all[4]=0x025) Then
 			$Id_match2=1
 	    Else
 		    $Id_match2=0
@@ -167,6 +167,7 @@ if winexists($WIN_BUSMASTER) then
 	Else
 		$Pass2=0
 	EndIf
+	ConsoleWrite("Pass1" & $Pass1 & @CRLF)
 	ConsoleWrite("Pass2" & $Pass2 & @CRLF)
 	If($Pass1=1 And $Pass2=1) Then
 		_WriteResult("Pass","TS_Tx_07")

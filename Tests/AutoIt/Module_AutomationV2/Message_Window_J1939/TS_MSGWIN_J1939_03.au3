@@ -50,7 +50,8 @@ if winexists($WIN_BUSMASTER) Then
 
 	_DeactJ1939()																							; Deactivate J1939
 
-    If($itemTextArr="XBR_sig 0x0 0.000 ") Then
+    ;If($itemTextArr="XBR_sig 0x0 0.000 ") Then
+	If($itemTextArr="XBR_sig 0x10 16 ") Then
 		_WriteResult("Pass","TS_MsgWndJ1939_03")
     Else
 	   _WriteResult("Fail","TS_MsgWndJ1939_03")

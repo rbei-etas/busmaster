@@ -13,6 +13,7 @@
 ;                           This configuration file should be listed in the top of the MRU list"
 ;
 ;==================================================Test Procedure =======================================================
+#RequireAdmin
 ConsoleWrite(@CRLF)
 ConsoleWrite("****Start : TS_UserCfx_10.au3****"&@CRLF)
 Local $path=_TestDataPath()
@@ -32,24 +33,49 @@ if winexists($WIN_BUSMASTER) Then
 			ControlClick($WIN_ConfirmSaveAs,"",$BTN_Yes_ConfirmSaveAs)
 		EndIf
 		Sleep(1000)
-		  Run("regedit")                                                                                                        ;Go to Registry editor
+
+		$isAppNotRes=_CloseApp()
+		Sleep(1000)
+
+
+		Run("regedit")                                                                                                        ;Go to Registry editor
         Sleep(500)
+		Send("{HOME}")
+		sleep(100)
 		$handle=ControlGetHandle($WIN_RegEdit,"",$TVC_RegEdit)                                                                  ;Get handle for Tree view in Registry
         ConsoleWrite("handle" & $handle & @CRLF)
-		_GUICtrlTreeView_Expand($handle,"",False)                                                                               ;Expand tree view till MRU lsit in Registry editor
+		;_GUICtrlTreeView_Expand($handle,"",False)                                                                               ;Expand tree view till MRU lsit in Registry editor
         Sleep(1000)
-		_GUICtrlTreeView_Expand($handle,"",True)
+		;_GUICtrlTreeView_Expand($handle,"",True)
+		;$a=_GUICtrlTreeView_FindItem($handle, "HKEY_CLASSES_ROOT")
+		; ConsoleWrite("$a=" & $a & @CRLF)
+
+		Sleep(1000)
+		Send("{DOWN 2}")
+		;Send("{RIGHT}")
+		Send("{RIGHT}")
+		Sleep(1000)
+
         Sleep(1000)
-        Send("{DOWN 2}")
+        ;Send("{DOWN 2}")
+		Send("{DOWN 11}")
+		Send("{RIGHT}")
         Sleep(1000)
-        Send("{DOWN 10}")
+		;Send("{DOWN 10}")
+        Send("{DOWN 29}")
+		Send("{RIGHT}")
         Sleep(1000)
-        Send("{DOWN 31}")
+		 Send("{DOWN 5}")
+		Send("{RIGHT}")
+        ;Send("{DOWN 31}")
         Sleep(1000)
-        Send("{DOWN}")
+        ;Send("{DOWN}")
         Sleep(1000)
         Send("{DOWN 3}")
         Sleep(1000)
+
+
+
         $handle1=ControlGetHandle($WIN_RegEdit,"",$LST_CfxFiles_RegEdit)                                                         ;Get handle of cfx files list in MRU list
         Sleep(500)
         ;$count=_GUICtrlListView_GetItemCount($handle1)                                                                            ;Get total count of item list in MRU list
@@ -63,6 +89,29 @@ if winexists($WIN_BUSMASTER) Then
         Else
 			_WriteResult("Fail","TS_UserCfx_10")
 		EndIf
+
+
+		;-----------------------------closing regeditor tree list view---------
+		Sleep(1000)
+        ;Send("{DOWN 2}")
+		;Send("{DOWN 11}")
+		Send("{LEFT}")
+		Send("{LEFT}")
+
+		Send("{LEFT}")
+		Send("{LEFT}")
+
+		Send("{LEFT}")
+		Send("{LEFT}")
+
+		Send("{LEFT}")
+		Send("{LEFT}")
+
+		Send("{LEFT}")
+		Send("{LEFT}")
+
+		;-----------------------------closing regeditor tree list view---------
+
 		WinClose($WIN_RegEdit)
 EndIf
 

@@ -51,7 +51,9 @@ if winexists($WIN_BUSMASTER) then
 	_CreateConfig("cfxCANDB_16.cfx")																; Create Configuration
 
 	_createCANDB("testCANDB16")																		; Create a CAN DB
-
+	;------Maximize Child Window DatabaseEditor - CAN---------------
+	_Maximize_childWindow("DatabaseEditor - CAN")
+	sleep(1000)
 	_DBmessage("n")																					; Select 'New Message' from right click menu
 
 	WinWaitActive($WIN_Msg_Details,"",3)

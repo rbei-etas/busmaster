@@ -38,3 +38,5 @@ _EndoHTMLTable()
 _SaveHTMLReport()
 
 _IEQuit($oIE)
+
+_ExcelBookClose($oExcel, 1, 0)

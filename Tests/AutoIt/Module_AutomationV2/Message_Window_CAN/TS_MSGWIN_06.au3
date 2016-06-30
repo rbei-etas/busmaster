@@ -12,7 +12,7 @@
 ConsoleWrite(@CRLF)
 ConsoleWrite(@CRLF)
 ConsoleWrite("****Start : TS_MSGWIN_06.au3****"&@CRLF)
-
+ _launchApp()
 
 WinActivate($WIN_BUSMASTER)
 if winexists($WIN_BUSMASTER) then

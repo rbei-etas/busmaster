@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BUSMASTER_CONFIGURATION>
   <Global_Configuration>
-    <BUSMASTER_Version>1.9.0</BUSMASTER_Version>
+    <BUSMASTER_Version>3.0.0</BUSMASTER_Version>
     <IsMsgFilterEnabled>FALSE</IsMsgFilterEnabled>
+    <IsMsgFilterEnabledLin>FALSE</IsMsgFilterEnabledLin>
     <IsReplayFilterEnabled>TRUE</IsReplayFilterEnabled>
     <IsLogFilterEnabled>FALSE</IsLogFilterEnabled>
+    <IsLogFilterLINEnabled>FALSE</IsLogFilterLINEnabled>
     <IsLoggingEnabled>FALSE</IsLoggingEnabled>
     <IsMsgIntepretationEnabled>FALSE</IsMsgIntepretationEnabled>
     <IsOverWriteEnabled>FALSE</IsOverWriteEnabled>
@@ -12,6 +14,7 @@
     <DisplayNumericMode>FALSE</DisplayNumericMode>
     <LogOnConnect_CAN>TRUE</LogOnConnect_CAN>
     <LogOnConnect_J1939>FALSE</LogOnConnect_J1939>
+    <LogOnConnect_LIN>FALSE</LogOnConnect_LIN>
     <Window_Position>
       <Visibility>SHOWNORMAL</Visibility>
       <WindowPlacement>HIDE</WindowPlacement>
@@ -38,6 +41,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -57,7 +61,7 @@
           <AccMaskByte3_1>FF</AccMaskByte3_1>
           <AccMaskByte4_0>FF</AccMaskByte4_0>
           <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Vector - Virtual Channel 1 SN - 0Channel Index - 0</HardwareDesc>
+          <HardwareDesc>Vector - Virtual Channel 1 SN - 0</HardwareDesc>
           <ItemUnderFocus>64</ItemUnderFocus>
           <BTR0BTR1>49210</BTR0BTR1>
           <AccFilterMode>0</AccFilterMode>
@@ -69,6 +73,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -80,6 +94,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -99,7 +114,7 @@
           <AccMaskByte3_1>FF</AccMaskByte3_1>
           <AccMaskByte4_0>FF</AccMaskByte4_0>
           <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Vector - Virtual Channel 2 SN - 0Channel Index - 1</HardwareDesc>
+          <HardwareDesc>Vector - Virtual Channel 2 SN - 0</HardwareDesc>
           <ItemUnderFocus>64</ItemUnderFocus>
           <BTR0BTR1>49210</BTR0BTR1>
           <AccFilterMode>0</AccFilterMode>
@@ -111,6 +126,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
       </ControllerSettings>
     </CAN_DIL_Section>
@@ -160,6 +185,22 @@
         <Signal_Column>87</Signal_Column>
       </COLUMN_WIDTH>
     </J1939_Signal_Watch>
+    <LIN_Signal_Watch>
+      <Window_Position>
+        <Visibility>SHOWNORMAL</Visibility>
+        <WindowPlacement>HIDE</WindowPlacement>
+        <Top>70</Top>
+        <Left>10</Left>
+        <Right>500</Right>
+        <Bottom>300</Bottom>
+      </Window_Position>
+      <COLUMN_WIDTH>
+        <MESSAGE_COLUMN>94</MESSAGE_COLUMN>
+        <Raw_Val_Column>94</Raw_Val_Column>
+        <Physical_Val_Column>189</Physical_Val_Column>
+        <Signal_Column>94</Signal_Column>
+      </COLUMN_WIDTH>
+    </LIN_Signal_Watch>
     <CAN_Signal_Graph>
       <GRAPH_PARAMETERS>
         <Buffer_Size>5000</Buffer_Size>
@@ -203,6 +244,7 @@
     </CAN_Signal_Graph>
     <CAN_Log/>
     <J1939_Log/>
+    <LIN_Log/>
     <CAN_Simulated_Systems>
       <Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
@@ -229,6 +271,8 @@
         <IsEnabled>1</IsEnabled>
         <Retain_Recored_Time>0</Retain_Recored_Time>
         <Message_Delay>1</Message_Delay>
+        <Retain_Recorded_Session>0</Retain_Recorded_Session>
+        <Session_Delay>1</Session_Delay>
         <Is_Cyclic_Mode>0</Is_Cyclic_Mode>
         <Cyclic_Delay>1</Cyclic_Delay>
         <IsInteractive>1</IsInteractive>
@@ -397,7 +441,7 @@
         <ID>Data Byte(s)</ID>
         <Order>13</Order>
         <IsVisible>1</IsVisible>
-        <Width>235</Width>
+        <Width>650</Width>
       </COLUMN>
       <IsHex>1</IsHex>
       <IsAppend>1</IsAppend>
@@ -420,6 +464,91 @@
         <Right>398</Right>
       </Interpretation_Window_Position>
     </J1939_Message_Window>
+    <LIN_Message_Window>
+      <Append_Buffer_Size>5000</Append_Buffer_Size>
+      <Overwrite_Buffer_Size>2000</Overwrite_Buffer_Size>
+      <Display_Update_Time>100</Display_Update_Time>
+      <COLUMN>
+        <ID></ID>
+        <Order>1</Order>
+        <IsVisible>0</IsVisible>
+        <Width>0</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Time</ID>
+        <Order>2</Order>
+        <IsVisible>1</IsVisible>
+        <Width>95</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Message</ID>
+        <Order>3</Order>
+        <IsVisible>1</IsVisible>
+        <Width>99</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Message Type</ID>
+        <Order>4</Order>
+        <IsVisible>1</IsVisible>
+        <Width>135</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Tx/Rx</ID>
+        <Order>5</Order>
+        <IsVisible>1</IsVisible>
+        <Width>85</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Channel</ID>
+        <Order>6</Order>
+        <IsVisible>1</IsVisible>
+        <Width>80</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>DLC</ID>
+        <Order>7</Order>
+        <IsVisible>1</IsVisible>
+        <Width>70</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>ID</ID>
+        <Order>8</Order>
+        <IsVisible>1</IsVisible>
+        <Width>65</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Data Byte(s)</ID>
+        <Order>9</Order>
+        <IsVisible>1</IsVisible>
+        <Width>235</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Checksum</ID>
+        <Order>10</Order>
+        <IsVisible>1</IsVisible>
+        <Width>437</Width>
+      </COLUMN>
+      <IsHex>0</IsHex>
+      <IsAppend>1</IsAppend>
+      <IsInterpret>0</IsInterpret>
+      <Time_Mode>SYSTEM</Time_Mode>
+      <Window_Position>
+        <Visibility>SHOWNORMAL</Visibility>
+        <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
+        <Top>0</Top>
+        <Left>0</Left>
+        <Bottom>566</Bottom>
+        <Right>1317</Right>
+      </Window_Position>
+      <Interpretation_Window_Position>
+        <Visibility>SHOWNORMAL</Visibility>
+        <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
+        <Top>115</Top>
+        <Left>49</Left>
+        <Bottom>392</Bottom>
+        <Right>398</Right>
+      </Interpretation_Window_Position>
+    </LIN_Message_Window>
     <CAN_Tx_Window>
       <Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
@@ -445,7 +574,7 @@
         <CxMin>0</CxMin>
       </Splitter_Window_Left_0>
       <Splitter_Window_Left_1>
-        <CxIdeal>322</CxIdeal>
+        <CxIdeal>0</CxIdeal>
         <CxMin>0</CxMin>
         <CxIdeal>0</CxIdeal>
         <CxMin>0</CxMin>
@@ -459,172 +588,117 @@
       <Default_Sampling_Period>125</Default_Sampling_Period>
       <SignalDefiner_AutoCorrect>1</SignalDefiner_AutoCorrect>
     </CAN_Wave_Form_Genarator>
-    <CAN_Bus_Statistics>
+    <FLEX_Tx_Window>
+      <Window_Position>
+        <Visibility>SHOWNORMAL</Visibility>
+        <WindowPlacement>SETMINPOSITION</WindowPlacement>
+        <Top>-1</Top>
+        <Left>4</Left>
+        <Bottom>661</Bottom>
+        <Right>864</Right>
+      </Window_Position>
+      <Channel_Msg_List>
+        <Index>0</Index>
+      </Channel_Msg_List>
+    </FLEX_Tx_Window>
+    <FlexRay_Message_Window>
       <COLUMN>
-        <Order>0</Order>
-        <Width>200</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
+        <ID></ID>
         <Order>1</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
+        <IsVisible>0</IsVisible>
+        <Width>0</Width>
       </COLUMN>
       <COLUMN>
+        <ID>Time</ID>
         <Order>2</Order>
-        <Width>90</Width>
         <IsVisible>1</IsVisible>
+        <Width>95</Width>
       </COLUMN>
       <COLUMN>
+        <ID>Tx/Rx</ID>
         <Order>3</Order>
-        <Width>90</Width>
         <IsVisible>1</IsVisible>
+        <Width>85</Width>
       </COLUMN>
       <COLUMN>
+        <ID>Frame Id</ID>
         <Order>4</Order>
-        <Width>90</Width>
         <IsVisible>1</IsVisible>
+        <Width>100</Width>
       </COLUMN>
       <COLUMN>
+        <ID>Frame Type</ID>
         <Order>5</Order>
-        <Width>90</Width>
         <IsVisible>1</IsVisible>
+        <Width>100</Width>
       </COLUMN>
       <COLUMN>
+        <ID>Slot Type</ID>
         <Order>6</Order>
-        <Width>90</Width>
         <IsVisible>1</IsVisible>
+        <Width>84</Width>
       </COLUMN>
       <COLUMN>
+        <ID>Description</ID>
         <Order>7</Order>
-        <Width>90</Width>
         <IsVisible>1</IsVisible>
+        <Width>117</Width>
       </COLUMN>
       <COLUMN>
+        <ID>Cycle No</ID>
         <Order>8</Order>
-        <Width>90</Width>
         <IsVisible>1</IsVisible>
+        <Width>81</Width>
       </COLUMN>
       <COLUMN>
+        <ID>Channel</ID>
         <Order>9</Order>
-        <Width>90</Width>
         <IsVisible>1</IsVisible>
+        <Width>76</Width>
       </COLUMN>
       <COLUMN>
+        <ID>DLC</ID>
         <Order>10</Order>
-        <Width>90</Width>
         <IsVisible>1</IsVisible>
+        <Width>50</Width>
       </COLUMN>
       <COLUMN>
+        <ID>Data Byte(s)</ID>
         <Order>11</Order>
-        <Width>90</Width>
         <IsVisible>1</IsVisible>
+        <Width>235</Width>
       </COLUMN>
-      <COLUMN>
-        <Order>12</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>13</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>14</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>15</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>16</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>17</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>18</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>19</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>20</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>21</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>22</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>23</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>24</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>25</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>26</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>27</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>28</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>29</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>30</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>31</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <Order>32</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
+      <IsHex>0</IsHex>
+      <IsAppend>1</IsAppend>
+      <IsInterpret>0</IsInterpret>
+      <Time_Mode>SYSTEM</Time_Mode>
+      <Window_Position>
+        <Visibility>SHOWNORMAL</Visibility>
+        <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
+        <Top>0</Top>
+        <Left>0</Left>
+        <Bottom>566</Bottom>
+        <Right>1317</Right>
+      </Window_Position>
+      <Interpretation_Window_Position>
+        <Visibility>SHOWNORMAL</Visibility>
+        <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
+        <Top>115</Top>
+        <Left>49</Left>
+        <Bottom>392</Bottom>
+        <Right>398</Right>
+      </Interpretation_Window_Position>
+    </FlexRay_Message_Window>
+    <FLEX_Cluster_Config>
+      <CHANNEL>
+        <Index>0</Index>
+        <HWUri>Hardware</HWUri>
+        <DbPath></DbPath>
+        <ClusterId></ClusterId>
+        <ECU/>
+      </CHANNEL>
+    </FLEX_Cluster_Config>
+    <LIN_Simulated_Systems>
       <Window_Position>
         <Visibility>HIDE</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
@@ -633,6 +707,43 @@
         <Bottom>0</Bottom>
         <Right>0</Right>
       </Window_Position>
-    </CAN_Bus_Statistics>
+    </LIN_Simulated_Systems>
+    <LIN_Cluster_Config>
+      <CHANNEL>
+        <Index>0</Index>
+        <HWUri>Hardware</HWUri>
+        <DbPath></DbPath>
+        <ClusterId></ClusterId>
+        <BaudRate>19200</BaudRate>
+        <ProtocolVersion>LIN 2.1</ProtocolVersion>
+        <Overwrite_Settings>1</Overwrite_Settings>
+        <MasterMode>0</MasterMode>
+        <ECU/>
+      </CHANNEL>
+    </LIN_Cluster_Config>
+    <LIN_Tx_Window>
+      <Window_Position>
+        <Visibility>HIDE</Visibility>
+        <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
+        <Top>-1</Top>
+        <Left>0</Left>
+        <Bottom>0</Bottom>
+        <Right>0</Right>
+      </Window_Position>
+      <Channel_Msg_List/>
+    </LIN_Tx_Window>
+    <LIN_Schedule_Table>
+      <Window_Position>
+        <Visibility>SHOWNORMAL</Visibility>
+        <WindowPlacement>SETMINPOSITION</WindowPlacement>
+        <Top>183</Top>
+        <Left>535</Left>
+        <Bottom>716</Bottom>
+        <Right>1185</Right>
+      </Window_Position>
+      <Channel>
+        <Index>1</Index>
+      </Channel>
+    </LIN_Schedule_Table>
   </Module_Configuration>
 </BUSMASTER_CONFIGURATION>

@@ -47,6 +47,10 @@ If winexists($WIN_BUSMASTER) then
 
 	_openCANDB("testDBE_38.DBF")																		; Open the DB
 
+	;------Maximize Child Window DatabaseEditor - CAN---------------
+	_Maximize_childWindow("DatabaseEditor - CAN")
+	sleep(1000)
+
 	$sigDetlvhwd=controlgethandle($WIN_BUSMASTER,"",$LVC_SigDet_DBeditor)								; Get handle of signal details list view
 	_GUICtrlListView_ClickItem($sigDetlvhwd,0)
 	sleep(500)

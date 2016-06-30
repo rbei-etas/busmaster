@@ -6,7 +6,7 @@ FileCopy ( $BusMasterExeFPath & "\GCCDLLMakeTemplate_J1939", "C:\Windows\SysWOW6
 DirCreate( "C:\Windows\SysWOW64\SimulatedSystems")
 DirCopy ( $BusMasterExeFPath & "\SimulatedSystems", "C:\Windows\SysWOW64\SimulatedSystems", 1)
 
-Local $foo = Run('"C:\Program Files (x86)\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.exe" /run /prod /ErrorStdOut /in "D:\Module_AutomationV2\NodeSimulation_J1939\NodeSimulationJ1939.au3" /UserParams', @SystemDir, @SW_SHOW, $STDERR_CHILD + $STDOUT_CHILD)
+Local $foo = Run('"C:\Program Files (x86)\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.exe" /run /prod /ErrorStdOut /in "C:\Module_AutomationV2\NodeSimulation_J1939\NodeSimulationJ1939.au3" /UserParams', @SystemDir, @SW_SHOW, $STDERR_CHILD + $STDOUT_CHILD)
 
 Local $line
 

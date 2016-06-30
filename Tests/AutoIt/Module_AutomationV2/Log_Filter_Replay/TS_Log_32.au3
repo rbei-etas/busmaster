@@ -28,8 +28,9 @@ if winexists($WIN_BUSMASTER) then
 	_loadConfig("cfxLog_32.cfx")																; Load Configuration
 
 	_ConnectDisconnect()																		; Connect
-
-	_TransmitMsgsMenu()																			; Transmit CAN messages
+	sleep(1000)
+	;_TransmitMsgsMenu()																			; Transmit CAN messages
+	Send("b")
 	sleep(1000)
 
 	_ConnectDisconnect()																		; Disconnect
@@ -49,9 +50,10 @@ if winexists($WIN_BUSMASTER) then
 
 	_ConnectDisconnect()																		; Connect
 
-	_TransmitMsgsMenu()																			; Transmit CAN messages
+	;_TransmitMsgsMenu()																			; Transmit CAN messages
 	sleep(1000)
-
+	Send("b")
+	sleep(1000)
 	_ConnectDisconnect()																		; Disconnect
 
 	_loadConfig("Sample.cfx")																	; Load Configuration

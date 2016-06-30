@@ -52,6 +52,10 @@ if winexists($WIN_BUSMASTER) then
 
 	_createJ1939DB("testJ1939DB16")																		; Create a CAN DB
 
+	;------Maximize Child Window DatabaseEditor - J1939---------------
+	_Maximize_childWindow("DatabaseEditor - J1939")
+	sleep(1000)
+
 	_J1939DBmessage("n")																					; Select 'New Message' from right click menu
 
 	WinWaitActive($WIN_Msg_Details,"",3)

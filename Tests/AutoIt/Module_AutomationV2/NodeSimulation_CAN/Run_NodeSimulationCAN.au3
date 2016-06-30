@@ -6,7 +6,7 @@ FileCopy ( $BusMasterExeFPath & "\GCCDLLMakeTemplate_CAN", "C:\Windows\SysWOW64"
 DirCreate( "C:\Windows\SysWOW64\SimulatedSystems")
 DirCopy ( $BusMasterExeFPath & "\SimulatedSystems", "C:\Windows\SysWOW64\SimulatedSystems", 1)
 
-Local $foo = Run('"C:\Program Files (x86)\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.exe" /run /prod /ErrorStdOut /in "D:\Module_AutomationV2\NodeSimulation_CAN\NodeSimulationCAN.au3" /UserParams', @SystemDir, @SW_SHOW, $STDERR_CHILD + $STDOUT_CHILD)
+Local $foo = Run('"C:\Program Files (x86)\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.exe" /run /prod /ErrorStdOut /in "C:\Module_AutomationV2\NodeSimulation_CAN\NodeSimulationCAN.au3" /UserParams', @SystemDir, @SW_SHOW, $STDERR_CHILD + $STDOUT_CHILD)
 
 Local $line
 

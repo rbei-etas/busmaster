@@ -26,7 +26,8 @@ $InputFolderPath=_TestDataPath()
 
 if winexists($WIN_BUSMASTER) then
 	$Result=_OthrConversionsFormatConv("ASC TO LOG Conversion","FormatConvASC2LOG.asc","FormatConvASC2LOG.log")
-	$res=StringInStr($Result,"Proper Header was not found in ASC File.Logging Mode is Assumed as Absolute & Numeric Format Assumed as Hex")
+	;$res=StringInStr($Result,"Proper Header was not found in ASC File.Logging Mode is Assumed as Absolute & Numeric Format Assumed as Hex")
+	$res=StringInStr($Result,"Conversion Completed Successfully")
 	$OutputCppFilePath=$OutputFolderPath &"\"& "FormatConvASC2LOG.log"
 	ConsoleWrite("$OutputCppFilePath : " & $OutputCppFilePath & @CRLF)
 	If($res>0) Then

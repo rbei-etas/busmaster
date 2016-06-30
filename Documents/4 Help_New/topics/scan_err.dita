@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="stcan_struct" xml:lang="en-us">
+  <title>SCAN_ERR</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>STCAN_MSG Structure</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>SCAN_ERR Structure Definition</p>
+    <codeblock>struct SCAN_ERR
+{
+    unsigned char m_ucTxError;      // Tx Error Counter Value
+    unsigned char m_ucRxError;      // Rx Error Counter Value
+    unsigned char m_ucChannel;      // Channel Number
+};</codeblock>
+    <p><table frame="all">
+        <tgroup cols="2">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <tbody>
+            <row>
+              <entry>
+                <b>Member</b>
+              </entry>
+              <entry>
+                <b>Description</b>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <b>m_ucTxError</b>
+              </entry>
+              <entry>Tx Error counter value</entry>
+            </row>
+            <row>
+              <entry>
+                <b>m_ucRxError</b>
+              </entry>
+              <entry>Rx Error counter value</entry>
+            </row>
+            <row>
+              <entry>
+                <b>m_ucChannel</b>
+              </entry>
+              <entry>Channel on which error frame is received</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+    <p><b>Example:</b></p>
+    <example>
+      <codeblock>// Error Active Handler which will print error counter values and channel number
+void OnError_Active(SCAN_ERR ErrorMsg)
+{
+  Trace( &quot;Tx Error: %d Rx Error: %d Channel: %d&quot;,
+         ErrorMsg.m_ucTxError,
+         ErrorMsg.m_ucRxError,
+         ErrorMsg.m_ucChannel );
+}</codeblock>
+    </example>
+  </body>
+</topic>

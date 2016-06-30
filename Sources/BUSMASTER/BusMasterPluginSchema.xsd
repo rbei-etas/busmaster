@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2016 rel. 2 (http://www.altova.com) by Nayana (Robert Bosch Engineering and Business Solutions Limited) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="BusMasterPlugin" type="BusMasterPluginType">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:complexType name="parentType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="command" type="commandType" maxOccurs="unbounded"/>
+			<xs:element name="commandgroup" type="commandgroupType" maxOccurs="unbounded"/>
+			<xs:element name="seperator" maxOccurs="unbounded"/>
+		</xs:choice>
+		<xs:attribute name="name"/>
+		<xs:attribute name="beforemenu"/>
+	</xs:complexType>
+	<xs:complexType name="commandType">
+	<xs:choice minOccurs="0" maxOccurs="1">
+		<xs:sequence>
+			<xs:element name="toolbutton">
+				<xs:complexType>
+					<xs:attribute name="group" type="xs:string" use="required"/>
+					<xs:attribute name="enabledpath"/>
+					<xs:attribute name="disabledpath"/>
+					<xs:attribute name="hotpath"/>
+				</xs:complexType>
+			</xs:element>
+			</xs:sequence>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="id" type="xs:string" use="required"/>
+		<xs:attribute name="tooltip" type="xs:string" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="commandgroupType">
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="command" type="commandType" maxOccurs="unbounded"/>
+			<xs:element name="commandgroup" type="commandgroupType" maxOccurs="unbounded"/>
+			<xs:element name="seperator" maxOccurs="unbounded"/>
+		</xs:choice>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="BusMasterPluginType">
+		<xs:sequence>
+			<xs:element name="id" type="xs:string"/>
+			<xs:element name="description" type="xs:string"/>
+			<xs:element name="dllpath"/>
+			<xs:element name="minBusMasterVer"/>
+			<xs:element name="MenuConfiguration" type="MenuConfigurationType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="MenuConfigurationType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="parent" type="parentType"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

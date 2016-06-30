@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
 <topic id="astyle" xml:lang="en-us">
-  <title>Installation of Runtime Libraries</title>
+  <title>Installation of Additional Libraries</title>
   <prolog>
-    <author>VenkataNarayan</author>
+    <author>Venkatanarayana Makam</author>
     <copyright>
       <copyryear year="2011"/>
       <copyrholder>ETAS GmbH</copyrholder>
@@ -12,7 +12,7 @@
   <body>
     <section>
       <title>Description</title>
-      <p> Describes about the installation of additional libraries required for BUSMASTER compilation.</p>
+      <p>This section describes about the installation of additional libraries required for compiling BUSMASTER and its dependency projects.</p>
     </section>
     <section>
       <title>Support to IXXAT hardware</title>
@@ -24,39 +24,11 @@
       </ul>
     </section>
     <section>
-      <title>Libxml2 linking support</title>
-      <p>The following steps should be followed to compile BUSMASTER.</p>
-      <ul>
-        <li>Download and Copy libxml2-2.7.8.win32, iconv-1.9.2.win32 and zlib-1.2.5.win32 from the following link <xref href="ftp://xmlsoft.org/libxml2/win32/" scope="external"/> to C: drive</li>
-      </ul>
-      <ul>
-        <li>Add libxml2, iconv and zlib binaries, libraries and include files in VC++ directories in Visual Studio <b>
-            <b>
-              <b>
-                <b>Properties</b>
-              </b>
-            </b>
-          </b> page for each project. This can be done by selecting the <b>Properties</b> menu item displayed on right click of a project in <b>Solution Explorer</b> as shown in the image below:</li>
-      </ul>
-      <image href="../images/vc_options.png"/>
-      <p>Clicking the menu item <b>Properties</b> will display the properties window as shown below:</p>
-      <image href="../images/libxml2Settings - edit.png"/>
-      <p>To add executable path for libxml2, select the <b>Executable Directories</b> option and select the combo box and click the <b>Edit...</b> option. Properties window will be displayed. Add the path for <b>bin</b> as shown below:</p>
-      <image href="../images/libxml2Settings.png" placement="break"/>
-      <p>To add include path for libxml2, select the <b>Include Directories</b> option and select the combo box and click the <b>Edit...</b> option. Properties window will be displayed. Add the path for <b>include</b> as shown below:</p>
-      <image href="../images/libxml2IncludeSettings.png" placement="break"/>
-      <p>To add library path for libxml2, select the <b>Library Directories</b> and select the combo box and click the <b>Edit...</b> option. Properties window will be displayed. Add the path for <b>lib</b> as shown below:</p>
-      <image href="../images/libxml2LibrarySettings.png" placement="break"/>
-    </section>
-    <section>
-      <title>MinGW Installation</title>
-      <p>The following steps should be followed to install MinGW folder and use it to successfully compile  CPP files in   Node Simulation  using BUSMASTER.</p>
-      <ul>
-        <li>Download latest mingw executable from the following link <xref href="http://sourceforge.net/projects/mingw/files/Installer/mingw-get-inst/" scope="external"/> and then use it to download the actual MinGW and copy the MinGW folder to C: drive</li>
-      </ul>
-      <ul>
-        <li>Set the environment variable path ‘C:\MinGW\bin’.</li>
-      </ul>
+      <b>Qt Installation</b>
+      <p>The following steps should be followed to install Qt 5.3.0 and use it to successfully compile LDFEditor.sln and LDFViewer.sln.<ul>
+          <li>Download Qt 5.5.1 Build for VS2013 and install in the location <b>C:\Qt\</b> from the following link <xref href="http://download.qt.io/archive/qt/5.5/5.5.1/qt-opensource-windows-x86-msvc2013-5.5.1.exe" scope="external">http://download.qt.io/archive/qt/5.5/5.5.1/qt-opensource-windows-x86-msvc2013-5.5.1.exe</xref></li>
+          <li>If Qt 5.5.1 is installed in the different location other than &apos;<b>C:\Qt\&apos;</b> then update &apos;<b>QTDIR</b>&apos; element value in the &apos;<b>Sources\BUSMASTER_Settings\QTIncludes.props</b>&apos; file with the proper location.</li>
+        </ul></p>
     </section>
   </body>
 </topic>

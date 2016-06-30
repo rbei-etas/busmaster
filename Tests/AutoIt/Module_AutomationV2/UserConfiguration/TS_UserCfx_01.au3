@@ -38,7 +38,8 @@ ConsoleWrite("****Start : TS_UserCfx_01.au3****"&@CRLF)
 		$MenuData8=_GUICtrlMenu_GetItemText($MenuHandle,7)
 		;$MenuData9=_GUICtrlMenu_GetItemText($MenuHandle,8)
 
-		If($MenuData1="&File" And $MenuData2="&CAN" And $MenuData3="&J1939" And $MenuData4="Flex&Ray" And $MenuData5="&LIN" And $MenuData6="&View" And $MenuData7="&Window" And $MenuData8="&Help") Then
+		;If($MenuData1="&File" And $MenuData2="&CAN" And $MenuData3="&J1939" And $MenuData4="Flex&Ray" And $MenuData5="&LIN" And $MenuData6="&View" And $MenuData7="&Window" And $MenuData8="&Help") Then
+		If($MenuData1="&File" And $MenuData2="&CAN" And $MenuData3="&J1939" And $MenuData4="&LIN" And $MenuData5="&View" And $MenuData6="&Window" And $MenuData7="&Help") Then
 			  _WriteResult("Pass","TS_UserCfx_01")
 		Else
 			_WriteResult("Fail","TS_UserCfx_01")

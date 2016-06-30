@@ -3,7 +3,7 @@
 <topic id="what_is_new" xml:lang="en-us">
   <title>What is new?</title>
   <prolog>
-    <author>Ratnadip Choudhury</author>
+    <author/>
     <copyright>
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
@@ -15,6 +15,21 @@
     </metadata>
   </prolog>
   <body>
+    <p><b>3.0.0</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>CAN Transmit Windows<ol>
+            <li>UI Redesign</li>
+            <li>Message wise raster support</li>
+          </ol></li>
+      </ul><ul>
+        <li>Node Simulation <ol>
+            <li>Big Endian support</li>
+            <li>Message and Signal access is simplified</li>
+          </ol></li>
+        <li>Signal watch configuration window is updated with channel wise signal details</li>
+        <li>Bug Fixes</li>
+      </ul></p>
     <p><b>2.6.4</b></p>
     <p>Following features are added:</p>
     <p><ul>

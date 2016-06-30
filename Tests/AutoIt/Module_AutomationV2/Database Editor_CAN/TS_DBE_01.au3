@@ -23,13 +23,19 @@ ConsoleWrite("****Start : TS_DBE_01.au3****"&@CRLF)
 _launchApp()																					; Check if the App is open else launch it
 
 ProcessWait("BUSMASTER.exe")																	; Pauses script execution until a given process exists.
-sleep(1000)
+sleep(4000)
 
 WinActivate($WIN_BUSMASTER,3)
+
+
 if winexists($WIN_BUSMASTER) then
 	_createConfig("cfxDBE_01")																	; Create New Configuration
 	_createCANDB("testDBE_01")																	; Create New Database File
 	sleep(1500)
+
+	;------Maximize Child Window DatabaseEditor - CAN---------------
+	_Maximize_childWindow("DatabaseEditor - CAN")
+
 	_DBmessage("n")																				; Select 'New Message' from right click menu
 	sleep(1000)
 	$msgNameHWD=controlgethandle($WIN_Msg_Details,"",$TXT_MsgName_MsgDetails)					; Fetch Msg Name Edit control handle

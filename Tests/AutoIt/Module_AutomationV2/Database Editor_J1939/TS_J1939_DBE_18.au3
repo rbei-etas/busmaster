@@ -50,6 +50,11 @@ if winexists($WIN_BUSMASTER) then
 
 	_openJ1939DB("testJ1939DBE_18.DBF")																; Open the DB
 
+	;------Maximize Child Window DatabaseEditor - J1939---------------
+	_Maximize_childWindow("DatabaseEditor - J1939")
+	sleep(1000)
+
+
 	ControlClick($WIN_DBEditor_J1939,"",$BTN_NewSignal_DBEditor)									; Click on 'New Signal'
 
 	_addSigDetails("int","Sig1",32,4,0)																; Add a signal with same signal name as the first one to generate duplicate signal name warning messsage

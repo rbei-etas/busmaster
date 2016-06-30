@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="stcan_struct" xml:lang="en-us">
+  <title>LIN Node Simulation Examples</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>STLIN_MSG Structure</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p><b>Master Request Transmission:</b></p>
+    <p>To send the Master request ( or Header), the header ID should be configured in Node simulation Pre Connect Event.</p>
+    <p><b>Example code:</b></p>
+    <p>The following  example shows how to send the master request with an identifier 0x4, for every 10ms.</p>
+    <p><codeblock>void OnBus_Pre_Connect()
+{
+  STLIN_MSG sMsg;
+
+  sMsg.messagetype = 0;   // Master Response
+  sMsg.checksumtype = 0;  // Classic
+  sMsg.id = <b>0x4</b>;          // Message Identifier
+  sMsg.cluster = 1;       // channel 1
+
+  // Register the header frame.
+  SendMsg(sMsg);
+}
+
+//Called For Every 10ms.
+void OnTimer_TimerFor10ms_10()
+{
+  STLIN_MSG sMsg;
+
+  sMsg.messagetype = 0; // Master Response
+  sMsg.checksumtype = 0; // Classic
+  sMsg.id = <b>0x4</b>;  // Message Identifier
+  sMsg.cluster = 1;
+
+  // Send the header frame
+  SendMsg(sMsg);
+}</codeblock></p>
+    <p><b>Responding to Master Request</b></p>
+    <p>To respond to  the master request, slave response of the particular identifier needs to be configured in Node simulation Pre Connect Event. Once the configuration is done, The data can be changed in any other Node simulation handlers.   </p>
+    <p><b>Example code:</b></p>
+    <p>For example to respond to the master request with an identifier 0x4, Pre-Connect event shall be configured as shown below:</p>
+    <codeblock>void OnBus_Pre_Connect()
+{
+  STLIN_MSG sMsg;
+
+  sMsg.messagetype = 1; // Slave Response
+  sMsg.checksumtype = 0; // Classic
+  sMsg.dlc = 8;
+  sMsg.id = <b>0x4</b>;  // Message Identifier
+  sMsg.data[0] = 10;  // Lower 4 Bytes
+  sMsg.data[1] = 20;  // Upper 4 Bytes
+  sMsg.cluster = 1;
+
+  // Register Slave response
+  SendMsg(sMsg);
+}
+
+//changing data in key handlers.
+void OnKey_A()
+{
+STLIN_MSG sMsg;
+
+  sMsg.messagetype = 1; // Slave Response
+  sMsg.checksumtype = 0; // Classic
+  sMsg.dlc = 8;
+  sMsg.id = <b>0x4</b>;  // Message Identifier
+  sMsg.data[0] = 20;  // Lower 4 Bytes
+  sMsg.data[1] = 30;  // Upper 4 Bytes
+  sMsg.cluster = 1;
+
+  // Send the message
+  SendMsg(sMsg);
+}</codeblock>
+  </body>
+</topic>

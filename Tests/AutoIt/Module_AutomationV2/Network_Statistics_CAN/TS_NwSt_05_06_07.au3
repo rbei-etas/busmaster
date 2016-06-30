@@ -116,7 +116,8 @@ if winexists($mWin) then
 		$avLoad=1
 	EndIf
 
-	WinClose($WIN_NW_Stats)														; Close network statistics window
+	;WinClose($WIN_NW_Stats,$WIN_NW_Stats)														; Close network statistics window
+	Send("!+{F4}",0)																			; Close network statistics window
 
 	_CANNWStatsMenu()															; Open Network Statistics window
 

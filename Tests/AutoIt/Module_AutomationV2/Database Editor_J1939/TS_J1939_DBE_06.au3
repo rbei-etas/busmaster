@@ -27,13 +27,15 @@ if winexists($WIN_BUSMASTER) then
 	sleep(1000)
 	_addSigDesc("Desc64",64)															; Call _addSigDesc function from 'globalFunc4Module.au3' file to add signal description.
 	sleep(1000)
+	;------Maximize Child Window DatabaseEditor - CAN---------------
+	_Maximize_childWindow("DatabaseEditor - J1939")
 	$sigDesclvhwd=controlgethandle($WIN_DBEditor_J1939,"",$LVC_SigDesc_SigDesc)				; Get handle of signal description list view
 	$sigDescName=_GUICtrlListView_GetItemText($sigDesclvhwd,0,0)						; Fetch the signal desc name
 	$sigDescVal=_GUICtrlListView_GetItemText($sigDesclvhwd,0,1)							; Fetch the signal desc value
 	ConsoleWrite("$sigDescName :"&$sigDescName&@CRLF)
 	ConsoleWrite("$sigDescVal :"&$sigDescVal&@CRLF)
 EndIf
-if $sigDescName="Desc64" and $sigDescVal=40 Then
+if $sigDescName="Desc64" and $sigDescVal=64 Then
 	_WriteResult("Pass","TS_J1939_DBE_06")
 Else
 	_WriteResult("Fail","TS_J1939_DBE_06")

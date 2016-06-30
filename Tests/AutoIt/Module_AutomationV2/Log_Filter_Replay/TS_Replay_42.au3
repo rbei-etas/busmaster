@@ -2,7 +2,7 @@
 ; Critical (C)		:		Y
 ; TestCase No.		:		TS_Replay_42
 ; TestCases			:		Using the Filter Attributes
-; Test Data			:		
+; Test Data			:
 ; Test Setup		:		1. Open 'Configure Filters' dialog by menu option 'Configure -> App Filters'.
 ;~ 							2. Make a filter with the following attributes:
 ;~ 							3. Choose 'Range ' radio box in 'Filter Attributes' group box.
@@ -14,7 +14,7 @@
 ;~ 							9. Add the filter by clicking on Add button and close the 'Configure Filters' dialog by clicking on 'OK'.
 ;~ 							10. Open 'Configure Replay dialog' and add a new replay file.
 ;~ 							11. Choose the confiured filter by opening 'Filter Selection dialog'.
-;~ 							12. Now click on connect to get the 'Replay Window' and observe the message entries in it. 
+;~ 							12. Now click on connect to get the 'Replay Window' and observe the message entries in it.
 
 ; Expected Results  : 		1. The chosen ID range i.e from 0x1 to 0xA in step 4 along with filter attributes choosen should not be present in 'Replay Window'.
 ;==========================================================================Test Procedure =========================================================================
@@ -36,7 +36,8 @@ if winexists($WIN_BUSMASTER) then
 
 ;~ 	_EnableHex()																				; Enable Hex mode
 
-	_ConnectDisconnect()																		; Connect the tool
+	;_ConnectDisconnect()																		; Connect the tool
+	_Connect_CAN_Menu()
 	Sleep(1000)
 
 	_CANReplayOptionsMenu($CANReplayGoMenu)														; Select "Go" from menu
@@ -107,7 +108,7 @@ if winexists($WIN_BUSMASTER) then
 	if $FirstMsg[4]="0x100" and $SecondMsg[4]="0x100" and $ThirdMsg[4]="0x150" and $FourthMsg[4]="0x150" and $FifthMsg[4]="0x200" and $SixthMsg[4]="0x200" and $SeventhMsg[4]="0x200" and $EightMsg[4]="0x200" Then
 		$MsgIDs=1
 	EndIf
-
+	#cs
 	if $FirstMsg[2]=2 and $SecondMsg[2]=1 and $ThirdMsg[2]=2 and $FourthMsg[2]=1 and $FifthMsg[2]=1 and  $SixthMsg[2]=2 and $SeventhMsg[2]=2 and $EightMsg[2]=1 Then
 		$MsgDir=1
 	EndIf
@@ -115,7 +116,23 @@ if winexists($WIN_BUSMASTER) then
 	if $FirstMsg[1]="Tx" and  $SecondMsg[1]="Rx" and $ThirdMsg[1]="Tx" and  $FourthMsg[1]="Rx" Then
 		$MsgCh=1
 	EndIf
-
+	#ce
+	;-------------------updated below to avoid virtual controller issue of Tx and Rx messages
+	if $FirstMsg[1] = "Tx" Then
+		if $FirstMsg[2]=2 and $SecondMsg[2]=1 and $ThirdMsg[2]=2 and $FourthMsg[2]=1 and $FifthMsg[2]=1 and  $SixthMsg[2]=2 and $SeventhMsg[2]=2 and $EightMsg[2]=1 Then
+			$MsgDir=1
+		EndIf
+	ElseIf $FirstMsg[1] = "Rx" Then
+		if $FirstMsg[2]=1 and $SecondMsg[2]=2 and $ThirdMsg[2]=1 and $FourthMsg[2]=2 and $FifthMsg[2]=2 and  $SixthMsg[2]=1 and $SeventhMsg[2]=1 and $EightMsg[2]=2 Then
+			$MsgDir=1
+		EndIf
+	EndIf
+	if $FirstMsg[1]="Tx" and  $SecondMsg[1]="Rx" and $ThirdMsg[1]="Tx" and  $FourthMsg[1]="Rx" Then
+		$MsgCh=1
+	ElseIf $FirstMsg[1]="Rx" and  $SecondMsg[1]="Tx" and $ThirdMsg[1]="Rx" and  $FourthMsg[1]="Tx" Then
+		$MsgCh=1
+	EndIf
+	;----------------------------------------------------------------------------------------
 	consolewrite("$MsgIDs :"&$MsgIDs&@CRLF)
 	consolewrite("$MsgDir :"&$MsgDir&@CRLF)
 	consolewrite("$MsgCh :"&$MsgCh&@CRLF)

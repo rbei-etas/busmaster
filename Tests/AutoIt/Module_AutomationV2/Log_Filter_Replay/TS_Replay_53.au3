@@ -27,7 +27,8 @@ if winexists($WIN_BUSMASTER) then
 
 	_loadConfig("cfxReplay_53.cfx")																	; Load Configuration
 
-	_ConnectDisconnect()																			; Connect
+	;_ConnectDisconnect()																			; Connect
+	_Connect_CAN_Menu()
 
 	$RepWinHWD=_GetReplayWinHWD()
 	_GUICtrlListView_ClickItem($RepWinHWD,2,"","",2)												; Double click on the 3rd item in the replay window to setup a break point
@@ -40,24 +41,26 @@ if winexists($WIN_BUSMASTER) then
 	_ClickToolBarIcon($cntToolhWd,$Icon_RplyStart_Index)											; Click on Skip icon
 	sleep(2000)
 
-	_ConnectDisconnect()																			; Disconnect
+	;_ConnectDisconnect()																			; Disconnect
 
 	$MsgWinCount=_GetCANMsgWinItemCount()															; Fetch the count of items in the msg window
 	consolewrite("$MsgWinCount :"&$MsgWinCount&@CRLF)
 
 	If $MsgWinCount=4 then
-		$FirstMsg=_GetMsgWinCANInfo(0)																; Fetch the First msg in the msg window
+		$FirstMsg=_GetMsgWinCANInfo(1)																; Fetch the First msg in the msg window [Tx]
 
 		consolewrite("$FirstMsg[1] :"&$FirstMsg[1]&@CRLF)
 		consolewrite("$FirstMsg[2] :"&$FirstMsg[2]&@CRLF)
 		consolewrite("$FirstMsg[3] :"&$FirstMsg[3]&@CRLF)
 		consolewrite("$FirstMsg[3] :"&$FirstMsg[4]&@CRLF)
 
-		if $FirstMsg[1]="Tx" and $FirstMsg[2]=1 and $FirstMsg[4]="0x001" Then
-			$TxFirstMsg=1
-		EndIf
 
-		$ThirdMsg=_GetMsgWinCANInfo(2)																; Fetch the third msg in the msg window
+			if $FirstMsg[1]="Tx" and $FirstMsg[2]=1 and $FirstMsg[4]="0x001" Then
+				$TxFirstMsg=1
+			EndIf
+
+
+		$ThirdMsg=_GetMsgWinCANInfo(3)																; Fetch the third msg in the msg window [Rx]
 
 		consolewrite("$ThirdMsg[1] :"&$ThirdMsg[1]&@CRLF)
 		consolewrite("$ThirdMsg[2] :"&$ThirdMsg[2]&@CRLF)

@@ -32,6 +32,18 @@ ConsoleWrite("****Start : TS_TxWin_34.au3****"&@CRLF)
 		 Sleep(500)
 		 WinMenuSelectItem($WIN_BUSMASTER,"",$CANMenu,$CANSigWatchMenu,$SigWatchActivateMenu)       ;Select CAN->Signal Watch->Activate
 		  Sleep(500)
+
+		  ;---Updated below scripts to access Network statistics window since it is implemented as child window ----
+
+		Opt("WinDetectHiddenText", 0)
+		;$HWD= ControlGetHandle($WIN_NW_Stats,"",$LVC_Details_NW_Stats)
+		Opt("WinSearchChildren", 1)
+		Opt("WinTitleMatchMode", 1)
+		WinWait("Network Statistics")
+
+		;----------------------------------------------------------------------------
+
+
 		 $pos=WinGetPos($WIN_NW_Stats)                                                               ;Get the pisition of the Network Statistics window
 		 sleep(500)
 		$pos1=WinGetPos($WIN_SignalWatch)                                                            ;Get the position of Signal watch window

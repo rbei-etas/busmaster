@@ -44,8 +44,8 @@ ConsoleWrite("****Start : TS_UserCfx_14.au3****"&@CRLF)
 	    $hSubmenu=_GUICtrlMenu_GetItemSubMenu($hFile, 1)
 	    $submenuText=_GUICtrlMenu_GetItemText($hFile,1)
 	    ConsoleWrite("$submenuText:" & $submenuText & @CRLF)
-        $res=_GUICtrlMenu_GetItemDisabled($hSubmenu,7)										   ; Check whether CAN->Driver Selection->Kvaser CAN is disabled or not
-	    $val=_GUICtrlMenu_GetItemText($hSubmenu,7)											   ; Fetch the text of CAN->Driver Selection->Kvaser CAN
+        $res=_GUICtrlMenu_GetItemDisabled($hSubmenu,8)										   ; Check whether CAN->Driver Selection->Kvaser CAN is disabled or not
+	    $val=_GUICtrlMenu_GetItemText($hSubmenu,8)											   ; Fetch the text of CAN->Driver Selection->Kvaser CAN
 	    ConsoleWrite("$res : "&$res& @CRLF)
 	    ConsoleWrite("$val : "&$val& @CRLF)
 	    If($res=True) Then

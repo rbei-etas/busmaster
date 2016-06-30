@@ -20,6 +20,7 @@ _StartoHTMLTable("J1939 Message Window Module Test Report")
 ;------------------P1 test cases-----------------------------
 
 #include "TS_MSGWIN_J1939_03.au3"    ;Covers TS_MSGWIN_J1939_04.au3
+
 #include "TS_MSGWIN_J1939_05.au3"
 
 ;--------------P2 test cases---------------------------------
@@ -35,3 +36,5 @@ _EndoHTMLTable()
 _SaveHTMLReport()
 
 _IEQuit($oIE)
+
+_ExcelBookClose($oExcel, 1, 0)

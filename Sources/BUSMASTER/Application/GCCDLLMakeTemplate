@@ -1,0 +1,25 @@
+CXX = mingw32-g++
+BM_LIB = -L"<BUSMASTER_NS_LIB_FOLDER>" -l<PROTOCOL_HELPER_LIB>
+
+BM_INCLUDES = -I"<BM_INCLUDES>"
+
+CXXFLAGS = -Wall -c
+#$(BM_INCLUDE)
+
+dll = <FILENAME>.dll
+
+DBOBJFILE = <DB_OBJFILES>
+
+DBINCLUDES = <DB_INCLUDES>
+
+
+all: $(dll)
+
+$(dll): <FILENAME>.o
+	$(CXX) -shared -Wl,--dll  <FILENAME>.o $(DBOBJFILE) $(BM_LIB) -o $@
+
+<FILENAME>.o: <FILEPATH>
+	$(CXX) $(DBINCLUDES) $(CXXFLAGS) $(BM_INCLUDES) $< -o $@
+
+clean: 
+	del /f <FILENAME>.o

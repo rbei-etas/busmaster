@@ -160,6 +160,7 @@ if winexists($WIN_BUSMASTER) then
 
 	$TExeHWD= ControlGetHandle($WIN_BUSMASTER,"",$LVC_TestCaseResult_TestExe)
 	$TExeCount=_GUICtrlListView_GetItemCount($TExeHWD)											; Fetch the TestExecutor item count
+	ConsoleWrite("$TExeCount :"&$TExeCount&@CRLF)
 
 	if $TExeCount=6 Then
 		$TestCaseName=_GetTestExecutorInfo(0)
@@ -219,17 +220,27 @@ if winexists($WIN_BUSMASTER) then
 	Send("^{F4}")																				; Close Test executor window
 	sleep(1000)
 
-	$Msg1=_GetMsgWinCANInfo(0)
+	;$Msg1=_GetMsgWinCANInfo(0)
 
-	if $Msg1[1]="Tx" and $Msg1[3]="s" And $Msg1[4]="0x101" And $Msg1[5]="MsgStdLil" And $Msg1[7]= "0100000000000000" Then
-		$MsgTransmission=1
-	EndIf
+	;if $Msg1[1]="Tx" and $Msg1[3]="s" And $Msg1[4]="0x101" And $Msg1[5]="MsgStdLil" And $Msg1[7]= "0100000000000000" Then
+	;	$MsgTransmission=1
+	;EndIf
+	;---Added below scripts to check Tx message in message window ------
+	for $i=0 To 1
+		$Msg1=_GetMsgWinCANInfo($i)
+		if $Msg1[1]="Tx" and $Msg1[3]="s" And $Msg1[4]="0x101" And $Msg1[5]="MsgStdLil" And $Msg1[7]= "0100000000000000" Then
+			$MsgTransmission=1
+			ConsoleWrite("$i="&$i&@CRLF)
+		EndIf
+	Next
 
 	ConsoleWrite("$MsgTransmission:"&$MsgTransmission&@CRLF)
 
 	$GetReportFile_Path=_OutputDataPath()
 
 	$Count=_FileCountLines($GetReportFile_Path & "\Report_04.TXT")								; Fetch the no. of lines in the report file
+	ConsoleWrite("$Count :"&$Count&@CRLF)
+
 	if $Count=26 Then
 		$ToolVersion=StringStripWS (FileReadLine ($GetReportFile_Path & "\Report_04.TXT",2),1)	; Fetch the tool version in the report file
 		$ReportFile=StringStripWS (FileReadLine ($GetReportFile_Path & "\Report_04.TXT",3),1)	; Fetch the Report file name in the report file
@@ -259,7 +270,17 @@ if winexists($WIN_BUSMASTER) then
 		consolewrite("$MsgName :"&$MsgName&@CRLF)
 		consolewrite("$Signal :"&$Signal&@CRLF)
 
-		$ToolVer=StringReplace(_GetToolVersion()," Ver","")																; Fetch the Busmaster Version
+		Local $ToolVer3[2]
+		$ToolVer1=StringReplace(_GetToolVersion()," Ver","")																; Fetch the Busmaster Version
+		ConsoleWrite("$ToolVer :" &$ToolVer1&@CRLF)
+		$ToolVer2=StringReplace($ToolVer1,"Nightly",",")																		; Fetch the Busmaster Version
+		ConsoleWrite("$ToolVer2 :" &$ToolVer2&@CRLF)
+		Local $ToolVer3 = StringSplit($ToolVer2, ",")
+		$ToolVer4 =$ToolVer3[1]
+
+
+
+		$ToolVer=StringLeft($ToolVer4,15)
 		ConsoleWrite("$ToolVer :" &$ToolVer&@CRLF)
 		if $ToolVersion="BUSMASTER Version:: "& $ToolVer and $ReportFile="Report File For:: Test" Then
 			$ReportHeader=1
@@ -269,7 +290,7 @@ if winexists($WIN_BUSMASTER) then
 			$TestSetupInfo=1
 		EndIf
 
-		if $Result="Results:" and $TestCase="TestCase:  Test_4" and $ResultStatus="Result:	SUCCESS" and $VerifyStatus="Verify - 1 (Severity - SUCCESS)" and $MsgName="MsgStdLil:" and $Signal="Sigstd1X==1(x=1.000000)SUCCESS" Then
+		if $Result="Results:" and $TestCase="TestCase:  Test_4" and $ResultStatus="Result:	SUCCESS" and $VerifyStatus="Verify - 1 (Severity - SUCCESS)" and $MsgName="MsgStdLil:" and $Signal="Sigstd1X==1(x=1)SUCCESS" Then
 			$ResultInfo=1
 		EndIf
 

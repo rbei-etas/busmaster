@@ -28,6 +28,9 @@ if winexists($WIN_BUSMASTER) then
 	_createConfig("cfxJ1939DBE_01")																; Create New Configuration
 	_createJ1939DB("testJ1939DBE_01")															; Create New Database File
 	sleep(1500)
+	;------Maximize Child Window DatabaseEditor - J1939---------------
+	_Maximize_childWindow("DatabaseEditor - J1939")
+
 	_J1939DBmessage("n")																		; Select 'New Message' from right click menu
 	sleep(1000)
 	$msgNameHWD=controlgethandle($WIN_Msg_Details,"",$TXT_MsgName_MsgDetails)					; Fetch Msg Name Edit control handle

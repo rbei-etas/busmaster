@@ -1,0 +1,12 @@
+EXPORTS
+vSetConnectProcAddress
+vSetDisconnectProcAddress
+vSetStartTimerProcAddress
+vSetStopTimerProcAddress
+vSetSetTimerValProcAddress
+vSetSendMsgProcAddress
+vSetGetDllHandleProcAddress
+vSetTraceProcAddress
+bGetProgramVersion
+
+OnBus_Pre_Connect

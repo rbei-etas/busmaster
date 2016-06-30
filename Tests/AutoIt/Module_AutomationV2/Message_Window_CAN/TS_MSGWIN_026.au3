@@ -23,10 +23,12 @@ if winexists($WIN_BUSMASTER) then
 	_loadConfig("cfxCANMsgWin_26.cfx")
 	$msgCount= _GetDBConfigMsgDispCount()                         ;Get Db message count
 	_DissociateCANDB(0)
-	Sleep(1000)
+	;ControlClick($WIN_BUSMASTER,"[CLASS:Button; INSTANCE:2]",1)
+	controlclick($WIN_Dissociate_CANDB,"","[CLASS:Button; INSTANCE:2]")							; Click on OK button \
+	Sleep(3000)
     $msgCountNonDB=_GetNonDBConfigMsgDispCount()                  ;Get Non Db message count
-	ConsoleWrite("$msgCount" & $msgCount & @CRLF)
-	ConsoleWrite("$msgCountNonDb" & $msgCountNonDb & @CRLF)
+	ConsoleWrite("$msgCount= " & $msgCount & @CRLF)
+	ConsoleWrite("$msgCountNonDb= " & $msgCountNonDb & @CRLF)
 	If($msgCount==$msgCountNonDb) Then
 		_WriteResult("Pass","TS_MSGWIN_26")
 	Else

@@ -38,7 +38,7 @@ if winexists($mWin) then
 
 	_CANNWStatsMenu()															; Open Network Statistics winodow
 
-	_ConnectDisconnect()														; Connect
+	;_ConnectDisconnect()														; Connect
 	sleep(1500)
 
 	$TotalMsg=_GetNWStatsInfo(0)												; Fetch the total message info
@@ -53,13 +53,16 @@ if winexists($mWin) then
 		$bTransmission=1
 	EndIf
 
-	_TransmitMsgsMenu()															; Transmit CAN messages
+	;_TransmitMsgsMenu()															; Transmit CAN messages
+	_ConnectDisconnect()
 	sleep(1500)
+	sleep(3000)
 
 	$TotalMsg_Trans1=_GetNWStatsInfo(0)											; Fetch the total message info
 	consolewrite("$TotalMsg_Trans1[0]: "&$TotalMsg_Trans1[0]&@CRLF)
 	consolewrite("$TotalMsg_Trans1[1]: "&$TotalMsg_Trans1[1]&@CRLF)
-	sleep(1000)
+	;sleep(1000)
+	sleep(3000)
 
 	$TotalMsg_Trans2=_GetNWStatsInfo(0)											; Fetch the total message info after 1 sec
 	consolewrite("$TotalMsg_Trans2[0]: "&$TotalMsg_Trans2[0]&@CRLF)
@@ -74,11 +77,13 @@ if winexists($mWin) then
 
 	_CANNWStatsMenu()															; Open Network Statistics winodow
 
-	if $TotalMsg_Trans2[1] > $TotalMsg_Trans1[1] Then
+	;if $TotalMsg_Trans2[1] > $TotalMsg_Trans1[1] Then
+	if ($TotalMsg_Trans2[1] - $TotalMsg_Trans1[1])>0 Then
 		$aTransmission=1
 	EndIf
 
-	if $TotalMsg_Trans3[1] > $TotalMsg_Trans2[1] Then
+	;if $TotalMsg_Trans3[1] > $TotalMsg_Trans2[1] Then
+	if ($TotalMsg_Trans3[1] - $TotalMsg_Trans2[1])>0 Then
 		$aDisconnect=1
 	EndIf
 

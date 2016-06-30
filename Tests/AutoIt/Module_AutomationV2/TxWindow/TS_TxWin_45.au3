@@ -13,7 +13,7 @@
 ;==================================================Test Procedure =======================================================
 ConsoleWrite(@CRLF)
 ConsoleWrite("****Start : TS_TxWin_45.au3****"&@CRLF)
-    ;_launchApp()
+    _launchApp()
 	WinActivate($WIN_BUSMASTER)
 	if winexists($WIN_BUSMASTER) Then
 		_loadConfig("TS_TxWin_01.cfx")

@@ -19,6 +19,7 @@ _StartoHTMLTable("Format Converters Module Test Report")
 
        ;P1 test cases
   #include "TS_FormatConv_001.au3"
+
 ;~   ; "TS_FormatConv_002" covered in "TS_FormatConv_001"
   #include "TS_FormatConv_003.au3"
   #include "TS_FormatConv_004.au3"
@@ -28,6 +29,7 @@ _StartoHTMLTable("Format Converters Module Test Report")
   #include "TS_FormatConv_008.au3"
   #include "TS_FormatConv_009.au3"
   #include "TS_FormatConv_010.au3"
+
  ;------------------------------------
        ;P2 test cases
 #include "TS_FormatConv_011.au3"
@@ -41,3 +43,5 @@ _EndoHTMLTable()
 _SaveHTMLReport()
 
 _IEQuit($oIE)
+
+_ExcelBookClose($oExcel, 1, 0)

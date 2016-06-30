@@ -72,9 +72,11 @@ if winexists($WIN_BUSMASTER) then
 	_DeactJ1939()																						; Deactivate J1939
 
 EndIf
+$retVer = StringInStr($ToolVer,$LogVer)
+ConsoleWrite("$retVer"&$retVer)
 
-
-if  $ToolVer=$LogVer and $Protocol="***PROTOCOL J1939***" and $NoEdit="***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***" and $StartLog="***[START LOGGING SESSION]***" and $StartDateTimeInLog="Match" and $NumericMode="***HEX***" and $TimeMode="***SYSTEM MODE***" Then
+;if  $ToolVer=$LogVer and $Protocol="***PROTOCOL J1939***" and $NoEdit="***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***" and $StartLog="***[START LOGGING SESSION]***" and $StartDateTimeInLog="Match" and $NumericMode="***HEX***" and $TimeMode="***SYSTEM MODE***" Then
+if  $retVer>0 and $Protocol="***PROTOCOL J1939***" and $NoEdit="***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***" and $StartLog="***[START LOGGING SESSION]***" and $StartDateTimeInLog="Match" and $NumericMode="***HEX***" and $TimeMode="***SYSTEM MODE***" Then
 	_WriteResult("Pass","TS_J1939Log_03")
 Else
 	_WriteResult("Fail","TS_J1939Log_03")

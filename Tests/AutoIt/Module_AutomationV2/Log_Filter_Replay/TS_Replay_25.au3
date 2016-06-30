@@ -2,7 +2,7 @@
 ; Critical (C)		:		Y
 ; TestCase No.		:		TS_Replay_25
 ; TestCases			:		Using the Filter Attributes
-; Test Data			:		
+; Test Data			:
 ; Test Setup		:		1. Open 'Configure Filters' dialog by menu option 'Configure -> App Filters'.
 ;~ 							2. Make a filter with the following attributes:
 ;~ 							3. Choose 'ID' radio box in 'Filter Attributes' group box.
@@ -10,7 +10,7 @@
 ;~ 							5. Choose 'ID Type' as 'All'.
 ;~ 							6. Choose 'Frame' as 'Non RTR'.
 ;~ 							7. Choose 'Direction' as 'All'.
-;~ 							8. Choose 'Channel' as 'All'.  
+;~ 							8. Choose 'Channel' as 'All'.
 
 ; Expected Results  : 		1. The chosen ID in step 4 along with filter attributes choosen should not be present in 'Replay Window'.
 ;==========================================================================Test Procedure =========================================================================
@@ -32,7 +32,8 @@ if winexists($WIN_BUSMASTER) then
 
 ;~ 	_EnableHex()																				; Enable Hex mode
 
-	_ConnectDisconnect()																		; Connect the tool
+	;_ConnectDisconnect()																		; Connect the tool
+	_Connect_CAN_Menu()
 	Sleep(1000)
 
 	_CANReplayOptionsMenu($CANReplayGoMenu)														; Select "Go" from menu
@@ -76,10 +77,12 @@ if winexists($WIN_BUSMASTER) then
 	consolewrite("$FourthMsg[4] :"&$FourthMsg[4]&@CRLF)
 	consolewrite("$FourthMsg[2] :"&$FourthMsg[2]&@CRLF)
 
+
+
 	if $FirstMsg[4]="0x200" and $SecondMsg[4]="0x200" and $ThirdMsg[4]="0x200" and $FourthMsg[4]="0x200" Then
 		$MsgIDs=1
 	EndIf
-
+	#cs
 	if $FirstMsg[2]=1 and $SecondMsg[2]=2 and $ThirdMsg[2]=2 and $FourthMsg[2]=1 Then
 		$MsgDir=1
 	EndIf
@@ -87,7 +90,23 @@ if winexists($WIN_BUSMASTER) then
 	if $FirstMsg[1]="Tx" and  $SecondMsg[1]="Rx" Then
 		$MsgCh=1
 	EndIf
-
+	#ce
+	;-------------------updated below to avoid virtual controller issue of Tx and Rx messages.
+	if $FirstMsg[1] = "Tx" Then
+		if $FirstMsg[2]=1 and $SecondMsg[2]=2 and $ThirdMsg[2]=2 and $FourthMsg[2]=1 Then
+			$MsgDir=1
+		EndIf
+	ElseIf $FirstMsg[1]= "Rx" Then
+		if $FirstMsg[2]=2 and $SecondMsg[2]=1 and $ThirdMsg[2]=1 and $FourthMsg[2]=2 Then
+			$MsgDir=1
+		EndIf
+	EndIf
+	if $FirstMsg[1]="Tx" and  $SecondMsg[1]="Rx" Then
+		$MsgCh=1
+	ElseIf $FirstMsg[1]="Rx" and  $SecondMsg[1]="Tx" Then
+		$MsgCh=1
+	EndIf
+	;-----------------------------------------------------------------------------------------
 	consolewrite("$MsgIDs :"&$MsgIDs&@CRLF)
 	consolewrite("$MsgDir :"&$MsgDir&@CRLF)
 	consolewrite("$MsgCh :"&$MsgCh&@CRLF)

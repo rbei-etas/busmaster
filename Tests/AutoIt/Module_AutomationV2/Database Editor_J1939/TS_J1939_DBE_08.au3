@@ -2,7 +2,7 @@
 ; Critical (C)		:		Y
 ; TestCase No.		:		TS_J1939_DBE_08
 ; TestCases			:		Database Usage in Busmaster
-; Test Data			:		
+; Test Data			:
 ; Test Setup		:		1. Continue from above test case TS_J1939_DBE_07.
 ;~ 							2. Click 'Yes' in message box.
 ;~ 							3. Click 'Yes' in message box.
@@ -22,7 +22,8 @@ WinActivate($WIN_BUSMASTER,3)
 if winexists($WIN_BUSMASTER) then
 	_loadConfig("cfxJ1939DBE_08")
 	_DissociateJ1939DB(0)																	; Dissociate DB
-	if winexists("",$disDBtxt) Then
+	Opt("WinTextMatchMode", 1)
+	if winexists("",$disDBtxt1) Then
 		consolewrite("Dissociation will clear Signal Watch List window exists" & @CRLF)
 		WinActivate("",$disDBtxt)
 		send("{ENTER}")					  													; Click on 'yes' button in "Dissociation will clear Signal Watch List." warning message

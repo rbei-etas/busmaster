@@ -1,1 +1,0 @@
-This folder is required to compile DBManager project in Debug mode

@@ -33,7 +33,7 @@ if winexists($WIN_BUSMASTER) then
 	ConsoleWrite("$sigDescName :"&$sigDescName&@CRLF)
 	ConsoleWrite("$sigDescVal :"&$sigDescVal&@CRLF)
 EndIf
-if $sigDescName="Desc64" and $sigDescVal=40 Then
+if $sigDescName="Desc64" and $sigDescVal=64 Then       									;changed by srinibas - Given correct value for $sigDescVal for validation
 	_WriteResult("Pass","TS_DBE_06")
 Else
 	_WriteResult("Fail","TS_DBE_06")

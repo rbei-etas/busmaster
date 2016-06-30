@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="configure_replay" xml:lang="en-us">
+  <title>Replay</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Configure Replay</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p><b>Description:</b></p>
+    <p>CAN Replay feature can be used to replay the CAN log data to the network.User can configure replay file setting using <b>CAN --&gt; Replay --&gt; Configure</b> menu. This will show replay file configuration dialog as shown below.</p>
+    <p><image href="../images/CAN_Replay_Config.bmp" alt="Replay File Configuration Dialog" placement="break"/></p>
+    <p><ul>
+        <li><b>Replay Files:</b> User can add as many as replay files in to the replay list. This list will show the replay files that are already configured. To add a new Replay file select Add button. This will show replay file selection dialog. User can select log files that are created using BUSMASTER. Once the user has selected a replay file, the file will be added to the replay list. User can change the file &quot;... &quot; button in the Replay File Details section. The check box associated with replay file will make the replay file eligible to run. If the check box is not checked then that replay will not be used for replay.</li>
+      </ul></p>
+    <section>
+      <b>Replay Configuration:</b>
+    </section>
+    <p>Replaying of file can be configured using the three parameters mentioned below<ul>
+        <li>Time Mode</li>
+        <li>Replay Delay</li>
+      </ul></p>
+    <p><b>1. Replay Mode</b>:</p>
+    <p>There are two modes of Replay<ul>
+        <li>Single Run -All the messages in the file will be replayed only once.</li>
+        <li>Cyclic - The messages in the file will be replayed cyclically.</li>
+      </ul></p>
+    <p><b>2. Time Mode:</b></p>
+    <p>The time delay can be set to control the delay between two consecutive messages and between two consecutive replay of the same file.</p>
+    <p>The following field controls delays<ul>
+        <li>Recorded time delay in the log file</li>
+        <li>Time delay between messages.</li>
+        <li>Time delay between cycles – Applicable for only cyclic mode.</li>
+      </ul></p>
+    <p>Time delay 1 and 2 are mutually exclusive irrespective of replay mode. This time delay is the time duration between transmission of two consecutive messages. The minimum time delay (in milliseconds) is one millisecond.</p>
+    <p>On clicking the OK button a Message Replay Window will be displayed. This will contain all messages in the replay file. By default first message in the replay window will be selected. Please see section Replay a File for further details.</p>
+    <p>User can configure to replay all message logged or only transmitted message or only received message by selecting the option from Replay Message Type. It can be done during configuration of replay.</p>
+  </body>
+</topic>

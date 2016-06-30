@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" [
+<!ENTITY Introduction '<xref/>'>]>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>CAN Simulation in BUSMASTER</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2013"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>LIN Simulation</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p><b>Introduction:</b></p>
+    <p>BUSMASTER can be used as master to transmit master requests and as slave to respond to master requests. User can monitor/analyze the LIN messages using BUSMASTER.The following steps are required to Configure the BUSMASTER for transmission of frame headers or transmission/reception of LIN messages.</p>
+    <p><b>1. Controller (Driver) Selection:</b> </p>
+    <p>BUSMASTER can be connected to Physical CAN Network using CAN Controller.Refer <xref href="CAN_Controller_Configuration.dita"/> section for more Information.</p>
+    <p><b>2. <b>Configuring CAN BUS Parameters:</b></b></p>
+    <p>Once the required driver is selected CAN BUS parameters (like baud rate, BTR0, BTR1, etc..)need to be configured. Refer CAN Channel Configuration section for more information.</p>
+    <p><b>3</b>. <b>
+        <b>Database Configuration:</b>
+      </b></p>
+    <p>This is an optional step and is required for Message&amp;Signal interpretation of CAN data in BUSMASTER. Refer CAN Database Configuration section for more Information.</p>
+    <p><b>4. Connect to Network:</b></p>
+    <p>Once the Configuration done,  BUSMASTER can be connected to CAN Network using <b>CAN-&gt;Connect</b>. menu.</p>
+    <p><b>5. Monitoring Messages:</b></p>
+    <p>BUSMASTER <b>CAN Message Window</b> can be used to monitor the CAN messages of CAN Network.Refer <b>CAN <xref href="message_window.dita"/></b> section for more information.</p>
+  </body>
+</topic>

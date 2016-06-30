@@ -20,6 +20,7 @@ _StartoHTMLTable("J1939 Database Editor Module Test Report")
 ; J1939 DB P1 Case's
 
 #include "TS_J1939_DBE_01.au3"
+
 #include "TS_J1939_DBE_02.au3"
 #include "TS_J1939_DBE_03.au3"
 #include "TS_J1939_DBE_04.au3"
@@ -83,3 +84,5 @@ _EndoHTMLTable()
 _SaveHTMLReport()
 
 _IEQuit($oIE)
+
+_ExcelBookClose($oExcel, 1, 0)

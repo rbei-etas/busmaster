@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BUSMASTER_CONFIGURATION>
   <Global_Configuration>
-    <BUSMASTER_Version>2.3.0</BUSMASTER_Version>
+    <BUSMASTER_Version>3.0.0</BUSMASTER_Version>
     <IsMsgFilterEnabled>FALSE</IsMsgFilterEnabled>
     <IsMsgFilterEnabledLin>FALSE</IsMsgFilterEnabledLin>
     <IsReplayFilterEnabled>FALSE</IsReplayFilterEnabled>
@@ -28,7 +28,7 @@
     <CAN_Database_Files/>
     <J1939_Database_Files/>
     <CAN_DIL_Section>
-      <DriverName>Vector XL</DriverName>
+      <DriverName>Kvaser CAN</DriverName>
       <ControllerMode>Unknown</ControllerMode>
       <ControllerSettings>
         <Channel>
@@ -41,6 +41,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -60,7 +61,7 @@
           <AccMaskByte3_1>FF</AccMaskByte3_1>
           <AccMaskByte4_0>FF</AccMaskByte4_0>
           <AccMaskByte4_1>FF</AccMaskByte4_1>
-          <HardwareDesc>Vector - Virtual Channel 1 SN - 0Channel Index - 0</HardwareDesc>
+          <HardwareDesc>Kvaser - Virtual #0 (Channel 0), Serial Number- 0, Firmware- 0x00000000 0x00000000</HardwareDesc>
           <ItemUnderFocus>64</ItemUnderFocus>
           <BTR0BTR1>49210</BTR0BTR1>
           <AccFilterMode>0</AccFilterMode>
@@ -271,10 +272,10 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>205</Top>
-        <Left>57</Left>
-        <Bottom>482</Bottom>
-        <Right>406</Right>
+        <Top>238</Top>
+        <Left>49</Left>
+        <Bottom>515</Bottom>
+        <Right>398</Right>
       </Interpretation_Window_Position>
     </CAN_Message_Window>
     <J1939_Message_Window>
@@ -386,9 +387,9 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>115</Top>
+        <Top>238</Top>
         <Left>49</Left>
-        <Bottom>392</Bottom>
+        <Bottom>515</Bottom>
         <Right>398</Right>
       </Interpretation_Window_Position>
     </J1939_Message_Window>
@@ -471,9 +472,9 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>115</Top>
+        <Top>238</Top>
         <Left>49</Left>
-        <Bottom>392</Bottom>
+        <Bottom>515</Bottom>
         <Right>398</Right>
       </Interpretation_Window_Position>
     </LIN_Message_Window>
@@ -653,9 +654,9 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>115</Top>
+        <Top>238</Top>
         <Left>49</Left>
-        <Bottom>392</Bottom>
+        <Bottom>515</Bottom>
         <Right>398</Right>
       </Interpretation_Window_Position>
     </FlexRay_Message_Window>
@@ -687,6 +688,7 @@
         <BaudRate>19200</BaudRate>
         <ProtocolVersion>LIN 2.1</ProtocolVersion>
         <Overwrite_Settings>1</Overwrite_Settings>
+        <MasterMode>47</MasterMode>
         <ECU/>
       </CHANNEL>
     </LIN_Cluster_Config>
@@ -701,5 +703,18 @@
       </Window_Position>
       <Channel_Msg_List/>
     </LIN_Tx_Window>
+    <LIN_Schedule_Table>
+      <Window_Position>
+        <Visibility>SHOWNORMAL</Visibility>
+        <WindowPlacement>SETMINPOSITION</WindowPlacement>
+        <Top>183</Top>
+        <Left>535</Left>
+        <Bottom>716</Bottom>
+        <Right>1185</Right>
+      </Window_Position>
+      <Channel>
+        <Index>1</Index>
+      </Channel>
+    </LIN_Schedule_Table>
   </Module_Configuration>
 </BUSMASTER_CONFIGURATION>

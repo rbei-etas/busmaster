@@ -4,9 +4,11 @@ Follow the below steps before running the scripts:
 
 2. Change the compatibility mode of Autoit3.exe and SciTE.exe to Win XP Service Pack 3(For Win 7 64 bit machine).
 
-3. Copy "Module_AutomationV2" folder from "Tests\AutoIt\" to D drive. Copy "IncludeFiles.au3", "Data_DeclarationModV2.au3" and "globalFunc4ModuleV2.au3" in Module_AutomationV2 folder to "C:\Program Files (x86)\AutoIt3\Include" folder.
+3. Copy "Module_AutomationV2" folder from "Tests\AutoIt\" to C drive. Copy "IncludeFiles.au3", "Data_DeclarationModV2.au3" and "globalFunc4ModuleV2.au3" in Module_AutomationV2 folder to "C:\Program Files (x86)\AutoIt3\Include" folder.
 
 4. Run "RunMe.bat" to run all the scripts. HTML result file will be saved in the module folder.
+
+5. Update the Busmaster Version number in the C:\Module_AutomationV2\BusmasterVersion.txt file.
 
 BUSMASTER Installation with Addons
 

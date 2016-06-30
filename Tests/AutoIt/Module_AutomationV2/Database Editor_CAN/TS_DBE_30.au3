@@ -89,7 +89,9 @@ If winexists($WIN_BUSMASTER) then
 ;~ 	_CreateConfig("cfxCANDB_30.cfx")																	; Create Configuration
 
 	_openCANDB("testDBE_30.DBF")																		; Open the DB
-
+	;------Maximize Child Window DatabaseEditor - CAN---------------
+	_Maximize_childWindow("DatabaseEditor - CAN")
+	sleep(1000)
 	ControlClick($WIN_DBEditor_CAN,"",$BTN_NewSignal_DBEditor)											; Click on 'New Signal'
 
 	if WinWaitActive($WIN_Signal_Details,"",3) Then

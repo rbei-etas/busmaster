@@ -1,0 +1,25 @@
+CXX = mingw32-g++
+BM_LIB = -L"C:\Program Files (x86)\BUSMASTER_v3.0.0\SimulatedSystems\OBJ" -lWrapper_LIN
+
+BM_INCLUDES = -I"C:\Program Files (x86)\BUSMASTER_v3.0.0\SimulatedSystems\Include"
+
+CXXFLAGS = -Wall -c
+#$(BM_INCLUDE)
+
+dll = LINCPP.dll
+
+DBOBJFILE = 
+
+DBINCLUDES = 
+
+
+all: $(dll)
+
+$(dll): LINCPP.o
+	$(CXX) -shared -Wl,--dll  LINCPP.o $(DBOBJFILE) $(BM_LIB) -o $@
+
+LINCPP.o: D:/SVN/branches/OPENSO~1/BUSMAS~1.0/Tests/AutoIt/MODULE~1/TestData/LINCPP.cpp
+	$(CXX) $(DBINCLUDES) $(CXXFLAGS) $(BM_INCLUDES) $< -o $@
+
+clean: 
+	rm -f LINCPP.o

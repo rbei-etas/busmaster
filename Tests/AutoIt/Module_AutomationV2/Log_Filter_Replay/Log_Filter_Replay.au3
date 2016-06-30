@@ -20,6 +20,7 @@ _StartoHTMLTable("Log_Filter_Replay Module Test Report")
 ; --------------------------------------------------
 ;~ ; Filter P1 Case's
 #include "TS_Filter_01.au3"
+
 #include "TS_Filter_02.au3"
 #include "TS_Filter_03.au3"
 #include "TS_Filter_04.au3"
@@ -27,20 +28,20 @@ _StartoHTMLTable("Log_Filter_Replay Module Test Report")
 #include "TS_Filter_06.au3"
 #include "TS_Filter_07.au3"
 
-; Filter P2 Case's
-;	TS_Filter_07- TS_Filter_12 is covered in P1 caM1se
-;	TS_Filter_12 is Not suitable for regression
-#include "TS_Filter_14.au3"
-;~ ;	TS_Filter_15 is Not suitable for regression
-#include "TS_Filter_16.au3"
-;~ ;	TS_Filter_17 is covered in P1 case
-#include "TS_Filter_18.au3"
-;~ ;	TS_Filter_19 & TS_Filter_20 is covered in P1 case
-;~ ; --------------------------------------------------
+;~ ; Filter P2 Case's
+;~ ;	TS_Filter_07- TS_Filter_12 is covered in P1 caM1se
+;~ ;	TS_Filter_12 is Not suitable for regression
+;~ #include "TS_Filter_14.au3"
+;	TS_Filter_15 is Not suitable for regression
+ #include "TS_Filter_16.au3"
+;	TS_Filter_17 is covered in P1 case
+ #include "TS_Filter_18.au3"
+;	TS_Filter_19 & TS_Filter_20 is covered in P1 case
+; --------------------------------------------------
 
-;~ ; --------------------------------------------------
-;~ ; Logging P1 case's
-#include "TS_Log_01.au3"
+; --------------------------------------------------
+; Logging P1 case's
+;~ #include "TS_Log_01.au3"
 #include "TS_Log_02.au3"
 #include "TS_Log_03.au3"
 #include "TS_Log_04.au3"
@@ -77,6 +78,7 @@ _StartoHTMLTable("Log_Filter_Replay Module Test Report")
 
 ; --------------------------------------------------
 ; Replay P1 case's
+
 #include "TS_Replay_01.au3"
 #include "TS_Replay_02.au3"
 #include "TS_Replay_03.au3"
@@ -97,6 +99,8 @@ _StartoHTMLTable("Log_Filter_Replay Module Test Report")
 #include "TS_Replay_18.au3"
 #include "TS_Replay_19.au3"
 #include "TS_Replay_20.au3"
+
+
 #include "TS_Replay_21.au3"
 #include "TS_Replay_22.au3"
 #include "TS_Replay_23.au3"
@@ -148,3 +152,5 @@ _EndoHTMLTable()
 _SaveHTMLReport()
 
 _IEQuit($oIE)
+
+_ExcelBookClose($oExcel, 1, 0)

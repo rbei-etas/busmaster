@@ -34,6 +34,11 @@ If winexists($WIN_BUSMASTER) then
 
 	_openJ1939DB("testJ1939DBE_52.DBF")																	; Open the DB
 
+	;------Maximize Child Window DatabaseEditor - J1939---------------
+	_Maximize_childWindow("DatabaseEditor - J1939")
+	sleep(1000)
+
+
 	$DBTreeVwHWD = ControlGetHandle($WIN_DBEditor_J1939, "", $TVC_DBFile_DBEditor) 						; Fetch tree view control handle
 	$childHWD = _GUICtrlTreeView_GetNext($DBTreeVwHWD, 0)
 	_GUICtrlTreeView_ClickItem($DBTreeVwHWD, $childHWD, "Right") 										; Right Click on the msg node

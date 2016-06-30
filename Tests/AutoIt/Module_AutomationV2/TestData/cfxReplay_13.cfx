@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BUSMASTER_CONFIGURATION>
   <Global_Configuration>
-    <BUSMASTER_Version>2.0.0</BUSMASTER_Version>
+    <BUSMASTER_Version>3.0.0</BUSMASTER_Version>
     <IsMsgFilterEnabled>FALSE</IsMsgFilterEnabled>
+    <IsMsgFilterEnabledLin>FALSE</IsMsgFilterEnabledLin>
     <IsReplayFilterEnabled>FALSE</IsReplayFilterEnabled>
     <IsLogFilterEnabled>FALSE</IsLogFilterEnabled>
+    <IsLogFilterLINEnabled>FALSE</IsLogFilterLINEnabled>
     <IsLoggingEnabled>FALSE</IsLoggingEnabled>
     <IsMsgIntepretationEnabled>FALSE</IsMsgIntepretationEnabled>
     <IsOverWriteEnabled>FALSE</IsOverWriteEnabled>
@@ -12,6 +14,7 @@
     <DisplayNumericMode>FALSE</DisplayNumericMode>
     <LogOnConnect_CAN>TRUE</LogOnConnect_CAN>
     <LogOnConnect_J1939>TRUE</LogOnConnect_J1939>
+    <LogOnConnect_LIN>FALSE</LogOnConnect_LIN>
     <Window_Position>
       <Visibility>SHOWNORMAL</Visibility>
       <WindowPlacement>HIDE</WindowPlacement>
@@ -24,10 +27,6 @@
   <Module_Configuration>
     <CAN_Database_Files/>
     <J1939_Database_Files/>
-    <FLEX_Database>
-      <FilePath></FilePath>
-      <FilePath></FilePath>
-    </FLEX_Database>
     <CAN_DIL_Section>
       <DriverName>Simulation</DriverName>
       <ControllerMode>Unknown</ControllerMode>
@@ -42,6 +41,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -73,6 +73,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -84,6 +94,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -115,6 +126,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -126,6 +147,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -157,6 +179,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -168,6 +200,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -199,6 +232,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -210,6 +253,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -241,6 +285,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -252,6 +306,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -283,6 +338,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -294,6 +359,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -325,6 +391,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -336,6 +412,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -367,6 +444,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -378,6 +465,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -409,6 +497,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -420,6 +518,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -451,6 +550,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -462,6 +571,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -493,6 +603,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -504,6 +624,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -535,6 +656,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -546,6 +677,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -577,6 +709,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -588,6 +730,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -619,6 +762,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -630,6 +783,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -661,6 +815,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
         <Channel>
           <BaudRate>500</BaudRate>
@@ -672,6 +836,7 @@
           <Clock>16</Clock>
           <SamplePerc>75</SamplePerc>
           <Sampling>1</Sampling>
+          <BTLCycles>10</BTLCycles>
           <Warning_Limit>96</Warning_Limit>
           <Propagation_Delay>ALL</Propagation_Delay>
           <SJW>4</SJW>
@@ -703,6 +868,16 @@
           <PassiveMode>0</PassiveMode>
           <HWTimestamps>0</HWTimestamps>
           <Location></Location>
+          <LowSpeed>0</LowSpeed>
+          <CANFD_BaudRate>2000000</CANFD_BaudRate>
+          <CANFD_SamplePoint>70</CANFD_SamplePoint>
+          <CANFD_BTLCycles>10</CANFD_BTLCycles>
+          <CANFD_SJW>3</CANFD_SJW>
+          <CANFD_TxDelayCompensation>0</CANFD_TxDelayCompensation>
+          <CANFD_TxSecondarySamplePoint>0</CANFD_TxSecondarySamplePoint>
+          <CANFD_CanRxMode>2</CANFD_CanRxMode>
+          <CANFD_CanFdRxMode>4</CANFD_CanFdRxMode>
+          <CANFD_CanFdTxConfig>2</CANFD_CanFdTxConfig>
         </Channel>
       </ControllerSettings>
     </CAN_DIL_Section>
@@ -752,6 +927,22 @@
         <Signal_Column>85</Signal_Column>
       </COLUMN_WIDTH>
     </J1939_Signal_Watch>
+    <LIN_Signal_Watch>
+      <Window_Position>
+        <Visibility>SHOWNORMAL</Visibility>
+        <WindowPlacement>HIDE</WindowPlacement>
+        <Top>70</Top>
+        <Left>10</Left>
+        <Right>500</Right>
+        <Bottom>300</Bottom>
+      </Window_Position>
+      <COLUMN_WIDTH>
+        <MESSAGE_COLUMN>94</MESSAGE_COLUMN>
+        <Raw_Val_Column>94</Raw_Val_Column>
+        <Physical_Val_Column>189</Physical_Val_Column>
+        <Signal_Column>94</Signal_Column>
+      </COLUMN_WIDTH>
+    </LIN_Signal_Watch>
     <CAN_Signal_Graph>
       <GRAPH_PARAMETERS>
         <Buffer_Size>5000</Buffer_Size>
@@ -795,6 +986,7 @@
     </CAN_Signal_Graph>
     <CAN_Log/>
     <J1939_Log/>
+    <LIN_Log/>
     <CAN_Simulated_Systems>
       <Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
@@ -889,9 +1081,9 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>279</Top>
+        <Top>115</Top>
         <Left>49</Left>
-        <Bottom>556</Bottom>
+        <Bottom>392</Bottom>
         <Right>398</Right>
       </Interpretation_Window_Position>
     </CAN_Message_Window>
@@ -994,12 +1186,97 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>279</Top>
+        <Top>115</Top>
         <Left>49</Left>
-        <Bottom>556</Bottom>
+        <Bottom>392</Bottom>
         <Right>398</Right>
       </Interpretation_Window_Position>
     </J1939_Message_Window>
+    <LIN_Message_Window>
+      <Append_Buffer_Size>5000</Append_Buffer_Size>
+      <Overwrite_Buffer_Size>2000</Overwrite_Buffer_Size>
+      <Display_Update_Time>100</Display_Update_Time>
+      <COLUMN>
+        <ID></ID>
+        <Order>1</Order>
+        <IsVisible>0</IsVisible>
+        <Width>0</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Time</ID>
+        <Order>2</Order>
+        <IsVisible>1</IsVisible>
+        <Width>95</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Message</ID>
+        <Order>3</Order>
+        <IsVisible>1</IsVisible>
+        <Width>99</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Message Type</ID>
+        <Order>4</Order>
+        <IsVisible>1</IsVisible>
+        <Width>135</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Tx/Rx</ID>
+        <Order>5</Order>
+        <IsVisible>1</IsVisible>
+        <Width>85</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Channel</ID>
+        <Order>6</Order>
+        <IsVisible>1</IsVisible>
+        <Width>80</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>DLC</ID>
+        <Order>7</Order>
+        <IsVisible>1</IsVisible>
+        <Width>70</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>ID</ID>
+        <Order>8</Order>
+        <IsVisible>1</IsVisible>
+        <Width>65</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Data Byte(s)</ID>
+        <Order>9</Order>
+        <IsVisible>1</IsVisible>
+        <Width>235</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Checksum</ID>
+        <Order>10</Order>
+        <IsVisible>1</IsVisible>
+        <Width>437</Width>
+      </COLUMN>
+      <IsHex>0</IsHex>
+      <IsAppend>1</IsAppend>
+      <IsInterpret>0</IsInterpret>
+      <Time_Mode>SYSTEM</Time_Mode>
+      <Window_Position>
+        <Visibility>SHOWNORMAL</Visibility>
+        <WindowPlacement>SETMINPOSITION</WindowPlacement>
+        <Top>0</Top>
+        <Left>0</Left>
+        <Bottom>566</Bottom>
+        <Right>1317</Right>
+      </Window_Position>
+      <Interpretation_Window_Position>
+        <Visibility>SHOWNORMAL</Visibility>
+        <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
+        <Top>115</Top>
+        <Left>49</Left>
+        <Bottom>392</Bottom>
+        <Right>398</Right>
+      </Interpretation_Window_Position>
+    </LIN_Message_Window>
     <CAN_Tx_Window>
       <Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
@@ -1025,9 +1302,9 @@
         <CxMin>0</CxMin>
       </Splitter_Window_Left_0>
       <Splitter_Window_Left_1>
-        <CxIdeal>597</CxIdeal>
+        <CxIdeal>0</CxIdeal>
         <CxMin>0</CxMin>
-        <CxIdeal>322</CxIdeal>
+        <CxIdeal>0</CxIdeal>
         <CxMin>0</CxMin>
       </Splitter_Window_Left_1>
       <Splitter_Window_Right_0>
@@ -1039,118 +1316,6 @@
       <Default_Sampling_Period>125</Default_Sampling_Period>
       <SignalDefiner_AutoCorrect>1</SignalDefiner_AutoCorrect>
     </CAN_Wave_Form_Genarator>
-    <CAN_Bus_Statistics>
-      <COLUMN>
-        <ID>Parameter</ID>
-        <Order>1</Order>
-        <Width>200</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 1</ID>
-        <Order>2</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 2</ID>
-        <Order>3</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 3</ID>
-        <Order>4</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 4</ID>
-        <Order>5</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 5</ID>
-        <Order>6</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 6</ID>
-        <Order>7</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 7</ID>
-        <Order>8</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 8</ID>
-        <Order>9</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 9</ID>
-        <Order>10</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 10</ID>
-        <Order>11</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 11</ID>
-        <Order>12</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 12</ID>
-        <Order>13</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 13</ID>
-        <Order>14</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 14</ID>
-        <Order>15</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 15</ID>
-        <Order>16</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <COLUMN>
-        <ID>Channel 16</ID>
-        <Order>17</Order>
-        <Width>90</Width>
-        <IsVisible>1</IsVisible>
-      </COLUMN>
-      <Window_Position>
-        <Visibility>SHOWNORMAL</Visibility>
-        <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>240</Top>
-        <Left>728</Left>
-        <Bottom>770</Bottom>
-        <Right>1118</Right>
-      </Window_Position>
-    </CAN_Bus_Statistics>
     <CAN_TS_Editor>
       <XML_File_Path>TestAutomaion_Editor_Lib\NewTestEditorFile.xml</XML_File_Path>
       <Tree_Bkg_Color>feefed</Tree_Bkg_Color>
@@ -1195,6 +1360,9 @@
         <Bottom>607</Bottom>
         <Right>1142</Right>
       </Window_Position>
+      <Channel_Msg_List>
+        <Index>0</Index>
+      </Channel_Msg_List>
     </FLEX_Tx_Window>
     <FlexRay_Message_Window>
       <COLUMN>
@@ -1216,7 +1384,7 @@
         <Width>169</Width>
       </COLUMN>
       <COLUMN>
-        <ID>Frame ID</ID>
+        <ID>Frame Id</ID>
         <Order>4</Order>
         <IsVisible>1</IsVisible>
         <Width>166</Width>
@@ -1228,32 +1396,38 @@
         <Width>184</Width>
       </COLUMN>
       <COLUMN>
-        <ID>Description</ID>
+        <ID>Slot Type</ID>
         <Order>6</Order>
         <IsVisible>1</IsVisible>
         <Width>185</Width>
       </COLUMN>
       <COLUMN>
-        <ID>Cycle No</ID>
+        <ID>Description</ID>
         <Order>7</Order>
         <IsVisible>1</IsVisible>
         <Width>181</Width>
       </COLUMN>
       <COLUMN>
-        <ID>Channel</ID>
+        <ID>Cycle No</ID>
         <Order>8</Order>
         <IsVisible>1</IsVisible>
         <Width>180</Width>
       </COLUMN>
       <COLUMN>
-        <ID>Data Length</ID>
+        <ID>Channel</ID>
         <Order>9</Order>
         <IsVisible>1</IsVisible>
         <Width>193</Width>
       </COLUMN>
       <COLUMN>
-        <ID>Data Byte(s)</ID>
+        <ID>DLC</ID>
         <Order>10</Order>
+        <IsVisible>1</IsVisible>
+        <Width>235</Width>
+      </COLUMN>
+      <COLUMN>
+        <ID>Data Byte(s)</ID>
+        <Order>11</Order>
         <IsVisible>1</IsVisible>
         <Width>235</Width>
       </COLUMN>
@@ -1272,11 +1446,67 @@
       <Interpretation_Window_Position>
         <Visibility>SHOWNORMAL</Visibility>
         <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
-        <Top>279</Top>
+        <Top>115</Top>
         <Left>49</Left>
-        <Bottom>556</Bottom>
+        <Bottom>392</Bottom>
         <Right>398</Right>
       </Interpretation_Window_Position>
     </FlexRay_Message_Window>
+    <FLEX_Cluster_Config>
+      <CHANNEL>
+        <Index>0</Index>
+        <HWUri>Hardware</HWUri>
+        <DbPath></DbPath>
+        <ClusterId></ClusterId>
+        <ECU/>
+      </CHANNEL>
+    </FLEX_Cluster_Config>
+    <LIN_Simulated_Systems>
+      <Window_Position>
+        <Visibility>HIDE</Visibility>
+        <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
+        <Top>0</Top>
+        <Left>0</Left>
+        <Bottom>0</Bottom>
+        <Right>0</Right>
+      </Window_Position>
+    </LIN_Simulated_Systems>
+    <LIN_Cluster_Config>
+      <CHANNEL>
+        <Index>0</Index>
+        <HWUri>Hardware</HWUri>
+        <DbPath></DbPath>
+        <ClusterId></ClusterId>
+        <BaudRate>19200</BaudRate>
+        <ProtocolVersion>LIN 2.1</ProtocolVersion>
+        <Overwrite_Settings>1</Overwrite_Settings>
+        <MasterMode>0</MasterMode>
+        <ECU/>
+      </CHANNEL>
+    </LIN_Cluster_Config>
+    <LIN_Tx_Window>
+      <Window_Position>
+        <Visibility>HIDE</Visibility>
+        <WindowPlacement>RESTORETOMAXIMIZED</WindowPlacement>
+        <Top>-1</Top>
+        <Left>0</Left>
+        <Bottom>0</Bottom>
+        <Right>0</Right>
+      </Window_Position>
+      <Channel_Msg_List/>
+    </LIN_Tx_Window>
+    <LIN_Schedule_Table>
+      <Window_Position>
+        <Visibility>SHOWNORMAL</Visibility>
+        <WindowPlacement>SETMINPOSITION</WindowPlacement>
+        <Top>183</Top>
+        <Left>535</Left>
+        <Bottom>716</Bottom>
+        <Right>1185</Right>
+      </Window_Position>
+      <Channel>
+        <Index>1</Index>
+      </Channel>
+    </LIN_Schedule_Table>
   </Module_Configuration>
 </BUSMASTER_CONFIGURATION>

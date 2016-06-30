@@ -24,7 +24,11 @@ WinActivate($WIN_BUSMASTER,3)
 if winexists($WIN_BUSMASTER) then
 	_openCANDB("testDBE_05")															; Open dbf file
 	_SelectSigDesc(0)																	; select signal description from list view
+	;------Maximize Child Window DatabaseEditor - CAN---------------
+	_Maximize_childWindow("DatabaseEditor - CAN")
+	sleep(1000)
 	ControlClick($WIN_DBEditor_CAN,"",$BTN_EditSigDesc_DBEditor)						; Click on 'Edit Desc' button
+	sleep(3000)
 	_addSigDesc("Desc1update",2)														; Call _addSigDesc function from 'globalFunc4Module.au3' file to update signal description.
 	sleep(500)
 	$sigDesclvhwd=controlgethandle($WIN_BUSMASTER,"",$LVC_SigDesc_SigDesc)				; Get handle of signal description list view

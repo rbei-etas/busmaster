@@ -21,6 +21,20 @@ ConsoleWrite("****Start : TS_TxWin_33.au3****"&@CRLF)
 		Sleep(1000)
 		 WinMenuSelectItem($WIN_BUSMASTER,"",$CANMenu,$CANNWStatsMenu)                                      ; Select CAN->Network Statistics
 		 Sleep(500)
+
+		;---Updated below scripts to access Network statistics window since it is implemented as child window ----
+
+		Opt("WinDetectHiddenText", 0)
+		;$HWD= ControlGetHandle($WIN_NW_Stats,"",$LVC_Details_NW_Stats)
+		Opt("WinSearchChildren", 1)
+		Opt("WinTitleMatchMode", 1)
+		WinWait("Network Statistics")
+
+
+
+	;----------------------------------------------------------------------------
+
+
 		 $pos=WinGetPos($WIN_NW_Stats)                                                                       ;Get the pisition of the Network Statistics window
 		 ConsoleWrite("$pos[0]" & $pos[0] & @CRLF)
 		  ConsoleWrite("$pos[1]" & $pos[1] & @CRLF)

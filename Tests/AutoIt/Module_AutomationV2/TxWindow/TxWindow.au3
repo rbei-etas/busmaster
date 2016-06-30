@@ -18,6 +18,7 @@ _StartoHTMLTable("Tx Window Module Test Report")
 
 ;~ ;-------------P1 test cases------------------------------
 #include "TS_TxWin_01.au3"
+
 #include "TS_TxWin_02.au3"
 #include "TS_TxWin_03.au3"
 #include "TS_TxWin_05.au3"
@@ -56,3 +57,5 @@ _EndoHTMLTable()
 _SaveHTMLReport()
 
 _IEQuit($oIE)
+
+_ExcelBookClose($oExcel, 1, 0)

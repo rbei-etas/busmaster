@@ -23,6 +23,10 @@ _launchApp()
 WinActivate($WIN_BUSMASTER,3)
 if winexists($WIN_BUSMASTER) then
 	_openJ1939DB("testJ1939DBE_05")														; Open dbf file
+	;------Maximize Child Window DatabaseEditor - J1939---------------
+	_Maximize_childWindow("DatabaseEditor - J1939")
+	sleep(1000)
+
 	_SelectSigDesc(0)																	; select signal description from list view
 	ControlClick($WIN_DBEditor_J1939,"",$BTN_EditSigDesc_DBEditor)						; Click on 'Edit Desc' button
 	_addSigDesc("Desc1update",2)														; Call _addSigDesc function from 'globalFunc4Module.au3' file to update signal description.
