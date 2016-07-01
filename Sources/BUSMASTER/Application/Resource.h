@@ -30,7 +30,6 @@
 #define IDD_DLG_FIBEX_IMPORT            108
 #define IDI_ICON_J1939_LOG_DISABLED     109
 #define IDI_ICON_J1939_ONLINE_DISABLED  110
-#define IDB_LICENSEDLG                  110
 #define IDI_ICON_J1939_TRANSMIT_DISABLED 111
 #define IDR_CAN_MONITOR                 111
 #define IDI_ICON_CAN_CONNECT            112

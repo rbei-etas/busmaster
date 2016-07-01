@@ -1,3 +1,7 @@
+/*
+* Copyright Robert Bosch Engineering and Business Solutions Private Limited. All Rights Reserved.
+*/
+
 #pragma once
 #include <string>
 #include "DeviceListInfo.h"
