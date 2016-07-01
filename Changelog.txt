@@ -1,3 +1,21 @@
+commit 285a451d4bccf43c4981374238b854be9c296e10
+Author: saravanan <saravanan.sivasubramaniam@in.bosch.com>
+Date:   Fri Jul 1 12:55:37 2016 +0530
+
+    Updated files for v3.0.0
+
+commit 69530befe9ca80d8fbe609dba50fe0447563cbc4
+Author: saravanan <saravanan.sivasubramaniam@in.bosch.com>
+Date:   Thu Jun 30 17:56:36 2016 +0530
+
+    BUSMASTER v3.0.0 changes
+
+commit 93f0f2805bbef626758a717ab176d47bc424bab4
+Author: Prathiba <Prathibabharathi.pagadala@in.bosch.com>
+Date:   Tue Nov 17 12:07:30 2015 +0530
+
+    Version information updated
+
 commit 41180fd99ae65bf8d2b683eb8095acb87c41b1f8
 Author: Prathiba <prathibabharathi.pagadala@in.bosch.com>
 Date:   Mon Nov 16 18:24:59 2015 +0530
