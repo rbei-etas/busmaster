@@ -14,7 +14,7 @@
    <string>Create Event Triggered Frame</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="ldfeditor.qrc">
+   <iconset>
     <normaloff>:/LDFEditorIcons/Resources/icons/ScheduleTable.png</normaloff>:/LDFEditorIcons/Resources/icons/ScheduleTable.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -180,8 +180,6 @@
    <header>LDFCommonTableWidget.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="ldfeditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

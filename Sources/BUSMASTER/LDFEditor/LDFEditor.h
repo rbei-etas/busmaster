@@ -4,11 +4,14 @@
 #include <QtWidgets/QMainWindow>
 #include <QSplitter>
 #include <QMenuBar>
-#include <LDFElementView.h>
-#include <LDFNetworkView.h>
-#include <LDFPropertyView.h>
+#include <QEvent>
+#include <QCloseEvent>
+
 #include <ui_LDFEditor.h>
-#include <qevent.h>
+
+#include "LDFElementView.h"
+#include "LDFNetworkView.h"
+#include "LDFPropertyView.h"
 
 class LDFEditor : public QMainWindow
 {
@@ -33,6 +36,7 @@ private:
     int ValidateForSaving();
 
     int nValidateForCluster(std::list<ParsingResults>& ouErrors, std::list<ParsingResults>& ouWarnings);
+
 public:
     LDFEditor(std::string omstrLdfPath, QWidget* parent = 0);
     ~LDFEditor();

@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>698</width>
-    <height>403</height>
+    <height>539</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,7 +23,7 @@
    <string>Edit ECU - Slave_ECU1</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="ldfeditor.qrc">
+   <iconset>
     <normaloff>:/LDFEditorIcons/Resources/icons/Ecu.png</normaloff>:/LDFEditorIcons/Resources/icons/Ecu.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -518,41 +518,41 @@
       </widget>
      </item>
      <item>
-          <widget class="QGroupBox" name="grpRespErr">
-           <property name="title">
-            <string>Response Error</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_3">
-            <item row="0" column="0">
-             <layout class="QHBoxLayout" name="horizontalLayout_3">
-              <item>
-               <widget class="QLabel" name="labelRespErr">
-                <property name="text">
-                 <string>Response Error Signal          </string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QComboBox" name="comboRespErr"/>
-              </item>
-             </layout>
-            </item>
-            <item row="0" column="1">
-             <spacer name="horizontalSpacer_7">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </widget>
-         </item>
+      <widget class="QGroupBox" name="grpRespErr">
+       <property name="title">
+        <string>Response Error</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLabel" name="labelRespErr">
+            <property name="text">
+             <string>Response Error Signal          </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboRespErr"/>
+          </item>
+         </layout>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </item>
      <item>
       <widget class="QGroupBox" name="groupFaultStateSignals">
        <property name="title">
@@ -594,8 +594,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="ldfeditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

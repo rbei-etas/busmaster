@@ -63,6 +63,7 @@ LDFEditor::~LDFEditor()
 {
     LDFDatabaseManager::GetDatabaseManager()->DeleteDatabaseManager();
 }
+
 void LDFEditor::SetupWarningPane()
 {
     if ( nullptr == m_pWarningTable )
@@ -79,8 +80,6 @@ void LDFEditor::SetupWarningPane()
 
 void LDFEditor::closeEvent (QCloseEvent* event)
 {
-
-
     if ( CheckForSaving() == 0 )
     {
         event->ignore();
@@ -236,6 +235,7 @@ int LDFEditor::ConnectMenuActions(void)
     connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(onFileExit()));
     return 0;
 }
+
 int LDFEditor::onFileExit()
 {
     if ( CheckForSaving() != 0 )
@@ -245,6 +245,7 @@ int LDFEditor::onFileExit()
 
     return 0;
 }
+
 int LDFEditor::onActionOpenRecentFile()
 {
     if ( CheckForSaving() == 0 )
@@ -360,7 +361,7 @@ int LDFEditor::OpenLDFFile(QString strLDFFilePath)
     if ( "" != strLDFFilePath )
     {
         if (CloseCurrentLDFFile())
-          return -1;
+            return -1;
 
         list<ParsingResults> ouErrors;
         list<ParsingResults> ouWarnings;
@@ -412,7 +413,7 @@ int LDFEditor::OpenLDFFile(QString strLDFFilePath)
             QList<QVariant> ouRow;
             int nRow = 0;
             m_pWarningTable->setRowCount(ouWarnings.size());
-for ( auto itr : ouWarnings )
+            for ( auto itr : ouWarnings )
             {
                 ouRow.clear();
                 ouRow.push_back("Warning");
@@ -535,7 +536,7 @@ int LDFEditor::ValidateForSaving()
         QList<QVariant> ouRow;
         int nRow = 0;
         m_pWarningTable->setRowCount(ouWarnings.size());
-for ( auto itr : ouWarnings )
+        for ( auto itr : ouWarnings )
         {
             ouRow.clear();
             ouRow.push_back("Warning");
@@ -576,7 +577,10 @@ int LDFEditor::onActionLIN1_3(void)
     {
         return 0;
     }
-    CloseCurrentLDFFile();
+
+    if (CloseCurrentLDFFile())
+        return -1;
+
     m_strCurrentLDFFilePath = QFileDialog::getSaveFileName(this, tr("New LDF File 1.3"), "", tr("LDF Files (*.ldf)"));
 
     if(m_strCurrentLDFFilePath.isEmpty() == false)
@@ -599,7 +603,10 @@ int LDFEditor::onActionLIN2_0(void)
     {
         return 0;
     }
-    CloseCurrentLDFFile();
+
+    if (CloseCurrentLDFFile())
+        return -1;
+
     m_strCurrentLDFFilePath = QFileDialog::getSaveFileName(this, tr("New LDF File 2.0"), "", tr("LDF Files (*.ldf)"));
 
     if(m_strCurrentLDFFilePath.isEmpty() == false)
@@ -622,7 +629,10 @@ int LDFEditor::onActionLIN2_1(void)
     {
         return 0;
     }
-    CloseCurrentLDFFile();
+
+    if (CloseCurrentLDFFile())
+        return -1;
+
     m_strCurrentLDFFilePath = QFileDialog::getSaveFileName(this, tr("New LDF File 2.1"), "", tr("LDF Files (*.ldf)"));
 
     if(m_strCurrentLDFFilePath.isEmpty() == false)

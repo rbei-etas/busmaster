@@ -22,7 +22,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="ldfeditor.qrc">:/LDFEditorIcons/Resources/icons/32x32/Application.png</pixmap>
+        <pixmap resource="LDFEditor.qrc">:/LDFEditorIcons/Resources/icons/32x32/Application.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -123,7 +123,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="ldfeditor.qrc"/>
+  <include location="LDFEditor.qrc"/>
  </resources>
  <connections/>
 </ui>

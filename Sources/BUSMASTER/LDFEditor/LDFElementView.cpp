@@ -1703,7 +1703,7 @@ void LDFElementView::vOnDeleteSlaveElement()
         QMessageBox::StandardButton reply;
         if(pItem->parent()->childCount() <= 1)
         {
-            reply = QMessageBox::critical(this, "Delete?", "Alteast one Slave should exist");
+            reply = QMessageBox::critical(this, "Delete?", "At least one Slave should exist");
             return;
         }
 

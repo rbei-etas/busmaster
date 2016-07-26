@@ -28,7 +28,7 @@
    <string>Master_Ecu</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="ldfeditor.qrc">
+   <iconset>
     <normaloff>:/LDFEditorIcons/Resources/icons/Ecu.png</normaloff>:/LDFEditorIcons/Resources/icons/Ecu.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -168,8 +168,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="ldfeditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

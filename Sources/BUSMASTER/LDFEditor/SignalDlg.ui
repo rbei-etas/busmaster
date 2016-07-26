@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>723</width>
-    <height>389</height>
+    <width>739</width>
+    <height>416</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -20,7 +20,7 @@
    <string>Edit Signal - Signal1</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="ldfeditor.qrc">
+   <iconset>
     <normaloff>:/LDFEditorIcons/Resources/icons/Signals.png</normaloff>:/LDFEditorIcons/Resources/icons/Signals.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -350,8 +350,6 @@ Subcribers</string>
   <tabstop>listSubscribers</tabstop>
   <tabstop>buttonOption</tabstop>
  </tabstops>
- <resources>
-  <include location="ldfeditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

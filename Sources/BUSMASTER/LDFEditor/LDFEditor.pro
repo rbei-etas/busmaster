@@ -45,7 +45,6 @@ HEADERS += \
     LDFCommonTableWidget.h \
     LDFDatabaseManager.h \
     LDFDefines.h \
-    ldfeditor.h \
     LDFElementView.h \
     LDFNetworkView.h \
     LDFPropertyView.h \
@@ -62,7 +61,8 @@ HEADERS += \
     SignalGroupDlg.h \
     SlaveDlg.h \
     SporadicFrameEditDlg.h \
-    UnconditionalFrameEditDlg.h
+    UnconditionalFrameEditDlg.h \
+    LDFEditor.h
 
 SOURCES += \
     AboutLDFEditor.cpp \
@@ -73,7 +73,6 @@ SOURCES += \
     LDFCLusterPropsDlg.cpp \
     LDFCommonTableWidget.cpp \
     LDFDatabaseManager.cpp \
-    ldfeditor.cpp \
     LDFElementView.cpp \
     LDFNetworkView.cpp \
     LDFPropertyView.cpp \
@@ -90,4 +89,5 @@ SOURCES += \
     SignalGroupDlg.cpp \
     SlaveDlg.cpp \
     SporadicFrameEditDlg.cpp \
-    UnconditionalFrameEditDlg.cpp
+    UnconditionalFrameEditDlg.cpp \
+    LDFEditor.cpp
