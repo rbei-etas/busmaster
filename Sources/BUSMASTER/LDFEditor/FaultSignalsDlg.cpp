@@ -66,7 +66,7 @@ for ( auto itr : ouSignsalList )
             {
                 ui.tableSignalList->item(nRow, 0)->setCheckState(Qt::Unchecked);
             }
-            ui.tableSignalList->item(nRow, 0)->setData(Qt::UserRole, QVariant(itr.second->GetUniqueId()));
+            ui.tableSignalList->item(nRow, 0)->setData(Qt::UserRole, QVariant::fromValue(itr.second->GetUniqueId()));
             nRow++;
         }
         ouColumnList.clear();

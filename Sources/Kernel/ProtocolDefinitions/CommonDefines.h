@@ -8,8 +8,9 @@
 
 //#define   EXPORTS
 
+#include <stdint.h>
 
-typedef unsigned __int64        UID_ELEMENT;
+typedef uint64_t                UID_ELEMENT;
 typedef int                     ERRORCODE;
 typedef int                     STARTBIT;
 

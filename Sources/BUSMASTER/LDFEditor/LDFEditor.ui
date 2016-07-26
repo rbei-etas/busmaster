@@ -20,7 +20,7 @@
    <string>BUSMASTER LDF Editor</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="ldfeditor.qrc">
+   <iconset resource="LDFEditor.qrc">
     <normaloff>:/LDFEditorIcons/Resources/icons/32x32/Application.png</normaloff>:/LDFEditorIcons/Resources/icons/32x32/Application.png</iconset>
   </property>
   <property name="windowOpacity">
@@ -84,7 +84,7 @@
           </font>
          </property>
          <property name="textAlignment">
-          <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+          <set>AlignCenter</set>
          </property>
         </column>
         <column>
@@ -98,7 +98,7 @@
           </font>
          </property>
          <property name="textAlignment">
-          <set>AlignHCenter|AlignVCenter|AlignCenter</set>
+          <set>AlignCenter</set>
          </property>
         </column>
        </widget>
@@ -156,7 +156,7 @@
      <x>0</x>
      <y>0</y>
      <width>851</width>
-     <height>23</height>
+     <height>17</height>
     </rect>
    </property>
    <property name="font">
@@ -396,16 +396,16 @@
   <customwidget>
    <class>LDFPropertyView</class>
    <extends>QTableWidget</extends>
-   <header>ldfpropertyview.h</header>
+   <header>LDFPropertyView.h</header>
   </customwidget>
   <customwidget>
    <class>LDFAdditionalView</class>
    <extends>QTableWidget</extends>
-   <header>ldfadditionalview.h</header>
+   <header>LDFAdditionalView.h</header>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="ldfeditor.qrc"/>
+  <include location="LDFEditor.qrc"/>
  </resources>
  <connections/>
 </ui>

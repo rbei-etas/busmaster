@@ -2,10 +2,10 @@
 
 #include "qtablewidget.h"
 #include "qfiledialog.h"
-#include "ICluster.h"
+//#include "ICluster.h"
 #include "LDFDatabaseManager.h"
-#include <qprocess>
-#include <qtemporaryfile>
+#include <QProcess>
+#include <QTemporaryFile>
 #define VALIDATE_AND_RETURN(x)  if ( nullptr == x ) return EC_FAILURE;
 #define VALIDATE_POINTER(x)     if ( nullptr == x ) return;
 
@@ -82,16 +82,16 @@ int GetString(eDiagType oueLinDiagType, std::string& strString);
 int GetString(double dVal, QString& strText);
 int GetString(int nVal, QString& strText );
 unsigned int GetUnsignedInt(const QString& strText);
-unsigned int GetUnsignedInt(QString& strText, int nBase);
+unsigned int GetUnsignedInt(const QString& strText, int nBase);
 
 QString GetString(int nVal, bool bPrintHex = true);
 QString GetString(unsigned int nVal,bool bPrintHexSymbol = true);
 QString GetString(double dVal);
-QString GetString(unsigned __int64 nVal, bool bPrintHexSymbol = true);
+QString GetString(uint64_t nVal, bool bPrintHexSymbol = true);
 
 QString GetString(int nVal, int nBase);
 QString GetString(unsigned int nVal, int nBase);
-QString GetString(unsigned __int64 nVal, int nBase);
+QString GetString(uint64_t nVal, int nBase);
 
 
 int GetType(std::string strString, eDiagType& ouDiagType);

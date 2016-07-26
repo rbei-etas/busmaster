@@ -1,8 +1,9 @@
 #pragma once
-#include <qobject>
+#include <QObject>
+#include <QStringList>
+#include <QLibrary>
+
 #include "ICluster.h"
-#include "qstringlist.h"
-#include <qlibrary.h>
 
 class LDFDatabaseManager : public QObject
 {
@@ -28,7 +29,7 @@ public:
     LDFDatabaseManager(void);
     ~LDFDatabaseManager(void);
 
-    int SetLDFFilePath(std::string& strFilePath);
+    int SetLDFFilePath(const std::string &strFilePath);
     std::string GetLDFFilePath();
     int LoadLDFFilePath(std::string& strFilePath);
     ICluster* GetLDFCluster();

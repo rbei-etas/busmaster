@@ -216,6 +216,6 @@ void SporadicFrameEditDlg::vAddFrameToTable(IFrame* pFrame, std::map<UID_ELEMENT
         {
             ui.tableFrames->item(ui.tableFrames->rowCount()-1, 0)->setCheckState(Qt::Checked);
         }
-        ui.tableFrames->item(ui.tableFrames->rowCount()-1, 0)->setData(Qt::UserRole, QVariant(pFrame->GetUniqueId()));
+        ui.tableFrames->item(ui.tableFrames->rowCount()-1, 0)->setData(Qt::UserRole, QVariant::fromValue(pFrame->GetUniqueId()));
     }
 }

@@ -40,8 +40,8 @@ public:
 
     virtual ERRORCODE GetNextUniqueId(UID_ELEMENT&) = 0;
     //Editor
-    virtual ERRORCODE LoadFromFile(std::string& strFileName, std::list<ParsingResults>& ouErrors, std::list<ParsingResults>& ouWarnings) = 0;
-    virtual ERRORCODE SaveToFile(std::string& strFileName) = 0;
+    virtual ERRORCODE LoadFromFile(const std::string& strFileName, std::list<ParsingResults>& ouErrors, std::list<ParsingResults>& ouWarnings) = 0;
+    virtual ERRORCODE SaveToFile(const std::string& strFileName) = 0;
     virtual ERRORCODE ValidateCluster(std::list<std::string>&) = 0;
     virtual ERRORCODE GetDBFilePath(std::string& oustrDbFileList) = 0;
     virtual ERRORCODE GetDBFileChecksum(std::string& strDBFileChecksum) = 0;
@@ -64,7 +64,7 @@ public:
     virtual bool isNotoficationsEnabled() = 0;
     //Interpretation
 
-    virtual ERRORCODE GetEcu(std::string& strEcuName, IEcu** pEcu) = 0;
+    virtual ERRORCODE GetEcu(const std::string& strEcuName, IEcu** pEcu) = 0;
     virtual ERRORCODE GetName(std::string& strClusterName) = 0;
 
     virtual ERRORCODE GetFrame(unsigned int& unId, void* vProtocolFrameParams, IFrame** pFrame) = 0;
@@ -104,7 +104,7 @@ public:
         return EC_SUCCESS;
     }
 
-    virtual ERRORCODE SetName(std::string& strName)
+    virtual ERRORCODE SetName(const std::string& strName)
     {
         //if ( m_strName != strName )
         {
@@ -237,7 +237,7 @@ public:
 
     virtual ERRORCODE GetEcus(eDIR eDirection, std::list<IEcu*>& ouNodes) = 0;
     virtual ERRORCODE GetLength(unsigned int& unSignalLength) = 0;
-    virtual ERRORCODE GetMinMaxValue(unsigned __int64& unMinValue, unsigned __int64& unMaxValue) = 0;
+    virtual ERRORCODE GetMinMaxValue(uint64_t& unMinValue, uint64_t& unMaxValue) = 0;
     virtual ERRORCODE MapNode( eDIR eDirection, UID_ELEMENT&) = 0;
     virtual ERRORCODE UnMapNode( eDIR eDirection, UID_ELEMENT&) = 0;
 
@@ -250,9 +250,9 @@ public:
     virtual ERRORCODE GetDataType(eSignalDataType&) = 0;
     virtual ERRORCODE GetUnit(std::string&) = 0;
 
-    virtual ERRORCODE GetRawValue(int nStartBit, int nSignalLength, int nByteLength, bool bIntel, unsigned char* pchData, unsigned __int64& unRawValue) = 0;
-    virtual ERRORCODE GetEnggValueFromRaw(unsigned __int64  dwRawValue, double& dEnggValue) = 0;
-    virtual ERRORCODE GetRawValueFromEng(double dEnggValue, unsigned __int64&  dwRawValue) = 0;
+    virtual ERRORCODE GetRawValue(int nStartBit, int nSignalLength, int nByteLength, bool bIntel, unsigned char* pchData, uint64_t& unRawValue) = 0;
+    virtual ERRORCODE GetEnggValueFromRaw(uint64_t  dwRawValue, double& dEnggValue) = 0;
+    virtual ERRORCODE GetRawValueFromEng(double dEnggValue, uint64_t&  dwRawValue) = 0;
 };
 
 
@@ -279,8 +279,8 @@ public:
     virtual ERRORCODE MapSignal(UID_ELEMENT) = 0;
     virtual ERRORCODE UnMapSignal(UID_ELEMENT) = 0;
 
-    virtual ERRORCODE GetEngValue(eSignalDataType eDataType, int  nSiglength, unsigned __int64 unRawValue, double& dEngValue) = 0;
-    virtual ERRORCODE GetRawValue(double dEngValue, unsigned __int64& unRawValue) = 0;
+    virtual ERRORCODE GetEngValue(eSignalDataType eDataType, int  nSiglength, uint64_t unRawValue, double& dEngValue) = 0;
+    virtual ERRORCODE GetRawValue(double dEngValue, uint64_t& unRawValue) = 0;
 };
 
 class ISignalGroup : public IElement
@@ -370,6 +370,9 @@ public:
     }
 };
 
-extern "C" __declspec( dllexport ) ERRORCODE ParseDBFile( std::string& strFileName, ETYPE_BUS clusterType, std::list<ClusterResult>& ouClusterResultList );
+#ifdef _WIN32
+extern "C" __declspec(dllexport) ERRORCODE ParseDBFile( std::string& strFileName, ETYPE_BUS clusterType, std::list<ClusterResult>& ouClusterResultList );
 extern "C" __declspec(dllexport) ERRORCODE FreeCluster( ICluster* pCluster );
 extern "C" __declspec(dllexport) ERRORCODE CreateLDFCluster(ICluster** pouLdfCluster);
+// TODO figure out whether it is needed on Unixes!
+#endif

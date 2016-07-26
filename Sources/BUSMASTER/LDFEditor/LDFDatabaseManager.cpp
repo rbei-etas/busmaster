@@ -110,7 +110,7 @@ ICluster* LDFDatabaseManager::GetLDFCluster()
     return m_pouLDFClsuter;
 }
 
-int LDFDatabaseManager::SetLDFFilePath(std::string& strFilePath)
+int LDFDatabaseManager::SetLDFFilePath(const std::string& strFilePath)
 {
     m_strCurrentLDFFilePath = strFilePath;
 

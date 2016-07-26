@@ -255,7 +255,7 @@ public:
     //eEndianess m_ouEndianess;
     std::string m_omUnit;
     //eLinSignalValueType m_ouValueType;
-    unsigned __int64 m_nIntialValue;
+    uint64_t m_nIntialValue;
 };
 
 

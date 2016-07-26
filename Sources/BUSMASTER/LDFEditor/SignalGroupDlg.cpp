@@ -235,7 +235,7 @@ for ( auto itr : ouElementMap )
 
         ui.tableSignals->setCellWidget(nRow, 1, poffsetWidget);
 
-        ui.tableSignals->item(nRow, 0)->setData(Qt::UserRole, itr.first);
+        ui.tableSignals->item(nRow, 0)->setData(Qt::UserRole, QVariant::fromValue(itr.first));
 
         auto itrSelectedSig = ouSelectedSignals.find(itr.first);
         if ( itrSelectedSig != ouSelectedSignals.end() )
@@ -265,7 +265,7 @@ void SignalGroupDlg::vPrepareUiForNewMode()
     ui.tableSignals->setRowCount(ouElementMap.size());
     QList<QVariant> ouColumns;
     int nRow = 0;
-for ( auto itr : ouElementMap )
+    for ( auto itr : ouElementMap )
     {
         ouColumns.clear();
         itr.second->GetName(strName);
@@ -282,7 +282,7 @@ for ( auto itr : ouElementMap )
 
         ui.tableSignals->setCellWidget(nRow, 1, poffsetWidget);
         ui.tableSignals->item(nRow, 0)->setCheckState(Qt::Unchecked);
-        ui.tableSignals->item(nRow, 0)->setData(Qt::UserRole, itr.first);
+        ui.tableSignals->item(nRow, 0)->setData(Qt::UserRole, QVariant::fromValue(itr.first));
         nRow++;
     }
 }

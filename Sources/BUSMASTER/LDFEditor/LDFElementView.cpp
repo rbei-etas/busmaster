@@ -612,7 +612,7 @@ int LDFElementView::nGetDigFrameTreeWidgetItem(IFrame* pDigFrame, QTreeWidgetIte
     strName = strName + " [ " + strTemp.toStdString() + " ] ";
     pouTreeWidget->setText(0, QString::fromStdString(strName));
     pouTreeWidget->setIcon(0, m_ouIcons[defFRAME_ICON_INDEX]);
-    pouTreeWidget->setData(0, Qt::UserRole, pDigFrame->GetUniqueId());
+    pouTreeWidget->setData(0, Qt::UserRole, QVariant::fromValue(pDigFrame->GetUniqueId()));
     ouTreeItemID.m_eTreeElementType = eLdfItem;
     ouTreeItemID.m_uidElement = pDigFrame->GetUniqueId();
     m_UidTreeWidgetMap[ouTreeItemID.m_uidElement] = pouTreeWidget;

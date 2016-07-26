@@ -120,7 +120,7 @@ public:
     eSignalDataType m_ouDataType;
     eEndianess m_ouEndianess;
     eLinSignalValueType m_ouValueType;
-    unsigned __int64 m_nIntialValue;
+    uint64_t m_nIntialValue;
 };
 
 class LinSignalGroupProps

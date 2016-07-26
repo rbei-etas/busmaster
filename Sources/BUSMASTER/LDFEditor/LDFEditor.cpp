@@ -1,22 +1,33 @@
-#include "ldfeditor.h"
-#include <qpushbutton.h>
-#include <qlist>
-#include <qfiledialog.h>
+
+
+#include <QToolButton>
+#include <QMessageBox>
+#include <QTextEdit>
+#include <QDesktopServices>
+#include <QPushButton>
+#include <QList>
+#include <QFileDialog>
+
+
 #include "IClusterProps.h"
 #include "ICluster.h"
+
 #include "LDFDatabaseManager.h"
-#include <qtoolbutton.h>
-#include <algorithm>
-#include "AboutLDFEditor.h"
-#include "LDFUtility.h"
-#include "qmessagebox.h"
+#include "LDFEditor.h"
+
+#include <math.h>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
+
+#include "AboutLDFEditor.h"
+#include "LDFUtility.h"
+
+
+
 //#include "../DBManager/LINDBManager/LDFCluster.h"
-#include "ICluster.h"
-#include "qtextedit.h"
-#include <math.h>
-#include <QDesktopServices>
+
+
 using namespace std;
 LDFEditor::LDFEditor(std::string omstrLdfPath, QWidget* parent)
     : QMainWindow(parent)

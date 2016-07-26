@@ -426,7 +426,7 @@ for(auto itrFrame : mapFrames)
             }
         }
         ecCode = EC_SUCCESS;
-        pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant(uidFrame));
+        pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant::fromValue(uidFrame));
     }
 
     if(m_DiagnosticuID[0] != INVALID_UID_ELEMENT)
@@ -436,33 +436,33 @@ for(auto itrFrame : mapFrames)
         {
             ecCode = EC_SUCCESS;
             GetString(eLIN_SID_ASSIGN_NAD_ID, strFrameName);
-            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant(uidFrame));
+            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant::fromValue(uidFrame));
             GetString(eLIN_SID_ASSIGN_FRAME_ID, strFrameName);
-            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant(uidFrame));
+            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant::fromValue(uidFrame));
             GetString(eLIN_SID_FREEFORMAT, strFrameName);
-            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant(uidFrame));
+            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant::fromValue(uidFrame));
             GetString(eLIN_SID_READ_BY_IDENTIFIER, strFrameName);
-            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant(uidFrame));
+            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant::fromValue(uidFrame));
         }
         else if ( ouLinSettings.m_dProtocolVers == defVersion_2_1)
         {
             ecCode = EC_SUCCESS;
             GetString(eLIN_SID_ASSIGN_NAD_ID, strFrameName);
-            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant(uidFrame));
+            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant::fromValue(uidFrame));
             GetString(eLIN_SID_COND_CHANGE_NAD, strFrameName);
-            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant(uidFrame));
+            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant::fromValue(uidFrame));
             GetString(eLIN_SID_ASSIGN_FRAME_RANGE, strFrameName);
-            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant(uidFrame));
+            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant::fromValue(uidFrame));
             GetString(eLIN_SID_ASSIGN_FRAME_ID, strFrameName);
-            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant(uidFrame));
+            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant::fromValue(uidFrame));
             GetString(eLIN_SID_SAVE_CONFIG, strFrameName);
-            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant(uidFrame));
+            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant::fromValue(uidFrame));
             GetString(eLIN_SID_DATA_DUMP, strFrameName);
-            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant(uidFrame));
+            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant::fromValue(uidFrame));
             GetString(eLIN_SID_FREEFORMAT, strFrameName);
-            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant(uidFrame));
+            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant::fromValue(uidFrame));
             GetString(eLIN_SID_READ_BY_IDENTIFIER, strFrameName);
-            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant(uidFrame));
+            pTempComboBox->addItem(QString::fromStdString(strFrameName), QVariant::fromValue(uidFrame));
 
         }
     }

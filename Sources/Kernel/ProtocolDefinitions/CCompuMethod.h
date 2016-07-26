@@ -15,7 +15,7 @@ enum Validity
     eValidityNone
 };
 
-typedef enum eCompuType
+enum eCompuType
 {
     IDENTICAL_ENUM = 0,              //No change
     LINEAR_ENUM,                     //Linear expression N0,N1,D1
@@ -50,7 +50,7 @@ class  CompuTextable
 public:
     ValueRange m_sRange;
     std::string m_aTextName;
-    CompuTextable& CompuTextable::operator=(const CompuTextable& RefObj)
+    CompuTextable& operator=(const CompuTextable& RefObj)
     {
         m_sRange = RefObj.m_sRange;
         m_aTextName = RefObj.m_aTextName;

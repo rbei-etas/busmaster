@@ -1,10 +1,12 @@
-#include "ldfadditionalview.h"
-#include "qheaderview.h"
+#include "LDFAdditionalView.h"
 #include "LDFDatabaseManager.h"
 #include "LDFUtility.h"
-#include <algorithm>
 #include "LDFDefines.h"
 #include "LineEditWidget.h"
+
+#include <algorithm>
+#include <QHeaderView>
+
 LDFAdditionalView::LDFAdditionalView(QWidget* parent)
     : LDFCommonTableWidget(parent)
 {
@@ -639,7 +641,7 @@ for ( auto itr : mapSignals )
         ouValueList.push_back(QVariant(QString::fromStdString(strPublishers)));
         ouValueList.push_back(QVariant(QString::fromStdString(strSubscribers)));
         ouValueList.push_back(QVariant(GetString(ouSignalProps.m_ouLINSignalProps.m_nLength, 10)));     //In dec always
-        ouValueList.push_back(QVariant(ouSignalProps.m_ouLINSignalProps.m_nIntialValue));
+        ouValueList.push_back(QVariant::fromValue(ouSignalProps.m_ouLINSignalProps.m_nIntialValue));
 
         strEncoding = "", strUnit = "", strCoding = "";
         if(nullptr != pCoding)
@@ -847,7 +849,7 @@ for ( auto itr : mapSignals )
         ouValueList.push_back(QVariant(QString::fromStdString(strPublishers)));
         ouValueList.push_back(QVariant(QString::fromStdString(strSubscribers)));
         ouValueList.push_back(QVariant(GetString(ouSignalProps.m_ouLINSignalProps.m_nLength, 10)));
-        ouValueList.push_back(QVariant(ouSignalProps.m_ouLINSignalProps.m_nIntialValue));
+        ouValueList.push_back(QVariant::fromValue(ouSignalProps.m_ouLINSignalProps.m_nIntialValue));
 
         strEncoding = "", strUnit = "", strCoding = "";
         if(nullptr != pCoding)

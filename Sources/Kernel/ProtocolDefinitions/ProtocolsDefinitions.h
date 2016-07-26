@@ -13,7 +13,7 @@ enum ETYPE_BUS
 };
 
 
-typedef enum eBUSEVENT
+enum eBUSEVENT
 {
     ON_ACTIVATED = 0,       //Feature usage
     ON_CONNECT,

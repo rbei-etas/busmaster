@@ -177,7 +177,7 @@
   <customwidget>
    <class>LDFCommonTableWidget</class>
    <extends>QTableWidget</extends>
-   <header>ldfcommontablewidget.h</header>
+   <header>LDFCommonTableWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

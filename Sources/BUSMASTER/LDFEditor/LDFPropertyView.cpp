@@ -1,9 +1,12 @@
+#include <QHeaderView>
+
 #include "LDFPropertyView.h"
 #include "LDFDatabaseManager.h"
-#include "qheaderview.h"
 #include "LDFUtility.h"
+#include "LDFAdditionalView.h"
+
 #include "Defines.h"
-#include "ldfadditionalview.h"
+
 #define def_MASTER_ROW_COUNT        3
 
 LDFPropertyView::LDFPropertyView(QWidget* parent)
@@ -410,7 +413,7 @@ int LDFPropertyView::DisplaySignalElementProps(IElement* pouLdfElement)
     ouRowList.clear();
 
     ouRowList.push_back(QVariant("Initial Value"));
-    ouRowList.push_back(QVariant(ouSignalProps.m_ouLINSignalProps.m_nIntialValue));
+    ouRowList.push_back(QVariant::fromValue(ouSignalProps.m_ouLINSignalProps.m_nIntialValue));
     InsertRow(nRow++, ouRowList);
     ouRowList.clear();
 

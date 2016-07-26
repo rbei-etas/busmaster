@@ -2,8 +2,8 @@
 #define LDFEDITOR_H
 
 #include <QtWidgets/QMainWindow>
-#include <QSplitter.h>
-#include <QMenubar>
+#include <QSplitter>
+#include <QMenuBar>
 #include <LDFElementView.h>
 #include <LDFNetworkView.h>
 #include <LDFPropertyView.h>

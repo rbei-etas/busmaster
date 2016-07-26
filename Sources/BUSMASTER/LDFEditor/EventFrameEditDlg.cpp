@@ -4,9 +4,11 @@
 #include "LDFUtility.h"
 #include "Defines.h"
 #include "LDFDefines.h"
-#include "qabstractitemview.h"
-#include "qmessagebox.h"
-#include "qdialogbuttonbox.h"
+
+#include <QAbstractItemView>
+#include <QMessageBox>
+#include <QDialogButtonBox>
+
 EventFrameEditDlg::EventFrameEditDlg(ICluster* pCluster, IFrame** pouFrame, bool bNew, QWidget* parent)
 {
     m_pouFrame = pouFrame;
@@ -105,7 +107,7 @@ void EventFrameEditDlg::vFillElementList()
         (*m_pouFrame)->GetProperties(ouFrameProps);
     }
 
-for ( auto itr : pElementMap )
+    for ( auto itr : pElementMap )
     {
         ((IFrame*)itr.second)->GetFrameId(unFrameid);
         m_FrameIdMap[unFrameid] = unFrameid;
@@ -113,6 +115,7 @@ for ( auto itr : pElementMap )
         (IFrame*)itr.second->GetName(strName);
         m_strFrameNames[strName] = strName;
     }
+
     if ( true == m_bEditMode && (*m_pouFrame != nullptr ) )
     {
         (*m_pouFrame)->GetFrameId(unCurrentFrameid);
@@ -132,6 +135,7 @@ for ( auto itr : pElementMap )
             ui.comboFrameId->addItem(strId);
         }
     }
+
     if ( true == m_bEditMode )
     {
         ui.comboFrameId->setCurrentText(GetString(unCurrentFrameid));
@@ -147,10 +151,10 @@ void EventFrameEditDlg::vFillScheduleTables()
     std::map<UID_ELEMENT, IElement*> pElementMap;
     m_pLdfCluster->GetElementList(eScheduleTableElement, pElementMap);
     std::string strName;
-for ( auto itr : pElementMap )
+    for ( auto itr : pElementMap )
     {
         itr.second->GetName(strName);
-        ui.comboCollisionTable->addItem(strName.c_str(), QVariant(itr.second->GetUniqueId()));
+        ui.comboCollisionTable->addItem(strName.c_str(), QVariant::fromValue(itr.second->GetUniqueId()));
     }
 }
 
@@ -206,7 +210,7 @@ void EventFrameEditDlg::vAddFrameToTable(IFrame* pFrame, std::map<UID_ELEMENT, U
         {
             ui.tableFrames->item(ui.tableFrames->rowCount()-1, 0)->setCheckState(Qt::Checked);
         }
-        ui.tableFrames->item(ui.tableFrames->rowCount()-1, 0)->setData(Qt::UserRole, QVariant(pFrame->GetUniqueId()));
+        ui.tableFrames->item(ui.tableFrames->rowCount()-1, 0)->setData(Qt::UserRole, QVariant::fromValue(pFrame->GetUniqueId()));
     }
 }
 

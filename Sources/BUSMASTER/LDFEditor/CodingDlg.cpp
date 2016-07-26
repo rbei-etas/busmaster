@@ -201,7 +201,7 @@ void CodingDlg::vPrepareUiForEdit()
         int nRow = 0;
 
         ui.tableLogicalValues->setEditTriggers(QAbstractItemView::AllEditTriggers);
-for ( auto itr : ouCompuMethodsProps.m_ouLinCompuMethods.m_ouLogicalValueList )
+        for ( auto itr : ouCompuMethodsProps.m_ouLinCompuMethods.m_ouLogicalValueList )
         {
             LineEditWidget* pRawEdit = new LineEditWidget(nRow, ui.tableLogicalValues);
             if ( LDFDatabaseManager::GetDatabaseManager()->bIsDisplayHexOn() == true )
@@ -234,7 +234,7 @@ for ( auto itr : ouCompuMethodsProps.m_ouLinCompuMethods.m_ouLogicalValueList )
         ui.tablePhysicalValues->setRowCount(nSize);
         ui.tablePhysicalValues->setEditTriggers(QAbstractItemView::AllEditTriggers);
         nRow = 0;
-for ( auto itr : ouCompuMethodsProps.m_ouLinCompuMethods.m_ouPhysicalValueList )
+        for ( auto itr : ouCompuMethodsProps.m_ouLinCompuMethods.m_ouPhysicalValueList )
         {
             ouColumns.clear();
             LineEditWidget* pFactorEdit = new LineEditWidget(nRow, ui.tablePhysicalValues);

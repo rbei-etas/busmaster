@@ -166,7 +166,7 @@ for ( auto itr : m_ouElementMap[defEcuIndex] )
         {
             pListItem->setCheckState(Qt::Unchecked);
         }
-        pListItem->setData(Qt::UserRole, QVariant(itr.second));
+        pListItem->setData(Qt::UserRole, QVariant::fromValue(itr.second));
         ui.listSubscribers->addItem(pListItem);
     }
 }
@@ -182,21 +182,21 @@ void SignalDlg::vPrepareUiForNewMode()
     //Ecu Fill
     QListWidgetItem* pListItem;
     ui.comboPublisher->addItem(QString(""));
-for ( auto itr : m_ouElementMap[defEcuIndex] )
+    for ( auto itr : m_ouElementMap[defEcuIndex] )
     {
-        ui.comboPublisher->addItem(QString::fromStdString(itr.first), QVariant(itr.second));
+        ui.comboPublisher->addItem(QString::fromStdString(itr.first), QVariant::fromValue(itr.second));
 
         pListItem = new QListWidgetItem(QString::fromStdString(itr.first));
         pListItem->setCheckState(Qt::Unchecked);
-        pListItem->setData(Qt::UserRole, QVariant(itr.second));
+        pListItem->setData(Qt::UserRole, QVariant::fromValue(itr.second));
         ui.listSubscribers->addItem(pListItem);
     }
     ui.comboPublisher-> setCurrentIndex(0);
 
     ui.comboCoding->addItem(QString(""), QVariant(INVALID_UID_ELEMENT));
-for ( auto itr: m_ouElementMap[defCodingIndex] )
+    for ( auto itr: m_ouElementMap[defCodingIndex] )
     {
-        ui.comboCoding->addItem(QString::fromStdString(itr.first), QVariant(itr.second));
+        ui.comboCoding->addItem(QString::fromStdString(itr.first), QVariant::fromValue(itr.second));
     }
     ui.comboCoding-> setCurrentIndex(0);
 }
@@ -242,7 +242,7 @@ void SignalDlg::onSelectionOk()
     if ( nLength > 0 )
     {
         unsigned int nInitilVal = GetUnsignedInt(ui.editInitialValue->text());
-        unsigned __int64 nMaxVal = pow(2, nLength );
+        quint64 nMaxVal = pow(2, nLength );
         if ( nInitilVal >= nMaxVal )
         {
             strErrors += strTemp.sprintf("<br>%d. Initial Value Exceeds the Signal Value Range<\br>", ++nErrors);

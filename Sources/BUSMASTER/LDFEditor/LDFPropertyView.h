@@ -2,11 +2,14 @@
 #define PROPERTYVIEW_H
 
 #include <QWidget>
-#include <qtreewidget>
-#include "ICluster.h"
-#include <qtablewidget>
+#include <QTreeWidget>
+#include <QTableWidget>
+
 #include "LDFDefines.h"
 #include "LDFCommonTableWidget.h"
+
+#include "ICluster.h"
+
 class LDFAdditionalView;
 class LDFPropertyView : public LDFCommonTableWidget
 {

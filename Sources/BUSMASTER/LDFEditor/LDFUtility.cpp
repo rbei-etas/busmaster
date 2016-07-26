@@ -1,9 +1,13 @@
 #include "LDFUtility.h"
 #include "LDFDefines.h"
 #include "Defines.h"
-#include "qtreewidget.h"
+
+#include <QTreeWidget>
+
 #include <cmath>
 #include <limits>
+#include <stdio.h>
+
 std::string g_strEdiagType[eLIN_SID_ALL] = {" Unconditionl Frame",
         "MasterReq",
         "SlaveResp",
@@ -267,7 +271,7 @@ for ( auto itrEcu : ouEcuMap )
     }
     //Signals
     ISignal* pouSignal;
-    char chName[33];
+    QString chName;
     SignalInstanse ouSignalInstanse;
     ouSignalInstanse.m_nStartBit = INVALID_DATA;
     ouSignalInstanse.m_nUpdateBitPos = INVALID_DATA;
@@ -285,13 +289,13 @@ for ( auto itrEcu : ouEcuMap )
     {
         pBaseCluster->CreateElement(eSignalElement, (IElement**)&pouSignal);
         ouSignalInstanse.m_nStartBit = i * 8;
-        sprintf_s(chName, defLINMasterSignalName, i);
-        pouSignal->SetName(std::string(chName));
+        chName = QString(defLINMasterSignalName).arg(i);
+        pouSignal->SetName(chName.toStdString());
         pouSignal->SetProperties(ouSignalProps);
         uid = pouSignal->GetUniqueId();
         pouFrame->MapSignal( uid, ouSignalInstanse );
         pouSignal->MapNode(eTx, uidMaster);
-for ( auto itr : uidSlaveList )
+        for ( auto itr : uidSlaveList )
         {
             pouSignal->MapNode(eRx, itr);
         }
@@ -345,7 +349,7 @@ for ( auto itrEcu : ouEcuMap )
     }
     //Signals
     ISignal* pouSignal;
-    char chName[33];
+    QString chName;
     SignalInstanse ouSignalInstanse;
     ouSignalInstanse.m_nStartBit = INVALID_DATA;
     ouSignalInstanse.m_nUpdateBitPos = INVALID_DATA;
@@ -363,13 +367,13 @@ for ( auto itrEcu : ouEcuMap )
     {
         pBaseCluster->CreateElement(eSignalElement, (IElement**)&pouSignal);
         ouSignalInstanse.m_nStartBit = i * 8;
-        sprintf_s(chName, defLINSlaveSignalName, i);
-        pouSignal->SetName(std::string(chName));
+        chName = QString(defLINSlaveSignalName).arg(i);
+        pouSignal->SetName(chName.toStdString());
         pouSignal->SetProperties(ouSignalProps);
         uid = pouSignal->GetUniqueId();
         pouFrame->MapSignal( uid, ouSignalInstanse );
         pouSignal->MapNode(eRx, uidMaster);
-for ( auto itr : uidSlaveList )
+        for ( auto itr : uidSlaveList )
         {
             pouSignal->MapNode(eTx, itr);
         }
@@ -447,7 +451,7 @@ int GetString(int nVal, QString& strText)
     return 0;
 }
 
-unsigned int GetUnsignedInt(QString& strText, int nBase)
+unsigned int GetUnsignedInt(const QString& strText, int nBase)
 {
     return strtoul(strText.toStdString().c_str(), nullptr, nBase);
 }
@@ -467,7 +471,7 @@ unsigned int GetUnsignedInt(const QString& strText)
     return unVal;
 }
 
-QString GetString(unsigned __int64 nVal, bool bPrintSymbol)
+QString GetString(uint64_t nVal, bool bPrintSymbol)
 {
     QString strText = "";
     bool bHex = LDFDatabaseManager::GetDatabaseManager()->bIsDisplayHexOn();
@@ -631,7 +635,7 @@ QString GetString(unsigned int nVal, int nBase)
     return strText;
 }
 
-QString GetString(unsigned __int64 nVal, int nBase)
+QString GetString(uint64_t nVal, int nBase)
 {
     QString strText = "";
     bool bHex = LDFDatabaseManager::GetDatabaseManager()->bIsDisplayHexOn();

@@ -1,10 +1,12 @@
 #ifndef NodeConfigurationDlg_H
 #define NodeConfigurationDlg_H
 
-#include <QDialog>
 #include "ui_NodeConfiguration.h"
 #include "Defines.h"
 #include "ICluster.h"
+
+#include <QDialog>
+#include <QComboBox>
 #include <QMenu>
 
 enum eNodeConfigMenu

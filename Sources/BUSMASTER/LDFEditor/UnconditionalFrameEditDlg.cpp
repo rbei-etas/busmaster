@@ -279,7 +279,7 @@ void UnconditionalFrameEditDlg::vAddSignalToTree(ISignal* pSignal, SignalInstans
     nGetSubscribers(lstECUs, strSubscribers);
     ouColumns.push_back(QVariant(strSubscribers.c_str()));
     ouColumns.push_back(GetString(ouSignalProps.m_ouLINSignalProps.m_nLength, 10));         //Alwas dec
-    ouColumns.push_back(QVariant(ouSignalProps.m_ouLINSignalProps.m_nIntialValue));
+    ouColumns.push_back(QVariant::fromValue(ouSignalProps.m_ouLINSignalProps.m_nIntialValue));
     ouColumns.push_back(QVariant(strName.c_str()));
     QVariant ouVariant;
     ouVariant.setValue(pSignal->GetUniqueId());
