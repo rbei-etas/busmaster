@@ -42,8 +42,6 @@ LDFEditor::LDFEditor(std::string omstrLdfPath, QWidget* parent)
     UpdatedRecentFileList();
     SetupWarningPane();
     m_strCurrentLDFFilePath = "";
-    connect(ui.m_pouLDFElementView, SIGNAL(itemSelectionChanged()), this, SLOT(OnitemElementViewSelected()));
-    connect(ui.m_pouLDFNetworkView, SIGNAL(itemSelectionChanged()), this, SLOT(OnitemNetworkViewSelected()));
 
     connect(LDFDatabaseManager::GetDatabaseManager(), SIGNAL(DocumentModified()), this, SLOT(OnDocumentModified()));
 
@@ -101,7 +99,7 @@ void LDFEditor::OnDocumentModified()
     setTitle();
 }
 
-void LDFEditor::OnitemNetworkViewSelected()
+void LDFEditor::on_m_pouLDFNetworkView_itemSelectionChanged()
 {
     if(ui.m_pouLDFNetworkView->selectedItems().size() > 0)
     {
@@ -125,7 +123,7 @@ void LDFEditor::OnitemNetworkViewSelected()
 }
 
 
-void LDFEditor::OnitemElementViewSelected()
+void LDFEditor::on_m_pouLDFElementView_itemSelectionChanged()
 {
     if(ui.m_pouLDFElementView->selectedItems().size() > 0)
     {
@@ -142,7 +140,6 @@ void LDFEditor::OnitemElementViewSelected()
 
 int LDFEditor::ConnectMenuActions(void)
 {
-
     QIcon newIcon;
     newIcon.addFile(":/LDFEditorIcons/Resources/icons/16x16/new.png", QSize(16, 16));
     newIcon.addFile(":/LDFEditorIcons/Resources/icons/22x22/new.png", QSize(22, 22));
@@ -199,7 +196,7 @@ int LDFEditor::ConnectMenuActions(void)
         recentFileActs[i]->setVisible(false);
         ui.menu_Recent_Files->addAction(recentFileActs[i]);
         connect(recentFileActs[i], SIGNAL(triggered()),
-                this, SLOT(onActionOpenRecentFile()));
+                this, SLOT(on_actionRecent_triggered()));
     }
 
     ui.mainToolBar->addAction(ui.menu_New->menuAction());
@@ -222,21 +219,11 @@ int LDFEditor::ConnectMenuActions(void)
     ouWarningAction->setText(strWarningWindow);
     ui.menuView->addAction(ouWarningAction);
     ui.actionPreview_LDF_File->setDisabled(true);
-    connect (ui.actionHelp, SIGNAL(triggered()), this, SLOT(onActionHelp()));
-    connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(onActionFileOpen()));
-    connect(ui.actionSave, SIGNAL(triggered()), this, SLOT(onActionFileSave()));
-    connect(ui.actionSave_As, SIGNAL(triggered()), this, SLOT(onActionFileSaveAs()));
-    connect(ui.action_About, SIGNAL(triggered()), this, SLOT(onActionAbout()));
-    connect(ui.actionNewLIN_1_3, SIGNAL(triggered()), this, SLOT(onActionLIN1_3()));
-    connect(ui.actionNewLIN_2_0, SIGNAL(triggered()), this, SLOT(onActionLIN2_0()));
-    connect(ui.actionNewLIN_2_1, SIGNAL(triggered()), this, SLOT(onActionLIN2_1()));
-    connect(ui.actionHex, SIGNAL(triggered()), this, SLOT(onActionHex()));
-    connect(ui.actionPreview_LDF_File, SIGNAL(triggered()), this, SLOT(onActionPreviewFile()));
-    connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(onFileExit()));
+
     return 0;
 }
 
-int LDFEditor::onFileExit()
+int LDFEditor::on_actionExit_triggered()
 {
     if ( CheckForSaving() != 0 )
     {
@@ -246,7 +233,7 @@ int LDFEditor::onFileExit()
     return 0;
 }
 
-int LDFEditor::onActionOpenRecentFile()
+int LDFEditor::on_actionRecent_triggered()
 {
     if ( CheckForSaving() == 0 )
     {
@@ -302,20 +289,20 @@ int LDFEditor::UpdatedRecentFileList()
 }
 
 
-int LDFEditor::onActionAbout()
+int LDFEditor::on_action_About_triggered()
 {
     AboutLDFEditor ouAbouDlg(this);
     ouAbouDlg.exec();
     return 0;
 }
-int LDFEditor::onActionHelp(void)
+int LDFEditor::on_actionHelp_triggered(void)
 {
     QString strTemp  =  QApplication::applicationDirPath();
     strTemp = strTemp + "/ldfeditor.chm";
     return QDesktopServices::openUrl(QUrl::fromLocalFile(strTemp));
 }
 
-int LDFEditor::onActionFileOpen(void)
+int LDFEditor::on_actionOpen_triggered(void)
 {
     if ( CheckForSaving() == 0 )
     {
@@ -470,7 +457,7 @@ int LDFEditor::CheckForSaving()
                                            QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
         if (ret == QMessageBox::Save)
         {
-            onActionFileSave(); // TODO : Update it to Save
+            on_actionSave_triggered(); // TODO : Update it to Save
             return 1;
         }
         if (ret == QMessageBox::Discard)
@@ -497,7 +484,7 @@ void LDFEditor::setTitle()
     setWindowTitle(strTitle);
 }
 
-int LDFEditor::onActionFileSave(void)
+int LDFEditor::on_actionSave_triggered(void)
 {
     if ( ValidateForSaving() == 0 && m_strCurrentLDFFilePath.length() > 0)
     {
@@ -560,7 +547,7 @@ int LDFEditor::ValidateForSaving()
 }
 
 
-int LDFEditor::onActionFileSaveAs(void)
+int LDFEditor::on_actionSave_As_triggered(void)
 {
     if ( ValidateForSaving() == 0 )
     {
@@ -571,7 +558,7 @@ int LDFEditor::onActionFileSaveAs(void)
     return 0;
 }
 
-int LDFEditor::onActionLIN1_3(void)
+int LDFEditor::on_actionNewLIN_1_3_triggered(void)
 {
     if ( CheckForSaving() == 0 )
     {
@@ -597,7 +584,7 @@ int LDFEditor::onActionLIN1_3(void)
     return 0;
 }
 
-int LDFEditor::onActionLIN2_0(void)
+int LDFEditor::on_actionNewLIN_2_0_triggered(void)
 {
     if ( CheckForSaving() == 0 )
     {
@@ -623,7 +610,7 @@ int LDFEditor::onActionLIN2_0(void)
     return 0;
 }
 
-int LDFEditor::onActionLIN2_1(void)
+int LDFEditor::on_actionNewLIN_2_1_triggered(void)
 {
     if ( CheckForSaving() == 0 )
     {
@@ -650,7 +637,7 @@ int LDFEditor::onActionLIN2_1(void)
 }
 
 
-int LDFEditor::onActionHex(void)
+int LDFEditor::on_actionHex_triggered(void)
 {
     LDFDatabaseManager::GetDatabaseManager()->SetDisplayHex(ui.actionHex->isChecked());
     return 0;
@@ -686,7 +673,7 @@ void LDFEditor::AddWarningsOfNewFile(double dVers)
     nRow++;
 }
 
-int LDFEditor::onActionPreviewFile()
+int LDFEditor::on_actionPreview_LDF_File_triggered()
 {
     QLDFViewerProcess* pouViewerProc = new QLDFViewerProcess();
     pouViewerProc->start();
@@ -750,7 +737,7 @@ for ( auto itr : pElement )
     bool bUnconditionalFrameFound = false;;
     pElement.clear();
     LDFDatabaseManager::GetDatabaseManager()->GetLDFCluster()->GetElementList(eFrameElement, pElement);
-for ( auto itr : pElement )
+    for ( auto itr : pElement )
     {
         IFrame* pFrame = (IFrame*)itr.second;
         eFrameType ouFrameType;
@@ -766,6 +753,7 @@ for ( auto itr : pElement )
             break;
         }
     }
+
     if ( false == bUnconditionalFrameFound )
     {
         ParsingResults ouPasringResult;
@@ -781,7 +769,7 @@ for ( auto itr : pElement )
     bool SignalFound = false;
     pElement.clear();
     LDFDatabaseManager::GetDatabaseManager()->GetLDFCluster()->GetElementList(eSignalElement, pElement);
-for ( auto itr : pElement )
+    for ( auto itr : pElement )
     {
         ISignal* pSignal = (ISignal*)itr.second;
         SignalProps ouSignalProps;
@@ -797,6 +785,7 @@ for ( auto itr : pElement )
             break;
         }
     }
+
     if ( false == SignalFound )
     {
         ParsingResults ouPasringResult;
@@ -812,7 +801,7 @@ for ( auto itr : pElement )
     bool TableFound = false;
     pElement.clear();
     LDFDatabaseManager::GetDatabaseManager()->GetLDFCluster()->GetElementList(eScheduleTableElement, pElement);
-for ( auto itr : pElement )
+    for ( auto itr : pElement )
     {
         ScheduleTableProps ouTableProps;
         IScheduleTable* pTable = (IScheduleTable*)itr.second;
@@ -829,6 +818,7 @@ for ( auto itr : pElement )
             break;
         }
     }
+
     if ( false == TableFound )
     {
         ParsingResults ouPasringResult;

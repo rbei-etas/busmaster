@@ -44,21 +44,23 @@ public:
     void closeEvent (QCloseEvent* event);
 
 public slots:
-    int onActionFileOpen(void);
-    int onActionFileSave(void);
-    int onActionFileSaveAs(void);
-    int onActionAbout(void);
-    int onActionHelp(void);
-    int onActionLIN1_3(void);
-    int onActionLIN2_0(void);
-    int onActionLIN2_1(void);
-    int onActionHex(void);
-    int onActionOpenRecentFile();
-    int onActionPreviewFile();
-    void OnitemElementViewSelected();
-    void OnitemNetworkViewSelected();
+    int on_actionOpen_triggered(void);
+    int on_actionSave_triggered(void);
+    int on_actionSave_As_triggered(void);
+    int on_action_About_triggered(void);
+    int on_actionHelp_triggered(void);
+    int on_actionNewLIN_1_3_triggered(void);
+    int on_actionNewLIN_2_0_triggered(void);
+    int on_actionNewLIN_2_1_triggered(void);
+    int on_actionHex_triggered(void);
+    int on_actionRecent_triggered();
+    int on_actionPreview_LDF_File_triggered();
+    void on_m_pouLDFElementView_itemSelectionChanged();
+    void on_m_pouLDFNetworkView_itemSelectionChanged();
+    int on_actionExit_triggered();
+
+private slots:
     void OnDocumentModified();
-    int onFileExit();
 };
 
 #endif // LDFEDITOR_H
