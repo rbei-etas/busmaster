@@ -6,7 +6,8 @@ INCLUDEPATH += ../../Kernel/ProtocolDefinitions
 
 RESOURCES += \
     ldfeditor.qrc \
-    LDFEditor.qrc
+    LDFEditor.qrc \
+    ldfeditor.qrc
 
 FORMS += \
     AboutLDFEditor.ui \

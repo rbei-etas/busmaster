@@ -14,7 +14,7 @@
    <string>Create Event Triggered Frame</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="ldfeditor.qrc">
+   <iconset>
     <normaloff>:/LDFEditorIcons/Resources/icons/Frame.png</normaloff>:/LDFEditorIcons/Resources/icons/Frame.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -171,8 +171,6 @@
    <header>ldfcommontablewidget.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="ldfeditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

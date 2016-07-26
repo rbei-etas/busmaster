@@ -14,7 +14,7 @@
    <string>Edit Unconditional Frame - Frame1</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="ldfeditor.qrc">
+   <iconset>
     <normaloff>:/LDFEditorIcons/Resources/icons/Frame.png</normaloff>:/LDFEditorIcons/Resources/icons/Frame.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
@@ -401,11 +401,9 @@
   <customwidget>
    <class>LDFCommonTableWidget</class>
    <extends>QTableWidget</extends>
-   <header>LDFCommonTableWidget.h</header>
+   <header>ldfcommontablewidget.h</header>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="ldfeditor.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

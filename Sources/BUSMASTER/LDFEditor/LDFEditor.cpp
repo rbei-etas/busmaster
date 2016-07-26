@@ -328,6 +328,14 @@ int LDFEditor::onActionFileOpen(void)
 }
 int LDFEditor::CloseCurrentLDFFile()
 {
+    ICluster* LDFCluster = LDFDatabaseManager::GetDatabaseManager()->GetLDFCluster();
+    if (LDFCluster == nullptr) {
+        QMessageBox::critical(this,
+                              tr("Unable to load function"),
+                              tr("Unable to load CreateLDFCluster function from the DBManager library!"));
+        return -1;
+    }
+
     LDFDatabaseManager::GetDatabaseManager()->GetLDFCluster()->Clear();
     LDFDatabaseManager::GetDatabaseManager()->SetLDFFilePath(std::string(""));
 
@@ -351,7 +359,9 @@ int LDFEditor::OpenLDFFile(QString strLDFFilePath)
 {
     if ( "" != strLDFFilePath )
     {
-        CloseCurrentLDFFile();
+        if (CloseCurrentLDFFile())
+          return -1;
+
         list<ParsingResults> ouErrors;
         list<ParsingResults> ouWarnings;
         QFile file(strLDFFilePath);
