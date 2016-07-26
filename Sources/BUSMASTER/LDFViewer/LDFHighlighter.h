@@ -41,7 +41,7 @@
 #ifndef LDFLDFHighlighter_H
 #define LDFLDFHighlighter_H
 
-#include < QSyntaxHighlighter>
+#include <QSyntaxHighlighter>
 #include <QTextCharFormat>
 
 QT_BEGIN_NAMESPACE

@@ -1,7 +1,9 @@
-#include "ldfviewer.h"
+#include <QFileDialog>
+#include <QTextOption>
+
+#include "LDFViewer.h"
 #include "LDFHighlighter.h"
-#include "qfiledialog.h"
-#include "qtextoption.h"
+
 LDFViewer::LDFViewer(QWidget* parent, QString strFileName)
     : QMainWindow(parent)
 {
@@ -29,7 +31,7 @@ void LDFViewer::vSetupEditor()
     font.setFixedPitch(true);
     font.setPointSize(10);
 
-    m_pouLdfEditor = new QTextEdit;
+    m_pouLdfEditor = new QTextEdit(this);
     m_pouLdfEditor->setFont(font);
 
     m_pouLDFHighlighter = new LDFHighlighter(m_pouLdfEditor->document());

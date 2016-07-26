@@ -2,8 +2,9 @@
 #define LDFVIEWER_H
 
 #include <QtWidgets/QMainWindow>
-#include "ui_ldfviewer.h"
-#include <QtWidgets/qtextedit.h>
+#include <QtWidgets/QTextEdit>
+
+#include "ui_LDFViewer.h"
 
 class LDFViewer : public QMainWindow
 {
