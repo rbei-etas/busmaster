@@ -10,12 +10,6 @@
     <height>716</height>
    </rect>
   </property>
-  <property name="font">
-   <font>
-    <family>Courier New</family>
-    <pointsize>11</pointsize>
-   </font>
-  </property>
   <property name="windowTitle">
    <string>BUSMASTER LDF Editor</string>
   </property>
@@ -40,12 +34,6 @@
        <enum>Qt::Horizontal</enum>
       </property>
       <widget class="LDFElementView" name="m_pouLDFElementView">
-       <property name="font">
-        <font>
-         <family>Courier New</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
        <column>
         <property name="text">
          <string>LDF Element View</string>
@@ -77,12 +65,6 @@
          <property name="text">
           <string>Property</string>
          </property>
-         <property name="font">
-          <font>
-           <family>Courier New</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
          <property name="textAlignment">
           <set>AlignCenter</set>
          </property>
@@ -90,12 +72,6 @@
         <column>
          <property name="text">
           <string>Value</string>
-         </property>
-         <property name="font">
-          <font>
-           <family>Courier New</family>
-           <pointsize>10</pointsize>
-          </font>
          </property>
          <property name="textAlignment">
           <set>AlignCenter</set>
@@ -134,12 +110,6 @@
        </widget>
       </widget>
       <widget class="LDFNetworkView" name="m_pouLDFNetworkView">
-       <property name="font">
-        <font>
-         <family>Courier New</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
        <column>
         <property name="text">
          <string notr="true">LIN Network View</string>
@@ -159,18 +129,7 @@
      <height>17</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
    <widget class="QMenu" name="menuFile">
-    <property name="font">
-     <font>
-      <family>Courier New</family>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
     <property name="contextMenuPolicy">
      <enum>Qt::DefaultContextMenu</enum>
     </property>
@@ -199,11 +158,6 @@
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
     <property name="title">
      <string>&amp;Help</string>
     </property>
@@ -211,12 +165,6 @@
     <addaction name="action_About"/>
    </widget>
    <widget class="QMenu" name="menuView">
-    <property name="font">
-     <font>
-      <family>Courier New</family>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
     <property name="title">
      <string>&amp;View</string>
     </property>
@@ -230,11 +178,6 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
-   <property name="font">
-    <font>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -260,12 +203,6 @@
    <property name="text">
     <string>&amp;Open...</string>
    </property>
-   <property name="font">
-    <font>
-     <family>Courier New</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
    <property name="menuRole">
     <enum>QAction::ApplicationSpecificRole</enum>
    </property>
@@ -274,66 +211,30 @@
    <property name="text">
     <string>&amp;Save</string>
    </property>
-   <property name="font">
-    <font>
-     <family>Courier New</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionSave_As">
    <property name="text">
     <string>Save &amp;As...</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>Courier New</family>
-     <pointsize>10</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionExit">
    <property name="text">
     <string>E&amp;xit</string>
    </property>
-   <property name="font">
-    <font>
-     <family>Courier New</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionNewLIN_1_3">
    <property name="text">
     <string>LIN 1.3</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>Courier New</family>
-     <pointsize>10</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionNewLIN_2_0">
    <property name="text">
     <string>LIN 2.0</string>
    </property>
-   <property name="font">
-    <font>
-     <family>Courier New</family>
-     <pointsize>10</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionNewLIN_2_1">
    <property name="text">
     <string>LIN 2.1</string>
-   </property>
-   <property name="font">
-    <font>
-     <family>Courier New</family>
-     <pointsize>10</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionHex">
