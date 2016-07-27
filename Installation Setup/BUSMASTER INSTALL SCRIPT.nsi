@@ -443,6 +443,7 @@ Section "BUSMASTER"
   File ..\Sources\BUSMASTER\BIN\Release\BUSMASTER.exe
   File ..\Sources\BUSMASTER\BIN\Release\BUSMASTER.exe.manifest
   File ..\Sources\BUSMASTER\Application\BUSMASTER.tlb
+  File ..\Sources\BUSMASTER\Application\saint_config.cfg
   File ..\Sources\BUSMASTER\Application\BUSMASTER_Interface.c
   File ..\Sources\BUSMASTER\Application\BUSMASTER_Interface.h
   File ..\Sources\BUSMASTER\BIN\Release\CAN_STUB.dll
@@ -690,6 +691,12 @@ Section "Vector XL"
   SetOutPath $INSTDIR
   File ..\Sources\BUSMASTER\BIN\Release\CAN_Vector_XL.dll
   File ..\Sources\BUSMASTER\BIN\Release\vxlapi.dll
+SectionEnd
+
+Section "Saint"
+  SectionIn 1 2
+  SetOutPath $INSTDIR
+  File ..\Sources\BUSMASTER\BIN\Release\CAN_SAINT.dll
 SectionEnd
 
 Section "IXXAT VCI"

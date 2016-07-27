@@ -1131,6 +1131,7 @@
 #define ID_BTN_MSG_SLIDER               40058
 #define ID_BUTTON40059                  40059
 #define ID_BUTTON40060                  40060
+#define ID_CAN_SAI                      40061
 #define IDM_UDS                         40100
 #define IDD_SETTINGS_UDS                40101
 #define IDS_INVALID_DB_PROMPT           61447
@@ -1194,7 +1195,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        120
-#define _APS_NEXT_COMMAND_VALUE         40061
+#define _APS_NEXT_COMMAND_VALUE         40062
 #define _APS_NEXT_CONTROL_VALUE         1019
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
