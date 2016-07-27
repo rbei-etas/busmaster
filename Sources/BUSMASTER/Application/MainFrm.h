@@ -948,4 +948,6 @@ private:
     IBusmasterPluginManager* mPluginManager = nullptr;
     frChannelSettingsHandler mFrChannelSettingsHandler;
 
+public:
+	afx_msg void OnCanSaintTool();
 };

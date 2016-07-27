@@ -14,6 +14,7 @@ goto END
 echo Using MSBuild found in %DOTNET%
 set PATH=%DOTNET%;%PATH%
 MSBuild "Kernel\BusmasterKernel.sln" /property:Configuration=Release /p:VisualStudioVersion=12.0
+MSBuild "DBManager\DBManager.sln" /property:Configuration=Release /p:VisualStudioVersion=12.0
 MSBuild "BUSMASTER\BUSMASTER.sln" /property:Configuration=Release /p:VisualStudioVersion=12.0 
 
 REM CAN PEAK USB.
@@ -38,5 +39,6 @@ cd ..\bison
 cd ..\..\Sources
 MSBuild "BUSMASTER\Format Converter\FormatConverter.sln" /property:Configuration=Release /p:VisualStudioVersion=12.0 
 
+MSBuild "PlugIns\FlexRay\FlexRayPlugIns.sln" /property:Configuration=Release /p:VisualStudioVersion=12.0
 :END
 

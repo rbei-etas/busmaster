@@ -1213,6 +1213,7 @@ BEGIN
             MENUITEM "&Main Window",                IDM_UDS
             MENUITEM "&Settings",                   IDD_SETTINGS_UDS
         END
+        MENUITEM "Saint Tool",                  ID_CAN_SAI
     END
     POPUP "&J1939"
     BEGIN

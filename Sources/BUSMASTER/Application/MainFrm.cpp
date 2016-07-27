@@ -455,6 +455,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     //Plugin
     ON_COMMAND_RANGE( IDR_PLUGIN_MENU_START, IDR_PLUGIN_MENU_END, onPluginMenuClicked )
     ON_UPDATE_COMMAND_UI_RANGE( IDR_PLUGIN_MENU_START, IDR_PLUGIN_MENU_END, onPluginMenuUpadate )
+	ON_COMMAND(ID_CAN_SAI, &CMainFrame::OnCanSaintTool)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -17907,4 +17908,19 @@ void CMainFrame::onPluginMenuUpadate( CCmdUI* pCmdUI )
 {
     BusmasterMenuItem menuItem(pCmdUI);
     mPluginManager->noifyMenuUpdate(pCmdUI->m_nID, &menuItem);
+}
+
+
+void CMainFrame::OnCanSaintTool()
+{
+	if (g_pouDIL_CAN_Interface){
+		INT nCount = 1;
+		DWORD temp = g_pouDIL_CAN_Interface->DILC_GetSelectedDriver();
+		if (temp == 7){
+			g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount);
+		}
+		else{
+			AfxMessageBox("Connect to the Saint Driver first");
+		}
+	}
 }
