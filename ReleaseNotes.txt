@@ -1,5 +1,5 @@
 RBEI-ETAS BUSMASTER - Monitoring, Analysis and Simulation Tool
-v3.0.0
+v3.1.0
 Release Notes
 
 Copyright
@@ -9,10 +9,10 @@ Under no circumstances may any part of this document be copied, reproduced, tran
 If printed, this document is an uncontrolled copy.
 
 1) Introduction
-	BUSMASTER is a monitoring, anaylsis and Simulation tool for CAN, LIN and FlexRay bus systems. This document describes the properties, prerequisites, and conventions for BUSMASTER, especially a general product overview, how BUSMASTER is installed, new features, and known issues and is valid for v3.0.0. 
+	BUSMASTER is a monitoring, anaylsis and Simulation tool for CAN, LIN and FlexRay bus systems. This document describes the properties, prerequisites, and conventions for BUSMASTER, especially a general product overview, how BUSMASTER is installed, new features, and known issues and is valid for v3.1.0. 
 
 	1.1) User Documentation
-		BUSMASTER V3.0.0 detailed instructions for use can be found in the help manual after the installation.
+		BUSMASTER V3.1.0 detailed instructions for use can be found in the help manual after the installation.
 
 2) Product Definition
 	2.1) General Description
@@ -38,11 +38,19 @@ If printed, this document is an uncontrolled copy.
 	2.3) Installation
 		To install BUSMASTER, the user needs Admin Rights
 	2.4) Licensing
-		BUSMASTER v3.0.0 is licensed under Open Source license LGPL v3.
+		BUSMASTER v3.1.0 is licensed under Open Source license LGPL v3.
 3) Changes
-	This chapter describes changes of BUSMASTER v3.0.0 with respect to earlier versions. Some of them are not mentioned in the documentation.
-	3.1) Changes in v3.0.0
-		 3.1.1) BUSMASTER v3.0.0 has the following enhancements:
+	This chapter describes changes of BUSMASTER v3.1.0 with respect to earlier versions. Some of them are not mentioned in the documentation.
+	3.1) Changes in v3.1.0
+		 3.1.1) BUSMASTER v3.1.0 has the following enhancements:
+				1) Ribbon bar support
+				2) CAN Channel selection window enhancements
+		 3.1.2) Compatibility with earlier release
+			    BUSMASTER v3.1.0 is functionally upwards compatible with previous BUSMASTER versions.
+		 3.1.3) Solved problems
+				Git issues #970, #954, #905, #875, #857, #624, #623, #950 are fixed in this version
+	3.2) Changes in v3.0.0
+		 3.2.1) BUSMASTER v3.0.0 has the following enhancements:
 				1) CAN Tranmit Windows
                    a) UI Redesign
 				   b) Message wise raster support
@@ -50,34 +58,34 @@ If printed, this document is an uncontrolled copy.
 				   a) Big Endian support
 				   b) Message and Signal access is simplified
 				3) Signal watch configuration window is updated with channel wise signal details
-		 3.1.2) Compatibility with earlier release
+		 3.2.2) Compatibility with earlier release
 			    BUSMASTER v3.0.0 is functionally upwards compatible with previous BUSMASTER versions.
 				a) Node Simulation is upgraded from v1.1 to v1.2. v1.1 files will be automatically converted to v1.2 format on importing to Node Simulation				
-		 3.1.3) Solved problems
+		 3.2.3) Solved problems
 				Git issues #467,#750,#719,#756,#911,#940,#816,#904,#910,#921,#923,#934,
 				#935,#936 are fixed in this version
 		
-	3.2) Changes in v2.6.4
-		 3.1.1) BUSMASTER v2.6.4 has the following enhancements:
+	3.3) Changes in v2.6.4
+		 3.3.1) BUSMASTER v2.6.4 has the following enhancements:
 				1) Advanced Log file Settings
 				2) Replay Optimization for CAN
 				3) NodeSimulation UI Improvements
 				4) Toolbar Cleanup
-		 3.1.2) Compatibility with earlier release
+		 3.3.2) Compatibility with earlier release
 			    BUSMASTER v2.6.4 is functionally upwards compatible with previous BUSMASTER versions.
-		 3.1.3) Solved problems
+		 3.3.3) Solved problems
 				Git issues #674, #855, #849, #681, #642, #536 are fixed in this version
 		
-	3.3) Changes in v2.6.3
-		 3.1.1) BUSMASTER v2.6.3 has the following enhancements:
+	3.4) Changes in v2.6.3
+		 3.4.1) BUSMASTER v2.6.3 has the following enhancements:
 				1) LIN Kvaser hardware support
 				2) Bug fixes
-		 3.1.2) Compatibility with earlier release
+		 3.4.2) Compatibility with earlier release
 				BUSMASTER v2.6.3 is functionally upwards compatible with previous BUSMASTER versions.
-		 3.1.3) Solved problems
+		 3.4.3) Solved problems
 				Git issues #757, #648, #633, #603, #565, #559, #689, #743 are fixed in this version
 	3.4) Hints
 		1) MinGW TDM1 GCC v4.8.1 is supported and used for testing
-		2) Admin Rights required to use the tool
+		2) Admin Rights required to install the tool
 	3.5) Contact, Support and Problem reporting
 		Contact busmaster@in.bosch.com or github.com/rbei-etas/busmaster for problem reporting
