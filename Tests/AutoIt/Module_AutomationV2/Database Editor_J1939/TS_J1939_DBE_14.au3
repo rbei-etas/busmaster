@@ -22,8 +22,9 @@ if winexists($WIN_BUSMASTER) then
 
 	_CreateConfig("cfxJ1939DB_14.cfx")																; Create Configuration
 
-	WinMenuSelectItem($WIN_BUSMASTER,"",$J1939Menu,$databaseMenu,$newMenu)							; Create a new DB
-	WinWaitActive($WIN_J1939SaveAs,"",3)
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$Tool,$J1939DBMenuTool,$newMenu)							; Create a new DB
+	;WinRibbonSelectItem($WIN_BUSMASTER,"",$J1939Menu,$databaseMenu,$newMenu)							; Create a new DB
+	WinWaitActive($WIN_J1939SaveAs,"",10)
 
 	if winexists($WIN_J1939SaveAs) Then
 		$DefDBName=ControlGetText($WIN_J1939SaveAs,"",$TXT_FileName_NewDB)								; Fetch the Default DB name

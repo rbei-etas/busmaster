@@ -49,7 +49,7 @@ IMPLEMENT_DYNCREATE(CMsgFilterConfigPage, CPropertyPage)
   Modifications  :
 *******************************************************************************/
 
-CMsgFilterConfigPage::CMsgFilterConfigPage(std::string caption, filterDetails* filterDetails, HWND hMsgWnd)
+CMsgFilterConfigPage::CMsgFilterConfigPage(std::string caption, filterDetails* filterDetails, HWND /*hMsgWnd*/)
     :CPropertyPage(CMsgFilterConfigPage::IDD, IDS_PPAGE_TITLE_MSG_FILTER), mCaption(caption)
 {
     mFilterDetails = filterDetails;
@@ -265,7 +265,7 @@ void CMsgFilterConfigPage::vUpdateDataFromUI()
         auto filter = mFilterDetails->mFitersApplied.find(omFilterName.GetBuffer(0));
         if (mFilterDetails->mFitersApplied.end() != filter)
         {
-            filter->second = m_omLstcFilterList.GetCheck(nIndex);
+            filter->second = (m_omLstcFilterList.GetCheck(nIndex)!=0);
         }
     }
 }

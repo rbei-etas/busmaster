@@ -46,7 +46,7 @@ if winexists($WIN_BUSMASTER) then
 	_EnableFilterLogLIN()																			; Enable Filter during logging
 
 	_ConnectDisconnect_LIN()
-	sleep(3000)
+	;sleep(1000)
 	_ConnectDisconnect_LIN()
 
 	;_DisableOverwriteMode()																		; Disable Overwrite Mode

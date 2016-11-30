@@ -104,7 +104,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL, BOOL bDi
     STARTUPINFO         sStartInfo;
     SECURITY_ATTRIBUTES sSecurityAttr;
     CWaitCursor omWait;
-    DWORD makeResult = -1;
+    DWORD makeResult = 1;		//non-zero initialisation
 
     // Check if file name passed as parameter is not empty
     if(omFileName.IsEmpty()==FALSE)
@@ -440,7 +440,7 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL, BOOL bDi
 
                 CString omStrDLLFile = "";
                 //compiled properly
-                if(makeResult == 0)
+                if(makeResult == 0)								
                 {
                     CString omStrFileNameInSDLLFile="";
                     CString omStrFileNameInLongFileName="";
@@ -626,14 +626,13 @@ BOOL CBuildProgram::bBuildProgram(PSNODEINFO psNodeInfo, BOOL bLoadDLL, BOOL bDi
 /*                      pointer to CFileException object to open function by  */
 /*                      replacing it with passing a pointer to existing object*/
 /******************************************************************************/
-BOOL CBuildProgram::bCreateMakeFile(PSNODEINFO psInfo, CString& omStrMakeFileTemplateName,
+BOOL CBuildProgram::bCreateMakeFile(PSNODEINFO psInfo, CString& /*omStrMakeFileTemplateName*/,
                                     CString& omStrMakeFileName          )
 {
     if (psInfo != nullptr )
     {
         if ( psInfo->m_omStrCFileName != "" )
         {
-            char path_buffer[_MAX_PATH];
             char drive[_MAX_DRIVE];
             char dir[_MAX_DIR];
             char fname[_MAX_FNAME];

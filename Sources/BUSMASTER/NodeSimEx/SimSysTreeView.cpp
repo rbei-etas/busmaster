@@ -118,6 +118,8 @@ BEGIN_MESSAGE_MAP(CSimSysTreeView, CTreeView)
     ON_WM_KEYDOWN()
 
     ON_NOTIFY_REFLECT(NM_RCLICK, OnTreeViewRightclick)
+    ON_NOTIFY_REFLECT(NM_CLICK, OnTreeViewLeftclick)
+    
     ON_NOTIFY_REFLECT(NM_DBLCLK, OnTreeViewDblclick)
     ON_NOTIFY_REFLECT(TVN_SELCHANGED, OnSelchanged)
     ON_COMMAND(IDM_ADD_NODE, OnAddNode)
@@ -628,7 +630,7 @@ void CSimSysTreeView::OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult)
 /*  Date Created     :  23.10.14
 /*  Modification     :
 /******************************************************************************/
-void CSimSysTreeView::OnTreeViewDblclick(NMHDR* , LRESULT* pResult)
+void CSimSysTreeView::OnTreeViewDblclick(NMHDR* , LRESULT* /*pResult*/)
 {
     OnEditNode();
 }
@@ -687,6 +689,10 @@ void CSimSysTreeView::OnRemoveNode()
 
                     pSimSysNodeInfo->bDeleteNodeFromSimSys("");
                 }
+                else
+                {
+                    return;
+                }
                 omTree.DeleteAllItems();
             }
         }
@@ -699,6 +705,10 @@ void CSimSysTreeView::OnRemoveNode()
                 {
                     omTree.DeleteItem(m_hSelectedTreeItem);
                 }
+            }
+            else
+            {
+                return;
             }
         }
     }
@@ -909,7 +919,7 @@ void CSimSysTreeView::OnEnableDisableNode()
         if(pSimSysNodeInfo != nullptr)
         {
             PSNODELIST pTempNode = pSimSysNodeInfo->m_psNodesList;
-            bool bCheck = omTree.GetCheck(m_hSelectedTreeItem);
+            bool bCheck = (omTree.GetCheck(m_hSelectedTreeItem)!=0);
             while(pTempNode != nullptr)
             {
                 pTempNode->m_sNodeInfo->m_bIsNodeEnabled = !bCheck;
@@ -1374,4 +1384,28 @@ HTREEITEM CSimSysTreeView::FindHTreeItem(const CString& omStrNodeName)
         hSub = om_Tree.GetNextSiblingItem(hSub);
     }
     return nullptr;
+}
+
+void CSimSysTreeView::OnTreeViewLeftclick(NMHDR* pNMHDR, LRESULT* pResult)
+{
+    TVHITTESTINFO ht = { 0 };
+
+    DWORD dwpos = GetMessagePos();
+
+    // include <windowsx.h> and <windows.h> header files
+    ht.pt.x = GET_X_LPARAM(dwpos);
+    ht.pt.y = GET_Y_LPARAM(dwpos);
+    ::MapWindowPoints(HWND_DESKTOP, pNMHDR->hwndFrom, &ht.pt, 1);
+
+    TreeView_HitTest(pNMHDR->hwndFrom, &ht);
+    //Handling Checkbox is done in LBUTTON DOWN based on BUS Connect.
+    //so we need to inform framework not todo anything on Checkbox NM_CLICK
+    if (TVHT_ONITEMSTATEICON & ht.flags)
+    {
+        *pResult = 1;
+    }
+    else
+    {
+        *pResult = 0;
+    }
 }

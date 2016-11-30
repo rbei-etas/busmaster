@@ -33,6 +33,8 @@
 #include "BaseDIL_CAN.h"
 #include "MsgBufFSE.h"
 
+#pragma warning( disable : 4250 )
+
 class CFrameProcessor_CAN : public CBaseFrameProcessor_CAN , public CFrameProcessor_Common
 {
 private:

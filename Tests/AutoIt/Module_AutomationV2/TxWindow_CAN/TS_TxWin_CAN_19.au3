@@ -19,6 +19,7 @@ ConsoleWrite("****Start : TS_TxWin_CAN_19.au3****"&@CRLF)
 Local $VerifyMsgDataByteBFRCHNGE=0,$VerifyMsgDataByteAFTRCHNGE=0
 Local $DtaByteValue[8]=["8","7","6","5","4","3","2","1"],$j=0,$k=0
 Local $DtaByteValue1[8]=["1","2","3","4","5","6","7","8"]
+$countRowChckBox=0
 
 
     _launchApp()

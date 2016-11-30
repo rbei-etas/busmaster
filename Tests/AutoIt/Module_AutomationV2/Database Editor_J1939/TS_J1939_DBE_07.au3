@@ -35,6 +35,7 @@ if winexists($WIN_BUSMASTER) then
 	ConsoleWrite("$assocDBCount : " & $assocDBCount &@CRLF)
 	ControlClick($WIN_Dissociate_CANDB,"",$BTN_Cancel_Dis_CANDB)						; Click on 'Cancel' button in Dissociate database window
 	ConsoleWrite("$Res : " & $Res &@CRLF)
+
 EndIf
 ;~ WinWaitActive($WIN_BUSMASTER,$disDBtxt,4)
 if $Res=1 Then

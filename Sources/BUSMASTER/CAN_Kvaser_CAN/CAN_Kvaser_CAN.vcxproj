@@ -45,16 +45,19 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
     <Import Project="..\Busmaster_Kernel_Includes.props" />
+    <Import Project="..\Warnings_Supress.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
     <Import Project="..\Busmaster_Kernel_Includes.props" />
+    <Import Project="..\Warnings_Supress.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
     <Import Project="..\Busmaster_Kernel_Includes.props" />
+    <Import Project="..\Warnings_Supress.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -114,7 +117,7 @@ del "%TMP%\canlib32.lib"
     <Link>
       <AdditionalOptions>"$(SolutionDir)/BIN/Libs/$(OutDir)DataTypes.lib"
 "$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib"
-"$(SolutionDir)/Localization/lib/intl.lib" %(AdditionalOptions)</AdditionalOptions>
+ %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>$(SolutionDir)/BIN/Libs/$(OutDir)canlib32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)/bin/$(OutDir)CAN_Kvaser_CAN.dll</OutputFile>
       <AdditionalLibraryDirectories>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -241,7 +244,7 @@ del "%TMP%\canlib32.lib"
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\DIL_Interface\HardwareListing.cpp" />
+    <ClCompile Include="..\DIL_Interface\HardwareListingCAN.cpp" />
     <ClCompile Include="AcceptanceFilterDlg.cpp" />
     <ClCompile Include="CAN_Kvaser_CAN.cpp" />
     <ClCompile Include="CANRegAnalysis.cpp" />
@@ -252,7 +255,7 @@ del "%TMP%\canlib32.lib"
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\DIL_Interface\HardwareListing.h" />
+    <ClInclude Include="..\DIL_Interface\HardwareListingCAN.h" />
     <ClInclude Include="AcceptanceFilterDlg.h" />
     <ClInclude Include="CAN_Kvaser_CAN.h" />
     <ClInclude Include="CAN_Kvaser_CAN_Extern.h" />
@@ -271,6 +274,10 @@ del "%TMP%\canlib32.lib"
       <Project>{549e1d9d-fb60-4405-b78e-3c7a8221dc15}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bmp_net.bmp" />
+    <Image Include="res\BUSMASTERDoc.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

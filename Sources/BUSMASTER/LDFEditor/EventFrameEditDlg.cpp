@@ -1,6 +1,6 @@
 #include "EventFrameEditDlg.h"
 #include "LDFDatabaseManager.h"
-#include "IClusterProps.h"
+#include "LINDefines.h"
 #include "LDFUtility.h"
 #include "Defines.h"
 #include "LDFDefines.h"
@@ -50,8 +50,8 @@ void EventFrameEditDlg::vPrepareUiForEditMode()
 
     if ( nullptr != pouFrame )
     {
-        FrameProps ouFrameProps;
-        ouFrameProps.m_eFrameType = eFrame_Invalid;
+        LinFrameProps ouFrameProps;
+        //ouFrameProps.m_eFrameType = eFrame_Invalid;
         pouFrame->GetProperties(ouFrameProps);
         IElement* pTable;
         m_pLdfCluster->GetElement(eScheduleTableElement, ouFrameProps.m_ouLINEventTrigFrameProps.m_nCollisionResolveTable, &pTable);
@@ -98,8 +98,8 @@ void EventFrameEditDlg::vFillElementList()
     std::string strName;
     unsigned int unFrameid;
     unsigned int unCurrentFrameid = -1;
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+    //ouFrameProps.m_eFrameType = eFrame_Invalid;
     if ( true == m_bEditMode && (*m_pouFrame != nullptr ) )
     {
         (*m_pouFrame)->GetProperties(ouFrameProps);
@@ -161,10 +161,10 @@ void EventFrameEditDlg::vAddFrameToTable(IFrame* pFrame, std::map<UID_ELEMENT, U
         return;
     }
 
-    eFrameType ouFrameType;
-    EcuProperties ouEcuProps;
+    LinEcuProps ouEcuProps;
+	LinFrameProps frameProps;
     std::list<IEcu*> ouEcuList;
-    pFrame->GetFrameType(ouFrameType);
+    pFrame->GetProperties(frameProps);
     pFrame->GetEcus(eTx, ouEcuList);
     auto itrTxEcu  = ouEcuList.begin();
 
@@ -174,14 +174,13 @@ void EventFrameEditDlg::vAddFrameToTable(IFrame* pFrame, std::map<UID_ELEMENT, U
     }
 
     ((IEcu*)*itrTxEcu)->GetProperties(ouEcuProps);
-    if ( eLIN_Unconditional == ouFrameType && ouEcuProps.m_eEcuType == eLIN_Slave )
+    if ( eLinUnconditionalFrame == frameProps.m_eLinFrameType && ouEcuProps.m_eEcuType == eSlave )
     {
         std::string strName;
         std::string strTxEcu;
         std::string strRxEcu;
         unsigned int unId;
-        FrameProps ouFrameprops;
-        ouFrameprops.m_eFrameType = eFrame_Invalid;
+        LinFrameProps ouFrameprops;
         pFrame->GetName(strName);
         pFrame->GetFrameId(unId);
         pFrame->GetProperties(ouFrameprops);
@@ -189,8 +188,8 @@ void EventFrameEditDlg::vAddFrameToTable(IFrame* pFrame, std::map<UID_ELEMENT, U
 
         QList<QVariant> ouCloumns;
         ouCloumns.push_back(QVariant(QString::fromStdString(strName)));
-        ouCloumns.push_back(QVariant(ouFrameprops.m_ouLINUnConditionFrameProps.m_unId));
-        ouCloumns.push_back(QVariant(GetString(ouFrameprops.m_ouLINUnConditionFrameProps.m_nLength, 10)));
+        ouCloumns.push_back(QVariant(ouFrameprops.m_nMsgId));
+        ouCloumns.push_back(QVariant(GetString(ouFrameprops.m_unMsgSize, 10)));
         ouCloumns.push_back(QVariant(QString::fromStdString(strTxEcu)));
         ouEcuList.clear();
         pFrame->GetEcus(eRx, ouEcuList);
@@ -226,8 +225,7 @@ void EventFrameEditDlg::OnButtonClickOk()
     if ( 0 == nValidateValues() )
     {
         IFrame* pFrame;
-        FrameProps ouFrameProps;
-        ouFrameProps.m_eFrameType = eFrame_Invalid;
+        LinFrameProps ouFrameProps;
         if ( true == m_bEditMode )
         {
             pFrame = *m_pouFrame;
@@ -241,13 +239,13 @@ void EventFrameEditDlg::OnButtonClickOk()
         {
             pFrame->GetProperties(ouFrameProps);
 
-            ouFrameProps.m_ouLINEventTrigFrameProps.m_pouUnconditionalFrame.clear();
+            //ouFrameProps.m_ouLINUnConditionFrameProps.clear();
 
             //Frame Type
-            ouFrameProps.m_eFrameType = eLIN_EventTriggered;
+            ouFrameProps.m_eLinFrameType = eLinEventTriggeredFrame;
 
             //Frame id
-            ouFrameProps.m_ouLINEventTrigFrameProps.m_unId = GetUnsignedInt(ui.comboFrameId->currentText());
+            ouFrameProps.m_nMsgId = GetUnsignedInt(ui.comboFrameId->currentText());
 
             //Conditional Frames
             int nRow = ui.tableFrames->rowCount();

@@ -4091,7 +4091,6 @@ void CDMGraphCtrl::vSendCursorDetails()
         hr = spGraphCollection->get_Item(nIndex, &spItem);
         spItem.QueryInterface(&spCursor);
 
-        POINT ptCursor;
         DOUBLE dLogX,dLogY;
         short shCursorID;
         spCursor->get_X(&dLogX);

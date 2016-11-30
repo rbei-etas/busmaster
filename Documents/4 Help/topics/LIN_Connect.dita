@@ -16,7 +16,7 @@
   </prolog>
   <body>
     <p>User can connect/disconnect the tool from the LIN-bus by pressing/releasing a toggle tool bar button shown in the figure below.</p>
-    <image href="../images/LIN_Connect_Disconnect.bmp" placement="break"/>
+    <image href="../images/LIN_Connect.bmp" placement="break"/>
     <p>The tool can also be connected by selecting <menucascade>
         <uicontrol>LIN</uicontrol>
         <uicontrol>Connect</uicontrol>

@@ -51,7 +51,7 @@
 #define def_ROW_INDEX           0
 
 #define def_HEIGHT_PANE         150
-#define def_WIDTH_PANE          200
+#define def_WIDTH_PANE          350
 
 #define def_HEIGHT_IMAGE        16
 #define def_WIDTH_IMAGE         16

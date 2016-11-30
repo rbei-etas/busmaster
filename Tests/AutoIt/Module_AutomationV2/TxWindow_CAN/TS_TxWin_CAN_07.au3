@@ -28,6 +28,7 @@ ConsoleWrite("****Start : TS_TxWin_CAN_07****"&@CRLF)
 
 Local $dbMsg1_Rx=0,$dbMsg1_Tx=0,$dbMsg2_Rx=0,$dbMsg2_Tx=0
 Local $VerifydbMsg1=0,$VerifydbMsg2=0
+$countRowChckBox=0
 
 
 
@@ -35,6 +36,7 @@ _launchApp()
 
 WinActivate($WIN_BUSMASTER)
 Local $Time_cyclic=0,$a=0
+$countRowChckBox=0
 if winexists($WIN_BUSMASTER) then
 
     _loadConfig("TS_TxWin_CAN_01")

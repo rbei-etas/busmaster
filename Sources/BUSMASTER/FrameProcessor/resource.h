@@ -15,7 +15,6 @@
 
 #define IDD_DLG_CONFIG_MSG_LOG              100
 #define IDC_CBTN_ADDLOG                     2000
-#define IDC_STATIC                          2001
 #define IDC_EDIT_LOGFILEPATH                2002
 #define IDC_CBTN_LOGFILEPATH                2003
 #define IDC_CHANNEL                         2004

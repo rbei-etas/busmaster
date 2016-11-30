@@ -51,7 +51,6 @@ enum eSECTION_ID // These IDs should be maintained with load sequence
 
     TEST_SETUP_EDITOR_SECTION_ID,
     TEST_SUITE_EXECUTOR_SECTION_ID,
-    FLEXRAY_CLUSTER_CONFIG,
     SIMSYS_SECTION_LIN_ID,
     LIN_CLUSTER_CONFIG,
     LIN_TXWND,

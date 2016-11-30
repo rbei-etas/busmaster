@@ -22,7 +22,7 @@
 
 #pragma once
 #include "LINTxMsgItem.h"
-
+#include "LINDefines.h"
 CLINTxMsgItem::CLINTxMsgItem()
 {
     MsgDetails.pchData = new unsigned char[defLIN_MSG_DLC_MAX];
@@ -62,14 +62,14 @@ void CLINTxMsgItem::vGetPhysicalValueFactor(ISignal* pSignal, double& dScale)
         {
             if (nullptr != pCoding)
             {
-                CompuMethodProps ouCompuProps;
+                LINCompuMethods ouCompuProps;
                 pCoding->GetProperties(ouCompuProps);
 
-                if (ouCompuProps.m_ouLinCompuMethods.m_ouPhysicalValueList.size() > 0)
+                if (ouCompuProps.m_ouPhysicalValueList.size() > 0)
                 {
-                    std::list<PhysicalValue>::iterator itrPhyValue = ouCompuProps.m_ouLinCompuMethods.m_ouPhysicalValueList.begin();
+                    std::list<PhysicalValue>::iterator itrPhyValue = ouCompuProps.m_ouPhysicalValueList.begin();
 
-                    if (itrPhyValue != ouCompuProps.m_ouLinCompuMethods.m_ouPhysicalValueList.end())
+                    if (itrPhyValue != ouCompuProps.m_ouPhysicalValueList.end())
                     {
                         dScale = itrPhyValue->m_dFactor;
                     }

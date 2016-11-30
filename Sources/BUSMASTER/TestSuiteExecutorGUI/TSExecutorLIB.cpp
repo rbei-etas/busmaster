@@ -740,7 +740,7 @@ HRESULT CTSExecutorLIB::GetConfigurationData(xmlNodePtr pxmlNodePtr)
         CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)ouTestSetupEntity.m_omstrCurrentTSFile.GetBuffer(MAX_PATH), omPath);
         omcVarChar = omPath.c_str();
 
-        xmlNodePtr pFilePath = xmlNewChild(pTestSuite, nullptr, BAD_CAST DEF_FILE_PATH, BAD_CAST omcVarChar);
+        xmlNodePtr pFilePath = xmlNewChild(pTestSuite, nullptr, BAD_CAST DEF_FILE_PATH_XML, BAD_CAST omcVarChar);
         xmlAddChild(pTestSuite, pFilePath);
 
         //<IsEnable />

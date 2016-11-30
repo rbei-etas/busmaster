@@ -154,8 +154,7 @@ UINT CReplayProcess::sunReplayMonoshotThreadFunc( LPVOID pParam )
         {
             unMsgDelay = 1;
         }
-        int nIndex; //nIndex declared outside
-
+        
         UINT unSessionDelay = pReplayDetails->m_ouReplayFile.m_unSessionDelay;
         if( unSessionDelay == 0 )
         {
@@ -871,7 +870,7 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
                 SFRAMEINFO_BASIC_CAN sBasicCanInfo;
 
                 pReplayDetails->vFormatCANDataMsg(&sCanMsg, &sBasicCanInfo);
-                bool bTobeBlocked = false;
+                BOOL bTobeBlocked = FALSE;
                 if( pReplayDetails->m_ouReplayFile.m_sFilterApplied.m_bEnabled == TRUE)
                 {
                     EnterCriticalSection(&pReplayDetails->m_omCritSecFilter);
@@ -879,7 +878,7 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
                     LeaveCriticalSection(&pReplayDetails->m_omCritSecFilter);
                 }
 
-                if(bTobeBlocked == false )
+                if(bTobeBlocked == FALSE )
                 {
                     // Use HIL Function to send CAN message
 

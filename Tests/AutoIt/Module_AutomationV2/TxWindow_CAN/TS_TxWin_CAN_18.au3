@@ -15,11 +15,12 @@
 
 ;==========================================================================Test Procedure =========================================================================
 ConsoleWrite(@CRLF)
-ConsoleWrite("****Start : TS_TxWin_CAN_12.au3****"&@CRLF)
+ConsoleWrite("****Start : TS_TxWin_CAN_18.au3****"&@CRLF)
 
 Local $VerifyupdateddataByte=0,$MsgTXdatbyte=0,$MsgRXdatbyte=0
 Local $DtaByteValue[8]=["248","249","250","251","252","253","254","255"],$j=0
 Local $DtaByteValue1[8]=["1","2","3","4","5","6","7","8"],$j=0
+$countRowChckBox=0
 
 
     _launchApp()

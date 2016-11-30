@@ -81,8 +81,12 @@ enum eSignalType
 
 enum eSignalDataType
 {
+	Invalid,
     eSigned,
-    eUnsigned
+    eUnsigned,
+	Float,
+	Double,
+	ByteArray
 };
 enum eEndianess
 {

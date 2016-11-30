@@ -25,6 +25,7 @@ _launchApp()
 
 WinActivate($WIN_BUSMASTER)
 Local $Time_cyclic=0,$a=0
+$countRowChckBox=0
 if winexists($WIN_BUSMASTER) then
 
     _loadConfig("TS_TxWin_CAN_01")
@@ -38,7 +39,7 @@ if winexists($WIN_BUSMASTER) then
 
 
 	_CloseTxWindowArg("CAN")																	; Close Tx window
-	_DisableOverwriteMode()																		; Enable overwrite Mode
+	;_DisableOverwriteMode()																		; Enable overwrite Mode
 	_ConnectDisconnect()																		; Connect CAN
 	;sleep(1000)
 	Send("a")

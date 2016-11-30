@@ -2,16 +2,16 @@
 ; Critical (C)		:		Y
 ; TestCase No.		:		TS_Replay_10
 ; TestCases			:		Replay a log file in cyclic mode with no messages in the log file with fixed time difference between messages and with fixed cycle delay
-; Test Data			:		
+; Test Data			:
 ; Test Setup		:		1. Select "Configure-> Replay".
-;~ 							2. A Dialog Box will appear. 
+;~ 							2. A Dialog Box will appear.
 ;~ 							3. Select a replay file and check the check option
 ;~ 							4. Select Mode of Replay as "Cyclic"
 ;~ 							5. Select a Log file name
 ;~ 							6. Select OK. Replay Window with message in log file will appear
 ;~ 							7. Select "File -> Connect" menu option or select "Connect" tool bar button
-;~ 							8. Enable logging 
-;~ 							9. Repeat the test case after editing the log file having four message 
+;~ 							8. Enable logging
+;~ 							9. Repeat the test case after editing the log file having four message
 ;~ 							10. Select Go button
 
 ; Expected Results  : 		1. After step 2, Non interactive replay will start its message transmission.
@@ -46,13 +46,14 @@ if winexists($WIN_BUSMASTER) then
 
 	ControlClick($WIN_CANReplayConfig,"",$BTN_OK_CANReplayConfig)								; Click on 'OK' button
 
-	_DisableOverwriteMode()																		; Disable overwrite mode
+	;_DisableOverwriteMode()																		; Disable overwrite mode
 
 	_ConnectDisconnect()																		; Connect the tool
 	Sleep(1000)
-
+     $RepWinHWD=_GetReplayWinHWD()																; Fetch the replay window handle
+	_GUICtrlListView_ClickItem($RepWinHWD,0)													; Click on the second row
 	_CANReplayOptionsMenu($CANReplayGoMenu)														; Select "Go" from menu
-	sleep(10000)
+	sleep(6000)
 
 	_ConnectDisconnect()																		; Disconnect the tool
 	sleep(1000)

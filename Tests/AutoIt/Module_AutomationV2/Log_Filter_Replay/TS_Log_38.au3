@@ -170,6 +170,7 @@ if winexists($WIN_BUSMASTER) then
 
 		Controlclick($WIN_CANLog,"",$BTN_RemoveLog_ConfigLog)												; Click on 'Remove' button
 		sleep(500)
+		Controlclick($WIN_CANLog,"",$BTN_OK_ConfigLOG)												        ; Click on 'OK' button
 	EndIf
 
 	_saveConfig()																							; Save the config

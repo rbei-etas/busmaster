@@ -29,7 +29,7 @@
     <ClCompile Include="..\Application\MultiLanguage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\DIL_Interface\HardwareListing.cpp">
+    <ClCompile Include="..\DIL_Interface\HardwareListingCAN.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -61,7 +61,7 @@
     <ClInclude Include="..\Application\MultiLanguage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\DIL_Interface\HardwareListing.h">
+    <ClInclude Include="..\DIL_Interface\HardwareListingCAN.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -69,5 +69,9 @@
     <ResourceCompile Include="CAN_Kvaser_CAN.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\BUSMASTERDoc.ico" />
+    <Image Include="res\bmp_net.bmp" />
   </ItemGroup>
 </Project>

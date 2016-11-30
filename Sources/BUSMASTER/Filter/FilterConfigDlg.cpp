@@ -32,7 +32,7 @@
 //#include "../Application/GettextBusmaster.h"
 /* Project includes */
 #include "Filter_resource.h"
-//#include "Include/CanUsbDefs.h"
+#include "CANDefines.h"
 #include "FilterConfigDlg.h"        // For Filter Configuration Dialog
 #include "Utility\MultiLanguageSupport.h"
 
@@ -2907,11 +2907,11 @@ BOOL CFilterConfigDlg::bUpdateSelectedItem(SFILTER_CAN& sFilter)
         if ( nullptr != pMessage )
         {
             // Update Message Type Combobox and the struct
-            FrameProps frameProps;
+            CANFrameProps frameProps;
             pMessage->GetProperties( frameProps );
 
             // Updating the Id type (Standard or Extended)
-            if ( frameProps.m_ouCANFrameProp.m_canMsgType == eCan_Standard )
+            if ( frameProps.m_canMsgType == eCan_Standard )
             {
                 sFilter.m_byIDType = TYPE_ID_CAN_STANDARD;
                 m_omMsgIDType.SetCurSel( 0 );
@@ -3878,6 +3878,7 @@ EDIRECTION CFilterConfigDlg::eGetDirection(int nIndex)
 
         default:    // Invalid Option
             ASSERT( FALSE );
+			return DIR_ALL;
             break;
     }
 }

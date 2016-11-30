@@ -24,6 +24,9 @@
     <ClCompile Include="CAN_VSCOM_stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\DIL_Interface\HardwareListingCAN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CAN_VSCOM.h">
@@ -39,6 +42,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vs_can_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DIL_Interface\HardwareListingCAN.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

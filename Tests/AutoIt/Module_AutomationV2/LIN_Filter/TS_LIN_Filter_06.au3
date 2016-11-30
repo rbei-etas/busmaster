@@ -53,7 +53,7 @@ if winexists($WIN_BUSMASTER) then
 	_EnableFilterLogLIN()																			; Enable Filter during logging
 
 	_ConnectDisconnect_LIN()
-	sleep(1000)
+	;sleep(1000)
 	_ConnectDisconnect_LIN()
 
 	;_DisableOverwriteMode()																		; Disable Overwrite Mode
@@ -91,13 +91,15 @@ if winexists($WIN_BUSMASTER) then
 	ConsoleWrite("$GetLogFile_Path:"&$GetLogFile_Path&@CRLF)
 	$logcount=_FileCountLines($GetLogFile_Path &"\"& $LoGFiltername&".log")
 	ConsoleWrite("$logcount-----------:"&$logcount&@CRLF)
-	if _FileCountLines($GetLogFile_Path &"\"& $LoGFiltername&".log")=18 Then
-		$Read_LogFirstEnter=FileReadLine ($GetLogFile_Path &"\"& $LoGFiltername&".log",15)			; Read the 16th line from the Log file
-		$Read_LogSecEnter=FileReadLine ($GetLogFile_Path &"\"& $LoGFiltername&".log",16)				; Read the 17th line from the Log file
+	if _FileCountLines($GetLogFile_Path &"\"& $LoGFiltername&".log")=20 Then
+		$Read_LogFirstEnter=FileReadLine ($GetLogFile_Path &"\"& $LoGFiltername&".log",15)			; Read the 15th line from the Log file
+		$Read_LogSecEnter=FileReadLine ($GetLogFile_Path &"\"& $LoGFiltername&".log",16)				; Read the 16th line from the Log file
+		$Read_LogThirdEnter=FileReadLine ($GetLogFile_Path &"\"& $LoGFiltername&".log",17)				; Read the 17th line from the Log file
+		$Read_LogfourthEnter=FileReadLine ($GetLogFile_Path &"\"& $LoGFiltername&".log",18)				; Read the 18th line from the Log file
 
 
-		$Read_LogEndDate=FileReadLine ($GetLogFile_Path &"\"& $LoGFiltername&".log",17)				; Read the 19th line from the Log file
-		$Read_EndSession=FileReadLine ($GetLogFile_Path &"\"& $LoGFiltername&".log",18)				; Read the 19th line from the Log file
+		$Read_LogEndDate=FileReadLine ($GetLogFile_Path &"\"& $LoGFiltername&".log",19)				; Read the 19th line from the Log file
+		$Read_EndSession=FileReadLine ($GetLogFile_Path &"\"& $LoGFiltername&".log",20)				; Read the 20th line from the Log file
 
 		consolewrite("$Read_LogFirstEnter:"&$Read_LogFirstEnter&@CRLF)
 		consolewrite("$Read_LogSecEnter:"&$Read_LogSecEnter&@CRLF)
@@ -118,12 +120,14 @@ if winexists($WIN_BUSMASTER) then
 
 		$FirstMsg=StringSplit($Read_LogFirstEnter," ")
 		$SecMsg=StringSplit($Read_LogSecEnter," ")
+		$ThirdMsg=StringSplit($Read_LogSecEnter," ")
+		$fourMsg=StringSplit($Read_LogSecEnter," ")
 
 
-		if $FirstMsg[2]="Tx" and $SecMsg[2]="Tx" Then
+		if $FirstMsg[2]="Tx" and $SecMsg[2]="Tx" and $ThirdMsg[2]="Tx" and $fourMsg[2]="Tx" Then
 			$txMsg =1
 		EndIf
-		if $FirstMsg[4]="0001" and $SecMsg[4]="0001"  Then
+		if $FirstMsg[4]="0001" and $SecMsg[4]="0001"  and $ThirdMsg[4]="0001" and $fourMsg[4]="0001" Then
 			$msgidCheck =1
 		EndIf
 	EndIf

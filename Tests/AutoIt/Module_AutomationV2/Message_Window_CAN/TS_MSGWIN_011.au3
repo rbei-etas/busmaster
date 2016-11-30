@@ -32,7 +32,7 @@ if winexists($WIN_BUSMASTER) then
 	_TransmitMsgsMenu()	                                                                     ;Transmit Data
 	sleep(3000)
 	_ConnectDisconnect()
-	_EnableInterpretMode()
+	;_EnableInterpretMode()
      Sleep(1000)
 	 WinActivate($WIN_CANMsgWind)
 	 Sleep(500)

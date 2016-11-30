@@ -749,8 +749,8 @@ void CUDSSettingsWnd::OnBnApplyPressed()
     }
 
     //To verify the legth of the simple messages
-    fMsgSize = m_omCheckMsgDLC.GetCheck();
-    FCRespReq = m_omTPNoRespReq.GetCheck();
+    fMsgSize = (m_omCheckMsgDLC.GetCheck() !=0) ;
+    FCRespReq = (m_omTPNoRespReq.GetCheck() !=0);
     OnEnChangeP2_TimeOut();
     OnEnChangeP2_Extended();
     UdsProtocolPtr->UpdateFields();
@@ -943,7 +943,7 @@ void CUDSSettingsWnd::OnBnCancelPressed()
     {
         m_omCheckMsgDLC.SetCheck( BST_CHECKED);
     }
-    FCRespReq = m_omTPNoRespReq.GetCheck();
+    FCRespReq = (m_omTPNoRespReq.GetCheck()!=0);
     P2TimeOut.vSetValue( P2_Time);  // To save the previous P2Time Value
     P2extended.vSetValue(P2_Time_Extended);
 

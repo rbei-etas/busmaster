@@ -1,6 +1,6 @@
 #ifndef CANDEFINES_H
 #define CANDEFINES_H
-
+#include "IClusterProps.h"
 #include "CommonDefines.h"
 #include "CCompuMethod.h"
 #define FRAMEFORMATE 2147483648
@@ -15,46 +15,58 @@ public:
 };*/
 
 
-enum eCANMultiplexSignalIndicator
-{
-    eMultiplexSwitch,
-    eMutiplexedSignal,
-    eBoth,
-    eNA
-};
+
 enum eCANMsgType
 {
     eCan_Standard,
     eCan_Extended
 };
 
-class CANFrameProps
+class CANFrameProps : public FrameProps
 {
 public:
-    unsigned int m_nMsgId;
-    unsigned int m_unMsgSize;
+	CANFrameProps()
+	{
+		m_eProtocol = eProtocolType::eCANProtocol;
+	}
     eCANMsgType m_canMsgType;
 };
 
 
-class CANCompuMethods
+class CANCompuMethods : public CompuMethodProps
 {
 public:
+	CANCompuMethods()
+	{
+		this->m_eType = eCANProtocol;
+	}
     CCompuMethod m_CompuMethod;
 };
 
 
-class CANSignalProps
+class CANSignalProps : public SignalProps
 {
 public:
-    eCANMultiplexSignalIndicator m_eMultiplex; // M = Switch , m = mulplexed signal, mIntM = Multipled signal and switch both
-    int m_nMuliplexedValue;
-    unsigned int m_unSignalSize; // signal size is always in bit
-    eSignalDataType m_eSignalValueType; // can be + for unsigned and - for unsigned
+	CANSignalProps()
+	{
+		this->eType  = eCANProtocol;
+	}
     /*double m_nSignalFactor;
     double m_nSignalOffset;
     double m_nSignalMaximum;
     double m_nSignalMinimum;*/
+};
+
+class CANEcuProperties : public EcuProperties
+{
+public:
+	eProtocolType m_eProtocol;
+
+
+	CANEcuProperties()
+	{
+		m_eProtocol = eProtocolType::eCANProtocol;
+	}
 };
 
 #endif

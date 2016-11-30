@@ -59,7 +59,7 @@ if winexists($WIN_BUSMASTER) then
 			ControlCommand($WIN_ClustrConfigLIN, "",$chckBoxEnableMaster, "Check", "") 					; Select Check box for enable Master mode.
 			Sleep(1000)
 			$enablemasterChecked = ControlCommand($WIN_ClustrConfigLIN, "",$chckBoxEnableMaster, "IsChecked", "")
-
+			ControlClick($WIN_ClustrConfigLIN,"","OK")
 
 	EndIf
 

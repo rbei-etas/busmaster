@@ -27,7 +27,7 @@ public:
     CImageList m_omImageList;
     CImageList m_omImageList1;
     // Dialog Data
-    enum { IDD = IDD_DLG_SIGNAL_WATCH_LIN };
+    enum { IDD = IDD_DLG_SIGNAL_WATCH_CONFIGURE };
 
     void vTest();
     afx_msg void OnClickTree(NMHDR* pNMHDR, LRESULT* pResult);

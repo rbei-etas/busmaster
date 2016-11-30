@@ -29,7 +29,7 @@ union sTreeData
     {
         unsigned char m_uchItemType;
         unsigned char m_uchItemIndex;
-        unsigned char m_uchItemSubType;
+        bool m_ItemSubType;
         unsigned char m_uchUnused;
     } m_unionData;
 };
@@ -151,11 +151,11 @@ int CCheckColumnTreeCtrl::nUpdateScheduleView()
 
                 // Insert frames
                 hItemFrame = InsertItem(chFrameName, hItemSchedule, NULL);
-                ouTreeItemData.m_unionData.m_uchItemSubType = CLINScheduleDataStore::pGetLINSchedDataStore().bIsFrameSupported(eCmdType);
+                ouTreeItemData.m_unionData.m_ItemSubType = CLINScheduleDataStore::pGetLINSchedDataStore().bIsFrameSupported(eCmdType);
                 SetItemData(hItemFrame, ouTreeItemData.m_dwTreeData);
                 SetItemImage(hItemFrame, 0, 0);
 
-                if ( itrFramelist->m_bEnabled == true &&  ( ouTreeItemData.m_unionData.m_uchItemSubType == true ) )
+                if ( itrFramelist->m_bEnabled == true &&  ( ouTreeItemData.m_unionData.m_ItemSubType == true ) )
                 {
                     SetCheck(hItemFrame, true);
                 }
@@ -216,7 +216,7 @@ void CCheckColumnTreeCtrl::EnableChildItems(HTREEITEM hItem, bool bEnable)
     {
         ouItemData.m_dwTreeData = GetItemData(hChild);
         if(ouItemData.m_unionData.m_uchItemType == ITEM_TYPE_MASTER_COMMAND &&
-                ouItemData.m_unionData.m_uchItemSubType == false)
+                ouItemData.m_unionData.m_ItemSubType == false)
         {
             nEnableScheduleCommand(hChild, false);
         }
@@ -259,7 +259,7 @@ void CCheckColumnTreeCtrl::vOnItemClick(HTREEITEM hItem)
     }
     else if(ouItemData.m_unionData.m_uchItemType == ITEM_TYPE_MASTER_COMMAND )
     {
-        if( ouItemData.m_unionData.m_uchItemSubType == true)
+        if( ouItemData.m_unionData.m_ItemSubType == true)
         {
             vHandleCommandItemClick(hItem);
         }

@@ -35,7 +35,7 @@
 
 #include "CANControllerConfigDlg.h"
 #include "CANSelectDlg.h"
-#include "DIL_Interface\HardwareListing.h"
+#include "DIL_Interface\HardwareListingCAN.h"
 #include "Utility\MultiLanguageSupport.h"
 
 /* C++ Includes */
@@ -154,13 +154,14 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_PerformClosureOperations(void)
 * \authors       Arunkumar Karri
 * \date          11.07.2012 Created
 */
-int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount)
+int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount, PSCONTROLLER_DETAILS InitData)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
     CWnd objMainWnd;
     objMainWnd.Attach(hParent);
-    CHardwareListing HwList(psInterfaces, nCount, pnSelList, CAN, CHANNEL_ALLOWED, &objMainWnd);
+	IChangeRegisters* pAdvancedSettings = new CCANControllerConfigDlg(InitData[0].m_omStrBaudrate,InitData[0].m_nBTR0BTR1, nullptr);
+    CHardwareListingCAN HwList(psInterfaces, nCount, pnSelList, CAN, CHANNEL_ALLOWED, &objMainWnd, InitData, pAdvancedSettings);
     INT nRet = HwList.DoModal();
     objMainWnd.Detach();
 
@@ -194,7 +195,7 @@ int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelL
  *      E_POINTER - no access to the VCI drivers
  *      NO_HW_INTERFACE - no CAN interface found
  */
-HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
+HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData)
 {
 #ifdef _IXXAT_DEBUG
     LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces\n");
@@ -250,7 +251,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterf
                     }
                     nHwCount  = unDefaultChannelCnt;
                 }
-                else if ( ListHardwareInterfaces(m_hOwnerWndHandle, m_sSelHwInterface, m_anSelectedItems, nHwCount) != 0 )
+                else if ( ListHardwareInterfaces(m_hOwnerWndHandle, m_sSelHwInterface, m_anSelectedItems, nHwCount,InitData) != 0 )
                 {
                     /* return if user cancels hardware selection */
                     return HW_INTERFACE_NO_SEL;
@@ -378,50 +379,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_DeselectHwInterface(void)
  *  S_OK - baudrate set correct to first CAN controller.
  *
  */
-HRESULT CDIL_CAN_IXXAT_VCI::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
-{
-    //TODO: original line, but here only the first available CAN controller is used
-    // VALIDATE_VALUE_RETURN_VAL(m_byCurrHardwareState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
-    VALIDATE_VALUE_RETURN_VAL(m_byCurrHardwareState, STATE_HW_INTERFACE_LISTED, ERR_IMPROPER_STATE);
-    VALIDATE_POINTER_RETURN_VAL(InitData, S_FALSE);
-
-    // absolutely necessary to call this macro
-    // else you will run directly into MFC hell
-    AFX_MANAGE_STATE(AfxGetStaticModuleState());
-
-#ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_DisplayConfigDlg\n");
-#endif
-
-    HRESULT hrRes = E_POINTER;
-
-    if (m_iNumberOfCANChannelsTotal > 0)
-    {
-        // The InitData is an pointer to an array with the controller details
-        // int iNumOfCtrlEntries = Length / sizeof(SCONTROLER_DETAILS); -> no need this time
-        SCONTROLLER_DETAILS* pCtrlArray = (SCONTROLLER_DETAILS*)InitData;
-
-        INT_PTR iDialogResult = -1;
-        CCANControllerConfigDlg CANControllerConfigDlg(pCtrlArray[0].m_nBTR0BTR1, CWnd::FromHandle(m_hOwnerWndHandle));
-        iDialogResult = CANControllerConfigDlg.DoModal();
-        if (IDOK == iDialogResult)
-        {
-            pCtrlArray[0].m_omStrBaudrate = CANControllerConfigDlg.GetBitTimingName();
-            pCtrlArray[0].m_nBTR0BTR1 = CANControllerConfigDlg.GetBitTimingValue();
-            m_arrIxxatCanChannels[0].SetControllerParameter(&pCtrlArray[0]);
-
-            hrRes = S_OK;
-        }
-        else
-        {
-            // aborted because the user had pressed the abort button
-            hrRes = E_ABORT;
-        }
-    }
-
-    return hrRes;
-}
 
 /**
  * @brief Can set configuration data.

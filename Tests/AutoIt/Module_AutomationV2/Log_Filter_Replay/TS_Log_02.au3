@@ -140,7 +140,7 @@ if winexists($WIN_BUSMASTER) then
 
 EndIf
 
-if $LogButtonCheck=1 and $LogFile1Config="Match" and $LogFile2Config="Match" and $LogFile3Config="Match" and $HexMsgID[4]=0x015 and $DecMsgID[4]=0021 Then
+if  $LogFile1Config="Match" and $LogFile2Config="Match" and $LogFile3Config="Match" and $HexMsgID[4]=0x015 and $DecMsgID[4]=0021 Then
 	_WriteResult("Pass","TS_Log_02")
 Else
 	_WriteResult("Fail","TS_Log_02")

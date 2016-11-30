@@ -93,7 +93,7 @@ void CMessageInterpretation::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CMessageInterpretation, CDialog)
     //{{AFX_MSG_MAP(CMessageInterpretation)
     ON_WM_SIZE()
-    ON_WM_CTLCOLOR()
+    //ON_WM_CTLCOLOR()
     ON_WM_SHOWWINDOW()
     ON_WM_CLOSE()
     ON_WM_CREATE()
@@ -230,10 +230,11 @@ void CMessageInterpretation::vResizeControls(void)
 
         m_ctrlSignal.GetWindowRect(&CtrlRect);
         // Get the column width
-        int nWidth = (CtrlRect.right - CtrlRect.left - 20) / 3;
+        int nWidth = (CtrlRect.right - CtrlRect.left - 20) / 4;
         m_ctrlSignal.SetColumnWidth(0, nWidth);
         m_ctrlSignal.SetColumnWidth(1, nWidth);
-        m_ctrlSignal.SetColumnWidth(2, nWidth);
+		m_ctrlSignal.SetColumnWidth(2, nWidth);
+		m_ctrlSignal.SetColumnWidth(3, nWidth);
     }
 }
 /******************************************************************************
@@ -353,7 +354,7 @@ void CMessageInterpretation::vCreateMsgIntrprtnDlg(CWnd* pomParent, BOOL bShow)
 
 void CMessageInterpretation::vSetCaption(CString strCaption)
 {
-    this->m_strCaption = "  "+strCaption;
+    //this->m_strCaption = "  "+strCaption;
     this->UpdateData(FALSE);
 }
 

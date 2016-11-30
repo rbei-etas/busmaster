@@ -228,6 +228,12 @@ Else
 	_WriteResult("Fail","TS_J1939_DBE_30")
 EndIf
 
+    _ActivatechildWindow($WIN_DBEditor_J19391)
+	WinClose($WIN_DBEditor_J19391)
+	if WinWaitActive($WIN_BUSMASTER,$saveDBtxt,2) Then
+		ControlClick($WIN_BUSMASTER,"",$BTN_No_SaveDB)
+	EndIf
+
 $isAppNotRes=_CloseApp()																				; Close the app
 
 if $isAppNotRes=1 Then

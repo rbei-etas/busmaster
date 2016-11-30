@@ -27,8 +27,8 @@ private slots:
     void onSelectionOk();
     void onSelecetionCancel();
     void ItemSelectionChangeLogical();
-    void FillLogicalValues(CompuMethodProps& ouCompuProps);
-    int FillPhysicalValues(CompuMethodProps& ouCompuProps);
+	void FillLogicalValues(LINCompuMethods& ouCompuProps);
+	int FillPhysicalValues(LINCompuMethods& ouCompuProps);
 private:
     Ui::CodingDlg ui;
 };

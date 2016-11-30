@@ -61,9 +61,9 @@ void SignalGroupDlg::onSelectionOk()
             std::string strName = ui.editName->text().toStdString();
 
 
-            SignalGroupProps ouSignalGroupProps;
+            LinSignalGroupProps ouSignalGroupProps;
             ouSignalGroupProps.eType = eLINProtocol;
-            ouSignalGroupProps.m_ouLinSignalGroupProps.m_nGroupSize = GetUnsignedInt(ui.editSize->text(), 10);
+            ouSignalGroupProps.m_nGroupSize = GetUnsignedInt(ui.editSize->text(), 10);
             pElement->SetProperties(ouSignalGroupProps);
 
             int nRow = ui.tableSignals->rowCount();
@@ -188,13 +188,13 @@ void SignalGroupDlg::vPrepareUiForEditMode()
     }
 
     auto* pSignalGroup = *m_pSignalGroup;
-    SignalGroupProps ouSignalGroupProps;
+    LinSignalGroupProps ouSignalGroupProps;
     std::string strName;
     pSignalGroup->GetName(strName);
     ui.editName->setText(strName.c_str());
 
     pSignalGroup->GetProperties(ouSignalGroupProps);
-    int nSize =  qMin( (int)ouSignalGroupProps.m_ouLinSignalGroupProps.m_nGroupSize , 64);
+    int nSize =  qMin( (int)ouSignalGroupProps.m_nGroupSize , 64);
 
 
     ui.editSize->setText(GetString(nSize, 10));

@@ -23,7 +23,7 @@
 #include <basetyps.h>
 #include <commctrl.h>
 #include <windowsx.h>
-#include "resource.h"
+#include "../res/resource.h"
 #include "about.h"
 
 

@@ -19,7 +19,7 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
-#include "TSEditorGUI_stdafx.h"
+#include "stdafx.h"
 #include "TreeViewEx.h"
 #include "TSEditorGUI_resource.h"
 #include "TSEditorGUI_ChildFrame.h"
@@ -1005,7 +1005,8 @@ void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
         }
 
         CMenu omContextMenu;
-
+		CMenu omSubMenu;
+		omSubMenu.CreatePopupMenu();
         VERIFY(omContextMenu.CreatePopupMenu());
         if(eEnityType == TEST_SETUP)
         {
@@ -1013,8 +1014,7 @@ void CTreeViewEx::OnNMRclick(NMHDR* /*pNMHDR*/, LRESULT* pResult)
         }
         else if(eEnityType == TEST_CASE)
         {
-            CMenu omSubMenu;
-            omSubMenu.CreatePopupMenu();
+            
             omSubMenu.AppendMenu(MF_STRING, IDM_ADD_SEND, _("Send"));
             omSubMenu.AppendMenu(MF_STRING, IDM_ADD_VERIFY, _("Verify"));
             omSubMenu.AppendMenu(MF_STRING, IDM_ADD_WAIT, _("Wait"));

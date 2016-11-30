@@ -1,6 +1,7 @@
 //Microsoft Developer Studio generated resource script.
 //
 #include "CAN_MHS_Resource.h"
+#include "../DIL_Interface/ChannelSelection.rc"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////

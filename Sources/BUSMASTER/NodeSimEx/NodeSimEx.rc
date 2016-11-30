@@ -158,7 +158,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON_FN_EDITOR      ICON                    "res\\icon2.ico"
+IDI_ICON_FN_EDITOR      ICON                    "res\\NodeSimulationIcon.ico"
 IDI_ICON_SIMSYS_CONFIG  ICON                    "res\\SimSysWnd.ico"
 IDI_ICON_NODE_ENABLED   ICON                    "res\\Node_Enabled.ico"
 IDI_ICON_NODE_DISABLED  ICON                    "res\\Node_Disabled.ico"

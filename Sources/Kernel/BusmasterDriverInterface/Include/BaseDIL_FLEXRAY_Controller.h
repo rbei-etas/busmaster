@@ -33,5 +33,5 @@ public:
     virtual HRESULT FLEXRAY_RegisterClient(BOOL bRegister, DWORD& ClientID, char* pacClientName) = 0;
 
     virtual HRESULT FLEXRAY_GetControllerParams(std::list<FlexRayControllerParams>&) = 0;
-
+    virtual ~CBaseDIL_FLEXRAY_Controller() {};
 };

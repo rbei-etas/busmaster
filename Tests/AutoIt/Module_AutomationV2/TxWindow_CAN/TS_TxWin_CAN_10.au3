@@ -19,6 +19,7 @@
 ConsoleWrite(@CRLF)
 ConsoleWrite("****Start : TS_TxWin_CAN_10.au3****"&@CRLF)
 
+$countRowChckBox=0
 Local $VerifyPhysicalValue=0
     _launchApp()
 	WinActivate($WIN_BUSMASTER)

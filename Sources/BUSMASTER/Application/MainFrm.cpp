@@ -62,7 +62,6 @@
 #include "BaseDIL_CAN.h"
 #include "BaseDIL_LIN.h"
 #include "BaseDIL_J1939.h"
-#include "BaseDIL_FLEXRAY.h"
 #include "include/ModuleID.h"
 #include "FrameProcessor/FrameProcessor_extern.h"
 #include "FrameProcessor/BaseFrameProcessor_CAN.h"
@@ -99,16 +98,15 @@
 #include "UI\BusmasterMenuItem.h"
 #include "DataTypes\NSCodeGenHelperFactory.h"
 #define MSG_GET_CONFIGPATH  10000
-#ifndef _FLEXRAY_
-#define _FLEXRAY_
-#endif
+#define FromXMLFile 1 //To show the called InitializeDil() is from XmlConfig
+
 
 // For bus statistics information
 
 extern CCANMonitorApp theApp;       // Application object
 CMsgBufFSE<STCANDATA> g_ouCANBufFSE;    //Global CAN buffer
 CMsgBufFSE<STLINDATA> g_ouLINBufFSE;    //Global LIN buffer
-CMsgBufFSE<s_FLXMSG> g_ouFlexRayBufSE;  //Global FlexRay buffer
+
 
 HWND g_hMainGUI;                     // Main GUI
 
@@ -125,7 +123,6 @@ extern BOOL g_bStopMsgHandlers;
 extern BOOL gbMsgTransmissionOnOff(BOOL bOnOff,HMODULE hModule);
 
 BOOL g_bStopSelectedMsgTx ;
-PSTXMSG g_psTxMsgBlockList;
 
 // Flag for Msg Handler status
 extern BOOL g_bMsgHandlerON;
@@ -144,7 +141,7 @@ static CBaseSignalWatch* sg_pouSWInterface[BUS_TOTAL] = {nullptr}; // SIGNAL WAT
 static CBaseFrameProcessor_LIN* sg_pouFrameProcLIN = nullptr; // CAN logger interface
 CBaseDIL_LIN* g_pouDIL_LIN_Interface = nullptr; // LIN DIL interface
 
-CBaseDIL_FLEXRAY* g_pouDIL_FLEXRAY_Interface = nullptr; // FlexRay DIL interface
+
 
 DWORD g_dwClientID = 0;
 extern BOOL g_bReadDllMsg;
@@ -162,7 +159,6 @@ static CBaseDIL_LIN* sg_pouLinDIL = nullptr; // DIL interface
 BOOL CMsgSignalDBWnd::sm_bValidJ1939Wnd = FALSE;
 SMSGENTRY* CTxMsgWndJ1939::m_psMsgRoot = nullptr;
 
-#define CREATE_TOOLBAR(pParentWnd, ToolBarObj, ID, Title) {if (nCreateToolbar(pParentWnd, ToolBarObj, ID, Title) != 0){return -1;}}
 #define defCONFIGFILTER         _("BUSMASTER Configuration files(*.cfx)|*.cfx||")
 #define defFILEEXT              "cfx"
 #define defDLGFLAGS             OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST
@@ -173,19 +169,14 @@ SMSGENTRY* CTxMsgWndJ1939::m_psMsgRoot = nullptr;
 #define TIMER_REFRESH_LIN_LOG_STATUS 0x103
 #define STSBAR_REFRESH_TIME_PERIOD      1000  // in milliseconds
 #define STSBAR_REFRESH_TIME_PERIOD_LOG  1000  // in milliseconds
-#define PROFILE_CAN_MONITOR "RBEI_ECF2_CAN_Monitor"
+#define PROFILE_CAN_MONITOR "Screen"
 
 
 #define defCONFIG_MSG_DISPLAY_CAN "CAN"
 #define defCONFIG_MSG_DISPLAY_LIN "LIN"
 #define defCONFIG_MSG_DISPLAY_J1939 "J1939"
-#define FLEXRAY_DIL_TOTAL           16
-#define FLEXRAY_DRIVER_STUB         0
-#define FLEXRAY_DAL_NONE            ~0x0
-const BYTE CAPL_2_C_MASK  = 0x1;
-const BYTE DBF_2_DBC_MASK = 0x2;
-const BYTE DBC_2_DBF_MASK = 0x4;
 
+#define	USE_MSG_AUTOIT_REQUEST				WM_USER + 1000
 
 enum
 {
@@ -220,15 +211,15 @@ enum
 
 
 
-IMPLEMENT_DYNAMIC(CMainFrame, CMDIFrameWnd)
+IMPLEMENT_DYNAMIC(CMainFrame, CMDIFrameWndEx)
 
-BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
+BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
     ON_WM_CREATE()
     ON_COMMAND(IDM_CONFIGURE_DATABASE_OPENACTIVE, OnOpenDatabase)
     ON_COMMAND(IDM_CONFIGURE_DATABASE_CLOSE, OnCloseDatabase)
     ON_MESSAGE(IDM_CONFIGURE_DATABASE_CLOSE, OnCloseDatabase)
-    ON_COMMAND(IDM_FILE_IMPORT_DATABASE, OnImportDatabase)
-    ON_COMMAND(IDM_CONFIGURE_BAUDRATE, OnConfigBaudrate)
+	ON_COMMAND(IDM_FILE_IMPORT_DATABASE, OnImportDatabase)
+
     ON_COMMAND(IDM_CONFIGURE_LIN_CHANNEL, OnConfigLinChannel)
     ON_COMMAND(IDM_CONFIGURE_DATABASE_NEW, OnNewDatabase)
     ON_COMMAND(IDM_CONFIGURE_DATABASE_SAVEAS, OnConfigDatabaseSaveAs)
@@ -239,7 +230,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_REPLAY_STEP, OnReplaySingleStep)
     ON_COMMAND(IDM_REPLAY_STOP, OnReplayStop)
     ON_COMMAND(IDM_REPLAY_GO, OnReplayGo)
-    ON_COMMAND(IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, OnMessageInterpretation)
+    
     ON_COMMAND(IDM_SIGNALWATCH_ADDSIGNAL, OnAddSignalToSignalWindow)
     ON_COMMAND(IDM_SIGNALWATCH_ADDSIGNAL_LIN, OnAddSignalToSignalWindow_LIN)
 
@@ -265,18 +256,37 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_DATABASE_SAVE, OnUpdateConfigureDatabaseSave)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_DATABASE_SAVEAS, OnUpdateConfigureDatabaseSaveas)
     ON_WM_CLOSE()
-    ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, OnUpdateMessageInterpret)
-    ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGFILTEROFF, OnUpdateLogFilter)
+	ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGFILTEROFF, OnUpdateLogFilter)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_REPLAYFILTEROFF, OnUpdateReplayFilter)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_MESSAGEFILTEROFF, OnUpdateMessageFilterButton)
     ON_COMMAND(IDM_FILTER_LOGFILTEROFF_BUTTON, OnLogFilter)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_LOGFILTEROFF_BUTTON, OnUpdateLogFilter)
     ON_COMMAND(IDM_FILTER_MESSAGEFILTEROFF_BUTTON, OnMessageFilterButton)
     ON_UPDATE_COMMAND_UI(IDM_FILTER_MESSAGEFILTEROFF_BUTTON, OnUpdateMessageFilterButton)
-    ON_COMMAND(IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, OnDisplayMessagewindowOverwrite)
-    ON_COMMAND(IDM_CLEAR_MSG_WINDOW, OnClearMsgWindow)
-    ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, OnUpdateDisplayMessagewindowOverwrite)
-    ON_UPDATE_COMMAND_UI(IDR_TOOL_HEXDEC, OnUpdateToolHexdec)
+    
+	//Clear
+	ON_COMMAND_RANGE(IDM_CLEAR_MSG_WINDOW_START, IDM_CLEAR_MSG_WINDOW_END, OnClearMsgWindow)
+	//Absolute
+	ON_COMMAND_RANGE(IDM_ABSOLUTE_TIME_MSG_WINDOW_START, IDM_ABSOLUTE_TIME_MSG_WINDOW_END, OnDisplayAbsoluteTime)
+	ON_UPDATE_COMMAND_UI_RANGE(IDM_ABSOLUTE_TIME_MSG_WINDOW_START, IDM_ABSOLUTE_TIME_MSG_WINDOW_END, OnUpdateDisplayAbsolutetime)
+	
+	//Relative
+	ON_COMMAND_RANGE(IDM_RELATIVE_TIME_MSG_WINDOW_START, IDM_RELATIVE_TIME_MSG_WINDOW_END, OnDisplayRelativetime)
+	ON_UPDATE_COMMAND_UI_RANGE(IDM_RELATIVE_TIME_MSG_WINDOW_START, IDM_RELATIVE_TIME_MSG_WINDOW_END, OnUpdateDisplayRelativetime)
+	
+	//System
+	ON_COMMAND_RANGE(IDM_SYSTEM_TIME_MSG_WINDOW_START, IDM_SYSTEM_TIME_MSG_WINDOW_END, OnDisplaySystemTime)
+	ON_UPDATE_COMMAND_UI_RANGE(IDM_SYSTEM_TIME_MSG_WINDOW_START, IDM_SYSTEM_TIME_MSG_WINDOW_END, OnUpdateDisplaySystemTime)
+	
+	//Overwrite
+	ON_COMMAND_RANGE(IDM_OVERWRITE_MSG_WINDOW_START, IDM_OVERWRITE_MSG_WINDOW_END, OnDisplayMessagewindowOverwrite)
+	ON_UPDATE_COMMAND_UI_RANGE(IDM_OVERWRITE_MSG_WINDOW_START, IDM_OVERWRITE_MSG_WINDOW_END, OnUpdateDisplayMessagewindowOverwrite)
+    
+	//Interpret
+	ON_COMMAND_RANGE(IDM_INTERPRETE_MSG_WINDOW_START, IDM_INTERPRETE_MSG_WINDOW_END, OnMessageInterpretation)
+	ON_UPDATE_COMMAND_UI_RANGE(IDM_INTERPRETE_MSG_WINDOW_START, IDM_INTERPRETE_MSG_WINDOW_END, OnUpdateMessageInterpret)
+
+	ON_UPDATE_COMMAND_UI(IDR_TOOL_HEXDEC, OnUpdateToolHexdec)
     ON_UPDATE_COMMAND_UI(IDM_LOG_ON_OFF, OnUpdateLogOnOff)
     ON_UPDATE_COMMAND_UI(IDM_REPLAY_GO, OnUpdateReplayGo)
     ON_UPDATE_COMMAND_UI(IDM_REPLAY_SKIP, OnUpdateReplaySkip)
@@ -296,8 +306,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_CFGN_SEND_MSGS, OnCfgSendMsgs)
     ON_COMMAND(IDM_FILE_CONNECT, OnFileConnect)
     ON_UPDATE_COMMAND_UI(IDM_FILE_CONNECT, OnUpdateFileConnect)
-    ON_COMMAND(ID_FLEXRAY_CONNECT, OnFlexRayConnect)
-    ON_UPDATE_COMMAND_UI(ID_FLEXRAY_CONNECT, OnUpdateFlexRayConnect)
+    
+    
     ON_COMMAND(IDM_LIN_CONNECT, OnLINConnect)
     ON_UPDATE_COMMAND_UI(IDM_LIN_CONNECT, OnUpdateLINConnect)
     ON_COMMAND(IDM_CONFIG_LOAD, OnLoadConfigFile)
@@ -322,13 +332,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(IDM_TRACE_WND, OnMessageTraceWnd)
     ON_UPDATE_COMMAND_UI(IDM_TRACE_WND, OnUpdateTraceWnd)
     ON_UPDATE_COMMAND_UI(IDM_CONFIGURE_BAUDRATE, OnUpdateConfigureBaudrate)
-    ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, OnDisplayAbsoluteTime)
-    ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, OnUpdateDisplayAbsolutetime)
-    ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, OnDisplayRelativetime)
-    ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, OnUpdateDisplayRelativetime)
-    ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME, OnDisplaySystemTime)
-    ON_UPDATE_COMMAND_UI(IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME, OnUpdateDisplaySystemTime)
-    ON_COMMAND(IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME,OnEnableTimeStampButton)
+    
+    
     ON_WM_SIZE()
     ON_UPDATE_COMMAND_UI(IDR_TOOL_BUTTON_SIGNAL_WATCH, OnUpdateSignalWatchWnd)
     ON_UPDATE_COMMAND_UI(IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN, OnUpdateSignalWatchWnd_LIN)
@@ -341,18 +346,16 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_COMMAND(IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN, OnConfigureSimulatedsystemsLin)
     ON_COMMAND_RANGE(IDC_SELECT_DRIVER,IDC_SELECT_DRIVER + 13, OnSelectDriver)
     ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_DRIVER,IDC_SELECT_DRIVER + 13, OnUpdateSelectDriver)
-    ON_COMMAND_RANGE(IDC_SELECT_FLEX_DRIVER,IDC_SELECT_FLEX_DRIVER + FLEXRAY_DIL_TOTAL, OnSelectFLEXRAYDriver)
-    ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_FLEX_DRIVER,IDC_SELECT_FLEX_DRIVER + FLEXRAY_DIL_TOTAL, OnUpdateSelectFLEXRAYDriver)
+    
+    
     ON_COMMAND_RANGE(IDC_SELECT_LIN_DRIVER,IDC_SELECT_LIN_DRIVER + 5, OnSelectLINDriver)
     ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_LIN_DRIVER,IDC_SELECT_LIN_DRIVER + 5, OnUpdateSelectLINDriver)
-    ON_COMMAND(ID_HELP_FINDER, CMDIFrameWnd::OnHelpFinder)
-    ON_COMMAND(ID_HELP, CMDIFrameWnd::OnHelp)
-    ON_COMMAND(ID_CONTEXT_HELP, CMDIFrameWnd::OnContextHelp)
-    ON_COMMAND(ID_DEFAULT_HELP, CMDIFrameWnd::OnHelpFinder)
+    ON_COMMAND(ID_HELP_FINDER, CMDIFrameWndEx::OnHelpFinder)
+    ON_COMMAND(ID_HELP, CMDIFrameWndEx::OnHelp)
+    ON_COMMAND(ID_CONTEXT_HELP, CMDIFrameWndEx::OnContextHelp)
+    ON_COMMAND(ID_DEFAULT_HELP, CMDIFrameWndEx::OnHelpFinder)
     ON_MESSAGE(WM_PROCESS_ERROR_MESSAGE, OnErrorMessageProc)
     ON_UPDATE_COMMAND_UI(ID_ACTIVE_DATABASE_NAME, OnUpdateConfigurationFileName)
-    ON_COMMAND_RANGE(IDM_REC_CFG_FILE1, IDM_REC_CFG_FILE5, OnClickMruList)
-    ON_UPDATE_COMMAND_UI_RANGE(IDM_REC_CFG_FILE1, IDM_REC_CFG_FILE5, OnUpdateMruList)
     ON_MESSAGE(WM_FILE_DISCONNECT,vDisconnect)
     ON_MESSAGE(WM_SET_WARNING_LIMIT_VAR,vSetWarningLimitVar)
     ON_MESSAGE(WM_KEY_PRESSED_MSG_WND,vKeyPressedInMsgWnd)
@@ -368,10 +371,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 
     ON_UPDATE_COMMAND_UI(IDM_CFGN_LOG, OnUpdateCfgnLog)
     ON_UPDATE_COMMAND_UI(IDM_CFGN_LIN_LOG, OnUpdateCfgnLog_LIN)
-    ON_COMMAND(ID_DISPLAY_MAIN, OnDisplayMain)
-    ON_UPDATE_COMMAND_UI(ID_DISPLAY_MAIN, OnUpdateDisplayMain)
-    ON_COMMAND(ID_DISPLAY_MSG_WND, OnDisplayMsgWnd)
-    ON_UPDATE_COMMAND_UI(ID_DISPLAY_MSG_WND, OnUpdateDisplayMsgWnd)
     ON_WM_ACTIVATE()
     ON_COMMAND(ID_CONFIGURE_WAVEFORM_MESSAGES, OnConfigureWaveformMessages)
     ON_COMMAND(IDR_START_SIGNAL_TRANSMISSION, OnStartSignalTransmission)
@@ -393,14 +392,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_UPDATE_COMMAND_UI(ID_ACTION_J1939_TX_MESSAGE, OnUpdateActionJ1939TxMessage)
     ON_COMMAND(ID_ACTION_J1939_LOG, OnActionJ1939Log)
     ON_UPDATE_COMMAND_UI(ID_ACTION_J1939_LOG, OnUpdateActionJ1939Log)
-    ON_COMMAND(ID_TOOLBAR_J1939, OnToolbarJ1939)
-    ON_UPDATE_COMMAND_UI(ID_TOOLBAR_J1939, OnUpdateToolbarJ1939)
-    ON_COMMAND(ID_FLEXRAY_TOOLBAR, OnToolbarFlexRay)
-    ON_UPDATE_COMMAND_UI(ID_FLEXRAY_TOOLBAR, OnUpdateToolbarFlexRay)
-    ON_COMMAND(ID_CONFIGURATION_TOOLBAR, OnToolbarConfiguration)
-    ON_UPDATE_COMMAND_UI(ID_CONFIGURATION_TOOLBAR, OnUpdateToolbarConfiguration)
-    ON_COMMAND(ID_TOOLBAR_LIN, OnToolbarLIN)
-    ON_UPDATE_COMMAND_UI(ID_TOOLBAR_LIN, OnUpdateToolbarLIN)
     ON_COMMAND(33077, OnJ1939ConfigureTimeouts)
     ON_UPDATE_COMMAND_UI(33077, OnUpdateJ1939Timeouts)
     ON_COMMAND(33079, OnJ1939DBNew)
@@ -411,11 +402,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(ID_DATABASE_CLOSE, OnJ1939DBClose)
     ON_COMMAND(ID_DATABASE_SAVE, OnJ1939DBSave)
     ON_UPDATE_COMMAND_UI(ID_DATABASE_SAVE, OnUpdateJ1939DBSave)
-    ON_COMMAND(33082, OnJ1939DBAssociate)
-    ON_COMMAND(33083, OnJ1939DBDissociate)
+	ON_COMMAND(ID_J1939_DATABASE_ASSOCIATE, OnJ1939DBAssociate)
+	ON_COMMAND(ID_J1939_DATABASE_DISSOCIATE, OnJ1939DBDissociate)
     ON_COMMAND(ID_CONFIGURE_SIMULATEDSYSTEMS, OnJ1939CfgSimSys)
-    ON_COMMAND(ID_DISPLAY_CONFIGURE, OnDisplayConfig)
-    ON_UPDATE_COMMAND_UI(ID_DISPLAY_CONFIGURE, OnUpdateDisplayConfig)
     ON_UPDATE_COMMAND_UI(33085, OnUpdateJ1939CfgSimSys)
     ON_COMMAND(ID_SIGNALWATCH_ADD, OnJ1939SignalwatchAdd)
     ON_COMMAND(ID_SIGNALWATCH_SHOWWINDOW, OnJ1939SignalwatchShow)
@@ -424,8 +413,6 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 
     ON_COMMAND_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_LIN, OnShowHideMessageWindow)
     ON_UPDATE_COMMAND_UI_RANGE(ID_SHOWMESSAGEWINDOW_CAN,ID_SHOWMESSAGEWINDOW_LIN, OnUpdateShowHideMessageWindow)
-    ON_COMMAND(ID_TB_CANDATABASE, OnToolbarCandatabase)
-    ON_UPDATE_COMMAND_UI(ID_TB_CANDATABASE, OnUpdateToolbarCanDatabase)
     ON_COMMAND(ID_TESTAUTOMATION_EDITOR, OnAutomationTSEditor)
     ON_COMMAND(ID_TESTAUTOMATION_EXECUTOR, OnAutomationTSExecutor)
     ON_COMMAND(ID_UTILITY_FILE_CONVERTER, OnFileConverter)
@@ -435,8 +422,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(WM_KEYBOARD_KEYDOWN, OnReceiveKeyDown)
     ON_MESSAGE(MSG_GET_CONFIGPATH, onGetConfigPath)
     ON_MESSAGE(WM_J1939_TX_CLOSE_MSG, onJ1939TxWndClose)
-    ON_COMMAND(ID_FLEXRAY_CLUSTER_CONFIG, OnFlexRayDBAssociate)
-    ON_UPDATE_COMMAND_UI(ID_FLEXRAY_CLUSTER_CONFIG, OnUpdateFlexrayAssociate)
+   
+    
     ON_COMMAND(ID_TRANSMIT_CONFIGURE_LIN, OnCfgSendMsgsLIN)
     ON_COMMAND(ID_LIN_CLUSTER_CONFIG, OnLinClusterConfig)
     ON_UPDATE_COMMAND_UI(ID_LIN_CLUSTER_CONFIG, OnUpdateLinClusterConfig)
@@ -447,15 +434,18 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
     ON_MESSAGE(WM_USER_NSCODEGEN, OnNodeSimCodeGenStatus)
 
 
-    ON_UPDATE_COMMAND_UI(IDM_MESSAGEWINDOW_FRAME, OnUpdateFrame)
-    ON_UPDATE_COMMAND_UI(IDM_MESSAGEWINDOW_PDU, OnUpdatePdu)
-    //end bhaskar
-
+	
+	ON_REGISTERED_MESSAGE(AFX_WM_ON_RIBBON_CUSTOMIZE, OnRibbonCustomize)
 
     //Plugin
     ON_COMMAND_RANGE( IDR_PLUGIN_MENU_START, IDR_PLUGIN_MENU_END, onPluginMenuClicked )
     ON_UPDATE_COMMAND_UI_RANGE( IDR_PLUGIN_MENU_START, IDR_PLUGIN_MENU_END, onPluginMenuUpadate )
-END_MESSAGE_MAP()
+
+	//Temp - For Autoit scripts.
+	ON_MESSAGE(USE_MSG_AUTOIT_REQUEST, OnAutoItRequest)
+	//ON_UPDATE_COMMAND_UI(ID_RIBBON_HIDE, &CMainFrame::OnUpdateRibbonHide)
+    ON_COMMAND(ID_BUTTON_TOGGLERIBBON, &CMainFrame::OnButtonToggleribbon)
+    END_MESSAGE_MAP()
 
 static UINT indicators[] =
 {
@@ -471,7 +461,7 @@ const int INDEX_CHANNELS = 0x4;
 const int INDEX_J1939_LOG_ICON = 0x3;
 const int INDEX_CAN_LOG_ICON = 0x2;
 const int INDEX_LIN_LOG_ICON = 0x5;
-const int INDEX_FLEXRAY_LOG_ICON = 0x6;
+
 
 CAppServices_Impl sg_ouAppServiceObj;
 
@@ -480,7 +470,7 @@ CMainFrame::CMainFrame()
 
     m_oNetworkStatistics = nullptr;
     GetCurrentDirectory(MAX_PATH, theApp.m_acApplicationDirectory);// Get application directory
-    m_nMaxFlexChannels = 1;
+    
     m_nMaxLinChannels = 1;
     m_podMsgSgWnd                   = nullptr;
     for (UINT i = 0; i < BUS_TOTAL; i++)
@@ -508,20 +498,13 @@ CMainFrame::CMainFrame()
     m_bMsgHandlerRxDataByte         = FALSE;
     m_bNoHardwareFound              = true;
     // Clear all MRU strings
-    m_omStrMRU_ConfigurationFiles[0]    = _(defSTR_DEFAULT_MRU_ITEM);
-    m_omStrMRU_ConfigurationFiles[1]    = "";
-    m_omStrMRU_ConfigurationFiles[2]    = "";
-    m_omStrMRU_ConfigurationFiles[3]    = "";
-    m_omStrMRU_ConfigurationFiles[4]    = "";
 
     // Config menu option - default
     m_bCfgNewMenuOption     = TRUE;
     m_bCfgLoadMenuOption    = TRUE;
     m_bCfgSaveMenuOption    = TRUE;
     m_bCfgSaveAsMenuOption  = TRUE;
-    mFrChannelSettingsHandler.LoadChannelConfiguration();
-    // Send toolbar button is not enabled.
-    //m_bEnableSendToolbarButton = FALSE;
+    
     m_bIsStatWndCreated = FALSE;
     m_bNotificWndVisible       = FALSE;
     // Initially the controller will be in error active mode.
@@ -565,7 +548,7 @@ CMainFrame::CMainFrame()
     m_omAppDirectory = acTmp;
     m_bInterPretMsg = FALSE;
     m_pouMsgInterpretBuffer = nullptr;
-    m_objFlexTxHandler.vLoadTx_DLL();
+    m_objTxHandler.vLoadTx_DLL();
     m_objSigGrphHandler.vLoadSigGrph_DLL();
     m_pouMsgInterpretBuffer = m_objSigGrphHandler.vGetGraphBuffer();
 
@@ -583,10 +566,6 @@ CMainFrame::CMainFrame()
 
     m_sMsgWndPlacement.length = 0;//MSG_WND_PLACEMENT
     m_sMsgInterpretPlacement.length = 0;
-    //Driver selection popup menu updation
-    m_pDILSubMenu = nullptr;
-    m_pFlxDILSubMenu = nullptr;
-    m_pDILSubMenuLin = nullptr;
     m_dwDriverId = 0; //Plugin;
     m_pouTxMsgWndJ1939 = nullptr;
     m_sJ1939ClientParam.m_byAddress = ADDRESS_NULL;
@@ -612,28 +591,7 @@ CMainFrame::CMainFrame()
     vGettextBusmaster();
 
     m_bLINDisconnect = false;
-    m_bUseAdvancedUILib = false;
-    m_hModAdvancedUILib = nullptr;
-    m_bytIconSize       = 20;
-
-    /* Try to load resource DLL for icons*/
-    m_hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
-    /* If the AdvancedUIPlugIn DLL exists, use it */
-    if ( m_hModAdvancedUILib )
-    {
-        m_bytIconSize       = 32;
-        m_bUseAdvancedUILib = true;
-    }
-
-
-
-    /* Set the FLEXRAY Monitor client ID to nullptr */
-    m_dwFLEXClientID = 0;
-    m_bFRConfigModified = false;
-    /* Set default FlexRay DIL selection to NONE */
-    m_shFLEXRAYDriverId = -1;
-
-
+   
     m_bFlxDILChanging = FALSE;
 
     m_shLINDriverId = -1;
@@ -649,10 +607,6 @@ CMainFrame::CMainFrame()
 
 CMainFrame::~CMainFrame()
 {
-    m_pDILSubMenu->DestroyMenu();
-    DELETE_PTR(m_pDILSubMenu);
-    m_pFlxDILSubMenu->DestroyMenu();
-    DELETE_PTR(m_pFlxDILSubMenu);
     DELETE_PTR(m_podMsgWndThread);
     if (m_pouMsgSigJ1939 != nullptr)
     {
@@ -673,13 +627,7 @@ CMainFrame::~CMainFrame()
     DELETE_PTR(m_pouTxMsgWndJ1939);
     CTxMsgWndJ1939::vClearDataStore();
 
-    /* Free the resource DLL */
-    if ( m_bUseAdvancedUILib && m_hModAdvancedUILib )
-    {
-        ::FreeLibrary(m_hModAdvancedUILib);
-        m_hModAdvancedUILib = nullptr;
-    }
-
+    
     ReleaseBusStat(CAN);
     ReleaseBusStat(LIN);
 
@@ -703,17 +651,7 @@ CMainFrame::~CMainFrame()
     }
 }
 
-void CMainFrame::OnUpdateFrame(CCmdUI* pCmdUI)
-{
-    BOOL bStatus = theApp.pouGetFlagsPtr()->nGetFlagStatus(DISPLAY_FRAME);
-    pCmdUI->SetCheck(bStatus);
-}
 
-void CMainFrame::OnUpdatePdu(CCmdUI* pCmdUI)
-{
-    BOOL bStatus = theApp.pouGetFlagsPtr()->nGetFlagStatus(DISPLAY_PDU);
-    pCmdUI->SetCheck(bStatus);
-}
 
 /******************************************************************************
     Functionality    :  National Language Support
@@ -724,35 +662,6 @@ void CMainFrame::vGettextBusmaster()
     bindtextdomain("BUSMASTER", "./Localization/locale/");
     textdomain("BUSMASTER");
 }
-
-/******************************************************************************
-    Input(s)         :  CMenu* Menu, LPCTSTR MenuString
-    Output           :  int
-    Functionality    :  FindMenuItem() will find a menu item string from the
-                        specified popup menu and returns its position (0-based)
-                        in the specified popup menu.
-                        It returns -1 if no such menu item string is found.
-******************************************************************************/
-int CMainFrame::nFindMenuItem(CMenu* Menu, LPCTSTR MenuString)
-{
-    ASSERT(Menu);
-    ASSERT(::IsMenu(Menu->GetSafeHmenu()));
-    int count = Menu->GetMenuItemCount();
-
-    for (int i = 0; i < count; i++)
-    {
-        CString str;
-
-        if (Menu->GetMenuString(i, str, MF_BYPOSITION) &&
-                (strcmp(str, MenuString) == 0))
-        {
-            return i;
-        }
-    }
-
-    return -1;
-}
-
 static bool bIsMsgExist(UINT MsgId, const SMSGENTRY* psFromList, sMESSAGE*& psMsg)
 {
     bool bResult = false;
@@ -904,7 +813,7 @@ static void vPopulateMainEntryList(CMainEntryList* podResultingList, const SMSGE
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& createStruct)
 {
     createStruct.style |= WS_VSCROLL | WS_HSCROLL;
-    if (!CMDIFrameWnd::PreCreateWindow(createStruct))
+    if (!CMDIFrameWndEx::PreCreateWindow(createStruct))
     {
         return FALSE;
     }
@@ -922,11 +831,12 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& createStruct)
 /******************************************************************************/
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-    if (CMDIFrameWnd::OnCreate(lpCreateStruct) == -1)
+    if (CMDIFrameWndEx::OnCreate(lpCreateStruct) == -1)
     {
         return -1;
     }
 
+    OnApplicationLook(ID_VIEW_APPLOOK_OFF_2007_BLUE);
     if ( nullptr != m_ouBusmasterNetwork && ( false == m_ouBusmasterNetwork->isDbManagerAvailable()) )
     {
         MessageBox("Unable to Load Database Manager.\nPlease Reinstall BUSMASTER", "Error", MB_OK|MB_ICONERROR);
@@ -939,56 +849,22 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     vGetWinStatus(m_WinCurrStatus);
     // Update the window placement
     SetWindowPlacement(&m_WinCurrStatus);
-    CREATE_TOOLBAR(this, m_wndToolbarMsgWnd, IDR_MSG_WND, _("Message Window"));
-    CREATE_TOOLBAR(this, m_wndToolBar, IDR_MAINFRAME, _("Main"));
-    CREATE_TOOLBAR(this, m_wndToolbarConfig, IDR_TLB_CONFIGURE, _("Configure"));
-    CREATE_TOOLBAR(this, m_wndToolbarJ1939, IDR_FUNCTIONS_J1939, "J1939");
-    CREATE_TOOLBAR(this, m_wndToolbarCANDB, IDR_CAN_DATABASE, _("CAN Database"));
-    CREATE_TOOLBAR(this, m_wndToolbarFlexRay, IDB_TLB_FLEXRAY, "FlexRay");
-    CREATE_TOOLBAR(this, m_wndToolbarConfiguration, IDR_CONFIG_TOOLBAR, _("Configuration"));
-    CREATE_TOOLBAR(this, m_wndToolbarLIN, IDB_LIN_IMG, "LIN");
-
-    /* Set toolbar button size to small to fit default icons*/
-    if ( !m_bUseAdvancedUILib )
-    {
-        CSize objSize;
-        /* 27 pixels is the default size of toolbar icons */
-        objSize.cx = 27;
-        objSize.cy = 27;
-
-        /* 72x18 is the size for Import Log Toolbar.*/
-        CSize objImportLogSize;
-        objImportLogSize.cx = 72;
-        objImportLogSize.cy = 18;
-
-        vSetToolbarButtonSize( m_wndToolBar,            objSize);
-        vSetToolbarButtonSize( m_wndToolbarMsgWnd,      objSize);
-        vSetToolbarButtonSize( m_wndToolbarConfig,      objSize);
-        vSetToolbarButtonSize( m_wndToolbarCANDB,       objSize);
-        vSetToolbarButtonSize( m_wndToolbarJ1939,       objSize);
-        vSetToolbarButtonSize( m_wndToolbarFlexRay,       objSize);
-        vSetToolbarButtonSize( m_wndToolbarConfiguration,       objSize);
-        vSetToolbarButtonSize( m_wndToolbarLIN,       objSize);
-    }
-
-    m_wndToolBar.bLoadCNVTCToolBar(m_bytIconSize, IDB_MAINFRAME,IDB_MAINFRAME_HOT, IDB_MAINFRAME_DISABLED);
-    m_wndToolbarMsgWnd.bLoadCNVTCToolBar(m_bytIconSize, IDB_MSG_WND,IDB_MSG_WND_HOT, IDB_MSG_WND_DISABLED);
-    m_wndToolbarConfig.bLoadCNVTCToolBar(m_bytIconSize, IDB_CONFIGURE,IDB_CONFIGURE_HOT, IDB_CONFIGURE_DISABLED);
-    m_wndToolbarCANDB.bLoadCNVTCToolBar(m_bytIconSize, IDB_CAN_DATABASE,IDB_CAN_DATABASE_HOT, IDB_CAN_DATABASE_DISABLED);
-    m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
-    m_wndToolbarFlexRay.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_FLEXRAY,IDB_TLB_FLEXRAY_HOT, IDB_TLB_FLEXRAY_DISABLED);
-    m_wndToolbarConfiguration.bLoadCNVTCToolBar(m_bytIconSize, IDR_CONFIG_TOOLBAR,IDR_CONFIG_TOOLBAR_HOT, IDR_CONFIG_TOOLBAR_DISABLED);
-    m_wndToolbarLIN.bLoadCNVTCToolBar(m_bytIconSize, IDB_LIN_IMG,IDB_LIN_IMGHOT, IDB_LIN_IMGDISABLED);
-
-
+	//mMenuBar.Create(this);
+	//mDefaultMenu = mMenuBar.GetHMenu();
+	//mMenuBar.EnableDocking(CBRS_ALIGN_ANY);
+	mRibbonBar.Create(this);
+	mRibbonBar.LoadFromResource(IDR_BUSMASTER_RIBBON);
+    mRibbonBar.UpdateRibbonBarMinimisedIcon();
+    
+    
     EnableDocking(CBRS_ALIGN_ANY);
 
     //To Initilaise GCC Version
     std::string strVersion;
     GetCurrentGccVersion(strVersion);
 
+	EnableDocking(CBRS_ALIGN_ANY);
 
-    bSetDefaultToolbarPosition();
     if (!m_wndStatusBar.CreateEx(this,SBT_TOOLTIPS) ||
             !m_wndStatusBar.SetIndicators(indicators,
                                           sizeof(indicators)/sizeof(UINT)))
@@ -996,10 +872,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
         TRACE0(_("Failed to create status bar\n"));
         return -1;      // fail to create
     }
-    LoadBarState(PROFILE_CAN_MONITOR);
-    ShowControlBar(&m_wndToolbarFlexRay, FALSE, FALSE);
-    //CheckDlgButton(IDR_TOOL_HEXDEC,BST_CHECKED);
-
+    
     // Set pane info for displaying active database name
     m_wndStatusBar.SetPaneInfo(0, ID_SEPARATOR, SBPS_NOBORDERS, 340);
 
@@ -1034,9 +907,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
     m_nIconSetFlag = 1;
     m_nJ1939IconSetFlag = 1;
-    m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
-    m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_J1939_LOG_ICON, m_hLogOffIcon);
-    m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_FLEXRAY_LOG_ICON, m_hLogOffIcon);
+    m_wndStatusBar.SetPaneIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
+	m_wndStatusBar.SetPaneIcon(INDEX_J1939_LOG_ICON, m_hLogOffIcon);
+	
     // Set number of channels supported
     CString omStrChannels;
     omStrChannels.Format( _(defSTR_CHANNELS_SUPPORTED),
@@ -1049,55 +922,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_unTimerSB = SetTimer(TIMER_REFRESH_MAINGUI, STSBAR_REFRESH_TIME_PERIOD,
                            nullptr);
 
-    // Set Drop down style for Toolbars containing TBSTYLE_DROPDOWN styles.
-    m_wndToolBar.GetToolBarCtrl().SetExtendedStyle( TBSTYLE_EX_DRAWDDARROWS );
-    m_wndToolbarMsgWnd.GetToolBarCtrl().SetExtendedStyle( TBSTYLE_EX_DRAWDDARROWS );
-    //m_wndToolbarMsgWnd.GetToolBarCtrl().SetButtonWidth(20,25);
-
-    TBBUTTONINFO tbi;
-
-    tbi.dwMask= TBIF_STYLE;
-    tbi.cbSize= sizeof(TBBUTTONINFO);
-
-    m_wndToolbarMsgWnd.GetToolBarCtrl().GetButtonInfo(
-        IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME, &tbi);
-
-
-    tbi.fsStyle |= BTNS_WHOLEDROPDOWN | TBSTYLE_BUTTON | BTNS_SHOWTEXT;
-
-    m_wndToolbarMsgWnd.GetToolBarCtrl().SetButtonInfo(
-        IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME, &tbi);
-
-    tbi.cbSize = sizeof tbi;
-    tbi.dwMask = TBIF_SIZE;
-
-    if ( m_bUseAdvancedUILib )
-    {
-        /* As the width of toolbar item is more, the tick mark position for timer button should be moved */
-        tbi.cx = (WORD)42;
-    }
-    else
-    {
-        tbi.cx = (WORD)30;
-    }
-    m_wndToolbarMsgWnd.GetToolBarCtrl().SetButtonInfo(IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME, &tbi);
-
-    //vGetWinStatus(m_WinCurrStatus);
-
-    // Set the text for the first sub menu item under
-    // "File -> Recent Configurations -> Empty" menu option
-    // The first sub menu is statically created and is disabled.
-    // So enable it and change the text top the first MRU file name
-    // Then create menu for the rest of the MRU files
-    DWORD dwVal = 0;
-    theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE1, REG_SZ, m_omStrMRU_ConfigurationFiles[0], dwVal);
-    theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE2, REG_SZ, m_omStrMRU_ConfigurationFiles[1], dwVal);
-    theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE3, REG_SZ, m_omStrMRU_ConfigurationFiles[2], dwVal);
-    theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE4, REG_SZ, m_omStrMRU_ConfigurationFiles[3], dwVal);
-    theApp.bReadFromRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE5, REG_SZ, m_omStrMRU_ConfigurationFiles[4], dwVal);
-
-    // Create MRU under "Recent Configurations" menu item
-    vCreateMRU_Menus();
+    //EnableWindowsDialog(ID_WINDOW_MANAGER, ID_WINDOW_MANAGER, TRUE);
+	
+	theApp.ReadRecentFileList();
+    //vCreateMRU_Menus();
 
     //Update DIL List
     if (g_pouDIL_CAN_Interface == nullptr)
@@ -1108,15 +936,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     }
     m_nDILCount = g_pouDIL_CAN_Interface->DILC_GetDILList(false, &m_ouList);
 
-    //Update FlexRay DIL List
-    if (g_pouDIL_FLEXRAY_Interface == nullptr)
-    {
-        DIL_GetInterface( FLEXRAY, (void**)&g_pouDIL_FLEXRAY_Interface );
-    }
-    if (nullptr != g_pouDIL_FLEXRAY_Interface)
-    {
-        m_nFlexRayDILCount = g_pouDIL_FLEXRAY_Interface->DILF_GetDILList(false, &m_ouFlexRayList);
-    }
+    
     if (g_pouDIL_LIN_Interface == nullptr)
     {
         DIL_GetInterface( LIN, (void**)&g_pouDIL_LIN_Interface );
@@ -1127,6 +947,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
     mPluginManager = new BusmasterPluginManager();; // TODO::
     mPluginManager->init( this );
+
+    mPluginManager->loadBusPlugins( nullptr );
+    
     mPluginManager->loadPlugins( nullptr );
     mPluginManager->notifyPlugins(eBusmaster_Event::plugin_load_completed, nullptr);
 
@@ -1140,14 +963,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     CSplashScreen::DisplaySplashScreen(this, SW_SHOW);
     Sleep(1500);
     bCreateMsgWindow();
-    m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUSERSELCTION::eCREATEDESTROYCMD, TRUE);
+    m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUSERSELCTION::eCREATEDESTROYCMD, TRUE);
     // Setting Hex Mode by default
     bSetHexDecFlags(TRUE);
 
 
     vInitialiaseLINConfig(1);
-    m_objFlexTxHandler.SetNetworkConfig(LIN, m_ouBusmasterNetwork);
-    m_objFlexTxHandler.SetNetworkConfig(CAN, m_ouBusmasterNetwork);
+    m_objTxHandler.SetNetworkConfig(LIN, m_ouBusmasterNetwork);
+    m_objTxHandler.SetNetworkConfig(CAN, m_ouBusmasterNetwork);
     //TODO Appropriate Place has to be decided.
     bInitFrameProcLIN(); // Initialize logger module
 
@@ -1157,100 +980,35 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 
     bUpdatePopupMenuDIL();
-    bUpdatePopupMenuFLEXRAYDIL();
+    
     bUpdatePopupMenuDILL(); //LIN modify
 
-    BusmasterPluginInfo pluginInfo;
-    UIElements uielements;
-    uielements.toolbarList["busmaster.commandgroup.can"] = &m_wndToolbarCANDB;
-    uielements.toolbarList["busmaster.commandgroup.flexray"] = &m_wndToolbarFlexRay;
-    uielements.toolbarList["busmaster.commandgroup.lin"] = &m_wndToolbarLIN;
-    uielements.toolbarList["busmaster.commandgroup.J1939"] = &m_wndToolbarJ1939;
-    uielements.menu = GetMenu();
-    mPluginManager->drawUI(uielements);
+
+    BusmasterPluginConfiguration pluginInfo;
+    UIElements uiElements;
+	uiElements.mRibbonBar = &mRibbonBar;
+	
+	mPluginManager->drawUI(uiElements);
     UpdateWindow();
-    return 0;
+	
+	mRibbonBar.ForceRecalcLayout();
+	return 0;
 }
 
-/******************************************************************************
- Output           : bool - failure/ success
- Functionality    : sets the default position for the toolbar
- ******************************************************************************/
-bool CMainFrame::bSetDefaultToolbarPosition()
-{
-    DockControlBar(&m_wndToolbarConfiguration, AFX_IDW_DOCKBAR_TOP);             //set the first toolbar at the top
-    DockControlBarLeftOf(&m_wndToolBar,&m_wndToolbarConfiguration);        //align others next to it
-    DockControlBarLeftOf(&m_wndToolbarMsgWnd,&m_wndToolBar);        //align others next to it
-    DockControlBarLeftOf( &m_wndToolbarCANDB, &m_wndToolbarMsgWnd);
-    DockControlBarLeftOf( &m_wndToolbarFlexRay, &m_wndToolbarCANDB);
-    ShowControlBar(&m_wndToolbarFlexRay, FALSE, FALSE);
-    DockControlBar(&m_wndToolbarJ1939,AFX_IDW_DOCKBAR_LEFT);        //align the toolabr to the left
-    DockControlBarLeftOf( &m_wndToolbarConfig, &m_wndToolbarJ1939); //aign the next toolbar below it
-    DockControlBar(&m_wndToolbarLIN,AFX_IDW_DOCKBAR_LEFT);        //align the toolabr to the left
-    DockControlBarLeftOf( &m_wndToolbarConfig, &m_wndToolbarLIN); //aign the next toolbar below it
-    return true;
-}
 
 #ifdef _DEBUG
 void CMainFrame::AssertValid() const
 {
-    CMDIFrameWnd::AssertValid();
+    CMDIFrameWndEx::AssertValid();
 }
 
 void CMainFrame::Dump(CDumpContext& dc) const
 {
-    CMDIFrameWnd::Dump(dc);
+    CMDIFrameWndEx::Dump(dc);
 }
 
 #endif //_DEBUG
 
-int CMainFrame::nCreateToolbar(CWnd* pomParent, CToolBar& omToolbar, UINT unID,
-                               CString omTitle)
-{
-    int Result = 0;
-
-    if (!omToolbar.CreateEx(pomParent, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT,
-                            WS_BORDER | WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER |
-                            CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC, CRect(0,0,0,0), unID) ||
-            !omToolbar.LoadToolBar(unID))
-    {
-        TRACE0(_("Failed to create toolbar\n"));
-        Result = -1;      // fail to create
-    }
-    else
-    {
-        omToolbar.EnableDocking(CBRS_ALIGN_ANY);
-        omToolbar.SetWindowText((LPCTSTR) omTitle);
-    }
-
-    return Result;
-}
-
-void CMainFrame::DockControlBarLeftOf(CToolBar* pomCurrBar,CToolBar* pomLeftOf)
-{
-    ASSERT(pomCurrBar != nullptr);
-    ASSERT(pomLeftOf != nullptr);
-
-    CRect omRect;
-
-    /* Get MFC to adjust the dimensions of all docked ToolBars so that
-    GetWindowRect will be accurate */
-    RecalcLayout();
-    pomLeftOf->GetWindowRect(&omRect);
-    omRect.OffsetRect(1, 0);
-    DWORD dwBarStyle = pomLeftOf->GetBarStyle();
-
-    UINT unBarID = 0;
-    unBarID = (dwBarStyle & CBRS_ALIGN_TOP) ? AFX_IDW_DOCKBAR_TOP : unBarID;
-    unBarID = (dwBarStyle & CBRS_ALIGN_BOTTOM && unBarID == 0) ? AFX_IDW_DOCKBAR_BOTTOM : unBarID;
-    unBarID = (dwBarStyle & CBRS_ALIGN_LEFT && unBarID == 0) ? AFX_IDW_DOCKBAR_LEFT : unBarID;
-    unBarID = (dwBarStyle & CBRS_ALIGN_RIGHT && unBarID == 0) ? AFX_IDW_DOCKBAR_RIGHT : unBarID;
-
-    // When we take the default parameters on rect, DockControlBar will dock
-    // each Toolbar on a seperate line.  By calculating a rectangle, we in effect
-    // are simulating a Toolbar being dragged to that location and docked.
-    DockControlBar(pomCurrBar, unBarID, &omRect);
-}
 
 /******************************************************************************
     Input(s)         :  WPARAM wParam, LPARAM lParam, LRESULT* pResult
@@ -1262,22 +1020,7 @@ void CMainFrame::DockControlBarLeftOf(CToolBar* pomCurrBar,CToolBar* pomLeftOf)
 ******************************************************************************/
 BOOL CMainFrame::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {
-    // TODO: Add your specialized code here and/or call the base class
-#define lpnm   ((LPNMHDR)lParam)
-#define lpnmTB ((LPNMTOOLBAR)lParam)
-
-    switch(lpnm->code)
-    {
-        case TBN_DROPDOWN:
-            if(lpnmTB ->iItem == IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME)
-            {
-                vToolBarDropDownMenu(IDM_MENU_TIMEMODE,
-                                     IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME);
-            }
-            return FALSE; //indicates the TBN_DROPDOWN
-            //notification was handled.
-    }
-    return CMDIFrameWnd::OnNotify(wParam, lParam, pResult);
+    return CMDIFrameWndEx::OnNotify(wParam, lParam, pResult);
 }
 
 /******************************************************************************
@@ -1360,7 +1103,7 @@ database that is already open?"), MB_YESNO, MB_ICONINFORMATION);
             else
             {
                 AfxMessageBox(_("Specified database file is not found.\n\
-Operation unsuccessful."), MB_OK|MB_ICONINFORMATION);
+								Operation unsuccessful."), MB_OK | MB_ICONINFORMATION);
             }
 
             if ( bDisplayEditor == TRUE )
@@ -1397,7 +1140,7 @@ Operation unsuccessful."), MB_OK|MB_ICONINFORMATION);
                     CFlags* pFlags = theApp.pouGetFlagsPtr();
                     pFlags->vSetFlagStatus( DBOPEN, TRUE );
                     // Enable 'Save' & 'Save Import' menu item
-                    CMenu* pMenu = GetMenu();
+					CMenu* pMenu = nullptr;// CMenu::FromHandle(mMenuBar.GetHMenu());
                     if (pMenu != nullptr)
                     {
                         HMENU hMenu = pMenu->GetSafeHmenu();
@@ -1430,7 +1173,7 @@ CMsgSignalDBWnd* CMainFrame::pomGetMsgSgWnd()
 /******************************************************************************
 DESCRIPTION:    Closes a database file
 *******************************************************************************/
-LRESULT CMainFrame::OnCloseDatabase(WPARAM wParam, LPARAM lParam)
+LRESULT CMainFrame::OnCloseDatabase(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
     OnCloseDatabase();
     return S_OK;
@@ -1601,7 +1344,7 @@ void CMainFrame::OnImportDatabase()
     }
 }
 
-DWORD CMainFrame::dLoadJ1939DBFile(CString omStrActiveDataBase, bool bFrmCom)
+DWORD CMainFrame::dLoadJ1939DBFile(CString omStrActiveDataBase, bool /*bFrmCom*/)
 {
     DWORD dReturn = (DWORD)E_FAIL;
     //Check for same DB path......
@@ -1726,7 +1469,7 @@ DWORD CMainFrame::dLoadDataBaseFile(CString omStrActiveDataBase, bool /* bFrmCom
     if ( ecError == EC_SUCCESS )
     {
         //Signal watch
-        m_objFlexTxHandler.SetNetworkConfig(CAN, m_ouBusmasterNetwork);
+        m_objTxHandler.SetNetworkConfig(CAN, m_ouBusmasterNetwork);
         sg_pouSWInterface[CAN]->SW_SetClusterInfo( m_ouBusmasterNetwork );
 
         //TODO CAN Nodesim
@@ -1880,29 +1623,6 @@ __int64 CMainFrame::nConvertStringToInt(CString omStrHexNo)
 /*  Functionality    :  This function is called to invoke the CChangeRegisters*/
 /*                   dialog box. On selection of menu, this function is called*/
 /******************************************************************************/
-void CMainFrame::OnConfigBaudrate()
-{
-    PCHAR pInitData = (PCHAR)m_asControllerDetails;
-    int nSize = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
-    if (g_pouDIL_CAN_Interface->DILC_DisplayConfigDlg(m_asControllerDetails, nSize) == S_OK)
-    {
-        //Set Controller to ConfigDetails
-        //memcpy(m_asControllerDetails, pInitData, nSize);
-    }
-    //Update hardware info in status bar
-    vUpdateHWStatusInfo();
-
-    //update baudrate details in global statistics buffer
-    for (int i = 0; i < defNO_OF_CHANNELS; i++)
-    {
-#ifdef BOA_FD_VERSION
-        GetICANBusStat()->BSC_SetBaudRate(i, m_asControllerDetails[i].m_unDataBitRate);
-#else
-        GetICANBusStat()->BSC_SetBaudRate(i, _tstof(m_asControllerDetails[i].m_omStrBaudrate.c_str()));
-#endif
-    }
-
-}
 
 void CMainFrame::OnConfigLinChannel()
 {
@@ -1945,7 +1665,7 @@ void CMainFrame::OnConfigChannelSelection()
     /* Deselect hardware interfaces if selected */
     hResult = g_pouDIL_CAN_Interface->DILC_DeselectHwInterfaces();
 
-    if (g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount) == S_OK)
+	if (g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount, m_asControllerDetails) == S_OK)
     {
         hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
         if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
@@ -2343,7 +2063,7 @@ void CMainFrame::OnConfigMessageDisplay()
     // Get the connection status
     if (pouFlag != nullptr)
     {
-        settings.mBusmasterIsOnline = pouFlag->nGetFlagStatus(CONNECTED);
+        settings.mBusmasterIsOnline = (pouFlag->nGetFlagStatus(CONNECTED)!=0);
     }
 
 
@@ -2374,7 +2094,7 @@ void CMainFrame::OnConfigMessageDisplay()
     std::map<std::string, bool> filtersApplied;
     for (int i = 0; i < sFilterAppliedCan.m_ushTotal; i++)
     {
-        settings.mFilterDetails.mFitersApplied[sFilterAppliedCan.m_psFilters[i].m_sFilterName.m_acFilterName] = sFilterAppliedCan.m_psFilters[i].m_bEnabled;
+        settings.mFilterDetails.mFitersApplied[sFilterAppliedCan.m_psFilters[i].m_sFilterName.m_acFilterName] = (sFilterAppliedCan.m_psFilters[i].m_bEnabled!=0);
     }
 
     //message attributes
@@ -2387,7 +2107,7 @@ void CMainFrame::OnConfigMessageDisplay()
     m_ouBusmasterNetwork->GetFrameList(CAN, 0, lstFrames);
     settings.mMessageAttribute.mMessageIDs = new UINT[lstFrames.size()];
     unsigned int unIndex = 0, unFrameId;
-for (auto itrFrame : lstFrames)
+    for (auto itrFrame : lstFrames)
     {
         itrFrame->GetFrameId(unFrameId);
         settings.mMessageAttribute.mMessageIDs[unIndex] = unFrameId;
@@ -2434,7 +2154,7 @@ void CMainFrame::OnConfigMessageDisplayLin()
     // Get the connection status
     if (pouFlag != nullptr)
     {
-        settings.mBusmasterIsOnline = pouFlag->nGetFlagStatus(LIN_CONNECTED);
+        settings.mBusmasterIsOnline = (pouFlag->nGetFlagStatus(LIN_CONNECTED)!=0);
     }
 
 
@@ -2464,7 +2184,7 @@ void CMainFrame::OnConfigMessageDisplayLin()
     std::map<std::string, bool> filtersApplied;
     for (int i = 0; i < sFilterAppliedLin.m_ushTotal; i++)
     {
-        settings.mFilterDetails.mFitersApplied[sFilterAppliedLin.m_psFilters[i].m_sFilterName.m_acFilterName] = sFilterAppliedLin.m_psFilters[i].m_bEnabled;
+        settings.mFilterDetails.mFitersApplied[sFilterAppliedLin.m_psFilters[i].m_sFilterName.m_acFilterName] = static_cast<bool>(sFilterAppliedLin.m_psFilters[i].m_bEnabled);
     }
 
     //message attributes
@@ -2761,11 +2481,19 @@ void CMainFrame::vPopulateJ1939PGNList()
     Functionality    :  Changes the press state of Interpretation
                         tool bar button
 ******************************************************************************/
-void CMainFrame::OnMessageInterpretation()
+void CMainFrame::OnMessageInterpretation(UINT id)
 {
-    if (m_podMsgWndThread != nullptr)
-    {
-        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+	if (nullptr == m_podMsgWndThread)
+	{
+		return;
+	}
+
+	static int msgWndcommandToBus[] = { CAN, J1939, LIN };
+	id = id - IDM_INTERPRETE_MSG_WINDOW_START;
+	if (id >= 0 && id < sizeof(msgWndcommandToBus))
+	{
+		ETYPE_BUS bus = static_cast<ETYPE_BUS>(msgWndcommandToBus[id]);
+		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(bus);
         BYTE byGetDispFlag = 0;
         ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
         if (IS_MODE_OVER(byGetDispFlag))
@@ -2786,16 +2514,7 @@ void CMainFrame::OnMessageInterpretation()
         {
             ASSERT(false); // Must not arise
         }
-        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-        {
-            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((ETYPE_BUS)shBusID);
-            //Update Message Window
-            if(hWnd)
-            {
-                BYTE bModes = DISPLAY_MODE;
-                ::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
-            }
-        }
+		::SendMessage(hWnd, WM_WND_PROP_MODIFY, DISPLAY_MODE, byGetDispFlag);
     }
 }
 
@@ -2832,7 +2551,7 @@ void CMainFrame::vOnLINScheduleTableConfig()
     //if(m_ouClusterConfig[LIN].m_ouFlexChannelConfig[0].m_strDataBasePath.empty() == false) pending
     if(nullptr != m_ouBusmasterNetwork)
     {
-        m_objFlexTxHandler.vCreateLINScheduleConfigDlg(this, m_ouBusmasterNetwork);
+        m_objTxHandler.vCreateLINScheduleConfigDlg(this, m_ouBusmasterNetwork);
     }
     else
     {
@@ -2871,9 +2590,6 @@ void CMainFrame::OnLogFilter()
                 sg_pouFrameProcCAN->EnableFilter((USHORT)i, bLogFilterStatus);
             }
         }
-        /* Modify filter icon accordingly in Main toolbar*/
-        BYTE bytTbrItemIndex = 5;
-        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bLogFilterStatus, IDI_ICON_LOG_FILTER_ON, IDI_ICON_LOG_FILTER );
     }
 }
 
@@ -2886,23 +2602,20 @@ void CMainFrame::OnLogFilterLIN()
     bool bLogFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
-    if(pouFlags != nullptr )
-    {
-        bLogFilterStatus = (pouFlags->nGetFlagStatus(LOGFILTER_LIN) != 0);
-        bLogFilterStatus = bLogFilterStatus ? FALSE : TRUE;
-        pouFlags->vSetFlagStatus(LOGFILTER_LIN, bLogFilterStatus);
-        if (sg_pouFrameProcLIN != nullptr)
-        {
-            INT Count = sg_pouFrameProcLIN->GetLoggingBlockCount();
-            for (INT i = 0; i < Count; i++)
-            {
-                sg_pouFrameProcLIN->EnableFilter((USHORT)i, bLogFilterStatus);
-            }
-        }
-        /* Modify filter icon accordingly in Main toolbar*/
-        BYTE bytTbrItemIndex = 9;
-        vModifyToolbarIcon( m_wndToolbarLIN, bytTbrItemIndex, bLogFilterStatus, IDI_ICON_LOG_FILTER_ON, IDI_ICON_LOG_FILTER );
-    }
+	if (pouFlags != nullptr)
+	{
+		bLogFilterStatus = (pouFlags->nGetFlagStatus(LOGFILTER_LIN) != 0);
+		bLogFilterStatus = bLogFilterStatus ? FALSE : TRUE;
+		pouFlags->vSetFlagStatus(LOGFILTER_LIN, bLogFilterStatus);
+		if (sg_pouFrameProcLIN != nullptr)
+		{
+			INT Count = sg_pouFrameProcLIN->GetLoggingBlockCount();
+			for (INT i = 0; i < Count; i++)
+			{
+				sg_pouFrameProcLIN->EnableFilter((USHORT)i, bLogFilterStatus);
+			}
+		}
+	}
 }
 
 void CMainFrame::ApplyReplayFilter()
@@ -2911,17 +2624,13 @@ void CMainFrame::ApplyReplayFilter()
     bool bReplayFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
-    if(pouFlags != nullptr )
-    {
-        bReplayFilterStatus = (pouFlags->nGetFlagStatus(REPLAYFILTER) != 0);
-        pouFlags->vSetFlagStatus(REPLAYFILTER, bReplayFilterStatus);
+	if (pouFlags != nullptr)
+	{
+		bReplayFilterStatus = (pouFlags->nGetFlagStatus(REPLAYFILTER) != 0);
+		pouFlags->vSetFlagStatus(REPLAYFILTER, bReplayFilterStatus);
 
-        vREP_EnableFilters(bReplayFilterStatus);
-
-        /* Modify filter icon accordingly in Main toolbar*/
-        BYTE bytTbrItemIndex = 7;
-        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bReplayFilterStatus, IDI_ICON_REPLAY_FILTER_ON, IDI_ICON_REPLAY_FILTER );
-    }
+		vREP_EnableFilters(bReplayFilterStatus);
+	}
 }
 
 void CMainFrame::ApplyLogFilter()
@@ -2930,23 +2639,20 @@ void CMainFrame::ApplyLogFilter()
     bool bLogFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
-    if(pouFlags != nullptr )
-    {
-        bLogFilterStatus = (pouFlags->nGetFlagStatus(LOGFILTER) != 0);
-        //bLogFilterStatus = bLogFilterStatus ? FALSE : TRUE;
-        pouFlags->vSetFlagStatus(LOGFILTER, bLogFilterStatus);
-        if (sg_pouFrameProcCAN != nullptr)
-        {
-            INT Count = sg_pouFrameProcCAN->GetLoggingBlockCount();
-            for (INT i = 0; i < Count; i++)
-            {
-                sg_pouFrameProcCAN->EnableFilter((USHORT)i, bLogFilterStatus);
-            }
-        }
-        /* Modify filter icon accordi5ngly in Main toolbar*/
-        BYTE bytTbrItemIndex = 5;
-        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bLogFilterStatus, IDI_ICON_LOG_FILTER_ON, IDI_ICON_LOG_FILTER );
-    }
+	if (pouFlags != nullptr)
+	{
+		bLogFilterStatus = (pouFlags->nGetFlagStatus(LOGFILTER) != 0);
+		//bLogFilterStatus = bLogFilterStatus ? FALSE : TRUE;
+		pouFlags->vSetFlagStatus(LOGFILTER, bLogFilterStatus);
+		if (sg_pouFrameProcCAN != nullptr)
+		{
+			INT Count = sg_pouFrameProcCAN->GetLoggingBlockCount();
+			for (INT i = 0; i < Count; i++)
+			{
+				sg_pouFrameProcCAN->EnableFilter((USHORT)i, bLogFilterStatus);
+			}
+		}
+	}
 }
 
 /******************************************************************************
@@ -2958,23 +2664,20 @@ void CMainFrame::ApplyLINLogFilter()
     bool bLogFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
-    if(pouFlags != nullptr )
-    {
-        bLogFilterStatus = (pouFlags->nGetFlagStatus(LOGFILTER_LIN) != 0);
-        //bLogFilterStatus = bLogFilterStatus ? FALSE : TRUE;
-        pouFlags->vSetFlagStatus(LOGFILTER_LIN, bLogFilterStatus);
-        if (sg_pouFrameProcLIN != nullptr)
-        {
-            INT Count = sg_pouFrameProcLIN->GetLoggingBlockCount();
-            for (INT i = 0; i < Count; i++)
-            {
-                sg_pouFrameProcLIN->EnableFilter((USHORT)i, bLogFilterStatus);
-            }
-        }
-        /* Modify filter icon accordi5ngly in Main toolbar*/
-        BYTE bytTbrItemIndex = 9;
-        vModifyToolbarIcon( m_wndToolbarLIN, bytTbrItemIndex, bLogFilterStatus, IDI_ICON_LOG_FILTER_ON, IDI_ICON_LOG_FILTER );
-    }
+	if (pouFlags != nullptr)
+	{
+		bLogFilterStatus = (pouFlags->nGetFlagStatus(LOGFILTER_LIN) != 0);
+		//bLogFilterStatus = bLogFilterStatus ? FALSE : TRUE;
+		pouFlags->vSetFlagStatus(LOGFILTER_LIN, bLogFilterStatus);
+		if (sg_pouFrameProcLIN != nullptr)
+		{
+			INT Count = sg_pouFrameProcLIN->GetLoggingBlockCount();
+			for (INT i = 0; i < Count; i++)
+			{
+				sg_pouFrameProcLIN->EnableFilter((USHORT)i, bLogFilterStatus);
+			}
+		}
+	}
 }
 
 /******************************************************************************
@@ -3075,20 +2778,17 @@ void CMainFrame::OnSelectMessage()
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, 0);
 
             //if msg filter is enable, disable it and then re-enable it to affect the changes
-            if(theApp.pouGetFlagsPtr()->nGetFlagStatus(DISPLAYFILTERON))
-            {
-                //Disable the msg filter, so it will update the modified changes
-                theApp.pouGetFlagsPtr()->vSetFlagStatus(DISPLAYFILTERON, FALSE);
-                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)FALSE, 0);
+			if (theApp.pouGetFlagsPtr()->nGetFlagStatus(DISPLAYFILTERON))
+			{
+				//Disable the msg filter, so it will update the modified changes
+				theApp.pouGetFlagsPtr()->vSetFlagStatus(DISPLAYFILTERON, FALSE);
+				::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)FALSE, 0);
 
-                //re-enable the msg filter, so it will show the modified changes
-                theApp.pouGetFlagsPtr()->vSetFlagStatus(DISPLAYFILTERON, TRUE);
-                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)TRUE, 0);
+				//re-enable the msg filter, so it will show the modified changes
+				theApp.pouGetFlagsPtr()->vSetFlagStatus(DISPLAYFILTERON, TRUE);
+				::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)TRUE, 0);
 
-                /* Modify filter icon accordingly in Main toolbar*/
-                BYTE bytTbrItemIndex = 6;
-                vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, TRUE, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
-            }
+			}
         }
     }
 }
@@ -3159,20 +2859,17 @@ void CMainFrame::OnLINFilter()
             ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_SET_FILTER_DETAILS, (WPARAM)&sMsgWndFilter, 0);
 
             //if msg filter is enable, disable it and then re-enable it to affect the changes
-            if(theApp.pouGetFlagsPtr()->nGetFlagStatus(DISPLAYFILTERON))
-            {
-                //Disable the msg filter, so it will update the modified changes
-                theApp.pouGetFlagsPtr()->vSetFlagStatus(DISPLAYFILTERON, FALSE);
-                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_ENABLE_FILTER_APPLIED, (WPARAM)FALSE, 0);
+			if (theApp.pouGetFlagsPtr()->nGetFlagStatus(DISPLAYFILTERON))
+			{
+				//Disable the msg filter, so it will update the modified changes
+				theApp.pouGetFlagsPtr()->vSetFlagStatus(DISPLAYFILTERON, FALSE);
+				::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_ENABLE_FILTER_APPLIED, (WPARAM)FALSE, 0);
 
-                //re-enable the msg filter, so it will show the modified changes
-                theApp.pouGetFlagsPtr()->vSetFlagStatus(DISPLAYFILTERON, TRUE);
-                ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_ENABLE_FILTER_APPLIED, (WPARAM)TRUE, 0);
+				//re-enable the msg filter, so it will show the modified changes
+				theApp.pouGetFlagsPtr()->vSetFlagStatus(DISPLAYFILTERON, TRUE);
+				::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_ENABLE_FILTER_APPLIED, (WPARAM)TRUE, 0);
 
-                /* Modify filter icon accordingly in Main toolbar*/
-                BYTE bytTbrItemIndex = 6;
-                vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, TRUE, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
-            }
+			}
         }
     }
 }
@@ -3237,7 +2934,7 @@ void CMainFrame::OnLogEnable()
             m_unTimerSBLog = 0;
             // Update Status bar
             //m_wndStatusBar.SetPaneText(INDEX_LOG_RECORD, "CAN");
-            m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
+            m_wndStatusBar.SetPaneIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
         }
     }
 
@@ -3311,11 +3008,10 @@ void CMainFrame::OnLog_LIN_Enable()
             //m_wndStatusBar.SetPaneText(INDEX_LOG_RECORD, "CAN");
             //shashank
             //m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
-            m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_LIN_LOG_ICON, m_hLogOffIcon);
+			m_wndStatusBar.SetPaneIcon(INDEX_LIN_LOG_ICON, m_hLogOffIcon);
         }
     }
-
-    vStartStopLogging_LIN(bLogON == TRUE);
+	vStartStopLogging_LIN(bLogON == TRUE);
 }
 
 
@@ -3531,16 +3227,6 @@ void CMainFrame::vConvStrtoByteArray(CByteArray* bufferTx, char* tempBuf)
         }
     }
 }
-
-/******************************************************************************/
-/*  Functionality    :  Returns reference to CToolBarCtrl
-/******************************************************************************/
-CToolBarCtrl& CMainFrame::vGetReferenceToToolBarCtrl()
-{
-    CToolBar* pToolBar = &m_wndToolBar;
-    return ((pToolBar)->GetToolBarCtrl());
-}
-
 
 /******************************************************************************/
 /*  Functionality    :  Returns the value of m_bIsNewDatabase
@@ -3890,7 +3576,7 @@ void CMainFrame::OnClose()
                     if (SaveConfiguration() ==
                             defCONFIG_FILE_SUCCESS )
                     {
-                        bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, oCfgFilename);
+						theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, oCfgFilename);
                     }
                     bSaveConfig = true;
                 }
@@ -3920,7 +3606,7 @@ void CMainFrame::OnClose()
                     vSetFileStorageInfo(oCfgFilename);
                     if ( SaveConfiguration() == defCONFIG_FILE_SUCCESS )
                     {
-                        bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, oCfgFilename);
+						theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, oCfgFilename);
                     }
                 }
                 else if ( unMsgRetVal == IDCANCEL )
@@ -3936,8 +3622,18 @@ void CMainFrame::OnClose()
     }
 
     // Writing in to Registry
-    bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, oCfgFilename);
+    theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, oCfgFilename);
 
+	if (g_pouDIL_CAN_Interface != nullptr)
+	{
+		g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();
+	}
+	
+	if (g_pouDIL_LIN_Interface != NULL)
+	{
+		g_pouDIL_LIN_Interface->DILL_StopHardware();
+		g_pouDIL_LIN_Interface->DILL_PerformClosureOperations();
+	}
     vREP_HandleConnectionStatusChange( FALSE ); //Close reply
 
     OnDllUnload(); //Unload all the loaded dlls
@@ -3957,14 +3653,14 @@ void CMainFrame::OnClose()
         m_unTimerSBLog = 0;
         // Update Status bar
         //m_wndStatusBar.SetPaneText(INDEX_LOG_RECORD, "CAN");
-        m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
+		m_wndStatusBar.SetPaneIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
     }
     if(m_unJ1939TimerSBLog != 0)
     {
         ::KillTimer(nullptr, m_unJ1939TimerSBLog);
         m_unJ1939TimerSBLog = 0;
         // Update Status bar
-        m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_J1939_LOG_ICON, m_hLogOffIcon);
+		m_wndStatusBar.SetPaneIcon(INDEX_J1939_LOG_ICON, m_hLogOffIcon);
     }
 
     if(m_podUIThread != nullptr)
@@ -4021,23 +3717,9 @@ void CMainFrame::OnClose()
         vStartStopLogging_LIN(bLogON == TRUE);
     }
 
-    m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCREATEDESTROYCMD, FALSE);
+    m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCREATEDESTROYCMD, FALSE);
 
-    if (g_pouDIL_CAN_Interface != nullptr)
-    {
-        g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();
-    }
-
-    if ( g_pouDIL_FLEXRAY_Interface != nullptr )
-    {
-        g_pouDIL_FLEXRAY_Interface->DILF_PerformClosureOperations();
-    }
-
-    if ( g_pouDIL_LIN_Interface != NULL )
-    {
-        g_pouDIL_LIN_Interface->DILL_StopHardware();
-        g_pouDIL_LIN_Interface->DILL_PerformClosureOperations();
-    }
+    
 
     vCloseFormatconverters();
 
@@ -4057,46 +3739,11 @@ void CMainFrame::OnClose()
     //now unloadplugins;
     mPluginManager->unLoadPlugins();
 
-
+	afxKeyboardManager->SaveState(theApp.GetRegSectionPath());
     CMDIFrameWnd::OnClose();
 }
 
-/**
-* \brief         Writes a value under BUSMASTER registry share
-* \param         void
-* \return        true for SUCCESS, else FALSE
-* \authors       Arunkumar Karri
-* \date          07.09.2013 Created
-*/
-bool CMainFrame::bWriteIntoRegistry(HKEY /* hRootKey */, CString strSubKey, CString strName,  BYTE bytType, CString strValue , DWORD dwValue)
-{
-    HKEY hKey;
-    DWORD dwDisp = 0;
-    LPDWORD lpdwDisp = &dwDisp;
-    CString strCompleteSubKey;
-    strCompleteSubKey.Format("Software\\RBEI-ETAS\\BUSMASTER_v%d.%d.%d\\%s",VERSION_MAJOR,VERSION_MINOR,VERSION_BUILD,strSubKey);
 
-    LONG iSuccess = RegCreateKeyEx( HKEY_CURRENT_USER, strCompleteSubKey, 0L,nullptr, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, nullptr, &hKey,lpdwDisp);
-    LSTATUS ls = 0;
-
-    if(iSuccess == ERROR_SUCCESS)
-    {
-        if ( bytType == REG_SZ )
-        {
-            ls = RegSetValueEx (hKey, strName.GetBuffer(MAX_PATH), 0L, REG_SZ,(CONST BYTE*) strValue.GetBuffer(MAX_PATH), strValue.GetLength());
-        }
-        else if ( bytType == REG_DWORD )
-        {
-            ls = RegSetValueEx (hKey, strName.GetBuffer(MAX_PATH), 0L, REG_DWORD,(CONST BYTE*) &dwValue, sizeof(dwValue));
-        }
-        RegCloseKey(hKey);
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
 
 /******************************************************************************
     Functionality    :  Creates the message window (an object of
@@ -4202,7 +3849,7 @@ void CMainFrame::OnHex_DecButon()
 
     BOOL bHexON = theApp.pouGetFlagsPtr()->nGetFlagStatus(HEX);
 
-    m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eHEXDECCMD, bHexON);
+    m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eHEXDECCMD, bHexON);
 
 
     if (sg_pouSWInterface[CAN] != nullptr)
@@ -4272,7 +3919,7 @@ void CMainFrame::bSetHexDecFlags(bool bHexEnabled)
 
     BOOL bHexON = theApp.pouGetFlagsPtr()->nGetFlagStatus(HEX);
 
-    m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eHEXDECCMD, bHexON);
+    m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eHEXDECCMD, bHexON);
 
 
     if (sg_pouSWInterface[CAN] != nullptr)
@@ -4352,29 +3999,32 @@ void CMainFrame::ApplyMessagewindowOverwrite()
  * Toggles overwrite button and switches between
  * overwriting state to appending state.
  */
-void CMainFrame::OnDisplayMessagewindowOverwrite()
+void CMainFrame::OnDisplayMessagewindowOverwrite(UINT id)
 {
-    if (m_podMsgWndThread != nullptr)
-    {
-        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
+
+	if (nullptr == m_podMsgWndThread)
+	{
+		return;
+	}
+
+	static int msgWndcommandToBus[] = { CAN, J1939, LIN };
+	id = id - IDM_OVERWRITE_MSG_WINDOW_START;
+	if (id >= 0 && id < sizeof(msgWndcommandToBus))
+	{
+		ETYPE_BUS bus = static_cast<ETYPE_BUS>(msgWndcommandToBus[id]);
+		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd((ETYPE_BUS)bus);
         BYTE byGetDispFlag = 0;
         ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
-
-
-
-        if (IS_MODE_APPEND(byGetDispFlag))
+		
+		if (IS_MODE_APPEND(byGetDispFlag))
         {
             CLEAR_EXPR_DISP_BITS(byGetDispFlag);
+	
+            int nDbCount = 0;
+			m_ouBusmasterNetwork->GetDBServiceCount(bus, 0, nDbCount);
+            
 
-
-
-            int nDbCanCount = 0,nDbJ1939Count = 0, nDbLinCount = 0;
-            m_ouBusmasterNetwork->GetDBServiceCount(CAN, 0, nDbCanCount);
-            m_ouBusmasterNetwork->GetDBServiceCount(J1939, 0, nDbJ1939Count);
-            m_ouBusmasterNetwork->GetDBServiceCount(LIN, 0, nDbLinCount);
-
-
-            if (nDbCanCount<=0 && nDbJ1939Count<=0 && nDbLinCount <= 0 )
+			if (nDbCount <= 0)
             {
                 m_bInterPretMsg = FALSE;
             }
@@ -4394,32 +4044,11 @@ void CMainFrame::OnDisplayMessagewindowOverwrite()
             SET_MODE_APPEND(byGetDispFlag);
             theApp.pouGetFlagsPtr()->vSetFlagStatus(OVERWRITE, FALSE);
         }
-        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-        {
-            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((ETYPE_BUS)shBusID);
-            //Update Message Window
-            if(hWnd)
-            {
-                BYTE bModes = DISPLAY_MODE;
-                ::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
-            }
-        }
+		
+		::SendMessage(hWnd, WM_WND_PROP_MODIFY, DISPLAY_MODE, byGetDispFlag);
     }
 }
 
-
-/******************************************************************************
-    Functionality    :  Retrieves status of eFlag from global CFlags object, a
-                        placeholder for all main program state flags and
-                        modifies press status of nButtonID accordingly.
-******************************************************************************/
-bool CMainFrame::bSetPressStatus(int nButtonID, eCANMONITORFLAG eFlag)
-{
-    // Get reference to Tool Bar ctrl
-    bool bStatus = (theApp.pouGetFlagsPtr()->nGetFlagStatus(eFlag) != 0);
-    CToolBarCtrl& omRefToolBarCtrl = vGetReferenceToToolBarCtrl();
-    return (omRefToolBarCtrl.PressButton(nButtonID, bStatus ? TRUE : FALSE) == TRUE);
-}
 
 /******************************************************************************
     Functionality    :  Checks or Unchecks the Interpretation menu option
@@ -4431,27 +4060,27 @@ void CMainFrame::OnUpdateMessageInterpret(CCmdUI* pCmdUI)
         return;
     }
     BYTE byGetDispFlag = 0;
-    if (m_podMsgWndThread != nullptr)
-    {
+	if (nullptr == m_podMsgWndThread)
+	{
+		return;
+	}
+
+	static int msgWndcommandToBus[] = { CAN, J1939, LIN };
+	UINT id = pCmdUI->m_nID - IDM_INTERPRETE_MSG_WINDOW_START;
+	if (id >= 0 && id < sizeof(msgWndcommandToBus))
+	{
+		ETYPE_BUS bus = static_cast<ETYPE_BUS>(msgWndcommandToBus[id]);
+		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(bus);
         int nDbLinCount = 0;
 
-        int nDbCANCount = 0;
-        int nDbJ1939Count = 0;
-        m_ouBusmasterNetwork->GetDBServiceCount( CAN, 0, nDbCANCount );
-        m_ouBusmasterNetwork->GetDBServiceCount( J1939, 0, nDbJ1939Count );
-        m_ouBusmasterNetwork->GetDBServiceCount( LIN, 0, nDbLinCount );
+        int nDbCount = 0;
+		m_ouBusmasterNetwork->GetDBServiceCount(bus, 0, nDbCount);
+        
 
-
-        if ( nDbCANCount > 0 ||
-                nDbJ1939Count > 0 ||
-                nDbLinCount > 0 )
+		if ( nDbCount > 0 )
         {
-            //If fil epresent then check for other status
-            HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
             ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
-            hWnd = m_podMsgWndThread->hGetHandleMsgWnd(LIN);
-            ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
-            if (IS_MODE_INTRP(byGetDispFlag))
+			if (IS_MODE_INTRP(byGetDispFlag))
             {
                 pCmdUI->Enable(TRUE);   // Enabled
                 pCmdUI->SetCheck(TRUE); // Pressed state
@@ -4547,17 +4176,14 @@ void CMainFrame::OnMessageFilterButton()
     bool bMessageFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
-    if(pouFlags != nullptr )
-    {
-        bMessageFilterStatus = (pouFlags->nGetFlagStatus(DISPLAYFILTERON) != 0);
-        bMessageFilterStatus = bMessageFilterStatus ? FALSE : TRUE;
-        pouFlags->vSetFlagStatus(DISPLAYFILTERON, bMessageFilterStatus);
+	if (pouFlags != nullptr)
+	{
+		bMessageFilterStatus = (pouFlags->nGetFlagStatus(DISPLAYFILTERON) != 0);
+		bMessageFilterStatus = bMessageFilterStatus ? FALSE : TRUE;
+		pouFlags->vSetFlagStatus(DISPLAYFILTERON, bMessageFilterStatus);
 
-        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, 0);
-        /* Modify filter icon accordingly in Main toolbar*/
-        BYTE bytTbrItemIndex = 6;
-        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
-    }
+		::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, 0);
+	}
 }
 
 
@@ -4579,19 +4205,14 @@ void CMainFrame::OnMessageFilterButtonLin()
     bool bMessageFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
-    if(pouFlags != nullptr )
-    {
-        bMessageFilterStatus = (pouFlags->nGetFlagStatus(DISPLAYFILTERONLIN) != 0);
-        bMessageFilterStatus = bMessageFilterStatus ? FALSE : TRUE;
-        pouFlags->vSetFlagStatus(DISPLAYFILTERONLIN, bMessageFilterStatus);
+	if (pouFlags != nullptr)
+	{
+		bMessageFilterStatus = (pouFlags->nGetFlagStatus(DISPLAYFILTERONLIN) != 0);
+		bMessageFilterStatus = bMessageFilterStatus ? FALSE : TRUE;
+		pouFlags->vSetFlagStatus(DISPLAYFILTERONLIN, bMessageFilterStatus);
 
-        ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, 0);
-
-        //TODO::
-        /* Modify filter icon accordingly in Main toolbar*/
-        BYTE bytTbrItemIndex = 10;
-        vModifyToolbarIcon( m_wndToolbarLIN, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
-    }
+		::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, 0);
+	}
 }
 
 /**
@@ -4607,144 +4228,6 @@ LRESULT CMainFrame::onJ1939TxWndClose(WPARAM /* wParam */, LPARAM /* lParam */)
     return S_OK;
 }
 
-/**
-* \brief         Sets the icon of a particular toolbar item
-* \param[in]     Toolbar object, Item Index, Icon resource IDs for normal, hot and disabled options
-* \param[out]    void
-* \return        void
-* \authors       Arunkumar Karri
-* \date          28.02.2013 Created
-*/
-void CMainFrame::vSetToolBarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, UINT nTBIDNormal, UINT nTBIDHot, UINT nTBIDDisabled)
-{
-    /* Perform this only if resource dll is available */
-    if ( m_hModAdvancedUILib )
-    {
-        /* Get hold of toolbar control */
-        CToolBarCtrl& Toolbar       = objToolbar.GetToolBarCtrl();
-
-        /* Get image list objects */
-        CImageList* pList           = Toolbar.GetImageList();
-        CImageList* pListHot        = Toolbar.GetHotImageList();
-        CImageList* pListDisabled   = Toolbar.GetDisabledImageList();
-
-        /* If successfully got all the image list pointers, proceed further */
-        if ( pList && pListHot && pListDisabled )
-        {
-            /* Load the icon based on resource ID */
-            HICON hIconNormal, hIconHot, hIconDisabled;
-
-            hIconNormal     = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDNormal));
-            hIconHot        = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDHot));
-            hIconDisabled   = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDDisabled));
-            /* Replace the respective Icon images if icons are successfully loaded */
-            if ( hIconNormal &&  hIconHot && hIconDisabled )
-            {
-                pList->Replace(bytItemIndex, hIconNormal);
-                pListHot->Replace(bytItemIndex, hIconHot);
-                pListDisabled->Replace(bytItemIndex, hIconDisabled);
-
-                objToolbar.Invalidate();
-            }
-        }
-    }
-}
-
-/**
-* \brief         Modifies the toolbar button size
-* \param[in]     Toolbar object, Size object
-* \return        void
-* \authors       Arunkumar Karri
-* \date          01.03.2013 Created
-*/
-void CMainFrame::vSetToolbarButtonSize(CNVTCToolBar& objToolbar, CSize& objSize)
-{
-    /* Get hold of toolbar control */
-    CToolBarCtrl& Toolbar       = objToolbar.GetToolBarCtrl();
-
-    /* Set the toolbar button size */
-    Toolbar.SetButtonSize(objSize);
-}
-
-/**
-* \brief         Modifies the icon of a particular toolbar item
-* \param[in]     Toolbar object, Item Index, Icon ON and OFF resource IDs and item ON status
-* \param[out]    void
-* \return        void
-* \authors       Arunkumar Karri
-* \date          28.02.2013 Created
-*/
-void CMainFrame::vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex, bool bItemON, UINT nTBIDON, UINT nTBIDOFF)
-{
-    /* Perform this only if resource dll is available */
-    if ( m_hModAdvancedUILib )
-    {
-        /* Get hold of toolbar control */
-        CToolBarCtrl& Toolbar       = objToolbar.GetToolBarCtrl();
-
-        /* Get image list objects */
-        CImageList* pList           = Toolbar.GetImageList();
-        CImageList* pListHot        = Toolbar.GetHotImageList();
-        CImageList* pListDisabled   = Toolbar.GetDisabledImageList();
-
-        /* Load the icon based on resource ID */
-        HICON hIcon;
-        if ( bItemON )
-        {
-            hIcon = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDON));
-        }
-        else
-        {
-            hIcon = LoadIcon(m_hModAdvancedUILib, MAKEINTRESOURCE(nTBIDOFF));
-        }
-
-        /* Replace the respective Icon images if icon is successfully loaded */
-        if ( hIcon )
-        {
-            pList->Replace(bytItemIndex, hIcon);
-            pListHot->Replace(bytItemIndex, hIcon);
-            //pListDisabled->Replace(bytItemIndex, hIcon);
-
-            objToolbar.Invalidate();
-        }
-    }
-    /* Handle connect icon change for default icons */
-    else if ( nTBIDOFF == IDI_ICON_CAN_CONNECT )
-    {
-        /* Get hold of toolbar control */
-        CToolBarCtrl& Toolbar       = objToolbar.GetToolBarCtrl();
-
-        /* Get image list objects */
-        CImageList* pList           = Toolbar.GetImageList();
-        CImageList* pListHot        = Toolbar.GetHotImageList();
-        CImageList* pListDisabled   = Toolbar.GetDisabledImageList();
-
-        /* If successfully got all the image list pointers, proceed further */
-        if ( pList && pListHot && pListDisabled )
-        {
-            /* Load the icon based on resource ID */
-            HICON hIcon;
-            if ( bItemON )
-            {
-                hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(ID_DISCONNECT));
-            }
-            else
-            {
-                hIcon = LoadIcon(AfxGetInstanceHandle(), MAKEINTRESOURCE(ID_CONNECT));
-            }
-
-            /* Replace the respective Icon images if icon is successfully loaded */
-            if ( hIcon )
-            {
-                pList->Replace(bytItemIndex, hIcon);
-                pListHot->Replace(bytItemIndex, hIcon);
-                pListDisabled->Replace(bytItemIndex, hIcon);
-
-                objToolbar.Invalidate();
-            }
-        }
-    }
-}
 
 /******************************************************************************
     Functionality    :  To handle(enable/disable) filter for replay when user
@@ -4753,21 +4236,17 @@ void CMainFrame::vModifyToolbarIcon(CNVTCToolBar& objToolbar, BYTE bytItemIndex,
 void CMainFrame::OnReplayFilter()
 {
     CFlags* pouFlags = nullptr;
-    bool bReplayFilterStatus = false;
+	bool bReplayFilterStatus = false;
 
     pouFlags = theApp.pouGetFlagsPtr();
-    if(pouFlags != nullptr )
-    {
-        bReplayFilterStatus = (pouFlags->nGetFlagStatus(REPLAYFILTER) != 0);
-        bReplayFilterStatus = !bReplayFilterStatus;
-        pouFlags->vSetFlagStatus(REPLAYFILTER, bReplayFilterStatus);
+	if (pouFlags != nullptr)
+	{
+		bReplayFilterStatus = (pouFlags->nGetFlagStatus(REPLAYFILTER) != 0);
+		bReplayFilterStatus = !bReplayFilterStatus;
+		pouFlags->vSetFlagStatus(REPLAYFILTER, bReplayFilterStatus);
 
-        vREP_EnableFilters(bReplayFilterStatus);
-
-        /* Modify filter icon accordingly in Main toolbar*/
-        BYTE bytTbrItemIndex = 7;
-        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bReplayFilterStatus, IDI_ICON_REPLAY_FILTER_ON, IDI_ICON_REPLAY_FILTER );
-    }
+		vREP_EnableFilters(bReplayFilterStatus);
+	}
 }
 
 void CMainFrame::ApplyMessageFilterButton()
@@ -4783,18 +4262,12 @@ void CMainFrame::ApplyMessageFilterButton()
         pouFlags->vSetFlagStatus(DISPLAYFILTERON, bMessageFilterStatus);
 
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(CAN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, 0);
-        /* Modify filter icon accordingly in Main toolbar*/
-        BYTE bytTbrItemIndex = 7;
-        vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
-
+        
         bMessageFilterStatus = (pouFlags->nGetFlagStatus(DISPLAYFILTERONLIN) != 0);
         //bMessageFilterStatus = bMessageFilterStatus ? FALSE : TRUE;
         pouFlags->vSetFlagStatus(DISPLAYFILTERONLIN, bMessageFilterStatus);
 
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_ENABLE_FILTER_APPLIED, (WPARAM)bMessageFilterStatus, 0);
-        /* Modify filter icon accordingly in Main toolbar*/
-        bytTbrItemIndex = 10;
-        vModifyToolbarIcon( m_wndToolbarLIN, bytTbrItemIndex, bMessageFilterStatus, IDI_ICON_MSG_FILTER_ON, IDI_ICON_MSG_FILTER );
     }
 }
 
@@ -4852,19 +4325,27 @@ void CMainFrame::OnUpdateMessageFilterButton(CCmdUI* pCmdUI)
     Date Created     :  26.03.2002
     Modifications    :
 ******************************************************************************/
-void CMainFrame::OnClearMsgWindow()
+void CMainFrame::OnClearMsgWindow(UINT id)
 {
-    // Post a message to clear the contents of the
-    // message window
-    for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-    {
-        HWND hWnd;
-        hWnd = m_podMsgWndThread->hGetHandleMsgWnd((ETYPE_BUS)shBusID);
-        if(hWnd)
-        {
-            ::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, 0, 0);
-        }
-    }
+	if (nullptr == m_podMsgWndThread)
+	{
+		return;
+	}
+
+	static int msgWndcommandToBus[] = { CAN, J1939, LIN };
+	id = id - IDM_CLEAR_MSG_WINDOW_START;
+	if (id >= 0 && id < sizeof(msgWndcommandToBus))
+	{
+		ETYPE_BUS bus = static_cast<ETYPE_BUS>(msgWndcommandToBus[id]);
+		// Post a message to clear the contents of the
+		// message window
+		HWND hWnd;
+		hWnd = m_podMsgWndThread->hGetHandleMsgWnd((ETYPE_BUS)bus);
+		if (hWnd)
+		{
+			::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, 0, 0);
+		}
+	}
 }
 
 /*******************************************************************************
@@ -5035,7 +4516,21 @@ sSIGNALS* CMainFrame::poGetSignalPointer(
 ******************************************************************************/
 void CMainFrame::OnUpdateDisplayMessagewindowOverwrite(CCmdUI* pCmdUI)
 {
-    pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(OVERWRITE));
+	if (nullptr == m_podMsgWndThread)
+	{
+		return;
+	}
+
+	static int msgWndcommandToBus[] = { CAN, J1939, LIN };
+	UINT id = pCmdUI->m_nID - IDM_OVERWRITE_MSG_WINDOW_START;
+	if (id >= 0 && id < sizeof(msgWndcommandToBus))
+	{
+		ETYPE_BUS bus = static_cast<ETYPE_BUS>(msgWndcommandToBus[id]);
+		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd((ETYPE_BUS)bus);
+		BYTE byGetDispFlag = 0;
+		::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
+		pCmdUI->SetCheck(!((bool)IS_MODE_APPEND(byGetDispFlag)));
+	}
 }
 /******************************************************************************
     Function Name    :  OnUpdateToolHexdec
@@ -5053,7 +4548,9 @@ void CMainFrame::OnUpdateDisplayMessagewindowOverwrite(CCmdUI* pCmdUI)
 ******************************************************************************/
 void CMainFrame::OnUpdateToolHexdec(CCmdUI* pCmdUI)
 {
-    pCmdUI->SetCheck(theApp.pouGetFlagsPtr()->nGetFlagStatus(HEX));
+    auto hexStatus = theApp.pouGetFlagsPtr()->nGetFlagStatus(HEX);
+    pCmdUI->SetCheck(hexStatus);
+    pCmdUI->SetText(hexStatus ? "Hex" : "Dec");
 }
 /******************************************************************************
     Function Name    :  OnUpdateLogOnOff
@@ -5263,7 +4760,7 @@ bool CMainFrame::bIsAtleastOneLoggingBlockEnabled_LIN(USHORT LogBlocks)
 BOOL CMainFrame::PreTranslateMessage(MSG* pMsg)
 {
     vProcessKeyPress(pMsg);
-    return CMDIFrameWnd::PreTranslateMessage(pMsg);
+    return CMDIFrameWndEx::PreTranslateMessage(pMsg);
 }
 
 /******************************************************************************/
@@ -5375,27 +4872,27 @@ void CMainFrame::vSaveWinStatus(WINDOWPLACEMENT WinCurrStatus)
     MONITORINFO ouMonitorInfo;
     GetMonitorInfo(hMonitor, &ouMonitorInfo);
     int nMonitors = GetSystemMetrics(SM_CMONITORS);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_DISPLAY_LEFT, REG_DWORD,"",ouMonitorInfo.rcWork.left);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_DISPLAY_MONITOR, REG_DWORD,"",nMonitors);
+	theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_DISPLAY_LEFT, REG_DWORD, "", ouMonitorInfo.rcWork.left);
+	theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_DISPLAY_MONITOR, REG_DWORD, "", nMonitors);
     // Write the Window Flag
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_FLAG, REG_DWORD,"",WinCurrStatus.flags);
+	theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_FLAG, REG_DWORD, "", WinCurrStatus.flags);
     // Write the show wnd command
     if (WinCurrStatus.showCmd == SW_SHOWMINIMIZED)
     {
         WinCurrStatus.showCmd = SW_SHOWNORMAL;
     }
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_SHOWCMD, REG_DWORD,"",WinCurrStatus.showCmd);
+	theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_SHOWCMD, REG_DWORD, "", WinCurrStatus.showCmd);
     // Write the X, Y position when window is in minimum position
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_X, REG_DWORD,"",WinCurrStatus.ptMinPosition.x);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_Y, REG_DWORD,"",WinCurrStatus.ptMinPosition.y);
+	theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_X, REG_DWORD, "", WinCurrStatus.ptMinPosition.x);
+	theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MINPOS_Y, REG_DWORD, "", WinCurrStatus.ptMinPosition.y);
     // Write the X, Y position when window is in maximum position
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MAXPOS_X, REG_DWORD,"",WinCurrStatus.ptMaxPosition.x);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MAXPOS_Y, REG_DWORD,"",WinCurrStatus.ptMaxPosition.y);
+	theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MAXPOS_X, REG_DWORD, "", WinCurrStatus.ptMaxPosition.x);
+	theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_MAXPOS_Y, REG_DWORD, "", WinCurrStatus.ptMaxPosition.y);
     // Write the Window co-ordinates
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_LEFT, REG_DWORD,"",WinCurrStatus.rcNormalPosition.left);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_RIGHT, REG_DWORD,"",WinCurrStatus.rcNormalPosition.right);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_TOP, REG_DWORD,"",WinCurrStatus.rcNormalPosition.top);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_BOTTOM, REG_DWORD,"",WinCurrStatus.rcNormalPosition.bottom);
+    theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_LEFT, REG_DWORD,"",WinCurrStatus.rcNormalPosition.left);
+    theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_RIGHT, REG_DWORD,"",WinCurrStatus.rcNormalPosition.right);
+    theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_TOP, REG_DWORD,"",WinCurrStatus.rcNormalPosition.top);
+    theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MAIN_WND, defITEM_MAIN_WND_BOTTOM, REG_DWORD,"",WinCurrStatus.rcNormalPosition.bottom);
 }
 /******************************************************************************/
 /*  Function Name    :  vGetWinStatus                                         */
@@ -5510,7 +5007,7 @@ void CMainFrame::vGetWinStatus(WINDOWPLACEMENT& WinCurrStatus)
 /******************************************************************************/
 void CMainFrame::OnShowWindow(BOOL bShow, UINT nStatus)
 {
-    CMDIFrameWnd::OnShowWindow(bShow, nStatus);
+    CMDIFrameWndEx::OnShowWindow(bShow, nStatus);
     // If it is to show the window
     if (bShow == TRUE)
     {
@@ -5586,11 +5083,11 @@ void CMainFrame::OnDestroy()
     // If DLL is loaded, then delete threads if anything is running/waiting
     //CExecuteManager::ouGetExecuteManager().vDeleteAllNode();
     // Write the MRU file list into the registry
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE1, REG_SZ, m_omStrMRU_ConfigurationFiles[0]);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE2, REG_SZ, m_omStrMRU_ConfigurationFiles[1]);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE3, REG_SZ, m_omStrMRU_ConfigurationFiles[2]);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE4, REG_SZ, m_omStrMRU_ConfigurationFiles[3]);
-    bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE5, REG_SZ, m_omStrMRU_ConfigurationFiles[4]);
+	//bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE1, REG_SZ, m_omStrMRU_ConfigurationFiles[0]);
+    //bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE2, REG_SZ, m_omStrMRU_ConfigurationFiles[1]);
+    //bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE3, REG_SZ, m_omStrMRU_ConfigurationFiles[2]);
+    //bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE4, REG_SZ, m_omStrMRU_ConfigurationFiles[3]);
+    //bWriteIntoRegistry(HKEY_CURRENT_USER, defSECTION_MRU, defSECTION_MRU_FILE5, REG_SZ, m_omStrMRU_ConfigurationFiles[4]);
 
 
     vEmptySimsysList();
@@ -5605,7 +5102,7 @@ void CMainFrame::OnDestroy()
 
 
 
-    CMDIFrameWnd::OnDestroy();
+    CMDIFrameWndEx::OnDestroy();
 
     // Check for the current status of the window
     if (GetWindowPlacement(&m_WinCurrStatus))
@@ -5831,7 +5328,7 @@ void CMainFrame::OnUpdateToolButtonMsgDisp(CCmdUI* pCmdUI)
 /*****************************************************************************/
 void CMainFrame::OnEndSession(BOOL bEnding)
 {
-    CMDIFrameWnd::OnEndSession(bEnding);
+    CMDIFrameWndEx::OnEndSession(bEnding);
 
     if (bEnding == TRUE)
     {
@@ -5865,14 +5362,14 @@ void CMainFrame::OnEndSession(BOOL bEnding)
 void CMainFrame::OnUpdateConfigurationFileName(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable();
-    CString omStrPage = strGetCurrentConfigFileName().c_str();
+    CString omStrPage = strGetCurrentConfigFileName();
 
     pCmdUI->SetText( omStrPage );
 
-    m_wndStatusBar.GetStatusBarCtrl().SetTipText( INDEX_DB_NAME, omStrPage);
+    m_wndStatusBar.SetTipText( INDEX_DB_NAME, omStrPage);
 }
 
-std::string CMainFrame::strGetCurrentConfigFileName()
+CString CMainFrame::strGetCurrentConfigFileName()
 {
     CString omStrConfigurationFilename = "";
     CString omStrDBName = "";
@@ -5994,7 +5491,7 @@ void CMainFrame::vWriteNewLogFilenameInRegistry( CString omLogFilename )
 ******************************************************************************/
 void CMainFrame::OnCfgSendMsgs()
 {
-    m_objFlexTxHandler.vShowConfigureMsgWindow(this, CAN);
+    m_objTxHandler.vShowConfigureMsgWindow(this, CAN);
 }
 
 /* Read thread function for graph display*/
@@ -6231,6 +5728,7 @@ void CMainFrame::OnFileConnect()
         g_bStopTimerHandlers    = TRUE;
         g_bStopKeyHandlers      = TRUE;
         g_bStopErrorHandlers    = TRUE;
+		
         if(bConnected)
         {
             //Build and Load Node Simulation
@@ -6271,11 +5769,11 @@ void CMainFrame::OnFileConnect()
 
         if( bConnected == FALSE )
         {
-            m_objFlexTxHandler.vBusStatusChanged(CAN, BUS_DISCONNECTED);
+            m_objTxHandler.vBusStatusChanged(CAN, BUS_DISCONNECTED);
         }
         else
         {
-            m_objFlexTxHandler.vBusStatusChanged(CAN, BUS_CONNECTED);
+            m_objTxHandler.vBusStatusChanged(CAN, BUS_CONNECTED);
         }
 
         // Update Replay Manager to Stop running replay threads
@@ -6407,150 +5905,133 @@ void CMainFrame::OnFileConnect()
             }
         }
 
-        if(bReturn)
-        {
-            BOOL bLogIsON = FALSE, bJ1939LogON = FALSE, bLinLogON = FALSE;
+		if (bReturn)
+		{
+            setConnectState(ETYPE_BUS::CAN, bConnected);
 
-            CFlags* pFlagLog = theApp.pouGetFlagsPtr();
-            if(pFlagLog != nullptr)
-            {
-                bLogIsON = pFlagLog->nGetFlagStatus(LOGTOFILE);
-            }
+			BOOL bLogIsON = FALSE, bJ1939LogON = FALSE, bLinLogON = FALSE;
 
-            //Handle start/stop logging
-            if (m_abLogOnConnect[CAN] == TRUE)
-            {
-                vStartStopLogging(bConnected);
-            }
-            else if(bLogIsON == TRUE && bConnected == TRUE)
-            {
-                vStartStopLogging(bLogIsON == TRUE);
-            }
+			CFlags* pFlagLog = theApp.pouGetFlagsPtr();
+			if (pFlagLog != nullptr)
+			{
+				bLogIsON = pFlagLog->nGetFlagStatus(LOGTOFILE);
+			}
 
-            if (m_abLogOnConnect[J1939] == TRUE)
-            {
-                // Enable Logging or stop logging
-                if (nullptr != sg_pouIJ1939Logger)
-                {
-                    if (bConnected)
-                    {
-                        vSetAssociatedDatabaseFiles(J1939); // Update the db file names associated
-                        vSetBaudRateInfo(J1939);                // Update the baud rate details
-                    }
-                    sg_pouIJ1939Logger->EnableLogging(bConnected);
+			//Handle start/stop logging
+			if (m_abLogOnConnect[CAN] == TRUE)
+			{
+				vStartStopLogging(bConnected);
+			}
+			else if (bLogIsON == TRUE && bConnected == TRUE)
+			{
+				vStartStopLogging(bLogIsON == TRUE);
+			}
 
-                    BYTE bytTbrItemIndex = 3;
-                    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, sg_pouIJ1939Logger->IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
-                }
+			if (m_abLogOnConnect[J1939] == TRUE)
+			{
+				// Enable Logging or stop logging
+				if (nullptr != sg_pouIJ1939Logger)
+				{
+					if (bConnected)
+					{
+						vSetAssociatedDatabaseFiles(J1939); // Update the db file names associated
+						vSetBaudRateInfo(J1939);                // Update the baud rate details
+					}
+					sg_pouIJ1939Logger->EnableLogging(bConnected);
+				}
 
-            }
-            else
-            {
-                if (nullptr != sg_pouIJ1939Logger)
-                {
-                    if(sg_pouIJ1939Logger->IsLoggingON() == TRUE)
-                    {
-                        bJ1939LogON = TRUE;
-                        sg_pouIJ1939Logger->EnableLogging(TRUE);
-                    }
-                }
-            }
-            //SGW Code commented by Arun 21-10-2010
-            pouFlags->vSetFlagStatus(CONNECTED, bConnected);
+			}
+			else
+			{
+				if (nullptr != sg_pouIJ1939Logger)
+				{
+					if (sg_pouIJ1939Logger->IsLoggingON() == TRUE)
+					{
+						bJ1939LogON = TRUE;
+						sg_pouIJ1939Logger->EnableLogging(TRUE);
+					}
+				}
+			}
+			//SGW Code commented by Arun 21-10-2010
+			pouFlags->vSetFlagStatus(CONNECTED, bConnected);
 
-            // Post Connect Activities
-            if( bConnected == TRUE )
-            {
-                // If Connect and Log both are enabled
+			// Post Connect Activities
+			if (bConnected == TRUE)
+			{
+				// If Connect and Log both are enabled
 
-                BOOL bLogON = FALSE;
-                CFlags* pFlag = theApp.pouGetFlagsPtr();
-                if(pFlag != nullptr)
-                {
-                    bLogON = pFlag->nGetFlagStatus(LOGTOFILE);
-                }
+				BOOL bLogON = FALSE;
+				CFlags* pFlag = theApp.pouGetFlagsPtr();
+				if (pFlag != nullptr)
+				{
+					bLogON = pFlag->nGetFlagStatus(LOGTOFILE);
+				}
 
-                if (bLogON == TRUE || m_abLogOnConnect[CAN] == TRUE)
-                {
-                    //if(theApp.m_pouMsgSignal != nullptr)
-                    {
-                        //if(theApp.m_pouMsgSignal->unGetNumerOfMessages() > 0)
-                        //if (nullptr != sg_pouFrameProcCAN)
-                        {
-                            //if(sg_pouFrameProcCAN->FPC_IsDataLogged() == TRUE)
-                            {
-                                m_unTimerSBLog = SetTimer(TIMER_REFRESH_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, nullptr);
-                            }
-                        }
-                    }
-                }
-                /*if(bLinLogON == TRUE || m_abLogOnConnect[LIN] == TRUE)
-                {
-                    m_unLinTimerSBLog = SetTimer(TIMER_REFRESH_LIN_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, nullptr);
-                }*/
-                if(bJ1939LogON == TRUE || m_abLogOnConnect[J1939] == TRUE)
-                {
-                    m_unJ1939TimerSBLog = SetTimer(TIMER_REFRESH_J1939_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, nullptr);
-                }
+				if (bLogON == TRUE || m_abLogOnConnect[CAN] == TRUE)
+				{
+					//if(theApp.m_pouMsgSignal != nullptr)
+					{
+						//if(theApp.m_pouMsgSignal->unGetNumerOfMessages() > 0)
+						//if (nullptr != sg_pouFrameProcCAN)
+						{
+							//if(sg_pouFrameProcCAN->FPC_IsDataLogged() == TRUE)
+							{
+								m_unTimerSBLog = SetTimer(TIMER_REFRESH_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, nullptr);
+							}
+						}
+					}
+				}
+				/*if(bLinLogON == TRUE || m_abLogOnConnect[LIN] == TRUE)
+				{
+				m_unLinTimerSBLog = SetTimer(TIMER_REFRESH_LIN_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, nullptr);
+				}*/
+				if (bJ1939LogON == TRUE || m_abLogOnConnect[J1939] == TRUE)
+				{
+					m_unJ1939TimerSBLog = SetTimer(TIMER_REFRESH_J1939_LOG_STATUS, STSBAR_REFRESH_TIME_PERIOD_LOG, nullptr);
+				}
 
-                vREP_HandleConnectionStatusChange( TRUE );
-                //send connection statud to replay window
-                BOOL bReplayFilterStatus = FALSE;
-                bReplayFilterStatus = pouFlags->nGetFlagStatus(REPLAYFILTER);
-                vREP_EnableFilters(bReplayFilterStatus);
-            }
-            // On Disconnect Kill the timer
-            else
-            {
-                if(m_unTimerSBLog != 0)
-                {
-                    ::KillTimer(nullptr, m_unTimerSBLog);
-                    m_unTimerSBLog = 0;
-                    // Update Status bar
-                    //m_wndStatusBar.SetPaneText(INDEX_LOG_RECORD, "CAN");
-                    m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
-                }
-            }
+				vREP_HandleConnectionStatusChange(TRUE);
+				//send connection statud to replay window
+				BOOL bReplayFilterStatus = FALSE;
+				bReplayFilterStatus = pouFlags->nGetFlagStatus(REPLAYFILTER);
+				vREP_EnableFilters(bReplayFilterStatus);
+			}
+			// On Disconnect Kill the timer
+			else
+			{
+				if (m_unTimerSBLog != 0)
+				{
+					::KillTimer(nullptr, m_unTimerSBLog);
+					m_unTimerSBLog = 0;
+					// Update Status bar
+					//m_wndStatusBar.SetPaneText(INDEX_LOG_RECORD, "CAN");
+					m_wndStatusBar.SetPaneIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
+				}
+			}
 
-            // Enable / disable signal transmission block
-            m_ouWaveTransmitter.bUpdateBlock(bConnected);
+			// Enable / disable signal transmission block
+			m_ouWaveTransmitter.bUpdateBlock(bConnected);
 
-            m_objTSExecutorHandler.vStartStopReadThread(CAN, bConnected);
-            m_objTSExecutorHandler.vBusConnected(bConnected);
+			m_objTSExecutorHandler.vStartStopReadThread(CAN, bConnected);
+			m_objTSExecutorHandler.vBusConnected(bConnected);
 
-            if(bConnected == FALSE )
-            {
+            if (bConnected == FALSE)
+			{
 
-                // Let the user configure the mgs
-                pouFlags->vSetFlagStatus( SENDMESG, FALSE );
+				// Let the user configure the mgs
+				pouFlags->vSetFlagStatus(SENDMESG, FALSE);
+                m_bCfgLoadMenuOption = TRUE;
+                m_bCfgNewMenuOption = TRUE;
+			}
+			else
+			{
+				// Disable the user to load or create another cfg file
+				m_bCfgLoadMenuOption = FALSE;
+				m_bCfgNewMenuOption = FALSE;
+			}
 
-                // Enable the user to load or create another cfg file
-                if(pouFlags->nGetFlagStatus(FLEX_CONNECTED) == FALSE)
-                {
-                    m_bCfgLoadMenuOption    = TRUE;
-                    m_bCfgNewMenuOption     = TRUE;
-                }
-            }
-            else
-            {
-                // Disable the user to load or create another cfg file
-                m_bCfgLoadMenuOption    = FALSE;
-                m_bCfgNewMenuOption     = FALSE;
-            }
-
-            g_bStopSendMultMsg  = TRUE;
-            // Get reference to toolbar control
-            CToolBarCtrl& omRefToolBarCtrl = vGetReferenceToToolBarCtrl();
-
-            // Load the required bitmap to
-            // show connect/disconnect state
-            /* Modify connect icon accordingly in Main toolbar*/
-            BYTE bytTbrItemIndex = 1;
-            vModifyToolbarIcon( m_wndToolBar, bytTbrItemIndex, bConnected, IDI_ICON_CAN_DISCONNECT, IDI_ICON_CAN_CONNECT );
-
-            // Press / Unpress the button if Connected / Disconnected
-            omRefToolBarCtrl.PressButton(IDM_FILE_CONNECT, bConnected);
-        }
+			g_bStopSendMultMsg = TRUE;
+		}
         if(!bConnected)//for proper logging of data even if connection stopped
         {
             if (nullptr != sg_pouFrameProcCAN)
@@ -6643,7 +6124,7 @@ void CMainFrame::OnLINConnect()
         //sg_pouSWInterface[LIN]->SW_SetClusterInfo(m_ouBusmasterNetwork);
         hResult = g_pouDIL_LIN_Interface->DILL_PreStartHardware();
 
-        m_objFlexTxHandler.vBusStatusChanged(LIN, BUS_PRECONNECT);
+        m_objTxHandler.vBusStatusChanged(LIN, BUS_PRECONNECT);
         if(FALSE == GetILINNodeSim()->NS_DLLBuildLoadAllEnabled())
         {
             return;
@@ -6653,14 +6134,14 @@ void CMainFrame::OnLINConnect()
         {
             pNodeSim->NS_ManageBusEventHandler(BUS_PRE_CONNECT);
         }
-        m_objFlexTxHandler.vBusStatusChanged(LIN, BUS_PRECONNECT);
+        m_objTxHandler.vBusStatusChanged(LIN, BUS_PRECONNECT);
 
         hResult = g_pouDIL_LIN_Interface->DILL_StartHardware();
 
         /* If connect fails, return from here */
         if ( hResult == S_FALSE )
         {
-            m_objFlexTxHandler.vBusStatusChanged(LIN, BUS_DISCONNECTED);
+            m_objTxHandler.vBusStatusChanged(LIN, BUS_DISCONNECTED);
             theApp.bWriteIntoTraceWnd("Error while accessing Hardware.");
             GetILINNodeSim()->NS_DLLUnloadAllEnabled();
             return;
@@ -6686,7 +6167,7 @@ void CMainFrame::OnLINConnect()
             vStartStopLogging_LIN(bLogIsON == TRUE);
         }
 
-        m_objFlexTxHandler.vBusStatusChanged(LIN, BUS_CONNECTED);
+        m_objTxHandler.vBusStatusChanged(LIN, BUS_CONNECTED);
         GetILINNodeSim()->NS_ManageBusEventHandler(BUS_CONNECT);
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_NOTIFICATION_FROM_OTHER, eBusStatusChanged, true);
         ::SendMessage(m_podMsgWndThread->hGetHandleMsgWnd(LIN), WM_NOTIFICATION_FROM_OTHER,
@@ -6731,7 +6212,7 @@ void CMainFrame::OnLINConnect()
 
         g_pouDIL_LIN_Interface->DILL_ResetSlaveRespData();
         hResult = g_pouDIL_LIN_Interface->DILL_StopHardware();
-        m_objFlexTxHandler.vBusStatusChanged(LIN, BUS_DISCONNECTED);
+        m_objTxHandler.vBusStatusChanged(LIN, BUS_DISCONNECTED);
         //m_objLINTxHandler.vStopTransmission(0);
         if (nullptr != m_podMsgWndThread)
         {
@@ -6777,10 +6258,10 @@ void CMainFrame::OnLINConnect()
         m_bCfgLoadMenuOption    = TRUE;
         m_bCfgNewMenuOption     = TRUE;
     }
-
+	setConnectState(ETYPE_BUS::LIN, bConnected);
+	
     pouFlag->vSetFlagStatus(LIN_CONNECTED, bConnected);
     BYTE bytTbrItemIndex = 1;
-    vModifyToolbarIcon(m_wndToolbarLIN, bytTbrItemIndex, bConnected, IDI_ICON_CAN_DISCONNECT, IDI_ICON_CAN_CONNECT);
 }
 
 void CMainFrame::OnUpdateLINConnect(CCmdUI* pCmdUI)
@@ -6941,8 +6422,6 @@ void CMainFrame::OnLoadConfigFile()
         DeselectJ1939Interfaces(FALSE);
         GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(false);
         m_podMsgWndThread->vModifyVisibilityStatus(SW_HIDE, J1939);
-        m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
-        m_wndToolbarJ1939.Invalidate();
     }
 }
 
@@ -7067,21 +6546,7 @@ void CMainFrame::OnNewConfigFile()
         pouFlags = theApp.pouGetFlagsPtr();
         pouFlags->vSetFlagStatus(REPLAYFILTER, FALSE);
         ApplyReplayFilter();
-        // Clear message window on connect
-        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(FLEXRAY);
-        if(nullptr != hWnd)
-        {
-            ::SendMessage(hWnd, IDM_CLEAR_MSG_WINDOW, 0, 0);
-            ::SendMessage(hWnd, WM_CLEAR_SORT_COLUMN, 0, 0);
-        }
-
-        /*Unload FLEXRAY DIL */
-        m_shFLEXRAYDriverId = DAL_NONE;
-        InitializeFLEXRAYDIL();
-        //m_ouClusterConfig[FLEXRAY].InitialiseConfig();
-        m_ouBusmasterNetwork->ReSetNetwork(FLEXRAY);
-        m_ouBusmasterNetwork->SetChannelCount(FLEXRAY, 1);
-
+        
         /*LIN*/
         m_shLINDriverId = DAL_NONE;
         IntializeDILL();
@@ -7098,20 +6563,10 @@ void CMainFrame::OnNewConfigFile()
         m_podMsgWndThread->vModifyVisibilityStatus(SW_HIDE, J1939);
         m_podMsgWndThread->vModifyVisibilityStatus(SW_HIDE, LIN);
 
-
-
-
-
-
-        /* m_wndToolbarJ1939.GetToolBarCtrl().ShowWindow(SW_HIDE);
-         m_wndToolbarNodeSimul.GetToolBarCtrl().ShowWindow(SW_HIDE);*/
-
         // Deactivate J1939
         DeselectJ1939Interfaces(FALSE);
         GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(false);
         m_podMsgWndThread->vModifyVisibilityStatus(SW_HIDE, J1939);
-        m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
-        m_wndToolbarJ1939.Invalidate();
     }
 }
 void CMainFrame::vInitialiaseLINConfig(int nChannel)
@@ -7204,7 +6659,7 @@ void CMainFrame::OnSaveConfigFile()
                     defCONFIG_FILE_SUCCESS )
             {
                 vPushConfigFilenameDown(omStrCfgFilename);
-                bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, omStrCfgFilename);
+				theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, omStrCfgFilename);
                 m_omStrSavedConfigFile = omStrCfgFilename;
             }
         }
@@ -7215,7 +6670,7 @@ void CMainFrame::OnSaveConfigFile()
         {
             vPushConfigFilenameDown(omStrCfgFilename);
 
-            bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, omStrCfgFilename);
+			theApp.bWriteIntoRegistry(HKEY_CURRENT_USER, SECTION, defCONFIGFILENAME, REG_SZ, omStrCfgFilename);
             m_omStrSavedConfigFile = omStrCfgFilename;
         }
     }
@@ -7284,103 +6739,40 @@ void CMainFrame::OnSaveAsConfigFile()
  Modifications    : Raja N on 19.07.2005, Added code to stop logging before
                     loading the new configuration file
 *******************************************************************************/
-void CMainFrame::OnClickMruList (UINT unID)
+void CMainFrame::OnClickMruList(CString omStrName)
 {
-    CMenu* pMenu = GetMenu();
-    if ( pMenu != nullptr)
-    {
-        // Get the string associated with the selected menu item
-        CString omStrName("");
-        pMenu->GetMenuString( unID, omStrName, MF_BYCOMMAND);
-        // Let the selected filename be the first file name in the MRU
-        if (!omStrName.IsEmpty() && omStrName != _(defSTR_DEFAULT_MRU_ITEM) )
-        {
-            // Check if any previous configuration file is loaded
-            // and changes are being made to it
-            if ( bIsConfigurationModified() == TRUE )
-            {
-                // Yes, there is a loaded config and changes have been made to
-                // it Hence display save confirmation message dialog
-                if (AfxMessageBox( _(defSTR_CONF_SAVE_CONFIRM),
-                                   MB_YESNO | MB_ICONQUESTION ) == IDYES )
-                {
-                    // Save
-                    OnSaveConfigFile();
-                }
-            }
-            // Get the flag status and stop logging if it already started
-            BOOL bLogON = FALSE;
-            // Get the main menu
-            CFlags* pFlag = nullptr;
-            pFlag = theApp.pouGetFlagsPtr();
-            if(pFlag != nullptr)
-            {
-                bLogON = pFlag->nGetFlagStatus(LOGTOFILE);
-                if( bLogON == TRUE )
-                {
-                    vStartStopLogging( FALSE );
-                    //pFlag->vSetFlagStatus( LOGTOFILE, FALSE );
-                }
-            }
-
-            // Call Configuration Load
-            nLoadConfigFile(omStrName);
-        }
-    }
-
-    else
-        AfxMessageBox(_(defIMPORT_DLLLOAD_WARNNING),
-                      MB_OK|MB_ICONINFORMATION);
-
-}
-
-/******************************************************************************
- Function Name    : OnUpdateMruList
- Input(s)         : -
- Output           : void
- Functionality    : - Equivalent to OnUpdateCommandUI
-                    - Modify's the text associated with the MRU menu items
- Member of        : CMainFrame
- Friend of        :     -
- Author(s)        : Amarnath S
- Date Created     : 18.11.2002
- Modifications    : Raja N on 28.04.2004
-                    Modified the UI Update logic to use the pCmdUI object and
-                    included connect status to disable the menu item.
- Modifications    : Raja N on 11.08.2004
-                    Modified the UI Update to check whether Tx dialog is active
-                    or not. If it is active the config can not be loaded.
- Modifications    : Raja N on 26.04.2005
-                    Modified code to refer new Tx message configuration window
-                    pointer to check the presence of Tx configuration window
-******************************************************************************/
-void CMainFrame::OnUpdateMruList (CCmdUI* pCmdUI)
-{
-    CFlags* pouFlag = nullptr;
-    BOOL bConnect = FALSE;
-    // Get MRU item index
-    UINT unIndex = pCmdUI->m_nID - IDM_REC_CFG_FILE1;
-    // Get MRU file name from configuration module
-    pouFlag     = theApp.pouGetFlagsPtr();
-    pCmdUI->SetText(m_omStrMRU_ConfigurationFiles[unIndex]);
-    if(pouFlag != nullptr)
-    {
-        // Check connection status
-        bConnect    = pouFlag->nGetFlagStatus(CONNECTED);
-        BOOL bFlexConnect =  pouFlag->nGetFlagStatus(FLEX_CONNECTED);
-        BOOL bLINConnect =  pouFlag->nGetFlagStatus(LIN_CONNECTED);
-
-
-        // Disable menu if the tool is connected or Tx msg window is active or
-        // MRU list is empty
-        if( bConnect == TRUE ||
-
-                m_omStrMRU_ConfigurationFiles[0] == _(defSTR_DEFAULT_MRU_ITEM) ||
-                bFlexConnect == TRUE || bLINConnect == TRUE )
-        {
-            pCmdUI->Enable(FALSE);
-        }
-    }
+	if (!omStrName.IsEmpty() && omStrName != _(defSTR_DEFAULT_MRU_ITEM))
+	{
+		// Check if any previous configuration file is loaded
+		// and changes are being made to it
+		if (bIsConfigurationModified() == TRUE)
+		{
+			// Yes, there is a loaded config and changes have been made to
+			// it Hence display save confirmation message dialog
+			if (AfxMessageBox(_(defSTR_CONF_SAVE_CONFIRM),
+				MB_YESNO | MB_ICONQUESTION) == IDYES)
+			{
+				// Save
+				OnSaveConfigFile();
+			}
+		}
+		// Get the flag status and stop logging if it already started
+		BOOL bLogON = FALSE;
+		// Get the main menu
+		CFlags* pFlag = nullptr;
+		pFlag = theApp.pouGetFlagsPtr();
+		if (pFlag != nullptr)
+		{
+			bLogON = pFlag->nGetFlagStatus(LOGTOFILE);
+			if (bLogON == TRUE)
+			{
+				vStartStopLogging(FALSE);
+				//pFlag->vSetFlagStatus( LOGTOFILE, FALSE );
+			}
+		}
+		// Call Configuration Load
+		nLoadConfigFile(omStrName);
+	}
 }
 /*******************************************************************************
  Function Name    : vPushConfigFilenameDown
@@ -7389,92 +6781,10 @@ void CMainFrame::OnUpdateMruList (CCmdUI* pCmdUI)
  Functionality    : Simulates MRU functionality
  Member of        : CMainFrame
  Friend of        :    -
- Author(s)        : Amarnath S
- Date Created     : 18.11.2002
- Modifications    : 27.11.2002, Amarnath Shastry
-                    Added "pSubSubMenu->GetMenuItemCount()"
- Modifications    : 02.01.2003, Amarnath S
-                    Empty text introduced if no MRU are found
- Modifications    : 28.04.2004, Raja N
-                    Use of pomGetMRUMenuPointer function to get the pointer of
-                    "Recent Files" menu item instead of directly getting the
-                    pointer from menubar.
 *******************************************************************************/
 void CMainFrame::vPushConfigFilenameDown(CString omStrConfigFilename )
 {
-    // The MRU list should have "omStrConfigFilename" file name
-    // as the first element.
-    // Hence u need to push down rest of the elements by one
-    // position
-    // If the filename is new then, the last element in the
-    // list will be lost
-    // Perform only for valid config file
-    if ( omStrConfigFilename != "" )
-    {
-        if (m_omStrMRU_ConfigurationFiles[0] == defSTR_DEFAULT_MRU_ITEM)
-        {
-            m_omStrMRU_ConfigurationFiles[0] = omStrConfigFilename;
-        }
-        else
-        {
-            CString omStrNames[5];
-            INT unIndex = -1;
-            UINT unMaxCountIndex = 5;// Push all the elements down
-
-            // Make a temp copy of all the MRU's
-            UINT unCount;
-            for (unCount = 0;                   //for (UINT unCount = 0; unCount defined out of for loop
-                    unCount < 5; unCount++)
-            {
-                omStrNames[unCount] = m_omStrMRU_ConfigurationFiles[unCount];
-                // Store the count
-                if ( omStrNames[unCount] == omStrConfigFilename )
-                {
-                    unIndex = unCount;
-                }
-            }
-
-            if ( unIndex != -1 )// If this is not newly loaded file
-            {
-                // Push down the mru files untill saved index
-                unMaxCountIndex = unIndex;
-            }
-
-            // MRU files gets shuffled here
-            for ( unCount = 0;
-                    unCount < unMaxCountIndex; unCount++)
-            {
-                m_omStrMRU_ConfigurationFiles[unCount + 1] =
-                    omStrNames[unCount];
-            }
-
-            // index zero always has selected file
-            m_omStrMRU_ConfigurationFiles[0] =
-                omStrConfigFilename;
-
-            // if this is new file name, create the
-            // menu for the same
-            // Get application main menu
-            if ( unIndex == -1 )
-            {
-                // Get the menu pointer of "Recent Configuration"
-                CMenu* pMenu = pomGetMRUMenuPointer();
-
-                if ( pMenu != nullptr )// Verify
-                {
-                    INT nMenuCount = pMenu->GetMenuItemCount();
-                    if ( nMenuCount < 5 )
-                    {
-                        // Create an item with empty string. UI Update will
-                        // set the text appropriatly
-                        UINT unMenuID = IDM_REC_CFG_FILE1;
-                        pMenu->AppendMenu( MF_STRING | MF_ENABLED,
-                                           unMenuID + nMenuCount, "");
-                    }
-                }
-            }
-        }
-    }
+    return theApp.AddToRecentFileList(omStrConfigFilename);
 }
 
 /******************************************************************************
@@ -7683,54 +6993,6 @@ void CMainFrame::OnFilePropeties()
     odProperties.DoModal();
 }
 
-/******************************************************************************
- Function Name    : vCreateMRU_Menus
- Input(s)         : -
- Output           : void
- Functionality    : Set the text for the first sub menu item under
-                    "File -> Recent Configurations -> Empty" menu option
-                    The first sub menu removed.Then create menu for the rest
-                    of the MRU files.
- Member of        : CMainFrame
- Friend of        :     -
- Author(s)        : Amarnath S
- Date Created     : 14.12.2002
- Modifications    : Raja N on 28.04.2004
-                    Modified the getting menu pointer portion as it has been
-                    moved to a seprate function pomGetMRUMenuPointer();
-******************************************************************************/
-void CMainFrame::vCreateMRU_Menus()
-{
-    // Get application main menu
-    CMenu* pMenu = pomGetMRUMenuPointer();
-    if ( pMenu != nullptr )// Verify
-    {
-        // if the first MRU file is empty then, "Empty" text shud be displayed
-        if ( m_omStrMRU_ConfigurationFiles[0] != "" &&
-                m_omStrMRU_ConfigurationFiles[0] != _(defSTR_DEFAULT_MRU_ITEM) )
-        {
-            // Remove the static item
-            UINT unMenuID = IDM_REC_CFG_FILE1;
-            // Create menu's to hold rest of MRU configuration files
-            for (UINT unCount = 0; unCount < 5; unCount++ )
-            {
-                // Create menu only if string is not empty
-                if ( m_omStrMRU_ConfigurationFiles[unCount] != "" )
-                {
-                    pMenu->RemoveMenu( unMenuID + unCount, MF_BYCOMMAND);
-                    pMenu->AppendMenu(MF_STRING, unMenuID + unCount,
-                                      m_omStrMRU_ConfigurationFiles[unCount] );
-                }
-                else
-                {
-                    //break the loop
-                    unCount = 5;
-                }
-            }
-        }
-    }
-}
-
 
 /******************************************************************************
     Function Name    :  OnTimer
@@ -7767,7 +7029,7 @@ void CMainFrame::OnTimer(UINT nIDEvent)
 
         //Update the bus statistics window once if it opened when CAN is in disconnnected state.
         if ( m_oNetworkStatistics != nullptr &&
-                m_oNetworkStatistics->IsWindowVisible( ) == TRUE && theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED) == FALSE && m_bUpdateNetworkStatistics)
+                m_oNetworkStatistics->IsWindowVisible( ) == TRUE /*&& theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED) == FALSE && m_bUpdateNetworkStatistics*/)
         {
 
             m_oNetworkStatistics->vSendMessage(CAN);
@@ -7833,12 +7095,12 @@ void CMainFrame::OnTimer(UINT nIDEvent)
                 /*m_wndStatusBar.SetPaneText(INDEX_LOG_RECORD, "CAN");*/
                 if(m_nIconSetFlag == 1)
                 {
-                    m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_CAN_LOG_ICON, m_hLogIcon2);
+					m_wndStatusBar.SetPaneIcon(INDEX_CAN_LOG_ICON, m_hLogIcon2);
                     m_nIconSetFlag = 2;
                 }
                 else if(m_nIconSetFlag == 2)
                 {
-                    m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_CAN_LOG_ICON, m_hLogIcon1);
+					m_wndStatusBar.SetPaneIcon(INDEX_CAN_LOG_ICON, m_hLogIcon1);
                     m_nIconSetFlag = 1;
                 }
 
@@ -7862,12 +7124,12 @@ void CMainFrame::OnTimer(UINT nIDEvent)
             }
             else
             {
-                m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
+                m_wndStatusBar.SetPaneIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
             }
         }
         else
         {
-            m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
+			m_wndStatusBar.SetPaneIcon(INDEX_CAN_LOG_ICON, m_hLogOffIcon);
         }
     }
     if(nIDEvent == m_unJ1939TimerSBLog)
@@ -7878,12 +7140,12 @@ void CMainFrame::OnTimer(UINT nIDEvent)
             {
                 if(m_nJ1939IconSetFlag == 1)
                 {
-                    m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_J1939_LOG_ICON, m_hLogIcon2);
+					m_wndStatusBar.SetPaneIcon(INDEX_J1939_LOG_ICON, m_hLogIcon2);
                     m_nJ1939IconSetFlag = 2;
                 }
                 else if(m_nJ1939IconSetFlag == 2)
                 {
-                    m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_J1939_LOG_ICON, m_hLogIcon1);
+					m_wndStatusBar.SetPaneIcon(INDEX_J1939_LOG_ICON, m_hLogIcon1);
                     m_nJ1939IconSetFlag = 1;
                 }
 
@@ -7907,17 +7169,17 @@ void CMainFrame::OnTimer(UINT nIDEvent)
             }
             else
             {
-                m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_J1939_LOG_ICON, m_hLogOffIcon);
+				m_wndStatusBar.SetPaneIcon(INDEX_J1939_LOG_ICON, m_hLogOffIcon);
             }
         }
         else
         {
-            m_wndStatusBar.GetStatusBarCtrl().SetIcon(INDEX_J1939_LOG_ICON, m_hLogOffIcon);
+			m_wndStatusBar.SetPaneIcon(INDEX_J1939_LOG_ICON, m_hLogOffIcon);
         }
     }
 
     // Call Parent class member for default action
-    CMDIFrameWnd::OnTimer(nIDEvent);
+    CMDIFrameWndEx::OnTimer(nIDEvent);
 }
 /******************************************************************************
     Function Name    :  OnDropFiles
@@ -7961,7 +7223,7 @@ void CMainFrame::OnDropFiles(HDROP hDropInfo)
             // second function editor window to open.
             if(omStrFileExt.CompareNoCase(defDOT_C) == 0 && bEditOn == FALSE)
             {
-                CMDIFrameWnd::OnDropFiles(hDropInfo);
+                CMDIFrameWndEx::OnDropFiles(hDropInfo);
                 // Save the selected filename into the configuration details
                 // if it is is not the same C file
                 m_omMRU_C_Filename = omStrFileName;
@@ -8314,40 +7576,6 @@ void CMainFrame::OnUpdateConfigurePassive(CCmdUI* pCmdUI)
             pCmdUI->Enable(TRUE);
         }
     }
-
-    /*if( pCmdUI != nullptr)
-    {
-        CFlags* podFlags = theApp.pouGetFlagsPtr();
-        if( podFlags != nullptr )
-        {
-            // Get the connection status
-            BOOL bConnect = podFlags->nGetFlagStatus(CONNECTED);
-            if(bConnect == FALSE )
-            {
-                pCmdUI->Enable(TRUE);
-            }
-            else
-            {
-                pCmdUI->Enable(FALSE);
-            }
-        }
-        LONG lParam = 0;
-        if (g_pouDIL_CAN_Interface->DILC_GetControllerParams(lParam, 0, HW_MODE) == S_OK)
-        {
-            if (lParam == defMODE_PASSIVE)
-            {
-                pCmdUI->SetCheck(TRUE);
-            }
-            else
-            {
-                pCmdUI->SetCheck(FALSE);
-            }
-        }
-        else
-        {
-            pCmdUI->SetCheck(FALSE);
-        }
-    }*/
 }
 /******************************************************************************/
 /*  Function Name    :  OnTraceWnd                                            */
@@ -8544,232 +7772,154 @@ LRESULT CMainFrame::vKeyPressedInMsgWnd(WPARAM wParam, LPARAM )
             ( wParam >= 'a' && wParam<='z' )||
             ( wParam >= '0' && wParam<='9' ) )
     {
-        m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eKeyPress, (UCHAR)wParam);
+        m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eKeyPress, (UCHAR)wParam);
     }
     return 0;
 }
 
-/******************************************************************************/
-/*  Function Name    :  GetSubMenu                                            */
-/*  Input(s)         :  CString MenuName                                      */
-/*  Output           :  Pointer to CMenu                                      */
-/*  Functionality    :  Function takes the Root Menu and returns the          */
-/*                      SubMenu Pointer                                       */
-/*  Member of        :  CMainFrame                                            */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        :  Arun Kumar K                                          */
-/*  Date Created     :  07.05.2010                                            */
-/*  Modifications    :                                                        */
-/******************************************************************************/
-CMenu* CMainFrame::GetSubMenu(CString MenuName)
-{
-    CMenu* mmenu = GetMenu();
-    CMenu* Submenu = nullptr;
-    BOOL bFound = FALSE;
-    int i = -1;
-    CString Str;
-    int nCnt = mmenu->GetMenuItemCount();
-    for (i = 0; i < nCnt; i++)
-    {
-        mmenu->GetMenuString(i, Str, MF_BYPOSITION);
-        if (Str == MenuName)
-        {
-            bFound = TRUE;
-            break;
-        }
-    }
-    if (bFound)
-    {
-        Submenu = mmenu->GetSubMenu(i);
-    }
-    return Submenu;
-}
 
-/******************************************************************************/
-/*  Function Name    : vToolBarDropDownMenu                                   */
-/*  Input(s)         : UINT unControlID, int nButtonIndex                     */
-/*  Output           :                                                        */
-/*  Functionality    : Pops up context menu  for drop down toolbar button     */
-/*  Member of        : CMainFrame                                             */
-/*  Friend of        :      -                                                 */
-/*  Author(s)        : Krishnaswamy B.N.                                      */
-/*  Date Created     : 03.06.2003                                             */
-/*  Modifications    : Arun Kumar K,                                          */
-/*                     20.05.2010, m_wndToolBar.ClientToScreen(..) used       */
-/*                                 instead of this->ClientToScreen(..).       */
-/*                     Amitesh Bharti,                                        */
-/*                     21.01.2004, Instead of index toolbar button ID is      */
-/*                                 passed as parameter.                       */
-/******************************************************************************/
-void CMainFrame::vToolBarDropDownMenu(UINT unControlID, int nButtonID)
-{
-    CMenu* m_pomContextMenu = new CMenu;
-    RECT rRect = {0,0,0,0};
-    // Load the Menu from the resource
-    if ( m_pomContextMenu != nullptr )
-    {
-        m_pomContextMenu->DestroyMenu();
-        m_pomContextMenu->LoadMenu(unControlID);
-
-        CMenu* pomSubMenu = m_pomContextMenu->GetSubMenu(0);
-
-        if(nButtonID == IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME)
-        {
-            m_wndToolbarMsgWnd.GetToolBarCtrl().GetRect( nButtonID, &rRect );
-            m_wndToolbarMsgWnd.ClientToScreen(&rRect);
-        }
-        else
-        {
-            m_wndToolBar.GetToolBarCtrl().GetRect( nButtonID, &rRect );
-            m_wndToolBar.ClientToScreen(&rRect);
-        }
-
-        rRect.left    = rRect.left + SHIFT_X;
-        //    rRect.bottom  = rRect.bottom + SHIFT_Y;
-        pomSubMenu->TrackPopupMenu( TPM_LEFTALIGN  |TPM_RIGHTBUTTON,
-                                    rRect.left ,
-                                    rRect.bottom ,
-                                    this,
-                                    nullptr);
-        if (m_pomContextMenu != nullptr )
-        {
-            delete m_pomContextMenu;
-        }
-    }
-}
 /******************************************************************************
-    Function Name    :  OnDisplayAbsoluteTime
+Function Name    :  OnDisplayRelativetime
 
-    Input(s)         :      -
-    Output           :  void
-    Functionality    :  Changes the Display mode to Absolute mode
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Krishnaswamy B.N.
-    Date Created     :  03.06.2003
-    Modification By  :  ArunKumar K
-    Modification on  :  08.06.2010, Setting Check Status in Message Window.
+Input(s)         :      -
+Output           :  void
+Functionality    :  Changes the display mode to relative mode
+Member of        :  CMainFrame
+Friend of        :      -
 ******************************************************************************/
-void CMainFrame::OnDisplayAbsoluteTime()
+void CMainFrame::OnDisplayRelativetime(UINT id)
 {
-    if (m_podMsgWndThread != nullptr)
-    {
-        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-        BYTE byGetDispFlag = 0;
-        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
-        CLEAR_EXPR_TM_BITS(byGetDispFlag);
-        SET_TM_ABS(byGetDispFlag);
-        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-        {
-            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((ETYPE_BUS)shBusID);
-            if(hWnd)
-            {
-                BYTE bModes = TIME_MODE;
-                ::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
-            }
-        }
-    }
+	if (nullptr == m_podMsgWndThread)
+	{
+		return;
+	}
+
+	static int msgWndcommandToBus[] = { CAN, J1939, LIN };
+	id = id - IDM_RELATIVE_TIME_MSG_WINDOW_START;
+	if (id >= 0 && id < sizeof(msgWndcommandToBus))
+	{
+		ETYPE_BUS bus = static_cast<ETYPE_BUS>(msgWndcommandToBus[id]);
+		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd((ETYPE_BUS)bus);
+		if (hWnd)
+		{
+			BYTE byGetDispFlag = 0;
+			::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
+			CLEAR_EXPR_TM_BITS(byGetDispFlag);
+			SET_TM_REL(byGetDispFlag);
+			::SendMessage(hWnd, WM_WND_PROP_MODIFY, TIME_MODE, byGetDispFlag);
+		}
+	}
 }
 /******************************************************************************
-    Function Name    :  OnUpdateDisplayAbsolutetime
+Function Name    :  OnUpdateDisplaySystemTime
 
-    Input(s)         :      -
-    Output           :  void
-    Functionality    :  Puts a check mark to the menu
-    Member of        :  CMainFrame
-    Friend of        :      -
+Input(s)         :      -
+Output           :  void
+Functionality    :  Puts a check mark to the menu
+Member of        :  CMainFrame
+Friend of        :      -
 
-    Author(s)        :  Krishnaswamy B.N.
-    Date Created     :  03.06.2003
-    Modification By  :  ArunKumar K
-    Modification on  :  08.06.2010, Retreiving Check Status from Message Window.
-    Modification By  :  Amitesh Bharti
-    Modification on  :  01.07.2003, This menu is enable even tool is connected.
-******************************************************************************/
-void CMainFrame::OnUpdateDisplayAbsolutetime(CCmdUI* pCmdUI)
-{
-    if (m_podMsgWndThread != nullptr)
-    {
-        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-        BYTE byGetDispFlag = 0;
-        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
-        if (IS_TM_ABS_SET(byGetDispFlag))
-        {
-            pCmdUI->SetCheck();
-        }
-        else
-        {
-            pCmdUI->SetCheck(FALSE);
-        }
-    }
-}
-/******************************************************************************
-    Function Name    :  OnDisplayRelativetime
-
-    Input(s)         :      -
-    Output           :  void
-    Functionality    :  Changes the display mode to relative mode
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Krishnaswamy B.N.
-    Date Created     :  03.06.2003
-    Modification By  :  ArunKumar K
-    Modification on  :  08.06.2010, Setting Check Status in Message Window.
-******************************************************************************/
-void CMainFrame::OnDisplayRelativetime()
-{
-    if (m_podMsgWndThread != nullptr)
-    {
-        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-        BYTE byGetDispFlag = 0;
-        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
-        CLEAR_EXPR_TM_BITS(byGetDispFlag);
-        SET_TM_REL(byGetDispFlag);
-        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-        {
-            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((ETYPE_BUS)shBusID);
-            if(hWnd)
-            {
-                BYTE bModes = TIME_MODE;
-                ::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
-            }
-        }
-    }
-}
-/******************************************************************************
-    Function Name    :  OnUpdateDisplayRelativetime
-
-    Input(s)         :      -
-    Output           :  void
-    Functionality    :  Puts a check mark to the menu
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Krishnaswamy B.N.
-    Date Created     :  03.06.2003
-    Modification By  :  ArunKumar K
-    Modification on  :  08.06.2010, Retreiving Check Status from Message Window.
-    Modification By  :  Amitesh Bharti
-    Modification on  :  01.07.2003, This menu is enable even tool is connected.
+Author(s)        :  Krishnaswamy B.N.
+Date Created     :  03.06.2003
+Modification By  :  ArunKumar K
+Modification on  :  08.06.2010, Retreiving Check Status from Message Window.
+Modification By  :  Amitesh Bharti
+Modification on  :  01.07.2003, This menu is enable even tool is connected.
 ******************************************************************************/
 void CMainFrame::OnUpdateDisplayRelativetime(CCmdUI* pCmdUI)
 {
-    if (m_podMsgWndThread != nullptr)
-    {
-        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-        BYTE byGetDispFlag = 0;
-        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
-        if (IS_TM_REL_SET(byGetDispFlag))
-        {
-            pCmdUI->SetCheck();
-        }
-        else
-        {
-            pCmdUI->SetCheck(FALSE);
-        }
-    }
+	if (nullptr == m_podMsgWndThread)
+	{
+		return;
+	}
+
+	static int msgWndcommandToBus[] = { CAN, J1939, LIN };
+	auto id = pCmdUI->m_nID - IDM_RELATIVE_TIME_MSG_WINDOW_START;
+	if (id >= 0 && id < sizeof(msgWndcommandToBus))
+	{
+		ETYPE_BUS bus = static_cast<ETYPE_BUS>(msgWndcommandToBus[id]);
+		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(bus);
+		BYTE byGetDispFlag = 0;
+		::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
+		if (IS_TM_REL_SET(byGetDispFlag))
+		{
+			pCmdUI->SetCheck();
+		}
+		else
+		{
+			pCmdUI->SetCheck(FALSE);
+		}
+	}
+}
+
+/******************************************************************************
+Function Name    :  OnDisplayAbsoluteTime
+
+Input(s)         :      -
+Output           :  void
+Functionality    :  Changes the display mode to relative mode
+Member of        :  CMainFrame
+Friend of        :      -
+******************************************************************************/
+void CMainFrame::OnDisplayAbsoluteTime(UINT id)
+{
+	if (nullptr == m_podMsgWndThread)
+	{
+		return;
+	}
+
+	static int msgWndcommandToBus[] = { CAN, J1939, LIN };
+	id = id - IDM_ABSOLUTE_TIME_MSG_WINDOW_START;
+	if (id >= 0 && id < sizeof(msgWndcommandToBus))
+	{
+		ETYPE_BUS bus = static_cast<ETYPE_BUS>(msgWndcommandToBus[id]);
+		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd((ETYPE_BUS)bus);
+		if (hWnd)
+		{
+			BYTE byGetDispFlag = 0;
+			::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
+			CLEAR_EXPR_TM_BITS(byGetDispFlag);
+			SET_TM_ABS(byGetDispFlag);
+			::SendMessage(hWnd, WM_WND_PROP_MODIFY, TIME_MODE, byGetDispFlag);
+		}
+	}
+}
+/******************************************************************************
+Function Name    :  OnUpdateDisplayAbsolutetime
+
+Input(s)         :      -
+Output           :  void
+Functionality    :  Puts a check mark to the menu
+Member of        :  CMainFrame
+Friend of        :      -
+******************************************************************************/
+void CMainFrame::OnUpdateDisplayAbsolutetime(CCmdUI* pCmdUI)
+{
+	if (nullptr == m_podMsgWndThread)
+	{
+		return;
+	}
+
+	static int msgWndcommandToBus[] = { CAN, J1939, LIN };
+	auto id = pCmdUI->m_nID - IDM_ABSOLUTE_TIME_MSG_WINDOW_START;
+	if (id >= 0 && id < sizeof(msgWndcommandToBus))
+	{
+		if (id >= 0 && id < sizeof(msgWndcommandToBus))
+		{
+			ETYPE_BUS bus = static_cast<ETYPE_BUS>(msgWndcommandToBus[id]);
+			HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(bus);
+			BYTE byGetDispFlag = 0;
+			::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
+			if (IS_TM_ABS_SET(byGetDispFlag))
+			{
+				pCmdUI->SetCheck();
+			}
+			else
+			{
+				pCmdUI->SetCheck(FALSE);
+			}
+		}
+	}
 }
 /******************************************************************************
     Function Name    :  OnDisplaySystemTime
@@ -8785,25 +7935,28 @@ void CMainFrame::OnUpdateDisplayRelativetime(CCmdUI* pCmdUI)
     Modification By  :  ArunKumar K
     Modification on  :  08.06.2010, Setting Check Status in Message Window.
 ******************************************************************************/
-void CMainFrame::OnDisplaySystemTime()
+void CMainFrame::OnDisplaySystemTime(UINT id)
 {
-    if (m_podMsgWndThread != nullptr)
-    {
-        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-        BYTE byGetDispFlag = 0;
-        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
-        CLEAR_EXPR_TM_BITS(byGetDispFlag);
-        SET_TM_SYS(byGetDispFlag);
-        for(short shBusID = CAN; shBusID < AVAILABLE_PROTOCOLS; shBusID++)
-        {
-            hWnd = m_podMsgWndThread->hGetHandleMsgWnd((ETYPE_BUS)shBusID);
-            if(hWnd)
-            {
-                BYTE bModes = TIME_MODE;
-                ::SendMessage(hWnd, WM_WND_PROP_MODIFY, bModes, byGetDispFlag);
-            }
-        }
-    }
+	if (nullptr == m_podMsgWndThread)
+	{
+		return;
+	}
+
+	static int msgWndcommandToBus[] = { CAN, J1939, LIN };
+	id = id - IDM_SYSTEM_TIME_MSG_WINDOW_START;
+	if (id >= 0 && id < sizeof(msgWndcommandToBus))
+	{
+		ETYPE_BUS bus = static_cast<ETYPE_BUS>(msgWndcommandToBus[id]);
+		HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd((ETYPE_BUS)bus);
+		if (hWnd)
+		{
+			BYTE byGetDispFlag = 0;
+			::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
+			CLEAR_EXPR_TM_BITS(byGetDispFlag);
+			SET_TM_SYS(byGetDispFlag);
+			::SendMessage(hWnd, WM_WND_PROP_MODIFY, TIME_MODE, byGetDispFlag);
+		}
+	}
 }
 /******************************************************************************
     Function Name    :  OnUpdateDisplaySystemTime
@@ -8823,37 +7976,33 @@ void CMainFrame::OnDisplaySystemTime()
 ******************************************************************************/
 void CMainFrame::OnUpdateDisplaySystemTime(CCmdUI* pCmdUI)
 {
-    if (m_podMsgWndThread != nullptr)
-    {
-        HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
-        BYTE byGetDispFlag = 0;
-        ::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
-        if (IS_TM_SYS_SET(byGetDispFlag))
-        {
-            pCmdUI->SetCheck();
-        }
-        else
-        {
-            pCmdUI->SetCheck(FALSE);
-        }
-    }
-}
-/******************************************************************************
-    Function Name    :  OnEnableTimeStampButton
+	if (nullptr == m_podMsgWndThread)
+	{
+		return;
+	}
 
-    Input(s)         :      -
-    Output           :  void
-    Functionality    :  Dummy Handler to enable the time mode toolbar button
-    Member of        :  CMainFrame
-    Friend of        :      -
-
-    Author(s)        :  Krishnaswamy B.N.
-    Date Created     :  03.06.2003
-******************************************************************************/
-void CMainFrame::OnEnableTimeStampButton()
-{
-    // Required to enable the toolbar button
+	static int msgWndcommandToBus[] = { CAN, J1939, LIN };
+	auto id = pCmdUI->m_nID - IDM_SYSTEM_TIME_MSG_WINDOW_START;
+	if (id >= 0 && id < sizeof(msgWndcommandToBus))
+	{
+		if (id >= 0 && id < sizeof(msgWndcommandToBus))
+		{
+			ETYPE_BUS bus = static_cast<ETYPE_BUS>(msgWndcommandToBus[id]);
+			HWND hWnd = m_podMsgWndThread->hGetHandleMsgWnd(bus);
+			BYTE byGetDispFlag = 0;
+			::SendMessage(hWnd, WM_PROVIDE_WND_PROP, (WPARAM)(&byGetDispFlag), 0);
+			if (IS_TM_SYS_SET(byGetDispFlag))
+			{
+				pCmdUI->SetCheck();
+			}
+			else
+			{
+				pCmdUI->SetCheck(FALSE);
+			}
+		}
+	}
 }
+
 
 /******************************************************************************
     Function Name    :  vNotificationFromOtherWin
@@ -8946,11 +8095,7 @@ bool CMainFrame::bCreateTraceWindow(void)
 /*****************************************************************************/
 void CMainFrame::OnSize(UINT nType, int cx, int cy)
 {
-    CMDIFrameWnd::OnSize(nType, cx, cy);
-
-    // Workaruond for Toolbar size problem
-    SendMessage(WM_COMMAND,ID_VIEW_TOOLBAR);
-    SendMessage(WM_COMMAND,ID_VIEW_TOOLBAR);
+	CMDIFrameWndEx::OnSize(nType, cx, cy);
 }
 
 
@@ -8994,45 +8139,6 @@ void CMainFrame::OnUpdateSignalWatchWnd_LIN(CCmdUI* pCmdUI)
     // Set Check as per the show status
     pCmdUI->SetCheck(bShowHideFlag);
 }
-
-/******************************************************************************
- Function Name    : pomGetMRUMenuPointer
-
- Input(s)         : -
- Output           : CMenu * - pointer to MRU menu item
- Functionality    : Returns the pointer of the MRU menu item "Recent Files"
-                    or nullptr in case of failure
- Member of        : CMainFrame
- Friend of        :     -
-
- Author(s)        : Raja N
- Date Created     : 28.04.2004
- Modifications    :
-******************************************************************************/
-CMenu* CMainFrame::pomGetMRUMenuPointer()
-{
-    // Get application main menu or nullptr in case of failure
-    CMenu* pMenu = GetMenu();
-
-    if ( pMenu != nullptr )// Verify
-    {
-        // Reach "File" menu option
-        INT nPos = nFindMenuItem(pMenu, _(defSTR_FILE_MENU_TEXT));
-        pMenu = pMenu->GetSubMenu( nPos );
-        if ( pMenu != nullptr )
-        {
-            // Reach "Recent Configurations" menu option
-            nPos = nFindMenuItem(pMenu, _(defSTR_RECENT_MENU_TEXT));
-            pMenu = pMenu->GetSubMenu( nPos );
-        }
-    }
-    // Return the pointer or nullptr
-    return pMenu;
-}
-
-
-
-
 
 /******************************************************************************/
 /*  Function Name    :  vSetControllerParameters                              */
@@ -9834,7 +8940,7 @@ void CMainFrame::vNS_LINInitCFileFunctPtrs()
 ******************************************************************************/
 BOOL CMainFrame::OnHelpInfo(HELPINFO* pHelpInfo)
 {
-    return CMDIFrameWnd::OnHelpInfo(pHelpInfo);
+    return CMDIFrameWndEx::OnHelpInfo(pHelpInfo);
 }
 
 /******************************************************************************
@@ -9904,7 +9010,7 @@ for ( auto dbPath : dbPathList )
 
         m_ouBusmasterNetwork->SetChannelCount( CAN, 1 );
 
-        m_objFlexTxHandler.SetNetworkConfig(CAN, m_ouBusmasterNetwork);
+        m_objTxHandler.SetNetworkConfig(CAN, m_ouBusmasterNetwork);
 
         ::SendMessage( m_podMsgWndThread->hGetHandleMsgWnd( CAN ),
                        WM_NOTIFICATION_FROM_OTHER,
@@ -10287,24 +9393,7 @@ void CMainFrame::vReRegisterAllJ1939Nodes(void)
     xmlFreeNode(pJ1939SimSys);
 }
 
-
-
-HRESULT CMainFrame::InitializeFLEXRAYDIL()
-{
-    return S_OK;
-}
-
-void CMainFrame::OnFlexRayConnect()
-{
-
-}
-
-void CMainFrame::OnUpdateFlexRayConnect(CCmdUI* pCmdUI)
-{
-
-}
-
-HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
+HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt, bool bLoadedFromXml)
 {
     HRESULT hResult = S_OK;
     m_bNoHardwareFound = true;
@@ -10327,7 +9416,7 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
             {
                 theApp.bWriteIntoTraceWnd(_("Channel Selection failed. Setting to default channel selection"));
             }
-            if ((hResult = g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount)) == S_OK)
+			if ((hResult = g_pouDIL_CAN_Interface->DILC_ListHwInterfaces(m_asINTERFACE_HW, nCount, m_asControllerDetails, bLoadedFromXml)) == S_OK)
             {
                 DeselectJ1939Interfaces();
                 // On Deactivate, deactivating J1939 and hiding the message window
@@ -10341,8 +9430,6 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
                 {
                     m_pouTxMsgWndJ1939->ShowWindow(SW_HIDE);
                 }
-                m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
-                m_wndToolbarJ1939.Invalidate();
                 HRESULT hResult = g_pouDIL_CAN_Interface->DILC_SelectHwInterfaces(m_asINTERFACE_HW, nCount);
                 if ((hResult == HW_INTERFACE_ALREADY_SELECTED) || (hResult == S_OK))
                 {
@@ -10430,9 +9517,9 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt)
                 }
             }
         }
-        m_objFlexTxHandler.vSetDILInterfacePtr(CAN,(void*)g_pouDIL_CAN_Interface);
-        m_objFlexTxHandler.vSetClientID(CAN,g_dwClientID);
-        vUpdateChannelInfo();
+        m_objTxHandler.vSetDILInterfacePtr(CAN,(void*)g_pouDIL_CAN_Interface);
+        m_objTxHandler.vSetClientID(CAN,g_dwClientID);
+		vUpdateChannelInfo(); 
     }
     return hResult;
 }
@@ -10497,11 +9584,9 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
                         vInitializeBusStatLIN();
                         //Update TxWindow
                         eUSERSELCTION eUserSel = eCHANNELCOUNTUPDATED;
-                        m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, 0);
+                        m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, 0);
 
-                        // Enable the Deactivate menu as a valid driver is selected
-                        m_pDILSubMenuLin->EnableMenuItem(IDC_SELECT_LIN_DRIVER + 0, true);
-
+                        
                         if(m_shLINDriverId == DRIVER_LIN_ETAS_BOA)
                         {
                             BOOL bIsLDFAssociated = FALSE;
@@ -10566,18 +9651,18 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
                 m_shLINDriverId = DAL_NONE;          //select simulation
                 wMsgWndState = SW_HIDE;
             }
-            else if (m_shLINDriverId <= 0) // Dummy Driver for Deactvation
-            {
-                wMsgWndState = SW_HIDE;
-                // Disable the Deactivate menu as a valid driver is selected
-                if ( m_pDILSubMenuLin != nullptr )
-                {
-                    m_pDILSubMenuLin->EnableMenuItem(IDC_SELECT_LIN_DRIVER + 0, false);
-                }
-            }
+			else if (m_shLINDriverId <= 0) // Dummy Driver for Deactvation
+			{
+				wMsgWndState = SW_HIDE;
+				// Disable the Deactivate menu as a valid driver is selected
+				/*if ( m_pDILSubMenuLin != nullptr )
+				{
+				m_pDILSubMenuLin->EnableMenuItem(IDC_SELECT_LIN_DRIVER + 0, false);
+				}*/
+			}
         }
-        m_objFlexTxHandler.vSetDILInterfacePtr(LIN, (void*)g_pouDIL_LIN_Interface);
-        m_objFlexTxHandler.vSetClientID(LIN, g_dwClientID);
+        m_objTxHandler.vSetDILInterfacePtr(LIN, (void*)g_pouDIL_LIN_Interface);
+        m_objTxHandler.vSetClientID(LIN, g_dwClientID);
 
         if ( nullptr != m_podMsgWndThread )
         {
@@ -10615,7 +9700,7 @@ void CMainFrame::vUpdateChannelInfo(void)
         }
         //Update TxWindow
         eUSERSELCTION eUserSel = eCHANNELCOUNTUPDATED;
-        m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, 0);
+        m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, 0);
 
         //Update J1939 Tx Window
         if ( m_pouTxMsgWndJ1939 )
@@ -10637,7 +9722,7 @@ void CMainFrame::vUpdateChannelInfo(void)
         }
         //Update TxWindow
         eUSERSELCTION eUserSel = eCHANNELCOUNTUPDATED;
-        m_objFlexTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, 0);
+        m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eUserSel, 0);
 
 
     }
@@ -10922,54 +10007,10 @@ void CMainFrame::vUpdateMsgNameCodeList(CMsgSignal* pMsgSig, CMsgNameMsgCodeList
     }
 }
 
-void CMainFrame::ToggleView(CToolBar& omToolbar)
-{
-    BOOL bToShow = !bIsToolbarVisible(omToolbar);
-
-    ShowControlBar(&omToolbar, bToShow, FALSE);
-    Invalidate();
-}
-
-bool CMainFrame::bIsToolbarVisible(CToolBar& omToolbar)
-{
-    return ((omToolbar.GetStyle() & WS_VISIBLE) != 0);
-}
-
-void CMainFrame::OnDisplayMain()
-{
-    ToggleView(m_wndToolBar);
-}
-
-void CMainFrame::OnUpdateDisplayMain(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolBar));
-}
-
-void CMainFrame::OnDisplayMsgWnd()
-{
-    ToggleView(m_wndToolbarMsgWnd);
-}
-
-void CMainFrame::OnUpdateDisplayMsgWnd(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarMsgWnd));
-}
-
-
-
-void CMainFrame::OnDisplayConfig()
-{
-    ToggleView(m_wndToolbarConfig);
-}
-
-void CMainFrame::OnUpdateDisplayConfig(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarConfig));
-}
 
 void CMainFrame::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 {
-    CMDIFrameWnd::OnActivate(nState, pWndOther, bMinimized);
+    CMDIFrameWndEx::OnActivate(nState, pWndOther, bMinimized);
     if(nState == WA_ACTIVE || nState == WA_CLICKACTIVE)
     {
         CMDIChildWnd* pChild = this->MDIGetActive();
@@ -11025,7 +10066,7 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
     ApplyReplayFilter();
     ApplyMessagewindowOverwrite();
     ApplyLINLogFilter();
-    vCreateMRU_Menus();
+    //vCreateMRU_Menus();
     m_podMsgWndThread->vModifyVisibilityStatus(SW_HIDE, J1939);
 
     m_podMsgWndThread->vModifyVisibilityStatus(SW_HIDE, LIN);
@@ -11034,11 +10075,6 @@ INT CMainFrame::nLoadConfigFile(CString omConfigFileName)
     DeselectJ1939Interfaces(FALSE);
     GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(false);
     m_podMsgWndThread->vModifyVisibilityStatus(SW_HIDE, J1939);
-    m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
-    m_wndToolbarJ1939.Invalidate();
-
-
-
     return nRetValue;
 }
 
@@ -11971,7 +11007,7 @@ void CMainFrame::vGetCurrentSessionData(eSECTION_ID eSecId, xmlNodePtr pNodePtr)
             //changes done for XML configuration
             xmlNodePtr pCANTxPtr = xmlNewNode(nullptr, BAD_CAST DEF_CAN_TX_WINDOW);
             xmlAddChild(pNodePtr, pCANTxPtr);
-            m_objFlexTxHandler.vGetTxWndConfigData(CAN, pCANTxPtr);
+            m_objTxHandler.vGetTxWndConfigData(CAN, pCANTxPtr);
         }
         break;
         case FILTER_SECTION_ID:
@@ -12159,17 +11195,7 @@ for ( auto cluster : clusterList )
             }
         }
         break;
-        case FLEXRAY_CLUSTER_CONFIG:
-        {
-            if (pNodePtr != nullptr && nullptr != mFrChannelSettingsHandler.mGetFrChannelConfiguration)
-            {
-                xmlNodePtr pNodeDBFilePtr = xmlNewChild(pNodePtr, nullptr, BAD_CAST DEF_CAN_DATABASE_FILES, BAD_CAST "");
-                mFrChannelSettingsHandler.mGetFrChannelConfiguration(pNodeDBFilePtr, m_ouBusmasterNetwork);
-                xmlAddChild(pNodePtr, pNodeDBFilePtr);
-            }
-        }
-        break;
-
+        
         case WAVEFORMDATA_SECTION_ID:
         {
             xmlNodePtr pNodeWaveFormGen = xmlNewNode(nullptr, BAD_CAST DEF_WF_GENERATOR);
@@ -12215,14 +11241,14 @@ for ( auto cluster : clusterList )
         {
             xmlNodePtr pFLEXTxPtr = xmlNewNode(nullptr, BAD_CAST DEF_LIN_TX_WINDOW);
             xmlAddChild(pNodePtr, pFLEXTxPtr);
-            m_objFlexTxHandler.vGetTxWndConfigData(LIN, pFLEXTxPtr);
+            m_objTxHandler.vGetTxWndConfigData(LIN, pFLEXTxPtr);
         }
         break;
         case LIN_SCHEDULE_CONFIG:
         {
             xmlNodePtr pScheduleConfig = xmlNewNode(NULL, BAD_CAST DEF_LIN_SCHEDULE_TABLE);
             xmlAddChild(pNodePtr, pScheduleConfig);
-            m_objFlexTxHandler.vGetScheduleConfig(pScheduleConfig);
+            m_objTxHandler.vGetScheduleConfig(pScheduleConfig);
         }
         break;
 
@@ -12915,30 +11941,15 @@ int CMainFrame::nLoadXMLConfiguration()
                 {
 
                 }
-                m_objFlexTxHandler.SetNetworkConfig(LIN, m_ouBusmasterNetwork);
+                m_objTxHandler.SetNetworkConfig(LIN, m_ouBusmasterNetwork);
 
-                m_objFlexTxHandler.vSetTxWndConfigData( LIN, m_xmlConfigFiledoc);
+                m_objTxHandler.vSetTxWndConfigData( LIN, m_xmlConfigFiledoc);
 
-                m_objFlexTxHandler.vSetScheduleConfig(m_xmlConfigFiledoc);
-                m_objFlexTxHandler.vShowLINScheduleConfigDlg(false);
+                m_objTxHandler.vSetScheduleConfig(m_xmlConfigFiledoc);
+                m_objTxHandler.vShowLINScheduleConfigDlg(false);
             }
             break;
-            case FLEXRAY_CLUSTER_CONFIG:
-            {
-                //m_ouClusterConfig[FLEXRAY].m_nChannelsConfigured = 0;
-                m_ouBusmasterNetwork->ReSetNetwork(FLEXRAY);
-
-                /*Unload FLEXRAY DIL */
-                m_shFLEXRAYDriverId = DAL_NONE;
-                InitializeFLEXRAYDIL();
-
-                if (nullptr != mFrChannelSettingsHandler.mSetFrChannelConfiguration)
-                {
-                    mFrChannelSettingsHandler.mSetFrChannelConfiguration(m_xmlConfigFiledoc, m_ouBusmasterNetwork);
-                }
-            }
-            break;
-
+            
             case DIL_SECTION_ID:
             {
 
@@ -13027,7 +12038,7 @@ int CMainFrame::nLoadXMLConfiguration()
                     }
 
 
-                    IntializeDIL(unChannelCount);
+				IntializeDIL(unChannelCount, FromXMLFile);
                     ASSERT(g_pouDIL_CAN_Interface != nullptr);
                     g_pouDIL_CAN_Interface->DILC_SetConfigData(m_asControllerDetails,
                             defNO_OF_CHANNELS);
@@ -13755,12 +12766,12 @@ int CMainFrame::nLoadXMLConfiguration()
             break;
             case TXWND_SECTION_ID:
             {
-                m_objFlexTxHandler.vSetTxWndConfigData(CAN,m_xmlConfigFiledoc);
+                m_objTxHandler.vSetTxWndConfigData(CAN,m_xmlConfigFiledoc);
             }
             break;
             case LIN_SCHEDULE_CONFIG:
             {
-                m_objFlexTxHandler.vSetScheduleConfig(m_xmlConfigFiledoc);
+                m_objTxHandler.vSetScheduleConfig(m_xmlConfigFiledoc);
             }
             break;
             case MSGWND_SECTION_J1939_ID:
@@ -14902,7 +13913,7 @@ void CMainFrame::vSetDefaultConfiguration(eSECTION_ID eSecId)
         break;
         case TXWND_SECTION_ID:
         {
-            m_objFlexTxHandler.vSetTxWndConfigData(CAN,nullptr);
+            m_objTxHandler.vSetTxWndConfigData(CAN,nullptr);
         }
         break;
 
@@ -14974,7 +13985,7 @@ void CMainFrame::vSetDefaultConfiguration(eSECTION_ID eSecId)
 
         case LIN_TXWND:
         {
-            m_objFlexTxHandler.vSetTxWndConfigData(LIN, nullptr);
+            m_objTxHandler.vSetTxWndConfigData(LIN, nullptr);
         }
         break;
         case TEST_SUITE_EXECUTOR_SECTION_ID:
@@ -14984,22 +13995,13 @@ void CMainFrame::vSetDefaultConfiguration(eSECTION_ID eSecId)
             m_objTSExecutorHandler.vSetConfigurationData(pTempData, nData);
         }
         break;
-        case FLEXRAY_CLUSTER_CONFIG:
-        {
-            /*Unload FLEXRAY DIL */
-            m_shFLEXRAYDriverId = DAL_NONE;
-            InitializeFLEXRAYDIL();
-
-            m_ouBusmasterNetwork->ReSetNetwork(FLEXRAY);
-            m_ouBusmasterNetwork->SetChannelCount(FLEXRAY, 1);
-        }
-        break;
+        
         case LIN_CLUSTER_CONFIG:
         {
             vInitialiaseLINConfig(1);
-            m_objFlexTxHandler.SetNetworkConfig(LIN, m_ouBusmasterNetwork);
-            m_objFlexTxHandler.vSetScheduleConfig(NULL);
-            m_objFlexTxHandler.vShowLINScheduleConfigDlg(false);
+            m_objTxHandler.SetNetworkConfig(LIN, m_ouBusmasterNetwork);
+            m_objTxHandler.vSetScheduleConfig(NULL);
+            m_objTxHandler.vShowLINScheduleConfigDlg(false);
         }
         break;
 
@@ -15012,93 +14014,6 @@ void CMainFrame::vSetDefaultConfiguration(eSECTION_ID eSecId)
 }
 
 
-void CMainFrame::OnSelectFLEXRAYDriver(UINT nID)
-{
-    m_bFlxDILChanging = TRUE;
-    DILINFO* psCurrDIL = psGetFLEXRAYDILEntry(nID);
-
-    //Re validation of code required
-    ICluster* pCluster = nullptr;
-    m_ouBusmasterNetwork->GetDBService(FLEXRAY, 0, 0, &pCluster);
-    if ( nullptr == pCluster)
-    {
-        int nSelection = MessageBox("Please Configure the Cluster Parameters", "Invalid Cluster Configuration", MB_OK);
-        if ( nSelection == IDOK )
-        {
-            OnFlexRayDBAssociate();
-        }
-    }
-
-    //Try Again after OnFlexRayDBAssociate() call;
-    m_ouBusmasterNetwork->GetDBService(FLEXRAY, 0, 0, &pCluster);
-
-    if ( nullptr == pCluster )
-    {
-        return;
-    }
-
-    if (psCurrDIL != nullptr)
-    {
-        m_shFLEXRAYDriverId =  psCurrDIL->m_dwDriverID;
-
-        HRESULT hResult = InitializeFLEXRAYDIL();
-
-        if (!((hResult == S_OK)|| (hResult == ERR_CLIENT_EXISTS)))
-        {
-
-            /* Resetting DIL to NONE */
-            if ( g_pouDIL_FLEXRAY_Interface )
-            {
-                m_shFLEXRAYDriverId = DAL_NONE;
-                g_pouDIL_FLEXRAY_Interface->DILF_SelectDriver(m_shFLEXRAYDriverId, m_hWnd);
-
-                Event_Bus_Staus busStatus;
-                busStatus.mBus = FLEXRAY;
-                busStatus.mEventType = eBUSEVENT::ON_DEACTIVATED;
-                mPluginManager->notifyPlugins(eBusmaster_Event::Bus_Status, &busStatus);
-            }
-        }
-        else
-        {
-            ETYPE_BUS busType = ETYPE_BUS::FLEXRAY;
-            mPluginManager->notifyPlugins(eBusmaster_Event::driver_selection_changed, &busType);
-        }
-    }
-    m_bFlxDILChanging = FALSE;
-}
-
-void CMainFrame::OnUpdateSelectFLEXRAYDriver(CCmdUI* pCmdUI)
-{
-    BOOL bSelected = FALSE;
-    // Search for the associated item in the DIL list
-    DILINFO* psCurrDIL = psGetFLEXRAYDILEntry(pCmdUI->m_nID);
-    if (psCurrDIL != nullptr)
-    {
-        if (g_pouDIL_FLEXRAY_Interface != nullptr)
-        {
-            bSelected = (psCurrDIL->m_dwDriverID == g_pouDIL_FLEXRAY_Interface->DILF_GetSelectedDriver());
-        }
-    }
-    CFlags* pFlag = theApp.pouGetFlagsPtr();
-    if (pFlag != nullptr)
-    {
-        BOOL bConnected = pFlag->nGetFlagStatus(FLEX_CONNECTED);
-        if (bConnected == FALSE)
-        {
-            pCmdUI->Enable(!bSelected);
-        }
-        else
-        {
-            pCmdUI->Enable(FALSE);
-        }
-    }
-
-    if(nullptr !=  psCurrDIL && psCurrDIL->m_dwDriverID != FLEXRAY_DAL_NONE)
-    {
-        pCmdUI->SetCheck(bSelected);
-    }
-}
-
 void CMainFrame::OnSelectDriver(UINT nID)
 {
     DILINFO* psCurrDIL = psGetDILEntry(nID);
@@ -15110,15 +14025,7 @@ void CMainFrame::OnSelectDriver(UINT nID)
 
         HRESULT hResult = IntializeDIL();
 
-        /* Check if user intentionally not cancelled hardware selection */
-        if ( hResult != HW_INTERFACE_NO_SEL )
-        {
-            //Retain default values for all channels
-            for (int i = 0; i < defNO_OF_CHANNELS; i++)
-            {
-                vInitialize( m_asControllerDetails[i],FALSE );
-            }
-        }
+
         /*Update hardware info in status bar*/
         vUpdateHWStatusInfo();
 
@@ -15256,204 +14163,110 @@ void CMainFrame::OnUpdateSelectLINDriver(CCmdUI* pCmdUI)
     }
 }
 
-/**
- * \brief     Populates the vailable FlexRay Hardware
- * \req       RS_FLX_01
- * \design    DS_FLX_01
- * \codetag   CT_FLX_01
- *
- */
+CMFCRibbonCategory* CMainFrame::GetCategory(const char* categoryName)
+        {
+	auto count = mRibbonBar.GetCategoryCount();
+	for (int i = 0; i < count; i++)
 
-bool CMainFrame::bUpdatePopupMenuFLEXRAYDIL(void)
+    {
+		auto category = mRibbonBar.GetCategory(i);
+		if (nullptr != category)
+        {
+			std::string name = category->GetName();
+			if (categoryName == name)
+        {
+				return category;
+        }
+    }
+    }
+
+	return nullptr;
+}
+CMFCRibbonPanel* CMainFrame::GetRibbonPanel(CMFCRibbonCategory* category, const char* panelName)
 {
-    USES_CONVERSION;
-
-    BOOL bResult = TRUE;
-
-    if (m_pFlxDILSubMenu == nullptr)
-    {
-        /* Create a new popup Menu */
-        if (bResult == ((m_pFlxDILSubMenu = new CMenu()) != nullptr))
-        {
-            if ((bResult = m_pFlxDILSubMenu->CreatePopupMenu()) == TRUE)
-            {
-                // Add the FlexRay DIL list
-                for (int i = 0; (i < m_nFlexRayDILCount) && bResult; i++)
-                {
-                    bResult = m_pFlxDILSubMenu->AppendMenu(MF_STRING,
-                                                           IDC_SELECT_FLEX_DRIVER + i, _((char*)m_ouFlexRayList[i].m_acName.c_str()));
-                    if (bResult == TRUE)
-                    {
-                        m_ouFlexRayList[i].m_ResourceID = IDC_SELECT_FLEX_DRIVER + i;
-                    }
-                }
-            }
-            else
-            {
-                theApp.bWriteIntoTraceWnd(_("bUpdatePopupMenuFLEXRAYDIL for driver selection failed!"));
-            }
-        }
-        else
-        {
-            theApp.bWriteIntoTraceWnd(_("new CMenu() for FlexRay failed!"));
-            ASSERT(false);
-        }
-    }
-
-
-    if (bResult == FALSE)
-    {
-        theApp.bWriteIntoTraceWnd(_("Could not create DIL menu items"));
-    }
-
-    return (bResult == TRUE);
+	if(category == nullptr)
+	{
+		return nullptr;
+	}
+	int panelCount = category->GetPanelCount();
+	for (int i = 0; i < panelCount; i++)
+	{
+		auto panel = category->GetPanel(i);
+		if (nullptr != panel)
+		{
+			std::string name = panel->GetName();
+			if (name == panelName)
+			{
+				return panel;
+			}
+		}
+	}
+	
+	
+	CMFCRibbonPanel* newPanel = category->AddPanel(panelName);
+	newPanel->SetJustifyColumns(FALSE);
+	return newPanel;
 }
 
-bool CMainFrame::bUpdatePopupMenuDIL(void)
+bool CMainFrame::bUpdatePopupMenuDIL()
 {
-    USES_CONVERSION;
+	auto canCategory = GetCategory("CAN");
+	if (canCategory == nullptr) return false;
 
-    BOOL bResult = TRUE;
+	auto panel = GetRibbonPanel(canCategory, "Hardware Configuration");
+	if (nullptr == panel) return false;
 
-    if (m_pDILSubMenu == nullptr)
-    {
         /* Create a new popup Menu */
-        if (bResult == ((m_pDILSubMenu = new CMenu()) != nullptr))
-        {
-            if ((bResult = m_pDILSubMenu->CreatePopupMenu()) == TRUE)
-            {
+	
+	auto control = static_cast<CMFCRibbonButton*>(panel->GetElement(2));
+	
                 // Add the DIL list
-                for (int i = 0; (i < m_nDILCount) && bResult; i++)
+	for (int i = 0; (i < m_nDILCount) ; i++)
                 {
-                    bResult = (m_pDILSubMenu->AppendMenu(MF_STRING,
-                                                         IDC_SELECT_DRIVER + i, _((char*)m_ouList[i].m_acName.c_str())) == TRUE);
-                    if (bResult == TRUE)
-                    {
+		CMFCRibbonButton* newButton = new CMFCRibbonButton();
+		
+		newButton->SetText(m_ouList[i].m_acName.c_str());
                         m_ouList[i].m_ResourceID = IDC_SELECT_DRIVER + i;
-                    }
-                }
-            }
-            else
-            {
-                theApp.bWriteIntoTraceWnd(_("CreatePopupMenu for driver selection failed"));
-            }
-        }
-        else
-        {
-            theApp.bWriteIntoTraceWnd(_("new CMenu() failed"));
-            ASSERT(false);
-        }
-    }
 
-    if (bResult == TRUE)
-    {
-        CMenu* pConfigMenu = GetSubMenu("&CAN"); // Get the Menu "&Hardware"
-        ASSERT(pConfigMenu != nullptr);
-        if (pConfigMenu == nullptr)
-        {
-            theApp.bWriteIntoTraceWnd(_("GetSubMenu(\"&CAN\") failed"));
+		newButton->SetVisible(TRUE);
+		newButton->SetID(IDC_SELECT_DRIVER + i);
+		control->AddSubItem(newButton);
         }
         // Added shortcut key
 
-        if(pConfigMenu != nullptr)
-        {
-            pConfigMenu->InsertMenu(1, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pDILSubMenu->m_hMenu), _("Dri&ver Selection"));
-        }
-    }
-    if (bResult == FALSE)
-    {
-        theApp.bWriteIntoTraceWnd(_("Could not create DIL menu items"));
-    }
 
-    return (bResult == TRUE);
-}
-
-DILINFO* CMainFrame::psGetFLEXRAYDILEntry(UINT unKeyID, bool bKeyMenuItem)
-{
-    DILINFO* psResult = nullptr;
-    for (int i = 0; i < m_nFlexRayDILCount; i++)
-    {
-        if (bKeyMenuItem == TRUE)
-        {
-            if (m_ouFlexRayList[i].m_ResourceID == unKeyID)
-            {
-                psResult = &(m_ouFlexRayList[i]);
-                break;
-            }
-        }
-        else
-        {
-            if (m_ouFlexRayList[i].m_dwDriverID == unKeyID)
-            {
-                psResult = &(m_ouFlexRayList[i]);
-                break;
-            }
-        }
-    }
-    return psResult;
+	return true;
 }
 
 bool CMainFrame::bUpdatePopupMenuDILL(void)
 {
-    USES_CONVERSION;
+	auto canCategory = GetCategory("LIN");
+	if (canCategory == nullptr) return false;
 
-    BOOL bResult = TRUE;
+	auto panel = GetRibbonPanel(canCategory, "Hardware Configuration");
+	if (nullptr == panel) return false;
 
-    if (m_pDILSubMenuLin == nullptr)
-    {
         /* Create a new popup Menu */
-        if (bResult == ((m_pDILSubMenuLin = new CMenu()) != nullptr))
-        {
-            if ((bResult = m_pDILSubMenuLin->CreatePopupMenu()) == TRUE)
-            {
-                // Add the DIL list
-                for (int i = 0; (i < m_nDILCountLin) && bResult; i++)
-                {
-                    bResult = m_pDILSubMenuLin->AppendMenu(MF_STRING,
-                                                           IDC_SELECT_LIN_DRIVER + i, _((char*)m_ouListLin[i].m_acName.c_str()));
-                    if (bResult == TRUE)
-                    {
-                        m_ouListLin[i].m_ResourceID = IDC_SELECT_LIN_DRIVER + i;
-                        if (i == 0) //Disable the Deactivate menu item by default
-                        {
-                            m_pDILSubMenuLin->EnableMenuItem(IDC_SELECT_LIN_DRIVER + i, false);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                theApp.bWriteIntoTraceWnd(_("CreatePopupMenu for driver selection failed"));
-            }
-        }
-        else
-        {
-            theApp.bWriteIntoTraceWnd(_("new CMenu() failed"));
-            ASSERT(false);
-        }
-    }
 
-    if (bResult == TRUE)
-    {
-        CMenu* pConfigMenu = GetSubMenu("&LIN"); // Get the Menu "&Hardware"
-        ASSERT(pConfigMenu != nullptr);
-        if (pConfigMenu == nullptr)
-        {
-            theApp.bWriteIntoTraceWnd(_("GetSubMenu(\"&LIN\") failed"));
-        }
+	auto control = static_cast<CMFCRibbonButton*>(panel->GetElement(2));
+
+                // Add the DIL list
+	for (int i = 0; (i < m_nDILCountLin); i++)
+                {
+		CMFCRibbonButton* newButton = new CMFCRibbonButton();
+		
+		newButton->SetText(m_ouListLin[i].m_acName.c_str());
+		m_ouListLin[i].m_ResourceID = IDC_SELECT_LIN_DRIVER + i;
+
+		newButton->SetVisible(TRUE);
+		newButton->SetID(IDC_SELECT_LIN_DRIVER + i);
+		control->AddSubItem(newButton);
+                    }
+
         // Added shortcut key
 
-        if(pConfigMenu != nullptr)
-        {
-            pConfigMenu->InsertMenu(3, MF_BYPOSITION | MF_POPUP, (UINT_PTR) (m_pDILSubMenuLin->m_hMenu), _("&Driver Selection"));
-        }
-    }
-    if (bResult == FALSE)
-    {
-        theApp.bWriteIntoTraceWnd(_("Could not create DIL menu items"));
-    }
 
-    return (bResult == TRUE);
+	return true;
 }
 
 DILINFO* CMainFrame::psGetDILEntry(UINT unKeyID, bool bKeyMenuItem)
@@ -15682,19 +14495,7 @@ LRESULT CMainFrame::OnMessageFromUserDll(WPARAM wParam, LPARAM lParam)
             }
         }
         break;
-        case FLEXRAY_DIS_CONNECT:
-        {
-            if (pouFlags != nullptr)
-            {
-                BOOL bConnect = pouFlags->nGetFlagStatus(FLEX_CONNECTED);
-                BOOL bRequest = (BOOL)lParam;
-                if (bRequest != bConnect)
-                {
-                    OnFlexRayConnect();
-                }
-            }
-        }
-        break;
+        
         case WRITE_TO_LOGFILE:
         {
             char* pacText = (char*)lParam;
@@ -15749,24 +14550,7 @@ LRESULT CMainFrame::OnMessageFromUserDll(WPARAM wParam, LPARAM lParam)
             }
         }
         break;
-        case WRITE_TO_LOGFILE_FLEXRAY:
-        {
-            /*char* pacText = (char*)lParam;
-            if( nullptr != pacText )
-            {
-                CString omText;
-                omText.Format("%s", A2T(pacText));
-                if (GetIFlexRayLogger() != nullptr)
-                {
-                    GetIFlexRayLogger()->LogString(omText);
-                }
-            }
-            else
-            {
-                hRetVal = S_FALSE;
-            }*/
-        }
-        break;
+        
         default:
         {
         }
@@ -15922,9 +14706,8 @@ void CMainFrame::OnActivateJ1939()
         GetIJ1939NodeSim()->NS_SetJ1939ActivationStatus(false);
         m_podMsgWndThread->vModifyVisibilityStatus(SW_HIDE, J1939);
     }
-    /* Modify filter icon accordingly in J1939 toolbar*/
-    BYTE bytTbrItemIndex = 1;
-    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, bActivateStatus, IDI_ICON_J1939_DEACTIVATE, IDI_ICON_J1939_ACTIVATE );
+
+	setConnectStateJ1939(bActivateStatus);
 
     /* If J1939 is deactivated, retain the old icon set and hide J1939 Tx window */
     if ( !bActivateStatus )
@@ -15933,14 +14716,9 @@ void CMainFrame::OnActivateJ1939()
         {
             m_pouTxMsgWndJ1939->ShowWindow(SW_HIDE);
         }
-        m_wndToolbarJ1939.bLoadCNVTCToolBar(m_bytIconSize, IDB_TLB_J1939,IDB_TLB_J1939_HOT, IDB_TLB_J1939_DISABLED);
     }
     else
     {
-        /*if( theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED) == TRUE && sg_pouIJ1939Logger->IsLoggingON() == TRUE)
-        {
-            sg_pouIJ1939Logger->vSetMeasurementFileName();
-        }*/
         // Go online or offline
         OnActionJ1939Online();
     }
@@ -15957,11 +14735,11 @@ void CMainFrame::OnUpdateActivateJ1939(CCmdUI* pCmdUI)
     {
         if ((nullptr == sg_pouIJ1939DIL) && (nullptr == sg_pouIJ1939Logger))
         {
-            pCmdUI->SetText(_("&Activate"));
+            pCmdUI->SetText(_("Activate"));
         }
         else
         {
-            pCmdUI->SetText(_("D&eactivate"));
+            pCmdUI->SetText(_("Deactivate"));
         }
 
         pCmdUI->Enable(TRUE);
@@ -16078,10 +14856,7 @@ void CMainFrame::OnActionJ1939Online()
             sg_pouIJ1939Logger->DisableDataLogFlag();
         }
     }
-    /* Modify filter icon accordingly in J1939 toolbar*/
-    //BYTE bytTbrItemIndex = 1;
-    //vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, bOnlineStatus, IDI_ICON_J1939_OFFLINE, IDI_ICON_J1939_ONLINE );
-
+    
     /* If J1939 goes offline, Switch off J1939 Transmit Item */
     if ( !bOnlineStatus )
     {
@@ -16089,8 +14864,6 @@ void CMainFrame::OnActionJ1939Online()
         {
             m_pouTxMsgWndJ1939->ShowWindow(SW_HIDE);
         }
-        /*bytTbrItemIndex = 4;
-        vSetToolBarIcon( m_wndToolbarJ1939, bytTbrItemIndex,  IDI_ICON_J1939_TRANSMIT_OFF, IDI_ICON_J1939_TRANSMIT_OFF, IDI_ICON_J1939_TRANSMIT_DISABLED);*/
     }
 }
 
@@ -16174,9 +14947,6 @@ void CMainFrame::vJ1939StartStopLogging()
 void CMainFrame::OnActionJ1939Log()
 {
     vJ1939StartStopLogging();
-    /* Modify filter icon accordingly in J1939 toolbar*/
-    BYTE bytTbrItemIndex = 3;
-    vModifyToolbarIcon( m_wndToolbarJ1939, bytTbrItemIndex, sg_pouIJ1939Logger->IsLoggingON(), IDI_ICON_J1939_LOG_ON, IDI_ICON_J1939_LOG_OFF );
 }
 
 void CMainFrame::OnUpdateActionJ1939Log(CCmdUI* pCmdUI)
@@ -16226,47 +14996,6 @@ void CMainFrame::OnUpdateActionLINLog(CCmdUI* pCmdUI)
         pCmdUI->Enable(FALSE);
         pCmdUI->SetCheck(FALSE);
     }
-}
-
-void CMainFrame::OnToolbarJ1939()
-{
-    ToggleView(m_wndToolbarJ1939);
-}
-
-void CMainFrame::OnUpdateToolbarJ1939(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarJ1939));
-}
-
-// END J1939 RELATED HANDLERS
-void CMainFrame::OnToolbarFlexRay()
-{
-
-}
-
-void CMainFrame::OnUpdateToolbarFlexRay(CCmdUI* pCmdUI)
-{
-
-}
-
-void CMainFrame::OnToolbarConfiguration()
-{
-    ToggleView(m_wndToolbarConfiguration);
-}
-
-void CMainFrame::OnUpdateToolbarConfiguration(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarConfiguration));
-}
-
-void CMainFrame::OnToolbarLIN()
-{
-    ToggleView(m_wndToolbarLIN);
-}
-
-void CMainFrame::OnUpdateToolbarLIN(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarLIN));
 }
 
 // START J1939 RELATED HELPER FUNCTIONS
@@ -16732,7 +15461,7 @@ void CMainFrame::OnJ1939DBClose()
     m_podMsgSgWndJ1939->MDIDestroy();
     m_podMsgSgWndJ1939 = nullptr;
 }
-LRESULT CMainFrame::OnJ1939DBClose(WPARAM wParam, LPARAM lParam)
+LRESULT CMainFrame::OnJ1939DBClose(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
     OnJ1939DBClose();
     return S_OK;
@@ -17012,32 +15741,40 @@ for (auto itrFrame : lstFrames)
 
 }
 
-void CMainFrame::OnToolbarCandatabase()
-{
-    ToggleView(m_wndToolbarCANDB);
-}
-
-void CMainFrame::OnUpdateToolbarCanDatabase(CCmdUI* pCmdUI)
-{
-    pCmdUI->SetCheck(bIsToolbarVisible(m_wndToolbarCANDB));
-}
-
 void CMainFrame::OnAutomationTSEditor(void)
 {
-    m_objTSEditorHandler.vShowTSEditorWindow((void*)this);
-}
+	try
+	{
+		//m_objTSEditorHandler.vShowTSEditorWindow((void*)this);
 
-void CMainFrame::OnUpdateFlexrayAssociate(CCmdUI* pCmdUI)
-{
-    CFlags* pouFlag  = theApp.pouGetFlagsPtr();
-    if ( (pouFlag!= nullptr) && (TRUE == pouFlag->nGetFlagStatus(FLEX_CONNECTED)))
-    {
-        pCmdUI->Enable(FALSE);
-    }
-    else
-    {
-        pCmdUI->Enable(TRUE);
-    }
+		// Get the working directory
+		char acPath[MAX_PATH] = "";
+		GetModuleFileName(nullptr, acPath, MAX_PATH);
+		PathRemoveFileSpec(acPath);
+		CString strPath = acPath;
+		strPath += "\\TestSetupEditorGUI.exe";
+
+		if (PathFileExists(strPath) == TRUE)
+		{
+			// Launch the converter utility
+			PROCESS_INFORMATION sProcessInfo;
+			STARTUPINFO sStartInfo;
+
+			memset(&sProcessInfo, 0, sizeof(PROCESS_INFORMATION));
+			memset(&sStartInfo, 0, sizeof(STARTUPINFO));
+
+			int nSuccess = CreateProcess(strPath.GetBuffer(MAX_PATH), "",
+				nullptr, nullptr, false, CREATE_NO_WINDOW, nullptr, nullptr,
+				&sStartInfo, &sProcessInfo);
+			if (!nSuccess)
+			{
+				AfxMessageBox("Unable to launch Test Automation Editor.", MB_ICONSTOP | MB_OK);
+			}
+		}
+	}
+	catch (...)
+	{
+	}
 }
 
 bool CMainFrame::bWaitForNSCodeGenStatus(ETYPE_BUS eBusType)
@@ -17067,7 +15804,7 @@ LRESULT CMainFrame::OnNodeSimCodeGenStatus(WPARAM ouWparam, LPARAM oulParam)
 {
     static int nCurrentThreads = 0;
     ETYPE_BUS eBus = (ETYPE_BUS)ouWparam;
-    bool bStatusCompleted = (bool)oulParam;
+    bool bStatusCompleted = (oulParam != 0);
 
     bStatusCompleted ? nCurrentThreads-- : nCurrentThreads++;
 
@@ -17133,33 +15870,6 @@ void CMainFrame::OnClusterChanged(ETYPE_BUS eBusType)
         ouNSCodeGenThreads->m_pMainFrame = this;
         ouNSCodeGenThreads->m_eBusType = eBusType;
         m_NSCodeGenThreads[eBusType] = CreateThread(nullptr, 0, NSCodeGenerationThread, ouNSCodeGenThreads, 0, nullptr);
-    }
-}
-
-void CMainFrame::OnFlexRayDBAssociate()
-{
-    CStringArray strFilePathArray;
-    ICluster* pCluster;
-
-    bWaitForNSCodeGenStatus(FLEXRAY);
-
-
-    if (nullptr != mFrChannelSettingsHandler.mInvokeFrChannelSettingsUi)
-    {
-
-        if (mFrChannelSettingsHandler.mInvokeFrChannelSettingsUi(m_ouBusmasterNetwork, this) != 0)
-        {
-            m_ouBusmasterNetwork->SetChannelCount(FLEXRAY, 1);
-
-            m_ouBusmasterNetwork->GetDBService(FLEXRAY, 0, 0, &pCluster);
-
-            OnClusterChanged(FLEXRAY);
-
-        }
-    }
-    else
-    {
-        MessageBox("Failed to Invoke Channel Configuration Dialog.", "Error", MB_OK | MB_ICONERROR);
     }
 }
 
@@ -17312,13 +16022,9 @@ void CMainFrame::vProcessKeyPress(MSG* pMsg)
         if(pouFlag != nullptr)
         {
             BOOL bConnected = FALSE;
-            BOOL bConnectedFlexRay = FALSE;
             BOOL bConnectedLIN = FALSE;
             // Get the current status of Connected/Disconnected state
             bConnected  = pouFlag->nGetFlagStatus(CONNECTED);
-            // Get the current status of Connected/Disconnected state for FlexRay
-            bConnectedFlexRay  = pouFlag->nGetFlagStatus(FLEX_CONNECTED);
-
             bConnectedLIN  = pouFlag->nGetFlagStatus(LIN_CONNECTED);
             //Procees the key "F2" and "ESC"
             if (pMsg->wParam == VK_F2)
@@ -17362,21 +16068,7 @@ void CMainFrame::vProcessKeyPress(MSG* pMsg)
                     OnFileConnect();
                 }
             }//else if (pMsg->wParam == VK_ESCAPE)
-            //Procees the key "F3" and "F12" for FlexRay
-            else if (pMsg->wParam == VK_F3)
-            {
-                if( m_shFLEXRAYDriverId != DAL_NONE && bConnectedFlexRay == FALSE )
-                {
-                    OnFlexRayConnect();
-                }
-            }
-            else if (pMsg->wParam == VK_F12)
-            {
-                if( m_shFLEXRAYDriverId != DAL_NONE && bConnectedFlexRay == TRUE )
-                {
-                    OnFlexRayConnect();
-                }
-            }
+            
             // For LIN F4 - Connect and F11 - Disconnect
             else if (pMsg->wParam == VK_F4)
             {
@@ -17458,7 +16150,7 @@ void CMainFrame::OnConfigChannelSelectionLIN()
 ******************************************************************************/
 void CMainFrame::OnCfgSendMsgsLIN()
 {
-    m_objFlexTxHandler.vShowConfigureMsgWindow(this, LIN);
+    m_objTxHandler.vShowConfigureMsgWindow(this, LIN);
 }
 
 // START LIN RELATED HELPER FUNCTIONS
@@ -17498,7 +16190,7 @@ void CMainFrame::OnLinClusterConfig()
     {
         m_ouBusmasterNetwork->SetChannelCount(LIN, 1);
 
-        m_objFlexTxHandler.SetNetworkConfig(LIN, m_ouBusmasterNetwork);
+        m_objTxHandler.SetNetworkConfig(LIN, m_ouBusmasterNetwork);
 
         vPopulateIDList(LIN); //For Message window configuration
         //Generate unions.h file.
@@ -17784,6 +16476,8 @@ void CMainFrame::vInitialize( SCONTROLLER_DETAILS& controller, BOOL bUpdateHWDes
     controller.m_unBTL_Cycles = 10;
 
     /* CAN FD related parameters */
+	controller.m_bcanFDEnabled = FALSE;
+	controller.m_bSupportCANFD = FALSE;
     controller.m_unDataBitRate = 2000000;
     controller.m_unDataSamplePoint = 70;
     controller.m_unDataBTL_Cycles = 10;
@@ -17809,6 +16503,15 @@ int CMainFrame::getDbService( IBMNetWorkGetService** dbService )
 {
     *dbService = m_ouBusmasterNetwork;
     return S_OK;
+}
+int CMainFrame::getDbSetService(IBMNetWorkService** dbService)
+{
+    *dbService = m_ouBusmasterNetwork;
+    return S_OK;
+}
+int CMainFrame::notifyPlugins(eBusmaster_Event event, void* data)
+{
+    return mPluginManager->notifyPlugins(event, data);
 }
 int CMainFrame::displayMessage( char* message )
 {
@@ -17894,6 +16597,58 @@ int CMainFrame::getPluginConnectionPoint(const char* pluginId, IBusmasterPluginC
     return S_OK;
 }
 
+afx_msg void CMainFrame::OnApplicationLook(UINT id)
+{
+	CWaitCursor wait;
+	switch (id)
+	{
+	case ID_VIEW_APPLOOK_WIN_2000:
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManager));
+		break;
+	case ID_VIEW_APPLOOK_OFF_XP:
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOfficeXP));
+		break;
+	case ID_VIEW_APPLOOK_WIN_XP:
+		CMFCVisualManagerWindows::m_b3DTabsXPTheme = TRUE;
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
+		break;
+	case ID_VIEW_APPLOOK_OFF_2003:
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOffice2003));
+		CDockingManager::SetDockingMode(DT_SMART);
+		break;
+	case ID_VIEW_APPLOOK_VS_2005:
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerVS2005));
+		CDockingManager::SetDockingMode(DT_SMART);
+		break;
+	case ID_VIEW_APPLOOK_VS_2008:
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerVS2008));
+		CDockingManager::SetDockingMode(DT_SMART);
+		break;
+	case ID_VIEW_APPLOOK_WINDOWS_7:
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows7));
+		CDockingManager::SetDockingMode(DT_SMART);
+		break;
+	default:
+		switch (id)
+		{
+		case ID_VIEW_APPLOOK_OFF_2007_BLUE:
+			CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_LunaBlue);
+			break;
+		case ID_VIEW_APPLOOK_OFF_2007_BLACK:
+			CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_ObsidianBlack);
+			break;
+		case ID_VIEW_APPLOOK_OFF_2007_SILVER:
+			CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_Silver);
+			break;
+		case ID_VIEW_APPLOOK_OFF_2007_AQUA:
+			CMFCVisualManagerOffice2007::SetStyle(CMFCVisualManagerOffice2007::Office2007_Aqua);
+			break;
+		}
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerOffice2007));
+		CDockingManager::SetDockingMode(DT_SMART);
+	}
+	RedrawWindow(NULL, NULL, RDW_ALLCHILDREN | RDW_INVALIDATE | RDW_UPDATENOW | RDW_FRAME | RDW_ERASE);
+}
 //plugin
 
 void CMainFrame::onPluginMenuClicked(UINT menuId)
@@ -17905,6 +16660,100 @@ void CMainFrame::onPluginMenuClicked(UINT menuId)
 }
 void CMainFrame::onPluginMenuUpadate( CCmdUI* pCmdUI )
 {
-    BusmasterMenuItem menuItem(pCmdUI);
-    mPluginManager->noifyMenuUpdate(pCmdUI->m_nID, &menuItem);
+    auto buttonCmd = dynamic_cast<CMFCRibbonCmdUI*>(pCmdUI);
+    if (buttonCmd != nullptr)
+    {
+        CMFCRibbonButtonEx* btn = dynamic_cast<CMFCRibbonButtonEx*>(buttonCmd->m_pUpdated);
+        if (nullptr != btn)
+        {
+            BusmasterMenuItem menuItem(btn, pCmdUI);
+            mPluginManager->noifyMenuUpdate(pCmdUI->m_nID, &menuItem);
+        }
+        else
+        {
+            CMFCRibbonButtonEx* btn = dynamic_cast<CMFCRibbonButtonEx*>(buttonCmd->m_pUpdated->GetOriginal());
+            if (nullptr != btn)
+            {
+                BusmasterMenuItem menuItem(btn, pCmdUI);
+                mPluginManager->noifyMenuUpdate(pCmdUI->m_nID, &menuItem);
+            }
+        }
+    }
+}
+
+void CMainFrame::setConnectStateJ1939(bool connected)
+{
+	CMFCRibbonCategory* canCategory = GetCategory("J1939");
+
+	if (canCategory == nullptr) return;
+	auto panel = GetRibbonPanel(canCategory, "Activate");
+	if (nullptr == panel) return;
+	int count = panel->GetCount();
+	auto control = static_cast<CMFCRibbonButton*>(panel->GetElement(0));
+	if (connected == true)
+	{
+		control->SetImageIndex(19, TRUE);
+		control->SetImageIndex(3, FALSE);
+		control->SetText("Deactivate");
+	}
+	else
+	{
+		control->SetImageIndex(18, TRUE);
+		control->SetImageIndex(0, FALSE);
+		control->SetText("Activate");
+	}
+	mRibbonBar.ForceRecalcLayout();
+}
+void CMainFrame::setConnectState(ETYPE_BUS busType, bool connected)
+{
+	CMFCRibbonCategory* canCategory = GetCategory(getBusInString(busType).c_str());
+	
+	if (canCategory == nullptr) return;
+	auto panel = GetRibbonPanel(canCategory, "Hardware Configuration");
+	if (nullptr == panel) return;
+	int count = panel->GetCount();
+	auto control = static_cast<CMFCRibbonButton*>(panel->GetElement(0));
+    CString text;
+    if (connected == true)
+	{
+		control->SetImageIndex(11, TRUE);
+		control->SetImageIndex(3, FALSE);
+        text.LoadString(IDS_DISCONNECT);
+        control->SetText((LPCSTR)text);
+	}
+	else
+	{
+		control->SetImageIndex(0, TRUE);
+		control->SetImageIndex(2, FALSE);
+        text.LoadString(IDS_CONNECT);
+        control->SetText((LPCSTR)text);
+	}
+	mRibbonBar.ForceRecalcLayout();
+}
+
+LRESULT CMainFrame::OnAutoItRequest(WPARAM wparam, LPARAM lparam)
+{
+	//MessageBox("Request");
+	if (wparam == 0)
+	{
+		if (lparam != theApp.pouGetFlagsPtr()->nGetFlagStatus(HEX))
+		{
+			OnHex_DecButon();
+		}
+		return wparam;
+	}
+	return 1;
+}
+
+LRESULT CMainFrame::OnRibbonCustomize(WPARAM lparam, LPARAM wparam)
+{
+    return 0;
+}
+
+
+void CMainFrame::OnButtonToggleribbon()
+{
+    mRibbonBar.ToggleWindowDisplay();
+
+    
 }

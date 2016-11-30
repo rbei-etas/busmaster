@@ -24,6 +24,7 @@
 #include"LINTransmitter.h"
 #include"HashDefines.h"
 #include"LINTxFormView.h"
+#include "LINDefines.h"
 #include<cctype>
 
 
@@ -305,6 +306,15 @@ void CLINTxFormView::vGetColPropMap(ESTATUS_BUS eBusStatus, std::map<int, SLISTI
         sListInfo.m_omEntries.RemoveAll();
         GetMsgTypeList(sListInfo.m_omEntries);
         mapColAndProp.insert(std::pair<int, SLISTINFO>(eMsgColType, sListInfo));
+
+		sListInfo.m_eType = eComboItem;
+		sListInfo.m_omEntries.RemoveAll();
+		GetChannelList(sListInfo.m_omEntries);
+		mapColAndProp.insert(std::pair<int, SLISTINFO>(eMsgColChannel, sListInfo));
+
+		sListInfo.m_eType = eNumber;
+		sListInfo.m_omEntries.RemoveAll();
+		mapColAndProp.insert(std::pair<int, SLISTINFO>(eMsgColDLC, sListInfo));
     }
 }
 
@@ -374,9 +384,9 @@ for (auto itrFrame : ouFrameList)
             ((IFrame*)((&itrFrame)->second))->GetFrameId(unId);
             ((IFrame*)((&itrFrame)->second))->GetName(strName);
 
-            FrameProps ouFrameProps;
+            LinFrameProps ouFrameProps;
             ((IFrame*)((&itrFrame)->second))->GetProperties(ouFrameProps);
-            if (ouFrameProps.m_eFrameType == eLIN_Unconditional || ouFrameProps.m_eFrameType == eLIN_Diagnostic)
+			if (ouFrameProps.m_eLinFrameType == eLinUnconditionalFrame || ouFrameProps.m_eLinFrameType == eLinDiagnosticFrame)
             {
                 ouMsgIDNamesMap.insert(std::map<int, std::string>::value_type(unId, strName));
             }
@@ -471,7 +481,7 @@ int CLINTxFormView::nGetDefaultMsgItem(std::string strMsgName, ITxMsgItem*& pouM
             //Msg Id
             UINT unMsgID = 0;
             CHAR* pcStr = nullptr;
-            BOOL bHex = TRUE;
+            bool bHex = true;
 
             bHex = m_bHexMode;
 
@@ -496,13 +506,13 @@ int CLINTxFormView::nGetDefaultMsgItem(std::string strMsgName, ITxMsgItem*& pouM
 int CLINTxFormView::nGetDataFromSignals(std::map<ISignal*, SignalInstanse>& mapSignal, int nDLC, unsigned char* pchData)
 {
     __int64 nI64SignVal=0;
-    SignalProps ouSignalProps;
-for (auto itr : mapSignal)
+    LINSignalProps ouSignalProps;
+	for (auto itr : mapSignal)
     {
         itr.first->GetProperties(ouSignalProps);
 
         //update the data
-        vGetDataBytesFromSignal(ouSignalProps.m_ouLINSignalProps.m_nIntialValue, std::make_pair(itr.first, itr.second), nDLC, pchData);
+        vGetDataBytesFromSignal(ouSignalProps.m_nIntialValue, std::make_pair(itr.first, itr.second), nDLC, pchData);
 
 
     }
@@ -644,7 +654,7 @@ bool CLINTxFormView::bGetKeyVal(int nItem, char& chKeyVal)
     if (omStrKeyVal.GetLength() > 0)
     {
         chKeyVal = omStrKeyVal.GetAt(0);
-        bReturn = std::isalnum(chKeyVal);
+        bReturn = std::isalnum(chKeyVal) > 0 ? true : false;
     }
     return bReturn;
 }
@@ -765,7 +775,7 @@ int CLINTxFormView::OnBusStatusChanged(ESTATUS_BUS eBusStatus)
 }
 int CLINTxFormView::GetConfigTag(std::string& strTag)
 {
-    strTag = std::string(DEF_MODULE_CONFIGURATION) + "/" + std::string(DEF_LIN_TX_WINDOW);
+    strTag = std::string(DEF_MODULE_CONFIGURATION_XPATH) + "/" + std::string(DEF_LIN_TX_WINDOW);
     return S_OK;
 }
 int CLINTxFormView::AddNewMsgItemsToDataStore(int nCount)
@@ -802,9 +812,9 @@ int CLINTxFormView::GetEndianess(std::pair<ISignal*, SignalInstanse>& Signal, eE
         return hResult;
     }
     hResult = S_OK;
-    SignalProps ouSignalProps;
+    LINSignalProps ouSignalProps;
     Signal.first->GetProperties(ouSignalProps);
-    endian = ouSignalProps.m_ouLINSignalProps.m_ouEndianess;
+    endian = ouSignalProps.m_ouEndianess;
 
     return hResult;
 }

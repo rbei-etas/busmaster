@@ -1,6 +1,6 @@
 #include "SporadicFrameEditDlg.h"
 #include "LDFDatabaseManager.h"
-#include "IClusterProps.h"
+#include "LINDefines.h"
 #include "LDFUtility.h"
 #include "Defines.h"
 #include "qdialogbuttonbox.h"
@@ -72,8 +72,8 @@ void SporadicFrameEditDlg::vFillElementList()
     std::string strName;
     unsigned int unFrameid;
     unsigned int unCurrentFrameid = -1;
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+	ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     if ( eEdit == m_ouMode && (m_pouFrame != nullptr ) )
     {
         (*m_pouFrame)->GetProperties(ouFrameProps);
@@ -99,8 +99,8 @@ void SporadicFrameEditDlg::OnButtonClickOk()
     if ( 0 == nValidateValues() )
     {
         IFrame* pFrame;
-        FrameProps ouFrameProps;
-        ouFrameProps.m_eFrameType = eFrame_Invalid;
+		LinFrameProps ouFrameProps;
+		ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
         if ( eEdit == m_ouMode )
         {
             pFrame = *m_pouFrame;
@@ -115,7 +115,7 @@ void SporadicFrameEditDlg::OnButtonClickOk()
             pFrame->GetProperties(ouFrameProps);
 
             //Frame Type
-            ouFrameProps.m_eFrameType = eLIN_Sporadic;
+			ouFrameProps.m_eLinFrameType = eLinSporadicFrame;
 
             ouFrameProps.m_ouLINSporadicFrameProps.m_pouUnconditionalFrame.clear();
             //Conditional Frames
@@ -171,11 +171,11 @@ void SporadicFrameEditDlg::vAddFrameToTable(IFrame* pFrame, std::map<UID_ELEMENT
         return;
     }
 
-    eFrameType ouFrameType;
-    EcuProperties ouEcuProps;
+	LinFrameProps frameProps;
+    LinEcuProps ouEcuProps;
     ouEcuProps.m_eEcuType = eEcuNone;
     std::list<IEcu*> ouEcuList;
-    pFrame->GetFrameType(ouFrameType);
+	pFrame->GetProperties(frameProps);
     pFrame->GetEcus(eTx, ouEcuList);
     auto itrTxEcu  = ouEcuList.begin();
     std::string strTxEcu;
@@ -186,21 +186,21 @@ void SporadicFrameEditDlg::vAddFrameToTable(IFrame* pFrame, std::map<UID_ELEMENT
         ((IEcu*)*itrTxEcu)->GetName(strTxEcu);
     }
 
-    if ( eLIN_Unconditional == ouFrameType)
+	if (eLinUnconditionalFrame == frameProps.m_eLinFrameType)
     {
         std::string strName;
         std::string strRxEcu;
         unsigned int unId;
-        FrameProps ouFrameprops;
-        ouFrameprops.m_eFrameType = eFrame_Invalid;
+        LinFrameProps ouFrameprops;
+		ouFrameprops.m_eLinFrameType = eLinInvalidFrame;
         pFrame->GetName(strName);
         pFrame->GetFrameId(unId);
         pFrame->GetProperties(ouFrameprops);
 
         QList<QVariant> ouCloumns;
         ouCloumns.push_back(QVariant(QString::fromStdString(strName)));
-        ouCloumns.push_back(QVariant(ouFrameprops.m_ouLINUnConditionFrameProps.m_unId));
-        ouCloumns.push_back(QVariant( GetString(ouFrameprops.m_ouLINUnConditionFrameProps.m_nLength, 10)));
+        ouCloumns.push_back(QVariant(ouFrameprops.m_nMsgId));
+        ouCloumns.push_back(QVariant( GetString(ouFrameprops.m_unMsgSize, 10)));
         ouCloumns.push_back(QVariant(QString::fromStdString(strTxEcu)));
         ouEcuList.clear();
         pFrame->GetEcus(eRx, ouEcuList);

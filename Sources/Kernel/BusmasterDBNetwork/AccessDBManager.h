@@ -7,7 +7,7 @@
 #include "../ProtocolDefinitions/ICluster.h"
 class AccessDBManager
 {
-    typedef ERRORCODE( *PARSEDBFILE )( std::string& strFileName, ETYPE_BUS clusterType, std::list<ClusterResult>& ouClusterResultList );
+    typedef ERRORCODE( *PARSEDBFILE )( std::string strFileName, ETYPE_BUS clusterType, std::list<ClusterResult>& ouClusterResultList );
     typedef ERRORCODE( *FREECLUSTER )( ICluster* );
     HMODULE mDllHandle;
     bool mDbManagerAvailable;

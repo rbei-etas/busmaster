@@ -32,6 +32,8 @@
 #include "BaseDIL_LIN.h"
 #include "MsgBufFSE.h"
 
+#pragma warning( disable : 4250 )
+
 class CFrameProcessor_LIN : public CBaseFrameProcessor_LIN, CFrameProcessor_Common
 {
 private:

@@ -32,6 +32,7 @@ HRESULT AccessDBManager::LoadDbManager()
         return S_FALSE;
     }
     mDbManagerAvailable = true;
+	return S_OK;
 }
 void AccessDBManager::ReleaseDbmanager()
 {
@@ -39,7 +40,7 @@ void AccessDBManager::ReleaseDbmanager()
     {
         FreeLibrary( mDllHandle );
         mDllHandle = nullptr;
-        mParseDbFile == nullptr;
+        mParseDbFile = nullptr;
     }
     mDbManagerAvailable = false;
 }

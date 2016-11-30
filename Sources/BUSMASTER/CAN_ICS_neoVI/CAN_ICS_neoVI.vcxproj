@@ -44,16 +44,19 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\Warnings_Supress.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
     <Import Project="..\Busmaster_Kernel_Includes.props" />
+    <Import Project="..\Warnings_Supress.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
     <Import Project="..\Busmaster_Kernel_Includes.props" />
+    <Import Project="..\Warnings_Supress.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -203,7 +206,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\DIL_Interface\HardwareListing.cpp" />
+    <ClCompile Include="..\DIL_Interface\HardwareListingCAN.cpp" />
     <ClCompile Include="CAN_ICS_neoVI.cpp" />
     <ClCompile Include="CAN_ICS_neoVI_Channel.cpp" />
     <ClCompile Include="CAN_ICS_neoVI_Network.cpp" />
@@ -213,7 +216,7 @@
     <ClCompile Include="..\Application\MultiLanguage.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\DIL_Interface\HardwareListing.h" />
+    <ClInclude Include="..\DIL_Interface\HardwareListingCAN.h" />
     <ClInclude Include="CAN_ICS_neoVI.h" />
     <ClInclude Include="CAN_ICS_neoVI_Channel.h" />
     <ClInclude Include="CAN_ICS_neoVI_Extern.h" />
@@ -222,6 +225,7 @@
     <ClInclude Include="CAN_ICS_neoVI_stdafx.h" />
     <ClInclude Include="ChangeRegDefines.h" />
     <ClInclude Include="ChangeRegisters_CAN_ICS_neoVI.h" />
+    <ClInclude Include="ConfigDlg_Resource.h" />
     <ClInclude Include="ContrConfigPeakUsbDefs.h" />
     <ClInclude Include="..\Application\MultiLanguage.h" />
   </ItemGroup>
@@ -240,6 +244,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CAN_ICS_neoVI_Resource.hm" />
+    <None Include="ConfigDlg_Resource.hm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bmp_net.bmp" />
+    <Image Include="res\BUSMASTERDoc.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

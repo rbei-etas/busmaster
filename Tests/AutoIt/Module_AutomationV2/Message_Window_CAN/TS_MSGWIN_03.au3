@@ -2,7 +2,7 @@
 ; Critical (C)		:		Y
 ; TestCase No.		:		TS_MSGWIN_03
 ; TestCases			:		Message interpretation
-; Test Data			:		
+; Test Data			:
 ; Test Setup		:		1. Transmit messages which are present in the database and currently associated to configuration.
 ;~ 							2. Double click on a particular message in message window.
 ;~ 							3. While the 'Message Interpretation' dialog is visible, click on any other interpretable message in the message window.
@@ -20,16 +20,16 @@ _launchApp()
 WinActivate($WIN_BUSMASTER,3)
 
 if winexists($WIN_BUSMASTER) then
-	
+
 	_loadConfig("cfxCANMsgWin_01")																					; Load Configuration
 
 	_ConnectDisconnect()																							; Connect
-	
-	_TransmitMsgsMenu()																								; Transmit CAN messages
-	sleep(800)
+
+	;_TransmitMsgsMenu()																							; Transmit CAN messages
+	sleep(2000)
 
 	$Msg_1=_GetMsgInterpretWinInfo(0)
-	
+
 	_ConnectDisconnect()																							; Disconnect
 
 EndIf

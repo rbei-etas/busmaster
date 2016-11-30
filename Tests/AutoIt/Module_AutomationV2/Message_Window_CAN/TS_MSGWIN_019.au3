@@ -32,7 +32,7 @@ if winexists($WIN_BUSMASTER) then
 
 	_loadConfig("cfxCANMsgWin_19.cfx")
 	  _EnableInterpretMode()
-	  WinMenuSelectItem($WIN_BUSMASTER,"",$fileMenu,$Exit)								; Select File->Exit from menu
+	  WinRibbonSelectItem($WIN_BUSMASTER,"",$fileMenu,$Exit)								; Select File->Exit from menu
 	sleep(1000)															;
 	if WinWaitActive($WIN_BUSMASTER,$SaveChangesConfigTXT,2) Then						; wait for save configuration dialog
 		ControlClick($WIN_BUSMASTER,$SaveChangesConfigTXT,$BTN_Yes_SaveConfig)			; Click on Yes button
@@ -60,7 +60,7 @@ if winexists($WIN_BUSMASTER) then
 	_DisableInterpretMode()
 	Sleep(500)
 	_DisableOverwriteMode()
-	 WinMenuSelectItem($WIN_BUSMASTER,"",$fileMenu,$Exit)								; Select File->Exit from menu
+	 WinRibbonSelectItem($WIN_BUSMASTER,"",$fileMenu,$Exit)								; Select File->Exit from menu
 	sleep(2000)															;
 	if WinWaitActive($WIN_BUSMASTER,$SaveChangesConfigTXT,2) Then						; wait for save configuration dialog
 		ControlClick($WIN_BUSMASTER,$SaveChangesConfigTXT,$BTN_Yes_SaveConfig)			; Click on No button

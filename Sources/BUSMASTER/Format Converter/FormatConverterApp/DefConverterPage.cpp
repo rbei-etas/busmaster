@@ -244,6 +244,11 @@ LPARAM CDefConverterPage::UpdateUI(WPARAM, LPARAM)
 
     UpdateData(FALSE);
     GetDlgItem(IDC_BTN_CONVERT)->EnableWindow(TRUE);
+    if (nullptr != mConvThrdHandle)
+    {
+        CloseHandle(mConvThrdHandle);
+        mConvThrdHandle = nullptr;
+    }
     return S_OK;
 }
 DWORD WINAPI ConverstionThreadProc(LPVOID pVoid)
@@ -263,7 +268,7 @@ DWORD WINAPI ConverstionThreadProc(LPVOID pVoid)
     pDefConverterPage->m_pouConverter->GetLastConversionStatus(hResult, conversionComment);
     pDefConverterPage->m_omstrConversionComment = conversionComment.c_str();
 
-    pDefConverterPage->SendMessage(WM_UPDATEUI);
+    pDefConverterPage->PostMessage(WM_UPDATEUI);
     return 0;
 }
 
@@ -288,7 +293,7 @@ void CDefConverterPage::OnBnClickedBtnConvert()
                 GetDlgItem(IDC_BTN_CONVERT)->EnableWindow(FALSE);
                 m_omstrConversionComment = _T("Converting...");
                 UpdateData(FALSE);
-                CreateThread(nullptr, 0, ConverstionThreadProc, this, 0, 0x0);
+                mConvThrdHandle = CreateThread(nullptr, 0, ConverstionThreadProc, this, 0, 0x0);
             }
             else
             {

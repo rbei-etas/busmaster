@@ -4,6 +4,10 @@
   <title>GetNetworkStatistics : To get all the statistics of a channel</title>
   <refbody>
     <section>
+      <title>Synopsis</title>
+      <p>HRESULT GetNetworkStatistics(int nChannel, sBUSSTATISTICS_USR *sStat);</p>
+    </section>
+    <section>
       <title>Description</title>
       <p>This function will provide the channel&apos;s statistics.</p>
     </section>

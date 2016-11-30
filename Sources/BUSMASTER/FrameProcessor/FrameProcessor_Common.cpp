@@ -588,7 +588,8 @@ void CFrameProcessor_Common::parseLogEnabledStatus(xmlDocPtr pDoc)
         if (pNodeSet != nullptr && pNodeSet->nodeNr >= 1)
         {
             xmlChar* xmlData = xmlNodeListGetString(pDoc, pNodeSet->nodeTab[0]->xmlChildrenNode, 1);
-            m_bEnableLogOnConnect = (bool)strtol((char*)xmlData, nullptr, 10);
+			auto tempEnableConnect = strtol((char*)xmlData, nullptr, 10);
+			m_bEnableLogOnConnect = (tempEnableConnect != 0);// static_cast<bool>(strtol((char*)xmlData, nullptr, 10));
         }
     }
 }

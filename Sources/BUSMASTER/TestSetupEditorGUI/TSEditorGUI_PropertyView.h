@@ -69,4 +69,5 @@ protected:
 private:
     CTSEditorChildFrame* GetEditorWindow();
     CString m_omstrHelpString;
+	void ResizeWindow(UINT nType, int cx, int cy);
 };

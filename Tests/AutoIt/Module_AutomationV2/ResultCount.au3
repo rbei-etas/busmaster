@@ -6,7 +6,7 @@
 	#include <Excel.au3>
 Global $CountPass = 0
 Global $CountFail = 0
-Global $TotalTestScrpt = 275
+Global $TotalTestScrpt = 271
 Global $TotalRow = 1401
 
 
@@ -31,6 +31,7 @@ if FileExists($ResultFilepath) Then
 EndIf
 Consolewrite("$CountPass = "&$CountPass)
 Consolewrite("$CountFail = "&$CountFail)
+$CountNotExectd = $TotalTestScrpt-($CountPass+$CountFail)
 
 $ResultCountFile = @ScriptDir&"\ResultDetails.ini"
 $RetVal = FileExists($ResultCountFile)
@@ -39,6 +40,6 @@ if $RetVal<>1 Then
 EndIf
 	_FileWriteToLine($ResultCountFile, 1, "Total_TestScript = "&$TotalTestScrpt, 1)
 	_FileWriteToLine($ResultCountFile, 2, "Total_TS_PASS = "&$CountPass, 1)
-	_FileWriteToLine($ResultCountFile, 3, "Total_TS_FAIL = "&$CountFail, 1)
+	_FileWriteToLine($ResultCountFile, 3, "Total_TS_FAIL = "&$CountFail+$CountNotExectd, 1)
 
 _ExcelBookClose($oExcel)

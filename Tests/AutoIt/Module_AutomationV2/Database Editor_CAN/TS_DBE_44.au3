@@ -46,10 +46,10 @@ If winexists($WIN_BUSMASTER) then
 
 	_addSigDetails("int","Signal1",32,0,0)																; Add the signal details
 
-	WinMenuSelectItem($WIN_BUSMASTER,"",$CANMenu,$databaseMenu,$saveMenu)								; Select CAN->Database->Save
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$Tool,$CANDBMenuTool,$saveMenu)								; Select CAN->Database->Save
 	sleep(250)
 
-	WinMenuSelectItem($WIN_BUSMASTER,"",$CANMenu,$databaseMenu,$DBSaveAsMenu)							; Select CAN->Database->Save As
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$Tool,$CANDBMenuTool,$DBSaveAsMenu)							; Select CAN->Database->Save As
 	$DBFolderPath = _OutputDataPath()																	; Set the DirPath to save the dbf file
 	if WinWaitActive($WIN_DBSaveAs,"",3) Then
 		ControlSend($WIN_DBSaveAs,"",$Edit_FName_SaveAsDB,$DBFolderPath&"\SaveAstestDBE_44")   			; Set Filename
@@ -58,7 +58,7 @@ If winexists($WIN_BUSMASTER) then
 		sleep(1000)
 	EndIf
 
-	WinMenuSelectItem($WIN_BUSMASTER,"",$CANMenu,$databaseMenu,$closeMenu)								; Select CAN->Database->Close
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$Tool,$CANDBMenuTool,$closeMenuDBEditor)								; Select CAN->Database->Close
 
 	if WinExists($WIN_DBEditor_CAN) Then
 		$DBEditor="Exists"

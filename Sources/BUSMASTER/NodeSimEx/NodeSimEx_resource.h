@@ -150,10 +150,10 @@
 #define IDM_CONTEXT_INSERTPDU           61452
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        4021
+#define _APS_NEXT_RESOURCE_VALUE        5000
 #define _APS_NEXT_COMMAND_VALUE         35027
 #define _APS_NEXT_CONTROL_VALUE         4037
 #define _APS_NEXT_SYMED_VALUE           4000

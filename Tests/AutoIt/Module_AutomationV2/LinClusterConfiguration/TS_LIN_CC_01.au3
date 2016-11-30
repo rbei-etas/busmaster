@@ -73,8 +73,8 @@ if winexists($WIN_BUSMASTER) then
 					ConsoleWrite("$ECUList="&$ECUList[$i]&@CRLF)
 				Next
 			EndIf
-
-
+			Sleep(1000)
+			ControlClick($WIN_ClustrConfigLIN,"","OK")
 
 	EndIf
 
@@ -84,6 +84,7 @@ EndIf
 ConsoleWrite("$clstrWinLinOpened="&$clstrWinLinOpened&@CRLF)
 ConsoleWrite("$LDFFilepath1="&$LDFFilepath1&@CRLF)
 ConsoleWrite("$countItemECU="&$countItemECU&@CRLF)
+ConsoleWrite("$chnlSel="&$chnlSel&@CRLF)
 ;ConsoleWrite("$ECUList="&$ECUList[$i]&@CRLF)
 
 if $clstrWinLinOpened=1 and $LDFFilepath1=1 and $countItemECU=3 and $chnlSel=1 Then									; Validate the result

@@ -356,7 +356,7 @@ hGetNotifyingEvent(void) const
 ******************************************************************************/
 
 template <typename SMSGBUFFER> void CMsgBufLINVFSE<SMSGBUFFER>::
-vDoSortBuffer( int nField, bool bAscending )
+vDoSortBuffer( int /*nField*/, bool /*bAscending*/ )
 {
     //SMSGBUFFER::vSetSortField(nField);
     //SMSGBUFFER::vSetSortAscending(bAscending);

@@ -203,10 +203,9 @@ public:
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
     HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
-    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
-    HRESULT CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
@@ -496,7 +495,7 @@ HRESULT CDIL_CAN_STUB::CAN_SetAppParams(HWND hWndOwner)
 
         SetCurrState(STATE_RESET);      // Reset state from primordial
         hResult = S_OK;                 // All okey
-
+        
     }
     else
     {
@@ -506,46 +505,7 @@ HRESULT CDIL_CAN_STUB::CAN_SetAppParams(HWND hWndOwner)
     return hResult;
 }
 
-HRESULT CDIL_CAN_STUB::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS /* InitData */, int& Length)
-{
-    HRESULT Result = S_FALSE;
-    char acInitFile[MAX_PATH] = {'\0'};
 
-    // Assuming that InitData points to a CHAR array with size MAX_PATH
-    //    strcpy_s(acInitFile, MAX_PATH, InitData);
-    int nResult = WARNING_NOTCONFIRMED;//DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILStub,
-
-    //acInitFile, DRIVER_STUB);
-    switch (nResult)
-    {
-        case WARNING_NOTCONFIRMED:
-        {
-            Result = WARN_INITDAT_NCONFIRM;
-        }
-        break;
-        case INFO_INIT_DATA_CONFIRMED:
-        {
-            //            strcpy(InitData, acInitFile); // Copy init file path
-            Length = lstrlen(acInitFile) + 1;
-            Result = S_OK;
-        }
-        break;
-        case INFO_RETAINED_CONFDATA:
-        {
-            Result = INFO_INITDAT_RETAINED;
-        }
-        break;
-        case ERR_CONFIRMED_CONFIGURED: // Not to be addressed at present
-        case INFO_CONFIRMED_CONFIGURED:// Not to be addressed at present
-        default:
-        {
-            // Do nothing... default return value is S_FALSE.
-        }
-        break;
-    }
-
-    return Result;
-}
 
 static BOOL bClientExist(std::string pcClientName, INT& Index)
 {
@@ -601,7 +561,7 @@ static BOOL bRemoveClient(DWORD dwClientId)
                 sg_asClientToBufMap[unClientIndex].unBufCount = 0;
                 bResult = TRUE;
             }
-
+            
             if (bResult == TRUE)
             {
                 if ((unClientIndex + 1) < sg_unClientCnt)
@@ -945,7 +905,7 @@ HRESULT CDIL_CAN_STUB::CAN_PerformClosureOperations(void)
     return S_OK;
 }
 
-HRESULT CDIL_CAN_STUB::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
+HRESULT CDIL_CAN_STUB::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData)
 {
     for (UINT i = 0; i < CHANNEL_ALLOWED; i++)
     {
@@ -1211,7 +1171,7 @@ HRESULT Worker_StopHardware(ISimENG* pISimENGLoc)
             SetCurrState(STATE_INITIALISED);
         }
     }
-
+    
 
     return hResult;
 }
@@ -1230,7 +1190,7 @@ HRESULT Worker_StartHardware(ISimENG* pISimENGLoc)
             SetCurrState(STATE_CONNECTED);
         }
     }
-
+    
     return hResult;
 }
 

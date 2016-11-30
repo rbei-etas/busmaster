@@ -59,7 +59,7 @@ public:
      *
      * @return S_OK for success, S_FALSE for failure
      */
-    virtual HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount) = 0;
+	virtual HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData) = 0;
 
     /**
      * Selects the hardware interface selected by the user.
@@ -82,7 +82,6 @@ public:
      *
      * @return S_OK for success, S_FALSE for failure
      */
-    virtual HRESULT CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length) = 0;
 
     /**
      * Sets the controller configuration data supplied by InitData.
@@ -180,4 +179,6 @@ public:
      */
     virtual HRESULT CAN_UnloadDriverLibrary(void) = 0;
     virtual HRESULT CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCnt) = 0;
+
+    virtual ~CBaseDIL_CAN_Controller() {}
 };

@@ -2,7 +2,7 @@
 #define ScheduleComboWidget_H
 
 #include <QComboBox>
-#include "IClusterProps.h"
+#include "LINDefines.h"
 
 class ScheduleComboWidget : public QComboBox
 {

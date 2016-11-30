@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="network_statistics" xml:lang="en-us">
+  <title>Network Statistics</title>
+  <prolog>
+    <author>Shashank Vernekar</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Network Statistics</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Network statistics dialog gives details about the messages transmitted and received on the bus. This information includes the number of Data Frames and Error messages transmitted and received by BUSMASTER and current rate of these parameters. Also information related to the total Wakeups and its rate will be displayed. This is updated once in a second. Message rate per second and Network load in terms of Bus traffic is also presented. The peak network load will show the peak traffic during that session. This information can be used to find bus utilisation. Statistics information will be cleared during connect and during controller reset.</p>
+    <p><image href="../images/Network_Stat_LIN.bmp"/></p>
+    <p>To invoke Network Statistics Dialog, select the menu <b>LIN --&gt; Network Statistics</b>.</p>
+  </body>
+</topic>

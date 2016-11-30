@@ -313,7 +313,7 @@ void CFlexListCtrl::OnClick(NMHDR* pNMHDR, LRESULT* pResult)
             {
                 CRect omRect;
                 GetSubItemRect(m_nRow, m_nColumn, LVIR_ICON, omRect);
-                if ( true == omRect.PtInRect( pNMListView->ptAction ) )
+                if ( TRUE == omRect.PtInRect( pNMListView->ptAction ) )
                 {
                     if ( ouUserProg.m_pfHandler != nullptr )
                     {
@@ -361,7 +361,11 @@ void CFlexListCtrl::OnKeyDown (UINT nChar, UINT nRepCnt, UINT nFlags)
             selectNext(nIncrement);
             break;
         }
-        case VK_LEFT:
+
+        //Currently disabling handling of key Left/Right/Up/Down events for 
+        // fixing Git hub issue 
+        //"#954 : Not able to traverse through the filter list using arrow keys"
+        /*case VK_LEFT:
         {
             nIncrement = -1;
             selectNext(nIncrement);
@@ -372,8 +376,7 @@ void CFlexListCtrl::OnKeyDown (UINT nChar, UINT nRepCnt, UINT nFlags)
             nIncrement = 1;
             selectNext(nIncrement);
             break;
-        }
-
+        }        
         case VK_UP :
         {
             nIncrement = -1*GetHeaderCtrl()->GetItemCount();
@@ -385,7 +388,7 @@ void CFlexListCtrl::OnKeyDown (UINT nChar, UINT nRepCnt, UINT nFlags)
             nIncrement = GetHeaderCtrl()->GetItemCount();
             selectNext(nIncrement);
             break;
-        }
+        }*/
         case VK_PRIOR:
         {
             nIncrement = -1*GetHeaderCtrl()->GetItemCount();

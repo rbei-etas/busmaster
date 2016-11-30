@@ -19,13 +19,13 @@ _StartoHTMLTable("LIN Message Window Module Test Report")
 
 ;------------------P1 test cases-----------------------------
 
-#include "TS_LIN_MSGWIN_01.au3"
+;#include "TS_LIN_MSGWIN_01.au3"
 ;----#include "TS_LIN_MSGWIN_02.au3"
-#include "TS_LIN_MSGWIN_04.au3"
+;#include "TS_LIN_MSGWIN_04.au3"              ; Menu state has to be checked manually
 ;#include "TS_LIN_MSGWIN_06.au3"
 #include "TS_LIN_MSGWIN_07.au3"
-#include "TS_LIN_MSGWIN_12.au3"
-#include "TS_LIN_MSGWIN_13.au3"
+;#include "TS_LIN_MSGWIN_12.au3"				 ; Menu state has to be checked manually
+;#include "TS_LIN_MSGWIN_13.au3"              ; Menu state has to be checked manually
 ;#include "TS_LIN_MSGWIN_16.au3"
 ;#include "TS_LIN_MSGWIN_17.au3"
 ;------Covers TS_MSGWIN_J1939_04.au3

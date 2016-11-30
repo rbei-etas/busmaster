@@ -38,6 +38,7 @@ if winexists($WIN_BUSMASTER) then
 	sleep(1500)
 	send("{ENTER}")
 	_addSigDetails("int","Signal1",32,0,0)													; Add the signal details
+
 	$sigDetlvhwd=controlgethandle($WIN_BUSMASTER,"",$LVC_SigDet_DBeditor)					; Get handle of signal details list view
 	$sigName=_GUICtrlListView_GetItemText($sigDetlvhwd,0,0)									; Fetch the signal name
 	$sigByteInd=_GUICtrlListView_GetItemText($sigDetlvhwd,0,1)								; Fetch the Byte Index
@@ -46,6 +47,12 @@ if winexists($WIN_BUSMASTER) then
 	$sigType=_GUICtrlListView_GetItemText($sigDetlvhwd,0,4)									; Fetch the signal type
 	$sigMaxVal=_GUICtrlListView_GetItemText($sigDetlvhwd,0,5)								; Fetch the signal Max value
 	$sigMinVal=_GUICtrlListView_GetItemText($sigDetlvhwd,0,6)								; Fetch the signal Min value
+
+	_ActivatechildWindow($WIN_DBEditor_CAN1)
+	WinClose($WIN_DBEditor_CAN1)
+	if WinWaitActive($WIN_BUSMASTER,$saveDBtxt,2) Then
+		ControlClick($WIN_BUSMASTER,"",$BTN_No_SaveDB)
+	EndIf
 	consolewrite("$sigName="&$sigName&@CRLF)
 	consolewrite("$sigLen="&$sigLen&@CRLF)
 	consolewrite("$sigType="&$sigType&@CRLF)

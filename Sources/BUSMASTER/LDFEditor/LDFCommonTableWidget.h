@@ -2,7 +2,7 @@
 #define LDFCOMMONTABLEWIDGET_H
 
 #include <QTableWidget>
-#include "IClusterProps.h"
+#include "LINDefines.h"
 
 class LDFCommonTableWidget : public QTableWidget
 {

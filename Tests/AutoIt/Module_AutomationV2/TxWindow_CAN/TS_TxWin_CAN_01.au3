@@ -22,6 +22,7 @@ Local $Timedelay=0,$VerifyMsg=1
 Local $m1_dbMsg_Rx1=0,$m1_dbMsg_Tx1=0,$m2_dbMsg_Tx1=0,$m2_dbMsg_Rx1=0
 Local $m1_dbMsg_Rx2=0,$m1_dbMsg_Tx2=0,$m2_dbMsg_Tx2=0,$m2_dbMsg_Rx2=0
 Local $Time1=0,$Time2=0,$Time3=0,$Time4=0
+$countRowChckBox=0
 
 _launchApp()
 
@@ -31,6 +32,7 @@ if winexists($WIN_BUSMASTER) then
 
     _loadConfig("TS_TxWin_CAN_01")
 	;_CANDriverSelectionXML()
+	;_DisableOverwriteMode()
 	sleep(500)
 	_TxMsgMenu()																				; Select CAN->Transmit->Configure menu
      sleep(1000)
@@ -39,14 +41,17 @@ if winexists($WIN_BUSMASTER) then
 
 
 	_CloseTxWindowArg("CAN")																	; Close Tx window
-	_DisableOverwriteMode()																		; Disable overwrite Mode
+	Sleep(1000)
+	;_DisableOverwriteMode()																    ; Disable overwrite Mode
+	;_DisableOverwriteModeAll($CANMenu)
+	Sleep(1000)
 	_ConnectDisconnect()																		; Connect CAN
 	sleep(1000)
 	_ConnectDisconnect()																		; DisConnect CAN
 
 	$rCount=_GetCANMsgWinItemCount()                                                            ; Fetch the no of items from message window
 	ConsoleWrite("$rCount="&$rCount&@CRLF)
-	If $rCount=8 Then
+	If $rCount=28 Then
 
 		;$Data1=_GetMsgWinCANInfo(0)                                                             ;Fetch messages from message window
 	    ;$Data2=_GetMsgWinCANInfo(1)

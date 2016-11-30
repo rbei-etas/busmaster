@@ -2445,15 +2445,13 @@ std::string CExecuteFunc::GetUniqueFrameName(IFrame* pouFrame)
     }
     std::ostringstream omstrTempFrameName;
     std::string strFrameName;
-    FrameProps ouProps;
-
-    pouFrame->GetProperties(ouProps);
+    
     pouFrame->GetName(strFrameName);
 
     return strFrameName;
 }
 
-ERRORCODE CExecuteFunc::GetUniqueFrameNames( int nChannel, std::map<std::string, IFrame*>& strNameList)
+ERRORCODE CExecuteFunc::GetUniqueFrameNames( int /*nChannel*/, std::map<std::string, IFrame*>& strNameList)
 {
     std::list<IFrame*> lstMsgNames;
 

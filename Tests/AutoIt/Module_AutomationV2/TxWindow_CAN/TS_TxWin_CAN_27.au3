@@ -18,6 +18,7 @@ ConsoleWrite("****Start : TS_TxWin_CAN_27au3****"&@CRLF)
 
 Local $VerifyCHNLBFRupdate=0,$VerifyCHNLAFTRupdate=0
 Local $dbMsg1_Rx=0,$dbMsg1_Tx=0,$dbMsg_ChnlUpdate_Rx=0,$dbMsg_ChnlUpdate_Tx=0
+$countRowChckBox=0
 
 _launchApp()
 WinActivate($WIN_BUSMASTER)

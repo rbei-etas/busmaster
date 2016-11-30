@@ -117,10 +117,11 @@ if winexists($mWin) then
 	EndIf
 
 	;WinClose($WIN_NW_Stats,$WIN_NW_Stats)														; Close network statistics window
+	_ActivatechildWindow($WIN_NW_Stats)
 	Send("!+{F4}",0)																			; Close network statistics window
-
+	Sleep(2000)
 	_CANNWStatsMenu()															; Open Network Statistics window
-
+	Sleep(2000)
 	; Fetch Total Messages row info
 	$uTotalMsgs_Parameter=_GetNWStatsInfo(0)
  	if $uTotalMsgs_Parameter[0]=$TotalMsgs_Parameter[0] and $uTotalMsgs_Parameter[1]=$TotalMsgs_Parameter[1] and $uTotalMsgs_Parameter[2]=$TotalMsgs_Parameter[2] Then
@@ -181,7 +182,7 @@ if winexists($mWin) then
 		$uavLoad=1
 	EndIf
 
-	WinClose($WIN_NW_Stats)														; Close network statistics window
+	;WinClose($WIN_NW_Stats)														; Close network statistics window
 
 EndIf
 

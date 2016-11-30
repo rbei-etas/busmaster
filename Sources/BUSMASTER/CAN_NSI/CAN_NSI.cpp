@@ -37,7 +37,7 @@
 //#include "DIL_Interface/BaseDIL_CAN_Controller.h"
 #include "BaseDIL_CAN_Controller.h"
 #include "DILPluginHelperDefs.h"
-#include "DIL_Interface\HardwareListing.h"
+#include "DIL_Interface\HardwareListingCAN.h"
 #include "ChangeRegisters.h"
 #include "../Application/MultiLanguage.h"
 #include "Utility/MultiLanguageSupport.h"
@@ -360,8 +360,8 @@ static BOOL bRemoveClient(DWORD dwClientId);
 BOOL Callback_DILNSI(BYTE /*Argument*/, PSCONTROLLER_DETAILS pDatStream, INT /*Length*/);
 int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/, PSCONTROLLER_DETAILS pControllerDetails, UINT nCount);
 static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails);
-int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount);
-static int nInitHwNetwork(UINT unDefaultChannelCnt = 0);
+int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount, PSCONTROLLER_DETAILS InitData);
+static int nInitHwNetwork(PSCONTROLLER_DETAILS InitData, UINT unDefaultChannelCnt = 0);
 static int nConnect(BOOL bConnect, BYTE /*hClient*/);
 static int nGetNoOfConnectedHardware(void);
 static int nSetApplyConfiguration();
@@ -398,10 +398,9 @@ public:
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
     HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
-    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
-    HRESULT CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
@@ -867,7 +866,7 @@ static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFS
 /// \authors       Arunkumar Karri
 /// \date          12.10.2011 Created
 ///---------------------------------------------------------------
-static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
+static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* /*File*/, int /*Line*/)
 {
     USES_CONVERSION;
 
@@ -1140,13 +1139,14 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
 /// \return       Operation Result. 0 incase of no errors.
 ///               Failure Error codes otherwise.
 ///---------------------------------------------------------------------------
-int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount)
+int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount, PSCONTROLLER_DETAILS InitData)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
     CWnd objMainWnd;
     objMainWnd.Attach(hParent);
-    CHardwareListing HwList(psInterfaces, nCount, pnSelList, CAN, CHANNEL_ALLOWED, &objMainWnd);
+	IChangeRegisters* pAdvancedSettings = new CChangeRegisters(nullptr, InitData, nCount);
+	CHardwareListingCAN HwList(psInterfaces, nCount, pnSelList, CAN, CHANNEL_ALLOWED, &objMainWnd, InitData, pAdvancedSettings);
     INT nRet = HwList.DoModal();
     objMainWnd.Detach();
 
@@ -1169,7 +1169,7 @@ int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelL
 /// \authors       Arunkumar Karri
 /// \date          12.10.2011 Created
 ///----------------------------------------------------------------------------
-static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
+static int nCreateMultipleHardwareNetwork(PSCONTROLLER_DETAILS InitData, UINT unDefaultChannelCnt = 0)
 {
     int nHwCount = sg_ucNoOfHardware;
     //DWORD dwFirmWare[2];
@@ -1249,7 +1249,7 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
         }
         nHwCount = unDefaultChannelCnt;
     }
-    else if ( ListHardwareInterfaces(sg_hOwnerWnd, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
+    else if ( ListHardwareInterfaces(sg_hOwnerWnd, sg_HardwareIntr, sg_anSelectedItems, nHwCount,InitData) != 0 )
     {
         return HW_INTERFACE_NO_SEL;
     }
@@ -1276,7 +1276,7 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
 /// \authors       Arunkumar Karri
 /// \date          12.10.2011 Created
 ///---------------------------------------------------------------------------------------------------
-static int nInitHwNetwork(UINT unDefaultChannelCnt)
+static int nInitHwNetwork(PSCONTROLLER_DETAILS InitData, UINT unDefaultChannelCnt)
 {
     int nChannelCount = 0;
     int nResult = NO_HW_INTERFACE;
@@ -1327,7 +1327,7 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
                 nResult = nCreateSingleHardwareNetwork();
             }
         }*/
-        nResult = nCreateMultipleHardwareNetwork(unDefaultChannelCnt);
+        nResult = nCreateMultipleHardwareNetwork(InitData, unDefaultChannelCnt);
     }
     return nResult;
 }
@@ -2112,13 +2112,13 @@ HRESULT CDIL_CAN_NSI::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& Ti
 /// \authors       Arunkumar Karri
 /// \date          12.10.2011 Created
 ///---------------------------------------------------------------------
-HRESULT CDIL_CAN_NSI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
+HRESULT CDIL_CAN_NSI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData)
 {
     //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_DRIVER_SELECTED, ERR_IMPROPER_STATE);
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
 
-    if (( hResult = nInitHwNetwork(nCount)) == 0)
+    if (( hResult = nInitHwNetwork(InitData, nCount)) == 0)
     {
         nCount = sg_nNoOfChannels; // Number of the selected device
         for(int i=0; i<nCount; i++)
@@ -2201,67 +2201,6 @@ HRESULT CDIL_CAN_NSI::CAN_DeselectHwInterface(void)
     /* Check for the success */
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
     return hResult;
-}
-
-///-------------------------------------------------------------
-/// \brief         Displays the controller configuration dialog.
-/// \param[out]    InitData, is SCONTROLLER_DETAILS structure
-/// \param[out]    Length , is INT
-/// \return        S_OK for success
-/// \authors       Arunkumar Karri
-/// \date          12.10.2011 Created
-///-------------------------------------------------------------
-HRESULT CDIL_CAN_NSI::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
-{
-    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
-    VALIDATE_POINTER_RETURN_VAL(InitData, S_FALSE);
-
-    HRESULT Result = S_FALSE;
-    PSCONTROLLER_DETAILS pControllerDetails = (PSCONTROLLER_DETAILS)InitData;
-    //First initialize with existing hw description
-    for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++)
-    {
-        pControllerDetails[i].m_omHardwareDesc  = sg_aodChannels[i].m_strName;
-    }
-    if (sg_ucNoOfHardware > 0)
-    {
-        Result = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILNSI, pControllerDetails, sg_ucNoOfHardware);
-        switch (Result)
-        {
-            case WARNING_NOTCONFIRMED:
-            {
-                Result = WARN_INITDAT_NCONFIRM;
-            }
-            break;
-            case INFO_INIT_DATA_CONFIRMED:
-            {
-                bLoadDataFromContr(pControllerDetails);
-                nSetApplyConfiguration();
-                for(int i = 0; i < defNO_OF_CHANNELS; i++)
-                {
-                    sg_ControllerDetails[i] = pControllerDetails[i];
-                    InitData[i] = pControllerDetails[i];
-                }
-
-                Length = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
-                Result = S_OK;
-            }
-            break;
-            case INFO_RETAINED_CONFDATA:
-            {
-                Result = INFO_INITDAT_RETAINED;
-            }
-            break;
-            case ERR_CONFIRMED_CONFIGURED: // Not to be addressed at present
-            case INFO_CONFIRMED_CONFIGURED:// Not to be addressed at present
-            default:
-            {
-                // Do nothing... default return value is S_FALSE.
-            }
-            break;
-        }
-    }
-    return Result;
 }
 
 ///------------------------------------------------------------------------------
@@ -2690,7 +2629,7 @@ HRESULT CDIL_CAN_NSI::CAN_UnloadDriverLibrary(void)
 {
     return S_OK;
 }
-HRESULT CDIL_CAN_NSI::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
+HRESULT CDIL_CAN_NSI::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD /*dwDriverId*/,bool /*bIsHardwareListed*/, unsigned int /*unChannelCount*/)
 {
     return S_OK;
 }

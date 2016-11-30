@@ -134,6 +134,12 @@ public:
     unsigned char m_ucDir;
     ULONGLONG m_ulTimeStamp;
     int           m_nSubError;   //added for providing Error bit details
+
+    SERROR_INFO_LIN()
+    {
+        this->m_ucTxErrCount = 0;
+        this->m_ucRxErrCount = 0;
+    }
 };
 
 typedef SERROR_INFO_LIN* PSERROR_INFO_LIN;

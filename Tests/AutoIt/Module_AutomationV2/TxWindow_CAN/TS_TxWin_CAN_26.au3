@@ -18,7 +18,7 @@ ConsoleWrite(@CRLF)
 ConsoleWrite("****Start : TS_TxWin_CAN_26.au3****"&@CRLF)
 
 Local $VerifyMsgTypeBFR=0,$VerifyMsgTypeAFTR=0
-
+$countRowChckBox=0
 
 
 _launchApp()

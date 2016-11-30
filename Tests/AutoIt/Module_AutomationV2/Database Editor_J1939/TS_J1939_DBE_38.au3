@@ -95,6 +95,11 @@ If winexists($WIN_BUSMASTER) then
 	ConsoleWrite($GetPopUp_Text[1]&@Crlf)
 	ConsoleWrite($GetPopUp_Text[2]&@Crlf)
 
+	_ActivatechildWindow($WIN_DBEditor_J19391)
+	WinClose($WIN_DBEditor_J19391)
+	if WinWaitActive($WIN_BUSMASTER,$saveDBtxt,2) Then
+		ControlClick($WIN_BUSMASTER,"",$BTN_No_SaveDB)
+	EndIf
 EndIf
 
 ConsoleWrite("$DupSigDesc: "&$DupSigDesc&@CRLF)

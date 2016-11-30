@@ -21,7 +21,7 @@
     <note>
       <ul>
         <li>Logging will fail if the log file is not present in the specified location.</li>
-        <li>Logging status is stored in coniguration file and logging will be started automatically during application startup if it is enabled and saved in the configuration file.</li>
+        <li>Logging status is stored in configuration file and logging will be started automatically during application startup if it is enabled and saved in the configuration file.</li>
       </ul>
     </note>
   </body>

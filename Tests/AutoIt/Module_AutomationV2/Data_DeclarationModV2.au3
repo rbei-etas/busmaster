@@ -93,7 +93,7 @@ $savebtnDBInst2="[CLASS:Button; INSTANCE:2]"						; Save button instance in file
 ;==============================================
 $WIN_SelCAN_DBFile="Select BUSMASTER Database Filename..."
 $dlgoDbf="Select BUSMASTER Database Filename..."
-;$TXT_FileName_OpenDB=1152												; controlID for the 'File Name' Edit control in 'Select BUSMASTER Database Filename' dialog
+;$TXT_FileName_OpenDB=1148												; controlID for the 'File Name' Edit control in 'Select BUSMASTER Database Filename' dialog
 $TXT_FileName_OpenDB="[CLASS:Edit; INSTANCE:1]"												; controlID for the 'File Name' Edit control in 'Select BUSMASTER Database Filename' dialog
 ;$selDbffNameCtrlID=1152												; controlID for the 'File Name' Edit control in 'Select BUSMASTER Database Filename' dialog
 $selDbffNameCtrlID=1001												; controlID for the 'File Name' Edit control in 'Select BUSMASTER Database Filename' dialog
@@ -125,7 +125,8 @@ $BTN_Open_AssocDBJ1939="[CLASS:Button; INSTANCE:1]"
 $WIN_Dissociate_CANDB="Dissociate Database"
 $BTN_Dissoc_Dis_CANDB=1285											; controlID for the dissociate button in Dissociate database window
 $dissocBTNctlID=1285												; controlID for the dissociate button in Dissociate database window
-$BTN_Cancel_Dis_CANDB=2												; controlID for 'Cancel' button in Dissociate DB window
+;$BTN_Cancel_Dis_CANDB=2												; controlID for 'Cancel' button in Dissociate DB window
+$BTN_Cancel_Dis_CANDB="OK"												; controlID for 'Cancel' button in Dissociate DB window
 $cancelDisBTNctrlID=2												; controlID for 'Cancel' button in Dissociate DB window
 $LSTB_DBFile_Dis_CANDB="[CLASS:ListBox; INSTANCE:1]"				; List Box instance in File->database->dissociate window
 $dissocdbflbinst1="[CLASS:ListBox; INSTANCE:1]"						; List Box instance in File->database->dissociate window
@@ -136,7 +137,9 @@ $BTN_Yes_disDBtxt=6                                                 ; Control id
 ; Database Editor - CAN
 ;==============================================
 $WIN_DBEditor_CAN="BUSMASTER - [DatabaseEditor - CAN]"
+$WIN_DBEditor_CAN1 = "DatabaseEditor - CAN"
 $WIN_DBEditor_J1939="BUSMASTER - [DatabaseEditor - J1939]"
+$WIN_DBEditor_J19391="DatabaseEditor - J1939"
 $windbEditCAN="BUSMASTER - [DatabaseEditor - CAN]"
 $WIN_Msg_Details="Message Details"
 $dlgmsgDtails="Message Details"
@@ -256,7 +259,7 @@ $BTN_OK_MsgDisplay=1												; controlID for 'OK' button  in Configure msg di
 $okConMsgDispBTNctrlID=1											; controlID for 'OK' button  in Configure msg display window
 $TabConfigMsgDisp=12320                                             ;Control id for message display configure tab
 $LSTDBMsgs=1235                                                     ;List view of DB messages
-$CANMsgDispConfigMenu="&Configure"
+$CANMsgDispConfigMenu="C"
 $LSTNonDBMsgs=1235
 ;==============================================
 ; Filter Selection Dialog
@@ -423,11 +426,13 @@ $BTN_DelAllFilterYes_BM=6																; Control ID for 'Yes' button
 ;==============================================
 ;Data declaration for Replay window
 ;==============================================
-$CANReplayMenu="&Replay"
-$CANReplayConfigMenu="&Configure"
-$CANReplayGoMenu="&Go"
-$CANReplayStopMenu="S&top"
-$CANEnableFilterReplayMenu="Enable &Filters"
+$CANReplayMenu="RP"
+$CANReplayConfigMenu="C"
+$CANReplayGoMenu="G"
+$CANReplayStepMenu="S"
+$CANReplaySkipMenu="K"
+$CANReplayStopMenu="T"
+$CANEnableFilterReplayMenu="F"
 $WIN_CANReplayConfig="Replay Configuration"
 $BTN_DELFile_CANReplayConfig=4												; Delete button control ID
 $BTN_ADDFile_CANReplayConfig=1262											; Add button control ID
@@ -462,15 +467,15 @@ $BTN_OK_About=1
 ;==============================================
 ;Network Statistics
 ;==============================================
-$CANNWStatsMenu="&Network Statistics"
+$CANNWStatsMenu="NT"
 $WIN_NW_Stats="Network Statistics"
 $LVC_Details_NW_Stats="[CLASS:SysListView32; INSTANCE:1]"						; List View instance in Network Statistics window
 
 ;==============================================
 ;CAN Node Simulation
 ;==============================================
-$CANNodeSimMenu="Node Sim&ulation"												; CAN->Node Simulation
-$CANNodeSimConfigMenu="&Configure"												; CAN->Node Simulation->Configure
+$CANNodeSimMenu="N"												; CAN->Node Simulation
+$CANNodeSimConfigMenu=""												; CAN->Node Simulation->Configure
 $TVC_NodeSim_ConfigCANNodeSim="[CLASS:SysTreeView32; INSTANCE:1]"				; Tree View instance in Configure Simulated Systems for CAN window
 $TVC_Handlers_CPP="[CLASS:SysTreeView32; INSTANCE:1]"							; Tree View instance in Cpp file
 $TVC_Handlers_CPPJ1939="[CLASS:SysTreeView32; INSTANCE:1]"                       ;Tree View instance in Cpp file in J1939
@@ -542,9 +547,9 @@ $BTN_OK_UtilFun = "[CLASS:Button; INSTANCE:1]"									; OK button in Utils Funr
 ;==============================================
 ;Signal Watch Window
 ;==============================================
-$CANSigWatchMenu="Sign&al Watch"												; CAN "Signal Watch" menu
-$J1939SigWatchMenu="&Signal Watch"												; J1939 "Signal Watch" menu
-$SigWatchConfigMenu="&Configure"												; "Configure" menu
+$CANSigWatchMenu="S"												; CAN "Signal Watch" menu
+$J1939SigWatchMenu="S"												; J1939 "Signal Watch" menu
+$SigWatchConfigMenu="S"												; "Configure" menu
 $SigWatchActivateMenu="&Activate"												; "Activate" menu
 $WIN_SigWatchConfig="Signal Watch List"											; Window title for Signal Watch List
 $WIN_SigWatch="Signal Watch - "													; Window title for Signal Watch
@@ -572,9 +577,10 @@ $LSTB_Details_TraceWinInfo="[CLASS:ListBox; INSTANCE:2]"
 ;Test Automation Window
 ;==============================================
 
-$TestAutomationMenu="T&est Automation"
-$TestAutomationEditMenu="&Editor"
-$TestAutomationExeMenu="E&xecutor"
+$WIN_TestAutomationEditorTitle="Test Automation Editor"
+$TestAutomationMenu="TA"
+$TestAutomationEditMenu="E"
+$TestAutomationExeMenu="TE"
 $TestAutomationFileMenu="&File"
 $TestAutomationNewMenu="&New"
 $TestAutomationVal="&Validate"
@@ -596,6 +602,7 @@ $TXT_XmlFPath_TestExeOpen="[CLASS:Edit; INSTANCE:1]"														; File path co
 ;$BTN_Open_TestExeOpen="[CLASS:Button; INSTANCE:2]"									; Open button instance
 $BTN_Open_TestExeOpen="[CLASS:Button; INSTANCE:1]"									; Open button instance
 $Win_TestSetup_TestEditor="New TestSetup File"
+$Win_TestSetup_open="Select A TestSetup File"
 ;$Edit_FName_NewTestSetupFile=1152
 $Edit_FName_NewTestSetupFile="[CLASS:Edit; INSTANCE:1]"
 ;$BTN_Save_NewTestSetupFile="[CLASS:Button; INSTANCE:2]"
@@ -688,8 +695,8 @@ $InterpretMsgMenu="&Interpret"
 ;==============================================
 
 
-$J1939NodeSimMenu="&Node Simulation"                                                    ;J1939->Node Simulation
-$J1939NodeSimConfigMenu="&Configure"	                                                   ;J1939->NodeSimulation->Configure
+$J1939NodeSimMenu="N"                                                    ;J1939->Node Simulation
+$J1939NodeSimConfigMenu="N"	                                                   ;J1939->NodeSimulation->Configure
 $BTN_BuildLoad_ConfigJ1939NodeSim=1004                                                    ;Control Id for Build And Load Button
 $J1939TXT_PrefAddress=4000                                                                ;Control Id for Preffered Address edit box in Node details
 $J1939TXT_ECUName=4001
@@ -703,58 +710,74 @@ $TXT_EventHandler_CPPFile=59664
 ;Data declaration for Menu Text
 ;==============================================
 
-$fileMenu="&File"
-$configMenu="Confi&guration"
-$loadMenu="&Load"
-$newMenu="&New"
-$CANMenu="&CAN"
-$saveConfig="&Save"
-$databaseMenu="&Database"
-$AssocCANDB="&Associate"
-$DissocCANDB="&Dissociate"
-$openMenu="&Open"
-$saveMenu="&Save"
-$DBSaveAsMenu="Sa&ve As"
-$closeMenu="&Close"
-$saveImportMenu="Save and Im&port"
-$configureMenu="&Configure"
-$configHWMenu="&Configure"
+$fileMenu="!F"
+$configMenu=""
+$loadMenu="L"
+$newMenu="N"
+$CANMenu="!C"
+$saveConfig="S"
+$databaseMenu="DB"
+$AssocCANDB="A"
+$DissocCANDB="D"
+$openMenu="O"
+$saveMenu="S"
+$DBSaveAsMenu="V"
+$closeMenu="X"
+$closeMenuDBEditor = "C"
+$saveImportMenu="P"
+$configureMenu="C"
+$configHWMenu="C"
 $HardwareMenu="&Hardware"
 $HWIMenu="&Hardware Interface"
-$kvaserHWMenu="&Kvaser CAN"
-$configTxmenu="&Configure"
-$TxMsgMenu="&Transmit"
-$AppFilterMenu="&Filter Configuration"
+$configTxmenu=""
+$TxMsgMenu="TW"
+;$AppFilterMenu="&Filter Configuration"
+$AppFilterMenu="FT"
 $MsgDisplay="&Message Display"
 $FunctionsMenu="F&unctions"
-$enableFilterMenu="Enable &Filter"
+$enableFilterMenu="E"
 $displayMenu="&Display"
-$EnableFilterDisp="&Enable Filters"
-$EnableFilterLogMenu="&Enable Filters"
-$transmitMenu="&Transmit"
-$EnableTransmitMenu="&Enable"
+$EnableFilterDisp="F"
+$EnableFilterLogMenu="F"
+$transmitMenu="TW"
+$EnableTransmitMenu="&Enable"	;NA
 $normalBlckMenu="&Normal Blocks"
-$CANMsgWinMenu="&Message Window"
-$J1939Menu="&J1939"
-$J1939LogMenu="&Logging"
-$J1939DBMenu="&Database"
-$J1939AssocDB="&Associate"
-$J1939DissocDB="&Dissociate"
+$CANMsgWinMenu="MW"
+$J1939Menu="!J"
+$J1939LogMenu="LG"
+$J1939DBMenu="DB"
+$J1939AssocDB="A"
+$J1939DissocDB="D"
 $J1939ViewMenu="&View"
-$J1939MsgWinMenu="&Message Window"
-$J1939MsgWinAct="&Activate"
-$J1939MsgWinDeact="D&eactivate"
-$CANLogMenu="&Logging"
-$LogMenu="L&og"
-$LogFilterMenu="&Log"
+$J1939MsgWinMenu="MW"
+$J1939MsgWinAct="AT"
+$J1939MsgWinDeact="AT"
+$CANLogMenu="LG"
+$LogMenu="LG"
+$LogFilterMenu="F"
 $HelpMenu="&Help"
-$AboutBusmaster="&About BUSMASTER"
-$FomatConverterMenu="&Format Converters"
-$GoOnlineJ1939 = "&Go Online"
-$GoOfflineJ1939="&Go Offline"
-$J1939TransmitMenu="&Transmit"
-$Exit="E&xit"
-$DriverSelectMenu="Dri&ver Selection"
+$AboutBusmaster="I"
+$FomatConverterMenu="FC"
+$GoOnlineJ1939 = "AT"
+$GoOfflineJ1939="AT"
+$J1939TransmitMenu="TW"
+$Exit="X"
+$DriverSelectMenu="V"
+$Tool = "!T"
+$CANDBMenuTool = "CE"
+$J1939DBMenuTool = "JE"
+$connectCAN = "CN"
+$overwritej1939 = "O"
+$clearMsgwin = "E"
+$messageWindow = "MW"
+$overwriteMode = "O"
+;----driver Selection mneu---
+
+$canDriversel = "DS"
+$kvaserHWMenu="K"
+$ixxatHWMenu="X"
+$nsiHWMenu="N"
+
 ;==============================================
 ;Data declaration for Button Text
 ;==============================================
@@ -854,23 +877,23 @@ $Static_Version_About=1153											; controlID for Busmaster version in About 
 $BMVersionStaticctrlID=1153											; controlID for Busmaster version in About dialog
 ;$TXT_FileName_AssoJ1939DB=1152                                      ;control ID for J1939 Associate DB path
 $TXT_FileName_AssoJ1939DB="[CLASS:Edit; INSTANCE:1]"                                     ;control ID for J1939 Associate DB path
-$CHKB_J1939Transport=1013                                           ;Control ID for J1939 Transport Protocol Check box in transmit window
-$J1939PGNctrlID=1346                                                ;Control ID for PGN combo box in J1939 transmit window
-$J1939MsgtypeCtrlID=1058                                            ;Control ID for message type edit control in J1939 Transmit Window
-$J1939PriorityCtrlID=1348                                           ;Control ID for Priority edit control in J1939 Transmit Window
-$J1939DLC_CtrlID=1125                                               ;Control ID for DLC edit control in J1939 transmit window
-$J1939DataCtrlID=1016                                               ;Control ID for Databytes edit control in J1939 transmit window
-$J1939FromAddCtrlID=1333                                             ;Control ID for From Address edit control in J1939 transmit window
-$J1939ToAddCtrlID=1181                                              ;Control ID for To Address edit control in J1939 transmit window
-$J1939NMCtrlID=1335                                                 ;Control ID for Network Management Checkbox in J1939 transmit window
-$J1939NMAddCtrlID=1336                                              ;Control ID for Network Management Address Edit Control in J1939 transmit window
-$CHKB_J1939ReqAdd=1008                                              ;Control ID for Request Address Edit Control in J1939 transmit window
-$CHKB_J1939CommAdd=1009                                             ;Control ID for Command Address Edit Control in J1939 transmit window
-$BTN_J1939Transmit=1011                                             ;Control ID for Transmit button in J1939 transmit window
-$BTN_Yes_DeleteBlk=6                                                ;controlID for 'Yes' button in a warning pop up message for delete message Block in Configure Transmission messages
-$BTN_AddCppFile_ConfigJ1939NodeSim=1001	                            ;control Id for Add New File button in Node Simulation
-$WIN_RegEdit="Registry Editor"                                      ;Registry editor Window
-$TVC_RegEdit=1                                                      ;Control id for Tree view in Registry Editor
+$CHKB_J1939Transport=1013                                           ; Control ID for J1939 Transport Protocol Check box in transmit window
+$J1939PGNctrlID=1346                                                ; Control ID for PGN combo box in J1939 transmit window
+$J1939MsgtypeCtrlID=1058                                            ; Control ID for message type edit control in J1939 Transmit Window
+$J1939PriorityCtrlID=1348                                           ; Control ID for Priority edit control in J1939 Transmit Window
+$J1939DLC_CtrlID=1125                                               ; Control ID for DLC edit control in J1939 transmit window
+$J1939DataCtrlID=1016                                               ; Control ID for Databytes edit control in J1939 transmit window
+$J1939FromAddCtrlID=1333                                            ; Control ID for From Address edit control in J1939 transmit window
+$J1939ToAddCtrlID=1181                                              ; Control ID for To Address edit control in J1939 transmit window
+$J1939NMCtrlID=1335                                                 ; Control ID for Network Management Checkbox in J1939 transmit window
+$J1939NMAddCtrlID=1336                                              ; Control ID for Network Management Address Edit Control in J1939 transmit window
+$CHKB_J1939ReqAdd=1008                                              ; Control ID for Request Address Edit Control in J1939 transmit window
+$CHKB_J1939CommAdd=1009                                             ; Control ID for Command Address Edit Control in J1939 transmit window
+$BTN_J1939Transmit=1011                                             ; Control ID for Transmit button in J1939 transmit window
+$BTN_Yes_DeleteBlk=6                                                ; controlID for 'Yes' button in a warning pop up message for delete message Block in Configure Transmission messages
+$BTN_AddCppFile_ConfigJ1939NodeSim=1001	                            ; control Id for Add New File button in Node Simulation
+$WIN_RegEdit="Registry Editor"                                      ; Registry editor Window
+$TVC_RegEdit=1                                                      ; Control id for Tree view in Registry Editor
 $LST_CfxFiles_RegEdit=2
 
 
@@ -899,10 +922,10 @@ $yesbtndel="[CLASS:Button; INSTANCE:1]"								; Clicking on yes button to delet
 $DefConfigFilePath="[CLASS:Edit; INSTANCE:1]"						; Edit control instance of File path in "Save Configuration File" for default config
 $DefConfigFileSaveBTNinst2="[CLASS:Button; INSTANCE:2]"				; Save button instance in "Save Configuration File" for default config
 $msglistInst="[CLASS:SysListView32; INSTANCE:3]"					; List View instance for messages in message block
-$LSTC_J1939MsgWin="[CLASS:SysListView32; INSTANCE:1]"                ;List view instance for J1939 Messsage window
+$LSTC_J1939MsgWin="[CLASS:SysListView32; INSTANCE:1]"               ; List view instance for J1939 Messsage window
 
-$COMB_KeyType_ConfigTX_INST="[CLASS:ComboBox; INSTANCE:3]"           ;Key type instance for key trigger in Configure CAN messages
-$BTN_YesConfirmSaveAsConfig="[CLASS:Button; INSTANCE:1]"                 ;Instance for Yes Button to confirm save As dialog that pops up
+$COMB_KeyType_ConfigTX_INST="[CLASS:ComboBox; INSTANCE:3]"          ; Key type instance for key trigger in Configure CAN messages
+$BTN_YesConfirmSaveAsConfig="[CLASS:Button; INSTANCE:1]"            ;Instance for Yes Button to confirm save As dialog that pops up
 
 ;==================================================
 ;Data Declaration for warning pop up messsage text
@@ -1013,10 +1036,10 @@ $BTNExcSaveOutput="[CLASS:Edit; INSTANCE:1]"
 ;=================================================================================================
  ;Data Declaration for LIN
 ;==================================================================================================
-$linMenu = "&LIN"  																		;LIN menu item
+$linMenu = "!L"  																		;LIN menu item
 $WIN_SelectLDFFile ="Select A LDF File"													;Window for selecting LDF file
-$Lindriver = "&Vector XL"																;menu item for Vector XL
-$LindriverSelectMenu ="&Driver Selection"												;Menu For Driverselection
+$Lindriver = "V"																		;menu item for Vector XL
+$LindriverSelectMenu ="DS"																;Menu For Driverselection
 $LinHwSelect = "[CLASS:SysListView32; INSTANCE:1]"										;Selected Hardware List View instance
 $WinHwSelection= "Hardware Selection"													;Window for Hardware Selection
 $BTN_Add_HwSelect = "[CLASS:Button; INSTANCE:1]"										;Instance for "Select" button in hardware selection
@@ -1024,8 +1047,8 @@ $BTN_OK_HwSelect = "[CLASS:Button; INSTANCE:3]"											;Instance for "OK" but
 $LinEcuListView = "[CLASS:SysListView32; INSTANCE:1]" 									;ECU List View instance
 $LinEnableMasterMode = 1015																;control id for check box of enable master mode
 $LVC_CID_LINMsgWin=200																	;control id for LIN message window
-$TxMsgMenuLin = "T&ransmit"																;tx menu for LIN
-$configTxmenuLin = "Confi&gure"															;config menu for Lin
+$TxMsgMenuLin = "TW"																	;tx menu for LIN
+$configTxmenuLin = "DS"																	;config menu for Lin
 $enableMaster_ConfigTXLIN = 1213														;controlID for 'master' radio button in LIN TX window
 $enableSlave_ConfigTXLIN = 1214															;controlID for 'salve' radio button in LIN TX window
 $BTN_AddMsg_ConfigTXLIN = 1250															;controlID for 'Add Message' button in LIN Tx window
@@ -1034,28 +1057,36 @@ $LinTxFrameList = "[CLASS:Button; INSTANCE:1]"
 $LSTC_LINMsgWin= "[CLASS:SysListView32; INSTANCE:1]"									;List View instance in Message window
 $WIN_LINMsgWind="BUSMASTER - [Message Window - LIN]"
 $WIN_MsgDisplay_LIN = "Configure Message Display - LIN"
-$LINMsgWinMenu = "&Message Window"
-$configMsgWindowLIN = "&Configure"
+$LINMsgWinMenu = "MW"
+$configMsgWindowLIN = "C"
 $LinconfgMsgDisp = "[CLASS:SysListView32; INSTANCE:1]"									;Instance for list view of config message Display.
 $WIN_Config_filter_LIN = "Configure Filter List - LIN"
 ;$BTN_Close_ConfigFilter =																; controlID for 'Close' button  in Configure filter window -LIN
 $FilterListLIN = 1000																	; controlID for Filter List in Configure filter window -LIN
-$LINSigWatchMenu = "Sign&al Watch"														; LIN "Signal Watch" menu
-$WinSigwatchConfigLIN = "Signal Watch Configure"										; Window for Signal Watch Configure - LIN
+$LINSigWatchMenu = "SW"																	; LIN "Signal Watch" menu
+$WinSigwatchConfigLIN = "SW"															; Window for Signal Watch Configure - LIN
 $LSTC_LINSigWatConfigWin = "[CLASS:SysTreeView32; INSTANCE:1]"							; List View instance in signal watch configure -Window for LIN
-$saveAsMenu = "Save &As..."
+$saveAsMenu = "A"
 $WIN_SaveAsCfx="SaveAs Configuration Filename..."										; SaveAs configuration dialog text
 $BTN_SaveAsInst_Cfx = "[CLASS:Button; INSTANCE:1]"
 $LSTC_LINSigWatchgWin = "[CLASS:SysListView32; INSTANCE:1]"
 $WIN_SigWatchLIN = "Signal Watch - LIN"
-$EnableMsgWindowLIN = "&Enable Filters"
+$EnableMsgWindowLIN = "F"
 $WIN_LINLog="Configure Logging for LIN"
-$LINLogMenu="L&ogging"
+$LINLogMenu="LG"
 $WIN_LINMsgWind="BUSMASTER - [Message Window - LIN]"
-$LINDriverSelMenu="&Driver Selection"													; Driver selection menu
+$LINDriverSelMenu="V"																	; Driver selection menu
 $View = "&View"
-$Toolbar = "&Toolbar"
-
+$Toolbar = "T"
+$ClusterConfigMenu="CC"                                           						; Cluster Configuration menu item
+$WIN_ClusterConfiguration="Cluster Configuration"
+$BTN_OK_ClusterConfig=1                                                               	; Control id for OK Button
+$view = "V"																				; View
+$dec = "DH"
+$hex = "DH"
+$connectLIN = "CN"																		; Connect LIN
+$activateLinMsgWin = "A"																; LIN - Message window Activate Ribbon Bar
+$winLinMsgWin = "Message Window - LIN"
 ;=================================================================================================
  ;Node Simulation
 ;==================================================================================================
@@ -1063,8 +1094,8 @@ $Toolbar = "&Toolbar"
 $BTN_Brows_NodeDetails = "[CLASS:Button; INSTANCE:1]"
 $WinselectFile= "Select the File"
 $WIN_TestCPP_BUSMASTER="BUSMASTER - TestNode_cppFile.cpp"								; CPP file window
-$NodeSimMenu = "Node Sim&ulation"														; Node Simulation
-$NodeSimConfigMenu = "&Configure"														; Config menu for node sim
+$NodeSimMenu = "NS"																		; Node Simulation
+$NodeSimConfigMenu = ""																	; Config menu for node sim
 $COMB_SlotID = 4028																		; Combo Box ID of Slot ID
 $COMB_BaseCycle= 4016																	; Combo Box ID of Base Cycle
 $COMB_Repetition = 4026																	; Combo Box ID of Repetition
@@ -1089,7 +1120,7 @@ $LDFFilePath = "[CLASS:Edit; INSTANCE:1]"												; Instance of LDF file path
 $ChannelSelInCCLIN="[CLASS:ComboBox; INSTANCE:1]"										; Instance of Channel Selection in LIN cluster Configuration
 $chckBoxEnableMaster = "[CLASS:Button; INSTANCE:8]"										; Check Box instance for enable master in Lin cluster configuration
 $toolBarLin="[CLASS:ToolbarWindow32; INSTANCE:3]"										; Tool Bar instance for LIN
-$EnableFilterLin = "&Enable Filters"
+$EnableFilterLin = "F"
 ;=================================================================================================
  ;CAN Tx Windown
 ;==================================================================================================
@@ -1118,3 +1149,31 @@ $EDIT_Filesize_ConfigLOG=2029																					;controlID for the editbox for
 $EDIT_Hours_ConfigLOG=2032																						;controlID for the editbox for hours
 $EDIT_Minutes_ConfigLOG=2034																					;controlID for the editbox for minutes
 $EDIT_InsertComments_ConfigLOG=2038																			    ;controlID for the editbox for InsertComments
+;=================================================================================================
+ ;Busmaster - Menu index
+;==================================================================================================
+$index_Trace = 5																		; Index of Trace menu
+$index_View_TraceWin = 0																; Index of View->Trace menu
+$index_View = 5																			; Index of View menu
+$index_View_Toolbar = 3																	; Index of View -> Tollbar menu
+$index_View_Toolbar_Lin = 5																; Index of View -> Tollbar->Lin  menu
+$index_View_Hex = 1																		; Index of View->Hex menu
+$index_Lin = 4																			; Index of Lin
+$index_Lin_MsgWin = 8																	; Index of Lin->msgWin
+$index_Lin_MsgWin_TimeMode = 5															; Index of Lin->msgWin->TimeMode
+$index_Lin_MsgWin_TimeMode_Rel = 2														; Index of Lin->msgWin->TimeMode->Relative
+;=================================================================================================
+ ;Advanced log File-CAN--- Added by Meghna
+;==================================================================================================
+$PEAKUSBMenu= "P"
+$ISOLAREVE= "L"
+$MessageWindowMenu= "M"
+$ActiveMenu= "A"
+$WindowMenu= "&Window"
+$1MessageWindowCANMenu= "1 Message Window-CAN"
+$OverwriteMenu= "O"
+$InterpretMenu= "I"
+$TimeModeMenu= "M"
+$SystemTimeMenu= "S"
+$ETASBOAMenu= "B"
+$ToolBar_Con_DisconnectLIN=334

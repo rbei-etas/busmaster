@@ -39,12 +39,14 @@ public:
 
     BOOL InitInstance(void);
     int ExitInstance(void);
+	void vInitialize( SCONTROLLER_DETAILS& controller, BOOL bUpdateHWDesc );
 
     /* Variable to maintain currently selected Driver ID */
     DWORD m_dwDriverID;
     /* Variable to store previously selected Driver ID */
     DWORD m_dwOldDriverID;
 
+	SCONTROLLER_DETAILS m_asOldControllerDetails[defNO_OF_CHANNELS];
     /* member variable to hold the pointer of currently selected controller interface */
     CBaseDIL_CAN_Controller* m_pBaseDILCAN_Controller;
     /* member variable to hold the previously selected controller interface */
@@ -118,7 +120,7 @@ public:
      * Call this function to list the hardware interfaces available and receive
      * user's choice.
      */
-    HRESULT DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+	HRESULT DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData, bool bLoadedFromXml = 0);
 
     /**
      * Call this function to select hardware interfaces.
@@ -136,7 +138,6 @@ public:
      * as InitData. If it is null, the dialog box is uninitialised. This also contains
      * the user's choice as OUT parameter
      */
-    HRESULT DILC_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
 
     /**
      * To set the configuration data for the currently selected DIL. Caller must

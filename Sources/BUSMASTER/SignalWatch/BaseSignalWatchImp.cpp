@@ -39,7 +39,7 @@ HRESULT CBaseSignalWatchImp::SW_DoInitialization(IBMNetWorkGetService* dbCluster
     DoInitialization();
     return StartSigWatchReadThread() ? S_OK : S_FALSE;
 }
-HRESULT CBaseSignalWatchImp::SW_ShowAddDelSignalsDlg(CWnd* pParent, void* dbCluster)
+HRESULT CBaseSignalWatchImp::SW_ShowAddDelSignalsDlg(CWnd* pParent, void* /*dbCluster*/)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     //mDbCluster = (IBMNetWorkGetService*)dbCluster;
@@ -52,7 +52,7 @@ HRESULT CBaseSignalWatchImp::SW_ShowAddDelSignalsDlg(CWnd* pParent, void* dbClus
     int nRet = odDlg.DoModal();
     return (HRESULT)nRet;
 }
-HRESULT CBaseSignalWatchImp::SW_ShowSigWatchWnd(CWnd* pParent, HWND hMainWnd, INT nCmd)
+HRESULT CBaseSignalWatchImp::SW_ShowSigWatchWnd(CWnd* /*pParent*/, HWND hMainWnd, INT nCmd)
 {
     if (nullptr == m_pouSigWnd)
     {
@@ -78,52 +78,59 @@ HRESULT CBaseSignalWatchImp::SW_GetConfigData(xmlNodePtr pNodePtr)
         for (int i = 0; i < nChannelConfig; i++)
         {
             ICluster* pDbService;
-            mDbCluster->GetDBService(mBusType, i, 0, &pDbService);
-            if (pDbService == nullptr)
-            {
-                continue;
-            }
-            pDbService->GetElementList(eFrameElement, lstNumofFrames);
-            auto itr = lstNumofFrames.begin();
-            while (itr != lstNumofFrames.end())
-            {
-                int selkey = -1;
-                ((IFrame*)itr->second)->GetFrameId(unId);
-                if (m_mapMsgIDtoSignallst->find(unId) != m_mapMsgIDtoSignallst->end())
-                {
-                    selkey = m_mapMsgIDtoSignallst->find(unId)->first;
-                }
-                CString strMessageId = "";
-                if (selkey == unId)
-                {
-                    xmlNodePtr pMsgTagPtr = xmlNewNode(nullptr, BAD_CAST DEF_MESSAGE);
-                    xmlAddChild(pNodePtr, pMsgTagPtr);
-                    strMessageId.Format("%d", selkey);
 
-                    /* Generating Message names */
-                    xmlNodePtr pMsgPtr = xmlNewChild(pMsgTagPtr, nullptr, BAD_CAST DEF_MSGID
-                                                     , BAD_CAST strMessageId.GetBufferSetLength(strMessageId.GetLength()));
-                    xmlAddChild(pMsgTagPtr, pMsgPtr);
-                    CString strSignalName = "";
-                    if (selkey == unId)
-                    {
-                        std::list<std::string> lstSignals = m_mapMsgIDtoSignallst->find(unId)->second;
-                        std::list<std::string>::iterator itrselSignals = lstSignals.begin();
+			int nDBCount = 0;
+			mDbCluster->GetDBServiceCount(mBusType, i, nDBCount);
 
-                        while (itrselSignals != lstSignals.end())
-                        {
-                            strSignalName = (*itrselSignals).c_str();
-                            // strSignalName.Format("%s", *itrselSignals);
+			for (auto nDBIndex = 0; nDBIndex < nDBCount; nDBIndex++)
+			{
+				mDbCluster->GetDBService(mBusType, i, nDBIndex, &pDbService);
+				if (pDbService == nullptr)
+				{
+					continue;
+				}
+				pDbService->GetElementList(eFrameElement, lstNumofFrames);
+				auto itr = lstNumofFrames.begin();
+				while (itr != lstNumofFrames.end())
+				{
+					int selkey = -1;
+					((IFrame*)itr->second)->GetFrameId(unId);
+					if (m_mapMsgIDtoSignallst->find(unId) != m_mapMsgIDtoSignallst->end())
+					{
+						selkey = m_mapMsgIDtoSignallst->find(unId)->first;
+					}
+					CString strMessageId = "";
+					if (selkey == unId)
+					{
+						xmlNodePtr pMsgTagPtr = xmlNewNode(nullptr, BAD_CAST DEF_MESSAGE);
+						xmlAddChild(pNodePtr, pMsgTagPtr);
+						strMessageId.Format("%d", selkey);
 
-                            xmlNodePtr pSignalPtr = xmlNewChild(pMsgTagPtr, nullptr, BAD_CAST DEF_SIGNAL
-                                                                , BAD_CAST strSignalName.GetBufferSetLength(strSignalName.GetLength()));
-                            xmlAddChild(pMsgTagPtr, pSignalPtr);
-                            itrselSignals++;
-                        }
-                    }
-                }
-                itr++;
-            }
+						/* Generating Message names */
+						xmlNodePtr pMsgPtr = xmlNewChild(pMsgTagPtr, nullptr, BAD_CAST DEF_MSGID
+							, BAD_CAST strMessageId.GetBufferSetLength(strMessageId.GetLength()));
+						xmlAddChild(pMsgTagPtr, pMsgPtr);
+						CString strSignalName = "";
+						if (selkey == unId)
+						{
+							std::list<std::string> lstSignals = m_mapMsgIDtoSignallst->find(unId)->second;
+							std::list<std::string>::iterator itrselSignals = lstSignals.begin();
+
+							while (itrselSignals != lstSignals.end())
+							{
+								strSignalName = (*itrselSignals).c_str();
+								// strSignalName.Format("%s", *itrselSignals);
+
+								xmlNodePtr pSignalPtr = xmlNewChild(pMsgTagPtr, nullptr, BAD_CAST DEF_SIGNAL
+									, BAD_CAST strSignalName.GetBufferSetLength(strSignalName.GetLength()));
+								xmlAddChild(pMsgTagPtr, pSignalPtr);
+								itrselSignals++;
+							}
+						}
+					}
+					itr++;
+				}
+			}
         }
     }
     // Setting signal watch window placement and column width
@@ -221,6 +228,7 @@ HRESULT CBaseSignalWatchImp::SW_SetConfigData(xmlNodePtr pNode)
     INT nRetValue = S_OK;
     if ((pNode != nullptr) && (m_pouSigWnd != nullptr))
     {
+		m_mapMsgIDtoSignallst->clear();
         WINDOWPLACEMENT WndPlace;
         while (pNode != nullptr)
         {
@@ -253,7 +261,7 @@ HRESULT CBaseSignalWatchImp::SW_SetConfigData(xmlNodePtr pNode)
                     child = child->next;
                 }
 
-                m_mapMsgIDtoSignallst[0].insert(std::map<long, std::list<std::string>>::value_type(id, signame));
+				m_mapMsgIDtoSignallst[0].insert(std::map<long, std::list<std::string>>::value_type(id, signame));
             }
 
             if ((!xmlStrcmp(pNode->name, (const xmlChar*)"Window_Position")))
@@ -324,7 +332,7 @@ BOOL CBaseSignalWatchImp::SW_IsWindowVisible(void)
 }
 HRESULT CBaseSignalWatchImp::SW_SetDisplayMode(BOOL bHex)
 {
-    m_bHex = bHex;
+    m_bHex = (bHex!=0);
     return S_OK;
 }
 HRESULT CBaseSignalWatchImp::SW_SetClusterInfo(void* ouCluster)

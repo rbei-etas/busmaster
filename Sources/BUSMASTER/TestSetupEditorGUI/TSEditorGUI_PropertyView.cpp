@@ -20,7 +20,7 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
-#include "TSEditorGUI_stdafx.h"
+#include "stdafx.h"
 #include "TSEditorGUI_ChildFrame.h"
 #include "TSEditorGUI_PropertyView.h"
 #include "TSEditorGUI_Definitions.h"
@@ -140,6 +140,9 @@ void CPropertyView::OnInitialUpdate()
     //Just To increase the List Item Height
     m_omImageList.Create(def_WIDTH_LISTITEM, def_HEIGHT_LISTITEM, ILC_COLOR24, 4, 1);
     m_omPropertyList.SetImageList(&m_omImageList, LVSIL_SMALL);
+	CRect PropertyRect;
+	this->GetClientRect(&PropertyRect);                                         // Get Window-Size to...
+	ResizeWindow(0, PropertyRect.Width(), PropertyRect.Height());
 }
 
 /******************************************************************************
@@ -186,6 +189,11 @@ void CPropertyView::OnSize(UINT nType, int cx, int cy)
 {
     CFormView::OnSize(nType, cx, cy);
     if(m_bSizeAvailable == TRUE)
+    {
+		ResizeWindow(nType, cx, cy);
+    }
+}
+void CPropertyView::ResizeWindow(UINT nType, int cx, int cy)
     {
         CRect PropertyRect;
         CRect ConfirmButtonRect, CancelButtonRect;
@@ -240,7 +248,6 @@ void CPropertyView::OnSize(UINT nType, int cx, int cy)
         EditHelpRect.left = StaticHelpRect.left + def_WINDOW_SEMIGAP;
         EditHelpRect.right = StaticHelpRect.right - def_WINDOW_SEMIGAP;
         GetDlgItem(IDC_EDITHELP)->MoveWindow(EditHelpRect);
-    }
 }
 
 /******************************************************************************

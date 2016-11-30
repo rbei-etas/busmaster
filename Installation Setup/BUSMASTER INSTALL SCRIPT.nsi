@@ -367,6 +367,7 @@ Section "BUSMASTER"
   Delete "$INSTDIR\Replay.dll"
   Delete "$INSTDIR\SignalWatch.dll"
   Delete "$INSTDIR\TestSetupEditorGUI.dll"
+  Delete "$INSTDIR\TestSetupEditorGUI.exe"
   Delete "$INSTDIR\TestSuiteExecutorGUI.dll"
   Delete "$INSTDIR\TXWindow.dll"
   Delete "$INSTDIR\FormatConverter.exe"
@@ -457,7 +458,7 @@ Section "BUSMASTER"
   File ..\Sources\BUSMASTER\BIN\Release\PSDI_CAN.dll
   File ..\Sources\BUSMASTER\BIN\Release\Replay.dll
   File ..\Sources\BUSMASTER\BIN\Release\SignalWatch.dll
-  File ..\Sources\BUSMASTER\BIN\Release\TestSetupEditorGUI.dll
+  File ..\Sources\BUSMASTER\BIN\Release\TestSetupEditorGUI.exe
   File ..\Sources\BUSMASTER\BIN\Release\TestSuiteExecutorGUI.dll
   File ..\Sources\BUSMASTER\BIN\Release\TXWindow.dll
   File ..\Sources\BUSMASTER\BIN\Release\FormatConverter.exe
@@ -513,10 +514,10 @@ Section "BUSMASTER"
   File /r ..\Sources\BUSMASTER\Localization
 
   ; Help
-  File /oname=BUSMASTER.chm "..\Documents\4 Help_new\out\help.chm"
+  File /oname=BUSMASTER.chm "..\Documents\4 Help\out\help.chm"
 
   ; LDF Editor Help
-  File /oname=LDFEditor.chm "..\Documents\4 Help_new\out\ldfeditor.chm"
+  File /oname=LDFEditor.chm "..\Documents\4 Help\out\ldfeditor.chm"
   
   ; Oxygen icons resource Dll
   File ..\Sources\BUSMASTER\BIN\Release\AdvancedUIPlugIn.dll
@@ -575,16 +576,16 @@ Section "BUSMASTER"
   
 
   ; Check if Visual Studio 2012 redistributable is already installed
-  ReadRegStr $1 HKLM "Software\Microsoft\DevDiv\vc\Servicing\11.0\RuntimeMinimum" Install
-  StrCmp $1 "1" NoInstall Install
+  ;ReadRegStr $1 HKLM "Software\Microsoft\DevDiv\vc\Servicing\11.0\RuntimeMinimum" Install
+  ;StrCmp $1 "1" NoInstall Install
 
-Install:
+;Install:
   ; Install Visual Studio 2013 Redistributable
   File "..\Tools\VC++ 2013 Redistributable\vcredist_x86.exe"
   ExecWait '"vcredist_x86.exe" /s /v" /qn"'
   Delete "$INSTDIR\vcredist_x86.exe"
 
-NoInstall:
+;NoInstall:
 
   ; create desktop shortcut
   CreateShortCut "$DESKTOP\BUSMASTER v${VERSION}.lnk" "$INSTDIR\BUSMASTER.exe" ""

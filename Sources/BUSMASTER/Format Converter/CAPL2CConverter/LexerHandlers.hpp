@@ -357,7 +357,7 @@ void vHandleOnkey(CString& omStrKeyVal)
             omStrText = defSTR_KeyCharHeader;// + HandlerVal + " */\n";
             omStrText += omStrKeyVal + defSTR_HeaderFormat;
             fprintf(yyout,omStrText);
-            omStrFunctionName.Format(defSTR_KeyCharStart,omStrKeyVal[0]);            
+            omStrFunctionName.Format(defSTR_KeyCharStart,omStrKeyVal.GetAt(0));
             fprintf(yyout,"%s",omStrFunctionName.GetBuffer(MAX_PATH));
             omStrFunctionName.Replace(defSTR_FunctionDefinition, ";");
         }
@@ -369,7 +369,7 @@ void vHandleOnkey(CString& omStrKeyVal)
                 //array is initialised with -1
                 omStrText += omStrKeyVal + defSTR_HeaderFormat;
                 fprintf(yyout,omStrText);
-                fprintf(yyout,defSTR_KeyCharStart,omStrKeyVal);
+                fprintf(yyout,defSTR_KeyCharStart, omStrKeyVal.GetAt(0));
 
                 sprintf(g_chErrorString,defSTR_Warning7,omStrKeyVal);
                 g_ouGlobalVariables.g_ouErrorStrings.insert(g_chErrorString);
@@ -1889,13 +1889,13 @@ void getCaplEvent(CString& caplEvent, CString& caplEventFunction)
 		{
 			omTempEndComment = defSTR_EndComment;
 
-		}
-		omTempEndComment.Replace(defSTR_PlaceHolderForBusname, strBUS_TYPE[g_ouGlobalVariables.m_eBus].c_str());
-		fprintf(yyout, "%s%s", omTempEndComment, g_ouGlobalVariables.omStrLastEvent);
-		g_ouGlobalVariables.omStrLastEvent.Empty();
-	}
-	g_ouGlobalVariables.g_ouLocalMsgVariables.RemoveAll();
-	//g_lFunctionStartPos = ftell(yyout);
+        }
+        omTempEndComment.Replace(defSTR_PlaceHolderForBusname, strBUS_TYPE[g_ouGlobalVariables.m_eBus].c_str());
+        fprintf ( yyout, "%s%s", (LPCSTR) omTempEndComment, (LPCSTR) g_ouGlobalVariables.omStrLastEvent );
+        g_ouGlobalVariables.omStrLastEvent.Empty();
+    }
+    g_ouGlobalVariables.g_ouLocalMsgVariables.RemoveAll();
+    //g_lFunctionStartPos = ftell(yyout);
 
 	CString omStrName = yytext;
 	RemoveComments(omStrName);
@@ -1960,7 +1960,7 @@ void vHandleCanCaplEvents()
             omStrTemp.TrimLeft(" \n\t");
             omStrTemp.TrimRight(" \n\t{");
 
-			fprintf(yyout, "\n%s%s%s%s\n", omTemp, defSTR_OnTimer, (LPCSTR)omStrTemp, " */");
+            fprintf ( yyout, "\n%s%s%s%s\n", (LPCSTR) omTemp, defSTR_OnTimer, (LPCSTR) omStrTemp, " */" );
 
             
             omStrFuncName.Format(defSTR_TimerStart,omStrTemp);
@@ -1987,18 +1987,18 @@ void vHandleCanCaplEvents()
             CString omStrText = yytext;
             omStrText.Remove('\n');
             //fprintf(yyout, "%s", defSTR_UnSupportedFunctionStart);
-            fprintf(yyout, "%s", omStrText);
-			/*g_ouGlobalVariables.g_nLastParseState = SecondParse;
-			BEGIN(UnsupportedParse);*/
+            fprintf ( yyout, "%s", (LPCSTR) omStrText );
+            /*g_ouGlobalVariables.g_nLastParseState = SecondParse;
+            BEGIN(UnsupportedParse);*/
         }
 		else if (caplEvent == "prestop")
         {
             CString omStrText = yytext;
             omStrText.Remove('\n');
             //fprintf(yyout, "%s", defSTR_UnSupportedFunctionStart);
-            fprintf(yyout, "%s", omStrText);
-			/*g_ouGlobalVariables.g_nLastParseState = SecondParse;
-			BEGIN(UnsupportedParse);*/
+            fprintf ( yyout, "%s", (LPCSTR) omStrText );
+            /*g_ouGlobalVariables.g_nLastParseState = SecondParse;
+            BEGIN(UnsupportedParse);*/
         }
 		else if (caplEvent == "stopmeasurement")
         {
@@ -2017,7 +2017,7 @@ void vHandleCanCaplEvents()
         }
 		else if (caplEvent == "busoff")
         {
-            fprintf(yyout, "\n%s%s", omTemp, defSTR_BusOffHeader);
+            fprintf ( yyout, "\n%s%s", (LPCSTR) omTemp, defSTR_BusOffHeader );
             g_ouGlobalVariables.omStrLastEvent = defSTR_BusOffHeader;
             fprintf(yyout, "%s", defSTR_BusOffStart);
             g_ouGlobalVariables.g_oucaplEventHandleState = CAPL_EVENT_BUSOFF;
@@ -2030,7 +2030,7 @@ void vHandleCanCaplEvents()
         }
 		else if (caplEvent == "erroractive")
         {
-            fprintf(yyout, "\n%s%s", omTemp, defSTR_ErrorActiveHeader);
+            fprintf ( yyout, "\n%s%s", (LPCSTR) omTemp, defSTR_ErrorActiveHeader );
             g_ouGlobalVariables.omStrLastEvent = defSTR_ErrorActiveHeader;
             fprintf(yyout, "%s", defSTR_ErrorActiveStart);
             g_ouGlobalVariables.g_oucaplEventHandleState = CAPL_EVENT_ERRORACTIVE;
@@ -2043,8 +2043,8 @@ void vHandleCanCaplEvents()
         }
 		else if (caplEvent == "errorpassive")
         {
-			nIndex = omStrTemp.Find("errorpassive");
-            fprintf(yyout, "\n%s%s", omTemp, defSTR_ErrorPassiveHeader);
+            nIndex = omStrTemp.Find("errorpassive");
+            fprintf ( yyout, "\n%s%s", (LPCSTR) omTemp, defSTR_ErrorPassiveHeader );
             g_ouGlobalVariables.omStrLastEvent = defSTR_ErrorPassiveHeader;
             fprintf(yyout, "%s", defSTR_ErrorPassiveStart);
             g_ouGlobalVariables.g_oucaplEventHandleState = CAPL_EVENT_ERRORPASSIVE;
@@ -2058,7 +2058,7 @@ void vHandleCanCaplEvents()
         }
 		else if (caplEvent == "warninglimit")
         {
-            fprintf(yyout, "\n%s%s", omTemp, defSTR_WarningLimitHeader);
+            fprintf ( yyout, "\n%s%s", (LPCSTR) omTemp, defSTR_WarningLimitHeader );
             g_ouGlobalVariables.omStrLastEvent = defSTR_WarningLimitHeader;
             fprintf(yyout, "%s", defSTR_WarningLimitStart);
             g_ouGlobalVariables.g_oucaplEventHandleState = CAPL_EVENT_WARNINGLIMIT;
@@ -2070,7 +2070,7 @@ void vHandleCanCaplEvents()
         }
 		else if (caplEvent == "errorframe")
         {
-            fprintf(yyout, "\n%s%s", omTemp, defSTR_ErrorFrameHeader);
+            fprintf ( yyout, "\n%s%s", (LPCSTR) omTemp, defSTR_ErrorFrameHeader );
             g_ouGlobalVariables.omStrLastEvent = defSTR_ErrorFrameHeader;
             fprintf(yyout, "%s", defSTR_ErrorFrameStart);
             g_ouGlobalVariables.g_oucaplEventHandleState = CAPL_EVENT_ERRORFRAME;
@@ -2904,11 +2904,11 @@ void vWriteLogFile()
     }
     else
     {
-        fprintf(pFileLog, "\n\n\nConversion is Completed With  %d Error(s) and %d Warning(s)\n", g_ouGlobalVariables.g_ouErrorStrings.size(), g_ouGlobalVariables.g_ouWarningStrings.size());
+        fprintf(pFileLog, "\n\n\nConversion is Completed With  %Iu Error(s) and %Iu Warning(s)\n", (size_t)g_ouGlobalVariables.g_ouErrorStrings.size(), (size_t)g_ouGlobalVariables.g_ouWarningStrings.size());
 
         if( g_ouGlobalVariables.g_ouErrorStrings.size() >= 1)
         {
-            fprintf(pFileLog, "\n\tErrors Occured in Conversion:(%d Error(s)) \n", g_ouGlobalVariables.g_ouErrorStrings.size());
+            fprintf(pFileLog, "\n\tErrors Occured in Conversion:(%Iu Error(s)) \n", (size_t)g_ouGlobalVariables.g_ouErrorStrings.size());
             set<string>::iterator ErrorItr = g_ouGlobalVariables.g_ouErrorStrings.begin();
             while( ErrorItr != g_ouGlobalVariables.g_ouErrorStrings.end())
             {
@@ -2921,7 +2921,7 @@ void vWriteLogFile()
         }
         if( g_ouGlobalVariables.g_ouWarningStrings.size() >= 1)
         {
-            fprintf(pFileLog, "\n\tWarnings Occured in Conversion:(%d Warning(s)) \n", g_ouGlobalVariables.g_ouWarningStrings.size());
+            fprintf(pFileLog, "\n\tWarnings Occured in Conversion:(%Iu Warning(s)) \n", (size_t)g_ouGlobalVariables.g_ouWarningStrings.size());
             set<string>::iterator WarningsItr = g_ouGlobalVariables.g_ouWarningStrings.begin();
             while( WarningsItr != g_ouGlobalVariables.g_ouWarningStrings.end())
             {
@@ -3409,8 +3409,8 @@ void vMsgDecl(CString& omStrValue, MsgVariables& ouMsgVariable, bool bGlobal)
             flag = 0;
             if( msg.m_uiMsgID != INVALID )
             {
-                fprintf(yyout,defSTR_MsgIniFormat,msg.m_acName.c_str(), (LPCSTR)name,
-                    msg.m_uiMsgID,extndd,dlc );
+                fprintf(yyout,defSTR_MsgIniFormat,msg.m_acName.c_str(), (LPCSTR)name/*,
+                    msg.m_uiMsgID,extndd,dlc*/ );
                 for( int  m = 0; m < dlc; m++)
                 {
 					fprintf(yyout,"%s", (LPCSTR)msgbyte.GetAt( m ));//each byte of message

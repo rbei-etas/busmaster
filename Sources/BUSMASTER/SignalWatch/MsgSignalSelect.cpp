@@ -33,7 +33,7 @@ BEGIN_MESSAGE_MAP(CMsgSignalSelect, CDialog)
     //ON_NOTIFY(TVN_ITEMCHANGED, IDC_TREE_LIN, OnClickTree)
 
     ON_WM_SIZE()
-    //ON_MESSAGE(IDD_DLG_SIGNAL_WATCH_LIN,OnInitDialog)
+    //ON_MESSAGE(IDD_DLG_SIGNAL_WATCH_CONFIGURE,OnInitDialog)
     //ON_WM_GETMINMAXINFO()
     ON_BN_CLICKED(IDOK, OnBnClickedOk)
 END_MESSAGE_MAP()
@@ -153,9 +153,9 @@ BOOL CMsgSignalSelect::OnInitDialog()
     std::string strName;
     int nChannels = 0;
     unsigned int unId;
-    FrameProps ouProps;
+    
     m_ouCluster->GetChannelCount(m_ouEbus, nChannels);
-    ICluster* pCluster;
+
     char chText[255];
     for (int i = 0; i < nChannels; i++)
     {
@@ -175,7 +175,7 @@ BOOL CMsgSignalSelect::OnInitDialog()
                 IFrame* pouFrame = *itr;
 
                 pouFrame->GetFrameId(unId);
-                pouFrame->GetProperties(ouProps);
+                
                 pouFrame->GetName(strName);
                 hmsg = pTreeStruct->InsertItem(strName.c_str(), hNumofChannel);
                 pTreeStruct->SetItemImage(hmsg, 3, 3);
@@ -307,7 +307,7 @@ void CMsgSignalSelect::vStoreintoMap()
     LeaveCriticalSection(&m_omCritSecSW);
 }
 
-UINT CMsgSignalSelect::vChangeWindowPos(HDWP& handleWP, HWND wndHandle, double fSizeX, double fSizeY, CRect rectWndPos)
+UINT CMsgSignalSelect::vChangeWindowPos(HDWP& handleWP, HWND /*wndHandle*/, double fSizeX, double fSizeY, CRect /*rectWndPos*/)
 {
     if (handleWP == NULL)
     {

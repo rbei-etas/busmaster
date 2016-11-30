@@ -91,7 +91,6 @@ BOOL CFormatConverterApp::InitInstance()
     dlg.m_psh.dwFlags &= ~PSH_HASHELP;
     dlg.m_psh.dwFlags &= ~PSH_NOAPPLYNOW;
     dlg.LoadConverters();
-    m_pMainWnd = &dlg;
 
     INT_PTR nResponse = dlg.DoModal();
     if (nResponse == IDOK)

@@ -21,6 +21,10 @@
 #include "TestSetupEditorLib_stdafx.h"
 #include "TestSetupEntity.h"
 #include "Utility\MultiLanguageSupport.h"
+#include "Utility\UtilFunctions.h"
+
+#define MSG_GET_CONFIGPATH  10000
+
 //#include "../Application/GettextBusmaster.h"
 /******************************************************************************
 Function Name  :  CTestSetupEntity
@@ -856,6 +860,19 @@ INT CTestSetupEntity::nLoadHeader(MSXML2::IXMLDOMNodePtr& pHeaderDOMNode)
     pInfoNode = pHeaderDOMNode->selectSingleNode(bstrNodeName);
     pInfoNode->get_nodeTypedValue(&NodeValue);
     m_ouTestSetupHeader.m_omDatabasePath = strCopyBSTRToCString(NodeValue);
+
+    CString csDBFilePath = strCopyBSTRToCString(NodeValue);
+    if (csDBFilePath.GetLength() > 0 && PathIsRelative((char*)csDBFilePath.GetBuffer()) == TRUE)
+    {
+        std::string omStrConfigFolder, omPath;
+        char configPath[MAX_PATH] = { 0 };
+        AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+        CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder);
+        char chAbsPath[MAX_PATH];
+        PathCombine(chAbsPath, omStrConfigFolder.c_str(), (char*)csDBFilePath.GetBuffer());
+        m_ouTestSetupHeader.m_omDatabasePath = chAbsPath;
+    }
+
     //Set The Database Path
     SetDatabaseFile(m_ouTestSetupHeader.m_omDatabasePath);
     pInfoNode.Release();
@@ -883,9 +900,19 @@ INT CTestSetupEntity::nLoadHeader(MSXML2::IXMLDOMNodePtr& pHeaderDOMNode)
     pInfoNode = pHeaderDOMNode->selectSingleNode(bstrNodeName);
     pInfoNode->get_nodeTypedValue(&NodeValue);
     m_ouTestSetupHeader.m_sReportFile.m_omPath = strCopyBSTRToCString(NodeValue);
+    CString csRepFilePath = strCopyBSTRToCString(NodeValue);
+    if (csRepFilePath.GetLength() > 0 && PathIsRelative((char*)csRepFilePath.GetBuffer()) == TRUE)
+    {
+        std::string omStrConfigFolder, omPath;
+        char configPath[MAX_PATH] = { 0 };
+        AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+        CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder);
+        char chAbsPath[MAX_PATH];
+        PathCombine(chAbsPath, omStrConfigFolder.c_str(), (char*)csRepFilePath.GetBuffer());
+        m_ouTestSetupHeader.m_sReportFile.m_omPath = chAbsPath;
+    }
+    
     pInfoNode.Release();
-
-
 
 
     //bstrNodeName = def_STR_REPORT_TIMEMODE;
@@ -978,7 +1005,18 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
 
     //Bus Type
     pInfoElement   =  pIDOMDoc->createElement(_bstr_t(def_STR_DBPATH_NODE));
-    bAddChildToNode(pInfoElement, def_STR_DATABASE, m_ouTestSetupHeader.m_omDatabasePath);
+    CString csRelDBFilePath = m_ouTestSetupHeader.m_omDatabasePath;
+    if (m_ouTestSetupHeader.m_omDatabasePath != "")
+    {
+        std::string omPath, omStrConfigFolder;
+        char configPath[MAX_PATH] = { 0 };
+        AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+        CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder);
+        CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)m_ouTestSetupHeader.m_omDatabasePath.GetBuffer(MAX_PATH), omPath);
+        csRelDBFilePath = omPath.c_str();
+    }
+
+    bAddChildToNode(pInfoElement, def_STR_DATABASE, csRelDBFilePath);
     pIDomHeaderNode->appendChild(pInfoElement);
 
 
@@ -1023,7 +1061,18 @@ INT CTestSetupEntity::nSaveHeader(MSXML2::IXMLDOMElementPtr& pIDomHeaderNode, CS
             m_ouTestSetupHeader.m_sReportFile.m_omPath = omReportPath;
         }
         //Report Path
-        bAddChildToNode(pInfoElement, def_STR_PATH_NODE, m_ouTestSetupHeader.m_sReportFile.m_omPath);
+        CString csRelRepFilePath = "";
+        if (m_ouTestSetupHeader.m_sReportFile.m_omPath != "")
+        {
+            std::string omPath, omStrConfigFolder;
+            char configPath[MAX_PATH] = { 0 };
+            AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
+            CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder);
+            CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)m_ouTestSetupHeader.m_sReportFile.m_omPath.GetBuffer(MAX_PATH), omPath);
+            csRelRepFilePath = omPath.c_str();
+        }
+
+        bAddChildToNode(pInfoElement, def_STR_PATH_NODE, csRelRepFilePath);
         //Extension
         bAddChildToNode(pInfoElement, def_STR_FORMAT_NODE, omstrTemp);
 

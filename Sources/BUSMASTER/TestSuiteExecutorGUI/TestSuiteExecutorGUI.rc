@@ -85,7 +85,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON_BUSMASTER      ICON                    "Res\\BUSMASTER.ico"
+IDI_APP_ICON            ICON                    "Res\\AppIcon.ico"
 IDI_ICON_TESTCASE       ICON                    "res\\TestCase.ico"
 
 #ifdef APSTUDIO_INVOKED

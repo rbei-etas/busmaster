@@ -30,12 +30,14 @@ Local $dbMsg1_Rx=0,$dbMsg1_Tx=0,$dbMsg2_Rx=0,$dbMsg2_Tx=0
 Local $ndbMsg1_Rx=0,$ndbMsg1_Tx=0,$ndbMsg2_Rx=0,$ndbMsg2_Tx=0,$ndbMsg1_Rx_Sc2=0,$ndbMsg1_Tx_Sc2=0
 Local $VerifydbMsg=0,$VerifyndbMsg=0,$VerifydbMsgSendScn2=0
 local $VerifydbMsgSendScn1=0,$VerifyndbMsgSendScn1=0,$dbMsg1_Rx_Sc2=0,$dbMsg1_Tx_Sc2=0,$VerifyndbMsgSendScn2=0
+$countRowChckBox=0
 
 
 _launchApp()
 
 WinActivate($WIN_BUSMASTER)
 Local $Time_cyclic=0,$a=0
+
 if winexists($WIN_BUSMASTER) then
 
     _loadConfig("TS_TxWin_CAN_01")
@@ -48,13 +50,20 @@ if winexists($WIN_BUSMASTER) then
 	 ;----------------scenario 1 -DBMsg---------------------
 
 	_ConfigTXWinDetails(0,"db",1,1,"","","","","")												; $Rownum,$HSCaseNo("db","ndb"),$messageid/Index(For dbMessage),chnl,datalength,Messageype,RTR(Yes/No),Repetition,Key
+	Send("{ENTER}")
 	;_ConfigTXWinDetails(2,"ndb","100",1,"","","","","")										; $Rownum,$HSCaseNo("db","ndb"),$messageid/Index(For dbMessage),chnl,datalength,Messageype,RTR(Yes/No),Repetition,Key
 
-	_DisableOverwriteMode()
+	;_DisableOverwriteMode()
+;~ 	Opt("WinDetectHiddenText", 0)
+;~ 	Opt("WinSearchChildren", 1)
+;~ 	Opt("WinTitleMatchMode", 1)
+;~ 	WinClose($WinCANTxWindow)
 
-
+	WinActivate($WIN_BUSMASTER,"")
 	_ConnectDisconnect()																		; Connect CAN
 	sleep(1000)
+	;_TxMsgMenu()
+	_ActivatechildWindow($WinCANTxWindow)
 	_SendMsgTxWindow()
 	_ActivatechildWindow("Message Window - CAN")
 	$rCount1=_GetCANMsgWinItemCount()                                                            ; Fetch the no of items from message window
@@ -82,13 +91,15 @@ if winexists($WIN_BUSMASTER) then
 	 ;----------------scenario 2 -DBMsg---------------------
 	sleep(1000)
 	_TxMsgMenu()
-	sleep(1000)
+	;sleep(1000)
 	;_ActivatechildWindow($WinCANTxWindow)
-	_ConfigTXWinDetails(0,"",1,1,"","","","5000","a")											; $Rownum,$HSCaseNo("db","ndb"),$messageid/Index(For dbMessage),chnl,datalength,Messageype,RTR(Yes/No),Repetition,Key
+     $countRowChckBox=0
+	_ConfigTXWinDetails(0,"",1,1,"","","","20000","a")											; $Rownum,$HSCaseNo("db","ndb"),$messageid/Index(For dbMessage),chnl,datalength,Messageype,RTR(Yes/No),Repetition,Key
 	_ClearMsgWindow()
-	sleep(1000)
+	;sleep(1000)
+	_ActivatechildWindow($WinCANTxWindow)
 	_SendMsgTxWindow()
-	sleep(500)
+	;sleep(500)
 	_ActivatechildWindow("Message Window - CAN")
 	$rCount2=_GetCANMsgWinItemCount()                                                            ; Fetch the no of items from message window
 	                                                           ; Fetch the no of items from message window
@@ -120,13 +131,20 @@ if winexists($WIN_BUSMASTER) then
 	 ;----------------scenario 1 -non DBMsg---------------------
 	 sleep(200)
 	 _ClearMsgWindow()
+	 _ClearMsgWindow()
 	_TxMsgMenu()
-	sleep(200)
+	;sleep(200)
 	;_ActivatechildWindow($WinCANTxWindow)
+	$countRowChckBox=0
 	_ConfigTXWinDetails(0,"ndb","100",1,"","","","","")											; $Rownum,$HSCaseNo("db","ndb"),$messageid/Index(For dbMessage),chnl,datalength,Messageype,RTR(Yes/No),Repetition,Key
+	_ClearMsgWindow()
 	;sleep(500)
+	;WinActivate($WIN_BUSMASTER,"")
+	 ;_ClearMsgWindow()
+	_ActivatechildWindow($WinCANTxWindow)
 	_SendMsgTxWindow()
 	sleep(200)
+
 	_ActivatechildWindow("Message Window - CAN")
 	;_ConnectDisconnect()																		; DisConnect CAN
 	$rCount3=_GetCANMsgWinItemCount()                                                            ; Fetch the no of items from message window
@@ -167,7 +185,9 @@ if winexists($WIN_BUSMASTER) then
 	_TxMsgMenu()
 	sleep(200)
 	;_ActivatechildWindow($WinCANTxWindow)
-	_ConfigTXWinDetails(0,"ndb","100",1,"","","","5000","a")											; $Rownum,$HSCaseNo("db","ndb"),$messageid/Index(For dbMessage),chnl,datalength,Messageype,RTR(Yes/No),Repetition,Key
+	$countRowChckBox=0
+	_ConfigTXWinDetails(0,"ndb","100",1,"","","","8000","a")											; $Rownum,$HSCaseNo("db","ndb"),$messageid/Index(For dbMessage),chnl,datalength,Messageype,RTR(Yes/No),Repetition,Key
+	_ClearMsgWindow()
 	sleep(500)
 	_SendMsgTxWindow()
 	sleep(200)
@@ -218,7 +238,7 @@ EndIf
 	If($VerifydbMsgSendScn1=1 And $VerifydbMsgSendScn2=1 And $VerifyndbMsgSendScn1=1 And $VerifyndbMsgSendScn2=1) Then
 		_WriteResult("Pass","TS_TxWin_CAN_05")
 	Else
-		_WriteResult("Fail","TS_TxWin_CAN_01")
+		_WriteResult("Fail","TS_TxWin_CAN_05")
 	EndIf
 
 

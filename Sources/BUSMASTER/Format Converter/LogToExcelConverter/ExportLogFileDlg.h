@@ -38,6 +38,7 @@
 class CExportLogFileDlg : public CPropertyPage
 {
     DECLARE_DYNAMIC(CExportLogFileDlg)
+    HANDLE mExprtLogFileThrdHandle = nullptr;
 
 public:
     CExportLogFileDlg(ETYPE_BUS eBus = CAN, CWnd* pParent = NULL);   // standard constructor

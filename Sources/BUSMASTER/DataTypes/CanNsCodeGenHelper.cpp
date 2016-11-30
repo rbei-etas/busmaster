@@ -6,7 +6,7 @@
 ///////////////////////////////////////////////////////////
 #include "DataTypes_stdafx.h"
 #include "CanNsCodeGenHelper.h"
-
+#include "CANDefines.h"
 #define defTab                  "\t"
 #define defColon                ":"
 #define defSpace                " "
@@ -29,7 +29,7 @@ CanNsCodeGenHelper::~CanNsCodeGenHelper()
 
 
 
-std::string CanNsCodeGenHelper::GetFrameBaseClassInitialiser(IFrame* frame)
+std::string CanNsCodeGenHelper::GetFrameBaseClassInitialiser(IFrame* /*frame*/)
 {
 
     return  NULL;
@@ -50,82 +50,75 @@ std::string CanNsCodeGenHelper::GetFrameClassName()
 }
 
 
-std::string CanNsCodeGenHelper::GetFrameName(IFrame* frame)
+std::string CanNsCodeGenHelper::GetFrameName(IFrame* /*frame*/)
 {
 
     return  NULL;
 }
 
 
-std::string CanNsCodeGenHelper::GetFramePdusInitialisation(IFrame* frame, IPdu* pdu)
+std::string CanNsCodeGenHelper::GetFramePdusInitialisation(IFrame* /*frame*/, IPdu* /*pdu*/)
 {
 
     return  NULL;
 }
 
 
-std::string CanNsCodeGenHelper::GetFrameSignalsInitialiser(IFrame* frame)
+std::string CanNsCodeGenHelper::GetFrameSignalsInitialiser(IFrame* /*frame*/)
 {
 
     return  NULL;
 }
 
-std::string CanNsCodeGenHelper::GetPdusDecl(IFrame* frame)
+std::string CanNsCodeGenHelper::GetPdusDecl(IFrame* /*frame*/)
 {
     return "";
 }
 
-std::string CanNsCodeGenHelper::getPduBaseClassInitialiser(IPdu* pdu)
+std::string CanNsCodeGenHelper::getPduBaseClassInitialiser(IPdu* /*pdu*/)
 {
-
-    return  NULL;
+	return  NULL;
 }
 
 
 std::string CanNsCodeGenHelper::GetPduBaseClassName()
 {
-
-    return  NULL;
+	return  NULL;
 }
 
 
 std::string CanNsCodeGenHelper::GetPduClassName()
 {
-
-    return  NULL;
+	return  NULL;
 }
 
 
-std::string CanNsCodeGenHelper::GetPduInitialiser(IPdu* pdu)
+std::string CanNsCodeGenHelper::GetPduInitialiser(IPdu* /*pdu*/)
 {
-
-    return  NULL;
+	return  NULL;
 }
 
 
-std::string CanNsCodeGenHelper::GetPduName(IPdu* pdu)
+std::string CanNsCodeGenHelper::GetPduName(IPdu* /*pdu*/)
 {
-
-    return  NULL;
+	return  NULL;
 }
 
 
-std::string CanNsCodeGenHelper::GetPduSignalInitialiser(IPdu* pdu, ISignal* signal)
+std::string CanNsCodeGenHelper::GetPduSignalInitialiser(IPdu* /*pdu*/, ISignal* /*signal*/)
 {
-
-    return  NULL;
+	return  NULL;
 }
 
-std::string CanNsCodeGenHelper::GetProtocolIncludesHeaderName(ICluster* pCluster)
+std::string CanNsCodeGenHelper::GetProtocolIncludesHeaderName(ICluster* /*pCluster*/)
 {
     return "#include \"CANIncludes.h\"";
 }
 
 
-std::string CanNsCodeGenHelper::GetSignalName(ISignal* signal)
+std::string CanNsCodeGenHelper::GetSignalName(ISignal* /*signal*/)
 {
-
-    return  NULL;
+	return  NULL;
 }
 
 
@@ -163,10 +156,10 @@ std::string CanNsCodeGenHelper::GetBaseClassConstructorDef(IFrame* frame)
     frame->GetFrameId(frameId);
     frame->GetLength(dlc);
 
-    FrameProps eouFrameProps;
+    CANFrameProps eouFrameProps;
     frame->GetProperties(eouFrameProps);
     bool bIsExtended = 0;
-    if (eCan_Extended == eouFrameProps.m_ouCANFrameProp.m_canMsgType)
+    if (eCan_Extended == eouFrameProps.m_canMsgType)
     {
         bIsExtended = 1;
     }
@@ -193,7 +186,7 @@ std::string CanNsCodeGenHelper::GetBaseClassDecl(IFrame* frame)
     return outStream.str();
 }
 
-std::string CanNsCodeGenHelper::GetPdusConstructorDef(IFrame* frame)
+std::string CanNsCodeGenHelper::GetPdusConstructorDef(IFrame* /*frame*/)
 {
     return "";
 }
@@ -266,9 +259,9 @@ std::string CanNsCodeGenHelper::GenerateSignalConstuctor(int startBit, ISignal* 
     outStream << unLength << ", ";
 
     //5.
-    SignalProps signalProps;
+    CANSignalProps signalProps;
     pouSignal->GetProperties(signalProps);
-    if (signalProps.m_ouCANSignalProps.m_eSignalValueType == eSignalDataType::eSigned)
+    if (signalProps.m_ouDataType == eSignalDataType::eSigned)
     {
         outStream << 1 << ", ";
     }
@@ -351,7 +344,7 @@ void CanNsCodeGenHelper::GetSignalType(ISignal* pouSignal, std::string& strSigna
 {
     unsigned int nLength = 0;
     pouSignal->GetLength(nLength);
-
+    
     if (nLength <= 8)
     {
         strSignalType = "char";
@@ -371,24 +364,12 @@ void CanNsCodeGenHelper::GetSignalType(ISignal* pouSignal, std::string& strSigna
         strSignalType = "__int64";
     }
 
-    SignalProps ouSignalProps;
+    CANSignalProps ouSignalProps;
     eSignalDataType eSignalType = eUnsigned;
     pouSignal->GetProperties(ouSignalProps);
 
-    switch (ouSignalProps.eType)
-    {
-        case eCANProtocol:
-            eSignalType = eSignalDataType::eUnsigned;
-            break;
-        case eLINProtocol:
-            eSignalType = ouSignalProps.m_ouLINSignalProps.m_ouDataType;
-            break;
+	eSignalType = ouSignalProps.m_ouDataType;
 
-        case eInvalidProtocol:
-            break;
-        default:
-            break;
-    }
 
     if (eSignalType == eSignalDataType::eUnsigned)
     {
@@ -397,38 +378,38 @@ void CanNsCodeGenHelper::GetSignalType(ISignal* pouSignal, std::string& strSigna
 
 }
 
-std::string CanNsCodeGenHelper::GetUniqueName(IPdu* pdu)
+std::string CanNsCodeGenHelper::GetUniqueName(IPdu* /*pdu*/)
 {
     return "";
 }
 
-std::string CanNsCodeGenHelper::GetConstructorDef(IPdu* pdu)
+std::string CanNsCodeGenHelper::GetConstructorDef(IPdu* /*pdu*/)
 {
     return "";
 }
 
 
-std::string CanNsCodeGenHelper::GetBaseClassConstructorDef(IPdu* pdu)
+std::string CanNsCodeGenHelper::GetBaseClassConstructorDef(IPdu* /*pdu*/)
 {
     return "";
 }
 
-std::string CanNsCodeGenHelper::GetSignalsConstructorDef(IPdu* pdu)
+std::string CanNsCodeGenHelper::GetSignalsConstructorDef(IPdu* /*pdu*/)
 {
     return "";
 }
 
-std::string CanNsCodeGenHelper::GetDecl(IPdu* pdu)
+std::string CanNsCodeGenHelper::GetDecl(IPdu* /*pdu*/)
 {
     return "";
 }
 
-std::string CanNsCodeGenHelper::GetBaseClassDecl(IPdu* pdu)
+std::string CanNsCodeGenHelper::GetBaseClassDecl(IPdu* /*pdu*/)
 {
     return "";
 }
 
-std::string CanNsCodeGenHelper::GetSignalsDecl(IPdu* pdu)
+std::string CanNsCodeGenHelper::GetSignalsDecl(IPdu* /*pdu*/)
 {
     return "";
 }

@@ -1680,7 +1680,7 @@ BOOL CExecuteManager::bDLLBuildLoadAllEnabled()
     while(pTempNode != nullptr)
     {
         if(pTempNode->m_sNodeInfo->m_eNodeFileType == NODE_FILE_C_CPP &&
-                pTempNode->m_sNodeInfo->m_omStrCFileName != "" && pTempNode->m_sNodeInfo->m_bIsNodeEnabled == true
+                pTempNode->m_sNodeInfo->m_omStrCFileName != "" && pTempNode->m_sNodeInfo->m_bIsNodeEnabled == TRUE
                 && pTempNode->m_sNodeInfo->m_eNodeState != NODE_BUILD_SUCCESS)
         {
             //Build all modified and Enabled nodes
@@ -1704,7 +1704,7 @@ BOOL CExecuteManager::bDLLBuildLoadAllEnabled()
         {
             if((pTempNode->m_sNodeInfo->m_omStrCFileName != ""
                     || pTempNode->m_sNodeInfo->m_omStrDllName != "")
-                    && pTempNode->m_sNodeInfo->m_bIsNodeEnabled == true) //Build all nodes except unloaded(or disabled) nodes.
+                    && pTempNode->m_sNodeInfo->m_bIsNodeEnabled == TRUE) //Build all nodes except unloaded(or disabled) nodes.
             {
                 bSuccess =
                     bExecuteDllLoad((pTempNode->m_sNodeInfo),FALSE);

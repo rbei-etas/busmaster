@@ -1,5 +1,5 @@
 #pragma once
-#include "..\Kernel\ProtocolDefinitions\ProtocolsDefinitions.h"
+#include "..\..\Kernel\ProtocolDefinitions\ProtocolsDefinitions.h"
 enum eBusmaster_Event
 {
     Bus_Status,                         // struct Event_Bus_Staus{}
@@ -19,6 +19,7 @@ enum eBusmaster_Event
 
     key_pressed,
 
+    unloading_plugins,
     busmaster_exit,
 };
 

@@ -65,3 +65,8 @@
 #define ID_DISPLAY_SETTINGS             32790
 #define IDM_HELP_ABOUTTESTSETUPEDITOR   32791
 #define IDM_FILE_VALIDATE               32792
+#define IDD_ABOUTBOX				100
+#define IDP_OLE_INIT_FAILED			100
+#define ID_VIEW_ARRANGE				127
+#define IDR_MAINFRAME				128
+#define IDR_TestAutomationETYPE				130

@@ -52,12 +52,13 @@ END_MESSAGE_MAP()
  * @param [in,out]  pParent
  *  If non-null, the parent window.
  */
-CCANControllerConfigDlg::CCANControllerConfigDlg(int iBTRRegisters, CWnd* pParent /*=nullptr*/)
+CCANControllerConfigDlg::CCANControllerConfigDlg(std::string omBaudRate, int iBTRRegisters, CWnd* pParent /*=nullptr*/)
     : CDialog(CCANControllerConfigDlg::IDD, pParent)
 {
     m_dwBTR0 = (iBTRRegisters & 0xFF00) >> 8;
     m_dwBTR1 = (iBTRRegisters & 0x00FF);
     m_bSuppressUpdateCalculation = FALSE;
+	m_dwBaudRate = strtoul(omBaudRate.c_str(),NULL,0);
 }
 
 /**
@@ -107,9 +108,11 @@ BOOL CCANControllerConfigDlg::OnInitDialog()
         m_comboBoxCiABaudSelection.AddString(m_asBaudList[i].strName.c_str());
     }
 
+	SelectComboBaudRate();//Setting the cursor value in BaudRate Selection Box
     int iCurIndex = GetListIndexFromBTRRegisters();
     m_comboBoxCiABaudSelection.SetCurSel(iCurIndex);
     UpdateBTRFields(iCurIndex);
+	m_bDialogCancel = FALSE;
 
     return TRUE;
 }
@@ -134,6 +137,7 @@ void CCANControllerConfigDlg::OnBnClickedButtonCancfgOk()
  */
 void CCANControllerConfigDlg::OnBnClickedButtonCancel()
 {
+    m_bDialogCancel = TRUE;
     CDialog::OnCancel();
 }
 
@@ -199,6 +203,11 @@ void CCANControllerConfigDlg::FillBaudStruct()
     m_asBaudList[9].dwBTR1 = m_dwBTR1;
 
     m_strSelectedBaudName = _("User defined");
+	m_mapBaudRateToCiaBaudIndex.clear();
+	for(int index = 0; index<= 9; index++)
+	{
+		m_mapBaudRateToCiaBaudIndex[m_asBaudList[index].dwBaud] =  index;
+	}
 }
 
 /**
@@ -243,6 +252,7 @@ void CCANControllerConfigDlg::UpdateBTRFields(int iIndex)
 
         m_dwBTR0 = m_asBaudList[iIndex].dwBTR0;
         m_dwBTR1 = m_asBaudList[iIndex].dwBTR1;
+		m_dwBaudRate = m_asBaudList[iIndex].dwBaud;
 
         m_bSuppressUpdateCalculation = FALSE;
     }
@@ -384,6 +394,7 @@ void CCANControllerConfigDlg::UpdateComboBoxIndexFromEditFields()
 {
     TCHAR szText[20];
     TCHAR* szDummy;
+	CString omStrBaudRate;
     m_editBTR0.GetWindowText(szText, 20);
     m_dwBTR0 = (DWORD) _tcstoul(szText, &szDummy, 16);
 
@@ -393,4 +404,65 @@ void CCANControllerConfigDlg::UpdateComboBoxIndexFromEditFields()
 
     int iIndexInList = GetListIndexFromBTRRegisters();
     m_comboBoxCiABaudSelection.SetCurSel(iIndexInList);
+	m_comboBoxCiABaudSelection.GetWindowText(omStrBaudRate);
+	m_dwBaudRate = strtoul(omStrBaudRate,NULL,0);
+}
+void CCANControllerConfigDlg::SelectComboBaudRate()
+{
+	int nBaudrate = m_dwBaudRate/1000; // BaudRate in KBPS 
+	std::map<int, int>::iterator itr = m_mapBaudRateToCiaBaudIndex.find(nBaudrate);
+	if(itr != m_mapBaudRateToCiaBaudIndex.end() && itr->second >= 0)
+	{
+		int nIndex = itr->second;
+		m_comboBoxCiABaudSelection.SetCurSel(nIndex);
+		m_strSelectedBaudName = m_asBaudList[nIndex].strName;
+		m_dwBTR0 = m_asBaudList[nIndex].dwBTR0;
+		m_dwBTR1 = m_asBaudList[nIndex].dwBTR1;
+	}
+	else
+	{
+		m_comboBoxCiABaudSelection.SetCurSel(9);
+	}
+}
+int CCANControllerConfigDlg::InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount,UINT ) 
+{
+	if (pControllerDetails!=nullptr)
+	{
+		m_dwBTR0 = (pControllerDetails[0].m_nBTR0BTR1 & 0xFF00) >> 8;
+		m_dwBTR1 = (pControllerDetails[0].m_nBTR0BTR1 & 0x00FF);
+		m_bSuppressUpdateCalculation = FALSE;
+		m_dwBaudRate = atol(pControllerDetails[0].m_omStrBaudrate.c_str());
+		m_asDummyControllerDetails[0] = pControllerDetails[0];
+		int nRet = DoModal();
+		if(nRet != IDOK) // On Cancel
+		{
+			pControllerDetails[0] = m_asDummyControllerDetails[0];
+		}
+		else
+		{
+			m_bDialogCancel = FALSE;
+			CString omTempBaudRate;
+			omTempBaudRate.Format("%ld",(m_dwBaudRate*1000));
+			pControllerDetails[0].m_omStrBaudrate = omTempBaudRate;
+		}		
+	}
+	return 1;
+}
+DOUBLE CCANControllerConfigDlg::vValidateBaudRate(DOUBLE dBaudRate,int,UINT )
+{
+	int nBaudRate = (int)dBaudRate;
+	int nBaudrate = nBaudRate/1000; // BaudRate in KBPS
+	if(m_mapBaudRateToCiaBaudIndex.size() == 0) 
+	{
+		FillBaudStruct();
+	}
+	std::map<int, int>::iterator itr = m_mapBaudRateToCiaBaudIndex.find(nBaudrate);
+	if(itr != m_mapBaudRateToCiaBaudIndex.end() && itr->second >= 0)
+	{
+		return nBaudRate;
+	}
+	else
+	{
+		return 500000;
+	}
 }

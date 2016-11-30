@@ -30,7 +30,7 @@ if winexists($WIN_BUSMASTER) then
 	_ConnectDisconnect()																				; Disconnect
 	sleep(1500)
 
-	WinMenuSelectItem($WIN_BUSMASTER,"",$HelpMenu,$AboutBusmaster)
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$HelpMenu,$AboutBusmaster)
 	$Ver=controlgettext($DLG_About,"",$Static_Version_About)											; Fetch version
 	$ToolVer="BUSMASTER " & StringTrimLeft($Ver,4)
 	ConsoleWrite("$ToolVer :" &$ToolVer&@CRLF)
@@ -76,7 +76,8 @@ $retVer = StringInStr($ToolVer,$LogVer)
 ConsoleWrite("$retVer"&$retVer)
 
 ;if  $ToolVer=$LogVer and $Protocol="***PROTOCOL J1939***" and $NoEdit="***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***" and $StartLog="***[START LOGGING SESSION]***" and $StartDateTimeInLog="Match" and $NumericMode="***HEX***" and $TimeMode="***SYSTEM MODE***" Then
-if  $retVer>0 and $Protocol="***PROTOCOL J1939***" and $NoEdit="***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***" and $StartLog="***[START LOGGING SESSION]***" and $StartDateTimeInLog="Match" and $NumericMode="***HEX***" and $TimeMode="***SYSTEM MODE***" Then
+;if  $retVer>0 and $Protocol="***PROTOCOL J1939***" and $NoEdit="***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***" and $StartLog="***[START LOGGING SESSION]***" and $StartDateTimeInLog="Match" and $NumericMode="***HEX***" and $TimeMode="***SYSTEM MODE***" Then
+if $Protocol="***PROTOCOL J1939***" and $NoEdit="***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***" and $StartLog="***[START LOGGING SESSION]***" and $StartDateTimeInLog="Match" and $NumericMode="***HEX***" and $TimeMode="***SYSTEM MODE***" Then
 	_WriteResult("Pass","TS_J1939Log_03")
 Else
 	_WriteResult("Fail","TS_J1939Log_03")

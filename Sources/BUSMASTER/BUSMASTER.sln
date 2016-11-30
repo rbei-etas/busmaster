@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataTypes", "DataTypes\DataTypes.vcxproj", "{5D1AB9D9-755F-4743-AE73-83B7D5FCCD65}"
 EndProject
@@ -26,7 +26,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SignalWatch", "SignalWatch\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Filter", "Filter\Filter.vcxproj", "{02495AB5-7675-42B9-8904-54EFEE4A4983}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSetupEditorGUI", "TestSetupEditorGUI\TestSetupEditorGUI.vcxproj", "{CDDB1221-83EF-4683-8466-966A153DA8E2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSetupEditorGUI", "TestSetupEditorGUI\TestSetupEditorGUI.vcxproj", "{27CED0E1-0032-4D9B-8B97-7ECFBF11BA76}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestSetupEditorLib", "TestSetupEditorLib\TestSetupEditorLib.vcxproj", "{9305EC2D-F775-402D-915B-9E0F397D2675}"
 EndProject
@@ -265,16 +265,16 @@ Global
 		{02495AB5-7675-42B9-8904-54EFEE4A4983}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
 		{02495AB5-7675-42B9-8904-54EFEE4A4983}.Unicode Release|Win32.ActiveCfg = Release|Win32
 		{02495AB5-7675-42B9-8904-54EFEE4A4983}.Unicode Release|Win32.Build.0 = Release|Win32
-		{CDDB1221-83EF-4683-8466-966A153DA8E2}.Debug|Win32.ActiveCfg = Debug|Win32
-		{CDDB1221-83EF-4683-8466-966A153DA8E2}.Debug|Win32.Build.0 = Debug|Win32
-		{CDDB1221-83EF-4683-8466-966A153DA8E2}.Release|Win32.ActiveCfg = Release|Win32
-		{CDDB1221-83EF-4683-8466-966A153DA8E2}.Release|Win32.Build.0 = Release|Win32
-		{CDDB1221-83EF-4683-8466-966A153DA8E2}.Unicode Debug|Win32.ActiveCfg = Release|Win32
-		{CDDB1221-83EF-4683-8466-966A153DA8E2}.Unicode Debug|Win32.Build.0 = Release|Win32
-		{CDDB1221-83EF-4683-8466-966A153DA8E2}.Unicode Release MinSize|Win32.ActiveCfg = Release|Win32
-		{CDDB1221-83EF-4683-8466-966A153DA8E2}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
-		{CDDB1221-83EF-4683-8466-966A153DA8E2}.Unicode Release|Win32.ActiveCfg = Release|Win32
-		{CDDB1221-83EF-4683-8466-966A153DA8E2}.Unicode Release|Win32.Build.0 = Release|Win32
+		{27CED0E1-0032-4D9B-8B97-7ECFBF11BA76}.Debug|Win32.ActiveCfg = Debug|Win32
+		{27CED0E1-0032-4D9B-8B97-7ECFBF11BA76}.Debug|Win32.Build.0 = Debug|Win32
+		{27CED0E1-0032-4D9B-8B97-7ECFBF11BA76}.Release|Win32.ActiveCfg = Release|Win32
+		{27CED0E1-0032-4D9B-8B97-7ECFBF11BA76}.Release|Win32.Build.0 = Release|Win32
+		{27CED0E1-0032-4D9B-8B97-7ECFBF11BA76}.Unicode Debug|Win32.ActiveCfg = Release|Win32
+		{27CED0E1-0032-4D9B-8B97-7ECFBF11BA76}.Unicode Debug|Win32.Build.0 = Release|Win32
+		{27CED0E1-0032-4D9B-8B97-7ECFBF11BA76}.Unicode Release MinSize|Win32.ActiveCfg = Release|Win32
+		{27CED0E1-0032-4D9B-8B97-7ECFBF11BA76}.Unicode Release MinSize|Win32.Build.0 = Release|Win32
+		{27CED0E1-0032-4D9B-8B97-7ECFBF11BA76}.Unicode Release|Win32.ActiveCfg = Release|Win32
+		{27CED0E1-0032-4D9B-8B97-7ECFBF11BA76}.Unicode Release|Win32.Build.0 = Release|Win32
 		{9305EC2D-F775-402D-915B-9E0F397D2675}.Debug|Win32.ActiveCfg = Debug|Win32
 		{9305EC2D-F775-402D-915B-9E0F397D2675}.Debug|Win32.Build.0 = Debug|Win32
 		{9305EC2D-F775-402D-915B-9E0F397D2675}.Release|Win32.ActiveCfg = Release|Win32
@@ -563,6 +563,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
 		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}

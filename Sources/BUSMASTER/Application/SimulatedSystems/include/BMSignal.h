@@ -15,7 +15,7 @@ class BMSignal
 public:
     const std::string m_Name;
     const unsigned long long m_ClusterID;
-    const int type;
+    const int type;				//1->signed 0->unsigned
     const int startBit;
     const int length;
     const bool intel;

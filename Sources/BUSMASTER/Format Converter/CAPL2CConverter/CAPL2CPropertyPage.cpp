@@ -176,6 +176,12 @@ BOOL CCAPL2CPropertyPage::OnInitDialog()
 
     //Needs to be made generic.
     m_omComboBusType.InsertString(0,"CAN");
+
+    loadFrCapl2CConverter();
+    if (nullptr != mFrCapl2CConverterModule)
+    {
+        m_omComboBusType.InsertString(1, "FlexRay");
+    }
     m_omComboBusType.SetCurSel(0);
 
     //Set Input Database Text;

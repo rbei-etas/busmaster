@@ -11,13 +11,13 @@
     </copyright>
     <metadata>
       <keywords>
-        <indexterm>FlexRay Transmit Window</indexterm>
+        <indexterm>LIN Message Window</indexterm>
       </keywords>
     </metadata>
   </prolog>
   <body>
     <p><b>Introduction:</b></p>
-    <p>On-line LIN Network Monitoring can be done using FlexRay Message window.</p>
+    <p>On-line LIN Network Monitoring can be done using LIN Message window.</p>
     <p><b>Activation:</b></p>
     <p>Use <b>LIN-&gt;Message Window-&gt;Activate</b> menu to Activate the Message window.This will display Message Window as shown in following figure.</p>
     <p><image href="../images/LIN_MessageWindow_Empty.bmp"/></p>

@@ -5,22 +5,35 @@
 #include <map>
 #include <string>
 #include <list>
+#include <vector>
 #include "CommonDefines.h"
-#include "LINDefines.h"
-#include "FlexRayDefines.h"
-#include "CANDefines.h"
 #include "ProtocolsDefinitions.h"
 
-
-/*enum eClusterType
+enum eAction
 {
-    CAN_CLUSTER,
-    J1939_CLUSTER,
-    LIN_CLUSTER,
-    FlexRay_CLUSTER,
-    ALL,
-    INVALID_CLUSTER,
-};*/
+	eModify,
+	eNameChange,
+	eTxNodeAdded,
+	eRxNodeAdded,
+	eRxNodeRemoved,
+	ePropertyChanged,
+	eBeforeDeletion,
+	eDeleted
+};
+
+enum eErrorSeverity
+{
+	eError,
+	eWarning
+};
+
+enum eMultiplexSignalIndicator
+{
+	eMultiplexSwitch,
+	eMutiplexedSignal,
+	eBoth,
+	eNA
+};
 
 enum ePropertyType
 {
@@ -46,14 +59,6 @@ enum eClusterElementType
     eInvalidElement,
 };
 
-enum eEcuType
-{
-    eCAN,
-    eLIN_Master,
-    eLIN_Slave,
-    eFlexRay,
-    eEcuNone
-};
 
 enum eDIR
 {
@@ -62,26 +67,17 @@ enum eDIR
     eAllDir = DIRECTION_ALL
 };
 
-enum eFrameType
+class ParsingResults
 {
+public:
+	eErrorSeverity m_ouErrorType;
+	unsigned int m_unErrorCode;
 
-    eCAN_Frame_start,
-    eCAN_Frame,
-    eCAN_Frame_end,
+	unsigned int m_unLineNum;
+	std::string m_strErrorDesc;
+	std::string m_strActionTaken;
 
-    eLIN_Frame_start,
-    eLIN_Unconditional,
-    eLIN_Sporadic,
-    eLIN_EventTriggered,
-    eLIN_Diagnostic,
-    eLIN_Frame_end,
 
-    eFlexRay_Frame_Start,
-    eFlexRay_Normal,
-    eFlexRay_Switch,
-    eFlexRay_Frame_End,
-
-    eFrame_Invalid
 };
 
 class SignalInstanse
@@ -90,6 +86,19 @@ public:
     int m_nStartBit;
     eEndianess m_ouSignalEndianess;
     int m_nUpdateBitPos;
+};
+class SignalValue
+{
+public:
+	std::string mName;
+	std::string mUnit;
+	union
+	{
+		unsigned __int64 mUnValue = 0;
+		signed __int64 mValue;
+	};
+	bool mIsSigned = true;
+	double mPhyicalValue = 0;
 };
 
 class InterpreteSignals
@@ -114,81 +123,68 @@ public:
 class EcuProperties
 {
 public:
-    eEcuType m_eEcuType;
-    LINMasterProps m_ouMasterProps;
-    LINSlaveProps m_ouSlavePros;
-    FlexRayEcuProperties m_ouFlexRayProperties;
-};
+	eProtocolType m_eProtocol;
 
 
-class SwitchProps
+	EcuProperties()
 {
-public:
-    std::string m_omSwitchName;
-    unsigned int m_unStartBit;
-    eEndianess m_oueEndianess;
-    unsigned int m_unBitLength;
-    UID_ELEMENT m_uidSignal;
+		m_eProtocol = eProtocolType::eInvalidProtocol;
+	}
 };
 
 class FrameProps
 {
 public:
-    eFrameType m_eFrameType;
-    LINUnConditionFrameProps m_ouLINUnConditionFrameProps;
-    LINEventTrigFrameProps m_ouLINEventTrigFrameProps;
-    LINSporadicFrameProps m_ouLINSporadicFrameProps;
-    LINDiagnosticFrameProps m_ouLINDiagnosticFrameProps;
-    FlexRayFrameProps m_ouFlexRayFrameProps;
-    SwitchProps m_ouFlexRaySwitchProps;
-    CANFrameProps m_ouCANFrameProp;
-};
+	FrameProps()
 
-enum eAction
 {
-    eModify,
-    eNameChange,
-    eTxNodeAdded,
-    eRxNodeAdded,
-    eRxNodeRemoved,
-    ePropertyChanged,
-    eBeforeDeletion,
-    eDeleted
+		m_eProtocol = eProtocolType::eInvalidProtocol;
     //...
-};
-
-class FlexRayFrameId
-{
-public:
-    unsigned int m_unSlotId;
-    unsigned int m_unBaseCycle;
-    eFlexRayChannel m_oueChannel;
+	}
+	eProtocolType m_eProtocol;
+	unsigned int m_nMsgId;
+	unsigned int m_unMsgSize;
 };
 
 
 class SignalGroupProps
 {
 public:
+	SignalGroupProps()
+	{
+		eType = eProtocolType::eInvalidProtocol;
+	}
     eProtocolType eType;
-    LinSignalGroupProps m_ouLinSignalGroupProps;
 };
 
 class SignalProps
 {
 public:
+	SignalProps()
+	{
+		eType = eProtocolType::eInvalidProtocol;
+	}
     eProtocolType eType;
-    LINSignalProps m_ouLINSignalProps;
-    FlexRaySignalProps m_ouFlexRaySignalProps;
-    CANSignalProps m_ouCANSignalProps;
+	unsigned int m_unSignalSize;	// signal size is always in bit
+	eSignalType m_ouSignalType;		
+	eSignalDataType m_ouDataType;   /*eSigned, eUnsigned*/
+	eEndianess m_ouEndianess;
+	unsigned __int64 m_nIntialValue;
+	eMultiplexSignalIndicator m_eMultiplex; // M = Switch , m = mulplexed signal, mIntM = Multipled signal and switch both
+	int m_nMuliplexedValue;
+	std::string m_omUnit;
 };
 
 
 class PduProps
 {
 public:
+	PduProps()
+	{
+		eType = eProtocolType::eInvalidProtocol;
+	}
     eProtocolType eType;
-    FlexRayPduProps m_ouFlexRayPduProps;
-    SwitchProps m_ouFlexRaySwitchProps;
+	unsigned int m_unByteLength;
 };
 
 
@@ -197,10 +193,11 @@ public:
 class CompuMethodProps
 {
 public:
+	CompuMethodProps()
+	{
+		m_eType = eProtocolType::eInvalidProtocol;
+	}
     eProtocolType m_eType;
-    LINCompuMethods m_ouLinCompuMethods;
-    FlxRayCompuMethods m_ouFlexRayCompuMethods;
-    CANCompuMethods m_ouCanComputeMethod;
 };
 
 
@@ -214,21 +211,7 @@ public:
 
 
 
-enum eErrorSeverity
-{
-    eError,
-    eWarning
-};
 
 
-class ParsingResults
-{
-public:
-    eErrorSeverity m_ouErrorType;
-    unsigned int m_unErrorCode;
-    unsigned int m_unLineNum;
-    std::string m_strErrorDesc;
-    std::string m_strActionTaken;
-};
 
 

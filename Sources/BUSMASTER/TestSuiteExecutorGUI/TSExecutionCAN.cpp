@@ -25,7 +25,7 @@
 //#include "DIL_Interface_Extern.h"
 #include "Utility/MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
-
+#include "CANDefines.h"
 
 /******************************************************************************
 Function Name  :  ReadTSXDataBuffer
@@ -604,8 +604,6 @@ for (auto signal:signalList )
         tagUSIGNALVALUE sSignalValue;
         if(ouSendData.m_eSignalUnitType == ENG)
         {
-            SignalProps signalProps;
-            signal.first->GetProperties( signalProps );
             signal.first->GetRawValueFromEng( ouSignalData.m_uValue.m_fValue, sSignalValue.m_u64Value );
         }
         else
@@ -618,13 +616,13 @@ for (auto signal:signalList )
     //Make CAN Message
     unsigned int length;
     unsigned int id;
-    FrameProps frameProps;
+    CANFrameProps frameProps;
     pMsg->GetLength( length );
     pMsg->GetFrameId( id );
     pMsg->GetProperties( frameProps );
     stCanMsg.m_ucChannel = ouSendData.m_byChannelNumber;    // Get Channel-Number
     stCanMsg.m_ucDataLen = (UCHAR)length;
-    stCanMsg.m_ucEXTENDED = (UCHAR)( ( frameProps.m_ouCANFrameProp.m_canMsgType == eCan_Extended ) ? 1 : 0 );
+    stCanMsg.m_ucEXTENDED = (UCHAR)( ( frameProps.m_canMsgType == eCan_Extended ) ? 1 : 0 );
     stCanMsg.m_ucRTR = ( signalList.size() > 0 ) ? 0 : 1;        //TODO:CheckThis
     stCanMsg.m_unMsgID = id;
     return TRUE;
@@ -640,16 +638,16 @@ UINT64 CTSExecutionCAN::un64GetBitMask( ISignal* CurrSig, SignalInstanse& ouInst
     Result <<= unLength;
     --Result; // These bits are now up.
 
-    SignalProps ouSignalProps;
+    CANSignalProps ouSignalProps;
 
     CurrSig->GetProperties( ouSignalProps );
     // Then shift them to the appropriate place.
-    short Shift = ( eIntel == ouSignalProps.m_ouLINSignalProps.m_ouEndianess ) ?
+    short Shift = ( eIntel == ouSignalProps.m_ouEndianess ) ?
                   ( (short)ouInstance.m_nStartBit )
                   : 64 - ouInstance.m_nStartBit;
     Result <<= Shift;
 
-    if ( eMotorola == ouSignalProps.m_ouLINSignalProps.m_ouEndianess )
+    if ( eMotorola == ouSignalProps.m_ouEndianess )
     {
         BYTE* pbStr = (BYTE*)&Result;
 
@@ -692,10 +690,6 @@ void CTSExecutionCAN::vSetSignalValue( SignalInstanse& ouSignalInstance, ISignal
     UINT64 unMaxVal = pow( (double)2, (double)unLength );
     unMaxVal -= 1;
     u64SignVal = u64SignVal&unMaxVal;
-
-    SignalProps ouSignalProps;
-    ouSigStrct->GetProperties( ouSignalProps );
-
 
     if ( ouSignalInstance.m_ouSignalEndianess == eIntel )// If Intel format
     {

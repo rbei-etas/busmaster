@@ -157,7 +157,7 @@ if winexists($WIN_BUSMASTER) then
 
 ;~ 	_ConfigTXWinDetails(0,"ndb","100",1,"","","No","1000","")																			;$Rownum,$HSCaseNo(1-dbmessage,2-NonDbmsg),$messageid/Index(For dbMessage),chnl,datalength,Messageype,RTR,Repetition,Key
 ;~     _CloseTxWindowArg("CAN")
-	WinMenuSelectItem($WIN_BUSMASTER,"",$linMenu,$LINLogMenu,$configureMenu)														   ; Select Configure->Log
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$linMenu,$LINLogMenu,$configureMenu)														   ; Select Configure->Log
 	Sleep(1000)
 	WinWaitActive($WIN_LINLog,2)
 	If WinExists($WIN_LINLog) Then
@@ -170,7 +170,7 @@ if winexists($WIN_BUSMASTER) then
 
 
 	_ConnectDisconnect_LIN()
-	 sleep(70000)
+	 sleep(65000)
      $logFile1ForTime=LogFileExist("SampleLog_S0_T0")
 	 if $logFile1ForTime=1 Then
 		$logfile1Content1 = _GetlogFileData("SampleLog_S0_T0.log", "8")																	;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting

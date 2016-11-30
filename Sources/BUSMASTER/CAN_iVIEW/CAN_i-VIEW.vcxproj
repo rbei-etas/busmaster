@@ -45,16 +45,19 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
     <Import Project="..\Busmaster_Kernel_Includes.props" />
+    <Import Project="..\Warnings_Supress.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
     <Import Project="..\Busmaster_Kernel_Includes.props" />
+    <Import Project="..\Warnings_Supress.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
     <Import Project="..\Busmaster_Kernel_Includes.props" />
+    <Import Project="..\Warnings_Supress.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -204,7 +207,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\DIL_Interface\HardwareListing.cpp" />
+    <ClCompile Include="..\DIL_Interface\HardwareListingCAN.cpp" />
     <ClCompile Include="AcceptanceFilterDlg.cpp" />
     <ClCompile Include="CAN_i-VIEW.cpp">
       <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">ProgramDatabase</DebugInformationFormat>
@@ -213,7 +216,7 @@
     <ClCompile Include="ChangeRegisters.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\DIL_Interface\HardwareListing.h" />
+    <ClInclude Include="..\DIL_Interface\HardwareListingCAN.h" />
     <ClInclude Include="AcceptanceFilterDlg.h" />
     <ClInclude Include="CAN_i-VIEW.h" />
     <ClInclude Include="CAN_i-VIEW_Extern.h" />
@@ -226,6 +229,13 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CAN_i-VIEW.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bmp_net.bmp" />
+    <Image Include="res\iview.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CAN_i-VIEW_Resource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

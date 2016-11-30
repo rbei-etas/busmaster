@@ -88,7 +88,7 @@ static UINT sg_nNoOfChannels = 0;
 static HANDLE sg_hEventRecv = nullptr;
 static HANDLE sg_hReadThread = nullptr;
 static DWORD sg_dwReadThreadId = 0;
-static struct _VSCanCfg sg_VSCanCfg;
+_VSCanCfg sg_VSCanCfg;
 
 
 /**
@@ -157,10 +157,9 @@ public:
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
     HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
-    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount,PSCONTROLLER_DETAILS );
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
-    HRESULT CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
@@ -488,28 +487,34 @@ HRESULT CDIL_CAN_VSCOM::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& 
 * \param[out]    nCount , is INT contains the selected channel count.
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_VSCOM::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
+HRESULT CDIL_CAN_VSCOM::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount,PSCONTROLLER_DETAILS InitData)
 {
     USES_CONVERSION;
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
     static BOOL bInit = 1;
-
+	int pnSelList[1]={0};
     nCount = 1;
     //set the current number of channels
     sg_nNoOfChannels = 1;
     asSelHwInterface[0].m_dwIdInterface = 0;
     asSelHwInterface[0].m_acDescription = "VScom CAN Device";
     sg_bCurrState = STATE_HW_INTERFACE_LISTED;
+	CWnd objMainWnd;
+	objMainWnd.Attach(sg_hOwnerWnd);
+ 	IChangeRegisters* pAdvancedSettings = new _VSCanCfg();
+	CHardwareListingCAN HwList(asSelHwInterface, nCount, pnSelList, CAN, CHANNEL_ALLOWED, &objMainWnd, InitData, pAdvancedSettings);
+ 	INT nRet = HwList.DoModal();
+	objMainWnd.Detach();   
 
-    if (bInit)
+    if(nRet==IDOK)
     {
-        bInit = FALSE;
+		return S_OK;
     }
     else
     {
-        MessageBox(sg_hOwnerWnd, "Please use the \"Channel Configuration\" menu item to setup the device.", "Hardware Selection", MB_OK);
+		return HW_INTERFACE_NO_SEL;
     }
 
-    return(S_OK);
 }
 
 /**
@@ -544,113 +549,72 @@ HRESULT CDIL_CAN_VSCOM::CAN_DeselectHwInterface(void)
     return hResult;
 }
 
-/**
-* \brief         Displays the controller configuration dialog.
-* \param[out]    InitData, is SCONTROLLER_DETAILS structure
-* \param[out]    Length , is INT
-* \return        S_OK for success
-*/
-HRESULT CDIL_CAN_VSCOM::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
+void vSettingConfigData( SCONTROLLER_DETAILS* cntrl, std::string &str )
 {
-    (void)Length;
-    HRESULT result;
-    SCONTROLLER_DETAILS* cntrl;
-    char temp[32];
+	sg_VSCanCfg.bDebug = cntrl[0].m_bDebug;
 
-    result = WARN_INITDAT_NCONFIRM;
-    cntrl = (SCONTROLLER_DETAILS*)InitData;
+	strcpy(sg_VSCanCfg.szLocation, cntrl[0].m_omStrLocation.c_str());
 
-    if (ShowCanVsComSetup(sg_hOwnerWnd, &sg_VSCanCfg))
-    {
-        if (sg_VSCanCfg.vSpeed)
-        {
-            switch ((int)sg_VSCanCfg.vSpeed)
-            {
-                case VSCAN_SPEED_20K:
-                    cntrl[0].m_omStrBaudrate = "20";
-                    break;
-                case VSCAN_SPEED_50K:
-                    cntrl[0].m_omStrBaudrate = "50";
-                    break;
-                case VSCAN_SPEED_100K:
-                    cntrl[0].m_omStrBaudrate = "100";
-                    break;
-                case VSCAN_SPEED_125K:
-                    cntrl[0].m_omStrBaudrate = "125";
-                    break;
-                case VSCAN_SPEED_250K:
-                    cntrl[0].m_omStrBaudrate = "250";
-                    break;
-                case VSCAN_SPEED_500K:
-                    cntrl[0].m_omStrBaudrate = "500";
-                    break;
-                case VSCAN_SPEED_800K:
-                    cntrl[0].m_omStrBaudrate = "800";
-                    break;
-                default:
-                    cntrl[0].m_omStrBaudrate = "1000";
-                    break;
-            }
-        }
-        else
-        {
-            cntrl[0].m_omStrBaudrate = "";
-            sprintf(temp, "%02X", sg_VSCanCfg.btr.Btr0);
-            cntrl[0].m_omStrBTR0 = temp;
-            sprintf(temp, "%02X", sg_VSCanCfg.btr.Btr1);
-            cntrl[0].m_omStrBTR1 = temp;
-        }
+	if (cntrl[0].m_bPassiveMode)
+	{
+		sg_VSCanCfg.dwMode = VSCAN_MODE_LISTEN_ONLY;
+	}
+	else if (cntrl[0].m_bSelfReception)
+	{
+		sg_VSCanCfg.dwMode = VSCAN_MODE_SELF_RECEPTION;
+	}
+	else
+	{
+		sg_VSCanCfg.dwMode = VSCAN_MODE_NORMAL;
+	}
 
-        cntrl[0].m_bDebug = sg_VSCanCfg.bDebug;
+	sg_VSCanCfg.bTimestamps = cntrl[0].m_bHWTimestamps;
 
-        cntrl[0].m_omStrLocation = sg_VSCanCfg.szLocation;
+	str = cntrl[0].m_omStrAccCodeByte4[0];
+	str += cntrl[0].m_omStrAccCodeByte3[0];
+	str += cntrl[0].m_omStrAccCodeByte2[0];
+	str += cntrl[0].m_omStrAccCodeByte1[0];
+	sg_VSCanCfg.codeMask.Code = strtoul(str.c_str(), nullptr, 16);
+	str = cntrl[0].m_omStrAccMaskByte4[0];
+	str += cntrl[0].m_omStrAccMaskByte3[0];
+	str += cntrl[0].m_omStrAccMaskByte2[0];
+	str += cntrl[0].m_omStrAccMaskByte1[0];
+	sg_VSCanCfg.codeMask.Mask = strtoul(str.c_str(), nullptr, 16);
 
-        if (sg_VSCanCfg.dwMode == VSCAN_MODE_LISTEN_ONLY)
-        {
-            cntrl[0].m_bPassiveMode = 1;
-            cntrl[0].m_bSelfReception = 0;
-        }
-        else if (sg_VSCanCfg.dwMode == VSCAN_MODE_SELF_RECEPTION)
-        {
-            cntrl[0].m_bPassiveMode = 0;
-            cntrl[0].m_bSelfReception = 1;
-        }
-        else
-        {
-            cntrl[0].m_bPassiveMode = 0;
-            cntrl[0].m_bSelfReception = 0;
-        }
-
-        cntrl[0].m_bHWTimestamps = sg_VSCanCfg.bTimestamps;
-
-        sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Code >> 0) & 0xFF);
-        cntrl[0].m_omStrAccCodeByte1[0] = temp;
-        sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Code >> 8) & 0xFF);
-        cntrl[0].m_omStrAccCodeByte2[0] = temp;
-        sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Code >> 16) & 0xFF);
-        cntrl[0].m_omStrAccCodeByte3[0] = temp;
-        sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Code >> 24) & 0xFF);
-        cntrl[0].m_omStrAccCodeByte4[0] = temp;
-
-        sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Mask >> 0) & 0xFF);
-        cntrl[0].m_omStrAccMaskByte1[0] = temp;
-        sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Mask >> 8) & 0xFF);
-        cntrl[0].m_omStrAccMaskByte2[0] = temp;
-        sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Mask >> 16) & 0xFF);
-        cntrl[0].m_omStrAccMaskByte3[0] = temp;
-        sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Mask >> 24) & 0xFF);
-        cntrl[0].m_omStrAccMaskByte4[0] = temp;
-
-        cntrl[0].m_bAccFilterMode = sg_VSCanCfg.bDualFilter;
-
-        if ((result = CAN_SetConfigData(InitData, 1)) == S_OK)
-        {
-            result = INFO_INITDAT_CONFIRM_CONFIG;
-        }
-    }
-    return(result);
+	sg_VSCanCfg.bDualFilter = cntrl[0].m_bAccFilterMode;
 }
 
+void* GetSpeed(long lBaudRate)
+{
+	switch(lBaudRate)
+	{
+	case 20000:
+		return (void*)VSCAN_SPEED_20K;
+		break;
+	case 50000:
+		return (void*)VSCAN_SPEED_50K;
+		break;
+	case 100000:
+		return (void*)VSCAN_SPEED_100K;
+		break;
+	case 125000:
+		return (void*) VSCAN_SPEED_125K;
+		break;
+	case 250000:
+		return (void*)VSCAN_SPEED_250K;
+		break;
+	case 500000:
+		return (void*)VSCAN_SPEED_500K;
+		break;
+	case 800000:
+		return (void*)VSCAN_SPEED_800K;
+		break;
+	default:
+		return (void*) VSCAN_SPEED_1M;
+		break;
+	}
+
+}
 /**
 * \brief         Sets the controller configuration data supplied by ConfigFile.
 * \param[in]     ConfigFile, is SCONTROLLER_DETAILS structure
@@ -667,33 +631,8 @@ HRESULT CDIL_CAN_VSCOM::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int L
     cntrl = (SCONTROLLER_DETAILS*)ConfigFile;
     if (cntrl[0].m_omStrBaudrate.length() > 0)
     {
-        switch(_tcstol(cntrl[0].m_omStrBaudrate.c_str(), &tmp, 0))
-        {
-            case 20:
-                sg_VSCanCfg.vSpeed = VSCAN_SPEED_20K;
-                break;
-            case 50:
-                sg_VSCanCfg.vSpeed = VSCAN_SPEED_50K;
-                break;
-            case 100:
-                sg_VSCanCfg.vSpeed = VSCAN_SPEED_100K;
-                break;
-            case 125:
-                sg_VSCanCfg.vSpeed = VSCAN_SPEED_125K;
-                break;
-            case 250:
-                sg_VSCanCfg.vSpeed = VSCAN_SPEED_250K;
-                break;
-            case 500:
-                sg_VSCanCfg.vSpeed = VSCAN_SPEED_500K;
-                break;
-            case 800:
-                sg_VSCanCfg.vSpeed = VSCAN_SPEED_800K;
-                break;
-            default:
-                sg_VSCanCfg.vSpeed = VSCAN_SPEED_1M;
-                break;
-        }
+        sg_VSCanCfg.vSpeed = GetSpeed(_tcstol(cntrl[0].m_omStrBaudrate.c_str(), &tmp, 0));
+
     }
     else
     {
@@ -701,37 +640,12 @@ HRESULT CDIL_CAN_VSCOM::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int L
         sg_VSCanCfg.btr.Btr1 = (UCHAR)_tcstol(cntrl[0].m_omStrBTR1.c_str(), &tmp, 0);
     }
 
-    sg_VSCanCfg.bDebug = cntrl[0].m_bDebug;
 
-    strcpy(sg_VSCanCfg.szLocation, cntrl[0].m_omStrLocation.c_str());
+	vSettingConfigData(cntrl, str);
 
-    if (cntrl[0].m_bPassiveMode)
-    {
-        sg_VSCanCfg.dwMode = VSCAN_MODE_LISTEN_ONLY;
-    }
-    else if (cntrl[0].m_bSelfReception)
-    {
-        sg_VSCanCfg.dwMode = VSCAN_MODE_SELF_RECEPTION;
-    }
-    else
-    {
-        sg_VSCanCfg.dwMode = VSCAN_MODE_NORMAL;
-    }
 
-    sg_VSCanCfg.bTimestamps = cntrl[0].m_bHWTimestamps;
 
-    str = cntrl[0].m_omStrAccCodeByte4[0];
-    str += cntrl[0].m_omStrAccCodeByte3[0];
-    str += cntrl[0].m_omStrAccCodeByte2[0];
-    str += cntrl[0].m_omStrAccCodeByte1[0];
-    sg_VSCanCfg.codeMask.Code = strtoul(str.c_str(), nullptr, 16);
-    str = cntrl[0].m_omStrAccMaskByte4[0];
-    str += cntrl[0].m_omStrAccMaskByte3[0];
-    str += cntrl[0].m_omStrAccMaskByte2[0];
-    str += cntrl[0].m_omStrAccMaskByte1[0];
-    sg_VSCanCfg.codeMask.Mask = strtoul(str.c_str(), nullptr, 16);
 
-    sg_VSCanCfg.bDualFilter = cntrl[0].m_bAccFilterMode;
 
     return(S_OK);
 }
@@ -1398,4 +1312,137 @@ static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
 HRESULT CDIL_CAN_VSCOM::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
 {
     return S_OK;
+}
+int SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int Length)
+{
+	(void)Length;
+	SCONTROLLER_DETAILS* cntrl;
+	char* tmp;
+	std::string str;
+	cntrl = (SCONTROLLER_DETAILS*)ConfigFile;
+	vSettingConfigData(cntrl, str);
+	return(S_OK);
+}
+std::string _VSCanCfg::GetBaudRate(int speed)
+{
+	switch ((int)sg_VSCanCfg.vSpeed)
+	{
+	case VSCAN_SPEED_20K:
+		return "20000";
+		break;
+	case VSCAN_SPEED_50K:
+		return "50000";
+		break;
+	case VSCAN_SPEED_100K:
+		return  "100000";
+		break;
+	case VSCAN_SPEED_125K:
+		return "125000";
+		break;
+	case VSCAN_SPEED_250K:
+		return "250000";
+		break;
+	case VSCAN_SPEED_500K:
+		return  "500000";
+		break;
+	case VSCAN_SPEED_800K:
+		return  "800000";
+		break;
+	default:
+		return  "1000000";
+		break;
+	}
+}
+int _VSCanCfg::InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount,UINT )
+{
+	HRESULT result;
+	SCONTROLLER_DETAILS* cntrl;
+	char temp[32];
+	char* tmp;
+	result = WARN_INITDAT_NCONFIRM;
+		if (pControllerDetails!=nullptr)
+	{
+		cntrl = (SCONTROLLER_DETAILS*)pControllerDetails;
+			if (cntrl[0].m_omStrBaudrate.length() > 0)
+			{
+				sg_VSCanCfg.vSpeed = GetSpeed(_tcstol(cntrl[0].m_omStrBaudrate.c_str(), &tmp, 0));
+			}
+			else
+			{
+				sg_VSCanCfg.btr.Btr0 = (UCHAR)_tcstol(cntrl[0].m_omStrBTR0.c_str(), &tmp, 0);
+				sg_VSCanCfg.btr.Btr1 = (UCHAR)_tcstol(cntrl[0].m_omStrBTR1.c_str(), &tmp, 0);
+			}
+			if (ShowCanVsComSetup(sg_hOwnerWnd, &sg_VSCanCfg))
+			{
+				if (sg_VSCanCfg.vSpeed)
+				{
+					cntrl[0].m_omStrBaudrate = GetBaudRate((int)sg_VSCanCfg.vSpeed);
+				}
+				else
+				{
+					cntrl[0].m_omStrBaudrate = "";
+					sprintf(temp, "%02X", sg_VSCanCfg.btr.Btr0);
+					cntrl[0].m_omStrBTR0 = temp;
+					sprintf(temp, "%02X", sg_VSCanCfg.btr.Btr1);
+					cntrl[0].m_omStrBTR1 = temp;
+				}
+				cntrl[0].m_bDebug = sg_VSCanCfg.bDebug;
+				cntrl[0].m_omStrLocation = sg_VSCanCfg.szLocation;
+				if (sg_VSCanCfg.dwMode == VSCAN_MODE_LISTEN_ONLY)
+				{
+					cntrl[0].m_bPassiveMode = 1;
+					cntrl[0].m_bSelfReception = 0;
+				}
+				else if (sg_VSCanCfg.dwMode == VSCAN_MODE_SELF_RECEPTION)
+				{
+					cntrl[0].m_bPassiveMode = 0;
+					cntrl[0].m_bSelfReception = 1;
+				}
+				else
+				{
+					cntrl[0].m_bPassiveMode = 0;
+					cntrl[0].m_bSelfReception = 0;
+				}
+				cntrl[0].m_bHWTimestamps = sg_VSCanCfg.bTimestamps;
+				sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Code >> 0) & 0xFF);
+				cntrl[0].m_omStrAccCodeByte1[0] = temp;
+				sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Code >> 8) & 0xFF);
+				cntrl[0].m_omStrAccCodeByte2[0] = temp;
+				sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Code >> 16) & 0xFF);
+				cntrl[0].m_omStrAccCodeByte3[0] = temp;
+				sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Code >> 24) & 0xFF);
+				cntrl[0].m_omStrAccCodeByte4[0] = temp;
+				sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Mask >> 0) & 0xFF);
+				cntrl[0].m_omStrAccMaskByte1[0] = temp;
+				sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Mask >> 8) & 0xFF);
+				cntrl[0].m_omStrAccMaskByte2[0] = temp;
+				sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Mask >> 16) & 0xFF);
+				cntrl[0].m_omStrAccMaskByte3[0] = temp;
+				sprintf(temp, "%X", (sg_VSCanCfg.codeMask.Mask >> 24) & 0xFF);
+				cntrl[0].m_omStrAccMaskByte4[0] = temp;
+				cntrl[0].m_bAccFilterMode = sg_VSCanCfg.bDualFilter;
+				if ((result = SetConfigData(pControllerDetails, 1)) == S_OK)
+				{
+					result = INFO_INITDAT_CONFIRM_CONFIG;
+				}
+			}
+			return(result);
+	}
+	else
+	{
+		return(result);
+	}	
+}
+DOUBLE _VSCanCfg::vValidateBaudRate(DOUBLE dBaudRate,int,UINT )
+{
+	CString omStrEditBaudRate;
+	long nBaudRate=(long)dBaudRate;
+	if(nBaudRate == 20000||nBaudRate == 50000||nBaudRate == 100000||nBaudRate == 125000||nBaudRate == 250000||nBaudRate == 500000||nBaudRate == 800000)
+	{
+		return nBaudRate;
+	}
+	else
+	{
+		return 1000000;
+	}
 }

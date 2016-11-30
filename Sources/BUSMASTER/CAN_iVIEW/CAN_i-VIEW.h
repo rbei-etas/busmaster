@@ -38,7 +38,7 @@
 //#include "DataTypes/DIL_DataTypes.h"
 #include "Utility/Utility_Thread.h"
 #include "Utility/Utility.h"
-#include "DIL_Interface\HardwareListing.h"
+#include "DIL_Interface\HardwareListingCAN.h"
 #include "ChangeRegisters.h"
 //#include "DIL_Interface/BaseDIL_CAN_Controller.h"
 #include "BaseDIL_CAN_Controller.h"
@@ -410,10 +410,9 @@ public:
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
     HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
-    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
-    HRESULT CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
@@ -446,7 +445,7 @@ private:
         DWORD       /*dwDriver*/,
         INTERFACE_HW*   psInterfaces,
         int*        pnSelList,
-        int&        nCount );
+        int&        nCount,PSCONTROLLER_DETAILS );
 
     void RxData(
         UNUM32              Id,

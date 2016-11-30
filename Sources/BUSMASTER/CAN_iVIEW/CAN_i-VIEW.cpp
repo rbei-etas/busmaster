@@ -465,13 +465,15 @@ int CDIL_CAN_i_VIEW::ListHardwareInterfaces(
     DWORD       /*dwDriver*/,
     INTERFACE_HW*   psInterfaces,
     int*        pnSelList,
-    int&        nCount )
+    int&        nCount
+	, PSCONTROLLER_DETAILS InitData)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
     CWnd objMainWnd;
     objMainWnd.Attach(hParent);
-    CHardwareListing HwList(psInterfaces, nCount, pnSelList, CAN, CHANNEL_ALLOWED,&objMainWnd);
+	IChangeRegisters* pAdvancedSettings = new CChangeRegisters(nullptr, InitData, nCount);
+	CHardwareListingCAN HwList(psInterfaces, nCount, pnSelList, CAN, CHANNEL_ALLOWED, &objMainWnd, InitData,pAdvancedSettings);
     INT nRet = HwList.DoModal();
     objMainWnd.Detach();
 
@@ -503,62 +505,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_SetAppParams(HWND hWndOwner)
     return hResult;
 }
 
-/**
- * \return S_OK for success, S_FALSE for failure
- *
- * Displays the controller configuration dialog.
- * Fields are initialized with values supplied by InitData.
- * InitData will be updated with the user selected values.
- */
-
-HRESULT CDIL_CAN_i_VIEW::CAN_DisplayConfigDlg(
-    PSCONTROLLER_DETAILS    InitData,
-    int&            Length )
-{
-    VALIDATE_VALUE_RETURN_VAL(m_CurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
-    VALIDATE_POINTER_RETURN_VAL(InitData, WARN_INITDAT_NCONFIRM);
-
-    USES_CONVERSION;
-
-    INT Result = WARN_INITDAT_NCONFIRM;
-    //First initialize with existing hw description
-    for (INT i = 0; i < min(Length, (INT)m_nChannels); i++)
-    {
-        InitData[i].m_omHardwareDesc = m_Channel[i]->Name();
-    }
-    if (m_nChannels > 0)
-    {
-        //Result = DisplayConfigurationDlg(m_hOwnerWnd, Callback_DIL_iVIEW,
-        //  psContrlDets, m_nChannels);
-        AFX_MANAGE_STATE(AfxGetStaticModuleState());
-        CChangeRegisters ChangeRegisters(nullptr, InitData, m_nChannels);
-        ChangeRegisters.DoModal();
-        Result = ChangeRegisters.nGetInitStatus();
-
-        switch (Result)
-        {
-            case WARNING_NOTCONFIRMED:
-                Result = WARN_INITDAT_NCONFIRM;
-                break;
-            case INFO_INIT_DATA_CONFIRMED:
-                Length = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
-                Result = CAN_SetConfigData(InitData, Length);
-                if (Result == S_OK)
-                {
-                    Result = INFO_INITDAT_CONFIRM_CONFIG;
-                }
-                break;
-            case INFO_RETAINED_CONFDATA:
-                Result = INFO_INITDAT_RETAINED;
-                break;
-            case ERR_CONFIRMED_CONFIGURED: // Not to be addressed at present
-            case INFO_CONFIRMED_CONFIGURED:// Not to be addressed at present
-            default:
-                break;
-        }
-    }
-    return Result;
-}
+  
 
 /**
  * Register Client
@@ -957,7 +904,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_PerformClosureOperations(void)
  */
 HRESULT CDIL_CAN_i_VIEW::CAN_ListHwInterfaces(
     INTERFACE_HW_LIST&  sSelHwInterface,
-    INT&            nCount)
+    INT&            nCount, PSCONTROLLER_DETAILS InitData)
 {
     INTERFACE_HW HWIF[defNO_OF_CHANNELS];
 
@@ -981,7 +928,7 @@ HRESULT CDIL_CAN_i_VIEW::CAN_ListHwInterfaces(
     LeaveCriticalSection(&m_Mutex);
 
     if( ListHardwareInterfaces( m_hOwnerWnd, 0, HWIF,
-                                m_SelectedVCI, nCount ) != 0 )
+                                m_SelectedVCI, nCount,InitData ) != 0 )
     {
         return HW_INTERFACE_NO_SEL;
     }
@@ -1279,7 +1226,7 @@ void CDIL_CAN_i_VIEW::RxEvent(
         pClientItr->second->WriteClientBuffers(CanData);
     }
 }
-HRESULT CDIL_CAN_i_VIEW::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
+HRESULT CDIL_CAN_i_VIEW::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD /*dwDriverId*/,bool /*bIsHardwareListed*/, unsigned int /*unChannelCount*/)
 {
     return S_OK;
 }

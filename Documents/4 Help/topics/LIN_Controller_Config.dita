@@ -20,8 +20,11 @@
     <p>BUSMASTER Can be connected to LIN physical channel using LIN Controller.</p>
     <p>Currently BUSMASTER Supports the following LIN Controllers.</p>
     <p><ol>
-        <li>ETAS ISOLAR-EVE.</li>
+        <li>ETAS BOA (To monitor messages LDF file needs to be associated)</li>
+        <li>ETAS ISOLAR-EVE</li>
+        <li>PEAK USB</li>
         <li>Vector XL</li>
+        <li>Kvaser LIN</li>
       </ol></p>
     <p><b>Selecting Controller:</b></p>
     <p>To select controller use LIN-&gt;Driver Selection-&gt;<i>{Driver}</i> For example to select ETAS ISOLAR EVE Driver use <b>LIN-&gt;Driver Selection-&gt;ETAS ISOLAR-EVE.</b></p>

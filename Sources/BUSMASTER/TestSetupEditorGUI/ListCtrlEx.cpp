@@ -23,7 +23,7 @@
  */
 
 // For all standard header file include
-#include "TSEditorGUI_stdafx.h"
+#include "stdafx.h"
 #include "Utility/ComboItem.h"              // For Custom Combobox Implementation
 #include "Utility/EditItem.h"               // For Custom Editbox Implementation
 #include "Utility/Utility_Structs.h"                 // For data struct definition
@@ -1039,13 +1039,23 @@ BOOL CListCtrlEx::OnEraseBkgnd(CDC* pDC)
 
     int nTotalItems =  GetCountPerPage();
     GetClientRect(omClientRect);
-
+	CRect headerRect;
+	GetHeaderCtrl()->GetItemRect(0, &headerRect);
     for(int i=0; i<nTotalItems+2; i++)
     {
+		omClientRect.left = 0;
+		omClientRect.right = omClientRect.Width();
+		if (i == 0)
+		{
+			omClientRect.top = headerRect.Height();
+		}
+		else
+		{
+			omClientRect.top = headerRect.Height() + (i ) * 19;
+		}
         GetItemPosition(i,&omItemPos);
-        omClientRect.top=omItemPos.y ;
-        GetItemPosition(i+1,&omItemPos);
-        omClientRect.bottom =omItemPos.y;
+
+		omClientRect.bottom = omClientRect.top + 19;
         CBrush omBrush((i % 2) ? m_colRow1 : m_colRow2);
         pDC->FillRect(&omClientRect, &omBrush);
         omBrush.DeleteObject();

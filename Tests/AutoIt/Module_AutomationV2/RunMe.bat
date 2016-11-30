@@ -78,13 +78,7 @@ cd LinClusterConfiguration
 Run_LinClusterConfiguration.au3
 cd ..
 
-cd AdvancedLog_CAN
-Run_AdvancedLog_CAN.au3
-cd ..
 
-cd AdvancedLog_LIN
-Run_AdvancedLog_LIN.au3
-cd ..
 
 cd LIN_Filter
 Run_LIN_Filter.au3
@@ -102,9 +96,22 @@ cd TxWindow_LIN
 Run_TxWindow_LIN.au3
 cd ..
 
-cd UserConfiguration
-Run_UserConfiguration.au3
+cd Log_LIN
+Run_LIN_Log.au3
 cd ..
+
+cd AdvancedLog_CAN
+Run_AdvancedLog_CAN.au3
+cd ..
+
+cd AdvancedLog_LIN
+Run_AdvancedLog_LIN.au3
+cd ..
+
+::cd UserConfiguration
+::Run_UserConfiguration.au3
+::cd ..
+
 
 ::cd ..
 ResultCount.au3

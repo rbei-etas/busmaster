@@ -153,7 +153,7 @@ void CBaseLogObject::SetLogInfo(const SLOGINFO& sLoginfo)
 /**
  * Set configuration data
  */
-BYTE* CBaseLogObject::SetConfigData(BYTE* pvDataStream, BYTE bytLogVersion)
+BYTE* CBaseLogObject::SetConfigData(BYTE* pvDataStream, BYTE /*bytLogVersion*/)
 {
     BYTE* pbSStream = pvDataStream;
     //pbSStream = m_sLogInfo.pbSetConfigData(pbSStream, bytLogVersion);
@@ -283,7 +283,7 @@ void CBaseLogObject::vWriteTextToFile(CString& om_LogText, ETYPE_BUS eBus)
 
         lfCurrentTime = (double)(stLogTime.QuadPart)/(double)(sFrequency.QuadPart);
 
-        INT lfDiffTime = lfCurrentTime - m_sLogInfo.m_sLogAdvStngs.m_qwLogSysTime;
+        INT lfDiffTime = static_cast<INT>(lfCurrentTime - m_sLogInfo.m_sLogAdvStngs.m_qwLogSysTime);
 
 
         INT nHrs = atoi(m_sLogInfo.m_sLogAdvStngs.m_omLogTimeHrs);
@@ -541,9 +541,6 @@ BOOL CBaseLogObject::bStartLogging(ETYPE_BUS eBus)
 
     if ((m_pLogFile == nullptr) && (m_sLogInfo.m_bEnabled))
     {
-        UINT64 qwRefSysTime, qwAbsBaseTime;
-        //m_ouRefTimeKeeper.vGetTimeParams(qwRefSysTime, qwAbsBaseTime);
-
         LARGE_INTEGER stLogTime, sFrequency;
         QueryPerformanceFrequency(&sFrequency);
         QueryPerformanceCounter(&stLogTime);

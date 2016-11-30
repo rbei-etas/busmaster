@@ -82,7 +82,7 @@ _StartoHTMLTable("Log_Filter_Replay Module Test Report")
 #include "TS_Replay_01.au3"
 #include "TS_Replay_02.au3"
 #include "TS_Replay_03.au3"
-#include "TS_Replay_04.au3"
+;#include "TS_Replay_04.au3"                             ;Need to be tested manualy since the menu state cannot be checked
 #include "TS_Replay_05.au3"
 #include "TS_Replay_06.au3"
 #include "TS_Replay_07.au3"
@@ -136,7 +136,7 @@ _StartoHTMLTable("Log_Filter_Replay Module Test Report")
 #include "TS_Replay_50.au3"
 ;	"TS_Replay_51" and "TS_Replay_52" - covered in TS_Replay_50
 #include "TS_Replay_53.au3"
-#include "TS_Replay_54.au3"
+;#include "TS_Replay_54.au3"                                             ;Invalid test case [Checking the status of the toolbar buttons]-Ribbon Bar changes
 ;~ ;	"TS_Replay_55" - covered in TS_Replay_08
 ;~ ;	"TS_Replay_56" and "TS_Replay_57"- covered in TS_Replay_07
 ;~ ;	"TS_Replay_58" - covered in TS_Replay_08

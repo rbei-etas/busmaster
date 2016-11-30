@@ -93,7 +93,7 @@ EndIf
 
 consolewrite("$AllMsgDirection:"&$AllMsgDirection&@CRLF)
 consolewrite("$AllMsgID:"&$AllMsgID&@CRLF)
-consolewrite("$FindEOF:"&$FindEOF[1]&@CRLF)
+;consolewrite("$FindEOF:"&$FindEOF[1]&@CRLF)
 
 if $AllMsgDirection="Success" and $AllMsgID="Success" and $FindEOF[1]="***END" Then			; Validate the result
 	_WriteResult("Pass","TS_Log_04")

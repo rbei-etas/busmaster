@@ -659,13 +659,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 3.0.0"
+            VALUE "FileVersion", "Ver 3.1.0"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 3.0.0"
+            VALUE "ProductVersion", "Ver 3.1.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -867,55 +867,55 @@ END
 //
 
 IDR_BMP_MSGSGDB         BITMAP                  "res\\bitmap1.bmp"
-IDR_BMP_CHK_UCHK        BITMAP                  "res\\bmp00001.bmp"
-IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+//IDR_BMP_CHK_UCHK        BITMAP                  "res\\bmp00001.bmp"
+//IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
 IDR_BMP_SPLASH_SCREEN   BITMAP                  "Res\\Splsh16.bmp"
-IDB_BMP_TOOLBAR_DISCONNECT BITMAP                  "res\\bmp00004.bmp"
-IDB_BMP_TOOLBAR_CONNECT BITMAP                  "res\\bmp_tool.bmp"
+//IDB_BMP_TOOLBAR_DISCONNECT BITMAP                  "res\\bmp00004.bmp"
+//IDB_BMP_TOOLBAR_CONNECT BITMAP                  "res\\bmp_tool.bmp"
 IDB_BMP_COPYRIGHT       BITMAP                  "res\\copyright.bmp"
 IDR_BMP_NET             BITMAP                  "res\\bmp_net.bmp"
 IDB_BMP_GRAPH_ELEMENTS  BITMAP                  "res\\GraphElements.bmp"
 IDR_BMP_CHECKBOX        BITMAP                  "res\\bmp_chec.bmp"
 IDB_BMP_FILTER          BITMAP                  "res\\Filter.bmp"
-IDB_BMPLOGO             BITMAP                  "res\\logo.bmp"
-IDR_NODE_SIMULATION     BITMAP                  "Res\\toolbar_user_prog.bmp"
-IDB_NODE_SIMULATION     BITMAP                  "Res\\toolbar_user_prog.bmp"
-IDB_NODE_SIMULATION_HOT BITMAP                  "Res\\toolbar_user_prog_Hot.bmp"
-IDB_NODE_SIMULATION_DISABLED BITMAP                  "Res\\toolbar_user_prog_disabled.bmp"
-IDB_MAINFRAME           BITMAP                  "Res\\Toolbar.bmp"
-IDB_MAINFRAME_HOT       BITMAP                  "Res\\Toolbar_hot.bmp"
-IDB_MAINFRAME_DISABLED  BITMAP                  "Res\\Toolbar_disabled.bmp"
+//IDB_BMPLOGO             BITMAP                  "res\\logo.bmp"
+//IDR_NODE_SIMULATION     BITMAP                  "Res\\toolbar_user_prog.bmp"
+//IDB_NODE_SIMULATION     BITMAP                  "Res\\toolbar_user_prog.bmp"
+//IDB_NODE_SIMULATION_HOT BITMAP                  "Res\\toolbar_user_prog_Hot.bmp"
+//IDB_NODE_SIMULATION_DISABLED BITMAP                  "Res\\toolbar_user_prog_disabled.bmp"
+//IDB_MAINFRAME           BITMAP                  "Res\\Toolbar.bmp"
+//IDB_MAINFRAME_HOT       BITMAP                  "Res\\Toolbar_hot.bmp"
+//IDB_MAINFRAME_DISABLED  BITMAP                  "Res\\Toolbar_disabled.bmp"
 IDB_HDRDOWN             BITMAP                  "Res\\hdrdown.bmp"
 IDB_HDRUP               BITMAP                  "Res\\hdrup.bmp"
-IDB_MSG_WND_HOT         BITMAP                  "Res\\MsgWndHot.bmp"
-IDB_MSG_WND_DISABLED    BITMAP                  "Res\\MsgWndDisabled.bmp"
-IDB_MSG_WND             BITMAP                  "Res\\MsgWnd.bmp"
-IDR_MSG_WND             BITMAP                  "Res\\MsgWnd.bmp"
+//IDB_MSG_WND_HOT         BITMAP                  "Res\\MsgWndHot.bmp"
+//IDB_MSG_WND_DISABLED    BITMAP                  "Res\\MsgWndDisabled.bmp"
+//IDB_MSG_WND             BITMAP                  "Res\\MsgWnd.bmp"
+//IDR_MSG_WND             BITMAP                  "Res\\MsgWnd.bmp"
 IDB_BMP_PROPERTIES      BITMAP                  "res\\Properties.bmp"
 IDR_BMP_MSG_SIG_WATCH   BITMAP                  "res\\Signalwatch.bmp"
-IDR_FUNCTIONS_J1939     BITMAP                  "res\\Functions_J1939.bmp"
-IDR_TLB_CONFIGURE       BITMAP                  "res\\configure_tlb.bmp"
-IDB_CONFIGURE           BITMAP                  "res\\Configure.bmp"
-IDB_CONFIGURE_HOT       BITMAP                  "Res\\Configure_Hot.bmp"
-IDB_CONFIGURE_DISABLED  BITMAP                  "Res\\Configure_Disabled.bmp"
+//IDR_FUNCTIONS_J1939     BITMAP                  "res\\Functions_J1939.bmp"
+//IDR_TLB_CONFIGURE       BITMAP                  "res\\configure_tlb.bmp"
+//IDB_CONFIGURE           BITMAP                  "res\\Configure.bmp"
+//IDB_CONFIGURE_HOT       BITMAP                  "Res\\Configure_Hot.bmp"
+//IDB_CONFIGURE_DISABLED  BITMAP                  "Res\\Configure_Disabled.bmp"
 IDB_J1939TXMSG          BITMAP                  "res\\J1939TxWnd.bmp"
-IDB_J1939DB             BITMAP                  "res\\J1939DB.bmp"
-IDR_CAN_DATABASE        BITMAP                  "res\\CANDatabase.bmp"
-IDB_CAN_DATABASE        BITMAP                  "res\\CANDatabase_Normal.bmp"
-IDB_CAN_DATABASE_HOT    BITMAP                  "Res\\CANDatabase_Hot.bmp"
-IDB_CAN_DATABASE_DISABLED BITMAP                  "Res\\CANDatabase_Disabled.bmp"
-IDB_TLB_J1939           BITMAP                  "res\\Toolbar_J1939.bmp"
-IDB_TLB_J1939_HOT       BITMAP                  "res\\Toolbar_J1939_Hot.bmp"
-IDB_TLB_J1939_DISABLED  BITMAP                  "res\\Toolbar_J1939_Disabled.bmp"
-IDB_TLB_FLEXRAY         BITMAP                  "res\\FlexRay_Toolbar.bmp"
-IDB_TLB_FLEXRAY_HOT     BITMAP                  "res\\FlexRay_Toolbar_Hot.bmp"
-IDB_TLB_FLEXRAY_DISABLED BITMAP                  "res\\FlexRay_Toolbar_Disabled.bmp"
-IDR_CONFIG_TOOLBAR      BITMAP                  "res\\Configuration_Toolbar.bmp"
-IDR_CONFIG_TOOLBAR_HOT  BITMAP                  "res\\Configuration_Toolbar_Hot.bmp"
-IDR_CONFIG_TOOLBAR_DISABLED BITMAP                  "res\\Configuration_Toolbar_Disabled.bmp"
-IDB_LIN_IMG             BITMAP                  "res\\LIN_Toolbar.bmp"
-IDB_LIN_IMGDISABLED     BITMAP                  "res\\LIN_Toolbar_Disabled.bmp"
-IDB_LIN_IMGHOT          BITMAP                  "res\\LIN_Toolbar_Hot.bmp"
+//IDB_J1939DB             BITMAP                  "res\\J1939DB.bmp"
+//IDR_CAN_DATABASE        BITMAP                  "res\\CANDatabase.bmp"
+//IDB_CAN_DATABASE        BITMAP                  "res\\CANDatabase_Normal.bmp"
+//IDB_CAN_DATABASE_HOT    BITMAP                  "Res\\CANDatabase_Hot.bmp"
+//IDB_CAN_DATABASE_DISABLED BITMAP                  "Res\\CANDatabase_Disabled.bmp"
+//IDB_TLB_J1939           BITMAP                  "res\\Toolbar_J1939.bmp"
+//IDB_TLB_J1939_HOT       BITMAP                  "res\\Toolbar_J1939_Hot.bmp"
+//IDB_TLB_J1939_DISABLED  BITMAP                  "res\\Toolbar_J1939_Disabled.bmp"
+//IDB_TLB_FLEXRAY         BITMAP                  "res\\FlexRay_Toolbar.bmp"
+//IDB_TLB_FLEXRAY_HOT     BITMAP                  "res\\FlexRay_Toolbar_Hot.bmp"
+//IDB_TLB_FLEXRAY_DISABLED BITMAP                  "res\\FlexRay_Toolbar_Disabled.bmp"
+//IDR_CONFIG_TOOLBAR      BITMAP                  "res\\Configuration_Toolbar.bmp"
+//IDR_CONFIG_TOOLBAR_HOT  BITMAP                  "res\\Configuration_Toolbar_Hot.bmp"
+//IDR_CONFIG_TOOLBAR_DISABLED BITMAP                  "res\\Configuration_Toolbar_Disabled.bmp"
+//IDB_LIN_IMG             BITMAP                  "res\\LIN_Toolbar.bmp"
+//IDB_LIN_IMGDISABLED     BITMAP                  "res\\LIN_Toolbar_Disabled.bmp"
+//IDB_LIN_IMGHOT          BITMAP                  "res\\LIN_Toolbar_Hot.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1195,12 +1195,7 @@ BEGIN
             MENUITEM "&設定",                         ID_CONFIGURE_SIMULATEDSYSTEMS
         END
     END
-    POPUP "Flex&Ray"
-    BEGIN
-        MENUITEM "&Connect",                    ID_FLEXRAY_CONNECT
-        MENUITEM "C&luster Configuration",      ID_FLEXRAY_CLUSTER_CONFIG
-        MENUITEM SEPARATOR
-    END
+
     POPUP "&LIN"
     BEGIN
         MENUITEM "Connect &LIN\tF4",            IDM_LIN_CONNECT
@@ -1266,7 +1261,6 @@ BEGIN
                 MENUITEM "&CANデータベース",                  ID_TB_CANDATABASE, CHECKED
                 MENUITEM "J1939",                       ID_TOOLBAR_J1939, CHECKED
             END
-            MENUITEM "FlexRay",                     ID_FLEXRAY_TOOLBAR, CHECKED
             MENUITEM "&LIN",                        ID_TOOLBAR_LIN, CHECKED
         END
         MENUITEM "&ステータスバー",                    ID_VIEW_STATUS_BAR
@@ -1296,46 +1290,46 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\BUSMASTER.ico"
 IDR_PGM_EDTYPE          ICON                    "res\\BUSMASTERDoc.ico"
-IDI_ICO_LOG             ICON                    "res\\Log.ico"
+//IDI_ICO_LOG             ICON                    "res\\Log.ico"
 IDI_ICON_MSGWND         ICON                    "Res\\MsgWnd.ico"
 IDI_ICO_WRITE           ICON                    "Res\\write.ico"
-IDI_ICON_DOWN           ICON                    "res\\DOWNArrow.ico"
-IDI_ICON_LEFT           ICON                    "res\\LEFTArrow.ico"
-IDI_ICON_RIGHT          ICON                    "res\\RIGHTArrow.ico"
-IDI_ICON_UP             ICON                    "res\\UPArrow.ico"
+//IDI_ICON_DOWN           ICON                    "res\\DOWNArrow.ico"
+//IDI_ICON_LEFT           ICON                    "res\\LEFTArrow.ico"
+//IDI_ICON_RIGHT          ICON                    "res\\RIGHTArrow.ico"
+//IDI_ICON_UP             ICON                    "res\\UPArrow.ico"
 IDR_ICON_GRAPH          ICON                    "res\\GraphWindow.ico"
 IDI_ICO_SEND_MSG        ICON                    "res\\ico_send.ico"
 IDI_ICO_DB_EDITOR       ICON                    "res\\DB Editor.ico"
-32988                   ICON                    "res\\BuildAll.ico"
-32989                   ICON                    "res\\BuilLoadAll.ico"
-32991                   ICON                    "res\\LoadAll.ico"
-32992                   ICON                    "res\\UnLoadAll.ico"
-32848                   ICON                    "res\\ExcMsgHndl.ico"
-32910                   ICON                    "res\\ExcErrHndl.ico"
-32850                   ICON                    "res\\ExcTimeHndl.ico"
-32900                   ICON                    "res\\ExcKeyHndl.ico"
-32909                   ICON                    "res\\ExcAllHndl.ico"
-32815                   ICON                    "res\\New.ico"
-57600                   ICON                    "res\\New.ico"
-32902                   ICON                    "res\\New.ico"
-32817                   ICON                    "res\\Open.ico"
-57601                   ICON                    "res\\Open.ico"
-32864                   ICON                    "res\\Save.ico"
-57603                   ICON                    "res\\Save.ico"
-32904                   ICON                    "res\\Save.ico"
-ID_DISCONNECT           ICON                    "res\\Disconnect.ico"
+//32988                   ICON                    "res\\BuildAll.ico"
+//32989                   ICON                    "res\\BuilLoadAll.ico"
+//32991                   ICON                    "res\\LoadAll.ico"
+//32992                   ICON                    "res\\UnLoadAll.ico"
+//32848                   ICON                    "res\\ExcMsgHndl.ico"
+//32910                   ICON                    "res\\ExcErrHndl.ico"
+//32850                   ICON                    "res\\ExcTimeHndl.ico"
+//32900                   ICON                    "res\\ExcKeyHndl.ico"
+//32909                   ICON                    "res\\ExcAllHndl.ico"
+//32815                   ICON                    "res\\New.ico"
+//57600                   ICON                    "res\\New.ico"
+//32902                   ICON                    "res\\New.ico"
+//32817                   ICON                    "res\\Open.ico"
+//57601                   ICON                    "res\\Open.ico"
+//32864                   ICON                    "res\\Save.ico"
+//57603                   ICON                    "res\\Save.ico"
+//32904                   ICON                    "res\\Save.ico"
+//ID_DISCONNECT           ICON                    "res\\Disconnect.ico"
 IDI_ICON_PLUS           ICON                    "res\\Plus.ico"
 IDI_ICON_MINUS          ICON                    "res\\Minus.ico"
 IDI_ICON_BLANK          ICON                    "res\\Blank.ico"
 IDI_ICON_HELP           ICON                    "Res\\Help.ico"
 IDI_ICON_ABOUT          ICON                    "Res\\About.ico"
-IDI_ICON_CASCADE        ICON                    "Res\\cascade.ico"
-IDI_ICON_TILE           ICON                    "Res\\Tile.ico"
+//IDI_ICON_CASCADE        ICON                    "Res\\cascade.ico"
+//IDI_ICON_TILE           ICON                    "Res\\Tile.ico"
 IDI_ICON_LOG_OFF        ICON                    "res\\LoggingOFF.ico"
 IDI_ICON_LOG_ON         ICON                    "res\\LoggingON.ico"
 IDI_ICON_LOG_ONLIGHT    ICON                    "res\\LoggingONLIGHT.ico"
 IDI_ICON_NETWORKSTAT    ICON                    "res\\Network_Statistics.ico"
-ID_CONNECT              ICON                    "Res\\Connect.ico"
+//ID_CONNECT              ICON                    "Res\\Connect.ico"
 IDI_ICON_SMSG           ICON                    "res\\DB Editor.ico"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1437,120 +1431,6 @@ BEGIN
 END
 
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// Toolbar
-//
-
-IDR_MAINFRAME TOOLBAR 32, 32
-BEGIN
-    BUTTON      ID_CAN_LOGO
-    BUTTON      IDM_FILE_CONNECT
-    SEPARATOR
-    BUTTON      IDM_NETWORK_STATISTICS_WND_CAN
-    BUTTON      32784
-    SEPARATOR
-    BUTTON      IDM_LOG_ON_OFF
-    SEPARATOR
-    BUTTON      IDM_FILTER_LOGFILTEROFF
-    BUTTON      IDM_FILTER_MESSAGEFILTEROFF
-    BUTTON      IDM_FILTER_REPLAYFILTEROFF
-    SEPARATOR
-    BUTTON      33052
-    SEPARATOR
-    BUTTON      IDM_REPLAY_STEP
-    BUTTON      IDM_REPLAY_SKIP
-    BUTTON      IDM_REPLAY_GO
-    BUTTON      IDM_REPLAY_STOP
-END
-
-IDR_CONFIG_TOOLBAR TOOLBAR 32, 32
-BEGIN
-    BUTTON      32902
-    BUTTON      IDM_CONFIG_LOAD
-    BUTTON      IDM_SAVE_CONFIG
-END
-
-IDR_MSG_WND TOOLBAR 32, 32
-BEGIN
-    BUTTON      IDM_CLEAR_MSG_WINDOW
-    SEPARATOR
-    BUTTON      IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET
-    BUTTON      IDR_TOOL_HEXDEC
-    BUTTON      IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE
-    BUTTON      IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME
-END
-
-IDR_FUNCTIONS_J1939 TOOLBAR 32, 32
-BEGIN
-    BUTTON      ID_CAN_LOGO
-    BUTTON      33056
-    SEPARATOR
-    BUTTON      33062
-    BUTTON      33063
-    BUTTON      33064
-END
-
-IDR_TLB_CONFIGURE TOOLBAR 32, 32
-BEGIN
-    BUTTON      ID_CAN_LOGO
-    BUTTON      32811
-    BUTTON      32809
-    BUTTON      32956
-    BUTTON      32891
-    BUTTON      32955
-    BUTTON      32821
-    BUTTON      33023
-    BUTTON      32818
-    BUTTON      33051
-    BUTTON      33055
-END
-
-IDR_CAN_DATABASE TOOLBAR 32, 32
-BEGIN
-    BUTTON      ID_CAN_LOGO
-    BUTTON      32815
-    BUTTON      32817
-    BUTTON      32864
-    BUTTON      33010
-    SEPARATOR
-    BUTTON      32860
-END
-
-IDB_TLB_FLEXRAY TOOLBAR 32, 32
-BEGIN
-    BUTTON      IDB_TLB_FLEXRAY
-    BUTTON      ID_FLEXRAY_CONNECT
-    SEPARATOR
-    BUTTON      ID_FLEXRAY_CLUSTER_CONFIG
-    SEPARATOR
-    BUTTON      IDM_FLEX_CFGN_SEND_MSGS
-END
-
-IDB_LIN_IMG TOOLBAR 32, 32
-BEGIN
-    BUTTON      IDB_LIN_IMG
-    BUTTON      IDM_LIN_CONNECT
-    SEPARATOR
-    BUTTON      ID_LIN_CLUSTER_CONFIG
-    BUTTON      IDM_SCHEDULE_CONFIG_LIN
-    SEPARATOR
-    BUTTON      ID_TRANSMIT_CONFIGURE_LIN
-    BUTTON      IDM_NETWORK_STATISTICS_WND_LIN
-    SEPARATOR
-    BUTTON      IDM_CFGN_LIN_LOG
-    BUTTON      IDM_LOG_LIN_ON_OFF
-    SEPARATOR
-    BUTTON      IDM_CONFIGURE_FILTER_LIN
-    BUTTON      IDM_FILTER_LOGLINOFF
-    BUTTON      IDM_FILTER_MSGLINOFF
-    SEPARATOR
-    BUTTON      IDM_SIGNALWATCH_ADDSIGNAL_LIN
-    BUTTON      IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN
-    SEPARATOR
-    BUTTON      ID_CONFIGURE_MESSAGEDISPLAY_LIN
-    BUTTON      IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN
-END
 
 
 #ifdef APSTUDIO_INVOKED
@@ -1727,7 +1607,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "無効なデータベースファイル名"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "メッセージ名"
-    IDS_VERSION             "Ver 3.0.0"
+    IDS_VERSION             "Ver 3.1.0"
     IDS_HEADER              "***注意: このドキュメントを修正しないでください***\n\n\n***[ロギングセッションの開始]***\n"
     IDS_FOOTER              "***[ロギングセッションの終了]***"
     IDS_CONNECT             "&接続\tF2"
@@ -1743,15 +1623,10 @@ BEGIN
     ID_LOG_RECORD_STATUS    "CAN"
     ID_LOG_RECORD_CAN_ICON  "CAN記録..."
     ID_LOG_RECORD_J1939_ICON "J1939記録..."
-    ID_FLEXRAY_CONNECT      "Connect/Disconnect\nConnect/Disconnect"
-    ID_FLEXRAY_CLUSTER_CONFIG 
-                            "Associate/Dissociate FlexRay Database\nAssociate/Dissociate FlexRay Database"
-    IDS_CONNECT_FLEXRAY     "&Connect\tF3"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_DISCONNECT_FLEXRAY  "D&isconnect\tF12"
     ID_TRANSMIT_CONFIGURE_LIN 
                             "Configure  messages to transmit over LIN-bus\nConfigure  messages to transmit over LIN-bus"
     IDM_LIN_CONNECT         "Connect/Disconnect\nConnect/Disconnect"
@@ -1989,7 +1864,6 @@ BEGIN
                             "Transmit J1939 messages\nTransmit J1939 messages"
     ID_ACTION_J1939_ONLINE  "Go Online/ Offline at J1939 Bus\nOnline/Offline at J1939 Bus"
     ID_TOOLBAR_J1939        "Show/hide J1939 Toolbar\nShow/hide J1939 toolbar"
-    ID_FLEXRAY_TOOLBAR      "Show/hide FlexRay Toolbar\nShow/hide FlexRay toolbar"
     ID_TB_CANDATABASE       "CANデータベースツールバーを表示/非表示\nCANデータベースツールバーの表示/非表示 "
 END
 

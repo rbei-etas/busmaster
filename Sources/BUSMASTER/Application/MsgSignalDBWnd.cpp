@@ -353,7 +353,7 @@ CWnd* CMsgSignalDBWnd::GetWorkingView()
     return pWnd;
 }
 
-LRESULT CMsgSignalDBWnd::UpdateSignalDetails(WPARAM wParam, LPARAM lParam)
+LRESULT CMsgSignalDBWnd::UpdateSignalDetails(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
     CMsgSgDetView* pView = (CMsgSgDetView*)m_omSplitterWnd.GetPane(FIRST_ROW,SECOND_COL);
     if(pView)

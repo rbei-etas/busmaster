@@ -1,7 +1,7 @@
 
 #include "DataTypes_stdafx.h"
 #include "LinNsCodeGenHelper.h"
-
+#include "LINDefines.h"
 #define defTab                  "\t"
 #define defColon                ":"
 #define defSpace                " "
@@ -31,7 +31,7 @@ void LinNsCodeGenHelper::SetCluster(ICluster* cluster)
 }
 
 
-std::string LinNsCodeGenHelper::GetProtocolIncludesHeaderName(ICluster* pCluster)
+std::string LinNsCodeGenHelper::GetProtocolIncludesHeaderName(ICluster* /*pCluster*/)
 {
     return "#include \"LINIncludes.h\"";
 }
@@ -46,39 +46,39 @@ IFrameCodeGenHelper* LinNsCodeGenHelper::GetFrameCodeGenHelper()
 }
 
 
-std::string LinNsCodeGenHelper::GetConstructorDef(IPdu* pdu)
+std::string LinNsCodeGenHelper::GetConstructorDef(IPdu* /*pdu*/)
 {
     return "";
 }
 
 
-std::string LinNsCodeGenHelper::GetBaseClassConstructorDef(IPdu* pdu)
+std::string LinNsCodeGenHelper::GetBaseClassConstructorDef(IPdu* /*pdu*/)
 {
     return "";
 }
 
 
-std::string LinNsCodeGenHelper::GetSignalsConstructorDef(IPdu* pdu)
+std::string LinNsCodeGenHelper::GetSignalsConstructorDef(IPdu* /*pdu*/)
 {
     return "";
 }
 
-std::string LinNsCodeGenHelper::GetUniqueName(IPdu* pdu)
+std::string LinNsCodeGenHelper::GetUniqueName(IPdu* /*pdu*/)
 {
     return "";
 }
 
-std::string LinNsCodeGenHelper::GetDecl(IPdu* pdu)
+std::string LinNsCodeGenHelper::GetDecl(IPdu* /*pdu*/)
 {
     return "";
 }
 
-std::string LinNsCodeGenHelper::GetBaseClassDecl(IPdu* pdu)
+std::string LinNsCodeGenHelper::GetBaseClassDecl(IPdu* /*pdu*/)
 {
     return "";
 }
 
-std::string LinNsCodeGenHelper::GetSignalsDecl(IPdu* pdu)
+std::string LinNsCodeGenHelper::GetSignalsDecl(IPdu* /*pdu*/)
 {
     return "";
 }
@@ -113,7 +113,7 @@ std::string LinNsCodeGenHelper::GetBaseClassConstructorDef(IFrame* frame)
     return outStream.str();
 }
 
-std::string LinNsCodeGenHelper::GetPdusConstructorDef(IFrame* frame)
+std::string LinNsCodeGenHelper::GetPdusConstructorDef(IFrame* /*frame*/)
 {
     return "";
 }
@@ -170,7 +170,7 @@ std::string LinNsCodeGenHelper::GetBaseClassDecl(IFrame* frame)
     return outStream.str();
 }
 
-std::string LinNsCodeGenHelper::GetPdusDecl(IFrame* frame)
+std::string LinNsCodeGenHelper::GetPdusDecl(IFrame* /*frame*/)
 {
     return "";
 }
@@ -248,9 +248,9 @@ std::string LinNsCodeGenHelper::GenerateSignalConstuctor(  int startBit, ISignal
 
     //5.
     //5.
-    SignalProps signalProps;
+    LINSignalProps signalProps;
     pouSignal->GetProperties(signalProps);
-    if (signalProps.m_ouLINSignalProps.m_ouDataType == eSignalDataType::eSigned)
+    if (signalProps.m_ouDataType == eSignalDataType::eSigned)
     {
         outStream << 1 << ", ";
     }
@@ -325,24 +325,12 @@ void LinNsCodeGenHelper::GetSignalType(ISignal* pouSignal, std::string& strSigna
         strSignalType = "__int64";
     }
 
-    SignalProps ouSignalProps;
+    LINSignalProps ouSignalProps;
     eSignalDataType eSignalType = eUnsigned;
     pouSignal->GetProperties(ouSignalProps);
 
-    switch (ouSignalProps.eType)
-    {
-        case eCANProtocol:
-            eSignalType = eSignalDataType::eUnsigned;
-            break;
-        case eLINProtocol:
-            eSignalType = ouSignalProps.m_ouLINSignalProps.m_ouDataType;
-            break;
+	eSignalType = ouSignalProps.m_ouDataType;
 
-        case eInvalidProtocol:
-            break;
-        default:
-            break;
-    }
 
     if ( eSignalType == eSignalDataType::eUnsigned )
     {

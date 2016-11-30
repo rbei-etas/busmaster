@@ -24,11 +24,11 @@ if winexists($WIN_BUSMASTER) then
 	_loadConfig("cfxTraceWin_01.cfx")															; Load a configuration file
 
 	; Select following hardwares to generate errors in the trace window
-	send("!cvx")																				; Select IXXAT hardware
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$CANMenu,$canDriversel,$ixxatHWMenu)					; Select IXXAT hardware
 	sleep(1000)
-	send("!cvn")																				; Select NSI CAN hardware
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$CANMenu,$canDriversel,$nsiHWMenu)					; Select NSI CAN hardware
 	sleep(1000)
-	send("!cvx")																				; Select IXXAT hardware
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$CANMenu,$canDriversel,$ixxatHWMenu)					; Select IXXAT hardware
 	sleep(1000)
 
 	$hWnd=controlgethandle($WIN_BUSMASTER,"","[CLASS:ListBox; INSTANCE:1]")

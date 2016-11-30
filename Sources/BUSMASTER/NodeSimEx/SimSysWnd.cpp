@@ -55,7 +55,7 @@ IMPLEMENT_DYNCREATE(CSimSysWnd, CMDIChildBase)
 /*  Date Created     :  15.12.2005                                            */
 /*  Modifications    :
 /******************************************************************************/
-CSimSysWnd::CSimSysWnd(ETYPE_BUS eBus, CSimSysTreeView* pSimSysTreeView, CGlobalObj* pGlobalObj, CString omBusName
+CSimSysWnd::CSimSysWnd(ETYPE_BUS eBus, CSimSysTreeView* pSimSysTreeView, CGlobalObj* /*pGlobalObj*/, CString omBusName
                       ) : CMDIChildBase(SIMSYS_WND_PLACEMENT)
 /*, m_pSimSysTreeView(eBus, &CSimSysManager::ouGetSimSysManager(eBus, pGlobalObj), &CExecuteManager::ouGetExecuteManager(eBus, pGlobalObj)
 , pGlobalObj, omBusName)*/
@@ -140,7 +140,7 @@ BOOL CSimSysWnd::PreCreateWindow(CREATESTRUCT& cs)
                         23.10.14, Added creation of tool bar, a removed
                         Simulated system detailed view.
 /******************************************************************************/
-BOOL CSimSysWnd::OnCreateClient( LPCREATESTRUCT lpcs, CCreateContext* pContext )
+BOOL CSimSysWnd::OnCreateClient( LPCREATESTRUCT /*lpcs*/, CCreateContext* pContext )
 {
     nCreateToolbar();
 
@@ -289,7 +289,7 @@ int CSimSysWnd::nCreateToolbar()
 {
     int Result = 0;
     m_hModAdvancedUILib = nullptr;
-    if (!m_toolbar.CreateEx(this,TBSTYLE_FLAT,WS_BORDER | WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER |
+    if (!m_toolbar.CreateEx(this,TBSTYLE_FLAT,WS_BORDER | WS_CHILD | WS_VISIBLE | CBRS_TOP | 
                             CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC,CRect(0,0,0,0), IDR_NODE_SIMULATION)
             || !m_toolbar.LoadToolBar(IDR_NODE_SIMULATION))
     {
@@ -299,7 +299,7 @@ int CSimSysWnd::nCreateToolbar()
     // Set the toolbar button size
     CToolBarCtrl& Toolbar = m_toolbar.GetToolBarCtrl();
     m_hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
-    BOOL B = FALSE;
+
     if (m_hModAdvancedUILib)
     {
         CSize objSize;

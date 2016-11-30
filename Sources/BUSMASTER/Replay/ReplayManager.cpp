@@ -222,7 +222,7 @@ void CReplayManager::vStartNonInteractiveReplays()
 {
     // Get the replay list size
     int nSize = (int)m_omReplayFiles.GetSize();
-    int nIndex;     //nIndex declared outside loop
+    //int nIndex;     //nIndex declared outside loop
     for( int nIndex = 0; nIndex < nSize; nIndex++ )
     {
         const CReplayFile& omFile = m_omReplayFiles.ElementAt( nIndex );

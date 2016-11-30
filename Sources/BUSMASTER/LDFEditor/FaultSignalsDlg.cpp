@@ -32,9 +32,9 @@ void FaultSignalsDlg::vPrepareUi()
 {
     VALIDATE_POINTER(m_pEcu);
 
-    EcuProperties ouEcuProps;
+    LinEcuProps ouEcuProps;
     m_pEcu->GetProperties(ouEcuProps);
-    if ( ouEcuProps.m_eEcuType == eLIN_Slave )
+    if ( ouEcuProps.m_eEcuType == eSlave )
     {
         if ( false == bAreEqual(m_fSlaveProtVersion , 2.1) )
         {
@@ -47,11 +47,11 @@ void FaultSignalsDlg::vPrepareUi()
     std::string strName;
     int nRow = 0;
     ui.tableSignalList->setRowCount(ouSignsalList.size());
-    SignalProps ouSignalProps;
+    LINSignalProps ouSignalProps;
 for ( auto itr : ouSignsalList )
     {
         itr.second->GetProperties(ouSignalProps);
-        if ( ouSignalProps.m_ouLINSignalProps.m_ouSignalType == eSignalNormal )
+        if ( ouSignalProps.m_ouSignalType == eSignalNormal )
         {
             itr.second->GetName(strName);
             ouColumnList.push_back(QVariant(strName.c_str()));

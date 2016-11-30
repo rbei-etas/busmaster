@@ -53,7 +53,7 @@ If winexists($WIN_BUSMASTER) then
 
 	_addSigDetails("int","Signal1",32,0,0)																; Add the signal details
 
-	WinMenuSelectItem($WIN_BUSMASTER,"",$J1939Menu,$databaseMenu,$closeMenu)								; Select CAN->Database->Close
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$Tool,$J1939DBMenuTool,$closeMenuDBEditor)								; Select CAN->Database->Close
 
 	if WinWaitActive($WIN_BUSMASTER,$saveDBtxt,2) Then
 		ControlClick($WIN_BUSMASTER,"",$BTN_Yes_SaveDB)													; Click on 'Yes' button
@@ -61,7 +61,7 @@ If winexists($WIN_BUSMASTER) then
 		sleep(1000)
 	EndIf
 
-	WinMenuSelectItem($WIN_BUSMASTER,"",$J1939Menu,$databaseMenu,$openMenu)
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$Tool,$J1939DBMenuTool,$openMenu)
 
 	$DirPath = _OutputDataPath()																		; Set the DirPath to saved dbf file path
 	if WinWaitActive($WIN_SelJ1939_DBFile,"",5) Then
@@ -74,7 +74,7 @@ If winexists($WIN_BUSMASTER) then
 	$sigDetlvhwd=controlgethandle($WIN_BUSMASTER,"",$LVC_SigDet_DBeditor)								; Get handle of signal details list view
 	$SignalCount=_GUICtrlListView_GetItemCount($sigDetlvhwd)											; Fetch the signal count
 
-	WinMenuSelectItem($WIN_BUSMASTER,"",$J1939Menu,$databaseMenu,$closeMenu)								; Select CAN->Database->Close
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$Tool,$J1939DBMenuTool,$closeMenuDBEditor)								; Select CAN->Database->Close
 
 EndIf
 

@@ -60,7 +60,7 @@ public:
     enum { IDD = IDD_DLG_HW_LISTING };
     CListCtrl   m_omSelectedHwList;
     CEdit   m_omNetName;
-    CEdit   m_omFirmware;
+    CEdit   m_omFirmware; 
     CEdit   m_omDriverID;
     CListCtrl   m_omHardwareList;
     //}}AFX_DATA

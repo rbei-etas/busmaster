@@ -42,8 +42,8 @@ if winexists($WIN_BUSMASTER) then
 
 	WinMenuSelectItem($WIN_BUSMASTER,"","&LIN","&Message Window","Time &Mode","&Relative Time")
 	Sleep(500)
-	 WinMenuSelectItem($WIN_BUSMASTER,"",$fileMenu,$Exit)								; Select File->Exit from menu
-	sleep(1000)															;
+	WinMenuSelectItem($WIN_BUSMASTER,"",$fileMenu,$Exit)								; Select File->Exit from menu
+	sleep(1000)																			;
 	if WinWaitActive($WIN_BUSMASTER,$SaveChangesConfigTXT,2) Then						; wait for save configuration dialog
 		ControlClick($WIN_BUSMASTER,$SaveChangesConfigTXT,$BTN_Yes_SaveConfig)			; Click on Yes button
 
@@ -57,19 +57,19 @@ if winexists($WIN_BUSMASTER) then
 	ProcessWait("BUSMASTER.exe") 														; Pauses script execution until a given process exists.
 	sleep(1000)
 
-	$winhWnd = WinGetHandle($WIN_BUSMASTER)                                              ; Fetch the window handle
-	$hMain = _GUICtrlMenu_GetMenu($winhWnd)                                              ; Fetch the handle of the menu
+	$winhWnd = WinGetHandle($WIN_BUSMASTER)                                             ; Fetch the window handle
+	$hMain = _GUICtrlMenu_GetMenu($winhWnd)                                             ; Fetch the handle of the menu
 	ConsoleWrite("menu handle : "&$hMain& @CRLF)
 	If winexists($WIN_LINMsgWind) Then
-		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 4)								      ; Fetch the handle of LIN menu
+		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, $index_Lin+1)						; Fetch the handle of LIN menu
 		ConsoleWrite("inside win exit : "&$hFile& @CRLF)
 	Else
-		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, 3)
+		$hFile = _GUICtrlMenu_GetItemSubMenu($hMain, $index_Lin)
 	EndIf
-	$hSubmenu=_GUICtrlMenu_GetItemSubMenu($hFile, 8)                                     ; Fetch the handle of LIN->Msg Window menu
-	$hsubmenu_time=_GUICtrlMenu_GetItemSubMenu($hSubmenu,5)                              ; Fetch the handle of LIN->Msg Window menu->Time mode
-	$text=_GUICtrlMenu_GetItemText($hSubmenu,5)
-    $resTimeMode=_GUICtrlMenu_GetItemChecked($hsubmenu_time,2)                           ; Check whether Relative time mode is checked
+	$hSubmenu=_GUICtrlMenu_GetItemSubMenu($hFile, $index_Lin_MsgWin)                    ; Fetch the handle of LIN->Msg Window menu
+	$hsubmenu_time=_GUICtrlMenu_GetItemSubMenu($hSubmenu,$index_Lin_MsgWin_TimeMode)    ; Fetch the handle of LIN->Msg Window menu->Time mode
+	$text=_GUICtrlMenu_GetItemText($hSubmenu,$index_Lin_MsgWin_TimeMode)
+    $resTimeMode=_GUICtrlMenu_GetItemChecked($hsubmenu_time,$index_Lin_MsgWin_TimeMode_Rel)   ; Check whether Relative time mode is checked
 	ConsoleWrite("$text = " & $text & @CRLF)
 	ConsoleWrite("$resTimeMode = " &  $resTimeMode & @CRLF)
 
@@ -85,7 +85,7 @@ EndIf
 
 
 Sleep(1000)
-$isAppNotRes=_CloseApp()																	; Close the app
+$isAppNotRes=_CloseApp()																; Close the app
 
 if $isAppNotRes=1 Then
 	_WriteResult("Warning","TS_LIN_MSGWIN_13")

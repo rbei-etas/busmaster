@@ -22,6 +22,7 @@
  * CCANMonitorApp class implementation file
  */
 #include "stdafx.h"
+#include "afxwinappex.h"
 #include <initguid.h>
 #include "HashDefines.h"
 #include "common.h"
@@ -41,89 +42,26 @@
 #include "BUSMASTER_Interface.c"
 #include "../Application/MultiLanguage.h"
 #include "Utility\MultiLanguageSupport.h"
-
+#include "AboutDlg.h"
 //extern DWORD GUI_dwThread_MsgDisp;
 extern BOOL g_bStopSendMultMsg;
 extern BOOL g_bStopKeyHandlers;
 extern BOOL g_bStopErrorHandlers;
 extern BOOL g_bStopSelectedMsgTx;
 extern BOOL g_bStopMsgBlockTx;
-extern PSTXMSG g_psTxMsgBlockList;
+
 // To Kill Message Handler Threads
 extern void gvStopMessageHandlerThreads();
 
-
-#ifdef FOR_ETIN
-//static function used for getting erg values
-static LONG GetEntitlementID(CString& omEntitlementId)
-{
-    char SubKey[] = "SOFTWARE\\Classes\\BoschIndia\\BUSMASTER tool\\ES581";
-    HKEY hCurrKey = nullptr;
-    LONG Result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-                               (LPCTSTR) SubKey, 0, KEY_READ, &hCurrKey);
-    char ValueName[32] = "Identifier";
-    char Data[128] = {'\0'};
-    DWORD Size = 128;
-    Result = RegQueryValueEx(hCurrKey, (LPCTSTR) ValueName,
-                             nullptr, (LPDWORD) nullptr, (LPBYTE) Data,
-                             &Size);
-    omEntitlementId = Data;
-    return Result;
-}
-#endif
-
-class CAboutDlg : public CDialog
-{
-    DECLARE_MESSAGE_MAP()
-
-public:
-    CAboutDlg();
-
-    enum { IDD = IDD_ABOUTBOX };
-
-protected:
-    /** DDX/DDV support */
-    virtual void DoDataExchange(CDataExchange* pDX);
-
-protected:
-    virtual BOOL OnInitDialog();
-};
-
-CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
-{
-}
-
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
-    CDialog::DoDataExchange(pDX);
-}
-
-BOOL CAboutDlg::OnInitDialog()
-{
-    CDialog::OnInitDialog();
-    CString omVerStr("");
-    omVerStr.Format(IDS_VERSION);
-    GetDlgItem(IDC_STATIC_VERSION)->SetWindowText(omVerStr);
-
-#ifdef FOR_ETIN
-    // Set Entitlement ID
-    CString omEntitlementId("");
-    GetEntitlementID(omEntitlementId);
-    GetDlgItem(IDC_EDIT1)->SetWindowText(omEntitlementId);
-#endif // FOR_ETIN
-
-    /* return TRUE unless you set the focus to a control */
-    /* EXCEPTION: OCX Property Pages should return FALSE */
-    return TRUE;
-}
-
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
-END_MESSAGE_MAP()
+#define defMAX_RECENTFILE_LIST		5
+#define defSECTION_MRU           "MRU List"
+#define defSECTION_MRU_FILE		 "MRU File"
 
 BEGIN_MESSAGE_MAP(CCANMonitorApp, CWinApp)
     ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
     /* Standard print setup command */
     ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
+	ON_COMMAND_EX_RANGE(ID_FILE_MRU_FILE1, ID_FILE_MRU_FILE16, OnOpenRecentFile)
 END_MESSAGE_MAP()
 
 CCANMonitorApp::CCANMonitorApp()
@@ -173,10 +111,14 @@ BOOL CCANMonitorApp::InitInstance()
     }
     // End of Multiple Language support
 
+	INITCOMMONCONTROLSEX InitCtrls;
+	InitCtrls.dwSize = sizeof(InitCtrls);
+	InitCtrls.dwICC = ICC_WIN95_CLASSES;
+	InitCommonControlsEx(&InitCtrls);
 
-    InitCommonControls();
+    //InitCommonControls();
     // START CHANGES MADE FOR AUTOMATION
-    CWinApp::InitInstance();
+	CWinAppEx::InitInstance();
 
     // Initialize OLE libraries
     if (!AfxOleInit())
@@ -190,23 +132,30 @@ BOOL CCANMonitorApp::InitInstance()
     // END CHANGES MADE FOR AUTOMATION
     // Enable OLE/ActiveX objects support
     AfxEnableControlContainer();
+	InitContextMenuManager();
+	InitKeyboardManager();
+	InitTooltipManager();
+	CMFCToolTipInfo ttParams;
+	ttParams.m_bVislManagerTheme = TRUE;
+	theApp.GetTooltipManager()->SetTooltipParams(AFX_TOOLTIP_TYPE_ALL,
+		RUNTIME_CLASS(CMFCToolTipCtrl), &ttParams);
     // Standard initialization
     // If you are not using these features and wish to reduce the size
     //  of your final executable, you should remove from the following
     //  the specific initialization routines you do not need. DEBUG
-#ifdef _AFXDLL
-    Enable3dControls();         // Call this when using MFC in a shared DLL
-#else
-    Enable3dControlsStatic();   // Call this when linking to MFC statically
-#endif
+//#ifdef _AFXDLL
+//    Enable3dControls();         // Call this when using MFC in a shared DLL
+//#else
+//    Enable3dControlsStatic();   // Call this when linking to MFC statically
+//#endif
     // Change the registry key under which our settings are stored.
     // TODO: You should modify this string to be something appropriate
     // such as the name of your company or organization.
-    SetRegistryKey("RBIN");
+    SetRegistryKey("RBEI-ETAS\\BUSMASTER_v3.1.0");
     // START CHANGES MADE FOR AUTOMATION
     COleTemplateServer::RegisterAll();
     // END CHANGES MADE FOR AUTOMATION
-    LoadStdProfileSettings(0); // Load standard INI file options (including MRU)
+    //LoadStdProfileSettings(0); // Load standard INI file options (including MRU)
     // Enable drag/drop open
     // Enable DDE Execute open
     //EnableShellOpen();
@@ -407,6 +356,54 @@ BOOL CCANMonitorApp::InitInstance()
     //CExecuteManager::ouGetExecuteManager().vStartDllReadThread();
     return TRUE;
 }
+void CCANMonitorApp::ReadRecentFileList()
+{
+	LoadStdProfileSettings( defMAX_RECENTFILE_LIST );
+}
+void CCANMonitorApp::AddToRecentFileList(LPCTSTR lpszPathName)
+{
+    if (nullptr == lpszPathName)
+    {
+        return;
+    }
+    CString ext = PathFindExtension(lpszPathName);
+    ext.MakeLower();
+    if (ext == defVALIDEXTN)
+    {
+        if (nullptr != m_pRecentFileList)
+        {
+            m_pRecentFileList->Add(lpszPathName);
+        }
+    }
+}
+
+bool CCANMonitorApp::bWriteIntoRegistry(HKEY /* hRootKey */, CString strSubKey, CString strName, BYTE bytType, CString strValue, DWORD dwValue)
+{
+	HKEY hKey;
+	DWORD dwDisp = 0;
+	LPDWORD lpdwDisp = &dwDisp;
+	CString strCompleteSubKey;
+	strCompleteSubKey.Format("Software\\RBEI-ETAS\\BUSMASTER_v%d.%d.%d\\%s", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD, strSubKey);
+	LONG iSuccess = RegCreateKeyEx(HKEY_CURRENT_USER, strCompleteSubKey, 0L, nullptr, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, nullptr, &hKey, lpdwDisp);
+	LSTATUS ls = 0;
+	if (iSuccess == ERROR_SUCCESS)
+	{
+		if (bytType == REG_SZ)
+		{
+			ls = RegSetValueEx(hKey, strName.GetBuffer(MAX_PATH), 0L, REG_SZ, (CONST BYTE*) strValue.GetBuffer(MAX_PATH), strValue.GetLength());
+		}
+		else if (bytType == REG_DWORD)
+		{
+			ls = RegSetValueEx(hKey, strName.GetBuffer(MAX_PATH), 0L, REG_DWORD, (CONST BYTE*) &dwValue, sizeof(dwValue));
+		}
+		RegCloseKey(hKey);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 bool CCANMonitorApp::bReadFromRegistry(HKEY hRootKey, CString strSubKey, CString strName,  DWORD dwType, CString& strValue , DWORD& dwValue)
 {
@@ -418,7 +415,7 @@ bool CCANMonitorApp::bReadFromRegistry(HKEY hRootKey, CString strSubKey, CString
 
     CString strCompleteSubKey;
     strCompleteSubKey.Format("Software\\RBEI-ETAS\\BUSMASTER_v%d.%d.%d\\%s",VERSION_MAJOR,VERSION_MINOR,VERSION_BUILD,strSubKey);
-
+	strValue = "";
     lError = RegOpenKeyEx( hRootKey, strCompleteSubKey, 0, KEY_READ, &hKey);
     // If the registry key open successfully, get the value in "path"
     // sub key
@@ -493,7 +490,7 @@ int CCANMonitorApp::ExitInstance()
     }
 
     CoUninitialize();
-    return CWinApp::ExitInstance();
+	return CWinAppEx::ExitInstance();
 }
 
 
@@ -608,6 +605,16 @@ void CCANMonitorApp::GetLoadedConfigFilename(CString& roStrCfgFile)
     roStrCfgFile = m_ostrConfigFilename;
 }
 
+BOOL CCANMonitorApp::OnOpenRecentFile(UINT nID)
+{
+	CMainFrame* pMainFrame = static_cast<CMainFrame*> (m_pMainWnd);
+	int index = nID - ID_FILE_MRU_FILE1;
+	if (index >= 0 && index < m_pRecentFileList->m_nSize)
+	{
+		pMainFrame->OnClickMruList(m_pRecentFileList->m_arrNames[index]);
+	}
+	return TRUE;
+}
 /**
  * \brief message handler for ID_FILE_OPEN
  *
@@ -667,11 +674,7 @@ void CCANMonitorApp::OnFileOpen()
             // would have destroyed. So create
             // the same.
             // And this should be created only once.
-            if ( pMainFrame != nullptr && m_bIsMRU_CreatedInOpen == FALSE )
-            {
-                pMainFrame->vCreateMRU_Menus();
-                m_bIsMRU_CreatedInOpen = TRUE;
-            }
+            
         }
         else
         {
@@ -805,32 +808,6 @@ Corrupt configuration file found");
     }
 }
 
-/**
- * \brief returns the value of m_bIsDirty
- *
- * This method returns the value of m_bIsDirty
- */
-BOOL CCANMonitorApp::bIsConfigurationModified()
-{
-    return FALSE;//m_oConfigDetails.bIsConfigurationModified();
-}
-
-
-/**
- * \brief sets the value of m_bIsConfigurationModified
- *
- * This method sets the value of m_bIsConfigurationModified
- */
-void CCANMonitorApp::vSetConfigurationModified(BOOL /*bModified = TRUE*/)
-{
-    //m_oConfigDetails.vSetConfigurationModified( bModified );
-}
-BOOL CCANMonitorApp::bGetDefaultSplitterPostion(eCONFIGDETAILS /*eParam*/,
-        CRect /*omWindowSize*/,
-        LPVOID* /*pData*/)
-{
-    return FALSE;
-}
 
 /**
  * \brief message handler for ID_FILE_NEW
@@ -886,12 +863,7 @@ void CCANMonitorApp::OnFileNew()
         // the same.
         // And this should be created only once.
 
-        if ( pMainFrame != nullptr &&
-                m_bIsMRU_CreatedInOpen == FALSE )
-        {
-            pMainFrame->vCreateMRU_Menus();
-            m_bIsMRU_CreatedInOpen = TRUE;
-        }
+        
     }
 }
 
@@ -1036,19 +1008,6 @@ BOOL CCANMonitorApp::bInitialiseConfiguration(BOOL bFromCom)
 
     return bReturn;
 }
-
-/**
- * \brief calls psReturnMsgBlockPointer()
- * \return Pointer to SMSGBLOCKLIST structure
- *
- * This method will call psReturnMsgBlockPointer()
- * a member function of CConfigDetails class.
- */
-PSMSGBLOCKLIST CCANMonitorApp::psReturnMsgBlockPointer()
-{
-    return nullptr;//m_oConfigDetails.psReturnMsgBlockPointer();
-}
-
 
 /**
  * \brief calls Config Details class member

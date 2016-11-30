@@ -214,15 +214,6 @@ void CFlags::vInitializeFlags()
     m_bLogOverWriteON       = TRUE;         // over write by default
     m_bSendSignalMSg        = FALSE;
     m_bActivatedJ1939       = FALSE; // CAN is default active bus for configuration.
-
-
-    /* Initialize FLEXRAY flags */
-    m_bFlexConnected            = FALSE;
-    m_bFlexLogEnable            = FALSE;
-
-    m_bDisplayFrame = TRUE;
-    m_bDisplayPdu = TRUE;
-
     m_bReplayFilter = FALSE;
 
 }
@@ -297,20 +288,12 @@ void CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
 
         case LOGTOFILE:
         {
-            if (m_bLogEnable != nValue)
-            {
-                theApp.vSetConfigurationModified();
-            }
             m_bLogEnable    = nValue ;
         }
         break;
 
         case LOGTOFILE_LIN:
         {
-            if (m_bLogEnable != nValue)
-            {
-                theApp.vSetConfigurationModified();
-            }
             m_bLogEnable    = nValue ;
         }
         break;
@@ -324,38 +307,18 @@ void CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             break;
 
         case LOGFILTER:
-            if ( m_bLogFilterOn  != nValue )
-            {
-                theApp.vSetConfigurationModified();
-            }
             m_bLogFilterOn  = nValue ;
             break;
         case LOGFILTER_LIN:
-            if ( m_bLogFilterOnLIN  != nValue )
-            {
-                theApp.vSetConfigurationModified();
-            }
             m_bLogFilterOnLIN  = nValue ;
             break;
         case DISPLAYFILTERON :
-            if ( m_bDisplayFilterOn != nValue)
-            {
-                theApp.vSetConfigurationModified();
-            }
             m_bDisplayFilterOn = nValue;
             break;
         case DISPLAYFILTERONLIN :
-            if ( m_bDisplayFilterOnLin != nValue)
-            {
-                theApp.vSetConfigurationModified();
-            }
             m_bDisplayFilterOnLin = nValue;
             break;
         case TRANSLATIONMODE :
-            if ( m_bTranslationMode != nValue)
-            {
-                theApp.vSetConfigurationModified();
-            }
             m_bTranslationMode = nValue;
             break;
         case FILTERUNDEFINEDMSGS :
@@ -380,27 +343,13 @@ void CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             m_bDbOpenJ1939 = nValue;
             break;
         case HEX :
-            if ( m_bDisplayHexON != nValue)
-            {
-                theApp.vSetConfigurationModified();
-            }
             m_bDisplayHexON = nValue;
             break;
         case DISPLAYTIMEMODE:
-            if ( static_cast<INT>(m_wDisplayTimeMode) != nValue )
-            {
-                theApp.vSetConfigurationModified();
-            }
             m_wDisplayTimeMode = static_cast<WORD>(nValue);
             break;
         case SCROLLING :
-            // Update if there is a change
-            if( m_bScrolling != nValue )
-            {
-                m_bScrolling = nValue;
-                // Set the modification flag to true
-                theApp.vSetConfigurationModified();
-            }
+			m_bScrolling = nValue;
             break;
 
         case SENDMESG:
@@ -412,10 +361,6 @@ void CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             break;
 
         case OVERWRITE:
-            if ( m_bOverwriteEnable != nValue )
-            {
-                theApp.vSetConfigurationModified();
-            }
             m_bOverwriteEnable = nValue;
             break;
 
@@ -444,17 +389,9 @@ void CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
             break;
 
         case LOGHEXON:
-            if (m_bLogHexON != nValue )
-            {
-                theApp.vSetConfigurationModified();
-            }
             m_bLogHexON = nValue;
             break;
         case LOGTIMEMODE:
-            if ( static_cast<WORD>(m_wLogTimeMode) != nValue )
-            {
-                theApp.vSetConfigurationModified();
-            }
             m_wLogTimeMode = static_cast<WORD>(nValue);
             break;
 
@@ -481,31 +418,12 @@ void CFlags::vSetFlagStatus(eCANMONITORFLAG eWhichFlag, INT nValue)
         case ADRESSCLAIM_J1939:
             m_bJAddressClaimed = nValue;
             break;
-        case DISPLAY_FRAME:
-            m_bDisplayFrame = nValue;
-            break;
-        case DISPLAY_PDU:
-            m_bDisplayPdu = nValue;
-            break;
         default:
             ASSERT(false); // Invalid flag enum value
     }
     m_omCriticalSec.Unlock();
 }
-void CFlags::vSetFlagStatus(eFLEXRAYMONITORFLAG eWhichFlag, INT nValue)
-{
-    m_omCriticalSecFlex.Lock();
-    switch( eWhichFlag )
-    {
-        case FLEX_CONNECTED:
-            m_bFlexConnected = nValue;
-            break;
 
-        default:
-            ASSERT(false); // Invalid flag enum value
-    }
-    m_omCriticalSecFlex.Unlock();
-}
 /******************************************************************************/
 /*  Function Name    :  nGetFlagStatus                                        */
 /*  Input(s)         :  Flag identifer                                        */
@@ -664,38 +582,12 @@ int CFlags::nGetFlagStatus(eCANMONITORFLAG eWhichFlag)
         case ADRESSCLAIM_J1939:
             nRetValue = (int) m_bJAddressClaimed;
             break;
-        case DISPLAY_FRAME:
-            nRetValue = (int)m_bDisplayFrame;
-            break;
-        case DISPLAY_PDU:
-            nRetValue = (int)m_bDisplayPdu;
-            break;
+        
         default:
             // Invalid flag enum value
             ASSERT ( FALSE );
     }
     m_omCriticalSec.Unlock();
-    return nRetValue;
-}
-
-int CFlags::nGetFlagStatus(eFLEXRAYMONITORFLAG eWhichFlag)
-{
-    INT nRetValue = -1;
-
-    m_omCriticalSecFlex.Lock();
-
-    switch( eWhichFlag )
-    {
-        case FLEX_CONNECTED:
-            nRetValue = m_bFlexConnected;
-            break;
-
-        default:
-            // Invalid flag enum value
-            ASSERT ( FALSE );
-    }
-    m_omCriticalSecFlex.Unlock();
-
     return nRetValue;
 }
 

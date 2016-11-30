@@ -244,7 +244,7 @@ int CTSExecutorChildFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     m_ouExecutionThread.m_hActionEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
     m_ouExecutionThread.bStartThread(ExecuteThread);
     //SSH + issue#438
-    SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_BUSMASTER), FALSE);
+    SetIcon(AfxGetApp()->LoadIcon(IDI_APP_ICON), FALSE);
     //SSH -
     return 0;
 }

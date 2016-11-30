@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-    int ShowCanSetupDlg(HINSTANCE hInstance, HWND hwndm, struct TMhsCanCfg* cfg);
+    int ShowCanSetupDlg(HINSTANCE hInstance, HWND hwndm, TMhsCanCfg* cfg);
 
 #ifdef __cplusplus
 }

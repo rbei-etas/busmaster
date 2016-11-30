@@ -34,6 +34,13 @@ if winexists($WIN_BUSMASTER) then
 	$sigType=_GUICtrlListView_GetItemText($sigDetlvhwd,0,4)									; Fetch the signal type
 	$sigMaxVal=_GUICtrlListView_GetItemText($sigDetlvhwd,0,5)								; Fetch the signal Max value
 	$sigMinVal=_GUICtrlListView_GetItemText($sigDetlvhwd,0,6)								; Fetch the signal Min value
+
+	_ActivatechildWindow($WIN_DBEditor_J19391)
+	WinClose($WIN_DBEditor_J19391)
+	if WinWaitActive($WIN_BUSMASTER,$saveDBtxt,2) Then
+		ControlClick($WIN_BUSMASTER,"",$BTN_No_SaveDB)
+	EndIf
+
 	consolewrite("$sigName="&$sigName&@CRLF)
 	consolewrite("$sigLen="&$sigLen&@CRLF)
 	consolewrite("$sigType="&$sigType&@CRLF)

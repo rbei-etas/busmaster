@@ -22,7 +22,7 @@ BEGIN_MESSAGE_MAP(CImportLogToolbar, CToolBar)
     ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
-void CImportLogToolbar::OnHScroll(UINT nSBCode,UINT nPos,CScrollBar* pScrollBar)
+void CImportLogToolbar::OnHScroll(UINT /*nSBCode*/,UINT /*nPos*/,CScrollBar* pScrollBar)
 {
     CSliderCtrl* pSlider = reinterpret_cast<CSliderCtrl*>(pScrollBar);
     if(m_hWndScroll!=nullptr && pSlider!=nullptr)

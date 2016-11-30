@@ -4,6 +4,10 @@
   <title>SaveConfigurationAs : To save current configuration in a particular file</title>
   <refbody>
     <section>
+      <title>Synopsis</title>
+      <p>HRESULT SaveConfigurationAs(BSTR ConfigPath);</p>
+    </section>
+    <section>
       <title>Description</title>
       <p>To save current configuration in a particular configuration file.</p>
     </section>

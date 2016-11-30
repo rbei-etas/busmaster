@@ -39,7 +39,7 @@ if winexists($WIN_BUSMASTER) then
 	_ConnectDisconnect()														; Disconnect the tool
 	sleep(2000)
 
-	_EnableOverwriteMode()														; Enable overwrite mode
+	;_EnableOverwriteMode()														; Enable overwrite mode
 	sleep(1000)
 
 	_DisableJ1939Win()															; If J1939 Msg Window is active then disable it

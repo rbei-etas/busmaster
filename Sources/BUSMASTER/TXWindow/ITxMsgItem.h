@@ -79,4 +79,5 @@ struct ITxMsgItem
     virtual int SetOldMsgConfig(xmlNodePtr pxmlNodePtr) = 0;
     virtual int GetSignalList(IBMNetWorkGetService* pouIBMNetwork, bool bIsHex, std::list<SIG_DETAILS>& lstSigDetails) = 0;
     virtual int GetSignal(IBMNetWorkGetService* pouIBMNetwork, bool bIsHex, std::string strSigName, SIG_DETAILS& ouSignalDetails) = 0;
+    virtual ~ITxMsgItem () {}
 };

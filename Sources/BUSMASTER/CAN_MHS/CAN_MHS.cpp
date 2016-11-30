@@ -42,6 +42,8 @@
 #include "mhsbmcfg.h"
 #include "Utility\MultiLanguageSupport.h"
 //#include "../Application/GettextBusmaster.h"
+#include "DIL_Interface/HardwareListingCAN.h"
+#include "mhs_types.h"
 
 #define USAGE_EXPORT
 #include "CAN_MHS_Extern.h"
@@ -174,7 +176,7 @@ static BYTE sg_bCurrState = STATE_DRIVER_SELECTED;
 static CRITICAL_SECTION sg_DIL_CriticalSection;
 
 static HWND sg_hOwnerWnd = nullptr;
-static struct TMhsCanCfg sg_MhsCanCfg;
+TMhsCanCfg *sg_MhsCanCfg = new TMhsCanCfg("",0,0,true);
 
 static SYSTEMTIME sg_CurrSysTime;
 static UINT64 sg_TimeStamp = 0;
@@ -189,10 +191,9 @@ public:
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
     HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
-    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount,PSCONTROLLER_DETAILS InitData);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
-    HRESULT CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
@@ -489,9 +490,12 @@ HRESULT CDIL_CAN_MHS::CAN_PerformInitOperations(void)
     DWORD dwClientID;
 
     hResult = S_FALSE;
-    sg_MhsCanCfg.CanSnrStr[0] = '\0';
-    sg_MhsCanCfg.CanSpeed = 125;
-    sg_MhsCanCfg.CanBtrValue = 0;
+	if(sg_MhsCanCfg != nullptr)
+	{
+		sg_MhsCanCfg->m_CanSnrStr[0] = '\0';
+		sg_MhsCanCfg->m_CanSpeed = 125;
+		sg_MhsCanCfg->m_CanBtrValue = 0;
+	}
     /* Create critical section for ensuring thread
     safeness of read message function */
     InitializeCriticalSection(&sg_DIL_CriticalSection);
@@ -573,29 +577,46 @@ HRESULT CDIL_CAN_MHS::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& Ti
 * \param[out]    nCount , is INT contains the selected channel count.
 * \return        S_OK for success, S_FALSE for failure
 */
-HRESULT CDIL_CAN_MHS::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
+HRESULT CDIL_CAN_MHS::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount,PSCONTROLLER_DETAILS InitData)
 {
     USES_CONVERSION;
-
+	CWnd objMainWnd;
+	int nRet;
     char str[2];
     str[0] = '\0';
+ 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
     if (CanDeviceOpen(0, str) == CAN_STATUS_OK)
     {
         (void)CanDeviceClose(0);
 
+		int pnSelList[1]={0};
         nCount = 1;
         //set the current number of channels
         sg_nNoOfChannels = 1;
         asSelHwInterface[0].m_dwIdInterface = 0;
         asSelHwInterface[0].m_acDescription = "0";
+		INTERFACE_HW Dummy_Interface = asSelHwInterface[0];
         sg_bCurrState = STATE_HW_INTERFACE_LISTED;
+		objMainWnd.Attach(sg_hOwnerWnd);
+		IChangeRegisters* pAdvancedSettings = new TMhsCanCfg ("",0,0,true);
+		CHardwareListingCAN HwList(&Dummy_Interface, 1, pnSelList, CAN, CHANNEL_ALLOWED,  &objMainWnd, InitData, pAdvancedSettings);
+		nRet=HwList.DoModal();
+		objMainWnd.Detach();
+		if(nRet==IDOK)
+		{
+			return S_OK;
     }
     else
     {
+			return HW_INTERFACE_NO_SEL;
+		}
+     }
+     else
+     {
         nCount = 0;
         return (S_FALSE);
     }
-    return(S_OK);
+    
 }
 
 
@@ -639,62 +660,9 @@ HRESULT CDIL_CAN_MHS::CAN_DeselectHwInterface(void)
 * \param[out]    Length , is INT
 * \return        S_OK for success
 */
-HRESULT CDIL_CAN_MHS::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
-{
-    (void)Length;
-    HRESULT result;
-    static struct TMhsCanCfg cfg = {"", 0,0, true};
-    SCONTROLLER_DETAILS* cntrl;
-    char* str;
 
-    result = WARN_INITDAT_NCONFIRM;
-    cntrl = (SCONTROLLER_DETAILS*)InitData;
-    if ( cntrl[0].m_nBTR0BTR1 == 0 )
-    {
-        cfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate.c_str(), &str, 0);
 
-        if ( cfg.CanSpeed > 1000 )
-        {
-            cfg.CanSpeed/=1000;
-        }
 
-        cfg.m_bBitRateSelected = TRUE;
-        cfg.CanBtrValue = 0;
-    }
-    else
-    {
-        cfg.CanSpeed = 0;
-        cfg.CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0.c_str(), &str, 0);
-        cfg.m_bBitRateSelected = FALSE;
-    }
-    strcpy_s(cfg.CanSnrStr, sizeof(cfg.CanSnrStr), cntrl[0].m_omHardwareDesc.c_str());
-    if (ShowCanSetup(sg_hOwnerWnd, &cfg))
-    {
-        char chTemp[255];
-        cntrl[0].m_omHardwareDesc = cfg.CanSnrStr;
-        if (cfg.CanBtrValue)
-        {
-            cntrl[0].m_omStrBaudrate = "";
-            sprintf_s(chTemp, sizeof(chTemp), "%d", cfg.CanBtrValue);
-            cntrl[0].m_omStrBTR0 = chTemp;
-            cntrl[0].m_nBTR0BTR1 = cfg.CanBtrValue;
-            cfg.m_bBitRateSelected = FALSE;
-        }
-        else
-        {
-            sprintf_s(chTemp,  sizeof(chTemp), "%d", cfg.CanSpeed);
-            cntrl[0].m_omStrBaudrate  = chTemp;
-            cntrl[0].m_omStrBTR0 = "";
-            cntrl[0].m_nBTR0BTR1 = cfg.CanBtrValue;
-            cfg.m_bBitRateSelected = TRUE;
-        }
-        if ((result = CAN_SetConfigData(InitData, 1)) == S_OK)
-        {
-            result = INFO_INITDAT_CONFIRM_CONFIG;
-        }
-    }
-    return(result);
-}
 
 
 /**
@@ -709,33 +677,36 @@ HRESULT CDIL_CAN_MHS::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, int Len
     SCONTROLLER_DETAILS* cntrl;
     char* str;
 
+	if(sg_MhsCanCfg != nullptr)
+	{
     //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
     cntrl = (SCONTROLLER_DETAILS*)ConfigFile;
     if (cntrl[0].m_omStrBaudrate.length() > 0)
     {
-        sg_MhsCanCfg.CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate.c_str(), &str, 0);
-        sg_MhsCanCfg.CanBtrValue = 0;
+			sg_MhsCanCfg->m_CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate.c_str(), &str, 0);
+			sg_MhsCanCfg->m_CanBtrValue = 0;
     }
     else
     {
-        sg_MhsCanCfg.CanSpeed = 0;
-        sg_MhsCanCfg.CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0.c_str(), &str, 0);
+			sg_MhsCanCfg->m_CanSpeed = 0;
+			sg_MhsCanCfg->m_CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0.c_str(), &str, 0);
     }
-    strcpy_s(sg_MhsCanCfg.CanSnrStr, sizeof(sg_MhsCanCfg.CanSnrStr), cntrl[0].m_omHardwareDesc.c_str());
+		strcpy_s(sg_MhsCanCfg->m_CanSnrStr, sizeof(sg_MhsCanCfg->m_CanSnrStr), cntrl[0].m_omHardwareDesc.c_str());
 
     // **** Übertragungsgeschwindigkeit einstellen
-    if (sg_MhsCanCfg.CanSpeed)
+		if (sg_MhsCanCfg->m_CanSpeed)
     {
-        if (CanSetSpeed(0, (uint16_t)sg_MhsCanCfg.CanSpeed) < 0)
+			if (CanSetSpeed(0, (uint16_t)sg_MhsCanCfg->m_CanSpeed) < 0)
         {
             return(S_FALSE);
         }
     }
     else
     {
-        if (CanSetSpeedUser(0, sg_MhsCanCfg.CanBtrValue) < 0)
+			if (CanSetSpeedUser(0, sg_MhsCanCfg->m_CanBtrValue) < 0)
         {
             return(S_FALSE);
+			}
         }
     }
     return(S_OK);
@@ -879,13 +850,16 @@ HRESULT CDIL_CAN_MHS::CAN_StartHardware(void)
     char str[259]; // Array size of 255 to hold serial number + 4 bytes to display snr=
 
     //VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
-    if (!str_has_char(sg_MhsCanCfg.CanSnrStr))
+    if(sg_MhsCanCfg !=nullptr)
+	{
+		if (!str_has_char(sg_MhsCanCfg->m_CanSnrStr))
     {
-        sprintf(str, "Snr=%s", sg_MhsCanCfg.CanSnrStr);
+			sprintf(str, "Snr=%s", sg_MhsCanCfg->m_CanSnrStr);
     }
     else
     {
         str[0]='\0';
+    }
     }
     if (!CanDeviceOpen(0, str))
     {
@@ -1284,7 +1258,7 @@ static BOOL bRemoveMapEntry(const SACK_MAP& RefObj, UINT& ClientID)
     return bResult;
 }
 
-HRESULT CDIL_CAN_MHS::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
+HRESULT CDIL_CAN_MHS::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD /*dwDriverId*/,bool /*bIsHardwareListed*/, unsigned int /*unChannelCount*/)
 {
     return S_OK;
 }
@@ -1311,4 +1285,77 @@ static int str_has_char(char* s)
     {
         return(-1);
     }
+}
+TMhsCanCfg::TMhsCanCfg(char CanSnrStr[],unsigned int CanSpeed, unsigned int CanBtrValue, BOOL bBitRateSelected)
+{
+	strcpy(m_CanSnrStr,CanSnrStr);
+	m_CanSpeed = CanSpeed;
+	m_CanBtrValue = CanBtrValue;
+	m_bBitRateSelected = bBitRateSelected;
+}
+int TMhsCanCfg::InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount,UINT )
+{
+	HRESULT result;
+	PSCONTROLLER_DETAILS cntrl = nullptr;
+	char* str;
+	result = 1;
+		if (pControllerDetails!=nullptr)
+	{
+		cntrl = (SCONTROLLER_DETAILS*)pControllerDetails;
+			if ( cntrl[0].m_nBTR0BTR1 == 0 )
+			{
+				m_CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate.c_str(), &str, 0);
+				if ( m_CanSpeed > 1000 )
+				{
+					m_CanSpeed/=1000;
+				}
+				m_bBitRateSelected = TRUE;
+				m_CanBtrValue = 0;
+			}
+			else
+			{
+				m_CanSpeed = _tcstol(cntrl[0].m_omStrBaudrate.c_str(), &str, 0);
+				m_CanBtrValue = _tcstol(cntrl[0].m_omStrBTR0.c_str(), &str, 0);
+				m_bBitRateSelected = FALSE;
+				if ( m_CanSpeed > 1000 )
+				{
+					m_CanSpeed/=1000;
+				}
+			}
+			strcpy_s(m_CanSnrStr, sizeof(m_CanSnrStr), cntrl[0].m_omHardwareDesc.c_str());
+			if (ShowCanSetup(sg_hOwnerWnd, this))
+			{
+				char chTemp[255];
+				cntrl[0].m_omHardwareDesc = m_CanSnrStr;
+				if (m_CanBtrValue)
+				{
+					cntrl[0].m_omStrBaudrate = "";
+					sprintf_s(chTemp, sizeof(chTemp), "%d", m_CanBtrValue);
+					cntrl[0].m_omStrBTR0 = chTemp;
+					cntrl[0].m_nBTR0BTR1 = m_CanBtrValue;
+					m_bBitRateSelected = FALSE;
+				}
+				else
+				{
+					sprintf_s(chTemp,  sizeof(chTemp), "%d", (m_CanSpeed * 1000));
+					cntrl[0].m_omStrBaudrate  = chTemp;
+					cntrl[0].m_omStrBTR0 = "";
+					cntrl[0].m_nBTR0BTR1 = m_CanBtrValue;
+					m_bBitRateSelected = TRUE;
+				}
+			}
+	}
+	return(result);
+}
+DOUBLE TMhsCanCfg::vValidateBaudRate(DOUBLE dBaudRate,int,UINT )
+{
+	int nBaudRate = (int)dBaudRate;
+	if(nBaudRate == 10000||nBaudRate == 20000||nBaudRate == 50000||nBaudRate == 100000||nBaudRate == 125000||nBaudRate == 250000||nBaudRate == 500000||nBaudRate == 800000 ||nBaudRate == 1000000)
+	{
+		return nBaudRate;
+	}
+	else
+	{
+		return 500000;
+	}
 }

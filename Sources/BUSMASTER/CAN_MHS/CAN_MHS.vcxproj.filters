@@ -20,6 +20,9 @@
     <ClCompile Include="..\Application\MultiLanguage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\DIL_Interface\HardwareListingCAN.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CAN_MHS.rc">
@@ -43,6 +46,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Application\MultiLanguage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mhs_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DIL_Interface\HardwareListingCAN.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

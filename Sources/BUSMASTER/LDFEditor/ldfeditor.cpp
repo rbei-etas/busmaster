@@ -2,7 +2,7 @@
 #include <qpushbutton.h>
 #include <qlist>
 #include <qfiledialog.h>
-#include "IClusterProps.h"
+#include "LINDefines.h"
 #include "ICluster.h"
 #include "LDFDatabaseManager.h"
 #include <qtoolbutton.h>
@@ -672,22 +672,21 @@ int LDFEditor::nValidateForCluster(list<ParsingResults>& ouErrors, list<ParsingR
     LDFDatabaseManager::GetDatabaseManager()->GetLDFCluster()->GetElementList(eEcuElement, pElement);
     bool bMasterFound = false;
     bool bSlaveFound = false;
-
+	LinEcuProps ecuProps;
 for ( auto itr : pElement )
     {
-        eEcuType ouEcuType;
         IEcu* pEcu = (IEcu*)itr.second;
         if ( nullptr == pEcu )
         {
             continue;
         }
 
-        pEcu->GetEcuType(ouEcuType);
-        if ( ouEcuType == eLIN_Master )
+		pEcu->GetProperties(ecuProps);
+		if (ecuProps.m_eEcuType == eMaster)
         {
             bMasterFound = true;
         }
-        else if ( ouEcuType == eLIN_Slave )
+		else if (ecuProps.m_eEcuType == eSlave)
         {
             bSlaveFound = true;
         }
@@ -719,17 +718,17 @@ for ( auto itr : pElement )
     bool bUnconditionalFrameFound = false;;
     pElement.clear();
     LDFDatabaseManager::GetDatabaseManager()->GetLDFCluster()->GetElementList(eFrameElement, pElement);
+	LinFrameProps frameProps;
 for ( auto itr : pElement )
     {
         IFrame* pFrame = (IFrame*)itr.second;
-        eFrameType ouFrameType;
         if ( nullptr == pFrame )
         {
             continue;
         }
 
-        pFrame->GetFrameType(ouFrameType);
-        if ( ouFrameType == eLIN_Unconditional )
+		pFrame->GetProperties(frameProps);
+		if (frameProps.m_eLinFrameType == eLinUnconditionalFrame)
         {
             bUnconditionalFrameFound = true;
             break;
@@ -750,17 +749,17 @@ for ( auto itr : pElement )
     bool SignalFound = false;
     pElement.clear();
     LDFDatabaseManager::GetDatabaseManager()->GetLDFCluster()->GetElementList(eSignalElement, pElement);
+	LINSignalProps ouSignalProps;
 for ( auto itr : pElement )
     {
         ISignal* pSignal = (ISignal*)itr.second;
-        SignalProps ouSignalProps;
         if ( nullptr == pSignal )
         {
             continue;
         }
 
         pSignal->GetProperties(ouSignalProps);
-        if ( ouSignalProps.m_ouLINSignalProps.m_ouSignalType == eSignalNormal )
+        if ( ouSignalProps.m_ouSignalType == eSignalNormal )
         {
             SignalFound = true;
             break;

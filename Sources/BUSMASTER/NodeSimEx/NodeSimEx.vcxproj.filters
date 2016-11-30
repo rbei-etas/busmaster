@@ -307,9 +307,6 @@
     <None Include="res\icon1.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="res\icon2.ico">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="res\SimSysWnd.ico">
       <Filter>Resource Files</Filter>
     </None>
@@ -336,6 +333,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\Node_Enabled.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\NodeSimulationIcon.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

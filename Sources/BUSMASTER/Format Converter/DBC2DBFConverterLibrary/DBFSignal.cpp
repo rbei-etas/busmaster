@@ -426,8 +426,8 @@ int CSignal::AddValueDescriptors(char* pcLine, fstream& fileInput)
             pcTemp = pcLine;
             pcTemp += acLine;
             strncpy(pcLine, pcTemp.c_str(), sizeof(pcLine));
-
-            if(pcLine[strlen(pcLine)-1] == ';')
+            
+            if (pcLine[strlen(pcLine) - 1] == ';')
             {
                 true_end  = true;
             }

@@ -23,7 +23,7 @@ WinActivate($WIN_BUSMASTER)
 if winexists($WIN_BUSMASTER) then
 
 	_loadConfig("cfxCANMsgWin_25.cfx")
-	WinMenuSelectItem($WIN_BUSMASTER,"",$CANMenu,$CANMsgWinMenu,$CANMsgDispConfigMenu)
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$CANMenu,$CANMsgWinMenu,$CANMsgDispConfigMenu)
       Sleep(1000)
 	$hWndConfigMsgDisp=controlgethandle($WIN_MsgDisplay,"",$TabConfigMsgDisp)                    ;Get handle for configure message display
 	_GUICtrlTab_ClickTab($hWndConfigMsgDisp, 1)
@@ -35,7 +35,8 @@ if winexists($WIN_BUSMASTER) then
 	Else
 	   _WriteResult("Fail","TS_MSGWIN_25")
 	EndIf
-
+	ControlClick($WIN_MsgDisplay,"",$BTN_OK_MsgDisplay)
+	sleep(1000)
 EndIf
 $isAppNotRes=_CloseApp()																				; Close the app
 

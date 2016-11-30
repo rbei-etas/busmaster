@@ -1158,7 +1158,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                 if(omstrDBVersion == DATABASE_VERSION_NO)
                 {
                     o_File.SeekToBegin();
-                    CString strDatabaseProtocol, omstrApplicationVersion;
+                    CString strDatabaseProtocol = "", omstrApplicationVersion = "";
 
                     // Reading Database Protocol
                     nIndex = -1;
@@ -1175,7 +1175,7 @@ BOOL CMsgSignal::bFillDataStructureFromDatabaseFile( CString strFileName, eProto
                         {
                             nPlace = strDatabaseProtocol.Find(']');
                         }
-                        CString omstrDatabaseProtocol;
+                        CString omstrDatabaseProtocol = "";
 
                         // Getting the PROTOCOL name
                         omstrDatabaseProtocol = strDatabaseProtocol.Right( strDatabaseProtocol.GetLength() - (nPlace+2));

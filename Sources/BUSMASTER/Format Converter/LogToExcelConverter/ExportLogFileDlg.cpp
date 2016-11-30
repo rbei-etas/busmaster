@@ -37,7 +37,8 @@ CExportLogFileDlg::CExportLogFileDlg(ETYPE_BUS eBus, CWnd* pParent /*=NULL*/)
     , m_omStrCSVFileName("")
 {
     m_eBus = eBus;
-
+    m_unNoOfFileds = 0;
+    m_pacFields = nullptr;
     if (m_eBus == CAN)
     {
         m_pacFields = (CHAR_ARRAY_20*) acFields_CAN;
@@ -268,6 +269,11 @@ LPARAM CExportLogFileDlg::UpdateUI(WPARAM wParam, LPARAM)
         //OnOK();
     }
     GetDlgItem(ID_CONVERT)->EnableWindow(TRUE);
+    if (nullptr != mExprtLogFileThrdHandle)
+    {
+        CloseHandle(mExprtLogFileThrdHandle);
+        mExprtLogFileThrdHandle = nullptr;
+    }
     return S_OK;
 
 }
@@ -290,7 +296,7 @@ DWORD WINAPI ExportLogFileThreadProc(LPVOID pVoid)
 
         //convert log file to excel file
         HRESULT hResult = oExport.bConvert();;
-        pExportLogFileDlg->SendMessage(WM_UPDATEUI,(WPARAM)hResult,0);
+        pExportLogFileDlg->PostMessage(WM_UPDATEUI,(WPARAM)hResult,0);
     }
     else
     {
@@ -316,9 +322,7 @@ void CExportLogFileDlg::OnBnClickedConvert()
         if( m_omSelectedList.GetCount() != 0 )
         {
             GetDlgItem(ID_CONVERT)->EnableWindow(FALSE);
-            CreateThread(nullptr, 0, ExportLogFileThreadProc, this, 0, 0x0);
-
-
+            mExprtLogFileThrdHandle = CreateThread(nullptr, 0, ExportLogFileThreadProc, this, 0, 0x0);
         }
         else
         {

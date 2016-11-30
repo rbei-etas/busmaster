@@ -70,7 +70,7 @@ public:
     HRESULT LIN_Send(STLIN_MSG& sLinTxMsg);
 
 
-    HRESULT LIN_SetSlaveRespData(const STLIN_MSG stRespMsg)
+    HRESULT LIN_SetSlaveRespData(const STLIN_MSG /*stRespMsg*/)
     {
         return S_OK;
     };
@@ -152,7 +152,7 @@ static INT bClassifyMsgType(LinMessageInfo* msgInf, STLINDATA& sLinData,unsigned
         break;
         case LIN_WAKEUP_FRAME:
         {
-            sLinData.m_uDataInfo.m_sErrInfo.m_ucId = -1;
+			sLinData.m_uDataInfo.m_sErrInfo.m_ucId = 0XFF;
             sLinData.m_eLinMsgType = LIN_EVENT;
             sLinData.m_uDataInfo.m_sErrInfo.m_eEventType = EVENT_LIN_WAKEUP;
             // a4@uincore.net
@@ -163,7 +163,7 @@ static INT bClassifyMsgType(LinMessageInfo* msgInf, STLINDATA& sLinData,unsigned
         case LIN_TX:
         {
             sLinData.m_eLinMsgType = LIN_MSG;
-            sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID   = id;
+			sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID = static_cast<unsigned char>(id);
             if(flags == LIN_RX)
             {
                 sLinData.m_ucDataType   = (UCHAR)RX_FLAG;
@@ -175,32 +175,32 @@ static INT bClassifyMsgType(LinMessageInfo* msgInf, STLINDATA& sLinData,unsigned
             /* Copy the message data */
             memcpy(sLinData.m_uDataInfo.m_sLINMsg.m_ucData,
                    msg, len);
-            sLinData.m_uDataInfo.m_sLINMsg.m_ucDataLen = len;
+			sLinData.m_uDataInfo.m_sLINMsg.m_ucDataLen = static_cast<unsigned char>(len);
             break;
         }
 
         case LIN_PARITY_ERROR:
-            sLinData.m_uDataInfo.m_sErrInfo.m_ucId = -1;
+			sLinData.m_uDataInfo.m_sErrInfo.m_ucId = 0XFF;
             sLinData.m_eLinMsgType = LIN_EVENT;
 
             sLinData.m_uDataInfo.m_sErrInfo.m_eEventType = EVENT_LIN_ERRMSG;
             break;
 
         case LIN_SYNCH_ERROR:
-            sLinData.m_uDataInfo.m_sErrInfo.m_ucId = -1;
+			sLinData.m_uDataInfo.m_sErrInfo.m_ucId = 0XFF;
             sLinData.m_eLinMsgType = LIN_EVENT;
             sLinData.m_uDataInfo.m_sErrInfo.m_eEventType = EVENT_LIN_ERRSYNC;
             break;
 
         case LIN_CSUM_ERROR:
-            sLinData.m_uDataInfo.m_sErrInfo.m_ucId = -1;
+			sLinData.m_uDataInfo.m_sErrInfo.m_ucId = 0XFF;
             sLinData.m_eLinMsgType = LIN_EVENT;
 
             sLinData.m_uDataInfo.m_sErrInfo.m_eEventType = EVENT_LIN_ERRCRC;
             break;
 
         case LIN_BIT_ERROR:
-            sLinData.m_uDataInfo.m_sErrInfo.m_ucId = -1;
+			sLinData.m_uDataInfo.m_sErrInfo.m_ucId = 0XFF;
             sLinData.m_eLinMsgType = LIN_EVENT;
 
             sLinData.m_uDataInfo.m_sErrInfo.m_eEventType = EVENT_LIN_ERRBIT;
@@ -355,7 +355,7 @@ USAGEMODE HRESULT GetIDIL_LIN_Controller(void** ppvInterface)
 * \authors       a4@uincore.net
 * \date          05.29.2015 Created
 */
-static void vCreateTimeModeMapping(HANDLE hDataEvent)
+static void vCreateTimeModeMapping(HANDLE /*hDataEvent*/)
 {
     //WaitForSingleObject(hDataEvent, INFINITE);
     GetLocalTime(&sg_CurrSysTime);
@@ -616,7 +616,7 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
 * \authors       a4@uincore.net
 * \date          05.29.2015 Created
 */
-static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
+static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* /*File*/, int /*Line*/)
 {
     USES_CONVERSION;
 
@@ -726,7 +726,7 @@ HRESULT CDIL_LIN_Kvaser::LIN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64&
 * \authors       a4@uincore.net
 * \date          05.29.2015 Created
 */
-HRESULT CDIL_LIN_Kvaser::LIN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
+HRESULT CDIL_LIN_Kvaser::LIN_ListHwInterfaces(INTERFACE_HW_LIST& /*asSelHwInterface*/, INT& nCount)
 {
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
@@ -751,7 +751,7 @@ HRESULT CDIL_LIN_Kvaser::LIN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterfac
 * \authors       a4@uincore.net
 * \date          05.29.2015 Created
 */
-HRESULT CDIL_LIN_Kvaser::LIN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount)
+HRESULT CDIL_LIN_Kvaser::LIN_SelectHwInterface(const INTERFACE_HW_LIST& /*sSelHwInterface*/, INT nCount)
 {
     if(nCount==0)
     {
@@ -1101,7 +1101,7 @@ HRESULT CDIL_LIN_Kvaser::LIN_ResetHardware(void)
 * \authors       a4@uincore.net
 * \date          05.29.2015 Created
 */
-HRESULT CDIL_LIN_Kvaser::LIN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlStatus)
+HRESULT CDIL_LIN_Kvaser::LIN_GetCntrlStatus(const HANDLE& /*hEvent*/, UINT& /*unCntrlStatus*/)
 {
 
     return S_OK;
@@ -1120,7 +1120,7 @@ HRESULT CDIL_LIN_Kvaser::LIN_GetCntrlStatus(const HANDLE& hEvent, UINT& unCntrlS
 * \authors       a4@uincore.net
 * \date          05.29.2015 Created
 */
-static int nWriteMessage(STLIN_MSG sMessage, DWORD dwClientID)
+static int nWriteMessage(STLIN_MSG sMessage, DWORD /*dwClientID*/)
 {
     int nReturn = -1;
     if ((sMessage.m_ucChannel > 0) &&
@@ -1214,7 +1214,7 @@ HRESULT CDIL_LIN_Kvaser::LIN_Send( STLIN_MSG& sMessage)
 * \authors       a4@uincore.net
 * \date          05.29.2015 Created
 */
-HRESULT CDIL_LIN_Kvaser::LIN_GetLastErrorString(std::string& acErrorStr)
+HRESULT CDIL_LIN_Kvaser::LIN_GetLastErrorString(std::string& /*acErrorStr*/)
 {
 
     return S_OK;
@@ -1365,10 +1365,9 @@ HRESULT CDIL_LIN_Kvaser::LIN_SetControllerParams(INT nValue, ECONTR_PARAM eContr
 * \authors       a4@uincore.net
 * \date          05.29.2015 Created
 */
-HRESULT CDIL_LIN_Kvaser::LIN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
+HRESULT CDIL_LIN_Kvaser::LIN_GetErrorCount(SERROR_CNT& /*sErrorCnt*/, UINT /*nChannel*/, ECONTR_PARAM /*eContrParam*/)
 {
-    HRESULT hResult = S_OK;
-    return hResult;
+    return S_OK;
 }
 
 /**
@@ -1379,7 +1378,7 @@ HRESULT CDIL_LIN_Kvaser::LIN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel,
 * \authors       a4@uincore.net
 * \date          05.29.2015 Created
 */
-HRESULT CDIL_LIN_Kvaser::LIN_SetAppParams(HWND hWndOwner)
+HRESULT CDIL_LIN_Kvaser::LIN_SetAppParams(HWND /*hWndOwner*/)
 {
     return S_OK;
 }

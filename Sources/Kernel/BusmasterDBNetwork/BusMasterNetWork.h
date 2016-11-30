@@ -69,7 +69,7 @@ class BMNetwork : public IBMNetWorkService
 {
 
 private:
-    BMProtocolConfig m_ouProtocolConfig[ETYPE_BUS::BUS_TOTAL];
+    BMProtocolConfig m_ouProtocolConfig[ETYPE_BUS::BUS_INVALID];
     //std::string GetUniqueFrameName(IFrame* pouFrame);
     AccessDBManager mDbManagerAcessor;
 
@@ -109,5 +109,5 @@ public:
     ERRORCODE ReSetNetwork(ETYPE_BUS eouProtocol);
 
 private:
-    ERRORCODE ParseDBFile(std::string& strFileName, std::list<ClusterResult>& ouClusterResultList);
+    ERRORCODE ParseDBFile(std::string strFileName, std::list<ClusterResult>& ouClusterResultList);
 };

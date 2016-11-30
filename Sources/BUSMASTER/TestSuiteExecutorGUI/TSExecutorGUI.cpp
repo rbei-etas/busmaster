@@ -278,7 +278,7 @@ USAGEMODE HRESULT TS_DoInitialization(ETYPE_BUS /*eBus*/)
     return g_podTSExecutor->TSX_DoInitialization();
 }
 
-USAGEMODE HRESULT TS_DoDeInitialization(ETYPE_BUS eBus)
+USAGEMODE HRESULT TS_DoDeInitialization(ETYPE_BUS /*eBus*/)
 {
     HINSTANCE hInst = AfxGetResourceHandle();
     AfxSetResourceHandle(TestSuiteExecutor.hResource);

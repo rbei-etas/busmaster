@@ -5,7 +5,7 @@
 #define IDC_BUT_REMOVE                  3
 #define IDC_BUT_SELECT                  5
 #define IDD_DIALOG1                     101
-#define IDD_DLG_HW_LISTING              130
+#define IDD_DLG_HW_LISTING_CAN          130
 #define IDD_DLG_ACCEPTANCE              197
 #define IDR_BMP_NET                     204
 #define IDD_DLG_CHANGE_REGISTERS        228

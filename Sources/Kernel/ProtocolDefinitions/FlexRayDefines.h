@@ -6,26 +6,36 @@
 #include "FlexRayEnums.h"
 #include "CommonDefines.h"
 #include "CCompuMethod.h"
+#include "IClusterProps.h"
 
 //FlexRay
-class  FlxRayCompuMethods
+class  FlexRayCompuMethods : public CompuMethodProps
 {
 public:
+	FlexRayCompuMethods()
+	{
+		this->m_eType = eProtocolType::eFlexRayProtocol;
+	}
     CCompuMethod m_ouCompuMethod;
 };
 
 
 
-class FlexRayFrameProps
+class FlexRayFrameProps : public FrameProps
 {
 public:
-    unsigned int m_unSlotId;
+	FlexRayFrameProps()
+	{
+		m_eProtocol = eProtocolType::eFlexRayProtocol;
+        m_unBaseCycle = 0;
+        m_unRepetition = 0;
+	}
     unsigned int m_unBaseCycle;
     eFlexRaySlotType m_oueSlotType ;
     unsigned int m_unRepetition;
-    unsigned int m_unLength;
     eFlexRayChannel m_oueChannel;
     eFlexRayFrameType m_oueFlexRayFrameType;
+
 };
 
 class WakeUp
@@ -153,10 +163,14 @@ public:
     short m_shCLUSTER_DRIFT_DAMPING;
 };
 
-class FlexRayEcuProperties
+class FlexRayEcuProperties : public EcuProperties
 {
 public:
-
+	FlexRayEcuProperties()
+	{
+		m_eProtocol = eProtocolType::eFlexRayProtocol;
+		m_eKeySlotUsage = eNone;
+	}
     eFlexRayKeySlotType  m_eKeySlotUsage;
     short               m_shMaxDynPayloadLgt;
     /**
@@ -235,33 +249,36 @@ public:
 
     int                 m_nWakeUpChannel;   //Channel used by the node to send a wakeup pattern (A or B).
 
-    FlexRayEcuProperties()
-    {
-        m_eKeySlotUsage = eNone;
-    }
     void Clear();
 };
 
 
-
-
-
-class FlexRaySignalProps
+class FlexRayFrameId
 {
 public:
-    int m_nLength;
-    eSignalType m_ouSignalType;
-    eSignalDataType m_ouDataType;
-    //eEndianess m_ouEndianess;
-    std::string m_omUnit;
-    //eLinSignalValueType m_ouValueType;
-    unsigned __int64 m_nIntialValue;
+	unsigned int m_unSlotId;
+	unsigned int m_unBaseCycle;
+	eFlexRayChannel m_oueChannel;
 };
 
 
-class FlexRayPduProps
+class FlexRaySignalProps : public SignalProps
 {
 public:
-    unsigned int m_unByteLength;
+	FlexRaySignalProps()
+	{
+		eType = eProtocolType::eFlexRayProtocol;
+	}
+    //eLinSignalValueType m_ouValueType;
+};
+
+
+class FlexRayPduProps : public PduProps
+{
+public:
     eFlexRayChannel m_oueChannel;
+	FlexRayPduProps()
+	{
+		eType = eProtocolType::eFlexRayProtocol;
+	}
 };

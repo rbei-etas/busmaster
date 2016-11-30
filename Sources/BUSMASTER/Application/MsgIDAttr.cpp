@@ -50,7 +50,7 @@
  Author(s)      :   Ratnadip Choudhury
  Date Created   :   18-03-2002
 ******************************************************************************/
-CMsgIDAttr::CMsgIDAttr(ETYPE_BUS eBusType, CWnd* pParent /*=nullptr*/)
+CMsgIDAttr::CMsgIDAttr(CMessageAttrib* msgAttributes, CWnd* pParent /*=nullptr*/)
     : CDialog(CMsgIDAttr::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CMsgIDAttr)
@@ -60,8 +60,8 @@ CMsgIDAttr::CMsgIDAttr(ETYPE_BUS eBusType, CWnd* pParent /*=nullptr*/)
     m_bForEdit = false;
     m_bDBMessage = FALSE;
     m_hClrBtn = nullptr;
-    //}}AFX_DATA_INIT
-    m_eBusType = eBusType;
+    mMsgAttributes = msgAttributes;
+    
 }
 
 /******************************************************************************
@@ -134,9 +134,9 @@ void CMsgIDAttr::OnOK()
     }
     if (m_bForEdit == false)
     {
-        if (nResult == 0)
+        if (nResult == 0 && nullptr != mMsgAttributes)
         {
-            nResult = CMessageAttrib::ouGetHandle(m_eBusType).nValidateNewID(m_nID);
+            nResult = mMsgAttributes->nValidateNewID(m_nID);
             if (nResult < 0)
             {
                 AfxMessageBox(_("Duplicate Message ID"));
@@ -148,9 +148,9 @@ void CMsgIDAttr::OnOK()
     {
         if(m_nID != m_nPreviousID)      //if the id is not changed then skip
         {
-            if (nResult == 0)
+            if (nResult == 0 && nullptr != mMsgAttributes)
             {
-                nResult = CMessageAttrib::ouGetHandle(m_eBusType).nValidateNewID(m_nID);
+                nResult = mMsgAttributes->nValidateNewID(m_nID);
                 if (nResult < 0)
                 {
                     AfxMessageBox("Duplicate Message ID");

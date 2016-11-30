@@ -4,6 +4,10 @@
   <title>GetMsgInfo : Retrieves the message parameters from the loaded database, given the message name</title>
   <refbody>
     <section>
+      <title>Synopsis</title>
+      <p>HRESULT GetMsgInfo(BSTR MsgName,sMESSAGESTRUCT  *sMsgStruct);</p>
+    </section>
+    <section>
       <title>Description</title>
       <p>This function will get the details about a database message.</p>
     </section>

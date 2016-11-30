@@ -931,11 +931,11 @@ void CMsgContainerCAN::GetMapIndexAtID(int nIndex,__int64& nMapIndex)
 }
 
 //Import Log File.
-HRESULT CMsgContainerCAN::LoadPage(const unsigned long& nPageNo)
+HRESULT CMsgContainerCAN::LoadPage(const unsigned long& /*nPageNo*/)
 {
     return S_OK;
 }
-HRESULT CMsgContainerCAN::OverwritePage(const unsigned long& nLineNo)
+HRESULT CMsgContainerCAN::OverwritePage(const unsigned long& /*nLineNo*/)
 {
     return S_OK;
 }

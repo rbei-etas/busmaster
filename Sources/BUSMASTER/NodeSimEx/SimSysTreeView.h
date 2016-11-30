@@ -87,6 +87,7 @@ protected:
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
     afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
     afx_msg void OnTreeViewRightclick(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnTreeViewLeftclick(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnSelchanged(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnTreeViewDblclick(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnRemoveNode();

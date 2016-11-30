@@ -16,7 +16,7 @@ ConsoleWrite("****Start : TS_TxWin_CAN_28****"&@CRLF)
 
 Local $ndbMsg1_Rx=0,$ndbMsg1_Tx=0,$ndbMsg2_Rx=0,$ndbMsg2_Tx=0,$ndbMsg2_Rx=0,$ndbMsg2_Tx=0,$ndbMsg3_Rx=0,$ndbMsg3_Tx=0
 Local $VerifymsgBFRAddMsg=0,$VerifymsgAFTRAddMsg=0
-
+$countRowChckBox=0
 
 
 _launchApp()

@@ -40,7 +40,7 @@ if winexists($WIN_BUSMASTER) then
 	Sleep(2000)
 	_DisableJ1939Win()																		; If J1939 Msg Window is active then disable it
 
-	_DisableOverwriteMode()																	; Disable Overwrite Mode
+	;_DisableOverwriteMode()																	; Disable Overwrite Mode
 	Sleep(2000)
 
 	$GetLogFile_Path=_OutputDataPath()														; Fetch the Log file path

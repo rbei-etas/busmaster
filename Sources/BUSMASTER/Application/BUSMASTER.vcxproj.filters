@@ -216,9 +216,6 @@
     <ClCompile Include="ProgressBarDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImportLogToolbar.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BusmasterPluginManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -240,19 +237,19 @@
     <ClCompile Include="UI\IIdGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\IUICreator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\UICreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ToolBarCreator.cpp">
+    <ClCompile Include="MFCRibbonBarEx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AboutDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MessageWindowSettingsDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="frChannelSettingsHandler.cpp">
+    <ClCompile Include="ImportLogToolbar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -552,7 +549,16 @@
     <ClInclude Include="IBusmasterPluginConnection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="frChannelSettingsHandler.h">
+    <ClInclude Include="AboutDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MFCRibbonBarEx.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IBusmasterBusPlugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IMenuInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -566,52 +572,13 @@
     <None Include="res\bitmap1.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Res\bitmap2.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Res\Blank.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\bmp00001.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\bmp00002.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\bmp00003.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\bmp00004.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\bmp00005.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\bmp00006.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\bmp00007.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\bmp_break_point.bmp">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Res\bmp_chec.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="res\bmp_func.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Res\bmp_net.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\bmp_tool.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\BuildAll.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\BuilLoadAll.ico">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Res\BUSMASTER.ico">
@@ -620,94 +587,13 @@
     <None Include="Res\BUSMASTERDoc.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Res\CANDatabase.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\CANDatabase_Disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\CANDatabase_Hot.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\CANDatabase_Normal.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\cascade.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\configure.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Configure_Disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Configure_Hot.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\configure_tlb.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Res\copyright.bmp">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Res\DB Editor.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Res\Disconnect.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\DOWNArrow.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Edit.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\edit_disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Edit_hot.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\ERROR_ACTIVE.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\ERROR_BUS_OFF.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\ERROR_PASSIVE.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\ExcAllHndl.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\ExcErrHndl.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\ExcKeyHndl.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\ExcMsgHndl.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\ExcTimeHndl.ico">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Res\Filter.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Filters.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Filters_disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Filters_hot.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\FunctionEditorDoc.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Functions_J1939.bmp">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Res\GraphElements.bmp">
@@ -728,52 +614,13 @@
     <None Include="Res\ico_send.ico">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Res\J1939DB.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Res\J1939TxWnd.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\LEFTArrow.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\LoadAll.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="LockKey.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Log.ico">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Res\Minus.ICO">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Res\MsgReplay.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\MsgReplay_disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\MsgReplay_hot.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\MsgWnd.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Res\MsgWnd.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\MsgWndDisabled.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\MsgWndHot.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\New.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Open.ico">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Res\Plus.ICO">
@@ -782,135 +629,32 @@
     <None Include="Res\Properties.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Res\Replay.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\RIGHTArrow.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Save.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\SendMsg.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\SigGen.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\SigGen_disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\SigGen_hot.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Res\Signalwatch.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Res\SimSysWnd.ico">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Res\Splsh16.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Tile.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\Toolbar.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\toolbar1.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Toolbar_disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\toolbar_func_editor.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\toolbar_func_editor_disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\toolbar_func_editor_hot.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Toolbar_hot.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\toolbar_user_prog.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\toolbar_user_prog_disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\toolbar_user_prog_Hot.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\ToolbarDsc.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\ToolbarDsc_Disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\ToolbarDsc_Hot.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\Transparent_icon.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\UnLoadAll.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\UPArrow.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Res\WARNING_LIMIT.ico">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="Res\write.ico">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="BUSMASTER.tlb" />
+    <None Include="Res\Busmaster.bmpx" />
+    <None Include="Res\CAN_ICON.bmpx" />
+    <None Include="Res\filemenu.bmpx" />
+    <None Include="Res\Filemenu1.bmpx" />
+    <None Include="Res\j1939_Icon1.bmpx" />
+    <None Include="Res\LIN.bmpx" />
+    <None Include="res\ribbon1.mfcribbon-ms" />
+    <None Include="res\LIN_ICON1.bmpx" />
+    <None Include="Res\BumasterSmallIcons.bmpx" />
+    <None Include="Res\Temp.bmpx" />
+    <None Include="Res\Temp_small.bmpx" />
+    <None Include="Res\TOOLS_ICON.bmpx" />
+    <None Include="Res\VIEW_ICON.bmpx" />
+    <None Include="Res\PluginImageMissing.bmpx" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\logo.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Toolbar_J1939.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Toolbar_J1939_Hot.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Toolbar_J1939_Disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\FlexRay_Toolbar.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\FlexRay_Toolbar_Hot.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\FlexRay_Toolbar_Disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Configuration_Toolbar.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Configuration_Toolbar_Hot.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\Configuration_Toolbar_Disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\LIN_Toolbar.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\LIN_Toolbar_Disabled.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\LIN_Toolbar_Hot.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\MsgWndImportLog.bmp">
       <Filter>Resource Files</Filter>
     </Image>
@@ -926,8 +670,20 @@
     <Image Include="res\Network_Statistics.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Res\Connect.ico">
+    <Image Include="Res\filesmall.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\bitmap21.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Res\HideRibbon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Res\ShowRibbon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="..\BIN\Release\BUSMASTER.exe.manifest" />
   </ItemGroup>
 </Project>

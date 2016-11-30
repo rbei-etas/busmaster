@@ -123,12 +123,6 @@ enum
 #define SECTION                     "Files"
 
 
-#define defSECTION_MRU           "MRU List"
-#define defSECTION_MRU_FILE1     "MRU File1"
-#define defSECTION_MRU_FILE2     "MRU File2"
-#define defSECTION_MRU_FILE3     "MRU File3"
-#define defSECTION_MRU_FILE4     "MRU File4"
-#define defSECTION_MRU_FILE5     "MRU File5"
 #define defSTR_DEFAULT_MRU_ITEM  "Empty"
 #define defSTR_FILE_MENU_TEXT    "&File"
 //#define defSTR_RECENT_MENU_TEXT  _T("Recent File")

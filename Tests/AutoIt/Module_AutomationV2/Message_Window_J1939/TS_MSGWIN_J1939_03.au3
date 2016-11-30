@@ -29,9 +29,9 @@ if winexists($WIN_BUSMASTER) Then
 
 	_ConnectDisconnect()																					; Disconnect
 
-	_EnableOverwriteMode()																					; Enable overwrite mode
+	_EnableOverwriteModeJ1939()																					; Enable overwrite mode
 
-	WinMenuSelectItem($WIN_BUSMASTER,"",$J1939Menu,$J1939MsgWinMenu,$InterpretMsgMenu)						; Enable interpret mode
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$J1939Menu,$J1939MsgWinMenu,$InterpretMsgMenu)						; Enable interpret mode
 
 	$HWD=_GetCANMsgWinHWD()																					; Fetch CAN msg win handle
 	_GUICtrlListView_ClickItem($HWD,4)																		; Click on the 4th item in msg window

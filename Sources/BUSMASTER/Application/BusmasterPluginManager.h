@@ -5,34 +5,18 @@
 #include "UI\MenuCreator.h"
 #include "UI\IIdGenerator.h"
 #include "UI\UICreator.h"
-
-#define PLUGIN_ERR_LOAD_SUCCESS             0x0
-#define PLUGIN_ERR_INVALID_LOAD_STATE       0x800000
-#define PLUGIN_ERR_INVALID_XML              0x800001
-#define PLUGIN_ERR_SCHEMA_FILE_NOT_FOUND    0x800002
-#define PLUGIN_ERR_DLL_NOT_FOUND            0x800003
-#define PLUGIN_ERR_INVALID_INTERFACE        0x800004
-#define PLUGIN_ERR_INVALID_LICENCE          0x800005
+#include <concurrent_vector.h>
 
 
-struct BusmasterPluginInfo
-{
-    IBusmasterPlugin* mPluginInterface = nullptr;
-    IMenuInterface* mMenuInterface = nullptr;
-    IEvent* mNotifyEvent = nullptr;
-    HMODULE mDllHandle = nullptr;
-    pluginMenuList menuList;
-    std::string mPluginId = "";
-    std::string mDescription ="";
-    std::string mPluginDllpath ="";
-    std::string mMinBusMasterVer ="";
-    int mPluginLoadState = PLUGIN_ERR_INVALID_LOAD_STATE;
-};
+
+
 
 class BusmasterPluginManager : public IBusmasterPluginManager
 {
-    IBusmasterPluginInterface* mBusmasterInterface;
-    std::vector<BusmasterPluginInfo> mPluginList;
+    bool mUnloadPlugins = false;
+    IBusmasterBusPluginInterface* mBusmasterInterface;
+    Concurrency::concurrent_vector<BusmasterPluginConfiguration> mPluginList;
+    Concurrency::concurrent_vector<BusmasterBusPluginConfiguration> mBusPluginList;
     IMenuCreator* mMenuCreator = nullptr;
     IIdGenerator* mIdgenerator = nullptr;
     IUICreator* mUiCreator = nullptr;
@@ -43,9 +27,12 @@ public:
     BusmasterPluginManager();
     virtual ~BusmasterPluginManager();
 public:
-    int init( IBusmasterPluginInterface* );
+    int init(IBusmasterBusPluginInterface*);
+	int loadBusPlugins(const char* dir);
+	int loadBusPlugin(const char* pluginFilePath);
     int loadPlugin( const char* pluginFilePath );
     int loadPlugins( const char* dir );
+	int addPlugin(BusmasterPluginConfiguration& pluginInfo);
     int drawUI(UIElements uielements) ;
     int notifyPlugins( eBusmaster_Event, void* );
     int noifyMenuClick( int menuId );
@@ -54,17 +41,21 @@ public:
     int getPluginCount();
     int getPluginConfiguration(xmlNodePtr&);
     int setPluginConfiguration(const xmlDocPtr);
-    bool getPluginForMenuId(int, BusmasterPluginInfo&, std::string& plugin);
+    bool getPluginForMenuId(int, BaseBusmasterPlugin&, std::string& plugin);
     IBusmasterPluginConnection* getPluginConnectionPoint(const char* id);
 private:
-    int loadPluginInformation(BusmasterPluginInfo& pluginInfo);
-
+    int parsePluginInformation(const char* pluginFile, BaseBusmasterPlugin& pluginInfo);
+    int loadPluginInformation(BusmasterPluginConfiguration& pluginInfo);
+	int loadBusPluginInformation(BusmasterBusPluginConfiguration& pluginInfo);
+	
     std::string BusmasterPluginManager::GetNodeValue(xmlDocPtr docptr, xmlChar* pchXpath, char* nodename);
-    void BusmasterPluginManager::CreateList(xmlNodePtr& nodeptr, PluginMenu* pluginmenu, Menu* menu, std::string xmlFilePath);
-    Menu CreateCommandList(xmlNodePtr& childnodeptr, std::string xmlFilePath);
-    char* CheckforRelativePath(char* revpath, std::string xmlFilePath);
-    Menu CreateCommandGroupList(xmlNodePtr& childnodeptr, std::string xmlFilePath);
+	void ParseMenuItem(xmlNodePtr, RibbonButton&, std::string&);
+    void CreateList(xmlNodePtr& nodeptr, RibbonButton* pluginmenu, std::string xmlFilePath);
+	RibbonElement CreateCommandList(xmlNodePtr& childnodeptr, std::string xmlFilePath);
+    char* CheckforRelativePath(const char* revpath, std::string xmlFilePath);
+	RibbonElement CreateCommandGroupList(xmlNodePtr& childnodeptr, std::string xmlFilePath);
     int isValidateBusmasterPluginXml(xmlDocPtr pluginDocPtr);
-    int unLoadPlugin(BusmasterPluginInfo&);
+    int unLoadPlugin(BusmasterPluginConfiguration&);
+    void parseIcons(xmlNodePtr, RibbonButton& button, bool isLarge, std::string& xmlFilePath);
 };
 

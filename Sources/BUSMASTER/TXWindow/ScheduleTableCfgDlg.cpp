@@ -111,23 +111,24 @@ void CScheduleTableCfgDlg::vAdjustColumns()
     CRect rect;
     m_TreeWnd.GetTreeCtrl().GetWindowRect(&rect);
 
+	auto columnWidth = rect.Width() - 5;
     //command Name
-    hditem.cxy = rect.Width() * 0.4;
+    hditem.cxy = columnWidth * 0.4;
     hditem.pszText = defSTR_FRAME_NAME;
     header.SetItem(0, &hditem);
 
     //Id
-    hditem.cxy = rect.Width() * 0.2;
+    hditem.cxy = columnWidth * 0.2;
     hditem.pszText = defSTR_FRAME_ID;
     header.SetItem(1, &hditem);
 
     //Column Width
-    hditem.cxy = rect.Width() * 0.3;
+    hditem.cxy = columnWidth * 0.2;
     hditem.pszText = defSTR_FRAME_TYPE;
     header.SetItem(2, &hditem);
 
     //Delay
-    hditem.cxy = rect.Width() * 0.2;
+    hditem.cxy = columnWidth * 0.2;
     hditem.pszText = defSTR_DELAY;
     header.SetItem(3, &hditem);
     header.RedrawWindow();
@@ -144,23 +145,24 @@ void CScheduleTableCfgDlg::vSetColumnHeaders()
     CRect rect;
     m_TreeWnd.GetWindowRect(&rect);
 
+	auto columnWidth = static_cast<int>( (rect.Width() - 10 ) / 4);
     //command Name
-    hditem.cxy = rect.Width()/4;
+	hditem.cxy = columnWidth;
     hditem.pszText = defSTR_FRAME_NAME;
     header.InsertItem(0, &hditem);
 
     //Id
-    hditem.cxy = rect.Width()/4;
+	hditem.cxy = columnWidth;
     hditem.pszText = defSTR_FRAME_ID;
     header.InsertItem(1, &hditem);
 
     //Column Width
-    hditem.cxy = rect.Width()/4;
+	hditem.cxy = columnWidth;
     hditem.pszText = defSTR_FRAME_TYPE;
     header.InsertItem(2, &hditem);
 
     //Delay
-    hditem.cxy = rect.Width()/4;
+	hditem.cxy = columnWidth;
     hditem.pszText = defSTR_DELAY;
     header.InsertItem(3, &hditem);
 
@@ -223,7 +225,7 @@ void CScheduleTableCfgDlg::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
     }
 }
 
-UINT CScheduleTableCfgDlg::vChangeWindowPos(HDWP& handleWP, HWND wndHandle, double fSizeX, double fSizeY,CRect rectWndPos)
+UINT CScheduleTableCfgDlg::vChangeWindowPos(HDWP& handleWP, HWND /*wndHandle*/, double fSizeX, double fSizeY,CRect /*rectWndPos*/)
 {
     if (handleWP == NULL)
     {

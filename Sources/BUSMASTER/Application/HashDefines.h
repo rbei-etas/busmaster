@@ -181,7 +181,7 @@ void newFuncName( )\n{\n\n}"
 #define ON_KEY                  "ON_KEY() Handler(s)"
 
 #define defMAX_TEXT_ACCEPTANCE  2
-#define EXPORTS     "EXPORTS"
+
 
 typedef void (*MSGFNPTR)(unsigned short, unsigned char, unsigned char*);
 typedef void (*TIMERFNPTR)();
@@ -981,12 +981,6 @@ typedef enum eCONFIGDETAILS
     REPLAY_CONFIG_DETS
 };
 
-#define defSECTION_MRU           "MRU List"
-#define defSECTION_MRU_FILE1     "MRU File1"
-#define defSECTION_MRU_FILE2     "MRU File2"
-#define defSECTION_MRU_FILE3     "MRU File3"
-#define defSECTION_MRU_FILE4     "MRU File4"
-#define defSECTION_MRU_FILE5     "MRU File5"
 #define defCONFIGFILENAME        "ConfigFile"
 
 #define defREGISTRY_LOCATION      "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\BUSMASTER.exe"

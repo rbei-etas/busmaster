@@ -25,7 +25,7 @@
 #include"HashDefines.h"
 #include"CANTxFormView.h"
 #include<cctype>
-
+#include "CANDefines.h"
 #include "BaseDIL_CAN.h"
 //#include "..\DIL_Interface\DIL_Interface_extern.h"
 
@@ -155,7 +155,7 @@ int CCANTxFormView::GetMsgRowProp(int nIndex, std::list<MSG_LST_ROW>& lstMsgRowP
         ouMsgLstRow.lvitem = { 0 };
         ouMsgLstRow.lvitem.mask = LVIF_IMAGE;
         ouMsgLstRow.lvitem.pszText = "";
-        ouMsgLstRow.lvitem.iImage = (bool)(pouMsgItem->MsgDetails.nMsgType & CCANTxMsgItem::eCANRTR);
+		ouMsgLstRow.lvitem.iImage = ((pouMsgItem->MsgDetails.nMsgType & CCANTxMsgItem::eCANRTR) !=0);
         ouMsgLstRow.lvitem.iItem = nIndex;
         ouMsgLstRow.lvitem.iSubItem = eMsgColRTR;
         ouMsgLstRow.UserProgInfo.m_bIcon = true;
@@ -280,7 +280,7 @@ void CCANTxFormView::vOnMsgTypeSelected(int nSelItem)
         lvitem.iSubItem = eMsgColRTR;
         m_lstMsg.GetItem(&lvitem);
 
-        bool bIsRTR = (bool)lvitem.iImage;
+		bool bIsRTR = (lvitem.iImage!=0);
         bool bActivateView = false;
         if (false == bIsRTR)
         {
@@ -291,7 +291,7 @@ void CCANTxFormView::vOnMsgTypeSelected(int nSelItem)
     }
 }
 
-void CCANTxFormView::vGetColPropMap(ESTATUS_BUS eBusStatus, std::map<int, SLISTINFO>& mapColAndProp)
+void CCANTxFormView::vGetColPropMap(ESTATUS_BUS /*eBusStatus*/, std::map<int, SLISTINFO>& /*mapColAndProp*/)
 {
     //SLISTINFO sListInfo;
     //if (BUS_CONNECTED == eBusStatus)
@@ -488,9 +488,9 @@ int CCANTxFormView::nGetDefaultMsgItem(std::string strMsgName, ITxMsgItem*& pouM
 
             pIFrame->GetLength(nTemp);
             pouMsgItem->MsgDetails.nDLC = nTemp;
-            FrameProps ouFrameProp;
+            CANFrameProps ouFrameProp;
             pIFrame->GetProperties(ouFrameProp);
-            if (eCan_Extended == ouFrameProp.m_ouCANFrameProp.m_canMsgType)
+            if (eCan_Extended == ouFrameProp.m_canMsgType)
             {
                 pouMsgItem->MsgDetails.nMsgType = CCANTxMsgItem::eCANEXT;
             }
@@ -507,7 +507,7 @@ int CCANTxFormView::nGetDefaultMsgItem(std::string strMsgName, ITxMsgItem*& pouM
             //Msg Id
             UINT unMsgID = 0;
             CHAR* pcStr = nullptr;
-            BOOL bHex = TRUE;
+            bool bHex = true;
 
             bHex = m_bHexMode;
 
@@ -568,7 +568,7 @@ int& CCANTxFormView::GetValidMsgType(int& nMsgType, int nRow, int nId)
     lvitem.iItem = nRow;
     lvitem.iSubItem = eMsgColRTR;
     m_lstMsg.GetItem(&lvitem);
-    bool bIsRTR = (bool)lvitem.iImage;
+	bool bIsRTR = (lvitem.iImage!=0);
     //If the id is not within the range of ext or std the type cannot be changed.
     if (omStrMsgType == def_MSG_TYPE_STD && nId >= 0 && nId < def_STD_MSG_ID_MAX)
     {
@@ -689,7 +689,7 @@ bool CCANTxFormView::bGetKeyVal(int nItem, char& chKeyVal)
     if (omStrKeyVal.GetLength() > 0 )
     {
         chKeyVal = omStrKeyVal.GetAt(0);
-        bReturn = std::isalnum(chKeyVal);
+        bReturn = std::isalnum(chKeyVal) > 0 ? true : false;
     }
     return bReturn;
 }
@@ -807,7 +807,7 @@ int CCANTxFormView::OnBusStatusChanged(ESTATUS_BUS eBusStatus)
 }
 int CCANTxFormView::GetConfigTag(std::string& strTag)
 {
-    strTag = std::string(DEF_MODULE_CONFIGURATION) + "/" + std::string(DEF_CAN_TX_WINDOW);
+    strTag = std::string(DEF_MODULE_CONFIGURATION_XPATH) + "/" + std::string(DEF_CAN_TX_WINDOW);
     return S_OK;
 }
 int CCANTxFormView::AddNewMsgItemsToDataStore(int nCount)

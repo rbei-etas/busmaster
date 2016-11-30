@@ -22,8 +22,10 @@
  * Implementation file for CMessageList class
  */
 #include "stdafx.h"
-#include "BUSMASTER.h"
+#include "HashDefines.h"
 #include "MessageList.h"
+
+
 
 /*******************************************************************************
   Function Name  : CMessageList

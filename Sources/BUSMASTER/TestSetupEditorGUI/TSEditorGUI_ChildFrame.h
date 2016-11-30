@@ -26,13 +26,13 @@
 #include "TestSetupEditorLib/TestSetupEntity.h"
 #include "TestSetupEditorLib/DataBaseMsgList.h"
 #include "TreeViewEx.h"
-#include "FrameProcessor/LogObjectCAN.h" /* derka */
+//#include "FrameProcessor/LogObjectCAN.h" /* derka */
+#include "ListCtrlEx.h"
 
 // CTSEditorChildFrame frame with splitter
 #define szFilter    "TestSetup Files (*.xml)|*.xml||"
-class CTSEditorChildFrame : public CMDIChildWnd
+class CTSEditorChildFrame : public CFrameWndEx
 {
-    DECLARE_DYNCREATE(CTSEditorChildFrame)
     CBaseEntityTA* m_pCurrentEntity;
     DWORD m_dwCurrentEntityID;
     HTREEITEM m_hCurrentTreeItem;
@@ -47,6 +47,7 @@ class CTSEditorChildFrame : public CMDIChildWnd
     BOOL m_bQueryConfirm;
     HMENU m_pMainMenu;
     WINDOWPLACEMENT m_sTSDefPlacement;
+	CMFCMenuBar mMenuBar;
 public:
     BOOL m_bModified;
     CTreeViewEx* m_odTreeView;
@@ -55,11 +56,14 @@ public:
     BOOL m_bPasted;
     CMenu m_omMenu;
     BOOL m_bInit;
+public: // create from serialization only
     CTSEditorChildFrame();
+	virtual ~CTSEditorChildFrame();
+	DECLARE_DYNCREATE(CTSEditorChildFrame)
 
 protected:
-    // protected constructor used by dynamic creation
-    virtual ~CTSEditorChildFrame();
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	CSplitterWnd m_wndSplitter;
 
     CSplitterWnd m_omSplitterWnd;
     CImageList*  m_pomImageList;
@@ -153,7 +157,8 @@ public:
     afx_msg void OnUpdateFileSaveas(CCmdUI* pCmdUI);
     afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 
-protected:
+public:
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
     virtual void OnUpdateFrameTitle(BOOL bAddToTitle);
 public:
     afx_msg void OnEditCopy(void);
@@ -165,8 +170,23 @@ public:
     afx_msg void OnDisplayReset(void);
     afx_msg void OnDisplaySettings(void);
     afx_msg void OnFileValidate(void);
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
+#endif
+
+protected:  // control bar embedded members
+	CToolBar          m_wndToolBar;
+	CStatusBar        m_wndStatusBar;
+
+// Generated message map functions
+protected:
+	
+	afx_msg void OnUpdateViewStyles(CCmdUI* pCmdUI);
+	afx_msg void OnViewStyle(UINT nCommandID);
+	
     virtual BOOL PreTranslateMessage(MSG* pMsg);
-    afx_msg void OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd);
+    //afx_msg void OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd);
     afx_msg void OnHelpTesteditorhelp();
     afx_msg void OnClose();
 

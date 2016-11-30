@@ -242,7 +242,7 @@ bool BlfLibrary::ReadAndUncompressBlfLogContainer(BinHelper& file, std::vector<c
     EM_INFO("Read container data");
     BlfObject_LogContainer logContainer;
     memset(&logContainer, 0, sizeof(BlfObject_LogContainer));
-    bool isOk = file.GetData(&logContainer.m_Header, sizeof(BlfObjectHeaderBase));
+    bool isOk = file.GetData(&logContainer.m_Header, sizeof(BlfObject_LogContainer));
 
     // Get compressed data
     size_t sizeCompressed = 0;
@@ -295,6 +295,12 @@ bool BlfLibrary::ReadAndUncompressBlfLogContainer(BinHelper& file, std::vector<c
             EM_INFO("Read container padding bytes");
             file.AddOffset(paddingBytes);
         }
+    }
+
+    if (NULL != dataCompressed)
+    {
+        delete[] dataCompressed;
+        dataCompressed = NULL;
     }
 
     EM_LOG_DEPTH_DEC();

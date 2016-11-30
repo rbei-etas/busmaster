@@ -726,7 +726,7 @@ static BOOL bLoadDataFromContr(IBMNetWorkGetService*  asDeviceConfig)
     }
     ChannelSettings ouChannelSettings;
     // If successful
-    for ( int nChannel = 0 ; nChannel < sg_nNoOfChannels; nChannel++ )
+    for ( unsigned int nChannel = 0 ; nChannel < sg_nNoOfChannels; nChannel++ )
     {
         //1. Cluster Configuration
         memset ( &sg_asChannel[nChannel].m_OCI_LinConfig, 0, sizeof( sg_asChannel[nChannel].m_OCI_LinConfig ) );                    // Initialize the Controller Configuration to 0
@@ -1115,13 +1115,13 @@ void CDIL_LIN_ETAS_BOA::vCopyOCI_LIN_EVENT_2_DATA(STLINDATA& stLinMsg,
         case OCI_LIN_EVENT_WAKEUP:
 
             stLinMsg.m_eLinMsgType = LIN_EVENT;
-            stLinMsg.m_uDataInfo.m_sErrInfo.m_ucId = -1;
+            stLinMsg.m_uDataInfo.m_sErrInfo.m_ucId = 0XFF;
             stLinMsg.m_eLinMsgType = LIN_EVENT;
             stLinMsg.m_uDataInfo.m_sErrInfo.m_eEventType = EVENT_LIN_WAKEUP;
             bIsError = TRUE;
             break;
         case OCI_LIN_EVENT_SLEEP_MODE:
-            stLinMsg.m_uDataInfo.m_sErrInfo.m_ucId = -1;
+			stLinMsg.m_uDataInfo.m_sErrInfo.m_ucId = 0XFF;
             stLinMsg.m_eLinMsgType = LIN_EVENT;
             stLinMsg.m_uDataInfo.m_sErrInfo.m_eEventType = EVENT_LIN_SLEEP;
 
@@ -1144,7 +1144,7 @@ void CDIL_LIN_ETAS_BOA::vCopyOCI_LIN_EVENT_2_DATA(STLINDATA& stLinMsg,
             hResult = S_OK;
             break;
         case OCI_LIN_ERR_SYNC:
-            stLinMsg.m_uDataInfo.m_sErrInfo.m_ucId = -1;
+			stLinMsg.m_uDataInfo.m_sErrInfo.m_ucId = 0XFF;
             stLinMsg.m_eLinMsgType = LIN_EVENT;
             unBaudRate = BOA_FlexData.data.linEventMessage.data.errSyncEvent.baudrate;
 
@@ -1176,7 +1176,7 @@ void CDIL_LIN_ETAS_BOA::vCopyOCI_LIN_EVENT_2_DATA(STLINDATA& stLinMsg,
             //stLinMsg.m_uDataInfo.m_sErrInfo.m_ucCrc =  BOA_FlexData.data.linEventMessage.data.crcDetectEvent.crcType;
             break;
         case OCI_LIN_EVENT_DLC_DETECT:
-            stLinMsg.m_uDataInfo.m_sErrInfo.m_ucId = -1;
+			stLinMsg.m_uDataInfo.m_sErrInfo.m_ucId = 0XFF;
             stLinMsg.m_eLinMsgType = LIN_EVENT;
 
             stLinMsg.m_uDataInfo.m_sErrInfo.m_eEventType = EVENT_LIN_DLC;
@@ -1593,7 +1593,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterfa
                 //set the current number of channels
                 nCount = min(nCount, defNO_OF_CHANNELS);
 
-                for (UINT i = 0; i < nCount; i++)
+                for (int i = 0; i < nCount; i++)
                 {
                     psHWInterface[i].m_dwIdInterface = 0;
                     psHWInterface[i].m_dwVendor = 0;
@@ -2173,7 +2173,7 @@ HRESULT CDIL_LIN_ETAS_BOA::LIN_SetControllerParams(int nValue, ECONTR_PARAM eCon
 
 HRESULT CDIL_LIN_ETAS_BOA::LIN_GetConfiguration( SCONTROLLER_DETAILS_LIN psControllerConfig[], INT& nSize )
 {
-    for ( int i = 0; i < sg_nNoOfChannels; i++ )
+    for ( unsigned int i = 0; i < sg_nNoOfChannels; i++ )
     {
         psControllerConfig[i].m_strHwUri =  (char*)(sg_asChannel[i].m_acURI);
         psControllerConfig[i].m_BaudRate = ( sg_asChannel[i].m_OCI_LinConfig.baudrate );

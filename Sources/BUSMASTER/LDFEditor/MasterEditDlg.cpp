@@ -1,6 +1,6 @@
 #include "MasterEditDlg.h"
 #include "LDFDatabaseManager.h"
-#include "IClusterProps.h"
+#include "LINDefines.h"
 #include "LDFUtility.h"
 #include "qmessagebox.h"
 MasterEditDlg::MasterEditDlg(IEcu* pouMasterEcu, QWidget* parent)
@@ -54,12 +54,12 @@ void MasterEditDlg::OnOk()
     std::string strName;
     m_pouMasterEcu->SetName(ui.editName->text().toStdString());
 
-    EcuProperties ouEcuProps;
+    LinEcuProps ouEcuProps;
     ouEcuProps.m_eEcuType = eEcuNone;
     m_pouMasterEcu->GetProperties(ouEcuProps);
 
-    ouEcuProps.m_ouMasterProps.m_fJitter = ui.editJitter->text().toDouble();
-    ouEcuProps.m_ouMasterProps.m_fTimeBase = ui.editTimeBase->text().toDouble();
+    ouEcuProps.mMasterProps.m_fJitter = ui.editJitter->text().toDouble();
+    ouEcuProps.mMasterProps.m_fTimeBase = ui.editTimeBase->text().toDouble();
     m_pouMasterEcu->SetProperties(ouEcuProps);
     LDFDatabaseManager::GetDatabaseManager()->setDocumentModified(true);
     accept();
@@ -85,14 +85,14 @@ void MasterEditDlg::SetUpUi()
     strTitle+= + strName.c_str();
     setWindowTitle(strTitle);
 
-    EcuProperties ouEcuProps;
+    LinEcuProps ouEcuProps;
     ouEcuProps.m_eEcuType = eEcuNone;
     m_pouMasterEcu->GetProperties(ouEcuProps);
 
     QString strTemp;
-    GetString(ouEcuProps.m_ouMasterProps.m_fJitter, strTemp);
+    GetString(ouEcuProps.mMasterProps.m_fJitter, strTemp);
     ui.editJitter->setText(strTemp);
 
-    GetString(ouEcuProps.m_ouMasterProps.m_fTimeBase, strTemp);
+    GetString(ouEcuProps.mMasterProps.m_fTimeBase, strTemp);
     ui.editTimeBase->setText(strTemp);
 }

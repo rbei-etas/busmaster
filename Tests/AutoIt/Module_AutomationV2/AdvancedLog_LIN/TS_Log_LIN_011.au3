@@ -57,7 +57,7 @@ sleep(4000)
 WinActivate($WIN_BUSMASTER,3)
 if winexists($WIN_BUSMASTER) then
 	sleep(2000)
-	WinMenuSelectItem($WIN_BUSMASTER,"",$linMenu,$LINLogMenu,$configureMenu)
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$linMenu,$LINLogMenu,$configureMenu)
 	WinActivate($WIN_LINLog,3)
 	if winexists($WIN_LINLog) then
 		$CHKB_OnTransmissionHWD=controlgethandle($WIN_LINLog,"",$CHKB_OnTransmission_ConfigLOG)											;Get the handler for the check box to create log files for each connect

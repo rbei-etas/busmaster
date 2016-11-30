@@ -27,10 +27,12 @@
 #endif
 
 #include "EXTERNAL/vs_can_api.h"
+#include "DIL_Interface/HardwareListingCAN.h"
 
 
-struct _VSCanCfg
+class _VSCanCfg: public IChangeRegisters
 {
+public:
     VSCAN_HANDLE hCan;
     char szLocation[MAX_PATH + 1];
     DWORD dwMode;
@@ -40,9 +42,12 @@ struct _VSCanCfg
     BOOL bDualFilter;
     BOOL bTimestamps;
     BOOL bDebug;
+	int InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount,UINT );
+	DOUBLE vValidateBaudRate(DOUBLE,int,UINT );
+	std::string GetBaudRate(int speed);
 };
 
-int WINAPI ShowCanVsComSetup(HWND hwnd, struct _VSCanCfg* cfg);
+int WINAPI ShowCanVsComSetup(HWND hwnd, _VSCanCfg* cfg);
 
 
 /**

@@ -16,6 +16,7 @@ ConsoleWrite("****Start : TS_TxWin_CAN_08****"&@CRLF)
 
 Local $txtdbMsgEXPCTD[5]=["m1","m2","m3","MsgTest1","MsgTest2"]
 Local $countDBMsg=0
+$countRowChckBox=0
 
 _launchApp()
 

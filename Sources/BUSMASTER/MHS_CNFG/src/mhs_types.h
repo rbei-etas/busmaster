@@ -2,6 +2,7 @@
 #define __MHS_TYPES_H__
 
 #include "global.h"
+#include "..\DIL_Interface\IChangeRegisters.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,12 +23,18 @@ extern "C" {
 #define  defFACT_BAUD_RATE               1000.0
 #define  defFACT_FREQUENCY               1000000.0
 
-    struct TMhsCanCfg
+	class TMhsCanCfg :public IChangeRegisters
     {
-        char CanSnrStr[MHS_STR_SIZE];
-        unsigned int CanSpeed;
-        unsigned int CanBtrValue;
+	public:
+		char m_CanSnrStr[MHS_STR_SIZE];
+		unsigned int m_CanSpeed;
+		unsigned int m_CanBtrValue;
         BOOL m_bBitRateSelected;
+	public:
+		TMhsCanCfg(char CanSnrStr[],unsigned int CanSpeed, unsigned int CanBtrValue, BOOL bBitRateSelected);
+		~TMhsCanCfg();
+		int InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount,UINT );
+		DOUBLE vValidateBaudRate(DOUBLE dbaudrate,int,UINT );
     };
 
     // Defination of BTR0 Register

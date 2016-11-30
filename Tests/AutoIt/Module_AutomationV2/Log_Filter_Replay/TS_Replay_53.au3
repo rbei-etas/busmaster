@@ -37,8 +37,9 @@ if winexists($WIN_BUSMASTER) then
 	_GUICtrlListView_ClickItem($RepWinHWD,0)														; Click on the 1st item in the replay window
 	sleep(500)
 
-	$cntToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_Con_Disconnect)							; Get handle of the 'Connect/Disconnect' toolbar
-	_ClickToolBarIcon($cntToolhWd,$Icon_RplyStart_Index)											; Click on Skip icon
+	;$cntToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_Con_Disconnect)					    ; Get handle of the 'Connect/Disconnect' toolbar
+	;_ClickToolBarIcon($cntToolhWd,$Icon_RplyStart_Index)
+	_CANReplayOptionsMenu($CANReplayGoMenu)                                                         ; Click on Go menu
 	sleep(2000)
 
 	;_ConnectDisconnect()																			; Disconnect

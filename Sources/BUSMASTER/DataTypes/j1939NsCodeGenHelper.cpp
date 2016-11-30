@@ -6,7 +6,7 @@
 ///////////////////////////////////////////////////////////
 #include "DataTypes_stdafx.h"
 #include "J1939NsCodeGenHelper.h"
-
+#include "CANDefines.h"
 #define defTab                  "\t"
 #define defColon                ":"
 #define defSpace                " "
@@ -24,7 +24,7 @@ J1939NsCodeGenHelper::~J1939NsCodeGenHelper()
 
 }
 
-std::string J1939NsCodeGenHelper::GetFrameBaseClassInitialiser(IFrame* frame)
+std::string J1939NsCodeGenHelper::GetFrameBaseClassInitialiser(IFrame* /*frame*/)
 {
 
     return  NULL;
@@ -45,30 +45,30 @@ std::string J1939NsCodeGenHelper::GetFrameClassName()
 }
 
 
-std::string J1939NsCodeGenHelper::GetFrameName(IFrame* frame)
+std::string J1939NsCodeGenHelper::GetFrameName(IFrame* /*frame*/)
 {
 
     return  NULL;
 }
 
-std::string J1939NsCodeGenHelper::GetFramePdusInitialisation(IFrame* frame, IPdu* pdu)
+std::string J1939NsCodeGenHelper::GetFramePdusInitialisation(IFrame* /*frame*/, IPdu* /*pdu*/)
 {
 
     return  NULL;
 }
 
-std::string J1939NsCodeGenHelper::GetFrameSignalsInitialiser(IFrame* frame)
+std::string J1939NsCodeGenHelper::GetFrameSignalsInitialiser(IFrame* /*frame*/)
 {
 
     return  NULL;
 }
 
-std::string J1939NsCodeGenHelper::GetPdusDecl(IFrame* frame)
+std::string J1939NsCodeGenHelper::GetPdusDecl(IFrame* /*frame*/)
 {
     return "";
 }
 
-std::string J1939NsCodeGenHelper::getPduBaseClassInitialiser(IPdu* pdu)
+std::string J1939NsCodeGenHelper::getPduBaseClassInitialiser(IPdu* /*pdu*/)
 {
 
     return  NULL;
@@ -89,35 +89,33 @@ std::string J1939NsCodeGenHelper::GetPduClassName()
 }
 
 
-std::string J1939NsCodeGenHelper::GetPduInitialiser(IPdu* pdu)
+std::string J1939NsCodeGenHelper::GetPduInitialiser(IPdu* /*pdu*/)
 {
 
     return  NULL;
 }
 
 
-std::string J1939NsCodeGenHelper::GetPduName(IPdu* pdu)
+std::string J1939NsCodeGenHelper::GetPduName(IPdu* /*pdu*/)
 {
 
     return  NULL;
 }
 
 
-std::string J1939NsCodeGenHelper::GetPduSignalInitialiser(IPdu* pdu, ISignal* signal)
+std::string J1939NsCodeGenHelper::GetPduSignalInitialiser(IPdu* /*pdu*/, ISignal* /*signal*/)
 {
-
-    return  NULL;
+	return  NULL;
 }
 
-std::string J1939NsCodeGenHelper::GetProtocolIncludesHeaderName(ICluster* pCluster)
+std::string J1939NsCodeGenHelper::GetProtocolIncludesHeaderName(ICluster* /*pCluster*/)
 {
     return "#include \"J1939Includes.h\"";
 }
 
-std::string J1939NsCodeGenHelper::GetSignalName(ISignal* signal)
+std::string J1939NsCodeGenHelper::GetSignalName(ISignal* /*signal*/)
 {
-
-    return  NULL;
+	return  NULL;
 }
 
 void J1939NsCodeGenHelper::SetCluster(ICluster* cluster)
@@ -153,10 +151,10 @@ std::string J1939NsCodeGenHelper::GetBaseClassConstructorDef(IFrame* frame)
     frame->GetFrameId(frameId);
     frame->GetLength(dlc);
 
-    FrameProps eouFrameProps;
+    CANFrameProps eouFrameProps;
     frame->GetProperties(eouFrameProps);
     bool bIsExtended = 0;
-    if (eCan_Extended == eouFrameProps.m_ouCANFrameProp.m_canMsgType)
+    if (eCan_Extended == eouFrameProps.m_canMsgType)
     {
         bIsExtended = 1;
     }
@@ -183,7 +181,7 @@ std::string J1939NsCodeGenHelper::GetBaseClassDecl(IFrame* frame)
     return outStream.str();
 }
 
-std::string J1939NsCodeGenHelper::GetPdusConstructorDef(IFrame* frame)
+std::string J1939NsCodeGenHelper::GetPdusConstructorDef(IFrame* /*frame*/)
 {
     return "";
 }
@@ -256,8 +254,17 @@ std::string J1939NsCodeGenHelper::GenerateSignalConstuctor(int startBit, ISignal
     outStream << unLength << ", ";
 
     //5.
-    outStream << 0 << ", ";
-
+    CANSignalProps signalProps;
+    pouSignal->GetProperties(signalProps);
+    if (signalProps.m_ouDataType == eSignalDataType::eSigned)
+    {
+        outStream << 1 << ", ";
+    }
+    else
+    {
+        outStream << 0 << ", ";
+    }
+    
     //6.
     outStream << "data" << ", ";
 
@@ -346,24 +353,12 @@ void J1939NsCodeGenHelper::GetSignalType(ISignal* pouSignal, std::string& strSig
         strSignalType = "__int64";
     }
 
-    SignalProps ouSignalProps;
+    CANSignalProps ouSignalProps;
     eSignalDataType eSignalType = eUnsigned;
     pouSignal->GetProperties(ouSignalProps);
 
-    switch (ouSignalProps.eType)
-    {
-        case eCANProtocol:
-            eSignalType = eSignalDataType::eUnsigned;
-            break;
-        case eLINProtocol:
-            eSignalType = ouSignalProps.m_ouLINSignalProps.m_ouDataType;
-            break;
+	eSignalType = ouSignalProps.m_ouDataType;
 
-        case eInvalidProtocol:
-            break;
-        default:
-            break;
-    }
 
     if (eSignalType == eSignalDataType::eUnsigned)
     {
@@ -372,38 +367,38 @@ void J1939NsCodeGenHelper::GetSignalType(ISignal* pouSignal, std::string& strSig
 
 }
 
-std::string J1939NsCodeGenHelper::GetUniqueName(IPdu* pdu)
+std::string J1939NsCodeGenHelper::GetUniqueName(IPdu* /*pdu*/)
 {
     return "";
 }
 
-std::string J1939NsCodeGenHelper::GetConstructorDef(IPdu* pdu)
+std::string J1939NsCodeGenHelper::GetConstructorDef(IPdu* /*pdu*/)
 {
     return "";
 }
 
 
-std::string J1939NsCodeGenHelper::GetBaseClassConstructorDef(IPdu* pdu)
+std::string J1939NsCodeGenHelper::GetBaseClassConstructorDef(IPdu* /*pdu*/)
 {
     return "";
 }
 
-std::string J1939NsCodeGenHelper::GetSignalsConstructorDef(IPdu* pdu)
+std::string J1939NsCodeGenHelper::GetSignalsConstructorDef(IPdu* /*pdu*/)
 {
     return "";
 }
 
-std::string J1939NsCodeGenHelper::GetDecl(IPdu* pdu)
+std::string J1939NsCodeGenHelper::GetDecl(IPdu* /*pdu*/)
 {
     return "";
 }
 
-std::string J1939NsCodeGenHelper::GetBaseClassDecl(IPdu* pdu)
+std::string J1939NsCodeGenHelper::GetBaseClassDecl(IPdu* /*pdu*/)
 {
     return "";
 }
 
-std::string J1939NsCodeGenHelper::GetSignalsDecl(IPdu* pdu)
+std::string J1939NsCodeGenHelper::GetSignalsDecl(IPdu* /*pdu*/)
 {
     return "";
 }

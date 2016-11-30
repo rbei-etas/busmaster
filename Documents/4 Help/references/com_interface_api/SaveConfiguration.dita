@@ -4,6 +4,10 @@
   <title>SaveConfiguration : To save current configuration file</title>
   <refbody>
     <section>
+      <title>Synopsis</title>
+      <p>HRESULT SaveConfiguration();</p>
+    </section>
+    <section>
       <title>Description</title>
       <p>This function saves the current configuration file of  BUSMASTER tool.</p>
     </section>

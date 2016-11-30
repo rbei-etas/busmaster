@@ -146,7 +146,7 @@ bool CMsgWndThread::isWindowVisible(ETYPE_BUS eBusType)
 {
     if (nullptr != m_pMsgWnd[eBusType])
     {
-        return m_pMsgWnd[eBusType]->IsWindowVisible();
+        return (m_pMsgWnd[eBusType]->IsWindowVisible() == TRUE);
     }
     return false;
 }
@@ -162,7 +162,7 @@ HWND CMsgWndThread::hGetHandleMsgWnd(ETYPE_BUS eBusType)
     }
 }
 
-void CMsgWndThread::vSetDILInterfacePointer(ETYPE_BUS eBusType, void** ppvJ1939DIL)
+void CMsgWndThread::vSetDILInterfacePointer(ETYPE_BUS /*eBusType*/, void** /*ppvJ1939DIL*/)
 {
     /*if(m_pMsgWnd[eBusType])
     {

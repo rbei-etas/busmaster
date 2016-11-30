@@ -18,7 +18,7 @@
 #define IDM_SIGNALDLG_DELETEALL         32948
 #define IDM_SIGNALDLG_SIGNALDETAILS     32949
 #define IDM_SIGNALDLG_ADD               32950
-#define IDD_DLG_SIGNAL_WATCH_LIN        32951
+#define IDD_DLG_SIGNAL_WATCH_CONFIGURE        32951
 #define IDC_TREE_LIN                    32952
 #define IDM_OPERATION_LIST_LIN          32953
 #define IDI_ICON_SMSG                   32954

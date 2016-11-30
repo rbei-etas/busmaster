@@ -83,7 +83,7 @@ if winexists($WIN_BUSMASTER) then
 
 
 	_ConnectDisconnect() 																										   	   ;Connect
-	 sleep(10000)                                                                                                                      ;transmit for 10 sec
+	 sleep(6000)                                                                                                                      ;transmit for 10 sec
 	_ConnectDisconnect()
 
 
@@ -107,7 +107,7 @@ if winexists($WIN_BUSMASTER) then
 
 
 	_ConnectDisconnect() 																												;Connect
-	 sleep(10000)                                                                                                                       ;transmit for 10 sec so that the first file size exceeds 5 mb size
+	 sleep(6000)                                                                                                                       ;transmit for 10 sec so that the first file size exceeds 5 mb size
 	_ConnectDisconnect()
 
 	$logFile3=LogFileExist("SampleLog_S2_T0")
@@ -125,7 +125,7 @@ if winexists($WIN_BUSMASTER) then
    ConsoleWrite("$validationObject3 - for exceeding size :" &$validationObject3 & @crlf)
 
 	_ConnectDisconnect() 																												;Connect
-	 sleep(10000)																														;transmit for 10 sec so that it creates 3rd file after the 2nd one exceeding 5 MB
+	 sleep(6000)																														;transmit for 10 sec so that it creates 3rd file after the 2nd one exceeding 5 MB
 	_ConnectDisconnect()
 
 	$logfile1Content2 = _GetlogFileData("SampleLog_S0_T0.log", "8")																	    ;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting
@@ -150,7 +150,7 @@ if winexists($WIN_BUSMASTER) then
     _CloseTxWindowArg("CAN")																     										;Close Tx window
 
 	_ConnectDisconnect()
-	 sleep(70000)
+	 sleep(62000)
      $logFile1ForTime=LogFileExist("SampleLog_S0_T0")
 	 if $logFile1ForTime=1 Then
 		$logfile1Content1 = _GetlogFileData("SampleLog_S0_T0.log", "8")																	;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting

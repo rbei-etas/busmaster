@@ -2,7 +2,7 @@
 ; Critical (C)		:		Y
 ; TestCase No.		:		TS_J1939_DBE_09
 ; TestCases			:		Database Usage in Busmaster
-; Test Data			:		
+; Test Data			:
 ; Test Setup		:		1. Continue from above test case TS_J1939_DBE_08.
 ;~ 							2. Select the 'NewDBFile.dbf' file and click on 'Open' button in the dialog.
 ;~ 							3. Select menu option 'J1939 -> Database -> Disassociate…' to open the 'Dissociate Database' dialog.

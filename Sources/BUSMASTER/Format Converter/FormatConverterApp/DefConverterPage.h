@@ -9,6 +9,7 @@ class CDefConverterPage : public CPropertyPage
     DECLARE_DYNAMIC(CDefConverterPage)
     CPluginManagerBase* m_pouPluginManager;
     INT m_nTabPosition;
+    HANDLE mConvThrdHandle = nullptr;
 public:
     CDefConverterPage(INT nTabPosition);
     HRESULT SetPluginManager(CPluginManagerBase* m_pouPluginManager);

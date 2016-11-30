@@ -31,7 +31,7 @@ if winexists($WIN_BUSMASTER) then
 
 
 	_createConfig("TS_TX_LIN_03")
-	_SetViewToolBarLIN()																	 		; Select LIN Tool Bar to view.
+	;_SetViewToolBarLIN()																	 		; Select LIN Tool Bar to view.
 	sleep(1000)
 	;_linDriverSelectionXml()																 		; Select LIN driver selection from xml configuration File.
 	_linDriverSelection()
@@ -59,7 +59,7 @@ if winexists($WIN_BUSMASTER) then
 		;_CloseTxWindowArg("LIN")																	; Close Tx window
 	EndIf
 
-	_DisableOverwriteMode()
+	_DisableOverwriteModeAll($linMenu)
 	$rCount=_GetLINMsgWinItemCount()																;count no. of items in msgwindow
 	$CountCol=_GetLINMsgWinColCount()																;count no. of columns in msgwindow
 	ConsoleWrite("$rCount="&$rCount&@CRLF)
@@ -95,9 +95,13 @@ if winexists($WIN_BUSMASTER) then
 
 	_TxMsgMenuLIN()
 	_DelMsgTxWindow(1)																				; Delete Slave and Connect
+
 	_CloseTxWindowArg("LIN")
-	_ConnectDisconnect_LIN()																		; Connect
-	sleep(1000)
+	sleep(2000)
+	Send($linMenu)
+	Send("L")
+	Send($connectLIN)
+	sleep(2000)
 	_ConnectDisconnect_LIN()																		; DisConnect
 	$rCount=_GetLINMsgWinItemCount()																; count no. of items in msgwindow
 	$CountCol=_GetLINMsgWinColCount()																; count no. of columns in msgwindow

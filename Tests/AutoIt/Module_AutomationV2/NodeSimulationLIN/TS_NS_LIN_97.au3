@@ -21,9 +21,9 @@ ConsoleWrite("****Start : TS_NS_LIN_97.au3****"&@CRLF)
 _launchApp()
 ProcessWait("BUSMASTER.exe")
 ;Global $RemoveDialogBox = 0,$childNode="",$CheckBoxNode1="",$CheckBoxNode2="",$CheckLoadednode=0
-Global $infoTrace[4]=["","","",""]
+Global $infoTrace[10]=["","","","","","","","","",""]
 Global $UtilFunCount=0,$traceInfoMsgHndler=0,$SecndMsg=0,$FirstMsg=0
-
+local $k=0
 
 WinActivate($WIN_BUSMASTER)
 
@@ -106,12 +106,12 @@ if winexists($WIN_BUSMASTER) then
 
 		WinActivate($WIN_BUSMASTER)
 		_ConnectDisconnect_LIN()																	; Connect LIN
-		Sleep(4000)
+		Sleep(2000)
 		_ConnectDisconnect_LIN()																	; Disconnect LIN
 
 		$rCount=_GetLINMsgWinItemCount()
 
-		if $rCount<>4 Then
+		if $rCount=0 Then
 			Do
 				;----cleare trace window-----
 				MouseClick("right", 880, 449)
@@ -126,7 +126,8 @@ if winexists($WIN_BUSMASTER) then
 				Sleep(500)
 				_ConnectDisconnect_LIN()
 				$rCount=_GetLINMsgWinItemCount()
-			Until $rCount = 4
+				$k = $k + 1
+			Until ($rCount = 4 Or $k=10)
 		EndIf
 
 		$CountTraceInfo= _GetTraceWinItemCount()													; Count info in trace Window.
@@ -134,7 +135,7 @@ if winexists($WIN_BUSMASTER) then
 
 
 
-		if $CountTraceInfo =4 Then
+		if $CountTraceInfo >=4 Then
 			For $i=0 to $CountTraceInfo-1
 				$infoTrace[$i] = _GetTraceWinInfo($i)
 				ConsoleWrite("$infoTrace="&$infoTrace[$i]&@CRLF)
@@ -159,13 +160,13 @@ if winexists($WIN_BUSMASTER) then
 
 		if $rCount=5 Then
 			_ConnectDisconnect_LIN()																	; Connect LIN
-			Sleep(2000)
+			Sleep(1000)
 			_ConnectDisconnect_LIN()
 			$rCount=_GetLINMsgWinItemCount()
 			;sleep(1000)
 		EndIf
 
-		if $rCount=4 Then
+		if $rCount>=4 Then
 
 
 			$Msg0=_GetMsgWinInfo($LVC_CID_LINMsgWin,0,10)															; Fetch the first row data in the msg window

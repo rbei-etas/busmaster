@@ -59,6 +59,12 @@ CChangeRegisters_CAN_ICS_neoVI::CChangeRegisters_CAN_ICS_neoVI(CWnd* pParent /*=
     m_omStrcombBaudRate = "";
     m_omStrComboClock = "32";
     m_omStrEditWarningLimit = "";
+	m_nLastSelection = 0;
+	m_omChannelImageList.Create(defCHANNEL_ICON_SIZE,
+		defCHANNEL_ICON_SIZE,
+		ILC_COLOR24,
+		defCHANNEL_LIST_INIT_SIZE,
+		defCHANNEL_LIST_GROW_SIZE);
     m_unCombClock      = 32;
     m_bDialogCancel    = FALSE;
     m_ucWarningLimit    = defWARNING_LIMIT_MIN;
@@ -202,11 +208,6 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::OnInitDialog()
     // Init Channel List box
 
     // Create Image List for Channel List Control
-    m_omChannelImageList.Create( defCHANNEL_ICON_SIZE,
-                                 defCHANNEL_ICON_SIZE,
-                                 ILC_COLOR24,
-                                 defCHANNEL_LIST_INIT_SIZE,
-                                 defCHANNEL_LIST_GROW_SIZE);
     // Load Channel Icon
     CWinApp* pWinApp = (CWinApp*)this;
     m_omChannelImageList.Add(pWinApp->LoadIcon(IDR_PGM_EDTYPE));
@@ -231,7 +232,6 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::OnInitDialog()
     }
 
     // Set the selected item index to zero
-    m_nLastSelection = 0;
 
     /*m_omCombBaudRate.SetCurSel(0);*/
     int nIdx = m_omCombBaudRate.FindString(0, m_omStrcombBaudRate);
@@ -294,6 +294,15 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::OnInitDialog()
     {
         m_omCtrlSJW.SetCurSel (0);
     }
+	nIndex = m_omCombBaudRate.FindStringExact (-1, m_pControllerDetails->m_omStrBaudrate.c_str());
+	if (CB_ERR != nIndex)
+	{
+		m_omCombBaudRate.SetCurSel (nIndex);
+	}
+	else
+	{
+		m_omCombBaudRate.SetCurSel (0);
+	}
     // List values having prop delay
     int nPropDelay = nGetValueFromComboBox(m_omCtrlPropDelay);
     if (nPropDelay != m_nPropDelay)
@@ -321,9 +330,10 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::OnInitDialog()
     //function to calculate the same.
 
     // Set the Focus to the First Item
-    m_omChannelList.SetItemState( 0,
+    m_omChannelList.SetItemState( m_nLastSelection,
                                   LVIS_SELECTED | LVIS_FOCUSED,
                                   LVIS_SELECTED | LVIS_FOCUSED);
+	m_omChannelList.EnsureVisible(m_nLastSelection, FALSE); //making sure that Selected Item is visible.
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -535,7 +545,7 @@ void CChangeRegisters_CAN_ICS_neoVI::OnSelchangeCombBaudRate()
                 // suggest  a next valid baud rate
                 //Validate only if previous value in edit control is not the
                 //  same as the one changed by user
-                vValidateBaudRate();
+				vExtractValuesForValidation();
                 // Update List items only it is from edit box
                 vChangeListBoxValues(-1);
                 CButton* pomButtonoK = (CButton*) GetDlgItem(IDC_ButtonOK);
@@ -629,7 +639,7 @@ void CChangeRegisters_CAN_ICS_neoVI::vChangeListBoxValues(INT nflag)
     }
     else
     {
-        vValidateBaudRate();
+		vExtractValuesForValidation();
     }
 
 }
@@ -715,104 +725,6 @@ void CChangeRegisters_CAN_ICS_neoVI::vSelSetFocusItemList(INT nItemCount,INT nIt
 /*                      change the baudrate to nearest possible value. Now it */
 /*                      will automatically change the values                  */
 /******************************************************************************/
-void CChangeRegisters_CAN_ICS_neoVI::vValidateBaudRate()
-{
-    CString omStrBaudRate       = "";
-    CString omStrPrvBaudRate    = "";
-    CString omStrClockFreq      = "";
-    DOUBLE  dBaudRate           = 0;
-    //UINT    unClockFreq         = 0;
-    //UINT    unClockPrevValue    = 0 ;
-    UINT    unProductNbtNBrp    = 0;
-    DOUBLE  dProductNbtNBrp     = 0;
-    CString omStrMessage        = "";
-
-    m_omCombBaudRate.GetWindowText(omStrBaudRate);
-    m_omStrcombBaudRate = omStrBaudRate;
-    dBaudRate           = (FLOAT)_tstof(omStrBaudRate);
-    m_dEditBaudRate     = (FLOAT)_tstof(m_omStrcombBaudRate);
-
-    //m_omCombClock.GetWindowText(omStrClockFreq);
-    //unClockFreq          = _tstoi(omStrClockFreq);
-
-    dProductNbtNBrp     = (DOUBLE)(m_unCombClock/(dBaudRate/1000))/2.0 *
-                          (defFACT_FREQUENCY / defFACT_BAUD_RATE);
-    unProductNbtNBrp    = (UINT)(dProductNbtNBrp + 0.5);
-
-    if ((fabs((dProductNbtNBrp - unProductNbtNBrp)) > defVALID_DECIMAL_VALUE)
-            ||(unProductNbtNBrp > (defMAX_NBT * defMAX_BRP))
-            || (unProductNbtNBrp < defMIN_NBT))
-    {
-        unProductNbtNBrp =defmcROUND5(dProductNbtNBrp);
-        INT nFlag = defRESET;
-
-        while (nFlag == defRESET)
-        {
-            INT i = 1;
-            UINT unNbt = unProductNbtNBrp / i;
-            FLOAT fNbt = (FLOAT)unProductNbtNBrp / i;
-
-            while ((unNbt >= 1) && (i <= defMAX_BRP) && (nFlag == defRESET))
-            {
-                if ((unNbt == fNbt) && (unNbt >= defMIN_NBT)
-                        && (unNbt <=defMAX_NBT))
-                {
-                    nFlag =defSET;
-                }
-                else
-                {
-                    i++;
-                    unNbt    = unProductNbtNBrp / i;
-                    fNbt     = (FLOAT)unProductNbtNBrp / i;
-                }
-            } //end while( unNbt >=1 && i<=MAX_BRP)
-
-            if ((nFlag == defRESET) && (unProductNbtNBrp < (defMIN_NBT *defMIN_BRP)))
-            {
-                unProductNbtNBrp = defMIN_NBT * defMIN_BRP;
-            }
-            else if ((unProductNbtNBrp > ( defMAX_NBT * defMAX_BRP))
-                     && (nFlag == defRESET))
-            {
-                unProductNbtNBrp = defMAX_NBT*defMAX_BRP;
-            }
-            else if (nFlag == defRESET)
-            {
-                unProductNbtNBrp++;
-            }
-        }//end while(nFlag==RESET)
-        dBaudRate = (DOUBLE)((m_unCombClock/2.0)*
-                             ( defFACT_FREQUENCY / defFACT_BAUD_RATE))/unProductNbtNBrp;
-
-        /*FLOAT  fTempBaudRate;
-         fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
-         fTempBaudRate = fTempBaudRate/100000;*/
-        if(dBaudRate < 5000)
-        {
-            dBaudRate = 5000;
-        }
-        omStrBaudRate.Format(_("%ld"),/*fTempBaudRate*/(long)dBaudRate);
-
-        omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);
-        omStrPrvBaudRate = m_omStrcombBaudRate;
-        //unClockPrevValue = m_unCombClock;
-
-        // set the baudrate
-        int nIndex = m_omCombBaudRate.FindString(0, omStrBaudRate);
-        if (nIndex < 0)
-        {
-            nIndex = 0;
-        }
-        m_omCombBaudRate.SetCurSel(nIndex);
-        /*m_omCombBaudRate.SetWindowText(omStrBaudRate);*/
-
-    }// End if
-    // Change the list of BTR0, BTR1, SJW, NBT and sampling if user selected YES
-    m_dEditBaudRate     = dBaudRate;
-    m_omStrcombBaudRate = omStrBaudRate;
-    //m_unCombClock       = unClockFreq;
-}
-/******************************************************************************/
 /*  Function Name    :  OnClickedOK                                           */
 /*                                                                            */
 /*  Input(s)         :  User Selects OK Button                                */
@@ -847,7 +759,7 @@ void CChangeRegisters_CAN_ICS_neoVI::OnClickedOK()
     // Update modified data
     UpdateData( TRUE);
     // Validate Baud rate and find the nearest match
-    vValidateBaudRate();
+	vExtractValuesForValidation();
     // Update data members associated with the controller
     if (bUpdateControllerDataMembers() == FALSE)
     {
@@ -1079,7 +991,7 @@ void CChangeRegisters_CAN_ICS_neoVI::OnItemchangedListChannels(NMHDR* pNMHDR, LR
             return;
         }
         // Validate Baud rate and find the nearest match
-        vValidateBaudRate();
+		vExtractValuesForValidation();
         // Save the changes in to the local data structure
         vUpdateControllerDetails();
     }
@@ -1735,4 +1647,129 @@ int CChangeRegisters_CAN_ICS_neoVI::nGetValueFromComboBox(CComboBox& omComboBox)
 INT CChangeRegisters_CAN_ICS_neoVI::nGetInitStatus()
 {
     return m_nDataConfirmStatus;
+}
+int CChangeRegisters_CAN_ICS_neoVI::InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount, UINT nSelectedHw) 
+{
+    if (pControllerDetails!=nullptr)
+    {
+        m_pControllerDetails = pControllerDetails;
+        m_nNoHardware = nCount;
+        m_nLastSelection = nSelectedHw;
+        for(int nIndex = 0; nIndex < nCount;nIndex++)
+        {
+            m_asDummyControllerDetails[nIndex] = m_pControllerDetails[nIndex];
+        }
+        int nRet = DoModal();
+        if(nRet!=IDOK)
+        {
+            for(int nIndex = 0; nIndex < nCount;nIndex++)
+            {
+                m_pControllerDetails[nIndex] = m_asDummyControllerDetails[nIndex];
+            }
+        }
+        m_bDialogCancel = FALSE;
+        return 1;
+    }
+
+    return 0;
+}
+DOUBLE CChangeRegisters_CAN_ICS_neoVI::vValidateBaudRate(DOUBLE dBaudrate,int nItemCount,UINT )
+{
+    CString omStrBaudRate       = "";
+    CString omStrPrvBaudRate    = "";
+    CString omStrClockFreq      = "";
+    DOUBLE  dBaudRate           = 0;
+    UINT    unProductNbtNBrp    = 0;
+    DOUBLE  dProductNbtNBrp     = 0;
+    CString omStrMessage        = "";
+    dBaudRate           = dBaudrate;
+    m_dEditBaudRate     = (FLOAT)_tstof(omStrBaudRate);
+    dProductNbtNBrp     = (DOUBLE)(m_unCombClock/(dBaudRate/1000))/2.0 *
+                          (defFACT_FREQUENCY / defFACT_BAUD_RATE);
+    unProductNbtNBrp    = (UINT)(dProductNbtNBrp + 0.5);
+    if ((fabs((dProductNbtNBrp - unProductNbtNBrp)) > defVALID_DECIMAL_VALUE)
+            ||(unProductNbtNBrp > (defMAX_NBT * defMAX_BRP))
+            || (unProductNbtNBrp < defMIN_NBT))
+    {
+        unProductNbtNBrp =defmcROUND5(dProductNbtNBrp);
+        INT nFlag = defRESET;
+        while (nFlag == defRESET)
+        {
+            INT i = 1;
+            UINT unNbt = unProductNbtNBrp / i;
+            FLOAT fNbt = (FLOAT)unProductNbtNBrp / i;
+            while ((unNbt >= 1) && (i <= defMAX_BRP) && (nFlag == defRESET))
+            {
+                if ((unNbt == fNbt) && (unNbt >= defMIN_NBT)
+                        && (unNbt <=defMAX_NBT))
+                {
+                    nFlag =defSET;
+                }
+                else
+                {
+                    i++;
+                    unNbt    = unProductNbtNBrp / i;
+                    fNbt     = (FLOAT)unProductNbtNBrp / i;
+                }
+            } //end while( unNbt >=1 && i<=MAX_BRP)
+            if ((nFlag == defRESET) && (unProductNbtNBrp < (defMIN_NBT *defMIN_BRP)))
+            {
+                unProductNbtNBrp = defMIN_NBT * defMIN_BRP;
+            }
+            else if ((unProductNbtNBrp > ( defMAX_NBT * defMAX_BRP))
+                     && (nFlag == defRESET))
+            {
+                unProductNbtNBrp = defMAX_NBT*defMAX_BRP;
+            }
+            else if (nFlag == defRESET)
+            {
+                unProductNbtNBrp++;
+            }
+        }//end while(nFlag==RESET)
+        dBaudRate = (DOUBLE)((m_unCombClock/2.0)*
+                             ( defFACT_FREQUENCY / defFACT_BAUD_RATE))/unProductNbtNBrp;
+        if(dBaudRate < 500000)
+        {
+			CString omStr;
+			omStr.Format(_("Resetting the BaudRate of channel %d to 500000"),nItemCount+1);
+			AfxMessageBox(omStr);
+			dBaudRate = 500000;
+        }
+       omStrBaudRate.Format(_("%ld"),/*fTempBaudRate*/(long)dBaudRate);
+		omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);
+		omStrPrvBaudRate = m_omStrcombBaudRate;
+    }// End if
+ 	UINT nBaudrate = (int)dBaudRate;
+	if(nBaudrate == 20000|| nBaudrate == 33333||nBaudrate == 50000||nBaudrate == 62500||nBaudrate == 83333||nBaudrate == 100000||nBaudrate == 125000||nBaudrate == 250000
+		||nBaudrate == 500000||nBaudrate == 800000||nBaudrate == 1000000)
+	{
+		m_dEditBaudRate     = dBaudRate;
+		m_omStrcombBaudRate = omStrBaudRate;
+		return dBaudRate;
+	}
+	else
+	{
+		CString omStr;
+		omStr.Format(_("Resetting the BaudRate of channel %d to 500000"),nItemCount+1);
+		AfxMessageBox(omStr);		
+		return 500000;
+	}
+	m_dEditBaudRate     = dBaudRate;
+	m_omStrcombBaudRate = omStrBaudRate;
+	return dBaudRate;
+}
+void CChangeRegisters_CAN_ICS_neoVI::vExtractValuesForValidation()
+{
+	CString omStrBaudRate = "";
+	DOUBLE  dBaudRate           = 0;
+	m_omCombBaudRate.GetWindowText(omStrBaudRate);
+	dBaudRate           = (FLOAT)_tstof(omStrBaudRate);
+	dBaudRate = vValidateBaudRate(dBaudRate,m_nLastSelection,m_unCombClock);
+	omStrBaudRate.Format("%.0lf",dBaudRate);
+	int nIndex = m_omCombBaudRate.FindString(0, omStrBaudRate);
+	if (nIndex < 0)
+	{
+		nIndex = 0;
+	}
+	m_omCombBaudRate.SetCurSel(nIndex);
 }

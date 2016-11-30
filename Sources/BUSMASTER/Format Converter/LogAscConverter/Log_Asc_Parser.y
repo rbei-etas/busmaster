@@ -82,7 +82,7 @@ int nGetAscTimeStamp(char* pchLogTime, char* pchAscTime)
 	}
 	printf("%s\n", pchLogTime);
 	sscanf(pchLogTime, "%d%c%d%c%d%c%d", &nHours, &pchTemp, &nMin, &pchTemp, &nSec, &pchTemp, &nMicroSeconds);
-	unTotalSec = nHours*3660 + nMin * 60 + nSec;
+	unTotalSec = nHours*3600 + nMin * 60 + nSec;
 	printf("%d\n", nMicroSeconds);
 	sprintf(pchAscTime, "%u.%06d", unTotalSec, nMicroSeconds*100);
 	return 0;

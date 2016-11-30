@@ -65,7 +65,6 @@ void CConfigData::vReadConfigFile()
 
 void CConfigData::vSaveConfigFile()
 {
-    UCHAR pCheckSum;
     DoDatastorageOperation(SAVE);
     //bSetCheckSum(m_omStrCurrFileName , &pCheckSum);
 }

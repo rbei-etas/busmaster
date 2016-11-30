@@ -30,6 +30,7 @@
 //#include "Include/Struct_Can.h"
 #include "ChangeRegDefines.h"
 #include "CAN_ICS_neoVI_Resource.h"
+#include "DIL_Interface\IChangeRegisters.h"
 #define defICSneoVIFrequency (32 * 1000000)
 #define defPropDelayICSneoVI 1
 #define defMAXPropDelay 8
@@ -93,8 +94,11 @@ typedef struct tagSCOLUMNS
     sBRP_NBT_SAMP_n_SJW  sBRPNBTSampNSJW;
 } sCOLUMNS;
 
-class CChangeRegisters_CAN_ICS_neoVI : public CDialog
+class CChangeRegisters_CAN_ICS_neoVI : public CDialog , public IChangeRegisters //CPropertyPage
 {
+public:
+	int InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount,UINT );
+	DOUBLE vValidateBaudRate(DOUBLE,int,UINT );
     // Construction
 public:
     // To Fill controller information taken from configuration module
@@ -152,6 +156,7 @@ private:
     virtual BOOL OnInitDialog();
     afx_msg void OnKillfocusEditBaudRate();
     afx_msg void OnSelchangeCombBaudRate();
+	void vExtractValuesForValidation();
     afx_msg void OnSelchangeCombSampling();
     afx_msg void OnSetfocusEditBaudRate();
     afx_msg void OnClickedOK();
@@ -165,6 +170,7 @@ private:
 private:
     // Pointer to hold controller information
     PSCONTROLLER_DETAILS  m_pControllerDetails;
+	SCONTROLLER_DETAILS   m_asDummyControllerDetails[defNO_OF_CHANNELS];
     int m_nLastSelection;
     CImageList m_omChannelImageList;
     USHORT  m_usBTR0BTR1;
@@ -183,7 +189,7 @@ private:
     void    vDisplayListBox(INT nIndex,INT nItemFocus);
     void    vChangeListBoxValues(INT nflag);
     void    vSelSetFocusItemList(INT nItemCount,INT nItem);
-    void    vValidateBaudRate();
+
     DOUBLE  dCalculateBaudRateFromBTRs(CString omStrCNF1, CString omStrCNF2,
                                        CString omStrCNF3);
     BOOL nListBoxValues(sCOLUMNS psColListCtrl[], DOUBLE dBuadRate,

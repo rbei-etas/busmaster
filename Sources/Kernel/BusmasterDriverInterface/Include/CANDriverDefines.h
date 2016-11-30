@@ -96,6 +96,8 @@ public:
     unsigned int  m_unBTL_Cycles;
 
     /* CAN FD related parameters */
+	bool	m_bcanFDEnabled;
+	bool	m_bSupportCANFD;
     unsigned int  m_unDataBitRate;
     unsigned int  m_unDataSamplePoint;
     unsigned int  m_unDataBTL_Cycles;
@@ -145,7 +147,7 @@ public:
 
 
 
-typedef struct SCAN_ERR
+struct SCAN_ERR
 {
     /** transmit error */
     unsigned char m_ucTxError;

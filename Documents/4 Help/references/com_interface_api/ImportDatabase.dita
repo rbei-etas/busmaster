@@ -4,6 +4,10 @@
   <title>ImportDatabase : To import a database file in BUSMASTER</title>
   <refbody>
     <section>
+      <title>Synopsis</title>
+      <p>HRESULT ImportDatabase(BSTR DBFilePath);</p>
+    </section>
+    <section>
       <title>Description</title>
       <p>This function will import the specified file to BUSMASTER.</p>
     </section>

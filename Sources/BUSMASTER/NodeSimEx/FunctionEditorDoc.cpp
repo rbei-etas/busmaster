@@ -1704,7 +1704,7 @@ void CFunctionEditorDoc::OnCloseDocument()
     Date Created     :  09.10.2015
     Requirement ID   :
 ***************************************************************************************/
-void CFunctionEditorDoc::SetNotifyReload(bool bNotifyReload)
+void CFunctionEditorDoc::SetNotifyReload(bool /*bNotifyReload*/)
 {
     //if the user has saved from Busmaster then the
     //m_bFileSavedFromBM flag is true, else if the change is from an
@@ -1835,13 +1835,13 @@ CStringArray* CFunctionEditorDoc::pomStrGetBusEventHandlerPrototypes()
 /*  Member of        :  CFunctionEditorDoc                                    */
 /*  Friend of        :      -                                                 */
 /******************************************************************************/
-CString CFunctionEditorDoc::omStrGetInitialisedMessage(UINT unMsgID,
+CString CFunctionEditorDoc::omStrGetInitialisedMessage(UINT /*unMsgID*/,
         const CString&
         omStrMsgName,
         const CString&
         omStrVarName,
-        BOOL bInitData,
-        int nChannelId, INT unChnlSel)
+        BOOL /*bInitData*/,
+        int /*nChannelId*/, INT /*unChnlSel*/)
 {
     // Copy the input param as init statement
     CString omStrResult = omStrMsgName + defSPACE_STR + omStrVarName +

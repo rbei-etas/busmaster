@@ -43,7 +43,7 @@ private:
     int DisplayDiagProps( IFrame* pouFrame);
     int DisplayCodingAdditionalProps(ICoding* pouLdfElement);
     int DisplaySignalGroupAdditionalProps(ISignalGroup* pouLdfElement);
-    int nGetEncodingnUnit(CompuMethodProps ouCompuProps, std::string& strEncoding, std::string& strUnit);
+    int nGetEncodingnUnit(LINCompuMethods ouCompuProps, std::string& strEncoding, std::string& strUnit);
     int DisplayScheduleTableFrameProps(CLINSheduleTableItem& ouTableItem);
 
     int DisplayAssignFrameIdProps(CLINSheduleTableItem& ouTableItem);

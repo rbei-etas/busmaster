@@ -1,5 +1,5 @@
 #pragma once
-
+#include <vector>
 class  ValueRange
 {
 public:
@@ -104,11 +104,11 @@ public:
     eCompuType  m_eCompuType;
 
     //Compu Methods
-    std::list<CompuTabCode> m_ouTabCode;
-    std::list<CompuTextable> m_ouTextCode;
+    std::vector<CompuTabCode> m_ouTabCode;
+	std::vector<CompuTextable> m_ouTextCode;
     CompuLinearCode m_ouLinearCode;
-    std::list<CompuIdenticalCode> m_ouIdenticalCode;
-    std::list<CompuLinearCode> m_ouCompuScaleLinear;
+	std::vector<CompuIdenticalCode> m_ouIdenticalCode;
+	std::vector<CompuLinearCode> m_ouCompuScaleLinear;
     //CompuFormula m_ouFormula;
     CCompuMethod& operator=(const CCompuMethod& RefObj)
     {

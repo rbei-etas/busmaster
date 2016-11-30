@@ -17,28 +17,36 @@ public:
     std::string iconPathEnable;
     std::string iconPathDisable;
     std::string iconPathHot;
-    /*int toolButtonID;
-    std::list<ToolButton> toolbuttonlist;
-    */
-
 };
 
-class Menu
+class RibbonElement
 {
 public:
     eMenuTypes mMenuType;
     std::string mId;
-    bool isToolTipReq = false;
-    std::string mName;
+	std::string mName;
     std::string tooltip;
-    std::list<Menu> submenulist;
-    ToolButton mToolbar;
+	std::list<RibbonElement> submenulist;
+	std::string mAcceleratorKey;
+
+	RibbonElement()
+    {
+    }
 };
 
-class PluginMenu
+class RibbonButton
 {
 public:
-    std::string mParentMenu;
-    std::string mBeforeMenu;
-    std::list<Menu> menuList;
+	std::string mCategory;
+	std::string mName;
+	std::string mId;
+	std::string mParentPanel;
+	
+    std::vector<std::string> mImagePath;
+    std::vector<std::string> mSmallImagePath;
+    int mImageIndex;
+
+	std::string mBeforeCategory;
+	std::string mAcceleratorKey;
+	std::list<RibbonElement> submenulist;
 };

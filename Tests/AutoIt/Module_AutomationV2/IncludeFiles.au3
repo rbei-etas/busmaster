@@ -19,3 +19,4 @@
 	#include <WindowsConstants.au3>
 	#include <Data_DeclarationModV2.au3>
 	#include <globalFunc4ModuleV2.au3>
+	#include <SendMessage.au3>

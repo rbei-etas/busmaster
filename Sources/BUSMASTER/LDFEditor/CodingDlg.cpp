@@ -183,7 +183,7 @@ void CodingDlg::vPrepareUiForEdit()
     if ( nullptr != pCoding )
     {
         std::string strName;
-        CompuMethodProps ouCompuMethodsProps;
+        LINCompuMethods ouCompuMethodsProps;
         ouCompuMethodsProps.m_eType = eInvalidProtocol;
         //Name
         pCoding->GetName(strName);
@@ -194,14 +194,14 @@ void CodingDlg::vPrepareUiForEdit()
 
         //Props;
         pCoding->GetProperties(ouCompuMethodsProps);
-        int nSize = ouCompuMethodsProps.m_ouLinCompuMethods.m_ouLogicalValueList.size();
+        int nSize = ouCompuMethodsProps.m_ouLogicalValueList.size();
         ui.tableLogicalValues->setRowCount(nSize);
         QList<QVariant> ouColumns;
         QVariant ouVariant;
         int nRow = 0;
 
         ui.tableLogicalValues->setEditTriggers(QAbstractItemView::AllEditTriggers);
-for ( auto itr : ouCompuMethodsProps.m_ouLinCompuMethods.m_ouLogicalValueList )
+for ( auto itr : ouCompuMethodsProps.m_ouLogicalValueList )
         {
             LineEditWidget* pRawEdit = new LineEditWidget(nRow, ui.tableLogicalValues);
             if ( LDFDatabaseManager::GetDatabaseManager()->bIsDisplayHexOn() == true )
@@ -230,11 +230,11 @@ for ( auto itr : ouCompuMethodsProps.m_ouLinCompuMethods.m_ouLogicalValueList )
             ouColumns.clear();
         }
 
-        nSize = ouCompuMethodsProps.m_ouLinCompuMethods.m_ouPhysicalValueList.size();
+        nSize = ouCompuMethodsProps.m_ouPhysicalValueList.size();
         ui.tablePhysicalValues->setRowCount(nSize);
         ui.tablePhysicalValues->setEditTriggers(QAbstractItemView::AllEditTriggers);
         nRow = 0;
-for ( auto itr : ouCompuMethodsProps.m_ouLinCompuMethods.m_ouPhysicalValueList )
+for ( auto itr : ouCompuMethodsProps.m_ouPhysicalValueList )
         {
             ouColumns.clear();
             LineEditWidget* pFactorEdit = new LineEditWidget(nRow, ui.tablePhysicalValues);
@@ -357,7 +357,7 @@ void CodingDlg::onSelectionOk()
 
     if ( pCoding != nullptr )
     {
-        CompuMethodProps ouCompuMethods;
+		LINCompuMethods ouCompuMethods;
         ouCompuMethods.m_eType = eInvalidProtocol;
         pCoding->GetProperties(ouCompuMethods);
 
@@ -378,9 +378,9 @@ void CodingDlg::onSelectionOk()
         accept();
     }
 }
-int CodingDlg::FillPhysicalValues(CompuMethodProps& ouCompuMethods)
+int CodingDlg::FillPhysicalValues(LINCompuMethods& ouCompuMethods)
 {
-    ouCompuMethods.m_ouLinCompuMethods.m_ouPhysicalValueList.clear();
+	ouCompuMethods.m_ouPhysicalValueList.clear();
     PhysicalValue ouPhysicalValue;
     int nRowCount = ui.tablePhysicalValues->rowCount();
     for ( int i = 0 ; i < nRowCount; i++ )
@@ -404,14 +404,14 @@ int CodingDlg::FillPhysicalValues(CompuMethodProps& ouCompuMethods)
         }
 
         ouPhysicalValue.m_strTextInfo = pUnitWidget->text().toStdString();
-        ouCompuMethods.m_ouLinCompuMethods.m_ouPhysicalValueList.push_back(ouPhysicalValue);
+        ouCompuMethods.m_ouPhysicalValueList.push_back(ouPhysicalValue);
     }
     return 0;
 }
 
-void CodingDlg::FillLogicalValues(CompuMethodProps& ouCompuMethods)
+void CodingDlg::FillLogicalValues(LINCompuMethods& ouCompuMethods)
 {
-    ouCompuMethods.m_ouLinCompuMethods.m_ouLogicalValueList.clear();
+    ouCompuMethods.m_ouLogicalValueList.clear();
     int nRowCount = ui.tableLogicalValues->rowCount();
     unsigned int unRawVal = 0;
     std::string strDesc;
@@ -429,7 +429,7 @@ void CodingDlg::FillLogicalValues(CompuMethodProps& ouCompuMethods)
             if ( nullptr != pWidget )
             {
                 strDesc = pWidget->text().toStdString();
-                ouCompuMethods.m_ouLinCompuMethods.m_ouLogicalValueList[unRawVal] = strDesc;
+                ouCompuMethods.m_ouLogicalValueList[unRawVal] = strDesc;
             }
         }
     }

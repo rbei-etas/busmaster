@@ -47,7 +47,7 @@ void SlaveDlg::onSelectionOk()
     if ( 0 == nValidateValue() )
     {
         IEcu* pouEcu;
-        EcuProperties ouEcuProps;
+        LinEcuProps ouEcuProps;
         ouEcuProps.m_eEcuType = eEcuNone;
         if ( m_bModeEdit == false )
         {
@@ -60,30 +60,30 @@ void SlaveDlg::onSelectionOk()
 
         pouEcu->SetName(ui.editName->text().toStdString());
         pouEcu->GetProperties(ouEcuProps);
-        ouEcuProps.m_eEcuType = eLIN_Slave;
+        ouEcuProps.m_eEcuType = eSlave;
 
-        ouEcuProps.m_ouSlavePros.m_dNASTimeout = ui.editNAS->text().toDouble();
-        ouEcuProps.m_ouSlavePros.m_dNCRTimeout = ui.editNCR->text().toDouble();
-        ouEcuProps.m_ouSlavePros.m_dP2Min = ui.editP2MIN->text().toDouble();
-        ouEcuProps.m_ouSlavePros.m_dSTMin = ui.editSTMIN->text().toDouble();
-        ouEcuProps.m_ouSlavePros.m_fProtocolVersion = ui.comboProtocol->currentText().toDouble();
-        ouEcuProps.m_ouSlavePros.m_nConfiguredNAD = GetUnsignedInt(ui.editConfigNAD->text());
-        ouEcuProps.m_ouSlavePros.m_nFunctionId = GetUnsignedInt(ui.editFunctionId->text());
-        ouEcuProps.m_ouSlavePros.m_nSupplierId = GetUnsignedInt(ui.editSupplierID->text());
-        ouEcuProps.m_ouSlavePros.m_nInitialNAD = GetUnsignedInt(ui.editInitialNAD->text());
-        ouEcuProps.m_ouSlavePros.m_nVariant = GetUnsignedInt(ui.editVariant->text());
+        ouEcuProps.mSlaveProps.m_dNASTimeout = ui.editNAS->text().toDouble();
+        ouEcuProps.mSlaveProps.m_dNCRTimeout = ui.editNCR->text().toDouble();
+        ouEcuProps.mSlaveProps.m_dP2Min = ui.editP2MIN->text().toDouble();
+        ouEcuProps.mSlaveProps.m_dSTMin = ui.editSTMIN->text().toDouble();
+        ouEcuProps.mSlaveProps.m_fProtocolVersion = ui.comboProtocol->currentText().toDouble();
+        ouEcuProps.mSlaveProps.m_nConfiguredNAD = GetUnsignedInt(ui.editConfigNAD->text());
+        ouEcuProps.mSlaveProps.m_nFunctionId = GetUnsignedInt(ui.editFunctionId->text());
+        ouEcuProps.mSlaveProps.m_nSupplierId = GetUnsignedInt(ui.editSupplierID->text());
+        ouEcuProps.mSlaveProps.m_nInitialNAD = GetUnsignedInt(ui.editInitialNAD->text());
+        ouEcuProps.mSlaveProps.m_nVariant = GetUnsignedInt(ui.editVariant->text());
 
         if(ui.comboRespErr->currentText().toStdString().empty() == false)
         {
-            ouEcuProps.m_ouSlavePros.m_nRespErrSignal = ui.comboRespErr->currentData().value<UID_ELEMENT>();
+			ouEcuProps.mSlaveProps.m_nRespErrSignal = ui.comboRespErr->currentData().value<UID_ELEMENT>();
         }
         else
         {
-            ouEcuProps.m_ouSlavePros.m_nRespErrSignal = INVALID_UID_ELEMENT;
+			ouEcuProps.mSlaveProps.m_nRespErrSignal = INVALID_UID_ELEMENT;
         }
 
         // Fault State signals
-        ouEcuProps.m_ouSlavePros.m_nFaultStateSignals = m_lstFaultSignals;
+		ouEcuProps.mSlaveProps.m_nFaultStateSignals = m_lstFaultSignals;
 
         pouEcu->SetProperties(ouEcuProps);
 
@@ -115,7 +115,7 @@ int SlaveDlg::nValidateValue()
     if ( false == m_bEcuInfoRead )
     {
         std::string strName;
-        EcuProperties ouecuProps;
+        LinEcuProps ouecuProps;
         ouecuProps.m_eEcuType = eEcuNone;
         std::map<UID_ELEMENT, IElement*> ouUidElementMap;
         m_pBaseCluster->GetElementList(eEcuElement, ouUidElementMap);
@@ -125,9 +125,9 @@ for ( auto itrEcu : ouUidElementMap )
             itrEcu.second->GetName(strName);
             m_MapNames[strName] = strName;
             ((IEcu*)itrEcu.second)->GetProperties(ouecuProps);
-            if ( ouecuProps.m_eEcuType == eLIN_Slave )
+            if ( ouecuProps.m_eEcuType == eSlave )
             {
-                m_MapunConfigId[ouecuProps.m_ouSlavePros.m_nConfiguredNAD] = ouecuProps.m_ouSlavePros.m_nConfiguredNAD;
+				m_MapunConfigId[ouecuProps.mSlaveProps.m_nConfiguredNAD] = ouecuProps.mSlaveProps.m_nConfiguredNAD;
             }
         }
         m_bEcuInfoRead = true;
@@ -143,7 +143,7 @@ for ( auto itrEcu : ouUidElementMap )
                 m_MapNames.erase(itr);
             }
 
-            auto itrId = m_MapunConfigId.find(ouecuProps.m_ouSlavePros.m_nConfiguredNAD);
+			auto itrId = m_MapunConfigId.find(ouecuProps.mSlaveProps.m_nConfiguredNAD);
             if ( itrId != m_MapunConfigId.end() )
             {
                 m_MapunConfigId.erase(itrId);
@@ -185,7 +185,7 @@ void SlaveDlg::vPrepareForEditEcu()
 
     if ( nullptr != pEcu )
     {
-        EcuProperties ouEcuProps;
+       LinEcuProps ouEcuProps;
         ouEcuProps.m_eEcuType = eEcuNone;
         std::string strName = "";
 
@@ -199,18 +199,18 @@ void SlaveDlg::vPrepareForEditEcu()
         //m_ouEcuCurrentProps = ouEcuProps;
 
         ui.editName->setText(QString::fromStdString(strName));
-        ui.editConfigNAD->setText(GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD));
-        ui.editFunctionId->setText(GetString(ouEcuProps.m_ouSlavePros.m_nFunctionId));
-        ui.editInitialNAD->setText(GetString(ouEcuProps.m_ouSlavePros.m_nInitialNAD));
-        ui.editNAS->setText(GetString(ouEcuProps.m_ouSlavePros.m_dNASTimeout));
-        ui.editNCR->setText(GetString(ouEcuProps.m_ouSlavePros.m_dNCRTimeout));
-        ui.editP2MIN->setText(GetString(ouEcuProps.m_ouSlavePros.m_dP2Min));
-        ui.editSTMIN->setText(GetString(ouEcuProps.m_ouSlavePros.m_dSTMin));
-        ui.editSupplierID->setText(GetString(ouEcuProps.m_ouSlavePros.m_nSupplierId));
-        ui.editVariant->setText(GetString(ouEcuProps.m_ouSlavePros.m_nVariant));
-        vInitialiseProtocolComboBox(ouEcuProps.m_ouSlavePros.m_fProtocolVersion);
+		ui.editConfigNAD->setText(GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD));
+        ui.editFunctionId->setText(GetString(ouEcuProps.mSlaveProps.m_nFunctionId));
+        ui.editInitialNAD->setText(GetString(ouEcuProps.mSlaveProps.m_nInitialNAD));
+        ui.editNAS->setText(GetString(ouEcuProps.mSlaveProps.m_dNASTimeout));
+        ui.editNCR->setText(GetString(ouEcuProps.mSlaveProps.m_dNCRTimeout));
+        ui.editP2MIN->setText(GetString(ouEcuProps.mSlaveProps.m_dP2Min));
+        ui.editSTMIN->setText(GetString(ouEcuProps.mSlaveProps.m_dSTMin));
+        ui.editSupplierID->setText(GetString(ouEcuProps.mSlaveProps.m_nSupplierId));
+        ui.editVariant->setText(GetString(ouEcuProps.mSlaveProps.m_nVariant));
+        vInitialiseProtocolComboBox(ouEcuProps.mSlaveProps.m_fProtocolVersion);
 
-        m_lstFaultSignals = ouEcuProps.m_ouSlavePros.m_nFaultStateSignals;
+        m_lstFaultSignals = ouEcuProps.mSlaveProps.m_nFaultStateSignals;
         nFillFaultStateSignals();
     }
 }
@@ -220,14 +220,14 @@ int SlaveDlg::nFillFaultStateSignals()
     {
         return 0;
     }
-    EcuProperties ouEcuProps;
+    LinEcuProps ouEcuProps;
     ouEcuProps.m_eEcuType = eEcuNone;
     std::string strName = "";
 
     (*m_pouEcu)->GetName(strName);
     (*m_pouEcu)->GetProperties(ouEcuProps);
 
-    if ( ouEcuProps.m_ouSlavePros.m_fProtocolVersion == 2.1 && ouEcuProps.m_eEcuType == eLIN_Slave )
+    if ( ouEcuProps.mSlaveProps.m_fProtocolVersion == 2.1 && ouEcuProps.m_eEcuType == eSlave )
     {
 
         QString strTemp = "";
@@ -260,17 +260,17 @@ void SlaveDlg::vPopulateResposeErrorCombo(bool bEdited)
     IEcu* pECU = *m_pouEcu;
     VALIDATE_POINTER(pECU);
 
-    EcuProperties ouEcuProps;
+    LinEcuProps ouEcuProps;
     ouEcuProps.m_eEcuType = eEcuNone;
     pECU->GetProperties(ouEcuProps);
 
-    double fProtocolVer =  ouEcuProps.m_ouSlavePros.m_fProtocolVersion;
+    double fProtocolVer =  ouEcuProps.mSlaveProps.m_fProtocolVersion;
 
     if(bEdited == true)
     {
         fProtocolVer = ui.comboProtocol->currentText().toDouble();
     }
-    if (ouEcuProps.m_eEcuType == eLIN_Slave && fProtocolVer == defVersion_1_3)
+    if (ouEcuProps.m_eEcuType == eSlave && fProtocolVer == defVersion_1_3)
     {
         return;
     }
@@ -278,7 +278,7 @@ void SlaveDlg::vPopulateResposeErrorCombo(bool bEdited)
     std::map<ISignal*, ISignal*> mapSignals;
     pECU->GetSignalList(eTx, mapSignals);
     ui.comboRespErr->clear();
-    SignalProps ouSignalProps;
+    LINSignalProps ouSignalProps;
     ouSignalProps.eType = eInvalidProtocol;
     std::string omstrSigName;
     ui.comboRespErr->addItem("");
@@ -288,7 +288,7 @@ for(auto itrSignal : mapSignals)
     {
         ((ISignal*)itrSignal.second)->GetProperties(ouSignalProps);
 
-        if(ouSignalProps.m_ouLINSignalProps.m_ouSignalType == eSignalNormal)
+        if(ouSignalProps.m_ouSignalType == eSignalNormal)
         {
             ((ISignal*)itrSignal.second)->GetName(omstrSigName);
             ui.comboRespErr->addItem(QString::fromStdString(omstrSigName));
@@ -305,14 +305,14 @@ for(auto itrSignal : mapSignals)
         return;
     }
 
-    EcuProperties ouECUProps;
+    LinEcuProps ouECUProps;
     ouEcuProps.m_eEcuType = eEcuNone;
     (*m_pouEcu)->GetProperties(ouECUProps);
 
-    if(ouECUProps.m_ouSlavePros.m_nRespErrSignal != INVALID_UID_ELEMENT)
+    if(ouECUProps.mSlaveProps.m_nRespErrSignal != INVALID_UID_ELEMENT)
     {
         IElement* pSignal = nullptr;
-        m_pBaseCluster->GetElement(eSignalElement, ouECUProps.m_ouSlavePros.m_nRespErrSignal, &pSignal);
+        m_pBaseCluster->GetElement(eSignalElement, ouECUProps.mSlaveProps.m_nRespErrSignal, &pSignal);
 
         if(nullptr != pSignal)
         {

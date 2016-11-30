@@ -24,7 +24,7 @@ public:
     virtual HRESULT StartSigWatchReadThread() = 0;
 protected:
     ETYPE_BUS mBusType;
-    BOOL m_bHex;
+    bool m_bHex;
     class CSigWatchDlg* m_pouSigWnd;
     CPARAM_THREADPROC m_ouReadThread;
     CRITICAL_SECTION m_omCritSecSW;

@@ -192,19 +192,8 @@ BOOL CNetworkStatistics::OnInitDialog()
 {
     CPropertySheet::OnInitDialog();
 
-    HMODULE hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
-
-    if ( hModAdvancedUILib )
-    {
-        SetIcon( ::LoadIcon(hModAdvancedUILib, MAKEINTRESOURCE( IDI_ICON_NETWORKSTAT )), TRUE);
-        ::FreeLibrary(hModAdvancedUILib);
-        hModAdvancedUILib = nullptr;
-    }
-    else
-    {
-        SetIcon( AfxGetApp()->LoadIcon(IDI_ICON_NETWORKSTAT), TRUE);
-    }
-
+    SetIcon( AfxGetApp()->LoadIcon(IDI_ICON_NETWORKSTAT), TRUE);
+    
     m_pCopyBusStsticsNode_LIN = nullptr;
 
     CRect r;

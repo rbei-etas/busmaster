@@ -55,6 +55,12 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+1                       RT_MANIFEST             "FormatConverter.exe.manifest"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -126,13 +132,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "TODO: <Company name>"
-            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "CompanyName", "RBEI, Bangalore"
+            VALUE "FileDescription", "RBEI, Bangalore"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "FormatConverter.exe"
-            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "OriginalFilename", "FormatConverter.exe"
-            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductName", "BUSMASTER Application"
             VALUE "ProductVersion", "1.0.0.1"
         END
     END

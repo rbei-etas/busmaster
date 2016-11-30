@@ -19,6 +19,7 @@ ConsoleWrite("****Start : TS_TxWin_CAN_17.au3****"&@CRLF)
 Local $VerifydataByte1=0,$VerifydataByte2=0
 Local $DtaByteValue[8]=["8","7","6","5","4","3","2","1"]
 Local $DtaByteValue1[8]=["1","2","3","4","5","6","7","8"],$j=0
+$countRowChckBox=0
 
 
     _launchApp()
@@ -114,6 +115,7 @@ Else
 		_WriteResult("Fail","TS_TxWin_CAN_17")
 EndIf
 
+Send("{ENTER}")
 $isAppNotRes=_CloseApp()														                         	; Close the app
 
 if $isAppNotRes=1 Then

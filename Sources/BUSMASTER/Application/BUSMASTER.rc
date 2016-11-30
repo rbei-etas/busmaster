@@ -13,7 +13,7 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #include "afxres.h"
-
+1 TYPELIB "BUSMASTER.tlb"
 
 
 
@@ -24,15 +24,9 @@
 // English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// TYPELIB
-//
 
 
 #ifdef APSTUDIO_INVOKED
@@ -83,34 +77,20 @@ END
 
 IDR_MAINFRAME ACCELERATORS
 BEGIN
+    VK_F1,          ID_CONTEXT_HELP,        VIRTKEY, SHIFT, NOINVERT
     VK_F1,          ID_HELP,                VIRTKEY, NOINVERT
-    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
-    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
-    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
-    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
-    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
-    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
-    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
-    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
-    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
-    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    "C",            IDM_CLEAR_MSG_WINDOW,   VIRTKEY, CONTROL, ALT, NOINVERT
     "B",            IDM_CONFIGURE_DATABASE_NEW, VIRTKEY, CONTROL, NOINVERT
     "D",            IDM_CONFIGURE_DATABASE_OPENACTIVE, VIRTKEY, CONTROL, NOINVERT
     "E",            IDM_CONFIGURE_DATABASE_SAVE, VIRTKEY, CONTROL, NOINVERT
-    "M",            IDM_FILE_IMPORT_DATABASE, VIRTKEY, CONTROL, NOINVERT
     "T",            IDM_DATABASE_DISSOCIATE_DB, VIRTKEY, CONTROL, NOINVERT
-    "I",            IDM_SAVE_IMPORT,        VIRTKEY, CONTROL, NOINVERT
-    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
-    "C",            IDM_CLEAR_MSG_WINDOW,   VIRTKEY, CONTROL, ALT, NOINVERT
     "I",            IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, VIRTKEY, CONTROL, ALT, NOINVERT
     "O",            IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, VIRTKEY, CONTROL, ALT, NOINVERT
+    "M",            IDM_FILE_IMPORT_DATABASE, VIRTKEY, CONTROL, NOINVERT
     "L",            IDM_LOG_ON_OFF,         VIRTKEY, CONTROL, ALT, NOINVERT
     "R",            IDM_MSGWND_RESET_COLUMNS, VIRTKEY, CONTROL, ALT, NOINVERT
+    "I",            IDM_SAVE_IMPORT,        VIRTKEY, CONTROL, NOINVERT
     "H",            IDR_TOOL_HEXDEC,        VIRTKEY, CONTROL, ALT, NOINVERT
-    VK_F1,          ID_CONTEXT_HELP,        VIRTKEY, SHIFT, NOINVERT
-    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
-    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
-    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
 END
 
 
@@ -131,9 +111,8 @@ BEGIN
     LTEXT           "For further support and services please visit",IDC_STATIC,40,123,140,10
     LTEXT           "_________________________________________________________________",IDC_STAT_LINE4,22,42,175,9,WS_DISABLED
     DEFPUSHBUTTON   "OK",IDOK,151,155,50,14
-	CONTROL         "ETAS BUSMASTER",IDC_NULLFRAME_COLOR_STAT,"MfcLink",WS_TABSTOP,76,135,71,11
-    
     LTEXT           "_________________________________________________________________",IDC_STAT_LINE5,22,105,175,9,WS_DISABLED
+    CONTROL         "<a>ETAS BUSMASTER</a>",IDC_CONTACT_LINK,"SysLink",WS_TABSTOP,81,140,77,14
 END
 
 IDD_DLG_VALUE_DESCRIPTOR DIALOGEX 0, 0, 215, 103
@@ -287,8 +266,8 @@ STYLE DS_SETFONT | DS_3DLOOK | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSME
 CAPTION "Message Interpretation"
 FONT 8, "MS Sans Serif", 400, 0, 0x0
 BEGIN
-    LTEXT           "  Message",IDC_CAPTION,0,0,218,14,SS_CENTERIMAGE
-    LTEXT           "  Signal(s)",IDC_CAPTION2,0,40,218,14,SS_CENTERIMAGE
+    LTEXT           "  Message Details:",IDC_CAPTION,0,0,218,14,SS_CENTERIMAGE
+    LTEXT           "  Signal(s):",IDC_CAPTION2,0,40,218,14,SS_CENTERIMAGE
     LTEXT           "  Name :",IDC_STATIC,0,20,29,8
     LTEXT           "ID :",IDC_STATIC,123,20,12,8
     EDITTEXT        IDC_EDIT_MSG_NAME,33,17,75,14,ES_AUTOHSCROLL | ES_READONLY
@@ -357,8 +336,6 @@ FONT 8, "MS Sans Serif", 400, 0, 0x0
 BEGIN
     CONTROL         "List1",IDC_LIST_STAT,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_OWNERDRAWFIXED | WS_BORDER | WS_TABSTOP,1,0,137,302
 END
-
-
 
 IDD_DLG_MSG_BUFFER_CONGIF DIALOG 0, 0, 214, 124
 STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION | WS_SYSMENU
@@ -500,8 +477,6 @@ BEGIN
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,16,58,197,1
     GROUPBOX        " Licence Key ",IDC_STATIC,14,70,199,86
 END
-
-
 
 IDD_DLG_WAVEFORM_CONFIG DIALOGEX 0, 0, 385, 286
 STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
@@ -663,13 +638,13 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,281,294,50,14
     LTEXT           "Select Channel",IDC_STATIC,103,15,48,12
     COMBOBOX        IDC_COMBO_CHANNEL,162,13,91,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    GROUPBOX        "Import Flexray Database",IDC_STATIC_DATABASE_INFO,18,35,346,249
+    GROUPBOX        "Import Database",IDC_STATIC_DATABASE_INFO,18,35,346,249
     EDITTEXT        IDC_EDIT_FIBEX_PATH,58,54,227,14,ES_AUTOHSCROLL | ES_READONLY
     LTEXT           "Fibex:",IDC_STATIC_DBNAME,31,53,21,14,SS_CENTERIMAGE,WS_EX_RIGHT
     PUSHBUTTON      "...",IDC_BUTTON_FIBEXPATH,291,54,23,14
     GROUPBOX        "Cluster and ECU Selection",IDC_STATIC,28,81,325,193
     COMBOBOX        IDC_COMBO_CLUSTER,172,98,126,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Select Flexray Cluster:",IDC_STATIC_CLUSTER_INFO,89,98,74,12,SS_CENTERIMAGE
+    LTEXT           "Select Cluster:",IDC_STATIC_CLUSTER_INFO,89,98,74,12,SS_CENTERIMAGE
     GROUPBOX        "Key Slot Configuration",IDC_STATIC_EXTRA_CONFIG,180,125,163,140
     CONTROL         "",IDC_LIST_ECU,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,37,128,135,137
     COMBOBOX        IDC_COMBO_LIN_PROTOCOL,261,184,55,56,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
@@ -683,8 +658,6 @@ BEGIN
     PUSHBUTTON      "Edit",IDC_BUTTON_LDF_EDIT,317,54,38,14,NOT WS_VISIBLE | WS_DISABLED
 END
 
-
-
 IDD_DLG_PROGRESS_BAR DIALOGEX 0, 0, 201, 57
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Loading..."
@@ -694,6 +667,22 @@ BEGIN
     CONTROL         "",IDC_PROGRESS_BAR,"msctls_progress32",WS_BORDER,7,7,187,16
     LTEXT           "Static",IDC_PROGRESS_TEXT,78,10,19,8
     LTEXT           "",IDC_STATIC_ERROR,7,25,187,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_TLB_IMPORT_LOG TOOLBAR 72, 18
+BEGIN
+    BUTTON      ID_BUTTON40047
+    BUTTON      ID_BTN_EDIT_PAGENO
+    BUTTON      ID_BUTTON40057
+    BUTTON      ID_BTN_MSG_SLIDER
+    BUTTON      ID_BUTTON40059
+    BUTTON      ID_BUTTON40060
 END
 
 
@@ -722,13 +711,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 3.0.0"
+            VALUE "FileVersion", "Ver 3.1.0"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 3.0.0"
+            VALUE "ProductVersion", "Ver 3.1.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -749,9 +738,9 @@ BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
         LEFTMARGIN, 8
-        RIGHTMARGIN, 195
+        RIGHTMARGIN, 207
         TOPMARGIN, 6
-        BOTTOMMARGIN, 55
+        BOTTOMMARGIN, 169
     END
 
     IDD_DLG_VALUE_DESCRIPTOR, DIALOG
@@ -801,6 +790,10 @@ BEGIN
     IDD_DLG_WND_NOTIFIC, DIALOG
     BEGIN
         RIGHTMARGIN, 204
+    END
+
+    IDD_DLG_INTERPRET_MSG, DIALOG
+    BEGIN
     END
 
     IDD_DLG_MSGID_ATTRIB, DIALOG
@@ -875,10 +868,6 @@ BEGIN
         BOTTOMMARGIN, 143
     END
 
-    IDD_DLG_CONFIG_MSG_LOG, DIALOG
-    BEGIN
-    END
-
     IDD_DLG_WAVEFORM_CONFIG, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -910,13 +899,6 @@ BEGIN
         BOTTOMMARGIN, 248
     END
 
-	IDD_DLG_NETWORK_STATISTICS, DIALOG
-    BEGIN
-        RIGHTMARGIN, 236
-        TOPMARGIN, 6
-        BOTTOMMARGIN, 308
-    END
-
     IDD_DLG_FIBEX_IMPORT, DIALOG
     BEGIN
         RIGHTMARGIN, 378
@@ -939,52 +921,30 @@ END
 //
 
 IDR_BMP_MSGSGDB         BITMAP                  "res\\bitmap1.bmp"
-IDR_BMP_CHK_UCHK        BITMAP                  "res\\bmp00001.bmp"
-IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
 IDR_BMP_SPLASH_SCREEN   BITMAP                  "Res\\Splsh16.bmp"
-IDB_BMP_TOOLBAR_DISCONNECT BITMAP                  "res\\bmp00004.bmp"
-IDB_BMP_TOOLBAR_CONNECT BITMAP                  "res\\bmp_tool.bmp"
 IDB_BMP_COPYRIGHT       BITMAP                  "res\\copyright.bmp"
 IDR_BMP_NET             BITMAP                  "res\\bmp_net.bmp"
 IDB_BMP_GRAPH_ELEMENTS  BITMAP                  "res\\GraphElements.bmp"
 IDR_BMP_CHECKBOX        BITMAP                  "res\\bmp_chec.bmp"
 IDB_BMP_FILTER          BITMAP                  "res\\Filter.bmp"
-IDB_BMPLOGO             BITMAP                  "res\\logo.bmp"
-IDB_MAINFRAME           BITMAP                  "Res\\Toolbar.bmp"
-IDB_MAINFRAME_HOT       BITMAP                  "Res\\Toolbar_hot.bmp"
-IDB_MAINFRAME_DISABLED  BITMAP                  "Res\\Toolbar_disabled.bmp"
 IDB_HDRDOWN             BITMAP                  "Res\\hdrdown.bmp"
 IDB_HDRUP               BITMAP                  "Res\\hdrup.bmp"
-IDB_MSG_WND_HOT         BITMAP                  "Res\\MsgWndHot.bmp"
-IDB_MSG_WND_DISABLED    BITMAP                  "Res\\MsgWndDisabled.bmp"
-IDB_MSG_WND             BITMAP                  "Res\\MsgWnd.bmp"
-IDR_MSG_WND             BITMAP                  "Res\\MsgWnd.bmp"
 IDB_BMP_PROPERTIES      BITMAP                  "res\\Properties.bmp"
 IDR_BMP_MSG_SIG_WATCH   BITMAP                  "res\\Signalwatch.bmp"
-IDR_FUNCTIONS_J1939     BITMAP                  "res\\Functions_J1939.bmp"
-IDR_TLB_CONFIGURE       BITMAP                  "res\\configure_tlb.bmp"
-IDB_CONFIGURE           BITMAP                  "res\\Configure.bmp"
-IDB_CONFIGURE_HOT       BITMAP                  "Res\\Configure_Hot.bmp"
-IDB_CONFIGURE_DISABLED  BITMAP                  "Res\\Configure_Disabled.bmp"
 IDB_J1939TXMSG          BITMAP                  "res\\J1939TxWnd.bmp"
-IDB_J1939DB             BITMAP                  "res\\J1939DB.bmp"
-IDR_CAN_DATABASE        BITMAP                  "res\\CANDatabase.bmp"
-IDB_CAN_DATABASE        BITMAP                  "res\\CANDatabase_Normal.bmp"
-IDB_CAN_DATABASE_HOT    BITMAP                  "Res\\CANDatabase_Hot.bmp"
-IDB_CAN_DATABASE_DISABLED BITMAP                  "Res\\CANDatabase_Disabled.bmp"
-IDB_TLB_J1939           BITMAP                  "res\\Toolbar_J1939.bmp"
-IDB_TLB_J1939_HOT       BITMAP                  "res\\Toolbar_J1939_Hot.bmp"
-IDB_TLB_J1939_DISABLED  BITMAP                  "res\\Toolbar_J1939_Disabled.bmp"
-IDB_TLB_FLEXRAY         BITMAP                  "res\\FlexRay_Toolbar.bmp"
-IDB_TLB_FLEXRAY_HOT     BITMAP                  "res\\FlexRay_Toolbar_Hot.bmp"
-IDB_TLB_FLEXRAY_DISABLED BITMAP                  "res\\FlexRay_Toolbar_Disabled.bmp"
-IDR_CONFIG_TOOLBAR      BITMAP                  "res\\Configuration_Toolbar.bmp"
-IDR_CONFIG_TOOLBAR_HOT  BITMAP                  "res\\Configuration_Toolbar_Hot.bmp"
-IDR_CONFIG_TOOLBAR_DISABLED BITMAP                  "res\\Configuration_Toolbar_Disabled.bmp"
-IDB_LIN_IMG             BITMAP                  "res\\LIN_Toolbar.bmp"
-IDB_LIN_IMGDISABLED     BITMAP                  "res\\LIN_Toolbar_Disabled.bmp"
-IDB_LIN_IMGHOT          BITMAP                  "res\\LIN_Toolbar_Hot.bmp"
 IDR_TLB_IMPORT_LOG      BITMAP                  "res\\MsgWndImportLog.bmp"
+IDB_RIBBON_J1939        BITMAP                  "res\\j1939_Icon1.bmpx"
+IDB_BITMAP15            BITMAP                  "Res\\Busmaster.bmpx"
+IDB_LIN_CATEGORY        BITMAP                  "Res\\LIN.bmpx"
+IDB_BITMAP14            BITMAP                  "Res\\Filemenu1.bmpx"
+IDB_CAN_CATEGORY        BITMAP                  "Res\\CAN_ICON.bmpx"
+IDB_BUSMASTER_SMALL     BITMAP                  "Res\\BumasterSmallIcons.bmpx"
+IDB_FILE_SMALL          BITMAP                  "Res\\filesmall.bmp"
+IDB_TEMP_BITMAP_SMALL   BITMAP                  "Res\\Temp_small.bmpx"
+IDB_TEMP_BITMAP         BITMAP                  "Res\\Temp.bmpx"
+IDB_TOOLS_CATEGORY      BITMAP                  "Res\\TOOLS_ICON.bmpx"
+IDB_VIEW_CATEGORY       BITMAP                  "Res\\VIEW_ICON.bmpx"
+IDB_PLUGIN_IMAGE_MISS   BITMAP                  "Res\\PluginImageMissing.bmpx"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1043,7 +1003,7 @@ BEGIN
     BEGIN
         MENUITEM "&System Time",                IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME, CHECKED
         MENUITEM "&Absolute Time",              IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, CHECKED
-        MENUITEM "&Relative Time",              IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, CHECKED
+        MENUITEM "Relative Time",               IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, CHECKED
     END
 END
 
@@ -1102,7 +1062,7 @@ BEGIN
         MENUITEM "&Save",                       IDM_SAVE_CONFIG
         MENUITEM "Save &As...",                 IDM_SAVEAS_CONFIG
         MENUITEM SEPARATOR
-        POPUP "&Recent Configurations"
+        POPUP "Recent Configurations"
         BEGIN
             MENUITEM "Empty",                       IDM_REC_CFG_FILE1
         END
@@ -1115,7 +1075,7 @@ BEGIN
     END
     POPUP "&CAN"
     BEGIN
-        MENUITEM "&Connect\tF2",                IDM_FILE_CONNECT
+        MENUITEM "Connect",                     IDM_FILE_CONNECT
         POPUP "Driver M&ode"
         BEGIN
             MENUITEM "&Active",                     IDM_CONFIGURE_ACTIVE, CHECKED
@@ -1151,12 +1111,12 @@ BEGIN
             BEGIN
                 MENUITEM "&System Time",                IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME, CHECKED
                 MENUITEM "&Absolute Time",              IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, CHECKED
-                MENUITEM "&Relative Time",              IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, CHECKED
+                MENUITEM "Relative Time",               IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, CHECKED
             END
             MENUITEM "&Overwrite",                  IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, CHECKED
             MENUITEM "&Interpret",                  IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, CHECKED
             MENUITEM "&Show Last",                  IDM_DISPLAY_MESSAGEWATCHWINDOW_SCROLL
-            MENUITEM "&Reset Columns",              IDM_MSGWND_RESET_COLUMNS
+            MENUITEM "Reset Columns",               IDM_MSGWND_RESET_COLUMNS
         END
         POPUP "Sign&al Watch"
         BEGIN
@@ -1178,7 +1138,7 @@ BEGIN
             MENUITEM "&Configure",                  IDM_CFGN_LOG
         END
         MENUITEM SEPARATOR
-        POPUP "&Replay"
+        POPUP "Replay"
         BEGIN
             MENUITEM "&Configure",                  IDM_CFGN_REPLAY
             MENUITEM "Enable &Filters",             32827, CHECKED
@@ -1240,12 +1200,12 @@ BEGIN
             BEGIN
                 MENUITEM "&System Time",                IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME, CHECKED
                 MENUITEM "&Absolute Time",              IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, CHECKED
-                MENUITEM "&Relative Time",              IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, CHECKED
+                MENUITEM "Relative Time",               IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, CHECKED
             END
             MENUITEM "&Overwrite",                  IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, CHECKED
             MENUITEM "&Interpret",                  IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, CHECKED
             MENUITEM "&Show Last",                  IDM_DISPLAY_MESSAGEWATCHWINDOW_SCROLL
-            MENUITEM "&Reset Columns",              IDM_MSGWND_RESET_COLUMNS
+            MENUITEM "Reset Columns",               IDM_MSGWND_RESET_COLUMNS
         END
         POPUP "&Signal Watch"
         BEGIN
@@ -1286,11 +1246,11 @@ BEGIN
             BEGIN
                 MENUITEM "&System Time",                IDM_DISPLAY_MESSAGE_DISPLAY_SYSTEM_TIME, CHECKED
                 MENUITEM "&Absolute Time",              IDM_DISPLAY_MESSAGE_DISPLAY_ABSOLUTETIME, CHECKED
-                MENUITEM "&Relative Time",              IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, CHECKED
+                MENUITEM "Relative Time",               IDM_DISPLAY_MESSAGE_DISPLAY_RELATIVETIME, CHECKED
             END
             MENUITEM "&Overwrite",                  IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE, CHECKED
             MENUITEM "&Interpret",                  IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET, CHECKED
-            MENUITEM "&Reset Columns",              IDM_MSGWND_RESET_COLUMNS
+            MENUITEM "Reset Columns",               IDM_MSGWND_RESET_COLUMNS
         END
         POPUP "Sign&al Watch"
         BEGIN
@@ -1306,7 +1266,7 @@ BEGIN
             MENUITEM "&Configure",                  IDM_CFGN_LIN_LOG
         END
         MENUITEM SEPARATOR
-        POPUP "T&ransmit"
+        POPUP "Transmit"
         BEGIN
             MENUITEM "Confi&gure",                  ID_TRANSMIT_CONFIGURE_LIN
         END
@@ -1317,7 +1277,7 @@ BEGIN
     END
     POPUP "&View"
     BEGIN
-        MENUITEM "T&race Window",               IDM_TRACE_WND, CHECKED
+        MENUITEM "Trace Window",                IDM_TRACE_WND, CHECKED
         MENUITEM "&Hex",                        32839, CHECKED
         MENUITEM SEPARATOR
         POPUP "&Toolbar"
@@ -1361,47 +1321,23 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\BUSMASTER.ico"
 IDR_PGM_EDTYPE          ICON                    "res\\BUSMASTERDoc.ico"
-IDI_ICO_LOG             ICON                    "res\\Log.ico"
 IDI_ICON_MSGWND         ICON                    "Res\\MsgWnd.ico"
 IDI_ICO_WRITE           ICON                    "Res\\write.ico"
-IDI_ICON_DOWN           ICON                    "res\\DOWNArrow.ico"
-IDI_ICON_LEFT           ICON                    "res\\LEFTArrow.ico"
-IDI_ICON_RIGHT          ICON                    "res\\RIGHTArrow.ico"
-IDI_ICON_UP             ICON                    "res\\UPArrow.ico"
 IDR_ICON_GRAPH          ICON                    "res\\GraphWindow.ico"
 IDI_ICO_SEND_MSG        ICON                    "res\\ico_send.ico"
 IDI_ICO_DB_EDITOR       ICON                    "res\\DB Editor.ico"
-32988                   ICON                    "res\\BuildAll.ico"
-32989                   ICON                    "res\\BuilLoadAll.ico"
-32991                   ICON                    "res\\LoadAll.ico"
-32992                   ICON                    "res\\UnLoadAll.ico"
-32848                   ICON                    "res\\ExcMsgHndl.ico"
-32910                   ICON                    "res\\ExcErrHndl.ico"
-32850                   ICON                    "res\\ExcTimeHndl.ico"
-32900                   ICON                    "res\\ExcKeyHndl.ico"
-32909                   ICON                    "res\\ExcAllHndl.ico"
-32815                   ICON                    "res\\New.ico"
-57600                   ICON                    "res\\New.ico"
-32902                   ICON                    "res\\New.ico"
-32817                   ICON                    "res\\Open.ico"
-57601                   ICON                    "res\\Open.ico"
-32864                   ICON                    "res\\Save.ico"
-57603                   ICON                    "res\\Save.ico"
-32904                   ICON                    "res\\Save.ico"
-ID_DISCONNECT           ICON                    "res\\Disconnect.ico"
 IDI_ICON_PLUS           ICON                    "res\\Plus.ico"
 IDI_ICON_MINUS          ICON                    "res\\Minus.ico"
 IDI_ICON_BLANK          ICON                    "res\\Blank.ico"
 IDI_ICON_HELP           ICON                    "Res\\Help.ico"
 IDI_ICON_ABOUT          ICON                    "Res\\About.ico"
-IDI_ICON_CASCADE        ICON                    "Res\\cascade.ico"
-IDI_ICON_TILE           ICON                    "Res\\Tile.ico"
 IDI_ICON_LOG_OFF        ICON                    "res\\LoggingOFF.ico"
 IDI_ICON_LOG_ON         ICON                    "res\\LoggingON.ico"
 IDI_ICON_LOG_ONLIGHT    ICON                    "res\\LoggingONLIGHT.ico"
 IDI_ICON_NETWORKSTAT    ICON                    "res\\Network_Statistics.ico"
-ID_CONNECT              ICON                    "Res\\Connect.ico"
 IDI_ICON_SMSG           ICON                    "res\\DB Editor.ico"
+IDI_ICON_HIDE_RIBBON    ICON                    "Res\\HideRibbon.ico"
+IDI_ICON_SHOW_RIBBON    ICON                    "Res\\ShowRibbon.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1442,11 +1378,11 @@ END
 
 IDD_DLG_CONFIG_MSG_LOG DLGINIT
 BEGIN
-    IDC_COMB_TIMEMODE, 0x403, 9, 0
+    IDC_CBTN_SEND, 0x403, 9, 0
 0x6241, 0x6f73, 0x756c, 0x6574, "\000" 
-    IDC_COMB_TIMEMODE, 0x403, 9, 0
+    IDC_CBTN_SEND, 0x403, 9, 0
 0x6552, 0x616c, 0x6974, 0x6576, "\000" 
-    IDC_COMB_TIMEMODE, 0x403, 7, 0
+    IDC_CBTN_SEND, 0x403, 7, 0
 0x7953, 0x7473, 0x6d65, "\000" 
     0
 END
@@ -1503,145 +1439,33 @@ END
 
 IDD_ABOUTBOX DLGINIT
 BEGIN
-    IDC_NULLFRAME_COLOR_STAT, 0x37c, 215, 0
-0x4d3c, 0x4346, 0x694c, 0x6b6e, 0x555f, 0x6c72, 0x683e, 0x7474, 0x3a70, 
-0x2f2f, 0x7777, 0x2e77, 0x7465, 0x7361, 0x632e, 0x6d6f, 0x652f, 0x2f6e, 
-0x7270, 0x646f, 0x6375, 0x7374, 0x612f, 0x7070, 0x696c, 0x6163, 0x6974, 
-0x6e6f, 0x5f73, 0x7562, 0x6d73, 0x7361, 0x6574, 0x2e72, 0x6870, 0x3c70, 
-0x4d2f, 0x4346, 0x694c, 0x6b6e, 0x555f, 0x6c72, 0x3c3e, 0x464d, 0x4c43, 
-0x6e69, 0x5f6b, 0x7255, 0x506c, 0x6572, 0x6966, 0x3e78, 0x2f3c, 0x464d, 
-0x4c43, 0x6e69, 0x5f6b, 0x7255, 0x506c, 0x6572, 0x6966, 0x3e78, 0x4d3c, 
-0x4346, 0x694c, 0x6b6e, 0x545f, 0x6f6f, 0x746c, 0x7069, 0x3c3e, 0x4d2f, 
-0x4346, 0x694c, 0x6b6e, 0x545f, 0x6f6f, 0x746c, 0x7069, 0x3c3e, 0x464d, 
-0x4c43, 0x6e69, 0x5f6b, 0x7546, 0x6c6c, 0x6554, 0x7478, 0x6f54, 0x6c6f, 
-0x6974, 0x3e70, 0x4146, 0x534c, 0x3c45, 0x4d2f, 0x4346, 0x694c, 0x6b6e, 
-0x465f, 0x6c75, 0x546c, 0x7865, 0x5474, 0x6f6f, 0x746c, 0x7069, "\076" 
+    1371, 0x37c, 157, 0
+0x4d3c, 0x4346, 0x694c, 0x6b6e, 0x555f, 0x6c72, 0x3c3e, 0x4d2f, 0x4346, 
+0x694c, 0x6b6e, 0x555f, 0x6c72, 0x3c3e, 0x464d, 0x4c43, 0x6e69, 0x5f6b, 
+0x7255, 0x506c, 0x6572, 0x6966, 0x3e78, 0x2f3c, 0x464d, 0x4c43, 0x6e69, 
+0x5f6b, 0x7255, 0x506c, 0x6572, 0x6966, 0x3e78, 0x4d3c, 0x4346, 0x694c, 
+0x6b6e, 0x545f, 0x6f6f, 0x746c, 0x7069, 0x3c3e, 0x4d2f, 0x4346, 0x694c, 
+0x6b6e, 0x545f, 0x6f6f, 0x746c, 0x7069, 0x3c3e, 0x464d, 0x4c43, 0x6e69, 
+0x5f6b, 0x7546, 0x6c6c, 0x6554, 0x7478, 0x6f54, 0x6c6f, 0x6974, 0x3e70, 
+0x4146, 0x534c, 0x3c45, 0x4d2f, 0x4346, 0x694c, 0x6b6e, 0x465f, 0x6c75, 
+0x546c, 0x7865, 0x5474, 0x6f6f, 0x746c, 0x7069, "\076" 
     0
 END
 
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Toolbar
+// RT_MANIFEST
 //
 
-IDR_MAINFRAME TOOLBAR 32, 32
-BEGIN
-    BUTTON      ID_CAN_LOGO
-    BUTTON      IDM_FILE_CONNECT
-    SEPARATOR
-    BUTTON      IDM_NETWORK_STATISTICS_WND_CAN
-    BUTTON      32784
-    SEPARATOR
-    BUTTON      IDM_LOG_ON_OFF
-    SEPARATOR
-    BUTTON      IDM_FILTER_LOGFILTEROFF
-    BUTTON      IDM_FILTER_MESSAGEFILTEROFF
-    BUTTON      IDM_FILTER_REPLAYFILTEROFF
-    SEPARATOR
-    BUTTON      33052
-    SEPARATOR
-    BUTTON      IDM_REPLAY_STEP
-    BUTTON      IDM_REPLAY_SKIP
-    BUTTON      IDM_REPLAY_GO
-    BUTTON      IDM_REPLAY_STOP
-END
+1                       RT_MANIFEST             "..\\BIN\\Release\\BUSMASTER.exe.manifest"
 
-IDR_CONFIG_TOOLBAR TOOLBAR 32, 32
-BEGIN
-    BUTTON      32902
-    BUTTON      IDM_CONFIG_LOAD
-    BUTTON      IDM_SAVE_CONFIG
-END
+/////////////////////////////////////////////////////////////////////////////
+//
+// Ribbon
+//
 
-IDR_MSG_WND TOOLBAR 32, 32
-BEGIN
-    BUTTON      IDM_CLEAR_MSG_WINDOW
-    SEPARATOR
-    BUTTON      IDM_DISPLAY_MESSAGEWATCHWINDOW_INTERPRET
-    BUTTON      IDR_TOOL_HEXDEC
-    BUTTON      IDM_DISPLAY_MESSAGEWINDOW_OVERWRITE
-    BUTTON      IDM_DISPLAY_MESSAGE_DISPLAYRELATIVETIME
-END
-
-IDR_FUNCTIONS_J1939 TOOLBAR 32, 32
-BEGIN
-    BUTTON      ID_CAN_LOGO
-    BUTTON      33056
-    SEPARATOR
-    BUTTON      33062
-    BUTTON      33063
-    BUTTON      33064
-END
-
-IDR_TLB_CONFIGURE TOOLBAR 32, 32
-BEGIN
-    BUTTON      ID_CAN_LOGO
-    BUTTON      32811
-    BUTTON      32809
-    BUTTON      32956
-    BUTTON      32891
-    BUTTON      32955
-    BUTTON      32821
-    BUTTON      33023
-    BUTTON      32818
-    BUTTON      33051
-    BUTTON      33055
-END
-
-IDR_TLB_IMPORT_LOG TOOLBAR 72, 18
-BEGIN
-    BUTTON      ID_BUTTON40047
-    BUTTON      ID_BTN_EDIT_PAGENO
-    BUTTON      ID_BUTTON40057
-    BUTTON      ID_BTN_MSG_SLIDER
-    BUTTON      ID_BUTTON40059
-    BUTTON      ID_BUTTON40060
-END
-
-IDR_CAN_DATABASE TOOLBAR 32, 32
-BEGIN
-    BUTTON      ID_CAN_LOGO
-    BUTTON      32815
-    BUTTON      32817
-    BUTTON      32864
-    BUTTON      33010
-    SEPARATOR
-    BUTTON      32860
-END
-
-IDB_TLB_FLEXRAY TOOLBAR 32, 32
-BEGIN
-    BUTTON      IDB_TLB_FLEXRAY
-    BUTTON      ID_FLEXRAY_CONNECT
-    SEPARATOR
-    BUTTON      ID_FLEXRAY_CLUSTER_CONFIG
-END
-
-IDB_LIN_IMG TOOLBAR 32, 32
-BEGIN
-    BUTTON      IDB_LIN_IMG
-    BUTTON      IDM_LIN_CONNECT
-    SEPARATOR
-    BUTTON      ID_LIN_CLUSTER_CONFIG
-    BUTTON      IDM_SCHEDULE_CONFIG_LIN
-    SEPARATOR
-    BUTTON      ID_TRANSMIT_CONFIGURE_LIN
-    BUTTON      IDM_NETWORK_STATISTICS_WND_LIN
-    SEPARATOR
-    BUTTON      IDM_CFGN_LIN_LOG
-    BUTTON      IDM_LOG_LIN_ON_OFF
-    SEPARATOR
-    BUTTON      IDM_CONFIGURE_FILTER_LIN
-    BUTTON      IDM_FILTER_LOGLINOFF
-    BUTTON      IDM_FILTER_MSGLINOFF
-    SEPARATOR
-    BUTTON      IDM_SIGNALWATCH_ADDSIGNAL_LIN
-    BUTTON      IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN
-    SEPARATOR
-    BUTTON      ID_CONFIGURE_MESSAGEDISPLAY_LIN
-    BUTTON      IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN
-END
+IDR_BUSMASTER_RIBBON    RT_RIBBON_XML           "res\\ribbon1.mfcribbon-ms"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1656,6 +1480,11 @@ BEGIN
     IDS_ERROR_LOCK_KEY_INCORRECT 
                             "Licence key is not correct \n Application will abort"
     IDS_ERROR_VER_MISMATCH  "Installed BUSMASTER version is lower than that of the application. Application will abort."
+END
+
+STRINGTABLE
+BEGIN
+    ID_WINDOW_MANAGER       "&Windows..."
 END
 
 STRINGTABLE
@@ -1753,7 +1582,7 @@ END
 STRINGTABLE
 BEGIN
     ID_VIEW_TOOLBAR         "Show /Hide the toolbar\nToolBar"
-    ID_VIEW_STATUS_BAR      "Show/Hide the Status bar\nStatusBar"
+    ID_VIEW_STATUS_BAR      "Show/Hide the Status bar\nStatus Bar"
 END
 
 STRINGTABLE
@@ -1780,11 +1609,11 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 3.0.0"
+    IDS_VERSION             "Ver 3.1.0"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
-    IDS_CONNECT             "&Connect\tF2"
-    IDS_DISCONNECT          "D&isconnect\tESC"
+    IDS_CONNECT             "Connect"
+    IDS_DISCONNECT          "Disconnect"
 END
 
 STRINGTABLE
@@ -1797,51 +1626,47 @@ BEGIN
     ID_LOG_RECORD_STATUS    "CAN"
     ID_LOG_RECORD_CAN_ICON  "CAN Recording..."
     ID_LOG_RECORD_J1939_ICON "J1939 Recording..."
-    ID_FLEXRAY_CONNECT      "Connect/Disconnect\nConnect/Disconnect"
-    ID_FLEXRAY_CLUSTER_CONFIG 
-                            "Associate FlexRay Database\nConfigure FlexRay Network"
-    IDS_CONNECT_FLEXRAY     "&Connect\tF3"
 END
 
 STRINGTABLE
 BEGIN
     IDM_CONFIGURE_FILTER_LIN 
-                            "Select messages for filtering at application level\nSelect messages for filtering at application level"
+                            "Select messages for filtering at application level\nFilters"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_DISCONNECT_FLEXRAY  "D&isconnect\tF12"
     ID_TRANSMIT_CONFIGURE_LIN 
-                            "Configure  messages to transmit over LIN-bus\nConfigure  messages to transmit over LIN-bus"
+                            "Configure  messages to transmit over LIN-bus\nTransmit Window"
     IDM_LIN_CONNECT         "Connect/Disconnect\nConnect/Disconnect"
-    ID_LIN_CLUSTER_CONFIG   "Associate LIN Database(LDF)\nConfigure LIN Network"
-    IDM_CFGN_LIN_LOG        "Configure LIN message logging\nLIN logging"
-    IDM_LOG_LIN_ON_OFF      "Start/Stop LIN Message Logging\nStart/Stop LIN Logging"
-    IDM_FILTER_LOGLINOFF    "Enable or Disable LIN Logging filter\nEnable or Disable LIN Logging filter"
-    IDM_FILTER_MSGLINOFF    "Enable or Disable Message Display filter For Lin\nEnable or Disable Message Display filter For LIN"
+    ID_LIN_CLUSTER_CONFIG   "Associate LIN Database(LDF)\nChannel Configuration"
+    IDM_CFGN_LIN_LOG        "Configure LIN message logging\nConfigure"
+    IDM_LOG_LIN_ON_OFF      "Start/Stop LIN Message Logging\nActivate"
+    IDM_FILTER_LOGLINOFF    "Enable or Disable LIN Logging filter\nEnable or Disable LIN Logging filter\nEnable Filters"
+    IDM_FILTER_MSGLINOFF    "Enable or Disable LIN Message Display filter For Lin\nEnable Filters"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_DISCONNECT_LIN      "D&isconnect\tF11"
-    IDS_CONNECT_LIN         "&Connect\tF4"
+    IDS_DISCONNECT_LIN      "Disconnect"
+    IDS_CONNECT_LIN         "Connect"
 END
 
 STRINGTABLE
 BEGIN
     ID_CONFIGURE_MESSAGEDISPLAY_LIN 
-                            "ConfigureLIN Message Display Attributes\nConfigure LIN Message Display Attributes"
+                            "Configure LIN Message Display Attributes\nConfigure"
     ID_LIN_FILTER_CONFIG    "LIN Filter Configuration\nLIN Filter Configuration"
-    IDM_SCHEDULE_CONFIG_LIN "Configure LIN Schedule Tables\nConfigure LIN Schedule Tables"
-   
+    IDM_SCHEDULE_CONFIG_LIN "Configure LIN Schedule Tables\nSchedule Configuration"
+    IDM_LDF_EDITOR_LIN      "Edit LIN Description files\nLDF Editor"
 END
 
 STRINGTABLE
 BEGIN
-    
+    ID_CONFIGURE_CHANNELSELECTION 
+                            "Configure CAN Channel parameters\nChannel Configuration"
     IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN 
-                            "Configure LIN Simulated Systems for Multinode Simulation\nConfigure LIN Simulated Systems for Multinode Simulation"
+                            "Configure LIN Simulated Systems for Multinode Simulation\nNode Simulation"
 END
 
 STRINGTABLE
@@ -1849,19 +1674,19 @@ BEGIN
     IDS_MESSAGE_ID          "Message ID"
     IDM_CONFIGURE_PASSIVE   "Set Controller To Passive Mode\nPassive Mode"
     IDM_CONFIGURE_ACTIVE    "Set Controller To Active Mode\nActive Mode"
-    IDM_TRACE_WND           "Show/Hide Trace Window\nShow/Hide Trace Window"
+    IDM_TRACE_WND           "Show/Hide Trace Window\nTrace Window"
 END
 
 STRINGTABLE
 BEGIN
     IDM_NETWORK_STATISTICS_WND_LIN 
-                            "Show Network Statistics Window\nShow Network Statistics Window"
+                            "Show/Hide LIN Network Statistics Window\nNetwork Statisitics"
     IDM_SIGNALWATCH_ADDSIGNAL_LIN 
-                            "Add/Delete Signals to Watch window\nAdd/Delete Signals to Watch window"
+                            "Add/Delete LIN Signals to Watch window\nConfigure"
     IDR_TOOL_BUTTON_SIGNAL_WATCH_LIN 
-                            "Show/Hide Signal Watch Window\nShow/Hide Signal Watch Windiow"
+                            "Show/Hide LIN Signal Watch Window\nActivate"
     IDM_NETWORK_STATISTICS_WND_CAN 
-                            "Show/Hide Network Statistics Window\nShow Network Statistics Window"
+                            "Show/Hide CAN Network Statistics Window\nNetwork Statistics"
 END
 
 STRINGTABLE
@@ -1873,7 +1698,7 @@ BEGIN
                             "Absolute or relative time display\nAbsolute/Relative time display"
     IDM_DISPLAY_SIGNALWATCHWINDOW "Show\\Hide Signal watch window"
     32838                   "Enable/Disable Interpret\nEnable/Disable Interpret"
-    ID_HELP_ABOUTCANDRIVER  "Hex or Decimal display\nHex or Decimal display"
+    ID_HELP_ABOUTCANDRIVER  "Hex or Decimal display\nHex or Decimal"
     IDR_TOOL_BUTTON_TIMER_HDLR "Execute Timer Handler\nExecute Timer Handler"
     IDR_TOOL_BUTTON_STEP    "Step Mesage\nStep Mesage"
     IDR_TOOL_BUTTON_STOP    "Stop\nStop"
@@ -1895,36 +1720,36 @@ BEGIN
     33047                   "Show/hide Message Window Toolbar\nShow/hide Message Window toolbar"
     33048                   "Show/hide Message Replay Toolbar\nShow/hide toolbar"
     33049                   "Show/hide Node Simulation Toolbar\nShow/hide Node Simulation toolbar"
-    33051                   "Configure waveform messages\nConfigure waveform messages"
-    33052                   "Start or Stop Transmitting Signal Messages\nStart or Stop Transmitting Signal Messages"
+    ID_CONFIGURE_WAVEFORM_MESSAGES "Configure Waveform messages\nConfigure"
+    IDR_START_SIGNAL_TRANSMISSION 
+                            "Start or Stop Transmitting Signal Messages\nEnable"
     ID_ACTIVEBUS_CAN        "Select CAN as the current active bus for all configuration\nConfigure for CAN"
     33054                   "Show/hide Signal Generation Toolbar\nShow/hide toolbar"
-    33055                   "Configure Signal Graph Window\nConfigure Signal Graph Window"
+    ID_CONFIGURE_SIGNALGRAPHWINDOW 
+                            "Configure Signals for graphical representation\nConfigure"
 END
 
 STRINGTABLE
 BEGIN
     IDM_DELETE_SEL_MSG_BLOCK "Delete selected message block"
-    IDM_CONFIGURE_DATABASE_OPENACTIVE 
-                            "Open active database\nOpen active database"
+    IDM_CONFIGURE_DATABASE_OPENACTIVE "Open active database\nOpen"
     IDM_SIGNALWATCH_ADDSIGNAL 
-                            "Add/Delete Signals to Watch window\nAdd/Delete Signals to Watch window"
+                            "Add/Delete CAN Signals to Watch window\nConfigure"
     IDM_SIGNALWATCH_CLOSE   "Show/Hide Signal Watch window\nShow/Hide Signal Watch window"
     IDM_FILTER_MESSAGE_SELECTMESSAGES 
-                            "Select messages for filtering at application level\nSelect messages for filtering at application level"
+                            "Select CAN messages for filtering at application level\nFilters"
     IDM_FILTER_MESSAGE_OFF  "Enable or Disable Message Display filter\nEnable or Disable Message Display filter"
-    IDM_FILTER_LOGFILTEROFF "Enable or Disable Loggiing filter\nEnable or Disable  Logging filter"
+    IDM_FILTER_LOGFILTEROFF "Enable or Disable Loggiing filter\nEnable Filters"
     IDM_FILTER_MESSAGEFILTEROFF 
-                            "Enable or Disable Message Display Filter \nEnable or Disable Message Display Filter"
+                            "Enable or Disable CAN Message Display Filter \nEnable Filters"
     IDM_FILTER_REPLAYFILTEROFF 
-                            "Enable or Disable Replay Filter \nEnable or Disable Replay Filter"
+                            "Enable or Disable Replay Filter\nEnable Filters"
     IDM_BUILD_COMPILEANDLINK "Compile and Link the current file"
 END
 
 STRINGTABLE
 BEGIN
-    IDR_TOOL_BUTTON_SIGNAL_WATCH 
-                            "Show/Hide Signal Watch Window\nShow/Hide Signal Watch Windiow"
+    IDR_TOOL_BUTTON_SIGNAL_WATCH "Show/Hide CAN Signal Watch Window\nActivate"
     IDR_TOOL_BUTTON_SKIP    "Skip Message\nSkip Message"
     IDR_TOOL_BUTTON_GO      "Go\nGo"
     IDR_TOOL_BUTTON_MSG_DISP 
@@ -1939,30 +1764,30 @@ STRINGTABLE
 BEGIN
     IDM_REPLAY_OFF          "Replay Mode"
     IDM_REPLAY_SELECTFILE   "Select file for replay"
-    IDM_REPLAY_GO           "Start replay message transmission\nStart replay message transmission"
-    IDM_REPLAY_STEP         "Transmit current replay message\nTransmit current replay message"
-    IDM_REPLAY_SKIP         "Skip current replay message\nSkip current replay message"
-    IDM_REPLAY_STOP         "Stop transmitting replay messages\nStop transmitting replay messages"
-    IDM_LOG_ON_OFF          "Enable or Disable Logging of messages\n Enable or Disable Logging of messages"
-    IDM_CONFIGURE_MESSAGE   "Configure Message Display Attributes\nConfigure Message Display Attributes"
+    IDM_REPLAY_GO           "Start replay message transmission\nGo"
+    IDM_REPLAY_STEP         "Transmit current replay message\nStep"
+    IDM_REPLAY_SKIP         "Skip current replay message\nSkip"
+    IDM_REPLAY_STOP         "Stop transmitting replay messages\nStop"
+    IDM_LOG_ON_OFF          "Enable or Disable Logging of messages\nActivate"
+    IDM_CONFIGURE_MESSAGE   "Configure CAN Message Display Attributes\nConfigure"
     IDM_ADD_MSG_BLOCK       "Add message block"
     IDM_CONFIGURE_BAUDRATE  "Configure CAN Controller\nConfigure CAN Controller"
-    32815                   "Create new CAN Database\nCreate new CAN Database"
+    IDM_CONFIGURE_DATABASE_NEW "Create new CAN Database\nNew"
 END
 
 STRINGTABLE
 BEGIN
-    IDM_CONFIGURE_DATABASE_CLOSE "Close database GUI"
+    IDM_CONFIGURE_DATABASE_CLOSE "Close database Editor\nClose"
     IDM_REPLAY_MODE_SINGLE  "Single replay mode"
     IDM_REPLAY_MODE_CYCLIC  "Cyclic replay mode"
     IDM_DISPLAY_SIGNAL_ADD  "Add/Delete Signals to the watch window"
-    IDM_FILE_IMPORT_DATABASE "Associate database\nAssociate database"
+    IDM_FILE_IMPORT_DATABASE "Associate CAN database\nAssociate"
 END
 
 STRINGTABLE
 BEGIN
-    IDM_CONFIGURE_DATABASE_SAVE 
-                            "Save into database file\nSave into database file"
+    IDM_CONFIGURE_DATABASE_SAVE "Save into database file\nSave"
+    IDM_CONFIGURE_DATABASE_SAVEAS "Save as new database file\nSave as"
     32869                   "Information about BUSMASTER version and copyrights\nInformation about BUSMASTER version and copyrights"
     IDM_FILTER_MESSAGEFILTEROFF_BUTTON 
                             "Enable or Disable Display filter\nEnable or Disable Display filter"
@@ -1983,7 +1808,7 @@ BEGIN
     IDM_NEW_UDEFNED_MSG     "Add new message that is not defined in the database."
     IDM_DELETE              "Deletes current message"
     IDR_TOOL_STOPSENDMSG    "Stop sending mutilple messages\nStop sending mutilple messages"
-    IDM_CFGN_SEND_MSGS      "Configure  messages to transmit over CAN-bus\nConfigure  messages to transmit over CAN-bus"
+    IDM_CFGN_SEND_MSGS      "Configure  messages to transmit over CAN-bus\nTransmit Window"
     IDM_DELETE_SEL_MSG      "Deletes current message details"
     IDM_MSGDISPWND_MSGREP   "Show between message name and ID in the message entry"
     IDM_MSGDISPWND_DATE     "Date is displayed along with time stamp"
@@ -1994,18 +1819,23 @@ BEGIN
     IDM_SHOW_DATE           "Enable or Disable Display of Date\nDisplay Date"
     IDM_SEND_SEL_MSG        "Send selected message on CAN bus"
     IDM_DELETE_ALL_SEL_MSG  "Delete all selected message from the list"
-    IDM_CONFIG_NEW          "Create new configuration file\nCreate new configuration file"
-    IDM_CONFIG_LOAD         "Load configuration file\nLoad configuration file"
-    IDM_SAVE_CONFIG         "Save configuration file\nSave configuration file"
-    IDM_SAVEAS_CONFIG       "Save configuration file with a new name\nSave configuration file with a new name"
+    IDM_CONFIG_NEW          "Create new BUSMASTER configuration file\nNew"
+    IDM_CONFIG_LOAD         "Load an existing BUSMASTER configuration file\nLoad"
+    IDM_SAVE_CONFIG         "Save configuration file\nSave"
+    IDM_SAVEAS_CONFIG       "Save configuration file with a new name\nSave As"
     IDM_EXECUTE_DLL_HANDLERS 
                             "Enable or Disable execution of DLL handler(s)\nEnable or Disable DLL handler(s)"
 END
 
 STRINGTABLE
 BEGIN
-    ID_DATABASE_SAVE        "Save J1939 Database"
+    ID_TESTAUTOMATION_EXECUTOR 
+                            "Execute Test Cases from Test Setup file\nTest Automation Executor"
+    ID_DATABASE_SAVE        "Save J1939 Database\nSave"
     ID_TOOLBAR_LIN          "Show/hide LIN Toolbar\nShow/hide LIN toolbar"
+    ID_SHOWMESSAGEWINDOW_CAN "Activate CAN Message Window\nActivate"
+    ID_SHOWMESSAGEWINDOW_J1939 "Activate J1939 Message Window\nActivate"
+    ID_SHOWMESSAGEWINDOW_LIN "Activate LIN Message Window\nActivate"
 END
 
 STRINGTABLE
@@ -2039,16 +1869,18 @@ BEGIN
     IDM_DISPLAY_MESSAGEWATCHWINDOW_SCROLL 
                             "Enable or Disable of Showing Last Message Entry"
     IDM_GRAPH_WND           "Show/Hide Graph Window\nShow/Hide Graph Window"
-    32955                   "Configure Replay\nConfigure Replay"
-    32956                   "Configure Log\nConfigure Log"
+    IDM_CFGN_REPLAY         "Configure Replay\nConfigure"
+    IDM_CFGN_LOG            "Configure Log parameters\nConfigure"
     32958                   "Provides options for exporting log file\nProvides options for exporting log file"
+    ID_UTILITY_FILE_CONVERTER 
+                            "Convert external files to BusMaster specific format\nFormat Converter"
 END
 
 STRINGTABLE
 BEGIN
-    33010                   "Save and import database file\nSave and import database file"
+    IDM_SAVE_IMPORT         "Save and import database file\nSave and import database file\nSave and Import"
     IDM_CONFIGURE_SIMULATEDSYSTEMS 
-                            "Configure Simulated Systems for Multinode Simulation\nConfigure Simulated Systems for Multinode Simulation"
+                            "Configure Simulated Systems for Multinode Simulation\nNode Simulation"
 END
 
 STRINGTABLE
@@ -2058,38 +1890,102 @@ END
 
 STRINGTABLE
 BEGIN
-    ID_ACTIVEBUS_J1939      "Activate/Deactivate J1939 interface\nActivate/Deactivate J1939 interface"
-    ID_J1939_CONFIG_LOG     "Configure J1939 message logging\nJ1939 logging"
-    ID_ACTION_J1939_LOG     "Start/Stop J1939 Message Logging\nStart/Stop J1939 Logging"
-    ID_ACTION_J1939_TX_MESSAGE 
-                            "Transmit J1939 messages\nTransmit J1939 messages"
+    ID_ACTIVEBUS_J1939      "Activate/Deactivate J1939 interface\nActivate/Deactivate"
+    ID_SIGNALGRAPHWINDOW_CAN "Activate Signal Graph\nActivate"
+    ID_J1939_CONFIG_LOG     "Configure J1939 message logging\nConfigure"
+    ID_ACTION_J1939_LOG     "Start/Stop J1939 Message Logging\nActivate"
+    ID_ACTION_J1939_TX_MESSAGE "Transmit J1939 messages\nTransmit Window"
     ID_ACTION_J1939_ONLINE  "Go Online/ Offline at J1939 Bus\nOnline/Offline at J1939 Bus"
     ID_TOOLBAR_J1939        "Show/hide J1939 Toolbar\nShow/hide J1939 toolbar"
-    ID_FLEXRAY_TOOLBAR      "Show/hide FlexRay Toolbar\nShow/hide FlexRay toolbar"
     ID_TB_CANDATABASE       "Show/Hide CAN Database toolbar\nShow/Hide CAN Database toolbar "
 END
 
 STRINGTABLE
 BEGIN
     ID_CONFIGURE_MESSAGEDISPLAY_J1939 
-                            "Configure Message Display Attributes of J1939\nConfigure Message Display Attributes of J1939"
+                            "Configure J1939 Message Display Attributes\nConfigure"
+    ID_TESTAUTOMATION_EDITOR "Create Test Setup files\nTest Automation Editor"
 END
 
 STRINGTABLE
 BEGIN
     33073                   "Show/hide Configure Toolbar\nShow/hide Configure toolbar"
-    ID_CONFIGURE_TIMEOUTS   "Configure flow control timeouts\nConfigure flow control timeouts"
+    ID_CONFIGURE_TIMEOUTS   "Configure flow control timeouts\nTimeout Configuration"
+    ID_DATABASE_NEW         "Create J1939 database\nNew"
+    ID_DATABASE_OPEN        "Open J1939 database\nOpen"
+    ID_DATABASE_ASSOCIATE   "Associate J1939 database\nAssociate"
+    ID_DATABASE_DISSOCIATE  "Dissociate J1939 database\nDissociate"
+    ID_DATABASE_CLOSE       "Close J1939 database\nClose"
+    ID_CONFIGURE_SIMULATEDSYSTEMS 
+                            "Configure Simulated Systems for Multinode Simulation\nNode Simulation"
 END
 
 STRINGTABLE
 BEGIN
+    ID_SIGNALWATCH_ADD      "Add/Delete J1939 Signals to Watch window\nConfigure"
+    ID_SIGNALWATCH_SHOWWINDOW "Show/Hide J1939 Signal Watch Window\nActivate"
     ID_CONFIGURE_MESSAGEDISPLAY 
                             "Configure Message Display Attributes of J1939\nConfigure Message Display Attributes of J1939"
 END
 
 STRINGTABLE
 BEGIN
-    33001                   "Disassociate database\nDisassociate database"
+    IDM_DATABASE_DISSOCIATE_DB "Disassociate CAN database\nDisassociate"
+END
+
+STRINGTABLE
+BEGIN
+    IDM_CLEAR_CAN_MSG_WINDOW "Clear CAN Message window contents\nClear"
+    IDM_CLEAR_J1939_MSG_WINDOW "Clear J1939 Message Window contents\nClear"
+    IDM_CLEAR_LIN_MSG_WINDOW "Clear LIN Message Window contents\nClear"
+    IDM_SYSTEM_TIME_CAN_MSG_WINDOW 
+                            "Display CAN messages in System Time\nSystem Time"
+END
+
+STRINGTABLE
+BEGIN
+    IDM_SYSTEM_TIME_J1939_MSG_WINDOW 
+                            "Display J1939 message timestamp in System Time mode\nSystem Time"
+    IDM_SYSTEM_TIME_LIN_MSG_WINDOW 
+                            "Display LIN message Timestamp in System Time mode\nSystem Time"
+    IDM_ABSOLUTE_TIME_CAN_MSG_WINDOW 
+                            "Display CAN messages in Absolute Time\nAbsolute Time"
+    IDM_ABSOLUTE_TIME_J1939_MSG_WINDOW 
+                            "Display J1939 message timestamp in Absolute Time mode\nAbsolute Time"
+    IDM_ABSOLUTE_TIME_LIN_MSG_WINDOW 
+                            "Display LIN message Timestamp in Absolute Time Mode\nAbsolute Time"
+END
+
+STRINGTABLE
+BEGIN
+    IDM_RELATIVE_TIME_CAN_MSG_WINDOW 
+                            "Display CAN messages in Relative Time\nRelative Time"
+    IDM_RELATIVE_TIME_J1939_MSG_WINDOW 
+                            "Display J1939 message timestamp in Relative Time \nAbsolute Time"
+    IDM_RELATIVE_TIME_LIN_MSG_WINDOW 
+                            "Display LIN message Timestamp in Relative Time Mode\nRelative Time"
+    IDM_OVERWRITE_CAN_MSG_WINDOW 
+                            "Display CAN messages in Overwrite mode\nOverwrite"
+    IDM_OVERWRITE_J1939_MSG_WINDOW 
+                            "Display J1939 messages in Overwrite mode\nOverwrite"
+    IDM_OVERWRITE_LIN_MSG_WINDOW 
+                            "Display LIN messages in Overwrite mode\nOverwrite"
+END
+
+STRINGTABLE
+BEGIN
+    IDM_INTERPRETE_CAN_MSG_WINDOW 
+                            "Enable CAN Signal interpretation\nInterpret"
+    IDM_INTERPRETE_J1939_MSG_WINDOW 
+                            "Enable J1939 Signal interpretation\nInterpret"
+    IDM_INTERPRETE_LIN_MSG_WINDOW 
+                            "Enable LIN Signal interpretation\nSignal Interpretation"
+END
+
+STRINGTABLE
+BEGIN
+    IDM_UDS                 "Configure Diagnostic messages for Transmission and Reception\nTransmit Window"
+    IDD_SETTINGS_UDS        "Configure settings for Diagnostic Message Transmission and Reception\nSettings"
 END
 
 #endif    // English (United States) resources
@@ -2118,5 +2014,4 @@ LANGUAGE 9, 1
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
-
 

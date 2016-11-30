@@ -2,7 +2,7 @@
 #include "UICreator.h"
 #include "MenuCreator.h"
 #include "IdGenerator.h"
-#include "ToolBarCreator.h"
+//#include "ToolBarCreator.h"
 
 UICreator::~UICreator()
 {
@@ -10,26 +10,19 @@ UICreator::~UICreator()
     {
         delete mMenucreator;
     }
-    if (nullptr != mToolbarcreator)
-    {
-        delete mToolbarcreator;
-    }
 }
 
 UICreator::UICreator(UIElements uielements, IIdGenerator* idgenerator)
 {
-    mUiElements.menu = uielements.menu;
-    mUiElements.toolbarList = uielements.toolbarList;
+	mUiElements.mRibbonBar = uielements.mRibbonBar;
     mMenucreator = new MenuCreator();
-    mToolbarcreator = new ToolBarCreator();
     mIdgenerator = idgenerator;
 }
 
 int UICreator::Create(std::map<std::string, pluginMenuList> populatelist)
 {
     mPluginMenuList = populatelist;
-    mMenucreator->populateMenuList(mUiElements.menu, mPluginMenuList, mIdgenerator);
-    mToolbarcreator->populateToolBar(mUiElements.toolbarList, mPluginMenuList, mIdgenerator);
+	mMenucreator->populateRibbonBar(mUiElements.mRibbonBar, mPluginMenuList, mIdgenerator);
     return 1;
 }
 

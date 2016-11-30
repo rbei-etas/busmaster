@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BusmasterPluginManager.h"
+#include "IBusmasterBusPlugin.h"
 #include "UI/MenuCreator.h"
 #include "UI/IdGenerator.h"
 #include "UI/BusmasterMenuItem.h"
@@ -8,16 +9,30 @@
 #include <libxml/xmlschemastypes.h>
 #include "Utility/XMLUtils.h"
 #include "Utility/Utility.h"
+
+#define	GET_BUSMASTER_BUS_PLUGIN_INTERFACE  "GetBusPlugInInterface"
 #define GET_BUSMASTER_PLUGIN_INTERFACE      "GetPlugInInterface"
 #define FREE_PLUGIN_INTERFCE                "FreePlugInInterface"
 #define defPLUGINEXTENSION                 "*.xml"
+#define defDEFAULTBUSPLUGINFOLDER           "BusmasterBusPlugins"
 #define defDEFAULTPLUGINFOLDER              "BusmasterPlugins"
 #define defSCHEMAFILENAME                   "BusMasterPluginSchema.xsd"
 
-#define nodepath "//MenuConfiguration/parent"
+#define nodepath "//MenuConfiguration/Menu"
+#define defXmlNode_Title			"Title"
+#define defXmlNode_Category			"Category"
+#define defXmlNode_Group			"Group"
+#define defXmlNode_Id				"Id"
+#define defXmlNode_BeforeCategory	"BeforeCategory"
+#define defXmlNode_LargeIcon		"LargeIcons"
+#define defXmlNode_SmallIcon		"SmallIcons"
+#define defXmlNode_Accelerator		"Accelerator"
+#define defXmlNode_CommandList		"CommandList"
 
 
 
+typedef int(*GetBusPlugInInterface)(IBusmasterBusPlugin**);
+typedef void(*FreeBusPlugInInterface)(IBusmasterBusPlugin*);
 
 typedef int (*GetPlugInInterface)(IBusmasterPlugin**);
 typedef void (*FreePlugInInterface)(IBusmasterPlugin*);
@@ -26,7 +41,7 @@ BusmasterPluginManager::BusmasterPluginManager()
 {
     mMenuCreator = nullptr;
     mIdgenerator = new IdGenerator();
-    mIdgenerator->id = mIdgenerator->setStartId(20000);
+	mIdgenerator->setStartId(20000);
 
     //SchemaPath
     std::string appPath;
@@ -54,73 +69,59 @@ BusmasterPluginManager::~BusmasterPluginManager()
 }
 
 
-int BusmasterPluginManager::init( IBusmasterPluginInterface* busmasterInterface)
+int BusmasterPluginManager::init(IBusmasterBusPluginInterface* busmasterInterface)
 {
     mBusmasterInterface = busmasterInterface;
 
     //createPluginMenuMap();
     return S_OK;
 }
-int BusmasterPluginManager::loadPlugin( const char* pluginFilePath )
+
+
+
+
+int BusmasterPluginManager::addPlugin(BusmasterPluginConfiguration& plugin)
 {
-    xmlNodeSetPtr nodeSet;
-    xmlXPathObjectPtr xmlpathptr;
-    xmlDocPtr xmlDocptr;
-    std::string  xmlfile = pluginFilePath;
-    Menu*  menu = nullptr;
-    xmlDocptr = xmlReadFile(xmlfile.c_str(), "utf-8", 0);
-
-    if (nullptr == xmlDocptr)
-    {
-        return S_FALSE;
-    }
-
-    if (PLUGIN_ERR_LOAD_SUCCESS != isValidateBusmasterPluginXml(xmlDocptr))
-    {
-        return S_FALSE;
-    }
-
-    std::list<PluginMenu> pluginmenus;
-
-    BusmasterPluginInfo busMasterPlugin;
-    busMasterPlugin.mPluginId = GetNodeValue(xmlDocptr, (xmlChar*) "//BusMasterPlugin/id", "pluginId");
-    busMasterPlugin.mDescription = GetNodeValue(xmlDocptr, (xmlChar*) "//BusMasterPlugin/description", "description");
-    busMasterPlugin.mPluginDllpath = GetNodeValue(xmlDocptr, (xmlChar*) "//BusMasterPlugin/dllpath", "plugindllpath");
-
-    auto tempPath = CheckforRelativePath((char*)busMasterPlugin.mPluginDllpath.c_str(), xmlfile);
-    busMasterPlugin.mPluginDllpath = tempPath;
-    busMasterPlugin.mMinBusMasterVer = GetNodeValue(xmlDocptr, (xmlChar*)"//BusMasterPlugin/minBusMasterVer", "minBusMasterVer");
-
-    delete[]tempPath;
-
-    xmlChar* pchPath = (xmlChar*)nodepath;
-    xmlpathptr = xmlUtils::pGetNodes(xmlDocptr, pchPath);
-    if (xmlpathptr != nullptr)
-    {
-        nodeSet = xmlpathptr->nodesetval;
-
-        for (int cmdindex = 0; cmdindex < nodeSet->nodeNr; cmdindex++)
-        {
-            PluginMenu pluginMenu;
-            pluginMenu.mParentMenu = (char*)xmlGetProp(nodeSet->nodeTab[cmdindex], (xmlChar*)"name");
-            pluginMenu.mBeforeMenu = (char*)xmlGetProp(nodeSet->nodeTab[cmdindex], (xmlChar*)"beforemenu");
-            CreateList(nodeSet->nodeTab[cmdindex], &pluginMenu, menu, xmlfile);
-            pluginmenus.push_back(pluginMenu);
-        }
-
-        busMasterPlugin.menuList = pluginmenus;
-    }
-    xmlXPathFreeObject(xmlpathptr);
-    xmlFreeDoc(xmlDocptr);
-
-    //Add the plugin-Info irresepective of the return value
-    loadPluginInformation(busMasterPlugin);
-
-    mPluginList.push_back(busMasterPlugin);
+	//Add the plugin-Info irresepective of the return value
+	mPluginList.push_back(plugin);
     return S_OK;
 }
 
-int BusmasterPluginManager::loadPluginInformation(BusmasterPluginInfo& pluginInfo)
+int BusmasterPluginManager::loadBusPluginInformation(BusmasterBusPluginConfiguration& pluginInfo)
+{
+	pluginInfo.mDllHandle = LoadLibrary(pluginInfo.mPluginDllpath.c_str());
+	if (nullptr == pluginInfo.mDllHandle)
+	{
+		pluginInfo.mPluginLoadState = PLUGIN_ERR_DLL_NOT_FOUND;
+	}
+	else
+	{
+        GetBusPlugInInterface fpluginInterface = (GetBusPlugInInterface)GetProcAddress(pluginInfo.mDllHandle, GET_BUSMASTER_BUS_PLUGIN_INTERFACE);
+
+        //Not a BUSMASTER Plugin
+        if (fpluginInterface == nullptr)
+        {
+            pluginInfo.mPluginLoadState = PLUGIN_ERR_INVALID_INTERFACE;
+        }
+        else
+        {
+            fpluginInterface(&pluginInfo.mBusPluginInterface);
+            if (nullptr != pluginInfo.mBusPluginInterface)
+            {
+                pluginInfo.mBusPluginInterface->setBusmasterInterface(mBusmasterInterface);
+                pluginInfo.mBusPluginInterface->getMenuInterface(&pluginInfo.mMenuInterface);
+                pluginInfo.mBusType = pluginInfo.mBusPluginInterface->getBusType();
+                pluginInfo.mPluginLoadState = PLUGIN_ERR_LOAD_SUCCESS;
+            }
+            else
+            {
+                pluginInfo.mPluginLoadState = PLUGIN_ERR_INVALID_INTERFACE;
+            }
+        }
+	}
+    return S_OK;
+}
+int BusmasterPluginManager::loadPluginInformation(BusmasterPluginConfiguration& pluginInfo)
 {
     pluginInfo.mDllHandle = LoadLibrary(pluginInfo.mPluginDllpath.c_str());
     if (nullptr == pluginInfo.mDllHandle)
@@ -154,7 +155,212 @@ int BusmasterPluginManager::loadPluginInformation(BusmasterPluginInfo& pluginInf
     }
     return pluginInfo.mPluginLoadState;
 }
-void BusmasterPluginManager::CreateList(xmlNodePtr& nodeptr, PluginMenu* pluginmenu, Menu* menu, std::string xmlFilePath)
+
+int BusmasterPluginManager::loadBusPlugins(const char* dir)
+{
+	char filePath[MAX_PATH];
+	std::string pluginPath;
+	if (dir == NULL)
+	{
+		char tempPluginpath[MAX_PATH];
+		GetModuleFileName(NULL, filePath, MAX_PATH);
+		PathRemoveFileSpec(filePath);
+        PathCombine(tempPluginpath, filePath, defDEFAULTBUSPLUGINFOLDER);
+		pluginPath = tempPluginpath;
+	}
+	else
+	{
+		pluginPath = dir;
+	}
+	if (PathFileExists(pluginPath.c_str()) == TRUE)
+	{
+		SetCurrentDirectory(pluginPath.c_str());
+
+		CFileFind omFileFinder;
+		CString strWildCard = defPLUGINEXTENSION; //look for the plugin files
+
+		BOOL bWorking = omFileFinder.FindFile(strWildCard);
+		while (bWorking)
+		{
+			bWorking = omFileFinder.FindNextFile();
+			if (omFileFinder.IsDots() || omFileFinder.IsDirectory())
+			{
+				continue;
+			}
+            loadBusPlugin(omFileFinder.GetFilePath());
+		}
+		return S_OK;
+	}
+	return S_FALSE;
+}
+int BusmasterPluginManager::loadBusPlugin(const char* pluginFilePath)
+{
+	BusmasterBusPluginConfiguration newPlugin;
+    if (S_OK == parsePluginInformation(pluginFilePath, newPlugin))
+	{
+        loadBusPluginInformation(newPlugin);
+        for (auto& busPlugin : mBusPluginList)
+        {
+            if (busPlugin.mBusType == newPlugin.mBusType)
+            {
+                return S_FALSE;
+            }
+        }
+        mBusPluginList.push_back(newPlugin);
+	}
+    return S_OK;
+}
+int BusmasterPluginManager::loadPlugin( const char* pluginFilePath )
+{
+	BusmasterPluginConfiguration busMasterPlugin;
+	if (S_OK == parsePluginInformation(pluginFilePath, busMasterPlugin))
+	{
+		loadPluginInformation(busMasterPlugin);
+        mPluginList.push_back(busMasterPlugin);
+	}
+    return S_OK;
+}
+
+int BusmasterPluginManager::parsePluginInformation(const char* pluginFilePath, BaseBusmasterPlugin& busMasterPlugin)
+{
+	xmlNodeSetPtr nodeSet;
+	xmlXPathObjectPtr xmlpathptr;
+	xmlDocPtr xmlDocptr;
+	std::string  xmlfile = pluginFilePath;
+	xmlDocptr = xmlReadFile(xmlfile.c_str(), "utf-8", 0);
+	if (nullptr == xmlDocptr)
+	{
+		return S_FALSE;
+	}
+	if (PLUGIN_ERR_LOAD_SUCCESS != isValidateBusmasterPluginXml(xmlDocptr))
+	{
+		return S_FALSE;
+	}
+	std::list<RibbonButton> pluginmenus;
+	busMasterPlugin.mPluginId = GetNodeValue(xmlDocptr, (xmlChar*) "//BusMasterPlugin/id", "pluginId");
+	busMasterPlugin.mDescription = GetNodeValue(xmlDocptr, (xmlChar*) "//BusMasterPlugin/description", "description");
+	busMasterPlugin.mPluginDllpath = GetNodeValue(xmlDocptr, (xmlChar*) "//BusMasterPlugin/dllpath", "plugindllpath");
+	auto tempPath = CheckforRelativePath((char*)busMasterPlugin.mPluginDllpath.c_str(), xmlfile);
+	busMasterPlugin.mPluginDllpath = tempPath;
+	busMasterPlugin.mMinBusMasterVer = GetNodeValue(xmlDocptr, (xmlChar*)"//BusMasterPlugin/minBusMasterVer", "minBusMasterVer");
+	delete[]tempPath;
+	xmlChar* pchPath = (xmlChar*)nodepath;
+	xmlpathptr = xmlUtils::pGetNodes(xmlDocptr, pchPath);
+	if (xmlpathptr != nullptr)
+	{
+		nodeSet = xmlpathptr->nodesetval;
+		for (int cmdindex = 0; cmdindex < nodeSet->nodeNr; cmdindex++)
+		{
+			RibbonButton pluginMenu;
+			ParseMenuItem(nodeSet->nodeTab[cmdindex], pluginMenu, xmlfile);
+			pluginmenus.push_back(pluginMenu);
+		}
+		busMasterPlugin.menuList = pluginmenus;
+	}
+	xmlXPathFreeObject(xmlpathptr);
+	xmlFreeDoc(xmlDocptr);
+	return S_OK;
+}
+void BusmasterPluginManager::ParseMenuItem(xmlNodePtr nodePtr, RibbonButton& retButton, std::string& xmlFilePath)
+{
+	if (nullptr == nodePtr)
+	{
+		return;
+	}
+
+
+
+	xmlNode* childNode = nodePtr->children;
+	while (nullptr != childNode)
+	{
+		std::string nodeName = (char*)childNode->name;// (char*)(xmlNodeListGetString(nodePtr->doc, childNode, 1));
+		xmlChar* value = xmlNodeListGetString(childNode->doc, childNode->xmlChildrenNode, 1);
+		std::string nodeValue = "";
+		if (nullptr != value)
+		{
+			nodeValue = (char*)value;
+		}
+		if (nodeName == defXmlNode_Title)
+		{
+			retButton.mName = nodeValue;
+		}
+		else if (nodeName == defXmlNode_Category)
+		{
+			retButton.mCategory = nodeValue;
+		}
+		else if (nodeName == defXmlNode_Group)
+		{
+			retButton.mParentPanel = nodeValue;
+		}
+		else if (nodeName == defXmlNode_Id)
+		{
+			retButton.mId = nodeValue;
+		}
+		else if (nodeName == defXmlNode_LargeIcon)
+		{
+            parseIcons(childNode, retButton, true, xmlFilePath);
+            //retButton.mImagePath = CheckforRelativePath(nodeValue.c_str(), xmlFilePath);
+		}
+		else if (nodeName == defXmlNode_SmallIcon)
+		{
+            parseIcons(childNode, retButton, false, xmlFilePath);
+            //retButton.mSmallImagePath = CheckforRelativePath(nodeValue.c_str(), xmlFilePath);
+		}
+		else if (nodeName == defXmlNode_BeforeCategory)
+		{
+			retButton.mBeforeCategory = nodeValue;
+		}
+
+		else if (nodeName == defXmlNode_Accelerator)
+		{
+			retButton.mAcceleratorKey = nodeValue;
+		}
+		else if (nodeName == defXmlNode_CommandList)
+		{
+			CreateList(childNode, &retButton, xmlFilePath);
+		}
+
+		
+		if (nullptr != value)
+		{
+			xmlFree(value);
+		}
+		childNode = childNode->next;
+	}
+}
+void BusmasterPluginManager::parseIcons(xmlNodePtr nodePtr, RibbonButton& button, bool isLarge, std::string& xmlFilePath)
+{
+    if (nullptr == nodePtr)
+    {
+        return;
+    }
+    std::vector<std::string>* targetList;
+    if (true == isLarge)
+    {
+        targetList = &button.mImagePath;
+    }
+    else
+    {
+        targetList = &button.mSmallImagePath;
+    }
+    xmlNodePtr childnodeptr = nodePtr->children;
+    std::string nodeValue = "";
+    while (childnodeptr != NULL)
+    {
+        if (!xmlStrcmp(childnodeptr->name, (const xmlChar*)"File"))
+        {
+            xmlChar* value = xmlNodeListGetString(childnodeptr->doc, childnodeptr->xmlChildrenNode, 1);
+            if (nullptr != value)
+            {
+                nodeValue = (char*)value;
+                xmlFree(value);
+            }
+            targetList->push_back(CheckforRelativePath(nodeValue.c_str(), xmlFilePath));
+        }
+        childnodeptr = childnodeptr->next;
+    }
+}
+void BusmasterPluginManager::CreateList(xmlNodePtr& nodeptr, RibbonButton* pluginmenu, std::string xmlFilePath)
 {
     xmlNodePtr childnodeptr = nodeptr->children;
     while (childnodeptr != NULL)
@@ -162,31 +368,31 @@ void BusmasterPluginManager::CreateList(xmlNodePtr& nodeptr, PluginMenu* pluginm
         // If Command under Parent
         if (!xmlStrcmp(childnodeptr->name, (const xmlChar*)"command"))
         {
-            Menu submenu;
+            RibbonElement submenu;
             submenu = CreateCommandList(childnodeptr, xmlFilePath);
-            pluginmenu->menuList.push_back(submenu);
+            pluginmenu->submenulist.push_back(submenu);
         }
         // If Command Group under Parent
         else if (!xmlStrcmp(childnodeptr->name, (const xmlChar*)"commandgroup"))
         {
-            Menu menu;
+			RibbonElement menu;
             menu = CreateCommandGroupList(childnodeptr, xmlFilePath);
-            pluginmenu->menuList.push_back(menu);
+			pluginmenu->submenulist.push_back(menu);
         }
         //if seperator under Parent
         else if (!xmlStrcmp(childnodeptr->name, (const xmlChar*)"seperator"))
         {
-            Menu submenu;
+			RibbonElement submenu;
             submenu.mMenuType = eMenuTypes::Separator;
-            pluginmenu->menuList.push_back(submenu);
+			pluginmenu->submenulist.push_back(submenu);
         }
         childnodeptr = childnodeptr->next;
     }
 }
 
-Menu BusmasterPluginManager::CreateCommandGroupList(xmlNodePtr& childnodeptr, std::string xmlFilePath)
+RibbonElement BusmasterPluginManager::CreateCommandGroupList(xmlNodePtr& childnodeptr, std::string xmlFilePath)
 {
-    Menu popmenu;
+	RibbonElement popmenu;
     xmlChar* chName;
     chName = xmlGetProp(childnodeptr, (xmlChar*)"name");
     popmenu.mName = (char*)chName;
@@ -199,7 +405,7 @@ Menu BusmasterPluginManager::CreateCommandGroupList(xmlNodePtr& childnodeptr, st
         //If Command under Command Group
         if (!xmlStrcmp(subchildnodeptr->name, (const xmlChar*)"command"))
         {
-            Menu submenu;
+			RibbonElement submenu;
             submenu = CreateCommandList(subchildnodeptr, xmlFilePath);
             popmenu.submenulist.push_back(submenu);
 
@@ -207,14 +413,14 @@ Menu BusmasterPluginManager::CreateCommandGroupList(xmlNodePtr& childnodeptr, st
         //if seperator under Command Group
         else if (!xmlStrcmp(subchildnodeptr->name, (const xmlChar*)"seperator"))
         {
-            Menu submenu;
+			RibbonElement submenu;
             submenu.mMenuType = eMenuTypes::Separator;
             popmenu.submenulist.push_back(submenu);
         }
         // a commandgroup under commandgroup
         else if (!xmlStrcmp(subchildnodeptr->name, (const xmlChar*)"commandgroup"))
         {
-            Menu menu = CreateCommandGroupList(subchildnodeptr, xmlFilePath);
+			RibbonElement menu = CreateCommandGroupList(subchildnodeptr, xmlFilePath);
             popmenu.submenulist.push_back(menu);
         }
         subchildnodeptr = subchildnodeptr->next;
@@ -222,9 +428,9 @@ Menu BusmasterPluginManager::CreateCommandGroupList(xmlNodePtr& childnodeptr, st
     return popmenu;
 }
 
-Menu BusmasterPluginManager::CreateCommandList(xmlNodePtr& childnodeptr, std::string xmlFilePath)
+RibbonElement BusmasterPluginManager::CreateCommandList(xmlNodePtr& childnodeptr, std::string xmlFilePath)
 {
-    Menu submenu;
+	RibbonElement submenu;
     xmlChar* cName, *cId, *cToolTip, *cEnabled, *cDisabled, *cHot;
     cName = xmlGetProp(childnodeptr, (xmlChar*)"name");
     submenu.mName = (char*)cName;
@@ -234,7 +440,7 @@ Menu BusmasterPluginManager::CreateCommandList(xmlNodePtr& childnodeptr, std::st
     xmlFree(cId);
     submenu.mMenuType = eMenuTypes::MenuItem;
     auto tooltipptr = (char*)xmlHasProp(childnodeptr, (xmlChar*)"tooltip");
-    if (tooltipptr != NULL)
+    /*if (tooltipptr != NULL)
     {
         submenu.isToolTipReq = true;
     }
@@ -243,9 +449,9 @@ Menu BusmasterPluginManager::CreateCommandList(xmlNodePtr& childnodeptr, std::st
         cToolTip = xmlGetProp(childnodeptr, (xmlChar*)"tooltip");
         submenu.tooltip = (char*)cToolTip;
         xmlFree(cToolTip);
-    }
+    }*/
 
-    xmlNodePtr toolbutton = childnodeptr->children;
+    /*xmlNodePtr toolbutton = childnodeptr->children;
     while (toolbutton != NULL)
     {
         char* abspathptr;
@@ -271,15 +477,13 @@ Menu BusmasterPluginManager::CreateCommandList(xmlNodePtr& childnodeptr, std::st
             break;
         }
         toolbutton = childnodeptr->children->next;
-    }
+    }*/
     return submenu;
 }
-char* BusmasterPluginManager::CheckforRelativePath(char* revpath, std::string xmlFilePath)
+char* BusmasterPluginManager::CheckforRelativePath(const char* revpath, std::string xmlFilePath)
 {
     char* returnPath = new char[1024];
-    //returnPath = "";
-    bool relativepath = false;
-    relativepath = PathIsRelative(revpath);
+    auto relativepath = PathIsRelative(revpath);
     if (revpath != nullptr && strlen(revpath) !=0)
     {
         if (relativepath)
@@ -338,16 +542,16 @@ int BusmasterPluginManager::loadPlugins( const char* dir )
         CString strWildCard = defPLUGINEXTENSION; //look for the plugin files
 
         BOOL bWorking = omFileFinder.FindFile( strWildCard );
-        while ( bWorking )
-        {
-            bWorking = omFileFinder.FindNextFile();
-            if ( omFileFinder.IsDots() || omFileFinder.IsDirectory() )
-            {
-                continue;
-            }
-            loadPlugin( omFileFinder.GetFilePath() );
-        }
-        return S_OK;
+while (bWorking)
+{
+    bWorking = omFileFinder.FindNextFile();
+    if (omFileFinder.IsDots() || omFileFinder.IsDirectory())
+    {
+        continue;
+    }
+    loadPlugin(omFileFinder.GetFilePath());
+}
+return S_OK;
     }
     return S_FALSE;
 }
@@ -355,7 +559,13 @@ int BusmasterPluginManager::drawUI(UIElements uielements)
 {
 
     std::map<std::string, pluginMenuList> pluginMenuList;
-for ( auto info : mPluginList )
+
+    for (auto info : mBusPluginList)
+    {
+        pluginMenuList[info.mPluginId] = info.menuList;
+    }
+
+    for (auto info : mPluginList)
     {
         pluginMenuList[info.mPluginId] = info.menuList;
     }
@@ -370,9 +580,9 @@ for ( auto info : mPluginList )
 
     return S_OK;
 }
-int BusmasterPluginManager::notifyPlugins( eBusmaster_Event eventType, void* eventData)
+int BusmasterPluginManager::notifyPlugins(eBusmaster_Event eventType, void* eventData)
 {
-for ( auto plugin : mPluginList )
+    for (auto plugin : mPluginList)
     {
         if (nullptr != plugin.mNotifyEvent)
         {
@@ -381,16 +591,16 @@ for ( auto plugin : mPluginList )
     }
     return S_FALSE;
 }
-int BusmasterPluginManager::noifyMenuClick( int menuId )
+int BusmasterPluginManager::noifyMenuClick(int menuId)
 {
     int retVal = S_FALSE;
-    BusmasterPluginInfo pluginInfo;
+    BusmasterPluginConfiguration pluginInfo;
     std::string pluginId;
-    if(true == getPluginForMenuId( menuId, pluginInfo, pluginId ))
+    if (true == getPluginForMenuId(menuId, pluginInfo, pluginId))
     {
-        if ( nullptr != pluginInfo.mMenuInterface )
+        if (nullptr != pluginInfo.mMenuInterface)
         {
-            pluginInfo.mMenuInterface->OnMenuItemClicked( pluginId.c_str() );
+            pluginInfo.mMenuInterface->OnMenuItemClicked(pluginId.c_str());
             retVal = S_OK;
         }
     }
@@ -398,7 +608,7 @@ int BusmasterPluginManager::noifyMenuClick( int menuId )
 }
 int BusmasterPluginManager::noifyMenuUpdate(int menuId, IMenuItem* menuItem)
 {
-    BusmasterPluginInfo pluginInfo;
+    BusmasterPluginConfiguration pluginInfo;
     std::string pluginId;
     if (true == getPluginForMenuId(menuId, pluginInfo, pluginId))
     {
@@ -412,20 +622,26 @@ int BusmasterPluginManager::noifyMenuUpdate(int menuId, IMenuItem* menuItem)
 }
 int BusmasterPluginManager::unLoadPlugins()
 {
-for (auto plugin : mPluginList)
+    //send exit command
+    mUnloadPlugins = true;
+    for (auto plugin : mPluginList)
+    {
+        eBusmaster_Event eventType = eBusmaster_Event::unloading_plugins;
+        if (nullptr != plugin.mNotifyEvent)
+        {
+            plugin.mNotifyEvent->onBusmasterEvent(eventType, nullptr);
+        }
+    }
+    
+    for (auto plugin : mPluginList)
     {
         unLoadPlugin(plugin);
     }
     mPluginList.clear();
     return S_FALSE;
 }
-int BusmasterPluginManager::unLoadPlugin(BusmasterPluginInfo& plugin)
+int BusmasterPluginManager::unLoadPlugin(BusmasterPluginConfiguration& plugin)
 {
-    eBusmaster_Event eventType = eBusmaster_Event::busmaster_exit;
-    if (nullptr != plugin.mNotifyEvent)
-    {
-        //plugin.mNotifyEvent->onBusmasterEvent(eventType, nullptr);
-    }
     if (nullptr != plugin.mDllHandle)
     {
         auto freePluginInterface = (FreePlugInInterface)GetProcAddress(plugin.mDllHandle, FREE_PLUGIN_INTERFCE);
@@ -452,7 +668,17 @@ int BusmasterPluginManager::getPluginCount()
 }
 int BusmasterPluginManager::getPluginConfiguration(xmlNodePtr& parentNode)
 {
-for (auto plugin : mPluginList)
+    for (auto plugin : mBusPluginList)
+    {
+        if (nullptr != plugin.mBusPluginInterface)
+        {
+            xmlNodePtr pluginNodePtr = nullptr;
+            plugin.mBusPluginInterface->getConfiguration(pluginNodePtr);
+            xmlAddChild(parentNode, pluginNodePtr);
+        }
+    }
+
+    for (auto plugin : mPluginList)
     {
         if(nullptr != plugin.mPluginInterface)
         {
@@ -465,7 +691,14 @@ for (auto plugin : mPluginList)
 }
 int BusmasterPluginManager::setPluginConfiguration(const xmlDocPtr configData)
 {
-for (auto plugin : mPluginList)
+    for (auto plugin : mBusPluginList)
+    {
+        if (nullptr != plugin.mBusPluginInterface)
+        {
+            plugin.mBusPluginInterface->setConfiguration(configData);
+        }
+    }
+    for (auto plugin : mPluginList)
     {
         if(nullptr != plugin.mPluginInterface)
         {
@@ -483,24 +716,31 @@ IMenuCreator* BusmasterPluginManager::getMenuCreator()
     return mMenuCreator;
 }
 
-bool BusmasterPluginManager::getPluginForMenuId( int menuId, BusmasterPluginInfo& pluginInfo, std::string& pluginActualId )
+bool BusmasterPluginManager::getPluginForMenuId(int menuId, BaseBusmasterPlugin& pluginInfo, std::string& pluginActualId)
 {
-    bool found = false;
     if (getMenuCreator() != nullptr && nullptr != mUiCreator)
     {
         std::string id;
         mUiCreator->getPluginMenuInfo(menuId, id, pluginActualId);
-for ( auto plugin : mPluginList )
+        
+        for (auto plugin : mBusPluginList)
+        {
+            if (id == plugin.mPluginId)
+            {
+                pluginInfo = plugin;
+                return true;
+            }
+        }
+        for ( auto plugin : mPluginList )
         {
             if ( id == plugin.mPluginId )
             {
                 pluginInfo = plugin;
-                found = true;
-                break;
+                return true;
             }
         }
     }
-    return found;
+    return false;
 }
 
 IBusmasterPluginConnection* BusmasterPluginManager::getPluginConnectionPoint(const char* id)
@@ -520,6 +760,7 @@ for (auto plugin : mPluginList)
 
 int BusmasterPluginManager::isValidateBusmasterPluginXml(xmlDocPtr pluginDocPtr)
 {
+	return PLUGIN_ERR_LOAD_SUCCESS;
     if (pluginDocPtr == nullptr)
     {
         return PLUGIN_ERR_INVALID_XML;
@@ -564,5 +805,8 @@ int BusmasterPluginManager::isValidateBusmasterPluginXml(xmlDocPtr pluginDocPtr)
     xmlSchemaCleanupTypes();
     xmlMemoryDump();
 
+#ifdef DEBUG
+	return PLUGIN_ERR_LOAD_SUCCESS;
+#endif
     return isValid;
 }

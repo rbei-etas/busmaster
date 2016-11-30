@@ -71,13 +71,15 @@ if winexists($WIN_BUSMASTER) then
 	_GUICtrlListView_ClickItem($RepWinHWD,2)														; Click on the 3rd item in the replay window
 	sleep(500)
 
-	$cntToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_Con_Disconnect)							; Get handle of the 'Connect/Disconnect' toolbar
-	_ClickToolBarIcon($cntToolhWd,$Icon_RplyStep_Index)												; Click on Step icon
+	;$cntToolhWd=ControlGetHandle($WIN_BUSMASTER,"",$ToolBar_Con_Disconnect)							; Get handle of the 'Connect/Disconnect' toolbar
+	;_ClickToolBarIcon($cntToolhWd,$Icon_RplyStep_Index)												; Click on Step icon
+	_CANReplayOptionsMenu($CANReplayStepMenu)														; Select "Step" from menu
 
 	$SelectedIndexAStep=_GUICtrlListView_GetSelectedIndices($RepWinHWD)								; fetch the selected item in the replay window
 	consolewrite("$SelectedIndexAStep :"&$SelectedIndexAStep&@CRLF)
 
-	_ClickToolBarIcon($cntToolhWd,$Icon_RplySkip_Index)												; Click on Skip icon
+	;_ClickToolBarIcon($cntToolhWd,$Icon_RplySkip_Index)												; Click on Skip icon
+	_CANReplayOptionsMenu($CANReplaySkipMenu)
 
 	$SelectedIndexASkip=_GUICtrlListView_GetSelectedIndices($RepWinHWD)								; fetch the selected item in the replay window
 	consolewrite("$SelectedIndexASkip :"&$SelectedIndexASkip&@CRLF)
@@ -91,7 +93,8 @@ if winexists($WIN_BUSMASTER) then
 
 EndIf
 
-If $ReplayBTNState=1 and $SelectedIndexAStep=3 and $SelectedIndexASkip=4  and $MsgWinCount=1 then
+;If $ReplayBTNState=1 and $SelectedIndexAStep=3 and $SelectedIndexASkip=4  and $MsgWinCount=1 then
+If $SelectedIndexAStep=3 and $SelectedIndexASkip=4  and $MsgWinCount=1 then
 	_WriteResult("Pass","TS_Replay_50")
 Else
 	_WriteResult("Fail","TS_Replay_50")

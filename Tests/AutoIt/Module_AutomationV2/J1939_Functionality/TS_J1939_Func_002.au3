@@ -33,7 +33,7 @@ if winexists($WIN_BUSMASTER) Then
 
 	_ConnectDisconnect()																											; Connect
 
-	_ClearMsgWindow()																												; Clear msg window
+	_ClearMsgWindowJ1939()																												; Clear msg window
 
 	_J1939tMsgWin("Request PGN","[0x0]Msg_Rqst","","")																				; Transmit request PGN msg
 	$rCount=_GetJ1939MsgWinItemCount()																								; Fetch msg wind item count

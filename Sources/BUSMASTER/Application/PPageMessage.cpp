@@ -227,7 +227,7 @@ int CPPageMessage::nEnterMessageAttrib(const SCanIDList& sMsgAttrib, int nItem)
 
 void CPPageMessage::OnButtonAdd()
 {
-    CMsgIDAttr odMsgDlg(m_eBusType);
+    CMsgIDAttr odMsgDlg(mMsgAttributes);
     if (odMsgDlg.DoModal() == IDOK)
     {
         m_sNewItem.nCANID = odMsgDlg.m_nID;
@@ -264,7 +264,7 @@ void CPPageMessage::OnButtonEdit()
         sscanf_s((LPCTSTR) omARow, "%X", &unMsgID);
         mMsgAttributes->nGetAttrib(unMsgID, m_sNewItem);
 
-        CMsgIDAttr odMsgDlg(m_eBusType);
+        CMsgIDAttr odMsgDlg(mMsgAttributes);
         odMsgDlg.m_nID = m_sNewItem.nCANID;
         odMsgDlg.m_sColour = m_sNewItem.Colour;
         odMsgDlg.m_omStrMsg = m_sNewItem.omCANIDName;

@@ -43,7 +43,7 @@ WinActivate($WIN_BUSMASTER,3)
 if winexists($WIN_BUSMASTER) then
 	_createConfig("cfxLOG_01")																	                        ;Create New Configuration
 
-	WinMenuSelectItem($WIN_BUSMASTER,"",$linMenu,$LINLogMenu,$configureMenu)						                        ;Select Configure->Log
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$linMenu,$LINLogMenu,$configureMenu)						                        ;Select Configure->Log
 	WinWaitActive($WIN_LINLog)
 
 	if WinActive($WIN_LINLog) Then

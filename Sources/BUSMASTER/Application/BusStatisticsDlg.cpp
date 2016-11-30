@@ -194,9 +194,12 @@ LRESULT CBusStatisticsDlg::vUpdateFields(WPARAM /*wParam*/, LPARAM /*lParam*/)
             nIndex++;
             // Bus Load
             // Format to show only two decimal digit.
+			if (theApp.pouGetFlagsPtr()->nGetFlagStatus(CONNECTED) == TRUE)
+			{
             m_omStrBusLoad.Format( defSTR_FORMAT_BUS_LOAD,
                                    sBusStatistics .m_dBusLoad );
             m_omStatList.SetItemText(nIndex, nChannel + 1, m_omStrBusLoad);
+			}
             nIndex++;
             // Peak Load
             m_omStrPeakBusLoad.Format( defSTR_FORMAT_BUS_LOAD,
@@ -378,21 +381,8 @@ BOOL CBusStatisticsDlg::OnInitDialog()
 {
     CCommonStatistics::OnInitDialog();
 
-    /* Try to load resource DLL for icons*/
-    HMODULE hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
-
-    //SSH #issue 438+
-    if ( hModAdvancedUILib )
-    {
-        SetIcon( ::LoadIcon(hModAdvancedUILib, MAKEINTRESOURCE( IDI_ICON_NETWORKSTAT )), TRUE);
-        ::FreeLibrary(hModAdvancedUILib);
-        hModAdvancedUILib = nullptr;
-    }
-    else
-    {
-        SetIcon( AfxGetApp()->LoadIcon(IDI_ICON_NETWORKSTAT), TRUE);
-    }
-
+    SetIcon( AfxGetApp()->LoadIcon(IDI_ICON_NETWORKSTAT), TRUE);
+    
     // Init Item color and Heading color variables
     int nHeadingColor, nItemColor;
     nHeadingColor = defHEADING_COLOR;

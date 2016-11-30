@@ -394,8 +394,6 @@ public:
 
     void setSourceAddress(unsigned char _sourceAddress)
     {
-        unsigned int sourceAddress;
-
         extendedId = (extendedId & 0xFFFFFF00) | _sourceAddress;
     }
 
@@ -483,25 +481,22 @@ public:
     unsigned char getPduFormat()
     {
         unsigned int pgn = extendedId & 0x3FFFFFF;// excluding priority 3 bits
-        pgn = (pgn >> 16) & 0xFF; // excluding 8bit Source Address and 8 bit Pdu Specific and 1 bit reserved, 1 bit datapage
-
-        return pgn;
+        unsigned char resultPgn = static_cast<unsigned char>((pgn >> 16) & 0xFF); // excluding 8bit Source Address and 8 bit Pdu Specific and 1 bit reserved, 1 bit datapage
+		return resultPgn;
     }
 
     unsigned char getDataPage()
     {
         unsigned int pgn = extendedId & 0x3FFFFFF;// excluding priority 3 bits
-        pgn = (pgn >> 24) & 1; // excluding 8bit Source Address and 8 bit Pdu Specific and 1 bit reserved
-
-        return pgn;
+		unsigned char resultPgn = static_cast<unsigned char>((pgn >> 24) & 1); // excluding 8bit Source Address and 8 bit Pdu Specific and 1 bit reserved
+		return resultPgn;
     }
 
     unsigned char getPriority()
     {
         unsigned int pgn = extendedId & 0x1C000000;
-
-        pgn = pgn >> 26;
-        return pgn;
+		unsigned char resultPgn = static_cast<unsigned char>(pgn >> 26);
+		return resultPgn;
     }
 
     unsigned char getPduSpecific()
@@ -1015,7 +1010,6 @@ typedef SSIMSYSARRAY* PSSIMSYSARRAY;
 #define SIMSYS_DELETE_CONFMN     _T("You are about to Delete a Simulated System.\n\nAre you sure you want to Delete?")
 #define ALL_SIMSYS_DELETE_CONFMN _T("You are about to Delete all the Simulated Systems.\n\nAre you sure you want to Delete?")
 #define ALL_NODE_EDIT_CONFMN     _T("You are about to change all the Node details!\n\nAre you sure you want to Continue?")
-#define NODE_DELETE_CONFMN       _T("You are about to Delete a Node.\n\nAre you sure you want to Delete?")
 #define ALL_NODE_DELETE_CONFMN   _T("You are about to Delete all the Nodes.\n\nAre you sure you want to Delete?")
 #define NODE_DELETE_CONFMN   _T("You are about to Delete this Node.\n\nAre you sure you want to Delete?")
 #define COPYFILE(SRC,DESTN)         ::CopyFile(SRC,DESTN,FALSE);

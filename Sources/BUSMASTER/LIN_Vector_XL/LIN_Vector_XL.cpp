@@ -1402,7 +1402,7 @@ HRESULT CDIL_LIN_VectorXL::LIN_GetTxMsgBuffer(BYTE*& /*pouFlxTxMsgBuffer*/)
 }
 HRESULT CDIL_LIN_VectorXL::LIN_GetConfiguration( SCONTROLLER_DETAILS_LIN psControllerConfig[], INT& nSize )
 {
-    for ( int i = 0; i < sg_nNoOfChannels; i++ )
+    for ( unsigned int i = 0; i < sg_nNoOfChannels; i++ )
     {
         psControllerConfig[i].m_strHwUri =  sg_HardwareIntr[i].m_acDescription.c_str();
         psControllerConfig[i].m_BaudRate =  sg_aodChannels[i].m_unBaudrate;

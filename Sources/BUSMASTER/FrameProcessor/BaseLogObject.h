@@ -90,7 +90,7 @@ protected:
 public:
     SLOGINFO m_sLogInfo;
     CBaseLogObject(CString omVersion);
-    ~CBaseLogObject();
+    virtual ~CBaseLogObject();
 
     // Equal operator. THERE SHOULDN'T BE ANY EQUAL OPERATOR OVERLOADING FOR
     // THE DERIVED CLASSES

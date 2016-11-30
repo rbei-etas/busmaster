@@ -25,7 +25,7 @@ if winexists($WIN_BUSMASTER) then
 
 	;_createConfig("TS_TX_LIN_09")
 	_loadConfig("cfx_TS_TX_LIN_16")
-	_SetViewToolBarLIN()																	 		; Select LIN Tool Bar to view.
+	;_SetViewToolBarLIN()																	 		; Select LIN Tool Bar to view.
 	sleep(1000)
 	;_linDriverSelectionXml()																 		; Select LIN driver selection from xml configuration File.
 	_linDriverSelection()

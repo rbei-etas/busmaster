@@ -32,7 +32,7 @@ protected:
     CBaseImportLogFile();
 public:
     CBaseImportLogFile(ETYPE_BUS eBus);
-    ~CBaseImportLogFile();
+    virtual ~CBaseImportLogFile();
     virtual HRESULT LoadFile(const std::string& strFileName);
     virtual HRESULT UnLoadFile();
     virtual HRESULT CancelFileLoad();

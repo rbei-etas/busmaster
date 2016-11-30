@@ -36,7 +36,7 @@ public:
     CDIL_LIN();
 
     /* Destructor */
-    ~CDIL_LIN();
+    virtual ~CDIL_LIN();
 
     BOOL InitInstance(void);
     int ExitInstance(void);

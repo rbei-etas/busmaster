@@ -81,42 +81,9 @@ CChannel::~CChannel()
   Date Created   : 8.3.2005
   Modifications  :
 *******************************************************************************/
-void CChannel::vUpdateErrorCounter(UCHAR ucTxError, UCHAR ucRxError)
+void CChannel::vUpdateErrorCounter(UCHAR /*ucTxError*/, UCHAR /*ucRxError*/)
 {
-    // Update Tx Error counter and peak Tx Error Counter
-    //m_ucTxErrorCounter = ucTxError;
-    //// Update Peak Value
-    //if( m_ucTxErrorCounter > m_ucPeakTxErrorCounter )
-    //{
-    //    m_ucPeakTxErrorCounter = m_ucTxErrorCounter;
-    //}
-    //// Update Rx Error counter and peak Rx Error Counter
-    //m_ucRxErrorCounter = ucRxError;
-    //// Update Peak Value
-    //if( m_ucRxErrorCounter > m_ucPeakRxErrorCounter )
-    //{
-    //    m_ucPeakRxErrorCounter = m_ucRxErrorCounter;
-    //}
-
-    //// Update Controller state
-    //if ((m_ucTxErrorCounter <= 127) && (m_ucRxErrorCounter <= 127))
-    //{
-    //    // Error Active Mode
-    //    m_ucControllerState = defCONTROLLER_ACTIVE;
-    //}
-
-    //// The sudden shift to the third state is to avoid
-    //// "else if ((byTxError > 127) || (byRxError > 127))"
-    //else if (m_ucTxErrorCounter == 255)
-    //{
-    //    // Bus off
-    //    m_ucControllerState = defCONTROLLER_BUSOFF;
-    //}
-    //else
-    //{
-    //    // Error passive
-    //    m_ucControllerState = defCONTROLLER_PASSIVE;
-    //}
+  
 }
 
 /*******************************************************************************

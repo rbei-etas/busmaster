@@ -76,7 +76,7 @@ public:
     virtual HRESULT ApplyFilterScheme(void* pvFilterApplied) = 0;
     virtual HRESULT GetFilterScheme(void* pvFilterApplied) = 0;
     virtual HRESULT EnableFilterApplied(BOOL bEnable) = 0;
-    virtual void SetDisplaySettings(DisplaySettings ouSettings) {};
+    virtual void SetDisplaySettings(DisplaySettings /*ouSettings*/) {};
     virtual BOOL bGetDilInterFace() = 0;
     virtual __int64 nCreateMapIndexKey(LPVOID pMsgData) = 0;
     virtual HRESULT hToggleDILBufferRead(BOOL bRead) = 0;

@@ -32,7 +32,6 @@
 #define DEF_IS_APPEND_ENABLED       "IsAppendLog_Enabled"
 #define DEF_RESET_ABS_TIME          "Reset_Absolute_Time"
 #define DEF_CHANNEL                 "Channel"
-#define DEF_FILE_PATH               "File_Path"
 #define DEF_TRGR_STRT_ID            "Trigger_Start_ID"
 #define DEF_TRGR_STP_ID             "Trigger_Stop_ID"
 #define DEF_IS_LOGON_TRANS          "IsLogOnTransmission"
@@ -264,7 +263,7 @@
 #define DEF_TS_NAME                 "Test_Suite_Name"
 #define DEF_IS_ENABLE               "IsEnable"
 #define DEF_TEST_SUITE              "TEST_SUITE"
-#define DEF_FILE_PATH               "File_Path"
+#define DEF_FILE_PATH_XML           "File_Path"
 #define DEF_TEST_CASES_SEL          "Testcases_Selected"
 #define DEF_INDEX                   "Index"
 
@@ -346,4 +345,4 @@
 #define DEF_SCHD_TABLE_WNDPOS       "//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Schedule_Table/Window_Position"
 #define DEF_SCHD_TABLE_COL_WIDTH    "//BUSMASTER_CONFIGURATION/Module_Configuration/LIN_Schedule_Table/COLUMN_WIDTH"
 
-#define DEF_MODULE_CONFIGURATION    "//BUSMASTER_CONFIGURATION/Module_Configuration"
+#define DEF_MODULE_CONFIGURATION_XPATH    "//BUSMASTER_CONFIGURATION/Module_Configuration"

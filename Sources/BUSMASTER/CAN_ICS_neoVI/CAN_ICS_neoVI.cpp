@@ -37,7 +37,7 @@
 //#include "Include/DIL_CommonDefs.h"
 #include "EXTERNAL/icsnVC40.h"
 //#include "DIL_Interface/BaseDIL_CAN_Controller.h"
-#include "DIL_Interface/HardwareListing.h"
+#include "DIL_Interface/HardwareListingCAN.h"
 #include "ChangeRegisters_CAN_ICS_NeoVI.h"
 #include "../Application/MultiLanguage.h"
 
@@ -376,10 +376,9 @@ public:
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
     HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
-    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
-    HRESULT CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
@@ -447,7 +446,7 @@ static int nCreateAndSetReadIndicationEvent(HANDLE& hReadEvent)
 /**
  * Function to retreive error occurred and log it
  */
-static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
+static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* /*File*/, int /*Line*/)
 {
     USES_CONVERSION;
 
@@ -1269,8 +1268,6 @@ DWORD WINAPI CanMsgReadThreadProc_CAN_ICS_neoVI(LPVOID pVoid)
 
 int ulGetESSerialNum(unsigned long DeviceType, int serialNumber, int nHardwareLic)
 {
-    CHAR chTemp[MAX_PATH];
-
     switch (DeviceType)
     {
             /* neoVI Blue */
@@ -1311,7 +1308,7 @@ int ulGetESSerialNum(unsigned long DeviceType, int serialNumber, int nHardwareLi
             break;
     };
 }
-std::string omGetDeviceType(int i, unsigned long ulDeviceType, unsigned int serialNumber, int nHardwareLic, int nNetworkId)
+std::string omGetDeviceType(int /*i*/, unsigned long ulDeviceType, unsigned int serialNumber, int nHardwareLic, int nNetworkId)
 {
     CHAR chTemp[MAX_PATH];
     char netid_str[256];
@@ -1550,13 +1547,14 @@ static int nCreateSingleHardwareNetwork()
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount)
+int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount, PSCONTROLLER_DETAILS InitData)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
     CWnd objMainWnd;
     objMainWnd.Attach(hParent);
-    CHardwareListing HwList(psInterfaces, nCount, pnSelList, CAN, CHANNEL_ALLOWED,  &objMainWnd);
+	IChangeRegisters* pAdvancedSettings = new CChangeRegisters_CAN_ICS_neoVI (nullptr, InitData, nCount);
+	CHardwareListingCAN HwList(psInterfaces, nCount, pnSelList, CAN, CHANNEL_ALLOWED,  &objMainWnd, InitData, pAdvancedSettings);
     INT nRet = HwList.DoModal();
     objMainWnd.Detach();
 
@@ -1597,7 +1595,7 @@ unsigned int GetSelectedChannelIndex(unsigned int unIndex)
  * This function will get the hardware selection from the user
  * and will create essential networks.
  */
-static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0, bool bAutoSelect = false)
+static int nCreateMultipleHardwareNetwork(PSCONTROLLER_DETAILS InitData, UINT unDefaultChannelCnt = 0, bool bAutoSelect = false)
 {
     int nHardwareCountPrev = sg_ucNoOfHardware;
     int nHwCount = sg_ucNoOfHardware;
@@ -1698,7 +1696,7 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0, bool bAu
             }
             nHwCount = unDefaultChannelCnt;
         }
-        else if ( ListHardwareInterfaces(sg_hOwnerWnd, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
+        else if ( ListHardwareInterfaces(sg_hOwnerWnd, sg_HardwareIntr, sg_anSelectedItems, nHwCount, InitData) != 0 )
         {
             sg_ucNoOfHardware = nHardwareCountPrev;
             return HW_INTERFACE_NO_SEL;
@@ -1787,7 +1785,7 @@ static int nGetNoOfConnectedHardware(int& nHardwareCount)
  * per hardware count. This will popup hardware selection dialog
  * in case there are more hardware present.
  */
-static int nInitHwNetwork(UINT unDefaultChannelCnt = 0)
+static int nInitHwNetwork(PSCONTROLLER_DETAILS InitData, UINT unDefaultChannelCnt = 0)
 {
     int nDevices = 0;
     int nReturn = NO_HW_INTERFACE;
@@ -1815,7 +1813,7 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt = 0)
         {
             // Get the selection from the user. This will also
             // create and assign the networks
-            nReturn = nCreateMultipleHardwareNetwork(unDefaultChannelCnt);
+            nReturn = nCreateMultipleHardwareNetwork(InitData, unDefaultChannelCnt);
         }
         else
         {
@@ -1835,14 +1833,14 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt = 0)
  * parallel port mode this will initialise connection with the
  * driver.
  */
-static int nConnectToDriver(UINT unDefaultChannelCnt = 0)
+static int nConnectToDriver(PSCONTROLLER_DETAILS InitData, UINT unDefaultChannelCnt = 0)
 {
     int nReturn = -1;
 
     if( sg_bIsDriverRunning == TRUE )
     {
         // Select Hardware or Simulation Network
-        nReturn = nInitHwNetwork(unDefaultChannelCnt);
+        nReturn = nInitHwNetwork(InitData, unDefaultChannelCnt);
     }
     return nReturn;
 }
@@ -2336,13 +2334,13 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT6
  * Function to List Hardware interfaces connect to the system and requests to the
  * user to select
  */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData)
 {
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
     if (bGetDriverStatus())
     {
-        if (( hResult = nConnectToDriver(nCount) ) == CAN_USB_OK)
+        if (( hResult = nConnectToDriver(InitData, nCount) ) == CAN_USB_OK)
         {
             nCount = sg_ucNoOfHardware;
             for (UINT i = 0; i < sg_ucNoOfHardware; i++)
@@ -2439,7 +2437,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetConfigData(PSCONTROLLER_DETAILS ConfigFile, in
     return hResult;
 }
 
-HRESULT CDIL_CAN_ICSNeoVI::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS ouControllerDetails,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
+HRESULT CDIL_CAN_ICSNeoVI::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS ouControllerDetails,DWORD dwDriverId,bool /*bIsHardwareListed*/, unsigned int unChannelCount)
 {
     if(m_dwDriverId != 0 && m_dwDriverId != dwDriverId )
     {
@@ -2472,7 +2470,7 @@ HRESULT CDIL_CAN_ICSNeoVI::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS ouControl
 
     if(sg_ucNoOfHardware > 0)
     {
-        int nResult = nCreateMultipleHardwareNetwork(1, true);
+        int nResult = nCreateMultipleHardwareNetwork(nullptr, 1, true);
 
         if(nResult != CAN_USB_OK)
         {
@@ -2693,68 +2691,8 @@ HRESULT hFillHardwareDesc(PSCONTROLLER_DETAILS pControllerDetails)
 /**
  * Function to display config dialog
  */
-HRESULT CDIL_CAN_ICSNeoVI::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
-{
-    HRESULT Result = WARN_INITDAT_NCONFIRM;
-    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
 
-    VALIDATE_POINTER_RETURN_VAL(InitData, Result);
-    PSCONTROLLER_DETAILS pControllerDetails = (PSCONTROLLER_DETAILS)InitData;
 
-    /* Fill the hardware description details */
-    hFillHardwareDesc(pControllerDetails);
-
-    if (sg_nNoOfChannels > 0)
-    {
-        int nResult = DisplayConfigurationDlg(sg_hOwnerWnd, Callback_DILTZM,
-                                              pControllerDetails, sg_nNoOfChannels);
-        switch (nResult)
-        {
-            case WARNING_NOTCONFIRMED:
-            {
-                Result = WARN_INITDAT_NCONFIRM;
-            }
-            break;
-            case INFO_INIT_DATA_CONFIRMED:
-            {
-                bLoadDataFromContr(pControllerDetails);
-                //memcpy(sg_ControllerDetails, pControllerDetails, sizeof (SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
-                for(int i = 0; i < defNO_OF_CHANNELS; i++)
-                {
-                    sg_ControllerDetails[i] = pControllerDetails[i];
-                }
-                nSetApplyConfiguration();
-                //memcpy(InitData, (void*)sg_ControllerDetails, sizeof (SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
-                for(int i = 0; i < defNO_OF_CHANNELS; i++)
-                {
-                    InitData[i] = sg_ControllerDetails[i];
-                }
-                Length = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
-
-                Result = INFO_INITDAT_CONFIRM_CONFIG;
-            }
-            break;
-            case INFO_RETAINED_CONFDATA:
-            {
-                Result = INFO_INITDAT_RETAINED;
-            }
-            break;
-            case ERR_CONFIRMED_CONFIGURED: // Not to be addressed at present
-            case INFO_CONFIRMED_CONFIGURED:// Not to be addressed at present
-            default:
-            {
-                // Do nothing... default return value is S_FALSE.
-            }
-            break;
-        }
-    }
-    else
-    {
-        Result = S_OK;
-    }
-
-    return Result;
-}
 
 /**
  * Function to start monitoring the bus

@@ -144,7 +144,11 @@ if winexists($WIN_BUSMASTER) then
 	send("{ENTER}")
 	Sleep(1000)
 
-	send("^{F4}")																					; Close Test executor window
+	Opt("WinDetectHiddenText", 0)                                                                    ; Close Test executor window
+	Opt("WinSearchChildren", 1)
+	Opt("WinTitleMatchMode", 1)
+	WinClose("Test Suite Executor")
+
 	sleep(1000)
 
 	_saveConfig()																					; Save configuration
@@ -192,7 +196,11 @@ if winexists($WIN_BUSMASTER) then
 	$TestSetUpCount=ControlTreeView ($WIN_BUSMASTER,"",$TVC_TestSuite_TestExecutor,"GetItemCount","#0")				; Fetch the child item count of test suite
 	sleep(1000)
 
-	send("^{F4}")																					; Close Test executor window
+	Opt("WinDetectHiddenText", 0)                                                                    ; Close Test executor window
+	Opt("WinSearchChildren", 1)
+	Opt("WinTitleMatchMode", 1)
+	WinClose("Test Suite Executor")
+
 	sleep(1000)
 
 	ConsoleWrite("$TestSuiteName:"&$TestSuiteName&@CRLF)

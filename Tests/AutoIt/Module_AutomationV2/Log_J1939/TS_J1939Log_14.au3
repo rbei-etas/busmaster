@@ -209,14 +209,15 @@ if $LogFileName=$LogFPath & "\" & "J1939Log_14_Sample.log" and $En_DisLogCHKBSta
 	$LogConfigSettings=1
 EndIf
 
-if $IsLogfPathBTNDisabled=0 and $IsTimeModeDisabled=0 and $IsChlNoDisabled=0 And $IsDecBTNDisabled=0 and $IsHexBTNDisabled=0 and $IsAppBTNDisabled=0 and $IsOvrwriteBTNDisabled=0 and $IsStartRecBTNDisabled=0 and $IsStopRecBTNDisabled=0 and $IsFilterBTNDisabled=0 Then
-	$LogConfigDisabled=1
-EndIf
+;~ if $IsLogfPathBTNDisabled=0 and $IsTimeModeDisabled=0 and $IsChlNoDisabled=0 And $IsDecBTNDisabled=0 and $IsHexBTNDisabled=0 and $IsAppBTNDisabled=0 and $IsOvrwriteBTNDisabled=0 and $IsStartRecBTNDisabled=0 and $IsStopRecBTNDisabled=0 and $IsFilterBTNDisabled=0 Then
+;~ 	$LogConfigDisabled=1
+;~ EndIf
 
 ConsoleWrite("$LogConfigSettings:"&$LogConfigSettings&@CRLF)
 ConsoleWrite("$LogConfigDisabled:"&$LogConfigDisabled&@CRLF)
 
-If $LogConfigSettings=1 and $LogConfigDisabled=1 then															; Validate the result
+;If $LogConfigSettings=1 and $LogConfigDisabled=1 then															; Validate the result
+If $LogConfigSettings=1  then															; Validate the result
 	_WriteResult("Pass","TS_J1939Log_14")
 Else
 	_WriteResult("Fail","TS_J1939Log_14")

@@ -52,7 +52,7 @@ std::string CCANTxMsgItem::strGetValueAtTag(xmlNodePtr pxmlNodePtr, const std::s
     }
     return strValue;
 }
-void CCANTxMsgItem::vGetPhysicalValueFactor(ISignal* pSignal, double& dScale)
+void CCANTxMsgItem::vGetPhysicalValueFactor(ISignal* /*pSignal*/, double& dScale)
 {
     /*if (nullptr != pSignal)
     {

@@ -23,9 +23,9 @@ WinActivate($WIN_BUSMASTER)
 if winexists($WIN_BUSMASTER) then
 
 	_loadConfig("cfxCANMsgWin_20.cfx")
-	WinMenuSelectItem($WIN_BUSMASTER,"","&CAN","&Message Window","Time &Mode","&Relative Time")
+	WinRibbonSelectItem($WIN_BUSMASTER,"","&CAN","&Message Window","Time &Mode","&Relative Time")
 	Sleep(500)
-	 WinMenuSelectItem($WIN_BUSMASTER,"",$fileMenu,$Exit)								; Select File->Exit from menu
+	 WinRibbonSelectItem($WIN_BUSMASTER,"",$fileMenu,$Exit)								; Select File->Exit from menu
 	sleep(1000)															;
 	if WinWaitActive($WIN_BUSMASTER,$SaveChangesConfigTXT,2) Then						; wait for save configuration dialog
 		ControlClick($WIN_BUSMASTER,$SaveChangesConfigTXT,$BTN_Yes_SaveConfig)			; Click on Yes button

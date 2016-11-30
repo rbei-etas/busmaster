@@ -70,7 +70,8 @@ if winexists($WIN_BUSMASTER) then
 				$LINVers = 1
 			EndIf
 
-
+			Sleep(1000)
+			ControlClick($WIN_ClustrConfigLIN,"","OK")
 
 
 

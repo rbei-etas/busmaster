@@ -90,7 +90,7 @@ void SignalDlg::vPrepareUiForEditMode()
 {
 
     std::string strName;
-    SignalProps ouSignalProps;
+    LINSignalProps ouSignalProps;
     ouSignalProps.eType = eInvalidProtocol;
     std::list<IEcu*> ouEcuTxList;
     std::list<IEcu*> ouEcuRxList;
@@ -108,12 +108,12 @@ void SignalDlg::vPrepareUiForEditMode()
     pSignal->GetEcus(eTx, ouEcuTxList);
     pSignal->GetEcus(eRx, ouEcuRxList);
     pSignal->GetEncoding(&pCoding);
-    m_nActualLength = ouSignalProps.m_ouLINSignalProps.m_nLength;
+    m_nActualLength = ouSignalProps.m_unSignalSize;
     ui.editName->setText(QString::fromStdString(strName));
-    ui.editLength->setText(tr("%1").arg(ouSignalProps.m_ouLINSignalProps.m_nLength));
-    ui.editInitialValue->setText(GetString(ouSignalProps.m_ouLINSignalProps.m_nIntialValue, false));
+    ui.editLength->setText(tr("%1").arg(ouSignalProps.m_unSignalSize));
+    ui.editInitialValue->setText(GetString(ouSignalProps.m_nIntialValue, false));
 
-    if ( ouSignalProps.m_ouLINSignalProps.m_ouValueType == eScalar )
+    if ( ouSignalProps.m_ouValueType == eScalar )
     {
         ui.comboSignalType->setCurrentIndex(0);
     }
@@ -312,31 +312,31 @@ void SignalDlg::vFillSignalDetails()
         pSignal = *m_pSignal;
     }
 
-    SignalProps ouSignalProps;
+    LINSignalProps ouSignalProps;
     ouSignalProps.eType = eLINProtocol;
 
     //Length
     unsigned int nLength = GetUnsignedInt(ui.editLength->text(), 10);
-    ouSignalProps.m_ouLINSignalProps.m_nLength = nLength;
+    ouSignalProps.m_unSignalSize = nLength;
 
     //Initial Value
     unsigned int nInitialValue =GetUnsignedInt(ui.editInitialValue->text());
-    ouSignalProps.m_ouLINSignalProps.m_nIntialValue = nInitialValue;
+    ouSignalProps.m_nIntialValue = nInitialValue;
 
     //Signal Type
-    ouSignalProps.m_ouLINSignalProps.m_ouSignalType = eSignalNormal;
+    ouSignalProps.m_ouSignalType = eSignalNormal;
 
     //Endianess always Intel in LDF
-    ouSignalProps.m_ouLINSignalProps.m_ouEndianess = eIntel;
+    ouSignalProps.m_ouEndianess = eIntel;
 
     //Data type always Unsigned in LDF
-    ouSignalProps.m_ouLINSignalProps.m_ouDataType = eUnsigned;
+    ouSignalProps.m_ouDataType = eUnsigned;
 
     //Byte array is valid if user selects and signal length is more than 8 bits
-    ouSignalProps.m_ouLINSignalProps.m_ouValueType = eScalar;
+    ouSignalProps.m_ouValueType = eScalar;
     if ( nLength > 8 && ui.comboSignalType->currentIndex() != 0)
     {
-        ouSignalProps.m_ouLINSignalProps.m_ouValueType = eByteArray;
+        ouSignalProps.m_ouValueType = eByteArray;
     }
 
     pSignal->SetName(ui.editName->text().toStdString());
@@ -388,29 +388,31 @@ void SignalDlg::vFillSignalDetails()
     {
         QListWidgetItem* itr = ui.listSubscribers->item(index);
 
-
-        if ( Qt::Checked == itr->checkState() )
+        if ( nullptr != itr )
         {
-            unTempId = itr->data(Qt::UserRole).value<UID_ELEMENT>();
-            pSignal->MapNode(eRx, unTempId);
-
-            m_pLdfCluster->GetElement(eEcuElement, unTempId, (IElement**)&pEcu);
-            unTempId = pSignal->GetUniqueId();
-            if ( nullptr != pEcu )
+            if ( Qt::Checked == itr->checkState () )
             {
-                pEcu->MapSignal(eRx, unTempId);
+                unTempId = itr->data ( Qt::UserRole ).value<UID_ELEMENT> ();
+                pSignal->MapNode ( eRx, unTempId );
+
+                m_pLdfCluster->GetElement ( eEcuElement, unTempId, (IElement**) &pEcu );
+                unTempId = pSignal->GetUniqueId ();
+                if ( nullptr != pEcu )
+                {
+                    pEcu->MapSignal ( eRx, unTempId );
+                }
             }
-        }
-        else
-        {
-            unTempId = itr->data(Qt::UserRole).value<UID_ELEMENT>();
-            pSignal->UnMapNode(eRx, unTempId);
-
-            m_pLdfCluster->GetElement(eEcuElement, unTempId, (IElement**)&pEcu);
-            unTempId = pSignal->GetUniqueId();
-            if ( nullptr != pEcu )
+            else
             {
-                pEcu->UnMapSignal(eRx, unTempId);
+                unTempId = itr->data ( Qt::UserRole ).value<UID_ELEMENT> ();
+                pSignal->UnMapNode ( eRx, unTempId );
+
+                m_pLdfCluster->GetElement ( eEcuElement, unTempId, (IElement**) &pEcu );
+                unTempId = pSignal->GetUniqueId ();
+                if ( nullptr != pEcu )
+                {
+                    pEcu->UnMapSignal ( eRx, unTempId );
+                }
             }
         }
     }

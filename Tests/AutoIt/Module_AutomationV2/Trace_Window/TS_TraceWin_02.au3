@@ -28,9 +28,9 @@ if winexists($WIN_BUSMASTER) then
 	$handle=WinGetHandle($WIN_BUSMASTER)
 	$menuHandle=_GUICtrlMenu_GetMenu($handle)
 
-	$sub=_GUICtrlMenu_GetItemSubMenu($menuHandle,4)
-	$text=_GUICtrlMenu_GetItemText($sub,0)
-	$state=_GUICtrlMenu_GetItemChecked($sub,0)
+	$sub=_GUICtrlMenu_GetItemSubMenu($menuHandle,$index_View)
+	$text=_GUICtrlMenu_GetItemText($sub,$index_View_TraceWin)
+	$state=_GUICtrlMenu_GetItemChecked($sub,$index_View_TraceWin)
 	ConsoleWrite("Item text" & $text & @CRLF)
 	ConsoleWrite("Item Check state" & $state & @CRLF)
 	If($state=True) Then

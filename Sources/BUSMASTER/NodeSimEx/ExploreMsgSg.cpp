@@ -541,7 +541,6 @@ void CExploreMsgSg::vSetFrameList(IBMNetWorkGetService* ouClusterConfig, ETYPE_B
 ***************************************************************************************/
 void CExploreMsgSg::vGetMsgList(ETYPE_BUS eBus,int nChannel,std::map<std::string,unsigned int>& mapMsgNameAndCode)
 {
-    ICluster* pCluster;
     std::list<IFrame*> ouFrameList;
     IBMNetWorkGetService* pouClusterConfig = m_pGlobalObj->m_ouClusterConfig;
     if(nullptr!=pouClusterConfig)
@@ -551,19 +550,19 @@ void CExploreMsgSg::vGetMsgList(ETYPE_BUS eBus,int nChannel,std::map<std::string
 
     std::list<IFrame*>::iterator itrLstMsg = ouFrameList.begin();
     int nIndex = 0;
+	LinFrameProps props;
     while(itrLstMsg != ouFrameList.end())
     {
         CString omMsg;
         std::string omFrameName;
         (*itrLstMsg)->GetName(omFrameName);
 
-        eFrameType oueFrameType = eFrame_Invalid;
-        (*itrLstMsg)->GetFrameType(oueFrameType);
+        (*itrLstMsg)->GetProperties(props);
         unsigned int unFrameId = 0;
         switch(eBus)
         {
             case LIN:
-                if(oueFrameType != eLIN_Unconditional && oueFrameType != eLIN_Diagnostic)
+				if (props.m_eLinFrameType != eLinUnconditionalFrame && props.m_eLinFrameType != eLinDiagnosticFrame)
                 {
                     itrLstMsg++;
                     continue;
@@ -613,9 +612,8 @@ void CExploreMsgSg::vGetSignalList(ETYPE_BUS eBus,int nChannel, DWORD dwMsgCode,
             }
             break;
     }
-    unsigned char uchBytes[254];
-
-    std::map< ISignal*, SignalInstanse> mapSignals;
+	
+	std::map< ISignal*, SignalInstanse> mapSignals;
 
     if(nullptr != pCluster && nullptr != ouframeStrct)
     {
@@ -623,7 +621,7 @@ void CExploreMsgSg::vGetSignalList(ETYPE_BUS eBus,int nChannel, DWORD dwMsgCode,
     }
 
     std::string omSignalName;
-for(auto itrSignal : mapSignals)
+	for(auto itrSignal : mapSignals)
     {
         (itrSignal.first)->GetName(omSignalName);
         lstSigNames.push_back(omSignalName);

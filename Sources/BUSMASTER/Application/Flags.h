@@ -69,13 +69,6 @@ typedef enum eCANMONITORFLAG
     ACTIVATED_J1939,
     REPLAYFILTER,
     ADRESSCLAIM_J1939,
-    DISPLAY_FRAME,
-    DISPLAY_PDU
-};
-
-typedef enum eFLEXRAYMONITORFLAG
-{
-    FLEX_CONNECTED = 0,
 };
 
 class CFlags
@@ -89,8 +82,6 @@ public:
     void vGetToolbarButtonStatus( PSTOOLBARINFO psToolBarInfo );
     int nGetFlagStatus(eCANMONITORFLAG WhichFlag);
     void vSetFlagStatus(eCANMONITORFLAG WhichFlag, int nValue);
-    int nGetFlagStatus(eFLEXRAYMONITORFLAG WhichFlag);
-    void vSetFlagStatus(eFLEXRAYMONITORFLAG WhichFlag, int nValue);
     void vInitializeFlags();
     static CFlags& ouGetFlagObj(void);
 
@@ -134,11 +125,8 @@ private:
     BOOL m_bSendSignalMSg;
     BOOL m_bActivatedJ1939;     // Current active bus for configuration.
     BOOL m_bJAddressClaimed;
-    BOOL m_bDisplayFrame;
-    BOOL m_bDisplayPdu;
-    /* FLEXRAY Flags */
-    BOOL m_bFlexConnected;
-    BOOL m_bFlexLogEnable;
+     
+    
 
     // Private constructors to make singleton class
     static CFlags sm_ouSingletonObj;

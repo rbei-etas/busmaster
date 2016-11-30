@@ -29,19 +29,14 @@
 #include "Struct.h" // Added by ClassView
 #include "Utility/MultiLanguageSupport.h"
 
-class CCANMonitorApp : public CWinApp
+class CCANMonitorApp : public CWinAppEx
 {
     DECLARE_MESSAGE_MAP()
 
 public:
     CCANMonitorApp();
 
-    /** Wrapper around CConfigDetails::vSetConfigurationModified() */
-    void vSetConfigurationModified(BOOL bModified = TRUE);
-
-    /** Wrapper around CConfigDetails::bIsConfigurationModified() */
-    BOOL bIsConfigurationModified();
-
+    
     /** wrapper around CConfigDetails::vRelease(..) */
     void vRelease1(eCONFIGDETAILS eParam, LPVOID* lpDataPtr);
 
@@ -51,20 +46,18 @@ public:
     /** wrapper around CConfigDetails::bSetData(..) */
     BOOL bSetData1(eCONFIGDETAILS  eParam, LPVOID lpVoid);
 
-    PSMSGBLOCKLIST psReturnMsgBlockPointer();
-
     /** To get Default window size */
     BOOL bGetDefaultValue( eCONFIGDETAILS eParam, WINDOWPLACEMENT& sPosition );
 
-    /** To get default splitter window position */
-    BOOL bGetDefaultSplitterPostion(eCONFIGDETAILS eParam, CRect omWindowSize,
-                                    LPVOID* pData);
-
-
+    
     CEvent m_aomState[defEVENT_TOTAL];
 
     void GetLoadedConfigFilename(CString& roStrCfgFile);
     bool bReadFromRegistry(HKEY hRootKey, CString strSubKey, CString strName,  DWORD dwType, CString& strValue , DWORD& dwValue);
+	bool bWriteIntoRegistry(HKEY /* hRootKey */, CString strSubKey, CString strName, BYTE bytType, CString strValue, DWORD dwValue = 0);
+	void ReadRecentFileList();
+	
+    void AddToRecentFileList(LPCTSTR lpszPathName);
 
     CMsgSignal* m_pouMsgSignal;
     CMsgSignal* m_pouMsgSgInactive;
@@ -86,6 +79,7 @@ public:
     afx_msg void OnFileOpen();
     afx_msg void OnFileNew();
 
+	afx_msg BOOL OnOpenRecentFile(UINT nID);
     INT COM_nSaveConfiguration(CString omStrCfgFilename);
     BOOL bWriteIntoTraceWnd(char* omText, BOOL bTrace = TRUE);
 

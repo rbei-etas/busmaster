@@ -267,7 +267,7 @@ public:
     HRESULT LIN_GetTxMsgBuffer(BYTE*& pouFlxTxMsgBuffer);
     HRESULT LIN_Send(STLIN_MSG& sLinTxMsg);
 
-    HRESULT LIN_SetSlaveRespData(const STLIN_MSG stRespMsg)
+    HRESULT LIN_SetSlaveRespData(const STLIN_MSG /*stRespMsg*/)
     {
         return S_OK;
     };
@@ -281,7 +281,7 @@ public:
     HRESULT LIN_GetLastErrorString(string& acErrorStr);
     HRESULT LIN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam);
     HRESULT LIN_GetConfiguration( SCONTROLLER_DETAILS_LIN[], INT& nSize );
-    HRESULT LIN_SetControllerParams(INT nValue, ECONTR_PARAM eContrparam)
+    HRESULT LIN_SetControllerParams(INT /*nValue*/, ECONTR_PARAM /*eContrparam*/)
     {
         return S_OK;
     }
@@ -413,7 +413,7 @@ static int SetReadIndicationEvent(HANDLE hReadEvent)
 }
 
 /* Function to retreive error occurred and log it */
-static void vRetrieveAndLog(DWORD dwErrorCode, char* File, int Line)
+static void vRetrieveAndLog(DWORD dwErrorCode, char* /*File*/, int /*Line*/)
 {
     USES_CONVERSION;
 
@@ -430,7 +430,7 @@ static void vRetrieveAndLog(DWORD dwErrorCode, char* File, int Line)
         sg_acErrStr = acErrText;
     }
 }
-static int nSetHardwareMode(UCHAR ucDeviceMode)
+static int nSetHardwareMode(UCHAR /*ucDeviceMode*/)
 {
     int nReturn = -1;
     return nReturn;
@@ -510,7 +510,7 @@ void CDIL_LIN_PeakUSB::ProcessLINMsg()
 
     // Array of lin Messages supported by USB driver
     TLINRcvMsg sMsgArray[ 125 ];
-    TLINRcvMsg sLinMsg;
+    
     int nActualRead = 124;
     // Read message from the driver
     nReturn = (*pfLIN_ReadMulti)( sg_hClient, sMsgArray, 124, &nActualRead);
@@ -811,8 +811,6 @@ static int nCreateSingleHardwareNetwork()
 *******************************************************************************/
 static int nGetFreeNetHandle()
 {
-    int nErr;
-    UCHAR ucIndex;
     int nNetHandle = 0;
 
     return nNetHandle;
@@ -1027,7 +1025,7 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt = 0)
     return nReturn;
 }
 // create client and get the client handle
-int nCreateClient(TCHAR* omStrClient, ULONG hMainFrame, HLINCLIENT& hClient)
+int nCreateClient(TCHAR* /*omStrClient*/, ULONG /*hMainFrame*/, HLINCLIENT& /*hClient*/)
 {
     USES_CONVERSION;
     int nReturn = -1;
@@ -1099,13 +1097,13 @@ static int nSetApplyConfiguration()
 
 
 /* Test Hardware */
-static int nTestHardwareConnection(HLINHW hHardwareHandle)
+static int nTestHardwareConnection(HLINHW /*hHardwareHandle*/)
 {
     int nReturn = -1;
     return nReturn;
 }
 /* connect to the bus */
-static int nConnect(BOOL bConnect)
+static int nConnect(BOOL /*bConnect*/)
 {
     VALIDATE_POINTER_RETURN_VAL(sg_podActiveNetwork, S_FALSE);
     int nReturn = S_OK;
@@ -1518,14 +1516,14 @@ HRESULT CDIL_LIN_PeakUSB::SetConfigData(IBMNetWorkGetService* ouConfig)
     return hResult;
 }
 
-BOOL Callback_DILTZM(BYTE /*Argument*/, PSCONTROLLER_DETAILS pDatStream, int /*Length*/)
+BOOL Callback_DILTZM(BYTE /*Argument*/, PSCONTROLLER_DETAILS /*pDatStream*/, int /*Length*/)
 {
     return S_OK;
     /*return (sg_pouDIL_LIN_PeakUSB->LIN_SetConfigData( pDatStream, 0) == S_OK);*/
 }
 
-int DisplayConfigurationDlg(HWND hParent, DILCALLBACK /*ProcDIL*/,
-                            PSCONTROLLER_DETAILS pControllerDetails, UINT nCount)
+int DisplayConfigurationDlg(HWND /*hParent*/, DILCALLBACK /*ProcDIL*/,
+                            PSCONTROLLER_DETAILS /*pControllerDetails*/, UINT /*nCount*/)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     int nResult = WARNING_NOTCONFIRMED;
@@ -1804,11 +1802,9 @@ HRESULT CDIL_LIN_PeakUSB::LIN_Send(STLIN_MSG& sLinTxMsg)
     return hResult;
 }
 
-HRESULT CDIL_LIN_PeakUSB::LIN_DisableSlave(STLIN_MSG& sMessage)
+HRESULT CDIL_LIN_PeakUSB::LIN_DisableSlave(STLIN_MSG& /*sMessage*/)
 {
-    HRESULT hResult = S_FALSE;
-
-    return 0;
+   return S_FALSE;
 }
 
 HRESULT CDIL_LIN_PeakUSB::LIN_GetBusConfigInfo(BYTE* /*BusInfo*/)
@@ -1871,28 +1867,6 @@ static DWORD dwGetAvailableClientSlot()
     return nClientId;
 }
 
-static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFSE* pBuf)
-{
-    BOOL bExist = FALSE;
-    return bExist;
-}
-
-static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED], UINT& unCount, CBaseCANBufFSE* BufferToRemove)
-{
-    BOOL bReturn = TRUE;
-    for (UINT i = 0; i < unCount; i++)
-    {
-        if (RootBufferArray[i] == BufferToRemove)
-        {
-            if (i < (unCount - 1)) //If not the last bufffer
-            {
-                RootBufferArray[i] = RootBufferArray[unCount - 1];
-            }
-            unCount--;
-        }
-    }
-    return bReturn;
-}
 
 /* Function to load driver PLinApi.dll */
 HRESULT CDIL_LIN_PeakUSB::LIN_LoadDriverLibrary(void)
@@ -2073,7 +2047,7 @@ HRESULT CDIL_LIN_PeakUSB::LIN_GetConfiguration( SCONTROLLER_DETAILS_LIN psContro
                   update the error counter whenever it is read from the driver.
 *******************************************************************************/
 static int nGetErrorCounter( UINT unChannel,
-                             SERROR_CNT& sErrorCount)
+                             SERROR_CNT& /*sErrorCount*/)
 {
     int nReturn = -1;
 

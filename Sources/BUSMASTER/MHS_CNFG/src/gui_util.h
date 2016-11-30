@@ -25,7 +25,7 @@ extern "C" {
     double GetTextWidgetAsDouble(HWND ctrl_wnd);
     void SetDlgItemHex(HWND hdlg, WORD id, uint32_t format_id, uint32_t value);
     uint32_t GetDlgItemHex(HWND hdlg, WORD id);
-    void FillComboBox(HWND hdlg, WORD id, const char** str_tab,
+    int FillComboBox(HWND hdlg, WORD id, const char** str_tab,
                       const DWORD* data_tab, WORD tab_len, DWORD value);
     void SetComboBoxWnd(HWND ctrl_wnd, DWORD value);
     void SetComboBox(HWND hdlg, WORD id, DWORD value);

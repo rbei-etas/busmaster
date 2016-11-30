@@ -28,36 +28,40 @@ Local $Time_cyclic=0,$a=0
 if winexists($WIN_BUSMASTER) then
 
 
-	;_createConfig("TS_TX_LIN_09")
+
 	_loadConfig("cfx_TS_TX_LIN_09")
-	_SetViewToolBarLIN()																	 		; Select LIN Tool Bar to view.
+
 	sleep(1000)
-	;_linDriverSelectionXml()																 		; Select LIN driver selection from xml configuration File.
+
 	_linDriverSelection()
 
-	_DisableOverwriteMode()
-	;_linDriverSelectionXml()																		; Select LIN driver selection from xml configuration File.
+	_DisableOverwriteModeAll($linMenu)
+
 	sleep(1000)
 	sleep(1000)
 	_openLINClusterConfig()
 	WinWaitActive($WIN_ClustrConfigLIN)
 	if winexists($WIN_ClustrConfigLIN) then
 		sleep(1000)
-		;_importLDF("TestLIN2_1.ldf")
-		;sleep(1000)
+
 		ControlCommand($WIN_ClustrConfigLIN, "",$chckBoxEnableMaster, "Check", "") 					; Select Check box for enable Master mode.
 		Sleep(1000)
 		ControlClick($WIN_ClusterConfiguration,"",$BTN_OK_ClusterConfig)
 		sleep(1000)
 		_TxMsgMenuLIN()
-		_ConfigTXWinDetails(0,"db",1,1,"","Master","","2000","z")									; $Rownum,$HSCaseNo("db","ndb"),$messageid/Index(For dbMessage),chnl,datalength,Messageype(For Lin master/Slave),RTR(Yes/No),Repetition,Key
-		_ConfigTXWinDetails(1,"db",1,1,"","Slave","","2000","z")									; $Rownum,$HSCaseNo("db","ndb"),$messageid/Index(For dbMessage),chnl,datalength,Messageype(For Lin master/Slave),RTR(Yes/No),Repetit
+		_ConfigTXWinDetails(0,"db",1,1,"","Master","","2000","a")									; $Rownum,$HSCaseNo("db","ndb"),$messageid/Index(For dbMessage),chnl,datalength,Messageype(For Lin master/Slave),RTR(Yes/No),Repetition,Key
+		_ConfigTXWinDetails(1,"db",1,1,"","Slave","","2000","a")									; $Rownum,$HSCaseNo("db","ndb"),$messageid/Index(For dbMessage),chnl,datalength,Messageype(For Lin master/Slave),RTR(Yes/No),Repetition,Key
 
 		_CloseTxWindowArg("LIN")																	; Close Tx window
 		_ConnectDisconnect_LIN()
-		sleep(2000)
-		Send("z")
-		sleep(2000)
+		Sleep(1000)
+		;$rCount=_GetLINMsgWinItemCount()
+
+		;sleep(3000)
+		;WinActivate($WIN_BUSMASTER,"")
+		;$rCount=_GetLINMsgWinItemCount()
+		Send("a")
+		;sleep(100)
 		_ConnectDisconnect_LIN()
 		;_CloseTxWindowArg("LIN")																	; Close Tx window
 	EndIf
@@ -82,16 +86,19 @@ if winexists($WIN_BUSMASTER) then
 			$FirstMsg=1
 			$FirstMsgTime=StringSplit($Msg0.Item(0),":")
 			$Tm1=$FirstMsgTime[3]
+			ConsoleWrite("$Tm1 - "&$Tm1&@CRLF)
 		Endif
 		if $Msg1.Item(0) <>" " and $Msg1.Item(1)="Frame1" and $Msg1.Item(2)="LIN Message" and $Msg1.Item(3)="Tx" and $Msg1.Item(4)=1 and $Msg1.Item(5)=4 and $Msg1.Item(6)= 0x001 and $Msg1.Item(7)="F3 FF FF FF" and $Msg1.Item(8)="0x4A (""Enhanced"")" Then			; Compare the Direction, Channel and Msg ID of the first row
 			$SecondMsg=1
-			$SecondMsgTime=StringSplit($Msg0.Item(0),":")
+			$SecondMsgTime=StringSplit($Msg1.Item(0),":")
 			$Tm2=$SecondMsgTime[3]
+			ConsoleWrite("$Tm2 - "&$Tm2&@CRLF)
 		Endif
 		if $Msg2.Item(0) <>" " and $Msg2.Item(1)="Frame1" and $Msg2.Item(2)="LIN Message" and $Msg2.Item(3)="Tx" and $Msg2.Item(4)=1 and $Msg2.Item(5)=4 and $Msg2.Item(6)= 0x001 and $Msg2.Item(7)="F3 FF FF FF" and $Msg2.Item(8)="0x4A (""Enhanced"")" Then			; Compare the Direction, Channel and Msg ID of the first row
 			$ThirdMsg=1
 			$ThirdMsgTime=StringSplit($Msg2.Item(0),":")
 			$Tm3=$ThirdMsgTime[3]
+			ConsoleWrite("$Tm3 - "&$Tm3&@CRLF)
 		Endif
 
 	EndIf

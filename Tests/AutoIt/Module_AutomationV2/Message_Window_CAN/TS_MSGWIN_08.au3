@@ -28,7 +28,7 @@ if winexists($WIN_BUSMASTER) then
 	sleep(3000)
 	_ConnectDisconnect()
 	;_EnableOverwriteMode()
-	_EnableInterpretMode()
+	;_EnableInterpretMode()
      Sleep(1000)
 	 WinActivate($WIN_CANMsgWind)
 	 Sleep(500)

@@ -18,7 +18,7 @@
  * \author    Venkatanarayana makam
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#include "TSEditorGUI_stdafx.h"
+#include "stdafx.h"
 #include "TSEditorGUI_SettingsDlg.h"
 #include "TSEditorGUI_Definitions.h"
 #include ".\tseditorgui_settingsdlg.h"

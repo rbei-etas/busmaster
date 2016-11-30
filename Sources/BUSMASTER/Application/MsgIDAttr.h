@@ -26,6 +26,9 @@
 
 class CRadixEdit;   // forward declaration
 
+// Interface file for CMessageAttrib class
+#include "MessageAttrib.h"
+
 class CMsgIDAttr : public CDialog
 {
     // Construction
@@ -35,7 +38,7 @@ public:
     UINT m_nID;
     UINT m_nPreviousID;
     COLORREF m_sColour;
-    CMsgIDAttr(ETYPE_BUS eBusType, CWnd* pParent = nullptr);   // standard constructor
+    CMsgIDAttr(CMessageAttrib* msgAttributes, CWnd* pParent = nullptr);   // standard constructor
 
     // Dialog Data
     //{{AFX_DATA(CMsgIDAttr)
@@ -69,7 +72,7 @@ protected:
     DECLARE_MESSAGE_MAP()
 private:
     HBRUSH m_hClrBtn;
-    ETYPE_BUS m_eBusType;
+    CMessageAttrib* mMsgAttributes = nullptr;
     // To draw a solid box with a specified colour
     //void vDrawColourBox();
 };

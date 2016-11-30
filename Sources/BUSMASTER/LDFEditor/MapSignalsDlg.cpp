@@ -1,6 +1,6 @@
 #include "MapSignalsDlg.h"
 #include "LDFDatabaseManager.h"
-#include "IClusterProps.h"
+#include "LINDefines.h"
 #include "LDFUtility.h"
 #include "Defines.h"
 #include "qdialogbuttonbox.h"
@@ -56,7 +56,7 @@ void MapSignalsDlg::SetUpUi()
     std::list<IFrame*> lstFrames;
     std::map<ISignal*, ISignal*> mapSignals;
     std::string strSignal;
-    SignalProps ouSigProps;
+    LINSignalProps ouSigProps;
     ouSigProps.eType = eInvalidProtocol;
     QVariant qVariant;
     UID_ELEMENT uidSignal;
@@ -93,7 +93,7 @@ for(auto itrSignal : mapSignals)
 
                     ouColumns.push_back(QVariant(strSignal.c_str()));
                     ouColumns.push_back(QVariant());
-                    ouColumns.push_back(QVariant(GetString(ouSigProps.m_ouLINSignalProps.m_nLength, 10)));
+                    ouColumns.push_back(QVariant(GetString(ouSigProps.m_unSignalSize, 10)));
 
                     qVariant.setValue(itrSignal.first->GetUniqueId());
 
@@ -201,7 +201,7 @@ ERRORCODE MapSignalsDlg::vValidateSignalStartBit(UID_ELEMENT uidSignal, int nFra
     IElement* pSignal = nullptr;
 
     LDFDatabaseManager::GetDatabaseManager()->GetLDFCluster()->GetElement(eSignalElement, uidSignal, &pSignal);
-    SignalProps omSigProps;
+    LINSignalProps omSigProps;
     omSigProps.eType = eInvalidProtocol;
     std::string omSignalName;
 
@@ -211,7 +211,7 @@ ERRORCODE MapSignalsDlg::vValidateSignalStartBit(UID_ELEMENT uidSignal, int nFra
         ((ISignal*)pSignal)->GetProperties(omSigProps);
 
         int nStartBit = m_mapSignalUIDSigInst[uidSignal].m_nStartBit;
-        int nEndBit = nStartBit + (omSigProps.m_ouLINSignalProps.m_nLength-1);
+        int nEndBit = nStartBit + (omSigProps.m_unSignalSize-1);
 
         if(strSigSB.isEmpty() == true)
         {

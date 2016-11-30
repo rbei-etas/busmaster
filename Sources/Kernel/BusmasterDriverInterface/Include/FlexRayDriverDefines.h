@@ -222,6 +222,14 @@ public:
         s_FLXPOCSTATUS stcPocStatus;
         s_FLXPDUDATAMSG stcPDUMsg; //Added by bhaskar
     };
+
+    s_FLXMSG ()
+    {
+        this->m_nChannel = -1;
+        this->m_eMessageType = eFLXMESSAGETYPE::FLXMSGTYPE_UNKNOWN;
+        this->m_eChannel = eFlexRayChannel::eFlexRayChannelNone;
+        this->m_unTimestamp = 0;
+    }
 };
 typedef s_FLXMSG* ps_FLXMSG;
 

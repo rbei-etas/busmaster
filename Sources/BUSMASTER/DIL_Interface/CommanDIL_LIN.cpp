@@ -430,7 +430,7 @@ UCHAR CCommanDIL_LIN::ucCalculateClassicChecksum(SLIN_CRC sCrc)
         UCHAR ucDatabyte = sCrc.ucData[unIndex];
 
         ucChecksum += ucDatabyte;
-        UCHAR ucCarry = ucChecksum / ucMask;
+		UCHAR ucCarry = static_cast<unsigned char>(ucChecksum / ucMask);
 
         if(ucCarry != 0 )
         {
@@ -439,7 +439,7 @@ UCHAR CCommanDIL_LIN::ucCalculateClassicChecksum(SLIN_CRC sCrc)
     }
 
     ucChecksum = ~ucChecksum;
-    return ucChecksum;
+    return static_cast<unsigned char>(ucChecksum);
 }
 
 UCHAR CCommanDIL_LIN::ucCalculatePID(UCHAR ucId)
@@ -472,14 +472,14 @@ UCHAR CCommanDIL_LIN::ucCalculatePID(UCHAR ucId)
 
 UCHAR CCommanDIL_LIN::ucCalculateEnhancedChecksum(SLIN_CRC sCrc)
 {
-    UINT ucChecksum = ucCalculatePID(sCrc.unID);
+	UINT ucChecksum = ucCalculatePID(static_cast<unsigned char>(sCrc.unID));
     UCHAR ucMask = 0xFF;
-    for(INT unIndex = 0; unIndex < sCrc.unDlc; unIndex++)
+    for(auto unIndex = 0U; unIndex < sCrc.unDlc; unIndex++)
     {
         UCHAR ucDatabyte = sCrc.ucData[unIndex];
 
         ucChecksum += ucDatabyte;
-        UCHAR ucCarry = ucChecksum / ucMask;
+		UCHAR ucCarry = static_cast<unsigned char>(ucChecksum / ucMask);
 
         if(ucCarry != 0 )
         {
@@ -488,7 +488,7 @@ UCHAR CCommanDIL_LIN::ucCalculateEnhancedChecksum(SLIN_CRC sCrc)
     }
 
     ucChecksum = ~ucChecksum;
-    return ucChecksum;
+	return  static_cast<unsigned char>(ucChecksum);
 }
 
 UCHAR CCommanDIL_LIN::ucChecksumCalculation(SLIN_CRC sCrc)
@@ -706,7 +706,7 @@ HRESULT CCommanDIL_LIN::LIN_UpdateLinScheduleTable( DWORD& dwClientId, int& nCha
 }
 
 
-HRESULT CCommanDIL_LIN::LIN_EnableLinScheuleCommand( DWORD& dwClientId, int& nChannel, int nTableHandle, int nIndex, bool bEnable )
+HRESULT CCommanDIL_LIN::LIN_EnableLinScheuleCommand( DWORD& /*dwClientId*/, int& nChannel, int nTableHandle, int nIndex, bool bEnable )
 {
     EnterCriticalSection(&m_ouCriticalSection);
     std::map<int, CSheduleTable>::iterator itrTable = m_ouScheduleController[nChannel].m_ouScheduleTableList.find(nTableHandle);

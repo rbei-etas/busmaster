@@ -253,21 +253,6 @@ BOOL CLINBusStatisticsDlg::OnInitDialog()
 {
     CCommonStatistics::OnInitDialog();
 
-    /* Try to load resource DLL for icons*/
-    HMODULE hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
-
-    //SSH #issue 438+
-    if ( hModAdvancedUILib )
-    {
-        SetIcon( ::LoadIcon(hModAdvancedUILib, MAKEINTRESOURCE( IDI_ICON_NETWORKSTAT )), TRUE);
-        ::FreeLibrary(hModAdvancedUILib);
-        hModAdvancedUILib = nullptr;
-    }
-    else
-    {
-        SetIcon( AfxGetApp()->LoadIcon(IDI_ICON_NETWORKSTAT), TRUE);
-    }
-
     // Init Item color and Heading color variables
     int nHeadingColor, nItemColor;
     nHeadingColor = defHEADING_COLOR;

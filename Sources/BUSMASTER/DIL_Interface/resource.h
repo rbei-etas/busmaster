@@ -14,6 +14,7 @@
 #endif
 #define IDR_BMP_NET                     204
 #define IDD_DLG_HW_LISTING              130
+#define IDD_DLG_HW_LISTING_CAN          130
 #define IDC_LSTC_HW_LIST                1018
 #define IDC_BUT_REMOVE                  3
 #define IDC_BUT_SELECT                  5

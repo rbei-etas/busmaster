@@ -29,12 +29,16 @@
 #include "Utility/RadixEdit.h"
 #include "ChangeRegDefines.h"
 //#include "Include/CanUsbDefs.h"
+#include "DIL_Interface\IChangeRegisters.h"
 
 
-class CChangeRegisters : public CDialog//CPropertyPage
+class CChangeRegisters : public CDialog, public IChangeRegisters //CPropertyPage
 {
     //DECLARE_DYNCREATE(CChangeRegisters)
     // Construction
+public:
+	int InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount,UINT );
+	DOUBLE vValidateBaudRate(DOUBLE, int,UINT );
 public:
     // To Fill controller information taken from configuration module
     BOOL   bFillControllerConfig();
@@ -154,6 +158,7 @@ private:
 private:
     // Pointer to hold controller information
     PSCONTROLLER_DETAILS  m_pControllerDetails;
+	SCONTROLLER_DETAILS m_asDummyControllerDetails[CHANNEL_ALLOWED];
     int m_nLastSelection;
     CImageList m_omChannelImageList;
     USHORT   m_usBTR0BTR1;
@@ -166,11 +171,11 @@ private:
     // and to set the focus to the selected item
     void    vDisplayListBox(INT nIndex,INT nItemFocus  );
     void    vChangeListBoxValues(INT nflag) ;
+	void vExtractValuesForValidation();
     void    vUpdateBTRsBRPEditWindow(INT nColumnCount, INT nItem);
     void    vCalculateBaudRateNBTR0(CString omStrBtr1);
     void    vCalculateBaudRateNBTR1(CString omStrBtr0);
     void    vSelSetFocusItemList(INT nItemCount,INT nItem);
-    void    vValidateBaudRate();
     DOUBLE  dCalculateBaudRateFromBTRs(CString omStrBTR0, CString omStrBTR1);
     BOOL nListBoxValues(struct sCOLUMNS* psColListCtrl,
                         DOUBLE dBuadRate,WORD usClockFreq,

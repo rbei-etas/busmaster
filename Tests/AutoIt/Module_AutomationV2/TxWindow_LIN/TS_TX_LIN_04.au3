@@ -25,7 +25,7 @@ if winexists($WIN_BUSMASTER) then
 
 
 	_createConfig("TS_TX_LIN_04")
-	_SetViewToolBarLIN()																	 		; Select LIN Tool Bar to view.
+	;_SetViewToolBarLIN()																	 		; Select LIN Tool Bar to view.
 	sleep(1000)
 	;_linDriverSelectionXml()																 		; Select LIN driver selection from xml configuration File.
 	_linDriverSelection()
@@ -52,7 +52,7 @@ if winexists($WIN_BUSMASTER) then
 		;_CloseTxWindowArg("LIN")																	; Close Tx window
 	EndIf
 
-	_DisableOverwriteMode()
+	_DisableOverwriteModeAll($linMenu)
 	$rCount=_GetLINMsgWinItemCount()																;count no. of items in msgwindow
 	$CountCol=_GetLINMsgWinColCount()																;count no. of columns in msgwindow
 	ConsoleWrite("$rCount="&$rCount&@CRLF)

@@ -5,6 +5,8 @@
 #include <math.h>
 
 //#include "Wrapper_FlexRay.h"
+unsigned long long processSignedValue(unsigned long long nSigValueInBits, int signlalLength, int type);
+
 
 GETFLEXRAYPHYSICALVALUE g_pfGetPhysicalValue;
 GETFLEXRAYRAWVALUE g_pfGetRawValue;
@@ -61,7 +63,7 @@ unsigned long long GetRawValue(int startBit, bool bIntel, int signlalLength, int
     unsigned int byteNumber = startBit / 8 + 1;
 
 
-
+	
     if(pchData != NULL )
     {
         unsigned int  nBytesToRead = 0;
@@ -78,7 +80,7 @@ unsigned long long GetRawValue(int startBit, bool bIntel, int signlalLength, int
 
         if (bValid == true)
         {
-            unsigned int  nBitsRead = 0;
+			unsigned int  nBitsRead = 0;
             for (register unsigned int  i = 0; i < nBytesToRead; i++)
             {
                 /* Please note: If byte number is byteNumber then array index = byteNumber - 1 */
@@ -98,15 +100,33 @@ unsigned long long GetRawValue(int startBit, bool bIntel, int signlalLength, int
                 unsigned char byMask = 0;
                 byMask = (unsigned char)(pow((float) 2.0, (int) nCurrBitsToRead) - 1);
                 //Update the signal value
-                nSigValueInBits |= (unsigned long long )(byMsgByteVal & byMask) << nBitsRead;
+                nSigValueInBits |= (long long )(byMsgByteVal & byMask) << nBitsRead;
 
                 nBitsRead += nCurrBitsToRead;
             }
         }
     }
+	return processSignedValue(nSigValueInBits, signlalLength, type);
+}
 
-
-    return (nSigValueInBits);
+unsigned long long processSignedValue(unsigned long long nSigValueInBits, int signlalLength, int type)
+{
+	if(0 == signlalLength)
+	{
+		return 0;
+	}
+	//Signed
+	if(1 == type)
+	{
+		unsigned long long maxValue = (unsigned long long)pow((float) 2.0, (signlalLength-1)) - 1;
+		if(maxValue < nSigValueInBits)
+		{
+			unsigned __int64 mask = 0xFFFFFFFFFFFFFFFF;
+			mask = mask << signlalLength;
+			nSigValueInBits = mask | nSigValueInBits;
+		}
+	}
+	return nSigValueInBits;
 }
 
 unsigned nGetNoOfBytesToRead(unsigned int  nBitNum, unsigned int  nSigLen)

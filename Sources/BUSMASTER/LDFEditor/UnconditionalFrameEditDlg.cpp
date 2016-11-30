@@ -1,6 +1,6 @@
 #include "UnconditionalFrameEditDlg.h"
 #include "LDFDatabaseManager.h"
-#include "IClusterProps.h"
+#include "LINDefines.h"
 #include "LDFUtility.h"
 #include "Defines.h"
 #include "MapSignalsDlg.h"
@@ -49,8 +49,8 @@ void UnconditionalFrameEditDlg::SetUpUi()
     m_bIsDynFrame = false;
     std::string strName, strECUName;
     QString strValue;
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+    ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     std::map<std::string, std::string> maSubscribers;
     std::list<IEcu*> lstTxECUs, lstRxECUs;
     ui.editFrameName->setValidator(new QRegExpValidator(QRegExp(defIdentifier_RegExp)));
@@ -82,11 +82,11 @@ void UnconditionalFrameEditDlg::SetUpUi()
         setWindowTitle(strTitle);
 
         // Set FrameId
-        strValue = GetString(ouFrameProps.m_ouLINUnConditionFrameProps.m_unId);
+        strValue = GetString(ouFrameProps.m_nMsgId);
         ui.comboFrameId->setCurrentText(strValue);
 
         // Set Frame Length
-        strValue = GetString(ouFrameProps.m_ouLINUnConditionFrameProps.m_nLength, 10);          //Always Dec
+        strValue = GetString(ouFrameProps.m_unMsgSize, 10);          //Always Dec
         ui.comboFrameLength->setCurrentText(strValue);
         m_omFrameLength = strValue.toStdString();
 
@@ -115,7 +115,7 @@ void UnconditionalFrameEditDlg::SetUpUi()
         void* pDynFrameList;
         m_pouLDFCluster->GetProperties(eLdfDyanmicFrameList, &ouDyanamicFramelist);
 
-        auto itr = std::find(ouDyanamicFramelist.begin(), ouDyanamicFramelist.end(), ouFrameProps.m_ouLINUnConditionFrameProps.m_unId);
+        auto itr = std::find(ouDyanamicFramelist.begin(), ouDyanamicFramelist.end(), ouFrameProps.m_nMsgId);
         if(ouDyanamicFramelist.end() != itr)
         {
             ui.chkDynFrame->setChecked(true);
@@ -139,7 +139,7 @@ void UnconditionalFrameEditDlg::vAddSubscribers(std::list<IEcu*> lstRxECUs)
     std::string strECUName;
     // Adding ECUs to Publisherlst and Subscriberlst
     maSubscribers.clear();
-for(auto itrECU : lstRxECUs)
+    for(auto itrECU : lstRxECUs)
     {
         IEcu* pEcu =  (IEcu*)(itrECU);
         strECUName = "";
@@ -163,20 +163,20 @@ void UnconditionalFrameEditDlg::vExistingFrameDetails(unsigned int unFrameId)
     std::map<UID_ELEMENT, IElement*> mapFrames;
     std::string omstrFrameName;
     m_pouLDFCluster->GetElementList(eFrameElement, mapFrames);
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
-for(auto itrFrame : mapFrames)
+    LinFrameProps ouFrameProps;
+    ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
+    for(auto itrFrame : mapFrames)
     {
         ((IFrame*)itrFrame.second)->GetProperties(ouFrameProps);
 
-        if(ouFrameProps.m_eFrameType == eLIN_Unconditional)
+        if (ouFrameProps.m_eLinFrameType == eLinUnconditionalFrame)
         {
             itrFrame.second->GetName(omstrFrameName);
             m_mapFrameNames[omstrFrameName] = omstrFrameName;
 
-            if(unFrameId != ouFrameProps.m_ouLINUnConditionFrameProps.m_unId)
+            if(unFrameId != ouFrameProps.m_nMsgId)
             {
-                m_mapFrameIds[ouFrameProps.m_ouLINUnConditionFrameProps.m_unId] = ouFrameProps.m_ouLINUnConditionFrameProps.m_unId;
+                m_mapFrameIds[ouFrameProps.m_nMsgId] = ouFrameProps.m_nMsgId;
             }
         }
     }
@@ -211,7 +211,7 @@ void UnconditionalFrameEditDlg::PopulateFrameSignals()
 
     (*m_pouFrame)->GetSignalList(mapSignals);
 
-for(auto itrMap : mapSignals)
+    for(auto itrMap : mapSignals)
     {
         vAddSignalToTree(itrMap.first, itrMap.second);
     }
@@ -226,7 +226,7 @@ void UnconditionalFrameEditDlg::vPopulatePublishers()
     ui.comboPublisher->addItem(defNONE);
     QVariant qVar;
     // Populating Publishers
-for(auto itrECU : mapECUs)
+    for(auto itrECU : mapECUs)
     {
         IEcu* pEcu =  (IEcu*)(itrECU.second);
         strECUName = "";
@@ -254,7 +254,7 @@ void UnconditionalFrameEditDlg::vEnableDynamicFrame()
 
 void UnconditionalFrameEditDlg::vAddSignalToTree(ISignal* pSignal, SignalInstanse ouSignalInstance)
 {
-    SignalProps ouSignalProps;
+    LINSignalProps ouSignalProps;
     ouSignalProps.eType = eInvalidProtocol;
     std::string strSubscribers = "", strName = "";
     std::list<IEcu*> lstECUs;
@@ -278,8 +278,8 @@ void UnconditionalFrameEditDlg::vAddSignalToTree(ISignal* pSignal, SignalInstans
     strSubscribers = "";
     nGetSubscribers(lstECUs, strSubscribers);
     ouColumns.push_back(QVariant(strSubscribers.c_str()));
-    ouColumns.push_back(GetString(ouSignalProps.m_ouLINSignalProps.m_nLength, 10));         //Alwas dec
-    ouColumns.push_back(QVariant(ouSignalProps.m_ouLINSignalProps.m_nIntialValue));
+    ouColumns.push_back(GetString(ouSignalProps.m_unSignalSize, 10));         //Alwas dec
+    ouColumns.push_back(QVariant(ouSignalProps.m_nIntialValue));
     ouColumns.push_back(QVariant(strName.c_str()));
     QVariant ouVariant;
     ouVariant.setValue(pSignal->GetUniqueId());
@@ -322,7 +322,7 @@ void UnconditionalFrameEditDlg::vUpdateFrameSignalList(std::map<UID_ELEMENT, Sig
     ui.tableSignals->setRowCount(0);
     std::list<IEcu*> lstRxECUs;
     std::string strSubscribers = "";
-for(auto itrSignal : mapSelectedSignals)
+    for(auto itrSignal : mapSelectedSignals)
     {
         uidSignal = itrSignal.first;
         m_pouLDFCluster->GetElement(eSignalElement, uidSignal, &pSignal);
@@ -345,18 +345,18 @@ void UnconditionalFrameEditDlg::onSelectionCancel()
 
 void UnconditionalFrameEditDlg::vUpdateNewFrameDetails()
 {
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
-    UID_ELEMENT uidFrame;
+    LinFrameProps ouFrameProps;
+    ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
+    UID_ELEMENT uidFrame = INVALID_UID_ELEMENT;
     IFrame* pFrame = nullptr;
     m_pouLDFCluster->CreateElement(eFrameElement, (IElement**)&pFrame);
 
 
     //2. Set Frame Props
     unsigned int nLength = GetUnsignedInt(ui.comboFrameLength->currentText(), 10);      //Always Dec
-    ouFrameProps.m_ouLINUnConditionFrameProps.m_nLength = nLength;
-    ouFrameProps.m_ouLINUnConditionFrameProps.m_unId = GetUnsignedInt(ui.comboFrameId->currentText());
-    ouFrameProps.m_eFrameType = eLIN_Unconditional;
+    ouFrameProps.m_unMsgSize = nLength;
+    ouFrameProps.m_nMsgId = GetUnsignedInt(ui.comboFrameId->currentText());
+    ouFrameProps.m_eLinFrameType = eLinUnconditionalFrame;
 
     pFrame->SetProperties(ouFrameProps);
 
@@ -408,7 +408,7 @@ void UnconditionalFrameEditDlg::vUpdateNewFrameDetails()
                 {
                     pSignal->GetEcus(eRx, ecuList);
                 }
-for ( auto itrEcu : ecuList )
+                for ( auto itrEcu : ecuList )
                 {
                     itrEcu->MapFrame(eRx, uidFrame);
                 }
@@ -423,8 +423,8 @@ for ( auto itrEcu : ecuList )
 
 void UnconditionalFrameEditDlg::vUpdateEditFrameDetails()
 {
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+    ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     UID_ELEMENT uidFrame;
     IFrame* pFrame = *m_pouFrame;
     uidFrame = pFrame->GetUniqueId();
@@ -432,9 +432,9 @@ void UnconditionalFrameEditDlg::vUpdateEditFrameDetails()
 
     //2. Set Frame Props
 
-    ouFrameProps.m_ouLINUnConditionFrameProps.m_nLength = GetUnsignedInt(ui.comboFrameLength->currentText(), 10);
-    ouFrameProps.m_ouLINUnConditionFrameProps.m_unId = GetUnsignedInt(ui.comboFrameId->currentText());
-    ouFrameProps.m_eFrameType = eLIN_Unconditional;
+    ouFrameProps.m_unMsgSize = GetUnsignedInt(ui.comboFrameLength->currentText(), 10);
+    ouFrameProps.m_nMsgId = GetUnsignedInt(ui.comboFrameId->currentText());
+    ouFrameProps.m_eLinFrameType = eLinUnconditionalFrame;
 
     pFrame->SetProperties(ouFrameProps);
 
@@ -442,7 +442,7 @@ void UnconditionalFrameEditDlg::vUpdateEditFrameDetails()
     pFrame->GetEcus(eTx, lstECUs);
 
     UID_ELEMENT uidECU;
-for(auto itrECU : lstECUs)
+    for(auto itrECU : lstECUs)
     {
         uidECU = itrECU->GetUniqueId();
         itrECU->UnMapFrame(eTx, uidFrame);
@@ -450,7 +450,7 @@ for(auto itrECU : lstECUs)
     }
     lstECUs.clear();
 
-for(auto itrECU : m_ouRxEcus)
+    for(auto itrECU : m_ouRxEcus)
     {
         uidECU = itrECU->GetUniqueId();
         itrECU->UnMapFrame(eRx, uidFrame);
@@ -509,7 +509,7 @@ for(auto itrECU : m_ouRxEcus)
                 {
                     pSignal->GetEcus(eRx, ecuList);
                 }
-for ( auto itrEcu : ecuList )
+                for ( auto itrEcu : ecuList )
                 {
                     itrEcu->MapFrame(eRx, uidFrame);
                 }
@@ -526,8 +526,8 @@ void UnconditionalFrameEditDlg::onSelectionOk()
 {
     if(EC_SUCCESS == nValidateValues())
     {
-        FrameProps ouFrameProps;
-        ouFrameProps.m_eFrameType = eFrame_Invalid;
+        LinFrameProps ouFrameProps;
+        ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
         UID_ELEMENT uidFrame;
         if(m_eUIMode == eNew)
         {
@@ -579,14 +579,14 @@ ERRORCODE UnconditionalFrameEditDlg::nValidateValues()
     std::string omStrName = ui.editFrameName->text().toStdString();
     QMessageBox msgBox;
     std::string omstrCurrFrame = "";
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+    ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     unsigned int unExistingFrameID;
     if(nullptr != (*m_pouFrame))
     {
         (*m_pouFrame)->GetName(omstrCurrFrame);
         (*m_pouFrame)->GetProperties(ouFrameProps);
-        unExistingFrameID =  ouFrameProps.m_ouLINUnConditionFrameProps.m_unId;
+        unExistingFrameID =  ouFrameProps.m_nMsgId;
         vExistingFrameDetails(unExistingFrameID);
     }
 
@@ -639,7 +639,7 @@ int UnconditionalFrameEditDlg::bIsDynamicFrame(unsigned int unFrameId)
     std::list<unsigned int> ouDyanamicFramelist;
     m_pouLDFCluster->GetProperties(eLdfDyanmicFrameList, &ouDyanamicFramelist);
     int nCount = 0;
-for(auto itr : ouDyanamicFramelist)
+    for(auto itr : ouDyanamicFramelist)
     {
         if(itr == unFrameId)
         {

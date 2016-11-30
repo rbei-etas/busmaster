@@ -43,7 +43,7 @@
 //#include "Include/DIL_CommonDefs.h"
 //#include "Include/Can_Error_Defs.h"
 //#include "DIL_Interface/BaseDIL_CAN_Controller.h"
-#include "../DIL_Interface/HardwareListing.h"
+#include "../DIL_Interface/HardwareListingCAN.h"
 
 #include "ChangeRegisters_CAN_ETAS_BOA.h"
 #include "Application/MultiLanguage.h"
@@ -342,10 +342,9 @@ public:
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
     HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
-    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+	HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
-    HRESULT CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
@@ -1198,7 +1197,7 @@ static void vCopyOCI_CAN_RX_2_DATA(const OCI_CANRxMessage* SrcMsg, STCANDATA* De
     }
 
     DestMsg->m_lTickCount.QuadPart = (LONGLONG)(SrcMsg->timeStamp * sg_asChannel[Channel - 1].m_fResolution);
-    memcpy(DestMsg->m_uDataInfo.m_sCANMsg.m_ucData, SrcMsg->data, sizeof(DestMsg->m_uDataInfo.m_sCANMsg.m_ucData));
+    memcpy(DestMsg->m_uDataInfo.m_sCANMsg.m_ucData, SrcMsg->data, sizeof(SrcMsg->data));
 }
 
 /**
@@ -1910,7 +1909,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS ouControl
     }
     INTERFACE_HW_LIST psHWInterface;
     bool bIsChannelSelected = false;
-    for (UINT nList = 0; nList < sg_SelectedChannels.m_nChannelCount; nList++)
+    for (UINT nList = 0; nList < CHANNEL_ALLOWED && nList < sg_SelectedChannels.m_nChannelCount; nList++)
     {
         sg_anSelectedItems[nList] = GetSelectedChannelIndex(nList);
         if(sg_anSelectedItems[nList] != -1)
@@ -2089,13 +2088,14 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT6
 *
 * @return Operation Result. 0 incase of no errors. Failure Error codes otherwise.
 */
-static int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount)
+static int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount,PSCONTROLLER_DETAILS InitData)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
     CWnd objMainWnd;
     objMainWnd.Attach(hParent);
-    CHardwareListing HwList(psInterfaces, nCount, pnSelList, CAN, CHANNEL_ALLOWED, &objMainWnd);
+	IChangeRegisters* pAdvancedSettings = new CChangeRegisters_CAN_ETAS_BOA(nullptr, InitData, nCount);
+	CHardwareListingCAN HwList(psInterfaces, nCount, pnSelList, CAN, CHANNEL_ALLOWED, &objMainWnd, InitData, pAdvancedSettings);
     INT nRet = HwList.DoModal();
     objMainWnd.Detach();
 
@@ -2111,7 +2111,36 @@ static int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int*
     }
 }
 
-HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
+BOA_ResultCode CreateController(int nChannelIndex)
+{
+	OCI_CANControllerCapabilities capabilities;
+	BOA_ResultCode err = 0;
+#if BOA_VERSION >= BOA_VERSION_2_0
+	capabilities.canFDSupport = 0;
+	BOA_Version                     version = {1, 3, 0, 0};
+	BOA_Version                     version1 = {1, 1, 0, 0};
+	err = (*(sBOA_PTRS.m_sOCI.destroyCANController))((sg_asChannel[nChannelIndex].m_OCI_HwHandle));
+		err =  (*(sBOA_PTRS.createCANController))(sg_asChannel[nChannelIndex].m_acURI,&version,
+			&(sg_asChannel[nChannelIndex].m_OCI_HwHandle));
+		if(BOA_FAILED(err)  )
+		{
+			sg_asChannel[nChannelIndex].m_bSupportCANFD = false;
+			err =  (*(sBOA_PTRS.createCANController))(sg_asChannel[nChannelIndex].m_acURI,&version1,
+				&(sg_asChannel[nChannelIndex].m_OCI_HwHandle));
+		}
+		else
+		{
+					sg_asChannel[nChannelIndex].m_bSupportCANFD = true;					
+		}
+		err = (*(sBOA_PTRS.m_sOCI.canioVTable.getCANControllerCapabilities))(sg_asChannel[nChannelIndex].m_OCI_HwHandle,
+			&capabilities);
+#else
+	err =  (*(sBOA_PTRS.m_sOCI.createCANController))(sg_asChannel[nChannelIndex].m_acURI,
+		&(sg_asChannel[nChannelIndex].m_OCI_HwHandle));
+#endif
+	return err;
+}
+HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData)
 {
     // VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_DRIVER_SELECTED, ERR_IMPROPER_STATE);
     USES_CONVERSION;
@@ -2143,6 +2172,16 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
                 psHWInterface[i].m_acDescription = acURI[i];
                 sg_HardwareList.m_omHardwareChannel[i] = psHWInterface[i].m_acNameInterface;
                 sg_ControllerDetails[i].m_omHardwareDesc = psHWInterface[i].m_acNameInterface;
+				strcpy_s(sg_asChannel[i].m_acURI, psHWInterface[i].m_acNameInterface.c_str());
+            }
+			for (UINT nChannelIndex = 0; nChannelIndex < nCount; nChannelIndex++)
+			{
+				//BOA_ResultCode err = CreateController(nChannelIndex);
+				sg_asChannel[nChannelIndex].m_bSupportCANFD = true;
+			}
+			for(int nChannelIndex = 0; nChannelIndex<nCount; nChannelIndex++)
+			{
+				InitData[nChannelIndex].m_bSupportCANFD = sg_asChannel[nChannelIndex].m_bSupportCANFD;				
             }
 
             /* List hw interface if there are more than one hw */
@@ -2157,7 +2196,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
                     }
                     nCount  = unDefaultChannelCnt;
                 }
-                else if ( ListHardwareInterfaces(nullptr, psHWInterface, sg_anSelectedItems, nCount) != 0 )
+                else if ( ListHardwareInterfaces(nullptr, psHWInterface, sg_anSelectedItems, nCount,InitData) != 0 )
                 {
                     /* return if user cancels hardware selection */
                     return HW_INTERFACE_NO_SEL;
@@ -2194,86 +2233,63 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SelectHwInterface(const INTERFACE_HW_LIST& asSelH
     HRESULT hResult = S_OK;
 
     /* First select only supported number of HW interfaces */
-    for (UINT i = 0; i < sg_nNoOfChannels; i++)
+	for (UINT nChannelIndex = 0; nChannelIndex < sg_nNoOfChannels; nChannelIndex++)
     {
-        strcpy_s(sg_asChannel[i].m_acURI, asSelHwInterface[i].m_acNameInterface.c_str());
-        sg_ControllerDetails[i].m_omHardwareDesc = asSelHwInterface[i].m_acNameInterface;
+		strcpy_s(sg_asChannel[nChannelIndex].m_acURI, asSelHwInterface[nChannelIndex].m_acNameInterface.c_str());
+		sg_ControllerDetails[nChannelIndex].m_omHardwareDesc = asSelHwInterface[nChannelIndex].m_acNameInterface;
     }
 
     /* Create the controller instance. */
-    for (UINT i = 0; i < sg_nNoOfChannels; i++)
+	for (UINT nChannelIndex = 0; nChannelIndex < sg_nNoOfChannels; nChannelIndex++) 
     {
         BOA_ResultCode err=0;
         // bool bSUpportCAN_FD = false;
-#if BOA_VERSION >= BOA_VERSION_2_0
-        BOA_Version                     version = {1, 3, 0, 0};
+		err = CreateController(nChannelIndex);
 
-        BOA_Version                     version1 = {1, 1, 0, 0};
-
-        err =  (*(sBOA_PTRS.createCANController))(sg_asChannel[i].m_acURI,&version,
-                &(sg_asChannel[i].m_OCI_HwHandle));
-
-        if(BOA_FAILED(err)  )
-        {
-            // m_bSupportCANFD
-            sg_asChannel[i].m_bSupportCANFD = false;
-
-            err =  (*(sBOA_PTRS.createCANController))(sg_asChannel[i].m_acURI,&version1,
-                    &(sg_asChannel[i].m_OCI_HwHandle));
-        }
-        else
-        {
-            sg_asChannel[i].m_bSupportCANFD = true;
-        }
-
-#else
-
-        err =  (*(sBOA_PTRS.m_sOCI.createCANController))(sg_asChannel[i].m_acURI,
-                &(sg_asChannel[i].m_OCI_HwHandle));
-#endif
         if (BOA_SUCCEEDED(err))
         {
             /*
             * Assign to userdata of QueueCfg. This will be useful to differentiate
             * between the controller
             */
-            sg_asChannel[i].m_OCI_RxQueueCfg.onFrame.userData = (void*)sg_asChannel[i].m_OCI_HwHandle;
-            sg_asChannel[i].m_OCI_RxQueueCfg.onEvent.userData = (void*)sg_asChannel[i].m_OCI_HwHandle;
+			sg_asChannel[nChannelIndex].m_OCI_RxQueueCfg.onFrame.userData = (void*)sg_asChannel[nChannelIndex].m_OCI_HwHandle;
+			sg_asChannel[nChannelIndex].m_OCI_RxQueueCfg.onEvent.userData = (void*)sg_asChannel[nChannelIndex].m_OCI_HwHandle;
             BOA_ResultCode ErrorCode = OCI_FAILURE;
             OCI_CANConfiguration ociCANConfig;
 
+			ErrorCode = (*sBOA_PTRS.m_sOCI.closeCANController)(sg_asChannel[nChannelIndex].m_OCI_HwHandle);
             /* configure the controller first */
-            ErrorCode = (*(sBOA_PTRS.m_sOCI.openCANController))(sg_asChannel[i].m_OCI_HwHandle,
-                        &(sg_asChannel[i].m_OCI_CANConfig),
-                        &(sg_asChannel[i].m_OCI_CntrlProp));
+			ErrorCode = (*(sBOA_PTRS.m_sOCI.openCANController))(sg_asChannel[nChannelIndex].m_OCI_HwHandle,
+				&(sg_asChannel[nChannelIndex].m_OCI_CANConfig),
+				&(sg_asChannel[nChannelIndex].m_OCI_CntrlProp));
 
             // Check if incompatible config
             if(ErrorCode == BOA_ERR_INCOMPATIBLE_CONFIG)
             {
                 // Get the config with which channel opened
-                ErrorCode = (*(sBOA_PTRS.m_sOCI.getCANConfiguration))(sg_asChannel[i].m_OCI_HwHandle, &ociCANConfig);
+				ErrorCode = (*(sBOA_PTRS.m_sOCI.getCANConfiguration))(sg_asChannel[nChannelIndex].m_OCI_HwHandle, &ociCANConfig);
 
                 if(BOA_SUCCEEDED(ErrorCode))
                 {
                     //Open the channel with existing configuration
-                    ErrorCode = (*(sBOA_PTRS.m_sOCI.openCANController))(sg_asChannel[i].m_OCI_HwHandle,
+					ErrorCode = (*(sBOA_PTRS.m_sOCI.openCANController))(sg_asChannel[nChannelIndex].m_OCI_HwHandle,
                                 &(ociCANConfig),
-                                &(sg_asChannel[i].m_OCI_CntrlProp));
-                    sg_asChannel[i].m_OCI_CANConfig = ociCANConfig;
+						&(sg_asChannel[nChannelIndex].m_OCI_CntrlProp));
+					sg_asChannel[nChannelIndex].m_OCI_CANConfig = ociCANConfig;
                 }
             }
             if (BOA_SUCCEEDED(ErrorCode))
             {
-                if (ManageQueue(QUEUE_ADD, i) == S_OK)
+				if (ManageQueue(QUEUE_ADD, nChannelIndex) == S_OK)
                 {
-                    if (ManageFilters(FILTER_ADD, i) == S_OK)
+					if (ManageFilters(FILTER_ADD, nChannelIndex) == S_OK)
                     {
-                        hResult = (*(sBOA_PTRS.m_sOCI.timeVTable.getTimerCapabilities))(sg_asChannel[i].m_OCI_HwHandle,
-                                  &(sg_asChannel[i].m_OCI_TimerCapabilities));
+						hResult = (*(sBOA_PTRS.m_sOCI.timeVTable.getTimerCapabilities))(sg_asChannel[nChannelIndex].m_OCI_HwHandle,
+							&(sg_asChannel[nChannelIndex].m_OCI_TimerCapabilities));
                         if (hResult == S_OK)
                         {
-                            sg_asChannel[i].m_fResolution = (float)10000 /
-                                                            (float)(sg_asChannel[i].m_OCI_TimerCapabilities.tickFrequency);
+							sg_asChannel[nChannelIndex].m_fResolution = (float)10000 /
+								(float)(sg_asChannel[nChannelIndex].m_OCI_TimerCapabilities.tickFrequency);
                         }
                         else
                         {
@@ -2355,78 +2371,9 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_DeselectHwInterface(void)
 }
 
 
-/**
-* Displays the configuration dialog for controller
-*
-* @return S_OK for success, S_FALSE for failure
-*/
-static int DisplayConfigurationDlg(HWND /* hParent */, PSCONTROLLER_DETAILS pControllerDetails, UINT nCount)
-{
-    AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    int nResult = WARNING_NOTCONFIRMED;
+/* First initialize with existing hw description */
+/* Do nothing... default return value is S_FALSE. */
 
-    SCONTROLLER_DETAILS sController[defNO_OF_CHANNELS];
-
-    for(int i =0 ; i < defNO_OF_CHANNELS; i++)
-    {
-        sController[i] = pControllerDetails[i];
-    }
-
-    CChangeRegisters_CAN_ETAS_BOA ouChangeRegister(nullptr, pControllerDetails, nCount);
-    ouChangeRegister.DoModal();
-
-    nResult = ouChangeRegister.nGetInitStatus();
-
-    return nResult;
-}
-
-HRESULT CDIL_CAN_ETAS_BOA::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
-{
-    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
-    VALIDATE_POINTER_RETURN_VAL(InitData, WARN_INITDAT_NCONFIRM);
-
-    USES_CONVERSION;
-    unsigned int l_length = 0;
-    INT Result = WARN_INITDAT_NCONFIRM;
-    PSCONTROLLER_DETAILS psContrlDets = (PSCONTROLLER_DETAILS)InitData;
-
-    /* First initialize with existing hw description */
-    for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++, l_length++)
-    {
-        psContrlDets[i].m_omHardwareDesc = sg_asChannel[i].m_acURI;
-    }
-    if (l_length > 0)
-    {
-        Result = DisplayConfigurationDlg(sg_hOwnerWnd, psContrlDets, l_length);
-        switch (Result)
-        {
-            case WARNING_NOTCONFIRMED:
-                Result = WARN_INITDAT_NCONFIRM;
-                break;
-
-            case INFO_INIT_DATA_CONFIRMED:
-                Length = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
-                Result = CAN_SetConfigData(psContrlDets, Length);
-                if (Result == S_OK)
-                {
-                    Result = INFO_INITDAT_CONFIRM_CONFIG;
-                }
-                break;
-
-            case INFO_RETAINED_CONFDATA:
-                Result = INFO_INITDAT_RETAINED;
-                break;
-
-            case ERR_CONFIRMED_CONFIGURED: // Not to be addressed at present
-            case INFO_CONFIRMED_CONFIGURED: // Not to be addressed at present
-            default:
-                /* Do nothing... default return value is S_FALSE. */
-                break;
-        }
-    }
-
-    return Result;
-}
 
 HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PSCONTROLLER_DETAILS pInitData, int /*Length*/)
 {
@@ -2455,25 +2402,28 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_SetConfigData(PSCONTROLLER_DETAILS pInitData, int
         ErrCode = (*sBOA_PTRS.m_sOCI.closeCANController)(sg_asChannel[i].m_OCI_HwHandle);
 
         /* Now load the controller config and open the controller */
-        ErrCode = (*sBOA_PTRS.m_sOCI.openCANController)(sg_asChannel[i].m_OCI_HwHandle,
-                  &(sg_asChannel[i].m_OCI_CANConfig),
-                  &(sg_asChannel[i].m_OCI_CntrlProp));
-        // Check if incompatible config
-        if(ErrCode == BOA_ERR_INCOMPATIBLE_CONFIG)
-        {
-            OCI_CANConfiguration ociCANConfig;
-            // Get the config with which channel opened
-            ErrCode = (*(sBOA_PTRS.m_sOCI.getCANConfiguration))(sg_asChannel[i].m_OCI_HwHandle, &ociCANConfig);
+		if (BOA_SUCCEEDED(ErrCode))
+		{
+			ErrCode = (*sBOA_PTRS.m_sOCI.openCANController)(sg_asChannel[i].m_OCI_HwHandle,
+				&(sg_asChannel[i].m_OCI_CANConfig),
+				&(sg_asChannel[i].m_OCI_CntrlProp));
+			// Check if incompatible config
+			if (ErrCode == BOA_ERR_INCOMPATIBLE_CONFIG)
+			{
+				OCI_CANConfiguration ociCANConfig;
+				// Get the config with which channel opened
+				ErrCode = (*(sBOA_PTRS.m_sOCI.getCANConfiguration))(sg_asChannel[i].m_OCI_HwHandle, &ociCANConfig);
 
-            if(BOA_SUCCEEDED(ErrCode))
-            {
-                //Open the channel with existing configuration
-                ErrCode = (*(sBOA_PTRS.m_sOCI.openCANController))(sg_asChannel[i].m_OCI_HwHandle,
-                          &(ociCANConfig),
-                          &(sg_asChannel[i].m_OCI_CntrlProp));
-                sg_asChannel[i].m_OCI_CANConfig = ociCANConfig;
-                bIsParamAdapted = true;
-            }
+				if (BOA_SUCCEEDED(ErrCode))
+				{
+					//Open the channel with existing configuration
+					ErrCode = (*(sBOA_PTRS.m_sOCI.openCANController))(sg_asChannel[i].m_OCI_HwHandle,
+						&(ociCANConfig),
+						&(sg_asChannel[i].m_OCI_CntrlProp));
+					sg_asChannel[i].m_OCI_CANConfig = ociCANConfig;
+					bIsParamAdapted = true;
+				}
+			}
         }
 
         /* Fill the hardware description details */

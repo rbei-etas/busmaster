@@ -11,27 +11,32 @@
     </copyright>
     <metadata>
       <keywords>
-        <indexterm>FlexRay Transmit Window</indexterm>
+        <indexterm>LIN Simulation</indexterm>
       </keywords>
     </metadata>
   </prolog>
   <body>
     <p><b>Introduction:</b></p>
-    <p>Currently BUSMASTER can be used as slave to Respond to Master Requests and to Monitor the LIN messages.The following steps are required to Configure the BUSMASTER for Transmit\Receive the LIN Messages.</p>
+    <p>BUSMASTER can be used as master to transmit master requests and as slave to respond to master requests. User can monitor/analyze the LIN messages using BUSMASTER.The following steps are required to Configure the BUSMASTER for transmission of frame headers or transmission/reception of LIN messages.</p>
     <p><b>1. Cluster Configuration:</b> </p>
-    <p>To Transmit\Receive the LIN Messages BUSMASTER has to be configured with LIN Baud Rate and Version.Refer <b>Cluster Configuration</b> Section for more Information.</p>
-    <p/>
-    <p><b>2. <b>Controller (Driver) Selection:</b></b></p>
-    <p>BUSMASTER can be connected to Physical LIN Network using LIN Controller.Refer <b>Controller Selection</b> section for more Information.</p>
-    <p/>
-    <p><b>3. Transmit Messages:</b></p>
-    <p>LIN Slave Messages Can be transmitted over LIN network using LIN Tx Window.Refer <b>LIN Transmission Window</b> Section for more information.</p>
-    <p/>
-    <p><b>4. Connect to Network:</b></p>
+    <p><ol>
+        <li>To Transmit\Receive the LIN Messages BUSMASTER has to be configured with LIN Baud Rate and Version.Refer <xref href="LIN_Cluster_Configuration.dita"/> Section for more Information.</li>
+        <li>To enable master mode for LIN channel for transmitting frame headers, check the <b>Enable Master Mode</b> check box under <b>LIN Network Settings</b></li>
+      </ol></p>
+    <p><b>2. <b>Schedule Table Configuration:</b></b></p>
+    <p>Configure Schedule Table window can be used to select  schedule table/frame headers for transmission  imported from the loaded LDF file if BUSMASTER is used as master. Refer <xref href="LIN_ScheduleTable_Configuration.dita"/>  for more information.</p>
+    <p><b>3</b>. <b>
+        <b>Controller (Driver) Selection:</b>
+      </b></p>
+    <p>BUSMASTER can be connected to Physical LIN Network using LIN Controller.Refer <xref href="LIN_Controller_Config.dita"/> section for more Information.</p>
+    <p><b>4. Transmit Messages:</b></p>
+    <p>LIN Slave Messages or LIN Master requests Can be transmitted over LIN network using LIN Tx Window.Refer <xref href="LIN_TxWindow.dita"/> Section for more information.</p>
+    <p><b>5. Connect to Network:</b></p>
     <p>Once the Cluster &amp; Controllers are properly configured BUSMASTER can be connected to Network using <b>LIN-&gt;Connect</b>. menu or the LIN Connect Tool bar Button as shown in following figure.</p>
-    <p><image href="../images/LIN_Connect.bmp"/></p>
-    <p/>
-    <p><b>5. Monitoring Messages:</b></p>
-    <p>BUSMASTER Message Window can be used to monitor the LIN messages of LIN Network.Refer <b>LIN Message Window</b> section for more information.</p>
+    <p><image href="../images/LIN_Connect.PNG"/></p>
+    <p><b>6. Monitoring Messages:</b></p>
+    <p>BUSMASTER Message Window can be used to monitor the LIN messages of LIN Network.Refer <b>
+        <xref href="LIN_message_window.dita"/>
+      </b> section for more information.</p>
   </body>
 </topic>

@@ -31,7 +31,7 @@ if winexists($WIN_BUSMASTER) Then
 
 	_ConnectDisconnect()																				; Disconnect
 
-	_EnableOverwriteMode()																				; Enable overwrite mode
+	_EnableOverwriteModeJ1939()																				; Enable overwrite mode
 
 ;~ 	WinMenuSelectItem($WIN_BUSMASTER,"",$J1939Menu,$J1939MsgWinMenu,$InterpretMsgMenu)					; Enable interpret mode
 

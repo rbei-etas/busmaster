@@ -22,7 +22,7 @@ public:
     /**
      * Destructor
      */
-    ~CBaseDIL_FLEXRAY() {};
+    virtual ~CBaseDIL_FLEXRAY() {};
 
     /* Based on the parameter this function renders number of the driver interface
     layers supported or available. If 'bAvailable' is true, this returns number of

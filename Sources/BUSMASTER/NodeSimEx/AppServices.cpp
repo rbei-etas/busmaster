@@ -180,7 +180,7 @@ double gdGetSignalEngValue(int nBus, unsigned long long nRawValue, int length, i
     double dEngVal = nRawValue;
     if ( nullptr != pCoding )
     {
-        pCoding->GetEngValue((type == 0) ? eSignalDataType::eUnsigned : eSignalDataType::eSigned, length, nRawValue, dEngVal);
+        pCoding->GetEngValue((type == 1) ? eSignalDataType::eSigned : eSignalDataType::eUnsigned, length, nRawValue, dEngVal);
     }
     return dEngVal;
 }
@@ -608,7 +608,7 @@ unsigned int sg_TimeNow(ETYPE_BUS ebus)
                 return 0;
             }
 
-            lAbsoluteTime = ((nCurrentTime - Result->m_n64TimeElapsedSinceConnection)*1000000)/f1.QuadPart;
+            lAbsoluteTime = static_cast<unsigned int>(((nCurrentTime - Result->m_n64TimeElapsedSinceConnection)*1000000)/f1.QuadPart);
         }
     }
 

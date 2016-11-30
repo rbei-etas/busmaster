@@ -46,7 +46,7 @@
 #define defSTR_SW_PARSE_ERROR    _T("Parse Error in %s ")
 #define defSTR_SW_SIGNAL_DETAIL_ERROR   _T("Signal Not Found in the Database!!\nPlease remove the Signal")
 #define defSTR_SW_SIGNAL_GENERIC_ERROR  _T("Error showing Signal Details!!")
-#define defSTR_MSG_ID_IN_HEX          _T("[0x%x]")
+//#define defSTR_MSG_ID_IN_HEX          _T("[0x%x]")
 #define defMSGID_EXTENDED       'x'
 
 #define defSTR_FORMAT_DISPLAY_DEC    _T("%-60s   [%16I64d]")

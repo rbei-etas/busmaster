@@ -45,7 +45,7 @@
     <ClCompile Include="vcinpldynl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\DIL_Interface\HardwareListing.cpp">
+    <ClCompile Include="..\DIL_Interface\HardwareListingCAN.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,7 +98,7 @@
     <ClInclude Include="vcinpldynl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\DIL_Interface\HardwareListing.h">
+    <ClInclude Include="..\DIL_Interface\HardwareListingCAN.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -106,5 +106,10 @@
     <ResourceCompile Include="CAN_IXXAT_VCI.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bmp_net.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

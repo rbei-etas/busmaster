@@ -80,8 +80,8 @@ const UINT64 J1939_ECU_NAME = 0x8000000000000001;
 #define LEN_STR_DLC_J1939       5
 #define LENGTH_STR_ID_CAN       16
 
-#define COPY_DATA(TgtStream, SrcStream, TotBytes) { memcpy(TgtStream, SrcStream, TotBytes); TgtStream += TotBytes; }
-#define COPY_DATA_2(TgtStream, SrcStream, TotBytes) { memcpy(TgtStream, SrcStream, TotBytes); SrcStream += TotBytes; }
+#define COPY_DATA_INC_DEST(TgtStream, SrcStream, TotBytes) { memcpy(TgtStream, SrcStream, TotBytes); TgtStream += TotBytes; }
+#define COPY_DATA_INC_SOURCE(TgtStream, SrcStream, TotBytes) { memcpy(TgtStream, SrcStream, TotBytes); SrcStream += TotBytes; }
 
 
 
@@ -286,23 +286,23 @@ typedef struct tagSTJ1939_MSG
     /* Renders the BYTE stream of the total message. */
     void vGetDataStream( BYTE* pbyData ) const
     {
-        COPY_DATA( pbyData, &m_sMsgProperties, sizeof( STJ1939_MSG_PROPERTIES ) );
-        COPY_DATA( pbyData, &m_unDLC, sizeof( UINT ) );
-        COPY_DATA( pbyData, m_pbyData, ( sizeof( BYTE ) * m_unDLC ) );
+        COPY_DATA_INC_DEST( pbyData, &m_sMsgProperties, sizeof( STJ1939_MSG_PROPERTIES ) );
+        COPY_DATA_INC_DEST( pbyData, &m_unDLC, sizeof( UINT ) );
+        COPY_DATA_INC_DEST( pbyData, m_pbyData, ( sizeof( BYTE ) * m_unDLC ) );
     }
 
     void vSetDataStream( BYTE* pbyData )
     {
-        COPY_DATA_2( &m_sMsgProperties, pbyData, sizeof( STJ1939_MSG_PROPERTIES ) );
+        COPY_DATA_INC_SOURCE( &m_sMsgProperties, pbyData, sizeof( STJ1939_MSG_PROPERTIES ) );
         UINT unTempDLC = 0;
-        COPY_DATA_2( &unTempDLC, pbyData, sizeof( UINT ) );
+        COPY_DATA_INC_SOURCE( &unTempDLC, pbyData, sizeof( UINT ) );
         if (/*unTempDLC > m_unDLC*/ m_pbyData == nullptr )
         {
             //DELETE_ARRAY(m_pbyData);
             m_pbyData = new BYTE[MAX_DATA_LEN_J1939];
         }
         m_unDLC = unTempDLC;
-        COPY_DATA_2( m_pbyData, pbyData, ( sizeof( BYTE ) * m_unDLC ) );
+        COPY_DATA_INC_SOURCE( m_pbyData, pbyData, ( sizeof( BYTE ) * m_unDLC ) );
     }
     void vInitialize( int nSize )
     {

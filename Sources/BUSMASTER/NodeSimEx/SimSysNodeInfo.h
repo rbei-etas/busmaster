@@ -81,7 +81,7 @@ struct sNODEINFO:private IDirectoryUpdate
     HRESULT RegisterFileToMonitor(std::string strFileName,bool bRegister);
 
 public:
-    ~sNODEINFO();
+    virtual ~sNODEINFO();
 
     sNODEINFO(ETYPE_BUS eBus, CGlobalObj* pGlobalObj);
     //Following functions are not tested.Enable if needed.

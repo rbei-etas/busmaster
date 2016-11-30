@@ -161,7 +161,7 @@ CString CConvertCpp::omStrExtractFunctionNameFromPrototype(CString omStrPrototyp
     return omStrFuncName;
 }
 
-bool CConvertCpp::bCreateCppBackupFile(std::string omFilePath, ETYPE_BUS eBus, std::string& omBakFilePath)
+bool CConvertCpp::bCreateCppBackupFile(std::string omFilePath, ETYPE_BUS eBus, std::string& /*omBakFilePath*/)
 {
     ifstream inputFile(omFilePath.c_str());
 

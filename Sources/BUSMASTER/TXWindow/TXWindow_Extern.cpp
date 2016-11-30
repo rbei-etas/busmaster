@@ -330,7 +330,7 @@ USAGEMODE HRESULT TXComman_vSetClientID(ETYPE_BUS eBusType, DWORD dwClientID)
     }
     return S_OK;
 }
-USAGEMODE HRESULT TXComman_vSetDILInterfacePtr(ETYPE_BUS eBusType, void* pDilPointer)
+USAGEMODE HRESULT TXComman_vSetDILInterfacePtr(ETYPE_BUS /*eBusType*/, void* /*pDilPointer*/)
 {
     return S_OK;
 }
@@ -344,8 +344,8 @@ USAGEMODE HRESULT TXComman_vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM l
         switch (wParam)
         {
             case 0: //eHEXDECCMD
-                pCANTxFormView->SetHexMode((bool)lParam);
-                pLINTxFormView->SetHexMode((bool)lParam);
+                pCANTxFormView->SetHexMode(lParam != 0);
+				pLINTxFormView->SetHexMode(lParam != 0);
                 break;
             case 6://eKeyPress
                 pCANTxFormView->OnKeyPressed((char)lParam);
@@ -353,7 +353,7 @@ USAGEMODE HRESULT TXComman_vPostMessageToTxWnd(UINT msg, WPARAM wParam, LPARAM l
                 break;
             case 7:
                 //Create and Release TxFormInstance. eCREATEDESTROYCMD
-                if (true == (bool)lParam)
+				if (0 != lParam )
                 {
                     CLINTxFormView::GetInstance();
                     CCANTxFormView::GetInstance();

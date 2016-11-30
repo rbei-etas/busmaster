@@ -30,7 +30,7 @@
 
 /* Project includes */
 #include "ContrConfigETASBOADefs.h"
-#include "CAN_ETAS_BOA_Resource.h"
+#include "ChannelSelectionResource.h"
 #include "ChangeRegisters_CAN_ETAS_BOA.h"
 #include "Utility\MultiLanguageSupport.h"
 
@@ -53,11 +53,17 @@ CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent, PSCO
     m_omStrComboSampling = "";
     m_omStrEditBaudRate = "";
     m_omStrEditWarningLimit = "";
+	m_nLastSelection = 0;
     m_unCombClock      = 32;
     m_bDialogCancel    = FALSE;
     m_ucWarningLimit    = defWARNING_LIMIT_MIN;
     m_ucControllerMode  = defCONTROLLER_MODE;
     m_usBTR0BTR1 = defDEFAUT_BAUDRATE;
+	m_omChannelImageList.Create(defCHANNEL_ICON_SIZE,
+		defCHANNEL_ICON_SIZE,
+		ILC_COLOR24,
+		defCHANNEL_LIST_INIT_SIZE,
+		defCHANNEL_LIST_GROW_SIZE);
     /* Update controller data */
     for (UINT i = 0; i < min(defNO_OF_CHANNELS, nHardwareCount); i++)
     {
@@ -145,11 +151,6 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     /* Init Channel List box */
 
     /* Create Image List for Channel List Control */
-    m_omChannelImageList.Create( defCHANNEL_ICON_SIZE,
-                                 defCHANNEL_ICON_SIZE,
-                                 ILC_COLOR24,
-                                 defCHANNEL_LIST_INIT_SIZE,
-                                 defCHANNEL_LIST_GROW_SIZE);
 
     /* Load Channel Icon */
     CWinApp* pWinApp = (CWinApp*)this;
@@ -178,7 +179,6 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     }
 
     /* Set the selected item index to zero */
-    m_nLastSelection = 0;
 
     m_omEditBaudRate.vSetBase( BASE_DECIMAL);
     m_omEditBaudRate.vSetSigned(FALSE);
@@ -262,10 +262,11 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     //function to calculate the same.
 
     /* Set the Focus to the First Item */
-    m_omChannelList.SetItemState( 0,
+    m_omChannelList.SetItemState( m_nLastSelection,
                                   LVIS_SELECTED | LVIS_FOCUSED,
                                   LVIS_SELECTED | LVIS_FOCUSED);
 
+	m_omChannelList.EnsureVisible(m_nLastSelection, FALSE); //making sure that Selected Item is visible.
 #if BOA_VERSION >= BOA_VERSION_2_0
     vEnableFDParameters(TRUE); /* Enable CANFD controller settings */
 #else
@@ -286,6 +287,14 @@ void CChangeRegisters_CAN_ETAS_BOA::vEnableFDParameters(BOOL bEnable)
     GetDlgItem(IDC_COMB_DATA_SAMPOINT)->EnableWindow(bEnable);
     GetDlgItem(IDC_COMB_DATA_BTL)->EnableWindow(bEnable);
     GetDlgItem(IDC_COMB_DATA_SJW)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STAT_BUAD_RATE3)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STATIC_TX)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STATIC_SEC_SMPL_POINT)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STATIC_SMPL_POINT)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STATIC_BTL)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STATIC_SJW)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STAT_KBPS2)->EnableWindow(bEnable);
+	
 }
 
 /**
@@ -428,94 +437,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnSetfocusEditBaudRate()
     UpdateData(TRUE);
 }
 
-/**
-* This function will validate the user input value of
-* baud rate. A valid baud rate will be calculated
-*/
-void CChangeRegisters_CAN_ETAS_BOA::vValidateBaudRate()
-{
-    CString omStrBaudRate       = "";
-    CString omStrPrvBaudRate    = "";
-    CString omStrClockFreq      = "";
-    DOUBLE  dBaudRate           = 0;
-    UINT    unProductNbtNBrp    = 0;
-    DOUBLE  dProductNbtNBrp     = 0;
-    CString omStrMessage        = "";
 
-    m_omEditBaudRate.GetWindowText(omStrBaudRate);
-    dBaudRate           = (FLOAT)_tstof(omStrBaudRate);
-    m_dEditBaudRate     = (FLOAT)_tstof(m_omStrEditBaudRate);
-
-    dProductNbtNBrp     = (DOUBLE)(m_unCombClock/(dBaudRate/1000))/2.0 *
-                          (defFACT_FREQUENCY / defFACT_BAUD_RATE);
-    unProductNbtNBrp    = (UINT)(dProductNbtNBrp + 0.5);
-
-    if ((fabs((dProductNbtNBrp - unProductNbtNBrp)) > defVALID_DECIMAL_VALUE)
-            ||(unProductNbtNBrp > (defMAX_NBT * defMAX_BRP))
-            || (unProductNbtNBrp < defMIN_NBT))
-    {
-        unProductNbtNBrp =defmcROUND5(dProductNbtNBrp);
-        int nFlag = defRESET;
-
-        while (nFlag == defRESET)
-        {
-            INT i = 1;
-            UINT unNbt = unProductNbtNBrp / i;
-            FLOAT fNbt = (FLOAT)unProductNbtNBrp / i;
-
-            while ((unNbt >= 1) && (i <= defMAX_BRP) && (nFlag == defRESET))
-            {
-                if ((unNbt == fNbt) && (unNbt >= defMIN_NBT)
-                        && (unNbt <=defMAX_NBT))
-                {
-                    nFlag =defSET;
-                }
-                else
-                {
-                    i++;
-                    unNbt    = unProductNbtNBrp / i;
-                    fNbt     = (FLOAT)unProductNbtNBrp / i;
-                }
-            } //end while( unNbt >=1 && i<=MAX_BRP)
-
-            if ((nFlag == defRESET) && (unProductNbtNBrp < (defMIN_NBT *defMIN_BRP)))
-            {
-                unProductNbtNBrp = defMIN_NBT * defMIN_BRP;
-            }
-            else if ((unProductNbtNBrp > ( defMAX_NBT * defMAX_BRP))
-                     && (nFlag == defRESET))
-            {
-                unProductNbtNBrp = defMAX_NBT*defMAX_BRP;
-            }
-            else if (nFlag == defRESET)
-            {
-                unProductNbtNBrp++;
-            }
-        }//end while(nFlag==RESET)
-        dBaudRate = (DOUBLE)((m_unCombClock/2.0)*
-                             ( defFACT_FREQUENCY / defFACT_BAUD_RATE))/unProductNbtNBrp;
-
-        /*FLOAT  fTempBaudRate;
-        fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
-        fTempBaudRate = fTempBaudRate/100000;*/
-        if(dBaudRate < 5000)
-        {
-            dBaudRate = 5000;
-        }
-        omStrBaudRate.Format(_("%ld"),/*fTempBaudRate*/(long)dBaudRate);
-
-        omStrMessage.Format(_(defBAUD_RATE_MESSAGE),omStrBaudRate);
-        omStrPrvBaudRate = m_omStrEditBaudRate;
-        //unClockPrevValue = m_unCombClock;
-
-        // set the baudrate
-        m_omEditBaudRate.SetWindowText(omStrBaudRate);
-    }// End if
-
-    // Change the list of BTR0, BTR1, SJW, NBT and sampling if user selected YES
-    m_dEditBaudRate     = dBaudRate;
-    m_omStrEditBaudRate = omStrBaudRate;
-}
 
 /**
 * Message handlers on OK Button.To Remove control
@@ -720,6 +642,7 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
 #if BOA_VERSION >= BOA_VERSION_2_0
     /*Update CAN FD parameters */
     m_omstrDataBitRate.Format("%d",     m_pControllerDetails[ nIndex ].m_unDataBitRate/1000);
+		GetDlgItem(IDC_EDIT_DATA_BAUD_RATE)->SetWindowText(m_omstrDataBitRate);
 
     CString omDataSamplePoint;
     omDataSamplePoint.Format("%d", m_pControllerDetails[ nIndex ].m_unDataSamplePoint);
@@ -755,6 +678,7 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
     else
     {
         m_omstrTxDelayCompensationON.Format(defSTR_CANFD_TX_DELAY_COMPENSATION_OFF);
+			GetDlgItem(IDC_EDIT_COMPENSATION_QUANTA)->SetWindowText("");
         GetDlgItem(IDC_EDIT_COMPENSATION_QUANTA)->EnableWindow(FALSE);
     }
 #endif
@@ -1080,4 +1004,115 @@ int CChangeRegisters_CAN_ETAS_BOA::nGetValueFromComboBox(CComboBox& omComboBox)
 INT CChangeRegisters_CAN_ETAS_BOA::nGetInitStatus()
 {
     return m_nDataConfirmStatus;
+}
+int CChangeRegisters_CAN_ETAS_BOA::InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount,UINT nSelectedHw) 
+{
+    if (pControllerDetails!=nullptr)
+    {
+        for (UINT i = 0; i < min(defNO_OF_CHANNELS, nCount); i++)
+        {
+            m_pControllerDetails[i] = pControllerDetails[i];
+            m_pControllerDetails[i].m_bSelfReception = pControllerDetails[i].m_bSelfReception;
+        }
+        m_nNoHardware = nCount;
+        m_nLastSelection = nSelectedHw;
+        for(int nIndex = 0; nIndex < nCount;nIndex++)
+        {
+            m_asDummyControllerDetails[nIndex] = m_pControllerDetails[nIndex];
+        }
+        int nRet = DoModal();
+        if(nRet!=IDOK)
+        {
+            for(int nIndex = 0; nIndex < nCount;nIndex++)
+            {
+                m_pControllerDetails[nIndex] = m_asDummyControllerDetails[nIndex];
+            }
+        }
+        m_bDialogCancel = FALSE;
+        return 1;
+    }
+
+    return 0;
+}
+DOUBLE CChangeRegisters_CAN_ETAS_BOA::vValidateBaudRate(DOUBLE dbaudrate,int nItemCount,UINT )
+{
+	CString omStrBaudRate       = "";
+    CString omStrPrvBaudRate    = "";
+    CString omStrClockFreq      = "";
+    DOUBLE  dBaudRate           = 0;
+    UINT    unProductNbtNBrp    = 0;
+    DOUBLE  dProductNbtNBrp     = 0;
+    CString omStrMessage        = "";
+	DOUBLE dEditBaudRate;
+    dBaudRate           = dbaudrate;
+			//Below Code is Commented for Future Reference and currently validation is not performed
+//     dEditBaudRate     = dBaudRate;
+// 
+//     dProductNbtNBrp     = (DOUBLE)(m_unCombClock/(dBaudRate/1000))/2.0 *
+//                           (defFACT_FREQUENCY / defFACT_BAUD_RATE);
+//     unProductNbtNBrp    = (UINT)(dProductNbtNBrp + 0.5);
+// 
+//     if ((fabs((dProductNbtNBrp - unProductNbtNBrp)) > defVALID_DECIMAL_VALUE)
+//             ||(unProductNbtNBrp > (defMAX_NBT * defMAX_BRP))
+//             || (unProductNbtNBrp < defMIN_NBT))
+//     {
+//         unProductNbtNBrp =defmcROUND5(dProductNbtNBrp);
+//         int nFlag = defRESET;
+// 
+//         while (nFlag == defRESET)
+//         {
+//             INT i = 1;
+//             UINT unNbt = unProductNbtNBrp / i;
+//             FLOAT fNbt = (FLOAT)unProductNbtNBrp / i;
+// 
+//             while ((unNbt >= 1) && (i <= defMAX_BRP) && (nFlag == defRESET))
+//             {
+//                 if ((unNbt == fNbt) && (unNbt >= defMIN_NBT)
+//                         && (unNbt <=defMAX_NBT))
+//                 {
+//                     nFlag =defSET;
+//                 }
+//                 else
+//                 {
+//                     i++;
+//                     unNbt    = unProductNbtNBrp / i;
+//                     fNbt     = (FLOAT)unProductNbtNBrp / i;
+//                 }
+//             } //end while( unNbt >=1 && i<=MAX_BRP)
+// 
+//             if ((nFlag == defRESET) && (unProductNbtNBrp < (defMIN_NBT *defMIN_BRP)))
+//             {
+//                 unProductNbtNBrp = defMIN_NBT * defMIN_BRP;
+//             }
+//             else if ((unProductNbtNBrp > ( defMAX_NBT * defMAX_BRP))
+//                      && (nFlag == defRESET))
+//             {
+//                 unProductNbtNBrp = defMAX_NBT*defMAX_BRP;
+//             }
+//             else if (nFlag == defRESET)
+//             {
+//                 unProductNbtNBrp++;
+//             }
+//         }//end while(nFlag==RESET)
+//         dBaudRate = (DOUBLE)((m_unCombClock/2.0)*
+//                              ( defFACT_FREQUENCY / defFACT_BAUD_RATE))/unProductNbtNBrp;
+// 
+//         /*FLOAT  fTempBaudRate;
+//         fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
+//         fTempBaudRate = fTempBaudRate/100000;*/
+//         if(dBaudRate < 5000)
+//         {
+// 			CString omStr;
+// 			omStr.Format(_("Resetting the BaudRate of channel %d to 500000"),nItemCount+1);
+// 			AfxMessageBox(omStr);
+// 			dBaudRate = 500000;
+//         }
+//         omStrBaudRate.Format(_("%ld"),/*fTempBaudRate*/(long)dBaudRate);
+// 
+//         
+//     }// End if
+// 
+//     // Change the list of BTR0, BTR1, SJW, NBT and sampling if user selected YES
+// 	dEditBaudRate     = dBaudRate;
+	return dBaudRate;
 }

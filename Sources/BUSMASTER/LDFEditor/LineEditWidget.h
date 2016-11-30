@@ -2,7 +2,7 @@
 #define LineEditWidget_H
 
 #include <QLineEdit>
-#include "IClusterProps.h"
+#include "LINDefines.h"
 class QTableWidget;
 class LineEditWidget : public QLineEdit
 {

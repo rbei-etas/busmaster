@@ -50,7 +50,7 @@ if winexists($WIN_BUSMASTER) then
 	;_TxMsgMenu()																				; Select CAN->Transmit->Configure menu
      sleep(1000)
 
-	_DisableOverwriteMode()																		; Disable overwrite Mode
+	;_DisableOverwriteMode()																		; Disable overwrite Mode
 
 	; Scenario -1
 
@@ -59,7 +59,7 @@ if winexists($WIN_BUSMASTER) then
 	_ConnectDisconnect()																		; DisConnect CAN
 	$rCount=_GetCANMsgWinItemCount()                                                            ; Fetch the no of items from message window
 	ConsoleWrite("$rCount="&$rCount&@CRLF)
-	If $rCount=4 Then
+	If $rCount=16 Then
 		$VerifyScn1Count=1																		; Scenario -1 is Verified in TS_TxWin_CAN_03
 	EndIf
 

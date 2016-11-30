@@ -49,9 +49,9 @@
 #define IDB_TLB_J1939                   321
 #define IDB_TLB_J1939_HOT               322
 #define IDB_TLB_J1939_DISABLED          323
-#define IDB_TLB_FLEXRAY                 324
-#define IDB_TLB_FLEXRAY_HOT             325
-#define IDB_TLB_FLEXRAY_DISABLED        326
+
+
+
 #define IDR_CONFIG_TOOLBAR              328
 #define IDR_CONFIG_TOOLBAR_HOT          329
 #define IDR_CONFIG_TOOLBAR_DISABLED     330
@@ -76,7 +76,7 @@
 #define IDC_LSTC_FILTER_LIST            1258
 #define IDC_BTN_ADD_FILE                1262
 #define IDC_COMBO_MSG_TYPE              1266
-#define IDC_FLEXRAY_LOGO                3008
+
 #define IDB_NODE_SIMULATION             4010
 #define IDB_NODE_SIMULATION_HOT         4011
 #define IDB_NODE_SIMULATION_DISABLED    4012

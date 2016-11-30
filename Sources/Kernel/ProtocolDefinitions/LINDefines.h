@@ -3,7 +3,7 @@
 #include <list>
 #include <map>
 #include "CommonDefines.h"
-//#include "..\FlexRayDefines.h"
+#include "IClusterProps.h"
 
 
 enum eLinSignalValueType
@@ -22,15 +22,9 @@ public:
     UID_ELEMENT m_nNode;
     bool m_bEnabled;
     unsigned char m_chDataBytes[MAX_LIN_FRAME_LENGTH];
-};
 
 
 
-class LINMasterProps
-{
-public:
-    double m_fJitter;
-    double m_fTimeBase;
 };
 
 class ConfigFrameDetails
@@ -79,20 +73,47 @@ public:
 
 };
 
+class LINMasterProps
+{
+public:
+    double m_fJitter;
+    double m_fTimeBase;
+};
 
+enum eLinEcuType
+{
+	eEcuNone,
+	eMaster,
+	eSlave
+};
+class LinEcuProps : public EcuProperties
+{
+public:
+	LinEcuProps()
+	{
+		m_eProtocol = eProtocolType::eLINProtocol;
+	}
+	eLinEcuType m_eEcuType;
+	LINSlaveProps mSlaveProps;
+	LINMasterProps mMasterProps;
+};
+enum eLinFrameType
+{
+	eLinInvalidFrame,
+	eLinUnconditionalFrame,
+	eLinSporadicFrame,
+	eLinEventTriggeredFrame,
+	eLinDiagnosticFrame,
+};
 class LINUnConditionFrameProps
 {
 public:
-    unsigned int m_unId;
-    unsigned int m_nLength;
 
 };
 
 class LINEventTrigFrameProps
 {
 public:
-    unsigned int m_unId;
-    unsigned int m_nLength;
     std::map<UID_ELEMENT, UID_ELEMENT> m_pouUnconditionalFrame;
     UID_ELEMENT m_nCollisionResolveTable;
 };
@@ -106,26 +127,40 @@ public:
 class LINDiagnosticFrameProps
 {
 public:
-    unsigned int m_unId;
-    unsigned int m_nLength;
     eDiagType m_eDiagType;
 };
 
-
-class LINSignalProps
+class LinFrameProps : public FrameProps
 {
 public:
-    int m_nLength;
-    eSignalType m_ouSignalType;
-    eSignalDataType m_ouDataType;
-    eEndianess m_ouEndianess;
-    eLinSignalValueType m_ouValueType;
-    unsigned __int64 m_nIntialValue;
+	LinFrameProps()
+	{
+		m_eProtocol = eProtocolType::eLINProtocol;
+	}
+	eLinFrameType m_eLinFrameType;
+	LINUnConditionFrameProps m_ouLINUnConditionFrameProps;
+	LINEventTrigFrameProps m_ouLINEventTrigFrameProps;
+	LINSporadicFrameProps m_ouLINSporadicFrameProps;
+	LINDiagnosticFrameProps m_ouLINDiagnosticFrameProps;
 };
 
-class LinSignalGroupProps
+class LINSignalProps : public SignalProps
 {
 public:
+	LINSignalProps()
+	{
+		eType = eProtocolType::eLINProtocol;
+	}
+    eLinSignalValueType m_ouValueType;
+};
+
+class LinSignalGroupProps : public SignalGroupProps
+{
+public:
+	LinSignalGroupProps()
+	{
+		eType = eProtocolType::eLINProtocol;
+	}
     unsigned int m_nGroupSize;
 };
 
@@ -161,9 +196,13 @@ public:
     std::string m_strTextInfo;
 };
 
-class LINCompuMethods
+class LINCompuMethods : public CompuMethodProps
 {
 public:
+	LINCompuMethods()
+	{
+		m_eType = eProtocolType::eLINProtocol;
+	}
     std::map<unsigned int, std::string> m_ouLogicalValueList;
     std::list<PhysicalValue> m_ouPhysicalValueList;
     bool m_bBCD;

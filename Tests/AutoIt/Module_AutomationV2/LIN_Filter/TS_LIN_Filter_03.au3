@@ -51,7 +51,7 @@ if winexists($WIN_BUSMASTER) then
 	_EnableFilterLogLIN()																			; Enable Filter during logging
 
 	_ConnectDisconnect_LIN()
-	sleep(1000)
+	;sleep(1000)
 	_ConnectDisconnect_LIN()
 
 	;_DisableOverwriteMode()																		; Disable Overwrite Mode
@@ -91,19 +91,30 @@ if winexists($WIN_BUSMASTER) then
 	ConsoleWrite("$GetLogFile_Path:"&$GetLogFile_Path&@CRLF)
 	$logcount=_FileCountLines($GetLogFile_Path & "\LIN_Log_Filter_03.log")
 	ConsoleWrite("$logcount-----------:"&$logcount&@CRLF)
-	if _FileCountLines($GetLogFile_Path & "\LIN_Log_Filter_03.log")=20 Then
+	if _FileCountLines($GetLogFile_Path & "\LIN_Log_Filter_03.log")=24 Then
 		$Read_LogFirstEnter=FileReadLine ($GetLogFile_Path & "\LIN_Log_Filter_03.log",15)			; Read the 16th line from the Log file
 		$Read_LogSecEnter=FileReadLine ($GetLogFile_Path & "\LIN_Log_Filter_03.log",16)				; Read the 17th line from the Log file
 
 		$Read_LogSThirdEnter=FileReadLine ($GetLogFile_Path & "\LIN_Log_Filter_03.log",17)			; Read the 18th line from the Log file
 		$Read_LogFourthEnter=FileReadLine ($GetLogFile_Path & "\LIN_Log_Filter_03.log",18)			; Read the 19th line from the Log file
-		$Read_LogEndDate=FileReadLine ($GetLogFile_Path & "\LIN_Log_Filter_03.log",19)				; Read the 19th line from the Log file
-		$Read_EndSession=FileReadLine ($GetLogFile_Path & "\LIN_Log_Filter_03.log",20)				; Read the 19th line from the Log file
+
+		$Read_LogFifthEnter=FileReadLine ($GetLogFile_Path & "\LIN_Log_Filter_03.log",19)			; Read the 19th line from the Log file
+		$Read_LogsixthEnter=FileReadLine ($GetLogFile_Path & "\LIN_Log_Filter_03.log",20)			; Read the 19th line from the Log file
+		$Read_LogSeventhEnter=FileReadLine ($GetLogFile_Path & "\LIN_Log_Filter_03.log",21)			; Read the 19th line from the Log file
+		$Read_LogEightthEnter=FileReadLine ($GetLogFile_Path & "\LIN_Log_Filter_03.log",22)			; Read the 19th line from the Log file
+
+		$Read_LogEndDate=FileReadLine ($GetLogFile_Path & "\LIN_Log_Filter_03.log",23)				; Read the 19th line from the Log file
+		$Read_EndSession=FileReadLine ($GetLogFile_Path & "\LIN_Log_Filter_03.log",24)				; Read the 19th line from the Log file
 		;consolewrite("@error :"&@error&@CRLF)
 		consolewrite("$Read_LogFirstEnter:"&$Read_LogFirstEnter&@CRLF)
 		consolewrite("$Read_LogSecEnter:"&$Read_LogSecEnter&@CRLF)
 		consolewrite("$Read_LogSThirdEnter:"&$Read_LogSThirdEnter&@CRLF)
 		consolewrite("$Read_LogFourthEnter:"&$Read_LogFourthEnter&@CRLF)
+
+		consolewrite("$Read_LogFifthEnter:"&$Read_LogFifthEnter&@CRLF)
+		consolewrite("$Read_LogsixthEnter:"&$Read_LogsixthEnter&@CRLF)
+		consolewrite("$Read_LogSeventhEnter:"&$Read_LogSeventhEnter&@CRLF)
+		consolewrite("$Read_LogEightthEnter:"&$Read_LogEightthEnter&@CRLF)
 
 
 
@@ -122,11 +133,16 @@ if winexists($WIN_BUSMASTER) then
 		$SecMsg=StringSplit($Read_LogSecEnter," ")
 		$ThrdMsg=StringSplit($Read_LogSThirdEnter," ")
 		$FourthMsg=StringSplit($Read_LogFourthEnter," ")
+		$FifthMsg=StringSplit($Read_LogFifthEnter," ")
+		$SixthMsg=StringSplit($Read_LogsixthEnter," ")
+		$SeventhMsg=StringSplit($Read_LogSeventhEnter," ")
+		$EighthMsg=StringSplit($Read_LogEightthEnter," ")
 
-		if $FirstMsg[2]="Tx" and $SecMsg[2]="Tx" and $ThrdMsg[2]="Tx" and $FourthMsg[2]="Tx" Then
+		;if $FirstMsg[2]="Tx" and $SecMsg[2]="Tx" and $ThrdMsg[2]="Tx" and $FourthMsg[2]="Tx"  Then
+		if $FirstMsg[2]="Tx" and $SecMsg[2]="Tx" and $ThrdMsg[2]="Tx" and $FourthMsg[2]="Tx"  and $FifthMsg[2]="Tx" and $SixthMsg[2]="Tx" and $SeventhMsg[2]="Tx" and $EighthMsg[2]="Tx" Then
 			$txMsg =1
 		EndIf
-		if $FirstMsg[4]="0001" and $SecMsg[4]="0005" and $ThrdMsg[4]="0001" and $FourthMsg[4]="0005" Then
+		if $FirstMsg[4]="0001" and $SecMsg[4]="0005" and $ThrdMsg[4]="0001" and $FourthMsg[4]="0005" and $FifthMsg[4]="0001" and $SixthMsg[4]="0005" and $SeventhMsg[4]="0001" and $EighthMsg[4]="0005" Then
 			$msgidCheck =1
 		EndIf
 	EndIf

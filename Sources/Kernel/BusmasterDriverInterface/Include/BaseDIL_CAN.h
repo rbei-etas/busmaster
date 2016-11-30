@@ -105,7 +105,7 @@ public:
      * Call this function to list the hardware interfaces available and receive
      * user's choice.
      */
-    virtual HRESULT DILC_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount) = 0;
+	virtual HRESULT DILC_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCountInitData, PSCONTROLLER_DETAILS InitData, bool bLoadFromXML = 0) = 0;
 
     /**
      * Call this function to select a particular hardware interface.
@@ -123,7 +123,6 @@ public:
      * as InitData. If it is null, the dialog box is uninitialised. This also contains
      * the user's choice as OUT parameter
      */
-    virtual HRESULT DILC_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length) = 0;
 
     /**
      * To set the configuration data for the currently selected DIL. Caller must

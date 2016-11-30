@@ -241,7 +241,7 @@ typedef struct tagFilterSet
     PSFILTER    m_psFilterInfo; // Filter informations
 
     tagFilterSet();             // Standard constructor
-    ~tagFilterSet();            // Destructor
+    virtual ~tagFilterSet();            // Destructor
 
 
     // To clear the current filter set.
@@ -274,7 +274,7 @@ struct SFILTERAPPLIED
     virtual bool bClone(const SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>& Source);
 
     // To clear the filter object
-    void vClear(void);
+    virtual void vClear(void);
 
     // Query function that tells if the filter object will block the frame.
     virtual BOOL bToBeBlocked(const SFRAMEINFO_BASIC_BUS& sCurrFrame) const;
@@ -566,7 +566,7 @@ void SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::pbSetConfigData( SFILTERAPPLIED& pFil
 
     Result = true;
 
-    m_ushTotal = pNodeSetPtr->nodeNr;
+    m_ushTotal = static_cast<USHORT>(pNodeSetPtr->nodeNr);
     CStringArray omStrFilters;
 
     std::map<std::string, int> mapFilters;
@@ -618,7 +618,7 @@ int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::nGetFiltersFromName(SFILTERAPPLIED& sF
 {
     int nRealFilters = 0;
     sFilterDest.m_bEnabled = m_bEnabled;
-    sFilterDest.m_ushTotal = omStrFilters.size();
+    sFilterDest.m_ushTotal = static_cast<USHORT>(omStrFilters.size());
     sFilterDest.m_psFilters = new SFILTERSET[sFilterDest.m_ushTotal];
 
     std::map<std::string,int>::iterator itr = omStrFilters.begin();
@@ -669,7 +669,7 @@ int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::nSetXMLConfigData(const xmlDocPtr& pDo
             pNodeSet = pPathObject->nodesetval;
             if(nullptr != pNodeSet)
             {
-                m_ushTotal = pNodeSet->nodeNr;
+                m_ushTotal = static_cast<USHORT>(pNodeSet->nodeNr);
                 if (m_ushTotal > 0)
                 {
                     m_psFilters = new SFILTERSET[m_ushTotal];
@@ -712,7 +712,7 @@ int SFILTERAPPLIED<SFRAMEINFO_BASIC_BUS>::nSetXMLConfigData(const xmlDocPtr& pDo
             pNodeSet = pPathObject->nodesetval;
             if(nullptr != pNodeSet)
             {
-                m_ushTotal = pNodeSet->nodeNr;
+                m_ushTotal = static_cast<USHORT>(pNodeSet->nodeNr);
                 if (m_ushTotal > 0)
                 {
                     m_psFilters = new SFILTERSET[m_ushTotal];

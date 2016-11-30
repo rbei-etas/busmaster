@@ -52,16 +52,22 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\Warnings_Supress.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
     <Import Project="..\Busmaster_Kernel_Includes.props" />
+    <Import Project="..\Warnings_Supress.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
     <Import Project="..\Busmaster_Kernel_Includes.props" />
+    <Import Project="..\Warnings_Supress.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <Import Project="..\Warnings_Supress.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -323,6 +329,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AboutDlg.cpp" />
     <ClCompile Include="Application.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -476,7 +483,6 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       </BrowseInformation>
     </ClCompile>
     <ClCompile Include="FlexTxHandler.cpp" />
-    <ClCompile Include="frChannelSettingsHandler.cpp" />
     <ClCompile Include="GraphConfiguration.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -614,6 +620,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       </BrowseInformation>
     </ClCompile>
     <ClCompile Include="MessageWindowSettingsDialog.cpp" />
+    <ClCompile Include="MFCRibbonBarEx.cpp" />
     <ClCompile Include="MsgBufferConfigPage.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -867,9 +874,14 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="UI\IdGenerator.cpp" />
-    <ClCompile Include="UI\IIdGenerator.cpp" />
-    <ClCompile Include="UI\IUICreator.cpp" />
+    <ClCompile Include="UI\IdGenerator.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="UI\IIdGenerator.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="UI\MenuCreator.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -878,7 +890,6 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="UI\ToolBarCreator.cpp" />
     <ClCompile Include="UI\UICreator.cpp" />
     <ClCompile Include="Utility.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
@@ -940,6 +951,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ResourceCompile Include="BUSMASTER.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="AppServices_Impl.h" />
     <ClInclude Include="BaseBusStatisticCAN.h" />
     <ClInclude Include="BaseBusStatisticLIN.h" />
@@ -965,15 +977,16 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="ChannelConfigurationDlg.h" />
     <ClInclude Include="Flags.h" />
     <ClInclude Include="FlexTxHandler.h" />
-    <ClInclude Include="frChannelSettingsHandler.h" />
     <ClInclude Include="GraphConfiguration.h" />
     <ClInclude Include="GraphElement.h" />
     <ClInclude Include="GraphList.h" />
     <ClInclude Include="GraphParameters.h" />
     <ClInclude Include="HashDefines.h" />
+    <ClInclude Include="IBusmasterBusPlugin.h" />
     <ClInclude Include="IBusmasterPlugin.h" />
     <ClInclude Include="IBusmasterPluginConnection.h" />
     <ClInclude Include="IBusmasterPluginInterface.h" />
+    <ClInclude Include="IMenuInterface.h" />
     <ClInclude Include="ImportLogToolbar.h" />
     <ClInclude Include="InterfaceGetter.h" />
     <ClInclude Include="IBusmasterPlugInManager.h" />
@@ -987,6 +1000,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="MessageInterpretation.h" />
     <ClInclude Include="MessageList.h" />
     <ClInclude Include="MessageWindowSettingsDialog.h" />
+    <ClInclude Include="MFCRibbonBarEx.h" />
     <ClInclude Include="MsgBufferConfigPage.h" />
     <ClInclude Include="MsgFilterConfigPage.h" />
     <ClInclude Include="MsgFrmtWnd.h" />
@@ -1042,106 +1056,41 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <None Include="resource.hm" />
     <None Include="Res\About.ico" />
     <None Include="res\bitmap1.bmp" />
-    <None Include="Res\bitmap2.bmp" />
     <None Include="Res\Blank.ico" />
-    <None Include="res\bmp00001.bmp" />
-    <None Include="Res\bmp00002.bmp" />
-    <None Include="Res\bmp00003.bmp" />
-    <None Include="Res\bmp00004.bmp" />
-    <None Include="Res\bmp00005.bmp" />
-    <None Include="Res\bmp00006.bmp" />
-    <None Include="Res\bmp00007.bmp" />
-    <None Include="Res\bmp_break_point.bmp" />
     <None Include="Res\bmp_chec.bmp" />
-    <None Include="res\bmp_func.bmp" />
     <None Include="Res\bmp_net.bmp" />
-    <None Include="Res\bmp_tool.bmp" />
-    <None Include="Res\BuildAll.ico" />
-    <None Include="Res\BuilLoadAll.ico" />
+    <None Include="Res\BumasterSmallIcons.bmpx" />
+    <None Include="Res\Busmaster.bmpx" />
     <None Include="Res\BUSMASTER.ico" />
     <None Include="Res\BUSMASTERDoc.ico" />
-    <None Include="Res\CANDatabase.bmp" />
-    <None Include="Res\CANDatabase_Disabled.bmp" />
-    <None Include="Res\CANDatabase_Hot.bmp" />
-    <None Include="Res\CANDatabase_Normal.bmp" />
-    <None Include="Res\cascade.ico" />
-    <None Include="Res\configure.bmp" />
-    <None Include="Res\Configure_Disabled.bmp" />
-    <None Include="Res\Configure_Hot.bmp" />
-    <None Include="Res\configure_tlb.bmp" />
+    <None Include="Res\CAN_ICON.bmpx" />
     <None Include="Res\copyright.bmp" />
     <None Include="Res\DB Editor.ico" />
-    <None Include="Res\Disconnect.ico" />
-    <None Include="Res\DOWNArrow.ico" />
-    <None Include="Res\Edit.bmp" />
-    <None Include="Res\edit_disabled.bmp" />
-    <None Include="Res\Edit_hot.bmp" />
-    <None Include="Res\ERROR_ACTIVE.ico" />
-    <None Include="Res\ERROR_BUS_OFF.ico" />
-    <None Include="Res\ERROR_PASSIVE.ico" />
-    <None Include="Res\ExcAllHndl.ico" />
-    <None Include="Res\ExcErrHndl.ico" />
-    <None Include="Res\ExcKeyHndl.ico" />
-    <None Include="Res\ExcMsgHndl.ico" />
-    <None Include="Res\ExcTimeHndl.ico" />
+    <None Include="Res\filemenu.bmpx" />
+    <None Include="Res\Filemenu1.bmpx" />
     <None Include="Res\Filter.bmp" />
-    <None Include="Res\Filters.bmp" />
-    <None Include="Res\Filters_disabled.bmp" />
-    <None Include="Res\Filters_hot.bmp" />
-    <None Include="res\FunctionEditorDoc.ico" />
-    <None Include="Res\Functions_J1939.bmp" />
     <None Include="Res\GraphElements.bmp" />
     <None Include="Res\GraphWindow.ico" />
     <None Include="Res\hdrdown.bmp" />
     <None Include="Res\hdrup.bmp" />
     <None Include="Res\Help.ico" />
     <None Include="Res\ico_send.ico" />
-    <None Include="Res\J1939DB.bmp" />
     <None Include="Res\J1939TxWnd.bmp" />
-    <None Include="Res\LEFTArrow.ico" />
-    <None Include="Res\LoadAll.ico" />
-    <None Include="LockKey.bmp" />
-    <None Include="Res\Log.ico" />
+    <None Include="Res\j1939_Icon1.bmpx" />
+    <None Include="Res\LIN.bmpx" />
+    <None Include="res\LIN_ICON1.bmpx" />
     <None Include="Res\Minus.ICO" />
-    <None Include="Res\MsgReplay.bmp" />
-    <None Include="Res\MsgReplay_disabled.bmp" />
-    <None Include="Res\MsgReplay_hot.bmp" />
-    <None Include="Res\MsgWnd.bmp" />
     <None Include="Res\MsgWnd.ico" />
-    <None Include="Res\MsgWndDisabled.bmp" />
-    <None Include="Res\MsgWndHot.bmp" />
-    <None Include="Res\New.ico" />
-    <None Include="Res\Open.ico" />
+    <None Include="Res\PluginImageMissing.bmpx" />
     <None Include="Res\Plus.ICO" />
     <None Include="Res\Properties.bmp" />
-    <None Include="Res\Replay.ico" />
-    <None Include="Res\RIGHTArrow.ico" />
-    <None Include="Res\Save.ico" />
-    <None Include="Res\SendMsg.ico" />
-    <None Include="Res\SigGen.bmp" />
-    <None Include="Res\SigGen_disabled.bmp" />
-    <None Include="Res\SigGen_hot.bmp" />
+    <None Include="res\ribbon1.mfcribbon-ms" />
     <None Include="Res\Signalwatch.bmp" />
-    <None Include="Res\SimSysWnd.ico" />
     <None Include="Res\Splsh16.bmp" />
-    <None Include="Res\Tile.ico" />
-    <None Include="res\Toolbar.bmp" />
-    <None Include="Res\toolbar1.bmp" />
-    <None Include="Res\Toolbar_disabled.bmp" />
-    <None Include="Res\toolbar_func_editor.bmp" />
-    <None Include="Res\toolbar_func_editor_disabled.bmp" />
-    <None Include="Res\toolbar_func_editor_hot.bmp" />
-    <None Include="Res\Toolbar_hot.bmp" />
-    <None Include="Res\toolbar_user_prog.bmp" />
-    <None Include="Res\toolbar_user_prog_disabled.bmp" />
-    <None Include="Res\toolbar_user_prog_Hot.bmp" />
-    <None Include="Res\ToolbarDsc.bmp" />
-    <None Include="Res\ToolbarDsc_Disabled.bmp" />
-    <None Include="Res\ToolbarDsc_Hot.bmp" />
-    <None Include="Res\Transparent_icon.ico" />
-    <None Include="Res\UnLoadAll.ico" />
-    <None Include="Res\UPArrow.ico" />
-    <None Include="Res\WARNING_LIMIT.ico" />
+    <None Include="Res\Temp.bmpx" />
+    <None Include="Res\Temp_small.bmpx" />
+    <None Include="Res\TOOLS_ICON.bmpx" />
+    <None Include="Res\VIEW_ICON.bmpx" />
     <None Include="Res\write.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -1206,25 +1155,20 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\Configuration_Toolbar.bmp" />
-    <Image Include="res\Configuration_Toolbar_Disabled.bmp" />
-    <Image Include="res\Configuration_Toolbar_Hot.bmp" />
-    <Image Include="Res\Connect.ico" />
-    <Image Include="res\FlexRay_Toolbar.bmp" />
-    <Image Include="res\FlexRay_Toolbar_Disabled.bmp" />
-    <Image Include="res\FlexRay_Toolbar_Hot.bmp" />
-    <Image Include="res\LIN_Toolbar.bmp" />
-    <Image Include="res\LIN_Toolbar_Disabled.bmp" />
-    <Image Include="res\LIN_Toolbar_Hot.bmp" />
+    <Image Include="res\bitmap21.bmp" />
+    <Image Include="Res\filesmall.bmp" />
+    <Image Include="Res\HideRibbon.ico" />
     <Image Include="res\LoggingOFF.ico" />
     <Image Include="res\LoggingON.ico" />
     <Image Include="res\LoggingONLIGHT.ico" />
-    <Image Include="res\logo.bmp" />
     <Image Include="res\MsgWndImportLog.bmp" />
     <Image Include="res\Network_Statistics.ico" />
-    <Image Include="res\Toolbar_J1939.bmp" />
-    <Image Include="res\Toolbar_J1939_Disabled.bmp" />
-    <Image Include="res\Toolbar_J1939_Hot.bmp" />
+    <Image Include="Res\ShowRibbon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="..\BIN\Release\BUSMASTER.exe.manifest">
+      <SubType>Designer</SubType>
+    </Manifest>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

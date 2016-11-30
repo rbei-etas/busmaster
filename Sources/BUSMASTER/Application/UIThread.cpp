@@ -118,7 +118,7 @@ int CUIThread::ExitInstance()
     Modified by      :
     Modification     :
 /*****************************************************************************/
-BOOL CUIThread::bCreateTraceWindow(CMDIFrameWnd* pomParentWnd)
+BOOL CUIThread::bCreateTraceWindow(CMDIFrameWndEx* pomParentWnd)
 {
     BOOL bResult = FALSE;
 

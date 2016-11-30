@@ -6,7 +6,7 @@
 
 #define EXT_INFO_PARAM      UINT_PTR
 #define OUT_INFO_PARAM      UINT_PTR
-////Info required bny the plugins from busmaster//////
+////Info required any the plugins from busmaster//////
 #define busmaster_version       0x1         //extended param - nullptr, expected INFO param: char[25]
 #define busmaster_window        0x2         //extended param - nullptr, expected INFO param: &HWND
 
@@ -25,6 +25,14 @@ public:
     virtual int getDilService( ETYPE_BUS, IBusService** ) = 0;
     virtual int displayMessage( char* message )=0;
     virtual int getInfo(int infoType, EXT_INFO_PARAM, /*IN, OUT*/ OUT_INFO_PARAM infoData) = 0;
+    virtual int postMessage() = 0;
     virtual int getPluginConnectionPoint(const char* pluginId, IBusmasterPluginConnection**) = 0;    //TODO::
 };
 
+class IBusmasterBusPluginInterface : public IBusmasterPluginInterface
+{
+public:
+    virtual ~IBusmasterBusPluginInterface(){};
+    virtual int getDbSetService(IBMNetWorkService**) = 0;
+    virtual int notifyPlugins(eBusmaster_Event, void*) = 0;
+};

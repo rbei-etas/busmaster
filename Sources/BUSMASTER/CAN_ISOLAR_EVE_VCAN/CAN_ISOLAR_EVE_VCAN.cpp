@@ -68,10 +68,9 @@ public:
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
     HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
-    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
-    HRESULT CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
@@ -429,7 +428,7 @@ static BOOL bIsBufferExists(const SCLIENTBUFMAP& sClientObj, const CBaseCANBufFS
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
+static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* /*File*/, int /*Line*/)
 {
     USES_CONVERSION;
 
@@ -738,7 +737,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_GetTimeModeMapping(SYSTEMTIME& /* CurrSysTime 
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_ListHwInterfaces(INTERFACE_HW_LIST& /* sSelHwInterface */, INT& /* nCount */)
+HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_ListHwInterfaces(INTERFACE_HW_LIST& /* sSelHwInterface */, INT& /* nCount */, PSCONTROLLER_DETAILS InitData)
 {
     return S_OK;
 }
@@ -753,10 +752,6 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_DeselectHwInterface(void)
     return S_OK;
 }
 
-HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS /* InitData */, int& /* Length */)
-{
-    return S_OK;
-}
 
 HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_SetConfigData(PSCONTROLLER_DETAILS /* InitData */, int /* Length */)
 {
@@ -1113,7 +1108,7 @@ HRESULT CDIL_ISOLAR_EVE_VCAN::CAN_ManageMsgBuf(BYTE bAction, DWORD ClientID, CBa
     return hResult;
 }
 
-HRESULT  CDIL_ISOLAR_EVE_VCAN::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
+HRESULT  CDIL_ISOLAR_EVE_VCAN::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS,DWORD /*dwDriverId*/,bool /*bIsHardwareListed*/, unsigned int /*unChannelCount*/)
 {
     return S_OK;
 }

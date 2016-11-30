@@ -2,7 +2,7 @@
 ; Critical (C)		:		Y
 ; TestCase No.		:		TS_J1939_DBE_10
 ; TestCases			:		Delete signal descriptions
-; Test Data			:		
+; Test Data			:
 ; Test Setup		:		1. Select "J1939->Database->Open..."
 ;~ 							2. Select "DBForSTS.dbf" database from the Open file dialog box
 ;~ 							3. Select "MESSAGE1" from the left view
@@ -36,6 +36,11 @@ if winexists($WIN_BUSMASTER) then
 	$sigDesclvhwd=controlgethandle($WIN_BUSMASTER,"",$LVC_SigDesc_SigDesc)								; Get handle of signal details list view
 	$signalDescCount=_GUICtrlListView_GetItemCount($sigDesclvhwd)										; Fetch the count of signal desc items
 	consolewrite("$signalDescCount : " & $signalDescCount & @Crlf)
+	_ActivatechildWindow($WIN_DBEditor_J19391)
+	WinClose($WIN_DBEditor_J19391)
+	if WinWaitActive($WIN_BUSMASTER,$saveDBtxt,2) Then
+		ControlClick($WIN_BUSMASTER,"",$BTN_No_SaveDB)
+	EndIf
 EndIf
 if $DelSignalDescRes=1 and $signalDescCount=0 Then
 	_WriteResult("Pass","TS_J1939_DBE_10")

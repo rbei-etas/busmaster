@@ -203,9 +203,9 @@ void LDFElementView::vPopulateLinEcus(QTreeWidgetItem* pTopTreeItem)
 
     QList<QTreeWidgetItem*> LinElementItem[LIN_MAX_ECU_TYPES];
     std::string strName;
-    EcuProperties ouECUProps;
+    LinEcuProps ouECUProps;
     ouECUProps.m_eEcuType = eEcuNone;
-for ( auto itrSignal : ouElementMap )
+	for ( auto itrSignal : ouElementMap )
     {
         itrSignal.second->GetName(strName);
 
@@ -213,7 +213,7 @@ for ( auto itrSignal : ouElementMap )
 
         switch (ouECUProps.m_eEcuType)
         {
-            case eLIN_Master:
+            case eMaster:
                 pElementItem[LIN_MASTER_ECU] = new QTreeWidgetItem();
                 pElementItem[LIN_MASTER_ECU]->setText(0, QString::fromStdString(strName));
                 pElementItem[LIN_MASTER_ECU]->setIcon(0, m_ouIcons[defECU_ICON_INDEX]);
@@ -227,7 +227,7 @@ for ( auto itrSignal : ouElementMap )
                 pElementItem[LIN_MASTER_ECU]->setData(0, Qt::UserRole, ouVariant);
                 LinElementItem[LIN_MASTER_ECU].push_back(pElementItem[LIN_MASTER_ECU]);
                 break;
-            case eLIN_Slave:
+            case eSlave:
                 pElementItem[LIN_SLAVE_ECU] = new QTreeWidgetItem();
                 pElementItem[LIN_SLAVE_ECU]->setText(0, QString::fromStdString(strName));
                 pElementItem[LIN_SLAVE_ECU]->setIcon(0, m_ouIcons[defECU_ICON_INDEX]);
@@ -273,14 +273,14 @@ void LDFElementView::OnSlaveNodeDelete(UID_ELEMENT uid)
         pEcu->GetFrameList(eTx,  lstFrames);
 
         itrFrame = lstFrames.begin();
-        FrameProps ouFrameProps;
-        ouFrameProps.m_eFrameType = eFrame_Invalid;
+        LinFrameProps ouFrameProps;
+		ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
         while(itrFrame != lstFrames.end())
         {
             UID_ELEMENT uidFrame = (*itrFrame)->GetUniqueId();
             (*itrFrame)->GetProperties(ouFrameProps);
 
-            if(ouFrameProps.m_eFrameType == eLIN_Unconditional)
+			if (ouFrameProps.m_eLinFrameType == eLinUnconditionalFrame)
             {
                 pEcu->UnMapFrame(eTx, uidFrame);
                 itrFrame = lstFrames.erase(itrFrame);
@@ -391,16 +391,16 @@ void LDFElementView::vPopulateLinFrames(QTreeWidgetItem* pTopTreeItem)
     std::string strName;
 
     ouTreeItemID.m_eTreeElementType = eLdfItem;
+	LinFrameProps linFrameProps;
 for ( auto itrFrame : ouFrameMap )
     {
         itrFrame.second->GetName(strName);
-        eFrameType ouLinFrameType;
-        ((IFrame*)(itrFrame.second))->GetFrameType(ouLinFrameType);
+		((IFrame*)(itrFrame.second))->GetProperties(linFrameProps);
         unsigned int unId = -1;
         char chText[33] = "";
-        switch (ouLinFrameType)
+		switch (linFrameProps.m_eLinFrameType)
         {
-            case eLIN_Unconditional:
+		case eLinUnconditionalFrame:
             {
                 pElementItem = new QTreeWidgetItem();
                 ((IFrame*)(itrFrame.second))->GetFrameId(unId);
@@ -419,7 +419,7 @@ for ( auto itrFrame : ouFrameMap )
 
             }
             break;
-            case eLIN_Sporadic:
+            case eSporadic:
             {
                 if(ouLINSettings.m_dProtocolVers <= defVersion_1_3)
                 {
@@ -438,8 +438,8 @@ for ( auto itrFrame : ouFrameMap )
                 LinElementItem[LIN_SPORADIC_FRAME_INDEX].push_back(pElementItem);
             }
             break;
-            case eLIN_EventTriggered:
-            {
+			case eLinEventTriggeredFrame:
+			{
                 pElementItem = new QTreeWidgetItem();
                 ((IFrame*)(itrFrame.second))->GetFrameId(unId);
                 omstrFrameId = GetString(unId);
@@ -456,7 +456,7 @@ for ( auto itrFrame : ouFrameMap )
                 LinElementItem[LIN_EVENT_FRAME_INDEX].push_back(pElementItem);
             }
             break;
-            case eLIN_Diagnostic:
+			case eLinDiagnosticFrame:
             {
                 nGetDigFrameTreeWidgetItem(((IFrame*)(itrFrame.second)), pElementItem);
                 LinElementItem[LIN_DIAGNOSTIC_FRAME_INDEX].push_back(pElementItem);
@@ -487,14 +487,14 @@ void LDFElementView::vPopulateLinEventTrigFrames(QTreeWidgetItem* pElementTopTre
     std::string strName;
     TreeItemID ouTreeItemID;
     QVariant ouVariant;
-    eFrameType oueFrameType;
+	LinFrameProps linFrameProps;
     unsigned int unId;
     m_poEventTrigTreeItem->takeChildren();
     ouTreeItemID.m_eTreeElementType = eLdfItem;
-for ( auto itrFrame : ouFrameMap )
+	for ( auto itrFrame : ouFrameMap )
     {
-        ((IFrame*)(itrFrame.second))->GetFrameType(oueFrameType);
-        if ( oueFrameType != eLIN_EventTriggered )
+		((IFrame*)(itrFrame.second))->GetProperties(linFrameProps);
+		if (linFrameProps.m_eLinFrameType != eEventTriggered)
         {
             continue;
         }
@@ -523,14 +523,14 @@ void LDFElementView::vPopulateLinDiagFrames(QTreeWidgetItem* pElementTopTreeItem
     std::string strName;
     TreeItemID ouTreeItemID;
     QVariant ouVariant;
-    eFrameType oueFrameType;
+	LinFrameProps linFrameProps;
     unsigned int unId;
     m_poDiagTreeItem->takeChildren();
     ouTreeItemID.m_eTreeElementType = eLdfItem;
 for ( auto itrFrame : ouFrameMap )
     {
-        ((IFrame*)(itrFrame.second))->GetFrameType(oueFrameType);
-        if ( oueFrameType != eLIN_Diagnostic )
+		((IFrame*)(itrFrame.second))->GetProperties(linFrameProps);
+		if (linFrameProps.m_eLinFrameType != eLinDiagnosticFrame)
         {
             continue;
         }
@@ -559,14 +559,14 @@ void LDFElementView::vPopulateLinUnconditionalFrames(QTreeWidgetItem* pElementTo
     std::string strName;
     TreeItemID ouTreeItemID;
     QVariant ouVariant;
-    eFrameType oueFrameType;
+	LinFrameProps linFrameProps;
     unsigned int unId;
     ouTreeItemID.m_eTreeElementType = eLdfItem;
     m_poUnconditionTreeItem->takeChildren();
 for ( auto itrFrame : ouFrameMap )
     {
-        ((IFrame*)(itrFrame.second))->GetFrameType(oueFrameType);
-        if ( oueFrameType != eLIN_Unconditional )
+		((IFrame*)(itrFrame.second))->GetProperties(linFrameProps);
+		if (linFrameProps.m_eLinFrameType != eLinUnconditionalFrame)
         {
             continue;
         }
@@ -660,17 +660,17 @@ void LDFElementView::vPopulateLinSignals(QTreeWidgetItem* pTopTreeItem)
 
     QList<QTreeWidgetItem*> LinElementItem[LIN_MAX_SIGNAL_TYPES];
     std::string strName;
-    SignalProps ouSignalProps;
+    LINSignalProps ouSignalProps;
     ouSignalProps.eType = eInvalidProtocol;
     ouTreeItemID.m_eTreeElementType = eLdfItem;
 
-for ( auto itrSignal : ouElementMap )
+	for ( auto itrSignal : ouElementMap )
     {
         itrSignal.second->GetName(strName);
 
         ((ISignal*)itrSignal.second)->GetProperties(ouSignalProps);
 
-        switch (ouSignalProps.m_ouLINSignalProps.m_ouSignalType)
+        switch (ouSignalProps.m_ouSignalType)
         {
             case eSignalNormal:
                 pElementItem[LIN_NORMAL_SIGNAL] = new QTreeWidgetItem();
@@ -1498,7 +1498,7 @@ void LDFElementView::vCreateSlaveEcu(IEcu* pouEcu, QTreeWidgetItem* pouParentTre
     std::map <UID_ELEMENT, IElement*> pouFrameList;
     m_pBaseCluster->GetElementList(eFrameElement, pouFrameList);
 
-    eFrameType ouFrameType;
+    
     UID_ELEMENT uId;
     unsigned int unFramId = 0;
     unsigned int unMasterFrameId = 0x3C;
@@ -1560,7 +1560,7 @@ void LDFElementView::vPopulateDiagSignals()
 {
     QList<QTreeWidgetItem*> LinElementItem[LIN_MAX_SIGNAL_TYPES];
     std::string strName;
-    SignalProps ouSignalProps;
+    LINSignalProps ouSignalProps;
     ouSignalProps.eType = eInvalidProtocol;
     TreeItemID ouTreeItemID;
     QVariant ouVariant;
@@ -1575,7 +1575,7 @@ for ( auto itrSignal : ouElementMap )
 
         ((ISignal*)itrSignal.second)->GetProperties(ouSignalProps);
 
-        if (ouSignalProps.m_ouLINSignalProps.m_ouSignalType == eSignalDiag)
+        if (ouSignalProps.m_ouSignalType == eSignalDiag)
         {
             pElementItem = new QTreeWidgetItem();
             pElementItem->setText(0, QString::fromStdString(strName));
@@ -1624,12 +1624,12 @@ void LDFElementView::vOnRemoveDiagSupport()
     std::map<UID_ELEMENT, IElement*> pouFrameList;
     m_pBaseCluster->GetElementList(eFrameElement, pouFrameList);
 
-    eFrameType ouFrameType;
+	LinFrameProps props;
     UID_ELEMENT uId;
 for ( auto itr : pouFrameList )
     {
-        ((IFrame*)itr.second)->GetFrameType(ouFrameType);
-        if ( eLIN_Diagnostic == ouFrameType )
+		((IFrame*)itr.second)->GetProperties(props);
+		if (eLinDiagnosticFrame == props.m_eLinFrameType)
         {
             uId = itr.second->GetUniqueId();
             vDeleteSignals((IFrame*)itr.second);
@@ -1750,17 +1750,17 @@ void LDFElementView::onItemDoubleClicked(QTreeWidgetItem* pTreeItem, int column)
             {
                 case eFrameElement:
                 {
-                    eFrameType oueFrameType;
-                    ((IFrame*)pElement)->GetFrameType(oueFrameType);
-                    if ( oueFrameType == eLIN_Unconditional)
+					LinFrameProps frameProps;
+					((IFrame*)pElement)->GetProperties(frameProps);
+					if (frameProps.m_eLinFrameType == eLinUnconditionalFrame)
                     {
                         vOnEditUnCondFrameElement();
                     }
-                    else if (oueFrameType == eLIN_EventTriggered)
+					else if (frameProps.m_eLinFrameType == eEventTriggered)
                     {
                         vOnEditEventTrigFrameElement();
                     }
-                    else if (oueFrameType == eLIN_Sporadic)
+					else if (frameProps.m_eLinFrameType == eSporadic)
                     {
                         vOnEditSporadicFrameElement();
                     }
@@ -1768,10 +1768,10 @@ void LDFElementView::onItemDoubleClicked(QTreeWidgetItem* pTreeItem, int column)
                 break;
                 case eSignalElement:
                 {
-                    SignalProps ouSignalProps;
+                    LINSignalProps ouSignalProps;
                     ouSignalProps.eType = eInvalidProtocol;
                     ((ISignal*)pElement)->GetProperties(ouSignalProps);
-                    if ( ouSignalProps.m_ouLINSignalProps.m_ouSignalType == eSignalNormal )
+                    if ( ouSignalProps.m_ouSignalType == eSignalNormal )
                     {
                         vOnEditSignal();
                     }
@@ -1779,13 +1779,13 @@ void LDFElementView::onItemDoubleClicked(QTreeWidgetItem* pTreeItem, int column)
                 break;
                 case eEcuElement:
                 {
-                    eEcuType ouEcuType;
-                    ((IEcu*)pElement)->GetEcuType(ouEcuType);
-                    if ( ouEcuType == eLIN_Master )
+                    LinEcuProps ecuProps;
+					((IEcu*)pElement)->GetProperties(ecuProps);
+					if (ecuProps.m_eEcuType == eMaster)
                     {
                         vOnEditMasterElement();
                     }
-                    else if ( ouEcuType == eLIN_Slave )
+					else if (ecuProps.m_eEcuType == eSlave)
                     {
                         vOnEditSlaveElement();
                     }
@@ -1905,10 +1905,10 @@ void LDFElementView::DisplayElementPopupMenu(const QPoint& point, QTreeWidgetIte
 {
     eClusterElementType eType = m_pouLDFDatabaseManager->GetLDFCluster()->GetElementType(uidElement);
     IElement* pElement = nullptr;
-    EcuProperties ouEcuProps;
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
-    SignalProps ouSignalProps;
+    LinEcuProps ouEcuProps;
+    LinFrameProps ouFrameProps;
+	ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
+    LINSignalProps ouSignalProps;
     ouSignalProps.eType = eInvalidProtocol;
     ouEcuProps.m_eEcuType = eEcuNone;
     switch(eType)
@@ -1921,11 +1921,11 @@ void LDFElementView::DisplayElementPopupMenu(const QPoint& point, QTreeWidgetIte
             {
                 if(EC_SUCCESS == ((IEcu*)pElement)->GetProperties(ouEcuProps))
                 {
-                    if(ouEcuProps.m_eEcuType == eLIN_Master)
+                    if(ouEcuProps.m_eEcuType == eMaster)
                     {
                         showContextMenu(m_ouElementPopupMenus[eMasterElementPopup],pTreeItem, point);
                     }
-                    else if(ouEcuProps.m_eEcuType == eLIN_Slave)
+                    else if(ouEcuProps.m_eEcuType == eSlave)
                     {
                         showContextMenu(m_ouElementPopupMenus[eSlaveElementPopup],pTreeItem, point);
                     }
@@ -1939,15 +1939,15 @@ void LDFElementView::DisplayElementPopupMenu(const QPoint& point, QTreeWidgetIte
             {
                 if(EC_SUCCESS == ((IFrame*)pElement)->GetProperties(ouFrameProps))
                 {
-                    if(ouFrameProps.m_eFrameType == eLIN_Unconditional)
+					if (ouFrameProps.m_eLinFrameType == eLinUnconditionalFrame)
                     {
                         showContextMenu(m_ouElementPopupMenus[eUnconditionalFrameElementPopup],pTreeItem, point);
                     }
-                    else if(ouFrameProps.m_eFrameType == eLIN_EventTriggered)
+					else if (ouFrameProps.m_eLinFrameType == eEventTriggered)
                     {
                         showContextMenu(m_ouElementPopupMenus[eEventTriggeredFrameElementPopup],pTreeItem, point);
                     }
-                    else if(ouFrameProps.m_eFrameType == eLIN_Sporadic)
+					else if (ouFrameProps.m_eLinFrameType == eSporadic)
                     {
                         showContextMenu(m_ouElementPopupMenus[eSporadicFrameElementPopup],pTreeItem, point);
                     }
@@ -1963,7 +1963,7 @@ void LDFElementView::DisplayElementPopupMenu(const QPoint& point, QTreeWidgetIte
             {
                 if(EC_SUCCESS == ((ISignal*)pElement)->GetProperties(ouSignalProps))
                 {
-                    if(ouSignalProps.m_ouLINSignalProps.m_ouSignalType == eSignalNormal)
+                    if(ouSignalProps.m_ouSignalType == eSignalNormal)
                     {
                         showContextMenu(m_ouElementPopupMenus[eSignalElementPopup],pTreeItem, point);
                     }

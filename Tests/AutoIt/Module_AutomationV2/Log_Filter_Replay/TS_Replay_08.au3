@@ -2,16 +2,16 @@
 ; Critical (C)		:		Y
 ; TestCase No.		:		TS_Replay_08
 ; TestCases			:		Replay a log file in cyclic mode with no messages in the log file
-; Test Data			:		
+; Test Data			:
 ; Test Setup		:		1. Select "Configure-> Replay".
-;~ 							2. A Dialog Box will appear. 
+;~ 							2. A Dialog Box will appear.
 ;~ 							3. Select a replay file and select time delay between messages as 50ms.
 ;~ 							4. Select Mode of Replay as "Cyclic"
 ;~ 							5. Select a Log file name
 ;~ 							6. Select OK. Replay Window with message in log file will appear
 ;~ 							7. Select "File -> Connect" menu option or select "Connect" tool bar button
-;~ 							8. Enable logging 
-;~ 							9. Repeat the test case after editing the log file having four message 
+;~ 							8. Enable logging
+;~ 							9. Repeat the test case after editing the log file having four message
 ;~ 							10. Select Go button
 
 ; Expected Results  : 		Replay window should close.
@@ -139,7 +139,7 @@ if winexists($WIN_BUSMASTER) then
 	ConsoleWrite("$Counter1:"&$Counter1&@CRLF)
 	ConsoleWrite("$Counter2:"&$Counter2&@CRLF)
 
-	if $MsgWinCount=7 and $Counter1=2 and $Counter2=2 Then
+	if $MsgWinCount=11 and $Counter1=2 and $Counter2=2 Then
 		_WriteResult("Pass","TS_Replay_08")
 	Else
 		_WriteResult("Fail","TS_Replay_08")

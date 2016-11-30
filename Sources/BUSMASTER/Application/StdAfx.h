@@ -79,8 +79,10 @@ const float PI = (float) 3.14159265358979323846;
 #include <comutil.h>
 #include <afxdlgs.h>
 #import <msxml6.dll>
+#include "afxribbonbar.h"
 
-//3.0.0
+#include <afxcontrolbars.h>     // Added to support for ribbons and control bars
+//3.1.0
 const BYTE VERSION_MAJOR=3;
-const BYTE VERSION_MINOR=0;
+const BYTE VERSION_MINOR=1;
 const BYTE VERSION_BUILD=0;

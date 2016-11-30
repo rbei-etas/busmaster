@@ -98,7 +98,7 @@ ERRORCODE NodeSimCodeGenerator::GenerateHeaderFile(std::fstream& fileHeader, INs
     cluster->GetElementList(ePduElement, pduList);
     IPduCodeGenHelper* pduCodeGenHelper = codeGenHelper->GetPduCodeGenHelper();
     PduProps pduProps;
-for ( auto itrPdu : pduList )
+    for ( auto itrPdu : pduList )
     {
         IPdu* pdu = (IPdu*)(itrPdu.second);
         pdu->GetProperties(pduProps);
@@ -106,7 +106,7 @@ for ( auto itrPdu : pduList )
         fileHeader << TAG_OPENFBRACE << std::endl;
         fileHeader << TAG_PUBLICSTART << std::endl;
 
-        sprintf_s(chTemp, sizeof(chTemp), TAG_DATABYTEDECL, pduProps.m_ouFlexRayPduProps.m_unByteLength);
+        sprintf_s(chTemp, sizeof(chTemp), TAG_DATABYTEDECL, pduProps.m_unByteLength);
         fileHeader << chTemp;
 
         fileHeader << pduCodeGenHelper->GetBaseClassDecl(pdu) << std::endl;
@@ -197,8 +197,7 @@ ERRORCODE NodeSimCodeGenerator::GenerateCppFile(std::fstream& fileHeader, INsCod
     fileHeader << defNameSpace  <<" " <<"PDU" << TAG_OPENFBRACE <<std::endl;
 
     //5. pdu definition
-    char chTemp[256];
-    std::string pduName;
+	std::string pduName;
     std::map<UID_ELEMENT, IElement*> pduList;
     cluster->GetElementList(ePduElement, pduList);
     IPduCodeGenHelper* pduCodeGenHelper = codeGenHelper->GetPduCodeGenHelper();
@@ -399,7 +398,6 @@ ERRORCODE NodeSimCodeGenerator::GenerateMakeFile(IBMNetWorkGetService* pBmNetWor
     CString omStrFile            = "";
 
 
-    char path_buffer[_MAX_PATH];
     char drive[_MAX_DRIVE];
     char dir[_MAX_DIR];
     char fname[_MAX_FNAME];
@@ -515,7 +513,7 @@ std::string NodeSimCodeGenerator::GetProtocolLib(ETYPE_BUS eBus)
     return strLib;
 }
 
-ERRORCODE NodeSimCodeGenerator::CompileCode(ICluster* pCluster, bool bRegenerate, bool bReCompile, INsCodeGenHelper* codeGenHelper)
+ERRORCODE NodeSimCodeGenerator::CompileCode(ICluster* pCluster, bool bRegenerate, bool /*bReCompile*/, INsCodeGenHelper* codeGenHelper)
 {
     if (nullptr == codeGenHelper)
     {

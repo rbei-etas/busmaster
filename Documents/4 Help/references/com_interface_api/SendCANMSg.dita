@@ -4,6 +4,10 @@
   <title>SendCANMSg : To send a CAN message</title>
   <refbody>
     <section>
+      <title>Synopsis</title>
+      <p>HRESULT SendCANMSg(CAN_MSGS *sMsg)</p>
+    </section>
+    <section>
       <title>Description</title>
       <p>This function will put the message on the CAN bus. The message structure CAN_MSGS will be filled with ID, length, frame format and data.</p>
     </section>

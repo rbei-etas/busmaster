@@ -114,21 +114,9 @@ BOOL CTxMsgChildFrame::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pCont
         ReleaseTxFormViewInstance();
     }
 
-    /* Try to load resource DLL for icons*/
-    HMODULE hModAdvancedUILib = ::LoadLibrary("AdvancedUIPlugIn.dll");
-
-    if ( hModAdvancedUILib )
-    {
-        SetIcon( ::LoadIcon(hModAdvancedUILib, MAKEINTRESOURCE( IDI_ICO_TX_WINDOW )), TRUE);
-        ::FreeLibrary(hModAdvancedUILib);
-        hModAdvancedUILib = nullptr;
-    }
-    else
-    {
-        HICON hIco = AfxGetApp()->LoadIcon(IDI_ICO_TX_WINDOW);
-        SetIcon(hIco, TRUE);
-    }
-
+    HICON hIco = AfxGetApp()->LoadIcon(IDI_ICO_TX_WINDOW);
+    SetIcon(hIco, TRUE);
+    
     return CMDIChildBase::OnCreateClient( lpcs, pContext );
 
 }

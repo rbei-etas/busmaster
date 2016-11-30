@@ -37,7 +37,7 @@ if winexists($WIN_BUSMASTER) then
 ;~ 	_EnableHex()																				; Enable Hex mode
 	Sleep(1000)
 	;_ConnectDisconnect()																		; Connect the tool
-	;WinMenuSelectItem($WIN_BUSMASTER,"",$CANMenu,"&Connect")
+	;WinRibbonSelectItem($WIN_BUSMASTER,"",$CANMenu,"&Connect")
 	_Connect_CAN_Menu()
 	Sleep(2000)
 

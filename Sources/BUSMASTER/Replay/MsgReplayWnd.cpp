@@ -88,6 +88,7 @@ BEGIN_MESSAGE_MAP(CMsgReplayWnd, CMDIChildWnd)
     ON_WM_MDIACTIVATE()
     ON_WM_ERASEBKGND()
     ON_MESSAGE( WM_OWNER_GET_DATA, vHandleListControlDataReq)
+
     ON_WM_SHOWWINDOW()
     ON_MESSAGE(WM_OW_LIST_DBLCLK, vListDoubleClick)
     //}}AFX_MSG_MAP
@@ -121,7 +122,7 @@ BOOL CMsgReplayWnd::OnCreateClient(LPCREATESTRUCT lpcs,
 
     int nReplayMode = m_ouReplayDetails.m_ouReplayFile.m_nReplayMode;
     DWORD wListStyle = WS_CHILD | WS_VISIBLE | WS_BORDER |
-                       LVS_REPORT | LVS_NOCOLUMNHEADER | LVS_SHOWSELALWAYS |
+		LVS_REPORT | LVS_NOCOLUMNHEADER|  LVS_SHOWSELALWAYS |
                        LVS_OWNERDATA;    // Virtual List control
 
     if( nReplayMode == defREPLAY_MODE_MONOSHOT)
@@ -219,6 +220,7 @@ void CMsgReplayWnd::OnSize(UINT nType, int cx, int cy)
     m_omMessageList.MoveWindow(omRect,TRUE);
     m_omMessageList.GetClientRect( omRect );
     m_omMessageList.SetColumnWidth(0, omRect.Width());
+	//m_omMessageList.SetScrollPos()
 }
 /******************************************************************************/
 /*  Function Name    :  bOpenReplayFile                                       */
@@ -247,7 +249,7 @@ void CMsgReplayWnd::OnSize(UINT nType, int cx, int cy)
 /*                      parsing the file and use owner data list for message  */
 /*                      entries                                               */
 /******************************************************************************/
-BOOL CMsgReplayWnd::bOpenReplayFile(BOOL bIsInteractive)
+BOOL CMsgReplayWnd::bOpenReplayFile(BOOL /*bIsInteractive*/)
 {
     BOOL bReturn = m_ouReplayDetails.bOpenReplayFile(TRUE);
     m_ouReplayDetails.bSetbIsProtocolMismatch(false);
@@ -259,14 +261,16 @@ BOOL CMsgReplayWnd::bOpenReplayFile(BOOL bIsInteractive)
 
         if( m_dwsize > 0 && bReturn==TRUE)
         {
-            m_omMessageList.SetItemCount(m_dwsize);
+			m_omMessageList.SetItemCount(m_dwsize);
 
-            m_omMessageList.SetItemState( 0, LVIS_SELECTED | LVIS_FOCUSED,
-                                          LVIS_SELECTED | LVIS_FOCUSED );
+            //m_omMessageList.SetItemState( 0, LVIS_SELECTED | LVIS_FOCUSED,
+              //                            LVIS_SELECTED | LVIS_FOCUSED );
             m_eReplayState = REPLAY_TO_START;
             m_ouReplayDetails.m_nUserSelectionIndex = 0;
             // Send message to resize list control
             SendMessage( WM_SIZE );
+			
+			//m_omMessageList.EnsureVisible(0, TRUE);
         }
         else
         {
@@ -692,13 +696,15 @@ LRESULT CMsgReplayWnd::vHandleListControlDataReq( WPARAM wParam, LPARAM /*lParam
     bool bEOFflag = false;
     bool bProtocolMismatch = false;
     bool bInvalidMsg = false;
+	
     // Text Request
     if (pItem->mask & LVIF_TEXT)
     {
         if( pItem->iSubItem == 0 &&
-                pItem->iItem < m_dwsize )
+			pItem->iItem < m_dwsize )
         {
-            omStrText = m_ouReplayDetails.omStrGetMsgFromLog(pItem->iItem,sCanMsg,bSessionFlag,bEOFflag,bProtocolMismatch,bInvalidMsg);
+
+			omStrText = m_ouReplayDetails.omStrGetMsgFromLog(pItem->iItem,sCanMsg,bSessionFlag,bEOFflag,bProtocolMismatch,bInvalidMsg);
 
             if(bProtocolMismatch && !m_ouReplayDetails.bGetbIsProtocolMismatch())
             {

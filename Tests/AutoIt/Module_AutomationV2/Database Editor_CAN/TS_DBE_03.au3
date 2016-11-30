@@ -34,6 +34,13 @@ if winexists($WIN_BUSMASTER) then
 	$sigDescVal=_GUICtrlListView_GetItemText($sigDesclvhwd,0,1)							; Fetch the signal desc value
 	ConsoleWrite("$sigDescName :"&$sigDescName&@CRLF)
 	ConsoleWrite("$sigDescVal :"&$sigDescVal&@CRLF)
+
+    _ActivatechildWindow($WIN_DBEditor_CAN1)
+	WinClose($WIN_DBEditor_CAN1)
+	if WinWaitActive($WIN_BUSMASTER,$saveDBtxt,2) Then
+		ControlClick($WIN_BUSMASTER,"",$BTN_No_SaveDB)
+	EndIf
+
 EndIf
 if $sigDescName="Desc1" and $sigDescVal=1 Then
 	_WriteResult("Pass","TS_DBE_03")

@@ -134,6 +134,62 @@ BOOL CDIL_CAN::InitInstance()
     return TRUE;
 }
 
+void CDIL_CAN::vInitialize(SCONTROLLER_DETAILS& controller, BOOL bUpdateHWDesc)
+{
+	// The default baudrate is taken as 500 kbps
+	controller.m_nItemUnderFocus = 64;
+	controller.m_nBTR0BTR1 = 49210;
+	controller.m_omStrCNF1 = "7";
+	controller.m_omStrCNF2 = "B8";
+	controller.m_omStrCNF3 = "5";
+	controller.m_omStrBTR0 = "C0";
+	controller.m_omStrBTR1 = "3A";
+	controller.m_omStrBaudrate = "500000";
+	controller.m_omStrClock = "16";
+	controller.m_omStrSamplePercentage = "75";
+	controller.m_omStrSampling = "1";
+	controller.m_omStrWarningLimit = "96";
+	controller.m_omStrPropagationDelay = "ALL";
+	controller.m_omStrSjw = "4";
+	controller.m_omStrAccCodeByte1[0] = "0";
+	controller.m_omStrAccCodeByte2[0] = "0";
+	controller.m_omStrAccCodeByte3[0] = "0";
+	controller.m_omStrAccCodeByte4[0] = "0";
+	controller.m_omStrAccCodeByte1[1] = "0";
+	controller.m_omStrAccCodeByte2[1] = "0";
+	controller.m_omStrAccCodeByte3[1] = "0";
+	controller.m_omStrAccCodeByte4[1] = "0";
+	controller.m_omStrAccMaskByte1[0] = "FF";
+	controller.m_omStrAccMaskByte2[0] = "FF";
+	controller.m_omStrAccMaskByte3[0] = "FF";
+	controller.m_omStrAccMaskByte4[0] = "FF";
+	controller.m_omStrAccMaskByte1[1] = "FF";
+	controller.m_omStrAccMaskByte2[1] = "FF";
+	controller.m_omStrAccMaskByte3[1] = "FF";
+	controller.m_omStrAccMaskByte4[1] = "FF";
+
+	if (bUpdateHWDesc)
+	{
+		controller.m_omHardwareDesc = "";
+	}
+	controller.m_bAccFilterMode = FALSE;
+	controller.m_ucControllerMode = 0x1;
+	controller.m_enmHWFilterType[0] = HW_FILTER_ACCEPT_ALL;
+	controller.m_enmHWFilterType[1] = HW_FILTER_ACCEPT_ALL;
+	controller.m_bSelfReception = TRUE;
+	controller.m_bLowSpeed = FALSE;
+	controller.m_unBTL_Cycles = 10;
+
+	/* CAN FD related parameters */
+	controller.m_bcanFDEnabled = FALSE;
+	controller.m_bSupportCANFD = FALSE;
+	controller.m_unDataBitRate = 2000000;
+	controller.m_unDataSamplePoint = 70;
+	controller.m_unDataBTL_Cycles = 10;
+	controller.m_unDataSJW = 03;
+	controller.m_bTxDelayCompensationControl = 0;   // OCI_CANFD_TX_DELAY_COMPENSATION_OFF
+	controller.m_unTxSecondarySamplePointOffset = 0;
+}
 /**
  * Helper Function for Dummy Interface
  */
@@ -442,14 +498,22 @@ HRESULT CDIL_CAN::DILC_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeS
  *
  * Call this function to list the hardware interfaces available and receive user's choice.
  */
-HRESULT CDIL_CAN::DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount)
+HRESULT CDIL_CAN::DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData, bool bLoadedFromXml /* =1 only when loaded from nLoadXMLConfiguration() */)
 {
     if(nullptr == m_pBaseDILCAN_Controller)
     {
         return S_FALSE;
     }
 
-    HRESULT hr = m_pBaseDILCAN_Controller->CAN_ListHwInterfaces(sSelHwInterface, nCount);
+	if (m_dwDriverID != m_dwOldDriverID && bLoadedFromXml != 1) // Flag is used to prevent initialization when loaded from XMl Config
+	{
+		for(int i = 0; i < defNO_OF_CHANNELS; i++)
+		{
+			m_asOldControllerDetails[i] = InitData[i];
+			vInitialize(InitData[i],FALSE);
+		}
+	}
+    HRESULT hr = m_pBaseDILCAN_Controller->CAN_ListHwInterfaces(sSelHwInterface, nCount,InitData);
 
     if ( hr != S_OK && m_hOldDll )
     {
@@ -469,6 +533,10 @@ HRESULT CDIL_CAN::DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT&
         m_hDll = m_hOldDll;
         m_pBaseDILCAN_Controller = m_pOldBaseDILCAN_Controller;
         m_dwDriverID = m_dwOldDriverID;
+		for(int i = 0; i < defNO_OF_CHANNELS; i++)
+		{
+			InitData[i] = m_asOldControllerDetails[i];
+		}
     }
     else if ( m_hOldDll )
     {
@@ -483,6 +551,7 @@ HRESULT CDIL_CAN::DILC_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT&
             /* Get rid of old DIL library */
             FreeLibrary(m_hOldDll);
         }
+		m_dwOldDriverID = m_dwDriverID;
     }
     m_hOldDll = nullptr;
 
@@ -511,21 +580,6 @@ HRESULT CDIL_CAN::DILC_SelectHwInterfaces(const INTERFACE_HW_LIST& sSelHwInterfa
 HRESULT CDIL_CAN::DILC_DeselectHwInterfaces(void)
 {
     return m_pBaseDILCAN_Controller->CAN_DeselectHwInterface();
-}
-
-/**
- * \brief     Display configuration dialog box
- * \req       RSI_14_012 - DILC_DisplayConfigDlg
- * \req       RS_23_14 - Display the configuration dialog box of the present controller
- *
- * Function to display the configuration dialog box for the selected DIL. If
- * the dialog box needs to be displayed been initialised, pass the relevant data
- * as InitData. If it is null, the dialog box is uninitialised. This also contains
- * the user's choice as OUT parameter
- */
-HRESULT CDIL_CAN::DILC_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
-{
-    return m_pBaseDILCAN_Controller->CAN_DisplayConfigDlg(InitData, Length);
 }
 
 /**

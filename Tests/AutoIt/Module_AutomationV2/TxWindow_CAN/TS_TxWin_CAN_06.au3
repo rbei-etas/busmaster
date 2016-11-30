@@ -16,6 +16,7 @@ ConsoleWrite("****Start : TS_TxWin_CAN_06****"&@CRLF)
 
 Local $dbMsg1_Rx=0,$dbMsg1_Tx=0,$dbMsg2_Rx=0,$dbMsg2_Tx=0,$dbMsg2_Rx=0,$dbMsg2_Tx=0,$dbMsg3_Rx=0,$dbMsg3_Tx=0
 Local $VerifymsgBFRAddMsg=0,$VerifymsgAFTRAddMsg=0
+$countRowChckBox=0
 
 
 

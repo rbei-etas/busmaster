@@ -21,7 +21,7 @@ if winexists($WIN_BUSMASTER) then
 
 	_CreateConfig("cfxCANDB_14.cfx")																; Create Configuration
 
-	WinMenuSelectItem($WIN_BUSMASTER,"",$CANMenu,$databaseMenu,$newMenu)							; Create a new DB
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$Tool,$CANDBMenuTool,$newMenu)							; Create a new DB
 	WinWaitActive($WIN_NewDBFile,"",3)
 
 	if winexists($WIN_NewDBFile) Then

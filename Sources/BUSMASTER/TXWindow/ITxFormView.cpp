@@ -310,8 +310,6 @@ void ITxFormView::vClearAllViews()
 }
 void ITxFormView::vInitMsgListCtrl(std::list<std::pair<std::string, int>>& lstMsgDetails)
 {
-
-    RECT rListCtrlRect;
     INT nTotalColunmSize = 0;
     INT nTotalStrLengthPixel = 0;
     INT nColumnSize = 0;
@@ -532,7 +530,7 @@ void ITxFormView::vInitSigMatrix()
     m_odSignalMatrix.vSetMessageLength(0);
 }
 
-void ITxFormView::vUpdateSignalList(bool bHexMode, std::list<SIG_DETAILS>& lstSigDetails)
+void ITxFormView::vUpdateSignalList(bool /*bHexMode*/, std::list<SIG_DETAILS>& lstSigDetails)
 {
     std::string strInit = "";
     int nCount = 0;
@@ -757,7 +755,7 @@ void ITxFormView::vUpdateButtonStatus()
     GetDlgItem(IDC_BT_DEL_ALL)->EnableWindow(bDeleteAllFrameEnable);
 }
 
-LRESULT ITxFormView::vOnDataBytesUpdated(WPARAM wParam, LPARAM lParam)
+LRESULT ITxFormView::vOnDataBytesUpdated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
     int nRow = m_lstMsg.GetSelectionMark();
     unsigned char chData[MAX_PATH] = { 0 };
@@ -777,13 +775,13 @@ LRESULT ITxFormView::vUserCommand(WPARAM wParam, LPARAM lParam)
     {
             //Change to Numeric Mode.
         case 0:
-            m_bHexMode = (bool)lParam;
+            m_bHexMode = (lParam!=0);
             UpdateTxView();
             break;
             //Change BUS Status.
         case 2:
             //SetBusStatus must be called before Updating Tx Window.
-            m_eBusStatus = (ESTATUS_BUS)lParam;
+            m_eBusStatus = static_cast<ESTATUS_BUS>(lParam);
             OnBusStatusChanged(m_eBusStatus);
             break;
     }
@@ -872,7 +870,7 @@ void ITxFormView::vOnSignalItemChanged(int nRow, int nColumn)
     }
     SIG_DETAILS ouSignalDetails;
     pouMsgItem->GetSignal(m_pouIBMNetwork, m_bHexMode,std::string(omStrSigName), ouSignalDetails);
-    SCROLLINFO ScrollInfo;
+
     // If it is a valid signal
     if (ouSignalDetails.Signal.first != nullptr)
     {
@@ -1193,7 +1191,7 @@ int ITxFormView::HighlightSignalMatrix(int nDlc, const SignalInstanse& ouSignalI
     m_odSignalMatrix.vSetHighlight(abySigMask, nDlc);
     return hResult;
 }
-UINT64 ITxFormView::un64GetBitMask(int byte, int startBitIndexInByte, int length, bool bIntel, unsigned char* aucData, unsigned long long u64SignVal)
+UINT64 ITxFormView::un64GetBitMask(int byte, int startBitIndexInByte, int length, bool bIntel, unsigned char* /*aucData*/, unsigned long long /*u64SignVal*/)
 {
     UINT64 Result = 0x1;
 
@@ -1243,7 +1241,7 @@ void ITxFormView::DisableAllColsInAddNewMsgRow()
         m_lstMsg.vSetColumnInfo(nLastRow, nCol, sInfo);
     }
 }
-void ITxFormView::vSignalNameHandler(CListCtrl* pList, int nItem, int nSubItem, void* UParam)
+void ITxFormView::vSignalNameHandler(CListCtrl* /*pList*/, int nItem, int /*nSubItem*/, void* UParam)
 {
     ITxFormView* pITxFormView = (ITxFormView*)UParam;
     if (nullptr == pITxFormView)

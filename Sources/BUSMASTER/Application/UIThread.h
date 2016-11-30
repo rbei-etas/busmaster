@@ -38,7 +38,7 @@ private:
 
     // Operations
 public:
-    BOOL bCreateTraceWindow(CMDIFrameWnd*);
+    BOOL bCreateTraceWindow(CMDIFrameWndEx*);
     void vUpdateWndCo_Ords(WINDOWPLACEMENT& wndPlacement, BOOL bLoadIntoTrace);
     void vClearTraceContents();
     // To display texts on the trace window

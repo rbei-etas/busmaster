@@ -214,7 +214,7 @@ int LDFPropertyView::DisplaySignalGroupDetails(IElement* pouLdfElement)
     CreateColumns(strColumns);
 
     std::string strName = "";
-    SignalGroupProps ouSignalGroupProps;
+    LinSignalGroupProps ouSignalGroupProps;
 
     pouSignalGroup->GetProperties(ouSignalGroupProps);
     pouSignalGroup->GetName(strName);
@@ -233,7 +233,7 @@ int LDFPropertyView::DisplaySignalGroupDetails(IElement* pouLdfElement)
 
     //2. Group Size
     ouRowList.push_back("Group Size");
-    ouRowList.push_back(GetString(ouSignalGroupProps.m_ouLinSignalGroupProps.m_nGroupSize, 10));
+    ouRowList.push_back(GetString(ouSignalGroupProps.m_nGroupSize, 10));
     InsertRow(nRow++, ouRowList);
     ouRowList.clear();
 
@@ -256,20 +256,18 @@ int LDFPropertyView::DisplayScheduleTableElementProps(IElement* pouLdfElement)
     strColumns <<"Frame Name" << "Frame Type"<<"Delay [ms]";
     CreateColumns(strColumns);
     IFrame* pouMsg;
-    eFrameType oueFrameType;
     QList<QVariant> ouColumnList;
     std::string strTemp;
     int nRow = 0;
     setRowCount(ouScheduleTableProps.m_ouCLINSheduleTableItem.size());
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+	ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
 for ( auto itr : ouScheduleTableProps.m_ouCLINSheduleTableItem )
     {
         m_pouLdfCluster->GetElement(eFrameElement, itr.m_nFrameId, (IElement**)&pouMsg);
 
         if(nullptr != pouMsg)
         {
-            pouMsg->GetFrameType(oueFrameType);
             pouMsg->GetName(strTemp);
             pouMsg->GetProperties(ouFrameProps);
         }
@@ -277,13 +275,13 @@ for ( auto itr : ouScheduleTableProps.m_ouCLINSheduleTableItem )
 
 
         int hr = 0;
-        if ( ouFrameProps.m_eFrameType == eLIN_Diagnostic )
+		if (ouFrameProps.m_eLinFrameType == eLinDiagnosticFrame)
         {
             hr = GetString(itr.m_eDiagType, strTemp);
         }
         else
         {
-            hr = GetString(ouFrameProps.m_eFrameType, strTemp);
+			hr = GetString(ouFrameProps.m_eLinFrameType, strTemp);
         }
 
         if ( 0 == hr )
@@ -324,15 +322,15 @@ int LDFPropertyView::DisplayCodingElementProps(IElement* pouLdfElement)
 
     if ( nullptr != ouCoding )
     {
-        CompuMethodProps ouCompuMethods;
+        LINCompuMethods ouCompuMethods;
         ouCompuMethods.m_eType = eInvalidProtocol;
         ouCoding->GetProperties(ouCompuMethods);
 
         QList<QVariant> ouColumnList;
         int nRow = 0;
-        setRowCount(ouCompuMethods.m_ouLinCompuMethods.m_ouPhysicalValueList.size()+ouCompuMethods.m_ouLinCompuMethods.m_ouLogicalValueList.size());
+        setRowCount(ouCompuMethods.m_ouPhysicalValueList.size()+ouCompuMethods.m_ouLogicalValueList.size());
 
-for ( auto itr : ouCompuMethods.m_ouLinCompuMethods.m_ouPhysicalValueList )
+for ( auto itr : ouCompuMethods.m_ouPhysicalValueList )
         {
             ouColumnList.clear();
             ouColumnList.push_back(QVariant("Physical"));
@@ -346,7 +344,7 @@ for ( auto itr : ouCompuMethods.m_ouLinCompuMethods.m_ouPhysicalValueList )
             InsertRow(nRow++, ouColumnList);
         }
 
-for ( auto itr : ouCompuMethods.m_ouLinCompuMethods.m_ouLogicalValueList)
+for ( auto itr : ouCompuMethods.m_ouLogicalValueList)
         {
             ouColumnList.clear();
             ouColumnList.push_back(QVariant("Logical"));
@@ -373,7 +371,7 @@ int LDFPropertyView::DisplaySignalElementProps(IElement* pouLdfElement)
 
     VALIDATE_AND_RETURN(poSignal);
 
-    SignalProps ouSignalProps;
+    LINSignalProps ouSignalProps;
     ouSignalProps.eType = eInvalidProtocol;
     poSignal->GetProperties(ouSignalProps);
     std::string strSignalName, strPublishers, strSubscribers;
@@ -399,34 +397,34 @@ int LDFPropertyView::DisplaySignalElementProps(IElement* pouLdfElement)
     ouRowList.clear();
 
     ouRowList.push_back(QVariant("Length"));
-    ouRowList.push_back(QVariant(ouSignalProps.m_ouLINSignalProps.m_nLength));
+    ouRowList.push_back(QVariant(ouSignalProps.m_unSignalSize));
     InsertRow(nRow++, ouRowList);
     ouRowList.clear();
 
-    QString strTemp = (ouSignalProps.m_ouLINSignalProps.m_ouSignalType == eSignalNormal ) ? "Normal" : "Diagnostic";
+    QString strTemp = (ouSignalProps.m_ouSignalType == eSignalNormal ) ? "Normal" : "Diagnostic";
     ouRowList.push_back(QVariant("Signal Type"));
     ouRowList.push_back(QVariant( strTemp ));
     InsertRow(nRow++, ouRowList);
     ouRowList.clear();
 
     ouRowList.push_back(QVariant("Initial Value"));
-    ouRowList.push_back(QVariant(ouSignalProps.m_ouLINSignalProps.m_nIntialValue));
+    ouRowList.push_back(QVariant(ouSignalProps.m_nIntialValue));
     InsertRow(nRow++, ouRowList);
     ouRowList.clear();
 
-    strTemp = (ouSignalProps.m_ouLINSignalProps.m_ouDataType == eSigned ) ? "Signed" : "Unsigned";
+    strTemp = (ouSignalProps.m_ouDataType == eSigned ) ? "Signed" : "Unsigned";
     ouRowList.push_back(QVariant("Data Type"));
     ouRowList.push_back(QVariant( strTemp ));
     InsertRow(nRow++, ouRowList);
     ouRowList.clear();
 
-    strTemp = (ouSignalProps.m_ouLINSignalProps.m_ouEndianess == eMotorola ) ? "Motorola" : "Intel";
+    strTemp = (ouSignalProps.m_ouEndianess == eMotorola ) ? "Motorola" : "Intel";
     ouRowList.push_back(QVariant("Endianess"));
     ouRowList.push_back(QVariant( strTemp ));
     InsertRow(nRow++, ouRowList);
     ouRowList.clear();
 
-    strTemp = (ouSignalProps.m_ouLINSignalProps.m_ouValueType == eScalar ) ? "Scalar" : "Byte Array";
+    strTemp = (ouSignalProps.m_ouValueType == eScalar ) ? "Scalar" : "Byte Array";
     ouRowList.push_back(QVariant("Value Type"));
     ouRowList.push_back(QVariant( strTemp ));
 
@@ -472,16 +470,16 @@ int LDFPropertyView::DisplayEcuElementProps(IElement* pouLdfElement)
 
     VALIDATE_AND_RETURN(pEcu);
 
-    EcuProperties ouEcuProps;
+    LinEcuProps ouEcuProps;
     ouEcuProps.m_eEcuType = eEcuNone;
     pEcu->GetProperties(ouEcuProps);
 
-    if ( eLIN_Master == ouEcuProps.m_eEcuType )
+    if ( eMaster == ouEcuProps.m_eEcuType )
     {
         DisplayMasterDetails((IEcu*)pouLdfElement);
 
     }
-    else if ( eLIN_Slave == ouEcuProps.m_eEcuType )
+    else if ( eSlave == ouEcuProps.m_eEcuType )
     {
         DisplaySlaveDetails((IEcu*)pouLdfElement);
     }
@@ -498,7 +496,7 @@ int LDFPropertyView::DisplaySlaveDetails(IEcu* pouLdfElement)
     strColumns <<"Property" << "Value";
     CreateColumns(strColumns);
 
-    EcuProperties ouEcuProps;
+    LinEcuProps ouEcuProps;
     ouEcuProps.m_eEcuType = eEcuNone;
     pouLdfElement->GetProperties(ouEcuProps);
 
@@ -508,15 +506,15 @@ int LDFPropertyView::DisplaySlaveDetails(IEcu* pouLdfElement)
     std::string strName;
     QString strTemp;
 
-    if(ouEcuProps.m_ouSlavePros.m_fProtocolVersion == defVersion_1_3)
+    if(ouEcuProps.mSlaveProps.m_fProtocolVersion == defVersion_1_3)
     {
         setRowCount(3);
     }
-    else if(ouEcuProps.m_ouSlavePros.m_fProtocolVersion == defVersion_2_0)
+	else if (ouEcuProps.mSlaveProps.m_fProtocolVersion == defVersion_2_0)
     {
         setRowCount(9);
     }
-    else if(ouEcuProps.m_ouSlavePros.m_fProtocolVersion == defVersion_2_1)
+	else if (ouEcuProps.mSlaveProps.m_fProtocolVersion == defVersion_2_1)
     {
         setRowCount(13);
     }
@@ -535,85 +533,85 @@ int LDFPropertyView::DisplaySlaveDetails(IEcu* pouLdfElement)
 
     //2.Protocol Version
     ouRowList.push_back("Protocol Version");
-    ouRowList.push_back(ouEcuProps.m_ouSlavePros.m_fProtocolVersion);
+	ouRowList.push_back(ouEcuProps.mSlaveProps.m_fProtocolVersion);
     InsertRow(nRow++, ouRowList);
     ouRowList.clear();
 
-    if(ouEcuProps.m_ouSlavePros.m_fProtocolVersion == defVersion_1_3)
+	if (ouEcuProps.mSlaveProps.m_fProtocolVersion == defVersion_1_3)
     {
         //7.Configured NAD
         ouRowList.push_back("Configured NAD");
-        ouRowList.push_back(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD);
+		ouRowList.push_back(ouEcuProps.mSlaveProps.m_nConfiguredNAD);
         InsertRow(nRow++, ouRowList);
         ouRowList.clear();
     }
-    else if ( ouEcuProps.m_ouSlavePros.m_fProtocolVersion == defVersion_2_1 || ouEcuProps.m_ouSlavePros.m_fProtocolVersion == defVersion_2_0 )
+	else if (ouEcuProps.mSlaveProps.m_fProtocolVersion == defVersion_2_1 || ouEcuProps.mSlaveProps.m_fProtocolVersion == defVersion_2_0)
     {
-        if (  ouEcuProps.m_ouSlavePros.m_fProtocolVersion == defVersion_2_1 )
+		if (ouEcuProps.mSlaveProps.m_fProtocolVersion == defVersion_2_1)
         {
             //3.NAs
             ouRowList.push_back("NAs Time out");
-            ouRowList.push_back(ouEcuProps.m_ouSlavePros.m_dNASTimeout);
+			ouRowList.push_back(ouEcuProps.mSlaveProps.m_dNASTimeout);
             InsertRow(nRow++, ouRowList);
             ouRowList.clear();
 
             //4.NCr
             ouRowList.push_back("NCr Time out");
-            ouRowList.push_back(ouEcuProps.m_ouSlavePros.m_dNCRTimeout);
+			ouRowList.push_back(ouEcuProps.mSlaveProps.m_dNCRTimeout);
             InsertRow(nRow++, ouRowList);
             ouRowList.clear();
         }
         //5.P2Min
         ouRowList.push_back("P2Min");
-        ouRowList.push_back(ouEcuProps.m_ouSlavePros.m_dP2Min);
+		ouRowList.push_back(ouEcuProps.mSlaveProps.m_dP2Min);
         InsertRow(nRow++, ouRowList);
         ouRowList.clear();
 
         //6.STMin
         ouRowList.push_back("STMin");
-        ouRowList.push_back(ouEcuProps.m_ouSlavePros.m_dSTMin);
+		ouRowList.push_back(ouEcuProps.mSlaveProps.m_dSTMin);
         InsertRow(nRow++, ouRowList);
         ouRowList.clear();
 
         //7.Configured NAD
         ouRowList.push_back("Configured NAD");
-        ouRowList.push_back(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD);
+		ouRowList.push_back(ouEcuProps.mSlaveProps.m_nConfiguredNAD);
         InsertRow(nRow++, ouRowList);
         ouRowList.clear();
 
-        if(ouEcuProps.m_ouSlavePros.m_fProtocolVersion == defVersion_2_1 )
+		if (ouEcuProps.mSlaveProps.m_fProtocolVersion == defVersion_2_1)
         {
             //8.Initial NAD
             ouRowList.push_back("Initial NAD");
-            ouRowList.push_back(ouEcuProps.m_ouSlavePros.m_nInitialNAD);
+			ouRowList.push_back(ouEcuProps.mSlaveProps.m_nInitialNAD);
             InsertRow(nRow++, ouRowList);
             ouRowList.clear();
         }
 
         //9.Function id
         ouRowList.push_back("Function ID");
-        ouRowList.push_back(ouEcuProps.m_ouSlavePros.m_nFunctionId);
+		ouRowList.push_back(ouEcuProps.mSlaveProps.m_nFunctionId);
         InsertRow(nRow++, ouRowList);
         ouRowList.clear();
 
 
         //10.Supplier id
         ouRowList.push_back("Supplier ID");
-        ouRowList.push_back(ouEcuProps.m_ouSlavePros.m_nSupplierId);
+		ouRowList.push_back(ouEcuProps.mSlaveProps.m_nSupplierId);
         InsertRow(nRow++, ouRowList);
         ouRowList.clear();
 
         //11.Variant id
         ouRowList.push_back("Variant");
-        ouRowList.push_back(ouEcuProps.m_ouSlavePros.m_nVariant);
+		ouRowList.push_back(ouEcuProps.mSlaveProps.m_nVariant);
         InsertRow(nRow++, ouRowList);
         ouRowList.clear();
 
-        if(ouEcuProps.m_ouSlavePros.m_fProtocolVersion == defVersion_2_1 )
+		if (ouEcuProps.mSlaveProps.m_fProtocolVersion == defVersion_2_1)
         {
             //12.Fault State Signals
             ouRowList.push_back("Fault State Signals");
-for(auto itr : ouEcuProps.m_ouSlavePros.m_nFaultStateSignals)
+			for (auto itr : ouEcuProps.mSlaveProps.m_nFaultStateSignals)
             {
                 std::string strName;
                 IElement* pSignal;
@@ -668,10 +666,10 @@ for(auto itr : ouEcuProps.m_ouSlavePros.m_nFaultStateSignals)
         //13.Response Error Signals
         ouRowList.push_back("Response Error Signals");
         std::string strRespSig="";
-        if(ouEcuProps.m_ouSlavePros.m_nRespErrSignal != INVALID_UID_ELEMENT)
+		if (ouEcuProps.mSlaveProps.m_nRespErrSignal != INVALID_UID_ELEMENT)
         {
             IElement* pSignal;
-            m_pouLdfCluster->GetElement(eSignalElement, ouEcuProps.m_ouSlavePros.m_nRespErrSignal, &pSignal);
+			m_pouLdfCluster->GetElement(eSignalElement, ouEcuProps.mSlaveProps.m_nRespErrSignal, &pSignal);
             pSignal->GetName(strRespSig);
         }
         ouRowList.push_back(QString::fromStdString(strRespSig));
@@ -691,7 +689,7 @@ int LDFPropertyView::DisplayMasterDetails(IEcu* pouLdfElement)
     CreateColumns(strColumns);
 
     std::string strName = "";
-    EcuProperties ouEcuProps;
+    LinEcuProps ouEcuProps;
     ouEcuProps.m_eEcuType = eEcuNone;
     pouLdfElement->GetProperties(ouEcuProps);
     pouLdfElement->GetName(strName);
@@ -710,14 +708,14 @@ int LDFPropertyView::DisplayMasterDetails(IEcu* pouLdfElement)
 
     //2. Jitter
     ouRowList.push_back("Jitter");
-    ouRowList.push_back(ouEcuProps.m_ouMasterProps.m_fJitter);
+    ouRowList.push_back(ouEcuProps.mMasterProps.m_fJitter);
     InsertRow(nRow++, ouRowList);
     ouRowList.clear();
 
 
     //3. Time Base
     ouRowList.push_back("Time Base");
-    ouRowList.push_back(ouEcuProps.m_ouMasterProps.m_fTimeBase);
+	ouRowList.push_back(ouEcuProps.mMasterProps.m_fTimeBase);
     InsertRow(nRow++, ouRowList);
     ouRowList.clear();
 
@@ -730,28 +728,28 @@ int LDFPropertyView::DisplayFrameElementProps(IElement* pouLdfElement)
 
     VALIDATE_AND_RETURN(pFrame);
 
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+    ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     pFrame->GetProperties(ouFrameProps);
 
     QList<QString> strColumns;
     strColumns <<"Property Name" << "Value";
     CreateColumns(strColumns);
 
-    if ( eLIN_Unconditional == ouFrameProps.m_eFrameType )
+	if (eLinUnconditionalFrame == ouFrameProps.m_eLinFrameType)
     {
         DisplayUnConditionalFrameDetails((IFrame*)pouLdfElement);
 
     }
-    else if ( eLIN_EventTriggered == ouFrameProps.m_eFrameType )
+	else if (eLinEventTriggeredFrame == ouFrameProps.m_eLinFrameType)
     {
         DisplayEventTriggeredFrameDetails((IFrame*)pouLdfElement);
     }
-    else if ( eLIN_Sporadic == ouFrameProps.m_eFrameType )
+	else if (eLinSporadicFrame == ouFrameProps.m_eLinFrameType)
     {
         DisplaySporadicFrameDetails((IFrame*)pouLdfElement);
     }
-    else if ( eLIN_Diagnostic == ouFrameProps.m_eFrameType )
+	else if (eLinDiagnosticFrame == ouFrameProps.m_eLinFrameType)
     {
         DisplayDiagnosticFrameDetails((IFrame*)pouLdfElement);
     }
@@ -762,8 +760,8 @@ int LDFPropertyView::DisplayEventTriggeredFrameDetails(IFrame* pouFrame)
 {
     VALIDATE_AND_RETURN(pouFrame);
     clearContents();
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+	ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     pouFrame->GetProperties(ouFrameProps);
     LIN_Settings ouLIN_Settings;
     m_pouLdfCluster->GetProperties(eLINClusterProperties, &ouLIN_Settings);
@@ -821,7 +819,7 @@ for ( auto itr : ouFrameProps.m_ouLINEventTrigFrameProps.m_pouUnconditionalFrame
 
     ouValueList.clear();
     ouValueList.push_back(QVariant("Frame ID"));
-    ouValueList.push_back(ouFrameProps.m_ouLINEventTrigFrameProps.m_unId);
+    ouValueList.push_back(ouFrameProps.m_nMsgId);
     InsertRow(nRow++, ouValueList);
     return 0;
 }
@@ -830,8 +828,8 @@ int LDFPropertyView::DisplayDiagnosticFrameDetails(IFrame* pouFrame)
 {
     VALIDATE_AND_RETURN(pouFrame);
     clearContents();
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+	ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     pouFrame->GetProperties(ouFrameProps);
     LIN_Settings ouLIN_Settings;
     m_pouLdfCluster->GetProperties(eLINClusterProperties, &ouLIN_Settings);
@@ -871,7 +869,7 @@ int LDFPropertyView::DisplayDiagnosticFrameDetails(IFrame* pouFrame)
 
     ouValueList.clear();
     ouValueList.push_back(QVariant("Frame ID"));
-    ouValueList.push_back(ouFrameProps.m_ouLINDiagnosticFrameProps.m_unId);
+    ouValueList.push_back(ouFrameProps.m_nMsgId);
     InsertRow(nRow++, ouValueList);
 
     ouValueList.clear();
@@ -881,7 +879,7 @@ int LDFPropertyView::DisplayDiagnosticFrameDetails(IFrame* pouFrame)
 
     ouValueList.clear();
     ouValueList.push_back(QVariant("Size (Byte(s))"));
-    ouValueList.push_back(QVariant(GetString(ouFrameProps.m_ouLINDiagnosticFrameProps.m_nLength, 10)));
+    ouValueList.push_back(QVariant(GetString(ouFrameProps.m_unMsgSize, 10)));
     InsertRow(nRow++, ouValueList);
 
     ouValueList.clear();
@@ -896,8 +894,8 @@ int LDFPropertyView::DisplaySporadicFrameDetails(IFrame* pouFrame)
 {
     VALIDATE_AND_RETURN(pouFrame);
     clearContents();
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+	ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     pouFrame->GetProperties(ouFrameProps);
     LIN_Settings ouLIN_Settings;
     m_pouLdfCluster->GetProperties(eLINClusterProperties, &ouLIN_Settings);
@@ -965,8 +963,8 @@ int LDFPropertyView::DisplayUnConditionalFrameDetails(IFrame* pouFrame)
 {
     VALIDATE_AND_RETURN(pouFrame);
     clearContents();
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+	ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     pouFrame->GetProperties(ouFrameProps);
 
     LIN_Settings ouLIN_Settings;
@@ -1002,7 +1000,7 @@ int LDFPropertyView::DisplayUnConditionalFrameDetails(IFrame* pouFrame)
 
     ouValueList.clear();
     ouValueList.push_back(QVariant("Frame Id"));
-    ouValueList.push_back(QVariant(ouFrameProps.m_ouLINUnConditionFrameProps.m_unId));
+    ouValueList.push_back(QVariant(ouFrameProps.m_nMsgId));
     InsertRow(nRow++, ouValueList);
 
     ouValueList.clear();
@@ -1012,7 +1010,7 @@ int LDFPropertyView::DisplayUnConditionalFrameDetails(IFrame* pouFrame)
 
     ouValueList.clear();
     ouValueList.push_back(QVariant("Length (Byte(s))"));
-    ouValueList.push_back(QVariant(GetString(ouFrameProps.m_ouLINUnConditionFrameProps.m_nLength, 10)));        //Size always dec
+    ouValueList.push_back(QVariant(GetString(ouFrameProps.m_unMsgSize, 10)));        //Size always dec
     InsertRow(nRow++, ouValueList);
 
     ouValueList.clear();

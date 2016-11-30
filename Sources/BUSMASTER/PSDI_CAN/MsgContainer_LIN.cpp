@@ -269,7 +269,11 @@ void CMsgContainerLIN::vProcessNewData(STLINDATA& sLinData)
             m_sLINReadDataSpl.m_nDeltime = _abs64(sLinData.m_lTickCount.QuadPart -
                                                   m_sLINReadDataSpl.m_lTickCount.QuadPart);
         }
-        STLINDATA* pStlin = &m_sLINReadDataSpl;
+
+		// Update the msg id of the message from error msg info
+		sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID = sLinData.m_uDataInfo.m_sErrInfo.m_ucId;
+
+		STLINDATA* pStlin = &m_sLINReadDataSpl;
         *pStlin = sLinData;
 
         if (!bTobeBlocked(sLinData))
@@ -888,11 +892,11 @@ void CMsgContainerLIN::GetMapIndexAtID(int nIndex,__int64& nMapIndex)
 }
 //Import Log File.
 
-HRESULT CMsgContainerLIN::LoadPage(const unsigned long& nPageNo)
+HRESULT CMsgContainerLIN::LoadPage(const unsigned long& /*nPageNo*/)
 {
     return S_OK;
 }
-HRESULT CMsgContainerLIN::OverwritePage(const unsigned long& nLineNo)
+HRESULT CMsgContainerLIN::OverwritePage(const unsigned long& /*nLineNo*/)
 {
     return S_OK;
 }
@@ -1024,7 +1028,7 @@ HRESULT CMsgContainerLIN::GetMessageDetails(__int64 nMapIndex, unsigned int& msg
     }
 }
 
-HRESULT CMsgContainerLIN::sendMessage(long long key, bool isAppendMode/*has to be removed*/)
+HRESULT CMsgContainerLIN::sendMessage(long long /*key*/, bool /*isAppendMode*//*has to be removed*/)
 {
     return S_FALSE;
 }

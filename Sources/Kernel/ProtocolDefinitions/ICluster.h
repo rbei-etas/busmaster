@@ -11,7 +11,7 @@
 #endif
 
 #include "IClusterProps.h"
-
+#include "LINDefines.h"
 //Forword Decleration;
 class ICluster;
 class IElement;
@@ -155,7 +155,7 @@ protected:
     virtual ~IEcu() {};
 public:
     //Editor
-    virtual ERRORCODE GetEcuType(eEcuType&) = 0;
+	virtual ERRORCODE GetEcuType(eProtocolType&) = 0;
     virtual ERRORCODE MapFrame(eDIR eDir, UID_ELEMENT& nId) = 0;
     virtual ERRORCODE UnMapFrame(eDIR eDir, UID_ELEMENT& nId) = 0;
 
@@ -181,7 +181,7 @@ protected:
     virtual ~IFrame() {};
 
 public:
-    virtual ERRORCODE GetFrameType(eFrameType&) = 0;
+	virtual ERRORCODE GetFrameType(eProtocolType&) = 0;
     virtual ERRORCODE GetFrameId(unsigned int& unFrameId) = 0;
     virtual ERRORCODE GetLength(unsigned int& unFrameLength) = 0;
 
@@ -203,7 +203,8 @@ public:
     virtual ERRORCODE GetPduList(std::map<IPdu*, PduInstanse>& mapPdus) = 0;
     virtual ERRORCODE GetUpdatedPdus(unsigned char*, std::map<IPdu*, PduInstanse>&) = 0;
 
-    virtual ERRORCODE InterpretSignals( unsigned char*, int nSize, std::list<InterpreteSignals>& ouSignalInfoList, bool bIsHex, bool formatHex = false) = 0;
+    virtual ERRORCODE InterpretSignals( const unsigned char*, int nSize, std::list<InterpreteSignals>& ouSignalInfoList, bool bIsHex, bool formatHex = false) = 0;
+	virtual ERRORCODE InterpretSignals(const unsigned char*, int nSize, std::vector<SignalValue>& ouSignalInfoList) = 0;
 };
 
 class IPdu : public IElement
@@ -219,7 +220,7 @@ public:
     virtual ERRORCODE MapSignal( UID_ELEMENT& nId, SignalInstanse& ouProps) = 0;
     virtual ERRORCODE UnMapSignal(UID_ELEMENT&) = 0;
 
-    virtual ERRORCODE InterpretSignals(int nPduStartBit, unsigned char*, int nSize, std::list<InterpreteSignals>& ouSignalInfoList, bool bIsHex, bool formatHex = false) = 0;
+    virtual ERRORCODE InterpretSignals(int nPduStartBit, const unsigned char*, int nSize, std::list<InterpreteSignals>& ouSignalInfoList, bool bIsHex, bool formatHex = false) = 0;
 
     virtual ERRORCODE MapFrame( UID_ELEMENT& nId, PduInstanse& ) = 0;
     virtual ERRORCODE UnMapFrame(UID_ELEMENT&) = 0;
@@ -250,7 +251,7 @@ public:
     virtual ERRORCODE GetDataType(eSignalDataType&) = 0;
     virtual ERRORCODE GetUnit(std::string&) = 0;
 
-    virtual ERRORCODE GetRawValue(int nStartBit, int nSignalLength, int nByteLength, bool bIntel, unsigned char* pchData, unsigned __int64& unRawValue) = 0;
+    virtual ERRORCODE GetRawValue(int nStartBit, int nSignalLength, int nByteLength, bool bIntel, const unsigned char* pchData, unsigned __int64& unRawValue) = 0;
     virtual ERRORCODE GetEnggValueFromRaw(unsigned __int64  dwRawValue, double& dEnggValue) = 0;
     virtual ERRORCODE GetRawValueFromEng(double dEnggValue, unsigned __int64&  dwRawValue) = 0;
 };
@@ -370,6 +371,6 @@ public:
     }
 };
 
-extern "C" __declspec( dllexport ) ERRORCODE ParseDBFile( std::string& strFileName, ETYPE_BUS clusterType, std::list<ClusterResult>& ouClusterResultList );
+extern "C" __declspec( dllexport ) ERRORCODE ParseDBFile( std::string strFileName, ETYPE_BUS clusterType, std::list<ClusterResult>& ouClusterResultList );
 extern "C" __declspec(dllexport) ERRORCODE FreeCluster( ICluster* pCluster );
 extern "C" __declspec(dllexport) ERRORCODE CreateLDFCluster(ICluster** pouLdfCluster);

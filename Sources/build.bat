@@ -37,6 +37,5 @@ cd ..\bison
 
 cd ..\..\Sources
 MSBuild "BUSMASTER\Format Converter\FormatConverter.sln" /property:Configuration=Release /p:VisualStudioVersion=12.0 
-
 :END
 

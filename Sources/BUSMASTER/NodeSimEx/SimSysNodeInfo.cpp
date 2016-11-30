@@ -807,7 +807,7 @@ BOOL CSimSysNodeInfo::bIsBuildAllNodesValid()
     while(pTempNode != nullptr)
     {
         if(!pTempNode->m_sNodeInfo->m_omStrCFileName.IsEmpty() &&
-                pTempNode->m_sNodeInfo->m_bIsNodeEnabled == true &&
+                pTempNode->m_sNodeInfo->m_bIsNodeEnabled == TRUE &&
                 !bIsBuildAllValid)
         {
             bIsBuildAllValid = TRUE;

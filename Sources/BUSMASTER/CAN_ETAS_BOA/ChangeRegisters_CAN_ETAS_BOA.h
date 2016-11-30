@@ -28,11 +28,16 @@
 #include "BaseDIL_CAN_Controller.h"
 #include "ChangeRegDefines.h"
 #include "CAN_ETAS_BOA_Resource.h"
+#include "DIL_Interface\IChangeRegisters.h"
+#include "afxwin.h"
 #define defMAXPropDelay 8
 
-class CChangeRegisters_CAN_ETAS_BOA : public CDialog
+class CChangeRegisters_CAN_ETAS_BOA : public CDialog, public IChangeRegisters //CPropertyPage
 {
     // Construction
+public:
+	int InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount,UINT );
+    DOUBLE vValidateBaudRate(DOUBLE dbaudrate,int,UINT );
 public:
     // To Fill controller information taken from configuration module
     BOOL   bFillControllerConfig();
@@ -104,6 +109,7 @@ private:
 private:
     // Pointer to hold controller information
     SCONTROLLER_DETAILS  m_pControllerDetails[defNO_OF_CHANNELS];
+	SCONTROLLER_DETAILS m_asDummyControllerDetails[defNO_OF_CHANNELS];
     PSCONTROLLER_DETAILS psMainContrDets;
     int m_nLastSelection;
     CImageList m_omChannelImageList;
@@ -120,7 +126,7 @@ private:
 
     // To populate list box with possible vlaues for the given baudrate
     // and to set the focus to the selected item
-    void    vValidateBaudRate();
+
     // To save user given values in to the backend data
     void vUpdateControllerDetails();
     // To set the backend data to UI

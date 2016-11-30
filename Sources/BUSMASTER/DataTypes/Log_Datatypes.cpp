@@ -194,7 +194,7 @@ bool tagLogInfo::pbGetConfigData(xmlNodePtr pxmlNodePtr) const
     AfxGetMainWnd()->SendMessage(MSG_GET_CONFIGPATH, (WPARAM)configPath, 0);
     CUtilFunctions::nGetBaseFolder(configPath, omStrConfigFolder );
     CUtilFunctions::MakeRelativePath(omStrConfigFolder.c_str(), (char*)m_sLogFileName, omPath);
-    xmlNodePtr pLogFilePtr = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_FILE_PATH, BAD_CAST omPath.c_str());
+    xmlNodePtr pLogFilePtr = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_FILE_PATH_XML, BAD_CAST omPath.c_str());
     xmlAddChild(pxmlNodePtr, pLogFilePtr);
 
     xmlNodePtr pStrtIdPtr = xmlNewChild(pxmlNodePtr, nullptr, BAD_CAST DEF_TRGR_STRT_ID, BAD_CAST omcStartId);

@@ -19,21 +19,19 @@
  * \author    GT-Derka
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
-#include "TSEditorGUI_stdafx.h"
+#include "stdafx.h"
 #include "TreeViewEx.h"
-#include "TSEditorGUI_PropertyView.h"
+//#include "TSEditorGUI_PropertyView.h"
+#include "TestAutomationEditor.h"
 #include "TSEditorGUI_ChildFrame.h"
 #include "TestSetupEditorLib/VerifyEntity.h"
 #include "TSEditorGUI_resource.h"
 #include "TSEditorGUI_Definitions.h"
 #include "TSEditorGUI_SettingsDlg.h"
 #include "Include\Utils_macro.h"
-#include "TSEditorGUI_MDIChildBase.h"
 #include "include/XMLDefines.h"
 #include "Utility/XMLUtils.h"
 #include "Utility\MultiLanguageSupport.h"
-#include "TSEditorGUI_PropertyView.h"   /* derka */
-//#include "../Application/GettextBusmaster.h"
 #include "Utility\UtilFunctions.h"
 #include <htmlhelp.h>
 
@@ -48,8 +46,11 @@ const UINT g_unMinWindowWidth  = 850;
 const UINT g_unMinWindowHeight = 675;
 //INT g_iNumberOfActiveChannels = 0; /* derka */
 
-IMPLEMENT_DYNCREATE(CTSEditorChildFrame, CMDIChildWnd)
-extern CTSEditorChildFrame* g_pomTSEditorChildWindow;
+IMPLEMENT_DYNCREATE(CTSEditorChildFrame, CFrameWndEx)
+
+const int  iMaxUserToolbars = 10;
+const UINT uiFirstUserToolBarId = AFX_IDW_CONTROLBAR_FIRST + 40;
+const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 /******************************************************************************
 Function Name  :  CTSEditorChildFrame
 Input(s)       :  -
@@ -67,7 +68,7 @@ CTSEditorChildFrame::CTSEditorChildFrame()
     m_odTreeView = nullptr;
     m_hParentTreeItem = nullptr;
     m_omMenu.LoadMenu(IDR_TSEDITORMENU);
-    m_hMenuShared = m_omMenu.GetSafeHmenu();
+    //m_hMenuShared = m_omMenu.GetSafeHmenu();
     m_bQueryConfirm = TRUE;
     m_pomImageList = nullptr;
     m_bInit = TRUE;
@@ -130,7 +131,10 @@ void CTSEditorChildFrame::vInitialise()
 }
 
 
-BEGIN_MESSAGE_MAP(CTSEditorChildFrame, CMDIChildWnd)
+BEGIN_MESSAGE_MAP(CTSEditorChildFrame, CFrameWndEx)
+	ON_WM_CREATE()
+	ON_UPDATE_COMMAND_UI_RANGE(AFX_ID_VIEW_MINIMUM, AFX_ID_VIEW_MAXIMUM, &CTSEditorChildFrame::OnUpdateViewStyles)
+	ON_COMMAND_RANGE(AFX_ID_VIEW_MINIMUM, AFX_ID_VIEW_MAXIMUM, &CTSEditorChildFrame::OnViewStyle)
     ON_WM_DESTROY()
     ON_MESSAGE(WM_TS_SELCHANGED, OnSelectionChanged)
     ON_MESSAGE(WM_TS_SELCHANGING, OnSelectionChanging)
@@ -158,6 +162,22 @@ BEGIN_MESSAGE_MAP(CTSEditorChildFrame, CMDIChildWnd)
     ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
+int CTSEditorChildFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CFrameWndEx::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerVS2008));
+	RedrawWindow(NULL, NULL, RDW_ALLCHILDREN | RDW_INVALIDATE | RDW_UPDATENOW | RDW_FRAME | RDW_ERASE);
+
+	mMenuBar.Create(this);
+
+	mMenuBar.SetPaneStyle(mMenuBar.GetPaneStyle() | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY);
+	mMenuBar.EnableDocking(CBRS_ALIGN_ANY);
+	EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&mMenuBar);
+	return 0;
+}
 /******************************************************************************
 Function Name  :  OnCreateClient
 Input(s)       :  LPCREATESTRUCT - Create Structure
@@ -172,7 +192,11 @@ Modifications  :
 ******************************************************************************/
 BOOL CTSEditorChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContext)
 {
-    BOOL bReturn = m_omSplitterWnd.CreateStatic( this, def_NUM_ROWS_TSEDITOR, def_NUM_COLS_TSEDITOR );
+    BOOL bReturn = m_omSplitterWnd.CreateStatic( this, def_NUM_ROWS_TSEDITOR, def_NUM_COLS_TSEDITOR ,
+		WS_CHILD |
+		WS_VISIBLE |
+		WS_BORDER,              // Window Style
+		AFX_IDW_PANE_FIRST);
     CSize omSize(def_WIDTH_PANE, def_HEIGHT_PANE);
     bReturn = bReturn && m_omSplitterWnd.CreateView(def_ROW_INDEX, def_INDEX_TREEVIEW, RUNTIME_CLASS(CTreeViewEx),omSize, pContext);
     bReturn = bReturn && m_omSplitterWnd.CreateView(def_ROW_INDEX, def_INDEX_PROPVIEW, RUNTIME_CLASS(CPropertyView),omSize, pContext);
@@ -204,6 +228,13 @@ BOOL CTSEditorChildFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext
 }
 
 
+static UINT indicators[] =
+{
+	ID_SEPARATOR,           // status line indicator
+	ID_INDICATOR_CAPS,
+	ID_INDICATOR_NUM,
+	ID_INDICATOR_SCRL,
+};
 /******************************************************************************
 Function Name  :  vLoadTestSetupFile
 Input(s)       :  omFilePath - File Path
@@ -477,8 +508,8 @@ Modifications  :
 void CTSEditorChildFrame::OnDestroy()
 {
     //TODO::HANDLE Properly
-    CMDIChildWnd::OnDestroy();
-    g_pomTSEditorChildWindow = nullptr;
+	CFrameWndEx::OnDestroy();
+    //g_pomTSEditorChildWindow = nullptr;
 }
 
 /******************************************************************************
@@ -744,8 +775,6 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     omTempListCtrl.SetItemText(def_TS_ROWNUM_DATABASE, def_COLUMN_VALUE, ouHeaderInfo.m_omDatabasePath);
     omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_DATABASE, def_COLUMN_VALUE, sListInfo);
 
-
-
     //Report File Path - ROW8
     CString omStrDefExt;
     CString omStrFilter;
@@ -758,8 +787,6 @@ void CTSEditorChildFrame::vDisplayHeaderInfo(INT /*nTestSetupIndex*/)
     sListInfo.m_omEntries.Add(omStrDefExt);
     sListInfo.m_omEntries.Add(omStrFilter);
     omTempListCtrl.InsertItem(def_TS_ROWNUM_REPORT, _("Report File Path"));
-
-
     omTempListCtrl.SetItemText(def_TS_ROWNUM_REPORT, def_COLUMN_VALUE, ouHeaderInfo.m_sReportFile.m_omPath);
     omTempListCtrl.vSetColumnInfo(def_TS_ROWNUM_REPORT, def_COLUMN_VALUE, sListInfo);
 
@@ -1864,7 +1891,7 @@ void CTSEditorChildFrame::vHandleTestSetup(LPNMLISTVIEW pNMLV)
         if(ouHeaderInfo.m_omDatabasePath == "")
         {
             ouHeaderInfo.m_omDatabasePath = omstrDatabaseName;
-            if ( m_ouTSEntity.m_ouDataBaseManager.FillDataStructureFromDatabaseFile( omstrDatabaseName.GetBuffer( 0 ) ) == FALSE )
+            if ( m_ouTSEntity.m_ouDataBaseManager.FillDataStructureFromDatabaseFile( omstrDatabaseName.GetBuffer( 0 ) ) != EC_SUCCESS)
             {
                 // Remove the entry from the list box
                 CListCtrlEx& omTempListCtrl = m_odPropertyView->m_omPropertyList;
@@ -2620,7 +2647,7 @@ Modifications  :
 void CTSEditorChildFrame::OnUpdateFrameTitle(BOOL bAddToTitle)
 {
     vSetCurrentFile(m_omCurrentTSFile);
-    CMDIChildWnd::OnUpdateFrameTitle(bAddToTitle);
+	CFrameWndEx::OnUpdateFrameTitle(bAddToTitle);
 }
 
 /******************************************************************************
@@ -3156,7 +3183,7 @@ BOOL CTSEditorChildFrame::PreTranslateMessage(MSG* pMsg)
             }
         }
     }
-    return CMDIChildWnd::PreTranslateMessage(pMsg);
+	return CFrameWndEx::PreTranslateMessage(pMsg);
 }
 /******************************************************************************
 Function Name  :  GetConfigurationData
@@ -3570,18 +3597,18 @@ Code Tag       :
 ******************************************************************************/
 void CTSEditorChildFrame::OnFileExit(void)
 {
-    INT nRetVal = nPromptForSaveFile();
-    CHECKEQ(nRetVal, IDCANCEL);
-    m_omMenu.DestroyMenu();
-    AfxGetMainWnd()->SetMenu(CMenu::FromHandle(m_pMainMenu));
+    //INT nRetVal = nPromptForSaveFile();
+    //CHECKEQ(nRetVal, IDCANCEL);
+    //m_omMenu.DestroyMenu();
+    //AfxGetMainWnd()->SetMenu(CMenu::FromHandle(m_pMainMenu));
 
-    /* Make the next available MDI window active */
-    CWnd* pActivateWnd =   GetNextWindow();
-    pActivateWnd->SetForegroundWindow();
-    pActivateWnd->SetFocus();
-    ShowWindow(SW_HIDE);
+    ///* Make the next available MDI window active */
+    //CWnd* pActivateWnd =   GetNextWindow();
+    //pActivateWnd->SetForegroundWindow();
+    //pActivateWnd->SetFocus();
+    //ShowWindow(SW_HIDE);
     //OnFileClose();
-    //OnClose();
+    OnClose();
 }
 /******************************************************************************
 Function Name  :  OnMDIActivate
@@ -3595,20 +3622,20 @@ Date Created   :  20/04/2011
 Modifications  :
 Code Tag       :
 ******************************************************************************/
-void CTSEditorChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd)
-{
-    if(bActivate == TRUE)
-    {
-        m_hMenuShared = m_omMenu.GetSafeHmenu();
-    }
-
-    if(bActivate == FALSE)
-    {
-        AfxGetMainWnd()->SetMenu(CMenu::FromHandle(m_pMainMenu));
-    }
-
-    CMDIChildWnd::OnMDIActivate(bActivate, pActivateWnd, pDeactivateWnd);
-}
+//void CTSEditorChildFrame::OnMDIActivate(BOOL bActivate, CWnd* pActivateWnd, CWnd* pDeactivateWnd)
+//{
+//    if(bActivate == TRUE)
+//    {
+//       // m_hMenuShared = m_omMenu.GetSafeHmenu();
+//    }
+//
+//    if(bActivate == FALSE)
+//    {
+//        AfxGetMainWnd()->SetMenu(CMenu::FromHandle(m_pMainMenu));
+//    }
+//
+//	CFrameWndEx::OnMDIActivate(bActivate, pActivateWnd, pDeactivateWnd);
+//}
 
 /******************************************************************************
 Function Name  :  SetTSEditorMenu
@@ -3694,32 +3721,27 @@ void CTSEditorChildFrame::OnHelpTesteditorhelp()
 {
     // Get Application Help File Path
     CString omStrPath = AfxGetApp()->m_pszHelpFilePath;
-    // Replace .hlp with .chm
+
+	    // Replace .hlp with .chm
     int nIndex = omStrPath.ReverseFind( PERIOD );
     // Extract string before the extension
     omStrPath = omStrPath.Mid(0, nIndex );
     // Add New Extension
-    omStrPath = omStrPath + ".chm"+"::/html/TestAutomation.htm";
+    omStrPath = omStrPath + ".chm"+"::/topics/test_setup_editor.html";
+
+	omStrPath.Replace("TestSetupEditorGUI.chm", "BUSMASTER.chm");
+	
     // Make it as content display always
     ::HtmlHelp(nullptr, omStrPath, HH_DISPLAY_TOPIC, 0);
 }
 
-void CTSEditorChildFrame::OnClose()
+void CTSEditorChildFrame::OnClose() 
 {
     // TODO: Add your message handler code here and/or call default
-    /*OnFileClose();
-    CMDIChildWnd::OnClose();*/
-
-    INT nRetVal = nPromptForSaveFile();
+    
+    INT nRetVal = nPromptForSaveFile(); 
     CHECKEQ(nRetVal, IDCANCEL);
-
-    AfxGetMainWnd()->SetMenu(CMenu::FromHandle(m_pMainMenu));
-
-    /* Make the next available MDI window active */
-    CWnd* pActivateWnd =   GetNextWindow();
-    pActivateWnd->SetForegroundWindow();
-    pActivateWnd->SetFocus();
-    ShowWindow(SW_HIDE);
+	CFrameWndEx::OnClose();    
 }
 
 /**
@@ -3738,4 +3760,136 @@ void CTSEditorChildFrame::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
     }
 
     CWnd::OnGetMinMaxInfo(lpMMI);
+}
+BOOL CTSEditorChildFrame::PreCreateWindow(CREATESTRUCT& cs)
+{
+	if( !CFrameWndEx::PreCreateWindow(cs) )
+		return FALSE;
+	// TODO: Modify the Window class or styles here by modifying
+	//  the CREATESTRUCT cs
+
+	cs.style &= ~FWS_ADDTOTITLE;
+
+	return TRUE;
+}
+
+// CTSEditorChildFrame diagnostics
+
+#ifdef _DEBUG
+void CTSEditorChildFrame::AssertValid() const
+{
+	CFrameWndEx::AssertValid();
+}
+
+void CTSEditorChildFrame::Dump(CDumpContext& dc) const
+{
+	CFrameWndEx::Dump(dc);
+}
+#endif //_DEBUG
+
+void CTSEditorChildFrame::OnUpdateViewStyles(CCmdUI* pCmdUI)
+{
+	//if (!pCmdUI)
+	//	return;
+
+	//// TODO: customize or extend this code to handle choices on the View menu
+
+	//CTestAutomationEditorView* pView = GetRightPane();
+
+	//// if the right-hand pane hasn't been created or isn't a view,
+	//// disable commands in our range
+
+	//if (pView == NULL)
+	//	pCmdUI->Enable(FALSE);
+	//else
+	//{
+	//	DWORD dwStyle = pView->GetStyle() & LVS_TYPEMASK;
+
+	//	// if the command is ID_VIEW_LINEUP, only enable command
+	//	// when we're in LVS_ICON or LVS_SMALLICON mode
+
+	//	if (pCmdUI->m_nID == ID_VIEW_LINEUP)
+	//	{
+	//		if (dwStyle == LVS_ICON || dwStyle == LVS_SMALLICON)
+	//			pCmdUI->Enable();
+	//		else
+	//			pCmdUI->Enable(FALSE);
+	//	}
+	//	else
+	//	{
+	//		// otherwise, use dots to reflect the style of the view
+	//		pCmdUI->Enable();
+	//		BOOL bChecked = FALSE;
+
+	//		switch (pCmdUI->m_nID)
+	//		{
+	//		case ID_VIEW_DETAILS:
+	//			bChecked = (dwStyle == LVS_REPORT);
+	//			break;
+
+	//		case ID_VIEW_SMALLICON:
+	//			bChecked = (dwStyle == LVS_SMALLICON);
+	//			break;
+
+	//		case ID_VIEW_LARGEICON:
+	//			bChecked = (dwStyle == LVS_ICON);
+	//			break;
+
+	//		case ID_VIEW_LIST:
+	//			bChecked = (dwStyle == LVS_LIST);
+	//			break;
+
+	//		default:
+	//			bChecked = FALSE;
+	//			break;
+	//		}
+
+	//		pCmdUI->SetRadio(bChecked ? 1 : 0);
+	//	}
+	//}
+}
+
+void CTSEditorChildFrame::OnViewStyle(UINT nCommandID)
+{
+	//// TODO: customize or extend this code to handle choices on the View menu
+	//CTestAutomationEditorView* pView = GetRightPane();
+
+	//// if the right-hand pane has been created and is a CTestAutomationEditorView,
+	//// process the menu commands...
+	//if (pView != NULL)
+	//{
+	//	DWORD dwStyle = -1;
+
+	//	switch (nCommandID)
+	//	{
+	//	case ID_VIEW_LINEUP:
+	//		{
+	//			// ask the list control to snap to grid
+	//			CListCtrl& refListCtrl = pView->GetListCtrl();
+	//			refListCtrl.Arrange(LVA_SNAPTOGRID);
+	//		}
+	//		break;
+
+	//	// other commands change the style on the list control
+	//	case ID_VIEW_DETAILS:
+	//		dwStyle = LVS_REPORT;
+	//		break;
+
+	//	case ID_VIEW_SMALLICON:
+	//		dwStyle = LVS_SMALLICON;
+	//		break;
+
+	//	case ID_VIEW_LARGEICON:
+	//		dwStyle = LVS_ICON;
+	//		break;
+
+	//	case ID_VIEW_LIST:
+	//		dwStyle = LVS_LIST;
+	//		break;
+	//	}
+
+	//	// change the style; window will repaint automatically
+	//	if (dwStyle != -1)
+	//		pView->ModifyStyle(LVS_TYPEMASK, dwStyle);
+	//}
 }

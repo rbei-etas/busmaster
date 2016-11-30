@@ -47,10 +47,10 @@ If winexists($WIN_BUSMASTER) then
 
 	_addSigDetails("int","Signal1",32,0,0)																; Add the signal details
 
-	WinMenuSelectItem($WIN_BUSMASTER,"",$J1939Menu,$databaseMenu,$saveMenu)								; Select J1939->Database->Save
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$Tool,$J1939DBMenuTool,$saveMenu)								; Select J1939->Database->Save
 	sleep(250)
 
-	WinMenuSelectItem($WIN_BUSMASTER,"",$J1939Menu,$databaseMenu,$closeMenu)							; Select J1939->Database->Close
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$Tool,$J1939DBMenuTool,$closeMenuDBEditor)							; Select J1939->Database->Close
 
 	if WinExists($WIN_DBEditor_J1939) Then
 		$DBEditor="Exists"

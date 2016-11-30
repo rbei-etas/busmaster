@@ -62,7 +62,7 @@ local $VerifyCfxMRU=0
 		Send("{RIGHT}")
         Sleep(1000)
 		;Send("{DOWN 10}")
-        Send("{DOWN 29}")
+        Send("{DOWN 30}")
 		Send("{RIGHT}")
         Sleep(1000)
 		 Send("{DOWN 5}")

@@ -30,7 +30,7 @@ WinActivate($WIN_BUSMASTER)
 if winexists($WIN_BUSMASTER) then
 	sleep(2000)
 	_createConfig("cfxLINNS_05")															 ; Create new Configuration
-	_SetViewToolBarLIN()																	 ; Select LIN Tool Bar to view.
+	;_SetViewToolBarLIN()																	 ; Select LIN Tool Bar to view.
 
 	_linDriverSelection()																 ; Select LIN driver selection from xml configuration File.
 	sleep(1000)

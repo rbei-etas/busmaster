@@ -26,16 +26,16 @@ _StartoHTMLTable("CAN Message Window Module Test Report")
 ;---------------P2 test cases-------------------------------
 
 ;~ ;"TS_MSGWIN_12" is covered in test case TS_MSGWIN_08 and "TS_MSGWIN_08"
-#include "TS_MSGWIN_04.au3"
-#include "TS_MSGWIN_05.au3"
+;#include "TS_MSGWIN_04.au3"  ; Not automatable for ribbon bar[Need to check manually]
+;#include "TS_MSGWIN_05.au3"  ; Not automatable for ribbon bar[Need to check manually]
 #include "TS_MSGWIN_06.au3"
 #include "TS_MSGWIN_08.au3"
 #include "TS_MSGWIN_010.au3"
 #include "TS_MSGWIN_011.au3"
 #include "TS_MSGWIN_013.au3"
-#include "TS_MSGWIN_014.au3";--- updated script for New Tx window
-#include "TS_MSGWIN_019.au3"
-#include "TS_MSGWIN_020.au3"
+#include "TS_MSGWIN_014.au3" ;--- updated script for New Tx window
+;#include "TS_MSGWIN_019.au3" ; Not automatable for ribbon bar[Need to check manually]
+;#include "TS_MSGWIN_020.au3" ; Not automatable for ribbon bar[Need to check manually]
 #include "TS_MSGWIN_021.au3"
 #include "TS_MSGWIN_025.au3"
 #include "TS_MSGWIN_026.au3"

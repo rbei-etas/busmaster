@@ -30,6 +30,8 @@
 #include "BaseDIL_CAN.h"
 #include "BaseDIL_J1939.h"
 
+#pragma warning( disable : 4250 )
+
 class CFrameProcessor_J1939 : public CBaseFrameProcessor_J1939, CFrameProcessor_Common
 {
 private:

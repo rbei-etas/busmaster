@@ -4,6 +4,10 @@
   <title>StartLogging : To start logging</title>
   <refbody>
     <section>
+      <title>Synopsis</title>
+      <p>HRESULT StartLogging();</p>
+    </section>
+    <section>
       <title>Description</title>
       <p>This function enables logging.</p>
     </section>

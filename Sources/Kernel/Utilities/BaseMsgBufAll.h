@@ -86,7 +86,7 @@ public:
     {
     };
 
-    ~CBaseMsgBufVSE() // Destructor
+    virtual ~CBaseMsgBufVSE() // Destructor
     {
     };
 
@@ -119,7 +119,7 @@ public:
     {
     };
 
-    ~CBaseMsgBufVVSE() // Destructor
+    virtual ~CBaseMsgBufVVSE() // Destructor
     {
     };
 

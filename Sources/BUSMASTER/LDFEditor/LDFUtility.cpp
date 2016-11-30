@@ -100,22 +100,22 @@ QString toString( QVariant& ouVariant )
     return ouVariant.toString();
 }
 
-int GetString(eFrameType oueFrameType, std::string& strString)
+int GetString(eLinFrameType oueFrameType, std::string& strString)
 {
     strString = "";
     int nRetVal = 0;
     switch (oueFrameType)
     {
-        case eLIN_Unconditional:
+	case eLinUnconditionalFrame:
             strString = "UnConditional";
             break;
-        case eLIN_Sporadic:
+        case eLinSporadicFrame:
             strString = "Sporadic";
             break;
-        case eLIN_EventTriggered:
+		case eLinEventTriggeredFrame:
             strString = "EventTriggered";
             break;
-        case eLIN_Diagnostic:
+		case eLinDiagnosticFrame:
             strString = "Diagnostic";
             break;
         default:
@@ -227,21 +227,21 @@ int CreateMasterDiagFrame(IFrame*& pouFrame, ICluster* pBaseCluster)
     return 0;*/
 
     //Slave
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+	ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     pBaseCluster->CreateElement(eFrameElement, (IElement**)&pouFrame);
 
     pouFrame->SetName(std::string(defLINMasterFrameName));
     pouFrame->GetProperties(ouFrameProps);
-    ouFrameProps.m_eFrameType = eLIN_Diagnostic;
+	ouFrameProps.m_eLinFrameType = eLinDiagnosticFrame;
     ouFrameProps.m_ouLINDiagnosticFrameProps.m_eDiagType = eLIN_MASTER_FRAME_ID;
-    ouFrameProps.m_ouLINDiagnosticFrameProps.m_nLength = 8;
-    ouFrameProps.m_ouLINDiagnosticFrameProps.m_unId = 0x3C;
+    ouFrameProps.m_unMsgSize = 8;
+    ouFrameProps.m_nMsgId = 0x3C;
     pouFrame->SetProperties(ouFrameProps);
 
     std::map<UID_ELEMENT, IElement*> ouEcuMap;
     pBaseCluster->GetElementList(eEcuElement, ouEcuMap);
-    eEcuType oueEcuType;
+    LinEcuProps ecuProps;
     UID_ELEMENT uidElement = pouFrame->GetUniqueId();
     UID_ELEMENT uidMaster;
     std::list<UID_ELEMENT> uidSlaveList;
@@ -249,8 +249,8 @@ for ( auto itrEcu : ouEcuMap )
     {
         eDIR oueDir;
         IEcu* pouEcu = (IEcu*)itrEcu.second;
-        pouEcu->GetEcuType(oueEcuType);
-        if (eLIN_Master == oueEcuType)
+		pouEcu->GetProperties(ecuProps);
+		if (eMaster == ecuProps.m_eEcuType)
         {
             uidMaster = pouEcu->GetUniqueId();
             pouFrame->MapNode(eTx, uidMaster);
@@ -271,14 +271,14 @@ for ( auto itrEcu : ouEcuMap )
     SignalInstanse ouSignalInstanse;
     ouSignalInstanse.m_nStartBit = INVALID_DATA;
     ouSignalInstanse.m_nUpdateBitPos = INVALID_DATA;
-    SignalProps ouSignalProps;
+    LINSignalProps ouSignalProps;
     ouSignalProps.eType = eInvalidProtocol;
-    ouSignalProps.m_ouLINSignalProps.m_nIntialValue = 0;
-    ouSignalProps.m_ouLINSignalProps.m_nLength = 8;
-    ouSignalProps.m_ouLINSignalProps.m_ouDataType = eUnsigned;
-    ouSignalProps.m_ouLINSignalProps.m_ouEndianess = eIntel;
-    ouSignalProps.m_ouLINSignalProps.m_ouValueType = eScalar;
-    ouSignalProps.m_ouLINSignalProps.m_ouSignalType = eSignalDiag;
+    ouSignalProps.m_nIntialValue = 0;
+    ouSignalProps.m_unSignalSize = 8;
+    ouSignalProps.m_ouDataType = eUnsigned;
+    ouSignalProps.m_ouEndianess = eIntel;
+    ouSignalProps.m_ouValueType = eScalar;
+    ouSignalProps.m_ouSignalType = eSignalDiag;
 
     UID_ELEMENT uid = INVALID_UID_ELEMENT;
     for ( int i = 0 ; i < 8; i++ )
@@ -305,21 +305,21 @@ for ( auto itr : uidSlaveList )
 int CreateSlaveDiagFrame(IFrame*& pouFrame, ICluster* pBaseCluster)
 {
     //Slave
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+	ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     pBaseCluster->CreateElement(eFrameElement, (IElement**)&pouFrame);
 
     pouFrame->SetName(std::string(defLINSlaveFrameName));
     pouFrame->GetProperties(ouFrameProps);
-    ouFrameProps.m_eFrameType = eLIN_Diagnostic;
+	ouFrameProps.m_eLinFrameType = eLinDiagnosticFrame;
     ouFrameProps.m_ouLINDiagnosticFrameProps.m_eDiagType = eLIN_SLAVE_FRAME_ID;
-    ouFrameProps.m_ouLINDiagnosticFrameProps.m_nLength = 8;
-    ouFrameProps.m_ouLINDiagnosticFrameProps.m_unId = 0x3D;
+    ouFrameProps.m_unMsgSize = 8;
+    ouFrameProps.m_nMsgId = 0x3D;
     pouFrame->SetProperties(ouFrameProps);
 
     std::map<UID_ELEMENT, IElement*> ouEcuMap;
     pBaseCluster->GetElementList(eEcuElement, ouEcuMap);
-    eEcuType oueEcuType;
+	LinEcuProps props;
     UID_ELEMENT uidElement = pouFrame->GetUniqueId();
     UID_ELEMENT uidMaster;
     std::list<UID_ELEMENT> uidSlaveList;
@@ -327,8 +327,8 @@ for ( auto itrEcu : ouEcuMap )
     {
         eDIR oueDir;
         IEcu* pouEcu = (IEcu*)itrEcu.second;
-        pouEcu->GetEcuType(oueEcuType);
-        if (eLIN_Master == oueEcuType)
+		pouEcu->GetProperties(props);
+		if (eMaster == props.m_eEcuType)
         {
             uidMaster = pouEcu->GetUniqueId();
             pouFrame->MapNode(eRx, uidMaster);
@@ -349,14 +349,14 @@ for ( auto itrEcu : ouEcuMap )
     SignalInstanse ouSignalInstanse;
     ouSignalInstanse.m_nStartBit = INVALID_DATA;
     ouSignalInstanse.m_nUpdateBitPos = INVALID_DATA;
-    SignalProps ouSignalProps;
+    LINSignalProps ouSignalProps;
     ouSignalProps.eType = eInvalidProtocol;
-    ouSignalProps.m_ouLINSignalProps.m_nIntialValue = 0;
-    ouSignalProps.m_ouLINSignalProps.m_nLength = 8;
-    ouSignalProps.m_ouLINSignalProps.m_ouDataType = eUnsigned;
-    ouSignalProps.m_ouLINSignalProps.m_ouEndianess = eIntel;
-    ouSignalProps.m_ouLINSignalProps.m_ouValueType = eScalar;
-    ouSignalProps.m_ouLINSignalProps.m_ouSignalType = eSignalDiag;
+    ouSignalProps.m_nIntialValue = 0;
+    ouSignalProps.m_unSignalSize = 8;
+    ouSignalProps.m_ouDataType = eUnsigned;
+    ouSignalProps.m_ouEndianess = eIntel;
+    ouSignalProps.m_ouValueType = eScalar;
+    ouSignalProps.m_ouSignalType = eSignalDiag;
 
     UID_ELEMENT uid = INVALID_UID_ELEMENT;
     for ( int i = 0 ; i < 8; i++ )
@@ -395,10 +395,10 @@ int CreateDefauleNodeItems(double fLDFVersion)
     {
         pMaster->SetName(strName);
 
-        EcuProperties ouECUMasterProps;
-        ouECUMasterProps.m_eEcuType = eLIN_Master;
-        ouECUMasterProps.m_ouMasterProps.m_fJitter=0.0;
-        ouECUMasterProps.m_ouMasterProps.m_fTimeBase= 1;
+        LinEcuProps ouECUMasterProps;
+        ouECUMasterProps.m_eEcuType = eMaster;
+        ouECUMasterProps.mMasterProps.m_fJitter=0.0;
+        ouECUMasterProps.mMasterProps.m_fTimeBase= 1;
 
         ((IEcu*)pMaster)->SetProperties(ouECUMasterProps);
     }
@@ -413,20 +413,20 @@ int CreateDefauleNodeItems(double fLDFVersion)
     {
         pSlave->SetName(strName);
 
-        EcuProperties ouSlaveProps;
-        ouSlaveProps.m_eEcuType = eLIN_Slave;
-        ouSlaveProps.m_ouSlavePros.m_fProtocolVersion=fLDFVersion;
-        ouSlaveProps.m_ouSlavePros.m_dNASTimeout = 1000;
-        ouSlaveProps.m_ouSlavePros.m_dNCRTimeout=1000;
-        ouSlaveProps.m_ouSlavePros.m_dP2Min=50;
-        ouSlaveProps.m_ouSlavePros.m_dSTMin=0;
-        ouSlaveProps.m_ouSlavePros.m_nConfiguredNAD=1;
-        ouSlaveProps.m_ouSlavePros.m_nInitialNAD=1;
-        ouSlaveProps.m_ouSlavePros.m_nFunctionId=0;
-        ouSlaveProps.m_ouSlavePros.m_nSupplierId=0;
-        ouSlaveProps.m_ouSlavePros.m_nVariant=40;
-        ouSlaveProps.m_ouSlavePros.m_nFaultStateSignals.clear();
-        ouSlaveProps.m_ouSlavePros.m_nRespErrSignal=INVALID_UID_ELEMENT;
+        LinEcuProps ouSlaveProps;
+        ouSlaveProps.m_eEcuType = eSlave;
+        ouSlaveProps.mSlaveProps.m_fProtocolVersion=fLDFVersion;
+        ouSlaveProps.mSlaveProps.m_dNASTimeout = 1000;
+        ouSlaveProps.mSlaveProps.m_dNCRTimeout=1000;
+        ouSlaveProps.mSlaveProps.m_dP2Min=50;
+        ouSlaveProps.mSlaveProps.m_dSTMin=0;
+        ouSlaveProps.mSlaveProps.m_nConfiguredNAD=1;
+        ouSlaveProps.mSlaveProps.m_nInitialNAD=1;
+        ouSlaveProps.mSlaveProps.m_nFunctionId=0;
+        ouSlaveProps.mSlaveProps.m_nSupplierId=0;
+        ouSlaveProps.mSlaveProps.m_nVariant=40;
+        ouSlaveProps.mSlaveProps.m_nFaultStateSignals.clear();
+        ouSlaveProps.mSlaveProps.m_nRespErrSignal=INVALID_UID_ELEMENT;
 
         ((IEcu*)pSlave)->SetProperties(ouSlaveProps);
     }

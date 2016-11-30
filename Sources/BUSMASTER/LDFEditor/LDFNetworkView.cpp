@@ -86,14 +86,14 @@ void LDFNetworkView::OnElementCreated(UID_ELEMENT uid)
         case eEcuElement:
         {
             std::string strItemTitle;
-            EcuProperties ouEcuProperties;
+            LinEcuProps ouEcuProperties;
             ouEcuProperties.m_eEcuType = eEcuNone;
             TreeItemID ouTreeItemId;
             QVariant ouVariant;
             IEcu* pEcu = (IEcu*)pElement;
             pEcu->GetName(strItemTitle);
             pEcu->GetProperties(ouEcuProperties);
-            if ( ouEcuProperties.m_eEcuType == eLIN_Master )
+            if ( ouEcuProperties.m_eEcuType == eMaster )
             {
                 strItemTitle = strItemTitle + " [ Master ]";
             }
@@ -161,13 +161,13 @@ void LDFNetworkView::onDataUpdate()
     QVariant ouVariant;
     TreeItemID ouTreeItemId;
     ouTreeItemId.m_eTreeElementType = eLdfItem;
-    EcuProperties ouEcuProperties;
+    LinEcuProps ouEcuProperties;
     ouEcuProperties.m_eEcuType = eEcuNone;
 for ( auto itrEcu : ouEcuMap )
     {
         itrEcu.second->GetName(strItemTitle);
         ((IEcu*)itrEcu.second)->GetProperties(ouEcuProperties);
-        if ( ouEcuProperties.m_eEcuType == eLIN_Master )
+        if ( ouEcuProperties.m_eEcuType == eMaster )
         {
             strItemTitle = strItemTitle + " [ Master ]";
         }
@@ -300,11 +300,11 @@ void LDFNetworkView::vAddFrames(EcuTreeWidgets& ouEcuTreeWidgets, IEcu* pEcu)
     std::string strText;
 
     ouTreeItemID.m_eTreeElementType = eLdfItem;
-    eFrameType oueFrameType;
-for ( auto itrFrame : ouFrameList )
+    LinFrameProps props;
+    for ( auto itrFrame : ouFrameList )
     {
-        itrFrame->GetFrameType(oueFrameType);
-        if ( eLIN_Unconditional == oueFrameType )
+        itrFrame->GetProperties(props);
+        if (eLinUnconditionalFrame == props.m_eLinFrameType)
         {
             itrFrame->GetName(strText);
             QTreeWidgetItem* pouFrameItem = new QTreeWidgetItem();
@@ -327,10 +327,10 @@ for ( auto itrFrame : ouFrameList )
     pouRxTableItem->takeChildren();
 
 
-for ( auto itrFrame : ouFrameList )
+    for ( auto itrFrame : ouFrameList )
     {
-        itrFrame->GetFrameType(oueFrameType);
-        if ( eLIN_Unconditional == oueFrameType )
+        itrFrame->GetProperties(props);
+        if (eLinUnconditionalFrame == props.m_eLinFrameType)
         {
             itrFrame->GetName(strText);
             QTreeWidgetItem* pouFrameItem = new QTreeWidgetItem();
@@ -390,7 +390,7 @@ void LDFNetworkView::vHandleEcuElementChange(eAction eActionType, UID_ELEMENT nI
 
         std::string strName;
         TreeItemID uidTreeElement;
-        EcuProperties ouEcuProps;
+        LinEcuProps ouEcuProps;
         ouEcuProps.m_eEcuType = eEcuNone;
         m_pouLdfCluster->GetElement(eEcuElement, nId, (IElement**)&pEcu);
         if ( nullptr != pEcu )
@@ -398,7 +398,7 @@ void LDFNetworkView::vHandleEcuElementChange(eAction eActionType, UID_ELEMENT nI
             pEcu->GetName(strName);
             auto itr = m_UidTreeWidgetListMap[nId];
             pEcu->GetProperties(ouEcuProps);
-            if ( eLIN_Master == ouEcuProps.m_eEcuType )
+            if ( eMaster == ouEcuProps.m_eEcuType )
             {
                 strName = strName + " [ Master ]";
             }

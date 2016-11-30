@@ -412,9 +412,7 @@ std::string CMsgHandlerDlg::GetUniqueFrameName(IFrame* pouFrame)
     std::ostringstream omstrTempFrameName;
     std::string strFrameName;
 
-    FrameProps ouProps;
-
-    pouFrame->GetProperties(ouProps);
+   
     pouFrame->GetName(strFrameName);
     return strFrameName;
 }
@@ -425,18 +423,17 @@ void CMsgHandlerDlg::vGetUniqueFrameNames(std::list<std::string>& strNameList)
     CString strChnlNum;
     ((CComboBox*)GetDlgItem(IDC_CMB_CHANNEL))->GetWindowTextA(strChnlNum);
 
-    ICluster* pCluster;
     int channel = 0;// atoi( strChnlNum ) - 1;
     CGlobalObj::ouGetObj( m_eBus ).m_ouClusterConfig->GetFrameList( m_eBus, channel, lstMsgNames );
     std::map<std::string, int> mapFrameOcuurance;
     std::string strName = "";
+	LinFrameProps props;
 for ( auto itr : lstMsgNames )
     {
         if(m_eBus == LIN)
         {
-            eFrameType FrameType;
-            ((IFrame*)itr)->GetFrameType(FrameType);
-            if(FrameType != eLIN_Unconditional && FrameType != eLIN_Diagnostic)
+            ((IFrame*)itr)->GetProperties(props);
+			if (props.m_eLinFrameType != eLinUnconditionalFrame && props.m_eLinFrameType != eLinDiagnosticFrame)
             {
                 continue;
             }

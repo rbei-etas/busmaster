@@ -102,5 +102,8 @@
     <Image Include="res\Signalwatch.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\Signal_Watch.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

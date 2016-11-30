@@ -32,7 +32,7 @@ if winexists($WIN_BUSMASTER) then
 
 	_loadConfig("cfxLINFilter_01")																	; Load Configuration
 
-	_SetViewToolBarLIN()																			; Select LIN Tool Bar to view.
+	;_SetViewToolBarLIN()																			; Select LIN Tool Bar to view.
 	sleep(1000)
 	_linDriverSelection()																 		; Select LIN driver selection from xml configuration File.
 
@@ -58,13 +58,13 @@ if winexists($WIN_BUSMASTER) then
 	_AddFiltertoMsgDisp_LIN()													   ; Adds the filter for message display for LIN
 	sleep(1000)
 
-	_En_Dis_FilterDisplay()														  ; Enable filters for message display
+	;_En_Dis_FilterDisplay()														  ; Enable filters for message display
 
 	;ControlClick($WIN_MsgDisplay_LIN,"",$BTN_OK_MsgDisplay)						  ; Click on OK button
 
 	sleep(2000)
 
-	WinMenuSelectItem($WIN_BUSMASTER,"",$linMenu,$LINMsgWinMenu,$EnableMsgWindowLIN)
+	WinRibbonSelectItem($WIN_BUSMASTER,"",$linMenu,$LINMsgWinMenu,$EnableMsgWindowLIN)
 	sleep(1000)
 
 	sleep(1000)

@@ -76,7 +76,7 @@ public slots:
 QString toString( QVariant& ouVariant );
 
 
-int GetString(eFrameType oueFrameType, std::string& strString);
+int GetString(eLinFrameType oueFrameType, std::string& strString);
 int GetString(eDiagType oueLinDiagType, std::string& strString);
 
 int GetString(double dVal, QString& strText);

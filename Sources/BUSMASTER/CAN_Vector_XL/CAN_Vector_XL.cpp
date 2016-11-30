@@ -37,7 +37,7 @@
 #include "CAN_Vector_XL.h"
 #include "Utility/Utility_Thread.h"
 #include "BaseDIL_CAN_Controller.h"
-#include "DIL_Interface/HardwareListing.h"
+#include "DIL_Interface/HardwareListingCAN.h"
 #include "ChangeRegisters.h"
 #include "../Application/MultiLanguage.h"
 #include "Utility/MultiLanguageSupport.h"
@@ -193,7 +193,7 @@ static XLCLOSEDRIVER           xlDllCloseDriver = nullptr;
 static XLOPENDRIVER            xlDllOpenDriver = nullptr;
 
 /* Forward declarations*/
-static int nInitHwNetwork(UINT unDefaultChannelCnt = 0);
+static int nInitHwNetwork(PSCONTROLLER_DETAILS InitData,UINT unDefaultChannelCnt = 0);
 static BOOL bRemoveClient(DWORD dwClientId);
 static DWORD dwGetAvailableClientSlot();
 static BOOL bClientExist(std::string pcClientName, INT& Index);
@@ -254,10 +254,9 @@ public:
     HRESULT CAN_PerformInitOperations(void);
     HRESULT CAN_PerformClosureOperations(void);
     HRESULT CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT64& TimeStamp, LARGE_INTEGER& QueryTickCount);
-    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount);
+    HRESULT CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData);
     HRESULT CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelHwInterface, INT nCount);
     HRESULT CAN_DeselectHwInterface(void);
-    HRESULT CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length);
     HRESULT CAN_SetConfigData(PSCONTROLLER_DETAILS InitData, int Length);
     HRESULT CAN_StartHardware(void);
     HRESULT CAN_StopHardware(void);
@@ -860,12 +859,12 @@ HRESULT CDIL_CAN_VectorXL::CAN_GetTimeModeMapping(SYSTEMTIME& CurrSysTime, UINT6
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount)
+HRESULT CDIL_CAN_VectorXL::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterface, INT& nCount, PSCONTROLLER_DETAILS InitData)
 {
     USES_CONVERSION;
     HRESULT hResult = S_FALSE;
 
-    hResult = nInitHwNetwork(nCount);
+    hResult = nInitHwNetwork(InitData,nCount);
     if ( hResult == 0)
     {
         nCount = sg_nNoOfChannels;
@@ -1089,87 +1088,6 @@ int DisplayConfigurationDlg(HWND hParent, PSCONTROLLER_DETAILS pControllerDetail
     return nResult;
 }
 
-/**
-* \brief         Displays the controller configuration dialog.
-* \param[out]    InitData, is SCONTROLLER_DETAILS structure
-* \param[out]    Length , is INT
-* \return        S_OK for success
-* \authors       Arunkumar Karri
-* \date          07.10.2011 Created
-*/
-HRESULT CDIL_CAN_VectorXL::CAN_DisplayConfigDlg(PSCONTROLLER_DETAILS InitData, int& Length)
-{
-    VALIDATE_VALUE_RETURN_VAL(sg_bCurrState, STATE_HW_INTERFACE_SELECTED, ERR_IMPROPER_STATE);
-    VALIDATE_POINTER_RETURN_VAL(InitData, S_FALSE);
-
-    unsigned int l_length = 0;
-    HRESULT Result = S_FALSE;
-
-    PSCONTROLLER_DETAILS pControllerDetails = (PSCONTROLLER_DETAILS)InitData;
-    //First initialize with existing hw description
-    for (INT i = 0; i < min(Length, (INT)sg_nNoOfChannels); i++, l_length++)
-    {
-        //pControllerDetails[i].m_omHardwareDesc  = sg_aodChannels[i].m_strName;
-        static char chName[MAX_PATH];
-        sprintf(chName , _("Vector - %s, Serial Number- %d"),
-                sg_aodChannels[i].m_pXLChannelInfo->name,
-                sg_aodChannels[i].m_pXLChannelInfo->serialNumber);
-        //pControllerDetails[i].m_omHardwareDesc = chName;
-
-    }
-    if (l_length > 0)
-    {
-        int nResult = DisplayConfigurationDlg(sg_hOwnerWnd, pControllerDetails, l_length);
-        switch (nResult)
-        {
-            case WARNING_NOTCONFIRMED:
-            {
-                Result = WARN_INITDAT_NCONFIRM;
-            }
-            break;
-            case INFO_INIT_DATA_CONFIRMED:
-            {
-                bLoadDataFromContr(pControllerDetails);
-                //memcpy(sg_ControllerDetails, pControllerDetails, sizeof (SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
-                for(int i = 0; i < defNO_OF_CHANNELS; i++)
-                {
-                    sg_ControllerDetails[i] = pControllerDetails[i];
-                }
-
-                //memcpy(InitData, (void*)sg_ControllerDetails, sizeof (SCONTROLLER_DETAILS) * defNO_OF_CHANNELS);
-                for(int i = 0; i < defNO_OF_CHANNELS; i++)
-                {
-                    InitData[i] = sg_ControllerDetails[i];
-                }
-
-
-                Length = sizeof(SCONTROLLER_DETAILS) * defNO_OF_CHANNELS;
-                Result = S_OK;
-            }
-            break;
-            case INFO_RETAINED_CONFDATA:
-            {
-                Result = INFO_INITDAT_RETAINED;
-            }
-            break;
-            // Not to be addressed at present
-            case ERR_CONFIRMED_CONFIGURED:
-                // Not to be addressed at present
-            case INFO_CONFIRMED_CONFIGURED:
-            default:
-            {
-                // Do nothing... default return value is S_FALSE.
-            }
-            break;
-        }
-    }
-    else
-    {
-        Result = S_OK;
-    }
-
-    return Result;
-}
 
 /**
 * \brief         Function to set the channel baud rate configured by user
@@ -2274,13 +2192,14 @@ static int nGetNoOfConnectedHardware(void)
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount)
+int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelList, int& nCount, PSCONTROLLER_DETAILS InitData)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
     CWnd objMainWnd;
     objMainWnd.Attach(hParent);
-    CHardwareListing HwList(psInterfaces, nCount, pnSelList, CAN, CHANNEL_ALLOWED, &objMainWnd);
+	IChangeRegisters* pAdvancedSettings = new CChangeRegisters(nullptr, InitData, nCount);
+    CHardwareListingCAN HwList(psInterfaces, nCount, pnSelList, CAN, CHANNEL_ALLOWED, &objMainWnd, InitData, pAdvancedSettings );
     INT nRet = HwList.DoModal();
     objMainWnd.Detach();
 
@@ -2338,7 +2257,7 @@ unsigned int GetSelectedChannelIndex(unsigned int unIndex)
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
+static int nCreateMultipleHardwareNetwork(PSCONTROLLER_DETAILS InitData, UINT unDefaultChannelCnt = 0)
 {
     int nHardwareCountPrev = sg_ucNoOfHardware;
     int nHwCount = sg_ucNoOfHardware;
@@ -2377,7 +2296,7 @@ static int nCreateMultipleHardwareNetwork(UINT unDefaultChannelCnt = 0)
         }
         nHwCount = unDefaultChannelCnt;
     }
-    else if ( ListHardwareInterfaces(sg_hOwnerWnd, sg_HardwareIntr, sg_anSelectedItems, nHwCount) != 0 )
+    else if ( ListHardwareInterfaces(sg_hOwnerWnd, sg_HardwareIntr, sg_anSelectedItems, nHwCount,InitData) != 0 )
     {
         sg_ucNoOfHardware = nHardwareCountPrev;
         return HW_INTERFACE_NO_SEL;
@@ -2442,7 +2361,7 @@ static int nCreateSingleHardwareNetwork()
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-static int nInitHwNetwork(UINT unDefaultChannelCnt)
+static int nInitHwNetwork(PSCONTROLLER_DETAILS InitData, UINT unDefaultChannelCnt)
 {
     int nChannelCount = 0;
     int nResult = NO_HW_INTERFACE;
@@ -2478,7 +2397,7 @@ static int nInitHwNetwork(UINT unDefaultChannelCnt)
         {
             // Get the selection from the user. This will also
             // create and assign the networks
-            nResult = nCreateMultipleHardwareNetwork(unDefaultChannelCnt);
+            nResult = nCreateMultipleHardwareNetwork(InitData, unDefaultChannelCnt);
         }
         else
         {
@@ -2648,7 +2567,7 @@ static BOOL bGetClientObj(DWORD dwClientID, UINT& unClientIndex)
 * \authors       Arunkumar Karri
 * \date          07.10.2011 Created
 */
-static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* File, int Line)
+static void vRetrieveAndLog(DWORD /*dwErrorCode*/, char* /*File*/, int /*Line*/)
 {
     USES_CONVERSION;
 
@@ -2713,7 +2632,7 @@ static BOOL bRemoveClientBuffer(CBaseCANBufFSE* RootBufferArray[MAX_BUFF_ALLOWED
     return bReturn;
 }
 
-HRESULT CDIL_CAN_VectorXL::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS ouControllerDetails,DWORD dwDriverId,bool bIsHardwareListed, unsigned int unChannelCount)
+HRESULT CDIL_CAN_VectorXL::CAN_SetHardwareChannel(PSCONTROLLER_DETAILS ouControllerDetails,DWORD /*dwDriverId*/,bool bIsHardwareListed, unsigned int unChannelCount)
 {
     PSCONTROLLER_DETAILS psContrlDets = (PSCONTROLLER_DETAILS)ouControllerDetails;
 

@@ -145,7 +145,7 @@ BOOL CWaveformTransmitter::bGetSignalEntry(CString omSignalName,
     return bIsPresent;
 }
 
-UINT64 CWaveformTransmitter::un64GetBitMask(int byte, int startBitIndexInByte, int length, bool bIntel, unsigned char* aucData, unsigned long long u64SignVal)
+UINT64 CWaveformTransmitter::un64GetBitMask(int byte, int startBitIndexInByte, int length, bool bIntel, unsigned char* /*aucData*/, unsigned long long /*u64SignVal*/)
 {
     UINT64 Result = 0x1;
 

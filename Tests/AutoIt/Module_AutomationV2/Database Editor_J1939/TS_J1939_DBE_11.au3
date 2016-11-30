@@ -2,7 +2,7 @@
 ; Critical (C)		:		Y
 ; TestCase No.		:		TS_J1939_DBE_11
 ; TestCases			:		"Delete Signal"
-; Test Data			:		
+; Test Data			:
 ; Test Setup		:		"1. Open Database editor
 ;~ 							2. Select message "Test".
 ;~ 							3. Select signal ""Delete Signal" button or menu.
@@ -30,6 +30,11 @@ if winexists($WIN_BUSMASTER) then
 	EndIf
 	$signalCount=_GUICtrlListView_GetItemCount($sigDetlvhwd)							; Fetch the signal count
 	consolewrite("$signalCount : " & $signalCount & @Crlf)
+	_ActivatechildWindow($WIN_DBEditor_J19391)
+	WinClose($WIN_DBEditor_J19391)
+	if WinWaitActive($WIN_BUSMASTER,$saveDBtxt,2) Then
+		ControlClick($WIN_BUSMASTER,"",$BTN_No_SaveDB)
+	EndIf
 EndIf
 if $signalCount=0 Then
 	_WriteResult("Pass","TS_J1939_DBE_11")

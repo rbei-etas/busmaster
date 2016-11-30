@@ -398,7 +398,7 @@ void CMsgSgDetView::vDisplayMsgSgInformation(sMESSAGE* pMsg)
             }
             if(m_sDbParams.m_eBus == CAN)
             {
-                INT nMaxBits = (pMsg->m_unMessageLength * 8);
+                unsigned int nMaxBits = (pMsg->m_unMessageLength * 8);
 
                 if(nMaxBits >= defMAX_BITS)
                 {
@@ -417,7 +417,7 @@ void CMsgSgDetView::vDisplayMsgSgInformation(sMESSAGE* pMsg)
             }
             else if(m_sDbParams.m_eBus == J1939)
             {
-                INT nMaxBits = (pMsg->m_unMessageLength * 8);
+                unsigned int nMaxBits = (pMsg->m_unMessageLength * 8);
                 if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
                 {
                     // Disable "New Signal" button
@@ -562,7 +562,7 @@ void CMsgSgDetView::OnRclickLstSignalDetails(NMHDR* /*pNMHDR*/, LRESULT* pResult
 
             if(m_sDbParams.m_eBus == CAN)
             {
-                INT nMaxBits = 0;
+                unsigned int nMaxBits = 0;
                 if(nullptr != pMsg)
                 {
                     nMaxBits = (pMsg->m_unMessageLength * 8);
@@ -720,7 +720,7 @@ void CMsgSgDetView::OnDeleteSignal()
                     }
                     else if(m_sDbParams.m_eBus == J1939)
                     {
-                        INT nMaxBits = (pMsg->m_unMessageLength * 8);
+                        unsigned int nMaxBits = (pMsg->m_unMessageLength * 8);
                         if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
                         {
                             // Disable "New Signal" button
@@ -1311,7 +1311,7 @@ void CMsgSgDetView::OnSignalNew()
             }
             if(m_sDbParams.m_eBus == CAN)
             {
-                INT nMaxBits = (pMsg->m_unMessageLength * 8);
+                unsigned int nMaxBits = (pMsg->m_unMessageLength * 8);
 
                 if(nMaxBits >= defMAX_BITS)
                 {
@@ -1330,7 +1330,7 @@ void CMsgSgDetView::OnSignalNew()
             }
             else if(m_sDbParams.m_eBus == J1939)
             {
-                INT nMaxBits = (pMsg->m_unMessageLength * 8);
+                unsigned int nMaxBits = (pMsg->m_unMessageLength * 8);
                 if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
                 {
                     // Disable "New Signal" button
@@ -1592,7 +1592,7 @@ Do you want to continue?"), MB_YESNO);
                 }
                 if(m_sDbParams.m_eBus == CAN)
                 {
-                    INT nMaxBits = (pMsg->m_unMessageLength * 8);
+                    unsigned int nMaxBits = (pMsg->m_unMessageLength * 8);
 
                     if(nMaxBits >= defMAX_BITS)
                     {
@@ -1611,7 +1611,7 @@ Do you want to continue?"), MB_YESNO);
                 }
                 else if(m_sDbParams.m_eBus == J1939)
                 {
-                    INT nMaxBits = (pMsg->m_unMessageLength * 8);
+                    unsigned int nMaxBits = (pMsg->m_unMessageLength * 8);
                     if(nCheckTotalBitsUsed(pMsg->m_psSignals) >= nMaxBits)//check for total  Bits used
                     {
                         // Disable "New Signal" button

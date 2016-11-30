@@ -1,6 +1,6 @@
 #include "ScheduleTableDlg.h"
 #include "LDFDatabaseManager.h"
-#include "IClusterProps.h"
+#include "LINDefines.h"
 #include "LDFUtility.h"
 #include "qcombobox.h"
 #include <iostream>
@@ -92,7 +92,7 @@ void ScheduleTableDlg::onScheduleItemDragged(int nLogical, int nOld, int nNew)
     ui.tableFrames->setRowCount(0);
     vUpdateScheduleTableItems(tempScheduleTableItem);
 
-    /*EcuProperties ouEcuProps;
+    /*LinEcuProps ouEcuProps;
     m_pCurrentEcu->GetProperties(ouEcuProps);
     if ( ouEcuProps.m_eEcuType != eLIN_Slave )
     {
@@ -101,7 +101,7 @@ void ScheduleTableDlg::onScheduleItemDragged(int nLogical, int nOld, int nNew)
 
     LDFDatabaseManager::GetDatabaseManager()->setDocumentModified(true);
 
-    ouEcuProps.m_ouSlavePros.m_nConfiurableFrameIdList.clear();
+    ouEcuProps.mSlaveProps.m_nConfiurableFrameIdList.clear();
 
     int nRows = rowCount();
 
@@ -111,7 +111,7 @@ void ScheduleTableDlg::onScheduleItemDragged(int nLogical, int nOld, int nNew)
         QTableWidgetItem* pItem = item(nVisualRow,0);
         ConfigFrameDetails ouConfigFrame = pItem->data(Qt::UserRole).value<ConfigFrameDetails>();
 
-        ouEcuProps.m_ouSlavePros.m_nConfiurableFrameIdList.push_back(ouConfigFrame);
+        ouEcuProps.mSlaveProps.m_nConfiurableFrameIdList.push_back(ouConfigFrame);
     }
     m_pCurrentEcu->SetProperties(ouEcuProps);
     DisplayEcuAdditionalProps(m_pCurrentEcu);
@@ -193,15 +193,14 @@ void ScheduleTableDlg::vPrepareUIForEditMode()
     ui.editScheduleName->setText(QString::fromStdString(omStrSchedName));
 
     std::string strFrameName;
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+	ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     ScheduleTableProps ouScheduleTableProps;
     pScheduleTable->GetProperties(ouScheduleTableProps);
     QVariant qVar;
     ui.tableFrames->setRowCount(ouScheduleTableProps.m_ouCLINSheduleTableItem.size());
     std::string strFrameType;
     IFrame* pouMsg = nullptr;
-    eFrameType oueFrameType;
     int nRow = 0;
 
     bool bFrameExists = false;
@@ -279,10 +278,10 @@ void ScheduleTableDlg::vPrepareUIForEditMode()
 void ScheduleTableDlg::vUpdateScheduleTableItems(std::list<CLINSheduleTableItem>& lstScheduleTableItem)
 {
     IFrame* pouMsg = nullptr;
-    eFrameType oueFrameType;
+    
     std::string strFrameName, strFrameType;
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+	ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     int nRow = 0;
     QList<QVariant> ouColumns;
     QVariant qVar;
@@ -299,13 +298,13 @@ for ( auto itr : lstScheduleTableItem)
 
         pouMsg->GetName(strFrameName);
         pouMsg->GetProperties(ouFrameProps);
-        pouMsg->GetFrameType(oueFrameType);
+       
 
 
         if ( itr.m_eDiagType == eLIN_NORMAL_FRAME_ID )
         {
             //nFrameLength = nGetFrameLength(ouFrameProps).toInt();
-            GetString(oueFrameType, strFrameType);
+			GetString(ouFrameProps.m_eLinFrameType, strFrameType);
         }
         else if ( itr.m_eDiagType == eLIN_MASTER_FRAME_ID )
         {
@@ -370,21 +369,21 @@ void ScheduleTableDlg::onDelayEditChange(const QString& str)
     }
 }
 
-QString ScheduleTableDlg::nGetFrameLength(FrameProps ouFrameProps)
+QString ScheduleTableDlg::nGetFrameLength(const LinFrameProps& ouFrameProps)
 {
-    switch(ouFrameProps.m_eFrameType)
+    switch(ouFrameProps.m_eLinFrameType)
     {
-        case eLIN_Unconditional:
-            return GetString(ouFrameProps.m_ouLINUnConditionFrameProps.m_nLength, 10);
+	case eLinUnconditionalFrame:
+            return GetString(ouFrameProps.m_unMsgSize, 10);
             break;
-        case eLIN_Sporadic:
+        case eSporadic:
             return "";
             break;
-        case eLIN_EventTriggered:
+        case eLinEventTriggeredFrame:
             return "";
             break;
-        case eLIN_Diagnostic:
-            return GetString(ouFrameProps.m_ouLINDiagnosticFrameProps.m_nLength, 10);
+		case eLinDiagnosticFrame:
+			return GetString(ouFrameProps.m_unMsgSize, 10);
             break;
         default:
             return "8";
@@ -398,8 +397,8 @@ ERRORCODE ScheduleTableDlg::vFillFramesCombo(int nRow, ScheduleComboWidget** pCo
     LIN_Settings ouLinSettings;
     m_pouLDFCluster->GetProperties(eLINClusterProperties, &ouLinSettings);
 
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+	ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     std::map<UID_ELEMENT, IElement*> mapFrames;
     m_pouLDFCluster->GetElementList(eFrameElement, mapFrames);
     ScheduleComboWidget* pTempComboBox = new ScheduleComboWidget(nRow, this);
@@ -414,7 +413,7 @@ for(auto itrFrame : mapFrames)
         pFrame->GetName(strFrameName);
         pFrame->GetProperties(ouFrameProps);
         uidFrame = pFrame->GetUniqueId();
-        if ( ouFrameProps.m_eFrameType == eLIN_Diagnostic )
+		if (ouFrameProps.m_eLinFrameType == eLinDiagnosticFrame)
         {
             if ( ouFrameProps.m_ouLINDiagnosticFrameProps.m_eDiagType == eLIN_MASTER_FRAME_ID )
             {
@@ -477,8 +476,8 @@ ERRORCODE ScheduleTableDlg::vIfFramesExists()
     LIN_Settings ouLinSettings;
     m_pouLDFCluster->GetProperties(eLINClusterProperties, &ouLinSettings);
 
-    FrameProps ouFrameProps;
-    ouFrameProps.m_eFrameType = eFrame_Invalid;
+    LinFrameProps ouFrameProps;
+	ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
     std::map<UID_ELEMENT, IElement*> mapFrames;
     m_pouLDFCluster->GetElementList(eFrameElement, mapFrames);
     IFrame* pFrame = nullptr;
@@ -492,7 +491,7 @@ for(auto itrFrame : mapFrames)
         pFrame->GetName(strFrameName);
         pFrame->GetProperties(ouFrameProps);
         uidFrame = pFrame->GetUniqueId();
-        if ( ouFrameProps.m_eFrameType == eLIN_Diagnostic )
+		if (ouFrameProps.m_eLinFrameType == eLinDiagnosticFrame)
         {
             if ( ouFrameProps.m_ouLINDiagnosticFrameProps.m_eDiagType == eLIN_MASTER_FRAME_ID )
             {
@@ -529,20 +528,20 @@ void ScheduleTableDlg::onComboSelectionChange(int nRow, int nIndex)
     m_nPrevSelRow = nRow;
 }
 
-eScheduleCommand_Type ScheduleTableDlg::vGetFrameType(eFrameType ouFrameType, std::string omstrFrameName)
+eScheduleCommand_Type ScheduleTableDlg::vGetFrameType(eLinFrameType ouFrameType, std::string omstrFrameName)
 {
     switch (ouFrameType)
     {
-        case eLIN_Unconditional:
+	case eLinUnconditionalFrame:
             return eUnConditional;
             break;
-        case eLIN_Sporadic:
-            return eSporadic;
+        case eSporadic:
+			return eScheduleCommand_Type::eSporadic;
             break;
-        case eLIN_EventTriggered:
-            return eEventTriggered;
+		case eLinEventTriggeredFrame:
+			return eScheduleCommand_Type::eEventTriggered;
             break;
-        case eLIN_Diagnostic:
+		case eLinDiagnosticFrame:
             if(omstrFrameName == defLINMasterFrameName)
             {
                 return eMasterReq;
@@ -662,7 +661,6 @@ void ScheduleTableDlg::vPopulateSelFrameDetails(int nIndex)
         //memset(omSchedItem.m_chDataBytes, 0, sizeof(omSchedItem.m_chDataBytes));
 
         IFrame* pFrame;
-        eFrameType oueFrameType;
         std::string strFrameType;
         m_pouLDFCluster->GetElement(eFrameElement, uidElement, (IElement**)&pFrame);
 
@@ -670,8 +668,9 @@ void ScheduleTableDlg::vPopulateSelFrameDetails(int nIndex)
         {
             eDiagType eOldType = omSchedItem.m_eDiagType;
             omSchedItem.m_nFrameId = uidElement;
-            FrameProps ouFrameProps;
-            ouFrameProps.m_eFrameType = eFrame_Invalid;
+            LinFrameProps ouFrameProps;
+			eLinFrameType oueFrameType;
+			ouFrameProps.m_eLinFrameType = eLinInvalidFrame;
             pFrame->GetProperties(ouFrameProps);
 
             if ( uidElement != INVALID_UID_ELEMENT )
@@ -679,22 +678,22 @@ void ScheduleTableDlg::vPopulateSelFrameDetails(int nIndex)
                 if ( uidElement == m_DiagnosticuID[0] )
                 {
                     strFrameType = "Master Request";
-                    oueFrameType = eLIN_Diagnostic;
+					oueFrameType = eLinDiagnosticFrame;
                 }
                 else if ( uidElement == m_DiagnosticuID[1] )
                 {
                     strFrameType = "Slave Response";
-                    oueFrameType = eLIN_Diagnostic;
+					oueFrameType = eLinDiagnosticFrame;
                 }
                 else
                 {
 
-                    GetString(ouFrameProps.m_eFrameType, strFrameType);
+                    GetString(ouFrameProps.m_eLinFrameType, strFrameType);
                 }
             }
 
             ui.tableFrames->item(nSelectedRow, 1)->setText(strFrameType.c_str());
-            if(ouFrameProps.m_eFrameType == eLIN_Unconditional || ouFrameProps.m_eFrameType == eLIN_EventTriggered || ouFrameProps.m_eFrameType == eLIN_Sporadic)
+			if (ouFrameProps.m_eLinFrameType == eLinUnconditionalFrame || ouFrameProps.m_eLinFrameType == eEventTriggered || ouFrameProps.m_eLinFrameType == eSporadic)
             {
                 omSchedItem.m_eDiagType = eLIN_NORMAL_FRAME_ID;
                 ui.tableFrames->item(nSelectedRow, 2)->setText(nGetFrameLength(ouFrameProps));
@@ -800,7 +799,7 @@ void ScheduleTableDlg::vPopulatePropertyView(CLINSheduleTableItem& ouSchedTableI
     //ui.tableProperties->clear();
     ui.tableProperties->setRowCount(0);
     IElement* pElement = nullptr;
-    eFrameType ouFrameType;
+    
     switch(ouSchedTableItem.m_eDiagType)
     {
         case eLIN_MASTER_FRAME_ID:
@@ -843,19 +842,21 @@ void ScheduleTableDlg::vPopulatePropertyView(CLINSheduleTableItem& ouSchedTableI
         case eLIN_NORMAL_FRAME_ID:
             m_pouLDFCluster->GetElement(eFrameElement, ouSchedTableItem.m_nFrameId, &pElement);
 
+			//TODO Delete if statement
             if(nullptr != pElement)
             {
-                ((IFrame*)pElement)->GetFrameType(ouFrameType);
+				LinFrameProps props;
+				((IFrame*)pElement)->GetProperties(props);
 
-                switch(ouFrameType)
+				switch (props.m_eLinFrameType)
                 {
-                    case eLIN_Unconditional:
+				case eLinUnconditionalFrame:
                         break;
-                    case eLIN_EventTriggered:
+				case eLinEventTriggeredFrame:
                         break;
-                    case eLIN_Sporadic:
+                    case eSporadic:
                         break;
-                    case eLIN_Diagnostic:
+					case eLinDiagnosticFrame:
                         break;
                 }
             }
@@ -866,7 +867,6 @@ void ScheduleTableDlg::vPopulatePropertyView(CLINSheduleTableItem& ouSchedTableI
 void ScheduleTableDlg::vPopulateAssignNADProperties(CLINSheduleTableItem& ouSchedTableItem)
 {
     std::map<UID_ELEMENT, IElement*> mapEcus;
-    eEcuType ouECUType;
     std::string strName;
     //ui.tableProperties->clear();
     ui.tableProperties->setRowCount(0);
@@ -886,11 +886,12 @@ void ScheduleTableDlg::vPopulateAssignNADProperties(CLINSheduleTableItem& ouSche
 
     QVariant qVar;
     int nIndex = 0;
-for(auto itrECU : mapEcus)
+	LinEcuProps props;
+	for(auto itrECU : mapEcus)
     {
-        ((IEcu*)itrECU.second)->GetEcuType(ouECUType);
+		((IEcu*)itrECU.second)->GetProperties(props);
 
-        if(ouECUType == eLIN_Slave)
+		if (props.m_eEcuType == eSlave)
         {
             itrECU.second->GetName(strName);
             pComboBox->addItem(QString::fromStdString(strName));
@@ -914,7 +915,7 @@ for(auto itrECU : mapEcus)
     connect(pComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onComboAssignNADNodeChange(int)));
     IEcu* pEcu = (IEcu*)pElement;
 
-    EcuProperties ouEcuProps;
+    LinEcuProps ouEcuProps;
     ouEcuProps.m_eEcuType = eEcuNone;
     pEcu->GetProperties(ouEcuProps);
     QList<QVariant> ouColumns;
@@ -927,37 +928,37 @@ for(auto itrECU : mapEcus)
 
     ouColumns.clear();
     ouColumns.push_back(QVariant("Initial NAD"));
-    ouColumns.push_back(QVariant(ouEcuProps.m_ouSlavePros.m_nInitialNAD));
+    ouColumns.push_back(QVariant(ouEcuProps.mSlaveProps.m_nInitialNAD));
     ui.tableProperties->InsertRow(1, ouColumns);
 
     ouColumns.clear();
     ouColumns.push_back(QVariant("Supplier ID"));
-    ouColumns.push_back(QVariant(ouEcuProps.m_ouSlavePros.m_nSupplierId));
+	ouColumns.push_back(QVariant(ouEcuProps.mSlaveProps.m_nSupplierId));
     ui.tableProperties->InsertRow(2, ouColumns);
 
     ouColumns.clear();
     ouColumns.push_back(QVariant("Function ID"));
-    ouColumns.push_back(QVariant(ouEcuProps.m_ouSlavePros.m_nFunctionId));
+	ouColumns.push_back(QVariant(ouEcuProps.mSlaveProps.m_nFunctionId));
     ui.tableProperties->InsertRow(3, ouColumns);
 
     ouColumns.clear();
     ouColumns.push_back(QVariant("Configure NAD"));
-    ouColumns.push_back(QVariant(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD));
+	ouColumns.push_back(QVariant(ouEcuProps.mSlaveProps.m_nConfiguredNAD));
     ui.tableProperties->InsertRow(4, ouColumns);
 
     int nLSBSupplierId, nMSBSupplierId, nLSBFunctionId, nMSBFunctionId;
-    nLSBSupplierId = ouEcuProps.m_ouSlavePros.m_nSupplierId & 0xFF;
-    nMSBSupplierId = (ouEcuProps.m_ouSlavePros.m_nSupplierId & 0xFF00)>> 8;
-    nLSBFunctionId = ouEcuProps.m_ouSlavePros.m_nFunctionId & 0xFF;
-    nMSBFunctionId =(ouEcuProps.m_ouSlavePros.m_nFunctionId & 0xFF00)>> 8;
+	nLSBSupplierId = ouEcuProps.mSlaveProps.m_nSupplierId & 0xFF;
+	nMSBSupplierId = (ouEcuProps.mSlaveProps.m_nSupplierId & 0xFF00) >> 8;
+	nLSBFunctionId = ouEcuProps.mSlaveProps.m_nFunctionId & 0xFF;
+	nMSBFunctionId = (ouEcuProps.mSlaveProps.m_nFunctionId & 0xFF00) >> 8;
 
     int nPCI = 0x06, nSID = 0xB0;
     std::ostringstream omStrStream;
-    omStrStream << "[" << GetString(ouEcuProps.m_ouSlavePros.m_nInitialNAD).toStdString().c_str() << ","
+	omStrStream << "[" << GetString(ouEcuProps.mSlaveProps.m_nInitialNAD).toStdString().c_str() << ","
                 <<  GetString(nPCI).toStdString().c_str() << "," << GetString(nSID).toStdString().c_str() << ","
                 <<  GetString(nLSBSupplierId).toStdString().c_str() << "," << GetString(nMSBSupplierId).toStdString().c_str()
                 << "," << GetString(nLSBFunctionId).toStdString().c_str() << "," << GetString(nMSBFunctionId).toStdString().c_str()
-                << "," << GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD).toStdString().c_str()  << "]";
+				<< "," << GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD).toStdString().c_str() << "]";
     ouColumns.clear();
     ouColumns.push_back(QVariant("PDU"));
     ouColumns.push_back(QVariant(omStrStream.str().c_str()));
@@ -998,7 +999,6 @@ void ScheduleTableDlg::onCondNADEditChange(const QString& strText)
 void ScheduleTableDlg::vPopulateReadByIdentifier(CLINSheduleTableItem& ouSchedTableItem)
 {
     std::map<UID_ELEMENT, IElement*> mapEcus;
-    eEcuType ouECUType;
     std::string strName;
     //ui.tableProperties->clear();
     ui.tableProperties->setRowCount(0);
@@ -1096,7 +1096,6 @@ void ScheduleTableDlg::vPopulateReadByIdentifier(CLINSheduleTableItem& ouSchedTa
 void ScheduleTableDlg::vPopulateFreeFormat(CLINSheduleTableItem& ouSchedTableItem)
 {
     std::map<UID_ELEMENT, IElement*> mapEcus;
-    eEcuType ouECUType;
     std::string strName;
     //ui.tableProperties->clear();
     ui.tableProperties->setRowCount(0);
@@ -1265,7 +1264,6 @@ void ScheduleTableDlg::onFreeFormatEditChange(const QString&)
 void ScheduleTableDlg::vPopulateCondChangeNAD(CLINSheduleTableItem& ouSchedTableItem)
 {
     std::map<UID_ELEMENT, IElement*> mapEcus;
-    eEcuType ouECUType;
     std::string strName;
     //ui.tableProperties->clear();
     ui.tableProperties->setRowCount(0);
@@ -1367,38 +1365,38 @@ void ScheduleTableDlg::onComboAssignNADNodeChange(int nIndex)
     if(EC_SUCCESS == m_pouLDFCluster->GetElement(eEcuElement ,uidECU, &pElement))
     {
 
-        EcuProperties ouEcuProps;
+        LinEcuProps ouEcuProps;
         ouEcuProps.m_eEcuType = eEcuNone;
         ((IEcu*)pElement)->GetProperties(ouEcuProps);
-        ui.tableProperties->item(1, 1)->setText(GetString(ouEcuProps.m_ouSlavePros.m_nInitialNAD));
-        ui.tableProperties->item(2, 1)->setText(GetString(ouEcuProps.m_ouSlavePros.m_nSupplierId));
+        ui.tableProperties->item(1, 1)->setText(GetString(ouEcuProps.mSlaveProps.m_nInitialNAD));
+		ui.tableProperties->item(2, 1)->setText(GetString(ouEcuProps.mSlaveProps.m_nSupplierId));
 
-        ui.tableProperties->item(3, 1)->setText(GetString(ouEcuProps.m_ouSlavePros.m_nFunctionId));
+		ui.tableProperties->item(3, 1)->setText(GetString(ouEcuProps.mSlaveProps.m_nFunctionId));
 
-        ui.tableProperties->item(4, 1)->setText(GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD));
+		ui.tableProperties->item(4, 1)->setText(GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD));
 
         int nLSBSupplierId, nMSBSupplierId, nLSBFunctionId, nMSBFunctionId;
-        nLSBSupplierId = ouEcuProps.m_ouSlavePros.m_nSupplierId & 0xFF;
-        nMSBSupplierId = (ouEcuProps.m_ouSlavePros.m_nSupplierId & 0xFF00) >> 8;
-        nLSBFunctionId = ouEcuProps.m_ouSlavePros.m_nFunctionId & 0xFF;
-        nMSBFunctionId = (ouEcuProps.m_ouSlavePros.m_nFunctionId & 0xFF00) >> 8;
+		nLSBSupplierId = ouEcuProps.mSlaveProps.m_nSupplierId & 0xFF;
+		nMSBSupplierId = (ouEcuProps.mSlaveProps.m_nSupplierId & 0xFF00) >> 8;
+		nLSBFunctionId = ouEcuProps.mSlaveProps.m_nFunctionId & 0xFF;
+		nMSBFunctionId = (ouEcuProps.mSlaveProps.m_nFunctionId & 0xFF00) >> 8;
 
         int nPCI = 0x06, nSID = 0xB0;
         std::ostringstream omStrStream;
-        omStrStream << "[" << GetString(ouEcuProps.m_ouSlavePros.m_nInitialNAD).toStdString().c_str() << "," <<  GetString(nPCI).toStdString().c_str()
-                    << "," << GetString(nSID).toStdString().c_str() << "," << GetString(ouEcuProps.m_ouSlavePros.m_nSupplierId).toStdString().c_str()
+		omStrStream << "[" << GetString(ouEcuProps.mSlaveProps.m_nInitialNAD).toStdString().c_str() << "," << GetString(nPCI).toStdString().c_str()
+			<< "," << GetString(nSID).toStdString().c_str() << "," << GetString(ouEcuProps.mSlaveProps.m_nSupplierId).toStdString().c_str()
                     << "," << GetString(nMSBSupplierId).toStdString().c_str()
-                    << "," << GetString(ouEcuProps.m_ouSlavePros.m_nFunctionId).toStdString().c_str() << ","
-                    << GetString(nMSBFunctionId).toStdString().c_str() << "," << GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD).toStdString().c_str() << "]";
+					<< "," << GetString(ouEcuProps.mSlaveProps.m_nFunctionId).toStdString().c_str() << ","
+					<< GetString(nMSBFunctionId).toStdString().c_str() << "," << GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD).toStdString().c_str() << "]";
 
         ui.tableProperties->item(5, 1)->setText(omStrStream.str().c_str());
 
         CLINSheduleTableItem ouSchedItem = ui.tableFrames->item(ui.tableFrames->currentRow(), 0)->data(Qt::UserRole).value<CLINSheduleTableItem>();
         ouSchedItem.m_nNode = uidECU;
-        ouSchedItem.m_chDataBytes[0] = ouEcuProps.m_ouSlavePros.m_nInitialNAD;
-        ouSchedItem.m_chDataBytes[1] = ouEcuProps.m_ouSlavePros.m_nConfiguredNAD;
-        ouSchedItem.m_chDataBytes[2] = ouEcuProps.m_ouSlavePros.m_nSupplierId;
-        ouSchedItem.m_chDataBytes[3] = ouEcuProps.m_ouSlavePros.m_nFunctionId;
+        ouSchedItem.m_chDataBytes[0] = ouEcuProps.mSlaveProps.m_nInitialNAD;
+        ouSchedItem.m_chDataBytes[1] = ouEcuProps.mSlaveProps.m_nConfiguredNAD;
+        ouSchedItem.m_chDataBytes[2] = ouEcuProps.mSlaveProps.m_nSupplierId;
+        ouSchedItem.m_chDataBytes[3] = ouEcuProps.mSlaveProps.m_nFunctionId;
         ouSchedItem.m_dDelay = ui.tableFrames->item(ui.tableFrames->currentRow(), 3)->text().toDouble();
         QVariant qVar;
         qVar.setValue(ouSchedItem);
@@ -1417,7 +1415,7 @@ void ScheduleTableDlg::onComboAssignIdRangeNodeChange(int nIndex)
         CLINSheduleTableItem ouSchedItem = ui.tableFrames->item(ui.tableFrames->currentRow(), 0)->data(Qt::UserRole).value<CLINSheduleTableItem>();
         int nStartIndex = ouSchedItem.m_chDataBytes[3];
 
-        EcuProperties ouEcuProps;
+        LinEcuProps ouEcuProps;
         ouEcuProps.m_eEcuType = eEcuNone;
         ((IEcu*)pElement)->GetProperties(ouEcuProps);
 
@@ -1428,9 +1426,9 @@ void ScheduleTableDlg::onComboAssignIdRangeNodeChange(int nIndex)
         IElement* pFrame = nullptr;
         unsigned int unFrameId;
 
-        auto itr = ouEcuProps.m_ouSlavePros.m_nConfiurableFrameIdList.begin();
+		auto itr = ouEcuProps.mSlaveProps.m_nConfiurableFrameIdList.begin();
         std::advance(itr, nStartIndex);
-        for(; itr != ouEcuProps.m_ouSlavePros.m_nConfiurableFrameIdList.end(); itr++)
+		for (; itr != ouEcuProps.mSlaveProps.m_nConfiurableFrameIdList.end(); itr++)
         {
             if(nIndex >= 4)
             {
@@ -1455,7 +1453,7 @@ void ScheduleTableDlg::onComboAssignIdRangeNodeChange(int nIndex)
 
         int nPCI = 0x06, nSID = 0xB7;
         std::ostringstream omStrStream;
-        omStrStream << "[" << GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD).toStdString().c_str() << ","
+		omStrStream << "[" << GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD).toStdString().c_str() << ","
                     <<  GetString(nPCI).toStdString().c_str() << "," << GetString(nSID).toStdString().c_str() << ","
                     << GetString(nStartIndex).toStdString().c_str() << "," << GetString(nPID[0]).toStdString().c_str()
                     << "," << GetString(nPID[1]).toStdString().c_str() << "," << GetString(nPID[2]).toStdString().c_str() << ","
@@ -1485,15 +1483,15 @@ void ScheduleTableDlg::onComboDataDumpChange(int nIndex)
     if(EC_SUCCESS == m_pouLDFCluster->GetElement(eEcuElement ,uidECU, &pElement))
     {
         CLINSheduleTableItem ouSchedItem = ui.tableFrames->item(ui.tableFrames->currentRow(), 0)->data(Qt::UserRole).value<CLINSheduleTableItem>();
-        EcuProperties ouEcuProps;
+        LinEcuProps ouEcuProps;
         ouEcuProps.m_eEcuType = eEcuNone;
         ((IEcu*)pElement)->GetProperties(ouEcuProps);
-        ui.tableProperties->item(1, 1)->setText(GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD));
+		ui.tableProperties->item(1, 1)->setText(GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD));
         int nVal = 0x06, nVal1= 0xB4, nVal2 = 255;
 
         std::ostringstream omStrStream;
 
-        omStrStream << "[" << GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD).toStdString().c_str() << "," <<  GetString(nVal).toStdString().c_str()
+		omStrStream << "[" << GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD).toStdString().c_str() << "," << GetString(nVal).toStdString().c_str()
                     << "," << GetString(nVal1).toStdString().c_str() << ","
                     <<  GetString(ouSchedItem.m_chDataBytes[3]).toStdString().c_str() << "," << GetString(ouSchedItem.m_chDataBytes[4]).toStdString().c_str()
                     << "," << GetString(ouSchedItem.m_chDataBytes[5]).toStdString().c_str()
@@ -1520,10 +1518,10 @@ void ScheduleTableDlg::onComboSaveConfigChange(int nIndex)
     if(EC_SUCCESS == m_pouLDFCluster->GetElement(eEcuElement ,uidECU, &pElement))
     {
         CLINSheduleTableItem ouSchedItem = ui.tableFrames->item(ui.tableFrames->currentRow(), 0)->data(Qt::UserRole).value<CLINSheduleTableItem>();
-        EcuProperties ouEcuProps;
+        LinEcuProps ouEcuProps;
         ouEcuProps.m_eEcuType = eEcuNone;
         ((IEcu*)pElement)->GetProperties(ouEcuProps);
-        ui.tableProperties->item(1, 1)->setText(GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD));
+		ui.tableProperties->item(1, 1)->setText(GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD));
         int nVal = 0x01, nVal1= 0xB6, nVal2 = 255;
         if(ouSchedItem.m_eDiagType == eLIN_SID_SAVE_CONFIG)
         {
@@ -1536,7 +1534,7 @@ void ScheduleTableDlg::onComboSaveConfigChange(int nIndex)
 
         std::ostringstream omStrStream;
 
-        omStrStream << "[" << GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD).toStdString().c_str() << "," <<  GetString(nVal).toStdString().c_str() << "," << GetString(nVal1).toStdString().c_str() << ","
+		omStrStream << "[" << GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD).toStdString().c_str() << "," << GetString(nVal).toStdString().c_str() << "," << GetString(nVal1).toStdString().c_str() << ","
                     <<  GetString(nVal2).toStdString().c_str() << "," << GetString(nVal2).toStdString().c_str() << "," << GetString(nVal2).toStdString().c_str()
                     << "," << GetString(nVal2).toStdString().c_str() << "," << GetString(nVal2).toStdString().c_str() << "]";
 
@@ -1555,7 +1553,6 @@ void ScheduleTableDlg::onComboSaveConfigChange(int nIndex)
 void ScheduleTableDlg::vPopulateDataDump(CLINSheduleTableItem& ouSchedTableItem)
 {
     std::map<UID_ELEMENT, IElement*> mapEcus;
-    eEcuType ouECUType;
     std::string strName;
     //ui.tableProperties->clear();
     ui.tableProperties->setRowCount(0);
@@ -1572,14 +1569,14 @@ void ScheduleTableDlg::vPopulateDataDump(CLINSheduleTableItem& ouSchedTableItem)
     pComboBox->setFrame(false);
 
     m_pouLDFCluster->GetElementList(eEcuElement, mapEcus);
-
+	LinEcuProps props;
     QVariant qVar;
     int nIndex = 0;
 for(auto itrECU : mapEcus)
     {
-        ((IEcu*)itrECU.second)->GetEcuType(ouECUType);
+		((IEcu*)itrECU.second)->GetProperties(props);
 
-        if(ouECUType == eLIN_Slave)
+		if (props.m_eEcuType == eSlave)
         {
             itrECU.second->GetName(strName);
             pComboBox->addItem(QString::fromStdString(strName));
@@ -1604,7 +1601,7 @@ for(auto itrECU : mapEcus)
     IEcu* pEcu = (IEcu*)pElement;
 
     int nRow = 0;
-    EcuProperties ouEcuProps;
+    LinEcuProps ouEcuProps;
     ouEcuProps.m_eEcuType = eEcuNone;
     pEcu->GetProperties(ouEcuProps);
     QList<QVariant> ouColumns;
@@ -1618,7 +1615,7 @@ for(auto itrECU : mapEcus)
 
     ouColumns.clear();
     ouColumns.push_back(QVariant("Configured NAD"));
-    ouColumns.push_back(QVariant(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD));
+    ouColumns.push_back(QVariant(ouEcuProps.mSlaveProps.m_nConfiguredNAD));
     ui.tableProperties->InsertRow(nRow++, ouColumns);
 
     std::ostringstream omStrStream;
@@ -1680,7 +1677,7 @@ for(auto itrECU : mapEcus)
     ui.tableProperties->setCellWidget(nRow++, 1, pLineEdit[4]);
     pLineEdit[4]->setText(GetString( ouSchedTableItem.m_chDataBytes[7], false));
 
-    omStrStream << "[" <<  GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD).toStdString().c_str()
+    omStrStream << "[" <<  GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD).toStdString().c_str()
                 << "," <<  GetString(nVal).toStdString().c_str() << "," << GetString(nVal1).toStdString().c_str() << ","
                 <<  GetString(ouSchedTableItem.m_chDataBytes[3]).toStdString() << "," << GetString(ouSchedTableItem.m_chDataBytes[4]).toStdString()
                 << "," << GetString(ouSchedTableItem.m_chDataBytes[5]).toStdString()
@@ -1701,7 +1698,6 @@ for(auto itrECU : mapEcus)
 void ScheduleTableDlg::vPopulateSaveConfig(CLINSheduleTableItem& ouSchedTableItem)
 {
     std::map<UID_ELEMENT, IElement*> mapEcus;
-    eEcuType ouECUType;
     std::string strName;
     //ui.tableProperties->clear();
     ui.tableProperties->setRowCount(0);
@@ -1721,11 +1717,12 @@ void ScheduleTableDlg::vPopulateSaveConfig(CLINSheduleTableItem& ouSchedTableIte
 
     QVariant qVar;
     int nIndex = 0;
+	LinEcuProps props;
 for(auto itrECU : mapEcus)
     {
-        ((IEcu*)itrECU.second)->GetEcuType(ouECUType);
+		((IEcu*)itrECU.second)->GetProperties(props);
 
-        if(ouECUType == eLIN_Slave)
+		if (props.m_eEcuType == eSlave)
         {
             itrECU.second->GetName(strName);
             pComboBox->addItem(QString::fromStdString(strName));
@@ -1749,7 +1746,7 @@ for(auto itrECU : mapEcus)
     connect(pComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onComboSaveConfigChange(int)));
     IEcu* pEcu = (IEcu*)pElement;
 
-    EcuProperties ouEcuProps;
+    LinEcuProps ouEcuProps;
     ouEcuProps.m_eEcuType = eEcuNone;
     pEcu->GetProperties(ouEcuProps);
     QList<QVariant> ouColumns;
@@ -1762,7 +1759,7 @@ for(auto itrECU : mapEcus)
 
     ouColumns.clear();
     ouColumns.push_back(QVariant("Configured NAD"));
-    ouColumns.push_back(QVariant(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD));
+    ouColumns.push_back(QVariant(ouEcuProps.mSlaveProps.m_nConfiguredNAD));
     ui.tableProperties->InsertRow(1, ouColumns);
 
     std::ostringstream omStrStream;
@@ -1773,7 +1770,7 @@ for(auto itrECU : mapEcus)
         nVal = 0x06, nVal1=0xB4;
     }
 
-    omStrStream << "[" <<  GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD).toStdString().c_str()
+    omStrStream << "[" <<  GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD).toStdString().c_str()
                 << "," <<  GetString(nVal).toStdString().c_str() << "," << GetString(nVal1).toStdString().c_str() << ","
                 <<  GetString(nVal2).toStdString().c_str() << "," << GetString(nVal2).toStdString().c_str() << "," << GetString(nVal2).toStdString().c_str()
                 << "," << GetString(nVal2).toStdString().c_str() << "," << GetString(nVal2).toStdString().c_str() << "]";
@@ -1788,7 +1785,6 @@ for(auto itrECU : mapEcus)
 void ScheduleTableDlg::vPopulateAssignFrameIdRange(CLINSheduleTableItem& ouSchedTableItem)
 {
     std::map<UID_ELEMENT, IElement*> mapEcus;
-    eEcuType ouECUType;
     std::string strName;
     //ui.tableProperties->clear();
     ui.tableProperties->setRowCount(0);
@@ -1808,11 +1804,12 @@ void ScheduleTableDlg::vPopulateAssignFrameIdRange(CLINSheduleTableItem& ouSched
 
     QVariant qVar;
     int nIndex = 0;
+	LinEcuProps props;
 for(auto itrECU : mapEcus)
     {
-        ((IEcu*)itrECU.second)->GetEcuType(ouECUType);
+		((IEcu*)itrECU.second)->GetProperties(props);
 
-        if(ouECUType == eLIN_Slave)
+		if (props.m_eEcuType == eSlave)
         {
             itrECU.second->GetName(strName);
             pComboBox->addItem(QString::fromStdString(strName));
@@ -1842,7 +1839,7 @@ for(auto itrECU : mapEcus)
         nStartIndex = ouSchedTableItem.m_chDataBytes[3];
     }
 
-    EcuProperties ouECUProps;
+    LinEcuProps ouECUProps;
     ouECUProps.m_eEcuType = eEcuNone;
     ((IEcu*)pElement)->GetProperties(ouECUProps);
     if(bIsNewCmd == false)
@@ -1850,7 +1847,7 @@ for(auto itrECU : mapEcus)
         int nIndex = 0;
         IElement* pFrame = nullptr;
         unsigned int unFrameId = 0;
-for(auto itr : ouECUProps.m_ouSlavePros.m_nConfiurableFrameIdList)
+for(auto itr : ouECUProps.mSlaveProps.m_nConfiurableFrameIdList)
         {
             if(nIndex >= 4)
             {
@@ -1885,7 +1882,7 @@ for(auto itr : ouECUProps.m_ouSlavePros.m_nConfiurableFrameIdList)
 
     IEcu* pEcu = (IEcu*)pElement;
 
-    EcuProperties ouEcuProps;
+    LinEcuProps ouEcuProps;
     ouEcuProps.m_eEcuType = eEcuNone;
     pEcu->GetProperties(ouEcuProps);
     QList<QVariant> ouColumns;
@@ -1932,7 +1929,7 @@ for(auto itr : ouECUProps.m_ouSlavePros.m_nConfiurableFrameIdList)
     ui.tableProperties->setCellWidget(5, 1, pLineEdit[4]);
     int nPCI = 0x06, nSID = 0xB7;
     std::ostringstream omStrStream;
-    omStrStream << "[" << GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD).toStdString().c_str() << ","
+    omStrStream << "[" << GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD).toStdString().c_str() << ","
                 <<  GetString(nPCI).toStdString().c_str() << "," << GetString(nSID).toStdString().c_str()
                 << "," << GetString(nStartIndex).toStdString().c_str() << "," << GetString(nPID[0]).toStdString().c_str()
                 << "," << GetString(nPID[1]).toStdString().c_str() << ","
@@ -1962,7 +1959,7 @@ void ScheduleTableDlg::onAssignFrameIdRangeEditChange(const QString&)
         IElement* pElement = nullptr;
         if(EC_SUCCESS == m_pouLDFCluster->GetElement(eEcuElement ,uidECU, &pElement))
         {
-            EcuProperties ouEcuProps;
+            LinEcuProps ouEcuProps;
             ouEcuProps.m_eEcuType = eEcuNone;
             ((IEcu*)pElement)->GetProperties(ouEcuProps);
             CLINSheduleTableItem ouSchedItem = ui.tableFrames->item(ui.tableFrames->currentRow(), 0)->data(Qt::UserRole).value<CLINSheduleTableItem>();
@@ -1975,7 +1972,7 @@ void ScheduleTableDlg::onAssignFrameIdRangeEditChange(const QString&)
 
             int nPCI = 0x06, nSID = 0xB7;
             std::ostringstream omStrStream;
-            omStrStream << "[" << GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD).toStdString().c_str() << ","
+            omStrStream << "[" << GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD).toStdString().c_str() << ","
                         <<  GetString(nPCI).toStdString().c_str() << "," << GetString(nSID).toStdString().c_str() << ","
                         << GetString(ouSchedItem.m_chDataBytes[3]).toStdString().c_str() << ","
                         << GetString(ouSchedItem.m_chDataBytes[4]).toStdString().c_str()
@@ -2000,13 +1997,13 @@ void ScheduleTableDlg::onAssignDataDumpEditChange(const QString&)
         IElement* pElement = nullptr;
         if(EC_SUCCESS == m_pouLDFCluster->GetElement(eEcuElement ,uidECU, &pElement))
         {
-            EcuProperties ouEcuProps;
+            LinEcuProps ouEcuProps;
             ouEcuProps.m_eEcuType = eEcuNone;
             ((IEcu*)pElement)->GetProperties(ouEcuProps);
             CLINSheduleTableItem ouSchedItem = ui.tableFrames->item(ui.tableFrames->currentRow(), 0)->data(Qt::UserRole).value<CLINSheduleTableItem>();
 
             int nPCI = 0x06, nSID = 0xB4;
-            ouSchedItem.m_chDataBytes[0] = ouEcuProps.m_ouSlavePros.m_nConfiguredNAD;
+            ouSchedItem.m_chDataBytes[0] = ouEcuProps.mSlaveProps.m_nConfiguredNAD;
             ouSchedItem.m_chDataBytes[1] = nPCI;
             ouSchedItem.m_chDataBytes[2] = nSID;
             ouSchedItem.m_chDataBytes[3] = GetUnsignedInt(((LineEditWidget*)ui.tableProperties->cellWidget(2, 1))->text());
@@ -2042,7 +2039,7 @@ void ScheduleTableDlg::onAssignFrameIdEditChange(const QString&)
         IElement* pElement = nullptr;
         if(EC_SUCCESS == m_pouLDFCluster->GetElement(eEcuElement ,uidECU, &pElement))
         {
-            EcuProperties ouEcuProps;
+            LinEcuProps ouEcuProps;
             ouEcuProps.m_eEcuType = eEcuNone;
             ((IEcu*)pElement)->GetProperties(ouEcuProps);
             CLINSheduleTableItem ouSchedItem = ui.tableFrames->item(ui.tableFrames->currentRow(), 0)->data(Qt::UserRole).value<CLINSheduleTableItem>();
@@ -2055,7 +2052,7 @@ void ScheduleTableDlg::onAssignFrameIdEditChange(const QString&)
 
             int nPCI = 0x06, nSID = 0xB1;
             std::ostringstream omStrStream;
-            omStrStream << "[" << GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD).toStdString().c_str() << ","
+            omStrStream << "[" << GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD).toStdString().c_str() << ","
                         <<  GetString(nPCI).toStdString().c_str() << "," << GetString(nSID).toStdString().c_str() << ","
                         << GetString(ouSchedItem.m_chDataBytes[0]).toStdString().c_str() << ","
                         << GetString(ouSchedItem.m_chDataBytes[1]).toStdString().c_str()
@@ -2091,21 +2088,21 @@ void ScheduleTableDlg::onComboAssignFrameIdFrameChange(int nIndex)
 
         if(EC_SUCCESS == m_pouLDFCluster->GetElement(eEcuElement, uidECU, &pECU))
         {
-            EcuProperties ouEcuProps;
+            LinEcuProps ouEcuProps;
             ouEcuProps.m_eEcuType = eEcuNone;
             ((IEcu*)pECU)->GetProperties(ouEcuProps);
 
-            ui.tableProperties->item(2, 1)->setText(GetString(ouEcuProps.m_ouSlavePros.m_nSupplierId));
+            ui.tableProperties->item(2, 1)->setText(GetString(ouEcuProps.mSlaveProps.m_nSupplierId));
             ui.tableProperties->item(3, 1)->setText(GetString(nPid));
 
             int nLSBSupplierId, nMSBSupplierId, nLSBFunctionId, nMSBFunctionId;
-            nLSBSupplierId = ouEcuProps.m_ouSlavePros.m_nSupplierId & 0xFF;
-            nMSBSupplierId = (ouEcuProps.m_ouSlavePros.m_nSupplierId & 0xFF00) >> 8;
+            nLSBSupplierId = ouEcuProps.mSlaveProps.m_nSupplierId & 0xFF;
+            nMSBSupplierId = (ouEcuProps.mSlaveProps.m_nSupplierId & 0xFF00) >> 8;
             nLSBFunctionId = 0xFF;
             nMSBFunctionId = 0xFF;
             int nSID = 0xB1, nPCI = 6;
             std::ostringstream omStrStream;
-            omStrStream << "[" << GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD).toStdString().c_str() << ","
+            omStrStream << "[" << GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD).toStdString().c_str() << ","
                         <<  GetString(nPCI).toStdString().c_str() << ","
                         << GetString(nSID).toStdString().c_str() << "," << GetString(nLSBSupplierId).toStdString().c_str() << ","
                         << GetString(nMSBSupplierId).toStdString().c_str()
@@ -2145,22 +2142,22 @@ void ScheduleTableDlg::onComboAssignFrameIdNodeChange(int nIndex)
     if(EC_SUCCESS == m_pouLDFCluster->GetElement(eEcuElement ,uidECU, &pElement))
     {
 
-        EcuProperties ouEcuProps;
+        LinEcuProps ouEcuProps;
         ouEcuProps.m_eEcuType = eEcuNone;
         ((IEcu*)pElement)->GetProperties(ouEcuProps);
 
-        (ui.tableProperties->item(2, 1))->setText(GetString(ouEcuProps.m_ouSlavePros.m_nSupplierId));
+        (ui.tableProperties->item(2, 1))->setText(GetString(ouEcuProps.mSlaveProps.m_nSupplierId));
         (ui.tableProperties->item(3, 1))->setText(GetString(nFramePID));
 
         int nLSBSupplierId, nMSBSupplierId, nLSBFunctionId, nMSBFunctionId;
-        nLSBSupplierId = ouEcuProps.m_ouSlavePros.m_nSupplierId & 0xFF;
-        nMSBSupplierId = (ouEcuProps.m_ouSlavePros.m_nSupplierId & 0xFF00) >> 8;
+        nLSBSupplierId = ouEcuProps.mSlaveProps.m_nSupplierId & 0xFF;
+        nMSBSupplierId = (ouEcuProps.mSlaveProps.m_nSupplierId & 0xFF00) >> 8;
         nLSBFunctionId = 0xFF;
         nMSBFunctionId = 0xFF;
 
         int nSID = 0xB1, nPCI = 6;
         std::ostringstream omStrStream;
-        omStrStream << "[" << GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD).toStdString().c_str() << ","
+        omStrStream << "[" << GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD).toStdString().c_str() << ","
                     <<  GetString(nPCI).toStdString().c_str() << ","
                     << GetString(nSID).toStdString().c_str() << "," << GetString(nLSBSupplierId).toStdString().c_str()
                     << "," << GetString(nMSBSupplierId).toStdString().c_str()
@@ -2185,7 +2182,7 @@ ERRORCODE ScheduleTableDlg::vPopulateAssignFrameId(CLINSheduleTableItem& ouSched
 {
     std::map<UID_ELEMENT, IElement*> mapEcus;
     std::map<UID_ELEMENT, IElement*> mapFrames;
-    eEcuType ouECUType;
+    
     std::string strName;
 
     int nSelectedRow = ui.tableFrames->currentRow();
@@ -2204,16 +2201,16 @@ ERRORCODE ScheduleTableDlg::vPopulateAssignFrameId(CLINSheduleTableItem& ouSched
     m_pouLDFCluster->GetElementList(eFrameElement, mapFrames);
 
     QVariant qVar;
-    eFrameType ouFrameType;
+	LinFrameProps props;
     std::string omFrameName;
     int nFrameIndex = 0;
     unsigned int unFrameId = 0;
     UID_ELEMENT uidFrame = INVALID_UID_ELEMENT;
 for(auto itrFrame : mapFrames)
     {
-        ((IFrame*)itrFrame.second)->GetFrameType(ouFrameType);
+		((IFrame*)itrFrame.second)->GetProperties(props);
 
-        if(ouFrameType == eLIN_Diagnostic || ouFrameType == eLIN_Sporadic)
+		if (props.m_eLinFrameType == eLinDiagnosticFrame || props.m_eLinFrameType == eSporadic)
         {
             continue;
         }
@@ -2259,11 +2256,12 @@ for(auto itrFrame : mapFrames)
     }
 
     int nIndex = 0;
+	LinEcuProps ecuProps;
 for(auto itrECU : mapEcus)
     {
-        ((IEcu*)itrECU.second)->GetEcuType(ouECUType);
+		((IEcu*)itrECU.second)->GetProperties(ecuProps);
 
-        if(ouECUType == eLIN_Slave)
+		if (ecuProps.m_eEcuType == eSlave)
         {
             itrECU.second->GetName(strName);
             pComboBox->addItem(QString::fromStdString(strName));
@@ -2290,7 +2288,7 @@ for(auto itrECU : mapEcus)
     connect(pFrameComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(onComboAssignFrameIdFrameChange(int)));
     IEcu* pEcu = (IEcu*)pElement;
 
-    EcuProperties ouEcuProps;
+    LinEcuProps ouEcuProps;
     ouEcuProps.m_eEcuType = eEcuNone;
     pEcu->GetProperties(ouEcuProps);
     QList<QVariant> ouColumns;
@@ -2313,7 +2311,7 @@ for(auto itrECU : mapEcus)
 
     ouColumns.clear();
     ouColumns.push_back(QVariant("Supplier ID"));
-    ouColumns.push_back(QVariant(ouEcuProps.m_ouSlavePros.m_nSupplierId));
+    ouColumns.push_back(QVariant(ouEcuProps.mSlaveProps.m_nSupplierId));
     ui.tableProperties->InsertRow(2, ouColumns);
 
     ouColumns.clear();
@@ -2322,14 +2320,14 @@ for(auto itrECU : mapEcus)
     ui.tableProperties->InsertRow(3, ouColumns);
 
     int nLSBSupplierId, nMSBSupplierId, nLSBFunctionId, nMSBFunctionId;
-    nLSBSupplierId = ouEcuProps.m_ouSlavePros.m_nSupplierId & 0xFF;
-    nMSBSupplierId = (ouEcuProps.m_ouSlavePros.m_nSupplierId & 0xFF00) >> 8;
+    nLSBSupplierId = ouEcuProps.mSlaveProps.m_nSupplierId & 0xFF;
+    nMSBSupplierId = (ouEcuProps.mSlaveProps.m_nSupplierId & 0xFF00) >> 8;
     nLSBFunctionId = 0xFF;
     nMSBFunctionId = 0xFF;
 
     int nSID = 0xB1, nPCI = 6;
     std::ostringstream omStrStream;
-    omStrStream << "[" << GetString(ouEcuProps.m_ouSlavePros.m_nConfiguredNAD).toStdString().c_str() << "," <<  GetString(nPCI).toStdString().c_str() << ","
+    omStrStream << "[" << GetString(ouEcuProps.mSlaveProps.m_nConfiguredNAD).toStdString().c_str() << "," <<  GetString(nPCI).toStdString().c_str() << ","
                 << GetString(nSID).toStdString().c_str() << "," << GetString(nLSBSupplierId).toStdString().c_str() << ","
                 << GetString(nMSBSupplierId).toStdString().c_str()
                 << "," << GetString(nLSBFunctionId).toStdString().c_str() << ","

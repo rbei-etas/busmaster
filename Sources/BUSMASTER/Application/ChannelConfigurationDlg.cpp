@@ -117,7 +117,7 @@ BOOL CChannelConfigurationDlg::OnInitDialog()
 
     m_omEcuList.SetExtendedStyle(LVS_REPORT);
 
-    m_omEcuList.InsertColumn(0, "Select ECU");
+    m_omEcuList.InsertColumn(0, "ECU List");
     // Set the width to occupy the whole list
     CRect omRect;
     m_omEcuList.GetWindowRect(&omRect);
@@ -480,10 +480,9 @@ for (auto itrEcu : ouEcuList)
     return bFound;
 }
 
-INT CChannelConfigurationDlg::nUpdateLinParams(INT /* nChannelIndex */, INT nClusterIndex)
+INT CChannelConfigurationDlg::nUpdateLinParams(INT /* nChannelIndex */, INT /*nClusterIndex*/)
 {
-
-    return 0;
+	return 0;
 }
 
 INT CChannelConfigurationDlg::nUpdateEcuList(INT /* nChannelIndex */, INT nClusterIndex)
@@ -524,7 +523,7 @@ int CChannelConfigurationDlg::nSaveProtocolSettings(int /* nIndex */)
             ouChannelSettings.m_ouLINSettings.m_strProtocolVersion = sg_LINPROTOCOL_BAUD[nSel].m_strProtocol;
             ouChannelSettings.m_ouLINSettings.m_nBaudRate = m_nLinBaudRate;
             ouChannelSettings.m_ouLINSettings.m_bOverWriteSettings = (((CButton*)GetDlgItem(IDC_CHECK_OVERWRITE_SETTINGS))->GetCheck() != 0);
-            ouChannelSettings.m_ouLINSettings.m_bIsMasterMode = ((CButton*)GetDlgItem(IDC_ENABLE_MASTER_MODE))->GetCheck();
+            ouChannelSettings.m_ouLINSettings.m_bIsMasterMode = (((CButton*)GetDlgItem(IDC_ENABLE_MASTER_MODE))->GetCheck() !=0);
 
             vUpdateScheduleTableList(ouChannelSettings, m_nCurrentChannel, (IBMNetWorkService*)m_pBmNetWork);
         }
@@ -637,6 +636,7 @@ eCommandType vGetScheduleCommandType(eDiagType oueDiagType)
             return COMMAND_INVALID;
             break;
         default:
+			return COMMAND_INVALID;
             break;
     }
 }

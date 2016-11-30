@@ -52,8 +52,8 @@ private:
     void vPrepareUIForEditMode();
     void vPrepareValidations();
     ERRORCODE vFillFramesCombo(int nRow, ScheduleComboWidget** pComboBox);
-    QString nGetFrameLength(FrameProps ouFrameProps);
-    eScheduleCommand_Type vGetFrameType(eFrameType ouFrameType, std::string omstrFrameName);
+    QString nGetFrameLength(const LinFrameProps& ouFrameProps);
+	eScheduleCommand_Type vGetFrameType(eLinFrameType ouFrameType, std::string omstrFrameName);
     void vPopulateSelFrameDetails();
     void vPopulateSelFrameDetails(int nIndex);
     void vPopulatePropertyView(CLINSheduleTableItem& ouSchedTableItem);

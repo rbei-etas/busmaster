@@ -19,12 +19,8 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 
-#pragma once
 
-#define IDC_BUT_REMOVE                  3
-#define IDC_BUT_SELECT                  5
 #define IDD_PPAGE_CONTROLLER            107
-#define IDD_DLG_HW_LISTING              130
 #define IDD_DLG_ACCEPTANCE              197
 #define IDR_BMP_NET                     204
 #define IDD_DLG_CHANGE_REGISTERS        228
@@ -32,8 +28,6 @@
 #define IDC_EDIT_BTR0                   1001
 #define IDC_EDIT_BTR1                   1002
 #define IDC_STAT_ACCEPTANCE             1007
-#define IDC_EDIT_NET_NAME               1007
-#define IDC_EDIT_FIRMWARE               1008
 #define IDC_LSTC_BTR_LIST               1012
 #define IDC_STAT_BAUD_RATE              1013
 #define IDC_STAT_KBPS                   1014
@@ -42,9 +36,7 @@
 #define IDC_STAT_BTR0                   1016
 #define IDC_STAT_BTR1                   1017
 #define IDC_EDIT_BRP                    1018
-#define IDC_LSTC_HW_LIST                1018
 #define IDC_COMB_SAMPLING               1019
-#define IDC_EDIT_DRIVER_ID              1019
 #define IDC_COMB_CLOCK                  1020
 #define IDC_COMB_PROPDELAY              1021
 #define IDC_STAT_CLOCK                  1022
@@ -72,7 +64,6 @@
 #define IDC_RBTN_FILTER_REJECT_ALL      1214
 #define IDC_RBTN_FILTER_MANUAL_SET      1215
 #define IDC_STAT_FILTER_TYPES           1216
-#define IDC_LSTC_SELECTED_HW_LIST       1226
 #define IDC_LIST_CHANNELS               1246
 #define IDD_CONFIG_STUB                 3000
 #define IDC_EDIT_INITFILE               3001
@@ -95,3 +86,13 @@
 #define IDC_COMB_SAMPOINT               3011
 #define IDC_EDIT_CHANNEL_DESC           3012
 #define IDC_CHKB_SELF_RECEPTION         3013
+#define IDD_DLG_HW_LISTING_CAN          130
+
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        101
+#define _APS_NEXT_COMMAND_VALUE         40001
+#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_SYMED_VALUE           101
+#endif
+#endif

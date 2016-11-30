@@ -216,97 +216,10 @@ typedef enum eUSERSELCTION
     eKeyPress,
     eCREATEDESTROYCMD,
 };
-typedef enum eTXMSGTRIGGERTYPE
-{
-    eONTIME = 0,
-    eONKEY
-};
-struct sTXCANMSGDETAILS
-{
-    BOOL m_bIsMsgDirty;          // for a database message;to Indicate user enter
-    // bytes value instead of signal value.
-    BOOL m_bEnabled;            // To indicate eligiblity of the message for Tx
-    STCAN_MSG m_sTxMsg;
-};
-typedef sTXCANMSGDETAILS STXCANMSGDETAILS;
-typedef sTXCANMSGDETAILS* PSTXCANMSGDETAILS;
 
-struct sTXCANMSGLIST
-{
-    STXCANMSGDETAILS m_sTxMsgDetails;
-    struct sTXCANMSGLIST* m_psNextMsgDetails;
-};
-typedef sTXCANMSGLIST STXCANMSGLIST;
-typedef sTXCANMSGLIST* PSTXCANMSGLIST;
 
-struct sTXLINMSGDETAILS
-{
-    BOOL m_bIsMsgDirty;          // for a database message;to Indicate user enter
-    // bytes value instead of signal value.
-    BOOL m_bEnabled;            // To indicate eligiblity of the message for Tx
-    STLIN_MSG m_sTxMsg;
-};
-typedef sTXLINMSGDETAILS STXLINMSGDETAILS;
-typedef sTXLINMSGDETAILS* PSTXLINMSGDETAILS;
 
-struct sTXLINMSGLIST
-{
-    STXLINMSGDETAILS m_sTxMsgDetails;
-    struct sTXLINMSGLIST* m_psNextMsgDetails;
-};
-typedef sTXLINMSGLIST STXLINMSGLIST;
-typedef sTXLINMSGLIST* PSTXLINMSGLIST;
 
-struct sMSGBLOCKLIST
-{
-    CString m_omStrBlockName;
-    unsigned char m_ucTrigger;
-    BOOL m_bType;
-    BOOL m_bActive;
-    BOOL m_bTxAllFrame;
-    UCHAR m_ucKeyValue;
-    UINT m_unTimeInterval;
-    UINT m_unMsgCount;
-    PSTXCANMSGLIST m_psTxCANMsgList;
-    sMSGBLOCKLIST* m_psNextMsgBlocksList;
-
-    sMSGBLOCKLIST()
-    {
-        m_psNextMsgBlocksList = nullptr;
-        m_unMsgCount          = 0;
-        m_bActive             = TRUE;
-        m_bType               = TRUE;
-        m_bTxAllFrame         = FALSE;
-        m_ucTrigger           = defTIME_TRIGGER;
-        m_omStrBlockName      = defDEFAULT_MSG_BLOCK_NAME;
-        m_psTxCANMsgList      = nullptr;
-        m_ucKeyValue          = 0;
-        m_unTimeInterval      = defDEFAULT_TIME_VAL;
-
-    }
-};
-typedef sMSGBLOCKLIST SMSGBLOCKLIST;
-typedef sMSGBLOCKLIST* PSMSGBLOCKLIST;
-
-struct sTXMSGINFO
-{
-    UINT m_unTimeInterval;
-    STHREADINFO m_sTimerThreadInfo;
-    STHREADINFO m_sKeyThreadInfo;
-    CEvent m_omTxBlockTimerEvent;
-    CEvent m_omTxBlockKeyEvent;
-    CEvent m_omTxBlockAutoUpdateEvent;// to set event from UI on auto update of Msg blocks
-    CEvent m_omKeyEvent;
-    BOOL m_bType;
-    BOOL m_bSendAllMessages;
-    //CRITICAL_SECTION m_sMsgBlocksCriticalSection;
-    HANDLE m_hSemaphore;
-    PSTXCANMSGLIST m_psTxCANMsgList;
-    struct sTXMSGINFO* m_psNextTxMsgInfo;
-};
-
-typedef  sTXMSGINFO   STXMSG;
-typedef  sTXMSGINFO*  PSTXMSG;
 
 struct sMSGFILTERINFO
 {
@@ -430,34 +343,6 @@ struct sMSGINFORMATION
 typedef sMSGINFORMATION SMSGINFORMATION;
 typedef SMSGINFORMATION* PSMSGINFORMATION;
 
-static char s_cStatus[][2] = {"|","/","-","\\"};
-
-static char sg_acNumCh[] =
-{
-    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
-    'F'
-};
-
-// Function pointer to overload situation handler
-typedef void (*PF_OVERLOAD_HANDLER)();
-
-typedef struct tagSBYTE
-{
-    unsigned char Bit0 : 1;
-    unsigned char Bit1 : 1;
-    unsigned char Bit2 : 1;
-    unsigned char Bit3 : 1;
-    unsigned char Bit4 : 1;
-    unsigned char Bit5 : 1;
-    unsigned char Bit6 : 1;
-    unsigned char Bit7 : 1;
-} STRUCT_BYTE;
-
-typedef union tagUBYTE
-{
-    BYTE        byByte;
-    STRUCT_BYTE sByte;
-} UNION_BYTE;
 
 // Types of Network Statistics parameters
 #define defSTAT_PARAMETERS_COUNT        24
@@ -629,15 +514,6 @@ public:
     std::list<std::string> m_strECUList;
 };
 
-class sFibexConfigContainer:public ConfigContainer
-{
-public:
-    INT m_nKeySlot[2];
-    eFlexRayKeySlotMode m_eMode[2];
-    eFlexRayKeySlotType m_eKeySlotType[2];
-    eFlexRayChannel m_eFlexRayChannel[2];
-    bool m_bLeadingColdStart[2];
-};
 
 struct sLinConfigContainer:public ConfigContainer
 {

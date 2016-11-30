@@ -57,7 +57,7 @@
 #include "TxMsgWndJ1939.h"
 #include ".\txmsgwndj1939.h"
 #include "Utility\MultiLanguageSupport.h"
-
+#include "CANDefines.h"
 HANDLE sg_hMsgSent = nullptr;
 HANDLE sg_hMsgStopped = nullptr;
 typedef struct
@@ -1071,12 +1071,12 @@ void CTxMsgWndJ1939::OnCbnSelchangeComboPgn()
         {
             if (pFrame != nullptr)
             {
-                FrameProps ouFrameProps;
+                CANFrameProps ouFrameProps;
                 pFrame->GetProperties(ouFrameProps);
                 // m_omDLCEdit.vSetValue(psMsg->m_unMessageLength);
-                m_omDLCEdit.vSetValue(ouFrameProps.m_ouCANFrameProp.m_unMsgSize);
+                m_omDLCEdit.vSetValue(ouFrameProps.m_unMsgSize);
                 m_omTOEdit.vSetValue((BYTE)unPGN);
-                for (UINT i = 0; i < ouFrameProps.m_ouCANFrameProp.m_unMsgSize; i++)
+                for (UINT i = 0; i < ouFrameProps.m_unMsgSize; i++)
                 {
                     m_omMsgDataEditVal += _("00");
                 }

@@ -352,7 +352,7 @@ int CMsgFrmtWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
     return 0;
 }
-BOOL CMsgFrmtWnd::OnCreateClient(LPCREATESTRUCT lpcs, CCreateContext* pContext)
+BOOL CMsgFrmtWnd::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* /*pContext*/)
 {
     createToolBar();
 
@@ -832,7 +832,7 @@ void CMsgFrmtWnd::OnParentNotify(UINT message, LPARAM lParam)
     int nEvent = LOWORD(message);
     CRect rect;
     CPoint hitPoint(LOWORD(lParam), HIWORD(lParam));
-    if (true == m_wndToolbarImportLog.IsVisible())
+    if (TRUE == m_wndToolbarImportLog.IsVisible())
     {
         m_wndToolbarImportLog.GetWindowRect(&rect);
         hitPoint.y -= rect.Height();
@@ -1268,7 +1268,7 @@ LRESULT CMsgFrmtWnd::vNotificationFromOtherWin(WPARAM wParam, LPARAM lParam)
         break;
         case eBusStatusChanged:
         {
-            mBusConnectedState = bool(lParam);
+            mBusConnectedState = (lParam != 0);
         }
         break;
         case eWINID_START_READ:
@@ -2166,7 +2166,7 @@ LRESULT CMsgFrmtWnd::OnUpdateFont(WPARAM /*wParam*/, LPARAM /*lParam*/)
     return 0;
 }
 
-LRESULT CMsgFrmtWnd::OnDisplaySettingUpdated(WPARAM wParam, LPARAM lParam)
+LRESULT CMsgFrmtWnd::OnDisplaySettingUpdated(WPARAM wParam, LPARAM /*lParam*/)
 {
     if ( wParam != 0 )
     {
@@ -3696,7 +3696,7 @@ bool CMsgFrmtWnd::GetConfigData(xmlNodePtr pxmlNodePtr)
                    Added the call CLEAR_EXPR_TM_BITS(m_bExprnFlag_Disp)
                    before setting the time mode.
 *******************************************************************************/
-HRESULT CMsgFrmtWnd::SetConfigData(BYTE* pvDataStream)
+HRESULT CMsgFrmtWnd::SetConfigData(BYTE* /*pvDataStream*/)
 {
     //Maintained to load default configration.
 
@@ -4168,7 +4168,7 @@ void CMsgFrmtWnd::OnImportLogPageNoChange ()
 
 void CMsgFrmtWnd::OnUpdateImportLogOverwriteScroll()
 {
-    if (m_wndToolbarImportLog.IsVisible() == FALSE)
+    if (m_omSliderMsgs.GetSafeHwnd() == nullptr)
     {
         return;
     }

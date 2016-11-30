@@ -911,11 +911,11 @@ void CMsgContainerJ1939::GetMapIndexAtID(int nIndex,__int64& nMapIndex)
     m_ouOWJ1939Buf.nGetMapIndexAtID(nIndex,nMapIndex);
 }
 
-HRESULT CMsgContainerJ1939::LoadPage(const unsigned long& nPageNo)
+HRESULT CMsgContainerJ1939::LoadPage(const unsigned long& /*nPageNo*/)
 {
     return S_OK;
 }
-HRESULT CMsgContainerJ1939::OverwritePage(const unsigned long& nLineNo)
+HRESULT CMsgContainerJ1939::OverwritePage(const unsigned long& /*nLineNo*/)
 {
     return S_OK;
 }
@@ -1036,7 +1036,7 @@ COLORREF CMsgContainerJ1939::getMessageColor(long long key, bool isAppendMode, C
     }
     return RGB(0, 0, 0);
 }
-HRESULT CMsgContainerJ1939::sendMessage(long long key, bool isAppendMode/*has to be removed*/)
+HRESULT CMsgContainerJ1939::sendMessage(long long /*key*/, bool /*isAppendMode*//*has to be removed*/)
 {
     return S_FALSE;
 }

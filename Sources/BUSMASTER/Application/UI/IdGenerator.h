@@ -6,12 +6,12 @@
 static std::map < std::string, int > menuidlist;
 class IdGenerator :public IIdGenerator
 {
+	int mCurrentId;
 public:
     int generateId(std::string, int& id);
-    //std::map < std::string, int > menuidlist;
-    bool removeid(std::string);
+	bool removeid(std::string);
     int setStartId(int mid);
-    std::string GetMenuItem(UINT id, std::map<std::string, std::list<PluginMenu>>);
+	std::string GetMenuItem(UINT id, std::map<std::string, std::list<RibbonButton>>);
 
 };
 

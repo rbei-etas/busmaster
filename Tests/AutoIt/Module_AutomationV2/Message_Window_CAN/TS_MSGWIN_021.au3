@@ -60,6 +60,8 @@ if winexists($WIN_BUSMASTER) then
 	   _WriteResult("Fail","TS_MSGWIN_21")
 	EndIf
 
+ControlClick($WIN_MsgDisplay,"",$BTN_OK_MsgDisplay)
+sleep(1000)
 EndIf
 $isAppNotRes=_CloseApp()																				; Close the app
 
