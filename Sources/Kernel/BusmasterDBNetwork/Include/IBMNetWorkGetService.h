@@ -208,7 +208,17 @@ public:
     void Initailise();
 };
 
-
+class IDbChangeListner
+{
+public:
+	struct DBChangeInfo
+	{
+		ETYPE_BUS mBusType;
+		std::string mChannel;
+		std::string mDbPath;
+	};
+	virtual void OnDataBaseChange(bool mIsAdded, const DBChangeInfo&) = 0;
+};
 class IBMNetWorkGetService
 {
 public:
@@ -220,9 +230,6 @@ public:
     virtual ERRORCODE GetDBServiceCount( ETYPE_BUS eouProtocol, int nChannelIndex, int& nCount ) = 0;
     virtual ERRORCODE GetFrameList( ETYPE_BUS eouProtocol, int nChannelIndex, std::list<IFrame*>& ) = 0;
     virtual ERRORCODE GetSimulatedEcuList( ETYPE_BUS, int nChannelIndex, std::list<IEcu*>& ) = 0;
-    virtual ERRORCODE ReSetNetwork( ETYPE_BUS eouProtocol ) = 0;
-    //virtual ERRORCODE GenerateCode( ICluster* pCluster, std::string strFileName = "", bool bRegenerate = false, bool bGenerateObj = true ) = 0;
-    //virtual ERRORCODE GenerateMakeFile( ETYPE_BUS, std::string strForCppFile ) = 0;
-    //virtual ERRORCODE GetUniqueFrameNames(ETYPE_BUS, int nChannelIndex, std::map<std::string, IFrame*>& strNameList) = 0;
     virtual ERRORCODE GetElementByName( ETYPE_BUS eouProtocol, int nChannelIndex, eClusterElementType oueElementType, std::string strName, IElement** pouElement ) = 0;
+	virtual ERRORCODE ManageClientForDbChanges(IDbChangeListner*, bool bAdd) = 0;
 };

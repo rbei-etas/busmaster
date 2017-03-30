@@ -82,7 +82,9 @@ if winexists($WIN_BUSMASTER) then
      $logFile1=LogFileExist("SampleLog_T0")
 	 if $logFile1=1 Then
 		$logfile1Content1 = _GetlogFileData("SampleLog_T0.log", "8")
+		if ($logfile1Content1[0]>=6) then
 		$logfile1CreatedTime1 = $logfile1Content1[6]
+		EndIf
 		ConsoleWrite("$logfile1CreatedTime1  :" & $logfile1CreatedTime1 & @CRLF)
 	EndIf
     sleep(30000)
@@ -106,7 +108,9 @@ if winexists($WIN_BUSMASTER) then
     ConsoleWrite("$validationObject2 - for creating logfiles after 3 min :" &$validationObject2 & @crlf)
 
 	$logfile1Content2 = _GetlogFileData("SampleLog_T0.log", "8")
-	$logfile1CreatedTime2 = $logfile1Content2[6]
+	if ($logfile1Content2[0]>=6) then
+		$logfile1CreatedTime2 = $logfile1Content2[6]
+	EndIf
 	ConsoleWrite("$logfile1CreatedTime2  :" & $logfile1CreatedTime2 & @CRLF)
 
 	$number = _CheckLogfileTimeIsEqual($logfile1CreatedTime1, $logfile1CreatedTime2)

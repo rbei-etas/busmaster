@@ -262,6 +262,7 @@
     <ClInclude Include="CAN_IXXAT_VCI_stdafx.h" />
     <ClInclude Include="CANControllerConfigDlg.h" />
     <ClInclude Include="CANSelectDlg.h" />
+    <ClInclude Include="ChannelSelectionResource.h" />
     <ClInclude Include="ClientBuffer.h" />
     <ClInclude Include="ClientList.h" />
     <ClInclude Include="DIL_CAN_IXXAT_VCI.h" />

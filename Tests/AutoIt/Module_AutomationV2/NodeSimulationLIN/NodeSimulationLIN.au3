@@ -20,7 +20,7 @@ _RunMe()
 _StartoHTMLTable("LIN Node Simulation Test Report")
 
 ;Run all the NodeSimulationCAN module scripts
-
+;If(@OSVersion = "WIN_7") Then
 ;-----P1 test Cases-----------------------------
 ;#include "TS_NS_LIN_02.au3"
 #include "TS_NS_LIN_05.au3"
@@ -33,7 +33,7 @@ _StartoHTMLTable("LIN Node Simulation Test Report")
 #include "TS_NS_LIN_19.au3"
 #include "TS_NS_LIN_23.au3"
 ;~ #include "TS_NS_LIN_30.au3" -  Covered in "TS_NS_LIN_31.au3"
-#include "TS_NS_LIN_31.au3"
+;#include "TS_NS_LIN_31.au3"
 ;#include "TS_NS_LIN_36.au3"
 #include "TS_NS_LIN_40.au3"
 #include "TS_NS_LIN_46.au3"
@@ -47,6 +47,7 @@ _StartoHTMLTable("LIN Node Simulation Test Report")
 #include "TS_NS_LIN_81.au3"
 #include "TS_NS_LIN_88.au3"
 #include "TS_NS_LIN_97.au3"
+#include "TS_NS_LIN_31.au3"
 ;#include "TS_NS_LIN_97.au3"
 ;-----------------------------------------------
 
@@ -62,6 +63,8 @@ _StartoHTMLTable("LIN Node Simulation Test Report")
 ;#include "TS_NS_129.au3"
 ;#include "TS_NS_139.au3"
 ; TS_NS_15 tc included in TS_NS_03 so deleted
+;EndIf
+
 _EndoHTMLTable()
 
 _SaveHTMLReport()

@@ -296,6 +296,12 @@ int CEditFrameWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
     return 0;
 }
+
+void CEditFrameWnd::vCloseEditFrameWindow()
+{
+	CMDIChildWnd::OnClose();
+}
+
 /**************************************************************************************
     Function Name    :  OnSetFocus
     Input(s)         :  CWnd* pOldWnd

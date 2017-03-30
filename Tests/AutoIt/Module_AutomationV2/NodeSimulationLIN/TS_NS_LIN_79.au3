@@ -32,7 +32,11 @@
 ConsoleWrite(@CRLF)
 ConsoleWrite(@CRLF)
 ConsoleWrite("****Start : TS_NS_LIN_79.au3****"&@CRLF)
-
+If(@OSVersion <> "WIN_7") Then
+	$tmOut = 0
+Else
+	$tmOut = 1000
+EndIf
 _launchApp()
 ProcessWait("BUSMASTER.exe")
 
@@ -143,7 +147,7 @@ if winexists($WIN_BUSMASTER) then
 		if $rCount=2 Then
 			_ConnectDisconnect_LIN()																	; Connect LIN
 			Send("a")
-			Sleep(1000)
+			Sleep($tmOut)
 			_ConnectDisconnect_LIN()
 			$rCount=_GetLINMsgWinItemCount()
 			sleep(1000)

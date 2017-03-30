@@ -485,7 +485,7 @@ void CExecuteFunc::vExecuteOnPGNHandler(void* pRxMsg)
             objMsg.msgType = psJ1939Msg->m_sMsgProperties.m_eType;
             objMsg.timeStamp = psJ1939Msg->m_sMsgProperties.m_un64TimeStamp;
 
-            memcpy(objMsg.data, psJ1939Msg->m_pbyData, sizeof(psJ1939Msg->m_pbyData));
+			memcpy(objMsg.data, psJ1939Msg->m_pbyData, objMsg.dlc);
             sMsgData.m_pFMsgHandler(objMsg);
         }
         catch(...)

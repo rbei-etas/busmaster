@@ -22,6 +22,11 @@ ConsoleWrite(@CRLF)
 ConsoleWrite(@CRLF)
 ConsoleWrite("****Start : TS_LIN_Log_31.au3****"&@CRLF)
 
+If(@OSVersion <> "WIN_7") Then
+	Local $data1 = 3,$data2 = 3,$data3 = 3
+Else
+	Local $data1 =4 ,$data2 = 4,$data3 = 4
+EndIf
 
 _launchApp()
 
@@ -92,7 +97,8 @@ consolewrite("$finddatacount7 :"&$finddatacount7&@CRLF)
 consolewrite("$totalCountlogFile :"&$totalCountlogFile&@CRLF)
 consolewrite("$EndOfLog :"&$EndOfLog&@CRLF)
 
-if $EndOfLog="***[STOP LOGGING SESSION]***" and $finddatacount5=4 and $finddatacount6=4 And $finddatacount7=4 Then                                                   ; Check the last line of the lof file
+;if $EndOfLog="***[STOP LOGGING SESSION]***" and $finddatacount5=4 and $finddatacount6=4 And $finddatacount7=4 Then                                                   ; Check the last line of the lof file
+if $EndOfLog="***[STOP LOGGING SESSION]***" and $finddatacount5=$data1 and $finddatacount6=$data2 and $finddatacount7=$data3 and $totalCountlogFile=1 Then
 	_WriteResult("Pass","TS_LIN_Log_31")
 Else
 	_WriteResult("Fail","TS_LIN_Log_31")

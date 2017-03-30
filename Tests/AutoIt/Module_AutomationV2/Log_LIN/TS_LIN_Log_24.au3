@@ -21,7 +21,11 @@
 ConsoleWrite(@CRLF)
 ConsoleWrite(@CRLF)
 ConsoleWrite("****Start : TS_LIN_Log_24.au3****"&@CRLF)
-
+If(@OSVersion <> "WIN_7") Then
+		$data1 = 14
+	Else
+		$data1 = 18
+EndIf
 
 _launchApp()
 
@@ -75,8 +79,9 @@ EndIf
 
 consolewrite("$finddatacountTxChnl :"&$finddatacountTxChnl&@CRLF)
 consolewrite("$EndOfLog :"&$EndOfLog&@CRLF)
+consolewrite("$data1 :"&$data1&@CRLF)
 
-if $EndOfLog="***[STOP LOGGING SESSION]***" and $finddatacountTxChnl=18 Then                                                ; Check the last line of the log file
+if $EndOfLog="***[STOP LOGGING SESSION]***" and $finddatacountTxChnl=$data1 Then                                                ; Check the last line of the log file
 	_WriteResult("Pass","TS_LIN_Log_24")
 Else
 	_WriteResult("Fail","TS_LIN_Log_24")

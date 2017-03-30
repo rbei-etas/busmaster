@@ -22,7 +22,13 @@ ConsoleWrite("****Start :TS_LIN_Filter_02.au3****"&@CRLF)
 Local $Msg = ObjCreate("System.Collections.ArrayList") ; create
 Dim $FirstMsg[13]=[1,2,3,4,5,6,7,8,9,10,11,12,13],$SecMsg[13]=[1,2,3,4,5,6,7,8,9,10,11,12,13]
 Local $FirstMsg = 0,$msgidCheck=0,$txmsg=0,$endOfFIle=0
+Local $logcnt = 20
 
+If(@OSVersion <> "WIN_7") Then
+		$sleep = 700
+	Else
+		$sleep = 0
+EndIf
 
 
 
@@ -46,7 +52,7 @@ if winexists($WIN_BUSMASTER) then
 	_EnableFilterLogLIN()																			; Enable Filter during logging
 
 	_ConnectDisconnect_LIN()
-	;sleep(1000)
+	sleep($sleep)
 	_ConnectDisconnect_LIN()
 
 	;_DisableOverwriteMode()																		; Disable Overwrite Mode
@@ -56,7 +62,9 @@ if winexists($WIN_BUSMASTER) then
 	ConsoleWrite("$GetLogFile_Path:"&$GetLogFile_Path&@CRLF)
 
 	ConsoleWrite("$GetLogFile_Path:"&$GetLogFile_Path&@CRLF)
-	if _FileCountLines($GetLogFile_Path & "\LIN_Log_Filter_01.log")=20 Then
+	ConsoleWrite("FileCount = "&_FileCountLines($GetLogFile_Path & "\LIN_Log_Filter_01.log"))
+
+	if _FileCountLines($GetLogFile_Path & "\LIN_Log_Filter_01.log")=$logcnt Then
 		$Read_LogFirstEnter=FileReadLine ($GetLogFile_Path & "\LIN_Log_Filter_01.log",15)	; Read the 16th line from the Log file
 		$Read_LogSecEnter=FileReadLine ($GetLogFile_Path & "\LIN_Log_Filter_01.log",16)		; Read the 17th line from the Log file
 

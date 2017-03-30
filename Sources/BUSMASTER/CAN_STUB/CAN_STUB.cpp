@@ -462,20 +462,25 @@ HRESULT PerformAnOperation(BYTE bActionCode)
 {
     HRESULT hResult = S_FALSE;
 
-    // Lock so that no other thread may use the common resources
-    EnterCriticalSection(&sg_CSBroker);
+    if ( TryEnterCriticalSection ( &sg_CSBroker ) )
+    {
+        // Lock so that no other thread may use the common resources
+        //EnterCriticalSection ( &sg_CSBroker );
 
-    // Identify current assignment of the broker thread
-    sg_sBrokerObjBusEmulation.m_unActionCode = bActionCode;
-    // Now release the harness
-    SetEvent(sg_sBrokerObjBusEmulation.m_hActionEvent);
-    // Wait until current assignment of broker thread is over
-    WaitForSingleObject(sg_hNotifyFinish, INFINITE);
-    // Save the result
-    hResult = sg_hResult;
 
-    // Work is over, now unlock for others to use common resources
-    LeaveCriticalSection(&sg_CSBroker);
+        // Identify current assignment of the broker thread
+        sg_sBrokerObjBusEmulation.m_unActionCode = bActionCode;
+        // Now release the harness
+        SetEvent ( sg_sBrokerObjBusEmulation.m_hActionEvent );
+        // Wait until current assignment of broker thread is over
+        WaitForSingleObject ( sg_hNotifyFinish, INFINITE );
+        // Save the result
+        hResult = sg_hResult;
+
+        // Work is over, now unlock for others to use common resources
+        LeaveCriticalSection ( &sg_CSBroker );
+    }
+
 
     return hResult;
 }

@@ -2393,17 +2393,17 @@ static int nInitHwNetwork(PSCONTROLLER_DETAILS InitData, UINT unDefaultChannelCn
     else
     {
         // Check whether channel selection dialog is required
-        if( nChannelCount > 1)
+        //if( nChannelCount > 1)
         {
             // Get the selection from the user. This will also
             // create and assign the networks
             nResult = nCreateMultipleHardwareNetwork(InitData, unDefaultChannelCnt);
         }
-        else
-        {
-            // Use available one hardware
-            nResult = nCreateSingleHardwareNetwork();
-        }
+   //     else
+   //     {
+   //         // Use available one hardware
+			//nResult = nCreateSingleHardwareNetwork(InitData);
+   //     }
     }
     return nResult;
 }

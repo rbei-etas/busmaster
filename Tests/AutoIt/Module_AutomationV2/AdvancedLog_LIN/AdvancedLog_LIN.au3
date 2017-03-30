@@ -20,6 +20,8 @@ _StartoHTMLTable("Advanced logging for LIN Module Test Report")
 ; --------------------------------------------------
 ; Advanced logging for LIN P1 Case's
 
+;If(@OSVersion = "WIN_7") Then
+
 #include "TS_Log_LIN_001.au3"
 #include "TS_Log_LIN_002.au3"
 #include "TS_Log_LIN_003.au3"
@@ -37,6 +39,7 @@ _StartoHTMLTable("Advanced logging for LIN Module Test Report")
 #include "TS_Log_LIN_010.au3"
 #include "TS_Log_LIN_011.au3"
 
+;EndIf
 
 _EndoHTMLTable()
 

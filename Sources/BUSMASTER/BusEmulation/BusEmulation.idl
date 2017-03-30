@@ -10,7 +10,7 @@ import "ocidl.idl";
 
 [
 	object,
-	uuid(A7A51157-F1D2-4090-8C6C-EBE6B10AB058),	dual,
+	uuid(4C07C2ED-FBCD-4FFD-8CB5-DE51F768D6D9),dual,
 	nonextensible,
 	helpstring("ISimENG Interface"),
 	pointer_default(unique)
@@ -25,14 +25,14 @@ interface ISimENG : IDispatch{
     [id(7), helpstring("method GetCurrentStatus")] HRESULT GetCurrentStatus([in] USHORT ClientID, [in,out] VARIANT *pNodeStatus);
 };
 [
-	uuid(CE8A7D2C-9199-4E88-BC0D-B257F57CD108),	version(1.1),
+	uuid(31524BD8-59B7-4F51-9481-5638D8A11550),version(1.1),
 	helpstring("BusEmulation 1.1 Type Library")
 ]
 library BusEmulationLib
 {
 	importlib("stdole2.tlb");
 	[
-		uuid(564025BB-1550-4BE1-86DD-61A860BC7F3C),		helpstring("SimENG Class")
+		uuid(FB26D896-2329-486C-ABFA-E326A7676B98),	helpstring("SimENG Class")
 	]
 	coclass SimENG
 	{

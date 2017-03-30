@@ -36,7 +36,8 @@
 ConsoleWrite(@CRLF)
 ConsoleWrite(@CRLF)
 ConsoleWrite("****Start : TS_Replay_47/48.au3****"&@CRLF)
-
+Local $ReplayFilePath1=""
+Local $FilePath2=""
 
 _launchApp()
 
@@ -59,8 +60,7 @@ if winexists($WIN_BUSMASTER) then
 
 	$Count1=ControlListView ($WIN_CANReplayConfig,"",$LVC_ReplayFile_CANReplayConfig,"GetItemCount")		; Fetch the count of files
 
-	$FilePath1=ControlListView ($WIN_CANReplayConfig,"",$LVC_ReplayFile_CANReplayConfig,"GetText",0,0)		; Fetch the file path
-
+	$ReplayFilePath1=ControlListView ($WIN_CANReplayConfig,"",$LVC_ReplayFile_CANReplayConfig,"GetText",0,0)		; Fetch the file path
 	$BTNState1=ControlCommand ($WIN_CANReplayConfig,"",$CHKB_Interactive_CANReplayConfig,"IsChecked")		; Fetch the Interactive replay option state
 
 	ControlClick($WIN_CANReplayConfig,"",$BTN_OK_CANReplayConfig)											; Click on 'OK' button
@@ -84,7 +84,7 @@ if winexists($WIN_BUSMASTER) then
 	sleep(500)
 
 	consolewrite("$Count1 :"&$Count1&@CRLF)
-	consolewrite("$FilePath1 :"&$FilePath1&@CRLF)
+	consolewrite("$ReplayFilePath1 :"&$ReplayFilePath1&@CRLF)
 	consolewrite("$Count2 :"&$Count2&@CRLF)
 	consolewrite("$FilePath2 :"&$FilePath2&@CRLF)
 	consolewrite("$BTNState1 :"&$BTNState1&@CRLF)
@@ -92,7 +92,7 @@ if winexists($WIN_BUSMASTER) then
 
 	$testDataPath=_TestDataPath()
 
-	if $Count1=1 and $Count2=1  and $FilePath1=_TestDataPath()&"\Replay_47.log" and $FilePath2=_TestDataPath()&"\Replay_47.log" Then
+	if $Count1=1 and $Count2=1  and $ReplayFilePath1=_TestDataPath()&"\Replay_47.log" and $FilePath2=_TestDataPath()&"\Replay_47.log" Then
 		_WriteResult("Pass","TS_Replay_47")
 	Else
 		_WriteResult("Fail","TS_Replay_47")

@@ -74,15 +74,16 @@ void CUDSMainWnd::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CUDSMainWnd, CDialog)
-    ON_BN_CLICKED(IDC_SEND_UDS, OnBnClickedSendUD)
-    ON_BN_CLICKED(IDC_CHECK_TP, OnBnClickedTesterPresent)
-    ON_EN_UPDATE(IDC_EDIT_DATA, OnEnChangeData)
-    ON_EN_UPDATE(IDC_EDIT_SA, OnEnChangeSA)
-    ON_EN_UPDATE(IDC_EDIT_TA, OnEnChangeTA)
-    ON_WM_TIMER()
-    ON_WM_CTLCOLOR()
-    ON_WM_KEYDOWN()
-    ON_WM_CHAR()
+    ON_BN_CLICKED ( IDC_SEND_UDS, OnBnClickedSendUD )
+    ON_BN_CLICKED ( IDC_CHECK_TP, OnBnClickedTesterPresent )
+    ON_EN_UPDATE ( IDC_EDIT_DATA, OnEnChangeData )
+    ON_EN_UPDATE ( IDC_EDIT_SA, OnEnChangeSA )
+    ON_EN_UPDATE ( IDC_EDIT_TA, OnEnChangeTA )
+    ON_WM_TIMER ()
+    ON_WM_CTLCOLOR ()
+    ON_WM_KEYDOWN ()
+    ON_WM_CHAR ()
+    ON_MESSAGE (WM_COMMANDHELP, CUDSMainWnd::OnCommandHelp )
 
 END_MESSAGE_MAP()
 
@@ -343,7 +344,6 @@ void CUDSMainWnd::PrepareFlowControl()
     {
         case INTERFACE_NORMAL_11 :
         {
-            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte-1] = TargetAddress;
             psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte] = 0x30;
             psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+1] = BSize;
             psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+2] = SSTMin; //////
@@ -365,7 +365,6 @@ void CUDSMainWnd::PrepareFlowControl()
 
         case INTERFACE_NORMAL_ISO_29 :
         {
-            psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte-1] = TargetAddress;
             psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte] = 0x30;
             psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+1] = BSize;
             psTxCanMsgUds->m_psTxMsg->m_ucData[initialByte+2] = SSTMin;
@@ -1206,4 +1205,18 @@ BOOL CUDSMainWnd::PreTranslateMessage(MSG* pMsg)
     }
 
     return bSkip;
+}
+
+LRESULT CUDSMainWnd::OnCommandHelp ( WPARAM wParam, LPARAM lParam )
+{
+    DWORD dwDirLen = 1024, dwRetVal = 0;
+    char cCurrWkDirPath[1024] = { 0 }, cChmFilePath[2048] = {0};
+    dwRetVal = GetModuleFileName ( NULL, cCurrWkDirPath, dwDirLen );
+    PathRemoveFileSpec ( cCurrWkDirPath );
+    CString strChmFilePath = "";
+    strChmFilePath = PathCombine ( cChmFilePath, cCurrWkDirPath, "BUSMASTER.chm ::/topics/Diagnostics_Main_Window.html" );
+    
+    ::HtmlHelp ( nullptr, strChmFilePath, HH_DISPLAY_TOPIC, 0 );
+
+    return S_OK;
 }

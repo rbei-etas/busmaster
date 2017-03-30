@@ -23,6 +23,57 @@
 #define TAG_DATABYTES               "m_DataBytes"
 #define TAG_SEMICOLON               ";"
 
+
+ERRORCODE DBChangeManger::ManageClient(IDbChangeListner* newListner, bool bAdd)
+{
+	if (newListner == nullptr)
+	{
+		return EC_FAILURE;
+	}
+	if (true == bAdd)
+	{
+		return AddListner(newListner);
+	}
+	else
+	{
+		return RemoveListner(newListner);
+	}
+}
+ERRORCODE DBChangeManger::UpdateChange(bool isAdded, IDbChangeListner::DBChangeInfo dbInfo)
+{
+	for (auto listner : mDbChangeListners)
+	{
+		if (nullptr != listner )
+		{
+			listner->OnDataBaseChange(isAdded, dbInfo);
+		}
+	}
+	return EC_SUCCESS;
+}
+
+ERRORCODE DBChangeManger::AddListner(IDbChangeListner* newListner)
+{
+	for (auto listner : mDbChangeListners)
+	{
+		if (listner == newListner)
+		{
+			return EC_SUCCESS;
+		}
+	}
+	mDbChangeListners.push_back(newListner);
+	return EC_SUCCESS;
+}
+ERRORCODE DBChangeManger::RemoveListner(IDbChangeListner* newListner)
+{
+	for (auto listner : mDbChangeListners)
+	{
+		if (listner == newListner)
+		{
+			mDbChangeListners.remove(listner);
+		}
+	}
+	return EC_SUCCESS;
+}
 ERRORCODE BMNetwork::GetChannelSettings(ETYPE_BUS eouProtocol, int nChannelIndex, ChannelSettings* ouChannelSettings)
 {
     return m_ouProtocolConfig[eouProtocol].GetChannelSettings(nChannelIndex, ouChannelSettings);
@@ -89,7 +140,16 @@ ERRORCODE BMNetwork::SetDBService(ETYPE_BUS eouProtocol, int nChannelIndex, int 
 
 ERRORCODE BMNetwork::AddDBService(ETYPE_BUS eouProtocol, int nChannelIndex, ICluster* ouCluster)
 {
-    return m_ouProtocolConfig[eouProtocol].AddDBService(nChannelIndex, ouCluster);
+	ERRORCODE retVal = m_ouProtocolConfig[eouProtocol].AddDBService(nChannelIndex, ouCluster);
+	if (EC_SUCCESS == retVal)
+	{
+		IDbChangeListner::DBChangeInfo changeInfo;
+		changeInfo.mBusType = eouProtocol;
+        changeInfo.mChannel = "CHANNEL"+ std::to_string(nChannelIndex);
+		ouCluster->GetDBFilePath(changeInfo.mDbPath);
+		mDBChangeManger.UpdateChange(true, changeInfo);
+	}
+	return retVal;
 }
 
 ERRORCODE BMNetwork::LoadDb( ETYPE_BUS forCluster, int channelIndex, std::string dbFilePath )
@@ -109,28 +169,33 @@ ERRORCODE BMNetwork::LoadDb( ETYPE_BUS forCluster, int channelIndex, std::string
 }
 ERRORCODE BMNetwork::DeleteDBService(ETYPE_BUS eouProtocol, int nChannelIndex, std::string dbPath)
 {
-    std::list<ICluster*> clusterList;
-    m_ouProtocolConfig[eouProtocol].GetDBServiceList(nChannelIndex, clusterList);
-    std::string path;
-    int index = 0;
-for (auto cluster : clusterList)
-    {
-        cluster->GetDBFilePath(path);
-        if (path == dbPath)
-        {
-            if (EC_SUCCESS == m_ouProtocolConfig[eouProtocol].ReleaseDbService(nChannelIndex, index))
-            {
-                mDbManagerAcessor.mFreeCluster(cluster);
-                return EC_SUCCESS;
-            }
-            else
-            {
-                return EC_FAILURE;
-            }
-        }
-        index++;
-    }
-    return EC_FAILURE;
+	std::list<ICluster*> clusterList;
+	m_ouProtocolConfig[eouProtocol].GetDBServiceList(nChannelIndex, clusterList);
+	std::string path;
+	int index = 0;
+	for (auto cluster : clusterList)
+	{
+		cluster->GetDBFilePath(path);
+		if (path == dbPath)
+		{
+			if (EC_SUCCESS == m_ouProtocolConfig[eouProtocol].ReleaseDbService(nChannelIndex, index))
+			{
+				mDbManagerAcessor.mFreeCluster(cluster);
+				IDbChangeListner::DBChangeInfo changeInfo;
+				changeInfo.mBusType = eouProtocol;
+				changeInfo.mChannel = nChannelIndex;
+				changeInfo.mDbPath = dbPath;
+				mDBChangeManger.UpdateChange(false, changeInfo);
+				return EC_SUCCESS;
+			}
+			else
+			{
+				return EC_FAILURE;
+			}
+		}
+		index++;
+	}
+	return EC_FAILURE;
 }
 
 
@@ -191,7 +256,10 @@ BMNetwork::BMNetwork()
 }
 
 
-
+ERRORCODE BMNetwork::ManageClientForDbChanges(IDbChangeListner* newListner, bool bAdd)
+{
+	return mDBChangeManger.ManageClient(newListner, bAdd);
+}
 
 ERRORCODE BMNetwork::ParseDbFile( std::string strFileName, ETYPE_BUS clusterType, std::list<ICluster*>& ouClusterList )
 {

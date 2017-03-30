@@ -47,6 +47,9 @@
     <ClInclude Include="..\DIL_Interface\HardwareListingCAN.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ChannelSelectionResource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CAN_VSCOM.rc">

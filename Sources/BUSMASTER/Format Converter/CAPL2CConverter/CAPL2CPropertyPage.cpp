@@ -694,6 +694,7 @@ void CCAPL2CPropertyPage::OnConvert()
             {
                 return;
             }
+            ouWaitIndicator.DisplayWindow ( _ ( "" ), this );
         }
         else
         {

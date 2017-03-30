@@ -8,13 +8,20 @@ cd Trace_Window
 Run_Trace_Window.au3
 cd ..
 
-cd Database Editor_CAN
-Run_DBEditor.au3
+
+cd TestFrameWork_CAN
+Run_Test_Automation_CAN.au3
 cd ..
 
 cd Format Converters
 Run_FormatConverter.au3
 cd ..
+
+cd Database Editor_CAN
+Run_DBEditor.au3
+cd ..
+
+
 
 cd Database Editor_J1939
 Run_DBEditor_J1939.au3
@@ -62,9 +69,9 @@ cd ..
 ::Run_FormatConverter.au3
 ::cd ..
 
-cd TestFrameWork_CAN
-Run_Test_Automation_CAN.au3
-cd ..
+::cd TestFrameWork_CAN
+::Run_Test_Automation_CAN.au3
+::cd ..
 
 ::cd Signal_Watch_CAN
 ::Run_Signal_Watch_CAN.au3
@@ -72,6 +79,10 @@ cd ..
 
 cd TxWindow_CAN
 Run_TxWindow_CAN.au3
+cd ..
+
+cd AdvancedLog_CAN
+Run_AdvancedLog_CAN.au3
 cd ..
 
 cd LinClusterConfiguration
@@ -88,29 +99,27 @@ cd Message_Window_LIN
 Run_Message_Window_LIN.au3
 cd ..
 
-cd NodeSimulationLIN
-Run_NodeSimulationLIN.au3
+
+cd Log_LIN
+Run_LIN_Log.au3
+cd ..
+
+
+
+cd AdvancedLog_LIN
+Run_AdvancedLog_LIN.au3
 cd ..
 
 cd TxWindow_LIN
 Run_TxWindow_LIN.au3
 cd ..
 
-cd Log_LIN
-Run_LIN_Log.au3
-cd ..
-
-cd AdvancedLog_CAN
-Run_AdvancedLog_CAN.au3
-cd ..
-
-cd AdvancedLog_LIN
-Run_AdvancedLog_LIN.au3
-cd ..
-
 ::cd UserConfiguration
 ::Run_UserConfiguration.au3
 ::cd ..
+cd NodeSimulationLIN
+Run_NodeSimulationLIN.au3
+cd ..
 
 
 ::cd ..

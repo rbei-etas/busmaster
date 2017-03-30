@@ -21,7 +21,13 @@
 ConsoleWrite(@CRLF)
 ConsoleWrite(@CRLF)
 ConsoleWrite("****Start : TS_LIN_Log_14.au3****"&@CRLF)
+If(@OSVersion <> "WIN_7") Then
+		$sleep = 6000
 
+	Else
+		$sleep = 4000
+
+EndIf
 
 _launchApp()
 
@@ -41,7 +47,7 @@ if winexists($WIN_BUSMASTER) then
 	sleep(1000)
 
 	_ConnectDisconnect_LIN()																	; Connect the tool
-	sleep(4000)
+	sleep($sleep)
 
 	;_TransmitMsgsMenu()																		; Transmit normal blocks
 	;sleep(3000)

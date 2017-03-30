@@ -40,6 +40,11 @@
 #define USAGE_EXPORT
 #include "LIN_Vector_XL_Extern.h"
 
+// undef done since LIN_MSG is added as part of xl library version 9.7.26 which is already defined as enum in LINDriverDefines.h
+// if LIN_MSG of vxlapi.h needs to be used, then uncomment the below line and use VECTOR_XL_LIN_MSG  
+//#define VECTOR_XL_LIN_MSG LIN_MSG
+#undef LIN_MSG 
+
 BEGIN_MESSAGE_MAP(CLIN_Vector_XL, CWinApp)
 END_MESSAGE_MAP()
 
@@ -189,8 +194,8 @@ static INT bClassifyMsgType(XLevent& xlEvent, STLINDATA& sLinData)
         }
         break;
         case XL_LIN_MSG:
-        {
-            sLinData.m_eLinMsgType = LIN_MSG;
+        {			
+			sLinData.m_eLinMsgType = eLinMsgType::LIN_MSG;// (eLinMsgType)0; //LIN_MSG;
 
             sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID   = xlEvent.tagData.linMsgApi.linMsg.id;
             std::map<int,int>::iterator itr = sg_aodChannels[sLinData.m_uDataInfo.m_sLINMsg.m_ucChannel-1].m_nMapIdChecksumType.find(sLinData.m_uDataInfo.m_sLINMsg.m_ucMsgID);

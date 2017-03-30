@@ -230,17 +230,17 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterf
             int iCANControllerNumber = 0;
             CClientList* pClientList = nullptr;
 
-            if ( m_iNumberOfCANChannelsTotal == 1 ) /* Only single channel available */
-            {
-                sSelHwInterface[0] = m_sSelHwInterface[0];
+            //if ( m_iNumberOfCANChannelsTotal == 1 ) /* Only single channel available */
+            //{
+            //    sSelHwInterface[0] = m_sSelHwInterface[0];
 
-                /* Rearrange hardware parameters */
-                m_arrTmpIxxatCanChannels[0].GetHardwareParams(&qiVCIDeviceID,
-                        &iCANControllerNumber, (void**)&pClientList);
-                m_arrIxxatCanChannels[0].SetHardwareParams(qiVCIDeviceID, iCANControllerNumber,
-                        pClientList);
-            }
-            else    /* Multiple channels available */
+            //    /* Rearrange hardware parameters */
+            //    m_arrTmpIxxatCanChannels[0].GetHardwareParams(&qiVCIDeviceID,
+            //            &iCANControllerNumber, (void**)&pClientList);
+            //    m_arrIxxatCanChannels[0].SetHardwareParams(qiVCIDeviceID, iCANControllerNumber,
+            //            pClientList);
+            //}
+            //else    /* Multiple channels available */
             {
                 /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
                 if ( unDefaultChannelCnt && nHwCount >= unDefaultChannelCnt )
@@ -1065,7 +1065,6 @@ int CDIL_CAN_IXXAT_VCI::VciDeviceInfoAddToArray(int iStartPosArray, VCIDEVICEINF
 {
     int iNumOfCANController = 0;
     HANDLE hDevice = nullptr;
-
     VCIDEVICECAPS sVciDeviceCaps;
 
     // try to open the VCI device

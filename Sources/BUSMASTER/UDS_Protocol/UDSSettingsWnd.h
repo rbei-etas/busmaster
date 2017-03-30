@@ -184,7 +184,8 @@ public:
     void CUDSSettingsWnd::OnEnChangeS3_Server();
     afx_msg  void CUDSSettingsWnd::OnCloseWnd();
 
-
+    //Handle F1 key press
+    afx_msg LRESULT OnCommandHelp ( WPARAM wParam, LPARAM lParam );
 
 
     // Dialog Data

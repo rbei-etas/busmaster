@@ -3,6 +3,9 @@
 #include "IBusMasterKernel.h"
 #include "BusmasterEvents.h"
 #include "IBusmasterPluginConnection.h"
+#include "IVariableLayer.h"
+
+using namespace VariableManager;
 
 #define EXT_INFO_PARAM      UINT_PTR
 #define OUT_INFO_PARAM      UINT_PTR
@@ -27,6 +30,7 @@ public:
     virtual int getInfo(int infoType, EXT_INFO_PARAM, /*IN, OUT*/ OUT_INFO_PARAM infoData) = 0;
     virtual int postMessage() = 0;
     virtual int getPluginConnectionPoint(const char* pluginId, IBusmasterPluginConnection**) = 0;    //TODO::
+	virtual int getVariableCommunicationLayer(IVariableLayer** variableLayer) = 0;
 };
 
 class IBusmasterBusPluginInterface : public IBusmasterPluginInterface

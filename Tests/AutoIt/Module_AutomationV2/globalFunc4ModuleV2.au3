@@ -11,6 +11,9 @@ local $sHTML
 Local $TCIDIndex="B", $TCResIndex=3
 Global $driverSelXml[20],$channelNo[10]
 Global $countRowChckBox = 0
+Global $resultFile = "TestRunResults.xlsx"
+
+
 ;$BusMasterExeFPath=@ProgramFilesDir&"\BUSMASTER_v2.5.0"
 
 ;$versionBusMaster  = To get the busmaster software version no from text file
@@ -51,6 +54,9 @@ ConsoleWrite("$BusMasterExeFPath="&$BusMasterExeFPath&@CRLF)
 ;==========================================================================================================
 
 Func _launchApp()
+	$FilePath1 = _SetOneFolderUp()&"\Result\TestRunResults.xlsx" ; This file should already exist
+	_checkExcel($FilePath1)
+
 	$rVal = 1
 	ConsoleWrite("launchApp function" & @CRLF)
 	Sleep(1000)
@@ -182,12 +188,18 @@ Func _WriteResult($TCStatus,$TCNo)
 	$sHTML &= "   <td>"&$TCNo&"</td>" & @CR
 	$sHTML &= "   <td BGCOLOR="&$ColorCode&">"&$TCStatus&"</td>" & @CR
 	$sHTML &= " </tr>" & @CR
+
+	$IEhnd = WinGetHandle( "[Class:IEFrame]" )
+	If Not ishwnd($IEhnd) Then
+		$oIE = _IECreate()
+	EndIf
 	_IEAction($oIE, "refresh")
 
 	_IEAction($oIE, "visible")									; Sets an object state to visible
 	_IEDocWriteHTML($oIE, $sHTML)								; Replaces the HTML for the entire document.
 
 	; Write the test result to Excel Sheet
+	If WinExists("TestRunResults.xlsx - Excel") Then
 	if FileExists($FilePath) Then
 		$oExcel.Application.ActiveSheet.Columns($TCIDIndex).Select						; Select the Testcase ID column
 		$TCAddress=$oExcel.Application.Selection.Find($TCNo).Address					; Fetch the address of the Testcase ID
@@ -197,6 +209,7 @@ Func _WriteResult($TCStatus,$TCNo)
 		_ExcelWriteCell($oExcel, $TCStatus, $TCRow, $TCResIndex)						; Write the result
 	EndIf
 	_ExcelBookSave($oExcel)
+	EndIf
 EndFunc
 
 ;==========================================================================================================
@@ -273,6 +286,14 @@ EndFunc
 ;==========================================================================================================
 
 Func _createConfig($cfxFName)
+
+	ConsoleWrite("Which OS = "&@OSVersion&@CRLF)
+	If(@OSVersion <> "WIN_7") Then
+		$BTN_SaveInst_NewCfx = "[CLASS:Button; INSTANCE:2]"
+	EndIf
+
+
+
 	$sMenu=WinRibbonSelectItem($WIN_BUSMASTER,"",$fileMenu,$newMenu)					; Select File->Configuration->New
 	WinWaitActive($WIN_BUSMASTER,$saveConfigtxt,3)
 	if WinExists($WIN_BUSMASTER,$saveConfigtxt) Then								; wait for save configuration dialog
@@ -289,7 +310,7 @@ Func _createConfig($cfxFName)
 		ControlClick($WIN_DefaultCfxSave,"",$BTN_Save_SaveConfigFile)
 	EndIf
 	_HandleSaveSimSysWin()															; Check for Save Simulated System window
-	WinWaitActive($WIN_NewCfx,"",5)
+	WinWaitActive($WIN_NewCfx,"",25)
 	ConsoleWrite("$DirPath----------"&$DirPath&@CRLF)
 	if winexists($WIN_NewCfx) Then
 		ControlSend($WIN_NewCfx,"",$TXT_FileName_NewCfx,$DirPath&"\"&$cfxFName)		; Set the filename in 'New configuration filename' dialog
@@ -399,6 +420,11 @@ EndFunc
 ;==========================================================================================================
 
 Func _createCANDB($dbFName)
+
+	If(@OSVersion <> "WIN_7") Then
+		$BTN_SaveInst_NewDB = "[CLASS:Button; INSTANCE:2]"
+	EndIf
+
 	WinRibbonSelectItem($WIN_BUSMASTER,"",$Tool,$CANDBMenuTool,$newMenu)
 	WinWaitActive($WIN_NewDBFile,"",3)
 	$DBFolderPath = _OutputDataPath()													; Set the DirPath to save the dbf file
@@ -420,6 +446,9 @@ EndFunc
 ;==========================================================================================================
 
 Func _createJ1939DB($dbFName)
+	If(@OSVersion <> "WIN_7") Then
+		$BTN_SaveInst_NewDB = "[CLASS:Button; INSTANCE:2]"
+	EndIf
 	$dbMenu=WinRibbonSelectItem($WIN_BUSMASTER,"",$Tool,$J1939DBMenuTool,$newMenu)
 	sleep(1000)
 	$DBFolderPath = _OutputDataPath()													; Set the DirPath to save the dbf file
@@ -741,7 +770,10 @@ EndFunc
 Func _DelSignalDesc()
 	$DelSignalDescPopUp=0
 	$sigDesclvhwd=controlgethandle($WIN_BUSMASTER,"",$LVC_SigDesc_SigDesc)							; Get handle of signal details list view
+
+
 	for $i=0 to _GUICtrlListView_GetItemCount($sigDesclvhwd)-1
+
 		_GUICtrlListView_ClickItem($sigDesclvhwd,0)													; Click on the first item in the Signal details list view
 		sleep(800)
 		controlclick($WIN_BUSMASTER,"",$BTN_DelSigDesc_DBEditor)									; Delete Signal Desc
@@ -1125,6 +1157,9 @@ EndFunc
 ;Output 	   :
 ;===============================================================================
 Func _ConfigureCANLog($logFileName,$TimeMode,$Channel,$NumFormat,$FileMode,$Start_Rec,$Stop_Rec,$Filters)
+	If(@OSVersion <> "WIN_7") Then
+		$BTN_SaveInst_SelLogFile="[CLASS:Button; INSTANCE:2]"
+	EndIf
 	WinRibbonSelectItem($WIN_BUSMASTER,"",$CANMenu,$CANLogMenu,$configureMenu)					; Select Configure->Log
 	Sleep(1000)
 	ControlClick($WIN_CANLog,"",$BTN_Add_ConfigLOG)												; Click on Add button
@@ -1182,6 +1217,9 @@ EndFunc
 ;Output 	   :
 ;===============================================================================
 Func _ConfigureJ1939Log($logFileName,$TimeMode,$Channel,$NumFormat,$FileMode,$Start_Rec,$Stop_Rec,$Filters)
+	If(@OSVersion <> "WIN_7") Then
+		$BTN_SaveInst_SelLogFile="[CLASS:Button; INSTANCE:2]"
+	EndIf
 	_J1939LogMenu()																					; Open Configure J1939 Logging
 	Sleep(1000)
 	ControlClick($WIN_J1939Log,"",$BTN_Add_ConfigLOG)												; Click on Add button
@@ -2226,7 +2264,7 @@ Func _AddKeyHandler($Key)
 		$KeyHWD=_GetCANHandlerHWD(2,4)														; Fetch the handle of the key handler item
 		_GUICtrlTreeView_ClickItem($TVHWD, $KeyHWD, "Right") 								; Right click on Key Handler item in the tree view
 		send("a")																			; Select 'Add' from the right click menu
-		if WinWaitActive($WIN_KeyValue,"",5) Then
+		if WinWaitActive($WIN_KeyValue,"",15) Then
 			send($Key)																		; Select 'Add' from the right click menu
 			ControlClick($WIN_KeyValue,"",$BTN_OK_KeyValue)									; Click on 'OK' button
 		EndIf
@@ -2245,7 +2283,7 @@ Func _AddJ1939KeyHandler($key,$WinInfo)
 		$KeyHWD=_GetJ1939HandlerHWD(2,4)
 		_GUICtrlTreeView_ClickItem($TVHWD, $KeyHWD, "Right") 							; Right click on Key Handler item in the tree view
 		send($key)
-     If WinWaitActive($WIN_KeyValue,"",5) Then
+     If WinWaitActive($WIN_KeyValue,"",15) Then
 			send($Key)																		; Select 'Add' from the right click menu
 			ControlClick($WIN_KeyValue,"",$BTN_OK_KeyValue)									; Click on 'OK' button
 		EndIf
@@ -2308,7 +2346,9 @@ EndFunc
 Func _AddMsgHandler($HSCaseNo,$Param1,$Param2)
 	$TVHWD=_GetCANCppTVHWD()															; Fetch the handle of tree view
 	$MsgHWD=_GetCANHandlerHWD(2,2)														; Fetch the handle of the Msg handler item
+	sleep(2000)
 	_GUICtrlTreeView_ClickItem($TVHWD, $MsgHWD, "Right") 								; Right click on Msg Handler item in the tree view
+	sleep(2000)
 	sleep(500)
 	send("a")																			; Select 'Add' from the right click menu
 	WinWaitActive($WIN_AddMsgHandler,"",5)
@@ -2384,6 +2424,7 @@ Func _GetCANHandlerHWD($SCaseno,$ChildItemNo)
 			$item1HWD1 = _GUICtrlTreeView_GetNext($nodeHWD, "")				; Get handle of "include header" child item
 			$var1=$item1HWD1
 			for $i=1 to $ChildItemNo
+				Sleep(500)
 				$itemHWD = _GUICtrlTreeView_GetNextSibling($nodeHWD, $var1) ; Get handle of $ChildItemNo
 				_GUICtrlTreeView_ClickItem($nodeHWD, $var1)
 				$var1=$itemHWD
@@ -3321,7 +3362,10 @@ EndFunc
 Func _AddTestExeFile($FName)
 	_TestExeTreeMenu($TestExe_AddMenu)																		; Select 'add' from right click menu
 	$XmlPath=_TestDataPath()
-	if WinWaitActive($WIN_TestExeOpen,"",3) Then
+	if WinWaitActive($WIN_TestExeOpen,"",13) Then
+		Sleep(2000)
+			ControlFocus($WIN_TestExeOpen, "", $TXT_XmlFPath_TestExeOpen)
+		Sleep(2000)
 		ControlSend($WIN_TestExeOpen,"",$TXT_XmlFPath_TestExeOpen,$XmlPath&"\"&$FName)						; Set the filename
 		sleep(500)
 		ControlClick($WIN_TestExeOpen,"",$BTN_Open_TestExeOpen)												; Click on Open button
@@ -3399,6 +3443,12 @@ Func Capl2CppConversion($InputCAPLFile,$OutputCPPFile,$DBC_CAPLFile,$DBF_CAPLFil
         WinWaitActive($WIN_SelectCAN_CAPL2CPP, "", 5)
         $InputCAPLPath=_TestDataPath()                                                                             ; Input file path
 		sleep(1000)
+
+		Sleep(2000)
+			ControlFocus($WIN_SelectCAN_CAPL2CPP, "", $TXT_Open_File_CAPL2CPP)
+		Sleep(2000)
+
+
 		ControlSend($WIN_SelectCAN_CAPL2CPP,"",$TXT_Open_File_CAPL2CPP,$InputCAPLPath & "\" & $InputCAPLFile)      ; Send input file path to the control
 		sleep(750)
 	    ControlClick($WIN_SelectCAN_CAPL2CPP,"",$BTN_Open_File_CAPL2CPP)
@@ -3411,6 +3461,11 @@ Func Capl2CppConversion($InputCAPLFile,$OutputCPPFile,$DBC_CAPLFile,$DBF_CAPLFil
 		WinWaitActive($WIN_SelectCpp_CAPL2CPP, "", 5)
 		sleep(750)
 		$OutputFolderPath=_OutputDataPath()                                                                        ; Output file path
+
+		Sleep(2000)
+			ControlFocus($WIN_SelectCpp_CAPL2CPP, "", $TXT_Open_File_CAPL2CPP)
+		Sleep(2000)
+
         ControlSend($WIN_SelectCpp_CAPL2CPP,"",$TXT_Open_File_CAPL2CPP,$OutputFolderPath & "\" & $OutputCPPFile)   ; Send output file path to the control
 		sleep(500)
 		ControlClick($WIN_SelectCpp_CAPL2CPP,"",$BTN_Open_File_CAPL2CPP)
@@ -3420,6 +3475,13 @@ Func Capl2CppConversion($InputCAPLFile,$OutputCPPFile,$DBC_CAPLFile,$DBF_CAPLFil
         controlclick($WIN_FormatConv,"",$BTN_Add_DBC_CAPL2CPP)                                                     ; Click add dbc file
         WinWaitActive($SelectDBC_CAPL2CPP, "", 5)
         $Capl2cppDbcFilepath=_TestDataPath()                                                                       ; DBC file path
+
+
+		Sleep(2000)
+			ControlFocus($SelectDBC_CAPL2CPP, "", $TXT_Open_File_CAPL2CPP)
+		Sleep(2000)
+
+
         ControlSend($SelectDBC_CAPL2CPP,"",$TXT_Open_File_CAPL2CPP,$Capl2cppDbcFilepath & "\" & $DBC_CAPLFile)     ; Sends dbc file path to the control
         ControlClick($SelectDBC_CAPL2CPP,"",$BTN_Open_File_CAPL2CPP)
         $hWd=ControlGetHandle($WIN_FormatConv,"",$LST_DBCFiles)
@@ -3427,6 +3489,11 @@ Func Capl2CppConversion($InputCAPLFile,$OutputCPPFile,$DBC_CAPLFile,$DBF_CAPLFil
 		ControlClick($WIN_FormatConv,"",$BTN_Change_DBF_Path)			                                              ; click on change dbf button
 		sleep(1000)
         $Capl2cppDbfFilepath=_OutputDataPath()                                                                        ;DBF file path
+
+		Sleep(2000)
+			ControlFocus($ChangeDBCCAPL2CPP, "", $TXT_Open_File_CAPL2CPP)
+		Sleep(2000)
+
 		ControlSend($ChangeDBCCAPL2CPP,"",$TXT_Open_File_CAPL2CPP,$Capl2cppDbfFilepath & "\" &$DBF_CAPLFile)          ;Send dbf file path to the control
         ControlClick($ChangeDBCCAPL2CPP,"",$BTN_Open_File_CAPL2CPP)
         controlclick($WIN_FormatConv,"",$BTN_Convert_CAPL2CPP)                                                        ;Click on Convert button
@@ -3477,6 +3544,11 @@ Func Capl2CppConversion1($InputCAPLFile,$OutputCPPFile,$DBC_CAPLFile,$DBF_CAPLFi
         WinWaitActive($WIN_SelectCAN_CAPL2CPP, "", 5)
         $InputCAPLPath=_TestDataPath()                                                                             ; Input file path
 		sleep(1000)
+
+		Sleep(2000)
+		ControlFocus($WIN_SelectCAN_CAPL2CPP, "", $TXT_Open_File_CAPL2CPP)
+        Sleep(2000)
+
 		ControlSend($WIN_SelectCAN_CAPL2CPP,"",$TXT_Open_File_CAPL2CPP,$InputCAPLPath & "\" & $InputCAPLFile)      ; Send input file path to the control
 		sleep(750)
 	    ControlClick($WIN_SelectCAN_CAPL2CPP,"",$BTN_Open_File_CAPL2CPP)
@@ -3489,6 +3561,11 @@ Func Capl2CppConversion1($InputCAPLFile,$OutputCPPFile,$DBC_CAPLFile,$DBF_CAPLFi
         controlclick($WIN_FormatConv,"",$BTN_Add_DBC_CAPL2CPP)                                                     ; Click add dbc file
         WinWaitActive($SelectDBC_CAPL2CPP, "", 5)
         $Capl2cppDbcFilepath=_TestDataPath()                                                                       ; DBC file path
+
+		Sleep(2000)
+		ControlFocus($SelectDBC_CAPL2CPP, "", $TXT_Open_File_CAPL2CPP)
+        Sleep(2000)
+
         ControlSend($SelectDBC_CAPL2CPP,"",$TXT_Open_File_CAPL2CPP,$Capl2cppDbcFilepath & "\" & $DBC_CAPLFile)     ; Sends dbc file path to the control
         ControlClick($SelectDBC_CAPL2CPP,"",$BTN_Open_File_CAPL2CPP)
 		closeDilogBoxError($SelectDBC_CAPL2CPP)
@@ -3497,6 +3574,11 @@ Func Capl2CppConversion1($InputCAPLFile,$OutputCPPFile,$DBC_CAPLFile,$DBF_CAPLFi
 		ControlClick($WIN_FormatConv,"",$BTN_Change_DBF_Path)			                                              ; click on change dbf button
 		sleep(1000)
         $Capl2cppDbfFilepath=_TestDataPath()                                                                        ;DBF file path
+
+		Sleep(2000)
+		ControlFocus($ChangeDBCCAPL2CPP, "", $TXT_Open_File_CAPL2CPP)
+        Sleep(2000)
+
 		ControlSend($ChangeDBCCAPL2CPP,"",$TXT_Open_File_CAPL2CPP,$Capl2cppDbfFilepath & "\" &$DBF_CAPLFile)          ;Send dbf file path to the control
         ControlClick($ChangeDBCCAPL2CPP,"",$BTN_Open_File_CAPL2CPP)
 		closeDilogBoxError($ChangeDBCCAPL2CPP)
@@ -3565,6 +3647,7 @@ Func _OthrConversionsFormatConv($TXT_ConvType,$InputFile,$OutputFile)
 
 			$InputFilePath=_TestDataPath()
 			;ControlSend($Dlg_OpenOthrConv,"",$TXT_Open_FilePath_OthrConv,$InputFilePath &"\"& $InputFile)      ;Send path of the input file
+			Sleep(2000)
 
 			Send($InputFilePath &"\"& $InputFile)
 			;Send("{TAB}")
@@ -3631,6 +3714,9 @@ EndFunc
 
 Func _LogToExcelConversions($BusType,$InputFile,$OutputFile)
 	_FormatConverterMenu()                                                                                      ;Invoke Format converters menu
+	If(@OSVersion <> "WIN_7") Then
+		$BTN_SaveCSVFile="[CLASS:Button; INSTANCE:2]"
+	EndIf
     if @error Then
 		ConsoleWriteError("Format Converter didn't run" & @CRLF)
 	Exit
@@ -3644,21 +3730,26 @@ Func _LogToExcelConversions($BusType,$InputFile,$OutputFile)
 		sleep(2000)
 		$hWndLogToExcel=controlgethandle($WIN_FormatConv,"",$Tab_CAPL2CPP)
 		_GUICtrlTab_ClickTab($hWndLogToExcel, 1)
-		$handle=ControlGetHandle($WIN_FormatConv,"",$COMBO_SelectConvTypeLogToExcel)
+		$handle=ControlGetHandle($WIN_FormatConv,"",$COMBO_SelectConvTypeLogToExcel1)
 	    If($BusType="CAN") Then                                                                                   ;Check whether Bus type is CAN or J1939
 
            _GUICtrlComboBox_SelectString($handle,"CAN")
 	    Else
            _GUICtrlComboBoxEx_ShowDropDown($handle,True)
-           ControlClick($WIN_FormatConv,"",$COMBO_SelectConvTypeLogToExcel)
+           ControlClick($WIN_FormatConv,"",$COMBO_SelectConvTypeLogToExcel1)
            Sleep(1000)
 		   send("{DOWN}")
 		EndIf
 		sleep(1000)
 		controlclick($WIN_FormatConv,"",$BTN_InputLogFile)
-		WinWaitActive($WIN_SelectLogFile, "", 5)
+		WinWaitActive($WIN_SelectLogFile, "", 15)
 		$InputFilePath=_TestDataPath()
-		WinWaitActive($WIN_SelectLogFile, "", 5)
+		WinWaitActive($WIN_SelectLogFile, "", 15)
+
+		Sleep(2000)
+			ControlFocus($WIN_SelectLogFile, "", $TXT_Open_File_Log2Excel)
+		Sleep(2000)
+
 		ControlSend($WIN_SelectLogFile,"",$TXT_Open_File_Log2Excel,$InputFilePath &"\"& $InputFile)                  ;Send path of the input file
 		ControlClick($WIN_SelectLogFile,"",$BTN_Open_FilePath_LogToExcel)
 		sleep(1000)
@@ -3668,6 +3759,11 @@ Func _LogToExcelConversions($BusType,$InputFile,$OutputFile)
 		WinWaitActive($WIN_SelectCSVFile,"", 5)                                     					              ; wait for open dialog
 		$OutputFilePath= _OutputDataPath()
 		;ControlSend($WIN_SelectCSVFile,"",1152,$OutputFilePath &"\"& $OutputFile)                                     ;Send path of the output file
+
+		Sleep(2000)
+			ControlFocus($WIN_SelectCSVFile, "", $BTNExcSaveOutput)
+		Sleep(2000)
+
 		ControlSend($WIN_SelectCSVFile,"",$BTNExcSaveOutput,$OutputFilePath &"\"& $OutputFile)                                     ;Send path of the output file
 		ControlClick($WIN_SelectCSVFile,"",$BTN_SaveCSVFile)
 		sleep(1000)
@@ -3755,10 +3851,17 @@ Func _LoadTestSetupFile($ldfFileName)
 	Send("{ALT}")
 	Send("F")
 	Send("O")
-	WinWaitActive($Win_TestSetup_open,"",3)
+	WinWaitActive($Win_TestSetup_open,"",13)
+
+	Sleep(2000)
+		ControlFocus($Win_TestSetup_open, "", $Edit_FName_NewTestSetupFile)
+	Sleep(2000)
 	ControlSend($Win_TestSetup_open,"",$Edit_FName_NewTestSetupFile,$ldfFileName)	; Enter the File name
-	sleep(750)
-	ControlClick($Win_TestSetup_open,"",$BTN_Save_NewTestSetupFile)							; Click on Save button
+	sleep(1750)
+;~ 	If(@OSVersion <> "WIN_7") Then
+;~ 		$BTN_Save_OpenTestSetupFile = "[CLASS:Button; INSTANCE:1]"
+;~ 	EndIf
+	ControlClick($Win_TestSetup_open,"",$BTN_Save_loadTestSetupFile)							; Click on Save button
 	closeDilogBoxError($Win_TestSetup_TestEditor)
 	If winexists("Error") Then
 		ConsoleWrite("---------------------------------------------")
@@ -3936,9 +4039,6 @@ Func _RunMe()
 	; $BusMasterExeFPath has to be updated everytime before running the script on a new version.
 	;$BusMasterExeFPath=@ProgramFilesDir&"\BUSMASTER_v1.9.0"
 
-
-
-
 	$FilePath = _SetOneFolderUp()&"\Result\TestRunResults.xlsx" ; This file should already exist
 
 ;~ 	if WinExists("Microsoft Excel - TestRunResults.xlsx") Then  ; Check and close the result file if it is opened.
@@ -3947,16 +4047,29 @@ Func _RunMe()
 ;~ 	EndIf
 	if FileExists($FilePath) Then
 		;if WinExists("Microsoft Excel - TestRunResults.xlsx") Then
-		if WinExists("TestRunResults.xlsx") Then
+		;if WinExists("[CLASS:NetUIHWND; INSTANCE:1]")
+
+		$excl = ControlEnable("Microsoft Excel","","[CLASS:NetUIHWND; INSTANCE:1]")
+		Consolewrite("$excl---------"& $excl & @CRLF)
+		if $excl=1 Then
+			WinActivate("Microsoft Excel")
+			Sleep(5000)
+			Send("!s")
+			Sleep(1000)
+			ConsoleWrite("***********")
+			ProcessClose("EXCEL.exe")
+		EndIf
+
+		if WinExists($resultFile) Then
 			Consolewrite(@crlf & "Result Excel sheet is opened" & @CRLF)
 			;WinActivate("Microsoft Excel - TestRunResults.xlsx")
-			WinActivate("TestRunResults.xlsx")
+			WinActivate($resultFile)
 			$FuncRes=_ExcelBookSave($oExcel)
 			Send("^s");
 			Consolewrite("$FuncRes : " & $FuncRes & @CRLF)
 			sleep(2000)
 			;WinClose("Microsoft Excel - TestRunResults.xlsx")
-			WinClose("TestRunResults.xlsx")
+			WinClose($resultFile)
 			sleep(1000)
 		EndIf
 		Global $oExcel = _ExcelBookOpen($FilePath) ; Open the Excel file
@@ -4027,8 +4140,11 @@ Func _importLDF($ldfFileName)
 		Sleep(1000)
 	EndIf
 
-	WinWaitActive($WIN_SelectLDFFile,"",3)
+	WinWaitActive($WIN_SelectLDFFile,"",13)
 	if WinExists($WIN_SelectLDFFile,"") Then
+		Sleep(2000)
+			ControlFocus($WIN_SelectLDFFile, "", $TXT_FilePath_SaveConfigFile1)
+		Sleep(2000)
 		ControlSend($WIN_SelectLDFFile,"",$TXT_FilePath_SaveConfigFile1,$DirPath&"\"&$ldfFileName)
 		ControlClick($WIN_SelectLDFFile,"",$BTN_Open_FilePath_OthrConv)
 	EndIf
@@ -4044,7 +4160,7 @@ EndFunc   ;==>_importLDF
 
 Func _linDriverSelection()
 
-	WinRibbonSelectItem($WIN_BUSMASTER, "",$linMenu,$LindriverSelectMenu,$Lindriver) ;Select Lin Driver
+	;WinRibbonSelectItem($WIN_BUSMASTER, "",$linMenu,$LindriverSelectMenu,$Lindriver) ;Select Lin Driver
 
 ;~ 	sleep(1000)
 ;~ 	WinWaitActive($WinHwSelection)
@@ -4057,7 +4173,13 @@ Func _linDriverSelection()
 ;~ 		ControlClick($WinHwSelection,"","[CLASS:Button; INSTANCE:3]")					; Click on OK button
 ;~ 		sleep(750)
 ;~ 	EndIf
-	_driverSelection(2,2,4)
+	If(@OSVersion <> "WIN_7") Then
+		;_driverSelection(2,2,7)
+		_driverSelection(2,4,8)
+	Else
+		_driverSelection(2,2,4)
+	EndIf
+	;_driverSelection(2,2,4)
 	ConsoleWrite("Selected hardware for LIN..."& @CRLF)
 
 
@@ -4071,6 +4193,14 @@ EndFunc
 
 
 Func _driverSelection($protocol,$driver,$ChnlDesc)
+	Local $cntDrv = 0
+	If(@OSVersion <> "WIN_7") Then
+		$select = "[CLASS:Button; INSTANCE:2]"
+		$BtnOK = "[CLASS:Button; INSTANCE:4]"
+	Else
+		$select = "[CLASS:Button; INSTANCE:1]"
+		$BtnOK = "[CLASS:Button; INSTANCE:3]"
+	EndIf
 
 	ConsoleWrite("_GetSoftVersion")
 	$CurrentDirPath1 = _SetOneFolderUp()
@@ -4109,31 +4239,49 @@ Func _driverSelection($protocol,$driver,$ChnlDesc)
 		EndIf
 		;$i=$i+1
 	Next
-	WinMenuSelectItem($WIN_BUSMASTER, "",$protocol,$LindriverSelectMenu,$driver) ;Select Lin Driver
+	WinRibbonSelectItem($WIN_BUSMASTER, "",$protocol,$LindriverSelectMenu,$driver) ;Select Lin Driver
 	;WinWaitActive($WinHwSelection)
+	Sleep(1000)
 	if winexists($WinHwSelection) Then
 		$LinSelhWd=controlgethandle($WinHwSelection,"",$LinHwSelect)		; Get handle of Lin-Hardware selection list view [CLASS:SysListView32; INSTANCE:1]
  		;$i = 0
  		$j= 1
 		$cnt = _GUICtrlListView_GetItemCount($LinSelhWd)
 		ConsoleWrite("$cnt="&$cnt&@CRLF)
- 		For $i=0 To $cnt-1
+ 		;For $i=0 To $cnt-1
+		For $i=0 To $cnt-1
+			ConsoleWrite("$chnlDescFor="&$chnlDesc&@CRLF)
+			sleep(500)
 			_GUICtrlListView_ClickItem($LinSelhWd,$i)
 			$data = ControlGetText($WinHwSelection, "", "[CLASS:Edit; INSTANCE:2]")
 			ConsoleWrite("$data="&$data&@CRLF)
  			If $data=$ChnlDesc Then
- 				;_GUICtrlListView_ClickItem($LinSelhWd,$i)							; Click on the first hardware
-				ControlClick($WinHwSelection,"","[CLASS:Button; INSTANCE:1]")					; Click on Select button
-				sleep(750)
+				if $ChnlDesc="PLIN-USB Device ID - 1h" And $cntDrv=0 Then
+					;ControlClick($WinHwSelection,"","[CLASS:Button; INSTANCE:1]")		; Click on Select button
+					sleep(500)
+					$cntDrv = $cntDrv +1
+					ContinueLoop
+				Else
+					;ControlClick($WinHwSelection,"","[CLASS:Button; INSTANCE:1]")		; Click on Select button
+					ControlClick($WinHwSelection,"",$select)		; Click on Select button
+					sleep(500)
+					ExitLoop
+					EndIf
 				;Break()
  				;$i = $i + 1
  			EndIf
 
 		Next
 
-	ControlClick($WinHwSelection,"","[CLASS:Button; INSTANCE:3]")					; Click on OK button
+	;ControlClick($WinHwSelection,"","[CLASS:Button; INSTANCE:3]")					; Click on OK button
+		ControlClick($WinHwSelection,"",$BtnOK)		; Click on Select button
+	Else
+		If(@OSVersion <> "WIN_7") Then
+			Send("{ALT}")
+		EndIf
 	EndIf
 	sleep(750)
+
 
 EndFunc
 ;=================================================================================
@@ -4467,8 +4615,10 @@ EndFunc
 ;Output 	   :
 ;===============================================================================
 Func _AppFilterMenu_LIN()
+	WinWaitActive($WIN_BUSMASTER)
+	ConsoleWrite("---------------------------")
 	WinRibbonSelectItem($WIN_BUSMASTER,"",$linMenu,$AppFilterMenu)								; Select Configure->App Filters
-	winwaitactive($WIN_Config_filter,"",3)
+	winwaitactive($WIN_Config_filter,"",13)
 EndFunc
 ;=================================================================================
 ;Function Name :  _AddFilter_LIN
@@ -4478,7 +4628,7 @@ EndFunc
 ;===============================================================================
 Func _AddFilter_LIN($filterType,$msgID,$FromID,$ToID,$Dir,$Channel)
 	_AppFilterMenu_LIN()																		; Select LIN>Filter menu
-	WinWaitActive($WIN_Config_filter,"",2)														; Wait for the window to be active
+	WinWaitActive($WIN_Config_filter,"",12)														; Wait for the window to be active
 	if $filterType="Stop" Then
 		ControlClick($WIN_Config_filter,"",$BTN_AddFilter_ConfigFilter)							; Click on 'Add' filter button
 		sleep(750)
@@ -4546,6 +4696,44 @@ EndFunc
 Func _OpenFilterConfig_LIN()
 	WinRibbonSelectItem($WIN_BUSMASTER,"",$linMenu,$LINMsgWinMenu,$configMsgWindowLIN)
 EndFunc
+
+;===============================================================================
+;Function Name : _CheckErrorMessageLINFilter
+;Functionality : To check the error messages in LIN filter
+;Input 		   :
+;Output 	   :
+;===============================================================================
+Func _CheckErrorMessageLINFilter($Case)
+	$hWnd=controlgethandle($WIN_Config_filter_LIN,"",$TXT_ErrorTxt)
+	$errorMessageObtained=_GUICtrlEdit_GetText($hWnd)
+	consolewrite("$errorMessageObtained : "&$errorMessageObtained&@CRLF)
+	$retValue=0
+    $errorMessageIsProper=0
+	Switch $Case
+		Case "ValidIDRange"
+			if($errorMessageObtained="Valid range for LIN Message ID is 0 - 0x3F") Then
+				$errorMessageIsProper= 1
+			EndIf
+		Case "InvalidID"
+			if($errorMessageObtained="Invalid Message ID") Then
+				$errorMessageIsProper= 1
+			EndIf
+		Case "MinGreaterThanMax"
+			if($errorMessageObtained="Start Range ID is greater than or equal to End Range ID") Then
+				$errorMessageIsProper= 1
+			EndIf
+		Case Else
+			if($errorMessageObtained="") Then
+				$errorMessageIsProper= 0
+			EndIf
+	EndSwitch
+	$addButton=ControlCommand($WIN_Config_filter_LIN,"",$BTN_Add_ConfigFilter,"IsEnabled") 						             ;Status of the add to filter details button
+	if($addButton=0 and $errorMessageIsProper=1)Then
+		$retValue=1
+	EndIf
+return $retValue
+EndFunc
+
 ;===============================================================================
 ;Function Name : _OpenMshWindConfig_LIN
 ;Functionality : open  config message window for LIN
@@ -4575,6 +4763,9 @@ EndFunc
 ;Output		   		: -
 ;==========================================================================================================
 Func _saveAsConfig($cfxFName)
+	If(@OSVersion <> "WIN_7") Then
+		$BTN_SaveAsInst_Cfx = "[CLASS:Button; INSTANCE:2]"
+	EndIf
 	WinRibbonSelectItem($WIN_BUSMASTER,"",$fileMenu,$saveAsMenu)					; Select File->Save As
 
 	sleep(1000)
@@ -4622,6 +4813,9 @@ EndFunc
 ;===============================================================================
 
 Func _ConfigureLINLog($logFileName,$TimeMode,$Channel,$NumFormat,$FileMode,$Start_Rec,$Stop_Rec,$Filters)
+	If(@OSVersion <> "WIN_7") Then
+		$BTN_SaveInst_SelLogFile = "[CLASS:Button; INSTANCE:2]"
+	EndIf
 	WinRibbonSelectItem($WIN_BUSMASTER,"",$linMenu,$LINLogMenu,$configureMenu)					; Select Configure->Log
 	Sleep(1000)
 	ControlClick($WIN_LINLog,"",$BTN_Add_ConfigLOG)												; Click on Add button
@@ -5102,7 +5296,7 @@ Func _AddBusevent($HSCaseNo)
 	_GUICtrlTreeView_ClickItem($TVHWD, $BusevntHWD, "Right") 							; Right click on Busevent handler item in the tree view
 	sleep(500)
 	send("a")																			; Select 'Add' from the right click menu
-	WinWaitActive($WIN_BusEventhandler,"",5)
+	WinWaitActive($WIN_BusEventhandler,"",30)
 	Switch $HSCaseNo
 	Case 1
 		; preconnect
@@ -5207,7 +5401,7 @@ Func _AddErrHandler($index)
 		_GUICtrlTreeView_ClickItem($TVHWD, $ErrHWD, "Right") 								; Right click on Error Handler item in the tree view
 		send("a")																			; Select 'Add' from the right click menu
 
-		if WinWaitActive($WIN_ERRHandler,"",5) Then
+		if WinWaitActive($WIN_ERRHandler,"",15) Then
 
 			ControlCommand($WIN_ERRHandler,"",$ErrhndlrChckbox,"Check")	   					; Check check boxes in dialog box .
 			ControlClick($WIN_ERRHandler,"",$BTN_OK_ERRHandler)								; Click on 'OK' button
@@ -5294,7 +5488,7 @@ EndFunc
 Func _SetTextTxWin($datalngth,$pos_X,$pos_Y)
 	$LVhWndCanTx1=_GetTxWindHWD()
 	ControlClick($WIN_BUSMASTER,"",$LVhWndCanTx1,"Left",2,$pos_X,$pos_Y)					; Double click on the datalength Column
-	sleep(200)
+	sleep(1000)
 	Send($datalngth)
 	sleep(200)
 	send("{ENTER}")
@@ -5393,9 +5587,9 @@ Func  _ConfigTXWinDetails($Rownum,$HSCaseNo,$messageid,$chnl,$datalength,$Messag
 				ConsoleWrite("-------------------------------------------"&@CRLF)
 				$ColWidthK=_GetColWidthTxWin($LVhWndCanTx,6)
 				ConsoleWrite("$ColWidth44---"&$ColWidthK&@CRLF)
-				ControlClick($WIN_BUSMASTER,"",$LVhWndCanTx,"Left",2,$VerifyMsgItemPos[0]+$ColWidthK+620,$VerifyMsgItemPos[1])					; Double click on the Message Name Column
+				ControlClick($WIN_BUSMASTER,"",$LVhWndCanTx,"Left",1,$VerifyMsgItemPos[0]+$ColWidthK+620,$VerifyMsgItemPos[1])					; Double click on the Message Name Column
 				sleep(200)
-				_SetTextTxWin($Key,$VerifyMsgItemPos[0]+$ColWidthK+670,$VerifyMsgItemPos[1])
+				_SetTextTxWin($Key,$VerifyMsgItemPos[0]+$ColWidthK+630,$VerifyMsgItemPos[1])
 				sleep(200)
 			Else
 				;$ColWidth1=_GetColWidthTxWin($LVhWndCanTx,7)
@@ -5417,6 +5611,86 @@ Func  _ConfigTXWinDetails($Rownum,$HSCaseNo,$messageid,$chnl,$datalength,$Messag
 
 EndFunc
 
+;===============================================================================
+;Function Name : _ChangePhysicalAndRowValuesTxWin
+;Functionality : To change the physical and row values of signals
+;Input 		   :$indexOfSignal- Index of the signal, $phyValue- physical value to be changed, $rowValue - row value of the signal
+;              [note : Changing Physical value will change the row value and vice versa]
+;Output 	   :
+;===============================================================================
+Func _ChangePhysicalAndRowValuesTxWin($indexOfSignal,$phyValue,$rowValue)
+	$HWDsignalsView=ControlGetHandle($WIN_BUSMASTER,"",$LVC_TxWin_SigDtls)
+	$ColWidth1=_GetColWidthTxWin($HWDsignalsView,0)
+	$ColWidth2=_GetColWidthTxWin($HWDsignalsView,1)
+	$ColWidth3=_GetColWidthTxWin($HWDsignalsView,2)
+	$row=_GetRowPosTxWin($HWDsignalsView,$indexOfSignal)
+	ConsoleWrite("$ColWidth1 = "& $ColWidth1 &@CRLF)
+	ConsoleWrite("$ColWidth2 = "& $ColWidth2 &@CRLF)
+	ConsoleWrite("$ColWidth3 = "& $ColWidth3 &@CRLF)
+	ConsoleWrite("$row[0] = "& $row[0] &@CRLF)
+	ConsoleWrite("$row[1] = "& $row[1] &@CRLF)
+
+   if($rowValue<>"") Then
+	   ControlClick($WIN_BUSMASTER,"",$HWDsignalsView,"Left",2,$row[0]+$ColWidth1+10,$row[1])
+	   Send($rowValue)
+	   Send("{ENTER}")
+   EndIf
+   if($phyValue<>"") Then
+	   ControlClick($WIN_BUSMASTER,"",$HWDsignalsView,"Left",2,$row[0]+$ColWidth1+$ColWidth2+10,$row[1])
+	   Send($phyValue)
+	   Send("{ENTER}")
+   EndIf
+EndFunc
+;===============================================================================
+;Function Name : _CheckTheAddedMessageDetailsTxWnd
+;Functionality : To check whethe the messages are added to Tx wnd properly
+;Input 		   :$expectedMsgDetails - array of details of the message
+;Input 		   :$index - Index of the message to be checked
+;Output 	   :1 - if details are added as expected
+;===============================================================================
+Func _CheckTheAddedMessageDetailsTxWnd($expectedMsgDetails,$index)
+	$messageAddedToTxWnd=0
+	$HWD=ControlGetHandle($WIN_BUSMASTER,"",$LVC_TxWin)								    ; Fetch the handle of test editor details
+	$obtainedMsgDetails=_GUICtrlListView_GetItemTextArray($HWD,$index)
+	if $obtainedMsgDetails[0]=7 then
+		ConsoleWrite("$obtainedMasterMsgDetails[1] = "& $obtainedMsgDetails[1] &@CRLF)
+		ConsoleWrite("$obtainedMasterMsgDetails[2] = "& $obtainedMsgDetails[2] &@CRLF)
+		ConsoleWrite("$obtainedMasterMsgDetails[3] = "& $obtainedMsgDetails[3] &@CRLF)
+		ConsoleWrite("$obtainedMasterMsgDetails[4] = "& $obtainedMsgDetails[4] &@CRLF)
+		ConsoleWrite("$obtainedMasterMsgDetails[5] = "& $obtainedMsgDetails[5] &@CRLF)
+		ConsoleWrite("$obtainedMasterMsgDetails[6] = "& $obtainedMsgDetails[6] &@CRLF)
+		ConsoleWrite("$obtainedMasterMsgDetails[7] = "& $obtainedMsgDetails[7] &@CRLF)
+		if $obtainedMsgDetails[1]=$expectedMsgDetails[0] And $obtainedMsgDetails[2]=$expectedMsgDetails[1] And $obtainedMsgDetails[3]=$expectedMsgDetails[2] And $obtainedMsgDetails[4]=$expectedMsgDetails[3] And $obtainedMsgDetails[5]=$expectedMsgDetails[4] And $obtainedMsgDetails[6]=$expectedMsgDetails[5] And $obtainedMsgDetails[7]=$expectedMsgDetails[6] Then
+				$messageAddedToTxWnd=1
+				ConsoleWrite("$Message Added To TxWnd for "&$index&"th Master message = "& $messageAddedToTxWnd &@CRLF)
+		EndIf
+	EndIf
+	Return $messageAddedToTxWnd
+EndFunc
+
+;===============================================================================
+;Function Name : _ChangeDataByteOfMessageTxWnd
+;Functionality : To change the data byte of the message
+;Input 		   :
+;Output 	   :
+;===============================================================================
+Func _ChangeDataByteOfMessageTxWnd($byteIndex,$value)
+	$HWDdataByteView=ControlGetHandle($WIN_BUSMASTER,"",$LVC_TxWin_dtaView)
+	$ColWidth1=_GetColWidthTxWin($HWDdataByteView,0)
+	$ColWidth2=_GetColWidthTxWin($HWDdataByteView,1)
+	$row=_GetRowPosTxWin($HWDdataByteView,0)
+	ConsoleWrite("$ColWidth1 = "& $ColWidth1 &@CRLF)
+	ConsoleWrite("$ColWidth2 = "& $ColWidth2 &@CRLF)
+	ConsoleWrite("$row[0] = "& $row[0] &@CRLF)
+	ConsoleWrite("$row[1] = "& $row[1] &@CRLF)
+	$XaxisValue=$row[0]+$ColWidth1+($ColWidth2*$byteIndex)+10
+	ConsoleWrite("$row$XaxisValue = "& $XaxisValue &@CRLF)
+   if($value<>"") Then
+	   ControlClick($WIN_BUSMASTER,"",$HWDdataByteView,"Left",2,$XaxisValue,$row[1])
+	   Send($value)
+	   Send("{ENTER}")
+   EndIf
+EndFunc
 
 ;===============================================================================
 ;Function Name : _CloseTxWindowCAN
@@ -5586,6 +5860,9 @@ EndFunc
 ;Output 	   :
 ;===============================================================================
 Func _ConfigureCANLogWithLogpath($logFileName)
+	If(@OSVersion <> "WIN_7") Then
+		$BTN_SaveInst_SelLogFile = "[CLASS:Button; INSTANCE:2]"
+	EndIf
 	WinRibbonSelectItem($WIN_BUSMASTER,"",$CANMenu,$CANLogMenu,$configureMenu)					; Select Configure->Log
 	Sleep(1000)
 	ControlClick($WIN_CANLog,"",$BTN_Add_ConfigLOG)												; Click on Add button
@@ -5736,6 +6013,9 @@ EndFunc
 ;Output 	   :
 ;===============================================================================
 Func _ConfigureLINLogWithLogpath($logFileName)
+	If(@OSVersion <> "WIN_7") Then
+		$BTN_SaveInst_SelLogFile = "[CLASS:Button; INSTANCE:2]"
+	EndIf
 	WinRibbonSelectItem($WIN_BUSMASTER,"",$linMenu,$LINLogMenu,$configureMenu)				    ; Select Configure->Log
 	Sleep(1000)
 	ControlClick($WIN_LINLog,"",$BTN_Add_ConfigLOG)												; Click on Add button
@@ -5772,6 +6052,9 @@ Func _loadConfigFileAnyloc($pathwithCFX)
 		if $FileExt=0 Then
 			$pathwithCFX=$pathwithCFX&".cfx"
 		EndIf
+		Sleep(2000)
+			ControlFocus($WIN_LoadCfx, "", $TXT_FileName_LoadCfx)
+		Sleep(2000)
 		ControlSetText($WIN_LoadCfx,"",$TXT_FileName_LoadCfx,$pathwithCFX)	; Set the filename in 'Load Configuration Filename...' dialog
 		sleep(500)
 		$cConfig=ControlClick($WIN_LoadCfx,"",$BTN_LoadInst_LoadCfx)				; Click on Load button
@@ -5939,6 +6222,71 @@ Func _monitorScript($foo)
 	FileWrite ( @ScriptDir&"\PrintLog.txt", $line )
 	If(ProcessExists($foo)) Then
 		ProcessClose ( $foo )
+	EndIf
+	_cleanUp()
+EndFunc
+
+;===============================================================================
+;Function Name : _monitorScript()
+;Functionality : It monitors the script execution.It handles if any error/Application hangs during execution
+;Input 		   :
+;Output 	   :
+;===============================================================================
+Func _checkExcel($FilePath)
+	$resultFile = "TestRunResults.xlsx"
+	if FileExists($FilePath) Then
+		;if WinExists("Microsoft Excel - TestRunResults.xlsx") Then
+		;if WinExists("[CLASS:NetUIHWND; INSTANCE:1]")
+
+		$excl = ControlEnable("Microsoft Excel","","[CLASS:NetUIHWND; INSTANCE:1]")
+		Consolewrite("$excl---------"& $excl & @CRLF)
+		if $excl=1 Then
+			WinActivate("Microsoft Excel")
+			Sleep(5000)
+			Send("!s")
+			Sleep(1000)
+			ConsoleWrite("***********")
+			ProcessClose("EXCEL.exe")
+		EndIf
+		$retExcel = WinExists($resultFile)
+		if $retExcel=0 Then
+			Consolewrite(@crlf & "Result Excel sheet is opened" & @CRLF)
+			$oExcel = _ExcelBookOpen($FilePath) ; Open the Excel file
+			_ExcelSheetActivate($oExcel, "1.9.0")
+			sleep(1000)
+		EndIf
+
+		;_ExcelSheetActivate($oExcel, "2.0.0")
+	EndIf
+EndFunc
+
+;==========================================================================================================
+;Function Name : _cleanUp
+;Functionality : This function will closes Format Converter Window,Busmaster and EXCEL if its opened as part of clean up.
+;Input 		   : -
+;Output		   : If the process is killed then it returns the $isAppKilled=1 to calling function
+;==========================================================================================================
+Func _cleanUp()
+	if ProcessExists ($AppProcess) Then													; if the application still exists then kill the process
+		ProcessClose($AppProcess)
+		ConsoleWrite("Application Killed+++"&@CRLF)
+																			; if app is forcefully killed then set $isAppKilled value to 1
+
+	EndIf
+	$formatConv = "FormatConverter.exe"
+	if ProcessExists ($formatConv) Then													; if the application still exists then kill the process
+		ProcessClose($formatConv)
+		ConsoleWrite("Application Killed----"&@CRLF)
+																			; if app is forcefully killed then set $isAppKilled value to 1
+	EndIf
+	Local $aProcesses = ProcessList("EXCEL.exe")
+	$ArrLength = UBound($aProcesses)
+	ConsoleWrite("##"&$aProcesses[0][0])
+	if $aProcesses[0][0]>0 Then
+		For $i=1 to $aProcesses[0][0]
+			ConsoleWrite("*************"&$ArrLength)
+			ProcessClose($aProcesses[$i][0])
+		Next
 	EndIf
 
 EndFunc

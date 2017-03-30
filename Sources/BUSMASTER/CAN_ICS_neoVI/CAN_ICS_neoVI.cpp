@@ -1716,10 +1716,13 @@ static int nCreateMultipleHardwareNetwork(PSCONTROLLER_DETAILS InitData, UINT un
     //Reorder hardware interface as per the user selection
     for (int nCount = 0; nCount < sg_ucNoOfHardware; nCount++)
     {
+		if (sg_anSelectedItems[nCount] != -1)
+		{
         sg_ndNeoToOpen[nCount].Handle       = (int)sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwIdInterface;
         sg_ndNeoToOpen[nCount].SerialNumber = (int)sg_HardwareIntr[sg_anSelectedItems[nCount]].m_dwVendor;
         _stscanf_s(sg_HardwareIntr[sg_anSelectedItems[nCount]].m_acNameInterface.c_str(), "%d", &sg_ndNeoToOpen[nCount].DeviceType);
         m_bytNetworkIDs[nCount]             =  sg_HardwareIntr[sg_anSelectedItems[nCount]].m_bytNetworkID;
+		}       
     }
     for (int nIndex = 0; nIndex < sg_ucNoOfHardware; nIndex++)
     {
@@ -1808,18 +1811,18 @@ static int nInitHwNetwork(PSCONTROLLER_DETAILS InitData, UINT unDefaultChannelCn
     else
     {
         // Check whether channel selection dialog is required
-        if( nDevices > 1 ||
+        if(/* nDevices > 1 ||*/
                 ( sg_ndNeoToOpen[0].DeviceType == NEODEVICE_VCAN3 ) )
         {
             // Get the selection from the user. This will also
             // create and assign the networks
             nReturn = nCreateMultipleHardwareNetwork(InitData, unDefaultChannelCnt);
         }
-        else
-        {
-            // Use available one hardware
-            nReturn = nCreateSingleHardwareNetwork();
-        }
+        //else
+        //{
+        //    // Use available one hardware
+        //    nReturn = nCreateSingleHardwareNetwork();
+        //}
     }
     return nReturn;
 }

@@ -237,6 +237,7 @@
     <ClInclude Include="CAN_VSCOM.h" />
     <ClInclude Include="CAN_VSCOM_Extern.h" />
     <ClInclude Include="CAN_VSCOM_stdafx.h" />
+    <ClInclude Include="ChannelSelectionResource.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="vs_can_api.h" />
   </ItemGroup>

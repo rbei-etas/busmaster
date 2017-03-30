@@ -99,20 +99,21 @@ END
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOGEX 0, 0, 223, 180
+IDD_ABOUTBOX DIALOGEX 0, 0, 251, 245
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
-    ICON            IDR_MAINFRAME,IDC_STATIC,10,7,21,20
-    LTEXT           "Ver 3.0.0",IDC_STATIC_VERSION,41,10,138,8
-    LTEXT           "Copyright 2011 ETAS GmbH and Robert Bosch Engineering and Business Solutions Limited",IDC_STATIC,40,21,155,20
-    LTEXT           "This program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.",IDC_STATIC,40,59,167,50
-    LTEXT           "For further support and services please visit",IDC_STATIC,40,123,140,10
-    LTEXT           "_________________________________________________________________",IDC_STAT_LINE4,22,42,175,9,WS_DISABLED
-    DEFPUSHBUTTON   "OK",IDOK,151,155,50,14
-    LTEXT           "_________________________________________________________________",IDC_STAT_LINE5,22,105,175,9,WS_DISABLED
-    CONTROL         "<a>ETAS BUSMASTER</a>",IDC_CONTACT_LINK,"SysLink",WS_TABSTOP,81,140,77,14
+    ICON            IDR_MAINFRAME,IDC_STATIC,4,4,20,20
+    LTEXT           "Copyright 2011 ETAS GmbH and Robert Bosch Engineering and Business Solutions Limited",IDC_STATIC_COPYRIGHT,5,138,242,19
+    LTEXT           "This program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.",IDC_STATIC_LICENSE_INFO,6,175,238,34
+    LTEXT           "For further support and services please visit",IDC_STATIC,8,216,140,10
+    DEFPUSHBUTTON   "OK",IDOK,199,229,50,14
+    CONTROL         "<a>ETAS BUSMASTER</a>",IDC_CONTACT_LINK,"SysLink",WS_TABSTOP,149,215,77,14
+    CONTROL         "",IDC_LIST_COMPONENTS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,2,32,246,84
+    LTEXT           "Copyright Information:",IDC_STATIC_CR,5,123,75,9
+    LTEXT           "License Information:",IDC_STATIC_LI,6,161,67,10
+    LTEXT           "Version",IDC_STATIC_VERSION,36,9,162,8
 END
 
 IDD_DLG_VALUE_DESCRIPTOR DIALOGEX 0, 0, 215, 103
@@ -711,13 +712,13 @@ BEGIN
             VALUE "Comments", "Public Copy"
             VALUE "CompanyName", "RBEI, Bangalore"
             VALUE "FileDescription", "BUSMASTER MFC Application"
-            VALUE "FileVersion", "Ver 3.1.0"
+            VALUE "FileVersion", "Ver 3.2.0"
             VALUE "InternalName", "BUSMASTER"
             VALUE "LegalCopyright", "Copyright (C) 2011"
             VALUE "LegalTrademarks", "BOSCH"
             VALUE "OriginalFilename", "BUSMASTER.EXE"
             VALUE "ProductName", "BUSMASTER Application"
-            VALUE "ProductVersion", "Ver 3.1.0"
+            VALUE "ProductVersion", "Ver 3.2.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -738,9 +739,9 @@ BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
         LEFTMARGIN, 8
-        RIGHTMARGIN, 207
+        RIGHTMARGIN, 235
         TOPMARGIN, 6
-        BOTTOMMARGIN, 169
+        BOTTOMMARGIN, 234
     END
 
     IDD_DLG_VALUE_DESCRIPTOR, DIALOG
@@ -1437,20 +1438,6 @@ BEGIN
     0
 END
 
-IDD_ABOUTBOX DLGINIT
-BEGIN
-    1371, 0x37c, 157, 0
-0x4d3c, 0x4346, 0x694c, 0x6b6e, 0x555f, 0x6c72, 0x3c3e, 0x4d2f, 0x4346, 
-0x694c, 0x6b6e, 0x555f, 0x6c72, 0x3c3e, 0x464d, 0x4c43, 0x6e69, 0x5f6b, 
-0x7255, 0x506c, 0x6572, 0x6966, 0x3e78, 0x2f3c, 0x464d, 0x4c43, 0x6e69, 
-0x5f6b, 0x7255, 0x506c, 0x6572, 0x6966, 0x3e78, 0x4d3c, 0x4346, 0x694c, 
-0x6b6e, 0x545f, 0x6f6f, 0x746c, 0x7069, 0x3c3e, 0x4d2f, 0x4346, 0x694c, 
-0x6b6e, 0x545f, 0x6f6f, 0x746c, 0x7069, 0x3c3e, 0x464d, 0x4c43, 0x6e69, 
-0x5f6b, 0x7546, 0x6c6c, 0x6554, 0x7478, 0x6f54, 0x6c6f, 0x6974, 0x3e70, 
-0x4146, 0x534c, 0x3c45, 0x4d2f, 0x4346, 0x694c, 0x6b6e, 0x465f, 0x6c75, 
-0x546c, 0x7865, 0x5474, 0x6f6f, 0x746c, 0x7069, "\076" 
-    0
-END
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1609,7 +1596,7 @@ BEGIN
     IDS_INVALID_DB_PROMPT   "Invalid database filename"
     ID_ACTIVE_DATABASE_NAME " "
     IDS_MESSAGE_NAME        "Message Name"
-    IDS_VERSION             "Ver 3.1.0"
+    IDS_VERSION             "Ver 3.2.0"
     IDS_HEADER              "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n\n\n***[START LOGGING SESSION]***\n"
     IDS_FOOTER              "***[END LOGGING SESSION]***"
     IDS_CONNECT             "Connect"

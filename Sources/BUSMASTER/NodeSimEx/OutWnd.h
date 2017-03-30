@@ -48,6 +48,8 @@ public:
     void vResetContent();
     // Set the content of list box.
 
+	void vCloseOutputWindow();
+
     // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(COutWnd)
@@ -66,6 +68,7 @@ protected:
     afx_msg BOOL OnHelpInfo(HELPINFO* pHelpInfo);
     afx_msg void OnSize(UINT nType, int cx, int cy);
     afx_msg void OnDbClick();
+
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:

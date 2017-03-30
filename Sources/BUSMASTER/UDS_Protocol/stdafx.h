@@ -23,7 +23,6 @@
 #include <IO.H>             // i/0 header definitions
 #include <stdlib.h>         // standard library definitions
 #include <locale.h>
-
-
+#include <afxpriv.h>
 
 // TODO: reference additional headers your program requires here

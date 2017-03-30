@@ -38,6 +38,7 @@
 #include "ChangeRegDefines.h"
 // CChangeRegisters class defination file.
 #include "ChangeRegisters.h"
+
 // Definition of CAcceptanceFilterDlg class
 #include "AcceptanceFilterDlg.h"
 #include "Utility/MultiLanguageSupport.h"
@@ -375,6 +376,8 @@ void CChangeRegisters:: vDisplayListBox(INT nIndex,INT nItemFocus )
 
     m_omEditBTR0.GetWindowText(omStrBTR0);
     m_omEditBTR1.GetWindowText(omStrBTR1);
+	omStrBTR0 = m_pControllerDetails[m_nLastSelection].m_omStrBTR0.c_str();
+	omStrBTR1 = m_pControllerDetails[m_nLastSelection].m_omStrBTR1.c_str();
     // Insert items and subitems after Formating the strings in the list view
     // control.
     for (INT i=0; i <nIndex; i++)
@@ -714,6 +717,8 @@ void CChangeRegisters::vChangeListBoxValues(INT nflag)
         m_omCombClock.GetLBText(nGetValue,omStrComboEditItem);
     }
     unClock       = _tstoi(omStrComboEditItem.GetBuffer(MAX_PATH));
+	GetDlgItem(IDC_EDIT_BAUD_RATE)->GetWindowText(m_omStrEditBaudRate);
+	m_dEditBaudRate = (FLOAT)_tstof(m_omStrEditBaudRate);
     // Call function to calculate the list of BTR0, BTR1, SJW,NBT and Sampling.
     nReturn = nListBoxValues( m_asColListCtrl,m_dEditBaudRate,(WORD)unClock,&unIndex,
                               nSample) ;
@@ -1162,6 +1167,7 @@ void CChangeRegisters:: vCalculateBaudRateNBTR0(CString omStrBtr1)
 void CChangeRegisters::vSelSetFocusItemList(INT nItemCount,INT nItem)
 {
     LVITEM sItem;
+	nItem = -1;
     // If there is no defualt or last selected item, selection will be at
     // item number middle of the total item numbers.
     if(nItem ==-1 || nItem>=nItemCount)
@@ -2034,6 +2040,23 @@ DOUBLE CChangeRegisters::vValidateBaudRate(DOUBLE dBaudrate,int nItemCount,UINT 
 	 DOUBLE  dEditBaudRate;
     dBaudRate           = dBaudrate;
     dEditBaudRate     = dBaudRate;
+
+	if (dBaudRate < 5000)
+	{
+		CString omStr;
+		omStr.Format(_("Invalid Baud Rate. Resetting the Baud Rate of Channel %d to 5000"), nItemCount + 1);
+		AfxMessageBox(omStr);
+		dBaudRate = 5000;
+	}
+
+	if (dBaudRate > 1000000)
+	{
+		CString omStr;
+		omStr.Format(_("Invalid Baud Rate. Resetting the Baud Rate of Channel %d to 1000000"), nItemCount + 1);
+		AfxMessageBox(omStr);
+		dBaudRate = 1000000;
+	}
+
 	if(unClockFreq == 0)//This condition is satisfied when it is called from HardWareListing
 	{
 		unClockFreq          = 16;
@@ -2085,15 +2108,21 @@ DOUBLE CChangeRegisters::vValidateBaudRate(DOUBLE dBaudrate,int nItemCount,UINT 
 			/*FLOAT  fTempBaudRate;
 	        fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
 	        fTempBaudRate = fTempBaudRate/100000;*/
-        if(dBaudRate < 5000)
-        {
-			CString omStr;
-			omStr.Format(_("Resetting the BaudRate of channel %d to 5000"),nItemCount+1);
-			AfxMessageBox(omStr);
-			dBaudRate = 5000;
-        }
+
+				
+		dBaudRate = dBaudRate * 1000;
+
         omStrBaudRate.Format(_("%ld"),/*fTempBaudRate*/(long)dBaudRate);
-        omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);        
+        omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);
+
+		CString omStrEditBaudRate;
+		omStrEditBaudRate.Format("%ld", (long)dBaudrate);
+		if (omStrBaudRate != omStrEditBaudRate)
+		{
+			CString omStr;
+			omStr.Format(_("Invalid Baud Rate. Resetting to nearest valid Baud Rate %s Kbps"), omStrBaudRate);
+			AfxMessageBox(omStr);
+		}
     }// End if
 	    // Change the list of BTR0, BTR1, SJW, NBT and sampling if user selected YES
     dEditBaudRate     = dBaudRate;
@@ -2109,6 +2138,6 @@ void CChangeRegisters::vExtractValuesForValidation()
 	m_omCombClock.GetWindowText(omStrClockFreq);
 	UINT unClockFreq          = _tstoi(omStrClockFreq.GetBuffer(MAX_PATH)); 
 	dBaudRate = vValidateBaudRate(dBaudRate,m_nLastSelection,unClockFreq);
-	omStrBaudRate.Format(_T("%.0lf"),dBaudRate);
+	omStrBaudRate.Format(_T("%ld"),(long)dBaudRate);
 	m_omEditBaudRate.SetWindowText(omStrBaudRate);
 }

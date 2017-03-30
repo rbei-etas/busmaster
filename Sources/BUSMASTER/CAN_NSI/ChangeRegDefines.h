@@ -104,7 +104,7 @@
 #define  defMIN_SJW                    1
 // Maximum value of Sampling point = ( (NBT-TSEG2)/NBT ) * 100
 #define  defMAX_SAMPLING               81
-#define  defMIN_SAMPLING               50
+#define  defMIN_SAMPLING               0 // Updated from 50 to 0 to display all possible values
 
 // Find Max of two numbers
 #define  defmcMAX2(X,Y)    ( ( X>Y ) ? X:Y )

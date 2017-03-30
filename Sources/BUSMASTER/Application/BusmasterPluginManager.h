@@ -15,6 +15,7 @@ class BusmasterPluginManager : public IBusmasterPluginManager
 {
     bool mUnloadPlugins = false;
     IBusmasterBusPluginInterface* mBusmasterInterface;
+	std::map<std::string, CLicenseDetails> mMapLicenseDetails;
     Concurrency::concurrent_vector<BusmasterPluginConfiguration> mPluginList;
     Concurrency::concurrent_vector<BusmasterBusPluginConfiguration> mBusPluginList;
     IMenuCreator* mMenuCreator = nullptr;
@@ -36,6 +37,8 @@ public:
     int drawUI(UIElements uielements) ;
     int notifyPlugins( eBusmaster_Event, void* );
     int noifyMenuClick( int menuId );
+	int notifyAppClose();
+	int getLicenseDetails(std::string strAddOnName, CLicenseDetails &obj);
     int noifyMenuUpdate(int menuId, IMenuItem* menuItem);
     int unLoadPlugins();
     int getPluginCount();

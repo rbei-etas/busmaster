@@ -627,6 +627,9 @@ void CChangeRegisters_CAN_ICS_neoVI::vChangeListBoxValues(INT nflag)
 {
     UINT unIndex = 0;
 
+	GetDlgItem(IDC_COMB_BAUD_RATE)->GetWindowText(m_omStrcombBaudRate);
+	m_dEditBaudRate = (FLOAT)_tstof(m_omStrcombBaudRate);
+
     // Call function to calculate the list of BTR0, BTR1, SJW,NBT and Sampling.
     if (nListBoxValues(m_asColListCtrl, m_dEditBaudRate, (WORD)m_unCombClock,
                        &unIndex, nGetValueFromComboBox(m_omCombSampling)) != -1)
@@ -1072,6 +1075,8 @@ void CChangeRegisters_CAN_ICS_neoVI::vFillControllerConfigDetails()
     m_dEditBaudRate =
         dCalculateBaudRateFromBTRs( m_omStrEditCNF1, m_omStrEditCNF2, m_omStrEditCNF3);
 
+	m_dEditBaudRate = (FLOAT)_tstof(m_omStrcombBaudRate);
+	
     UpdateData(FALSE);
     unsigned int unIndex = 0;
     int nReturn = nListBoxValues(m_asColListCtrl, m_dEditBaudRate,
@@ -1684,6 +1689,12 @@ DOUBLE CChangeRegisters_CAN_ICS_neoVI::vValidateBaudRate(DOUBLE dBaudrate,int nI
     CString omStrMessage        = "";
     dBaudRate           = dBaudrate;
     m_dEditBaudRate     = (FLOAT)_tstof(omStrBaudRate);
+
+	if (m_unCombClock == 0)
+	{
+		m_unCombClock = 16;
+	}
+
     dProductNbtNBrp     = (DOUBLE)(m_unCombClock/(dBaudRate/1000))/2.0 *
                           (defFACT_FREQUENCY / defFACT_BAUD_RATE);
     unProductNbtNBrp    = (UINT)(dProductNbtNBrp + 0.5);
@@ -1765,7 +1776,7 @@ void CChangeRegisters_CAN_ICS_neoVI::vExtractValuesForValidation()
 	m_omCombBaudRate.GetWindowText(omStrBaudRate);
 	dBaudRate           = (FLOAT)_tstof(omStrBaudRate);
 	dBaudRate = vValidateBaudRate(dBaudRate,m_nLastSelection,m_unCombClock);
-	omStrBaudRate.Format("%.0lf",dBaudRate);
+	omStrBaudRate.Format("%ld", (long)dBaudRate);
 	int nIndex = m_omCombBaudRate.FindString(0, omStrBaudRate);
 	if (nIndex < 0)
 	{

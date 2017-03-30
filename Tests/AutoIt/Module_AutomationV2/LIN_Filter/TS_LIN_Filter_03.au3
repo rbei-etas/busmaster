@@ -23,6 +23,11 @@ Dim $FirstMsg[13]=[1,2,3,4,5,6,7,8,9,10,11,12,13],$SecMsg[13]=[1,2,3,4,5,6,7,8,9
 Local $FirstMsg = 0,$msgidCheck=0,$txmsg=0,$endOfFIle=0
 Local $FirstMsgInMsgWindow=0,$SecMsginMsgWindow=0
 
+If(@OSVersion <> "WIN_7") Then
+		$sleep = 700
+	Else
+		$sleep = 0
+EndIf
 
 _launchApp()
 
@@ -51,7 +56,7 @@ if winexists($WIN_BUSMASTER) then
 	_EnableFilterLogLIN()																			; Enable Filter during logging
 
 	_ConnectDisconnect_LIN()
-	;sleep(1000)
+	sleep($sleep)
 	_ConnectDisconnect_LIN()
 
 	;_DisableOverwriteMode()																		; Disable Overwrite Mode

@@ -31,6 +31,7 @@
 #include <ShlObj.h>
 #include <cstringt.h>
 #include <string>
+#include <sstream>
 #include "Utility.h"
 #include "CommonDefines.h"
 
@@ -790,6 +791,96 @@ BOOL bCalcBitMaskForSig(BYTE* pbyMaskByte, UINT unArrayLen,
     return bValid;
 }
 
+UINT64 un64GetBitMask(int byte, int startBitIndexInByte, int length, bool bIntel, unsigned char* /*aucData*/, unsigned long long /*u64SignVal*/)
+{
+	UINT64 Result = 0x1;
+
+	// First make the required number of bits (m_unSignalLength) up.
+	Result <<= length;
+	--Result; // These bits are now up.
+
+	// Then shift them to the appropriate place.
+	short Shift = (true == bIntel) ?
+		((short)byte - 1) * 8 + startBitIndexInByte
+		: 64 - ((short)byte * 8 - startBitIndexInByte);
+	Result <<= Shift;
+
+	if (false == bIntel)
+	{
+		BYTE* pbStr = (BYTE*)&Result;
+
+		BYTE bTmp = 0x0;
+		bTmp = pbStr[0];
+		pbStr[0] = pbStr[7];
+		pbStr[7] = bTmp;
+		bTmp = pbStr[1];
+		pbStr[1] = pbStr[6];
+		pbStr[6] = bTmp;
+		bTmp = pbStr[2];
+		pbStr[2] = pbStr[5];
+		pbStr[5] = bTmp;
+		bTmp = pbStr[3];
+		pbStr[3] = pbStr[4];
+		pbStr[4] = bTmp;
+	}
+	return Result;
+}
+void vSetSignalValue(int byte, int startBitIndexInByte, int length, bool bIntel, unsigned long long u64SignVal, unsigned char* aucData, int dataLength)
+{
+	/* Signal valuedata type happens to be of the same size of the entire CAN
+	data byte array. Hence there is an opportunity to take advantage of this
+	idiosyncratic characteristics. We will shifts the bit array in u64SignVal
+	by the required number of bit positions to exactly map it as a data byte
+	array and then interchange positions of bytes as per the endianness and
+	finally use it as the etching mask on the target. */
+	UINT64* pu64Target = (UINT64*)aucData; // We should be able to work on
+	BYTE* pbData = (BYTE*)&u64SignVal; // these variables as an arrayof
+	// bytes andvice versa.
+	// First findout offset between the last significant bits of the signal
+	// and theframe. Finding out the lsb will directly answer to thisquery.
+	UINT64 unMaxVal = pow((double)2, (double)length);
+	unMaxVal -= 1;
+	u64SignVal = u64SignVal&unMaxVal;
+	if (bIntel == true)// If Intel format
+	{
+		int Offset = (byte - 1) * 8 + startBitIndexInByte;
+		u64SignVal <<= Offset;// Exactly map the data bits on the databytes.
+	}
+	else// If Motorola format
+	{
+		int Offset = byte * 8 - startBitIndexInByte;
+		u64SignVal <<= (64 - Offset);
+		BYTE byTmp = 0x0;
+		byTmp = pbData[7];
+		pbData[7] = pbData[0];
+		pbData[0] = byTmp;
+		byTmp = pbData[6];
+		pbData[6] = pbData[1];
+		pbData[1] = byTmp;
+		byTmp = pbData[5];
+		pbData[5] = pbData[2];
+		pbData[2] = byTmp;
+		byTmp = pbData[4];
+		pbData[4] = pbData[3];
+		pbData[3] = byTmp;
+	}
+	UINT64 unTmp = un64GetBitMask(byte, startBitIndexInByte, length, bIntel, aucData, u64SignVal);
+	*pu64Target &= ~unTmp;// All bits related to the current signal willbe
+	// be made0.
+	*pu64Target |= u64SignVal;
+}
+void vGetDataBytesFromSignal(unsigned long long u64SignVal, int startBit, eEndianess endian, int signalLength, unsigned char* pucData, int nDLC)
+{
+	unsigned char ucData[MAX_PATH] = { 0 };
+	memcpy(ucData, pucData, nDLC);
+	int byteOffsetBy8 = startBit / 64;
+	int signalStartBitInByte = startBit % 8;
+	int byteStart = startBit / 8 - (byteOffsetBy8 * 8) + 1;
+	
+	vSetSignalValue(byteStart, signalStartBitInByte, signalLength, (endian == eEndianess::eIntel), u64SignVal, &ucData[0], nDLC);
+	memcpy(pucData, ucData, nDLC);
+}
+
 HRESULT GetBusmasterInstalledFolder(std::string& strPath)
 {
     char acPath[512];
@@ -1018,4 +1109,20 @@ std::string getBusInString(ETYPE_BUS eBus)
             break;
     }
     return busName;
+}
+
+
+void tokenize(const std::string& input, char delim, std::vector<std::string>& tokens)
+{
+	if (input == "")
+	{
+		return;
+	}
+	std::stringstream stream;
+	stream.str(input);
+	std::string item;
+	while (std::getline(stream, item, delim))
+	{
+		tokens.push_back(item);
+	}
 }

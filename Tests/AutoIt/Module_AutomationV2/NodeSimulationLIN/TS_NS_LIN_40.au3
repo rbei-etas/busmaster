@@ -24,6 +24,12 @@ ConsoleWrite(@CRLF)
 ConsoleWrite(@CRLF)
 ConsoleWrite("****Start : TS_NS_LIN_40.au3****"&@CRLF)
 
+If(@OSVersion <> "WIN_7") Then
+		$sleep = 3000
+	Else
+		$sleep = 3000
+EndIf
+
 _launchApp()
 ProcessWait("BUSMASTER.exe")
 ;Global $RemoveDialogBox = 0,$childNode="",$CheckBoxNode1="",$CheckBoxNode2="",$CheckLoadednode=0
@@ -42,6 +48,7 @@ if winexists($WIN_BUSMASTER) then
 	sleep(1000)
 	;WinMenuSelectItem($WIN_BUSMASTER,"",$CANMenu,$CANMsgWinMenu,"&Activate")			; To deactivate CAn Message Window
 	_openLINClusterConfig()
+	;sleep(5000)
 	if winexists($WIN_ClustrConfigLIN) then
 		ControlCommand($WIN_ClustrConfigLIN, "",$chckBoxEnableMaster, "Check", "") 					; Select Check box for enable Master mode.
 		Sleep(1000)
@@ -96,13 +103,18 @@ if winexists($WIN_BUSMASTER) then
 		_SaveAndCloseFunEditor()																	; save and Close Function editor
 
 		WinActivate($WIN_BUSMASTER)
+		If(@OSVersion <> "WIN_7") Then
+			_ConnectDisconnect_LIN()
+			_ConnectDisconnect_LIN()
+
+		EndIf
 		;_TxMsgMenuLIN()
 		_ConnectDisconnect_LIN()																	; Connect LIN
-		Sleep(3000)
+		Sleep($sleep)
 
 
 		$CountMsgWindowLIN=_GetLINMsgWinItemCount()																					;count no. of columns in msgwindow
-
+		ConsoleWrite("$CountMsgWindowLIN="&$CountMsgWindowLIN&@CRLF)
 		;_TxMsgMenuLIN()
 		Send("a")
 		sleep(1500)
@@ -205,7 +217,8 @@ EndIf
 
 
 
-	If $MsgFunCount = 1   and $traceInfoMsgHndler=1 and $CountMsgWindowLIN=2 and $rCount=6 and $FirstMsg=1 and $SecndMsg=1 and $Thirdmsg=1 and $FourthMsg=1 and $FifthMsg=1 and $SixthMsg=1 Then
+	;If $MsgFunCount = 1   and $traceInfoMsgHndler=1 and $CountMsgWindowLIN=2 and $rCount=6 and $FirstMsg=1 and $SecndMsg=1 and $Thirdmsg=1 and $FourthMsg=1 and $FifthMsg=1 and $SixthMsg=1 Then
+	If $MsgFunCount = 1 and $CountMsgWindowLIN=2 and $rCount=6 and $FirstMsg=1 and $SecndMsg=1 and $Thirdmsg=1 and $FourthMsg=1 and $FifthMsg=1 and $SixthMsg=1 Then
 		_WriteResult("Pass","TS_NS_LIN_40")
 		ConsoleWrite("PASS")
 	Else

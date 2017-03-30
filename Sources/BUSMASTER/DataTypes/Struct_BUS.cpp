@@ -19,201 +19,234 @@
  * \copyright Copyright (c) 2011, Robert Bosch Engineering and Business Solutions. All rights reserved.
  */
 #include "DataTypes_stdafx.h"
-#include "include/Struct_CAN.h"
-#include "DataTypes/Base_FlexRay_Buffer.h"
-#include "include/Struct_LIN.h"
+//#include "include/Struct_CAN.h"
+//#include "DataTypes/Base_FlexRay_Buffer.h"
+//#include "include/Struct_LIN.h"
 #include "application/hashdefines.h"
 #include "application/Common.h"
 
-int sTCANDATA::m_nSortField = 0;
-int sTCANDATA::m_nMFactor = 1;
-
-int sTLINDATA::m_nSortField = 0;
-int sTLINDATA::m_nMFactor = 1;
-
-void sTCANDATA::vSetSortField(int nField)
-{
-    m_nSortField = nField;
-}
-
-void sTCANDATA::vSetSortAscending(bool bAscending)
-{
-    m_nMFactor = bAscending ? 1 : -1;
-};
-
-int sTCANDATA::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
-{
-    int Result = 0;
-
-    sTCANDATA* pDatCAN1 = (sTCANDATA*) pEntry1;
-    sTCANDATA* pDatCAN2 = (sTCANDATA*) pEntry2;
-
-    switch (m_nSortField)
-    {
-        case 6: // Sort by message name
-        {
-            CString str1, str2;
-            AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatCAN1->m_uDataInfo.m_sCANMsg.m_unMsgID, (LPARAM)&str1);
-            AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatCAN2->m_uDataInfo.m_sCANMsg.m_unMsgID, (LPARAM)&str2);
-
-            Result = (int) (str1.CompareNoCase(str2));
-            Result *= m_nMFactor;
-
-            if (Result != 0)
-            {
-                break;
-            }
-        }
-        case 5: // Sort by CAN id
-        {
-            Result = (int) (pDatCAN1->m_uDataInfo.m_sCANMsg.m_unMsgID - pDatCAN2->m_uDataInfo.m_sCANMsg.m_unMsgID);
-            Result *= m_nMFactor;
-            if (Result != 0)
-            {
-                break;
-            }
-        }
-        case 3: // Sort by channel
-        {
-            Result = (int) (pDatCAN1->m_uDataInfo.m_sCANMsg.m_ucChannel - pDatCAN2->m_uDataInfo.m_sCANMsg.m_ucChannel);
-            Result *= m_nMFactor;
-            if (Result != 0)
-            {
-                break;
-            }
-        }
-        case 1: // Sort by time stamp
-        {
-            Result = (int) (pDatCAN1->m_lTickCount.QuadPart - pDatCAN2->m_lTickCount.QuadPart);
-            Result *= m_nMFactor;
-        }
-        break;
-        default:
-        {
-            ASSERT(false);
-        }
-        break;
-    }
-    return Result;
-};
-
-__int64 sTCANDATA::GetSlotID(sTCANDATA& pDatCAN)
-{
-    STCAN_MSG& sMsg = pDatCAN.m_uDataInfo.m_sCANMsg;
-    // Form message to get message index in the CMap
-    int nMsgID = MAKE_RX_TX_MESSAGE( sMsg.m_unMsgID,
-                                     IS_RX_MESSAGE(pDatCAN.m_ucDataType));
-
-    nMsgID = MAKE_DEFAULT_MESSAGE_TYPE(nMsgID);
-    // For extended message
-    if (sMsg.m_ucEXTENDED)
-    {
-        nMsgID = MAKE_EXTENDED_MESSAGE_TYPE(nMsgID);
-    }
-    // Apply Channel Information
-    __int64 n64MapIndex = MAKE_CHANNEL_SPECIFIC_MESSAGE( nMsgID,
-                          sMsg.m_ucChannel );
-    return n64MapIndex;
-};
+//int STCANDATA::m_nSortField = 0;
+//int STCANDATA::m_nMFactor = 1;
+//
+///*int STLINDATA::m_nSortField = 0;
+//int STLINDATA::m_nMFactor = 1;*/
+//
+//void STCANDATA::vSetSortField(int nField)
+//{
+//    m_nSortField = nField;
+//}
+//
+//void STCANDATA::vSetSortAscending(bool bAscending)
+//{
+//    m_nMFactor = bAscending ? 1 : -1;
+//};
+//
+//int STCANDATA::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
+//{
+//    int Result = 0;
+//
+//    STCANDATA* pDatCAN1 = (STCANDATA*) pEntry1;
+//    STCANDATA* pDatCAN2 = (STCANDATA*) pEntry2;
+//
+//    switch (m_nSortField)
+//    {
+//        case 7: // Sort by DLC
+//        {
+//            Result = (int) (pDatCAN1->m_uDataInfo.m_sCANMsg.m_ucDataLen - pDatCAN2->m_uDataInfo.m_sCANMsg.m_ucDataLen);
+//            Result *= m_nMFactor;
+//            if ( Result != 0 )
+//            {
+//                break;
+//            }
+//            break;
+//        }
+//        case 6: // Sort by message name
+//        {
+//            CString str1, str2;
+//            AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatCAN1->m_uDataInfo.m_sCANMsg.m_unMsgID, (LPARAM)&str1);
+//            AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatCAN2->m_uDataInfo.m_sCANMsg.m_unMsgID, (LPARAM)&str2);
+//
+//            Result = (int) (str1.CompareNoCase(str2));
+//            Result *= m_nMFactor;
+//
+//            if (Result != 0)
+//            {
+//                break;
+//            }
+//            break;
+//        }
+//        case 5: // Sort by CAN id
+//        {
+//            Result = (int) (pDatCAN1->m_uDataInfo.m_sCANMsg.m_unMsgID - pDatCAN2->m_uDataInfo.m_sCANMsg.m_unMsgID);
+//            Result *= m_nMFactor;
+//            if (Result != 0)
+//            {
+//                break;
+//            }
+//            break;
+//        }
+//        case 4: // Sort by Message Type
+//        {
+//            Result = (int) (pDatCAN1->m_uDataInfo.m_sCANMsg.m_ucEXTENDED - pDatCAN2->m_uDataInfo.m_sCANMsg.m_ucEXTENDED);
+//            Result *= m_nMFactor;
+//            if ( Result != 0 )
+//            {
+//                break;
+//            }
+//            break;
+//        }
+//        case 3: // Sort by channel
+//        {
+//            Result = (int) (pDatCAN1->m_uDataInfo.m_sCANMsg.m_ucChannel - pDatCAN2->m_uDataInfo.m_sCANMsg.m_ucChannel);
+//            Result *= m_nMFactor;
+//            if (Result != 0)
+//            {
+//                break;
+//            }
+//            break;
+//        }
+//        case 2: // Sort by Tx/Rx column
+//        {
+//            Result = (int) (IS_TX_MESSAGE(pDatCAN1->m_ucDataType) -  IS_TX_MESSAGE(pDatCAN2->m_ucDataType));
+//            Result *= m_nMFactor;
+//            if ( Result != 0 )
+//            {
+//                break;
+//            }
+//            break;
+//        }
+//        case 1: // Sort by time stamp
+//        {
+//            Result = (int) (pDatCAN1->m_lTickCount.QuadPart - pDatCAN2->m_lTickCount.QuadPart);
+//            Result *= m_nMFactor;
+//        }
+//        break;
+//        default:
+//        {
+//            ASSERT(false);
+//        }
+//        break;
+//    }
+//    return Result;
+//};
+//
+//__int64 STCANDATA::GetSlotID(STCANDATA& pDatCAN)
+//{
+//    STCAN_MSG& sMsg = pDatCAN.m_uDataInfo.m_sCANMsg;
+//    // Form message to get message index in the CMap
+//    int nMsgID = MAKE_RX_TX_MESSAGE( sMsg.m_unMsgID,
+//                                     IS_RX_MESSAGE(pDatCAN.m_ucDataType));
+//
+//    nMsgID = MAKE_DEFAULT_MESSAGE_TYPE(nMsgID);
+//    // For extended message
+//    if (sMsg.m_ucEXTENDED)
+//    {
+//        nMsgID = MAKE_EXTENDED_MESSAGE_TYPE(nMsgID);
+//    }
+//    // Apply Channel Information
+//    __int64 n64MapIndex = MAKE_CHANNEL_SPECIFIC_MESSAGE( nMsgID,
+//                          sMsg.m_ucChannel );
+//    return n64MapIndex;
+//};
 
 /*----------------------------- FlexRay Implementation -----------------------------*/
 
-void s_FLXMSG::vSetSortField(int /* nField */)
-{
-}
-
-void s_FLXMSG::vSetSortAscending(bool /* bAscending */)
-{
-};
-
-int s_FLXMSG::DoCompareIndiv(const void* /* pEntry1 */, const void* /* pEntry2 */)
-{
-    return 0;
-};
-
-__int64 s_FLXMSG::GetSlotID(struct_UCI_FLXMSG& /* pDatFLEX */)
-{
-    return 0;
-};
-
-void sTLINDATA::vSetSortField(int nField)
-{
-    m_nSortField = nField;
-}
-
-void sTLINDATA::vSetSortAscending(bool bAscending)
-{
-    m_nMFactor = bAscending ? 1 : -1;
-};
-
-int sTLINDATA::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
-{
-    int Result = 0;
-
-    sTLINDATA* pDatLIN1 = (sTLINDATA*) pEntry1;
-    sTLINDATA* pDatLIN2 = (sTLINDATA*) pEntry2;
-
-    switch (m_nSortField)
-    {
-        case 6: // Sort by message name
-        {
-            CString str1, str2;
-            AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatLIN1->m_uDataInfo.m_sLINMsg.m_ucMsgID, (LPARAM)&str1);
-            AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatLIN2->m_uDataInfo.m_sLINMsg.m_ucMsgID, (LPARAM)&str2);
-
-            Result = (int) (str1.CompareNoCase(str2));
-            Result *= m_nMFactor;
-
-            if (Result != 0)
-            {
-                break;
-            }
-        }
-        case 5: // Sort by LIN id
-        {
-            Result = (int) (pDatLIN1->m_uDataInfo.m_sLINMsg.m_ucMsgID - pDatLIN2->m_uDataInfo.m_sLINMsg.m_ucMsgID);
-            Result *= m_nMFactor;
-            if (Result != 0)
-            {
-                break;
-            }
-        }
-        case 3: // Sort by channel
-        {
-            Result = (int) (pDatLIN1->m_uDataInfo.m_sLINMsg.m_ucChannel - pDatLIN2->m_uDataInfo.m_sLINMsg.m_ucChannel);
-            Result *= m_nMFactor;
-            if (Result != 0)
-            {
-                break;
-            }
-        }
-        case 1: // Sort by time stamp
-        {
-            Result = (int) (pDatLIN1->m_lTickCount.QuadPart - pDatLIN2->m_lTickCount.QuadPart);
-            Result *= m_nMFactor;
-        }
-        break;
-        default:
-        {
-            ASSERT(false);
-        }
-        break;
-    }
-    return Result;
-};
-
-__int64 sTLINDATA::GetSlotID(sTLINDATA& pDatLIN)
-{
-    STLIN_MSG& sMsg = pDatLIN.m_uDataInfo.m_sLINMsg;
-    // Form message to get message index in the CMap
-    int nMsgID = MAKE_RX_TX_MESSAGE( sMsg.m_ucMsgID,
-                                     IS_RX_MESSAGE(pDatLIN.m_ucDataType));
-
-    nMsgID = MAKE_DEFAULT_MESSAGE_TYPE(nMsgID);
-    // For extended message
-
-    // Apply Channel Information
-    __int64 n64MapIndex = MAKE_CHANNEL_SPECIFIC_MESSAGE( nMsgID,
-                          sMsg.m_ucChannel );
-    return n64MapIndex;
-};
+//void s_FLXMSG::vSetSortField(int /* nField */)
+//{
+//}
+//
+//void s_FLXMSG::vSetSortAscending(bool /* bAscending */)
+//{
+//};
+//
+//int s_FLXMSG::DoCompareIndiv(const void* /* pEntry1 */, const void* /* pEntry2 */)
+//{
+//    return 0;
+//};
+//
+//__int64 s_FLXMSG::GetSlotID(struct_UCI_FLXMSG& /* pDatFLEX */)
+//{
+//    return 0;
+//};
+//
+//void sTLINDATA::vSetSortField(int nField)
+//{
+//    m_nSortField = nField;
+//}
+//
+//void sTLINDATA::vSetSortAscending(bool bAscending)
+//{
+//    m_nMFactor = bAscending ? 1 : -1;
+//};
+//
+//int sTLINDATA::DoCompareIndiv(const void* pEntry1, const void* pEntry2)
+//{
+//    int Result = 0;
+//
+//    sTLINDATA* pDatLIN1 = (sTLINDATA*) pEntry1;
+//    sTLINDATA* pDatLIN2 = (sTLINDATA*) pEntry2;
+//
+//    switch (m_nSortField)
+//    {
+//        case 6: // Sort by message name
+//        {
+//            CString str1, str2;
+//            AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatLIN1->m_uDataInfo.m_sLINMsg.m_ucMsgID, (LPARAM)&str1);
+//            AfxGetMainWnd()->SendMessage(WM_GET_MSG_NAME_FROM_CODE, (WPARAM)pDatLIN2->m_uDataInfo.m_sLINMsg.m_ucMsgID, (LPARAM)&str2);
+//
+//            Result = (int) (str1.CompareNoCase(str2));
+//            Result *= m_nMFactor;
+//
+//            if (Result != 0)
+//            {
+//                break;
+//            }
+//        }
+//        case 5: // Sort by LIN id
+//        {
+//            Result = (int) (pDatLIN1->m_uDataInfo.m_sLINMsg.m_ucMsgID - pDatLIN2->m_uDataInfo.m_sLINMsg.m_ucMsgID);
+//            Result *= m_nMFactor;
+//            if (Result != 0)
+//            {
+//                break;
+//            }
+//        }
+//        case 3: // Sort by channel
+//        {
+//            Result = (int) (pDatLIN1->m_uDataInfo.m_sLINMsg.m_ucChannel - pDatLIN2->m_uDataInfo.m_sLINMsg.m_ucChannel);
+//            Result *= m_nMFactor;
+//            if (Result != 0)
+//            {
+//                break;
+//            }
+//        }
+//        case 1: // Sort by time stamp
+//        {
+//            Result = (int) (pDatLIN1->m_lTickCount.QuadPart - pDatLIN2->m_lTickCount.QuadPart);
+//            Result *= m_nMFactor;
+//        }
+//        break;
+//        default:
+//        {
+//            ASSERT(false);
+//        }
+//        break;
+//    }
+//    return Result;
+//};
+//
+//__int64 sTLINDATA::GetSlotID(sTLINDATA& pDatLIN)
+//{
+//    STLIN_MSG& sMsg = pDatLIN.m_uDataInfo.m_sLINMsg;
+//    // Form message to get message index in the CMap
+//    int nMsgID = MAKE_RX_TX_MESSAGE( sMsg.m_ucMsgID,
+//                                     IS_RX_MESSAGE(pDatLIN.m_ucDataType));
+//
+//    nMsgID = MAKE_DEFAULT_MESSAGE_TYPE(nMsgID);
+//    // For extended message
+//
+//    // Apply Channel Information
+//    __int64 n64MapIndex = MAKE_CHANNEL_SPECIFIC_MESSAGE( nMsgID,
+//                          sMsg.m_ucChannel );
+//    return n64MapIndex;
+//};

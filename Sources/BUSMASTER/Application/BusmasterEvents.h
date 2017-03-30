@@ -5,7 +5,7 @@ enum eBusmaster_Event
     Bus_Status,                         // struct Event_Bus_Staus{}
     network_config_changed,             // ETYPE_BUS bus;
     driver_selection_changed,           // ETYPE_BUS bus;
-
+	database_dissociated,
     Channel_Added,                      // struct Event_Channel_Added{}
     Channel_Updated,                    // struct Event_Channel_Updated{}
 

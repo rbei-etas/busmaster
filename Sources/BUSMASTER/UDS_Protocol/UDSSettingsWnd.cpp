@@ -124,8 +124,6 @@ CUDSSettingsWnd::CUDSSettingsWnd(CWnd* pParent /*=NULL*/,CUDS_Protocol* pEngine)
     : CDialog(CUDSSettingsWnd::IDD, pParent)
 {
     UdsProtocolPtr = pEngine;
-
-
 }
 
 CUDSSettingsWnd::~CUDSSettingsWnd()
@@ -179,7 +177,7 @@ BEGIN_MESSAGE_MAP(CUDSSettingsWnd, CDialog)
     ON_BN_CLICKED(ID_CANCEL, OnBnCancelPressed)
     ON_BN_CLICKED(IDC_DefaultValues, OnDefaultValuesPressed)
     ON_EN_UPDATE( IDC_STmin, OnEnChangeSTmin)
-
+    ON_MESSAGE ( WM_COMMANDHELP, CUDSSettingsWnd::OnCommandHelp )
 END_MESSAGE_MAP()
 
 /**********************************************************************************************************
@@ -767,6 +765,21 @@ void CUDSSettingsWnd::OnBnOKPressed()
 {
     OnBnApplyPressed();
     this->ShowWindow(SW_HIDE);
+}
+
+
+LRESULT CUDSSettingsWnd::OnCommandHelp ( WPARAM wParam, LPARAM lParam )
+{
+    DWORD dwDirLen = 1024, dwRetVal = 0;
+    char cCurrWkDirPath[1024] = { 0 }, cChmFilePath[2048] = { 0 };
+    dwRetVal = GetModuleFileName ( NULL, cCurrWkDirPath, dwDirLen );
+    PathRemoveFileSpec ( cCurrWkDirPath );
+    CString strChmFilePath = "";
+    strChmFilePath = PathCombine ( cChmFilePath, cCurrWkDirPath, "BUSMASTER.chm ::/topics/Diagnostics_Settings.html" );
+
+    ::HtmlHelp ( nullptr, strChmFilePath, HH_DISPLAY_TOPIC, 0 );
+
+    return S_OK;
 }
 
 /*******************************************************************************************************************

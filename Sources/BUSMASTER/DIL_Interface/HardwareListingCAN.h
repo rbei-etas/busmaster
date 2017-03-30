@@ -35,7 +35,9 @@
 #include <map>
 #include "..\DIL_Interface\ChannelSelectionResource.h"
 #include "resource.h"
+#include "Utility/RadixEdit.h"
 #include "DIL_Interface\IChangeRegisters.h"
+
 class CHardwareListingCAN : public CDialog
 {
 
@@ -90,6 +92,7 @@ protected:
     virtual void OnCancel();
     afx_msg void OnItemchangedLstcSelectedHwList(NMHDR* pNMHDR, LRESULT* pResult);
 	void InitializeControllerDetails(int nItem);
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 private:
@@ -97,8 +100,11 @@ private:
 	void vUpdateControllerDetails();
 	void vFillControllerConfigDetails();
 	void    vValidateBaudRate();
+	void vCalculateConfigParams();
     // Pointer to Hardware List
     INTERFACE_HW* m_psHwInterface;
+
+	bool m_bOnEnterBaudRate;
     // Size of the array
     int m_nSize;
 	CWnd* m_pParent;
@@ -123,6 +129,9 @@ public:
     afx_msg void OnNMClickLstcHwList(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnNMClickLstcSelectedHwList(NMHDR* pNMHDR, LRESULT* pResult);
 	DOUBLE  m_dEditBaudRate;
+	CString m_omStrBTR0Val;
+	CString m_omStrBTR1Val;
+
 public:
     // Hardware CONTAINER
     typedef struct tagHardwareContainer
@@ -143,9 +152,15 @@ public:
     void vSortHardwareItems();
 private:
     std::string getProtocolChannelNameFormat( int );	
+	void vEnableBTRParams(BOOL bEnable);
+	
 public:
-	CEdit m_omEditBaudRate;
+	CRadixEdit  m_omEditBaudRate;
 	CString m_omStrEditBaudRate;
+	CRadixEdit   m_omEditBTR1;
+	CRadixEdit   m_omEditBTR0;
+	CString m_omStrEditBTR0;
+	CString m_omStrEditBTR1;
 	CEdit m_omCANFDEditBaudRate;
 	CString m_omCANFDStrEditBaudRate;
 	BOOL m_bDialogCancel;

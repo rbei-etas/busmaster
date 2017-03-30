@@ -19,6 +19,7 @@ public:
     virtual BOOL OnInitDialog();
     afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     virtual BOOL Create(CWnd* pParentWnd = NULL, DWORD dwStyle = (DWORD)-1, DWORD dwExStyle = 0);
+    afx_msg void OnHelp ();
 protected:
     virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
     void vGettextBusmaster();

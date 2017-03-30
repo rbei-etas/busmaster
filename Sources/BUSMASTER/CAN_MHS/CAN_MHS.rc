@@ -1,6 +1,6 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
-#include "CAN_MHS_Resource.h"
+#include "ChannelSelectionResource.h"
 #include "../DIL_Interface/ChannelSelection.rc"
 
 #define APSTUDIO_READONLY_SYMBOLS
@@ -14,13 +14,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (USA) resources
+// English (United States) resources
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
-#ifdef _WIN32
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -28,18 +26,35 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE
+1 TEXTINCLUDE 
 BEGIN
-    "CAN_MHS_Resource.h\0"
+    "ChannelSelectionResource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+1 TEXTINCLUDE 
+BEGIN
+    "CAN_MHS_Resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
 BEGIN
     "\r\n"
     "\0"
@@ -47,8 +62,6 @@ END
 
 #endif    // APSTUDIO_INVOKED
 
-
-#ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
 // Version
@@ -71,18 +84,15 @@ BEGIN
     BEGIN
         BLOCK "040704b0"
         BEGIN
-            VALUE "Comments", "MHS-Elektronik Tiny-CAN Driver for Busmaster\0"
-            VALUE "CompanyName", "MHS-Elektronik GmbH & Co. KG\0"
-            VALUE "FileDescription", "MHS-Elektronik Tiny-CAN Driver for Busmaster\0"
-            VALUE "FileVersion", "1, 0, 0, 0\0"
-            VALUE "InternalName", "CAN_MHS\0"
-            VALUE "LegalCopyright", "Copyright (c) 2011, Robert Bosch Engineering and Business Solutions\0"
-            VALUE "LegalTrademarks", "\0"
-            VALUE "OriginalFilename", "CAN_MHS.dll\0"
-            VALUE "PrivateBuild", "\0"
-            VALUE "ProductName", "  CAN_MHS\0"
-            VALUE "ProductVersion", "1, 0, 0, 0\0"
-            VALUE "SpecialBuild", "\0"
+            VALUE "Comments", "MHS-Elektronik Tiny-CAN Driver for Busmaster"
+            VALUE "CompanyName", "MHS-Elektronik GmbH & Co. KG"
+            VALUE "FileDescription", "MHS-Elektronik Tiny-CAN Driver for Busmaster"
+            VALUE "FileVersion", "1, 0, 0, 0"
+            VALUE "InternalName", "CAN_MHS"
+            VALUE "LegalCopyright", "Copyright (c) 2011, Robert Bosch Engineering and Business Solutions"
+            VALUE "OriginalFilename", "CAN_MHS.dll"
+            VALUE "ProductName", "  CAN_MHS"
+            VALUE "ProductVersion", "1, 0, 0, 0"
         END
     END
     BLOCK "VarFileInfo"
@@ -91,9 +101,7 @@ BEGIN
     END
 END
 
-#endif    // !_MAC
-
-#endif    // English (USA) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -107,3 +115,4 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+

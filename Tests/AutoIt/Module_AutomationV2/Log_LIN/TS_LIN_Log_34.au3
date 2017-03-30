@@ -22,8 +22,17 @@
 ConsoleWrite(@CRLF)
 ConsoleWrite(@CRLF)
 ConsoleWrite("****Start : TS_LIN_Log_34.au3****"&@CRLF)
+If(@OSVersion <> "WIN_7") Then
+		$sleep = 3500
+	Else
+		$sleep = 3000
+EndIf
 
-
+If(@OSVersion <> "WIN_7") Then
+	Local $data1 = 11
+Else
+	Local $data1 = 14
+EndIf
 _launchApp()
 
 ;Dim $HexMsgID21Tx1[10]=["","","","","","","","","",""],$HexMsgID21Tx2[10]=["","","","","","","","","",""],$HexMsgID21Tx3[10]=["","","","","","","","","",""]
@@ -46,7 +55,7 @@ if winexists($WIN_BUSMASTER) then
 	sleep(1000)
 
 	_ConnectDisconnect_LIN()																	; Connect the tool
-	sleep(3000)
+	sleep($sleep)
 
 	;_TransmitMsgsMenu()																		; Transmit normal blocks
 	;sleep(3000)
@@ -99,7 +108,7 @@ consolewrite("$finddataslaveNoRespnse :"&$finddataslaveNoRespnse&@CRLF)
 consolewrite("$EndOfLog :"&$EndOfLog&@CRLF)
 
 
-if $EndOfLog="***[STOP LOGGING SESSION]***" and $finddataslaveNoRespnse=14 Then                                                ; Check the last line of the lof file
+if $EndOfLog="***[STOP LOGGING SESSION]***" and $finddataslaveNoRespnse>=$data1 Then                                                ; Check the last line of the lof file
 	_WriteResult("Pass","TS_LIN_Log_34")
 Else
 	_WriteResult("Fail","TS_LIN_Log_34")

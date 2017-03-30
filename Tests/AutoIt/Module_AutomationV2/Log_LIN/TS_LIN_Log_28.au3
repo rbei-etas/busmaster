@@ -29,6 +29,11 @@ Dim $HexMsgID21Tx1[10]=["","","","","","","","","",""],$HexMsgID21Tx2[10]=["",""
 Local $filename = "\Log_28_Sample.log",$verfyCount = 0,$finddatacount=0,$finddatacount5=0,$finddatacount6=0,$finddatacount7=0,$cnt=0
 local $totalCountlogFile = 0
 
+If(@OSVersion <> "WIN_7") Then
+	Local $data1 = 3,$data2 = 3,$data3 = 3
+Else
+	Local $data1 =4 ,$data2 = 4,$data3 = 4
+EndIf
 
 if winexists($WIN_BUSMASTER) then
 	_loadConfig("cfxLogging_28_LIN")														    ; Load Configuration
@@ -91,7 +96,8 @@ consolewrite("$finddatacount6 :"&$finddatacount6&@CRLF)
 consolewrite("$finddatacount7 :"&$finddatacount7&@CRLF)
 consolewrite("$totalCountlogFile :"&$totalCountlogFile&@CRLF)
 
-if $finddatacount5=4 and $finddatacount6=4 and $finddatacount7=4 and $totalCountlogFile=1 Then
+;if $finddatacount5=4 and $finddatacount6=4 and $finddatacount7=4 and $totalCountlogFile=1 Then
+if $finddatacount5=$data1 and $finddatacount6=$data2 and $finddatacount7=$data3 and $totalCountlogFile=1 Then
 	_WriteResult("Pass","TS_LIN_Log_28")
 Else
 	_WriteResult("Fail","TS_LIN_Log_28")

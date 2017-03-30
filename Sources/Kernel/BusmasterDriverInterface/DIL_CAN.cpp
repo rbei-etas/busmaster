@@ -58,6 +58,7 @@ enum
     DRIVER_CAN_ETAS_BOA,
     DRIVER_CAN_ETAS_ES581,
     DRIVER_CAN_ETAS_ES5814,
+	DRIVER_CAN_ETAS_ES5821,
     DRIVER_CAN_VECTOR_XL,
     DRIVER_CAN_KVASER_CAN,
     DRIVER_CAN_MHS,
@@ -78,6 +79,7 @@ static ENTRY_DIL sg_ListDIL[] =
     {DRIVER_CAN_ETAS_BOA,   "ETAS &BOA"         },
     {DRIVER_CAN_ETAS_ES581, "ETAS &ES581.3"     },
     {DRIVER_CAN_ETAS_ES5814, "ETAS ES581.&4"    },
+	{DRIVER_CAN_ETAS_ES5821, "ETAS ES582.&1"	},
     {DRIVER_CAN_ISOLAR,     "ETAS ISO&LAR-EVE"  },
     {DRIVER_CAN_IVIEW,      "&i-VIEW"           },
     {DRIVER_CAN_ICS_NEOVI,  "IntrepidCS ne&oVI" },
@@ -313,6 +315,7 @@ HRESULT CDIL_CAN::DILC_SelectDriver(DWORD dwDriverID, HWND hWndOwner)
                 m_hDll = LoadLibrary("CAN_ICS_neoVI.dll");
                 break;
             case DRIVER_CAN_ETAS_ES5814:
+			case DRIVER_CAN_ETAS_ES5821:
             case DRIVER_CAN_ETAS_BOA:
                 m_hDll = vLoadEtasBoaLibrary();
                 break;

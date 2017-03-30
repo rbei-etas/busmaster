@@ -34,6 +34,7 @@
 #include "NodeSimEx/NodeSimEx_extern.h"
 #include "MsgContainer_CAN.h"
 #include "../Application/HashDefines.h"
+#include "..\Utility\SortData.h"
 const int nBitsIn4Bytes          = 32;
 
 
@@ -921,8 +922,11 @@ void CMsgContainerCAN::SetClientID(DWORD dwClientID)
 
 void CMsgContainerCAN::DoSortBuffer(int nField,bool bAscending)
 {
-    m_ouAppendCanBuf.vDoSortBuffer(nField,bAscending);
-    m_ouOWCanBuf.vDoSortBuffer( nField, bAscending );
+    CCANMsgWndDataHandler<STCANDATASPL>::SortBufferData ( nField, bAscending, mBmNetwork, m_ouAppendCanBuf.nGetBuffer (), m_ouAppendCanBuf.GetBufferLength () );
+    m_ouAppendCanBuf.vDoSortIndexMapArray ();
+
+    CCANMsgWndDataHandler<STCANDATA>::SortBufferData ( nField, bAscending, mBmNetwork, m_ouOWCanBuf.nGetBuffer(), m_ouOWCanBuf.GetBufferLength() );
+    m_ouOWCanBuf.vDoSortIndexMapArray ();
 }
 
 void CMsgContainerCAN::GetMapIndexAtID(int nIndex,__int64& nMapIndex)

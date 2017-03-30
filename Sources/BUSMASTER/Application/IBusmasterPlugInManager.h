@@ -53,6 +53,8 @@ public:
     virtual int getPluginConfiguration(xmlNodePtr&)=0;
     virtual IBusmasterPluginConnection* getPluginConnectionPoint(const char* id) = 0;
     virtual int setPluginConfiguration(const xmlDocPtr)=0;
+	virtual int notifyAppClose()= 0 ;
+	virtual int getLicenseDetails(std::string strAddOnName, CLicenseDetails &) = 0;
 };
 
 typedef int( *GetBusMaterPluginInterface )( IBusmasterPlugin* );

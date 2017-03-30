@@ -25,7 +25,7 @@ _launchApp()																					; Check if the App is open else launch it
 ProcessWait("BUSMASTER.exe")																	; Pauses script execution until a given process exists.
 sleep(4000)
 
-WinActivate($WIN_BUSMASTER,3)
+WinActivate($WIN_BUSMASTER,20)
 
 
 if winexists($WIN_BUSMASTER) then

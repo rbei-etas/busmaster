@@ -40,7 +40,8 @@ SectionGroup "Main"
 Section "BUSMASTER"
 	IfFileExists Software\RBEI-ETAS\BUSMASTER_v${VERSION} bRegEntryMruExists
 	 bRegEntryMruExists:
-	 DeleteRegKey HKCU "Software\RBEI-ETAS\BUSMASTER_v${VERSION}"
-	
+	 DeleteRegKey HKCU "Software\RBEI-ETAS\BUSMASTER_v${VERSION}\BUSMASTER"
+	 DeleteRegKey HKCU "Software\RBEI-ETAS\BUSMASTER_v${VERSION}\Files"
+	 DeleteRegKey HKCU "Software\RBEI-ETAS\BUSMASTER_v${VERSION}\MainWnd"	
 SectionEnd
 SectionGroupEnd

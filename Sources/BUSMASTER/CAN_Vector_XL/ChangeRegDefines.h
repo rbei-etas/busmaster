@@ -110,7 +110,7 @@
 // Minimum value of TSEG1   = TSEG1bit + 1 ( BTR1 : 0-3)
 #define  defMIN_TSEG1                      3
 // Minimum vaue of Sampling point = ( (NBT-TSEG2)/NBT ) * 100
-#define  defMIN_SAMPLING                   50
+#define  defMIN_SAMPLING                   0 // Updated from 50 to 0 to display all possible values
 // Minimum value of TSEG2  = TSEG2bit + 1 ( BTR1 : 4-6)
 #define  defMIN_TSEG2                  2
 

@@ -25,6 +25,8 @@
 !include "NSISHeaders.nsh"
 !include "MUI2.nsh"
 
+!include "Sections.nsh"
+
 !define MUI_WELCOMEFINISHPAGE_BITMAP "welcomefinishpage.bmp"
 !define MUI_WELCOMEPAGE_TEXT "This wizard will guide you through the installation of BUSMASTER on your system."
 !define MUI_HEADERIMAGE
@@ -111,6 +113,14 @@ Var STR_CONTAINS_VAR_2
 Var STR_CONTAINS_VAR_3
 Var STR_CONTAINS_VAR_4
 Var STR_RETURN_VAR
+
+var COMP_BM
+var COMP_ADD_ONS
+var COMP_FLEXRAY
+var COMP_Instruments
+var COMP_PAGE_INIT
+var DeleteLicenseFiles
+
 Function StrContains
   Exch $STR_NEEDLE
   Exch 1
@@ -186,6 +196,8 @@ Function .onInit
   Pop $0 ; $0 has '1' if the user closed the splash screen early,
          ;        '0' if everything closed normally, and
          ;       '-1' if some error occurred.
+		 
+
 FunctionEnd
 
 ; The default installation folder
@@ -260,6 +272,8 @@ icsneo40_install:
 icsneo40_done:
 FunctionEnd
 
+
+
 ; Checks for the version if it is already installed
 Function CheckVersion
   ; Read the BUSMASTER version installed
@@ -294,9 +308,12 @@ FunctionEnd
 Page Custom information
 !insertmacro MUI_PAGE_FINISH
 
+!define MUI_PAGE_CUSTOMFUNCTION_PRE un.ComponentsPage_Pre
+!define MUI_PAGE_CUSTOMFUNCTION_LEAVE un.ComponentsPage_Leave
+
+!insertmacro MUI_UNPAGE_COMPONENTS
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES
-
 !insertmacro MUI_LANGUAGE English
 
 ; Installation Types
@@ -514,8 +531,9 @@ Section "BUSMASTER"
   File /r ..\Sources\BUSMASTER\Localization
 
   ; Help
-  File /oname=BUSMASTER.chm "..\Documents\4 Help\out\help.chm"
-
+  ;File /oname=BUSMASTER.chm "..\Documents\4 Help\out\help.chm"
+  File ..\Sources\BUSMASTER\BIN\Release\BUSMASTER.chm
+  
   ; LDF Editor Help
   File /oname=LDFEditor.chm "..\Documents\4 Help\out\ldfeditor.chm"
   
@@ -743,7 +761,6 @@ Section "COM Examples"
   SetOutPath "$INSTDIR\Examples\COM\"
   File ..\Examples\COM\VC++COM_Client.zip
 SectionEnd
-
 Section "Test Automation"
   SectionIn 1 2
   SetOutPath "$INSTDIR\Examples\TestAutomation\"
@@ -754,8 +771,19 @@ SectionEnd
 
 SectionGroupEnd
 
+Function un.onInit
+StrCpy $COMP_PAGE_INIT "1"
+StrCpy $DeleteLicenseFiles "0"
+StrCpy $COMP_FLEXRAY "0"
+StrCpy $COMP_Instruments "0"
+StrCpy $COMP_ADD_ONS "0"
+FunctionEnd
+
 ; Uninstall section here...
-Section "Uninstall"
+Section un.BUSMASTER Uninstall 
+  
+  IntOp $COMP_BM $COMP_BM & ${SF_SELECTED}
+   ${If} $COMP_BM != "0"
  ; Prompt user to close all instances of BUSMASTER.
   ${nsProcess::FindProcess} "BUSMASTER.exe" $R0
   ${If} $R0 == 0
@@ -769,6 +797,9 @@ Section "Uninstall"
   
   ; Unregister server
   SetOutPath $INSTDIR
+  
+  
+    
   ExecWait 'BusEmulation.exe /unregserver'
   ExecWait 'BUSMASTER.exe /unregserver'
 
@@ -816,7 +847,144 @@ Section "Uninstall"
   Delete "$SMPROGRAMS\BUSMASTER v${VERSION}\Tools\Format Converter.lnk"
   
   RMDir /r "$SMPROGRAMS\BUSMASTER v${VERSION}\Tools"
-
+  
   ; Deleting If StartPrograms BUSMASTER dir exists
-  RMDir /r "$SMPROGRAMS\BUSMASTER v${VERSION}"
+  RMDir /r "$SMPROGRAMS\BUSMASTER v${VERSION}" 
+  ${EndIf}
+  
 SectionEnd
+
+SectionGroup "un.AddOns" Section_AddOns
+Section /o un.FlexRay Section_FlexRay
+
+IntOp $COMP_FLEXRAY $COMP_FLEXRAY & ${SF_SELECTED}
+${if} $COMP_FLEXRAY == "1"
+${If} $DeleteLicenseFiles == "1"
+  Delete "$PROGRAMFILES\BUSMASTER_v${VERSION}\LicenseValidator.dll"
+  Delete "$PROGRAMFILES\BUSMASTER_v${VERSION}\MacIdLicenceManager.dll"
+  ;RMDir /r "$INSTDIR\BusmasterBusPlugins"
+  ;RMDir /r "$INSTDIR\BusmasterPlugins"
+  ${EndIf}  
+ExecWait '"$PROGRAMFILES\BUSMASTER_v${VERSION}\BusmasterBusPlugins\FlexRay\uninst.exe" /S'
+${EndIf}
+SectionEnd
+
+Section /o un.Instruments Section_Instruments
+
+IntOp $COMP_FLEXRAY $COMP_FLEXRAY & ${SF_SELECTED}
+${if} $COMP_Instruments == "1"
+${If} $DeleteLicenseFiles == "1"
+  Delete "$PROGRAMFILES\BUSMASTER_v${VERSION}\LicenseValidator.dll"
+  Delete "$PROGRAMFILES\BUSMASTER_v${VERSION}\MacIdLicenceManager.dll"
+  ;RMDir /r "$INSTDIR\BusmasterBusPlugins"
+  ;RMDir /r "$INSTDIR\BusmasterPlugins"
+${EndIf}
+ExecWait '"$PROGRAMFILES\BUSMASTER_v${VERSION}\BusmasterPlugins\InstrumentPlugin\uninst.exe" /S'
+${EndIf}
+
+SectionEnd
+
+
+SectionGroupEnd
+
+LangString DESC_BUSMASTER ${ENGLISH} "Select BusMaster to uninstall BusMaster including AddOns"
+LangString DESC_AddOns ${ENGLISH} "Select AddOns to uninstall BusMaster AddOns"
+LangString DESC_AddOns_FlexRay ${ENGLISH} "Select FlexRay AddOn to uninstall only FlexRay AddOn"
+LangString DESC_AddOns_Instruments ${ENGLISH} "Select Instruments to uninstall only Instruments AddOn"
+
+!insertmacro MUI_UNFUNCTION_DESCRIPTION_BEGIN
+  !insertmacro MUI_DESCRIPTION_TEXT ${Section_AddOns} $(DESC_AddOns)
+  !insertmacro MUI_DESCRIPTION_TEXT ${Section_FlexRay} $(DESC_AddOns_FlexRay)
+  !insertmacro MUI_DESCRIPTION_TEXT ${Section_Instruments} $(DESC_AddOns_Instruments)
+  !insertmacro MUI_DESCRIPTION_TEXT ${Uninstall} $(DESC_BUSMASTER)
+!insertmacro MUI_UNFUNCTION_DESCRIPTION_END
+
+Function un.ComponentsPage_Pre
+	Call un.CheckAddOnDetails
+	SectionGetFlags ${Uninstall} $R5
+FunctionEnd
+
+Function un.ComponentsPage_Leave
+SectionGetFlags ${Uninstall} $COMP_BM
+SectionGetFlags ${Section_AddOns} $COMP_ADD_ONS
+SectionGetFlags ${Section_FlexRay} $COMP_FLEXRAY
+SectionGetFlags ${Section_Instruments} $COMP_Instruments
+
+StrCpy $COMP_PAGE_INIT "0"
+StrCpy $DeleteLicenseFiles "0"
+
+IntOp $COMP_ADD_ONS $COMP_ADD_ONS & ${SF_SELECTED}
+${If} $COMP_ADD_ONS == "1"
+StrCpy $DeleteLicenseFiles "1"
+${EndIf}
+
+FunctionEnd
+
+Function un.CheckAddOnDetails
+StrCpy $0 0
+StrCpy $COMP_ADD_ONS "0"
+StrCpy $COMP_FLEXRAY "0"
+StrCpy $COMP_Instruments "0"
+loop:
+  EnumRegKey $1 HKCU "SOFTWARE\RBEI-ETAS\BUSMASTER_v${VERSION}\Add-Ons" $0
+  StrCmp $1 "" done
+  StrCpy $COMP_ADD_ONS "1"
+  ${If} $1 == "FlexRay"
+  StrCpy $COMP_FLEXRAY "1"
+  ${EndIf}
+  ${If} $1 == "Instruments"
+  StrCpy $COMP_Instruments "1"
+  ${EndIf}
+  
+  ;StrCmp $1 "" disbleBM
+  IntOp $0 $0 + 1
+  goto loop
+  
+  done:   
+  ${If} $COMP_PAGE_INIT == "1"
+${If} $COMP_FLEXRAY == "0" 
+${AndIf} $COMP_Instruments == "0"
+	SectionSetText ${Section_AddOns} ""
+	SectionSetText ${Section_FlexRay} ""
+	SectionSetText ${Section_Instruments} "" 
+	IntOp $0 ${SF_SELECTED} | ${SF_RO}
+	SectionSetFlags ${Uninstall} $0
+${EndIf}
+${If} $COMP_FLEXRAY == "0"	
+	SectionSetText ${Section_FlexRay} ""
+${EndIf}
+${If} $COMP_Instruments == "0" 
+ SectionSetText ${Section_Instruments} "" 
+${EndIf}
+
+${If} $COMP_ADD_ONS != "0"
+  ${AndIf} $Uninstall != "0"
+	Call un.DisableAddOns
+  ${EndIf}  
+  ${EndIf}
+	
+; Read the BUSMASTER version installed
+FunctionEnd
+
+Function un.DisableAddOns
+	IntOp $0 ${SF_SELECTED} | ${SF_RO}
+	!insertmacro SetSectionFlag ${Section_AddOns} $0	
+	!insertmacro SetSectionFlag ${Section_FlexRay} $0	
+	!insertmacro SetSectionFlag ${Section_Instruments} $0	
+FunctionEnd
+
+Function un.onSelChange
+SectionGetFlags ${Uninstall} $R0
+
+${If} $R5 != $R0
+${If} $R0 == ${SF_SELECTED}    
+	Call un.DisableAddOns
+${ElseIf} $R0 != ${SF_SELECTED}    
+	!insertmacro ClearSectionFlag ${Section_AddOns} ${SF_RO}
+	!insertmacro ClearSectionFlag ${Section_FlexRay} ${SF_RO}
+	!insertmacro ClearSectionFlag ${Section_Instruments} ${SF_RO}
+${EndIf}
+ SectionGetFlags ${Uninstall} $R5
+${EndIf}
+
+FunctionEnd

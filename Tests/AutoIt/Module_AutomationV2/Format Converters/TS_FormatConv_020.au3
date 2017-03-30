@@ -41,6 +41,7 @@ If WinExists($WIN_BUSMASTER) Then
 		sleep(2000)
 		$hWndLogToExcel=controlgethandle($WIN_FormatConv,"",$Tab_CAPL2CPP)
 		_GUICtrlTab_ClickTab($hWndLogToExcel, 1)
+		Sleep(1000)
 		$handle=ControlGetHandle($WIN_FormatConv,"",$COMBO_SelectConvTypeLogToExcel)
 		_GUICtrlComboBox_SelectString($handle,"CAN")                                                              ;Select Bus type CAN
 		$handle=ControlGetHandle($WIN_FormatConv,"",$LSTB_AvailableFields)

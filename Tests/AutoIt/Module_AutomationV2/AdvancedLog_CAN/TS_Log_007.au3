@@ -43,6 +43,10 @@ local $logfile1CreatedTime1=0
 local $logfile1CreatedTime2=0
 local $logfile1CreatedTime1ForTime=0
 local $logfile1CreatedTime2ForTime=0
+local $connectTime=6000
+If(@OSVersion <> "WIN_7") Then
+		$connectTime = 7000
+EndIf
 
 
 _launchApp()																					                         		 	   ;Check if the App is open else launch it
@@ -83,7 +87,7 @@ if winexists($WIN_BUSMASTER) then
 
 
 	_ConnectDisconnect() 																										   	   ;Connect
-	 sleep(6000)                                                                                                                      ;transmit for 10 sec
+	 sleep($connectTime)                                                                                                                      ;transmit for 10 sec
 	_ConnectDisconnect()
 
 
@@ -107,7 +111,7 @@ if winexists($WIN_BUSMASTER) then
 
 
 	_ConnectDisconnect() 																												;Connect
-	 sleep(6000)                                                                                                                       ;transmit for 10 sec so that the first file size exceeds 5 mb size
+	 sleep($connectTime)                                                                                                                       ;transmit for 10 sec so that the first file size exceeds 5 mb size
 	_ConnectDisconnect()
 
 	$logFile3=LogFileExist("SampleLog_S2_T0")
@@ -125,7 +129,7 @@ if winexists($WIN_BUSMASTER) then
    ConsoleWrite("$validationObject3 - for exceeding size :" &$validationObject3 & @crlf)
 
 	_ConnectDisconnect() 																												;Connect
-	 sleep(6000)																														;transmit for 10 sec so that it creates 3rd file after the 2nd one exceeding 5 MB
+	 sleep($connectTime)																														;transmit for 10 sec so that it creates 3rd file after the 2nd one exceeding 5 MB
 	_ConnectDisconnect()
 
 	$logfile1Content2 = _GetlogFileData("SampleLog_S0_T0.log", "8")																	    ;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting

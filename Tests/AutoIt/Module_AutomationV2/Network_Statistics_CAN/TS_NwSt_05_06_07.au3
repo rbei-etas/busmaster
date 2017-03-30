@@ -42,6 +42,16 @@ _launchApp()
 WinActivate($WIN_BUSMASTER,3)
 Local $TotalMsgs=0, $TotalErrors=0,$Total_TxSTDMsgs=0,$TxSTDMsgsPSec=0,$Total_TxEXTMsgs=0,$TxEXTMsgsPSec=0,$Load=0,$pLoad=0,$avLoad=0
 Local $uTotalMsgs=0, $uTotalErrors=0,$uTotal_TxSTDMsgs=0,$uTxSTDMsgsPSec=0,$uTotal_TxEXTMsgs=0,$uTxEXTMsgsPSec=0,$uLoad=0,$upLoad=0,$uavLoad=0
+
+local $MsgsCount=0
+If(@OSVersion <> "WIN_7") Then
+	$MsgsCount=3000
+Else
+	$MsgsCount=4000
+EndIf
+consolewrite("$MsgsCount: "&$MsgsCount&@CRLF)
+
+
 if winexists($mWin) then
 	_loadConfig("cfx_NwSt_05")													; Load Configuration
 
@@ -76,7 +86,7 @@ if winexists($mWin) then
 
 	; Fetch Transmitted STD Messages per sec row info
 	$Tx_STDMsgsPSec_Parameter=_GetNWStatsInfo(10)
-	if $Tx_STDMsgsPSec_Parameter[0]="Standard[Msg/s]" and $Tx_STDMsgsPSec_Parameter[1]>4000 Then
+	if $Tx_STDMsgsPSec_Parameter[0]="Standard[Msg/s]" and $Tx_STDMsgsPSec_Parameter[1]>$MsgsCount Then
 		$TxSTDMsgsPSec=1
 	EndIf
 
@@ -88,7 +98,7 @@ if winexists($mWin) then
 
 	; Fetch Transmitted EXT Messages per sec row info
 	$Tx_EXTMsgsPSec_Parameter=_GetNWStatsInfo(12)
-	if $Tx_EXTMsgsPSec_Parameter[0]="Extended[Msg/s]" and $Tx_EXTMsgsPSec_Parameter[1]>4000 Then
+	if $Tx_EXTMsgsPSec_Parameter[0]="Extended[Msg/s]" and $Tx_EXTMsgsPSec_Parameter[1]>$MsgsCount Then
 		$TxEXTMsgsPSec=1
 	EndIf
 

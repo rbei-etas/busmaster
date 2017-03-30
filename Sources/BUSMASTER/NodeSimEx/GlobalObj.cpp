@@ -544,3 +544,21 @@ HRESULT CGlobalObj::RegisterNodeToDIL(BOOL bRegister, PSNODEINFO pNodeInfo)
     }
     return hResult;
 }
+
+void CGlobalObj::vCloseAllActiveFunctionEditors()
+{
+	//CFunctionEditorDoc* pDocRet = nullptr;
+	CFunctionEditorDoc* pDoc = nullptr;
+	if (m_pEditorDocTemplate != nullptr)
+	{
+		POSITION pos = m_pEditorDocTemplate->GetFirstDocPosition();
+		while (pos/*&& !pDocRet*/)
+		{
+			pDoc = (CFunctionEditorDoc*)m_pEditorDocTemplate->GetNextDoc(pos);
+			if (pDoc->IsKindOf(RUNTIME_CLASS(CFunctionEditorDoc)))
+			{
+				pDoc->OnCloseDocument();
+			}
+		}
+	}
+}

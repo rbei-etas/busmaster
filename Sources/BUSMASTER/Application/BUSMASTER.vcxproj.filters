@@ -246,6 +246,12 @@
     <ClCompile Include="AboutDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VariableLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CANSignalExtractor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="MessageWindowSettingsDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -549,6 +555,15 @@
     <ClInclude Include="IBusmasterPluginConnection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VariableLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IVariableLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CANSignalExtractor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="AboutDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -671,9 +686,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Res\filesmall.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bitmap21.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Res\HideRibbon.ico">

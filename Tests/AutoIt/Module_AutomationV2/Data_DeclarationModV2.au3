@@ -277,6 +277,8 @@ $LSTC_ConfigFilter_FilterSelect="[CLASS:SysListView32; INSTANCE:1]"					; List V
 $LSTC_SelectedFilter_FilterSelect="[CLASS:SysListView32; INSTANCE:2]"				; Selected Filter List View instance
 $configFilMsgDisp="[CLASS:SysListView32; INSTANCE:1]"								; List View instance in Filter List Message display dialog window
 
+
+
 ;==============================================
 ; Configure Logging for CAN
 ;==============================================
@@ -422,6 +424,12 @@ $LVC_FilterDetails_ConfigFilter="[CLASS:SysListView32; INSTANCE:2]"						; Filte
 $TXT_DelAllFilter_BM="Do you want to delete all filters from the list?"					; Delete All filter window warning message text
 $BTN_DelAllFilterNO_BM=7																; Control ID for 'No' button
 $BTN_DelAllFilterYes_BM=6																; Control ID for 'Yes' button
+
+$RBTN_Event_FilterSelect=32951														     ; controlID for 'Event' radio button
+$RBTN_ID_FilterSelect=1253														   		 ; controlID for 'id' radio button
+$TXT_ErrorTxt=1233
+$BTN_Cancel_ConfigFilter=2															     ; controlID for 'Cancel' button  in Configure Filter window
+$TXT__To_FilterSelect=1255
 
 ;==============================================
 ;Data declaration for Replay window
@@ -607,7 +615,7 @@ $Win_TestSetup_open="Select A TestSetup File"
 $Edit_FName_NewTestSetupFile="[CLASS:Edit; INSTANCE:1]"
 ;$BTN_Save_NewTestSetupFile="[CLASS:Button; INSTANCE:2]"
 $BTN_Save_NewTestSetupFile="[CLASS:Button; INSTANCE:1]"
-
+$BTN_Save_loadTestSetupFile = "[CLASS:Button; INSTANCE:1]"
 ;==============================================
 ;Message Interpretation Window
 ;==============================================

@@ -26,7 +26,7 @@
 
 #include "../BusmasterDriverInterface/include/Error.h"
 #include "BaseMsgBufAll.h"
-
+#include "..\..\Busmaster\Application\Hashdefines.h"
 
 
 const int SIZE_APP_CAN_BUFFER       = 5000;
@@ -66,7 +66,15 @@ public:
     HANDLE hGetNotifyingEvent(void) const;
     void vDoSortBuffer( int nField, bool bAscending );
     void vDoSortIndexMapArray();
+    __int64 GetSlotID ( STCANDATA& pDatCAN );
     void nGetMapIndexAtID(int nIndex,__int64& nMapIndex);
+
+    SMSGBUFFER * nGetBuffer ()
+    {
+        return m_asMsgBuffer;
+    }
+
+    
 
 private:
     CMap<__int64, __int64, int, int> m_omIdIndexMap;
@@ -394,9 +402,42 @@ vDoSortIndexMapArray()
 {
     for(int nCnt = 0; nCnt< m_omIdIndexMap.GetCount(); nCnt++)
     {
-        __int64 nSlotID = SMSGBUFFER::GetSlotID(m_asMsgBuffer[nCnt]);
+        __int64 nSlotID = GetSlotID(m_asMsgBuffer[nCnt]);
         m_omIdIndexMap.SetAt(nSlotID, nCnt);
     }
+}
+
+
+/******************************************************************************
+Function Name    :  GetSlotID
+Input(s)         :  pDataCAN - The field data to be used for displaying sorted data.
+Output           :  -
+Functionality    :  Gets the index of the message from the CAN index map.
+Member of        :  CMsgBufCANVFSE
+Friend of        :  -
+Author(s)        :  Mandar M Apte
+Date Created     :  12-01-2017
+Modification date:
+Modification By  :
+******************************************************************************/
+template <typename SMSGBUFFER>
+__int64 CMsgBufCANVFSE<SMSGBUFFER>::GetSlotID ( STCANDATA& pDatCAN )
+{
+    STCAN_MSG& sMsg = pDatCAN.m_uDataInfo.m_sCANMsg;
+    // Form message to get message index in the CMap
+    int nMsgID = MAKE_RX_TX_MESSAGE ( sMsg.m_unMsgID,
+                                      IS_RX_MESSAGE ( pDatCAN.m_ucDataType ) );
+
+    nMsgID = MAKE_DEFAULT_MESSAGE_TYPE ( nMsgID );
+    // For extended message
+    if ( sMsg.m_ucEXTENDED )
+    {
+        nMsgID = MAKE_EXTENDED_MESSAGE_TYPE ( nMsgID );
+    }
+    // Apply Channel Information
+    __int64 n64MapIndex = MAKE_CHANNEL_SPECIFIC_MESSAGE ( nMsgID,
+                                                          sMsg.m_ucChannel );
+    return n64MapIndex;
 }
 
 /******************************************************************************

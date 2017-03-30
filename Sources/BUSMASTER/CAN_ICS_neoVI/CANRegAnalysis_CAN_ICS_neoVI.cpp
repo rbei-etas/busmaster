@@ -38,7 +38,7 @@
  * Calculate set of the NBT and BRP value for given
  * baudrate and clock frequency
  */
-BOOL CChangeRegisters_CAN_ICS_neoVI::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
+BOOL CChangeRegisters_CAN_ICS_neoVI::nListBoxValues(sCOLUMNS* psColListCtrl,
         DOUBLE dBuadRate, WORD wClockFreq,
         UINT* puwIndex, INT nSample)
 {
@@ -46,9 +46,10 @@ BOOL CChangeRegisters_CAN_ICS_neoVI::nListBoxValues(sCOLUMNS* /*psColListCtrl*/,
     DOUBLE  dProductNbtNBrp     = 0;
     INT     nReturn             = -1;
 
+	wClockFreq = 16;
     // Calcualte the product NBT * BRP = clock/(2.0 * baudrate ). This product
     // should be an integer multiple.
-    dProductNbtNBrp  = (wClockFreq / dBuadRate) / 2.0 *
+	dProductNbtNBrp = (wClockFreq / (dBuadRate / 1000)) / 2.0 *
                        (defFACT_FREQUENCY / defFACT_BAUD_RATE);
     unProductNbtNBrp = (UINT) (dProductNbtNBrp + 0.5);
 

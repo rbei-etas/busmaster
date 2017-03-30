@@ -186,6 +186,7 @@ enum
     DRIVER_CAN_ETAS_BOA,
     DRIVER_CAN_ETAS_ES581,
     DRIVER_CAN_ETAS_ES5814,
+	DRIVER_CAN_ETAS_ES5821,
     DRIVER_CAN_VECTOR_XL,
     DRIVER_CAN_KVASER_CAN,
     DRIVER_CAN_MHS,
@@ -344,8 +345,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWndEx)
     ON_UPDATE_COMMAND_UI(IDM_CFGN_REPLAY, OnUpdateCfgnReplay)
     ON_COMMAND(IDM_CONFIGURE_SIMULATEDSYSTEMS, OnConfigureSimulatedsystems)
     ON_COMMAND(IDM_CONFIGURE_SIMULATEDSYSTEMS_LIN, OnConfigureSimulatedsystemsLin)
-    ON_COMMAND_RANGE(IDC_SELECT_DRIVER,IDC_SELECT_DRIVER + 13, OnSelectDriver)
-    ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_DRIVER,IDC_SELECT_DRIVER + 13, OnUpdateSelectDriver)
+    ON_COMMAND_RANGE(IDC_SELECT_DRIVER,IDC_SELECT_DRIVER + 14, OnSelectDriver)
+    ON_UPDATE_COMMAND_UI_RANGE(IDC_SELECT_DRIVER,IDC_SELECT_DRIVER + 14, OnUpdateSelectDriver)
     
     
     ON_COMMAND_RANGE(IDC_SELECT_LIN_DRIVER,IDC_SELECT_LIN_DRIVER + 5, OnSelectLINDriver)
@@ -948,9 +949,15 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
     mPluginManager = new BusmasterPluginManager();; // TODO::
     mPluginManager->init( this );
 
-    mPluginManager->loadBusPlugins( nullptr );
-    
-    mPluginManager->loadPlugins( nullptr );
+	mPluginManager->loadBusPlugins( nullptr );
+	//variablelayer
+	BusmasterPluginConfiguration info;
+	mVariableLayer.setBusmasterInterface(this);
+	info.mPluginInterface = &mVariableLayer;
+	mVariableLayer.getNotifySink(&info.mNotifyEvent);
+	mPluginManager->addPlugin(info);
+	//Load Other Plugins
+	mPluginManager->loadPlugins( nullptr );
     mPluginManager->notifyPlugins(eBusmaster_Event::plugin_load_completed, nullptr);
 
 
@@ -3634,6 +3641,7 @@ void CMainFrame::OnClose()
 		g_pouDIL_LIN_Interface->DILL_StopHardware();
 		g_pouDIL_LIN_Interface->DILL_PerformClosureOperations();
 	}
+	mPluginManager->notifyAppClose();
     vREP_HandleConnectionStatusChange( FALSE ); //Close reply
 
     OnDllUnload(); //Unload all the loaded dlls
@@ -3662,6 +3670,8 @@ void CMainFrame::OnClose()
         // Update Status bar
 		m_wndStatusBar.SetPaneIcon(INDEX_J1939_LOG_ICON, m_hLogOffIcon);
     }
+	//now unloadplugins;
+	mPluginManager->unLoadPlugins();
 
     if(m_podUIThread != nullptr)
     {
@@ -3717,7 +3727,8 @@ void CMainFrame::OnClose()
         vStartStopLogging_LIN(bLogON == TRUE);
     }
 
-    m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCREATEDESTROYCMD, FALSE);
+    //m_objTxHandler.vPostMessageToTxWnd(WM_USER_CMD, (WPARAM)eCREATEDESTROYCMD, FALSE);
+    m_objTxHandler.vPostMessageToTxWnd ( WM_USER_CLOSE, FALSE, FALSE );
 
     
 
@@ -3736,8 +3747,8 @@ void CMainFrame::OnClose()
     //eBusmaster_Event event = eBusmaster_Event::busmaster_exit;
     //mPluginManager->notifyPlugins(event, nullptr);
 
-    //now unloadplugins;
-    mPluginManager->unLoadPlugins();
+
+	
 
 	afxKeyboardManager->SaveState(theApp.GetRegSectionPath());
     CMDIFrameWnd::OnClose();
@@ -5110,10 +5121,13 @@ void CMainFrame::OnDestroy()
         vSaveWinStatus(m_WinCurrStatus);    // save in the registry
     }
 
-    if (g_pouDIL_CAN_Interface != nullptr)
+    // The closure operation is done in the ::OnClose() so commenting the below
+    // performClosureOperations() for CAN interface. This is causing application
+    // crash on closure
+    /*if (g_pouDIL_CAN_Interface != nullptr)
     {
         g_pouDIL_CAN_Interface->DILC_PerformClosureOperations();
-    }
+    }*/
 
     //Destruction of Menu Pointer--by Arun
     /*if (pMyMenu)
@@ -5882,9 +5896,17 @@ void CMainFrame::OnFileConnect()
             ouWaitIndicator.DisplayWindow(
                 _("Trying to connect the hardware ... Please wait"), this);
             {
-                if (g_pouDIL_CAN_Interface->DILC_StartHardware() == S_OK)
+				Event_Bus_Staus busStatus;
+				busStatus.mBus = ETYPE_BUS::CAN;
+				busStatus.mEventType = eBUSEVENT::ON_PRE_CONNECT;
+				mPluginManager->notifyPlugins(eBusmaster_Event::Bus_Status, &busStatus);
+
+				if (g_pouDIL_CAN_Interface->DILC_StartHardware() == S_OK)
                 {
                     ouWaitIndicator.SetWindowText(_("Connected... "));
+					busStatus.mBus = ETYPE_BUS::CAN;
+					busStatus.mEventType = eBUSEVENT::ON_CONNECT;
+					mPluginManager->notifyPlugins(eBusmaster_Event::Bus_Status, &busStatus);
                     bReturn = true;
                 }
                 else
@@ -5901,6 +5923,10 @@ void CMainFrame::OnFileConnect()
         {
             if (g_pouDIL_CAN_Interface->DILC_StopHardware() == S_OK)
             {
+				Event_Bus_Staus busStatus;
+				busStatus.mBus = ETYPE_BUS::CAN;
+				busStatus.mEventType = eBUSEVENT::ON_DISCONNECT;
+				mPluginManager->notifyPlugins(eBusmaster_Event::Bus_Status, &busStatus);
                 bReturn = true;
             }
         }
@@ -9059,6 +9085,8 @@ for ( auto dbPath : dbPathList )
                 break;
             }
         }
+
+		mPluginManager->notifyPlugins(eBusmaster_Event::database_dissociated, nullptr);
     }
 
 }
@@ -9466,6 +9494,9 @@ HRESULT CMainFrame::IntializeDIL(UINT unDefaultChannelCnt, bool bLoadedFromXml)
 
                         /*Update hardware info in status bar*/
                         vUpdateHWStatusInfo();
+
+						ETYPE_BUS busType = ETYPE_BUS::CAN;
+						mPluginManager->notifyPlugins(eBusmaster_Event::driver_selection_changed, &busType);
                     }
                     else
                     {
@@ -13455,6 +13486,10 @@ INT CMainFrame::nGetControllerID(std::string strDriverName)
     {
         nDriverID = DRIVER_CAN_ETAS_ES5814;
     }
+	else if (strDriverName == "ETAS ES582.1")
+	{
+		nDriverID = DRIVER_CAN_ETAS_ES5821;
+	}
     else if(strDriverName == "IntrepidCS neoVI")
     {
         nDriverID = DRIVER_CAN_ICS_NEOVI;
@@ -16538,6 +16573,11 @@ int CMainFrame::getInfo(int infoType, EXT_INFO_PARAM, /*IN, OUT*/ OUT_INFO_PARAM
             *( (HWND*)infoData ) = GetSafeHwnd();
         }
         break;
+		case 6:
+		{
+			*((HWND*)infoData) = m_hWndMDIClient;
+		}
+		break;
         case busmaster_version:
         {
             char* retVal = (char*)infoData;
@@ -16596,7 +16636,11 @@ int CMainFrame::getPluginConnectionPoint(const char* pluginId, IBusmasterPluginC
     }
     return S_OK;
 }
-
+int CMainFrame::getVariableCommunicationLayer(IVariableLayer** variableLayer)
+{
+	*variableLayer = &mVariableLayer;
+	return S_OK;
+}
 afx_msg void CMainFrame::OnApplicationLook(UINT id)
 {
 	CWaitCursor wait;
@@ -16756,4 +16800,11 @@ void CMainFrame::OnButtonToggleribbon()
     mRibbonBar.ToggleWindowDisplay();
 
     
+}
+int CMainFrame::GetLicenseDetails(std::string strAddOn, CLicenseDetails &licenseDetails)
+{
+	if (nullptr != mPluginManager)
+	{
+		return mPluginManager->getLicenseDetails(strAddOn, licenseDetails);
+	}	
 }

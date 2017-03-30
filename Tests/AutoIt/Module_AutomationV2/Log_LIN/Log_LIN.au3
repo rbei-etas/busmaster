@@ -19,6 +19,8 @@ _StartoHTMLTable("LIN_Log  Test Report")
 
 ; --------------------------------------------------
 ; LIN DB P1 Case's
+;If(@OSVersion = "WIN_7") Then
+
 
 
 #include "TS_LIN_Log_01.au3"      		; Pass-Done
@@ -60,9 +62,26 @@ _StartoHTMLTable("LIN_Log  Test Report")
 ;#include "TS_LIN_Log_35.au3"      		; not closing
 
 
+; LIN DB P2 Case's
+#include "TS_LIN_Log_40.au3"      		; Pass
+;#include "TS_LIN_Log_41.au3"      		; Covered in TS_LIN_Log_40
+#include "TS_LIN_Log_42.au3"            ; Pass
+;#include "TS_LIN_Log_43.au3"      		; Not Automatable
+#include "TS_LIN_Log_44.au3"            ; Pass
+#include "TS_LIN_Log_45.au3"      		; Pass
+;#include "TS_LIN_Log_46.au3"           ; NA
+;#include "TS_LIN_Log_47.au3"           ; NA
+;#include "TS_LIN_Log_48.au3"           ; Not Automatable
+#include "TS_LIN_Log_49.au3"      		; Pass
+;#include "TS_LIN_Log_50.au3"           ; Covered in TS_LIN_Log_49
+;#include "TS_LIN_Log_51.au3"           ; Covered in TS_LIN_Log_49
+;#include "TS_LIN_Log_52.au3"           ; Covered in TS_LIN_Log_49
+#include "TS_LIN_Log_53.au3"  		    ; Pass
+#include "TS_LIN_Log_54.au3"      		; Pass
+;#include "TS_LIN_Log_55.au3"           ; Not automatable
 
 
-
+;EndIf
 
 
 

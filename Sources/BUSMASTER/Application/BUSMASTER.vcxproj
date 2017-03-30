@@ -396,6 +396,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
       </BrowseInformation>
     </ClCompile>
+    <ClCompile Include="CANSignalExtractor.cpp" />
     <ClCompile Include="CNVTCImageList.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Disabled</Optimization>
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -917,6 +918,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='busmaster_debug|Win32'">
       </BrowseInformation>
     </ClCompile>
+    <ClCompile Include="VariableLayer.cpp" />
     <ClCompile Include="WaveFormDataHandler.cpp" />
     <ClCompile Include="WaveformSelectionDlg.cpp" />
     <ClCompile Include="WaveformTransmitter.cpp" />
@@ -963,6 +965,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="BusStatisticLIN.h" />
     <ClInclude Include="BusStatistics.h" />
     <ClInclude Include="BusStatisticsDlg.h" />
+    <ClInclude Include="CANSignalExtractor.h" />
     <ClInclude Include="CFilesDefs_CAN.h" />
     <ClInclude Include="CNVTCImageList.h" />
     <ClInclude Include="CNVTCToolBar.h" />
@@ -990,6 +993,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="ImportLogToolbar.h" />
     <ClInclude Include="InterfaceGetter.h" />
     <ClInclude Include="IBusmasterPlugInManager.h" />
+    <ClInclude Include="IVariableLayer.h" />
     <ClInclude Include="J1939TimeOutCfg.h" />
     <ClInclude Include="LINBusStatisticsDlg.h" />
     <ClInclude Include="LinChannelParam.h" />
@@ -1046,6 +1050,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="UI\UICreator.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="ValueDescriptionDlg.h" />
+    <ClInclude Include="VariableLayer.h" />
     <ClInclude Include="WaveFormDataHandler.h" />
     <ClInclude Include="WaveformSelectionDlg.h" />
     <ClInclude Include="WaveformTransmitter.h" />
@@ -1155,7 +1160,6 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\bitmap21.bmp" />
     <Image Include="Res\filesmall.bmp" />
     <Image Include="Res\HideRibbon.ico" />
     <Image Include="res\LoggingOFF.ico" />

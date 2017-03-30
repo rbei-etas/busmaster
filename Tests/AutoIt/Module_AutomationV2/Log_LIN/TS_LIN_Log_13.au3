@@ -21,7 +21,11 @@
 ConsoleWrite(@CRLF)
 ConsoleWrite(@CRLF)
 ConsoleWrite("****Start : TS_LIN_Log_13.au3****"&@CRLF)
-
+If(@OSVersion <> "WIN_7") Then
+	Local $data1 = 6,$data2 = 6,$data3 = 6
+Else
+	Local $data1 =8 ,$data2 = 8,$data3 = 8
+EndIf
 
 _launchApp()
 
@@ -86,7 +90,8 @@ consolewrite("$finddatacount1 :"&$finddatacount1&@CRLF)
 consolewrite("$finddatacount2 :"&$finddatacount2&@CRLF)
 consolewrite("$finddatacount8 :"&$finddatacount8&@CRLF)
 
-if $finddatacount1=8 and $finddatacount2=8 and $finddatacount8=8 Then
+;if $finddatacount1=8 and $finddatacount2=8 and $finddatacount8=8 Then
+if $finddatacount1=$data1 and $finddatacount2=$data2 and $finddatacount8=$data3 Then
 	_WriteResult("Pass","TS_LIN_Log_13")
 Else
 	_WriteResult("Fail","TS_LIN_Log_13")

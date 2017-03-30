@@ -104,7 +104,7 @@ protected:
     std::string m_strSelectedBaudName; ///< The selected baud rate as string
     BOOL   m_bSuppressUpdateCalculation;  ///< internal flag to prevent problems while changing the combox box selection
 	BOOL	m_bDialogCancel;
-	SCONTROLLER_DETAILS m_asDummyControllerDetails[1];
+	SCONTROLLER_DETAILS m_asDummyControllerDetails[CHANNEL_ALLOWED];
     void FillBaudStruct();
     void UpdateBTRFields(int iIndex);
     int  GetListIndexFromBTRRegisters();

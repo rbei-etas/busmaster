@@ -104,7 +104,9 @@ if winexists($WIN_BUSMASTER) then
 
 	if $logFile1=1 And $logFile2=1 Then
 		$logfile1Content1 = _GetlogFileData("SampleLog_S0_T0.log", "8")											               		   ;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting
-		$logfile1CreatedTime1 = $logfile1Content1[6]																				   ;Get the created time of the log file
+		if($logfile1Content1[0]>=6) then
+			$logfile1CreatedTime1 = $logfile1Content1[6]																				   ;Get the created time of the log file
+		EndIf
 		ConsoleWrite("$logfile1CreatedTime1  :" & $logfile1CreatedTime1 & @CRLF)
  		$sizeinBytes = FileGetSize ( _OutputDataPath()&"\SampleLog_S0_T0.log" )
 		$size=$sizeinBytes/1048576
@@ -138,7 +140,9 @@ if winexists($WIN_BUSMASTER) then
 	_ConnectDisconnect_LIN()
 
 	$logfile1Content2 = _GetlogFileData("SampleLog_S0_T0.log", "8")																	    ;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting
-	$logfile1CreatedTime2 = $logfile1Content2[6]																	                    ;Get the created time of the log file
+	if( $logfile1Content2[0]>=6)then
+		$logfile1CreatedTime2 = $logfile1Content2[6]																	                    ;Get the created time of the log file
+	EndIf
 	ConsoleWrite("$logfile1CreatedTime2  :" & $logfile1CreatedTime2 & @CRLF)
 
 	$number = _CheckLogfileTimeIsEqual($logfile1CreatedTime1, $logfile1CreatedTime2)													;Check whether the log files created times are equal ,if not then it is overwritten
@@ -174,7 +178,9 @@ if winexists($WIN_BUSMASTER) then
      $logFile1ForTime=LogFileExist("SampleLog_S0_T0")
 	 if $logFile1ForTime=1 Then
 		$logfile1Content1 = _GetlogFileData("SampleLog_S0_T0.log", "8")																	;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting
-		$logfile1CreatedTime1ForTime = $logfile1Content1[6]																	            ;Get the created time of the log file
+		if($logfile1Content1[0]>=6) then
+			$logfile1CreatedTime1ForTime = $logfile1Content1[6]																	            ;Get the created time of the log file
+		EndIf
 		ConsoleWrite("$logfile1CreatedTime1ForTime  :" & $logfile1CreatedTime1ForTime & @CRLF)
 	EndIf
 	sleep(30000)
@@ -198,7 +204,9 @@ if winexists($WIN_BUSMASTER) then
     ConsoleWrite("$validationObject5 - for creating logfiles after 3 min :" &$validationObject5 & @crlf)
 
 	$logfile1Content2 = _GetlogFileData("SampleLog_S0_T0.log", "8")																	    ;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting
-	$logfile1CreatedTime2ForTime = $logfile1Content2[6]																				    ;Get the created time of the log file
+	if( $logfile1Content2[0]>=6)then
+		$logfile1CreatedTime2ForTime = $logfile1Content2[6]																				    ;Get the created time of the log file
+	EndIf
 	ConsoleWrite("$logfile1CreatedTime2ForTime  :" & $logfile1CreatedTime2ForTime & @CRLF)
 
 	$number = _CheckLogfileTimeIsEqual($logfile1CreatedTime1ForTime, $logfile1CreatedTime2ForTime)

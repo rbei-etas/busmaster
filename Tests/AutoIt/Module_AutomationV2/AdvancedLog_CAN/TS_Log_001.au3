@@ -119,6 +119,7 @@ if winexists($WIN_BUSMASTER) then
 
 
 		ControlClick($WIN_CANLog,"",$BTN_Add_ConfigLOG)                                                                            ;Click on add button
+		Sleep(1000)
 		$OnTransmissionButtonStatus=ControlCommand($WIN_CANLog,"",$CHKB_OnTransmission_ConfigLOG,"IsEnabled")           		   ;Status of the checkbox to create log for every bus connect
 		$LogfileSizeButtonStatus=ControlCommand($WIN_CANLog,"",$CHKB_LogfileSize_ConfigLOG,"IsEnabled")                  		   ;Status of the checkbox to create log after each file size exceeding the limit
 		$LogOnTimeButtonStatus=ControlCommand($WIN_CANLog,"",$CHKB_LogOnTime_ConfigLOG,"IsEnabled")                     		   ;Status of the checkbox to create log in certain time limit
@@ -158,6 +159,7 @@ if winexists($WIN_BUSMASTER) then
 
 		ConsoleWrite("$validationObjectTS1 :" &$validationObjectTS1 & @crlf)
 		ConsoleWrite("$validationObjectTS2 :" &$validationObjectTS2 & @crlf)
+		ControlClick($WIN_CANLog,"",$BTN_OK_ConfigLOG)
 
 		if $validationObjectTS1=1 And $validationObjectTS2=1  Then
 			_WriteResult("Pass","TS_Log_001")

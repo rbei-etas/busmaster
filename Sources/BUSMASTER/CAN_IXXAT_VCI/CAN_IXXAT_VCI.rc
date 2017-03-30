@@ -1,6 +1,6 @@
 // Microsoft Visual C++ generated resource script.
 //
-#include "resource.h"
+#include "ChannelSelectionResource.h"
 #include "../DIL_Interface/ChannelSelection.rc"
 
 #define APSTUDIO_READONLY_SYMBOLS

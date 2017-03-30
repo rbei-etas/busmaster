@@ -26,6 +26,12 @@ local $m1_Key_Rx1=0,$m1_Key_Tx1=0,$m2_Key_Rx1=0,$m2_Key_Tx1=0
 Local $m1SecondMsgTime=0,$m1FirstMsgTime=0,$m2SecondMsgTime=0,$m2FirstMsgTime=0,$Time1=0,$Time2=0,$Time3=0,$Time4=0
 Local $m1_dbMsg_Rx1=0,$m1_dbMsg_Tx1=0,$m2_dbMsg_Tx1=0,$m2_dbMsg_Rx1=0,$m1_dbMsg_Rx2=0,$m1_dbMsg_Tx2=0,$m2_dbMsg_Tx2=0,$m2_dbMsg_Rx2=0
 
+If(@OSVersion <> "WIN_7") Then
+		$sleep=6000
+	Else
+		$sleep=2000
+EndIf
+
 _launchApp()
 
 WinActivate($WIN_BUSMASTER)
@@ -51,7 +57,7 @@ if winexists($WIN_BUSMASTER) then
 	;sleep(1000)
 	WinActivate($WIN_BUSMASTER,"")
 	Send("a")
-	sleep(2000)
+	sleep($sleep)
 	_ConnectDisconnect()																		; DisConnect CAN
 
 	$rCount=_GetCANMsgWinItemCount()                                                            ; Fetch the no of items from message window

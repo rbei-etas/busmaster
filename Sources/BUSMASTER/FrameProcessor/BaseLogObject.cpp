@@ -59,7 +59,7 @@ const int SIZE_CHAR = sizeof(char);
 #define BUS_LOG_BAUDRATE_START  "***START CHANNEL BAUD RATE***"
 #define BUS_LOG_BAUDRATR_END    "***END CHANNEL BAUD RATE***"
 #define BUS_LOG_CHANNEL         "***CHANNEL %d - %s - %s bps***"
-#define BUS_LOG_CHANNEL_LIN         "***CHANNEL %d - Protocol Version %s - Hardware %s - BaudRate %d bps***"
+#define BUS_LOG_CHANNEL_LIN         "***CHANNEL %d - Protocol Version %s - Hardware %s - BaudRate %0.0f bps***"
 #define BUS_LOG_COMMENT_START   "***START COMMENT***"   //arun
 #define BUS_LOG_COMMENT_END     "***END COMMENT***"
 

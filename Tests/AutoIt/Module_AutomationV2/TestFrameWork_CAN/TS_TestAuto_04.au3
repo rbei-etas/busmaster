@@ -53,7 +53,7 @@ sleep(1000)
 
 WinActivate($WIN_BUSMASTER,3)
 
-local $TestExeRes=0, $MsgTransmission=0,$Count=0,$ReportHeader=0,$TestSetupInfo=0,$ResultInfo=0
+local $TestExeRes=0, $MsgTransmission=0,$Count=0,$ReportHeader=0,$TestSetupInfo=0,$ResultInfo=0,$CountWinInfo=0
 
 if winexists($WIN_BUSMASTER) then
 
@@ -225,14 +225,16 @@ if winexists($WIN_BUSMASTER) then
 	_ClickTestEditConfirmBTN()																	; Click on Confirm button
 
 	Send("!{F4}")																				; Close Test executor window
-	sleep(1000)
+	sleep(3000)
 
+	$CountWinInfo=_GetCANMsgWinItemCount()
 	;$Msg1=_GetMsgWinCANInfo(0)
 
 	;if $Msg1[1]="Tx" and $Msg1[3]="s" And $Msg1[4]="0x101" And $Msg1[5]="MsgStdLil" And $Msg1[7]= "0100000000000000" Then
 	;	$MsgTransmission=1
 	;EndIf
 	;---Added below scripts to check Tx message in message window ------
+	If $CountWinInfo = 2 Then
 	for $i=0 To 1
 		$Msg1=_GetMsgWinCANInfo($i)
 		if $Msg1[1]="Tx" and $Msg1[3]="s" And $Msg1[4]="0x101" And $Msg1[5]="MsgStdLil" And $Msg1[7]= "0100000000000000" Then
@@ -240,6 +242,7 @@ if winexists($WIN_BUSMASTER) then
 			ConsoleWrite("$i="&$i&@CRLF)
 		EndIf
 	Next
+	EndIf
 
 	ConsoleWrite("$MsgTransmission:"&$MsgTransmission&@CRLF)
 

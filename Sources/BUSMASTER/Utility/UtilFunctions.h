@@ -25,6 +25,7 @@
 
 #include <iostream>
 #include <cctype>
+#include "CANChannelConfigDefines.h"
 
 class CUtilFunctions
 {
@@ -59,8 +60,15 @@ public:
     static bool bFindLastSuffix(std::string str, std::string subStr, int& npos);
     static void CUtilFunctions::Trim(std::string& str , char chChar);
     static bool IsNumber(const std::string& strNumber);
+	static BOOL nCalculateCANChannelParameters(struct sBTRTemp* psColListCtrl,
+		DOUBLE dBuadRate, WORD wClockFreq, INT nSample);
+	static DOUBLE dCalculateBaudRateFromBTRs(CString omStrBTR0,
+		CString omStrBTR1);
 private:
     /* Make constructor as private so that object can not be created for this class */
     CUtilFunctions();
     virtual ~CUtilFunctions();
+	static BOOL nCalculateCANRegValues(struct sBTRTemp* psColListCtrl,
+		WORD wNbt, WORD wBrp, UINT* puwIndex,
+		INT nSample);
 };

@@ -73,15 +73,25 @@ if winexists($WIN_BUSMASTER) then
 				sleep(1000)
 				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, ""   & @CRLF)														; Write in the editor of Node sim
 				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "Trace(""Key Pressed_"&$i+1&"=%c"""&",KeyValue);"   & @CRLF)						; Write in the editor of Node sim
+				sleep(1000)
 				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "STLIN_MSG sMsgM1;" & @CRLF)										; Write in the editor of Node sim
-				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "sMsgM1.messagetype = 0;    // master Response" & @CRLF)			; Write in the editor of Node sim
-				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "sMsgM1.checksumtype = 0; // Classic" & @CRLF)					; Write in the editor of Node sim
-				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "sMsgM1.dlc = 8; // DLC"& @CRLF)							; Write in the editor of Node sim
-				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "sMsgM1.id = "&$i+1&";  // Message Identifier" & @CRLF)	; Write in the editor of Node sim
-				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "sMsgM1.data[1] = 10;  // Lower 4 Bytes" & @CRLF)	; Write in the editor of Node sim
-				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "sMsgM1.data[7] = 20;  // Upper 4 Bytes" & @CRLF)	; Write in the editor of Node sim
+				sleep(1000)
+				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "sMsgM1.messagetype = 0;    " & @CRLF)			; Write in the editor of Node sim
+				sleep(1000)
+				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "sMsgM1.checksumtype = 0; " & @CRLF)					; Write in the editor of Node sim
+				sleep(1000)
+				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "sMsgM1.dlc = 8; "& @CRLF)							; Write in the editor of Node sim
+				sleep(1000)
+				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "sMsgM1.id = "&$i+1&";  " & @CRLF)	; Write in the editor of Node sim
+				sleep(1000)
+				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "sMsgM1.data[1] = 10;  " & @CRLF)	; Write in the editor of Node sim
+				sleep(1000)
+				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "sMsgM1.data[7] = 20; " & @CRLF)	; Write in the editor of Node sim
+				sleep(1000)
 				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "sMsgM1.cluster = 1;" & @CRLF)									; Write in the editor of Node sim
+				sleep(1000)
 				ControlSend($WIN_BUSMASTER, "", $TXT_TimeHandler_CPPFile, "SendMsg(sMsgM1);" & @CRLF)											; Write in the editor of Node sim
+				sleep(1000)
 				;ControlSend($WIN_LINNodesim, "", $TXT_EventHandler_CPPFile, "Trace(""MsgId-8 Transmitted"");" & @CRLF)							; Write in the editor of Node sim
 			Next
 		endif

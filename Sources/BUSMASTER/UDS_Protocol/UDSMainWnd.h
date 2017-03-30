@@ -202,7 +202,7 @@ public:
     afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
     afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
     afx_msg BOOL PreTranslateMessage(MSG* pMsg);
-
+    afx_msg LRESULT OnCommandHelp ( WPARAM wParam, LPARAM lParam );
 
 
     void CUDSMainWnd::SendSimpleDiagnosticMessagePanels(mPSTXSELMSGDATA pstx);

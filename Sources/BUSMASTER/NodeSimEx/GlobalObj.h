@@ -109,6 +109,8 @@ public:
     static CString omGetBusSpecMsgFieldName(ETYPE_BUS eBus);
     static CString omGetBusSpecMsgStructName(ETYPE_BUS eBus);
     static CString omGetBusName(ETYPE_BUS eBus);
+
+	void vCloseAllActiveFunctionEditors();
 };
 
 #endif         //#define NODE_GLOBAL_OBJ_H

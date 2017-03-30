@@ -230,6 +230,7 @@
     <ClInclude Include="CAN_Vector_XL_stdafx.h" />
     <ClInclude Include="ChangeRegDefines.h" />
     <ClInclude Include="ChangeRegisters.h" />
+    <ClInclude Include="ChannelSelectionResource.h" />
     <ClInclude Include="ContrConfigPeakUsbDefs.h" />
     <ClInclude Include="..\Application\MultiLanguage.h" />
     <ClInclude Include="resource1.h" />

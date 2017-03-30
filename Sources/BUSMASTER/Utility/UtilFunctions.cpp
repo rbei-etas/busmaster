@@ -248,3 +248,141 @@ bool CUtilFunctions::IsNumber(const std::string& strNumber)
     bReturn = !strNumber.empty() && it == strNumber.end();
     return bReturn;
 }
+BOOL CUtilFunctions::nCalculateCANRegValues(struct sBTRTemp* psColListCtrl,
+	WORD wNbt, WORD wBrp, UINT* puwIndex,
+	INT nSample)
+{
+	WORD  wSJW = 0;
+	WORD  wTSEG1 = 0;
+	WORD  wTSEG2 = 0;
+	WORD  wTSEG2min = 0;
+	WORD  wTSEG2max = 0;
+	WORD  wSampling = 0;
+
+	INT k = 0;
+	for (INT i = 0; i<defMAX_SJW; i++)
+	{
+		wSJW = (BYTE)(i + 1);
+		k = 0;
+		// Calculate Maximum and Minimum value of TSEG2.
+		wTSEG2max = (BYTE)(defmcMIN2(defMAX_TSEG2, wNbt - defMIN_TSEG1 - 1));
+		wTSEG2min = (BYTE)(defmcMAX3(defMIN_TSEG2, wSJW, wNbt - defMAX_TSEG1 - 1));
+		for (INT j = wTSEG2min; j<wTSEG2max + 1; j++)
+		{
+
+			wTSEG2 = (BYTE)(j);
+			k++;
+			//Calculate Sampling = ((NBT-TSEG2)/NBT) *100
+			wSampling = (BYTE)(((FLOAT)(wNbt - wTSEG2) / wNbt) * 100);
+			// Only if sampling is greater then 50%, the value is stored in list.
+			if (wSampling >= defMIN_SAMPLING)
+			{
+				// Calculate TSEG1 = NBT-TSEG2-1
+				wTSEG1 = (BYTE)(wNbt - wTSEG2 - 1);
+				*puwIndex += 1;
+				//Fill the structure with BRP, Sampling, NBT,SJW values for display
+				psColListCtrl[*puwIndex - 1].sBRPNBTSampNSJW.usBRP = wBrp;
+				psColListCtrl[*puwIndex - 1].sBRPNBTSampNSJW.usSampling = wSampling;
+				psColListCtrl[*puwIndex - 1].sBRPNBTSampNSJW.usNBT = wNbt;
+				psColListCtrl[*puwIndex - 1].sBRPNBTSampNSJW.usSJW = wSJW;
+				//Pack the register BTR0 its bit BRPbit = BRP -1; SJWbit = SJW -1;
+				psColListCtrl[*puwIndex - 1].uBTRReg0.sBTR0Bit.ucBRPbit = wBrp - 1;
+				psColListCtrl[*puwIndex - 1].uBTRReg0.sBTR0Bit.ucSJWbit = wSJW - 1;
+				//Pack the register BTR1 its bit TESG1bit=TSEG1-1;TSEG2bit=TSEG2 -1;
+				psColListCtrl[*puwIndex - 1].uBTRReg1.sBTR1Bit.ucTSEG1bit = wTSEG1 - 1;
+				psColListCtrl[*puwIndex - 1].uBTRReg1.sBTR1Bit.ucTSEG2bit = wTSEG2 - 1;
+				//Pack the register BTR1 its bit SAMbit=1 or 0
+				if (nSample == 3)
+				{
+					psColListCtrl[*puwIndex - 1].uBTRReg1.sBTR1Bit.ucSAMbit = 1;
+				}
+				else
+				{
+					psColListCtrl[*puwIndex - 1].uBTRReg1.sBTR1Bit.ucSAMbit = 0;
+				}
+			}
+		}
+	}
+
+	return 1;
+}
+
+BOOL CUtilFunctions::nCalculateCANChannelParameters(struct sBTRTemp* psColListCtrl,
+	DOUBLE dBuadRate, WORD wClockFreq, INT nSample)
+{
+	UINT  unProductNbtNBrp = 0;
+	DOUBLE dProductNbtNBrp = 0;
+	INT   nReturn = -1;
+
+	UINT puwIndex = 0;
+	// Calcualte the product NBT * BRP = clock/(2.0 * baudrate ). This product
+	// should be an integer multiple.
+	dProductNbtNBrp = (wClockFreq / (dBuadRate / 1000)) / 2.0 *
+		(defFACT_FREQUENCY / defFACT_BAUD_RATE);
+	unProductNbtNBrp = (UINT)(dProductNbtNBrp + 0.5);
+	//Check if product is integer multiple. Ignore diffrence <= 0.004
+	if (fabs((dProductNbtNBrp - unProductNbtNBrp)) <= defVALID_DECIMAL_VALUE)
+	{
+		INT   i = 1;
+		WORD wNBT = (WORD)(unProductNbtNBrp / i);
+		FLOAT fNBT = (FLOAT)unProductNbtNBrp / i;
+
+		//Calculate all set of NBT and BRP value for a given product of NBT and BRP.
+		while (wNBT >= 1 && i <= defMAX_BRP)
+		{
+			if ((wNBT == fNBT) && (wNBT >= defMIN_NBT) && (wNBT <= defMAX_NBT))
+			{
+				WORD wBRP = (WORD)(unProductNbtNBrp / wNBT);
+				//Call this function to calculate BTR0, BTR1 regsiter value for one set
+				// of NBT and BRP.
+				nReturn = nCalculateCANRegValues(psColListCtrl, wNBT, wBRP, &puwIndex, nSample);
+			}
+
+			i++;
+			wNBT = (WORD)(unProductNbtNBrp / i);
+			fNBT = (FLOAT)unProductNbtNBrp / i;
+		}
+
+	}
+	else
+	{
+		nReturn = -1;
+	}
+	return nReturn;
+}
+
+DOUBLE CUtilFunctions::dCalculateBaudRateFromBTRs(CString omStrBTR0,
+	CString omStrBTR1)
+{
+	uBTR1 uBTR1val;
+	uBTR0 uBTR0val;
+	DOUBLE dBaudRate = 0;
+	BYTE   byBRP = 0;
+	BYTE   byNBT = 0;
+	BYTE   byTSEG1 = 0;
+	BYTE   byTSEG2 = 0;
+	char* pcStopStr = nullptr;
+
+	uBTR0val.ucBTR0 = _tcstol(omStrBTR0, &pcStopStr, defHEXADECIMAL);
+	uBTR1val.ucBTR1 = _tcstol(omStrBTR1, &pcStopStr, defHEXADECIMAL);
+
+	// BRP = BRPbit+1
+	byBRP = static_cast <BYTE> (uBTR0val.sBTR0Bit.ucBRPbit + 1);
+
+	//  TSEG1 = TSEG1bit +1
+	byTSEG1 = static_cast <BYTE> (uBTR1val.sBTR1Bit.ucTSEG1bit + 1);
+
+	//TSEG2 = TSEG2bit+1;
+	byTSEG2 = static_cast <BYTE> (uBTR1val.sBTR1Bit.ucTSEG2bit + 1);
+
+	//NBT = TESG1 + TSEG2 +1
+	byNBT = static_cast <BYTE> (byTSEG1 + byTSEG2 + 1);
+
+	dBaudRate = (DOUBLE)(_tstoi(defCLOCK) / (2.0 * byBRP * byNBT));
+	dBaudRate = dBaudRate * (defFACT_FREQUENCY / defFACT_BAUD_RATE);
+
+	/* covert to bps */
+	dBaudRate *= 1000;
+
+	return dBaudRate;
+}

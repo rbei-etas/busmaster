@@ -341,10 +341,18 @@ if winexists($WIN_BUSMASTER) then
 	$OutPutPath=_OutputDataPath()																	; Fetch the output data path
    _CreateNewTestSetup()
 
-	WinWaitActive($Win_TestSetup_TestEditor,"",3)
+	WinWaitActive($Win_TestSetup_TestEditor,"",13)
+
+	Sleep(2000)
+	ControlFocus($Win_TestSetup_TestEditor, "", $TXT_Open_File_CAPL2CPP)
+	Sleep(2000)
 
 	ControlSend($Win_TestSetup_TestEditor,"",$Edit_FName_NewTestSetupFile,$OutPutPath&"\TestAuto_01")	; Enter the File name
 	sleep(750)
+
+	If(@OSVersion <> "WIN_7") Then
+		$BTN_Save_NewTestSetupFile = "[CLASS:Button; INSTANCE:2]"
+	EndIf
 
 	ControlClick($Win_TestSetup_TestEditor,"",$BTN_Save_NewTestSetupFile)							; Click on Save button
 	sleep(1000)

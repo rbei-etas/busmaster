@@ -13,5 +13,6 @@ public:
     virtual ERRORCODE SetChannelCount( ETYPE_BUS eouProtocol, int nCount ) = 0;
     virtual ERRORCODE ParseDbFile( std::string strFileName, ETYPE_BUS clusterType, std::list<ICluster*>& ) = 0;
     virtual ERRORCODE SetSimulatedEcuList( ETYPE_BUS, int nChannelIndex, std::list<IEcu*>& ) = 0;
+	virtual ERRORCODE ReSetNetwork(ETYPE_BUS eouProtocol) = 0;
     virtual bool isDbManagerAvailable() = 0;
 };

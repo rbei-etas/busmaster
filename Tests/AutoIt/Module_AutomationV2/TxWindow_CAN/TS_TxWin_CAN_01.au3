@@ -23,8 +23,14 @@ Local $m1_dbMsg_Rx1=0,$m1_dbMsg_Tx1=0,$m2_dbMsg_Tx1=0,$m2_dbMsg_Rx1=0
 Local $m1_dbMsg_Rx2=0,$m1_dbMsg_Tx2=0,$m2_dbMsg_Tx2=0,$m2_dbMsg_Rx2=0
 Local $Time1=0,$Time2=0,$Time3=0,$Time4=0
 $countRowChckBox=0
+If(@OSVersion <> "WIN_7") Then
+		$sleep=4000
+	Else
+		$sleep=1000
+EndIf
 
 _launchApp()
+
 
 WinActivate($WIN_BUSMASTER)
 Local $Time_cyclic=0,$a=0
@@ -46,7 +52,7 @@ if winexists($WIN_BUSMASTER) then
 	;_DisableOverwriteModeAll($CANMenu)
 	Sleep(1000)
 	_ConnectDisconnect()																		; Connect CAN
-	sleep(1000)
+	sleep($sleep)
 	_ConnectDisconnect()																		; DisConnect CAN
 
 	$rCount=_GetCANMsgWinItemCount()                                                            ; Fetch the no of items from message window

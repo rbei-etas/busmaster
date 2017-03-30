@@ -29,6 +29,7 @@
 #include <string>
 #include <vector>
 #include "ProtocolsDefinitions.h"
+#include "CommonDefines.h"
 #define BM_MAX_PATH 2000
 enum eNodeSimFolderType
 {
@@ -93,6 +94,8 @@ int nConvertPhysicalToRaw(double dMaxVal, double dMinVal, double dOffset, double
 unsigned int unConvertRawToPhysical(unsigned long long int unMaxRawVal, unsigned long long int unMinRawVal, double dOffset, double dScalFactor, double& dMaxPhyVal, double& dMinPhyVal);
 int nConvertRawToPhysical(long long int unMaxRawVal, long long int unMinRawVal, double dOffset, double dScalFactor, double& dMaxPhyVal, double& dMinPhyVal);
 
+
+void vGetDataBytesFromSignal(unsigned long long u64SignVal, int startBit, eEndianess endian, int signalLength, unsigned char* pucData, int nDLC);
 //Helper function
 unsigned long long int unRoundOffdoubleValue(double dValue);
 
@@ -112,3 +115,5 @@ HRESULT GetCurrentGccVersion(std::string& strPath);
 HRESULT GetBusmasterNodeSimualtionFolder(eNodeSimFolderType OUeNodeSimFolderType, std::string& strFolder);
 
 std::string getBusInString(ETYPE_BUS eBus);
+
+void tokenize(const std::string& input, char delim, std::vector<std::string>& tokens);

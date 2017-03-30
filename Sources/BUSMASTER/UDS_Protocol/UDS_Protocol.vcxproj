@@ -104,6 +104,7 @@
       <AdditionalOptions>"$(SolutionDir)/BIN/Libs/$(OutDir)/Utils.lib"
 "$(SolutionDir)/BIN/Libs/$(OutDir)/DataTypes.lib" %(AdditionalOptions)</AdditionalOptions>
       <OutputFile>$(SolutionDir)/BIN/$(OutDir)UDS_Protocol.dll</OutputFile>
+      <AdditionalDependencies>HTMLHELP.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -125,7 +126,7 @@
       <AdditionalIncludeDirectories>$(IntDir);$(VC_IncludePath);$(WindowsSDK_IncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Winmm.lib;HTMLHELP.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)/BIN/$(OutDir)UDS_Protocol.dll</OutputFile>
       <AdditionalLibraryDirectories>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>

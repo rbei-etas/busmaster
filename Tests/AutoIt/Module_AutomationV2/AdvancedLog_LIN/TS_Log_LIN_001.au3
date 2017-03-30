@@ -102,6 +102,7 @@ if winexists($WIN_BUSMASTER) then
 
 
 		ControlClick($WIN_LINLog,"",$BTN_Add_ConfigLOG)                                                                            ;Click on add button
+		Sleep(1000)
 		$OnTransmissionButtonStatus=ControlCommand($WIN_LINLog,"",$CHKB_OnTransmission_ConfigLOG,"IsEnabled")           		   ;Status of the checkbox to create log for every bus connect
 		$LogfileSizeButtonStatus=ControlCommand($WIN_LINLog,"",$CHKB_LogfileSize_ConfigLOG,"IsEnabled")                  		   ;Status of the checkbox to create log after each file size exceeding the limit
 		$LogOnTimeButtonStatus=ControlCommand($WIN_LINLog,"",$CHKB_LogOnTime_ConfigLOG,"IsEnabled")                     		   ;Status of the checkbox to create log in certain time limit
@@ -109,6 +110,10 @@ if winexists($WIN_BUSMASTER) then
 		if $OnTransmissionButtonStatus=1 And $LogfileSizeButtonStatus=1 And $LogOnTimeButtonStatus=1 Then                          ;Checking whether checkboxes in advanced logging are enabled
 			$validationObjectForAdvLogAfterAddingLog=1
 		EndIf
+		ConsoleWrite("$OnTransmissionButtonStatus :" &$OnTransmissionButtonStatus & @crlf)
+		ConsoleWrite("$LogfileSizeButtonStatus :" &$LogfileSizeButtonStatus & @crlf)
+		ConsoleWrite("$LogOnTimeButtonStatus :" &$LogOnTimeButtonStatus & @crlf)
+
 
 		ControlCommand($WIN_LINLog,"",$CHKB_OnTransmission_ConfigLOG,"Check")   													;check the checkbox to create log for every bus connect
 		ControlCommand($WIN_LINLog,"",$CHKB_LogfileSize_ConfigLOG,"Check")  														;check the checkbox to create log after each file size exceeding the limit
@@ -138,7 +143,7 @@ if winexists($WIN_BUSMASTER) then
 		if $validationObjectForAdvLogAfterAddingLog=1 And $NumberOfLogfilesButtonStatus=1 And $NumberOfLogfilestxt=10 And $Filesizetxt="50" And $Hourstxt=0 And $Minutestxt=30  Then
 			$validationObjectTS2=1
 		EndIf
-
+		ControlClick($WIN_LINLog,"",$BTN_OK_ConfigLOG)
 		ConsoleWrite("$validationObjectTS1 :" &$validationObjectTS1 & @crlf)
 		ConsoleWrite("$validationObjectTS2 :" &$validationObjectTS2 & @crlf)
 

@@ -4,6 +4,7 @@
 
 #include "FormatConverterWnd.h"
 #include "DefConverterPage.h"
+#include <HtmlHelp.h>
 // CFormatConverterWnd
 
 IMPLEMENT_DYNAMIC(CFormatConverterWnd, CPropertySheet)
@@ -42,6 +43,7 @@ void CFormatConverterWnd::vGettextBusmaster(void)
 
 BEGIN_MESSAGE_MAP(CFormatConverterWnd, CPropertySheet)
     ON_WM_CREATE()
+    ON_COMMAND ( ID_HELP, &CFormatConverterWnd::OnHelp )
 END_MESSAGE_MAP()
 
 
@@ -85,6 +87,24 @@ int CFormatConverterWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
     // TODO:  Add your specialized creation code here
 
     return 0;
+}
+
+void CFormatConverterWnd::OnHelp ()
+{
+    // Get Application Help File Path
+    CString omStrPath = AfxGetApp ()->m_pszHelpFilePath;
+
+    // Replace .hlp with .chm
+    int nIndex = omStrPath.ReverseFind ('.');
+    // Extract string before the extension
+    omStrPath = omStrPath.Mid ( 0, nIndex );
+    // Add New Extension
+    omStrPath = omStrPath + ".chm" + "::/topics/format_converters.html";
+
+    omStrPath.Replace ( "FormatConverter.chm", "BUSMASTER.chm" );
+    
+    // Make it as content display always
+    ::HtmlHelp ( nullptr, omStrPath, HH_DISPLAY_TOPIC, 0 );
 }
 
 BOOL CFormatConverterWnd::Create(CWnd* pParentWnd , DWORD dwStyle , DWORD dwExStyle)

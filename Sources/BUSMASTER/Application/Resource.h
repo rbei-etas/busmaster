@@ -397,22 +397,27 @@
 #define IDC_STAT_STBIT                  1021
 #define IDC_BTN_LEFT                    1021
 #define IDC_COMB_PROPDELAY              1021
+#define IDC_SPLIT1                      1021
 #define IDC_STAT_CLOCK                  1022
 #define IDC_STAT_SGLEN                  1022
 #define IDC_STAT_MSG_LISTGP             1022
 #define IDC_BTN_DOWN                    1022
+#define IDC_STATIC_COPYRIGHT            1022
 #define IDC_COMB_SGVALUE                1023
 #define IDC_EDIT_BYINDEX                1023
 #define IDC_STAT_SG_LISTGP              1023
 #define IDC_COMB_SAMPLING3              1023
 #define IDC_COMB_SJW                    1023
+#define IDC_STATIC_LICENSE_INFO         1023
 #define IDC_EDIT_SGLEN                  1024
 #define IDC_COMB_VAR_TYPE               1024
 #define IDC_BUTTON_REMOVEONE            1024
 #define IDC_BUTTON9                     1024
+#define IDC_STATIC_CR                   1024
 #define IDC_EDIT_STBIT                  1025
 #define IDC_STAT_VAR_TYPE               1025
 #define IDC_RADIO_ACTION_ZOOM           1025
+#define IDC_STATIC_LI                   1025
 #define IDC_STAT_FACTOR                 1026
 #define IDC_STAT_GLOBAL_NAME            1026
 #define IDC_RADIO_ACTION_TRACK          1026
@@ -495,6 +500,7 @@
 #define IDC_APPLY_BUTTON                1054
 #define IDC_STAT                        1055
 #define IDC_LIST_SIGNAL_WATCH           1056
+#define IDC_LIST_COMPONENTS             1056
 #define IDC_STAT_8                      1057
 #define IDC_COMBO_MSGTYPE               1058
 #define IDC_STAT_LOG                    1059
@@ -1243,7 +1249,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        149
 #define _APS_NEXT_COMMAND_VALUE         40113
-#define _APS_NEXT_CONTROL_VALUE         1021
+#define _APS_NEXT_CONTROL_VALUE         1026
 #define _APS_NEXT_SYMED_VALUE           122
 #endif
 #endif

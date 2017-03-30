@@ -84,13 +84,14 @@
 #include "IBMNetWorkService.h"
 #include "IBusmasterPluginInterface.h"
 
-
+#include "VariableLayer.h"
 #include "MFCRibbonBarEx.h"
 #include "IBusmasterPlugInManager.h"
 #define WM_SAVE_DBJ1939        (WM_USER + 108)
 #define WM_USER_NSCODEGEN      (WM_USER + 107)
 #define WM_USER_SETDEFAULTMENU (WM_USER + 106)
 
+using namespace VariableManager;
 
 // Forward reference to Message Child Window
 class CMsgMDIChildWnd;
@@ -173,6 +174,7 @@ protected:
     // Implementation
 public:
 
+	int GetLicenseDetails(std::string strAddOn, CLicenseDetails &obj);
     void vGettextBusmaster();
     HICON m_hLogIcon1, m_hLogIcon2, m_hLogOffIcon;
     int m_nIconSetFlag;
@@ -769,6 +771,8 @@ public:
     int getInfo(int infoType, EXT_INFO_PARAM, /*IN, OUT*/ OUT_INFO_PARAM infoData);
     int getPluginConnectionPoint(const char* pluginId, IBusmasterPluginConnection**);
     void provideBusmasterConfiguredPaths(int pathType, char* infoData);
+	int getVariableCommunicationLayer(IVariableLayer** variableLayer);
+
 public:
     afx_msg void OnUpdateSelectDriver(CCmdUI* pCmdUI);
     afx_msg void OnSelectDriver(UINT nID);
@@ -904,6 +908,7 @@ private:
     IBusmasterPluginManager* mPluginManager = nullptr;
     
 
+	VariableLayer mVariableLayer;
 	void setConnectState(ETYPE_BUS busType, bool connected);
 	void setConnectStateJ1939(bool connected);
     

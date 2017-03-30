@@ -28,7 +28,11 @@ _launchApp()
 Local $EndOfLog=""
 Local $filename = "\Log_09_Sample.log",$verfyCount = 0,$finddatacount=0
 
-
+If(@OSVersion <> "WIN_7") Then
+		$sleep = 5000
+	Else
+		$sleep = 3000
+	EndIf
 
 if winexists($WIN_BUSMASTER) then
 
@@ -44,7 +48,7 @@ if winexists($WIN_BUSMASTER) then
 	sleep(1000)
 
 	_ConnectDisconnect_LIN()																	; Connect the tool
-	sleep(3000)
+	sleep($sleep)
 
 	;_TransmitMsgsMenu()																		; Transmit normal blocks
 	;sleep(3000)

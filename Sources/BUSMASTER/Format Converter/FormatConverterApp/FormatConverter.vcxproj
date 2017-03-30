@@ -91,7 +91,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>"../../BIN/Libs/$(IntDir)Utils.lib" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>shlwapi.lib;HTMLHELP.LIB;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)/bin/$(IntDir)$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -137,7 +137,7 @@ exit 0
     </ResourceCompile>
     <Link>
       <AdditionalOptions>"../../BIN/Libs/$(IntDir)Utils.lib" %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>shlwapi.lib;HTMLHELP.LIB;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(SolutionDir)/bin/$(IntDir)$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>

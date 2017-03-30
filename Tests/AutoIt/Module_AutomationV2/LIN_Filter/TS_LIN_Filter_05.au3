@@ -26,6 +26,12 @@ Local $FirstMsg = 0,$msgidCheck=0,$txmsg=0,$endOfFIle=0
 Local $FirstMsgInMsgWindow=0,$SecMsginMsgWindow=0
 Local $LoGFiltername = "LIN_Log_Filter_05"
 
+If(@OSVersion <> "WIN_7") Then
+	Local $tmout = 1000
+Else
+	Local $tmout = 0
+EndIf
+
 _launchApp()
 
 WinActivate($WIN_BUSMASTER)
@@ -53,7 +59,7 @@ if winexists($WIN_BUSMASTER) then
 	_EnableFilterLogLIN()																			; Enable Filter during logging
 
 	_ConnectDisconnect_LIN()
-	;sleep(1000)
+	sleep($tmout)
 	_ConnectDisconnect_LIN()
 
 	;_DisableOverwriteMode()																		; Disable Overwrite Mode

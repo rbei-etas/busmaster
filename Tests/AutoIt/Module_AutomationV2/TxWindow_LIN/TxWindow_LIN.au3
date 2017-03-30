@@ -17,7 +17,7 @@ _RunMe()
 _StartoHTMLTable("Tx Window Module Test Report")
 
 ;~ ;-------------P1 test cases------------------------------
-
+;If(@OSVersion = "WIN_7") Then
 #include "TS_TX_LIN_01.au3"
 #include "TS_TX_LIN_02.au3"   ;PASS
 
@@ -35,7 +35,7 @@ _StartoHTMLTable("Tx Window Module Test Report")
 
 ;----------------P2 test cases-----------------------------------
 
-
+;EndIf
 
 _EndoHTMLTable()
 

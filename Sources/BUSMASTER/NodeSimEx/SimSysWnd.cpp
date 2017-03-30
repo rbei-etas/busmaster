@@ -62,7 +62,7 @@ CSimSysWnd::CSimSysWnd(ETYPE_BUS eBus, CSimSysTreeView* pSimSysTreeView, CGlobal
 {
     m_bSplitWndCreated = FALSE; // Splitter not created yet!
     m_eBus  = eBus;
-    m_pSimSysTreeView = pSimSysTreeView;
+    m_pSimSysTreeView = pSimSysTreeView;	
 }
 /******************************************************************************/
 /*  Function Name    :  ~CSimSysWnd                                           */
@@ -196,9 +196,14 @@ BOOL CSimSysWnd::OnCreateClient( LPCREATESTRUCT /*lpcs*/, CCreateContext* pConte
 /*  Modification     :                                                        */
 /******************************************************************************/
 
+void CSimSysWnd::CloseSimSysWindow()
+{
+	CMDIChildBase::OnClose();
+}
+
 void CSimSysWnd::OnClose()
 {
-    CMDIChildBase::ShowWindow(SW_HIDE);
+	CMDIChildBase::ShowWindow(SW_HIDE);
 }
 
 

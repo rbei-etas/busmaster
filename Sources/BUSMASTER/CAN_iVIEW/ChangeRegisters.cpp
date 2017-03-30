@@ -2065,6 +2065,23 @@ DOUBLE CChangeRegisters::vValidateBaudRate(DOUBLE dbaudrate,int nItemCount,UINT 
 	 DOUBLE  dEditBaudRate;
     dBaudRate           = dbaudrate;
    dEditBaudRate     = dBaudRate;
+
+   if (dBaudRate < 5000)
+   {
+	   CString omStr;
+	   omStr.Format(_("Invalid Baud Rate. Resetting the Baud Rate of Channel %d to 5000"), nItemCount + 1);
+	   AfxMessageBox(omStr);
+	   dBaudRate = 5000;
+   }
+
+   if (dBaudRate > 1000000)
+   {
+	   CString omStr;
+	   omStr.Format(_("Invalid Baud Rate. Resetting the Baud Rate of Channel %d to 1000000"), nItemCount + 1);
+	   AfxMessageBox(omStr);
+	   dBaudRate = 1000000;
+   }
+
    if(unClockFreq == 0) //This conditioned is satisfied when Validation is called from HardWareListing.cpp
    {
      unClockFreq          = 16;
@@ -2113,18 +2130,29 @@ DOUBLE CChangeRegisters::vValidateBaudRate(DOUBLE dbaudrate,int nItemCount,UINT 
         }//end while(nFlag==RESET)
         dBaudRate = (DOUBLE)((unClockFreq/2.0)*
                              ( defFACT_FREQUENCY / defFACT_BAUD_RATE ))/unProductNbtNBrp;
+
+		dBaudRate = dBaudRate * 1000;
         /*FLOAT  fTempBaudRate;
         fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
         fTempBaudRate = fTempBaudRate/100000;*/
-        if(dBaudRate < 5000)
+       /* if(dBaudRate < 5000)
         {
 			CString omStr;
 			omStr.Format(_("Resetting the BaudRate of channel %d to 5000"),nItemCount+1);
 			AfxMessageBox(omStr);
 			dBaudRate = 5000;
-        }
+        }*/
         omStrBaudRate.Format(_("%ld"),/*fTempBaudRate*/(long)dBaudRate);
         omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);
+
+		CString omStrEditBaudRate;
+		omStrEditBaudRate.Format("%ld", (long)dbaudrate);
+		if (omStrBaudRate != omStrEditBaudRate)
+		{
+			CString omStr;
+			omStr.Format(_("Invalid Baud Rate. Resetting to nearest valid Baud Rate %s Kbps"), omStrBaudRate);
+			AfxMessageBox(omStr);
+		}
     }// End if
     dEditBaudRate     = dBaudRate;
 	return dBaudRate;
@@ -2141,6 +2169,6 @@ void CChangeRegisters::vExtractValuesForValidation()
 	m_omCombClock.GetWindowText(omStrClockFreq);
 	UINT unClockFreq          = _tstoi(omStrClockFreq.GetBuffer(MAX_PATH)); 
 	dBaudRate = vValidateBaudRate(dBaudRate,m_nLastSelection,unClockFreq);
-	omStrBaudRate.Format(_T("%.0lf"),dBaudRate);
+	omStrBaudRate.Format(_T("%ld"),(long)dBaudRate);
 	m_omEditBaudRate.SetWindowText(omStrBaudRate);
 }

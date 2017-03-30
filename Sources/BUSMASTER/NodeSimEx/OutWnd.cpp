@@ -90,6 +90,7 @@ BEGIN_MESSAGE_MAP(COutWnd, CMDIChildBase)
     ON_WM_SIZE()
     ON_LBN_DBLCLK(IDC_LSTB_OUTPUT,OnDbClick)
     ON_WM_SHOWWINDOW()
+	
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -278,6 +279,13 @@ void COutWnd::OnDestroy()
 {
     CMDIChildBase::OnDestroy();
 }
+
+void COutWnd::vCloseOutputWindow()
+{
+	CMDIChildBase::OnClose();
+}
+
+
 /******************************************************************************/
 /*  Function Name    :  OnHelpInfo                                            */
 /*  Input(s)         :  Pointer to object of structure for help request info. */

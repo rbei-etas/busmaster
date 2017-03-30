@@ -258,6 +258,7 @@ del "%25TMP%25\canlib32.lib"
     <ClInclude Include="ChangeRegDefines.h" />
     <ClInclude Include="ChangeRegisters.h" />
     <ClInclude Include="..\Application\MultiLanguage.h" />
+    <ClInclude Include="ChannelSelectionResource.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CAN_NSI.rc" />

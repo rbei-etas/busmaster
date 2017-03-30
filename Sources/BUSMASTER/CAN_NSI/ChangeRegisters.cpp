@@ -743,6 +743,10 @@ void CChangeRegisters::vChangeListBoxValues(INT /*nflag*/)
         m_omCombClock.GetLBText(nGetValue,omStrComboEditItem);
     }
     unClock       = _tstoi(omStrComboEditItem.GetBuffer(MAX_PATH));
+
+	GetDlgItem(IDC_EDIT_BAUD_RATE)->GetWindowText(m_omStrEditBaudRate);
+	m_dEditBaudRate = (FLOAT)_tstof(m_omStrEditBaudRate);
+
     // Call function to calculate the list of BTR0, BTR1, SJW,NBT and Sampling.
     nReturn = nListBoxValues( m_asColListCtrl,m_dEditBaudRate,(WORD)unClock,&unIndex,
                               nSample) ;
@@ -2202,6 +2206,23 @@ DOUBLE CChangeRegisters::vValidateBaudRate(DOUBLE dBaudrate,int nItemCount,UINT 
 	 DOUBLE  dEditBaudRate;
     dBaudRate           = dBaudrate;
     dEditBaudRate     = dBaudRate;
+
+	if (dBaudRate < 5000)
+	{
+		CString omStr;
+		omStr.Format(_("Invalid Baud Rate. Resetting the Baud Rate of Channel %d to 5000"), nItemCount + 1);
+		AfxMessageBox(omStr);
+		dBaudRate = 5000;
+	}
+
+	if (dBaudRate > 1000000)
+	{
+		CString omStr;
+		omStr.Format(_("Invalid Baud Rate. Resetting the Baud Rate of Channel %d to 1000000"), nItemCount + 1);
+		AfxMessageBox(omStr);
+		dBaudRate = 1000000;
+	}
+
 	if(unClockFreq == 0)//This condition is satisfied when it is called from HardWareListing
 	{
 		unClockFreq          = 16;
@@ -2250,18 +2271,29 @@ DOUBLE CChangeRegisters::vValidateBaudRate(DOUBLE dBaudrate,int nItemCount,UINT 
         }//end while(nFlag==RESET)
         dBaudRate = (DOUBLE)((unClockFreq/2.0)*
                              ( defFACT_FREQUENCY / defFACT_BAUD_RATE ))/unProductNbtNBrp;
+
+		dBaudRate = dBaudRate * 1000;
 /*FLOAT  fTempBaudRate;
         fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
         fTempBaudRate = fTempBaudRate/100000;*/
-        if(dBaudRate < 5000)
+        /*if(dBaudRate < 5000)
         {
 			CString omStr;
 			omStr.Format(_("Resetting the BaudRate of channel %d to 5000"),nItemCount+1);
 			AfxMessageBox(omStr);
 			dBaudRate = 5000;
-        }
+        }*/
         omStrBaudRate.Format(_("%ld"),/*fTempBaudRate*/(long)dBaudRate);
         omStrMessage.Format(defBAUD_RATE_MESSAGE,omStrBaudRate);
+
+		CString omStrEditBaudRate;
+		omStrEditBaudRate.Format("%ld", (long)dBaudrate);
+		if (omStrBaudRate != omStrEditBaudRate)
+		{
+			CString omStr;
+			omStr.Format(_("Invalid Baud Rate. Resetting to nearest valid Baud Rate %s Kbps"), omStrBaudRate);
+			AfxMessageBox(omStr);
+		}
     }// End if
     dEditBaudRate     = dBaudRate;
 	return dBaudRate;
@@ -2276,6 +2308,6 @@ void CChangeRegisters::vExtractValuesForValidation()
 	m_omCombClock.GetWindowText(omStrClockFreq);
 	UINT unClockFreq          = _tstoi(omStrClockFreq.GetBuffer(MAX_PATH)); 
 	dBaudRate = vValidateBaudRate(dBaudRate,m_nLastSelection,unClockFreq);
-	omStrBaudRate.Format(_T("%.0lf"),dBaudRate);
+	omStrBaudRate.Format(_T("%ld"), (long)dBaudRate);
 	m_omEditBaudRate.SetWindowText(omStrBaudRate);
 }

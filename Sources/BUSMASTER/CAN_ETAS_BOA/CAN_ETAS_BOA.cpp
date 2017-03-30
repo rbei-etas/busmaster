@@ -2185,7 +2185,7 @@ HRESULT CDIL_CAN_ETAS_BOA::CAN_ListHwInterfaces(INTERFACE_HW_LIST& asSelHwInterf
             }
 
             /* List hw interface if there are more than one hw */
-            if (nCount > 1)
+            //if (nCount > 1)
             {
                 /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
                 if ( unDefaultChannelCnt && nCount >= unDefaultChannelCnt )

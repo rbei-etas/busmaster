@@ -62,8 +62,16 @@ public:
 };
 
 
-
-
+class DBChangeManger
+{
+	std::list<IDbChangeListner*> mDbChangeListners;
+public:
+	ERRORCODE ManageClient(IDbChangeListner* client, bool bAdd);
+	ERRORCODE UpdateChange(bool isAdded, IDbChangeListner::DBChangeInfo dbInfo);
+private:
+	ERRORCODE AddListner(IDbChangeListner* client);
+	ERRORCODE RemoveListner(IDbChangeListner* client);
+};
 
 class BMNetwork : public IBMNetWorkService
 {
@@ -72,7 +80,7 @@ private:
     BMProtocolConfig m_ouProtocolConfig[ETYPE_BUS::BUS_INVALID];
     //std::string GetUniqueFrameName(IFrame* pouFrame);
     AccessDBManager mDbManagerAcessor;
-
+	DBChangeManger mDBChangeManger;
 public:
 
     BMNetwork();
@@ -102,6 +110,7 @@ public:
     ERRORCODE GetSimulatedEcuList(ETYPE_BUS, int nChannelIndex, std::list<IEcu*>&);
     ERRORCODE GetFrame(ETYPE_BUS eouProtocol, int nChannelIndex, unsigned int unId, void* pProtocolData, IFrame**);
     ERRORCODE GetElementByName(ETYPE_BUS eouProtocol, int nChannelIndex, eClusterElementType oueElementType, std::string strName, IElement**);
+	ERRORCODE ManageClientForDbChanges(IDbChangeListner*, bool bAdd);
 
     ERRORCODE ParseDbFile( std::string strFileName, ETYPE_BUS forCluster, std::list<ICluster*>& );
     ERRORCODE LoadDb( ETYPE_BUS eouProtocol, int nChannelIndex, std::string );

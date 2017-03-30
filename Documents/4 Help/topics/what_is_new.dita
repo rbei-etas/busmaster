@@ -15,6 +15,13 @@
     </metadata>
   </prolog>
   <body>
+    <p><b>3.2.0</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>Windows 10 Support</li>
+        <li>CAN ETAS ES582.1 hardware support</li>
+        <li>Bug Fixes</li>
+      </ul></p>
     <p><b>3.1.0</b></p>
     <p>Following features are added:</p>
     <p><ul>

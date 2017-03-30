@@ -205,12 +205,6 @@ union STDATAINFO
 */
 class STCANDATA
 {
-private:
-    static int  m_nSortField;
-
-    /** Multiplication factor */
-    static int  m_nMFactor;
-
 public:
     /** Type of the message */
     unsigned char    m_ucDataType;

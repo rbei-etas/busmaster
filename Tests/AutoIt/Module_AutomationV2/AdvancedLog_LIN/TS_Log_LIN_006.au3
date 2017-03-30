@@ -92,7 +92,9 @@ if winexists($WIN_BUSMASTER) then
 	_ConnectDisconnect_LIN() 																											;DisConnect
 	$logFile1 = LogFileExist("SampleLog_M0_T0")
 	$logfile1Content1 = _GetlogFileData("SampleLog_M0_T0.log", "8")                                                                     ;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting
-	$Time1 = $logfile1Content1[6]																				                        ;Get the created time of the log file 1 for the "after every hours/mins" config
+	if($logfile1Content1[0]>=6) then
+		$Time1 = $logfile1Content1[6]																				                        ;Get the created time of the log file 1 for the "after every hours/mins" config
+	EndIf
 	ConsoleWrite("$Time1  :" & $Time1 & @CRLF)
 
 
@@ -121,7 +123,9 @@ if winexists($WIN_BUSMASTER) then
      $logFile1ForTime=LogFileExist("SampleLog_M0_T0")
 	 if $logFile1ForTime=1 Then
 		$logfile1Content1 = _GetlogFileData("SampleLog_M0_T0.log", "8")																	;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting
-		$Time2 = $logfile1Content1[6]																	                                ;Get the created time of the log file
+		if($logfile1Content1[0]>=6) then
+			$Time2 = $logfile1Content1[6]																	                                ;Get the created time of the log file
+		EndIf
 		ConsoleWrite("$Time2  :" & $Time2 & @CRLF)
 	EndIf
 	sleep(30000)
@@ -145,7 +149,9 @@ if winexists($WIN_BUSMASTER) then
     ConsoleWrite("$validationObject3 - for creating logfiles after 3 min :" &$validationObject3 & @crlf)
 
 	$logfile1Content2 = _GetlogFileData("SampleLog_M0_T0.log", "8")																	    ;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting
-	$Time3 = $logfile1Content2[6]																				    					;Get the created time of the log file
+	if($logfile1Content2[0]>=6) then
+		$Time3 = $logfile1Content2[6]																				    					;Get the created time of the log file
+	EndIf
 	ConsoleWrite("$Time3  :" & $Time3 & @CRLF)
 
 

@@ -424,26 +424,26 @@ void CCANControllerConfigDlg::SelectComboBaudRate()
 		m_comboBoxCiABaudSelection.SetCurSel(9);
 	}
 }
-int CCANControllerConfigDlg::InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount,UINT ) 
+int CCANControllerConfigDlg::InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount, UINT nSelectedHw)
 {
 	if (pControllerDetails!=nullptr)
 	{
-		m_dwBTR0 = (pControllerDetails[0].m_nBTR0BTR1 & 0xFF00) >> 8;
-		m_dwBTR1 = (pControllerDetails[0].m_nBTR0BTR1 & 0x00FF);
+		m_dwBTR0 = (pControllerDetails[nSelectedHw].m_nBTR0BTR1 & 0xFF00) >> 8;
+		m_dwBTR1 = (pControllerDetails[nSelectedHw].m_nBTR0BTR1 & 0x00FF);
 		m_bSuppressUpdateCalculation = FALSE;
-		m_dwBaudRate = atol(pControllerDetails[0].m_omStrBaudrate.c_str());
-		m_asDummyControllerDetails[0] = pControllerDetails[0];
+		m_dwBaudRate = atol(pControllerDetails[nSelectedHw].m_omStrBaudrate.c_str());
+		m_asDummyControllerDetails[nSelectedHw] = pControllerDetails[nSelectedHw];
 		int nRet = DoModal();
 		if(nRet != IDOK) // On Cancel
 		{
-			pControllerDetails[0] = m_asDummyControllerDetails[0];
+			pControllerDetails[nSelectedHw] = m_asDummyControllerDetails[nSelectedHw];
 		}
 		else
 		{
 			m_bDialogCancel = FALSE;
 			CString omTempBaudRate;
 			omTempBaudRate.Format("%ld",(m_dwBaudRate*1000));
-			pControllerDetails[0].m_omStrBaudrate = omTempBaudRate;
+			pControllerDetails[nSelectedHw].m_omStrBaudrate = omTempBaudRate;
 		}		
 	}
 	return 1;

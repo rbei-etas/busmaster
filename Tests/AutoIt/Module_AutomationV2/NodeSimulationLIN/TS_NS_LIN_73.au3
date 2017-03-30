@@ -21,7 +21,11 @@ ProcessWait("BUSMASTER.exe")
 
 Global $infoTrace[10]=["","","","","","","","","",""]
 Global $ErrFunCount=0,$traceInfoErrHndler=0,$FirstMsg=0
-
+If(@OSVersion <> "WIN_7") Then
+	$tmOut = 200
+Else
+	$tmOut = 2000
+EndIf
 
 
 WinActivate($WIN_BUSMASTER)
@@ -85,7 +89,7 @@ if winexists($WIN_BUSMASTER) then
 		_ConnectDisconnect_LIN()																	; Connect LIN
 		Sleep(4000)
 		Send("a")
-		Sleep(2000)
+		Sleep($tmOut)
 
 
 
@@ -114,14 +118,18 @@ if winexists($WIN_BUSMASTER) then
 		Local $Msg0 = ObjCreate("System.Collections.ArrayList") 									; create object
 		Local $Msg1 = ObjCreate("System.Collections.ArrayList") 									; create object
 
+		if $rCount <> 1 Then
+			_ConnectDisconnect_LIN()
+			_ConnectDisconnect_LIN()
+		EndIf
 
-
+		$rCount=_GetLINMsgWinItemCount()
 		if $rCount = 1 Then
 
 
 			$Msg0=_GetMsgWinInfo($LVC_CID_LINMsgWin,0,10)															; Fetch the first row data in the msg window
 
-			if $Msg0.Item(0) <>"" and $Msg0.Item(1)="0x0" and $Msg0.Item(2)="Error - Slave Not Responding" and $Msg0.Item(3)="" and $Msg0.Item(4)=1 and $Msg0.Item(6)= 0x014 and $Msg0.Item(7)="" and $Msg0.Item(8)="" Then			; Compare the Direction, Channel and Msg ID of the first row
+			if $Msg0.Item(0) <>"" and $Msg0.Item(1)="0x14" and $Msg0.Item(2)="Error - Slave Not Responding" and $Msg0.Item(3)="" and $Msg0.Item(4)=1 and $Msg0.Item(6)= 0x014 and $Msg0.Item(7)="" and $Msg0.Item(8)="" Then			; Compare the Direction, Channel and Msg ID of the first row
 				$FirstMsg=1
 				ConsoleWrite("$FirstMsg = "& $FirstMsg &@CRLF)
 			Endif

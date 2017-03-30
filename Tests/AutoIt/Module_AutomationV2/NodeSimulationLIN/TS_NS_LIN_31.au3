@@ -80,9 +80,12 @@ if winexists($WIN_BUSMASTER) then
 		$SimFileHWD=_GUICtrlTreeView_GetItemHandle($SimTVHWD,"")							; Fetch the first item handle
 		_GUICtrlTreeView_SetSelected($SimTVHWD, $SimFileHWD)
 		Send("{ENTER}")
-		WinWaitActive("","",5)
+		WinWaitActive("","",15)
+		Sleep(500)
 		_AddBusevent(1)
+		Sleep(2000)
 		_AddBusevent(2)
+		Sleep(500)
 		_AddBusevent(3)
 
 		$TVHWD=_GetWinHndlrNSTV()															; Fetch the handle of tree view

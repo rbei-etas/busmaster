@@ -72,4 +72,6 @@ public:
     static ETYPE_BUS sm_eBus;
     virtual afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
     afx_msg void OnSetFocus(CWnd* pOldWnd);
+
+	void vCloseEditFrameWindow();
 };

@@ -93,7 +93,9 @@ if winexists($WIN_BUSMASTER) then
 	_ConnectDisconnect_LIN() 																											;DisConnect
 	$logFile1 = LogFileExist("SampleLog_M0_S0")
 	$logfile1Content1 = _GetlogFileData("SampleLog_M0_S0.log", "8")                                                                     ;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting
+	if($logfile1Content1[0]>=6) then
 	$logfile1CreatedTime1 = $logfile1Content1[6]																				        ;Get the created time of the log file 1 for the "for every bus connect for transmission" config
+	EndIf
 	ConsoleWrite("$logfile1CreatedTime1  :" & $logfile1CreatedTime1 & @CRLF)
 
 
@@ -107,7 +109,9 @@ if winexists($WIN_BUSMASTER) then
 	$logFile3 = LogFileExist("SampleLog_M2_S0")
 
 	$logfile1Content1 = _GetlogFileData("SampleLog_M2_S0.log", "8")											               		        ;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting
-	$logfile2CreatedTime1 = $logfile1Content1[6]																				        ;Get the created time of the log file
+	if($logfile1Content1[0]>=6) then
+		$logfile2CreatedTime1 = $logfile1Content1[6]																				        ;Get the created time of the log file
+	EndIf
 	ConsoleWrite("$logfile2CreatedTime1  :" & $logfile2CreatedTime1 & @CRLF)
 
 	ConsoleWrite("$logFile1  :" & $logFile1 & @CRLF)
@@ -130,7 +134,9 @@ if winexists($WIN_BUSMASTER) then
 
 	if $logFile1ForSize=1 And $logFile2ForSize=1 Then
 		$logfile1Content2 = _GetlogFileData("SampleLog_M0_S0.log", "8")											               		     ;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting
-		$logfile1CreatedTime2 = $logfile1Content2[6]																				     ;Get the created time of the log file
+		if($logfile1Content2[0]>=6) then
+			$logfile1CreatedTime2 = $logfile1Content2[6]																				     ;Get the created time of the log file
+		EndIf
 		ConsoleWrite("$logfile1CreatedTime2  :" & $logfile1CreatedTime2 & @CRLF)
  		$sizeinBytes = FileGetSize ( _OutputDataPath()&"\SampleLog_M0_S0.log" )															 ;Get the file size in bytes
 		$size=$sizeinBytes/1048576																										 ;Converting to MB
@@ -171,7 +177,9 @@ if winexists($WIN_BUSMASTER) then
 	_ConnectDisconnect_LIN() 																											;Disonnect
 
 	$logfile1Content1 = _GetlogFileData("SampleLog_M2_S0.log", "8")	;///										               		    ;Get the 8th row of the logfile to get the created date and time info to veryfy that it is overwritting
-	$logfile2CreatedTime2 = $logfile1Content1[6]       																				    ;Get the created time of the log file
+	if($logfile1Content1[0]>=6) then
+		$logfile2CreatedTime2 = $logfile1Content1[6]       																				    ;Get the created time of the log file
+	EndIf
 	ConsoleWrite("$logfile2CreatedTime2  :" & $logfile2CreatedTime2 & @CRLF)
 
 	$number1 = _CheckLogfileTimeIsEqual($logfile2CreatedTime1, $logfile2CreatedTime2)													;Check whether the log files created times are equal ,if not then it is overwritten

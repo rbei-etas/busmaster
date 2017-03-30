@@ -6,6 +6,7 @@
 #include "../Include/BaseDefs.h"
 #include "IMenuInterface.h"
 #include "IBusmasterPlugin.h"
+#include "ILicenseProvider.h"
 class IBusmasterBusPlugin
 {
 public:
@@ -17,7 +18,9 @@ public:
     virtual void getMenuInterface(IMenuInterface**) = 0;
     virtual void getConfiguration(xmlNodePtr& pNodePtr) = 0;            //TODO
     virtual void setConfiguration(const xmlDocPtr) = 0;            //TODO
+	virtual void closureOperations() = 0;
     
+	virtual ILicenseProvider *getLicenseProvider() = 0;
 
 	virtual ~IBusmasterBusPlugin(){};
 };

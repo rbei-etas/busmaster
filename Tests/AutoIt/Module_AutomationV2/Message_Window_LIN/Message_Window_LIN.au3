@@ -18,7 +18,7 @@ _RunMe()
 _StartoHTMLTable("LIN Message Window Module Test Report")
 
 ;------------------P1 test cases-----------------------------
-
+;If(@OSVersion = "WIN_7") Then
 ;#include "TS_LIN_MSGWIN_01.au3"
 ;----#include "TS_LIN_MSGWIN_02.au3"
 ;#include "TS_LIN_MSGWIN_04.au3"              ; Menu state has to be checked manually
@@ -36,7 +36,7 @@ _StartoHTMLTable("LIN Message Window Module Test Report")
 ;#include "TS_MSGWIN_J1939_06.au3"
 ;#include "TS_MSGWIN_J1939_07.au3"
 
-
+;EndIf
 
 _EndoHTMLTable()
 

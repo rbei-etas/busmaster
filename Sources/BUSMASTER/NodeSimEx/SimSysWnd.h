@@ -49,7 +49,6 @@ public:
     // To save window size and splitter postion before unloading a conf file
     void vUpdateWndCo_Ords();
 
-
     // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CSimSysWnd)
@@ -82,4 +81,5 @@ public:
     afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
     afx_msg void OnSize( UINT nType, int cx, int cy );
     CNVTCToolBar m_toolbar;
+	void CloseSimSysWindow();
 };
