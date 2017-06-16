@@ -229,10 +229,19 @@ static void vFormatCANDataMsg(STCANDATA* pMsgCAN,
     {
         CurrDataCAN->m_eDrctn = DIR_RX;
     }
-    else
+	else
     {
         CurrDataCAN->m_eDrctn = DIR_TX;
     }
+
+	if (IS_ERR_MESSAGE(pMsgCAN->m_ucDataType))
+	{
+		CurrDataCAN->m_eEventType = ERROR_ACTIVE;
+	}
+	else
+	{
+		CurrDataCAN->m_eEventType = ERROR_INVALID;
+	}
 
     CurrDataCAN->m_eChannel = pMsgCAN->m_uDataInfo.m_sCANMsg.m_ucChannel;
 
@@ -258,8 +267,7 @@ static void vFormatCANDataMsg(STCANDATA* pMsgCAN,
         CurrDataCAN->m_byMsgType = TYPE_MSG_CAN_NON_RTR;
     }
 
-
-    CurrDataCAN->m_dwFrameID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
+	CurrDataCAN->m_dwFrameID = pMsgCAN->m_uDataInfo.m_sCANMsg.m_unMsgID;
 }
 
 BOOL CMsgContainerCAN::bTobeBlocked(STCANDATA& sCanData)

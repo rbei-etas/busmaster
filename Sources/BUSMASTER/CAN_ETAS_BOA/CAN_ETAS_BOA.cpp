@@ -1993,12 +1993,12 @@ static BOOL bLoadDataFromContr(PSCONTROLLER_DETAILS pControllerDetails)
             sg_asChannel[i].m_OCI_CANConfig.canFDConfig.txDelayCompensationControl   = (OCI_CANFDTxDelayCompensation)
                     pControllerDetails[i].m_bTxDelayCompensationControl;
             sg_asChannel[i].m_OCI_CANConfig.canFDConfig.txSecondarySamplePointOffset = pControllerDetails[i].m_unTxSecondarySamplePointOffset;
-            sg_asChannel[i].m_OCI_CANConfig.canFDConfig.canFdRxConfig.canRxMode      = (OCI_CANRxMode)
-                    pControllerDetails[i].m_bytCanRxMode;
-            sg_asChannel[i].m_OCI_CANConfig.canFDConfig.canFdRxConfig.canFdRxMode    = (OCI_CANFDRxMode)
-                    pControllerDetails[i].m_bytCanFdRxMode;
-            sg_asChannel[i].m_OCI_CANConfig.canFDConfig.canFdTxConfig                = (OCI_CANFDTxConfig)
-                    pControllerDetails[i].m_bytCanFdTxConfig;
+			sg_asChannel[i].m_OCI_CANConfig.canFDConfig.canFdRxConfig.canRxMode = (OCI_CANRxMode)2;   // OCI_CAN_RXMODE_CAN_FRAMES_USING_CAN_MESSAGE
+                    //pControllerDetails[i].m_bytCanRxMode;
+			sg_asChannel[i].m_OCI_CANConfig.canFDConfig.canFdRxConfig.canFdRxMode = (OCI_CANFDRxMode)4;   // OCI_CANFDRXMODE_CANFD_FRAMES_USING_CANFD_MESSAGE
+                    //pControllerDetails[i].m_bytCanFdRxMode;
+			sg_asChannel[i].m_OCI_CANConfig.canFDConfig.canFdTxConfig = (OCI_CANFDTxConfig)4;   // OCI_CANFDTX_USE_CAN_AND_CANFD_FRAMES_ONLY
+                   // pControllerDetails[i].m_bytCanFdTxConfig;
             sg_asChannel[i].m_OCI_CANConfig.busParticipationMode = OCI_BUSMODE_ACTIVE;
 #endif
         }

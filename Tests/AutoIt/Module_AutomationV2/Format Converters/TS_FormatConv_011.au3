@@ -41,8 +41,8 @@ if winexists($WIN_BUSMASTER) then
 		sleep(2000)
 		$hWndLogToExcel=controlgethandle($WIN_FormatConv,"",$Tab_CAPL2CPP)
 		_GUICtrlTab_ClickTab($hWndLogToExcel, 1)
-		ControlClick($WIN_FormatConv,"",$BTN_Export)
 		Sleep(1000)
+		ControlClick($WIN_FormatConv,"",$BTN_Export)
 		If WinWaitActive($WIN_BUSMASTER,"Enter log and CSV file details",2) Then
 			_WriteResult("Pass","STS_FORMAT_CONV_011")
 			ControlClick($WIN_BUSMASTER,"",$BTN_OK_EnterLogFileDetails)

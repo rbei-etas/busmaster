@@ -22,4 +22,5 @@ protected:
 public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnLvnItemchangedListComponents(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedImportLicense();
 };

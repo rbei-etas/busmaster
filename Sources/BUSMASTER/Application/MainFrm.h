@@ -772,6 +772,7 @@ public:
     int getPluginConnectionPoint(const char* pluginId, IBusmasterPluginConnection**);
     void provideBusmasterConfiguredPaths(int pathType, char* infoData);
 	int getVariableCommunicationLayer(IVariableLayer** variableLayer);
+	int ImportLicense();
 
 public:
     afx_msg void OnUpdateSelectDriver(CCmdUI* pCmdUI);

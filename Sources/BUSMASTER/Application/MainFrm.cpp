@@ -13447,19 +13447,7 @@ void CMainFrame::LoadControllerConfigData(SCONTROLLER_DETAILS& sController, xmlN
         {
             sController.m_unTxSecondarySamplePointOffset = atoi(strVar.c_str());
         }
-        if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_CanRxMode",strVar))
-        {
-            sController.m_bytCanRxMode = atoi(strVar.c_str());
-        }
-        if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_CanFdRxMode",strVar))
-        {
-            sController.m_bytCanFdRxMode = atoi(strVar.c_str());
-        }
-        if (xmlUtils::GetDataFrmNode(pNodePtr,"CANFD_CanFdTxConfig",strVar))
-        {
-            sController.m_bytCanFdTxConfig = atoi(strVar.c_str());
-        }
-
+      
 
 
 
@@ -16446,23 +16434,7 @@ void CMainFrame::SaveConfigDataToXML( SCONTROLLER_DETAILS& controller, xmlNodePt
     strVar = strData.c_str();
     xmlNewChild( pNodePtr, nullptr, BAD_CAST "CANFD_TxSecondarySamplePoint", BAD_CAST strVar );
 
-    std::stringstream stream17;
-    stream17 << (int)controller.m_bytCanRxMode;
-    strData = stream17.str();
-    strVar = strData.c_str();
-    xmlNewChild( pNodePtr, nullptr, BAD_CAST "CANFD_CanRxMode", BAD_CAST strVar );
-
-    std::stringstream stream18;
-    stream18 << (int)controller.m_bytCanFdRxMode;
-    strData = stream18.str();
-    strVar = strData.c_str();
-    xmlNewChild( pNodePtr, nullptr, BAD_CAST "CANFD_CanFdRxMode", BAD_CAST strVar );
-
-    std::stringstream stream19;
-    stream19 << (int)controller.m_bytCanFdTxConfig;
-    strData = stream19.str();
-    strVar = strData.c_str();
-    xmlNewChild( pNodePtr, nullptr, BAD_CAST "CANFD_CanFdTxConfig", BAD_CAST strVar );
+    
 }
 void CMainFrame::vInitialize( SCONTROLLER_DETAILS& controller, BOOL bUpdateHWDesc )
 {
@@ -16519,9 +16491,7 @@ void CMainFrame::vInitialize( SCONTROLLER_DETAILS& controller, BOOL bUpdateHWDes
     controller.m_unDataSJW = 03;
     controller.m_bTxDelayCompensationControl = 0;   // OCI_CANFD_TX_DELAY_COMPENSATION_OFF
     controller.m_unTxSecondarySamplePointOffset = 0;
-    controller.m_bytCanRxMode = 2;   // OCI_CAN_RXMODE_CAN_FRAMES_USING_CAN_MESSAGE
-    controller.m_bytCanFdRxMode = 4;   // OCI_CANFDRXMODE_CANFD_FRAMES_USING_CANFD_MESSAGE
-    controller.m_bytCanFdTxConfig = 2;   // OCI_CANFDTX_USE_CANFD_FRAMES_ONLY
+    
 }
 
 void CMainFrame::vLoadBusmasterKernel()
@@ -16807,4 +16777,91 @@ int CMainFrame::GetLicenseDetails(std::string strAddOn, CLicenseDetails &license
 	{
 		return mPluginManager->getLicenseDetails(strAddOn, licenseDetails);
 	}	
+}
+// This function is used to import a license from About Box
+int CMainFrame::ImportLicense()
+{
+	int nResult = -1;
+	CFileDialog fileDlg(TRUE, "lic", nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		_("License File(s)(*.lic)|*.lic||"), nullptr);
+
+	// Set Title
+	fileDlg.m_ofn.lpstrTitle = _("Select License File...");
+
+	if (fileDlg.DoModal() == IDOK)
+	{
+		std::string strLicenseFile = fileDlg.GetPathName();
+		std::string strLicenseFileExt = fileDlg.GetFileExt();
+
+		if (strLicenseFileExt != "lic")
+		{
+			AfxMessageBox("Invalid license file format");
+			return -1;
+		}
+
+		if (TRUE == PathFileExists(strLicenseFile.c_str()))
+		{
+			LONG lError = 0;
+			HKEY hKey;
+			BYTE acRegValue[1024] = { 0 };
+			DWORD dwSize = sizeof(BYTE[1024]);
+
+			HKEY hRootKey = HKEY_LOCAL_MACHINE;
+			CString strSubKey = "";
+			CString strName = "Install_Dir";
+			DWORD dwType = REG_SZ;
+			CString strValue = "";
+			DWORD dwValue = 0;
+
+			CString strCompleteSubKey;
+			strCompleteSubKey.Format("Software\\BUSMASTER_v%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
+			strValue = "";
+			lError = RegOpenKeyEx(hRootKey, strCompleteSubKey, 0, KEY_READ, &hKey);
+			// If the registry key open successfully, get the value in "path"
+			// sub key
+			if (lError == ERROR_SUCCESS)
+			{
+				if (dwType == REG_SZ)
+				{
+					lError = RegQueryValueEx(hKey, strName, 0, &dwType, acRegValue, &dwSize);
+					strValue.Format("%s", acRegValue);
+				}
+
+				RegCloseKey(hKey);
+			}
+
+			BOOL bStatus = FALSE;
+			strLicenseFile += '\0';
+			strValue += "\0";
+			SHFILEOPSTRUCT fileInfo;
+			fileInfo.hwnd = this->m_hWnd;
+			fileInfo.wFunc = FO_COPY;
+			fileInfo.pFrom = strLicenseFile.c_str();
+			fileInfo.pTo = strValue.GetBuffer();
+
+			fileInfo.fFlags = FOF_NOCONFIRMATION;
+			fileInfo.fAnyOperationsAborted = bStatus;
+
+			if (strValue != "" && TRUE == PathFileExists(strLicenseFile.c_str()))
+			{
+				int nRetVal = SHFileOperation(&fileInfo);
+				if (nRetVal != 0)
+				{
+					MessageBox("Importing License file failed", "BUSMASTER", MB_OK | MB_ICONERROR);
+					nResult = - 1;
+				}
+				else
+				{
+					//MessageBox("License file is copied successfully.\nRestart BUSMASTER to start using Add-On features.", "BUSMASTER", MB_OK | MB_ICONINFORMATION);
+					nResult = 0;
+				}
+				if (fileInfo.fAnyOperationsAborted)
+				{
+					nResult = -1;
+				}
+			}
+		}
+	}
+
+	return nResult;
 }

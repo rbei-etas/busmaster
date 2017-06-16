@@ -585,7 +585,7 @@ void CMsgReplayWnd::SetWindowFont()
 void CMsgReplayWnd::OnClose()
 {
     bSetThreadStopSignal();
-    CMDIChildWnd::OnClose();
+	CWnd::OnClose();
 }
 
 /******************************************************************************/
@@ -727,14 +727,14 @@ LRESULT CMsgReplayWnd::vHandleListControlDataReq( WPARAM wParam, LPARAM /*lParam
             }
             if((bEOFflag || bProtocolMismatch || bInvalidMsg) && pItem->iItem == 0)
             {
+				
                 if(bEOFflag && pItem->iItem == 0)
                 {
                     CReplayManager::ouGetReplayManager().vSendToTrace(defSTR_REPLAY_FILE_EMPTY);
                 }
-                OnClose();
-                m_ouReplayDetails.vCloseReplayFile();
-                DestroyWindow();
-
+                OnClose();                
+				m_ouReplayDetails.vCloseReplayFile();
+				DestroyWindow();
             }
         }
     }
@@ -742,7 +742,10 @@ LRESULT CMsgReplayWnd::vHandleListControlDataReq( WPARAM wParam, LPARAM /*lParam
     // Image Request
     if(pItem->mask & LVIF_IMAGE && !bProtocolMismatch && !(bEOFflag && pItem->iItem == 0))
     {
-        pItem->iImage = m_ouReplayDetails.m_omBreakPoints[ pItem->iItem];
+		if (m_ouReplayDetails.m_omBreakPoints.GetSize() > pItem->iItem)
+		{
+			pItem->iImage = m_ouReplayDetails.m_omBreakPoints[pItem->iItem];
+		}        
     }
     return 0;
 }

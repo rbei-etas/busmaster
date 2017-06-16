@@ -878,6 +878,11 @@ UINT CReplayProcess::sunNIReplayThreadFunc( LPVOID pParam )
                     LeaveCriticalSection(&pReplayDetails->m_omCritSecFilter);
                 }
 
+
+				bTobeBlocked = bTobeBlocked | pReplayDetails->bMessageTobeBlocked(sBasicCanInfo);
+
+
+
                 if(bTobeBlocked == FALSE )
                 {
                     // Use HIL Function to send CAN message

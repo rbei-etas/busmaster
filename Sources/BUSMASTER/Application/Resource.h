@@ -225,6 +225,7 @@
 #define IDC_OK                          1001
 #define IDC_STATIC_EXTRA_CONFIG         1001
 #define IDC_STATIC_HOUR                 1001
+#define IDC_IMPORT_LICENSE              1001
 #define IDC_STAT_SIGNALLENGTH           1002
 #define IDC_EDIT_BTR1                   1002
 #define IDC_SPIN_BYINDEX                1002

@@ -36,6 +36,21 @@ UINT gunSendMsg_CAN(STCAN_MSG* psTxMsg, HMODULE hModule)
     sMsg.m_ucRTR = psTxMsg->m_ucRTR;
     sMsg.m_ucEXTENDED = psTxMsg->m_ucEXTENDED;
     sMsg.m_ucDataLen = psTxMsg->m_ucDataLen;
+	sMsg.m_bCANFD = psTxMsg->m_bCANFD;
+	if (sMsg.m_ucDataLen > 8 && sMsg.m_bCANFD == false)
+	{
+		sMsg.m_ucDataLen = 8;
+	}
+
+	else if (sMsg.m_ucDataLen > 64 && sMsg.m_bCANFD == true)
+	{
+		sMsg.m_ucDataLen = 64;
+	}
+
+	else if (sMsg.m_ucDataLen > 64)
+	{
+		sMsg.m_ucDataLen = 64;
+	}
     sMsg.m_ucChannel = psTxMsg->m_ucChannel;
 
     memset(sMsg.m_ucData, 0, sMsg.m_ucDataLen);
@@ -43,7 +58,7 @@ UINT gunSendMsg_CAN(STCAN_MSG* psTxMsg, HMODULE hModule)
     {
         sMsg.m_ucData[i] = psTxMsg->m_ucData[i];
     }
-    sMsg.m_bCANFD = psTxMsg->m_bCANFD;
+
 
     if (pmCEexecuteFunc != nullptr)
     {

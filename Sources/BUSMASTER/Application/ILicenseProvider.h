@@ -9,6 +9,7 @@ public:
 	tm tmDateTime;
 	std::string strDateTime;
 	int nValidLicense = 0; // 0 - InValid License, 1 - Valid License
+	std::string strVersion = "";
 
 	CLicenseDetails()
 	{
@@ -16,6 +17,7 @@ public:
 		nLicenseValidity = 0;
 		strDateTime = "";
 		nValidLicense = 0;
+		strVersion = "";
 	}
 	~CLicenseDetails()
 	{

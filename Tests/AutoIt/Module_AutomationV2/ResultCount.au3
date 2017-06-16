@@ -6,8 +6,8 @@
 	#include <Excel.au3>
 Global $CountPass = 0
 Global $CountFail = 0
-Global $TotalTestScrpt = 271
-Global $TotalRow = 1401
+Global $TotalTestScrpt = 287
+Global $TotalRow = 1402
 
 
 
@@ -17,11 +17,11 @@ if FileExists($ResultFilepath) Then
 	;ConsoleWrite("$FileOpen="&$FileOpen)
 	$oExcel = _ExcelBookOpen($ResultFilepath)
 	;for $i = 4 to $TotalTestScrpt
-	for $i = 4 to $TotalRow
+	for $i = 3 to $TotalRow
 		$dataCell = _ExcelReadCell($oExcel, $i, 3)
 		;$TotalTestScrpt1 = _ExcelReadCell($oExcel, $i, 2)
 		ConsoleWrite("$dataCell = "&$dataCell&@CRLF)
-		if $dataCell = "PASS" Then
+		if $dataCell = "Pass" Then
 			$CountPass = $CountPass + 1
 		ElseIf $dataCell = "FAIL" Then
 			$CountFail = $CountFail + 1

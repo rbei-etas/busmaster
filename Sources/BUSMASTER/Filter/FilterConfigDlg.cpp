@@ -1345,6 +1345,7 @@ void CFilterConfigDlg::vUpdateFilterComponents( const SFILTER_CAN& sFilter )
         m_omRadioEvent.SetCheck( TRUE );
 
         m_omEventType.SelectString( -1, sFilter.m_omEventName.c_str() );
+		
     }
     // Update
     // ID Type
@@ -1649,7 +1650,7 @@ void CFilterConfigDlg::OnRadioEvent()
                 SFILTER_CAN* psFilter = (SFILTER_CAN*)
                                         (psTempSet->m_psFilterInfo) + m_nSelecetedFilterIndex;
                 psFilter->m_ucFilterType = defFILTER_TYPE_EVENT;// Update the UI
-
+				psFilter->m_omEventName = defFILTER_ERR_FRAME;
                 CString omStrIDFrom = "";
                 omStrIDFrom = psFilter->m_omEventName.c_str();
                 // Apply the text

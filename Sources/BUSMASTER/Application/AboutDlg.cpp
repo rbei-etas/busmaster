@@ -19,6 +19,7 @@
 #define defSTR_REGISTRY          "Software\\RBEI-ETAS\\BUSMASTER_v%d.%d.%d\\Add-Ons"
 #define defSTR_BUSMASTER         "BUSMASTER"
 #define defSTR_OPEN_SOURCE       "Open Source"
+#define defSTR_Add_On_VERSION    "Version"
 #define defSTR_ADDON             "Add-On"
 #define defSTR_FLEXRAY           "FlexRay"
 #define defSTR_INSTRUMENTS       "Instruments"
@@ -30,6 +31,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	ON_NOTIFY(NM_CLICK, IDC_CONTACT_LINK, &CAboutDlg::OnContactLinkClicked)
 	ON_BN_CLICKED(IDOK, &CAboutDlg::OnBnClickedOk)
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_COMPONENTS, &CAboutDlg::OnLvnItemchangedListComponents)
+	ON_BN_CLICKED(IDC_IMPORT_LICENSE, &CAboutDlg::OnBnClickedImportLicense)
 END_MESSAGE_MAP()
 
 extern CCANMonitorApp theApp;
@@ -50,11 +52,13 @@ BOOL CAboutDlg::OnInitDialog()
 	m_lstComponents.EnableWindow(TRUE);
 	char caColumnName[][50] = { defSTR_NAME,
 		defSTR_TYPE,
+		defSTR_VERSION,
 		defSTR_LICENSE_VALIDITY,
 		defSTR_LICENSE_VALID_TILL
 	};
 
 	INT nColumnFormat[] = { LVCFMT_LEFT,
+		LVCFMT_LEFT,
 		LVCFMT_LEFT,
 		LVCFMT_LEFT,
 		LVCFMT_LEFT
@@ -66,10 +70,11 @@ BOOL CAboutDlg::OnInitDialog()
 	m_lstComponents.GetWindowRect(&rListCtrlRect);
 	nTotalColunmSize = rListCtrlRect.right - rListCtrlRect.left;
 
-	m_lstComponents.InsertColumn(0, caColumnName[0], nColumnFormat[0], (int)(0.25 * nTotalColunmSize));
-	m_lstComponents.InsertColumn(1, caColumnName[1], nColumnFormat[1], (int)(0.25 * nTotalColunmSize));
-	m_lstComponents.InsertColumn(2, caColumnName[2], nColumnFormat[2], (int)(0.2 * nTotalColunmSize));
-	m_lstComponents.InsertColumn(3, caColumnName[3], nColumnFormat[3], (int)(0.3 * nTotalColunmSize));
+	m_lstComponents.InsertColumn(0, caColumnName[0], nColumnFormat[0], (int)(0.225 * nTotalColunmSize));
+	m_lstComponents.InsertColumn(1, caColumnName[1], nColumnFormat[1], (int)(0.225 * nTotalColunmSize));
+	m_lstComponents.InsertColumn(2, caColumnName[2], nColumnFormat[2], (int)(0.15 * nTotalColunmSize));
+	m_lstComponents.InsertColumn(3, caColumnName[3], nColumnFormat[3], (int)(0.15 * nTotalColunmSize));
+	m_lstComponents.InsertColumn(4, caColumnName[4], nColumnFormat[4], (int)(0.25 * nTotalColunmSize));
 
 	// Set the extended style
 
@@ -95,8 +100,9 @@ BOOL CAboutDlg::OnInitDialog()
 	int nItemIndex = m_lstComponents.InsertItem(m_lstComponents.GetItemCount(), achKey);
 	m_lstComponents.SetItemText(nItemIndex, 0, defSTR_BUSMASTER);
 	m_lstComponents.SetItemText(nItemIndex, 1, defSTR_OPEN_SOURCE);
-	m_lstComponents.SetItemText(nItemIndex, 2, "-");
+	m_lstComponents.SetItemText(nItemIndex, 2, strVersion);
 	m_lstComponents.SetItemText(nItemIndex, 3, "-");
+	m_lstComponents.SetItemText(nItemIndex, 4, "-");
 
 	CMainFrame* pMainFrame = static_cast<CMainFrame*> (theApp.m_pMainWnd);	
 	
@@ -125,7 +131,7 @@ BOOL CAboutDlg::OnInitDialog()
 				m_lstComponents.SetItemText(nItemIndex, 0, achKey);
 				m_lstComponents.SetItemText(nItemIndex, 1, defSTR_ADDON);
 				int nDays = 0, nValidLicense = 0;
-				std::string strDateTime = "";
+				std::string strDateTime = "", strAddOnVersion = "";
 				char result[MAX_PATH] = { 0 }, month[100] = { 0 };
 				if (nullptr != pMainFrame)
 				{
@@ -134,6 +140,7 @@ BOOL CAboutDlg::OnInitDialog()
 					nDays = licenseDetails.nLicenseValidity;
 					strDateTime = licenseDetails.strDateTime;
 					nValidLicense = licenseDetails.nValidLicense;
+					strAddOnVersion = licenseDetails.strVersion;
 				}
 
 				CString strValidity = "0";
@@ -142,16 +149,24 @@ BOOL CAboutDlg::OnInitDialog()
 				{
 					strValidity.Format("%d days", nDays);
 				}
-				
-				if (1 == nValidLicense)
+				if (strAddOnVersion.empty() == false)
 				{
-					m_lstComponents.SetItemText(nItemIndex, 2, strValidity);
-					m_lstComponents.SetItemText(nItemIndex, 3, strDateTime.c_str());
+					m_lstComponents.SetItemText(nItemIndex, 2, strAddOnVersion.c_str());
 				}
 				else
 				{
-					m_lstComponents.SetItemText(nItemIndex, 2, "0");
-					m_lstComponents.SetItemText(nItemIndex, 3, "Invalid");
+					m_lstComponents.SetItemText(nItemIndex, 2, "-");
+				}
+				
+				if (1 == nValidLicense)
+				{
+					m_lstComponents.SetItemText(nItemIndex, 3, strValidity);
+					m_lstComponents.SetItemText(nItemIndex, 4, strDateTime.c_str());
+				}
+				else
+				{
+					m_lstComponents.SetItemText(nItemIndex, 3, "0");
+					m_lstComponents.SetItemText(nItemIndex, 4, "Invalid");
 				}
 				
 			}
@@ -228,4 +243,18 @@ void CAboutDlg::OnLvnItemchangedListComponents(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 
 	*pResult = 0;
+}
+
+// This function is used to import a license from About Box
+void CAboutDlg::OnBnClickedImportLicense()
+{
+	CMainFrame* pMainFrame = static_cast<CMainFrame*> (theApp.m_pMainWnd);
+
+	if (NULL != pMainFrame)
+	{
+		if (0 == pMainFrame->ImportLicense())
+		{
+			MessageBox("License file is copied successfully.\nRestart BUSMASTER to start using Add-On features.", "BUSMASTER", MB_OK | MB_ICONINFORMATION);
+		}
+	}
 }

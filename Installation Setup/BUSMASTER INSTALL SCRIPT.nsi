@@ -34,6 +34,10 @@
 !define MUI_ICON  "..\Sources\BUSMASTER\Application\Res\BUSMASTER.ico"
 !define MUI_UNICON "..\Sources\BUSMASTER\Application\Res\Uninstaller.ico"
 
+!define Flexray_Key "1"
+!define Instruments_Key "1"
+!define CANFD_Key "1"
+
 !macro StrStr ResultVar String SubString
   Push `${String}`
   Push `${SubString}`
@@ -118,6 +122,7 @@ var COMP_BM
 var COMP_ADD_ONS
 var COMP_FLEXRAY
 var COMP_Instruments
+var COMP_CANFD
 var COMP_PAGE_INIT
 var DeleteLicenseFiles
 
@@ -390,7 +395,7 @@ Section "BUSMASTER"
   Delete "$INSTDIR\FormatConverter.exe"
   Delete "$INSTDIR\SigGrphWnd.dll"
   Delete "$INSTDIR\SignalDefiner.dll"
-  RMDir /r "$INSTDIR\ConverterPlugins"
+  ;RMDir /r "$INSTDIR\ConverterPlugins"
   Delete "$INSTDIR\BUSMASTER.chm"
   Delete "$INSTDIR\LDFEditor.chm"
   Delete "$INSTDIR\COPYING.LESSER.txt"
@@ -445,6 +450,24 @@ Section "BUSMASTER"
   Delete "$INSTDIR\qtiff.dll"
   Delete "$INSTDIR\qwbmp.dll"
   Delete "$INSTDIR\qwebp.dll"
+  Delete "$INSTDIR\Application.version"
+  
+  
+  Delete "$INSTDIR\ConverterPlugins\AscLogConverter.dll"
+  Delete "$INSTDIR\ConverterPlugins\BlfLibrary.dll"
+  Delete "$INSTDIR\ConverterPlugins\BlfLogConverter.dll"
+  Delete "$INSTDIR\ConverterPlugins\CAPL2CConverter.dll"
+  Delete "$INSTDIR\ConverterPlugins\CAPL2CConverterJPN.dll"
+  Delete "$INSTDIR\ConverterPlugins\DBC2DBFConverter.dll"
+  Delete "$INSTDIR\ConverterPlugins\DBC2DBFConverterLibrary.dll"
+  Delete "$INSTDIR\ConverterPlugins\DBF2DBCConverter.dll"
+  Delete "$INSTDIR\ConverterPlugins\intl.dll"
+  Delete "$INSTDIR\ConverterPlugins\J1939DBC2DBFConverter.dll"
+  Delete "$INSTDIR\ConverterPlugins\libxml2.dll"
+  Delete "$INSTDIR\ConverterPlugins\LogAscConverter.dll"
+  Delete "$INSTDIR\ConverterPlugins\LogToExcelConverter.dll"
+  Delete "$INSTDIR\ConverterPlugins\LogToExcelConverterJPN.dll"
+  Delete "$INSTDIR\ConverterPlugins\zlib1.dll"
   
   ; Delete schema file
   Delete "$INSTDIR\BusMasterPluginSchema.xsd"
@@ -481,7 +504,7 @@ Section "BUSMASTER"
   File ..\Sources\BUSMASTER\BIN\Release\FormatConverter.exe
   File ..\Sources\BUSMASTER\BIN\Release\SigGrphWnd.dll
   File ..\Sources\BUSMASTER\BIN\Release\SignalDefiner.dll
-  File ..\Sources\BUSMASTER\BIN\Release\iconv.dll
+  ;File ..\Sources\BUSMASTER\BIN\Release\iconv.dll
   File ..\Sources\BUSMASTER\BIN\Release\libxml2.dll
   File ..\Sources\BUSMASTER\BIN\Release\zlib1.dll
   File ..\Sources\BUSMASTER\BIN\Release\intl.dll
@@ -517,13 +540,31 @@ Section "BUSMASTER"
   File ..\Sources\BUSMASTER\BIN\Release\qtiff.dll
   File ..\Sources\BUSMASTER\BIN\Release\qwbmp.dll
   File ..\Sources\BUSMASTER\BIN\Release\qwebp.dll
+  File ..\Sources\BUSMASTER\BIN\Release\Application.version
 
   ; PlugIn schema file
   File ..\Sources\BUSMASTER\BusMasterPluginSchema.xsd
   
   ; Converters
-  File /r ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins
+  ;File /r ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins
+  SetOutPath "$INSTDIR\ConverterPlugins"
+  File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\AscLogConverter.dll
+  File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\BlfLibrary.dll
+  File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\BlfLogConverter.dll
+  File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\CAPL2CConverter.dll
+  File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\CAPL2CConverterJPN.dll
+  File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\DBC2DBFConverter.dll
+  File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\DBC2DBFConverterLibrary.dll
+  File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\DBF2DBCConverter.dll
+  File ..\Sources\BUSMASTER\BIN\Release\intl.dll
+  File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\J1939DBC2DBFConverter.dll
+  File ..\Sources\BUSMASTER\BIN\Release\libxml2.dll
+  File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\LogAscConverter.dll
+  File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\LogToExcelConverter.dll
+  File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\LogToExcelConverterJPN.dll
+  File ..\Sources\BUSMASTER\BIN\Release\zlib1.dll
 
+  SetOutPath $INSTDIR
   ; Japanese lib files
   File /r ..\Sources\BUSMASTER\BIN\Release\JPN
 
@@ -554,7 +595,7 @@ Section "BUSMASTER"
 
   ;Add dlls to ConverterPlugins
   SetOutPath "$INSTDIR\ConverterPlugins"
-  File ..\Sources\BUSMASTER\BIN\Release\iconv.dll
+  ;File ..\Sources\BUSMASTER\BIN\Release\iconv.dll
   File ..\Sources\BUSMASTER\BIN\Release\intl.dll
   File ..\Sources\BUSMASTER\BIN\Release\libxml2.dll
   File ..\Sources\BUSMASTER\BIN\Release\zlib1.dll
@@ -610,6 +651,9 @@ Section "BUSMASTER"
 
   ; Registry entries for uninstaller
   WriteRegStr HKLM "Software\BUSMASTER_v${VERSION}" "Install_Dir" "$INSTDIR"
+  WriteRegStr HKLM "Software\BUSMASTER_v${VERSION}" "Flexray_Key" "${Flexray_Key}"
+  WriteRegStr HKLM "Software\BUSMASTER_v${VERSION}" "Instruments_Key" "${Instruments_Key}"
+  WriteRegStr HKLM "Software\BUSMASTER_v${VERSION}" "CANFD_Key" "${CANFD_Key}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "DisplayName" "BUSMASTER Ver ${VERSION}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "UninstallString" "$INSTDIR\uninst.exe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\BUSMASTER_v${VERSION}" "InstallLocation " "$INSTDIR\"
@@ -785,10 +829,12 @@ Section un.BUSMASTER Uninstall
   IntOp $COMP_BM $COMP_BM & ${SF_SELECTED}
    ${If} $COMP_BM != "0"
  ; Prompt user to close all instances of BUSMASTER.
+  ${Do}
   ${nsProcess::FindProcess} "BUSMASTER.exe" $R0
   ${If} $R0 == 0
   MessageBox MB_OK|MB_ICONSTOP "Please close all instances of BUSMASTER and Click 'OK'"
   ${EndIf}
+  ${LoopUntil} $R0 != 0
   
   ; Kill process BusEmulation if active.
   ${Do}
@@ -859,27 +905,96 @@ Section /o un.FlexRay Section_FlexRay
 
 IntOp $COMP_FLEXRAY $COMP_FLEXRAY & ${SF_SELECTED}
 ${if} $COMP_FLEXRAY == "1"
+
+  ; Prompt user to close all instances of BUSMASTER.
+  ${Do}
+  ${nsProcess::FindProcess} "BUSMASTER.exe" $R0
+  ${If} $R0 == 0
+  MessageBox MB_OK|MB_ICONSTOP "Please close all instances of BUSMASTER and Click 'OK'"
+  ${EndIf}
+  ${LoopUntil} $R0 != 0
+  
+  ; Kill process BusEmulation if active.
+  ${Do}
+  ${nsProcess::KillProcess} "BusEmulation.exe" $R0
+  ${LoopUntil} $R0 != 0
+  
+  ; Unregister server
+  SetOutPath $INSTDIR
+  
 ${If} $DeleteLicenseFiles == "1"
-  Delete "$PROGRAMFILES\BUSMASTER_v${VERSION}\LicenseValidator.dll"
-  Delete "$PROGRAMFILES\BUSMASTER_v${VERSION}\MacIdLicenceManager.dll"
+  Delete "$INSTDIR\LicenseValidator.dll"
+  Delete "$INSTDIR\MacIdLicenceManager.dll"
   ;RMDir /r "$INSTDIR\BusmasterBusPlugins"
   ;RMDir /r "$INSTDIR\BusmasterPlugins"
   ${EndIf}  
-ExecWait '"$PROGRAMFILES\BUSMASTER_v${VERSION}\BusmasterBusPlugins\FlexRay\uninst.exe" /S'
+  
+;ExecWait '"$PROGRAMFILES\BUSMASTER_v${VERSION}\BusmasterBusPlugins\FlexRay\uninst.exe" /S'
+ExecWait '"$INSTDIR\BusmasterBusPlugins\FlexRay\uninst.exe" /S'
+
 ${EndIf}
 SectionEnd
 
 Section /o un.Instruments Section_Instruments
 
-IntOp $COMP_FLEXRAY $COMP_FLEXRAY & ${SF_SELECTED}
+IntOp $COMP_Instruments $COMP_Instruments & ${SF_SELECTED}
 ${if} $COMP_Instruments == "1"
+   
+  ; Prompt user to close all instances of BUSMASTER.
+  ${Do}
+  ${nsProcess::FindProcess} "BUSMASTER.exe" $R0
+  ${If} $R0 == 0
+  MessageBox MB_OK|MB_ICONSTOP "Please close all instances of BUSMASTER and Click 'OK'"
+  ${EndIf}
+  ${LoopUntil} $R0 != 0
+  
+  ; Kill process BusEmulation if active.
+  ${Do}
+  ${nsProcess::KillProcess} "BusEmulation.exe" $R0
+  ${LoopUntil} $R0 != 0
+  
+  ; Unregister server
+  SetOutPath $INSTDIR
+  
 ${If} $DeleteLicenseFiles == "1"
-  Delete "$PROGRAMFILES\BUSMASTER_v${VERSION}\LicenseValidator.dll"
-  Delete "$PROGRAMFILES\BUSMASTER_v${VERSION}\MacIdLicenceManager.dll"
+  Delete "$INSTDIR\LicenseValidator.dll"
+  Delete "$INSTDIR\MacIdLicenceManager.dll"
   ;RMDir /r "$INSTDIR\BusmasterBusPlugins"
   ;RMDir /r "$INSTDIR\BusmasterPlugins"
 ${EndIf}
-ExecWait '"$PROGRAMFILES\BUSMASTER_v${VERSION}\BusmasterPlugins\InstrumentPlugin\uninst.exe" /S'
+ExecWait '"$INSTDIR\BusmasterPlugins\InstrumentPlugin\uninst.exe" /S'
+${EndIf}
+
+SectionEnd
+
+Section /o un.CANFD Section_CANFD
+
+IntOp $COMP_CANFD $COMP_CANFD & ${SF_SELECTED}
+${if} $COMP_CANFD == "1"
+   
+  ; Prompt user to close all instances of BUSMASTER.
+  ${Do}
+  ${nsProcess::FindProcess} "BUSMASTER.exe" $R0
+  ${If} $R0 == 0
+  MessageBox MB_OK|MB_ICONSTOP "Please close all instances of BUSMASTER and Click 'OK'"
+  ${EndIf}
+  ${LoopUntil} $R0 != 0
+  
+  ; Kill process BusEmulation if active.
+  ${Do}
+  ${nsProcess::KillProcess} "BusEmulation.exe" $R0
+  ${LoopUntil} $R0 != 0
+  
+  ; Unregister server
+  SetOutPath $INSTDIR
+  
+${If} $DeleteLicenseFiles == "1"
+  Delete "$INSTDIR\LicenseValidator.dll"
+  Delete "$INSTDIR\MacIdLicenceManager.dll"
+  ;RMDir /r "$INSTDIR\BusmasterBusPlugins"
+  ;RMDir /r "$INSTDIR\BusmasterPlugins"
+${EndIf}
+ExecWait '"$INSTDIR\BusmasterBusPlugins\CANFD\uninst.exe" /S' 
 ${EndIf}
 
 SectionEnd
@@ -891,11 +1006,13 @@ LangString DESC_BUSMASTER ${ENGLISH} "Select BusMaster to uninstall BusMaster in
 LangString DESC_AddOns ${ENGLISH} "Select AddOns to uninstall BusMaster AddOns"
 LangString DESC_AddOns_FlexRay ${ENGLISH} "Select FlexRay AddOn to uninstall only FlexRay AddOn"
 LangString DESC_AddOns_Instruments ${ENGLISH} "Select Instruments to uninstall only Instruments AddOn"
+LangString DESC_AddOns_CANFD ${ENGLISH} "Select CAN FD to uninstall only CAN FD AddOn"
 
 !insertmacro MUI_UNFUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${Section_AddOns} $(DESC_AddOns)
   !insertmacro MUI_DESCRIPTION_TEXT ${Section_FlexRay} $(DESC_AddOns_FlexRay)
   !insertmacro MUI_DESCRIPTION_TEXT ${Section_Instruments} $(DESC_AddOns_Instruments)
+  !insertmacro MUI_DESCRIPTION_TEXT ${Section_CANFD} $(DESC_AddOns_CANFD)
   !insertmacro MUI_DESCRIPTION_TEXT ${Uninstall} $(DESC_BUSMASTER)
 !insertmacro MUI_UNFUNCTION_DESCRIPTION_END
 
@@ -909,6 +1026,7 @@ SectionGetFlags ${Uninstall} $COMP_BM
 SectionGetFlags ${Section_AddOns} $COMP_ADD_ONS
 SectionGetFlags ${Section_FlexRay} $COMP_FLEXRAY
 SectionGetFlags ${Section_Instruments} $COMP_Instruments
+SectionGetFlags ${Section_CANFD} $COMP_CANFD
 
 StrCpy $COMP_PAGE_INIT "0"
 StrCpy $DeleteLicenseFiles "0"
@@ -925,6 +1043,7 @@ StrCpy $0 0
 StrCpy $COMP_ADD_ONS "0"
 StrCpy $COMP_FLEXRAY "0"
 StrCpy $COMP_Instruments "0"
+StrCpy $COMP_CANFD "0"
 loop:
   EnumRegKey $1 HKCU "SOFTWARE\RBEI-ETAS\BUSMASTER_v${VERSION}\Add-Ons" $0
   StrCmp $1 "" done
@@ -935,6 +1054,9 @@ loop:
   ${If} $1 == "Instruments"
   StrCpy $COMP_Instruments "1"
   ${EndIf}
+  ${If} $1 == "CANFD"
+  StrCpy $COMP_CANFD "1"
+  ${EndIf}
   
   ;StrCmp $1 "" disbleBM
   IntOp $0 $0 + 1
@@ -944,9 +1066,11 @@ loop:
   ${If} $COMP_PAGE_INIT == "1"
 ${If} $COMP_FLEXRAY == "0" 
 ${AndIf} $COMP_Instruments == "0"
+${AndIf} $COMP_CANFD == "0"
 	SectionSetText ${Section_AddOns} ""
 	SectionSetText ${Section_FlexRay} ""
 	SectionSetText ${Section_Instruments} "" 
+	SectionSetText ${Section_CANFD} ""
 	IntOp $0 ${SF_SELECTED} | ${SF_RO}
 	SectionSetFlags ${Uninstall} $0
 ${EndIf}
@@ -955,6 +1079,9 @@ ${If} $COMP_FLEXRAY == "0"
 ${EndIf}
 ${If} $COMP_Instruments == "0" 
  SectionSetText ${Section_Instruments} "" 
+${EndIf}
+${If} $COMP_CANFD == "0" 
+ SectionSetText ${Section_CANFD} "" 
 ${EndIf}
 
 ${If} $COMP_ADD_ONS != "0"
@@ -971,6 +1098,7 @@ Function un.DisableAddOns
 	!insertmacro SetSectionFlag ${Section_AddOns} $0	
 	!insertmacro SetSectionFlag ${Section_FlexRay} $0	
 	!insertmacro SetSectionFlag ${Section_Instruments} $0	
+	!insertmacro SetSectionFlag ${Section_CANFD} $0	
 FunctionEnd
 
 Function un.onSelChange
@@ -983,6 +1111,7 @@ ${ElseIf} $R0 != ${SF_SELECTED}
 	!insertmacro ClearSectionFlag ${Section_AddOns} ${SF_RO}
 	!insertmacro ClearSectionFlag ${Section_FlexRay} ${SF_RO}
 	!insertmacro ClearSectionFlag ${Section_Instruments} ${SF_RO}
+	!insertmacro ClearSectionFlag ${Section_CANFD} ${SF_RO}
 ${EndIf}
  SectionGetFlags ${Uninstall} $R5
 ${EndIf}

@@ -104,9 +104,10 @@ public:
     unsigned int  m_unDataSJW;
     bool            m_bTxDelayCompensationControl;
     unsigned int  m_unTxSecondarySamplePointOffset;
-    unsigned short m_bytCanRxMode;
-    unsigned short m_bytCanFdRxMode;
-    unsigned short m_bytCanFdTxConfig;
+	unsigned int  m_unTxSecondarySamplePointFilter;
+	bool		  m_bProtocolExceptionHandling;
+	bool		  m_bEdgeFilter;
+	bool m_bISO;
 
     int     m_bDebug;                            // debug mode for channel driver
     int     m_bPassiveMode;                      // passive mode (no bus interaction, acknowledge, etc.)

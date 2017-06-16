@@ -1633,7 +1633,5 @@ void CHardwareListingCAN::InitializeControllerDetails(int nItem)
 	m_pControllerDetails[nItem].m_unDataSJW                      = 03;
 	m_pControllerDetails[nItem].m_bTxDelayCompensationControl    = 0;   // OCI_CANFD_TX_DELAY_COMPENSATION_OFF
 	m_pControllerDetails[nItem].m_unTxSecondarySamplePointOffset = 0;
-	m_pControllerDetails[nItem].m_bytCanRxMode                   = 2;   // OCI_CAN_RXMODE_CAN_FRAMES_USING_CAN_MESSAGE
-	m_pControllerDetails[nItem].m_bytCanFdRxMode                 = 4;   // OCI_CANFDRXMODE_CANFD_FRAMES_USING_CANFD_MESSAGE
-	m_pControllerDetails[nItem].m_bytCanFdTxConfig               = 4;   //  OCI_CANFDTX_USE_CAN_AND_CANFD_FRAMES
+	
 }

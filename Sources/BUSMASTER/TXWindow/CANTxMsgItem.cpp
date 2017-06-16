@@ -136,14 +136,19 @@ int CCANTxMsgItem::SetMsgConfig(xmlNodePtr pxmlNodePtr)
     {
         MsgDetails.nMsgType |= CCANTxMsgItem::eCANRTR;
     }
+	int nDlcFromConfig = atoi(strGetValueAtTag(pxmlNodePtr, DEF_DLC).c_str());
+	if (nDlcFromConfig > MAX_DATA_LEN_CAN)
+	{
+		nDlcFromConfig = 8;
+	}
     //Msg DLC
-    MsgDetails.nDLC = atoi(strGetValueAtTag(pxmlNodePtr, DEF_DLC).c_str());
+	MsgDetails.nDLC = nDlcFromConfig;
     //Msg Databytes
     std::string strDataBytes = strGetValueAtTag(pxmlNodePtr, DEF_DATABYTES).c_str();
     char* pch;
     pch = strtok((char*)strDataBytes.c_str(), " ,.-");
     int i = 0;
-    while (pch != nullptr)
+	while (pch != nullptr && i < MAX_DATA_LEN_CAN)
     {
         MsgDetails.pchData[i] = atoi(pch);
         pch = strtok(nullptr, " ,.-");
