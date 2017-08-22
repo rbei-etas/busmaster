@@ -96,7 +96,8 @@ void CClientList::DeleteAllEntries()
 HRESULT CClientList::RegisterClient(DWORD& pdwClientID, std::string pacClientName)
 {
     HRESULT hResult = S_FALSE;
-    if (!GetClient(pacClientName))
+    CClientBuffer* pClient = GetClient(pacClientName);
+    if (!pClient)
     {
         // this client is not registered at this time
         if (m_ClientBufferMap.size() <= MAX_CLIENT_ALLOWED)
@@ -104,8 +105,8 @@ HRESULT CClientList::RegisterClient(DWORD& pdwClientID, std::string pacClientNam
             pdwClientID = m_dwUniqueClientID;
 
             // do not forget to delete this object later, we are the creator so we delete it!
-            CClientBuffer* pNewClient = new CClientBuffer(m_dwUniqueClientID, nullptr, nullptr,  pacClientName);
-            m_ClientBufferMap[m_dwUniqueClientID] = pNewClient;
+            CClientBuffer* pClient = new CClientBuffer(m_dwUniqueClientID, nullptr, nullptr, pacClientName);
+            m_ClientBufferMap[m_dwUniqueClientID] = pClient;
             m_dwUniqueClientID++;
             hResult = S_OK;
         }
@@ -120,6 +121,7 @@ HRESULT CClientList::RegisterClient(DWORD& pdwClientID, std::string pacClientNam
     {
         // a client with this name is already registered,
         // write the ID to the variable
+        pdwClientID = pClient->dwClientID;
         hResult = ERR_CLIENT_EXISTS;
     }
     return hResult;
