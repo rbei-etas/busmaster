@@ -42,6 +42,8 @@ CChannelConfigurationDlg::CChannelConfigurationDlg(IBMNetWorkService* pBmService
     m_eBusType = eBusType;
     m_pBmNetWork = pBmService;
     m_nCurrentChannel = -1;
+	m_omStrPreviousDb = "";
+
     pBmService->GetChannelCount(eBusType, m_nChannelConfigured);
     //Atleast one channel should configued
     if (m_nChannelConfigured == 0)
@@ -141,13 +143,15 @@ BOOL CChannelConfigurationDlg::OnInitDialog()
     OnCbnSelchangeComboChannel();
 
     nUpdateLinSettings();
-
+	
     nDisplayProtocolSettings(0);
     nEnableControls(m_eBusType);
     if (m_eBusType == LIN)
     {
         GetDlgItem(IDC_BUTTON_LDF_EDIT)->ShowWindow(TRUE);
         GetDlgItem(IDC_BUTTON_LDF_EDIT)->EnableWindow(TRUE);
+
+		m_omStrPreviousDb = m_strFibexFilePath;
     }
     return TRUE;
 }
@@ -239,7 +243,20 @@ void CChannelConfigurationDlg::OnBnClickedButtonFibexpath()
         int nCount = 0;
         ERRORCODE ecCode = m_pBmNetWork->GetChannelCount(m_eBusType, nCount);
 
+		/*ERRORCODE ecDBLoad = m_pBmNetWork->LoadDb(LIN, 0, (LPCSTR)strPath);
+
+		if (ecDBLoad == EC_SUCCESS)
+		{
+			m_pBmNetWork->GetDBServiceList(LIN, 0, ouClusterList);
+		}*/
+
         ecCode = m_pBmNetWork->ParseDbFile((LPCSTR)strPath, m_eBusType, ouClusterList);
+
+		////Load First Cluster Only
+		//if (ouClusterList.size() > 0)
+		//{
+		//	m_pBmNetWork->AddDBService(LIN, 0, *(ouClusterList.begin()));
+		//}
 
         ouWaitIndicator.CloseWindow();
         m_nCurrentChannel = m_ComboChannelSelect.GetCurSel();
@@ -645,7 +662,7 @@ void CChannelConfigurationDlg::onBtnOk()
 {
     //Save Current Values to the old Channel
     if (-1 != m_nCurrentChannel)
-    {
+    {		
 
         std::list<ICluster*>::iterator itFlexConfig = m_ouCurrentChannelCluster.begin();
         if (itFlexConfig != m_ouCurrentChannelCluster.end())
@@ -654,8 +671,21 @@ void CChannelConfigurationDlg::onBtnOk()
         }
         if (itFlexConfig != m_ouCurrentChannelCluster.end())
         {
+			std::string strCurrentDb = "";
+			(*itFlexConfig)->GetDBFilePath(strCurrentDb);
+			if (m_omStrPreviousDb != "" && strCurrentDb != m_omStrPreviousDb)
+			{
+				m_pBmNetWork->DeleteDBService(LIN, m_nCurrentChannel, m_omStrPreviousDb);
+			}
+
             if (m_nCurrentChannel < m_nChannelConfigured)
             {
+				if (strCurrentDb != m_omStrPreviousDb)
+				{
+					//Load First Cluster Only
+					m_pBmNetWork->AddDBService(LIN, 0, (*itFlexConfig));
+				}
+
                 m_pBmNetWork->SetChannelCount(m_eBusType, 1);
                 m_pBmNetWork->SetDBService(m_eBusType, m_nCurrentChannel, 0, (*itFlexConfig));
 
@@ -680,7 +710,7 @@ void CChannelConfigurationDlg::onBtnOk()
 
                 m_pBmNetWork->SetSimulatedEcuList(m_eBusType, m_nCurrentChannel, ouEcuList);
 
-
+				
             }
         }
 

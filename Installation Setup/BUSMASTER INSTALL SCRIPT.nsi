@@ -35,8 +35,8 @@
 !define MUI_UNICON "..\Sources\BUSMASTER\Application\Res\Uninstaller.ico"
 
 !define Flexray_Key "1"
-!define Instruments_Key "1"
-!define CANFD_Key "1"
+!define Instruments_Key "2"
+!define CANFD_Key "2"
 
 !macro StrStr ResultVar String SubString
   Push `${String}`
@@ -335,6 +335,12 @@ Section "BUSMASTER"
 
   ; If the file exists delete it before installing
   
+  ;DBCache
+  ReadEnvStr $R7 "ALLUSERSPROFILE"
+  StrCpy $1 "\BUSMASTER\General\DBCache"
+  StrCpy $R7 $R7$1
+  RMDir /r  "$R7"
+  
   ; Kernel
   Delete "$INSTDIR\BusmasterKernel.dll"
   
@@ -552,7 +558,7 @@ Section "BUSMASTER"
   File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\BlfLibrary.dll
   File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\BlfLogConverter.dll
   File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\CAPL2CConverter.dll
-  File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\CAPL2CConverterJPN.dll
+  ;File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\CAPL2CConverterJPN.dll
   File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\DBC2DBFConverter.dll
   File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\DBC2DBFConverterLibrary.dll
   File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\DBF2DBCConverter.dll
@@ -561,15 +567,15 @@ Section "BUSMASTER"
   File ..\Sources\BUSMASTER\BIN\Release\libxml2.dll
   File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\LogAscConverter.dll
   File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\LogToExcelConverter.dll
-  File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\LogToExcelConverterJPN.dll
+  ;File ..\Sources\BUSMASTER\BIN\Release\ConverterPlugins\LogToExcelConverterJPN.dll
   File ..\Sources\BUSMASTER\BIN\Release\zlib1.dll
 
   SetOutPath $INSTDIR
   ; Japanese lib files
-  File /r ..\Sources\BUSMASTER\BIN\Release\JPN
+  ;File /r ..\Sources\BUSMASTER\BIN\Release\JPN
 
   ; Japanese Localization folder
-  File /r ..\Sources\BUSMASTER\Localization
+  ;File /r ..\Sources\BUSMASTER\Localization
 
   ; Help
   ;File /oname=BUSMASTER.chm "..\Documents\4 Help\out\help.chm"

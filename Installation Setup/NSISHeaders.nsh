@@ -31,4 +31,4 @@
 !define StrStr "!insertmacro StrStr"
 
 /* BUSMASTER Version to be updated for every release */
-!define VERSION "3.2.1"
+!define VERSION "3.2.2"

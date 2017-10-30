@@ -140,7 +140,7 @@ private:
     void vEnableFDParameters(BOOL bEnable);
 public:
     afx_msg void OnCbnSelchangeCombSjw();
-    afx_msg void OnCbnSelchangeCombDelayCompensation();
+    //afx_msg void OnCbnSelchangeCombDelayCompensation();
     afx_msg void OnCbnSelchangeCombPropdelay();
     CComboBox m_omCtrlSamplePoint;
     CComboBox m_omCtrlSJW;

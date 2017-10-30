@@ -206,11 +206,7 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
         if ( nIndex == -1 ) // not found
         {
             strcpy_s(s_acTraceStr, 1024, _("Invalid database filename"));
-            if(m_bAutoServerMode == FALSE)
-            {
-                //vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0,
-                //(LPARAM) s_acTraceStr);
-            }
+           
         }
         else // found
         {
@@ -221,11 +217,7 @@ BOOL CMsgSignal::bValidateDatabaseFile(CString strFileName)
             if ( sFileExtn != DATABASE_EXTN)
             {
                 strcpy_s(s_acTraceStr, 1024, _("Invalid database filename"));
-                if(m_bAutoServerMode == FALSE)
-                {
-                    //vWriteTextToTrace();//(WM_WRITE_TO_TRACE, 0,
-                    //(LPARAM) s_acTraceStr);
-                }
+               
             }
             else
             {

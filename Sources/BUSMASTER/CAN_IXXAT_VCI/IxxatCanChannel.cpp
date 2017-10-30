@@ -444,7 +444,7 @@ HRESULT CIxxatCanChannel::SendMessage(DWORD dwClientID, const STCAN_MSG& sCanTxM
     HRESULT hResult = HW_INTERFACE_NO_SEL;
     if (m_hCANChannel)
     {
-        CClientBuffer* pClient = m_pClientList->GetClientByID( (int) dwClientID);
+        CClientBuffer* pClient = m_pClientList->GetClientByID(dwClientID);
         if (pClient)
         {
             CANMSG sIxxatCanMsg;

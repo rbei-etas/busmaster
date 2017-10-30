@@ -877,7 +877,7 @@ void ITxFormView::vOnSignalItemChanged(int nRow, int nColumn)
         // Get the Signal Raw Value
         CString omStr = m_omLctrSigList.GetItemText(nRow, nColumn);
         unsigned __int64 un64Min, un64Max;
-        unsigned __int64 unI64RawValue;
+        unsigned __int64 unI64RawValue = 0;
         __int64 nI64TempRawValue;
         double dwPhyVal = 0;
         int nBase = m_bHexMode ? defBASE_HEX : defBASE_DEC;

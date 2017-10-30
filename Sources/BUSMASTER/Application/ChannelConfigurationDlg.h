@@ -66,7 +66,7 @@ private:
     CButton m_LeadingColdStart1;
     CEdit m_omFibexPath;
 
-
+	std::string m_omStrPreviousDb;
 public:
     afx_msg void OnBnClickedButtonFibexpath();
     afx_msg void OnBnClickedButtonLDFEditor();

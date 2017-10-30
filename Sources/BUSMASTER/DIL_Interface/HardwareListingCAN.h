@@ -120,9 +120,7 @@ private:
     // Pointer to Selected List
     int* m_pnSelList;
 
-	std::map<std::string, bool> m_mapChannelToCANFDStatus;
 	std::string m_omChannelDesc[defNO_OF_CHANNELS];
-	bool m_pnCANDFDValue[defNO_OF_CHANNELS];
     ETYPE_BUS m_eBus;
     int m_nMaxChannelAllowed;
 public:
@@ -161,11 +159,7 @@ public:
 	CRadixEdit   m_omEditBTR0;
 	CString m_omStrEditBTR0;
 	CString m_omStrEditBTR1;
-	CEdit m_omCANFDEditBaudRate;
-	CString m_omCANFDStrEditBaudRate;
 	BOOL m_bDialogCancel;
-	CButton m_chkCANFD;
-	BOOL m_bCANFD;
 	IChangeRegisters* m_pAdvChnlConfig;
 	afx_msg void OnEnKillfocusCanEditBaudRate();
 	void OnKillFocusOfEditBox(CEdit* , CString, bool );
@@ -175,6 +169,4 @@ public:
 	afx_msg void OnHdnItemdblclickLstcHwList(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMDblclkLstcHwList(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMDblclkLstcSelectedHwList(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnBnClickedCheckCanfd();
-	afx_msg void OnEnKillfocusCanfdEditBaudRate();
 };

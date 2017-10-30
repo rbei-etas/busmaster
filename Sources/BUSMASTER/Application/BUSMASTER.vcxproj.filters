@@ -258,6 +258,13 @@
     <ClCompile Include="ImportLogToolbar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ClientManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+   
+    <ClCompile Include="LINSignalExtractor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Midl Include="BUSMASTER.idl">
@@ -576,6 +583,13 @@
     <ClInclude Include="IMenuInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ClientManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+   
+    <ClInclude Include="LINSignalExtractor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="resource.hm">
@@ -668,6 +682,7 @@
     <None Include="Res\TOOLS_ICON.bmpx" />
     <None Include="Res\VIEW_ICON.bmpx" />
     <None Include="Res\PluginImageMissing.bmpx" />
+    <None Include="Res\HELP_ICON.bmpx" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\MsgWndImportLog.bmp">

@@ -52,5 +52,8 @@ namespace VariableManager
 		virtual int registerVariable(std::string& variablePath, IVariableChangeListner*, bool forTx, bool onUpdateOnly) = 0;
 		virtual int UnRegisterVariable(std::string& variablePath, IVariableChangeListner*) = 0;
 		virtual int setVariableValue(VariableData* value, bool isPhysicalValue) = 0;
+		virtual void HandleImportInstruments(std::string& variablePath) = 0;
+		virtual int getVariableType(std::string variablePath, unsigned int& unType) = 0;
+		virtual int isSignalValueValid(std::string variablePath, double& physical) = 0;
 	};
 };

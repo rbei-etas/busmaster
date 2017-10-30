@@ -1455,30 +1455,37 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
     int nResult = 0;
     int hObject = 0;
     std::stringstream acFirmware;
-
+	
     nResult = (*icsneoOpenNeoDevice)(&sg_ndNeoToOpen[nDevID], &hObject, nullptr, 1, 0);
     int nHardwareLic = 0;
     if (nResult == NEOVI_OK && hObject != 0)
     {
-        stAPIFirmwareInfo objstFWInfo;
+		stAPIFirmwareInfo *objstFWInfo = new stAPIFirmwareInfo();
         int nErrors = 0;
         if ( icsneoGetHardwareLicense )
         {
+			
             (*icsneoGetHardwareLicense)(hObject, &nHardwareLic);
         }
         if ( icsneoGetHWFirmwareInfo )
         {
-            nResult = (*icsneoGetHWFirmwareInfo)(hObject, &objstFWInfo);
+			
+            nResult = (*icsneoGetHWFirmwareInfo)(hObject, objstFWInfo);
             if ( nResult == 1 )
             {
-                acFirmware << std::dec << (unsigned short) objstFWInfo.iAppMajor;
-                acFirmware << '.';
-                acFirmware << std::dec << (unsigned short) objstFWInfo.iAppMinor;
+				if (nullptr != objstFWInfo)
+				{
+					acFirmware << std::dec << (unsigned short)objstFWInfo->iAppMajor;
+					acFirmware << '.';
+					acFirmware << std::dec << (unsigned short)objstFWInfo->iAppMinor;
+				}                
             }
         }
+		
         (*icsneoClosePort)(hObject, &nErrors);
     }
 
+	
     for ( int i=0; i<nCntNtwIDs; i++ )
     {
         sg_HardwareIntr[nChannels].m_dwIdInterface = sg_ndNeoToOpen[nDevID].Handle;
@@ -1499,7 +1506,7 @@ static int nAddChanneltoHWInterfaceList(int narrNetwordID[], int nCntNtwIDs, int
                 , sg_ndNeoToOpen[nDevID].SerialNumber, nHardwareLic, sg_HardwareIntr[nChannels].m_bytNetworkID);
         nChannels++;
     }
-
+	
     return nResult;
 }
 
@@ -1600,6 +1607,7 @@ static int nCreateMultipleHardwareNetwork(PSCONTROLLER_DETAILS InitData, UINT un
     int nHardwareCountPrev = sg_ucNoOfHardware;
     int nHwCount = sg_ucNoOfHardware;
     int nChannels = 0;
+	
     // Get Hardware Network Map
     for (int nCount = 0; nCount < nHwCount; nCount++)
     {
@@ -1633,36 +1641,39 @@ static int nCreateMultipleHardwareNetwork(PSCONTROLLER_DETAILS InitData, UINT un
             /* ValueCAN3 - 2/1 channels*/
             case NEODEVICE_VCAN3:
             {
+				
                 int narrVCAN3NtwID[] = {NETID_HSCAN, NETID_MSCAN};
                 int nCntNtwIDs = 2;
                 int hObject = 0;
-                int nResult = 0;
-
+                int nResult = 0;				
                 nResult = (*icsneoOpenNeoDevice)(pNeoDevice, &hObject, nullptr, 1, 0);
+				
                 if (nResult == NEOVI_OK && hObject!=0)
                 {
-                    stAPIFirmwareInfo objstFWInfo;
-                    (void) (*icsneoGetHWFirmwareInfo)(hObject, &objstFWInfo);
-
+                   // stAPIFirmwareInfo objstFWInfo;					
+                    //(void) (*icsneoGetHWFirmwareInfo)(hObject, &objstFWInfo);
+				
                     int nHardwareLic = 0;
                     int nErrors = 0;
                     if ( icsneoGetHardwareLicense )
-                    {
+                    {						
                         (*icsneoGetHardwareLicense)(hObject, &nHardwareLic);
-                    }
+                    }					
+					
                     (*icsneoClosePort)(hObject, &nErrors);
-
+					
                     // Check if it a Limited version with only one channel support.
                     if ( nHardwareLic == 8 )    // Single channel
                     {
                         nCntNtwIDs = 1;
                         if ( nHwCount == 1 )    //If only one device connected
-                        {
+                        {							
                             nCreateSingleHardwareNetwork();
+							
                             return S_OK;
                         }
                     }
-                    nAddChanneltoHWInterfaceList(narrVCAN3NtwID, nCntNtwIDs, nChannels, nCount);
+					nAddChanneltoHWInterfaceList(narrVCAN3NtwID, nCntNtwIDs, nChannels, nCount);					
                 }
             }
             break;
@@ -1686,7 +1697,7 @@ static int nCreateMultipleHardwareNetwork(PSCONTROLLER_DETAILS InitData, UINT un
     nHwCount = nChannels;   //Reassign hardware count according to final list of channels supported.
 
     if(bAutoSelect == false)
-    {
+    {		
         /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
         if ( unDefaultChannelCnt && nHwCount >= unDefaultChannelCnt )
         {
@@ -1700,7 +1711,7 @@ static int nCreateMultipleHardwareNetwork(PSCONTROLLER_DETAILS InitData, UINT un
         {
             sg_ucNoOfHardware = nHardwareCountPrev;
             return HW_INTERFACE_NO_SEL;
-        }
+        }		
     }
     else
     {

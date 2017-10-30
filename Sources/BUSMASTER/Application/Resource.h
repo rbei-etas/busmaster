@@ -1243,6 +1243,7 @@
 #define IDM_NETWORK_STATISTICS_WND_CAN  63501
 #define IDC_STATIC_LIN_OVERWRITE        63502
 #define ID_CONFIGURE_MESSAGEDISPLAY_ETH 63506
+#define IDB_HELP						63507
 
 // Next default values for new objects
 // 

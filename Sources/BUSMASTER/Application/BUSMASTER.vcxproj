@@ -397,6 +397,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
       </BrowseInformation>
     </ClCompile>
     <ClCompile Include="CANSignalExtractor.cpp" />
+    <ClCompile Include="ClientManager.cpp" />
     <ClCompile Include="CNVTCImageList.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Disabled</Optimization>
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -542,6 +543,8 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     </ClCompile>
     <ClCompile Include="J1939TimeOutCfg.cpp" />
     <ClCompile Include="LINBusStatisticsDlg.cpp" />
+    <ClCompile Include="LINSignalExtractor.cpp" />
+    
     <ClCompile Include="MainFrm.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Disabled</Optimization>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -967,6 +970,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="BusStatisticsDlg.h" />
     <ClInclude Include="CANSignalExtractor.h" />
     <ClInclude Include="CFilesDefs_CAN.h" />
+    <ClInclude Include="ClientManager.h" />
     <ClInclude Include="CNVTCImageList.h" />
     <ClInclude Include="CNVTCToolBar.h" />
     <ClInclude Include="common.h" />
@@ -997,6 +1001,8 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <ClInclude Include="J1939TimeOutCfg.h" />
     <ClInclude Include="LINBusStatisticsDlg.h" />
     <ClInclude Include="LinChannelParam.h" />
+    <ClInclude Include="LINSignalExtractor.h" />
+    
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MDIChildBase.h" />
     <ClInclude Include="MessageAttrib.h" />
@@ -1079,6 +1085,7 @@ copy ".\Res\Splsh16.bmp" "$(SolutionDir)\bin\$(OutDir)Splsh16.bmp"
     <None Include="Res\hdrdown.bmp" />
     <None Include="Res\hdrup.bmp" />
     <None Include="Res\Help.ico" />
+    <None Include="Res\HELP_ICON.bmpx" />
     <None Include="Res\ico_send.ico" />
     <None Include="Res\J1939TxWnd.bmp" />
     <None Include="Res\j1939_Icon1.bmpx" />

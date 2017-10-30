@@ -16,21 +16,81 @@ namespace VariableManager
 
 	bool VariableLayer::isVariableExists(std::string& variablePath)
 	{
-		return false;
+		std::vector<std::string> tokens;
+
+		if (variablePath.find(":CAN:") != -1)
+		{
+			return mCanSignalExtractor.bIsVariableExists(variablePath);
+		}
+		else if (variablePath.find(":LIN:") != -1)
+		{
+			return mLINSignalExtractor.bIsVariableExists(variablePath);
+		}
+	}
+
+	int VariableLayer::getVariableType(std::string variablePath, unsigned int& unType)
+	{
+		std::vector<std::string> tokens;
+
+		if (variablePath.find(":CAN:") != -1)
+		{
+			return mCanSignalExtractor.getVariableType(variablePath, unType);
+		}
+		else if (variablePath.find(":LIN:") != -1)
+		{
+			return mLINSignalExtractor.getVariableType(variablePath, unType);
+		}
+	}
+	int VariableLayer::isSignalValueValid(std::string variablePath, double& physical)
+	{
+		std::vector<std::string> tokens;
+
+		if (variablePath.find(":CAN:") != -1)
+		{
+			return mCanSignalExtractor.isSignalValueValid(variablePath, physical);
+		}
+		else if (variablePath.find(":LIN:") != -1)
+		{
+			return mLINSignalExtractor.isSignalValueValid(variablePath, physical);
+		}
 	}
 	int VariableLayer::registerVariable(std::string& variablePath, IVariableChangeListner* listner, bool forTx, bool onUpdateOnly)
 	{
 		std::vector<std::string> tokens;
 
-		return mCanSignalExtractor.registerVariable(variablePath, listner);
+		if (variablePath.find(":CAN:") != -1)
+		{
+			return mCanSignalExtractor.registerVariable(variablePath, listner);
+		}
+		else if (variablePath.find(":LIN:") != -1)
+		{
+			return mLINSignalExtractor.registerVariable(variablePath, listner);
+		}		
 	}
     int VariableLayer::UnRegisterVariable(std::string& variablePath, IVariableChangeListner* listner)
 	{
-        return mCanSignalExtractor.unRegisterVariable(variablePath, listner);
+		if (variablePath.find(":CAN:") != -1)
+		{
+			return mCanSignalExtractor.unRegisterVariable(variablePath, listner);
+		}
+		else if (variablePath.find(":LIN:") != -1)
+		{
+			return mLINSignalExtractor.unRegisterVariable(variablePath, listner);
+		}
 	}
 	int VariableLayer::setVariableValue(VariableData* value, bool isPhysicalValue)
 	{
-		return mCanSignalExtractor.setVariableValue(value, isPhysicalValue);
+		if (nullptr != value)
+		{
+			if (value->mVariablePath.find(":CAN:") != -1)
+			{
+				return mCanSignalExtractor.setVariableValue(value, isPhysicalValue);
+			}
+			else if (value->mVariablePath.find(":LIN:") != -1)
+			{
+				return mLINSignalExtractor.setVariableValue(value, isPhysicalValue);
+			}
+		}		
 	}
 
 	void VariableLayer::setBusmasterInterface(IBusmasterPluginInterface* bmPluginInterface)
@@ -40,6 +100,7 @@ namespace VariableManager
 		IBMNetWorkGetService* dbService;
 		mBmPluginInterface->getDbService(&dbService);
 		mCanSignalExtractor.setBmDatabaseInterface(dbService);
+		mLINSignalExtractor.setBmDatabaseInterface(dbService);
 
         dbService->ManageClientForDbChanges(this, true);
 
@@ -94,7 +155,16 @@ namespace VariableManager
 		break;
 		case driver_selection_changed:
 		{
-			StartReadThread();
+			ETYPE_BUS busEvent = *((ETYPE_BUS*)eventData);
+
+			if (busEvent == ETYPE_BUS::CAN)
+			{
+				StartReadThread();
+			}
+			else if (busEvent == ETYPE_BUS::LIN)
+			{
+				StartLINReadThread();
+			}
 		}
 		case new_configuration_loaded:
 		{
@@ -109,6 +179,7 @@ namespace VariableManager
 		case busmaster_exit:
 		{
 			StopReadThread();
+			StopLINReadThread();
 		}
 
 		default:
@@ -119,10 +190,10 @@ namespace VariableManager
 
 	void VariableLayer::handleBusEvent(Event_Bus_Staus busEvent)
 	{
-		if (busEvent.mBus != ETYPE_BUS::CAN)
+		/*if (busEvent.mBus != ETYPE_BUS::CAN)
 		{
 			return;
-		}
+		}*/
 		switch (busEvent.mEventType)
 		{
 		case ON_CONNECT:
@@ -133,7 +204,14 @@ namespace VariableManager
 			break;
 		case ON_DISCONNECT:
 			//StopReadThread();
-			mCanSignalExtractor.handleBusEvent(busEvent);
+			if (busEvent.mBus == ETYPE_BUS::CAN)
+			{
+				mCanSignalExtractor.handleBusEvent(busEvent);
+			}
+			else if (busEvent.mBus == ETYPE_BUS::LIN)
+			{
+				mLINSignalExtractor.handleBusEvent(busEvent);
+			}
 			break;
 		default:
 			break;
@@ -142,7 +220,14 @@ namespace VariableManager
 
     void VariableLayer::OnDataBaseChange(bool mIsAdded, const DBChangeInfo& info)
     {
-        mCanSignalExtractor.onDatabaseChanged(info.mBusType, info.mDbPath, info.mChannel, mIsAdded);
+		if (info.mBusType == CAN)
+		{
+			mCanSignalExtractor.onDatabaseChanged(info.mBusType, info.mDbPath, info.mChannel, mIsAdded);
+		}      
+		if (info.mBusType == LIN)
+		{
+			mLINSignalExtractor.onDatabaseChanged(info.mBusType, info.mDbPath, info.mChannel, mIsAdded);
+		}
     }
 
 	int VariableLayer::StartReadThread()
@@ -224,5 +309,101 @@ namespace VariableManager
 		SetEvent(pThreadParam->hGetExitNotifyEvent());
 		return 0;
 	}
+
+	// LIN BUS
+	int VariableLayer::StartLINReadThread()
+	{
+		unsigned long clientId = 0;
+		IBusService* busService;
+
+		mBmPluginInterface->getDilService(LIN, (IBusService**)&busService);
+		CBaseDIL_LIN* canDil = (CBaseDIL_LIN*)busService;
+
+		//mBusMasterInterface->registerOnBus( CAN, &m_ouReadThread, true, clientId );
+		canDil->DILL_RegisterClient(TRUE, clientId, LIN_MONITOR_NODE);
+		canDil->DILL_ManageMsgBuf(MSGBUF_ADD, clientId, &m_ouLINBufFSE);
+		m_ouLINReadThread.m_hActionEvent = m_ouLINBufFSE.hGetNotifyingEvent();
+		m_ouLINReadThread.m_pBuffer = this;
+		mLINSignalExtractor.setLINService(canDil, clientId);
+		m_ouLINReadThread.bStartThread(ReadLINThreadProc);
+		return S_OK;
+	}
+	int VariableLayer::StopLINReadThread()
+	{
+		mLINSignalExtractor.setLINService(nullptr, 0);
+		m_ouLINReadThread.bTerminateThread();
+		return 0;
+	}
+	int VariableLayer::ReadLINDataBuffer()
+	{
+		while (m_ouLINBufFSE.GetMsgCount() > 0)
+		{
+			static STLINDATA sLINData;
+			INT Result = m_ouLINBufFSE.ReadFromBuffer(&sLINData);
+			mLINSignalExtractor.onMessageRecieved(sLINData);
+		}
+		return 0;
+	}
+
+	DWORD WINAPI VariableLayer::ReadLINThreadProc(LPVOID pVoid)
+	{
+		CPARAM_THREADPROC* pThreadParam = (CPARAM_THREADPROC*)pVoid;
+		if (pThreadParam == nullptr)
+		{
+			return (DWORD)-1;
+		}
+		VariableLayer* pSWCan = (VariableLayer*)pThreadParam->m_pBuffer;
+		if (pSWCan == nullptr)
+		{
+			return (DWORD)-1;
+		}
+		bool bLoopON = true;
+		pThreadParam->m_unActionCode = INVOKE_FUNCTION;
+		while (bLoopON)
+		{
+			WaitForSingleObject(pThreadParam->m_hActionEvent, INFINITE);
+			switch (pThreadParam->m_unActionCode)
+			{
+			case INVOKE_FUNCTION:
+			{
+				pSWCan->ReadLINDataBuffer(); // Retrieve message from the driver
+			}
+			break;
+			case EXIT_THREAD:
+			{
+				bLoopON = false;
+			}
+			break;
+			case CREATE_TIME_MAP:
+			{
+				//Nothing at this moment
+			}
+			break;
+			default:
+			case INACTION:
+			{
+				// nothing right at this moment
+			}
+			break;
+			}
+		}
+		SetEvent(pThreadParam->hGetExitNotifyEvent());
+		return 0;
+	}
+
+	void VariableLayer::HandleImportInstruments(std::string& variablePath)
+	{
+		std::vector<std::string> tokens;
+
+		if (variablePath.find(":CAN:") != -1)
+		{
+			mCanSignalExtractor.HandleImportInstruments();
+		}
+		else if (variablePath.find(":LIN:") != -1)
+		{
+			mLINSignalExtractor.HandleImportInstruments();
+		}
+	}
+
 };
 

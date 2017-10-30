@@ -956,6 +956,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	info.mPluginInterface = &mVariableLayer;
 	mVariableLayer.getNotifySink(&info.mNotifyEvent);
 	mPluginManager->addPlugin(info);
+
+	/*BusmasterPluginConfiguration info1;
+	mLINVariableLayer.setBusmasterInterface(this);
+	info1.mPluginInterface = &mLINVariableLayer;
+	mLINVariableLayer.getNotifySink(&info1.mNotifyEvent);
+	mPluginManager->addPlugin(info1);
+*/
 	//Load Other Plugins
 	mPluginManager->loadPlugins( nullptr );
     mPluginManager->notifyPlugins(eBusmaster_Event::plugin_load_completed, nullptr);
@@ -1317,6 +1324,7 @@ void CMainFrame::OnImportDatabase()
         CString omStrMsg = _("Database File: \n ");
         BOOL bAllFilesImported = TRUE;
         int nFileCount = strFilePathArray.GetSize();
+		
         for(int nCount = 0; nCount < nFileCount; nCount++)
         {
             CString strTempFileName = strFilePathArray.GetAt(nCount);
@@ -1336,6 +1344,8 @@ void CMainFrame::OnImportDatabase()
             omStrMsg += _(" not found!");
             MessageBox(omStrMsg,"BUSMASTER",MB_OK|MB_ICONERROR);
         }
+
+		
 
         HWND hWnd;
         hWnd = m_podMsgWndThread->hGetHandleMsgWnd(CAN);
@@ -9638,6 +9648,9 @@ HRESULT CMainFrame::IntializeDILL(UINT unDefaultChannelCnt)
                                 theApp.bWriteIntoTraceWnd(_("Information: To monitor messages associating LDF file is required for LIN ETAS BOA"));
                             }
                         }
+
+						ETYPE_BUS busType = ETYPE_BUS::LIN;
+						mPluginManager->notifyPlugins(eBusmaster_Event::driver_selection_changed, &busType);
                     }
                     else
                     {
@@ -13148,7 +13161,7 @@ void CMainFrame::vVlaidateAndLoadFibexConfig(sLinConfigContainer& ouFibexContain
             for ( auto itrCluster = ouClusterList.begin(); itrCluster != ouClusterList.end(); itrCluster++ )
             {
                 (*itrCluster)->GetName(strName);
-                if ( strName == ouFibexContainer.m_strClusterId )
+				if (strName == ouFibexContainer.m_strClusterId || ouFibexContainer.m_strClusterId == "")
                 {
                     m_ouBusmasterNetwork->SetDBService(LIN, ouFibexContainer.m_nChannel, 0, *itrCluster);
 
@@ -13186,6 +13199,7 @@ for(auto itrScheduleTable : mapScheduleTables)
             if ( true == bValid )
             {
                 vPopulateIDList( LIN );
+				OnClusterChanged(LIN);
             }
             else
             {
@@ -15885,7 +15899,7 @@ void CMainFrame::GenerateNodeSimObjFiles(ETYPE_BUS eBusType)
 
 void CMainFrame::OnClusterChanged(ETYPE_BUS eBusType)
 {
-    DWORD result = WaitForSingleObject( m_NSCodeGenThreads[eBusType], 0);
+    DWORD result = WaitForSingleObject( m_NSCodeGenThreads[eBusType], INFINITE);
 
     if (result == WAIT_OBJECT_0 || result == WAIT_FAILED)
     {

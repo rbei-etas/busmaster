@@ -1026,6 +1026,7 @@ HRESULT CMsgContainerLIN::GetMessageDetails(__int64 nMapIndex, unsigned int& msg
             msgName.Format("0x%X", sLinMsg.m_uDataInfo.m_sLINMsg.m_ucMsgID);
         }
     }
+	return S_OK;
 }
 
 HRESULT CMsgContainerLIN::sendMessage(long long /*key*/, bool /*isAppendMode*//*has to be removed*/)

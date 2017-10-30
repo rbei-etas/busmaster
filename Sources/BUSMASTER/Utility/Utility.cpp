@@ -920,6 +920,7 @@ HRESULT GetCurrentVerBusMasterUserDataPath(std::string& path)
             return S_OK;
         }
     }
+	return S_FALSE;
 }
 
 HRESULT GetBusMasterAppPath(std::string& strPath)

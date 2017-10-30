@@ -77,14 +77,6 @@ CChangeRegisters_CAN_ETAS_BOA::CChangeRegisters_CAN_ETAS_BOA(CWnd* pParent, PSCO
     m_bOption = 0;
     m_nNoHardware = nHardwareCount;
     m_nDataConfirmStatus = WARNING_NOTCONFIRMED;
-
-    /*CAN FD Parameters */
-    m_omstrDataBitRate                  = "";
-    //m_omstrDataSamplePoint              = "";
-    m_omstrDataBTL_Cycles               = "";
-    m_omstrDataSJW                      = "";
-    m_omstrTxDelayCompensationON        = "";
-    m_omstrTxDelayCompensationQuanta.Format("%d", CANFD_SECONDARY_SAMPLE_POINT);
 }
 
 /**
@@ -102,18 +94,9 @@ void CChangeRegisters_CAN_ETAS_BOA::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_EDIT_BAUD_RATE, m_omStrEditBaudRate);
     DDX_Text(pDX, IDC_EDIT_WARNING_LIMIT, m_omStrEditWarningLimit);
     DDX_Control(pDX, IDC_COMB_SAMPOINT, m_omCtrlSamplePoint);
-    DDX_CBString(pDX, IDC_COMB_SJW, m_omStrSJW);
-    //DDX_CBString(pDX,IDC_COMB_SAMPOINT, m_omStrSamplePoint);
+    DDX_CBString(pDX, IDC_COMB_SJW, m_omStrSJW);   
     DDX_Control(pDX, IDC_COMB_SJW, m_omCtrlSJW);
-    DDX_Check(pDX, IDC_CHECK_SELF_REC, m_bSelfReception);
-    DDX_Text(pDX, IDC_EDIT_DATA_BAUD_RATE, m_omstrDataBitRate);
-    //DDV_MinMaxInt(pDX,atoi(m_omstrDataBitRate.GetBuffer(0)),0,1000000);
-    //DDX_CBString(pDX,IDC_COMB_DATA_SAMPOINT, m_omstrDataSamplePoint);
-    DDX_CBString(pDX,IDC_COMB_DELAY_COMPENSATION, m_omstrTxDelayCompensationON);
-    //DDX_CBString(pDX,IDC_COMB_DATA_BTL, m_omstrDataBTL_Cycles);
-    DDX_Text(pDX, IDC_EDIT_COMPENSATION_QUANTA, m_omstrTxDelayCompensationQuanta);
-    DDX_Control(pDX, IDC_EDIT_COMPENSATION_QUANTA, m_omEditSamplePoint);
-    DDX_CBString(pDX,IDC_COMB_DATA_SJW, m_omstrDataSJW);
+    DDX_Check(pDX, IDC_CHECK_SELF_REC, m_bSelfReception); 
 }
 
 BEGIN_MESSAGE_MAP(CChangeRegisters_CAN_ETAS_BOA, CDialog)
@@ -126,8 +109,7 @@ BEGIN_MESSAGE_MAP(CChangeRegisters_CAN_ETAS_BOA, CDialog)
     ON_NOTIFY(NM_CLICK, IDC_LIST_CHANNELS, OnClickListChannels)
     ON_NOTIFY(LVN_ITEMCHANGED, IDC_LIST_CHANNELS, OnItemchangedListChannels)
     ON_NOTIFY(NM_DBLCLK, IDC_LIST_CHANNELS, OnDblclkListChannels)
-    ON_CBN_SELCHANGE(IDC_COMB_SJW, OnCbnSelchangeCombSjw)
-    ON_CBN_SELCHANGE(IDC_COMB_DELAY_COMPENSATION, OnCbnSelchangeCombDelayCompensation)
+    ON_CBN_SELCHANGE(IDC_COMB_SJW, OnCbnSelchangeCombSjw)    
 END_MESSAGE_MAP()
 
 /**
@@ -226,10 +208,6 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
     {
         m_omCtrlSamplePoint.SetCurSel(-1);
         m_omCtrlSamplePoint.SetWindowText(omStrSamplePoint);
-
-        /* Set the default selection as 70% and update the controller structure */
-        /* m_omCtrlSamplePoint.SetCurSel (7);
-         m_pControllerDetails->m_omStrSamplePercentage = "70";*/
     }
 
     nIndex = m_omCtrlSJW.FindStringExact (-1, m_pControllerDetails->m_omStrSjw.c_str());
@@ -257,10 +235,7 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
         m_nSJWCurr = nSJWCurr;
     }
 
-    //m_omEditWarningLimit.SetReadOnly(TRUE);
-    //Initialise the index for number of items in list box before passing it is
-    //function to calculate the same.
-
+   
     /* Set the Focus to the First Item */
     m_omChannelList.SetItemState( m_nLastSelection,
                                   LVIS_SELECTED | LVIS_FOCUSED,
@@ -281,20 +256,7 @@ BOOL CChangeRegisters_CAN_ETAS_BOA::OnInitDialog()
 */
 void CChangeRegisters_CAN_ETAS_BOA::vEnableFDParameters(BOOL bEnable)
 {
-    GetDlgItem(IDC_EDIT_DATA_BAUD_RATE)->EnableWindow(bEnable);
-    GetDlgItem(IDC_COMB_DELAY_COMPENSATION)->EnableWindow(bEnable);
-    GetDlgItem(IDC_EDIT_COMPENSATION_QUANTA)->EnableWindow(bEnable);
-    GetDlgItem(IDC_COMB_DATA_SAMPOINT)->EnableWindow(bEnable);
-    GetDlgItem(IDC_COMB_DATA_BTL)->EnableWindow(bEnable);
-    GetDlgItem(IDC_COMB_DATA_SJW)->EnableWindow(bEnable);
-	GetDlgItem(IDC_STAT_BUAD_RATE3)->EnableWindow(bEnable);
-	GetDlgItem(IDC_STATIC_TX)->EnableWindow(bEnable);
-	GetDlgItem(IDC_STATIC_SEC_SMPL_POINT)->EnableWindow(bEnable);
-	GetDlgItem(IDC_STATIC_SMPL_POINT)->EnableWindow(bEnable);
-	GetDlgItem(IDC_STATIC_BTL)->EnableWindow(bEnable);
-	GetDlgItem(IDC_STATIC_SJW)->EnableWindow(bEnable);
-	GetDlgItem(IDC_STAT_KBPS2)->EnableWindow(bEnable);
-	
+   	
 }
 
 /**
@@ -364,15 +326,7 @@ void CChangeRegisters_CAN_ETAS_BOA::OnKillfocusEditBaudRate()
         {
             /* Validate for empty string and if zero value is entered. */
             DOUBLE dBaudRate = (FLOAT)_tstof(omStrBaudRate);
-            /* if (nLength == 0 || dBaudRate <= 0 || dBaudRate > 1000000.0)
              {
-                 m_omEditBaudRate.SetWindowText(m_omStrEditBaudRate);
-                 AfxMessageBox(_(defVALIDATION_MSG_BAUD_RATE));
-                 m_omEditBaudRate.SetFocus();
-                 m_omEditBaudRate.SetSel(0, -1,FALSE);
-             }
-             else*/
-            {
 
                 m_dEditBaudRate     = (FLOAT)_tstof(m_omStrEditBaudRate);
                 m_omStrEditBaudRate = omStrBaudRate;
@@ -614,21 +568,15 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
     m_omStrEditBaudRate     = m_pControllerDetails[ nIndex ].m_omStrBaudrate.c_str();
     m_omStrEditCNF1         = m_pControllerDetails[ nIndex ].m_omStrCNF1.c_str();
     m_omStrEditCNF2         = m_pControllerDetails[ nIndex ].m_omStrCNF2.c_str();
-    m_omStrEditCNF3         = m_pControllerDetails[ nIndex ].m_omStrCNF3.c_str();
-    //m_omStrComboClock       = m_pControllerDetails[ nIndex ].m_omStrClock.c_str();
+    m_omStrEditCNF3         = m_pControllerDetails[ nIndex ].m_omStrCNF3.c_str();    
     m_omStrComboSampling    = m_pControllerDetails[ nIndex ].m_omStrSampling.c_str();
     m_omStrEditWarningLimit = m_pControllerDetails[ nIndex ].m_omStrWarningLimit.c_str();
-    //m_omStrSamplePoint = m_pControllerDetails[ nIndex ].m_omStrSamplePercentage.c_str();
+  
 
     m_omCtrlSamplePoint.SetWindowText(m_pControllerDetails[ nIndex ].m_omStrSamplePercentage.c_str());
     m_omStrSJW = m_pControllerDetails[ nIndex ].m_omStrSjw.c_str();
     m_bSelfReception = m_pControllerDetails[ nIndex ].m_bSelfReception;
 
-    //omStrInitComboBox(ITEM_SAMPLING,1,m_omCombSampling));
-    //Assign edit box string value to CString member variable of Edit control
-    // for Baudrate Convert String into float or INT to be used to make a list
-    // of all possible  of BTRi, SJW, Sampling Percentage, and NBT values
-    //m_unCombClock       = (UINT)_tstoi(m_omStrComboClock);
 
     // TO BE FIXED LATER
     m_dEditBaudRate = (FLOAT)_tstof(m_omStrEditBaudRate);
@@ -638,50 +586,6 @@ void CChangeRegisters_CAN_ETAS_BOA::vFillControllerConfigDetails()
     {
         pComboBTLCYCL->SetWindowText(m_omstrBTL_Cycles);
     }
-
-#if BOA_VERSION >= BOA_VERSION_2_0
-    /*Update CAN FD parameters */
-    m_omstrDataBitRate.Format("%d",     m_pControllerDetails[ nIndex ].m_unDataBitRate/1000);
-		GetDlgItem(IDC_EDIT_DATA_BAUD_RATE)->SetWindowText(m_omstrDataBitRate);
-
-    CString omDataSamplePoint;
-    omDataSamplePoint.Format("%d", m_pControllerDetails[ nIndex ].m_unDataSamplePoint);
-
-    GetDlgItem(IDC_COMB_DATA_SAMPOINT)->SetWindowText(omDataSamplePoint);
-
-    //m_omstrDataSamplePoint.Format("%d", m_pControllerDetails[ nIndex ].m_unDataSamplePoint);
-    //m_omstrDataBTL_Cycles.Format("%d",  m_pControllerDetails[ nIndex ].m_unDataBTL_Cycles);
-    m_omstrDataSJW.Format("%d",         m_pControllerDetails[ nIndex ].m_unDataSJW);
-
-    CComboBox* pComboDataBTLCYCL = (CComboBox*)GetDlgItem(IDC_COMB_DATA_BTL);
-    if (pComboDataBTLCYCL != nullptr)
-    {
-        // pComboBTLCYCL->SetCurSel (0);
-        CString omStrDataBTLCycles;
-        omStrDataBTLCycles.Format(_("%d"), m_pControllerDetails[ nIndex ].m_unDataBTL_Cycles);
-        pComboDataBTLCYCL->SetWindowText(omStrDataBTLCycles);
-    }
-
-    if(m_pControllerDetails[ nIndex ].m_unTxSecondarySamplePointOffset != 0)
-    {
-        m_omstrTxDelayCompensationQuanta.Format("%d", m_pControllerDetails[ nIndex ].m_unTxSecondarySamplePointOffset);
-    }
-    else
-    {
-        m_omstrTxDelayCompensationQuanta.Format("%d", CANFD_SECONDARY_SAMPLE_POINT);
-    }
-    if ( m_pControllerDetails[ nIndex ].m_bTxDelayCompensationControl )
-    {
-        m_omstrTxDelayCompensationON.Format(defSTR_CANFD_TX_DELAY_COMPENSATION_ON);
-        GetDlgItem(IDC_EDIT_COMPENSATION_QUANTA)->EnableWindow(TRUE);
-    }
-    else
-    {
-        m_omstrTxDelayCompensationON.Format(defSTR_CANFD_TX_DELAY_COMPENSATION_OFF);
-			GetDlgItem(IDC_EDIT_COMPENSATION_QUANTA)->SetWindowText("");
-        GetDlgItem(IDC_EDIT_COMPENSATION_QUANTA)->EnableWindow(FALSE);
-    }
-#endif
 
     UpdateData(FALSE);
 }
@@ -727,8 +631,7 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
 
         GetDlgItem(IDC_EDIT_BAUD_RATE)->GetWindowText(m_omStrEditBaudRate);
         m_pControllerDetails[ m_nLastSelection ].m_omStrBaudrate = m_omStrEditBaudRate.GetBuffer(MAX_PATH);
-        //m_pControllerDetails[ m_nLastSelection ].m_omStrClock        =
-        //                                                    m_omStrComboClock;
+       
         m_pControllerDetails[m_nLastSelection].m_omStrCNF1 = m_omStrEditCNF1.GetBuffer(MAX_PATH);
         m_pControllerDetails[m_nLastSelection].m_omStrCNF2 = m_omStrEditCNF2.GetBuffer(MAX_PATH);
         m_pControllerDetails[m_nLastSelection].m_omStrCNF3 = m_omStrEditCNF3.GetBuffer(MAX_PATH);
@@ -753,39 +656,6 @@ void CChangeRegisters_CAN_ETAS_BOA::vUpdateControllerDetails()
         }
 
         m_pControllerDetails[m_nLastSelection].m_unBTL_Cycles = atoi((LPCTSTR)m_omstrBTL_Cycles);
-#if BOA_VERSION >= BOA_VERSION_2_0
-        /*Update CAN FD parameters */
-        m_pControllerDetails[ m_nLastSelection ].m_unDataBitRate        = atoi((LPCTSTR)m_omstrDataBitRate) * 1000;
-
-        CString omDataSamplePoint;
-        GetDlgItem(IDC_COMB_DATA_SAMPOINT)->GetWindowText(omDataSamplePoint);
-        m_pControllerDetails[ m_nLastSelection ].m_unDataSamplePoint    = atoi((LPCTSTR)omDataSamplePoint);
-
-        //m_pControllerDetails[ m_nLastSelection ].m_unDataSamplePoint    = atoi((LPCTSTR)m_omstrDataSamplePoint);
-        //m_pControllerDetails[ m_nLastSelection ].m_unDataBTL_Cycles     = atoi((LPCTSTR)m_omstrDataBTL_Cycles);
-        m_pControllerDetails[ m_nLastSelection ].m_unDataSJW            = atoi((LPCTSTR)m_omstrDataSJW);
-
-        CString omDataBTLCycles;
-        CComboBox* pComboDataBTLCYCL = (CComboBox*)GetDlgItem(IDC_COMB_DATA_BTL);
-        if (pComboDataBTLCYCL != nullptr)
-        {
-            pComboDataBTLCYCL->GetWindowText(omDataBTLCycles);
-            m_pControllerDetails[ m_nLastSelection ].m_unDataBTL_Cycles = atoi((LPCTSTR)omDataBTLCycles);
-        }
-
-        if ( m_omstrTxDelayCompensationON == defSTR_CANFD_TX_DELAY_COMPENSATION_ON )
-        {
-            m_pControllerDetails[ m_nLastSelection ].m_bTxDelayCompensationControl = true;
-            m_pControllerDetails[ m_nLastSelection ].m_unTxSecondarySamplePointOffset = atoi((LPCTSTR)m_omstrTxDelayCompensationQuanta);
-        }
-        else
-        {
-            m_pControllerDetails[ m_nLastSelection ].m_bTxDelayCompensationControl = false;
-            m_omstrTxDelayCompensationQuanta = "";
-            m_pControllerDetails[ m_nLastSelection ].m_unTxSecondarySamplePointOffset = 0;
-        }
-
-#endif
     }
     else
     {
@@ -930,21 +800,6 @@ void CChangeRegisters_CAN_ETAS_BOA::OnCbnSelchangeCombSjw()
     }
 }
 
-/**
-* Handler when user switches the Delay compensation ON\OFF state
-*/
-void CChangeRegisters_CAN_ETAS_BOA::OnCbnSelchangeCombDelayCompensation()
-{
-    UpdateData();
-    if ( m_omstrTxDelayCompensationON == defSTR_CANFD_TX_DELAY_COMPENSATION_ON )
-    {
-        GetDlgItem(IDC_EDIT_COMPENSATION_QUANTA)->EnableWindow(TRUE);
-    }
-    else
-    {
-        GetDlgItem(IDC_EDIT_COMPENSATION_QUANTA)->EnableWindow(FALSE);
-    }
-}
 
 /**
 * Handler when the user selects a specific value in the PD list
@@ -1045,74 +900,6 @@ DOUBLE CChangeRegisters_CAN_ETAS_BOA::vValidateBaudRate(DOUBLE dbaudrate,int nIt
     CString omStrMessage        = "";
 	DOUBLE dEditBaudRate;
     dBaudRate           = dbaudrate;
-			//Below Code is Commented for Future Reference and currently validation is not performed
-//     dEditBaudRate     = dBaudRate;
-// 
-//     dProductNbtNBrp     = (DOUBLE)(m_unCombClock/(dBaudRate/1000))/2.0 *
-//                           (defFACT_FREQUENCY / defFACT_BAUD_RATE);
-//     unProductNbtNBrp    = (UINT)(dProductNbtNBrp + 0.5);
-// 
-//     if ((fabs((dProductNbtNBrp - unProductNbtNBrp)) > defVALID_DECIMAL_VALUE)
-//             ||(unProductNbtNBrp > (defMAX_NBT * defMAX_BRP))
-//             || (unProductNbtNBrp < defMIN_NBT))
-//     {
-//         unProductNbtNBrp =defmcROUND5(dProductNbtNBrp);
-//         int nFlag = defRESET;
-// 
-//         while (nFlag == defRESET)
-//         {
-//             INT i = 1;
-//             UINT unNbt = unProductNbtNBrp / i;
-//             FLOAT fNbt = (FLOAT)unProductNbtNBrp / i;
-// 
-//             while ((unNbt >= 1) && (i <= defMAX_BRP) && (nFlag == defRESET))
-//             {
-//                 if ((unNbt == fNbt) && (unNbt >= defMIN_NBT)
-//                         && (unNbt <=defMAX_NBT))
-//                 {
-//                     nFlag =defSET;
-//                 }
-//                 else
-//                 {
-//                     i++;
-//                     unNbt    = unProductNbtNBrp / i;
-//                     fNbt     = (FLOAT)unProductNbtNBrp / i;
-//                 }
-//             } //end while( unNbt >=1 && i<=MAX_BRP)
-// 
-//             if ((nFlag == defRESET) && (unProductNbtNBrp < (defMIN_NBT *defMIN_BRP)))
-//             {
-//                 unProductNbtNBrp = defMIN_NBT * defMIN_BRP;
-//             }
-//             else if ((unProductNbtNBrp > ( defMAX_NBT * defMAX_BRP))
-//                      && (nFlag == defRESET))
-//             {
-//                 unProductNbtNBrp = defMAX_NBT*defMAX_BRP;
-//             }
-//             else if (nFlag == defRESET)
-//             {
-//                 unProductNbtNBrp++;
-//             }
-//         }//end while(nFlag==RESET)
-//         dBaudRate = (DOUBLE)((m_unCombClock/2.0)*
-//                              ( defFACT_FREQUENCY / defFACT_BAUD_RATE))/unProductNbtNBrp;
-// 
-//         /*FLOAT  fTempBaudRate;
-//         fTempBaudRate = (FLOAT)((INT)(dBaudRate * 100000));
-//         fTempBaudRate = fTempBaudRate/100000;*/
-//         if(dBaudRate < 5000)
-//         {
-// 			CString omStr;
-// 			omStr.Format(_("Resetting the BaudRate of channel %d to 500000"),nItemCount+1);
-// 			AfxMessageBox(omStr);
-// 			dBaudRate = 500000;
-//         }
-//         omStrBaudRate.Format(_("%ld"),/*fTempBaudRate*/(long)dBaudRate);
-// 
-//         
-//     }// End if
-// 
-//     // Change the list of BTR0, BTR1, SJW, NBT and sampling if user selected YES
-// 	dEditBaudRate     = dBaudRate;
+
 	return dBaudRate;
 }
