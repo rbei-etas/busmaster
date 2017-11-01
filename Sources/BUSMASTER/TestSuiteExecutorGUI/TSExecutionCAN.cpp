@@ -590,28 +590,40 @@ BOOL CTSExecutionCAN::bMakeCanMessage( IFrame*& pMsg, CSend_MessageData& ouSendD
     {
         return FALSE;
     }
-    INT nIndex = 0;
+    INT nSignalCount;
 
     std::map<ISignal*, SignalInstanse> signalList;
     pMsg->GetSignalList( signalList );
     std::string signalName;
 
     memset(&stCanMsg.m_ucData, 0, 8*sizeof(UCHAR));
-for (auto signal:signalList )
+    for (auto signal:signalList )
     {
-        POSITION pos = ouSendData.m_odSignalDataList.FindIndex(nIndex++);
-        CSignalData& ouSignalData =  ouSendData.m_odSignalDataList.GetAt(pos);
-        tagUSIGNALVALUE sSignalValue;
-        if(ouSendData.m_eSignalUnitType == ENG)
+        signal.first->GetName(signalName);
+
+        nSignalCount = ouSendData.m_odSignalDataList.GetCount();
+        for (INT i = 0; i < nSignalCount; i++)
         {
-            signal.first->GetRawValueFromEng( ouSignalData.m_uValue.m_fValue, sSignalValue.m_u64Value );
+
+            POSITION pos = ouSendData.m_odSignalDataList.FindIndex(i);
+            CSignalData& ouSignalData = ouSendData.m_odSignalDataList.GetAt(pos);
+            if (ouSignalData.m_omSigName == signalName.c_str())
+            {
+
+                tagUSIGNALVALUE sSignalValue;
+
+                if (ouSendData.m_eSignalUnitType == ENG)
+                {
+                    signal.first->GetRawValueFromEng(ouSignalData.m_uValue.m_fValue, sSignalValue.m_u64Value);
+                }
+                else
+                {
+                    sSignalValue.m_u64Value = ouSignalData.m_uValue.m_u64Value;
+                }
+                vSetSignalValue(signal.second, signal.first, stCanMsg.m_ucData, sSignalValue.m_u64Value);
+                //psCurrSignal = psCurrSignal->m_psNextSignalList;
+            }
         }
-        else
-        {
-            sSignalValue.m_u64Value = ouSignalData.m_uValue.m_u64Value;
-        }
-        vSetSignalValue( signal.second, signal.first, stCanMsg.m_ucData, sSignalValue.m_u64Value );
-        //psCurrSignal = psCurrSignal->m_psNextSignalList;
     }
     //Make CAN Message
     unsigned int length;
@@ -638,16 +650,13 @@ UINT64 CTSExecutionCAN::un64GetBitMask( ISignal* CurrSig, SignalInstanse& ouInst
     Result <<= unLength;
     --Result; // These bits are now up.
 
-    CANSignalProps ouSignalProps;
-
-    CurrSig->GetProperties( ouSignalProps );
     // Then shift them to the appropriate place.
-    short Shift = ( eIntel == ouSignalProps.m_ouEndianess ) ?
+    short Shift = ( eIntel == ouInstance.m_ouSignalEndianess ) ?
                   ( (short)ouInstance.m_nStartBit )
                   : 64 - ouInstance.m_nStartBit;
     Result <<= Shift;
 
-    if ( eMotorola == ouSignalProps.m_ouEndianess )
+    if ( eMotorola == ouInstance.m_ouSignalEndianess )
     {
         BYTE* pbStr = (BYTE*)&Result;
 
