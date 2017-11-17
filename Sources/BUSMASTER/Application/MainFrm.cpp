@@ -13512,6 +13512,10 @@ INT CMainFrame::nGetControllerID(std::string strDriverName)
     {
         nDriverID = DRIVER_CAN_PEAK_USB;
     }
+	else if (strDriverName == "NSI CAN-API")
+	{
+		nDriverID = DRIVER_CAN_NSI;
+	}
     else
     {
         nDriverID = DRIVER_CAN_STUB;
