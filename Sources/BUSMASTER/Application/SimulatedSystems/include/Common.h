@@ -1,5 +1,5 @@
-#ifndef _BUSMASTER_COMMAN_H_
-#define _BUSMASTER_COMMAN_H_
+#ifndef _BUSMASTER_COMMON_H_
+#define _BUSMASTER_COMMON_H_
 
 
 #ifdef __cplusplus
