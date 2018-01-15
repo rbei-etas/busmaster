@@ -1549,7 +1549,7 @@ static int nSetFilter(UINT unDrvChannel, BOOL /*bWrite*/)
     }
     else
     {
-        cr = Ic_SetRxMask(NSI_hCanal[sg_aodChannels[unDrvChannel].m_nChannel], dwCode, dwMask, _CAN_EXT);
+        cr = Ic_SetRxMask(NSI_hCanal[sg_aodChannels[unDrvChannel].m_nChannel], dwCode, dwMask, _CAN_ALL); // to accept both Standard and Extended
     }
     if(cr != _OK)
     {
@@ -1644,9 +1644,11 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
     int nReturn = S_OK;
     unsigned int i;
 
-    if(bConnect)
+	if (!flagConnect && bConnect) 
     {
-        InitializeCriticalSection(&sg_CritSectForAckBuf);
+		bLoadDataFromContr(sg_ControllerDetails);
+		nSetApplyConfiguration();
+		InitializeCriticalSection(&sg_CritSectForAckBuf);
         for(i=0; i<sg_nNoOfChannels; i++)
         {
             /* Start CAN controler. Receptions are starting now. The controler is seting the acknowledge bit
@@ -1663,7 +1665,7 @@ static int nConnect(BOOL bConnect, BYTE /*hClient*/)
             sg_byCurrState[i] = CREATE_MAP_TIMESTAMP;
         }
     }
-    else
+	else if (flagConnect && !bConnect) 
     {
         DeleteCriticalSection(&sg_CritSectForAckBuf);
         for(i=0; i<sg_nNoOfChannels; i++)
@@ -2068,7 +2070,15 @@ HRESULT CDIL_CAN_NSI::CAN_PerformClosureOperations(void)
 {
     HRESULT hResult = S_OK;
 
-    hResult = CAN_StopHardware();
+	if (flagConnect)                       
+	{
+		hResult = CAN_StopHardware();
+	}
+	else
+	{
+		hResult = S_FALSE;
+	}
+
     // Remove all the existing clients
     UINT ClientIndex = 0;
     while (sg_unClientCnt > 0)
@@ -2243,8 +2253,6 @@ HRESULT CDIL_CAN_NSI::CAN_StartHardware(void)
     USES_CONVERSION;
     HRESULT hResult = S_OK;
 
-    flagConnect = TRUE;
-
     //Connect to the channels
     hResult = nConnect(TRUE, 0);
     if (hResult == S_OK)
@@ -2253,6 +2261,7 @@ HRESULT CDIL_CAN_NSI::CAN_StartHardware(void)
         sg_bCurrState = STATE_CONNECTED;
         SetEvent(NSI_hEvent[0]);
         vCreateTimeModeMapping(NSI_hEvent[0]);
+		flagConnect = TRUE;  
     }
     else
     {
@@ -2292,13 +2301,12 @@ HRESULT CDIL_CAN_NSI::CAN_StopHardware(void)
     //Terminate the read thread
     sg_sParmRThread.bTerminateThread();
 
-    flagConnect = FALSE;
-
     hResult = nConnect(FALSE, 0);
     if (hResult == S_OK)
     {
         hResult = S_OK;
         sg_bCurrState = STATE_HW_INTERFACE_SELECTED;
+		flagConnect = FALSE; 
     }
     else
     {
