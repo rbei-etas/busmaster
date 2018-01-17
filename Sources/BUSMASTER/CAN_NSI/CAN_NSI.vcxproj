@@ -85,9 +85,6 @@
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(SolutionDir)\EXTERNAL\libxml2\lib;$(SolutionDir)\EXTERNAL\zlib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <PreBuildEvent>
-      <Command>cmd GetKvaserLib.bat</Command>
-    </PreBuildEvent>
     <Midl>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -110,11 +107,6 @@
       <Culture>0x0409</Culture>
       <AdditionalIncludeDirectories>$(IntDir);$(VC_IncludePath);$(WindowsSDK_IncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
-    <PreLinkEvent>
-      <Command>copy "%25TMP%25\canlib32.lib" ".\..\bin\libs\$(IntDir)canlib32.lib"
-del "%25TMP%25\canlib32.lib"
-</Command>
-    </PreLinkEvent>
     <Link>
       <AdditionalOptions>"$(SolutionDir)/BIN/Libs/$(OutDir)DataTypes.lib"
 "$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib" %(AdditionalOptions)</AdditionalOptions>
@@ -159,11 +151,6 @@ del "%25TMP%25\canlib32.lib"
       <Culture>0x0409</Culture>
       <AdditionalIncludeDirectories>$(IntDir);$(VC_IncludePath);$(WindowsSDK_IncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
-    <PreLinkEvent>
-      <Command>copy "%25TMP%25\canlib32.lib" ".\..\bin\libs\$(IntDir)canlib32.lib"
-del "%25TMP%25\canlib32.lib"
-</Command>
-    </PreLinkEvent>
     <Link>
       <AdditionalOptions>"$(SolutionDir)/BIN/Libs/$(OutDir)DataTypes.lib"
 "$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib" %(AdditionalOptions)</AdditionalOptions>
