@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="introduction" xml:lang="en-us">
+  <title>Getting Started</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2014"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Introduction</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section><title>1. Creating LDF File Using LDF Editor:</title>Currently LDF Editor supports creation of LDF 1.3, 2.0 and 2.1 versions.</section>
+    <section>
+      <p><b>Recommended work flow to create a LDF file:</b></p>
+    </section>
+    <p><ol>
+        <li>Create LDF File using File-&gt;New-&gt;LDF <i>&lt;version&gt;</i>.LDF Editor will create a Master and a Slave node with default parameters.</li>
+        <li>Create slaves if required. ( Refer section : <xref href="LIN_Editor_SlaveDialog.dita"/>)</li>
+        <li>Create signal and provide its Publisher and subscribers ( Refer section:<xref href="LIN_Editor_Signal.dita"/>)</li>
+        <li>Create unconditional Frames and map publisher and signals. ( Refer section:<xref href="LIN_Editor_UnconditionalFrame.dita"/>)</li>
+        <li>Create Event triggered and sporadic frames if required (Refer sections:<xref href="LIN_Editor_EventTriggeredFrame.dita"/> and <xref href="LIN_Editor_SporadicFrame.dita"/> )</li>
+        <li>Add Diagnostic Messages and signals if required (Refer section:<xref href="LIN_Editor_DiagnosticSupport.dita"/> )</li>
+        <li>Create schedule table(s) and define slots ( Refer section:<xref href="LIN_Editor_ScheduleTable.dita"/> )</li>
+        <li>Create codings and associate to signals ( Refer section:<xref href="LIN_Editor_Signal.dita"/> )</li>
+        <li>Create signal groups if required.Signal groups are depreciated from LDF 2.x ( Refer section:<xref href="LIN_Editor_SignalGroup.dita"/> )</li>
+        <li>Create Node compositions if Required ( Refer section:<xref href="LIN_Editor_NodeComposition.dita"/> )</li>
+      </ol></p>
+    <p><b>2. Importing\Editing LDF File:</b></p>
+    <p>Use File-&gt;Open to import the existing LDF file.If any errors found tool will report the same and file not be loaded.If any warnings are found tool will display the same in warnings window with the description, action point if any and imports LDF File</p>
+    <p><b>3. Preview LDF File:</b></p>
+    <p>To preview the current LDF File use View-&gt;Preview File menu.</p>
+  </body>
+</topic>

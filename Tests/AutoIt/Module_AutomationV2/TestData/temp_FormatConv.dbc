@@ -1,0 +1,60 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_:
+
+
+BO_ 3221225472 VECTOR__INDEPENDENT_SIG_MSG: 0 Vector__XXX
+ SG_ signal2 : 0|64@1+ (1,0) [0|1.84467440737096E+019] "" Vector__XXX
+
+BO_ 5 message4: 8 Vector__XXX
+
+BO_ 0 Message4: 8 Vector__XXX
+ SG_ Signal4 : 0|64@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 1792 Message3: 4 Vector__XXX
+ SG_ Signal3 : 0|32@1- (1,0) [0|0] "" Vector__XXX
+
+BO_ 1280 Message1: 8 Vector__XXX
+ SG_ Signal1 : 0|64@1- (1,0) [-9.22337203685478E+018|9.22337203685478E+018] "" Vector__XXX
+
+
+
+CM_ BO_ 3221225472 "This is a message for not used signals, created by Vector CANdb++ DBC OLE DB Provider.";
+BA_DEF_  "BusType" STRING ;
+BA_DEF_DEF_  "BusType" "CAN";
+SIG_VALTYPE_ 0 Signal4 : 2;
+SIG_VALTYPE_ 1792 Signal3 : 1;
+

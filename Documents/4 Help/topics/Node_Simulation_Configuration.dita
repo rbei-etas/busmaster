@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="simulated_systems" xml:lang="en-us">
+  <title>Node Simulation Configuration</title>
+  <prolog>
+    <author>Robin George Koshy</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Simulated Systems</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Simulated systems can be configured under the &lt;Protocol&gt;-bus by following the steps given below. Select <b>&lt;Protocol&gt; --&gt; Node Simulation --&gt; Configure</b> menu option. This will display the window as shown is figure below.</p>
+    <image href="../images/NodeSimulationConfiguration.bmp" placement="break"/>
+    <section><title>Add Node</title>This is used to added .cpp/.dll files to Node Simulation. Add Node can be done by following ways:</section>
+    <image href="../images/RootNodeContextMenu.bmp"/>
+    <section>
+      <p><ol>
+          <li>Right click the Root Node(&lt;Protocol&gt; Bus) and select &quot;Add&quot;.</li>
+          <li>Click Add Node in the toolbar.</li>
+          <li>Pressing &quot;Insert&quot; key in the keyboard.</li>
+        </ol></p>
+      <p>Then &quot;Node Details&quot; dialog box appears as shown below. Add unique Node name and add existing .cpp/.dll or provide new File name to create new .cpp file.</p>
+      <image href="../images/NodeDetails.PNG"/>
+    </section>
+    <section>
+      <title>Edit Node</title>
+      <p>This is used to edit the .cpp file attached to a Node. Editing can be done by following ways:</p>
+      <image href="../images/NodeContextMenu.bmp"/>
+      <p><ol>
+          <li>Select the Node then Right click and select &quot;Edit&quot;.</li>
+          <li>Select the Node and click &quot;Edit Node&quot; in the toolbar.</li>
+          <li>Select the Node and press &quot;Enter&quot; key in the keyboard.</li>
+        </ol></p>
+      <p>Then &quot;Function Editor&quot; window appears in which the required editing can be done.</p>
+    </section>
+    <section>
+      <title>Remove Node</title>
+      <p>This is used remove selected node all the nodes in the Simulated system. Removing a Node can be done by following ways:</p>
+      <ol>
+        <li>Select the Node then Right click and select &quot;Remove&quot;. To Remove All Nodes select Root Node(&lt;Protocol&gt; Bus) and select &quot;Remove All&quot;.</li>
+        <li>Select the Node and click &quot;Remove Node&quot; in the toolbar. To Remove All Nodes select Root Node(&lt;Protocol&gt; Bus) and select &quot;Remove Node&quot; in the toolbar.</li>
+        <li>Select the Node and press &quot;Delete&quot; key in the keyboard. To Remove All Nodes select Root Node(&lt;Protocol&gt; Bus) and press &quot;Delete&quot; key.</li>
+      </ol>
+    </section>
+    <section>
+      <title>Configure Node</title>
+      <p>This is used change the name of the Node or change/add .cpp/.dll associated with a Node. Configuring a Node can be done by following ways:</p>
+      <ol>
+        <li>Select the Node then Right click and select &quot;Configure&quot;.</li>
+        <li>Select the Node and click &quot;Configure Node&quot; in the toolbar.</li>
+        <li>If no .cpp/.dll files are associated with the node previously, then by pressing &quot;Enter&quot; key in the keyboard.</li>
+      </ol>
+    </section>
+    <section>
+      <title>Build Node</title>
+      <p>This is used build the .cpp files associated with selected Node or all the nodes in the Simulated System. Building a Node can be done by following ways:</p>
+      <ol>
+        <li>Select the Node then Right click and select &quot;Build&quot;. To Build All Nodes select Root Node(&lt;Protocol&gt; Bus) and select &quot;Build All&quot;.</li>
+        <li>Select the Node and click &quot;Build Node&quot; in the toolbar. To Build All Nodes select Root Node(&lt;Protocol&gt; Bus) and select &quot;Build All&quot; in the toolbar.</li>
+      </ol>
+    </section>
+    <section>
+      <title>Enable/Disable Node</title>
+      <p>This used to active/deactivate  selected Node or all the Nodes in the Simulated System. Enabling/Disabling can be done by following ways:</p>
+      <ol>
+        <li>Check/Uncheck the checkbox associated with the Node will Enable/Disable the Node respectively. To Enable/Disable all the Nodes Check/Uncheck the Root Node(&lt;Protocol&gt; Bus) respectively.</li>
+        <li> &quot;Spacebar&quot; key can be used as keyboard shortcut to Check/Uncheck the Node(s).</li>
+      </ol>
+    </section>
+    <note/>
+    <ol>
+      <li>Node(s) can&apos;t be Added/Removed/Configured/Enabled/Disabled while the network is connected. </li>
+      <li>A Node can be edited while the network is connected. But the file must be built again to see the changes.</li>
+    </ol>
+  </body>
+</topic>

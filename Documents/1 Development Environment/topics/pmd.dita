@@ -20,15 +20,15 @@
     </section>
     <section>
       <title>Installation</title>
-      <p>Extract the archive  <filepath>pmd-bin-5.0-alpha.zip</filepath> in the recommended installation folder <filepath>C:\Program Files\PMD\</filepath>.</p>
+      <p>Extract the archive  <filepath>pmd-bin-5.0-alpha.zip</filepath> in the recommended installation folder <filepath>%ProgramFiles%\PMD\</filepath>.</p>
     </section>
     <section>
       <title>Configuration</title>
-      <p>The is no specific configuration of PMD necessary.</p>
+      <p>The configuration is contained in the test script <filepath>Tests\PMD\build.bat</filepath>. Beside that there is no specific configuration of PMD necessary.</p>
     </section>
     <section>
       <title>Usage</title>
-      <p>PMD can run on the command line and generate reports in XML format. It also has a GUI that can be started by executing <filepath>C:\Program Files\PMD\bin\cpdgui.bat</filepath>. Select C++ as language and run it recursively on the <filepath>Sources</filepath> folder.</p>
+      <p>The test script <filepath>Tests\PMD\build.bat</filepath> automatically rund on the <filepath>Sources</filepath> folder and generates HTML report files.</p>
     </section>
   </body>
 </topic>

@@ -1,0 +1,14 @@
+#Make file for building DLL
+
+SampleJ1939.dll : C:\PROGRA~1\BUSMASTER\SimulatedSystems\Obj\wrapper_J1939.o SampleJ1939.o 
+	dllwrap --def=C:\BUSMASTER\NODESIM_FILES\SampleJ1939.def \
+--dllname=C:\BUSMASTER\NODESIM_FILES\SampleJ1939.dll --driver-name=gcc C:\PROGRA~1\BUSMASTER\SimulatedSystems\Obj\wrapper_J1939.o C:\BUSMASTER\NODESIM_FILES\SampleJ1939.o 
+
+
+#wrapper_J1939.o : c:\test\wrapper_J1939.c c:\test\wrapper_J1939.h
+#	gcc -c c:\test\wrapper_J1939.c -o C:\test\wrapper_J1939.o -mwindows
+
+SampleJ1939.o : C:\BUSMASTER\NODESIM_FILES\SampleJ1939.c
+	gcc -c -IC:\PROGRA~1\BUSMASTER\SimulatedSystems\include C:\BUSMASTER\NODESIM_FILES\SampleJ1939.c  -o C:\BUSMASTER\NODESIM_FILES\SampleJ1939.o -mwindows
+
+

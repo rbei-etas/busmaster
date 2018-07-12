@@ -3,6 +3,8 @@
 :JAVA_FIND
 for /d %%i in ("%ProgramFiles%\Java\jdk*") do set JAVA_HOME=%%i
 if exist "%JAVA_HOME%\lib\tools.jar" goto SERNA_FIND
+for /d %%i in ("%ProgramFiles(x86)%\Java\jdk*") do set JAVA_HOME=%%i
+if exist "%JAVA_HOME%\lib\tools.jar" goto SERNA_FIND
 
 :JAVA_NOT_FOUND
 echo Java Development Kit not found. Build failed!
@@ -10,6 +12,8 @@ goto END
 
 :SERNA_FIND
 for /d %%i in ("%ProgramFiles%\Syntext\Serna Free*") do set SERNA_HOME=%%i
+if exist "%SERNA_HOME%" goto DITA_FIND
+for /d %%i in ("%ProgramFiles(x86)%\Syntext\Serna Free*") do set SERNA_HOME=%%i
 if exist "%SERNA_HOME%" goto DITA_FIND
 
 :SERNA_NOT_FOUND
@@ -64,6 +68,8 @@ goto HTMLHELP_FIND
 :HTMLHELP_FIND
 set HTMLHELP_HOME=%ProgramFiles%\HTML Help Workshop
 if exist "%HTMLHELP_HOME%" goto BUILD
+set HTMLHELP_HOME=%ProgramFiles(x86)%\HTML Help Workshop
+if exist "%HTMLHELP_HOME%" goto BUILD
 
 :HTMLHTLP_NOT_FOUND
 echo HTML Help Workshop not found. Build failed!
@@ -83,4 +89,4 @@ echo CHM was not build. I try again.
 hhc out\help.hhp
 
 :END
-exit 0
+REM exit 0

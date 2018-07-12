@@ -1,0 +1,25 @@
+Follow the below steps before running the scripts:
+
+1. Install Autoit v3.3.8.1 and SciTE4AutoIt3 in "C:\Program Files (x86)".
+
+2. Change the compatibility mode of Autoit3.exe and SciTE.exe to Win XP Service Pack 3(For Win 7 64 bit machine).
+
+3. Copy "Module_AutomationV2" folder from "Tests\AutoIt\" to C drive. Copy "IncludeFiles.au3", "Data_DeclarationModV2.au3" and "globalFunc4ModuleV2.au3" in Module_AutomationV2 folder to "C:\Program Files (x86)\AutoIt3\Include" folder.
+
+4. Run "RunMe.bat" to run all the scripts. HTML result file will be saved in the module folder.
+
+5. Update the Busmaster Version number in the C:\Module_AutomationV2\BusmasterVersion.txt file.
+
+BUSMASTER Installation with Addons
+
+1. Install BUSMASTER in "C:\Program Files (x86)".
+
+2. Copy/Install MinGW to "C" drive.
+
+3. Set the environment variable ‘path’ as ‘C:\MinGW\bin’
+
+4. Install the following drivers :
+	a) Vector
+	b) Kvaser
+
+

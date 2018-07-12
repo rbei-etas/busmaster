@@ -1,0 +1,16 @@
+2D Graph ActiveX Control
+
+(c) Copyright The Code Project Open License (CPOL)
+http://www.codeproject.com/info/cpol10.aspx
+
+Original graph engine built by:
+Nikolai Teofilov
+
+Source: "The code project"
+http://www.codeproject.com/KB/miscctrl/ntgraph_activex.aspx
+August 2003
+
+Major code and design refactoring done by:
+Marius Samoila
+http://members.shaw.ca/msamoila/
+December 2011

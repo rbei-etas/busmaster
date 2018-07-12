@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MapSignalsDlg</class>
+ <widget class="QDialog" name="MapSignalsDlg">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>719</width>
+    <height>461</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Signal Mapping</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="ldfeditor.qrc">
+    <normaloff>:/LDFEditorIcons/Resources/icons/Signals.png</normaloff>:/LDFEditorIcons/Resources/icons/Signals.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="Signals">
+     <property name="title">
+      <string>Signal Selection</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="LDFCommonTableWidget" name="tableSignals">
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <column>
+         <property name="text">
+          <string>Name</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Start Bit</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Length</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>LDFCommonTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header>ldfcommontablewidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="ldfeditor.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="stcan_struct" xml:lang="en-us">
+  <title>STLIN_MSG Structure</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>STLIN_MSG Structure</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>STLIN_MSG Structure Definition</p>
+    <codeblock>class STLIN_MSG
+{
+    unsigned char messagetype;       // Header - 0, Slave Response - 1
+    unsigned char checksumtype;      // Checksum Type (0 - Classical / 1 - Enhanced)
+    unsigned char dlc;               // Data length (0..8)
+    unsigned char id;                // LIN Identifier
+    
+    unsigned char data[8];           // Data access member
+    unsigned long timeStamp;
+    unsigned char cluster;           // Channel Number 
+    unsigned char crc;               // Checksum - Read Only
+
+} STLIN_MSG;</codeblock>
+    <p>Required Include header file is LINIncludes.h</p>
+    <p><table frame="all">
+        <title/>
+        <tgroup cols="2">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <tbody>
+            <row>
+              <entry>
+                <b>Member</b>
+              </entry>
+              <entry>
+                <b>Description</b>
+              </entry>
+            </row>
+            <row>
+              <entry>messagetype</entry>
+              <entry>To configure frame as Master request or Slave. 0 - Master request/header </entry>
+            </row>
+            <row>
+              <entry>checksumtype</entry>
+              <entry>To set checksum type as Classic or Enhanced. 0 - Classic 1-Enhanced</entry>
+            </row>
+            <row>
+              <entry>dlc</entry>
+              <entry>Data Length in bytes. Possible values [0-8]</entry>
+            </row>
+            <row>
+              <entry>id</entry>
+              <entry>LIN message identifier is a unsigned integer in decimal or hexadecimal (0x) to identify the message</entry>
+            </row>
+            <row>
+              <entry>data[8]</entry>
+              <entry>Message data. [0-7] bytes</entry>
+            </row>
+            <row>
+              <entry>timeStamp</entry>
+              <entry>Received frame absolute timestamp in 100&apos;s of microseconds</entry>
+            </row>
+            <row>
+              <entry>cluster</entry>
+              <entry>channel on which the frame is received or to be transmitted</entry>
+            </row>
+            <row>
+              <entry>crc</entry>
+              <entry>Checksum value of the received message</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+    <p><b>Event Structure:</b></p>
+    <p>SEVENT_CHECKSUM_LIN Structure Definition</p>
+    <p><codeblock>struct SEVENT_CHECKSUM_LIN
+{
+    unsigned char m_ucId;
+    unsigned char m_ucCrc;
+    unsigned char m_ucChannel;
+    unsigned int  m_ulTime;
+};</codeblock></p>
+    <p>SEVENT_RECEIVE_LIN Structure Definition</p>
+    <p><codeblock>struct SEVENT_RECEIVE_LIN
+{
+    unsigned int  m_ulTime;
+};</codeblock></p>
+    <p>SEVENT_SLAVE_NORESP_LIN Structure Definition</p>
+    <p><codeblock>struct SEVENT_SLAVE_NORESP_LIN
+{
+    unsigned char m_ucId;
+    unsigned char m_ucChannel;
+    unsigned int  m_ulTime;
+
+};</codeblock></p>
+    <p>SEVENT_SYNC_LIN Structure Definition</p>
+    <p><codeblock>typedef struct SEVENT_SYNC_LIN
+{
+    unsigned char m_ucChannel;
+    unsigned int  m_ulTime;
+
+};</codeblock></p>
+    <p>Required Include header file is LINIncludes.h</p>
+    <p/>
+  </body>
+</topic>

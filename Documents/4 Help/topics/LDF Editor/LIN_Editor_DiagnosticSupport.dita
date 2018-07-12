@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="introduction" xml:lang="en-us">
+  <title>Diagnostic Support</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Introduction</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title/>
+      <p><b>Adding Diagnostic Support:</b></p>
+      <p>To create diagnostic frames, right click on the &apos;Diagnostic Frames&apos; element in the Element view. By default &apos;MasterReq&apos; and &apos;SlaveResp&apos; diagnostic frames will get created as shown below.</p>
+      <image href="../../images/LDF Editor/LIN_DiagnosticFrames.png"/>
+    </section>
+    <p>On Adding diagnostic support for Frame, Diagnostic Signals will get automatically created for Master and Slave under &apos;Diagnostic Signals&apos; in the Element View as shown below.</p>
+    <image href="../../images/LDF Editor/LIN_DiagnosticSignals.png"/>
+    <p><b>Removing Diagnostic Support:</b></p>
+    <p>To remove diagnostic support right click on &apos;Diagnostic Frames&apos; in the Element view and click on &apos;Remove Diagnostic Support&apos; which removes diagnostic frames and diagnostic signals.</p>
+  </body>
+</topic>

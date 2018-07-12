@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="stcan_struct" xml:lang="en-us">
+  <title>What is new?</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>STCAN_MSG Structure</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p><b>Node Simulation v1.2 changes</b></p>
+    <p><ul>
+        <li>J1939_MSG in node simulation is updated to ease accessing message attributes, signal values and to support Big Endian signals as given below</li>
+        <li>
+          <p><codeblock>class J1939_MSG
+{
+    unsigned __int64       timeStamp; 
+    unsigned char          cluster;     
+    EJ1939_MSG_TYPE        msgType;
+    enum EDIRECTION        direction;   
+    <b>J1939Id</b>                id;
+    unsigned int           dlc;            
+    unsigned char          data[1785];
+
+    // To set data
+    bool byteAt(int index, unsigned char val);
+    bool wordAt(int index, unsigned short val);
+    bool longAt(int index, unsigned long val);
+
+    // To get data
+    unsigned char  byteAt(int index);
+    unsigned short wordAt(int index);
+    unsigned long longAt(int index);
+};
+
+class J1939Id
+{
+   unsigned int   extendedId;
+   
+   // Setters
+   void setId(unsigned int _extendedId);
+   void setSourceAddress(unsigned char _sourceAddress)
+   void setPGN(unsigned int _pgn);
+   void setPDUFormat(unsigned char _pduFormat)
+   void setDataPage(unsigned char _dataPage);
+   void setPriority(unsigned char _priority);
+   void setPDUSpecific(unsigned char _pduSpecific);
+
+   // Getters
+   unsigned char getSourceAddress();
+   unsigned char getPDUFormat();
+   unsigned int getPGN();
+   unsigned char getDataPage();
+   unsigned char getPriority();
+   unsigned char getPDUSpecific();
+};</codeblock></p>
+        </li>
+      </ul></p>
+    <p><ul>
+        <li>Following functions are supported to access/update Signal values</li>
+        <li>
+          <codeblock>To <b>set</b> signal rawvalue or physicalvalue
+  1. rawvalue(int x); // Type &apos;int&apos; will vary as per the signal type
+  2. physicalvalue(double x);
+
+
+To <b>get</b> signal rawvalue or physicalvalue
+  1. rawvalue(); // returns signal rawvalue
+  2. physicalvalue(); // returns signal physicalvalue
+
+For more details, refer &apos;Examples&apos; section under &apos;J1939-&gt;Node Simulation&apos;</codeblock>
+        </li>
+      </ul></p>
+    <p><ul>
+        <li>For more details, refer &apos;BMJ1939Defines.h&apos; in installation folder under &apos;SimulatedSystems\include&apos;</li>
+      </ul></p>
+  </body>
+</topic>

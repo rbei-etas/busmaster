@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" [
+<!ENTITY Introduction '<xref/>'>]>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>LIN Simulation in BUSMASTER</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2013"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>LIN Simulation</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p><b>Introduction:</b></p>
+    <p>BUSMASTER can be used as master to transmit master requests and as slave to respond to master requests. User can monitor/analyze the LIN messages using BUSMASTER.The following steps are required to Configure the BUSMASTER for transmission of frame headers or transmission/reception of LIN messages.</p>
+    <p><b>1. Cluster Configuration:</b> </p>
+    <p><ol>
+        <li>To Transmit\Receive the LIN Messages BUSMASTER has to be configured with LIN Baud Rate and Version.Refer <xref href="LIN_Cluster_Configuration.dita"/> Section for more Information.</li>
+        <li>To enable master mode for LIN channel for transmitting frame headers, check the <b>Enable Master Mode</b> check box under <b>LIN Network Settings</b></li>
+      </ol></p>
+    <p><b>2. <b>Schedule Table Configuration:</b></b></p>
+    <p>Configure Schedule Table window can be used to select  schedule table/frame headers for transmission  imported from the loaded LDF file if BUSMASTER is used as master. Refer <xref href="LIN_ScheduleTable_Configuration.dita"/>  for more information.</p>
+    <p><b>3</b>. <b>
+        <b>Controller (Driver) Selection:</b>
+      </b></p>
+    <p>BUSMASTER can be connected to Physical LIN Network using LIN Controller.Refer <xref href="LIN_Controller_Config.dita"/> section for more Information.</p>
+    <p><b>4. Transmit Messages:</b></p>
+    <p>LIN Slave Messages or LIN Master requests Can be transmitted over LIN network using LIN Tx Window.Refer <xref href="LIN_TxWindow.dita"/> Section for more information.</p>
+    <p><b>5. Connect to Network:</b></p>
+    <p>Once the Cluster &amp; Controllers are properly configured BUSMASTER can be connected to Network using <b>LIN-&gt;Connect</b>. menu or the LIN Connect Tool bar Button as shown in following figure.</p>
+    <p><image href="../images/LIN_Connect.PNG"/></p>
+    <p><b>6. Monitoring Messages:</b></p>
+    <p>BUSMASTER Message Window can be used to monitor the LIN messages of LIN Network.Refer <b>
+        <xref href="LIN_message_window.dita"/>
+      </b> section for more information.</p>
+  </body>
+</topic>

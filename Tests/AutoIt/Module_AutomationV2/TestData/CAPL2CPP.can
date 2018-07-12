@@ -1,0 +1,26 @@
+includes
+{
+  
+}
+
+variables
+{
+  
+}
+
+
+on message 0x500
+{
+  message Message1 ouCanMsg;
+  ouCanMsg.dlc = 8;
+  ouCanMsg.byte(0) = 1;  
+  ouCanMsg.byte(1) = 2;
+  ouCanMsg.byte(2) = 3;
+  ouCanMsg.byte(3) = 4;
+  output(ouCanMsg);
+}
+
+on key 'a'
+{
+  write("In Key Handlers");
+}

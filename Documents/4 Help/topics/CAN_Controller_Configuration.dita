@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" [
+<!ENTITY Introduction '<xref/>'>]>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>CAN Controller Configuration</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2013"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>LIN Transmit Window</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p><b>Introduction:</b></p>
+    <p>BUSMASTER Can be connected to CAN  physical channel using any one of the following CAN Controllers.</p>
+    <p><ol>
+        <li>ETAS BOA </li>
+        <li>ETAS ES581.3</li>
+        <li>ETAS ES581.4</li>
+        <li>ETAS ISOLAR-EVE</li>
+        <li>i-VIEW</li>
+        <li>InterprediCS neoVI</li>
+        <li>IXXAT VCI</li>
+        <li>Kvaser CAN</li>
+        <li>MHS Tiny-CAN </li>
+        <li>NSI CAN-API </li>
+        <li>PEAK USB </li>
+        <li>Vector XL</li>
+        <li>VScom CAN-API</li>
+      </ol></p>
+    <p><b>Controller Selection:</b></p>
+    <p>To select controller use CAN-&gt;Driver Selection-&gt;<i>{Driver}</i> For example to select ETAS Devices  use <b>CAN-&gt;Driver Selection-&gt;ETAS BOA.</b></p>
+    <p>If there are multiple devices connected BUSMASTER will display a Hardware selection dialog as shown below to map the devices and the channels.</p>
+    <p><image href="../images/CAN_Channel_Selection.bmp"/></p>
+    <p><b>CAN Parameter Configuration:</b></p>
+    <p>BUSMASTER Will select the open the CAN Channel with 500kbps by default.These default parameters can be changed using CAN channel configuration window.Select <b>CAN-&gt;Channel Configuration</b> menu.This will invoke the channel configuration dialog depending on the controller selected.The following figure shows the channel configuration window for ETAS BOA Devices.</p>
+    <p><image href="../images/CAN_Channel_Configuration.bmp"/></p>
+    <p>Once the  Controller is configured BUSMASTER Can be connected to <b>CAN</b> network using <b>CAN-&gt;Connect</b> Menu.</p>
+  </body>
+</topic>

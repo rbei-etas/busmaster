@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" [
+<!ENTITY Introduction '<xref/>'>]>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>Diagnostics Settings</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2013"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Diagnostics Settings</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p>Diagnostics settings window is used to set the settings for transmitting diagnostics requests and for receiving diagnostics response messages.</p>
+    <p>To configure diagnostic settings use <b>CAN-&gt;Diagnostics-&gt;Settings</b> menu.This will display the Window as shown below.</p>
+    <image href="../images/Diagnostics_Settings.bmp"/>
+    <p><ol>
+        <li>
+          <b>Diagnostics Standard</b>
+          <p> To select diagnostics standard UDS (ISO 14229) or ISO 14230
+
+</p>
+        </li>
+        <li>
+          <b>Interface</b>
+          <p> To select the type of the interface 11 bit or 29 bit interface
+
+</p>
+        </li>
+        <li>
+          <b>Max DLC</b>
+           <p>If checked, the data length of the messages transmitted will be set to 8 bytes even if the data length of the message is less than 8 bytes
+
+</p>
+        </li>
+        <li>
+          <b>Default Values </b>
+          <p>To reset to default settings
+
+</p>
+        </li>
+        <li>
+          <b>CAN ID (Request to ECU) </b>
+          <p>To set the identifier of the diagnostic request message that is to be transmitted
+
+</p>
+        </li>
+        <li>
+          <b>CAN ID (Response from ECU) </b>
+          <p>To set the identifier of the diagnostic response message that is to be received
+</p>
+        </li>
+        <li>
+          <b>Base address</b>
+          <p>Indicates the base of the 11 bit message identifier. Enabled only if the interface selected is 11 bit Extended interface</p>
+        </li>
+        <li>
+          <b>STmin</b>
+          <p>Indicates the time delay between transmission of two consecutive frames</p>
+        </li>
+        <li>
+          <b>Block Size</b>
+          <p>Maximum number of consecutive frames that a sender can send before waiting for the flow control</p>
+        </li>
+        <li>
+          <b>Flow Control Length</b>
+          <p>Length of the flow control to be transmitted</p>
+        </li>
+        <li>
+          <b>P2 Time Out</b>
+          <p>Indicates the time that the tool should wait for the ECU to respond</p>
+        </li>
+        <li>
+          <b>P2 Extended</b>
+          <p>Indicates the time to wait after the Negative response received</p>
+        </li>
+        <li>
+          <b>S3 Client</b>
+          <p>Indicates the time delay between tester present messages to be transmitted</p>
+        </li>
+      </ol></p>
+  </body>
+</topic>

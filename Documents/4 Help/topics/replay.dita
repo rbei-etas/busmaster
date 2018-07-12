@@ -21,7 +21,7 @@
         <li>Interactive and</li>
         <li>Non-Interactive</li>
       </ul></p>
-    <p>In interactive replay mode, the log file content will be display as list of messages and user can navigate this list and can transmit interested messages. User can step through replay messages, can skip messages, can start message transmission continouosly and can insert break points.</p>
+    <p>In interactive replay mode, the log file content will be display as list of messages and user can navigate this list and can transmit interested messages. User can step through replay messages, can skip messages, can start message transmission continuously and can insert break points.</p>
     <p>In non interactive mode, replay will start during tool connect and will be stopped during tool disconnect. In case of cyclic mode the replay will continue till tool disconnect and in monoshot or once, all messages will be transmitted only once and replay will start.</p>
     <p>Based on replay mode, user can configure replays in two different modes.<ul>
         <li>Single Run Mode and</li>

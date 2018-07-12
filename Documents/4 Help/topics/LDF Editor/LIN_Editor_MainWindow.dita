@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="introduction" xml:lang="en-us">
+  <title>LIN Database Editor Main Window</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Introduction</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title/>
+      <p>LIN Database Editor main window is as shown below:</p>
+    </section>
+    <section>
+      <image href="../../images/LDF Editor/LIN_EdiitorOverview.png"/>
+      <p><b>Menu bar:</b><ul>
+          <li>File Menu<ol>
+              <li>File-&gt;New-&gt;LIN 1.3<p>Creates LIN 1.3 LDF file. Default elements will get created.</p></li>
+              <li>File-&gt;New-&gt;LIN 2.0<p>Creates LIN 2.0 LDF file. Default elements will get created.</p></li>
+              <li>File-&gt;New-&gt;LIN 2.1<p>Creates LIN 2.1 LDF file. Default elements will get created.</p></li>
+              <li>File-&gt;Open<p>To Open an existing LDF file of versions 1.3, 2.0 and 2.1.</p></li>
+              <li>File-&gt;Save<p>To Save the changes to the current loaded LDF file.</p></li>
+              <li>File-&gt;Save As<p>To Save changes to a new LDF file.</p></li>
+              <li>File-&gt;Recent Files<p>Displays 5 recently viewed LDF files.Click on the file to load the LDF file.</p></li>
+            </ol></li>
+          <li>View Menu<ol>
+              <li>View-&gt;Hex<p>Select/DeSelect Hex to toggle between numeric modes Hex/Dec.</p></li>
+              <li>View-&gt;Preview LDF File<p>Opens the current LDF file in LDF file editor.</p></li>
+              <li>View-&gt;Warnings Window<p>Populates the Warning Window, which displays the list of warnings with description and action taken if any.</p></li>
+            </ol></li>
+        </ul></p>
+      <p><b>Toolbar:</b></p>
+      <p>Toolbar can be used for creating, loading, saving LDF files and also to set the numeric mode (hex/dec).</p>
+      <image href="../../images/LDF Editor/LIN_Toolbar.png"/>
+      <p><b>Element View:</b></p>
+      <p>Element view displays the LIN Cluster elements by which user can create or edit elements.</p>
+      <p>To Create a new element, right click on the element in the element view and select the pop up menu &apos;New&apos;.</p>
+      <p>To Edit a element, right click on the element in the element view and select the pop up menu &apos;Edit&apos;</p>
+      <p>To Delete a element, right click on the element in the element view and select the pop up menu &apos;Delete&apos;. Confirmation message is displayed before deleting the element.</p>
+      <p>The following LIN Cluster elements are displayed in Element View.</p>
+      <p><ul>
+          <li>Lin Cluster Settings</li>
+          <li>Master</li>
+          <li>Slaves</li>
+          <li>Unconditional Frames</li>
+          <li>Event Triggered Frames</li>
+          <li>Sporadic Frames (Displayed for LDF version 2.0 and 2.1)</li>
+          <li>Diagnostic Frames</li>
+          <li>Signals</li>
+          <li>Diagnostic Signals</li>
+          <li>Signal Groups</li>
+          <li>Codings</li>
+          <li>Schedule Tables</li>
+          <li>Node Compositions (Displayed for LDF version 2.0 and 2.1)</li>
+        </ul></p>
+      <p>On selecting an element in the element view, Property view and additional view will be updated with selected element properties.</p>
+      <p><b>Property View:</b></p>
+      <p>Property view displays the properties of the element selected in the element view.Properties are populated based on the type of element selected in the element view.</p>
+      <p><b>Additional View:</b></p>
+    </section>
+    <section>Additional view displays the additional properties of the element selected in the element view.Properties displayed in the additional view will vary based on the type of element selected in the element view.</section>
+    <section>
+      <table frame="all">
+        <title/>
+        <tgroup cols="2">
+          <colspec colname="c1"/>
+          <colspec colname="c2"/>
+          <tbody>
+            <row>
+              <entry>
+                <b>Selected Element</b>
+              </entry>
+              <entry>
+                <b>Properties displayed</b>
+              </entry>
+            </row>
+            <row>
+              <entry>Node (Master/Slave)</entry>
+              <entry>
+                <ol>
+                  <li>Node Attributes</li>
+                  <li>List of published frames</li>
+                </ol>
+              </entry>
+            </row>
+            <row>
+              <entry>Frame (Unconditional, Event Triggered, Sporadic and Diagnostic frames)</entry>
+              <entry>
+                <ol>
+                  <li>Frame Attributes</li>
+                  <li>List of published signals</li>
+                </ol>
+              </entry>
+            </row>
+            <row>
+              <entry>Signals (Normal and Diagnostic Signals)</entry>
+              <entry>
+                <ol>
+                  <li>Signal Attributes</li>
+                  <li>List of Codings mapped to the signal</li>
+                </ol>
+              </entry>
+            </row>
+            <row>
+              <entry>Codings</entry>
+              <entry>
+                <ol>
+                  <li>Coding Attributes</li>
+                </ol>
+              </entry>
+            </row>
+            <row>
+              <entry>Schedule Table</entry>
+              <entry>
+                <ol>
+                  <li>Schedule Table Items</li>
+                  <li>Schedule Table attributes populated based on the type of the frame selected</li>
+                </ol>
+              </entry>
+            </row>
+            <row>
+              <entry>Signal Groups</entry>
+              <entry>
+                <ol>
+                  <li>Signal Group properties</li>
+                  <li>Signals mapped to the Signal group</li>
+                </ol>
+              </entry>
+            </row>
+            <row>
+              <entry>Node Compositions </entry>
+              <entry>
+                <ol>
+                  <li>List of Composite nodes mapped to the Node Configuration</li>
+                </ol>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <b>Network View:</b>
+    </section>
+    <section>Network view displays the Master and Slave nodes. Published, subscribed frames and signals will be displayed under respective node.</section>
+    <section>On Selecting an element in the network view respective element in the element view is selected and elements properties are displayed in the Property view and Additional view. </section>
+    <p><b>Warning Window:</b></p>
+    <p>On Save or Load LDF file, warning will be displayed in the Warnings window if exists any with description and action taken is specified if any action is performed to correct the warning.</p>
+  </body>
+</topic>

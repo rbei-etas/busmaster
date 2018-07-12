@@ -1,0 +1,183 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "SignalWatch_resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+#endif //_WIN32
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041104e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "SignalWatch.dll"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "SignalWatch.dll"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x411, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DLG_ADD_DEL_SIGNALS DIALOGEX 0, 0, 316, 258
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | DS_CONTEXTHELP | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "シグナル監視リスト"
+FONT 9, "MS UI Gothic", 0, 0, 0x1
+BEGIN
+	LTEXT	"メッセージリスト:", -1, 7, 6, 44, 8
+	CONTROL	"List2", IDC_LSTC_SIGNAL, "SysListView32", LVS_REPORT |   
+	                  LVS_SHOWSELALWAYS | LVS_SORTASCENDING |         
+			              LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP, 7, 42, 107, 187
+	PUSHBUTTON	"&追加", IDM_SIGNALDLG_ADD, 124, 83, 50, 14
+	DEFPUSHBUTTON	"はい", IDOK, 107, 237, 50, 14
+	PUSHBUTTON	"&キャンセル", IDCANCEL, 170, 237, 50, 14
+	CONTROL	"List2", IDC_LSTC_SIGNAL_WATCH, "SysListView32", LVS_REPORT |  
+	                   LVS_SHOWSELALWAYS | LVS_SORTASCENDING |           
+			             LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP, 184, 42, 125, 187
+	LTEXT	"シグナルリスト:", -1, 7, 31, 35, 16
+	LTEXT	"シグナル監視リスト", -1, 184, 30, 56, 8
+	COMBOBOX	IDC_COMB_MSGNAME, 7, 16, 108, 85, CBS_DROPDOWNLIST | CBS_SORT |
+	                     WS_VSCROLL | WS_TABSTOP, 0
+	PUSHBUTTON	"&すべて追加", IDM_SIGNALDLG_ADDALL, 124, 108, 50, 14
+	PUSHBUTTON	"&削除", IDM_SIGNALDLG_DELETE, 124, 133, 50, 14
+	PUSHBUTTON	"&全て削除", IDM_SIGNALDLG_DELETEALL, 124, 158, 50, 14
+END
+
+IDD_DLG_SIGNAL_WATCH DIALOG  0, 0, 218, 113
+STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "シグナル監視"
+FONT 9, "MS UI Gothic"
+BEGIN
+    CONTROL         "List1",IDC_LIST_SIGNAL_WATCH,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,1,1,217,112
+END
+
+IDD_DLG_SIGNAL_WATCH_LIN DIALOGEX 0, 0, 220, 260
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CENTER | DS_CONTEXTHELP | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Signal Watch Configure"
+FONT 9, "MS UI Gothic", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "OK",IDOK,112,241,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,165,241,50,14
+    CONTROL         "",IDC_TREE_LIN,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_CHECKBOXES | WS_BORDER | WS_HSCROLL | WS_TABSTOP,1,1,218,230
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DLG_ADD_DEL_SIGNALS DLGINIT
+BEGIN
+	IDC_COMB_MSGNAME, 0x403, 4, 0
+0xb9c6, 0x00c8, 
+	0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_MENU_SIGNAL_WATCH MENU 
+BEGIN
+POPUP "シグナル監視"
+BEGIN
+MENUITEM "&シグナルの追加/削除...", IDM_SIGNALWATCH_ADDSIGNAL
+MENUITEM "&終了", IDM_SIGNALWATCH_CLOSE
+END
+POPUP "操作"
+BEGIN
+MENUITEM "&クリア", IDM_SG_WATCH_CLEAR
+END
+POPUP "シグナルダイアログ"
+BEGIN
+MENUITEM "&追加", IDM_SIGNALDLG_ADD
+MENUITEM "&すべて追加", IDM_SIGNALDLG_ADDALL
+MENUITEM "&削除", IDM_SIGNALDLG_DELETE
+MENUITEM "す&べて削除", IDM_SIGNALDLG_DELETEALL
+END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_BMP_MSG_SIG_WATCH BITMAP "res\\Signalwatch.bmp"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+LANGUAGE 0x11, 0x01
+#pragma code_page(932)
+#include "..\Localization\l.jpn\afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,358 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "1 TYPELIB ""DMGraph.tlb""\r\n"
+    "#include ""DMGraph.rc2""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_DMGRAPHCTRL         BITMAP  DISCARDABLE     "DMGraphc.bmp"
+IDB_FRAME               BITMAP  DISCARDABLE     "Frame.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_DMGRAPHCTRL         REGISTRY DISCARDABLE    "DMGraphCtrl.rgs"
+IDR_ELEMENTPROPPAGE     REGISTRY DISCARDABLE    "ElementPropPage.rgs"
+IDR_ANNOPROPPAGE        REGISTRY DISCARDABLE    "AnnoPropPage.rgs"
+IDR_CURSORPROPPAGE      REGISTRY DISCARDABLE    "CursorPropPage.rgs"
+IDR_FORMATPROPPAGE      REGISTRY DISCARDABLE    "FormatPropPage.rgs"
+IDR_DMGRAPHPROPPAGE     REGISTRY DISCARDABLE    "DMGraphPropPage.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ELEMENTPROPPAGE DIALOG DISCARDABLE  0, 0, 271, 167
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Elements:",IDC_STATIC,7,7,32,8
+    PUSHBUTTON      "&Add Element",IDC_ADDBUTTON,8,113,76,11
+    PUSHBUTTON      "&Delete Element",IDC_DELBUTTON,8,127,76,11
+    GROUPBOX        "Line",IDC_TXT_E1,93,6,162,64
+    LTEXT           "&Type:",IDC_TXT_E2,105,21,28,8
+    COMBOBOX        IDC_COMBO_TYPE,146,19,84,128,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "&Color:",IDC_TXT_E3,105,37,19,8
+    CONTROL         "",IDC_LINE_COLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,146,
+                    35,49,12
+    LTEXT           "&Width:",IDC_TXT_E4,105,53,22,8
+    EDITTEXT        IDC_LINE_WIDTH,146,50,42,13,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_LINE_WIDTH,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,186,50,11,13
+    GROUPBOX        "Point",IDC_STATIC,94,76,162,64
+    LTEXT           "T&ype:",IDC_TXT_E5,105,92,19,8
+    COMBOBOX        IDC_COMBO_SYMBOL,148,87,84,122,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "C&olor:",IDC_TXT_E6,105,107,19,8
+    CONTROL         "",IDC_POINT_COLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,
+                    148,103,49,12
+    CONTROL         "&Solid:",IDC_CHECK_SOLID,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,200,103,32,11
+    LTEXT           "S&ize:",IDC_TXT_E7,105,122,16,8
+    EDITTEXT        IDC_POINT_WIDTH,148,119,42,13,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_POINT_WIDTH,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,188,119,11,13
+    CONTROL         "&Visble:",IDC_CHECK_VISIBLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,99,146,39,11
+    LTEXT           "&Name:",IDC_TXT_E8,147,146,22,8
+    EDITTEXT        IDC_EDIT_NAME,175,144,72,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Remove selection",IDC_REMOVE_SEL,8,140,76,11
+    CONTROL         "List1",IDC_COLLECTION_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER | 
+                    LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,8,17,76,91
+END
+
+IDD_ANNOPROPPAGE DIALOG DISCARDABLE  0, 0, 271, 167
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Annotations:",IDC_STATIC,7,7,40,8
+    PUSHBUTTON      "&Add Annotation",IDC_ADDBUTTON,7,114,76,11
+    PUSHBUTTON      "&Delete Annotation",IDC_DELBUTTON,7,129,76,11
+    PUSHBUTTON      "&Remove selection",IDC_REMOVE_SEL,7,143,76,11
+    LTEXT           "&Caption:",IDC_TXT_A1,120,20,27,8
+    EDITTEXT        IDC_EDIT_CAPTION,153,18,85,12,ES_AUTOHSCROLL
+    LTEXT           "&X Coordinate:",IDC_TXT_A2,103,35,44,8
+    EDITTEXT        IDC_EDIT_X,153,33,85,12,ES_AUTOHSCROLL
+    LTEXT           "&Y Coordinate:",IDC_TXT_A3,103,49,44,8
+    EDITTEXT        IDC_EDIT_Y,153,48,85,12,ES_AUTOHSCROLL
+    LTEXT           "&Colors:",IDC_TXT_A4,122,65,22,8
+    CONTROL         "&Text",IDC_LABEL_COLOR,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,153,63,40,12
+    CONTROL         "&BkG",IDC_LABEL_BGCOLOR,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,197,63,40,12
+    LTEXT           "&Orientation:",IDC_TXT_A5,110,82,37,8
+    COMBOBOX        IDC_COMBO_ORIENTATION,153,78,85,36,CBS_DROPDOWN | 
+                    CBS_DISABLENOSCROLL | WS_TABSTOP
+    CONTROL         "&Visble:",IDC_CHECK_VISIBLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,122,92,39,11
+    CONTROL         "List1",IDC_COLLECTION_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER | 
+                    LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,8,17,76,91
+END
+
+IDD_CURSORPROPPAGE DIALOG DISCARDABLE  0, 0, 271, 167
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Cursors:",IDC_STATIC,7,7,26,8
+    PUSHBUTTON      "&Add Cursor",IDC_ADDBUTTON,7,113,76,11
+    PUSHBUTTON      "&Delete Cursor",IDC_DELBUTTON,7,128,76,11
+    LTEXT           "&Crosshair style:",IDC_TXT_C1,99,21,48,8
+    CONTROL         "&Visble:",IDC_CHECK_VISIBLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,126,105,37,11
+    CONTROL         "",IDC_CURSOR_COLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,
+                    154,91,40,12
+    LTEXT           "&Color:",IDC_TXT_C6,129,93,19,8
+    COMBOBOX        IDC_COMBO_STYLE,153,18,85,56,CBS_DROPDOWN | 
+                    CBS_DISABLENOSCROLL | WS_TABSTOP
+    LTEXT           "&X Coordinate:",IDC_TXT_C2,103,35,44,8
+    LTEXT           "&Y Coordinate:",IDC_TXT_C3,103,49,44,8
+    EDITTEXT        IDC_EDIT_X,153,33,85,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_Y,153,48,85,12,ES_AUTOHSCROLL
+    LTEXT           "&Snap mode:",IDC_TXT_C4,108,64,39,8
+    COMBOBOX        IDC_COMBO_SNAP,153,62,85,56,CBS_DROPDOWN | 
+                    CBS_DISABLENOSCROLL | WS_TABSTOP
+    LTEXT           "&Name:",IDC_TXT_C5,122,79,22,8
+    EDITTEXT        IDC_EDIT_NAME,153,77,85,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Remove selection",IDC_REMOVE_SEL,7,143,76,11
+    CONTROL         "List1",IDC_COLLECTION_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER | 
+                    LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,8,17,76,91
+END
+
+IDD_FORMATPROPPAGE DIALOG DISCARDABLE  0, 0, 271, 105
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_COMBO_AXIS,166,22,68,37,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Axis:",IDC_STATIC,138,24,16,8
+    EDITTEXT        IDC_EDIT_FORMAT,166,54,67,13,ES_AUTOHSCROLL
+    LTEXT           "&Format:",IDC_STATIC,137,56,24,8
+    LISTBOX         IDC_FORMAT_LIST,14,23,91,80,LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Templates:",IDC_STATIC,15,11,36,8
+    COMBOBOX        IDC_COMBO_TYPE,166,38,68,65,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Type:",IDC_STATIC,138,40,19,8
+    PUSHBUTTON      "&Default",IDC_BUTTON_DEFAULT,165,73,68,13
+END
+
+IDD_DMGRAPHPROPPAGE DIALOG DISCARDABLE  0, 0, 271, 124
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Track Mode:",IDC_STATIC,16,13,42,8
+    COMBOBOX        IDC_COMBO_MODE,67,11,60,82,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "&Caption:",IDC_STATIC,17,31,45,8
+    EDITTEXT        IDC_CAPTION,67,30,60,12,ES_AUTOHSCROLL
+    LTEXT           "&Frame Style:",IDC_STATIC,18,48,40,8
+    COMBOBOX        IDC_COMBO_FRAME,67,47,60,45,CBS_DROPDOWN | WS_TABSTOP
+    CONTROL         "&Show Grid X:",IDC_CHECK_SHOWGRID_X,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,16,64,59,8
+    CONTROL         "Show Grid Y:",IDC_CHECK_SHOWGRID_Y,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,16,79,59,8
+    CONTROL         "&X Log:",IDC_CHECK_XLOG,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,15,94,60,8
+    CONTROL         "&Y Log:",IDC_CHECK_YLOG,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,15,107,60,8
+    LTEXT           "&Control Frame:",IDC_STATIC,140,13,49,8
+    CONTROL         "",IDC_FRAME_COLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,
+                    200,12,28,10
+    LTEXT           "&Plot Area:",IDC_STATIC,140,27,32,8
+    CONTROL         "",IDC_PLOT_COLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,200,
+                    27,28,10
+    LTEXT           "&Axis Color:",IDC_STATIC,140,43,38,8
+    CONTROL         "",IDC_AXIS_COLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,200,
+                    42,28,10
+    LTEXT           "&Grid Color:",IDC_STATIC,140,59,38,8
+    CONTROL         "",IDC_GRID_COLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,200,
+                    58,28,10
+    LTEXT           "&Label Color:",IDC_STATIC,140,75,38,8
+    CONTROL         "",IDC_LABEL_COLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,
+                    200,74,28,10
+END
+
+IDD_ABOUT DIALOG DISCARDABLE  0, 0, 196, 205
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About DM Graph Control"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "DMGraph Control, Version ",IDC_STATIC,21,7,88,8
+    DEFPUSHBUTTON   "OK",IDOK,47,186,100,14,WS_GROUP
+    LTEXT           "",IDC_VERSION,122,7,67,8
+    EDITTEXT        IDC_DETAILS,7,20,182,161,ES_MULTILINE | ES_READONLY | 
+                    WS_VSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_CURSORPROPPAGE DLGINIT
+BEGIN
+    IDC_COMBO_STYLE, 0x403, 1, 0
+"\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ELEMENTPROPPAGE, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 157
+    END
+
+    IDD_CURSORPROPPAGE, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 159
+    END
+
+    IDD_DMGRAPHPROPPAGE, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 115
+    END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 189
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 203
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TXT
+//
+
+IDR_ABOUT               TXT     DISCARDABLE     "About.txt"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJNAME            "DMGraph"
+    IDS_TITLEElementPropPage "Elements"
+    IDS_HELPFILEElementPropPage "Help File Name"
+    IDS_DOCSTRINGElementPropPage "DMGraph Element Property Page"
+    IDS_TITLEAnnoPropPage   "Annotation"
+    IDS_HELPFILEAnnoPropPage "Help File Name"
+    IDS_DOCSTRINGAnnoPropPage "DMGraph Annotation Property Page"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_TITLECursorPropPage "Cursor"
+    IDS_HELPFILECursorPropPage "Help File Name"
+    IDS_DOCSTRINGCursorPropPage "DMGraph Cursor Property Page"
+    IDS_TITLEFormatPropPage "Format"
+    IDS_HELPFILEFormatPropPage "Help File Name"
+    IDS_DOCSTRINGFormatPropPage "DMGraph Format Property Page"
+    IDS_TITLEDMGraphPropPage "DM Graph"
+    IDS_HELPFILEDMGraphPropPage "Help File Name"
+    IDS_DOCSTRINGDMGraphPropPage "DMGraph Property Page"
+    IDS_CURSOR_CROSSHAIR_STYLE "Crosshair X & Y\nX hairline\nY hairline"
+    IDS_CURSOR_SNAP_MODE    "Fixed\nFloating\nSnap on element"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ANNO_ORIENTATION    "Horizontal\nVertical"
+    IDS_GRAPH_TRACK_MODE    "None\nTrack cursor\nTrack element\nZoom\nZoomX\nZoomY\nPanXY\nPanX\nPanY"
+    IDS_GRAPH_FRAME         "Flat\nScope\nBitmap"
+    IDS_ELEM_LINE_TYPE      "Solid\nDashed\nDoted\nDash-Doted\nDash-Dot-Doted\nNone\nXY Step\nYX Step\nBars\nStick"
+    IDS_ELEM_POINT_TYPE     "None\nDots\nRectangles\nDiamonds\nAsterics\nDawn Triangles\nUp Triangles\nLeft Triangles\nRight Triangles"
+    IDS_FORMAT_AXIS         "Bottom\nLeft"
+    IDS_FORMAT_TYPE         "Number\nExponential\nSymbolic\nDate\nTime"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "DMGraph.tlb"
+#include "DMGraph.rc2"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

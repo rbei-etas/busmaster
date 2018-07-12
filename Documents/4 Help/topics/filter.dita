@@ -18,19 +18,18 @@
     <p>Filter (App Filter) can be enabled/disabled-using tool bar buttons or menu. Filters must have been configured prior to this. (Refer section Configure - App Filter and Display Filter).</p>
     <section>
       <title>Display Filter</title>
-      <p>To enable message window filtering select <menucascade>
-          <uicontrol>App Filter</uicontrol>
-          <uicontrol>Enable Display Filter</uicontrol>
-        </menucascade> or press <uicontrol>Display Filter</uicontrol> toolbar button shown in figure below.</p>
+      <p>To enable message window filtering select <b>CAN --&gt; Message Window --&gt; Enable Filters</b> or press <b>Display Filter </b>toolbar button shown in figure below.
+</p>
       <image href="../images/FilterToolBar.bmp" placement="break"/>
       <p>To disable filtering select the toolbar button again. Filtering will toggle on each press.</p>
     </section>
     <section>
       <title>Log Filter</title>
-      <p>To enabling filter for logging select <menucascade>
-          <uicontrol>App Filter</uicontrol>
-          <uicontrol>Enable Log Filter</uicontrol>
-        </menucascade> or press <uicontrol>Log Filter</uicontrol> toolbar button shown in the fig. The filter will be applied on messages that are received after enabling the filter. To disable select the same menuitem or toolbar button again. Filtering will toggle on each press.</p>
+      <p>To enabling filter for logging select <b>CAN --&gt; Logging --&gt; Enable Filters</b> or press <uicontrol>Log Filter</uicontrol> toolbar button shown in the fig. The filter will be applied on messages that are received after enabling the filter. To disable select the same menu item or toolbar button again. Filtering will toggle on each press.</p>
+    </section>
+    <section>
+      <title>Replay Filter</title>
+      <p>To enabling filter for replay select <b>CAN --&gt; Replay --&gt; Enable Filters</b> or press <uicontrol>Replay Filter</uicontrol> toolbar button shown in the fig. To disable select the same menu item or toolbar button again. Filtering will toggle on each press.</p>
     </section>
     <note>Note<ul>
         <li>Message filter and Log filter will be applied only for the incoming messages after enabling the filter.</li>

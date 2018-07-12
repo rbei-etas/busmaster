@@ -51,7 +51,7 @@
     </section>
     <section>
       <title>Toggle Numeric Mode</title>
-      <p>This is a toggle tool bar button. This button is used to switch between decimal mode and hexadecimal mode. In decimal mode data bytes will be displayed in decimal format. In hexadecimal mode data bytes will be displayed in hexadecimal format. Please refer to description C of the figure shown in section Message Window.</p>
+      <p>This is a toggle tool bar button. This button is used to switch between decimal mode and hexadecimal mode. In decimal mode data bytes will be displayed in decimal format. In hexadecimal mode data bytes will be displayed in hexadecimal format. By default massages will be displayed in hexadecimal mode. Please refer to description C of the figure shown in section Message Window.</p>
     </section>
     <section>
       <title>Toggle Message Interpretation</title>
@@ -85,14 +85,6 @@ And clicking on the ‘-’ sign will collapse the expanded entries as shown in 
     <section>
       <title>Sending a Message From Message Display</title>
       <p>Messages can be directly send from Message Display entry. Select a message entry and right click. This will popup message operation menu (Refer Fig.1). Select Send to transmit the selected message entry on the CAN bus.</p>
-    </section>
-    <section>
-      <title>Toggle Date display</title>
-      <p>You have an option to display the system date on the message window. You can enable the Date by selecting <menucascade>
-          <uicontrol>Display</uicontrol>
-          <uicontrol>Message Window</uicontrol>
-          <uicontrol>Date</uicontrol>
-        </menucascade> menu option. This option is not available in relative time mode display.</p>
     </section>
     <section>
       <title>Clear Message Window</title>

@@ -12,11 +12,13 @@
   <topicref href="topics/license_information.dita" type="topic" toc="no"/>
   <topichead navtitle="Download">
     <topicref href="topics/git.dita" type="topic"/>
-    <topicref href="topics/wget.dita" type="topic"/>
   </topichead>
   <topichead navtitle="Build">
+    <!--<topicref href="topics/cmake.dita" type="topic"/>-->
     <topicref href="topics/msbuild.dita" type="topic"/>
     <topicref href="topics/vc.dita" type="topic"/>
+    <topicref href="topics/Installation_Of_Additional_Libraries.dita" type="topic"/>
+	<topicref href="topics/build_order.dita" type="topic"/>
   </topichead>
   <topichead navtitle="Documentation">
     <topicref href="topics/dita-ot.dita" type="topic"/>
@@ -32,5 +34,8 @@
   </topichead>
   <topichead navtitle="Installation">
     <topicref href="topics/nsis.dita" type="topic"/>
+  </topichead>
+  <topichead navtitle="Continuous Integration Server">
+    <topicref href="topics/jenkins.dita" type="topic"/>
   </topichead>
 </map>

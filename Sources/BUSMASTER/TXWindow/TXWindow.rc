@@ -1,0 +1,175 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+#include "../Utility/SignalDetails.rc"
+/////////////////////////////////////////////////////////////////////////////
+#include "afxres.h"
+#undef APSTUDIO_READONLY_SYMBOLS
+// English (United States) resources
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "TXWindow.dll"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "TXWindow.dll"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+IDD_LIN_TRANSMIT_MSG DIALOGEX 0, 0, 551, 334
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_CAPTION
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_LSTC_TRANSMIT_MSG,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,18,16,516,110,WS_EX_STATICEDGE
+    GROUPBOX        "Tx Frame List",IDC_STATIC,9,7,537,142
+    PUSHBUTTON      "Send Message",IDC_CBTN_SEND_MSG_LIN,364,131,55,14,WS_DISABLED
+    CONTROL         "",IDC_LSTC_SIG_DETAILS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,18,217,377,98
+    GROUPBOX        "Signal Details",IDC_STATIC,10,201,536,126
+    CTEXT           "6",IDC_STAT_8,411,292,8,8
+    CTEXT           "0",IDC_STAT_7,411,219,8,8
+    CTEXT           "1",IDC_STAT_6,411,231,8,8
+    CTEXT           "2",IDC_STAT_5,411,243,8,8
+    CTEXT           "3",IDC_STAT_4,411,255,8,8
+    CTEXT           "4",IDC_STAT_3,411,267,8,8
+    CTEXT           "5",IDC_STAT_2,411,279,8,8
+    CTEXT           "7",IDC_STAT_15,411,304,8,8
+    CTEXT           "7",IDC_STAT_9,425,206,8,8
+    CTEXT           "6",IDC_STAT_10,439,206,8,8
+    CTEXT           "5",IDC_STAT_11,453,206,8,8
+    CTEXT           "4",IDC_STAT_12,467,206,8,8
+    CTEXT           "3",IDC_STAT_16,481,206,8,8
+    CTEXT           "2",IDC_STAT_14,495,206,8,8
+    CTEXT           "1",IDC_STAT_151,509,206,8,8
+    CTEXT           "0",IDC_STAT_161,523,206,8,8
+    CONTROL         "",IDC_STAT_MATRIX_RECT,"Static",SS_BLACKFRAME,422,215,114,102,WS_EX_DLGMODALFRAME | WS_EX_CLIENTEDGE | WS_EX_STATICEDGE
+    PUSHBUTTON      "Delete All",IDC_BT_DEL_ALL,487,131,49,15,WS_DISABLED
+    PUSHBUTTON      "Delete",IDC_DEL_FRAME,426,131,50,15,WS_DISABLED
+    GROUPBOX        "",IDC_STATIC,10,151,536,44
+    CONTROL         "",IDC_LSTC_DATA_BYTES,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,14,161,517,30
+    LTEXT           "Data Bytes View (DEC)",IDC_STATIC_DATA_BYTE_VIEW,15,151,73,8
+END
+
+IDD_DLG_LIN_SCHEDULE_CONFIG DIALOGEX 0, 0, 283, 311
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | DS_MODALFRAME
+CAPTION "Configure Schedule Table"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_TREE_LIN_SCHEDULE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_CHECKBOXES | TVS_NOHSCROLL | WS_BORDER | WS_TABSTOP,0,0,282,289
+    DEFPUSHBUTTON   "Close",IDCLOSE,230,296,50,14
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+
+2 TEXTINCLUDE 
+BEGIN
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_LIN_TRANSMIT_MSG, DIALOG
+    BEGIN
+        , 50
+    END
+
+    IDD_DLG_LIN_SCHEDULE_CONFIG, DIALOG
+    BEGIN
+        , 50
+        , 5439488, -1040187308
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_BMP_CHECKBOX        BITMAP                  "res\\bmp_chec.bmp"
+IDR_BMP_MSG             BITMAP                  "res\\ScheduleTable.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICO_SEND_MSG        ICON                    "res\\ico_send.ico"
+IDI_ICO_TX_WINDOW       ICON                    "res\\TxWindow.ico"
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

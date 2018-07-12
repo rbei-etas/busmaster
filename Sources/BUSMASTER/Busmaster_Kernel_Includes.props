@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\Kernel\ProtocolDefinitions;..\..\Kernel\BusmasterDBNetwork\Include;..\..\Kernel\BusmasterDriverInterface\Include;..\..\Kernel\Utilities\;..\..\Kernel\BusmasterKernel\;..\..\Kernel\BusmasterDBNetwork\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>"..\..\Kernel\bin\$(Configuration)\Utilities.lib" "..\..\Kernel\BusmasterKernel\$(Configuration)\BusmasterKernel.lib" %(AdditionalOptions)</AdditionalOptions>
+    </Link> 
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

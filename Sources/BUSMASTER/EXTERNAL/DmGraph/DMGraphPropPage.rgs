@@ -1,0 +1,23 @@
+HKCR
+{
+	DMGraph.DMGraphPropPage.1 = s 'DMGraphPropPage Class'
+	{
+		CLSID = s '{cb32b59d-7aaa-44b5-acdf-a64b9380e48c}'
+	}
+	DMGraph.DMGraphPropPage = s 'DMGraphPropPage Class'
+	{
+		CLSID = s '{cb32b59d-7aaa-44b5-acdf-a64b9380e48c}'
+		CurVer = s 'DMGraph.DMGraphPropPage.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {cb32b59d-7aaa-44b5-acdf-a64b9380e48c} = s 'DMGraphPropPage Class'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

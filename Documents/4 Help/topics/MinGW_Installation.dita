@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="what_is_new" xml:lang="en-us">
+  <title>MinGW Installation using GCC Installer</title>
+  <prolog>
+    <author>Saravanan</author>
+    <copyright>
+      <copyryear year="2012"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>MinGW</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title>MinGW Installation</title>
+      <p>The following steps should be followed to install MinGW  and use it to successfully compile  CPP files in   Node Simulation  using BUSMASTER.</p>
+      <ul>
+        <li>Download latest mingw executable from the following link <xref href="http://sourceforge.net/projects/mingw/files/Installer/mingw-get-inst/" scope="external"/> and then use it to download the actual MinGW and copy the MinGW folder to C: drive</li>
+        <li>During MinGW installation, please choose the packages as shown in the screen below as it is not selected by default:</li>
+      </ul>
+      <image href="../images/GCC_Compiler_Selection.bmp" alt="GCC C++ Compiler Selection" placement="break"/>
+      <ul>
+        <li>Set the environment variable ‘path’ as ‘C:\MinGW\bin’.</li>
+      </ul>
+    </section>
+  </body>
+</topic>

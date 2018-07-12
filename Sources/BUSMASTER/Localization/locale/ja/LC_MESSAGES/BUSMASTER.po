@@ -1,0 +1,5724 @@
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+# #-#-#-#-#  SimSys.po (1.0)  #-#-#-#-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+# #-#-#-#-#  format - Copy.po (1.0)  #-#-#-#-#
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Ghizlane Tibba <FIXED-TERM.Ghizlane.Tibba@etas.com>\n"
+"Language-Team: SAS ETJP <fixed-term.Ghizlane.Tibba@etas.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-22 08:41+0900\n"
+"PO-Revision-Date: 2012-08-22 08:43+0900\n"
+"Last-Translator: Ghizlane Tibba <FIXED-TERM.Ghizlane.Tibba@etas.com>\n"
+"Language-Team: SAS <fixed-term.Ghizlane.Tibba@etas.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-17 17:11+0900\n"
+"PO-Revision-Date: 2012-07-17 17:16+0900\n"
+"Last-Translator: Ghizlane Tibba <FIXED-TERM.Ghizlane.Tibba@etas.com>\n"
+"Language-Team: ghiz <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-22 08:52+0900\n"
+"PO-Revision-Date: 2012-08-22 08:55+0900\n"
+"Last-Translator: Ghizlane Tibba <FIXED-TERM.Ghizlane.Tibba@etas.com>\n"
+"Language-Team: SAS <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja_JP\n"
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-21 14:14+0900\n"
+"PO-Revision-Date: 2012-09-18 17:19+0900\n"
+"Last-Translator: Ghizlane Tibba <FIXED-TERM.Ghizlane.Tibba@etas.com>\n"
+"Language-Team: ETAS JP <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: HardwareListing.cpp:293
+#, c-format
+msgid "%d"
+msgstr "%d"
+
+msgid "&Collapse"
+msgstr "(&C)折りたたみ"
+
+#: ChangeRegDefines.h:42
+msgid "0x"
+msgstr "0x"
+
+#: MsgFrmtWnd.cpp:110
+msgid "Acknowledgement error"
+msgstr "認証エラー"
+
+#: GUI_FormatMsgCAN.cpp:54
+#: GUI_FormatMsgJ1939.cpp:48
+msgid "Application Buffer Overflow"
+msgstr "アプリケーションバッファオーバーフロー"
+
+#: GUI_FormatMsgCAN.cpp:44
+#: GUI_FormatMsgJ1939.cpp:38
+msgid "Bus Error - Bit Error(Rx)"
+msgstr "バスエラー - Bit Error(Rx)"
+
+#: GUI_FormatMsgCAN.cpp:48
+#: GUI_FormatMsgJ1939.cpp:42
+msgid "Bus Error - Bit Error(Tx)"
+msgstr "バスエラー - Bit Error(Tx)"
+
+#: GUI_FormatMsgCAN.cpp:45
+#: GUI_FormatMsgJ1939.cpp:39
+msgid "Bus Error - Form Error(Rx)"
+msgstr "バスエラー - Form Error(Rx)"
+
+#: GUI_FormatMsgCAN.cpp:49
+#: GUI_FormatMsgJ1939.cpp:43
+msgid "Bus Error - Form Error(Tx)"
+msgstr "バスエラー - Form Error(Tx)"
+
+#: GUI_FormatMsgCAN.cpp:47
+#: GUI_FormatMsgJ1939.cpp:41
+msgid "Bus Error - Other Error(Rx)"
+msgstr "バスエラー - Other Error(Rx)"
+
+#: GUI_FormatMsgCAN.cpp:51
+#: GUI_FormatMsgJ1939.cpp:45
+msgid "Bus Error - Other Error(Tx)"
+msgstr "バスエラー - Other Error(Tx)"
+
+#: GUI_FormatMsgCAN.cpp:50
+#: GUI_FormatMsgJ1939.cpp:44
+msgid "Bus Error - Stuff Error(Tx)"
+msgstr "バスエラー - Stuff Error(Tx)"
+
+#: MsgFrmtWnd.cpp:1797
+msgid "CAN ID      "
+msgstr "CAN ID      "
+
+#: MsgFrmtWnd.cpp:93
+msgid "CRC error"
+msgstr "CRCエラー"
+
+#: MsgFrmtWnd.cpp:1796
+msgid "Channel    "
+msgstr "Channel    "
+
+#: MsgFrmtWnd.cpp:1756
+msgid "Channel        "
+msgstr "Channel        "
+
+#: GUI_FormatMsgCAN.cpp:52
+#: GUI_FormatMsgJ1939.cpp:46
+msgid "Controller Buffer Overflow"
+msgstr "コントローラバッファオバフロー"
+
+#: MsgFrmtWnd.cpp:1761
+#: MsgFrmtWnd.cpp:1805
+msgid "DLC "
+msgstr "DLC "
+
+#: MsgFrmtWnd.cpp:96
+msgid "DLC error"
+msgstr "DLC error"
+
+#: GUI_FormatMsgCAN.cpp:55
+#: GUI_FormatMsgJ1939.cpp:49
+msgid "DLL message buffer Overflow"
+msgstr "DLLメッセージバッファオバフロー"
+
+#: MsgFrmtWnd.cpp:1762
+#: MsgFrmtWnd.cpp:1806
+msgid "Data Byte(s)                                     "
+msgstr "Data Byte(s)                                     "
+
+#: MsgFrmtWnd.cpp:1802
+msgid "Dest       "
+msgstr "Dest       "
+
+#: GUI_FormatMsgCAN.cpp:53
+#: GUI_FormatMsgJ1939.cpp:47
+msgid "Driver Buffer Overflow"
+msgstr "ドライババッファオバフロー"
+
+#: MsgFrmtWnd.cpp:111
+msgid "EOF error"
+msgstr "EOFエラー"
+
+#: GUI_FormatMsgCAN.cpp:46
+#: GUI_FormatMsgJ1939.cpp:40
+msgid "Error Frame - Stuff error(Rx)"
+msgstr "エラーフレーム - Stuff error(Rx)"
+
+#: MsgFrmtWnd.cpp:2221
+#, c-format
+msgid "Error code: %X"
+msgstr "エラーコード： %X"
+
+#: MsgFrmtWnd.cpp:1758
+msgid "ID            "
+msgstr "ID            "
+
+#: MsgFrmtWnd.cpp:103
+msgid "Intermission field error"
+msgstr "休止フィールドのエラー"
+
+#: MsgFrmtWnd.cpp:1759
+msgid "Message       "
+msgstr "Message       "
+
+#: Filter_defines.h:42
+msgid "Msg Type"
+msgstr "Msg Type"
+
+#: MsgFrmtWnd.cpp:370
+msgid "Not able to create the list control."
+msgstr "リストコントロールを作成することができません。"
+
+#: MsgFrmtWnd.cpp:87
+#: MsgFrmtWnd.cpp:89
+#: MsgFrmtWnd.cpp:90
+#: MsgFrmtWnd.cpp:91
+#: MsgFrmtWnd.cpp:92
+#: MsgFrmtWnd.cpp:94
+#: MsgFrmtWnd.cpp:95
+#: MsgFrmtWnd.cpp:97
+#: MsgFrmtWnd.cpp:98
+#: MsgFrmtWnd.cpp:99
+#: MsgFrmtWnd.cpp:100
+#: MsgFrmtWnd.cpp:108
+#: MsgFrmtWnd.cpp:109
+#: MsgFrmtWnd.cpp:112
+msgid "Other Errors"
+msgstr "その他のエラー"
+
+#: MsgFrmtWnd.cpp:378
+msgid "PGN"
+msgstr "PGN"
+
+#: MsgFrmtWnd.cpp:1798
+msgid "PGN        "
+msgstr "PGN        "
+
+#: MsgFrmtWnd.cpp:1799
+msgid "PGN Name   "
+msgstr "PGN Name   "
+
+#: MsgFrmtWnd.cpp:1803
+msgid "Priority"
+msgstr "Priority"
+
+#: MsgFrmtWnd.cpp:88
+msgid "SOF bit error"
+msgstr "ビット·エラーのSOF"
+
+#: MsgFrmtWnd.cpp:1801
+msgid "Src    "
+msgstr "Src    "
+
+#: MsgFrmtWnd.cpp:3808
+msgid "SysListView32"
+msgstr "SysListView32"
+
+#: MsgFrmtWnd.cpp:1795
+msgid "Time             "
+msgstr "Time             "
+
+#: MsgFrmtWnd.cpp:1754
+msgid "Time              "
+msgstr "Time             "
+
+#: MsgFrmtWnd.cpp:104
+msgid "Tolerate Dominant Bits Error"
+msgstr "ドミナントビットエラーを許容"
+
+#: MsgFrmtWnd.cpp:1804
+msgid "Tx/Rx    "
+msgstr "Tx/Rx    "
+
+#: MsgFrmtWnd.cpp:1755
+msgid "Tx/Rx          "
+msgstr "Tx/Rx          "
+
+#: Filter_defines.h:37
+#: SigGrphWnd_Defines.h:104
+msgid "Type"
+msgstr "タイプ"
+
+#: MsgFrmtWnd.cpp:1800
+msgid "Type       "
+msgstr "Type       "
+
+#: MsgFrmtWnd.cpp:1557
+msgid "Unable to Allocate Memory."
+msgstr "メモリを割り当てることができません。"
+
+#: GUI_FormatMsgCAN.cpp:43
+#: GUI_FormatMsgJ1939.cpp:37
+msgid "Unknown Error"
+msgstr "不明なエラー"
+
+#: MsgFrmtWnd.cpp:1888
+msgid "bl"
+msgstr "bl"
+
+
+#: MsgFrmtWnd.cpp:102
+msgid "local error "
+msgstr "ローカルエラー"
+
+#: MsgFrmtWnd.cpp:113
+msgid "over load condition"
+msgstr "過負荷条件"
+
+#: MsgFrmtWnd.cpp:2105
+msgid "vOnRxMsg... undefined\n"
+msgstr "vOnRxMsg... undefined\n"
+
+#: TSEditorGUI.cpp:108
+msgid "Test Setup Editor"
+msgstr "テストセットアップエディタ"
+
+#: TSEditorGUI_Definitions.h:108
+#: TSEditorGUI_ChildFrame.cpp:2028
+#: TreeViewEx.cpp:1037
+msgid "Send"
+msgstr "Send"
+
+#: TSEditorGUI_Definitions.h:109
+#: TSDefinitions.h:66
+msgid "verify"
+msgstr "verify"
+
+#: TSEditorGUI_Definitions.h:110
+#: TSDefinitions.h:67
+msgid "verifyResponse"
+msgstr "verifyResponse"
+
+#: TSEditorGUI_ChildFrame.cpp:713
+#: TSEditorGUI_ChildFrame.cpp:725
+msgid "ABSOLUTE"
+msgstr "ABSOLUTE"
+
+#: TSEditorGUI_ChildFrame.cpp:2258
+msgid "BUSMASTER TestSetup Editor"
+msgstr "バスマスタテストセットアップエディタ"
+
+#: TSEditorGUI_ChildFrame.cpp:663
+msgid "Bus Type"
+msgstr "Bus Type"
+
+#: TSEditorGUI_ChildFrame.cpp:3019
+msgid "Byte"
+msgstr "Byte"
+
+#: TSEditorGUI_ChildFrame.cpp:784
+#: TSEditorGUI_ChildFrame.cpp:796
+msgid "CONTINUE"
+msgstr "CONTINUE"
+
+#: TSEditorGUI_ChildFrame.cpp:514
+msgid ""
+"Current List is Modified\n"
+"Do You Want to save the Changes?"
+msgstr ""
+"現在のリストが変更されました。\n"
+"変更を保存しますか？"
+
+#: TSEditorGUI_ChildFrame.cpp:694
+msgid "DataBase File (*.dbf)|*.dbf||"
+msgstr "DataBase File (*.dbf)|*.dbf||"
+
+#: TSEditorGUI_ChildFrame.cpp:695
+msgid "DataBase Path"
+msgstr "DataBase Path"
+
+#: TSEditorGUI_ChildFrame.cpp:1675
+msgid "Database Path"
+msgstr "Database Path"
+
+#: TSEditorGUI_ChildFrame.cpp:1675
+msgid ""
+"Database Path Is Changed\n"
+"Do You want to Delete all Existing messages"
+msgstr ""
+"データベースのパスが変更されました\n"
+"すべての既存メッセージを削除しますか"
+
+#: TSEditorGUI_ChildFrame.cpp:983
+msgid "Delay"
+msgstr "Delay"
+
+#: TSEditorGUI_ChildFrame.cpp:653
+#: GUI_FormatMsgCAN.cpp:300
+msgid "Description"
+msgstr "詳細"
+
+#: TSEditorGUI_ChildFrame.cpp:1047
+#: TSEditorGUI_ChildFrame.cpp:1055
+#: TSEditorGUI_ChildFrame.cpp:1143
+#: TSEditorGUI_ChildFrame.cpp:1445
+#: TSEditorGUI_ChildFrame.cpp:1512
+msgid "ENG"
+msgstr "ENG"
+
+#: TSEditorGUI_ChildFrame.cpp:889
+#: TSEditorGUI_ChildFrame.cpp:901
+msgid "ERROR"
+msgstr "ERROR"
+
+#: TSEditorGUI_ChildFrame.cpp:785
+#: TSEditorGUI_ChildFrame.cpp:791
+#: TSEditorGUI_ChildFrame.cpp:1340
+msgid "EXIT"
+msgstr "EXIT"
+
+#: SimENG.cpp:438
+#: BuildProgram.cpp:381
+#: DefConverterPage.cpp:225
+msgid "Error"
+msgstr "エラー"
+
+#: TSEditorGUI_ChildFrame.cpp:786
+msgid "Exception Handler"
+msgstr "Exception Handler"
+
+#: TSEditorGUI_ChildFrame.cpp:894
+#: TSEditorGUI_ChildFrame.cpp:902
+msgid "FATAL"
+msgstr "FATAL"
+
+#: TSEditorGUI_ChildFrame.cpp:898
+msgid "Failure Classification"
+msgstr "Failure Classification"
+
+#: TSEditorGUI_ChildFrame.cpp:1010
+msgid "File Path"
+msgstr "File Path"
+
+#: TSEditorGUI_ChildFrame.cpp:2854
+msgid "Found Some Errors\\Warnings"
+msgstr "Found Some Errors\\Warnings"
+
+#: TSEditorGUI_ChildFrame.cpp:210
+msgid "Invalid Test Setup File"
+msgstr "Invalid Test Setup File"
+
+#: TSEditorGUI_ChildFrame.cpp:3019
+msgid "Length"
+msgstr "Length"
+
+#: TSEditorGUI_ChildFrame.cpp:829
+#: TSEditorGUI_ChildFrame.cpp:875
+msgid "Message Count"
+msgstr "Message Count"
+
+#: TSEditorGUI_ChildFrame.cpp:514
+msgid "Modified"
+msgstr "Modified"
+
+#: TSEditorGUI_ChildFrame.cpp:2220
+msgid "New TestSetup File"
+msgstr "New TestSetup File"
+
+#: TSEditorGUI_ChildFrame.cpp:2858
+msgid "No Errors\\Warnings are Found"
+msgstr "New TestSetup File"
+
+#: TSEditorGUI_ChildFrame.cpp:979
+msgid "Purpose"
+msgstr "Purpose"
+
+#: TSEditorGUI_ChildFrame.cpp:1043
+#: TSEditorGUI_ChildFrame.cpp:1054
+#: TSEditorGUI_ChildFrame.cpp:1142
+msgid "RAW"
+msgstr "RAW"
+
+#: TSEditorGUI_ChildFrame.cpp:714
+#: TSEditorGUI_ChildFrame.cpp:720
+#: TSEditorGUI_ChildFrame.cpp:1290
+msgid "RELATIVE"
+msgstr "RELATIVE"
+
+msgid "Replay"
+msgstr "Replay"
+
+#: TSEditorGUI_ChildFrame.cpp:707
+msgid "Report File Path"
+msgstr "Report File Path"
+
+#: TSEditorGUI_ChildFrame.cpp:443
+msgid "Select A TestSetup File"
+msgstr "Select A TestSetup File"
+
+#: SignalWatchDefs.h:31
+msgid "Signal"
+msgstr "シグナル"
+
+#: TSEditorGUI_ChildFrame.cpp:1051
+#: TSEditorGUI_ChildFrame.cpp:1139
+msgid "Signal Unit Type"
+msgstr "Signal Unit Type"
+
+#: TSEditorGUI_ChildFrame.cpp:3019
+msgid "StartBit"
+msgstr "StartBit"
+
+#: TSEditorGUI_ChildFrame.cpp:2360
+msgid "Test Automation Editor"
+msgstr "Test Automation Editor"
+
+#: TSEditorGUI_ChildFrame.cpp:2364
+msgid "Test Automation Editor:: "
+msgstr "Test Automation Editor:: "
+
+#: TSEditorGUI_ChildFrame.cpp:775
+msgid "Test Case ID"
+msgstr "Test Case ID"
+
+#: TSEditorGUI_ChildFrame.cpp:779
+msgid "Test Case Name"
+msgstr "Test Case Name"
+
+#: TSEditorGUI_ChildFrame.cpp:702
+msgid "Text Files (*.txt)|*.txt|Html Files (*html)|*.html||"
+msgstr "Text Files (*.txt)|*.txt|Html Files (*html)|*.html||"
+
+#: TSEditorGUI_ChildFrame.cpp:2257
+#, c-format
+msgid ""
+"The file '%s' has been modified\n"
+"Do you Want to save?"
+msgstr ""
+"ファイル'%s' は変更されています\n"
+"保存しますか？"
+
+#: TSEditorGUI_ChildFrame.cpp:715
+msgid "Time Mode"
+msgstr "Time Mode"
+
+#: TSEditorGUI_ChildFrame.cpp:649
+msgid "Title"
+msgstr "Title"
+
+#: TSEditorGUI_ChildFrame.cpp:2020
+msgid "Untitled TestCase"
+msgstr "Untitled TestCase"
+
+#: TSEditorGUI_ChildFrame.cpp:2854
+msgid "Validation Failed"
+msgstr "Validation Failed"
+
+#: TSEditorGUI_ChildFrame.cpp:2858
+msgid "Validation Success"
+msgstr "Validation Success"
+
+#: TSEditorGUI_ChildFrame.cpp:2061
+msgid "VerfiyResponse"
+msgstr "VerfiyResponse"
+
+#: TSEditorGUI_ChildFrame.cpp:2036
+#: TreeViewEx.cpp:1038
+msgid "Verify"
+msgstr "Verify"
+
+#: TSEditorGUI_ChildFrame.cpp:885
+#: TSEditorGUI_ChildFrame.cpp:900
+msgid "WARNING"
+msgstr "WARNING"
+
+#: TSEditorGUI_ChildFrame.cpp:2044
+#: TreeViewEx.cpp:1039
+msgid "Wait"
+msgstr "Wait"
+
+#: TSEditorGUI_ChildFrame.cpp:947
+msgid "Wait Until"
+msgstr "Wait Until"
+
+#: TSEditorGUI_ChildFrame.cpp:2537
+msgid "Wrong Item Selected"
+msgstr "Wrong Item Selected"
+
+#: TSEditorGUI_ChildFrame.cpp:847
+#: TSEditorGUI_ChildFrame.cpp:927
+#: TSEditorGUI_ChildFrame.cpp:1732
+#: TSEditorGUI_ChildFrame.cpp:1750
+#: TSEditorGUI_ChildFrame.cpp:1817
+#: TSEditorGUI_ChildFrame.cpp:1835
+#: TSEditorGUI_ChildFrame.cpp:1903
+#: TSEditorGUI_ChildFrame.cpp:1921
+msgid "[Add Message]"
+msgstr "[Add Message]"
+
+#: ListCtrlEx.cpp:1192
+msgid "I got the message\n"
+msgstr "メッセージを確認しました\n"
+
+#: TreeViewEx.cpp:1064
+msgid "Background Color"
+msgstr "背景色"
+
+#: TreeViewEx.cpp:1061
+msgid "Collapse All"
+msgstr "すべて折りたたむ"
+
+#: TreeViewEx.cpp:1043
+#: TreeViewEx.cpp:1047
+msgid "Delete"
+msgstr "削除"
+
+#: TreeViewEx.cpp:1062
+msgid "Expand All"
+msgstr "すべてを展開"
+
+#: TreeViewEx.cpp:1042
+msgid "New"
+msgstr "新しい"
+
+#: TreeViewEx.cpp:1031
+msgid "New Test Case"
+msgstr "新しいテストケース"
+
+#: TreeViewEx.cpp:1040
+msgid "verfiyResponse"
+msgstr "レスポンスを確認します"
+
+msgid "\t    %-12s %-16s : %2d ;\n"
+msgstr "\t    %-12s %-16s : %2d ;\n"
+
+msgid "\t%-12s  %s     ;\n"
+msgstr "\t%-12s  %s     ;\n"
+
+msgid "\tDual Filtering\n"
+msgstr "\tデューアル フィルタリング\n"
+
+msgid "\tSTJ1939_MSG_PROPERTIES m_sMsgProperties;\n"
+msgstr "\tSTJ1939_MSG_PROPERTIES m_sMsgProperties;\n"
+
+msgid "\tWarning Limit\n"
+msgstr "\t警告 リミット\n"
+
+msgid "\tunsigned char      m_aucData[%d];\n"
+msgstr "\tunsigned char      m_aucData[%d];\n"
+
+msgid "\tunsigned char      m_aucData[8];\n"
+msgstr "\tunsigned char      m_aucData[8];\n"
+
+msgid "\tunsigned char m_ucChannel\t;\n"
+msgstr "\tunsigned char m_ucChannel\t;\n"
+
+msgid "\tunsigned char m_ucDLC         ;\n"
+msgstr "\tunsigned char m_ucDLC         ;\n"
+
+msgid "\tunsigned char m_ucEXTENDED    ;\n"
+msgstr "\tunsigned char m_ucEXTENDED    ;\n"
+
+msgid "\tunsigned char m_ucRTR         ;\n"
+msgstr "\tunsigned char m_ucRTR         ;\n"
+
+msgid "\tunsigned int  m_unMsgID       ;\n"
+msgstr "\tunsigned int  m_unMsgID       ;\n"
+
+msgid "\tunsigned int m_unDLC;\n"
+msgstr "\tunsigned int m_unDLC;\n"
+
+msgid "\tunsigned long  int m_aulData[2];\n"
+msgstr "\tunsigned long  int m_aulData[2];\n"
+
+msgid "\tunsigned short int m_auwData[4];\n"
+msgstr "\tunsigned short int m_auwData[4];\n"
+
+#: CAN_ICS_neoVI.cpp:279
+#: common.h:146
+msgid "\n"
+msgstr "\n"
+
+msgid ""
+"\n"
+"\tstruct\n"
+"\t{\n"
+msgstr ""
+"\n"
+"\tstruct\n"
+"\t{\n"
+
+msgid ""
+"\n"
+"\t};\n"
+"}%s_;"
+msgstr ""
+"\n"
+"\t};\n"
+"}%s_;"
+
+msgid ""
+"\n"
+"\n"
+"#pragma pack(pop,8)\n"
+"#endif"
+msgstr ""
+"\n"
+"\n"
+"#pragma pack(pop,8)\n"
+"#endif"
+
+msgid ""
+"\n"
+"***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***"
+msgstr ""
+"\n"
+"***注意: このドキュメントを修正しないでください***"
+
+msgid ""
+"\n"
+"typedef struct \n"
+"{\n"
+msgstr ""
+"\n"
+"typedef struct \n"
+"{\n"
+
+msgid ""
+"\n"
+"} %s;\n"
+msgstr ""
+"\n"
+"} %s;\n"
+
+msgid "          Received    "
+msgstr "          受信    "
+
+msgid "          Status    "
+msgstr "          状態    "
+
+msgid "          Transmitted    "
+msgstr "          送信    "
+
+#: SignalWatchDefs.h:60
+#, c-format
+msgid "         %-20s %-20s"
+msgstr "         %-20s %-20s"
+
+msgid "     Key:"
+msgstr "     キー:"
+
+#: SignalWatchDefs.h:38
+#, c-format
+msgid " %-2s %-16s-> %-14s %-10s[%s]"
+msgstr " %-2s %-16s-> %-14s %-10s[%s]"
+
+msgid " %-3d"
+msgstr " %-3d"
+
+msgid " %-4s"
+msgstr " %-4s"
+
+msgid " %cx   "
+msgstr " %cx   "
+
+msgid " (Not Active)"
+msgstr " (非アクティブ)"
+
+#: SignalWatchDefs.h:43
+msgid " -> "
+msgstr " -> "
+
+msgid " 0"
+msgstr " 0"
+
+msgid " Please use BUSMASTER Driver Manager from Start-> Programs -> BUSMASTER -> BUSMASTER Driver Manager and then restart the application."
+msgstr "次のようにドライバマネージャを起動してください。スタート-> プログラム -> BUSMASTER -> BUSMASTERドライバマネージャ、その後アプリを再起動してください。"
+
+msgid " Rx "
+msgstr "Rx"
+
+msgid " Tx "
+msgstr "Tx"
+
+msgid "Tahoma"
+msgstr "MS UI Gothic"
+
+msgid "MS Sans Serif"
+msgstr "MS UI Gothic"
+
+msgid " please start it manually from Control Panel -> Devices -> Candriver and then restart the application."
+msgstr "次のように手動で開始してください。コントロールパネル->デバイス->Candriver,その後アプリを再起動してください。"
+
+msgid " | "
+msgstr " | "
+
+msgid " }"
+msgstr " }"
+
+msgid ""
+"#ifndef %s_UNIONS_H_\n"
+"#define %s_UNIONS_H_\n"
+"#pragma pack(push,8)\n"
+msgstr ""
+"#ifndef %s_UNIONS_H_\n"
+"#define %s_UNIONS_H_\n"
+"#pragma pack(push,8)\n"
+
+msgid "#include \"Wrapper.h\"\n"
+msgstr "#include \"Wrapper.h\"\n"
+
+msgid "%-10d%6c%c         %-7d %-32s"
+msgstr "%-10d%6c%c         %-7d %-32s"
+
+msgid "%-11s "
+msgstr "%-11s "
+
+msgid "%-11s %-13s  %cx      %-5d  %-4s%-8X%-24s  %-3d%-16s"
+msgstr "%-11s %-13s  %cx      %-5d  %-4s%-8X%-24s  %-3d%-16s"
+
+msgid "%-11s %-13s  %cx      %-5d  %-4s%-9d%-23s  %-3d%-16s"
+msgstr "%-11s %-13s  %cx      %-5d  %-4s%-9d%-23s  %-3d%-16s"
+
+msgid "%-11s %-13s %s : Channel %2d  "
+msgstr "%-11s %-13s %s : Channel %2d  "
+
+msgid "%-11s%-14s%-6s%-9s%-5s%-33s%-4s%-16s"
+msgstr "%-11s%-14s%-6s%-9s%-5s%-33s%-4s%-16s"
+
+msgid "%-13s "
+msgstr "%-13s "
+
+msgid "%-13s  %cx      %-5d  %-4s%-8X%-24s  %-3d%-16s"
+msgstr "%-13s  %cx      %-5d  %-4s%-8X%-24s  %-3d%-16s"
+
+msgid "%-13s  %cx      %-5d  %-4s%-9d%-23s  %-3d%-16s"
+msgstr "%-13s  %cx      %-5d  %-4s%-9d%-23s  %-3d%-16s"
+
+msgid "%-13s %s : Channel %2d  "
+msgstr "%-13s %s : Channel %2d  "
+
+msgid "%-13s%-6s%-9s%-5s%-33s%-4s%-16s"
+msgstr "%-13s%-6s%-9s%-5s%-33s%-4s%-16s"
+
+msgid "%-16s"
+msgstr "%-16s"
+
+msgid "%-4X%-28s "
+msgstr "%-4X%-28s "
+
+msgid "%-4d%-28s "
+msgstr "%-4d%-28s "
+
+msgid "%-5.2f %%"
+msgstr "%-5.2f %%"
+
+#: SignalWatchDefs.h:59
+msgid "%-60s   [%16I64X]"
+msgstr "%-60s   [%16I64X]"
+
+#: SignalWatchDefs.h:58
+msgid "%-60s   [%16I64d]"
+msgstr "%-60s   [%16I64d]"
+
+msgid "%.0f"
+msgstr "%.0f"
+
+msgid "%.2f"
+msgstr "%.2f"
+
+#: SignalWatchDefs.h:61
+#, c-format
+msgid "%.3f"
+msgstr "%.3f"
+
+#: SigGrphWnd_Defines.h:148
+#, c-format
+msgid "%0.3fS"
+msgstr "%0.3fS"
+
+#: SigGrphWnd_Defines.h:147
+#, c-format
+msgid "%0.4f"
+msgstr "%0.4f"
+
+msgid "%02X"
+msgstr "%02X"
+
+msgid "%02X "
+msgstr "%02X "
+
+#: SigGrphWnd_Defines.h:158
+#, c-format
+msgid "%02d:%02d:%02d:%04d"
+msgstr "%02d:%02d:%02d:%04d"
+
+msgid "%03d"
+msgstr "%03d"
+
+msgid "%03d "
+msgstr "%03d "
+
+#: SignalWatchDefs.h:62
+#, c-format
+msgid "%16s %s"
+msgstr "%16s %s"
+
+msgid "%I64X"
+msgstr "%I64X"
+
+msgid "%I64d"
+msgstr "%I64d"
+
+msgid "%c"
+msgstr "%c"
+
+msgid "%d %s(s)"
+msgstr "%d %s"
+
+msgid ""
+"%d channel(s) information found in the configuration file.\n"
+"Application will supports %d channels.\n"
+"Taking default value for unavailable channel(s) information"
+msgstr ""
+"設定ファイル内に %d チャンネルの情報が見つかりました\n"
+"アプリケーションは %d 個のチャンネルをサポートしています\n"
+"利用できないチャンネル情報に対してはデフォルト値を使用します"
+
+msgid ""
+"%d channels information found in the configuration file.\n"
+"Application will support only %d channel(s).\n"
+"Taking first %d channel(s) information"
+msgstr ""
+"設定ファイル内に %d チャンネルの情報が見つかりました\n"
+"アプリケーションは %d 個のチャンネルしかサポートしていません\n"
+"最初の %d チャンネル情報を使用します"
+
+#: CAN_ICS_neoVI.cpp:1370
+#, c-format
+msgid "%d.%d"
+msgstr "%d.%d"
+
+#: SignalDetailsDlg.cpp:43
+#, c-format
+msgid "%f"
+msgstr "%f"
+
+msgid ""
+"%s\n"
+"\n"
+"%s.%s"
+msgstr ""
+"%s\n"
+"\n"
+"%s.%s"
+
+#: SigGrphWnd_Defines.h:268
+#: ContrConfigPeakUsbDefs.h:39
+#: HardwareListing.cpp:42
+#, c-format
+msgid "%s %d"
+msgstr "%s %d"
+
+msgid "%s %s %s"
+msgstr "%s %s %s"
+
+msgid "%s has invalid signal definition"
+msgstr "%s は無効なシグナル定義を含んでいます"
+
+msgid "%s is created with old version of BUSMASTER. Please recompile the source code to get latest version of DLL"
+msgstr "%s が古いバージョンのBUSMASTERに合わせて生成されています、最新のDLLの使用するにはソースコードを再コンパイルしてください"
+
+#: SignalWatchDefs.h:44
+#, c-format
+msgid "%s%s%s"
+msgstr "%s%s%s"
+
+#: Filter_defines.h:73
+#, c-format
+msgid "%s_%d"
+msgstr "%s_%d"
+
+msgid "%u"
+msgstr "%u"
+
+#: Filter_defines.h:61
+#, c-format
+msgid "%x"
+msgstr "%x"
+
+#: Filter_defines.h:60
+#, c-format
+msgid "%x [%s]"
+msgstr "%x [%s]"
+
+#: SignalDetailsDlg.cpp:47
+msgid "&Close"
+msgstr "(&C)終了"
+
+#: common.h:125
+msgid "&File"
+msgstr "(&F)ファイル"
+
+msgid "("
+msgstr "("
+
+msgid "(c)Robert Bosch India Limited, Bangalore"
+msgstr "(c)Robert Bosch India Limited, Bangalore"
+
+msgid "*"
+msgstr "*"
+
+#: BaseLogObject.cpp:496
+msgid "***"
+msgstr "***"
+
+#: BaseLogObject.cpp:50
+#: LogObjectCAN.cpp:39
+msgid "***ABSOLUTE MODE***"
+msgstr "***絶対モード***"
+
+#: BaseLogObject.cpp:49
+#: LogObjectCAN.cpp:38
+msgid "***DEC***"
+msgstr "***DEC***"
+
+#: LogObjectCAN.cpp:37
+msgid "***HEX***"
+msgstr "***HEX***"
+
+#: BaseLogObject.cpp:51
+#: LogObjectCAN.cpp:40
+msgid "***RELATIVE MODE***"
+msgstr "***相対モード***"
+
+#: BaseLogObject.cpp:52
+#: LogObjectCAN.cpp:41
+msgid "***SYSTEM MODE***"
+msgstr "***システム モード***"
+
+#: BaseLogObject.cpp:43
+#: LogObjectCAN.cpp:32
+msgid "***[START LOGGING SESSION]***"
+msgstr "***[ログセッションの開始]***"
+
+#: BaseLogObject.cpp:44
+#: LogObjectCAN.cpp:33
+msgid "***[STOP LOGGING SESSION]***"
+msgstr "***[ログセッションの終了]***"
+
+msgid "*.dbf|*.dbf||"
+msgstr "*.dbf|*.dbf||"
+
+#: ConfigMsgLogDlg.cpp:43
+msgid "*.log|*.log||"
+msgstr "*.log|*.log||"
+
+msgid ","
+msgstr ","
+
+msgid ", {"
+msgstr ", {"
+
+#: Struct.h:400
+msgid "-"
+msgstr "-"
+
+msgid ".C"
+msgstr ".C"
+
+#: BUSMASTER.cpp:865
+msgid ".c"
+msgstr ".c"
+
+msgid ".cfx"
+msgstr ".cfx"
+
+msgid ".def"
+msgstr ".def"
+
+msgid ".dll"
+msgstr ".dll"
+
+msgid ".exp"
+msgstr ".exp"
+
+msgid ".sim"
+msgstr ".sim"
+
+msgid "/* End BUSMASTER Function Prototype  */"
+msgstr "/* BUSMASTER ファンクションプロトタイプの終了 */"
+
+msgid "/* End BUSMASTER global variable */"
+msgstr "/* BUSMASTER グローバル変数の終了 */"
+
+msgid "/* End BUSMASTER include header */"
+msgstr "/* BUSMASTER include ヘッダの終了 */"
+
+msgid "/* Start BUSMASTER Function Prototype  */"
+msgstr "/* BUSMASTER ファンクションプロトタイプの開始 */"
+
+msgid "/* Start BUSMASTER generated function - "
+msgstr "/* BUSMASTER 生成ファンクションの開始 - */"
+
+msgid "/* Start BUSMASTER generated function - PLACE_HODLER_FOR_FUNCTIONNAME */"
+msgstr "/* BUSMASTER 生成ファンクションの開始 - PLACE_HODLER_FOR_FUNCTIONNAME */"
+
+msgid "/* Start BUSMASTER global variable */"
+msgstr "/* BUSMASTER グローバル変数の開始 */"
+
+msgid "/* Start BUSMASTER include header */"
+msgstr "/* BUSMASTER include ヘッダの開始 */"
+
+msgid ""
+"/*******************************************************************************/\n"
+"void newFuncName( )\n"
+"{\n"
+"\n"
+"}"
+msgstr ""
+"/*******************************************************************************/\n"
+"void newFuncName( )\n"
+"{\n"
+"\n"
+"}"
+
+msgid ""
+"/*******************************************************************************/\n"
+"void newMsgFuncName(unsigned short Can_ID, unsigned char DLC, unsigned char* strData)\n"
+"{\n"
+"\n"
+"}"
+msgstr ""
+"/*******************************************************************************/\n"
+"void newMsgFuncName(unsigned short Can_ID, unsigned char DLC, unsigned char* strData)\n"
+"{\n"
+"\n"
+"}"
+
+msgid ""
+"/*******************************************************************************/\n"
+"void newTimerFuncName( )\n"
+"{\n"
+"\n"
+"}"
+msgstr ""
+"/*******************************************************************************/\n"
+"void newTimerFuncName( )\n"
+"{\n"
+"\n"
+"}"
+
+msgid "//"
+msgstr "//"
+
+msgid "// Prototypes End"
+msgstr "// プロトタイプ終了"
+
+msgid "// Prototypes Start"
+msgstr "// プロトタイプ開始"
+
+msgid "//******************************BUSMASTER Messages and signals Database ******************************//"
+msgstr "//******************************BUSMASTER メッセージとシグナルデータベース ******************************//"
+
+msgid "//******************************BUSMASTER Messages and signals Database Ver1.0******************************//"
+msgstr "//******************************BUSMASTER メッセージとシグナルデータベース Ver1.0******************************//"
+
+msgid ""
+"//******************************BUSMASTER Messages and signals Database Ver1.0******************************//\n"
+"\n"
+"// Message Format: MSG,MSGID,MSG_LENGTH,NO_OF_SIGNALS,DATA_FORMAT\n"
+"// Signal Format: SIG_NAME,SIG_LENGTH,WHICH_BYTE_IN_MSG,START_BIT,SIG_TYPE,MAX_VAL,MIN_VAL,SIG_DATA_FORMAT,SIG_OFFSET,SIG_FACTOR,SIG_UNIT\n"
+"// Value Description Format: DESCRIPTOR,VALUE\n"
+"//************************************************************************************************************//\n"
+msgstr ""
+"//******************************BUSMASTER メッセージとシグナルデータベース Ver1.0******************************//\n"
+"\n"
+"// メッセージフォーマット: MSG,MSGID,MSG_LENGTH,NO_OF_SIGNALS,DATA_FORMAT\n"
+"// シグナルフォーマット: SIG_NAME,SIG_LENGTH,WHICH_BYTE_IN_MSG,START_BIT,SIG_TYPE,MAX_VAL,MIN_VAL,SIG_DATA_FORMAT,SIG_OFFSET,SIG_FACTOR,SIG_UNIT\n"
+"// 値(Value)明細フォーマット: DESCRIPTOR,VALUE\n"
+"//************************************************************************************************************//\n"
+
+msgid "//******************************CANvas Messages and signals Database ******************************//"
+msgstr "//******************************CANvas メッセージとシグナルデータベース******************************//"
+
+msgid "//******************************CANvas Messages and signals Database Ver1.0******************************//"
+msgstr "//******************************CANvas メッセージとシグナルデータベース Ver1.0******************************//"
+
+msgid "00"
+msgstr "00"
+
+msgid "0x%-8X%6c%c         %-7d %-24s"
+msgstr "0x%-8X%6c%c         %-7d %-24s"
+
+msgid "0x%X"
+msgstr "0x%X"
+
+msgid "1"
+msgstr "1"
+
+msgid "1.2"
+msgstr "1.2"
+
+msgid "1.3"
+msgstr "1.3"
+
+msgid "100"
+msgstr "100"
+
+msgid "14"
+msgstr "14"
+
+msgid "32"
+msgstr "32"
+
+msgid "49"
+msgstr "49"
+
+msgid "7"
+msgstr "7"
+
+msgid "96"
+msgstr "96"
+
+msgid ";"
+msgstr ";"
+
+msgid "= { 0x%X, %d, %d, %d"
+msgstr "= { 0x%X, %d, %d, %d"
+
+msgid "A"
+msgstr "A"
+
+#: ConfigMsgLogDlg.cpp:780
+msgid "ALL"
+msgstr "全て"
+
+msgid "Active"
+msgstr "有効"
+
+#: Filter_defines.h:46
+#: TxMsgBlocksView.cpp:278
+#: TxMsgBlocksView.cpp:977
+#: TxMsgBlocksView.cpp:1115
+#: TxMsgBlocksView.cpp:1685
+#: TxMsgBlocksView.cpp:2168
+msgid "All"
+msgstr "すべて"
+
+msgid "Average Load"
+msgstr "平均負荷"
+
+msgid "BA"
+msgstr "BA"
+
+#: ContrConfigPeakUsbDefs.h:50
+msgid "BRP"
+msgstr "BRP"
+
+#: ContrConfigPeakUsbDefs.h:41
+msgid "BTR0"
+msgstr "BTR0"
+
+#: ContrConfigPeakUsbDefs.h:42
+msgid "BTR1"
+msgstr "BTR1"
+
+msgid "BUSMASTER Sim Net"
+msgstr "BUSMASTER Sim Net"
+
+msgid "BUSMASTER USB"
+msgstr "BUSMASTER USB"
+
+msgid "BUSMASTER USB Net"
+msgstr "BUSMASTER USB Net"
+
+msgid "BUSMASTER Ver "
+msgstr "BUSMASTER Ver "
+
+msgid "BUSMASTERLogFile.log"
+msgstr "BUSMASTERLogFile.log"
+
+#: SigGrphWnd_Defines.h:48
+msgid "Bitmap Picture Format (*.bmp)|*.bmp||"
+msgstr "ビットマップフォーマット (*.bmp)|*.bmp||"
+
+msgid "Buffer Create Failed. Please check the buffer size in the Message Display Configuration"
+msgstr "バッファの生成に失敗しました、メッセージディスプレイ設定のバッファサイズを確認してください"
+
+msgid "Bus Access semaphore creation failed. Please restart the application"
+msgstr "バスアクセスで使用するセマフォの生成に失敗しました、アプリケーションを再起動してください。"
+
+msgid "Bus Off"
+msgstr "バスオフ"
+
+msgid "Bus Status : Active"
+msgstr "バス状態: アクティブ"
+
+msgid "Bus Status : Off"
+msgstr "バス状態: オフ"
+
+msgid "Bus Status : Passive"
+msgstr "バス状態: パッシブ"
+
+msgid "Bus error: an error counter reached the 'heavy' limit"
+msgstr "バスエラー: エラーカウンターが 'heavy' 状態になりました"
+
+msgid "Bus error: an error counter reached the 'light' limit"
+msgstr "バスエラー: エラーカウンターが 'light' 状態になりました"
+
+msgid "Bus error: the CAN controller is in bus-off state"
+msgstr "バスエラー: CANコントローラはバスオフ状態です"
+
+#: ConfigMsgLogDlg.cpp:928
+#: MsgSignal_Datatypes.h:42
+msgid "CAN"
+msgstr "CAN"
+
+#: HardwareListing.cpp:57
+#, c-format
+msgid "CAN %d"
+msgstr "CAN %d"
+
+msgid "CAN Bus"
+msgstr "CAN バス"
+
+msgid "CAN Driver Ver %d.%.2d.%c%x"
+msgstr "CAN ドライバ Ver %d.%.2d.%c%x"
+
+msgid "CAN controller Transmit buffer overflow"
+msgstr "CANコントローラの送信バッファにオーバーフロー発生"
+
+msgid "CAN_MonitorDataCon"
+msgstr "CAN_MonitorDataCon"
+
+msgid "CAN_MonitorDataInd"
+msgstr "CAN_MonitorDataInd"
+
+msgid "CAN_MonitorErrorInd"
+msgstr "CAN_MonitorErrorInd"
+
+#: ContrConfigPeakUsbDefs.h:47
+msgid "CNF1"
+msgstr "CNF1"
+
+#: ContrConfigPeakUsbDefs.h:48
+msgid "CNF2"
+msgstr "CNF2"
+
+#: ContrConfigPeakUsbDefs.h:49
+msgid "CNF3"
+msgstr "CNF3"
+
+msgid "CYCLIC"
+msgstr "CYCLIC"
+
+#: SigGrphWnd_Defines.h:102
+#: TSDefinitions.h:33
+msgid "Category"
+msgstr "カテゴリ"
+
+#: Filter_defines.h:44
+#: SigGrphWnd_Defines.h:267
+#: ContrConfigPeakUsbDefs.h:38
+#: HardwareListing.cpp:41
+msgid "Channel"
+msgstr "チャンネル"
+
+#: SigGrphWnd_Defines.h:33
+#, c-format
+msgid "Channel %-2d -> %s kbps"
+msgstr "チャンネル %-2d -> %s kbps"
+
+#: CAN_ICS_neoVI.cpp:290
+#, c-format
+msgid "Channel %-2d : %s"
+msgstr "チャンネル %-2d : %s"
+
+msgid "Channel %-2d : Failed\n"
+msgstr "チャンネル %-2d : 失敗\n"
+
+msgid "Channel %-2d : Passed\n"
+msgstr "チャンネル %-2d : 成功\n"
+
+msgid "Channel %-2d at %-9s Kbps"
+msgstr "チャンネル %-2d at %-9s Kbps"
+
+msgid "Channel not found. Do you want to remove this entry from the list?"
+msgstr "チャンネルが見つかりません、リストからエントリを削除しますか？"
+
+msgid "Channels"
+msgstr "チャンネル"
+
+msgid "Child window creation failed"
+msgstr "子ウィンドウの生成に失敗しました"
+
+msgid "Client handle is wrong"
+msgstr "クライアントのハンドルが不正です"
+
+msgid "ComboItem"
+msgstr "ComboItem"
+
+msgid "ComboLsit"
+msgstr "ComboLsit"
+
+#: common.h:113
+msgid "ConfigFile"
+msgstr "ConfigFile"
+
+msgid "Configuration"
+msgstr "設定"
+
+msgid ""
+"Configuration File is modified \n"
+" Do you want to save this configuration?"
+msgstr ""
+"設定ファイルが変更されました \n"
+" この設定を保存しますか?"
+
+msgid "Configure Simulated systems"
+msgstr "シミュレーションシステムの設定"
+
+msgid "Configure Transmission Messages"
+msgstr "送信メッセージの設定"
+
+#: CAN_ICS_neoVI.cpp:293
+msgid "Connect failed"
+msgstr "接続に失敗しました"
+
+msgid "Controller"
+msgstr "コントローラ"
+
+msgid "Could not be able to create network statistics window"
+msgstr "ネットワーク統計ウィンドウを生成できません"
+
+msgid "Could not delete signal!"
+msgstr "シグナルの削除に失敗しました"
+
+msgid "Could not update the data!"
+msgstr "データのアップデートに失敗しました"
+
+#: RxMsgList.cpp:69
+msgid "Courier"
+msgstr "MS UI Gothic"
+
+msgid "Currently no database file is selected."
+msgstr "現在、データベースファイルが選択されていません。"
+
+msgid "Currently the sample database file is loaded."
+msgstr "現在、サンプルデータベースファイルがロードされています。"
+
+msgid "DBC"
+msgstr "DBC"
+
+msgid "DBF"
+msgstr "DBF"
+
+msgid "DLC"
+msgstr "DLC"
+
+msgid "DLL"
+msgstr "DLL"
+
+msgid "Data Byte(s)"
+msgstr "Data Byte(s)"
+
+msgid "Data Bytes"
+msgstr "データバイト"
+
+#: SigGrphWnd_Defines.h:122
+msgid "Database Messages"
+msgstr "データベースメッセージ"
+
+msgid "Database file is corrupted"
+msgstr "データベースファイルが壊れています"
+
+msgid ""
+"Database filename not found!\n"
+"Please select the database file from Import Database... file menu"
+msgstr ""
+"データベースファイル名が見つかりません。\n"
+"データベースをインポート...ファイルメニューからデータベースファイルを選択してください"
+
+msgid ""
+"Database version mismatch!.\n"
+"Message data format will be ignored.\n"
+"Signal's byte order is set to Intel(Little-Endian) by default."
+msgstr ""
+"データベースのバージョンが一致しません。\n"
+"メッセージのデータフォーマットは無視されます。\n"
+"シグナルのバイト順をデフォルトでIntel(Little-Endian)に合わせます。"
+
+msgid "DatabaseFile"
+msgstr "データベースファイル"
+
+msgid "Databases"
+msgstr "データベース"
+
+msgid "Date"
+msgstr "日付"
+
+msgid "DefaultConfig.cfx"
+msgstr "DefaultConfig.cfx"
+
+msgid "Delete operation failed!"
+msgstr "削除に失敗しました"
+
+#: Filter_defines.h:43
+msgid "Direction"
+msgstr "方向"
+
+msgid "Directory creation Failed. Please check the path: \"%s\""
+msgstr "ディレクトリの生成に失敗しました、パスを確認してください: \"%s\""
+
+#: SigGrphWnd_Defines.h:131
+msgid "Disable"
+msgstr "無効"
+
+msgid "Display thread creation failed"
+msgstr "ディスプレイスレッドの生成に失敗しました"
+
+#: SigGrphWnd_Defines.h:62
+msgid ""
+"Dissociation will clear Graph element List for all buses.\n"
+"Do you want to Clear the List?"
+msgstr ""
+"分離を行うと全てのバスに関わるグラフエレメントが消去されます。\n"
+"リストを完全に消去しますか？"
+
+msgid ""
+"Dissociation will clear Signal Watch List.\n"
+"Do you want to Clear the List?"
+msgstr ""
+"分離を行うとシグナル監視リストが削除されます。\n"
+"リストを削除しましか？"
+
+#: common.h:144
+msgid "Do you want to save changes to the database file?"
+msgstr "変更内容をデータベースファイルに保存しますか？"
+
+msgid "Do you want to save changes to the simulated system file(s)?"
+msgstr "シミュレーションシステムファイルの変更内容を保存しますか？"
+
+msgid "Do you want to save changes?"
+msgstr "変更内容を保存しますか？"
+
+msgid "Driver Version"
+msgstr "ドライババージョン"
+
+msgid "Driver resource creation error"
+msgstr "ドライバリソースの生成にエラーが発生しました"
+
+msgid ""
+"Due to change in configuration\n"
+"Please unload the loaded DLL file"
+msgstr ""
+"設定の変更により\n"
+"ロードされているDLLファイルをアンロードしてください"
+
+#: SignalDetailsDlg.cpp:52
+msgid "Duplicate signal start bit value"
+msgstr "シグナルの先頭ビットが重複しています"
+
+msgid "EXPORTS"
+msgstr "EXPORTS"
+
+msgid "EditItem"
+msgstr "アイテムを修正"
+
+#: SigGrphWnd_Defines.h:103
+msgid "Element"
+msgstr "エレメント"
+
+#: SigGrphWnd_Defines.h:132
+msgid "Element not found in the list. Please remove dead elements!!"
+msgstr "リスト内にエレメントが見つかりません、無効なエレメントを削除してください。"
+
+#: common.h:124
+msgid "Empty"
+msgstr "空"
+
+#: SigGrphWnd_Defines.h:130
+msgid "Enable"
+msgstr "有効"
+
+#: SignalDetailsDlg.cpp:51
+msgid "End bit of signal is out of message length"
+msgstr "シグナルの終了ビットがメッセージ長の範囲を超えています"
+
+msgid "Enter Valid Integer :"
+msgstr "有効な数値を入力してください:"
+
+msgid "Error         [Err/s]"
+msgstr "エラー         [Err/s]"
+
+msgid "Error deleting Signal Watch List!!"
+msgstr "シグナルウォッチリストの削除でエラーが発生しました"
+
+msgid "Error in getting Active Database file name !!"
+msgstr "アクティブデータベースのファイル名の取得時にエラーが発生しました"
+
+msgid "Error in getting Baudrate information !!"
+msgstr "ボーレート情報の取得時にエラーが発生しました"
+
+msgid "Error in getting Functions DLL loaded name !!"
+msgstr "ロードされたDLLファンクション名の取得時にエラーが発生しました"
+
+msgid "Error in getting Log file name !!"
+msgstr "ログの取得時にエラーが発生しました"
+
+msgid "Error in getting Replay file name !!"
+msgstr "リプレイファイル名の取得時にエラーが発生しました"
+
+#: SignalWatchDefs.h:51
+msgid "Error showing Signal Details!!"
+msgstr "シグナルの詳細を表示できません。"
+
+#: SignalWatchDefs.h:47
+#, c-format
+msgid "Error while deleting Signal %s from Message %s !!!"
+msgstr "シグナル %s [%s メッセージ内]を削除できません。"
+
+#: SignalWatchDefs.h:48
+#, c-format
+msgid "Error while deleting Signal %s from Message ID: %x !!!"
+msgstr "シグナル %s を削除できません [メッセージ ID:%x]"
+
+#: SignalWatchDefs.h:46
+msgid "Error while deleting temporary list!!!"
+msgstr "テンポラリリストの削除ができません。"
+
+msgid "Error while saving file. Restoring old data"
+msgstr "ファイルの保存にエラーが発生しました、前のデータを復帰します"
+
+msgid "Errors        [Err/s]"
+msgstr "エラー        [Err/s]"
+
+msgid "Errors        [Total]"
+msgstr "エラー        [合計]"
+
+msgid ""
+"Exception in Message Handler Execution\n"
+"Please Unload the DLL"
+msgstr ""
+"メッセージハンドラの実行に例外が発生しました\n"
+"DLLをアンロードしてください"
+
+msgid "Exception occured in DLL Load Handler"
+msgstr "DLLロードハンドラに例外が発生しました"
+
+msgid "Exception occured in DLL UnLoad Handler"
+msgstr "DLLアンロードハンドラに例外が発生しました"
+
+msgid "Exception occured in Error Handler"
+msgstr "エラーハンドラに例外が発生しました"
+
+msgid "Exception occured in Key Handler of '%c'"
+msgstr "'%c'キーハンドラに例外が発生しました"
+
+msgid "Exception occured in Message Handler ID : 0x%X"
+msgstr "メッセージハンドラIDに例外が発生しました : 0x%X"
+
+msgid "Exception occured in Timer Handler \"%s\""
+msgstr "タイマーハンドラに例外が発生しました \"%s\""
+
+msgid "Exception while deleting Message Handler Thread!!"
+msgstr "メッセージハンドラのスレッド削除中に例外が発生しました。"
+
+#: Filter_defines.h:49
+msgid "Exd"
+msgstr "拡張"
+
+#: Filter_defines.h:88
+#: ContrConfigPeakUsbDefs.h:57
+msgid "Extended"
+msgstr "拡張"
+
+msgid "Extended      [Msg/s]"
+msgstr "拡張      [Msg/s]"
+
+msgid "Extended      [Total]"
+msgstr "拡張      [合計]"
+
+msgid "Extended RTR"
+msgstr "拡張 RTR"
+
+msgid "FALSE"
+msgstr "FALSE"
+
+msgid "FF"
+msgstr "FF"
+
+msgid "Failed to create %s Control"
+msgstr "Failed to create %s Control"
+
+msgid "Failed to get address of %s Handlers: %s"
+msgstr "%s ハンドラのアドレスを取得できません: %s"
+
+msgid "File is empty and all messages are filtered"
+msgstr "ファイルを空にした後、全てのメッセージをフィルタしました"
+
+msgid "File not found!"
+msgstr "ファイルが見つかりません。"
+
+#: common.h:115
+#: CAPL2CPropertyPage.cpp:446
+#: CAPL2CPropertyPage.cpp:487
+#: CAPL2CPropertyPage.cpp:665
+#: Selectdb.cpp:73
+msgid "Files"
+msgstr "ファイル"
+
+#: Filter_defines.h:72
+msgid "Filter"
+msgstr "フィルタ"
+
+#: Filter_defines.h:70
+msgid "Filter Name"
+msgstr "フィルタ名"
+
+msgid "Filter list has been updated"
+msgstr "フィルタリストがアップデートされました"
+
+msgid "Found Unsupported Options"
+msgstr "サポートされてないオプションが見つかりました"
+
+#: Filter_defines.h:39
+msgid "From"
+msgstr "から"
+
+msgid "From::Invalid Message ID"
+msgstr "From::無効なメッセージID"
+
+msgid "Function prototype cannot be empty."
+msgstr "ファンクションプロトタイプを入力してください"
+
+msgid "Global Variable(s)"
+msgstr "グローバル変数(複)"
+
+#: SigGrphWnd_Defines.h:120
+msgid "Graph Display"
+msgstr "グラフ表示"
+
+msgid "Graph component is not installed properly. Please reinstall the application!!"
+msgstr "グラフコンポーネントが正常にインストールされていません、アプリケーションを再インストールしてください。"
+
+#: SigGrphWnd_Defines.h:42
+msgid "HTML Report Format (*.html)|*.html||"
+msgstr "HTML レポートフォーマット (*.html)|*.html||"
+
+#: SigGrphWnd_Defines.h:44
+#, c-format
+msgid "HTML report successfully generated and saved at %s"
+msgstr "HTMLレポートの生成に成功し %sに保存しました"
+
+#: HardwareListing.cpp:44
+msgid "Hardware"
+msgstr "ハードウェア"
+
+msgid "Hardware Interface test passed successfully"
+msgstr "ハードウェアインタフェースのテストが正常に終了しました"
+
+msgid "Hardware is in use by another Net"
+msgstr "ハードウェアは他のネットで使用しています"
+
+#: CAN_ICS_neoVI.cpp:294
+msgid "Hardware reset failed"
+msgstr "ハードウェアリセットに失敗しました"
+
+#: SigGrphWnd_Defines.h:128
+msgid "Hide"
+msgstr "隠す"
+
+#: SigGrphWnd_Defines.h:141
+msgid "Hide Grid"
+msgstr "グリッドを隠す"
+
+#: Filter_defines.h:41
+msgid "ID Type"
+msgstr "IDタイプ"
+
+msgid "IDC_EDIT"
+msgstr "IDC_EDIT"
+
+msgid "Input file open error"
+msgstr "入力ファイルのオープンエラー"
+
+#: common.h:143
+msgid "Insufficient Memory available"
+msgstr "メモリスペースが足りません"
+
+msgid "Interval:"
+msgstr "間隔:"
+
+msgid "Invalid DLC value"
+msgstr "無効なDLC値"
+
+msgid ""
+"Invalid Data...!\n"
+"Data byte value should be less than 256."
+msgstr ""
+"無効なデータ...\n"
+"データバイトの値は256より少なく設定してください。"
+
+msgid ""
+"Invalid Data...!\n"
+"Data length count(DLC) should be less than 9."
+msgstr "無効なデータ...DLCは9より少なく設定してください。"
+
+msgid "Invalid File Header. Replay File Operation Failed"
+msgstr "無効なファイルヘッダ、ファイルオペレーションのリプレイに失敗しました"
+
+msgid "Invalid Message ID or Name"
+msgstr "無効なメッセージID又は名前です"
+
+msgid "Invalid data for byte : %d"
+msgstr "バイトに無効なデータが入っています: %d"
+
+msgid "Invalid hexa-decimal number!"
+msgstr "無効な16進数"
+
+#: SigGrphWnd_Defines.h:118
+msgid "Invalid main frame pointer"
+msgstr "無効なメインフレームポインター"
+
+msgid "Invalid parameter type"
+msgstr "無効なパラメータタイプ"
+
+msgid "Invalid parameter value"
+msgstr "無効なパラメータ値"
+
+msgid "Invalid signal length value!"
+msgstr "無効なシグナル長の値"
+
+#: MainFrm.cpp:771
+#: MsgSignal_Datatypes.h:44
+msgid "J1939"
+msgstr "J1939"
+
+msgid "Key"
+msgstr "キー"
+
+msgid "Less..."
+msgstr "以下..."
+
+msgid "Load"
+msgstr "ロード"
+
+msgid "Log Files"
+msgstr "ログファイル"
+
+msgid ""
+"Log file creation failed : %s\n"
+"Logging is disabled."
+msgstr ""
+"ログファイルの生成に失敗しました : %s\n"
+"ロギングを無効にします。"
+
+msgid "Log parameter changes are applied"
+msgstr "ログパラメータの変更を適用しました"
+
+msgid "Logging is currently on.Do you want to apply changes now or during next logging session?"
+msgstr "ロギング動作中です。変更をすぐに適用しますか、または次のセッションにしますか？"
+
+msgid "MONOSHOT"
+msgstr "MONOSHOT"
+
+#: common.h:119
+msgid "MRU File1"
+msgstr "MRU ファイル1"
+
+#: common.h:120
+msgid "MRU File2"
+msgstr "MRU ファイル2"
+
+#: common.h:121
+msgid "MRU File3"
+msgstr "MRU ファイル3"
+
+#: common.h:122
+msgid "MRU File4"
+msgstr "MRU ファイル4"
+
+#: common.h:123
+msgid "MRU File5"
+msgstr "MRU ファイル5"
+
+#: common.h:118
+msgid "MRU List"
+msgstr "MRU リスト"
+
+msgid "MainWnd"
+msgstr "MainWnd"
+
+msgid "MainWnd Flag"
+msgstr "MainWnd Flag"
+
+msgid "MainWnd MaxPos.X"
+msgstr "MainWnd MaxPos.X"
+
+msgid "MainWnd MaxPos.Y"
+msgstr "MainWnd MaxPos.Y"
+
+msgid "MainWnd MinPos.X"
+msgstr "MainWnd MinPos.X"
+
+msgid "MainWnd MinPos.Y"
+msgstr "MainWnd MinPos.Y"
+
+msgid "MainWnd ShowCmd"
+msgstr "MainWnd ShowCmd"
+
+msgid "MainWnd.bottom"
+msgstr "MainWnd.bottom"
+
+msgid "MainWnd.left"
+msgstr "MainWnd.left"
+
+msgid "MainWnd.right"
+msgstr "MainWnd.right"
+
+msgid "MainWnd.top"
+msgstr "MainWnd.top"
+
+msgid "Maximum number of timer functions supported are %d, you have %d timer functions. The last %d timer function(s) is(are) ignored during initialisation."
+msgstr "サポートされているタイマーファンクションの数は%dですが、%dのファンクションが存在しています。超えている%d個のファンクションはインストール中に無視されます。"
+
+#: SignalDetailsDlg.cpp:54
+msgid "Maximum value cannot be less than minimum value!"
+msgstr "最大値が最小値より小さいです"
+
+#: SignalDetailsDlg.cpp:48
+msgid "Maximum value is out of bounds!"
+msgstr "最大値が許容範囲を超えています"
+
+msgid ""
+"Memory allocation failure.\n"
+"Message transmission aborted!"
+msgstr ""
+"メモリのアロケーションに失敗しました。\n"
+"メッセージ送信を中止しました"
+
+#: SignalWatchDefs.h:29
+msgid "Message"
+msgstr "メッセージ"
+
+msgid "Message Buffer Creation Failed"
+msgstr "メッセージバッファの生成に失敗しました"
+
+msgid "Message Buffer deletion Failed"
+msgstr "メッセージバッファの削除に失敗しました"
+
+msgid "Message ID"
+msgstr "メッセージ ID"
+
+msgid "Message Text"
+msgstr "メッセージテキスト"
+
+msgid "Message ID/Name"
+msgstr "メッセージ ID/名"
+
+msgid "Message Log File(s)(*.log)|*.log||"
+msgstr "メッセージのログファイル (*.log)|*.log||"
+
+msgid "Message Name"
+msgstr "メッセージ名"
+
+msgid "Message Variable List"
+msgstr "メッセージの変数リスト"
+
+msgid "Message router thread creation failed"
+msgstr "メッセージルータスレッドの生成に失敗しました"
+
+msgid ""
+"Message transmissionacknowledgement could not be received for the message transmitted from\n"
+"MODULE_NAME module.\n"
+"Message transmission aborted!"
+msgstr ""
+"メッセージ送信での応答が次のモジュールから着ていません\n"
+"MODULE_NAME モジュール。\n"
+"メッセージ送信を中止しました"
+
+msgid "MessageLogFile"
+msgstr "MessageLogFile"
+
+msgid "MessageReplayFile"
+msgstr "MessageReplayFile"
+
+msgid "Messages      [Msg/s]"
+msgstr "メッセージ      [Msg/s]"
+
+msgid "Messages      [Total]"
+msgstr "メッセージ      [合計]"
+
+#: SignalDetailsDlg.cpp:55
+msgid "Minimum value cannot be more than maximum value!"
+msgstr "最小値が最大値より大きいです"
+
+#: SignalDetailsDlg.cpp:49
+msgid "Minimum value is out of bounds!"
+msgstr "最小値が許容範囲を超えています"
+
+msgid ""
+"Mode Mismatch\n"
+"%d session(s) cannot be replayed"
+msgstr ""
+"モードミスマッチ\n"
+"%d セッションをリプレイできません"
+
+msgid "More..."
+msgstr "もっと見る..."
+
+#: ContrConfigPeakUsbDefs.h:45
+msgid "NBT"
+msgstr "NBT"
+
+msgid "NUMBER_OF_MESSAGES"
+msgstr "NUMBER_OF_MESSAGES"
+
+#: Filter_defines.h:36
+msgid "Name"
+msgstr "名前"
+
+msgid "Name/ ID (in Dec)"
+msgstr "名/ID (in Dec)"
+
+msgid "Name/ ID (in Hex)"
+msgstr "名/ID (in Hex)"
+
+msgid "New_Database"
+msgstr "New_Database"
+
+msgid "New_DatabaseJ1939"
+msgstr "New_DatabaseJ1939"
+
+msgid "No Functions DLL loaded !!"
+msgstr "ロードされたファンクションDLLが見つかりません。"
+
+msgid "No USB Hardware found. Switching to Simulation mode"
+msgstr "USBハードウェアが見つかりません、シミュレーションモードに切り替えします"
+
+msgid "No item selected!"
+msgstr "選択したアイテムがないです。"
+
+#: Filter_defines.h:52
+msgid "Non RTR"
+msgstr "非RTR"
+
+msgid "None"
+msgstr "なし"
+
+msgid "Not Connected"
+msgstr "未接続"
+
+msgid "Not Imported !!"
+msgstr "インポートされていません。"
+
+msgid "Not Selected !!"
+msgstr "選択されていません。"
+
+msgid "NumItem"
+msgstr "NumItem"
+
+msgid "ON_KEY() Handler(s)"
+msgstr "ON_KEY() Handler(s)"
+
+msgid "ON_MESSAGE() Handler(s)"
+msgstr "ON_MESSAGE() Handler(s)"
+
+msgid "ON_TIMER() Handler(s)"
+msgstr "ON_TIMER() Handler(s)"
+
+msgid "OnTime"
+msgstr "OnTime"
+
+#: SigGrphWnd_Defines.h:135
+msgid "Only 10 graph elements are supported. Please delete existing element to add new element"
+msgstr "最大10個のグラフエレメントしか登録できません。新しいエレメントを追加するために既存のエレメントを削除してください。"
+
+msgid "Overwrite Buffer overflow occured. Please increase the Overwrite Buffer size"
+msgstr "オーバーライトバッファのオーバーフローが発生しました、オーバーライトバッファのサイズを大きくしてください"
+
+msgid "PLACE_HOLDER_FOR_APPLICATION_VERSION"
+msgstr "PLACE_HOLDER_FOR_APPLICATION_VERSION"
+
+msgid "PROTOCOL "
+msgstr "PROTOCOL "
+
+msgid "PROTOCOL CAN"
+msgstr "PROTOCOL CAN"
+
+msgid "Parallel Port"
+msgstr "並列ポート"
+
+msgid "Parallel port mode"
+msgstr "並列ポートモード"
+
+msgid "Parameter"
+msgstr "Parameter"
+
+#: SignalWatchDefs.h:49
+#, c-format
+msgid "Parse Error in %s "
+msgstr "%s の解析をできません"
+
+#: Filter_defines.h:57
+msgid "Pass"
+msgstr "パス"
+
+msgid "Passive"
+msgstr "パッシブ"
+
+msgid "Path \"%s\" not found. Do you Want to create it?"
+msgstr "パス \"%s\" が見つかりません。 新たに生成しますか?"
+
+msgid "Peak Load"
+msgstr "ピークロード"
+
+msgid "Peak Rx Error Counter"
+msgstr "ピークRxのエラーカウンタ"
+
+msgid "Peak Tx Error Counter"
+msgstr "ピークTxのエラーカウンタ"
+
+#: SignalWatchDefs.h:25
+msgid "Physical Value"
+msgstr "フィジカル値"
+
+msgid "Please check the database file!!"
+msgstr "データベースファイルを確認してください"
+
+#: SigGrphWnd_Defines.h:39
+msgid "Please enter valid CSV report file path"
+msgstr "有効なCSVレポートファイルのパスを入力してください"
+
+msgid "Please enter valid DLC"
+msgstr "有効なDLCを入力してください"
+
+#: SigGrphWnd_Defines.h:45
+msgid "Please enter valid HTML report file path"
+msgstr "有効なHTMLレポートファイルのパスを入力してください"
+
+#: SigGrphWnd_Defines.h:50
+msgid "Please enter valid bitmap file path"
+msgstr "有効なビットマップファイルのパスを入力してください"
+
+msgid "Please enter valid message code"
+msgstr "有効なメッセージコードを入力してください"
+
+#: SigGrphWnd_Defines.h:137
+msgid "Please enter valid range value"
+msgstr "有効な範囲の値を入力してください"
+
+msgid "Please select data type for the variable."
+msgstr "変数のデータタイプを選んでください"
+
+msgid "Please select the return type for the function."
+msgstr "ファンクションのリターンタイプを選んでください"
+
+msgid "Please select the signal from the signal list!"
+msgstr "シグナルリストからシグナルを選んでください"
+
+msgid ""
+"Protocol Mismatch \n"
+"Session(s) cannot be replayed"
+msgstr ""
+"プロトコルミスマッチ \n"
+"セッションをリプレイできませんでした"
+
+#: Filter_defines.h:51
+msgid "RTR"
+msgstr "RTR"
+
+#: SignalWatchDefs.h:26
+msgid "Raw Value"
+msgstr "生データ"
+
+msgid "ReadMsg( unsigned short *Can_ID, unsigned char *DLC, unsigned char *Data )"
+msgstr "ReadMsg( unsigned short *Can_ID, unsigned char *DLC, unsigned char *Data )"
+
+msgid "Receive buffer overflow"
+msgstr "受信バッファのオーバーフロー"
+
+msgid "Receive queue is empty"
+msgstr "受信キューは空です"
+
+msgid "Recent Configurations"
+msgstr "最近の設定"
+
+msgid "Replay Files"
+msgstr "リプレイファイル"
+
+msgid "Replay Window - "
+msgstr "リプレイウィンドウ - "
+
+msgid "Replay failed for: %s, %s"
+msgstr "リプレイを失敗しました: %s, %s"
+
+msgid ""
+"Replay is in progress!!\n"
+"Please stop it for next session."
+msgstr ""
+"リプレイ中です、\n"
+"次のセッションのために中止してください。"
+
+#: HardwareListing.cpp:54
+msgid ""
+"Required number of hardware are not configured.\n"
+"Application will use default channel association with hardware"
+msgstr ""
+"要求された数のハードウェアを設定できませんでした。\n"
+"アプリケーションはデフォルトチャンネルを使用してハードウェアに接続します。"
+
+#: CAN_ICS_neoVI.cpp:110
+#: HardwareListing.cpp:39
+#, c-format
+msgid ""
+"Required number of hardware are not present\n"
+"Required: %2d    Available: %2d"
+msgstr ""
+"要求された数のハードウェアが存在していません\n"
+"要求数: %2d    使用可能な数: %2d"
+
+msgid "Reset( USHORT Baud )"
+msgstr "Reset( USHORT Baud )"
+
+#: Filter_defines.h:55
+msgid "Rx"
+msgstr "Rx"
+
+msgid "Rx Error Counter"
+msgstr "Rx エラーカウンタ"
+
+#: ContrConfigPeakUsbDefs.h:46
+msgid "SJW"
+msgstr "SJW"
+
+msgid "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\BUSMASTER.exe"
+msgstr "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\BUSMASTER.exe"
+
+#: ContrConfigPeakUsbDefs.h:44
+msgid "Sampling Point"
+msgstr "サンプリングポイント"
+
+#: SigGrphWnd_Defines.h:35
+msgid "Select Export Filename..."
+msgstr "エキスポートファイル名を選択してください..."
+
+msgid "Select Message Log File..."
+msgstr "メッセージログファイル名を選択..."
+
+#: SigGrphWnd_Defines.h:47
+msgid "Select Picture Filename..."
+msgstr "ピクチャファイル名を選択してください..."
+
+msgid "Select Replay File Name"
+msgstr "リプレイファイル名を選択..."
+
+#: SigGrphWnd_Defines.h:41
+msgid "Select Report Filename..."
+msgstr "レポートファイル名を選択してください..."
+
+msgid "Select from the Combo box :"
+msgstr "コンボボックスから選択:"
+
+msgid "Select from the List below :"
+msgstr "下のリストから選択:"
+
+msgid "Selected message not found"
+msgstr "選択したメッセージが見つかりません"
+
+msgid "Send multiple message"
+msgstr "マルチメッセージの送信"
+
+msgid "SendMsg( unsigned short Can_ID, unsigned short DLC,unsigned char *Data )"
+msgstr "SendMsg( unsigned short Can_ID, unsigned short DLC,unsigned char *Data )"
+
+#: CAN_ICS_neoVI.cpp:292
+msgid "Setting hardware filter failed"
+msgstr "ハードウェアフィルタの設定に失敗しました"
+
+#: CAN_ICS_neoVI.cpp:296
+msgid "Setting hardware mode failed"
+msgstr "ハードウェアモードの設定に失敗しました"
+
+#: CAN_ICS_neoVI.cpp:291
+msgid "Setting warning limit failed"
+msgstr "警告制限の設定に失敗しました"
+
+#: SigGrphWnd_Defines.h:127
+msgid "Show"
+msgstr "表示"
+
+#: SigGrphWnd_Defines.h:140
+msgid "Show Grid"
+msgstr "グリッドを表示"
+
+msgid "Signal Matrix"
+msgstr "シグナルマトリックス"
+
+msgid "Signal Name"
+msgstr "シグナル名"
+
+#: SignalWatchDefs.h:50
+msgid ""
+"Signal Not Found in the Database!!\n"
+"Please remove the Signal"
+msgstr ""
+"データベースにシグナルが見つかりません\n"
+"シグナルを削除してください"
+
+msgid "Signal Watch - CAN"
+msgstr "信号の腕時計 - CAN"
+
+msgid "Signal Watch - J1939"
+msgstr "信号の腕時計 - J1939"
+
+msgid "Signal description already exists!"
+msgstr "シグナル明細は既に存在しています"
+
+#: SignalDetailsDlg.cpp:53
+msgid "Signal name already exists!"
+msgstr "シグナルの名前は既に存在しています"
+
+#: SignalDetailsDlg.cpp:50
+msgid "Signal name cannot be empty"
+msgstr "シグナル名を入力してください"
+
+msgid "Signal name cannot be empty!"
+msgstr "シグナル名を入力してください。"
+
+msgid "Signal value already exists!"
+msgstr "シグナル値が既に存在しています。"
+
+msgid "Signal value is out of range!"
+msgstr "シグナル値が範囲外です。"
+
+msgid "SimSys"
+msgstr "SimSys"
+
+msgid "Simulate"
+msgstr "シミュレート"
+
+msgid "Software Reset failed"
+msgstr "ソフトウェアリセットに失敗しました"
+
+#: CAN_ICS_neoVI.cpp:295
+msgid "Software reset failed"
+msgstr "ソフトウェアのリセットに失敗しました"
+
+#: Filter_defines.h:87
+#: ContrConfigPeakUsbDefs.h:56
+msgid "Standard"
+msgstr "標準"
+
+msgid "Standard      [Msg/s]"
+msgstr "標準      [Msg/s]"
+
+msgid "Standard      [Total]"
+msgstr "標準      [合計]"
+
+msgid "Standard RTR"
+msgstr "標準 RTR"
+
+msgid "Standard.RTR"
+msgstr "標準.RTR"
+
+#: SigGrphWnd_Defines.h:123
+msgid "Statistics"
+msgstr "通計"
+
+#: Filter_defines.h:48
+msgid "Std"
+msgstr "Std"
+
+#: Filter_defines.h:58
+msgid "Stop"
+msgstr "停止"
+
+msgid "Success"
+msgstr "成功"
+
+#: HardwareListing.cpp:51
+msgid "TEMP_CLIENT"
+msgstr "TEMP_CLIENT"
+
+#: HardwareListing.cpp:52
+msgid "TEMP_NET"
+msgstr "TEMP_NET"
+
+msgid "TRUE"
+msgstr "TRUE"
+
+msgid "Test of the CAN controller hardware registers failed (no hardware found)"
+msgstr "CANコントローラレジスタのテストに失敗しました(ハードウェアが見つかりません)"
+
+msgid ""
+"The following unsupported setting found.\n"
+"%sDefault value will be used for these options.\n"
+"To save changes please use File -> Configuration -> Save. Changes will be discarded otherwise."
+msgstr ""
+"次のサポートされていない設定が見つかりました\n"
+"%sこのオプションではデフォルト値を使用します\n"
+"変更を保存するには ファイル -> 設定 -> 保存 を選択します。保存しない場合、変更内容は破棄されます。"
+
+msgid "The message \"%s\" is not defined  in database !!"
+msgstr "メッセージ  \"%s\" はデータベースに定義されていません。"
+
+msgid "The registry value is corrupted. Please re-install."
+msgstr "レジストリの値が破損しています。再インストールしてください。"
+
+msgid ""
+"The registry value is corrupted. The interface function is not available.\n"
+"Please re-install."
+msgstr "レジストリの値が破損しています。インタフェースファンクションは利用できません。再インストールしてください。"
+
+msgid "The replay file \"%s\" does not exists !"
+msgstr "リプレイファイル \"%s\" は存在していません。"
+
+#: common.h:145
+msgid "There is no active database. Please import database"
+msgstr "アクティブデータベースがありません、データベースをインポートしてください"
+
+msgid "Time"
+msgstr "時間"
+
+msgid "Time delay should be greater then zero"
+msgstr "遅延時間の値はゼロより大きくしてください"
+
+msgid ""
+"Timeout occured waiting for acknowledgement\n"
+"for the message transmitted from MODULE_NAME module.!\n"
+"\n"
+"Select Yes to continue transmission. Further transmission may not be as expected.\n"
+"Select No to abort transmission."
+msgstr ""
+"応答待ち中、次のモジュールでタイムアウトが発生しました\n"
+"MODULE_NAME モジュールのメッセージ送信\n"
+"\n"
+"送信を続行するには Yes をクリックしてください。その後の送信内容は予期しないものとなる可能性があります。\n"
+"中断するには No をクリックしてください。"
+
+msgid "Timer"
+msgstr "タイマー"
+
+msgid "Timer Handler Name"
+msgstr "タイマーのハンドラ名"
+
+#: Filter_defines.h:40
+msgid "To"
+msgstr "まで"
+
+msgid "To::Invalid Message ID"
+msgstr "To::無効なメッセージID"
+
+msgid "Total"
+msgstr "合計"
+
+msgid "Trace Window"
+msgstr "トレースウィンドウ"
+
+msgid "Transmit buffer in CAN controller is full"
+msgstr "CANコントローラの送信バッファに空きがありません"
+
+msgid "Transmit queue is full"
+msgstr "送信キューに空きがありません"
+
+#: Filter_defines.h:54
+msgid "Tx"
+msgstr "Tx"
+
+msgid "Tx Error Counter"
+msgstr "Tx エラーカウンタ"
+
+msgid "Tx/Rx"
+msgstr "Tx/Rx"
+
+msgid "USB"
+msgstr "USB"
+
+msgid "USB Driver is not running"
+msgstr "USBドライバは実行されていません"
+
+msgid "Unable to communicate with driver. Please check if your current login has administrative privilege"
+msgstr "ドライバに接続できません、管理者権限でログインしていることを確認してください。"
+
+msgid "Unable to communicate with the driver or Unable to create client networks. Application will quit"
+msgstr "ドライバに接続できないか又はクライアントネットワークを生成できません、操作を中止します"
+
+msgid "Unable to connect to Hardware"
+msgstr "ハードウェアに接続できません"
+
+msgid "Unable to connect to Network"
+msgstr "ネットワークに接続できません"
+
+msgid "Unable to connect. Please check the Dongle"
+msgstr "接続できません、ドングル(Dongle)を確認してください"
+
+msgid "Unable to detect hardware interface."
+msgstr "ハードウェアインタフェースを検出できません"
+
+msgid "Unable to obtain path of GCC from registry key"
+msgstr "レジストリキーからGCCのパスを取得できません"
+
+msgid "Unable to select the device"
+msgstr "デバイスの選択をできません"
+
+msgid "Unable to set the parallel port to EPP mode"
+msgstr "並列ポートをEPPモードに設定できません"
+
+msgid "Unable to set the parallel port to Non EPP mode"
+msgstr "並列ポートをNon-EPPモードに設定できません"
+
+msgid ""
+"Unable to start the application.\n"
+"Either the application is already running or the BUSMASTER Device Driver is not yet started.\n"
+"If the BUSMASTER Device Driver is not started,"
+msgstr ""
+"アプリケーションを開始できません\n"
+"アプリケーションは既に実行中かまたはBUSMASTERのデバイスドライバが開始されていません。\n"
+"BUSMASTERのデバイスドライバが開始されない場合は、"
+
+msgid "Unable to start timer \"%s\" due to system resource problem !!"
+msgstr "システムリソースの問題により、タイマ \"%s\" を開始できません"
+
+msgid "Unit"
+msgstr "ユニット"
+
+msgid "Units"
+msgstr "ユニット(複)"
+
+#: AscLogConverter.cpp:95
+#: CAPL2CConverter.cpp:35
+#: DBC2DBFConverter.cpp:97
+#: DBF2DBCConverter.cpp:97
+#: LogAscConverter.cpp:103
+msgid "Unknown"
+msgstr "不明"
+
+msgid "Unknown Error. Message transmission aborted!"
+msgstr "不明なエラー、メッセージ送信を中止しました"
+
+msgid "Unknown error %x"
+msgstr "不明なエラー %x"
+
+msgid "Unsupported DLL Version %d.%d"
+msgstr "支持されていない DLL バージョン %d.%d"
+
+msgid "Unsupported version log file"
+msgstr "支持されていないバージョンのログファイル"
+
+msgid "User Programs"
+msgstr "ユーザープログラム"
+
+msgid "User can create the necessary database file and unload the sample database file if not required."
+msgstr "ユーザーは要求されていない場合、必要なデータベースファイルを生成しサンプルのデータベースファイルをアンロードを行えます。"
+
+msgid "User can select database file from 'File->Database->Import Database' menu option."
+msgstr "ユーザーは 'ファイル->データベース->データベースのインポート'のメニューオプションでデータベースを選べます。"
+
+msgid "UserFnInfoFile.txt"
+msgstr "UserFnInfoFile.txt"
+
+msgid "Utility Functions()"
+msgstr "Utility Functions()"
+
+msgid "Utils_"
+msgstr "Utils_"
+
+#: TSDefinitions.h:34
+msgid "Value"
+msgstr "値"
+
+msgid "Variable name cannot be empty."
+msgstr "変数名を入力してください"
+
+msgid "WAVEFORM"
+msgstr "WAVEFORM"
+
+msgid "Wait for acknowledgement failed."
+msgstr "応答待ちに失敗しました"
+
+msgid "Wrapper.h"
+msgstr "Wrapper.h"
+
+msgid "Write function failed. Message transmission aborted!"
+msgstr "送信ファンクションに失敗しました、メッセージ送信を中止します。"
+
+msgid ""
+"You are about to Delete a Message.\n"
+"\n"
+"Are you sure you want to Delete?"
+msgstr ""
+"メッセージを削除しようとしています.\n"
+"\n"
+"本当に削除しますか?"
+
+msgid ""
+"You are about to Delete a Node.\n"
+"\n"
+"Are you sure you want to Delete?"
+msgstr ""
+"ノードを削除しようとしています.\n"
+"\n"
+"本当に削除しますか?"
+
+msgid ""
+"You are about to Delete a Simulated System.\n"
+"\n"
+"Are you sure you want to Delete?"
+msgstr ""
+"シミュレーションシステムを削除しようとしています.\n"
+"\n"
+"本当に削除しますか?"
+
+msgid ""
+"You are about to Delete all the Nodes.\n"
+"\n"
+"Are you sure you want to Delete?"
+msgstr ""
+"全てのノードを削除しようとしています.\n"
+"\n"
+"本当に削除しますか?"
+
+msgid ""
+"You are about to Delete all the Simulated Systems.\n"
+"\n"
+"Are you sure you want to Delete?"
+msgstr ""
+"全てのシミュレーションシステムを削除しようとしています.\n"
+"\n"
+"本当に削除しますか?"
+
+msgid ""
+"You are about to change all the Node details!\n"
+"\n"
+"Are you sure you want to Continue?"
+msgstr ""
+"全てのノード情報を変更しようとしています.\n"
+"\n"
+"本当に変更しますか?"
+
+msgid ""
+"You are about to convert extended frame format to standard.\n"
+"This operation will truncate the message code from 29 to 11 bits.\n"
+"Do you want to continue?"
+msgstr ""
+"拡張フォーマットを標準フォーマットに変えようとしています。\n"
+"このオペレーションはメッセージコード長を29から11ビットにします。\n"
+"本当に変更しますか？"
+
+msgid ""
+"You are about to convert standard frame format to extended.\n"
+"This operation will convert the message code from 11 to 29 bits.\n"
+"Do you want to continue?"
+msgstr ""
+"標準フォーマットを拡張フォーマットに変えようとしています。\n"
+"このオペレーションはメッセージコード長を11から29ビットにします。\n"
+"本当に変更しますか？"
+
+msgid ""
+"You are about to delete a message block.\n"
+"\n"
+"Are you sure you want to delete?"
+msgstr ""
+"メッセージブロックを削除しようとしています.\n"
+"\n"
+"本当に削除しますか?"
+
+msgid ""
+"You are about to delete a signal description and its value.\n"
+"Are you sure you want to delete?"
+msgstr ""
+"シグナルの詳細とその値を削除しようとしています.\n"
+"\n"
+"本当に削除しますか?"
+
+msgid ""
+"You are about to delete a signal.\n"
+"\n"
+"Are you sure you want to delete?"
+msgstr ""
+"シグナルを削除しようとしています.\n"
+"\n"
+"本当に削除しますか?"
+
+msgid ""
+"You are about to delete all message frame detail of selected message block.\n"
+"\n"
+"Are you sure you want to delete?"
+msgstr ""
+"選択したメッセージブロックの詳細から全メッセージフレームを削除しようとしています.\n"
+"\n"
+"本当に削除しますか?"
+
+msgid ""
+"You are about to delete seleted message frame detail.\n"
+"\n"
+"Are you sure you want to delete?"
+msgstr ""
+"選択したメッセージフレームの詳細を削除しようとしています.\n"
+"\n"
+"本当に削除しますか?"
+
+msgid ""
+"You are about to delete the #include.\n"
+"Are you sure you want to delete?"
+msgstr ""
+"#includeを削除しようとしています.\n"
+"本当に削除しますか?"
+
+msgid ""
+"You are about to delete the function FUNCTION_NAME(...).\n"
+"Are you sure you want to delete?"
+msgstr ""
+"FUNCTION_NAME(...)ファンクションを削除しようとしています.\n"
+"本当に削除しますか?"
+
+msgid ""
+"You are about to delete the variable.\n"
+"Do you wish to proceed?"
+msgstr ""
+"変数を削除しようとしています.\n"
+"本当に削除しますか?"
+
+msgid ""
+"You cannot configure the selected message.\n"
+"No signals are defined for the message!"
+msgstr ""
+"選択したメッセージの設定を行えません。.\n"
+"このメッセージにはシグナルが定義されていません。"
+
+msgid ""
+"You cannot configure the selected message.\n"
+"The message length is zero!"
+msgstr ""
+"選択したメッセージを設定できません。\n"
+"メッセージ長がゼロです。"
+
+msgid ""
+"You cannot manipulate signal details since message length\n"
+"for the selected message is zero!"
+msgstr "シグナル詳細を操作できません、メッセージ長がゼロです。"
+
+msgid ""
+"You have changed \"Message Block\" properties or deleted message(s) from \"Active Message Block(s)\"\n"
+"These changes can not be saved while message transmission is ON.\n"
+"Do you want to ignore the changes ?"
+msgstr ""
+"ユーザーの操作により\"メッセージブロック\" のプロパティを変更したか、\"アクティブメッセージブロック\"からメッセージを削除しました\n"
+"メッセージ送信機能がオンの時、この変更の保存はできません。\n"
+"変更を無視しますか？"
+
+msgid ""
+"You have changed \"Message Block\" properties or deleted message(s) from \"Active Message Block(s)\"\n"
+"These changes can not be saved while message transmission is ON.\n"
+"Do you want to revert the changes ?"
+msgstr ""
+"ユーザーの操作により\"メッセージブロック\" のプロパティを変更したか、\"アクティブメッセージブロック\"からメッセージを削除しました\n"
+"メッセージ送信機能がオンの時、この変更の保存はできません。\n"
+"変更を復帰しますか？"
+
+#: Filter_defines.h:83
+#: SignalWatchDefs.h:54
+msgid "["
+msgstr "["
+
+#: Filter_defines.h:81
+#: SignalWatchDefs.h:52
+#, c-format
+msgid "[0x%x]"
+msgstr "[0x%x]"
+
+msgid "[BUSMASTER_VERSION]"
+msgstr "[BUSMASTER_VERSION]"
+
+msgid "[DATABASE_VERSION]"
+msgstr "[DATABASE_VERSION]"
+
+msgid "[END]"
+msgstr "[END]"
+
+msgid "[END_MSG]"
+msgstr "[END_MSG]"
+
+msgid "[PLACE_HOLDER_FOR_APPLICATION_VERSION]"
+msgstr "[PLACE_HOLDER_FOR_APPLICATION_VERSION]"
+
+msgid "[PROTOCOL]"
+msgstr "[PROTOCOL]"
+
+msgid "[START]"
+msgstr "[START]"
+
+msgid "[START_MSG] "
+msgstr "[START_MSG] "
+
+msgid "[START_SIGNALS] "
+msgstr "[START_SIGNALS] "
+
+msgid "[VALUE_DESCRIPTION] "
+msgstr "[VALUE_DESCRIPTION] "
+
+msgid "_"
+msgstr "_"
+
+msgid "_Unions.h"
+msgstr "_Unions.h"
+
+msgid "__int64"
+msgstr "__int64"
+
+msgid "a Client is already connected to the Net"
+msgstr "クライアントがネットに接続しています"
+
+#: SigGrphWnd_Defines.h:53
+msgid "about:blank"
+msgstr "about:blank"
+
+#: SigGrphWnd_Defines.h:49
+msgid "bmp"
+msgstr "bmp"
+
+#: SignalDetailsDlg.cpp:44
+msgid "bool"
+msgstr "bool"
+
+msgid "char"
+msgstr "char"
+
+msgid "float"
+msgstr "float"
+
+msgid "g_"
+msgstr "g_"
+
+#: SigGrphWnd_Defines.h:43
+msgid "html"
+msgstr "html"
+
+#: SignalDetailsDlg.cpp:45
+msgid "int"
+msgstr "int"
+
+#: ConfigMsgLogDlg.cpp:44
+#: AscLogConverter.cpp:144
+#: LogAscConverter.cpp:121
+msgid "log"
+msgstr "ログ"
+
+msgid "long"
+msgstr "long"
+
+msgid "m_sWhichBit"
+msgstr "m_sWhichBit"
+
+msgid "ms"
+msgstr "ms"
+
+msgid "newFuncName"
+msgstr "newFuncName"
+
+msgid "newMessage()"
+msgstr "newMessage()"
+
+msgid "newTimer"
+msgstr "newTimer"
+
+msgid "newTimer()"
+msgstr "newTimer()"
+
+msgid "pcan_usb"
+msgstr "pcan_usb"
+
+msgid "sMsgStruct"
+msgstr "sMsgStruct"
+
+msgid "short"
+msgstr "short"
+
+msgid "tmp"
+msgstr "tmp"
+
+msgid ""
+"typedef union \n"
+"{\n"
+msgstr ""
+"typedef union \n"
+"{\n"
+
+msgid "unsigned char"
+msgstr "unsigned char"
+
+#: SignalDetailsDlg.cpp:46
+msgid "unsigned int"
+msgstr "unsigned int"
+
+msgid "unsigned long"
+msgstr "unsigned long"
+
+msgid "unsigned short"
+msgstr "unsigned short"
+
+msgid "void"
+msgstr "void"
+
+msgid "}/* End BUSMASTER generated function - PLACE_HODLER_FOR_FUNCTIONNAME */"
+msgstr "}/* BUSMASTER 生成ファンクションの終了 - PLACE_HODLER_FOR_FUNCTIONNAME */"
+
+#: MainFrm.cpp:2364
+#: MainFrm.cpp:2507
+#: MainFrm.cpp:2646
+#: MainFrm.cpp:2849
+#: MainFrm.cpp:2880
+#: MainFrm.cpp:13350
+#: MainFrm.cpp:13375
+#, c-format
+msgid ""
+"\n"
+"%s"
+msgstr ""
+"\n"
+"%s"
+
+#: MainFrm.cpp:10443
+#, c-format
+msgid "%s - %s - %s Kbps (Allowed channels:%d)"
+msgstr "%s - %s - %s Kbps (許可したチャンネル数:%d)"
+
+#: MainFrm.cpp:12246
+msgid "&Configure"
+msgstr "&設定"
+
+#: MainFrm.cpp:12582
+msgid "Activate"
+msgstr "活性化"
+
+#: MainFrm.cpp:13201
+msgid "All Supported DataBaseFiles (*.dbf;*.dbc)|*.dbf; *.dbc|J1939 Database File(s)(*.dbf)|*.dbf|CANoe Database File(s) (*.dbc)|*.dbc||"
+msgstr "All Supported データベースファイル (*.dbf;*.dbc)|*.dbf; *.dbc|J1939 データベースファイル(*.dbf)|*.dbf|CANoeデータベースファイル (*.dbc)|*.dbc||"
+
+#: MainFrm.cpp:141
+msgid "BUSMASTER Configuration files(*.cfx)|*.cfx||"
+msgstr "バスマスタの構成ファイル(*.cfx)|*.cfx||"
+
+#: MainFrm.cpp:772
+msgid "CAN Database"
+msgstr "CAN Database"
+
+#: MainFrm.cpp:10319
+msgid "CAN_MONITOR"
+msgstr "CAN_MONITOR"
+
+#: MainFrm.cpp:10813
+msgid "CMsgFrmtWnd"
+msgstr "CMsgFrmtWnd"
+
+#: MainFrm.cpp:770
+msgid "Configure"
+msgstr "Configure"
+
+#: MainFrm.cpp:6357
+msgid "Connected... "
+msgstr "接続中..."
+
+#: MainFrm.cpp:12586
+msgid "Deactivate"
+msgstr "解除"
+
+#: MainFrm.cpp:5753
+msgid "Default Configuration loaded"
+msgstr "デフォルト設定値をロードしました"
+
+#: MainFrm.cpp:6362
+msgid "Failed to connect the hardware... "
+msgstr "ハードウェア接続に失敗しました"
+
+#: MainFrm.cpp:2120
+#, c-format
+msgid ""
+"File  \"%s\"  has been modified which is currently being loaded.\n"
+"Do you want to re-import it to reflect the changes?"
+msgstr ""
+"ファイル  \"%s\"  に修正がありました、\n"
+"変更を有効にするためリロードしますか？"
+
+#: MainFrm.cpp:2358
+#: MainFrm.cpp:13345
+#: MainFrm.cpp:13370
+msgid "Following file(s) are either not properly build or loaded:"
+msgstr "次のファイルは正しくビルドされていないか正しくロードされていません:"
+
+#: MainFrm.cpp:2502
+#: SimSysTreeView.cpp:2140
+msgid "Following file(s) are not properly build:"
+msgstr "次のファイルが正しくビルドできません:"
+
+#: MainFrm.cpp:2640
+#: MainFrm.cpp:13296
+#: SimSysTreeView.cpp:2410
+msgid "Following file(s) are not properly loaded:"
+msgstr "次のファイルが正しくロードされていません:"
+
+#: MainFrm.cpp:2843
+#: MainFrm.cpp:2875
+#: MainFrm.cpp:13320
+#: SimSysTreeView.cpp:2597
+msgid "Following file(s) are not properly unloaded:"
+msgstr "次のファイルが正しくアンロードされていません。"
+
+#: MainFrm.cpp:12658
+msgid "Go Offline"
+msgstr "オフラインにする"
+
+#: MainFrm.cpp:12662
+msgid "Go Online"
+msgstr "オンラインにする"
+
+#: MainFrm.cpp:12252
+msgid "Hardware Interface"
+msgstr "ハードウェアインタフェース"
+
+#: MainFrm.cpp:6621
+msgid "Load Configuration Filename..."
+msgstr "設定ファイル名をロード..."
+
+#: MainFrm.cpp:769
+msgid "Main"
+msgstr "メイン"
+
+#: MainFrm.cpp:768
+msgid "Message Window"
+msgstr "メッセージウィンドウ"
+
+#: MainFrm.cpp:6691
+msgid "New Configuration Filename..."
+msgstr "新しい設定ファイル名..."
+
+#: MainFrm.cpp:767
+msgid "Node Simulation"
+msgstr "ノードシミュレーション"
+
+#: MainFrm.cpp:147
+msgid "RBEI_ECF2_CAN_Monitor"
+msgstr "RBEI_ECF2_CAN_Monitor"
+
+#: MainFrm.cpp:2005
+msgid "Save As..."
+msgstr "名前をつけて保存..."
+
+#: MainFrm.cpp:4220
+#: MainFrm.cpp:6845
+msgid "Save Configuration File"
+msgstr "設定ファイルの保存"
+
+#: MainFrm.cpp:6898
+#: SimSysTreeView.cpp:2493
+msgid "SaveAs Configuration Filename..."
+msgstr "コンフィギュレーションファイル名を付けて保存..."
+
+#: MainFrm.cpp:1408
+#: MainFrm.cpp:13210
+msgid "Select Active Database Filename..."
+msgstr "使用しているデータベースファイル名を選択..."
+
+#: MainFrm.cpp:1046
+msgid "Select BUSMASTER Database Filename..."
+msgstr "BUSMASTERデータベースファイル名を選択..."
+
+#: MainFrm.cpp:13070
+msgid "Select J1939 Database Filename..."
+msgstr "J1939データベースファイル名を選択..."
+
+#: MainFrm.cpp:6353
+msgid "Trying to connect the hardware ... Please wait"
+msgstr "ハードウェアに接続中... お待ちください"
+
+#: MainFrm.cpp:4208
+#: MainFrm.cpp:4249
+msgid ""
+"You have made changes to the configuration.\n"
+"Do you want to save it?"
+msgstr ""
+"設定した内容に変更がありました。\n"
+"保存しますか？"
+
+#: MainFrm.cpp:142
+msgid "cfx"
+msgstr "cfx"
+
+#: MainFrm.cpp:10086
+msgid "open"
+msgstr "開く"
+
+#: MainFrm.cpp:1444
+#: MainFrm.cpp:13424
+msgid " not found!"
+msgstr "見つかりません！"
+
+#: MainFrm.cpp:13181
+#: MainFrm.cpp:13241
+msgid ""
+"Are you sure you want to close the \n"
+"database that is already open?"
+msgstr ""
+"すでに開いているデータベースを\n"
+"閉じてよろしいですか？"
+
+#: MainFrm.cpp:1445
+#: MainFrm.cpp:13425
+#: common.h:105
+#: common.h:106
+msgid "BUSMASTER"
+msgstr "BUSMASTER"
+
+#: MainFrm.cpp:1047
+msgid "BUSMASTER Database File(s)(*.dbf)|*.dbf||"
+msgstr "BUSMASTER データベースファイル (*.dbf)|*.dbf||"
+
+#: MainFrm.cpp:1406
+msgid "BUSMASTER Datatbase File(*.dbf)|*.dbf||"
+msgstr "BUSMASTER データベースファイル (*.dbf)|*.dbf||"
+
+#: MainFrm.cpp:10250
+#: MainFrm.cpp:10284
+msgid "BUSMASTER Format Conversions"
+msgstr "BUSMASTERフォーマット変換"
+
+#: MainFrm.cpp:2013
+msgid "CAN Datatbase File(*.dbf)|*.dbf||"
+msgstr "CAN データベースファイル (*.dbf)|*.dbf||"
+
+#: MainFrm.cpp:5766
+#: MainFrm.cpp:5772
+#, c-format
+msgid "Config File: %s"
+msgstr "設定ファイル: %s"
+
+#: MainFrm.cpp:13720
+msgid "Configure Message Display - J1939"
+msgstr "J1939 - メッセージの表示を設定する"
+
+#: MainFrm.cpp:2185
+msgid "Configure Message Display- CAN"
+msgstr "CAN - メッセージの表示を設定する"
+
+#: MainFrm.cpp:12409
+msgid "Could not create DIL menu items"
+msgstr "DILのメニュー項目を作成できませんでした。"
+
+#: MainFrm.cpp:1109
+#: MainFrm.cpp:1972
+#: MainFrm.cpp:13220
+msgid "Create BUSMASTER Database Window Failed!"
+msgstr "BUSMASTERデータベースウィンドウの作成に失敗しました！"
+
+#: MainFrm.cpp:13326
+msgid "Create J1939 Database Window Failed!"
+msgstr "J1939データベースウィンドウの作成に失敗しました！"
+
+#: MainFrm.cpp:12383
+msgid "CreatePopupMenu for driver selection failed"
+msgstr "ドライバを選択するためのポップアップメニューの作成に失敗しました"
+
+#: MainFrm.cpp:13005
+msgid "DIL.J1939 client registration failed..."
+msgstr "DIL.J1939クライアントの登録に失敗しました..."
+
+#: MainFrm.cpp:12973
+msgid "DIL.J1939 client registration successful..."
+msgstr "DIL.J1939クライアントの登録に成功しました..."
+
+#: MainFrm.cpp:12967
+msgid "DIL.J1939 initialisation failed..."
+msgstr "DIL.J1939初期化に失敗しました..."
+
+#: MainFrm.cpp:12940
+msgid "DIL.J1939 initialisation successful..."
+msgstr "DIL.J1939の初期化に成功しました..."
+
+#: MainFrm.cpp:12786
+msgid "DIL.J1939 network started..."
+msgstr "DIL.J1939ネットワークが開始されました..."
+
+#: MainFrm.cpp:12822
+msgid "DIL.J1939 network stopped..."
+msgstr "DIL.J1939ネットワークが停止しました..."
+
+#: MainFrm.cpp:12932
+msgid "DIL.J1939 query successful..."
+msgstr "DIL.J1939のクエリに成功しました..."
+
+#: MainFrm.cpp:1103
+#: MainFrm.cpp:1967
+#: MainFrm.cpp:13216
+#: MainFrm.cpp:13320
+msgid "Database Editor"
+msgstr "データベースエディタ"
+
+#: MainFrm.cpp:1422
+#: MainFrm.cpp:13403
+msgid ""
+"Database File: \n"
+" "
+msgstr ""
+"データベースファイル: \n"
+" "
+
+#: MainFrm.cpp:13066
+msgid "Done..."
+msgstr "完了..."
+
+#: MainFrm.cpp:10461
+msgid "Driver selection failed"
+msgstr "ドライバの選択に失敗しました"
+
+#: MainFrm.cpp:11008
+msgid "English"
+msgstr "英語"
+
+#: MainFrm.cpp:815
+msgid "Failed to create status bar\n"
+msgstr "ステータスバーの作成に失敗しました。\n"
+
+#: MainFrm.cpp:922
+msgid "Failed to create toolbar\n"
+msgstr "ツールバーの作成に失敗しました\n"
+
+#: MainFrm.cpp:6391
+msgid "Failed to start the hardware"
+msgstr "ハードウェアの起動に失敗しました。"
+
+#: MainFrm.cpp:12400
+msgid "GetSubMenu(\"&Configure\") failed"
+msgstr "GetSubMenu(\"&設定\") に失敗しました"
+
+#: MainFrm.cpp:13052
+msgid "Going Offline failed..."
+msgstr "オフラインへの移行に失敗しました..."
+
+#: MainFrm.cpp:13048
+msgid "Going Offline..."
+msgstr "オフラインへ移行..."
+
+#: MainFrm.cpp:13259
+msgid "J1939 Database File(s)(*.dbf)|*.dbf||"
+msgstr "J1939 データベースファイル (*.dbf)|*.dbf||"
+
+#: MainFrm.cpp:12995
+msgid "J1939 logger initialisation failed..."
+msgstr "J1939ロガーの初期化に失敗しました..."
+
+#: MainFrm.cpp:13000
+msgid "J1939 logger query failed..."
+msgstr "J1939ロガークエリに失敗しました..."
+
+#: MainFrm.cpp:12978
+msgid "J1939 logger query successful..."
+msgstr "J1939ロガークエリに成功しました..."
+
+#: MainFrm.cpp:12990
+msgid "J1939 logger successfully initialised..."
+msgstr "J1939ロガーが正常に初期化しました..."
+
+#: MainFrm.cpp:10454
+msgid "Listing hardware interfaces failed"
+msgstr "ハードウェアインターフェースのリスト化に失敗しました"
+
+#: MainFrm.cpp:12809
+msgid "Network startup failed. Select a valid hardware interface."
+msgstr "ネットワークの起動に失敗しました。有効なハードウェアインタフェースを選択してください。"
+
+#: MainFrm.cpp:6709
+#: SimSysTreeView.cpp:1578
+msgid "Open"
+msgstr "開く"
+
+#: MainFrm.cpp:3809
+msgid "POSTED ERROR MSG"
+msgstr "POSTED ERROR MSG"
+
+#: MainFrm.cpp:13010
+msgid "Query of DIL.J1939 failed..."
+msgstr "DIL.J1939のクエリに失敗しました..."
+
+#: MainFrm.cpp:12928
+msgid "Querying DIL.J1939 ..."
+msgstr "DIL.J1939を照会..."
+
+#: MainFrm.cpp:10449
+msgid "Selecting hardware interface failed"
+msgstr "ハードウェアインタフェースの選択に失敗しました。"
+
+#: MainFrm.cpp:1081
+#: MainFrm.cpp:13301
+msgid ""
+"Specified database file is not found.\n"
+"Operation unsuccessful."
+msgstr ""
+"指定されたデータベースファイルが見つかりません\n"
+"操作に失敗しました。"
+
+#: MainFrm.cpp:13029
+msgid "Stopping J1939 logging failed..."
+msgstr "J1939のロギング停止に失敗しました..."
+
+#: MainFrm.cpp:13025
+msgid "Stopping J1939 logging..."
+msgstr "J1939のロギングを停止しています..."
+
+#: MainFrm.cpp:12637
+msgid "The function vInitializeGraphWndReadBuffer() failed."
+msgstr "関数 vInitializeGraphWndReadBuffer() が失敗しました。"
+
+#: MainFrm.cpp:13061
+msgid "Uninitialising DIL.J1939 failed..."
+msgstr "DIL.J1939を未初期化に失敗しました..."
+
+#: MainFrm.cpp:13057
+msgid "Uninitialising DIL.J1939..."
+msgstr "DIL.J1939の未初期化..."
+
+#: MainFrm.cpp:12388
+msgid "new CMenu() failed"
+msgstr "新しい CMenu() に失敗しました"
+
+#: MainFrm.cpp:10444
+msgid "registering client failed"
+msgstr "クライアントの登録に失敗しました"
+
+#: ConfigMsgLogDlg.cpp:867
+msgid " - Read Only as Logging is ON"
+msgstr " - 読み取り専用、ログ中"
+
+#: ConfigMsgLogDlg.cpp:40
+#, c-format
+msgid "BUSMASTERLogFile%d.log"
+msgstr "BUSMASTERLogFile%d.log"
+
+#: ConfigMsgLogDlg.cpp:41
+#, c-format
+msgid "BUSMASTERLogFile_J1939_%d.log"
+msgstr "BUSMASTERLogFile_J1939_%d.log"
+
+#: ConfigMsgLogDlg.cpp:37
+#, c-format
+msgid "Configure Filter for Log File: %s"
+msgstr "ログファイル用フィルタ設定: %s"
+
+#: ConfigMsgLogDlg.cpp:81
+msgid "Configure Logging for CAN"
+msgstr "CAN用ログ設定"
+
+#: ConfigMsgLogDlg.cpp:90
+msgid "Configure Logging for J1939"
+msgstr "J1939用ログ設定"
+
+#: ConfigMsgLogDlg.cpp:38
+msgid "Do you want to remove selected log file entry?"
+msgstr "選択したログファイルエントリを削除しますか？"
+
+#: ConfigMsgLogDlg.cpp:932
+msgid "FILTER_SELECTION_CAN"
+msgstr "FILTER_SELECTION_CAN"
+
+#: ConfigMsgLogDlg.cpp:45
+msgid "Log File"
+msgstr "ログファイル"
+
+#: ConfigMsgLogDlg.cpp:39
+#, c-format
+msgid "Log file: %s is already added to the log configuration list!"
+msgstr "ログファイル: %s はログ設定リストに既に追加されています"
+
+#: ConfigMsgLogDlg.cpp:42
+msgid "Select a Log file"
+msgstr "ログファイルの選択"
+
+#: ConfigMsgLogDlg.cpp:82
+msgid "Start on Reception of ID 0x"
+msgstr "ID 0x の受信を開始"
+
+#: ConfigMsgLogDlg.cpp:91
+msgid "Start on Reception of PGN 0x"
+msgstr "PGN 0x の受信を開始"
+
+#: ConfigMsgLogDlg.cpp:83
+msgid "Stop on Reception of ID 0x"
+msgstr "ID 0x の受信を開始"
+
+#: ConfigMsgLogDlg.cpp:92
+msgid "Stop on Reception of PGN 0x"
+msgstr "PGN 0x の受信を開始"
+
+#: ConfigMsgLogDlg.cpp:343
+#: ConfigMsgLogDlg.cpp:372
+#: Struct.h:400
+#: BUSMASTER.cpp:872
+msgid "\\"
+msgstr "\\"
+
+#: J1939TimeOutCfg.cpp:41
+msgid "Error: Timer values should be greater than 0."
+msgstr "エラー: タイマー値は0より大きい値を入力してください"
+
+#: J1939TimeOutCfg.cpp:37
+msgid "T1: Maximum wait period for a receiver when more packets were expected."
+msgstr "T1: パケットがまだある場合の最大受信待機時間"
+
+#: J1939TimeOutCfg.cpp:38
+msgid "T2: Maximum wait period for a receiver to receive data packets after sending 'Clear to Send' message."
+msgstr "T2: 'Clear to Send'メッセージの送信後、データパケットを受信するための最大待機時間"
+
+#: J1939TimeOutCfg.cpp:39
+msgid "T3: Maximum wait period for a sender to receive 'End of Message Acknowledgement' after sending last data packet."
+msgstr "T3: 最後のデータパケットを送信した後、'End of Message Acknowledgement'を受信するための最大待機時間"
+
+#: J1939TimeOutCfg.cpp:40
+msgid "T4: Maximum wait period for a sender to receive another 'Clear to Send' message after receiving one to delay the data."
+msgstr "T4: データ延長を受信した後、'Clear to Send'メッセージを受信する時までの最大待機時間"
+
+#: J1939TimeOutCfg.cpp:34
+msgid "Tb: Time interval between two packets in broadcast transmission."
+msgstr "Tb: ブロードキャスト送信で使うパケット間の時間差"
+
+#: J1939TimeOutCfg.cpp:36
+msgid "Th: Time interval between two 'Clear to Send' message when delaying the data."
+msgstr "Th: データ通信を延長する時に使う'Clear to Send'メッセージの時間差"
+
+#: J1939TimeOutCfg.cpp:35
+msgid "Tr: Maximum wait period for a sender without receiving response from the receiver."
+msgstr "Tr: 受信側からの応答なしで待機する最大の待機時間"
+
+#: MsgIDAttr.cpp:142
+msgid "Duplicate Message ID"
+msgstr "重複したメッセージID"
+
+#: MsgIDAttr.cpp:130
+msgid "Invalid Message ID"
+msgstr "無効なメッセージID"
+
+#: MsgIDAttr.cpp:151
+msgid "Invalid message string"
+msgstr "無効な文字列"
+
+#: MsgIDAttr.cpp:211
+msgid "Add Message Display Attributes"
+msgstr "メッセージの表示属性を追加します。"
+
+#: DIL_CAN.cpp:188
+msgid "CAN_ETAS_BOA.dll"
+msgstr "CAN_ETAS_BOA.dll"
+
+#: DIL_CAN.cpp:183
+msgid "CAN_ICS_neoVI.dll"
+msgstr "CAN_ICS_neoVI.dll"
+
+#: DIL_CAN.cpp:198
+msgid "CAN_Kvaser_CAN.dll"
+msgstr "CAN_Kvaser_CAN.dll"
+
+#: DIL_CAN.cpp:208
+msgid "CAN_MHS.dll"
+msgstr "CAN_MHS.dll"
+
+#: DIL_CAN.cpp:178
+msgid "CAN_PEAK_USB.dll"
+msgstr "CAN_PEAK_USB.dll"
+
+#: DIL_CAN.cpp:203
+msgid "CAN_STUB.dll"
+msgstr "CAN_STUB.dll"
+
+#: DIL_CAN.cpp:193
+msgid "CAN_Vector_XL.dll"
+msgstr "CAN_Vector_XL.dll"
+
+#: DIL_CAN.cpp:55
+msgid "ETAS BOA"
+msgstr "ETAS BOA"
+
+#: DIL_CAN.cpp:56
+msgid "ETAS ES581"
+msgstr "ETAS ES581"
+
+#: DIL_CAN.cpp:57
+msgid "IntrepidCS neoVI"
+msgstr "IntrepidCS neoVI"
+
+#: DIL_CAN.cpp:58
+msgid "Kvaser CAN"
+msgstr "Kvaser CAN"
+
+#: DIL_CAN.cpp:227
+#: DIL_CAN.cpp:255
+msgid "Load library failed..."
+msgstr "ライブラリのロードに失敗しました"
+
+#: DIL_CAN.cpp:234
+msgid "Load library successful..."
+msgstr "ライブラリのロードに成功しました"
+
+#: DIL_CAN.cpp:59
+msgid "MHS Tiny-CAN"
+msgstr "MHS Tiny-CAN"
+
+#: DIL_CAN.cpp:60
+msgid "PEAK USB"
+msgstr "PEAK USB"
+
+#: DIL_CAN.cpp:53
+msgid "Simulation"
+msgstr "シミュレーション"
+
+#: DIL_CAN.cpp:61
+msgid "Vector XL"
+msgstr "ベクトル XL"
+
+#: TSExecutorLIB.cpp:1036
+msgid "Sending Messages Started"
+msgstr "送信メッセージが開始"
+
+#: TSExecutorLIB.cpp:1068
+msgid "VerifyRequest Started"
+msgstr "開始要求の確認"
+
+#: TSExecutorLIB.cpp:1043
+msgid "Verifying Started"
+msgstr "開始の確認"
+
+#: TSExecutorResult.cpp:233
+msgid ""
+"\n"
+"\t\t\t\tBUSMASTER Version:: BUSMASTER "
+msgstr ""
+"\n"
+"\t\t\t\tバスマスタバージョン:: バスマスタ"
+
+#: TSExecutorResult.cpp:234
+msgid ""
+"\n"
+"\t\t\t\tReport File For:: "
+msgstr ""
+"\n"
+"\t\t\t\tのレポートファイル:: "
+
+#: TSExecutorResult.cpp:241
+msgid ""
+"\n"
+"\tDatabase Information:"
+msgstr ""
+"\n"
+"\tデータベース情報:"
+
+#: TSExecutorResult.cpp:246
+msgid ""
+"\n"
+"\tDesignation: "
+msgstr ""
+"\n"
+"\t指定: "
+
+#: TSExecutorResult.cpp:239
+msgid ""
+"\n"
+"\tModule Name:"
+msgstr ""
+"\n"
+"\tモジュール名:"
+
+#: TSExecutorResult.cpp:245
+msgid ""
+"\n"
+"\tName: "
+msgstr ""
+"\n"
+"\t名: "
+
+#: TSExecutorResult.cpp:238
+msgid ""
+"\n"
+"\tTitle: "
+msgstr ""
+"\n"
+"\tタイトル: "
+
+#: TSExecutorResult.cpp:275
+#, c-format
+msgid ""
+"\n"
+"\tVerify - %d"
+msgstr ""
+"\n"
+"\t確認 - %d"
+
+#: TSExecutorResult.cpp:240
+msgid ""
+"\n"
+"\tVersion: "
+msgstr ""
+"\n"
+"\tバージョン: "
+
+#: TSExecutorResult.cpp:236
+msgid ""
+"\n"
+"\n"
+"TestSetup File Information:"
+msgstr ""
+"\n"
+"\n"
+"TestSetupファイル情報:"
+
+#: TSExecutorResult.cpp:268
+msgid ""
+"\n"
+"EndTime:"
+msgstr ""
+"\n"
+"終了時間:"
+
+#: TSExecutorResult.cpp:260
+msgid ""
+"\n"
+"Result:\tFAILED"
+msgstr ""
+"\n"
+"結果:\t失敗"
+
+#: TSExecutorResult.cpp:264
+msgid ""
+"\n"
+"Result:\tSUCCESS"
+msgstr ""
+"\n"
+"結果:\t成功"
+
+#: TSExecutorResult.cpp:247
+msgid ""
+"\n"
+"Results:"
+msgstr ""
+"\n"
+"結果:"
+
+#: TSExecutorResult.cpp:267
+msgid ""
+"\n"
+"StratTime:"
+msgstr ""
+"\n"
+"ストラト時間:"
+
+#: TSExecutorResult.cpp:256
+msgid ""
+"\n"
+"TestCase:  "
+msgstr ""
+"\n"
+"テストケース:  "
+
+#: TSExecutorResult.cpp:243
+msgid "Engineer Info:"
+msgstr "エンジニア情報"
+
+#: TSExecutorResult.cpp:355
+msgid "Friday"
+msgstr "金"
+
+#: TSExecutorResult.cpp:339
+msgid "Monday"
+msgstr "月"
+
+#: TSExecutorResult.cpp:283
+msgid "No Message is Verified"
+msgstr "メッセージは検証されていません"
+
+#: TSExecutorResult.cpp:359
+msgid "Saturday"
+msgstr "土"
+
+#: TSExecutorResult.cpp:335
+msgid "Sunday"
+msgstr "日"
+
+#: TSExecutorResult.cpp:351
+msgid "Thursday"
+msgstr "木"
+
+#: TSExecutorResult.cpp:343
+msgid "Tuesday"
+msgstr "火"
+
+#: TSExecutorResult.cpp:347
+msgid "Wednesday"
+msgstr "水"
+
+#: TreeViewEx.cpp:703
+msgid "Add..."
+msgstr "追加..."
+
+#: TreeViewEx.cpp:707
+#: TreeViewEx.cpp:711
+msgid "Execute"
+msgstr "実行"
+
+#: TreeViewEx.cpp:721
+msgid "Reload File"
+msgstr "ファイルを再読み込み"
+
+#: TSExecutionCAN.cpp:519
+msgid "FAIL"
+msgstr "失敗"
+
+#: TSExecutionCAN.cpp:69
+msgid "In VERIFY - After Enter\n"
+msgstr "VERIFY中 - 入力後\n"
+
+#: TSExecutionCAN.cpp:67
+msgid "In VERIFY - Before Enter\n"
+msgstr "VERIFY中 - 入力前\n"
+
+#: TSExecutionCAN.cpp:395
+msgid "No Message  has Recieved"
+msgstr "メッセージは受信されませんでした"
+
+#: TSExecutionCAN.cpp:375
+#: TSExecutionCAN.cpp:459
+#: TSExecutionCAN.cpp:503
+msgid "SUCCESS"
+msgstr "成功"
+
+#: TSExecutionCAN.cpp:391
+#, c-format
+msgid "SUCCESS COUNT %d"
+msgstr "成功数 %d"
+
+#: TSExecutionCAN.cpp:557
+msgid "Sending Message "
+msgstr "メッセージを送る"
+
+#: TSExecutionCAN.cpp:455
+msgid "Verifying Message "
+msgstr "メッセージを確認する"
+
+#: TSExecutorGUI.cpp:105
+msgid "Test Suite Executor"
+msgstr "テストスイートを実行する"
+
+msgid "Unnamed Test Suite"
+msgstr "Unnamed Test Suite"
+
+#: TSExecutorGUI_ChildFrame.cpp:197
+msgid "Execution Step"
+msgstr "実行ステップ"
+
+#: TSExecutorGUI_ChildFrame.cpp:198
+msgid "Result"
+msgstr "結果"
+
+#: TSExecutorGUI_ChildFrame.cpp:196
+msgid "TestCase Name"
+msgstr "TestCase名"
+
+#: TSExecutorGUI_ChildFrame.cpp:291
+#, c-format
+msgid "The %s is Invalid File"
+msgstr "%s は無効なファイルです"
+
+#: MsgSignalDBWnd.cpp:176
+msgid "DatabaseEditor - "
+msgstr "データベースエディタ - "
+
+#: operations_file.cpp:251
+msgid "Version"
+msgstr "バージョン"
+
+#: ReadCanMsg.cpp:205
+#, c-format
+msgid "Abandoned... %X %d\n"
+msgstr "廃棄されました... %X %d\n"
+
+#: ReadCanMsg.cpp:209
+#, c-format
+msgid "ReadDILCANMsg->WAIT_TIMEOUT %d\n"
+msgstr "ReadDILCANMsg->WAIT_TIMEOUT %d\n"
+
+#: ReadCanMsg.cpp:213
+#, c-format
+msgid "WAIT_FAILED... %X %d\n"
+msgstr "WAIT_FAILED... %X %d\n"
+
+#: RxMsgList.cpp:1104
+msgid "Failed to create Memory for Sortable Column."
+msgstr "ソート可能カラムのメモリを生成できませんでした"
+
+#: SigGrphWnd_Defines.h:38
+#, c-format
+msgid "CSV report successfully generated and saved at %s"
+msgstr "CSVレポートの生成に成功し %sに保存しました"
+
+#: SigGrphWnd_Defines.h:36
+msgid "Comma Separated Values format (*.csv)|*.csv||"
+msgstr "コンマで分離した値フォーマット (*.csv)|*.csv||"
+
+#: SigGrphWnd_Defines.h:125
+msgid "Physical"
+msgstr "フィジカル"
+
+#: SigGrphWnd_Defines.h:124
+msgid "Raw"
+msgstr "原"
+
+#: SigGrphWnd_Defines.h:37
+msgid "csv"
+msgstr "csv"
+
+#: SimENG.cpp:52
+msgid "\\\\.\\Pipe\\"
+msgstr "\\\\.\\Pipe\\"
+
+#: SimENG.cpp:112
+msgid "system error message retrieval operation failed"
+msgstr "システムエラーメッセージの回復に失敗しました"
+
+#: Struct.h:400
+msgid "/"
+msgstr "/"
+
+#: Struct.h:436
+msgid "Error Rate"
+msgstr "エラーレート"
+
+#: Struct.h:451
+msgid "Extended Rx Message"
+msgstr "拡張 Rx メッセージ"
+
+#: Struct.h:454
+msgid "Extended Rx RTR"
+msgstr "拡張 Rx RTR"
+
+#: Struct.h:452
+msgid "Extended Rx Rate"
+msgstr "拡張 Rx Rate"
+
+#: Struct.h:442
+msgid "Extended Tx Message"
+msgstr "拡張 Tx メッセージ"
+
+#: Struct.h:445
+msgid "Extended Tx RTR"
+msgstr "拡張 Tx RTR"
+
+#: Struct.h:443
+msgid "Extended Tx Rate"
+msgstr "拡張 Tx Rate"
+
+#: Struct.h:434
+msgid "Message Rate"
+msgstr "メッセージレート"
+
+#: Struct.h:437
+msgid "Network Load"
+msgstr "ネットワーク負荷"
+
+#: Struct.h:438
+msgid "Peak Network Load"
+msgstr "ピークネットワーク負荷"
+
+#: Struct.h:456
+msgid "Rx Error Rate"
+msgstr "Rx エラーレート"
+
+#: Struct.h:455
+msgid "Rx Errors"
+msgstr "Rx エラー"
+
+#: Struct.h:448
+msgid "Rx Message Total"
+msgstr "Rx メッセージ(全部)"
+
+#: Struct.h:449
+msgid "Standard Rx Message"
+msgstr "標準 Rx メッセージ"
+
+#: Struct.h:450
+msgid "Standard Rx Rate"
+msgstr "標準 Rx レート"
+
+#: Struct.h:440
+msgid "Standard Tx Message"
+msgstr "標準 Tx メッセージ"
+
+#: Struct.h:441
+msgid "Standard Tx Rate"
+msgstr "標準 Tx レート"
+
+#: Struct.h:453
+msgid "Standard.Rx RTR"
+msgstr "標準.Rx RTR"
+
+#: Struct.h:444
+msgid "Standard.Tx RTR"
+msgstr "標準.Tx RTR"
+
+#: Struct.h:435
+msgid "Total Errors"
+msgstr "エラー(全部)"
+
+#: Struct.h:433
+msgid "Total Messages"
+msgstr "メッセージ(全部)"
+
+#: Struct.h:447
+msgid "Tx Error Rate"
+msgstr "Tx エラーレート"
+
+#: Struct.h:446
+msgid "Tx Errors"
+msgstr "Tx エラー"
+
+#: Struct.h:439
+msgid "Tx Message Total"
+msgstr "Tx メッセージ(全部)"
+
+#: Struct.h:400
+msgid "|"
+msgstr "|"
+
+#: TSDefinitions.h:31
+msgid "<Untitled>"
+msgstr "<Untitled>"
+
+#: TSDefinitions.h:83
+msgid "Engineer Name"
+msgstr "Engineer Name"
+
+#: TSDefinitions.h:84
+msgid "Engineer Role"
+msgstr "Engineer Role"
+
+#: TSDefinitions.h:82
+msgid "Module Name"
+msgstr "Module Name"
+
+#: TSDefinitions.h:32
+msgid "[Delete Message]"
+msgstr "[Delete Message]"
+
+#: TSDefinitions.h:51
+msgid "bustype"
+msgstr "bustype"
+
+#: TSDefinitions.h:49
+msgid "category"
+msgstr "category"
+
+#: TSDefinitions.h:54
+msgid "database"
+msgstr "データベース"
+
+#: TSDefinitions.h:75
+msgid "default"
+msgstr "default"
+
+#: TSDefinitions.h:44
+msgid "description"
+msgstr "description"
+
+#: TSDefinitions.h:72
+msgid "exp_handler"
+msgstr "exp_handler"
+
+#: TSDefinitions.h:68
+msgid "failure"
+msgstr "failure"
+
+#: TSDefinitions.h:60
+msgid "format"
+msgstr "format"
+
+#: TSDefinitions.h:46
+msgid "header"
+msgstr "header"
+
+#: TSDefinitions.h:70
+msgid "identifier"
+msgstr "identifier"
+
+#: TSDefinitions.h:48
+msgid "info"
+msgstr "info"
+
+#: TSDefinitions.h:52
+msgid "list_of_database"
+msgstr "list_of_database"
+
+#: TSDefinitions.h:53
+msgid "list_of_database/database"
+msgstr "list_of_database/database"
+
+#: TSDefinitions.h:62
+msgid "list_of_test_cases"
+msgstr "list_of_test_cases"
+
+#: TSDefinitions.h:77
+msgid "name"
+msgstr "name"
+
+#: TSDefinitions.h:56
+msgid "path"
+msgstr "path"
+
+#: TSDefinitions.h:81
+msgid "purpose"
+msgstr "purpose"
+
+#: TSDefinitions.h:80
+msgid "replay"
+msgstr "replay"
+
+#: TSDefinitions.h:55
+msgid "reportfile"
+msgstr "reportfile"
+
+#: TSDefinitions.h:58
+msgid "reportfile/format"
+msgstr "reportfile/format"
+
+#: TSDefinitions.h:57
+msgid "reportfile/path"
+msgstr "reportfile/path"
+
+#: TSDefinitions.h:59
+msgid "reportfile/timemode"
+msgstr "reportfile/timemode"
+
+#: TSDefinitions.h:65
+msgid "send"
+msgstr "send"
+
+#: TSDefinitions.h:73
+msgid "send_message"
+msgstr "send_message"
+
+#: TSDefinitions.h:76
+msgid "signal"
+msgstr "signal"
+
+#: TSDefinitions.h:64
+msgid "testcase"
+msgstr "testcase"
+
+#: TSDefinitions.h:42
+msgid "testsetup"
+msgstr "testsetup"
+
+#: TSDefinitions.h:45
+msgid "testsetup/description"
+msgstr "testsetup/description"
+
+#: TSDefinitions.h:47
+msgid "testsetup/header"
+msgstr "testsetup/header"
+
+#: TSDefinitions.h:63
+msgid "testsetup/list_of_test_cases"
+msgstr "testsetup/list_of_test_cases"
+
+#: TSDefinitions.h:61
+msgid "timemode"
+msgstr "timemode"
+
+#: TSDefinitions.h:43
+#: TSDefinitions.h:71
+msgid "title"
+msgstr "title"
+
+#: TSDefinitions.h:74
+msgid "unit"
+msgstr "unit"
+
+#: TSDefinitions.h:50
+msgid "value"
+msgstr "value"
+
+#: TSDefinitions.h:78
+msgid "verify_message"
+msgstr "verify_message"
+
+#: TSDefinitions.h:85
+msgid "version"
+msgstr "version"
+
+#: TSDefinitions.h:41
+msgid "version=\"1.0\" encoding=\"UTF-8\""
+msgstr "version=\"1.0\" encoding=\"UTF-8\""
+
+#: TSDefinitions.h:79
+msgid "wait"
+msgstr "wait"
+
+#: TSDefinitions.h:69
+msgid "waitfor"
+msgstr "waitfor"
+
+#: TSDefinitions.h:41
+#: common.h:129
+msgid "xml"
+msgstr "xml"
+
+#: MsgSignal_Datatypes.cpp:105
+msgid "Cos wave"
+msgstr "余弦波"
+
+#: MsgSignal_Datatypes.cpp:103
+msgid "Sine wave"
+msgstr "正弦波"
+
+#: MsgSignal_Datatypes.cpp:104
+msgid "Triangular wave"
+msgstr "鋸(Triangular)波"
+
+#: BaseLogObject.cpp:501
+msgid " CAN***"
+msgstr " CAN***"
+
+#: BaseLogObject.cpp:507
+msgid " J1939***"
+msgstr " J1939***"
+
+#: BaseLogObject.cpp:377
+#, c-format
+msgid "%s"
+msgstr "%s"
+
+#: BaseLogObject.cpp:400
+#, c-format
+msgid "%s\n"
+msgstr "%s\n"
+
+#: BaseLogObject.cpp:493
+msgid "***BUSMASTER "
+msgstr "***BUSMASTER "
+
+#: BaseLogObject.cpp:58
+#, c-format
+msgid "***CHANNEL %d - %s - %s Kbps***"
+msgstr "***チャンネル %d - %s - %s Kbps***"
+
+#: BaseLogObject.cpp:53
+#, c-format
+msgid "***CHANNEL %d BAUD RATE %d kbps***"
+msgstr "***チャンネル %d ボーレート %d kbps***"
+
+#: BaseLogObject.cpp:57
+msgid "***END CHANNEL BAUD RATE***"
+msgstr "***終了 チャンネル ボーレート***"
+
+#: BaseLogObject.cpp:55
+msgid "***END DATABASE FILES (DBF/DBC)***"
+msgstr "***終 データベース ファイル (DBF/DBC)***"
+
+#: BaseLogObject.cpp:47
+#: LogObjectCAN.cpp:36
+#, c-format
+msgid "***END DATE AND TIME %d:%d:%d %d:%d:%d:%d***"
+msgstr "***終了 日付:時間 %d:%d:%d %d:%d:%d:%d***"
+
+#: LogObjectCAN.cpp:31
+msgid "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***"
+msgstr "***注意: このドキュメントは修正しないでください***"
+
+#: BaseLogObject.cpp:60
+msgid "***PROTOCOL"
+msgstr "***プロトコル"
+
+#: BaseLogObject.cpp:56
+msgid "***START CHANNEL BAUD RATE***"
+msgstr "***開始 チャンネルボーレート***"
+
+#: BaseLogObject.cpp:54
+msgid "***START DATABASE FILES (DBF/DBC)***"
+msgstr "***開始 データベース ファイル (DBF/DBC)***"
+
+#: BaseLogObject.cpp:46
+#: LogObjectCAN.cpp:35
+#, c-format
+msgid "***START DATE AND TIME %d:%d:%d %d:%d:%d:%d***"
+msgstr "***開始 日付:時間 %d:%d:%d %d:%d:%d:%d***"
+
+#: BaseLogObject.cpp:39
+#, c-format
+msgid "_%d"
+msgstr "_%d"
+
+#: BuildProgram.cpp:533
+msgid " loaded successfully"
+msgstr "ロードに成功しました"
+
+#: BuildProgram.cpp:163
+#: BuildProgram.cpp:196
+#: BuildProgram.cpp:231
+#, c-format
+msgid "%s: %d"
+msgstr "%s: %d"
+
+#: BuildProgram.cpp:333
+#, c-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#: BuildProgram.cpp:629
+msgid "<FILENAME>"
+msgstr "<FILENAME>"
+
+#: BuildProgram.cpp:609
+msgid "<INSTALLDIR>"
+msgstr "<INSTALLDIR>"
+
+#: BuildProgram.cpp:623
+msgid "<SRCDIR>"
+msgstr "<SRCDIR>"
+
+#: BuildProgram.cpp:197
+msgid "Error in opening error file"
+msgstr "エラーファイルを開けませんでした"
+
+#: BuildProgram.cpp:232
+msgid "Error in opening input file"
+msgstr "インプットファイルを開けませんでした"
+
+#: BuildProgram.cpp:164
+msgid "Error in opening output file"
+msgstr "アウトプットファイルを開けませんでした"
+
+#: BuildProgram.cpp:719
+msgid "Input file open error : "
+msgstr "インプットファイルのオープンエラー:"
+
+#: BuildProgram.cpp:334
+msgid "Invoking compiler Failed"
+msgstr "コンパイラの実行をできませんでした"
+
+#: BuildProgram.cpp:265
+msgid "\\GCCDLLMakeTemplate"
+msgstr "\\GCCDLLMakeTemplate"
+
+#: BuildProgram.cpp:268
+msgid "_CAN"
+msgstr "_CAN"
+
+#: BuildProgram.cpp:269
+msgid "_J1939"
+msgstr "_J1939"
+
+#: BUSMASTER.cpp:699
+msgid ""
+" while loading.\n"
+"Operation unsuccessful."
+msgstr ""
+"ロードの際\n"
+"オペレーションに失敗しました"
+
+#: BUSMASTER.cpp:703
+msgid ""
+" while saving.\n"
+"Operation unsuccessful."
+msgstr ""
+"保存の際\n"
+"オペレーションに失敗しました"
+
+#: BUSMASTER.cpp:865
+#, c-format
+msgid "%s%d%s"
+msgstr "%s%d%s"
+
+#: BUSMASTER.cpp:707
+msgid ""
+".\n"
+"Operation unsuccessful."
+msgstr ""
+".\n"
+"オペレーションに失敗しました"
+
+#: BUSMASTER.cpp:781
+msgid ""
+"An attempt to edit the file has been made from outside the application.\n"
+"Corrupt configuration file found"
+msgstr ""
+"アプリケーションの外部からファイルの修正をしようとした不正なアクセスがありました\n"
+"破損している設定ファイルが見つかりました"
+
+#: BUSMASTER.cpp:763
+msgid "Configuration file access was denied"
+msgstr "設定ファイルへのアクセスが拒否されました"
+
+#: BUSMASTER.cpp:721
+msgid "Configuration file not found"
+msgstr "設定ファイルを見つけませんでした"
+
+#: BUSMASTER.cpp:757
+msgid "Configuration file path not found"
+msgstr "設定ファイルのパスを見つけませんでした"
+
+#: BUSMASTER.cpp:789
+msgid "Corrupt configuration file header found"
+msgstr "破損している設定ファイル(ヘッダ)が見つかりました"
+
+#: BUSMASTER.cpp:715
+msgid "File error occured"
+msgstr "ファイルエラーが起こりました"
+
+#: BUSMASTER.cpp:751
+msgid "Invalid configuration file extension found"
+msgstr "無効設定ファイルエキステンションが見つかりました"
+
+#: BUSMASTER.cpp:769
+msgid "Invalid file handle obtained"
+msgstr "無効ファイルハンドルです"
+
+#: BUSMASTER.cpp:865
+msgid "NewEd"
+msgstr "NewEd"
+
+#: BUSMASTER.cpp:203
+msgid "RBIN"
+msgstr "RBIN"
+
+#: BUSMASTER.cpp:635
+msgid "Select BUSMASTER Source Filename..."
+msgstr "BUSMASTERソースファイル名を選択..."
+
+#: BUSMASTER.cpp:775
+msgid "Specified drive not found"
+msgstr "指定したドライブが見つかりませんでした"
+
+#: BUSMASTER.cpp:745
+msgid "Unable to close configuration file successfully"
+msgstr "設定ファイルを閉じることができませんでした"
+
+#: BUSMASTER.cpp:727
+msgid "Unable to open configuration file"
+msgstr "設定ファイルを開けませんでした"
+
+#: BUSMASTER.cpp:733
+msgid "Unable to read configuration file"
+msgstr "設定ファイルを読めませんでした"
+
+#: BUSMASTER.cpp:739
+msgid "Unable to write into configuration file"
+msgstr "設定ファイルに書き込めませんでした"
+
+#: BUSMASTER.cpp:795
+msgid "Unknown error encountered"
+msgstr "不明なエラーが発生しました"
+
+#: BusStatisticCAN.cpp:54
+msgid "EMPTY_APP_BUFFER"
+msgstr "EMPTY_APP_BUFFER"
+
+#: BusStatisticCAN.cpp:50
+msgid "ERR_READ_MEMORY_SHORT"
+msgstr "ERR_READ_MEMORY_SHORT"
+
+#: CAN_ETAS_BOA.cpp:1625
+#: CAN_ETAS_BOA.cpp:1637
+#, c-format
+msgid "%s failed to load"
+msgstr "%s ロードに失敗しました"
+
+#: CAN_ETAS_BOA.cpp:541
+msgid "OCI_AddCANBusEventFilter"
+msgstr "OCI_AddCANBusEventFilter"
+
+#: CAN_ETAS_BOA.cpp:551
+msgid "OCI_AddCANErrorFrameFilter"
+msgstr "OCI_AddCANErrorFrameFilter"
+
+#: CAN_ETAS_BOA.cpp:531
+msgid "OCI_AddCANFrameFilter"
+msgstr "OCI_AddCANFrameFilter"
+
+#: CAN_ETAS_BOA.cpp:596
+msgid "OCI_AddInternalErrorEventFilter"
+msgstr "OCI_AddInternalErrorEventFilter"
+
+#: CAN_ETAS_BOA.cpp:581
+msgid "OCI_AddTimerEventFilter"
+msgstr "OCI_AddTimerEventFilter"
+
+#: CAN_ETAS_BOA.cpp:467
+msgid "OCI_CloseCANController"
+msgstr "OCI_CloseCANController"
+
+#: CAN_ETAS_BOA.cpp:452
+msgid "OCI_CreateCANController"
+msgstr "OCI_CreateCANController"
+
+#: CAN_ETAS_BOA.cpp:515
+msgid "OCI_CreateCANRxQueue"
+msgstr "OCI_CreateCANRxQueue"
+
+#: CAN_ETAS_BOA.cpp:499
+msgid "OCI_CreateCANTxQueue"
+msgstr "OCI_CreateCANTxQueue"
+
+#: CAN_ETAS_BOA.cpp:457
+msgid "OCI_DestroyCANController"
+msgstr "OCI_DestroyCANController"
+
+#: CAN_ETAS_BOA.cpp:525
+msgid "OCI_DestroyCANRxQueue"
+msgstr "OCI_DestroyCANRxQueue"
+
+#: CAN_ETAS_BOA.cpp:509
+msgid "OCI_DestroyCANTxQueue"
+msgstr "OCI_DestroyCANTxQueue"
+
+#: CAN_ETAS_BOA.cpp:472
+msgid "OCI_GetCANConfiguration"
+msgstr "OCI_GetCANConfiguration"
+
+#: CAN_ETAS_BOA.cpp:488
+msgid "OCI_GetCANControllerCapabilities"
+msgstr "OCI_GetCANControllerCapabilities"
+
+#: CAN_ETAS_BOA.cpp:477
+msgid "OCI_GetCANControllerProperties"
+msgstr "OCI_GetCANControllerProperties"
+
+#: CAN_ETAS_BOA.cpp:493
+msgid "OCI_GetCANControllerStatus"
+msgstr "OCI_GetCANControllerStatus"
+
+#: CAN_ETAS_BOA.cpp:591
+msgid "OCI_GetError"
+msgstr "OCI_GetError"
+
+#: CAN_ETAS_BOA.cpp:571
+msgid "OCI_GetTimerCapabilities"
+msgstr "OCI_GetTimerCapabilities"
+
+#: CAN_ETAS_BOA.cpp:561
+#: CAN_ETAS_BOA.cpp:566
+msgid "OCI_GetTimerStatus"
+msgstr "OCI_GetTimerStatus"
+
+#: CAN_ETAS_BOA.cpp:576
+msgid "OCI_GetTimerValue"
+msgstr "OCI_GetTimerValue"
+
+#: CAN_ETAS_BOA.cpp:462
+msgid "OCI_OpenCANController"
+msgstr "OCI_OpenCANController"
+
+#: CAN_ETAS_BOA.cpp:520
+msgid "OCI_ReadCANData"
+msgstr "OCI_ReadCANData"
+
+#: CAN_ETAS_BOA.cpp:546
+msgid "OCI_RemoveCANBusEventFilter"
+msgstr "OCI_RemoveCANBusEventFilter"
+
+#: CAN_ETAS_BOA.cpp:556
+msgid "OCI_RemoveCANErrorFrameFilter"
+msgstr "OCI_RemoveCANErrorFrameFilter"
+
+#: CAN_ETAS_BOA.cpp:536
+msgid "OCI_RemoveCANFrameFilter"
+msgstr "OCI_RemoveCANFrameFilter"
+
+#: CAN_ETAS_BOA.cpp:601
+msgid "OCI_RemoveInternalErrorEventFilter"
+msgstr "OCI_RemoveInternalErrorEventFilter"
+
+#: CAN_ETAS_BOA.cpp:586
+msgid "OCI_RemoveTimerEventFilter"
+msgstr "OCI_RemoveTimerEventFilter"
+
+#: CAN_ETAS_BOA.cpp:482
+msgid "OCI_SetCANControllerProperties"
+msgstr "OCI_SetCANControllerProperties"
+
+#: CAN_ETAS_BOA.cpp:504
+msgid "OCI_WriteCANData"
+msgstr "OCI_WriteCANData"
+
+#: CAN_ETAS_BOA.cpp:1927
+msgid "could create Rx Queue"
+msgstr "受信キューの生成可能"
+
+#: CAN_ETAS_BOA.cpp:882
+#: CAN_ETAS_BOA.cpp:894
+#: CAN_ETAS_BOA.cpp:948
+msgid "could not add Error filter"
+msgstr "エラーフィルタの追加に失敗しました"
+
+#: CAN_ETAS_BOA.cpp:869
+msgid "could not add Event filter"
+msgstr "イベントフィルタの追加に失敗しました"
+
+#: CAN_ETAS_BOA.cpp:1921
+msgid "could not add filters"
+msgstr "フィルタの追加に失敗しました"
+
+#: CAN_ETAS_BOA.cpp:857
+msgid "could not add frame filter"
+msgstr "フレームフィルタの追加に失敗しました"
+
+#: CAN_ETAS_BOA.cpp:1982
+msgid "could not close controller"
+msgstr "コントローラの終了ができませんでした"
+
+#: CAN_ETAS_BOA.cpp:2139
+msgid "could not configure the controller"
+msgstr "コントローラの設定ができませんでした"
+
+#: CAN_ETAS_BOA.cpp:978
+#: CAN_ETAS_BOA.cpp:1005
+msgid "could not create Rx Queue"
+msgstr "受信キューの生成に失敗しました"
+
+#: CAN_ETAS_BOA.cpp:990
+#: CAN_ETAS_BOA.cpp:1014
+msgid "could not create TX Queue"
+msgstr "送信キューの生成に失敗しました"
+
+#: CAN_ETAS_BOA.cpp:1940
+msgid "could not create controller"
+msgstr "コントローラの生成に失敗しました"
+
+#: CAN_ETAS_BOA.cpp:1976
+msgid "could not destroy controller"
+msgstr "コントローラの廃止ができませんでした"
+
+#: CAN_ETAS_BOA.cpp:1988
+msgid "could not destroy the queue"
+msgstr "キューの削除ができませんでした"
+
+#: CAN_ETAS_BOA.cpp:1632
+msgid "could not get CSI function pointers"
+msgstr "CSI関数ポインターを取得できませんでした"
+
+#: CAN_ETAS_BOA.cpp:1615
+msgid "could not get OCI function pointers"
+msgstr "OCI関数ポインターを取得できませんでした"
+
+#: CAN_ETAS_BOA.cpp:2181
+#: CAN_ETAS_BOA.cpp:2247
+msgid "could not get controller mode"
+msgstr "コントローラモードを取得できませんでした"
+
+#: CAN_ETAS_BOA.cpp:1915
+msgid "could not get timer resolution"
+msgstr "タイマーレゾリューションを取得できませんでした"
+
+#: CAN_ETAS_BOA.cpp:1934
+msgid "could not open controller"
+msgstr "コントローラが開けませんでした"
+
+#: CAN_ETAS_BOA.cpp:937
+msgid "could not remove Error filter"
+msgstr "エラーフィルタの削除をできませんでした"
+
+#: CAN_ETAS_BOA.cpp:924
+msgid "could not remove Event filter"
+msgstr "イベントフィルタの削除をできませんでした"
+
+#: CAN_ETAS_BOA.cpp:912
+msgid "could not remove frame filter"
+msgstr "フレームフィルタの削除をできませんでした"
+
+#: CAN_ETAS_BOA.cpp:1994
+msgid "could not remove the filter"
+msgstr "フィルタの削除をできませんでした"
+
+#: CAN_ETAS_BOA.cpp:2174
+msgid "could not start the controller in running mode"
+msgstr "実行モードにコントローラの開始ができませんでした"
+
+#: CAN_ETAS_BOA.cpp:2236
+msgid "could not stop the controller in suspended mode"
+msgstr "中止モードにコントローラの終了ができませんでした"
+
+#: CAN_ETAS_BOA.cpp:2315
+msgid "could not write can data into bus"
+msgstr "CANバスにデータを送信できませんでした"
+
+#: CAN_ICS_neoVI.cpp:2283
+msgid "Controller configuration failed"
+msgstr "コントローラの設定に失敗しました"
+
+#: CAN_ICS_neoVI.cpp:2583
+#: CAN_Vector_XL.cpp:1280
+msgid "Could not start the read thread"
+msgstr "受信スレッドの開始ができませんでした"
+
+#: CAN_ICS_neoVI.cpp:2256
+msgid "Driver is not running..."
+msgstr "ドライバが実行されていません"
+
+#: CAN_ICS_neoVI.cpp:2470
+#, c-format
+msgid "ES581.2, Serial Number %d, Network: %s"
+msgstr "ES581.2, シリアル番号 %d, ネットワーク: %s"
+
+#: CAN_ICS_neoVI.cpp:2474
+#, c-format
+msgid "ES581.3, Serial Number %d, Network: %s"
+msgstr "ES581.3, シリアル番号 %d, ネットワーク: %s"
+
+#: CAN_ICS_neoVI.cpp:3043
+msgid "ETASneo40.dll"
+msgstr "ETASneo40.dll"
+
+#: CAN_ICS_neoVI.cpp:3046
+msgid "ETASneo40.dll loading failed"
+msgstr "ETASneo40.dllのロードに失敗しました"
+
+#: CAN_ICS_neoVI.cpp:2189
+#: CAN_Vector_XL.cpp:846
+msgid "Error connecting to driver"
+msgstr "ドライバに接続できませんでした"
+
+#: CAN_ICS_neoVI.cpp:2194
+msgid "Error in getting driver status"
+msgstr "ドライバの状態を取得できませんでした"
+
+#: CAN_ICS_neoVI.cpp:3066
+#: CAN_Vector_XL.cpp:716
+msgid "Getting Process address of the APIs failed"
+msgstr "実行したAPIのプロセスアドレスを取得できませんでした"
+
+#: CAN_ICS_neoVI.cpp:1625
+#, c-format
+msgid "Number of neoVIs Available: %d"
+msgstr "使用可能なneoVIsの数: %d"
+
+#: CAN_ICS_neoVI.cpp:3053
+msgid "Please have a look at: https://github.com/rbei-etas/busmaster/wiki/Hardware-support"
+msgstr "https://github.com/rbei-etas/busmaster/wiki/Hardware-supportを参照してください"
+
+#: CAN_ICS_neoVI.cpp:1597
+msgid "Query for devices unsuccessful"
+msgstr "デバイスへの問い合わせに失敗しました"
+
+#: CAN_ICS_neoVI.cpp:1589
+msgid "Query successful, but no device found"
+msgstr "問い合わせに成功しましたがデバイスが見つけられません"
+
+#: CAN_ICS_neoVI.cpp:1384
+#, c-format
+msgid "SN: %d, Port ID: %d-CAN%d"
+msgstr "SN: %d, ポートID: %d-CAN%d"
+
+#: CAN_ICS_neoVI.cpp:2482
+#, c-format
+msgid "Unknown, Serial Number %d"
+msgstr "不明, シリアル番号 %d"
+
+#: CAN_ICS_neoVI.cpp:2450
+#, c-format
+msgid "ValueCAN, Serial Number %d, Network: %s"
+msgstr "ValueCAN, シリアル番号 %d, ネットワーク: %s"
+
+#: CAN_ICS_neoVI.cpp:2465
+#, c-format
+msgid "ValueCAN3, Serial Number %d, Network: %s"
+msgstr "ValueCAN3, シリアル番号 %d, ネットワーク: %s"
+
+#: CAN_ICS_neoVI.cpp:3049
+msgid "icsneo40.dll"
+msgstr "icsneo40.dll"
+
+#: CAN_ICS_neoVI.cpp:3036
+msgid "icsneo40.dll already loaded"
+msgstr "icsneo40.dllはロード済みです"
+
+#: CAN_ICS_neoVI.cpp:3052
+msgid "icsneo40.dll loading failed"
+msgstr "icsneo40.dllのロードに失敗しました"
+
+#: CAN_ICS_neoVI.cpp:2443
+#, c-format
+msgid "neoVI Blue, Serial Number %d, Network: %s"
+msgstr "neoVI 青, シリアル番号 %d, ネットワーク: %s"
+
+#: CAN_ICS_neoVI.cpp:2457
+#, c-format
+msgid "neoVi Fire/Red, Serial Number %d, Network: %s"
+msgstr "neoVI ファイヤー/赤, シリアル番号 %d, ネットワーク: %s"
+
+#: CAN_Vector_XL.cpp:1855
+msgid "No available channels found! (e.g. no CANcabs...)\r\n"
+msgstr "使用可能なチャンネルがありません! (CANcabsなど)\r\n"
+
+#: CAN_Vector_XL.cpp:1999
+#, c-format
+msgid "Number of Vector hardwares Available: %d"
+msgstr "使用可能なベクトルハードウェアの数: %d"
+
+#: CAN_Vector_XL.cpp:1861
+msgid "Problem Finding Device!"
+msgstr "デバイスの探索中、問題発生!"
+
+#: CAN_Vector_XL.cpp:835
+#, c-format
+msgid "Vector - %s SN - %d Channel Index - %d"
+msgstr "Vector - %s SN - %d チャンネル Index - %d"
+
+#: CAN_Vector_XL.cpp:632
+msgid "vxlapi.dll already loaded"
+msgstr "vxlapi.dllはロード済みです"
+
+#: CAN_Vector_XL.cpp:641
+msgid "vxlapi.dll loading failed"
+msgstr "vxlapi.dllのロードに失敗しました"
+
+#: ChangeRegDefines.h:30
+msgid "Acceptance Code"
+msgstr "許可コード"
+
+#: ChangeRegDefines.h:29
+msgid "Acceptance Mask"
+msgstr "許可マスク"
+
+#: ChangeRegDefines.h:38
+msgid "BTR0 and BTR1"
+msgstr "BTR0とBTR1"
+
+#: ChangeRegDefines.h:28
+msgid "Baud Rate"
+msgstr "ボーレート"
+
+#: ChangeRegDefines.h:35
+msgid "Baud Rate Prescalar"
+msgstr "ボーレート(Prescalar)"
+
+#: ChangeRegDefines.h:31
+msgid "Bus Timer Register0"
+msgstr "バスタイマーレジスタ0"
+
+#: ChangeRegDefines.h:32
+msgid "Bus Timer Register1"
+msgstr "バスタイマーレジスタ1"
+
+#: ChangeRegDefines.h:27
+msgid "Change Registers"
+msgstr "レジスタの変更"
+
+#: ChangeRegDefines.h:34
+msgid "Clock Frequency"
+msgstr "クロック周期"
+
+#: ChangeRegDefines.h:47
+msgid "Error In Inserting SubItems"
+msgstr "サブアイテムを挿入する際にエラーが発生しました"
+
+#: ChangeRegDefines.h:36
+msgid "Item Number Under Focus"
+msgstr "フォーカスしているアイテム番号"
+
+#: ChangeRegDefines.h:44
+#, c-format
+msgid "Nearest Valid Baud Rate is %s kBit/s. Do You want to change it ?"
+msgstr "一番近い有効なボーレートは %s kBit/s です。変更しますか？"
+
+#: ChangeRegDefines.h:45
+msgid ""
+"Not a valid Decimal Numerals or out of range. !!! \n"
+"\n"
+"Enter only positive Decimal Numerals upto 1000kbps."
+msgstr ""
+"入力した値が十進数ではないか範囲を超えています。\n"
+"\n"
+"1000kbpsまでの有効な値を入力してください。"
+
+#: ChangeRegDefines.h:46
+msgid ""
+"Not a valid value. !!! \n"
+"\n"
+"Enter only Hexadecimal Value."
+msgstr ""
+"入力した値が無効です。\n"
+"\n"
+"16進数で入力してください。"
+
+#: ChangeRegDefines.h:33
+msgid "Sampling"
+msgstr "サンプリング"
+
+#: ChangeRegDefines.h:82
+#, c-format
+msgid "The Warning limit \"%s\" is beyond the limit %d - %d"
+msgstr "ワーニング限界値 \"%s\" は  限界値 %d - %d を越えています"
+
+#: common.h:130
+msgid "*.xml|*.xml||"
+msgstr "*.xml|*.xml||"
+
+#: common.h:140
+msgid "CSV File doesnot Exist!"
+msgstr "CSVファイルは存在していません。"
+
+#: common.h:133
+msgid "Could not convert!"
+msgstr "変換できません。"
+
+#: common.h:114
+msgid "Do you want to close the application?"
+msgstr "アプリを終了しますか？"
+
+#: common.h:137
+msgid "Enter CSV file details!"
+msgstr "CSVファイルの詳細を入力してください"
+
+#: common.h:138
+msgid "Enter Log and CSV file details!"
+msgstr "ログとCSVファイルの詳細を入力してください"
+
+#: common.h:136
+msgid "Enter Log file details!"
+msgstr "ログファイルの詳細を入力してください"
+
+#: common.h:141
+msgid "Invalid Log File!"
+msgstr "無効なログファイル"
+
+#: common.h:139
+msgid "Log File doesnot Exist!"
+msgstr "ログファイルが存在していません。"
+
+#: common.h:147
+msgid "MCNet_Example.xml"
+msgstr "MCNet_Example.xml"
+
+#: common.h:135
+msgid "No fields selected!"
+msgstr "フィールドが選択されていません"
+
+#: common.h:131
+msgid "Select Rule File"
+msgstr "ルールファイルを選択してください"
+
+#: common.h:134
+msgid "Successfully converted text file to Excel File!"
+msgstr "エクセルファイルでの変換に成功しました。"
+
+#: ConfigData.cpp:71
+msgid "Configuration file changed outside the Application"
+msgstr "アプリケーションの外からのアクセスで設定ファイルに変更がありました"
+
+#: ConfigData.cpp:57
+msgid "The Configuration file is not Compatible"
+msgstr "設定ファイルに互換性がありません"
+
+#: ConfigData.cpp:64
+msgid "The Configuration file is not Valid"
+msgstr "設定ファイルが有効ではありません"
+
+#: ContrConfigPeakUsbDefs.h:29
+msgid "16"
+msgstr "16"
+
+#: DefineTimerHandler.cpp:147
+msgid ""
+"Please enter a value more than or equal\n"
+"                          to 1 msec!"
+msgstr ""
+"1 msecより\n"
+"大きい値又は同じ値を入力してください"
+
+#: DefineTimerHandler.cpp:159
+msgid "TIMERNAME"
+msgstr "TIMERNAME"
+
+#: DefineTimerHandler.cpp:160
+msgid "TIMERVALUE"
+msgstr "TIMERVALUE"
+
+#: DefineTimerHandler.cpp:139
+msgid "~!@#$%^&*-+={}[]/\"\\<>`,.? ()"
+msgstr "~!@#$%^&*-+={}[]/\"\\<>`,.? ()"
+
+#: dmgraphctrl.h:101
+msgid "Appearance"
+msgstr "表示スタイル"
+
+#: dmgraphctrl.h:102
+msgid "Caption"
+msgstr "キャプション"
+
+#: dmgraphctrl.h:70
+msgid "DmGraphCtrl_class"
+msgstr "DmGraphCtrl_class"
+
+#: dmgraphctrl.h:103
+msgid "Enabled"
+msgstr "有効"
+
+#: dmgraphctrl.h:99
+msgid "_cx"
+msgstr "_cx"
+
+#: dmgraphctrl.h:100
+msgid "_cy"
+msgstr "_cy"
+
+#: Filter.cpp:125
+msgid "Bus"
+msgstr "バス"
+
+#: Filter.cpp:126
+msgid "Configured Filters"
+msgstr "設定されたフィルタ"
+
+#: Filter.cpp:124
+msgid "Filter Selection Dialog"
+msgstr "フィルタ選択ダイアログ"
+
+#: Filter.cpp:127
+msgid "Selected Filters"
+msgstr "選択されたフィルタ"
+
+#: FrameProcessor_J1939.cpp:179
+#, c-format
+msgid "ERR_READ_MEMORY_SHORT  nSize: %d"
+msgstr "ERR_READ_MEMORY_SHORT  nSize: %d"
+
+#: GUI_FormatMsgCAN.cpp:328
+msgid "ERR"
+msgstr "ERR"
+
+#: HardwareListing.cpp:474
+msgid "Please select atleast one hardware"
+msgstr "1個以上のハードウェアを選択してください"
+
+#: HardwareListing.cpp:515
+#, c-format
+msgid "Please select atmost %d hardwares"
+msgstr "最大 %d 個のハードウェアを選択してください"
+
+#: LogObjectCAN.cpp:142
+#, c-format
+msgid "%s %s %s %s %s %s %s\n"
+msgstr "%s %s %s %s %s %s %s\n"
+
+#: LogObjectCAN.cpp:42
+msgid "***<Time><Tx/Rx><Channel><CAN ID><Type><DLC><DataBytes>***"
+msgstr "***<時間><送受信><チャンネル><ID><タイプ><レングス><バイト数>***"
+
+#: LogObjectCAN.cpp:30
+msgid "***BUSMASTER Ver 1.6.4***"
+msgstr "***BUSMASTER バージョン 1.6.4***"
+
+#: LogObjectJ1939.cpp:160
+#, c-format
+msgid "%s %s %s %s %s %s %s %s %s %s %s\n"
+msgstr "%s %s %s %s %s %s %s %s %s %s %s\n"
+
+#: LogObjectJ1939.cpp:51
+msgid "***<Time><Channel><CAN ID><PGN><Type><Source Node><Destination Node><Priority><Tx/Rx><DLC><DataBytes>***"
+msgstr "***<時間><チャンネル><ID><PGN><タイプ><ソースノード><目的ノード><優先順位><送受信><レングス><バイト数>***"
+
+#: MessageDetailsDlg.cpp:198
+msgid " cannot be empty!"
+msgstr "空白ではいけません"
+
+#: MessageDetailsDlg.cpp:299
+msgid "Could not delete the signals..."
+msgstr "シグナルの削除ができませんでした"
+
+#: MessageDetailsDlg.cpp:290
+msgid ""
+"You have signals defined for this message for previous message length.\n"
+"Reducing message length will delete redundent signals and associated description\n"
+"defined for this message.Do you want to delete these signals?\n"
+"\n"
+"Select \"Yes\" to delete the signal(s) and to accept new message length value.\n"
+"Select \"No\" to retain the previous message length."
+msgstr ""
+"このメッセージには以前のメッセージの長さとしてシグナルが決定されています。\n"
+"メッセージの長さの調整を行った時には関連の説明やシグナルが削除されます。\n"
+"それでもこのシグナルを削除しますか？\n"
+"削除を行い新しいメッセージの長さを許可するには\"Yes\"を選択してください。\n"
+"以前のメッセージの長さを復帰するには\"No\"を選択してください。"
+
+#: MsgContainer_J1939.cpp:199
+msgid "J1939 PSDI - EMPTY_APP_BUFFER"
+msgstr "J1939 PSDI - EMPTY_APP_BUFFER"
+
+#: MsgContainer_J1939.cpp:193
+#, c-format
+msgid "J1939 PSDI - ERR_READ_MEMORY_SHORT  nSize: %d"
+msgstr "J1939 PSDI - ERR_READ_MEMORY_SHORT  nSize: %d"
+
+#: MsgSignal_Datatypes.h:45
+msgid "FLEXRAY"
+msgstr "FLEXRAY"
+
+#: MsgSignal_Datatypes.h:45
+msgid "FRAME ID :"
+msgstr "フレーム ID :"
+
+#: MsgSignal_Datatypes.h:46
+msgid "LIN"
+msgstr "LIN"
+
+#: MsgSignal_Datatypes.h:43
+msgid "MCNET"
+msgstr "MCNET"
+
+#: MsgSignal_Datatypes.h:47
+msgid "MOST"
+msgstr "MOST"
+
+#: MsgSignal_Datatypes.h:43
+msgid "Message Code :"
+msgstr "メッセージコード :"
+
+#: MsgSignal_Datatypes.h:42
+msgid "Message ID :"
+msgstr "メッセージ ID :"
+
+#: MsgSignal_Datatypes.h:46
+#: MsgSignal_Datatypes.h:47
+msgid "Msg ID :"
+msgstr "メッセージ :"
+
+#: MsgSignal_Datatypes.h:44
+msgid "PGN :"
+msgstr "PGN :"
+
+#: SimSysTreeView.cpp:1579
+msgid "New Simulated system Configuration Filename..."
+msgstr "新しいシミュレーションシステムのコンフィギュレーションファイル名..."
+
+#: SimSysTreeView.cpp:1180
+msgid " The config file is corrupted. cannot add!"
+msgstr "設定ファイルが壊れています。追加することはできません！"
+
+#: SimSysTreeView.cpp:1124
+msgid "Add"
+msgstr "加える"
+
+#: SimSysTreeView.cpp:1125
+msgid "Add Configuration Filename..."
+msgstr "コンフィギュレーションファイル名を追加..."
+
+#: SimSysTreeView.cpp:2258
+msgid "Could not delete seleceted Simsys!"
+msgstr "選択したSimsysを削除できませんでした！"
+
+#: SimSysTreeView.cpp:1553
+msgid "Memory Creation Error. Please try again"
+msgstr "メモリの作成エラーが発生しました。もう一度やり直してください"
+
+#: SimSysTreeView.cpp:2511
+msgid "The simulated system is already present.Cannot replace the file"
+msgstr "シミュレートされたシステムはすでに存在しています。ファイルを置き換えることはできません"
+
+#: SimSysTreeView.cpp:1301
+#: SimSysTreeView.cpp:2182
+#: SimSysTreeView.cpp:2244
+msgid "Unload all the dlls and try again!!"
+msgstr "すべてのDLLをアンロードし、再試行してください！"
+
+#: SimSysTreeView.cpp:1419
+msgid "Unload the dll and try again!"
+msgstr "dllをアンロードし、再度お試し下さい！"
+
+#: SimSysTreeView.cpp:1340
+msgid "Unload the dll and try again!!"
+msgstr "dllをアンロードし、再度お試し下さい！"
+
+#: MainFrm.cpp:10408
+#, c-format
+msgid "%s\\FormatConverter.exe"
+msgstr "%s\\FormatConverter.exe"
+
+#: MainFrm.cpp:10812
+msgid "&"
+msgstr "&"
+
+#: MainFrm.cpp:13013
+msgid "&Activate"
+msgstr "&活性化"
+
+#: MainFrm.cpp:13093
+msgid "&Go Offline"
+msgstr "&オフラインにする"
+
+#: MainFrm.cpp:13097
+msgid "&Go Online"
+msgstr "&オンラインにする"
+
+#: MainFrm.cpp:12653
+msgid "&Hardware Interface"
+msgstr "&ハードウェアインタフェース"
+
+#: MainFrm.cpp:16914
+msgid "&Hardware"
+msgstr "&ハードウェア"
+
+#: MainFrm.cpp:144
+msgid "*.dll"
+msgstr "*.dll"
+
+#: MainFrm.cpp:1937
+#: MainFrm.cpp:13378
+msgid "."
+msgstr "."
+
+#: MainFrm.cpp:10304
+msgid ".chm"
+msgstr ".chm"
+
+#: MainFrm.cpp:5968
+msgid ".log"
+msgstr ".log"
+
+#: MainFrm.cpp:10807
+msgid "500"
+msgstr "500"
+
+#: MainFrm.cpp:1082
+msgid ""
+"Are yor sure you want to close the \n"
+"database that is already open?"
+msgstr ""
+"すでに開いているデータベースを\n"
+"閉じてもよろしいですか？"
+
+#: MainFrm.cpp:1466
+msgid "BUSMASTER Database File(*.dbf)|*.dbf||"
+msgstr "バスマスタ データベースファイル (*.dbf)|*.dbf||"
+
+#: MainFrm.cpp:13017
+msgid "Deac&tivate"
+msgstr "&無効化"
+
+#: MainFrm.cpp:622
+msgid "LOCALDIR"
+msgstr "LOCALDIR"
+
+#: MainFrm.cpp:2061
+msgid "NewDB.dbf"
+msgstr "NewDB.dbf"
+
+#: MainFrm.cpp:1101
+#: MainFrm.cpp:1463
+#: MainFrm.cpp:2060
+#: MainFrm.cpp:13512
+#: MainFrm.cpp:13657
+#: DBC2DBFConverter.cpp:146
+#: DBF2DBCConverter.cpp:115
+msgid "dbf"
+msgstr "dbf"
+
+#: dmgraphctrl.cpp:3028
+#, c-format
+msgid "%.4f, %.3f,"
+msgstr "%.4f, %.3f,"
+
+#: dmgraphctrl.cpp:3003
+#, c-format
+msgid "%s,,"
+msgstr "%s,,"
+
+#: dmgraphctrl.cpp:3655
+#: dmgraphctrl.cpp:3686
+#, c-format
+msgid "%s: %s, %s"
+msgstr "%s: %s, %s"
+
+#: dmgraphctrl.cpp:48
+#: dmgraphctrl.cpp:52
+#: dmgraphctrl.cpp:56
+msgid "Arial"
+msgstr "MS UI Gothic"
+
+#: dmgraphctrl.cpp:2992
+#, c-format
+msgid ""
+"BUSMASTER Generated Report\n"
+"\n"
+msgstr ""
+"バスマスタは、レポートを生成\n"
+"\n"
+
+#: dmgraphctrl.cpp:2500
+msgid "DMGraph ActiveX Control"
+msgstr "DMGraph ActiveXコントロール"
+
+#: dmgraphctrl.cpp:2219
+#, c-format
+msgid "Error in creating ToolTip %#x\n"
+msgstr "ツールヒントを作成する際のエラー %#x\n"
+
+#: dmgraphctrl.cpp:163
+#, c-format
+msgid "Failed to load bitmap %#x\n"
+msgstr "ビットマップの読み込みに失敗しました %#x\n"
+
+#: dmgraphctrl.cpp:2534
+msgid "Graph2D"
+msgstr "Graph2D"
+
+#: dmgraphctrl.cpp:2604
+#: dmgraphctrl.cpp:2631
+#, c-format
+msgid "Size: %d\n"
+msgstr "サイズ: %d\n"
+
+#: dmgraphctrl.cpp:3012
+#, c-format
+msgid "Time( in mSec),Value,"
+msgstr "時間( mSec),値,"
+
+#: dmgraphctrl.cpp:60
+msgid "Times New Roman"
+msgstr "MS UI Gothic"
+
+#: dmgraphctrl.cpp:3202
+msgid "Unable to close file handle when saving bitmap"
+msgstr "bitmapを保存するときにファイルハンドルを閉じることができません"
+
+#: dmgraphctrl.cpp:3156
+msgid "Unable to open the file when saving bitmap"
+msgstr "bitmapを保存するときファイルを開くことができません"
+
+#: dmgraphctrl.cpp:3058
+msgid "Unable to retrieve colour format, width and height of bitmap"
+msgstr "カラー形式、幅とビットマップの高さを取得できません"
+
+#: dmgraphctrl.cpp:3141
+msgid "Unable to retrieve colour table when saving bitmap"
+msgstr "ビットマップを保存するときにカラーテーブルを取得することができません"
+
+#: dmgraphctrl.cpp:3185
+msgid "Unable to write bitmap info"
+msgstr "bitmapの情報を書き込むことができません"
+
+#: dmgraphctrl.cpp:3194
+msgid "Unable to write colour indices when saving bitmap"
+msgstr "bitmapを保存するときの色のインデックスを書き込むことができません"
+
+#: dmgraphctrl.cpp:3176
+msgid "Unable to write file header when saving bitmap"
+msgstr "bitmapを保存するときにファイルヘッダを書き込むことができません"
+
+#: dmgraphctrl.cpp:3244
+#, c-format
+msgid "Width %d Height %d \n"
+msgstr "幅%d 高%d \n"
+
+#: dmgraphctrl.cpp:2956
+msgid "w+"
+msgstr "w+"
+
+msgid "&Simulation"
+msgstr "&シミュレーション"
+
+msgid "Replay File"
+msgstr "リプレイファイル"
+
+msgid "TestSetup Files (*.xml)|*.xml||"
+msgstr "TestSetupファイル (*.xml)|*.xml||"
+
+#: TxMsgBlocksView.cpp:279
+#: TxMsgBlocksView.cpp:280
+#: TxMsgBlocksView.cpp:981
+#: TxMsgBlocksView.cpp:1052
+msgid "Single"
+msgstr "シングル"
+
+#: TxMsgBlocksView.cpp:966
+#: TxMsgBlocksView.cpp:2147
+msgid "Trigger (Cyclic) on event"
+msgstr "イベントのトリガ（周期的）"
+
+#: TxMsgBlocksView.cpp:970
+#: TxMsgBlocksView.cpp:2141
+msgid "Trigger (Monoshot) on event"
+msgstr "イベントのトリガ（Monoshot）"
+
+msgid "Configure Simulated Systems"
+msgstr "シミュレーションシステムの設定"
+
+#: FilterConfigDlg.cpp:563
+msgid " ["
+msgstr " ["
+
+#: FilterConfigDlg.cpp:1019
+#: FilterConfigDlg.cpp:1020
+#: FilterConfigDlg.cpp:1730
+msgid "0"
+msgstr "0"
+
+#: FilterConfigDlg.cpp:1752
+msgid "Do you want to delete all filters from the list?"
+msgstr "リストからすべてのフィルタを削除しますか？"
+
+#: FilterConfigDlg.cpp:1432
+msgid "End range message ID exceeds extended ID range"
+msgstr "終了範囲のメッセージIDは、拡張IDの範囲を超えています"
+
+#: FilterConfigDlg.cpp:1443
+msgid "End range message ID exceeds standard ID range"
+msgstr "終了範囲のメッセージIDが標準IDの範囲を超えています"
+
+#: FilterConfigDlg.cpp:755
+msgid "Filter name cannot be empty"
+msgstr "フィルタ名は空にすることはできません"
+
+#: FilterConfigDlg.cpp:1294
+msgid "Message ID exceeds extended ID range"
+msgstr "メッセージIDが拡張IDの範囲を超える"
+
+#: FilterConfigDlg.cpp:1305
+msgid "Message ID exceeds standard ID range"
+msgstr "メッセージIDは、標準的なIDの範囲を超えています"
+
+#: FilterConfigDlg.cpp:771
+msgid "Name already exist"
+msgstr "その名前はすでに存在します"
+
+#: FilterConfigDlg.cpp:1451
+msgid "Start Range ID is greater than End Range"
+msgstr "開始範囲IDは、範囲の終了値よりも大きい"
+
+#: FilterConfigDlg.cpp:1405
+msgid "Start range message ID exceeds extended ID range"
+msgstr "開始範囲のメッセージIDは、拡張されたIDの範囲を超えています"
+
+#: FilterConfigDlg.cpp:1416
+msgid "Start range message ID exceeds standard ID range"
+msgstr "開始範囲のメッセージIDは、標準的なIDの範囲を超えています"
+
+#: FilterConfigDlg.cpp:1947
+msgid "Unable to create memory for new Filter"
+msgstr "新しいフィルタのメモリを作成することができません"
+
+#: FilterConfigDlg.cpp:1952
+msgid "Unable to find unique name for the filter!!"
+msgstr "フィルタのユニークな名前を見つけることができません！"
+
+#: FilterConfigDlg.cpp:563
+msgid "]"
+msgstr "]"
+
+#: SimSysTreeView.cpp:46
+msgid "BUSMASTER Simulated system Configuration files(*.sim)|*.sim||"
+msgstr "バスマスタシミュレートされたシステム·コンフィギュレーション·ファイル(*.sim)|*.sim||"
+
+#: SimSysTreeView.cpp:521
+#: SimSysTreeView.cpp:620
+msgid "Disable All Error Handlers"
+msgstr "すべてのエラーハンドラを無効にする"
+
+#: SimSysTreeView.cpp:525
+#: SimSysTreeView.cpp:641
+msgid "Disable All Event Handlers"
+msgstr "すべてのイベントハンドラを無効にする"
+
+#: SimSysTreeView.cpp:505
+#: SimSysTreeView.cpp:812
+#: SimSysTreeView.cpp:1285
+msgid "Disable All Handlers"
+msgstr "すべてのハンドラを無効にする"
+
+#: SimSysTreeView.cpp:513
+#: SimSysTreeView.cpp:574
+msgid "Disable All Key Handlers"
+msgstr "すべてのキーハンドラを無効にする"
+
+#: SimSysTreeView.cpp:517
+#: SimSysTreeView.cpp:597
+msgid "Disable All Message Handlers"
+msgstr "すべてのメッセージハンドラを無効にする"
+
+#: SimSysTreeView.cpp:529
+#: SimSysTreeView.cpp:664
+msgid "Disable All Timer Handlers"
+msgstr "オールタイムハンドラを無効にする"
+
+#: SimSysTreeView.cpp:828
+#: SimSysTreeView.cpp:919
+#: SimSysTreeView.cpp:1683
+msgid "Disable Error Handlers"
+msgstr "エラーハンドラを無効にする"
+
+#: SimSysTreeView.cpp:820
+#: SimSysTreeView.cpp:873
+#: SimSysTreeView.cpp:1732
+msgid "Disable Key Handlers"
+msgstr "キーハンドラを無効にする"
+
+#: SimSysTreeView.cpp:824
+#: SimSysTreeView.cpp:896
+msgid "Disable Message Handlers"
+msgstr "メッセージハンドラを無効にする"
+
+#: SimSysTreeView.cpp:832
+#: SimSysTreeView.cpp:942
+msgid "Disable Timer Handlers"
+msgstr "タイマハンドラを無効にする"
+
+#: SimSysTreeView.cpp:552
+#: SimSysTreeView.cpp:631
+#: SimSysTreeView.cpp:1930
+msgid "Enable All Error Handlers"
+msgstr "すべてのエラーハンドラを有効にする"
+
+#: SimSysTreeView.cpp:556
+#: SimSysTreeView.cpp:652
+msgid "Enable All Event Handlers"
+msgstr "すべてのイベントハンドラを有効"
+
+#: SimSysTreeView.cpp:536
+#: SimSysTreeView.cpp:839
+#: SimSysTreeView.cpp:1277
+#: SimSysTreeView.cpp:1970
+msgid "Enable All Handlers"
+msgstr "すべてのハンドラを有効にする"
+
+#: SimSysTreeView.cpp:544
+#: SimSysTreeView.cpp:585
+#: SimSysTreeView.cpp:2011
+msgid "Enable All Key Handlers"
+msgstr "すべてのキーハンドラを有効にする"
+
+#: SimSysTreeView.cpp:548
+#: SimSysTreeView.cpp:608
+#: SimSysTreeView.cpp:2053
+msgid "Enable All Message Handlers"
+msgstr "すべてのメッセージハンドラを有効にする"
+
+#: SimSysTreeView.cpp:560
+#: SimSysTreeView.cpp:675
+#: SimSysTreeView.cpp:2095
+msgid "Enable All Timer Handlers"
+msgstr "オールタイムハンドラを有効に"
+
+#: SimSysTreeView.cpp:855
+#: SimSysTreeView.cpp:930
+#: SimSysTreeView.cpp:1675
+msgid "Enable Error Handlers"
+msgstr "エラーハンドラを有効にする"
+
+#: SimSysTreeView.cpp:847
+#: SimSysTreeView.cpp:884
+#: SimSysTreeView.cpp:1724
+msgid "Enable Key Handlers"
+msgstr "キーハンドラを有効にする"
+
+#: SimSysTreeView.cpp:851
+#: SimSysTreeView.cpp:907
+#: SimSysTreeView.cpp:1779
+msgid "Enable Message Handlers"
+msgstr "メッセージハンドラを有効にする"
+
+#: SimSysTreeView.cpp:859
+#: SimSysTreeView.cpp:953
+#: SimSysTreeView.cpp:1851
+msgid "Enable Timer Handlers"
+msgstr "タイマハンドラを有効にする"
+
+#: SimSysTreeView.cpp:508
+#: SimSysTreeView.cpp:539
+#: SimSysTreeView.cpp:577
+#: SimSysTreeView.cpp:600
+#: SimSysTreeView.cpp:623
+#: SimSysTreeView.cpp:644
+#: SimSysTreeView.cpp:667
+#: SimSysTreeView.cpp:815
+#: SimSysTreeView.cpp:842
+#: SimSysTreeView.cpp:876
+#: SimSysTreeView.cpp:899
+#: SimSysTreeView.cpp:922
+#: SimSysTreeView.cpp:945
+msgid "Failed to change the text of the String"
+msgstr "文字列のテキストを変更できませんでした"
+
+#: SimSysTreeView.cpp:47
+msgid "sim"
+msgstr "sim"
+
+msgid "Graph Display - "
+msgstr "グラフ表示 - "
+
+msgid "Graph Display - CAN"
+msgstr "グラフ表示 - CAN"
+
+#: AscLogConverter.cpp:171
+#, c-format
+msgid "***BUSMASTER Ver 1.6.4***\n"
+msgstr "***BUSMASTER バージョン 1.6.4***\n"
+
+#: AscLogConverter.cpp:172
+#, c-format
+msgid "***NOTE: PLEASE DO NOT EDIT THIS DOCUMENT***\n"
+msgstr "*** 注意: この文書を修正しないでください ***\n"
+
+#: AscLogConverter.cpp:174
+#, c-format
+msgid "***START DATE AND TIME "
+msgstr "*** 開始の日付と時間"
+
+#: AscLogConverter.cpp:173
+#, c-format
+msgid "***[START LOGGING SESSION]***\n"
+msgstr "*** [ログセッションの開始] ***\n"
+
+#: AscLogConverter.cpp:70
+msgid "ASC TO LOG Conversion"
+msgstr "ASC→ログ変換"
+
+#: AscLogConverter.cpp:145
+#: LogAscConverter.cpp:122
+msgid "BUSMASTER Log File(s) (*.log)|*.log||"
+msgstr "BUSMASTER ログファイル (*.log)|*.log||"
+
+#: AscLogConverter.cpp:28
+#: LogAscConverter.cpp:28
+#: LogToExcelConverter.cpp:45
+#: LogToExcelConverter.cpp:88
+msgid "C"
+msgstr "C"
+
+#: AscLogConverter.cpp:114
+#: LogAscConverter.cpp:153
+msgid "CANoe Log File(s) (*.asc)|*.asc||"
+msgstr "CANoe ログファイル (*.asc)|*.asc||"
+
+#: AscLogConverter.cpp:176
+#: LogAscConverter.cpp:185
+msgid "Conversion Completed Successfully"
+msgstr "変換が正常に終了しました"
+
+#: AscLogConverter.cpp:91
+#: CAPL2CConverter.cpp:31
+#: DBC2DBFConverter.cpp:93
+#: DBF2DBCConverter.cpp:93
+#: LogAscConverter.cpp:99
+msgid "Conversion failed"
+msgstr "変換に失敗しました"
+
+#: AscLogConverter.cpp:87
+#: CAPL2CConverter.cpp:27
+#: DBC2DBFConverter.cpp:89
+#: DBF2DBCConverter.cpp:89
+#: LogAscConverter.cpp:95
+msgid "Conversion success"
+msgstr "変換に成功しました"
+
+#: AscLogConverter.cpp:57
+msgid "Converts the CANoe log file(.asc) to BUSMASTER log file(.log)"
+msgstr "CANoe ログファイル(.asc)のBUSMASTER ログファイル(.log)での変換します。"
+
+#: AscLogConverter.cpp:188
+#: LogAscConverter.cpp:91
+#: LogAscConverter.cpp:198
+msgid "Input File path is not found"
+msgstr "入力ファイルパスが見つかりません"
+
+#: AscLogConverter.cpp:182
+#: LogAscConverter.cpp:87
+#: LogAscConverter.cpp:192
+msgid "Output File path is not found"
+msgstr "出力ファイルパスが見つかりません"
+
+#: AscLogConverter.cpp:113
+#: LogAscConverter.cpp:152
+msgid "asc"
+msgstr "asc"
+
+#: AscLogConverter.cpp:162
+#: LogAscConverter.cpp:170
+msgid "r"
+msgstr "r"
+
+#: AscLogConverter.cpp:166
+#: LogAscConverter.cpp:174
+msgid "w"
+msgstr "w"
+
+#: CAPL2CConverter.cpp:18
+msgid "CAPL TO C Conversion"
+msgstr "CAPL→C変換"
+
+#: CAPL2CConverter.cpp:12
+msgid "Converts the CANoe CAPL(.can) file to BUSMASTER Node Simulation(.c) file"
+msgstr "CANoe CAPL(.can)ファイルをBUSMASTER ノード Simulation(.c)ファイルに変換"
+
+#: CAPL2CPropertyPage.cpp:404
+msgid ""
+"\n"
+" Unsupported Key -->Equivalent Key"
+msgstr ""
+"\n"
+"未対応キー --> 等しいキー"
+
+#: CAPL2CPropertyPage.cpp:402
+msgid ""
+"\n"
+"---*****List Of User Intervention*****---"
+msgstr ""
+"\n"
+"---*****ユーザー介入のリスト*****---"
+
+#: CAPL2CPropertyPage.cpp:401
+msgid "---***********************************---"
+msgstr "---***********************************---"
+
+#: CAPL2CPropertyPage.cpp:477
+msgid "BUSMASTER  Files(*.c)|*.c||"
+msgstr "BUSMASTER  ファイル(*.c)|*.c||"
+
+#: CAPL2CPropertyPage.cpp:623
+msgid "BUSMASTER Database Files(*.dbf)|*.dbf||"
+msgstr "BUSMASTER データベースファイル(*.dbf)|*.dbf||"
+
+#: CAPL2CPropertyPage.cpp:438
+msgid "CAN Files(*.can)|*.can||"
+msgstr "CAN ファイル(*.can)|*.can||"
+
+#: CAPL2CPropertyPage.cpp:586
+msgid "CANoe Database Files(*.dbc)|*.dbc||"
+msgstr "CANoe データベースファイル(*.dbc)|*.dbc||"
+
+#: CAPL2CPropertyPage.cpp:666
+msgid "CAPL File"
+msgstr "CAPLファイル"
+
+#: CAPL2CPropertyPage.cpp:446
+#: CAPL2CPropertyPage.cpp:487
+msgid "CAPL file"
+msgstr "CAPLファイル"
+
+#: CAPL2CPropertyPage.cpp:624
+msgid "Select BUSMASTER Database File"
+msgstr "BUSMASTER データベースファイルの選択"
+
+#: CAPL2CPropertyPage.cpp:478
+msgid "Select BUSMASTER File"
+msgstr "BUSMASTER ファイルの選択"
+
+#: CAPL2CPropertyPage.cpp:439
+msgid "Select CAN File"
+msgstr "CAN ファイルの選択"
+
+#: CAPL2CPropertyPage.cpp:587
+msgid "Select CANoe Database File"
+msgstr "CANoe データベースファイルの選択"
+
+#: DBC2DBFConverter.cpp:147
+#: DBF2DBCConverter.cpp:116
+msgid "BUSMASTER Database File(s) (*.dbf)|*.dbf||"
+msgstr "BUSMASTER データベースファイル (*.dbf)|*.dbf||"
+
+#: DBC2DBFConverter.cpp:116
+#: DBF2DBCConverter.cpp:147
+msgid "CANoe Database File(s) (*.dbc)|*.dbc||"
+msgstr "CANoe データベースファイル (*.dbc)|*.dbc||"
+
+#: DBC2DBFConverter.cpp:59
+msgid "Converts the CANoe Database(.dbc) file to BUSMASTER Database(.dbf) file"
+msgstr "CANoe データベース(.dbc)ファイルをBUSMASTER ノード データベース(.dbf) ファイルに変換"
+
+#: DBC2DBFConverter.cpp:72
+msgid "DBC TO DBF Conversion"
+msgstr "DBC→DBF変換"
+
+#: DBC2DBFConverter.cpp:115
+#: DBF2DBCConverter.cpp:146
+msgid "dbc"
+msgstr "dbc"
+
+#: DBF2DBCConverter.cpp:59
+msgid "Converts the BUSMASTER Database(.dbf) file to CANoe Database(.dbc) file"
+msgstr "BUSMASTER データベース(.dbf) ファイルをCANoe データベース(.dbc)  ファイルに変換"
+
+#: DBF2DBCConverter.cpp:72
+msgid "DBF TO DBC Conversion"
+msgstr "DBC→DBF変換"
+
+#: DefConverterPage.cpp:225
+msgid "Unexpected Error Occured.Conversion Oberted"
+msgstr "予期しないエラーが発生したため、変換を中断しました"
+
+#: FormatConverterWnd.cpp:80
+msgid "Close"
+msgstr "閉じる"
+
+#: LogAscConverter.cpp:181
+msgid "Conversion May not be work with CANoe since the input file is logged in system mode"
+msgstr "CANoe"
+
+#: LogAscConverter.cpp:57
+msgid "Converts the BUSMASTER log file(.log) to CANoe log file(.asc)"
+msgstr "BUSMASTER ログファイル(.log)をCANoe ログファイル(.asc)に変換します"
+
+#: LogAscConverter.cpp:70
+msgid "LOG TO ASC Conversion"
+msgstr "ログ→ASC変換"
+
+#: LogToExcelConverter.cpp:53
+msgid "LogToExcelConverter.DLL Initializing!\n"
+msgstr "LogToExcelConverter.DLL 初期化中!\n"
+
+#: LogToExcelConverter.cpp:76
+msgid "LogToExcelConverter.DLL Terminating!\n"
+msgstr "LogToExcelConverter.DLL 終了中!\n"
+
+#: PluginManagerDLL.cpp:91
+msgid "Plugin Loading Error"
+msgstr "プラグインのロードに失敗しました"
+
+#: Selectdb.cpp:74
+msgid "Database File"
+msgstr "データベースファイル"
+
+msgid "J1939 DBC TO DBF Conversion"
+msgstr "J1939 DBF→DBF変換"
+
+msgid "Converts the CANoe J1939 Database(.dbc) file to BUSMASTER J1939 Database(.dbf) file"
+msgstr "J1939 CANoe データベース(.dbc)ファイルをJ1939 BUSMASTER ノード データベース(.dbf) ファイルに変換"
+
+msgid "Converts the CANoe CAN log file(.asc) to BUSMASTER CAN log file(.log)"
+msgstr "CANoe CAN ログファイル(.asc)をBUSMASTER CAN ログファイル(.log)に変換"
+
+msgid "Converts the BUSMASTER CAN log file(.log) to CANoe CAN log file(.asc)"
+msgstr "BUSMASTER CAN ログファイル(.log)をCANoe CAN ログファイル(.asc)に変換"
+
+msgid "DBC File Path"
+msgstr "DBCファイルのパス"
+
+msgid "DBF File Path"
+msgstr "DBFファイルのパス"
+
+msgid "Invalid Input/Output Files"
+msgstr "無効な入力/出力ファイル"
+

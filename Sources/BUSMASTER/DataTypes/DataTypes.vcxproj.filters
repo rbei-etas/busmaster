@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="NSCodeGenreration">
+      <UniqueIdentifier>{9d885127-b881-4586-a2d0-2400ced832db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NSCodeGenreration\Header Files">
+      <UniqueIdentifier>{3f74e5e7-75f5-425c-96d2-7433ffa2b5e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NSCodeGenreration\Source Files">
+      <UniqueIdentifier>{7b6b2dd8-a2e7-4d50-854a-340c29965181}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Filter_Datatypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Log_Datatypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainSubEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MsgSignal_Datatypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjConfig_DataTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UDS_DataTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeSimCodeGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LinNsCodeGenHelper.cpp">
+      <Filter>NSCodeGenreration\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CanNsCodeGenHelper.cpp">
+      <Filter>NSCodeGenreration\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NSCodeGenHelperFactory.cpp">
+      <Filter>NSCodeGenreration\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="j1939NsCodeGenHelper.cpp">
+      <Filter>NSCodeGenreration\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="J1939_DataTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Base_WrapperErrorLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseAppServices.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataTypes_stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Filter_Datatypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="J1939_DataTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Log_Datatypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainSubEntry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MsgSignal_Datatypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjConfig_DataTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SigGrphWnd_Datatypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UDS_DataTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeSimCodeGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CanNsCodeGenHelper.h">
+      <Filter>NSCodeGenreration\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INsCodeGenHelper.h">
+      <Filter>NSCodeGenreration\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LinNsCodeGenHelper.h">
+      <Filter>NSCodeGenreration\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NSCodeGenHelperFactory.h">
+      <Filter>NSCodeGenreration\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="J1939NsCodeGenHelper.h">
+      <Filter>NSCodeGenreration\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,233 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "ChannelSelectionResource.h"
+#include "../DIL_Interface/ChannelSelection.rc"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Germany) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CONFIG DIALOGEX 0, 0, 214, 247
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "VSCAN API Device Config"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDC_SAVE,70,218,74,18
+    COMBOBOX        IDC_DEVICE_LIST,15,17,93,78,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Search for Devices\non COM-Ports",IDC_SEARCH,115,16,82,25,BS_MULTILINE
+    LTEXT           "Device Type:",IDC_STATIC,17,50,47,8
+    LTEXT           "Unknown",IDC_DEVICE_TYPE,66,50,47,8
+    LTEXT           "Serialnumber:",IDC_STATIC,17,61,47,8
+    LTEXT           "Unknown",IDC_DEVICE_SERIAL,66,61,46,8
+    LTEXT           "SW-Version:",IDC_STATIC,116,50,47,8
+    LTEXT           "Unknown",IDC_DEVICE_SW_VERSION,165,50,39,8
+    LTEXT           "HW-Version:",IDC_STATIC,116,61,47,8
+    LTEXT           "Unknown",IDC_DEVICE_HW_VERSION,165,61,35,8
+    CONTROL         "Hardware Timestamps",IDC_CHECK_TIMESTAMPS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,103,113,91,10
+    COMBOBOX        IDC_BAUDRATE,14,160,69,112,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Baudrate:",IDC_STATIC,16,150,33,8
+    CONTROL         "Debug Mode",IDC_CHECK_DEBUG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,103,101,54,10
+    EDITTEXT        IDC_BTR0,124,160,16,12,ES_AUTOHSCROLL
+    LTEXT           "BTR0: 0x",IDC_STATIC,94,163,30,8
+    EDITTEXT        IDC_BTR1,178,160,16,12,ES_AUTOHSCROLL
+    LTEXT           "BTR1: 0x",IDC_STATIC,148,163,30,8
+    GROUPBOX        "Serial Port or IP:TCP-Port",IDC_STATIC,7,7,200,72
+    GROUPBOX        "Device Config",IDC_STATIC,7,85,200,126
+    LTEXT           "API-Version:",IDC_STATIC,17,33,47,8
+    LTEXT           "Unknown",IDC_API_VERSION,66,33,47,8
+    LTEXT           "Acceptance Code:",IDC_STATIC,15,182,63,8
+    CONTROL         "Dual Filter Mode",IDC_FILTER_DUAL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,137,192,65,10
+    EDITTEXT        IDC_ACC_CODE,24,190,49,12,ES_AUTOHSCROLL
+    LTEXT           "0x",IDC_STATIC,16,193,8,8
+    LTEXT           "Acceptance Mask:",IDC_STATIC,78,182,63,8
+    EDITTEXT        IDC_ACC_MASK,86,190,49,12,ES_AUTOHSCROLL
+    LTEXT           "0x",IDC_STATIC,78,193,8,8
+    CONTROL         "Normal",IDC_MODE_NORMAL,"Button",BS_AUTORADIOBUTTON,14,108,38,10
+    CONTROL         "Listen Only",IDC_MODE_LISTEN_ONLY,"Button",BS_AUTORADIOBUTTON,14,119,50,10
+    CONTROL         "Self Reception",IDC_MODE_SELF_RECEPTION,"Button",BS_AUTORADIOBUTTON,14,130,62,10
+    GROUPBOX        "Operation Mode",IDC_STATIC,7,97,85,48,WS_GROUP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 207
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 236
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x17L
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x0L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "000004b0"
+        BEGIN
+            VALUE "CompanyName", "Vision Systems GmbH"
+            VALUE "FileDescription", "CAN_VSCOM"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "CAN_VSCOM"
+            VALUE "LegalCopyright", "Copyright (C) 2012"
+            VALUE "OriginalFilename", "CAN_VSCOM"
+            VALUE "ProductName", "CAN_VSCOM"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_CONFIG DLGINIT
+BEGIN
+    IDC_BAUDRATE, 0x403, 18, 0
+0x7355, 0x2065, 0x5442, 0x2052, 0x6552, 0x6967, 0x7473, 0x7265, 0x0073, 
+
+    IDC_BAUDRATE, 0x403, 8, 0
+0x3032, 0x6b20, 0x6962, 0x0074, 
+    IDC_BAUDRATE, 0x403, 8, 0
+0x3035, 0x6b20, 0x6962, 0x0074, 
+    IDC_BAUDRATE, 0x403, 9, 0
+0x3031, 0x2030, 0x626b, 0x7469, "\000" 
+    IDC_BAUDRATE, 0x403, 9, 0
+0x3231, 0x2035, 0x626b, 0x7469, "\000" 
+    IDC_BAUDRATE, 0x403, 9, 0
+0x3532, 0x2030, 0x626b, 0x7469, "\000" 
+    IDC_BAUDRATE, 0x403, 9, 0
+0x3035, 0x2030, 0x626b, 0x7469, "\000" 
+    IDC_BAUDRATE, 0x403, 9, 0
+0x3038, 0x2030, 0x626b, 0x7469, "\000" 
+    IDC_BAUDRATE, 0x403, 10, 0
+0x3031, 0x3030, 0x6b20, 0x6962, 0x0074, 
+    0
+END
+
+#endif    // German (Germany) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "ChannelSelectionResource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

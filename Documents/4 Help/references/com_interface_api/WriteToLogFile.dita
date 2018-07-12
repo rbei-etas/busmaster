@@ -4,6 +4,10 @@
   <title>WriteToLogFile : Writes a text in the log file currently open</title>
   <refbody>
     <section>
+      <title>Synopsis</title>
+      <p>HRESULT WriteToLogFile(USHORT BlockIndex, BSTR pcStr);</p>
+    </section>
+    <section>
       <title>Description</title>
       <p>This function writes a text in the log file currently open.</p>
     </section>
@@ -14,6 +18,13 @@
     <section>
       <title>Cause of failure</title>
       <p>Logging not enabled, log file not present</p>
+    </section>
+    <section>
+      <b>Usage in COM Client</b>
+      <p>BSTR bstr; </p>
+      <p>bstr = SysAllocString(L&quot;In CanSendMsg1 : &quot;);</p>
+      <p> m_IApplication-&gt;WriteToLogFile(0, bstr);</p>
+      <p> SysFreeString(bstr);</p>
     </section>
   </refbody>
 </reference>

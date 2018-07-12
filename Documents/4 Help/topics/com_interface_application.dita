@@ -43,5 +43,13 @@ if(SUCCEEDED(hr))
 
  
 </p>
+    <p>
+
+</p>
+    <p>
+
+
+To receive CAN messages from Busmaster makes use of the new interface_IAppEvents (connection points).</p>
+    <p>To know more, refer Example folder in BUSMASTER installation folder.</p>
   </body>
 </topic>

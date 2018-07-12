@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="introduction" xml:lang="en-us">
+  <title>Schedule Table</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Introduction</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title/>
+      <p><b>Creating Schedule Table:</b></p>
+      <p>To create Schedule Table right click on the Schedule Table element in the element view and click on popup menu &apos;New&apos;.Create Schedule Table dialog is as shown below.</p>
+      <image href="../../images/LDF Editor/LIN_ScheduleTable.png"/>
+      <p><ol>
+          <li>
+            <b>General Properties:</b>
+            <ul>
+              <li><b>Name:</b> Name of the Schedule Table should follow C identifier rules and should be unique.</li>
+            </ul>
+          </li>
+          <li>
+            <b>Adding Schedule Table Item:</b>
+            <ul>
+              <li>To Add Schedule Table Item, click on &apos;Add&apos; button which adds a new row in Frame list.</li>
+              <li>Frame Name drop down will be populated with the list of Unconditional frames, Event Triggered frames, Sporadic frame and Diagnostic Frames.</li>
+              <li>Select the Frame name from the Frame Name drop down.</li>
+              <li>Specify the delay in delay field.</li>
+            </ul>
+          </li>
+          <li>
+            <b>Deleting Schedule Table Item:</b>
+            <ul>
+              <li>Select the Schedule Table Item in the list and click on &apos;Delete&apos; button</li>
+            </ul>
+          </li>
+          <li>
+            <b>Property view:</b>
+            <ul>
+              <li>On selecting Schedule Table Item in the list, properties will be displayed in the property view based on the type of the frame selected</li>
+              <li>User defined parameters will be editable in the Property view for user input</li>
+            </ul>
+          </li>
+        </ol></p>
+      <p><b>Editing Schedule Table:</b></p>
+      <p>To edit existing Schedule Table right click on the Schedule Table in the Element view and click on &apos;Edit&apos;. &apos;Edit Schedule Table&apos; dialog is displayed as shown below.</p>
+      <image href="../../images/LDF Editor/LIN_ScheduleTableEdit.png"/>
+    </section>
+    <p><b>Deleting Schedule Table:</b></p>
+    <p>To delete Schedule Table, right click on the Schedule Table in the Element view and click on the popup menu &apos;Delete&apos;. A confirmation message will be displayed before deleting the frame.</p>
+    <p/>
+    <p>To save the changes click on &apos;OK&apos; button. Errors are displayed if  validation fails.</p>
+    <p>The following validations are performed:<ul>
+        <li>Schedule Table name will be checked for its uniqueness</li>
+      </ul></p>
+    <p>To discard the changes click on &apos;Cancel&apos; button.</p>
+  </body>
+</topic>

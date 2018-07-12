@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="WriteToLogFile" xml:lang="en-us">
+  <title>UnRegisterClient : To Unregister a Client</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <p>HRESULT UnRegisterClient([in] USHORT usUniqueID);</p>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function unregisters the registered Client</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>usUniqueID - Client Id.</p>
+    </section>
+    <section>
+      <b>Usage in COM Client</b>
+    </section>
+    <section>HRESULT hResult = m_IApplication-&gt;UnRegisterClient(1); //Unregisters Client with id 1;</section>
+    <section>
+      <title>Cause of failure</title>
+      <p>NA</p>
+    </section>
+  </refbody>
+</reference>

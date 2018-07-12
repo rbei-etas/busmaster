@@ -30,7 +30,6 @@ doxygen Doxyfiles\TestSetupEditorLib
 doxygen Doxyfiles\TestSuiteExecutorGUI
 doxygen Doxyfiles\TXWindow
 doxygen Doxyfiles\Utility
-doxygen Doxyfiles\CAN_IXXAT_VCI
 
 if not exist "out\Format Converter" mkdir "out\Format Converter"
 doxygen "Doxyfiles\Format Converter\AscLogConverter"
@@ -39,5 +38,6 @@ doxygen "Doxyfiles\Format Converter\DBC2DBFConverter"
 doxygen "Doxyfiles\Format Converter\DBF2DBCConverter"
 doxygen "Doxyfiles\Format Converter\FormatConverterApp"
 doxygen "Doxyfiles\Format Converter\LogAscConverter"
+doxygen "Doxyfiles\Format Converter\LogToExcelConverter"
 
 exit 0

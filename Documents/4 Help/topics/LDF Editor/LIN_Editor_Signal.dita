@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="introduction" xml:lang="en-us">
+  <title>Signals</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2014"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Introduction</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title/>
+      <p><b>Creating Signals:</b></p>
+      <p>To create Signals right click on the <b>Signals</b> element in the element view and click on pop up menu &apos;<i>New</i>&apos;.A dialog Box as Shown in below image will be displayed.</p>
+      <image href="../../images/LDF Editor/New_Signal.png"/>
+      <p><ol>
+          <li>
+            <b>General Properties:</b>
+            <ul>
+              <li><b>Name:</b> Name of the Signal should follow C identifier rules and should be unique in signal list.</li>
+              <li><b>Length:</b> Length of the Signals in bits.The value always will be displayed as Decimal mode</li>
+              <li><b>Type</b>: Signal type can be either scalar or Byte array.</li>
+              <li><b>Initial Value:</b> This will be the initial value of the signal.</li>
+              <li><b>Coding:</b> Coding for the signal can be selected from the drop down <b>Select Coding</b>, which lists all the defined Codings.To define new coding refer the section Codings.</li>
+            </ul>
+          </li>
+          <li>
+            <b>Publisher and Subscribers:</b>
+            <ul>
+              <li>Signal publisher can be selected from the <b>Publisher</b> drop down which lists Master and all the Slave nodes</li>
+              <li>Subscribers of the signals can be selected from the <b>Select Subscribers</b> list.</li>
+            </ul>
+          </li>
+        </ol></p>
+      <p/>
+      <p><b>Editing Signals:</b></p>
+      <p>To edit existing Signal right click on the required signal item in the Element view and click on &apos;Edit&apos;. <b>Edit Signal - &lt;<i>Signal Name</i>&gt;</b> dialog is displayed as shown below.</p>
+      <p><image href="../../images/LDF Editor/Edit_Signal.png"/></p>
+    </section>
+    <section>
+      <p>If the publisher is changed, the signal will be unmapped from the frames which are published by the old ECU.</p>
+    </section>
+    <section>
+      <p/>
+      <p>To save the changes click on &apos;OK&apos; button. Errors are displayed if  validation fails.</p>
+      <p>The following validations are performed:<ul>
+          <li>Signal name will be checked for its uniqueness</li>
+          <li>Initial value should be in range of 0 (to 2^signal_length-1)</li>
+          <li>A Publisher should be selected.</li>
+        </ul></p>
+      <p>To discard the changes click on &apos;Cancel&apos; button.</p>
+      <p/>
+    </section>
+    <p><b>Deleting Signal:</b></p>
+    <p>To delete any signal, right click on the Signal item in the Element view and click on the pop up menu <b>Delete</b>. A confirmation message will be displayed before deleting the signal.</p>
+    <p>On deletion, deleted signal will be unmapped from all associated frames, Publisher  and the Subscribers.</p>
+  </body>
+</topic>

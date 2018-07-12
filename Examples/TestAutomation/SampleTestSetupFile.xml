@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testsetup title="TestSetup">
+	<description>First Testing Test Setup</description>
+	<header>
+		<info>
+			<category>Module Name</category>
+			<value>ECU</value>
+		</info>
+		<info>
+			<category>version</category>
+			<value>1.0</value>
+		</info>
+		<info>
+			<category>Engineer Name</category>
+			<value>Venkatanarayana</value>
+		</info>
+		<info>
+			<category>Engineer Role</category>
+			<value>SSE</value>
+		</info>
+		<list_of_database>
+			<database>CAN_Database.dbf</database>
+		</list_of_database>
+		<bustype>CAN</bustype>
+		<reportfile>
+			<path>ReportFile.html</path>
+			<format>HTM</format>
+			<timemode>REL</timemode>
+		</reportfile>
+	</header>
+	<list_of_test_cases>
+		<testcase identifier="000" title="Test Case1" exp_handler="CONTINUE">
+			<send>
+				<send_message identifier="123" unit="ENG" default="0.000000">
+					<signal name="Voltage">12.000000</signal>
+					<signal name="RPM">1000.000000</signal>
+				</send_message>
+			</send>
+			<wait purpose="Waiting for">1000</wait>
+			<verify failure="FATAL">
+				<verify_message identifier="123" unit="ENG">
+					<signal name="Voltage">x==11.60</signal>
+				</verify_message>
+			</verify>
+			<verifyResponse failure="FATAL" waitfor="1">
+				<verify_message identifier="456" unit="RAW">
+					<signal name="Display">x==1</signal>
+				</verify_message>
+			</verifyResponse>
+		</testcase>
+	</list_of_test_cases>
+</testsetup>

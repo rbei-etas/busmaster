@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7812969F-7FF6-448C-A19C-78CC07362163}</ProjectGuid>
+    <RootNamespace>DIL_J1939</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>Debug\</OutDir>
+    <IntDir>Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>Release\</OutDir>
+    <IntDir>Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;C:\libxml2-2.7.8.win32\include;C:\iconv-1.9.2.win32\include;C:\boost_1_53_0;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;$(SolutionDir)\EXTERNAL\iconv\lib;$(SolutionDir)\EXTERNAL\libxml2\lib;$(SolutionDir)\EXTERNAL\zlib\lib;$(LibraryPath);C:\boost_1_53_0\stage\lib</LibraryPath>
+    <ExecutablePath>$(TESTCOCOON)\VisualStudio;$(ExecutablePath)</ExecutablePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>--cs-on %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;C:\Program Files\boost\boost_1_49_0;..\..\..\Sources\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeader />
+      <PrecompiledHeaderFile>J1939_Tester_StdAfx.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>--cs-on
+"$(SolutionDir)/BIN/Libs/$(OutDir)Utils.lib"
+"$(SolutionDir)/BIN/Libs/$(OutDir)DataTypes.lib"
+"$(SolutionDir)/BIN/Libs/$(OutDir)DIL_Interface.lib" %(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>$(SolutionDir)/../../../Sources/bin/$(OutDir)J1939_Tester.exe</OutputFile>
+      <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;C:\Program Files\boost\boost_1_49_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>LIBCMT.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ModuleDefinitionFile />
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <EntryPointSymbol />
+      <BaseAddress>0x64000000</BaseAddress>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <ImportLibrary>$(SolutionDir)/BIN/Libs/$(OutDir)DIL_J1939.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>--cs-on %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir);C:\WinDDK\7600.16385.1\inc\mfc42;C:\WinDDK\7600.16385.1\inc\atl71;C:\Program Files\boost\boost_1_49_0;..\..\..\Sources\;C:\libxml2-2.7.8.win32\include;C:\iconv-1.9.2.win32\include;D:\D drive old\Busmaster\Workspace\BM 1.9.0\BusMaster - v1.8.1\Sources\EXTERNAL\libxml2\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeader />
+      <PrecompiledHeaderFile>J1939_Tester_StdAfx.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>--cs-on
+  "$(SolutionDir)../../../Sources/BIN/Libs/$(OutDir)DataTypes.lib"
+ "$(SolutionDir)../../../Sources/BIN/Libs/$(OutDir)Utils.lib" %(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>$(SolutionDir)/../../../Sources/bin/$(OutDir)DIL_Interface_Tester.exe</OutputFile>
+      <AdditionalLibraryDirectories>C:\WinDDK\7600.16385.1\lib\Mfc\i386;C:\WinDDK\7600.16385.1\lib\ATL\i386;C:\Program Files\boost\boost_1_53_0\stage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>LIBCMT.lib;%(IgnoreSpecificDefaultLibraries);daouuid.lib</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <ImportLibrary />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\Sources\CAN_Vector_XL\AcceptanceFilterDlg.cpp" />
+    <ClCompile Include="..\..\..\Sources\CommonClass\RefTimeKeeper.cpp" />
+    <ClCompile Include="..\..\..\Sources\FrameProcessor\BaseLogObject.cpp" />
+    <ClCompile Include="..\..\..\Sources\CAN_Vector_XL\CAN_Vector_XL.cpp" />
+    <ClCompile Include="..\..\..\Sources\CAN_Vector_XL\CAN_Vector_XL_stdafx.cpp" />
+    <ClCompile Include="..\..\..\Sources\CAN_Vector_XL\CANRegAnalysis.cpp" />
+    <ClCompile Include="..\..\..\Sources\CAN_Vector_XL\ChangeRegisters.cpp" />
+    <ClCompile Include="..\..\..\Sources\DIL_J1939\ConnectionDet.cpp" />
+    <ClCompile Include="..\..\..\Sources\DIL_Interface\DIL_CAN.cpp" />
+    <ClCompile Include="..\..\..\Sources\DIL_Interface\DIL_Interface.cpp" />
+    <ClCompile Include="..\..\..\Sources\DIL_Interface\DIL_Interface_stdafx.cpp" />
+    <ClCompile Include="DIL_Interface_Tester.cpp" />
+    <ClCompile Include="..\..\..\Sources\DIL_J1939\DIL_J1939.cpp" />
+    <ClCompile Include="..\..\..\Sources\DIL_J1939\DIL_J1939_stdafx.cpp" />
+    <ClCompile Include="..\..\..\Sources\DIL_Interface\DILC_Dummy.cpp" />
+    <ClCompile Include="..\..\..\Sources\DIL_Interface\DILI_J1939.cpp" />
+    <ClCompile Include="..\..\..\Sources\FrameProcessor\Format\FormatMsgCommon.cpp" />
+    <ClCompile Include="..\..\..\Sources\FrameProcessor\Format\FormatMsgJ1939.cpp" />
+    <ClCompile Include="..\..\..\Sources\CAN_Vector_XL\HardwareListing.cpp" />
+    <ClCompile Include="..\..\..\Sources\FrameProcessor\LogObjectJ1939.cpp" />
+    <ClCompile Include="..\..\..\Sources\DIL_J1939\MonitorNode.cpp" />
+    <ClCompile Include="..\..\..\Sources\Application\MultiLanguage.cpp" />
+    <ClCompile Include="..\..\..\Sources\DIL_J1939\NetworkMgmt.cpp" />
+    <ClCompile Include="..\..\..\Sources\DIL_J1939\NodeConManager.cpp" />
+    <ClCompile Include="..\..\..\Sources\DIL_J1939\ReadCanMsg.cpp" />
+    <ClCompile Include="..\..\..\Sources\DIL_J1939\TransferLayer.cpp" />
+    <ClCompile Include="WrapperErrorLogger.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\Sources\CAN_Vector_XL\AcceptanceFilterDlg.h" />
+    <ClInclude Include="..\..\..\Sources\CommonClass\RefTimeKeeper.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_Interface\BaseDIL_CAN.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_Interface\BaseDIL_CAN_Controller.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_Interface\BaseDIL_J1939.h" />
+    <ClInclude Include="..\..\..\Sources\FrameProcessor\BaseFrameProcessor_J1939.h" />
+    <ClInclude Include="..\..\..\Sources\FrameProcessor\BaseLogObject.h" />
+    <ClInclude Include="..\..\..\Sources\CAN_Vector_XL\CAN_Vector_XL.h" />
+    <ClInclude Include="..\..\..\Sources\CAN_Vector_XL\CAN_Vector_XL_Extern.h" />
+    <ClInclude Include="..\..\..\Sources\CAN_Vector_XL\CAN_Vector_XL_stdafx.h" />
+    <ClInclude Include="..\..\..\Sources\CAN_Vector_XL\ChangeRegDefines.h" />
+    <ClInclude Include="..\..\..\Sources\CAN_Vector_XL\ChangeRegisters.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_J1939\ConnectionDet.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_Interface\DIL_CAN.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_Interface\DIL_Interface.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_Interface\DIL_Interface_extern.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_Interface\DIL_Interface_Include.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_Interface\DIL_Interface_Resource.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_Interface\DIL_Interface_stdafx.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_J1939\DIL_J1939.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_J1939\DIL_J1939_Extern.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_J1939\DIL_J1939_stdafx.h" />
+    <ClInclude Include="DIL_Tester_StdAfx.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_Interface\DILC_Dummy.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_Interface\DILI_J1939.h" />
+    <ClInclude Include="..\..\..\Sources\FrameProcessor\Format\FormatMsgCommon.h" />
+    <ClInclude Include="..\..\..\Sources\FrameProcessor\Format\FormatMsgJ1939.h" />
+    <ClInclude Include="..\..\..\Sources\CAN_Vector_XL\HardwareListing.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_J1939\J1939_UtilityFuncs.h" />
+    <ClInclude Include="..\..\..\Sources\FrameProcessor\LogObjectJ1939.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_J1939\Macros.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_J1939\MonitorNode.h" />
+    <ClInclude Include="..\..\..\Sources\Application\MultiLanguage.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_J1939\NetworkMgmt.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_J1939\NodeConManager.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_J1939\ReadCanMsg.h" />
+    <ClInclude Include="..\..\..\Sources\DIL_J1939\TransferLayer.h" />
+    <ClInclude Include="WrapperErrorLogger.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

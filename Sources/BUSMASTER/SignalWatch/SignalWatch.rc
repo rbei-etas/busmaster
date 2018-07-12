@@ -1,0 +1,187 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "SignalWatch_Resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "SignalWatch.dll"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "SignalWatch.dll"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DLG_SIGNAL_WATCH DIALOG 0, 0, 218, 113
+STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Signal Watch"
+FONT 8, "Courier"
+BEGIN
+    CONTROL         "List1",IDC_LIST_SIGNAL_WATCH,"SysListView32",LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,1,1,217,112
+END
+
+IDD_DLG_SIGNAL_WATCH_CONFIGURE DIALOGEX 0, 0, 220, 260
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CENTER | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME |DS_MODALFRAME
+CAPTION "Signal Watch Configure"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "OK",IDOK,112,241,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,165,241,50,14
+    CONTROL         "",IDC_TREE_LIN,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | TVS_DISABLEDRAGDROP | TVS_CHECKBOXES | WS_BORDER | WS_HSCROLL | WS_TABSTOP,1,1,218,230
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_MENU_SIGNAL_WATCH MENU
+BEGIN
+    POPUP "Signal Watch"
+    BEGIN
+        MENUITEM "&Add/Delete Signals...",      IDM_SIGNALWATCH_ADDSIGNAL
+        MENUITEM "&Close",                      IDM_SIGNALWATCH_CLOSE
+    END
+    POPUP "Operations"
+    BEGIN
+		MENUITEM "Configure &Signals", IDD_DLG_SIGNAL_WATCH_CONFIGURE
+        MENUITEM "&Clear",                      IDM_SG_WATCH_CLEAR
+    END
+    POPUP "Signal Dlg"
+    BEGIN
+        MENUITEM "&Add",                        IDM_SIGNALDLG_ADD
+        MENUITEM "Add Al&l",                    IDM_SIGNALDLG_ADDALL
+        MENUITEM "&Delete",                     IDM_SIGNALDLG_DELETE
+        MENUITEM "D&elete All",                 IDM_SIGNALDLG_DELETEALL
+    END
+END
+
+IDM_OPERATION_LIST_LIN MENU
+BEGIN
+	MENUITEM "A&dd Signal", IDD_DLG_SIGNAL_WATCH_CONFIGURE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_BMP_MSG_SIG_WATCH   BITMAP                  "res\\Signalwatch.bmp"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_SIGNALWATCH    ICON                    "res\\Signal_Watch.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DLG_SIGNAL_WATCH, DIALOG
+    BEGIN
+    END
+
+	IDD_DLG_SIGNAL_WATCH_CONFIGURE, DIALOG
+    BEGIN
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" [
+<!ENTITY Introduction '<xref/>'>]>
+<topic id="signal_watch" xml:lang="en-us">
+  <title>LIN Cluster Configuration</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2013"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>LIN Cluster Configuration</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <p><b>Introduction:</b></p>
+    <p>To connect BUSMASTER to the LIN Network first it has to be configured with the proper LIN Baud Rate and LIN Protocol Version.This can be done using by importing a LDF or using manual settings.</p>
+    <p><b>Configuration:</b></p>
+    <p>To configure the Cluster use <b>LIN-&gt;Channel Configuration</b> menu.This will display the Window as shown in following Figure.</p>
+    <image href="../images/LIN_ClusterConfig_Example.bmp"/>
+    <p><ol>
+        <li>To enable master mode for LIN channel for transmitting frame headers, check the <b>Enable Master Mode</b> check box under <b>LIN Network Settings</b></li>
+        <li>LIN baud rate &amp; Protocol version can be set either by loading the LDF file or can be set explicity by using <b>LIN Network Settings</b> section by Enabling <b>Overwrite LDF Settings</b> as shown in above figure.</li>
+      </ol></p>
+  </body>
+</topic>

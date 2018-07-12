@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="introduction" xml:lang="en-us">
+  <title>Master</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2014"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Introduction</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title/>
+      <p><b>Creating Master ECU:</b></p>
+      <p>When a new LDF File is crated with LDF Editor a master node will with default values will be crated automatically</p>
+    </section>
+    <section>
+      <p><b>Editing Master ECU Properties:</b></p>
+      <p>To edit the properties of master ECU right click on the Master node item in the Element view and click on &apos;Edit&apos;. A dialog will be displayed as shown below.</p>
+      <image href="../../images/LDF Editor/Edit_Master.png"/>
+    </section>
+    <section/>
+    <section>
+      <p/>
+      <p>To save the changes click on &apos;OK&apos; button. Errors are displayed if  validation fails.</p>
+      <p>The following validations are performed:<ul>
+          <li>ECU name will be checked for its uniqueness</li>
+        </ul></p>
+      <p>To discard the changes click on &apos;Cancel&apos; button.</p>
+      <p/>
+    </section>
+    <p><b>Deleting Coding:</b></p>
+    <p>Master Node can not be deleted.</p>
+  </body>
+</topic>

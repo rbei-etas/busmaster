@@ -29,5 +29,59 @@
           <li>If voltage is not around 2.5v then CAN Transceiver (Philips PCA82C251T) has got damaged.</li>
         </ol></p>
     </section>
+    <section>
+      <b>Question: BUSMASTER throws up an error saying BUSMASTER_Interface.h missing while compling. Why?</b>
+    </section>
+    <section>Answer: </section>
+    <section>Rebuilding the solution will solve the problem. When rebuild is selected, the visual studio will compile BUSMASTER.idl file and will generate BUSMASTER_Interface.h and BUSMASTER_Interface.c files.</section>
+    <section/>
+    <section><b>Question: Why Toolbar replay buttons are not active after changing the active window? </b>Answer: This is the intended behavior of the toolbar replay button. </section>
+    <section>This is because of the following functionality : </section>
+    <section>1. Add more than one log file for replay in Replay Configuration window </section>
+    <section>2. Select interactive replay </section>
+    <section>3. Connect to the network. Multiple replay windows will be displayed corresponding to the number of log files added for reply. If 2 log files are added then 2 interactive replay windows will be displayed on connect. </section>
+    <section>4. The replay toolbar functionality works based on the active interactive window. So making it general will not work. </section>
+    <section>Hence the tool bar is disabled. </section>
+    <section/>
+    <section><b>Question: After the Message Replay Window is closed, there is no way to have it back. </b>Answer:</section>
+    <section>In interactive replay method, the functionality of close button is basically stopping the replay. Hence the window will be closed and immediately the replay will be stopped. To get back the replay window, just disconnect and connect to the network again. No restart of application is required. Make sure, Interactive Replay Window option is selected in the Replay configuration window. </section>
+    <section/>
+    <section>
+      <b>Question:The files union.h are created each time BUSMASTER starts. Due to this, any previous manual changes in these files are lost.</b>
+    </section>
+    <section>Answer:</section>
+    <section>Unions.h file generated is intended to use with BUSMASTER only. So any manual modification will not be retained. If any additional changes or definitions are required then the same can be achieved by creating a new header file and referring it in the cpp file or modifying in the database file itself.</section>
+    <section/>
+    <section>
+      <b>Question:In Message window, close window does not work</b>
+    </section>
+    <section>Answer:</section>
+    <section>This is the intended behavior. Message window will always be kept open. If the window has to be hidden then uncheck the View --&gt; Message Window menu option </section>
+    <section/>
+    <section>
+      <b>Question:Error launching BUSMASTER. When BUSMASTER is installed and launched, error message &quot;The application cannot be started because the application config is not correct&quot; is displayed</b>
+      <p>Answer:</p>
+      <p>Install .Net framework 3.5 or above and try again. BUSMASTER has dependency with .Net Framework.</p>
+    </section>
+    <section>
+      <b>Question:Which version of MinGW Compiler is supported in BUSMASTER?</b>
+      <p>Answer:</p>
+      <p>MinGW gcc version 4.8.1 (tdm-1). It is available at <xref href="http://sourceforge.net/projects/tdm-gcc/files/TDM-GCC%20Installer/Previous/1.1309.0/tdm-gcc-4.8.1.exe/download" scope="external"/></p>
+    </section>
+    <section>
+      <b>Question: On compiling file in Node Simulation, the output window shows &quot;No such file or directory&quot; even though the file exists?</b>
+      <p>Answer:</p>
+      <p>Possible reasons could be:
+      <ol>
+          <li>MinGW doesn&apos;t support certain file path format such as having space in the file path. </li>
+       </ol>
+   </p>
+    </section>
+    <section>
+      <b>Question: Even if the .cpp file is built and .dll is generated still on connecting, the output window display &quot;Input File open error: [Filepath].def Unable to initialise handler functions for execution. The DLL [Filepath].dll is unloaded&quot; and Node Simulation fails?</b>
+      <p>Answer:</p>
+      <p>This because the .def file of the .cpp might have got deleted. To create the .def file double click on the particular node and this opens function editor.
+   When the function editor is opened automatically the .def file is created, and the .dll will be loaded on connection.</p>
+    </section>
   </body>
 </topic>

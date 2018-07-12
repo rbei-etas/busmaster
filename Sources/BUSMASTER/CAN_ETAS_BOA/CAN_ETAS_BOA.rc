@@ -1,0 +1,229 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "ChannelSelectionResource.h"
+
+// Generated Help ID header file
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "../DIL_Interface/ChannelSelection.rc"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+1 TEXTINCLUDE 
+BEGIN
+    "ChannelSelectionResource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+1 TEXTINCLUDE 
+BEGIN
+    "ChannelSelectionResource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+1 TEXTINCLUDE 
+BEGIN
+    "ChannelSelectionResource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+
+IDD_DLG_CHANGE_REGISTERS_CAN_ETAS_BOA DIALOGEX 0, 0, 327, 202
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Configure CAN Controller"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_LIST_CHANNELS,"SysListView32",LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_TABSTOP,7,8,56,151
+    EDITTEXT        IDC_EDIT_BAUD_RATE,125,20,40,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMB_SAMPLING,125,42,36,39,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_WARNING_LIMIT,258,20,40,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_COMB_SAMPOINT,258,42,36,82,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_COMB_SJW,125,63,36,64,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Self Reception On",IDC_CHECK_SELF_REC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,77,108,74,10
+    COMBOBOX        IDC_COMB_BTL,258,63,36,64,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "OK",IDC_ButtonOK,212,182,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,266,182,50,14
+    GROUPBOX        "CAN Parameters",IDC_STAT_BAUD_RATE,71,5,244,153,BS_LEFT
+    LTEXT           "Bit Rate:",IDC_STAT_BUAD_RATE,77,19,36,14,SS_CENTERIMAGE
+    LTEXT           "bps",IDC_STAT_KBPS,168,20,17,14,SS_CENTERIMAGE
+    LTEXT           "Warning Limit:",IDC_STAT_BUAD_RATE2,201,19,45,14,SS_CENTERIMAGE
+    LTEXT           "Number of ",IDC_STATIC,77,40,36,10
+    LTEXT           "samples/bit:",IDC_STATIC,76,48,37,8
+    LTEXT           "Sample Point (%):",IDC_STATIC,201,45,48,8
+    LTEXT           "SJW:",IDC_STATIC,77,65,16,8
+    LTEXT           "Physical Media: High Speed CAN",IDC_STATIC,77,87,106,8
+    LTEXT           "BTL Cycles:",IDC_STATIC,201,68,37,8
+    LTEXT           "Description:",IDC_STATIC,9,166,40,8
+    EDITTEXT        IDC_EDIT_CHANNEL_DESC,51,166,267,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_DLG_HW_LISTING_CAN, DIALOG
+    BEGIN
+    END
+
+    IDD_DLG_CHANGE_REGISTERS_CAN_ETAS_BOA, DIALOG
+    BEGIN
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+IDR_BMP_NET             BITMAP                  "res\\bmp_net.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DLG_CHANGE_REGISTERS_CAN_ETAS_BOA DLGINIT
+BEGIN
+    IDC_COMB_SAMPLING, 0x403, 2, 0
+0x0031, 
+    IDC_COMB_SAMPLING, 0x403, 2, 0
+0x0033, 
+    IDC_COMB_SAMPOINT, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_COMB_SAMPOINT, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_COMB_SAMPOINT, 0x403, 3, 0
+0x3033, "\000" 
+    IDC_COMB_SAMPOINT, 0x403, 3, 0
+0x3034, "\000" 
+    IDC_COMB_SAMPOINT, 0x403, 3, 0
+0x3035, "\000" 
+    IDC_COMB_SAMPOINT, 0x403, 3, 0
+0x3036, "\000" 
+    IDC_COMB_SAMPOINT, 0x403, 3, 0
+0x3037, "\000" 
+    IDC_COMB_SAMPOINT, 0x403, 3, 0
+0x3038, "\000" 
+    IDC_COMB_SAMPOINT, 0x403, 3, 0
+0x3039, "\000" 
+    IDC_COMB_SJW, 0x403, 2, 0
+0x0031, 
+    IDC_COMB_SJW, 0x403, 2, 0
+0x0032, 
+    IDC_COMB_SJW, 0x403, 2, 0
+0x0033, 
+    IDC_COMB_SJW, 0x403, 2, 0
+0x0034, 
+    IDC_COMB_BTL, 0x403, 3, 0
+0x3031, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_PGM_EDTYPE          ICON                    "res\\BUSMASTERDoc.ico"
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED

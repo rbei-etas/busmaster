@@ -21,6 +21,7 @@
       <li>Transmission for a block takes place by a manual event like a key press</li>
       <li>Manual event transmission for a block sends one frame at a time</li>
       <li>Manual event transmission for a block sends all frames in a burst</li>
+      <li>Transmission of an entire block at a time</li>
     </ul>
     <p>The above listing results in the following transmission configuration parameters.</p>
     <ol>
@@ -28,10 +29,11 @@
       <li>Activation status of a block</li>
       <li>Frame list with which this block consists of. Each of the selected frames shall also be deactivated from transmission. This means only those selected can be transmitted.</li>
       <li>Transmission mode which can be either cyclic or monoshot.</li>
-      <li>Trigger event: Triggering event for a frame transmission which can be a timer, a manual one such as a key press. When it’s a manual event, either one frame gets transmitted at a time or the entire list in a burst. </li>
+      <li>Trigger event: Triggering event for a frame transmission which can be a timer, a manual one such as a key press. When it’s a manual event, either one frame gets transmitted at a time or the entire list in a burst. Delay between blocks will send an entire block in a single shot and will wait for the delay mentioned next to it, before sending the next block.</li>
+      <li>Automatic Updation: All the parameters set by the user should be automatically updated if the user desires it. &quot;Auto Update&quot; option serves this purpose. All the parameters will be set as soon as they loose focus.</li>
     </ol>
-    <p>Besides, there is another aspect which involves configuration of the message data. It should be possible to edit a defined message to the extent of its individual signals covering both its raw and engineering values.</p>
-    <p>The above listing translates into the following user interface specification for CAN~<image placement="break" href="../images/screenshots/transmission_messages_config.png"/></p>
+    <p>Besides, there is another aspect which involves configuration of the message data. It should be possible to edit a defined message to the extent of its individual signals covering both its raw and engineering values.</p>
+    <p>The above listing translates into the following user interface specification for CAN~<image href="../images/screenshots/transmission_messages_config.png" placement="break"/></p>
     <p>Transmission</p>
     <p>This transmits the frames defined in the transmission block list according to the time period and data specified. This must ensure the time integrity is maintained.</p>
     <p>The tagged requirement details are tabulated below:<table>
@@ -136,7 +138,15 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_17_10]</entry>
+              <entry>[RS_17_10</entry>
+              <entry>Feature</entry>
+              <entry>Transmission of an entire block at a time and waiting for specified delay before transmission of next block</entry>
+              <entry>X</entry>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_17_11]</entry>
               <entry>Feature</entry>
               <entry> - Specify if key event for a single message or a burst of message</entry>
               <entry>X</entry>
@@ -152,7 +162,7 @@
               <entry/>
             </row>
             <row>
-              <entry>[RS_17_11]</entry>
+              <entry>[RS_17_12]</entry>
               <entry>Feature</entry>
               <entry> - Addition of a frame, defined / undefined</entry>
               <entry>X</entry>
@@ -160,7 +170,7 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_17_12]</entry>
+              <entry>[RS_17_13]</entry>
               <entry>Feature</entry>
               <entry> - Deletion of a frame</entry>
               <entry>X</entry>
@@ -168,7 +178,7 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_17_13]</entry>
+              <entry>[RS_17_14]</entry>
               <entry>Feature</entry>
               <entry> - Clearing the frame list</entry>
               <entry>X</entry>
@@ -176,7 +186,7 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_17_14]</entry>
+              <entry>[RS_17_15]</entry>
               <entry>Feature</entry>
               <entry> - Enable / disable a frame from transmission</entry>
               <entry>X</entry>
@@ -192,7 +202,7 @@
               <entry/>
             </row>
             <row>
-              <entry>[RS_17_15]</entry>
+              <entry>[RS_17_16]</entry>
               <entry>Feature</entry>
               <entry> - Edit the frame characteristics</entry>
               <entry>X</entry>
@@ -200,7 +210,7 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_17_16]</entry>
+              <entry>[RS_17_17]</entry>
               <entry>Feature</entry>
               <entry> - Editing data for an undefined frame</entry>
               <entry>X</entry>
@@ -208,7 +218,7 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_17_17]</entry>
+              <entry>[RS_17_18]</entry>
               <entry>Feature</entry>
               <entry> - Editing data for a defined frame</entry>
               <entry>X</entry>
@@ -216,7 +226,15 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_17_18]</entry>
+              <entry>[RS_17_19]</entry>
+              <entry>Feature</entry>
+              <entry>Automatically saving the parameters as they are set</entry>
+              <entry>X</entry>
+              <entry/>
+              <entry/>
+            </row>
+            <row>
+              <entry>[RS_17_20]</entry>
               <entry>Feature</entry>
               <entry>Committing the transmission block list</entry>
               <entry>X</entry>
@@ -224,7 +242,7 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_17_19]</entry>
+              <entry>[RS_17_21]</entry>
               <entry>Feature</entry>
               <entry>Saving of configuration data</entry>
               <entry>X</entry>
@@ -232,7 +250,7 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_17_20]</entry>
+              <entry>[RS_17_22]</entry>
               <entry>Feature</entry>
               <entry>Retrieving of configuration data</entry>
               <entry>X</entry>
@@ -256,7 +274,7 @@
               <entry/>
             </row>
             <row>
-              <entry>[RS_17_21]</entry>
+              <entry>[RS_17_23]</entry>
               <entry>Feature</entry>
               <entry>Manual transmission of a frame</entry>
               <entry>X</entry>
@@ -264,7 +282,7 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_17_22]</entry>
+              <entry>[RS_17_24]</entry>
               <entry>Feature</entry>
               <entry>Start transmission activity</entry>
               <entry>X</entry>
@@ -272,7 +290,7 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_17_23]</entry>
+              <entry>[RS_17_25]</entry>
               <entry>Feature</entry>
               <entry>Stop transmission activity</entry>
               <entry>X</entry>
@@ -280,7 +298,7 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_17_24]</entry>
+              <entry>[RS_17_26]</entry>
               <entry>Design</entry>
               <entry>Maintaining integrity of the transmission frequency</entry>
               <entry>X</entry>
@@ -288,7 +306,7 @@
               <entry>X</entry>
             </row>
             <row>
-              <entry>[RS_17_25]</entry>
+              <entry>[RS_17_27]</entry>
               <entry>Design</entry>
               <entry>Ensure substantial number of transmission block doesn&apos;t overburden the system</entry>
               <entry>X</entry>
@@ -299,4 +317,72 @@
         </tgroup>
       </table></p>
   </body>
+  <topic id="frame_transmission.dita">
+    <title>Time Delay Between Blocks</title>
+    <body>
+      <ul>
+        <li>Abbrevations:</li>
+        <li>TDBB- Time Delay Between Blocks </li>
+        <li>TDBM- Time Delay Between Messages </li>
+      </ul>
+      <p>UI Behavior:</p>
+      <ul>
+        <li>Scenario 1: </li>
+        <li>1.Check TDBB </li>
+        <li>2.TBDM and its delay edit box should be disabled </li>
+      </ul>
+      <image href="../images/screenshots/time_delay_bet_blocks.JPG"/>
+      <ul>
+        <li>Scenario 2: </li>
+        <li>1.Uncheck TDBB </li>
+        <li>2.TBDM and its delay edit box should be enabled </li>
+      </ul>
+      <image href="../images/screenshots/time_delay_bet_blcks2.PNG"/>
+      <ul>
+        <li>Scenario 3: </li>
+        <li>1.Check / Uncheck TDBM </li>
+        <li>2.Check / Uncheck TDBB, the previous stats of TDBM and its time delay has to be retained. </li>
+        <li>3.Also the key trigger values has to be retained </li>
+      </ul>
+      <image href="../images/screenshots/time_delay_bet_blcks3.JPG"/>
+      <image href="../images/screenshots/time_delay_bet_blcks4.JPG"/>
+      <p>Functional Behavior:</p>
+      <ul>
+        <li>Scenario 1: </li>
+        <li>1.Check TDBB </li>
+        <li>2.Add multiple blocks in the Tx window with some messages in each block </li>
+        <li>3.When the transmission is started, the messages of first block has to be sent first 4.Messages of second block should be sent after the given time delay. By default the time delay should be 100 ms </li>
+        <li>5.Cyclic / monoshot functionality to be same as that of TBDM checked </li>
+      </ul>
+      <ul>
+        <li>Scenario 2: </li>
+        <li>1.Select TBDD. Input some time delay value </li>
+        <li>2.Connect and transmit messages </li>
+        <li>3.Uncheck TBDD and check TBDB. Connect and transmit again. Time delay specified for TBDM should be used for message transmission and vice versa. </li>
+      </ul>
+      <ul>
+        <li>Scenario 3: </li>
+        <li>1.Select key press either for one block or for multiple blocks </li>
+        <li>2.Key press should not depend or wait for any time delay specified either for TBDD or TBDM. </li>
+        <li>3.Once the key is pressed the message should be sent based on the Single / All selection </li>
+      </ul>
+      <ul>
+        <li>Scenario 4: </li>
+        <li>1.Message transmission should transmit or not transmit the messages based on the check / uncheck status of each message during run time </li>
+        <li>2.If a message is checked before transmission starts, the message should be sent when transmission is started. </li>
+        <li>3.If a message is unchecked before transmission starts, the message should not be sent when transmission is started. </li>
+      </ul>
+      <ul>
+        <li>Scenario 5: </li>
+        <li>1.Add multiple messages with some messages in each block </li>
+        <li>2.Connect and transmit messages </li>
+        <li>3.During transmission if a message in one block is checked / unchecked or any other data of a message is changed, then all the messages from the first should be sent again as a single shot. </li>
+      </ul>
+      <ul>
+        <li>Scenario 6: </li>
+        <li>1.If TBDD is unchecked then the list control in the Message Blocks view should not display any time delay in it to the right side of the message name </li>
+      </ul>
+      <note>All other scenarios should work normally as like that of TDBM. This can be either with / without AutoUpdate selected. Closing the window, closing the application and loading the same configuration again etc. should retain the values. Etc. Such functionalities are expected.</note>
+    </body>
+  </topic>
 </topic>

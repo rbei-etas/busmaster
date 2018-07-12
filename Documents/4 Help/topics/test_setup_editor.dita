@@ -39,11 +39,7 @@
     </section>
     <section>
       <title>Invoking Test setup editor</title>
-      <p>To open the test setup editor, In BUSMASTER click on menu Item <menucascade>
-          <uicontrol>Functions</uicontrol>
-          <uicontrol>Test Automation</uicontrol>
-          <uicontrol>Editor</uicontrol>
-        </menucascade>.</p>
+      <p>To open the test setup editor, In BUSMASTER click on menu Item <b>Tools-&gt;Test Automation Editor</b>.</p>
       <p>The first look of Automation Editor will be as shown in the figure below. To make things easier the BUSMASTER Menu will be replaced with the Test Automation Editor.</p>
       <image href="../images/TestSuiteEditor.bmp" placement="break"/>
       <p><uicontrol>Master Pane</uicontrol>: The master pane or right pane can be used to add or update the test cases.</p>

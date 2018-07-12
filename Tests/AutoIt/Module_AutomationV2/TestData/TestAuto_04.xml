@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testsetup title="Test">
+	<description>Automation</description>
+	<header>
+		<info>
+			<category>Module Name</category>
+			<value>Test Automation Editor</value>
+		</info>
+		<info>
+			<category>version</category>
+			<value>1.0</value>
+		</info>
+		<info>
+			<category>Engineer Name</category>
+			<value>ABC</value>
+		</info>
+		<info>
+			<category>Engineer Role</category>
+			<value>XYZ</value>
+		</info>
+		<list_of_database>
+			<database>C:\Module_AutomationV2\TestData\StdExtDB.dbf</database>
+		</list_of_database>
+		<bustype>CAN</bustype>
+		<reportfile>
+			<path>C:\Module_AutomationV2\TestFrameWork_CAN\Output\Report_04.TXT</path>
+			<format>TXT</format>
+			<timemode>ABS</timemode>
+		</reportfile>
+	</header>
+	<list_of_test_cases>
+		<testcase identifier="004" title="Test_4" exp_handler="CONTINUE">
+			<send/>
+			<wait purpose="Test">100</wait>
+			<verify failure="ERROR"/>
+		</testcase>
+	</list_of_test_cases>
+</testsetup>

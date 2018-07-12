@@ -20,10 +20,7 @@
       <li>Active: In this mode the controller will participate in the bus activity i.e. it will generate acknowledgement signal, error signals etc on reception of message and also will be able to transmit messages.</li>
       <li>Passive - Currently this mode is disabled.</li>
     </ul>
-    <p>Any one of the above mentioned modes can be selected from the menu <menucascade>
-        <uicontrol>Options</uicontrol>
-        <uicontrol>Controller Mode</uicontrol>
-      </menucascade>.</p>
+    <p>Any one of the above mentioned modes can be selected from the menu <b>Hardware --&gt; Driver Mode</b>.</p>
     <p>By default BUSMASTER will be in Active mode.</p>
   </body>
 </topic>

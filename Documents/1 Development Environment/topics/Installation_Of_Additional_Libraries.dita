@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="astyle" xml:lang="en-us">
+  <title>Installation of Additional Libraries</title>
+  <prolog>
+    <author>Venkatanarayana Makam</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ETAS GmbH</copyrholder>
+    </copyright>
+  </prolog>
+  <body>
+    <section>
+      <title>Description</title>
+      <p>This section describes about the installation of additional libraries required for compiling BUSMASTER and its dependency projects.</p>
+    </section>
+    <section>
+      <title>Support to IXXAT hardware</title>
+      <p>The following steps should be followed to compile CAN_IXXAT_VCI project in BUSMASTER.</p>
+      <ul>
+        <li>Download and install IXXAT VCI drivers from the following link <xref href="http://www.ixxat.com/download_vci_v3_en.html" scope="external" class="- topic/xref "/></li>
+        <li>Set Windows environment variable &apos;IXXAT_VCI_SDK&apos; with the path to the VCI header files (e.g. IXXAT_VCI_SDK = &quot;C:\Program Files\IXXAT\VCI 3.5\sdk\Microsoft_VisualC&quot;).</li>
+        <li>Restart the computer after performing the above two steps</li>
+      </ul>
+    </section>
+    <section>
+      <b>Qt Installation</b>
+      <p>The following steps should be followed to install Qt 5.3.0 and use it to successfully compile LDFEditor.sln and LDFViewer.sln.<ul>
+          <li>Download Qt 5.5.1 Build for VS2013 and install in the location <b>C:\Qt\</b> from the following link <xref href="http://download.qt.io/archive/qt/5.5/5.5.1/qt-opensource-windows-x86-msvc2013-5.5.1.exe" scope="external">http://download.qt.io/archive/qt/5.5/5.5.1/qt-opensource-windows-x86-msvc2013-5.5.1.exe</xref></li>
+          <li>If Qt 5.5.1 is installed in the different location other than &apos;<b>C:\Qt\&apos;</b> then update &apos;<b>QTDIR</b>&apos; element value in the &apos;<b>Sources\BUSMASTER_Settings\QTIncludes.props</b>&apos; file with the proper location.</li>
+        </ul></p>
+    </section>
+  </body>
+</topic>

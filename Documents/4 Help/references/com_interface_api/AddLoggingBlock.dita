@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/reference.dtd" []>
+<reference id="WriteToLogFile" xml:lang="en-us">
+  <title>AddLoggingBlock : To Add a Logging Block</title>
+  <refbody>
+    <section>
+      <title>Synopsis</title>
+      <p>HRESULT AddLoggingBlock(SLOGGINGBLOCK_USR* psLoggingBlock);</p>
+    </section>
+    <section>
+      <title>Description</title>
+      <p>This function is used to a add logging block.</p>
+    </section>
+    <section>
+      <title>Inputs</title>
+      <p>SLOGGINGBLOCK_USR* psLoggingBlock - pointer to logging block</p>
+    </section>
+    <section>
+      <b>Usage in COM Client</b>
+    </section>
+    <section>
+      <p>SLOGGINGBLOCK_USR* psLoggingBlock = new SLOGGINGBLOCK_USR();</p>
+      <p>m_IApplication-&gt;AddLoggingBlock(psLoggingBlock);</p>
+    </section>
+    <section>
+      <title>Cause of failure</title>
+      <p>NA</p>
+    </section>
+  </refbody>
+</reference>

@@ -3,7 +3,6 @@
 use strict;
 use File::Glob qw(bsd_glob);
 
-my $astyle_args = "-s4 -S"; # indent by four spaces, indent switches
 
 my $infile;
 my $outfile;
@@ -45,8 +44,8 @@ foreach(sort(@dirs)) {
     my $filename = $_;
     next if $filename eq "DIL_Datatypes.h"; # don't know why AStyle runs amok...
     unlink("new.txt");
-    print "astyle $astyle_args \"$filename\"\n";
-    print `astyle $astyle_args < \"$filename\" > new.txt`;
+    print "astyle --options=../../Sources/astyle.txt \"$filename\"\n";
+    print `astyle --options=../../Sources/astyle.txt < \"$filename\" > new.txt`;
     my @diffstat = `diff -Naur "$filename" new.txt | diffstat -t`;
     unlink("new.txt");
 

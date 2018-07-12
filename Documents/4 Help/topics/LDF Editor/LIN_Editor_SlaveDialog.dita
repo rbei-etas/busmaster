@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="introduction" xml:lang="en-us">
+  <title>Slave</title>
+  <prolog>
+    <author>Ratnadip Choudhury</author>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Introduction</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <p><b>Creating Slave</b><b>:</b></p>
+      <p>To create or edit slave nodes right click on the &apos;Slaves&apos; element in the Element View. By default one slave will be created on creating new LDF file. &apos;Create Slave Dialog&apos; is as shown below.</p>
+      <p>Slave can be created with the following Slave Protocol versions, Properties displayed will vary based on the protocol version selected</p>
+      <p><ul>
+          <li>Slave created with the protocol version 1.3 is as shown below</li>
+        </ul><image href="../../images/LDF Editor/LIN_CreateSlave1_3.png"/></p>
+    </section>
+    <p><ul>
+        <li>Slave created with the protocol version 2.0 is as shown below</li>
+      </ul><image href="../../images/LDF Editor/LIN_Slave2_0.png"/></p>
+    <p><ul>
+        <li>Slave created with the protocol version 2.1 is as shown below</li>
+      </ul><image href="../../images/LDF Editor/LIN_Slave2_1.png"/></p>
+    <p><b>General Properties:</b><ul>
+        <li><b>Name:</b> Name of the Slave which should follow C identifier rules and should be unique.</li>
+        <li>
+          <b>Protocol Version:</b>
+          <ol>
+            <li>For LDF Version 2.1, Protocol version drop down will be populated with 1.3,2.0 and 2.1</li>
+            <li>For LDF Version 2.0, Protocol version drop down will be populated with 1.3 and 2.0</li>
+            <li>For LDF Version 1.3, Protocol version drop down will be populated with 1.3</li>
+          </ol>
+        </li>
+        <li><b>Response Error Signal:</b> Response Error Signal drop down will be populated with the list of signals existing in the configuration. Response Error Signal is displayed if the Slave protocol versions 2.0 and 2.1</li>
+        <li><b>Fault State Signals:</b> To specify fault state signals, click on &apos;Edit&apos; button which displays</li>
+      </ul><image href="../../images/LDF Editor/LIN_FaultStateSignalDlg.png"/></p>
+    <p><b>Editing Slave:</b></p>
+    <p>To Edit the existing Slave node, right click on the Slave in the Element View and select popup menu &apos;Edit&apos; which displays </p>
+    <image href="../../images/LDF Editor/LIN_SlaveDlgEdit.png"/>
+    <p><b>Deleting Slave:</b></p>
+    <p>To delete Slave node, right click on the Slave node in the Element View and select pop up menu &apos;Delete&apos;. Confirmation message will be displayed before deleting the Node.</p>
+    <p>On deleting node, all the frames and signals published by the node will also be deleted.</p>
+    <p/>
+    <p>To save the changes click on &apos;OK&apos; button. Errors are displayed if  validation fails.</p>
+    <p>The following validations are performed:<ul>
+        <li>Slave name will be checked for its uniqueness</li>
+        <li>On delete, checks if at least one Slave node is available. If not tool will give error.</li>
+      </ul></p>
+  </body>
+</topic>

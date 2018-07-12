@@ -3,7 +3,7 @@
 <topic id="what_is_new" xml:lang="en-us">
   <title>What is new?</title>
   <prolog>
-    <author>Ratnadip Choudhury</author>
+    <author/>
     <copyright>
       <copyryear year="2011"/>
       <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
@@ -14,5 +14,150 @@
       </keywords>
     </metadata>
   </prolog>
-  <body/>
+  <body>
+    <p><b>3.2.0</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>Windows 10 Support</li>
+        <li>CAN ETAS ES582.1 hardware support</li>
+        <li>Bug Fixes</li>
+      </ul></p>
+    <p><b>3.1.0</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>Ribbon bar support</li>
+        <li>Channel Selection dialog enhancements</li>
+        <li>Bug Fixes</li>
+      </ul></p>
+    <p><b>3.0.0</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>CAN Transmit Windows<ol>
+            <li>UI Redesign</li>
+            <li>Message wise raster support</li>
+          </ol></li>
+      </ul><ul>
+        <li>Node Simulation <ol>
+            <li>Big Endian support</li>
+            <li>Message and Signal access is simplified</li>
+          </ol></li>
+        <li>Signal watch configuration window is updated with channel wise signal details</li>
+        <li>Bug Fixes</li>
+      </ul></p>
+    <p><b>2.6.4</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>Advanced log file settings</li>
+        <li>Replay optimization for CAN</li>
+        <li>Node Simulation UI Improvement</li>
+        <li>Toolbar cleanup</li>
+      </ul></p>
+    <p><b>2.6.3</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>Support for LIN Kvaser</li>
+        <li>Bug Fixes</li>
+      </ul></p>
+    <p><b>2.6.2</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>Bug Fixes</li>
+      </ul></p>
+    <p><b>2.6.1</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>Support for FlexRay GIGATRONIK flex-i Controller.</li>
+        <li>Bug Fixes</li>
+      </ul></p>
+    <p><b>2.6.0</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>LIN Database editor (LDF)</li>
+        <li>Introduction of CMake for solution/project file generation</li>
+      </ul></p>
+    <p><b>2.5.0</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>BLF to LOG Conversion</li>
+        <li>Bug Fixes</li>
+      </ul></p>
+    <p><b>2.4.0</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>LIN PEAK device support</li>
+        <li>LIN Master mode</li>
+        <li>LIN Status message reporting</li>
+        <li>ISO-TP over CAN support</li>
+        <li>UDS support</li>
+        <li>Bug Fixes</li>
+      </ul></p>
+    <p><b>2.3.0</b></p>
+    <p>Following features are added:</p>
+    <p><ul>
+        <li>LIN Statistics window</li>
+        <li>LIN Signal watch</li>
+        <li>LIN Filters</li>
+        <li>LIN Message window configuration</li>
+        <li>LIN Diagnostic ID support (3C and 3D)</li>
+        <li>FlexRay ETAS BOA support for BOA 2.0 AND BOA 1.4</li>
+        <li>Bug Fixes</li>
+      </ul></p>
+    <p><b>2.2.0</b></p>
+    <p>Following features are added:</p>
+    <ul>
+      <li>Support for LIN ETAS BOA</li>
+      <li>Support for LIN logging</li>
+      <li>Support for BOA 2.0 for CAN and CANFD</li>
+      <li>Bug Fixes</li>
+    </ul>
+    <p><b>2.1.0</b></p>
+    <p>LIN support added for slave node functionality. The tool can be used to respond back to master requests. It supports the following features :</p>
+    <ul>
+      <li>Support for LIN v1.3 and v2.0</li>
+      <li>Added LIN support for Vector XL library</li>
+      <li>LDF importing for cluster configuration and message interpretation</li>
+      <li>Modified Tx Window for DB and Non-DB frame configuration and data updation</li>
+      <li>Message Window with Error information and interpretation</li>
+      <li>Node Simulation for slave mode with message, timer, key and error handlers</li>
+    </ul>
+    <p><b>2.0.0</b></p>
+    <p>Added Support For Following CAN Controllers:</p>
+    <p><ul>
+        <li>ETAS ISOLAR EVE CAN</li>
+      </ul></p>
+    <p>Added FlexRay Support For Following Controllers:</p>
+    <p><ul>
+        <li>ETAS BOA</li>
+      </ul></p>
+    <p>Added  following FlexRay Modules:</p>
+    <ul>
+      <li>
+        <p>FIBEX Import support for 2.0,3.0</p>
+      </li>
+      <li>Message Window</li>
+    </ul>
+    <ul>
+      <li>Transmit Window</li>
+    </ul>
+    <p>Added LIN Support for Following Controllers</p>
+    <p><ul>
+        <li>ETAS ISOLAR EVE LIN</li>
+      </ul></p>
+    <p>Added Following LIN Modules:</p>
+    <p><ul>
+        <li>Message window</li>
+      </ul></p>
+    <p><ul>
+        <li>Transmit Window</li>
+      </ul></p>
+    <p/>
+    <p><b>1.9.0</b></p>
+    <p>Support to following hardware interfaces are added:</p>
+    <ul>
+      <li>NSI interface</li>
+      <li>i-View Interface</li>
+      <li>Development Environment IDE is migrated to Visual Studio 2012</li>
+      <li>Visual Studio Redistributable Package is expected by the installer script. Please refer development environment for more information</li>
+    </ul>
+  </body>
 </topic>

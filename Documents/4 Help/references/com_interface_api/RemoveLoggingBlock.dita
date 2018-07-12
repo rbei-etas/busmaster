@@ -4,6 +4,10 @@
   <title>RemoveLoggingBlock : To remove a particular logging block</title>
   <refbody>
     <section>
+      <title>Synopsis</title>
+      <p>HRESULT RemoveLoggingBlock([in] USHORT BlockIndex);</p>
+    </section>
+    <section>
       <title>Description</title>
       <p>This function removes a particular logging block</p>
     </section>

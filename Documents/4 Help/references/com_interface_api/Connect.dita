@@ -4,12 +4,16 @@
   <title>Connect : To connect BUSMASTER to the bus</title>
   <refbody>
     <section>
+      <title>Synopsis</title>
+      <p>HRESULT Connect(BOOL bConnect);</p>
+    </section>
+    <section>
       <title>Description</title>
       <p>This function connects / disconnects BUSMASTER to the bus.</p>
     </section>
     <section>
       <title>Inputs</title>
-      <p>TRUE - connect, FALSE - Disconnect</p>
+      <p>BOOL bConnect: TRUE - connect, FALSE - Disconnect</p>
     </section>
     <section>
       <title>Cause of failure</title>

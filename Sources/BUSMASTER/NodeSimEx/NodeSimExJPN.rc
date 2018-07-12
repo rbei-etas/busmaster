@@ -1,0 +1,584 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "NodeSimEx_resource.h"
+
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "NodeSimEx_resource.hm"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+#endif //_WIN32
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "NodeSimEx.dll"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "NodeSimEx.dll"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_FUNC_EDITOR MENU
+BEGIN
+    POPUP "Function Editor"
+    BEGIN
+        MENUITEM "Add...",                      IDM_ADD_HAND
+        MENUITEM "Edit...",                     IDM_EDIT_HAND
+        MENUITEM "Delete",                      IDM_DEL_HAND
+        MENUITEM "Save",                        ID_FUNCTIONEDITOR_SAVE
+    END
+END
+
+IDM_FNVIEW_CTXMENU MENU
+BEGIN
+    POPUP "Context"
+    BEGIN
+        MENUITEM "Cu&t",                        ID_EDIT_CUT
+        MENUITEM "&Copy",                       ID_EDIT_COPY
+        MENUITEM "&Paste",                      ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "Insert &Function",            IDM_CONTEXT_INSERTFUNCTION
+        MENUITEM "Insert &Message",             IDM_CONTEXT_INSERTMESSAGE
+        MENUITEM "Insert &Signal",              IDM_CONTEXT_INSERTSIGNAL
+    END
+END
+
+IDM_ROOT_MENU MENU
+BEGIN
+    POPUP "Root Menu"
+    BEGIN
+        MENUITEM "Add",                         IDM_ADD_NODE
+        MENUITEM "Build All",                   IDM_BUILD_NODE
+        MENUITEM "Remove All",                  IDM_REMOVE_NODE
+    END
+END
+
+IDM_NODE_MENU MENU
+BEGIN
+    POPUP "Node Menu"
+    BEGIN
+        MENUITEM "Edit",                        IDM_EDIT_NODE
+        MENUITEM "Configure",                   IDM_CONFIG_NODE
+        MENUITEM "Build",                       IDM_BUILD_NODE
+        MENUITEM "Remove",                      IDM_REMOVE_NODE
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_FN_EDITOR      ICON                    "res\\NodeSimulationIcon.ico"
+IDI_ICON_SIMSYS_CONFIG  ICON                    "res\\SimSysWnd.ico"
+IDI_ICON_NODE_ENABLED   ICON                    "res\\Node_Enabled.ico"
+IDI_ICON_NODE_DISABLED  ICON                    "res\\Node_Disabled.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_NODE_DEATILS DIALOGEX 0, 0, 379, 74
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Node Details"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    LTEXT           "Node Name :",IDC_STAT_NODE_NAME,8,11,44,12
+    LTEXT           "File :",IDC_STATIC,9,33,19,11
+    EDITTEXT        IDC_EDIT_ANODE_NAME,54,9,80,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_NODE_FILE_PATH,53,31,260,14,ES_AUTOHSCROLL | WS_DISABLED
+    PUSHBUTTON      "&Browse...",IDC_BTN_BROWSE,319,31,50,14
+    DEFPUSHBUTTON   "OK",IDOK,54,52,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,112,52,50,14
+    EDITTEXT        IDC_EDIT_ADDRESS,209,9,21,14,ES_AUTOHSCROLL | NOT WS_VISIBLE
+    LTEXT           "Preferred Address : 0x",IDC_STATIC_ADDRESS,138,11,70,8,NOT WS_VISIBLE
+    LTEXT           "ECU NAME : 0x",IDC_STATIC_ECU_NAME,237,11,52,8,NOT WS_VISIBLE
+    EDITTEXT        IDC_EDIT_ECU_NAME,289,9,80,14,ES_AUTOHSCROLL | NOT WS_VISIBLE
+END
+
+IDD_DLG_SELECT_FNS DIALOGEX 0, 0, 167, 159
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "ファンクションの挿入"
+FONT 9, "MS UI Gothic", 0, 0, 0x1
+BEGIN
+	LISTBOX	IDC_LSTB_FUNCTIONS, 7, 7, 150, 118, LBS_SORT |    
+	                 LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL |  
+			                    WS_TABSTOP, 0, HIDC_LSTB_FUNCTIONS
+	DEFPUSHBUTTON	"はい", IDC_CBTN_OK, 51, 136, 50, 14
+	PUSHBUTTON	"キャンセル", IDC_CBTN_CANCEL, 108, 136, 50, 14
+END
+
+IDD_DLG_MSG_HANDLERS DIALOGEX 0, 0, 205, 262
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | DS_CONTEXTHELP | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "メッセージハンドラの追加"
+FONT 9, "MS UI Gothic", 0, 0, 0x1
+BEGIN
+	CONTROL	"メッセージ名", IDC_RBTN_MSG_NAME, "Button",
+	 BS_AUTORADIOBUTTON, 104, 30, 65, 10, 0, HIDC_RBTN_MSG_NAME
+	CONTROL	"メッセージID", IDC_RBTN_MSG_ID, "Button", BS_AUTORADIOBUTTON,
+	 15, 16, 54, 10
+	CONTROL	"メッセージIDの範囲", IDC_RBTN_MSG_RANGE, "Button",
+	 BS_AUTORADIOBUTTON, 104, 16, 74, 10
+	CONTROL	"すべての受信メッセージ", IDC_RBTN_MSG_ALL, "Button",
+	 BS_AUTORADIOBUTTON, 15, 30, 72, 10
+	LISTBOX	IDC_LSTB_MSG_HANDLER_LIST, 6, 139, 108, 85, LBS_SORT |    
+	                 LBS_NOINTEGRALHEIGHT | WS_DISABLED | WS_VSCROLL | 
+			                     WS_HSCROLL | WS_TABSTOP, 0, HIDC_LSTB_MSG_HANDLER_LIST
+	EDITTEXT	IDC_EDIT_MSG_HANDLER_ID, 56, 57, 52, 14, ES_AUTOHSCROLL, 0
+	, HIDC_EDIT_MSG_HANDLER_ID
+	EDITTEXT	IDC_EDIT_MSG_HANDLER_ID_FROM, 42, 98, 52, 14, ES_AUTOHSCROLL, 0,
+	 HIDC_EDIT_MSG_HANDLER_ID_FROM
+	EDITTEXT	IDC_EDIT_MSG_HANDLER_ID_TO, 122, 98, 52, 14, ES_AUTOHSCROLL, 0,
+	 HIDC_EDIT_MSG_HANDLER_ID_TO
+	PUSHBUTTON	"&キャンセル", IDC_CBTN__MSG_CANCEL, 137, 241, 50, 14
+	PUSHBUTTON	"&適用", IDC_CBTN_MSG_HANDLDER_APPLY, 19, 241, 50, 14, 0, 0,
+	 HIDC_CBTN_MSG_HANDLDER_APPLY
+	DEFPUSHBUTTON	"&はい", IDC_CBTN__MSG_OK, 78, 241, 50, 14
+	LTEXT	"データベースメッセージリスト:", IDC_STATIC_DB_MSG_LIST, 8, 128, 77, 
+	8, WS_DISABLED
+	LTEXT	"メッセージ ID", IDC_STATIC_MSG_ID, 6, 57, 41, 14,
+	 SS_CENTERIMAGE
+	GROUPBOX	"メッセージ ID Range", IDC_STATIC_MSG_ID_RANGE, 6, 82, 185, 40
+	LTEXT	"From: 0x", IDC_STATIC, 15, 98, 27, 14, SS_CENTERIMAGE
+	LTEXT	"To: 0x", IDC_STATIC, 101, 98, 20, 14, SS_CENTERIMAGE
+	GROUPBOX	"ベース", IDC_STATIC, 6, 3, 185, 44
+	LTEXT	"0x", IDC_STATIC, 46, 60, 8, 8
+    	COMBOBOX        IDC_CMB_CHANNEL,122,147,51,40,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    	GROUPBOX        "Channel",IDC_STATIC_CHANNEL,118,136,65,29
+END
+
+IDD_DLG_KEY_VALUE DIALOGEX 0, 0, 156, 60
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_CONTEXTHELP | 
+    WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "キーの入力"
+FONT 9, "MS UI Gothic", 0, 0, 0x1
+BEGIN
+	DEFPUSHBUTTON	"はい", IDOK, 61, 39, 33, 14, 0, 0, HIDOK
+	PUSHBUTTON	"キャンセル", IDCANCEL, 115, 39, 33, 14, 0, 0, HIDCANCEL
+	CTEXT	"キーを押してください。", IDC_STAT_KEY, 20, 9, 97, 8, 0, 0,
+	 HIDC_STAT_KEY
+	DEFPUSHBUTTON	"適用", IDC_CBTN_KEY_APPLY, 7, 39, 33, 14, 0, 0,
+	 HIDC_CBTN_KEY_APPLY
+END
+
+IDD_DLG_INCLUDE_HEADERS DIALOGEX 0, 0, 179, 71
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "ヘッダファイルの入力"
+FONT 9, "MS UI Gothic", 0, 0, 0x1
+BEGIN
+	EDITTEXT	IDC_EDIT_FILENAME, 7, 20, 107, 14, ES_AUTOHSCROLL, 0,
+	 HIDC_EDIT_FILENAME
+	PUSHBUTTON	"&ブラウズ...", IDC_CBTN_BROWSE, 122, 20, 50, 14
+	DEFPUSHBUTTON	"はい", IDC_CBTN_OK, 65, 50, 50, 14
+	PUSHBUTTON	"キャンセル", IDC_CBTN_CANCEL, 122, 50, 50, 14
+	LTEXT	"&ヘッダファイル名:", IDC_STAT_INCLUDE_HEADER, 7, 7, 58, 8
+END
+
+IDD_DLG_ERROR_HANDLER DIALOGEX 0, 0, 124, 119
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "エラーハンドラの選択"
+FONT 9, "MS UI Gothic", 0, 0, 0x1
+BEGIN
+	DEFPUSHBUTTON	"&はい", IDC_CBTN__ERROR_OK, 11, 98, 38, 14
+	PUSHBUTTON	"&キャンセル", IDC_CBTN__ERROR_CANCEL, 74, 98, 38, 14
+	CONTROL	"Error Active", IDC_CHKB_ERROR_ACTIVE_HANDLER, "Button",
+	 BS_AUTOCHECKBOX | WS_TABSTOP, 32, 9, 53, 10, 0,
+	  HIDC_CHKB_ERROR_ACTIVE_HANDLER
+	CONTROL	"Error Passive", IDC_CHKB_ERROR_PASSIVE_HANDLER, "Button",
+	 BS_AUTOCHECKBOX | WS_TABSTOP, 32, 26, 57, 10, 0,
+	  HIDC_CHKB_ERROR_PASSIVE_HANDLER
+	CONTROL	"Warning Limit", IDC_CHKB_WARNING_LIMIT_HANDLER, "Button",
+	 BS_AUTOCHECKBOX | WS_TABSTOP, 32, 43, 59, 10, 0, HIDC_CHKB_WARNING_LIMIT_HANDLER
+	CONTROL	"Bus Off", IDC_CHKB_BUS_OFF_HANDLER, "Button",
+	 BS_AUTOCHECKBOX | WS_TABSTOP, 32, 60, 39, 10, 0, HIDC_CHKB_BUS_OFF_HANDLER
+	CONTROL	"Error Frame", IDC_CHKB_ERROR_FRAME_HANDLER, "Button", 
+	BS_AUTOCHECKBOX | WS_TABSTOP, 32, 77, 52, 10, 0, HIDC_CHKB_ERROR_FRAME_HANDLER
+END
+
+IDD_DLG_DLL_HANDLER DIALOGEX 0, 0, 121, 73
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "DLLハンドラの選択"
+FONT 9, "MS UI Gothic", 0, 0, 0x1
+BEGIN
+	DEFPUSHBUTTON	"&はい", IDC_CBTN__DLL_OK, 10, 50, 38, 14
+	PUSHBUTTON	"&キャンセル", IDC_CBTN__DLL_CANCEL, 76, 50, 38, 14
+	CONTROL	"ロード", IDC_CHKB_DLL_LOAD_HANDLER, "Button",
+	 BS_AUTOCHECKBOX | WS_TABSTOP, 41, 9, 32, 10, 0,
+	  HIDC_CHKB_DLL_LOAD_HANDLER
+	CONTROL	"アンロード", IDC_CHKB_DLL_UNLOAD_HANDLER, "Button", 
+	BS_AUTOCHECKBOX | WS_TABSTOP, 41, 26, 39, 10, 0, HIDC_CHKB_DLL_UNLOAD_HANDLER
+END
+
+IDD_DLG_DEFINE_UTILITY_FN DIALOGEX 0, 0, 187, 103
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "ユーティリティファンクションの追加"
+FONT 9, "MS UI Gothic", 0, 0, 0x1
+BEGIN
+	COMBOBOX	IDC_COMB_FN_RETURN_TYPE, 7, 20, 79, 65, CBS_DROPDOWN |     
+	                CBS_SORT | WS_VSCROLL | WS_TABSTOP, 0, HIDC_COMB_FN_RETURN_TYPE
+	EDITTEXT	IDC_EDIT_FN_PROTO, 27, 50, 137, 14, ES_AUTOHSCROLL, 0, 
+	HIDC_EDIT_FN_PROTO
+	DEFPUSHBUTTON	"はい", IDC_CBTN_OK, 73, 82, 50, 14
+	PUSHBUTTON	"キャンセル", IDC_CBTN_CANCEL, 130, 82, 50, 14
+	LTEXT	"フ&ァンクションリターンタイプ :", IDC_STAT_RETURN_TYPE, 7, 7, 74, 8
+	LTEXT	"&ファンクションプロトタイプ :", IDC_STAT_FN_PROTO, 7, 38, 64, 8
+	EDITTEXT	IDC_EDIT_UTILS_FN, 7, 50, 22, 14, ES_RIGHT | ES_NOHIDESEL |   
+	                  ES_READONLY
+END
+
+IDD_DLG_DEFINE_TIMER_HANDLER DIALOGEX 0, 0, 197, 82
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "新規タイマハンドラの定義"
+FONT 9, "MS UI Gothic", 0, 0, 0x1
+BEGIN
+	EDITTEXT	IDC_EDIT_TIMER_FUNCTION_NAME, 83, 8, 106, 14, ES_AUTOHSCROLL, 0,
+	 HIDC_EDIT_TIMER_FUNCTION_NAME
+	EDITTEXT	IDC_EDIT_TIMER_VALUE, 83, 29, 40, 14, ES_AUTOHSCROLL |  
+	                   ES_NUMBER, 0, HIDC_EDIT_TIMER_VALUE
+	DEFPUSHBUTTON	"はい", IDOK, 83, 59, 50, 14
+	PUSHBUTTON	"キャンセル", IDCANCEL, 139, 59, 50, 14
+	LTEXT	"タイマハンドラ名:", IDC_STAT_TIMER_FUNCTION, 7, 11, 68, 8
+	LTEXT	"タイマ値:", IDC_STAT_TIMER_VALUE, 34, 33, 40, 8
+	LTEXT	"msec", IDC_STAT_MILI_SECOND, 126, 34, 18, 8
+END
+
+IDD_MSG_SG_DLG DIALOGEX 0, 0, 327, 203
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "ダイアログ"
+FONT 9, "MS UI Gothic", 400, 0, 0x1
+BEGIN
+	CONTROL	"", IDC_LSTC_MSGS, "SysListView32", LVS_REPORT |
+	                     LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER |  
+			                        WS_BORDER | WS_TABSTOP, 19, 21, 125, 91
+	LISTBOX	IDC_LSTB_SIGNAL, 191, 21, 122, 91, LBS_SORT |      
+	               LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL |          
+		                  WS_TABSTOP, 0, HIDC_LSTB_SIGNAL
+	CONTROL	"チャンネル1", IDC_RBTN_CHANNEL1, "Button", BS_AUTORADIOBUTTON | WS_GROUP, 113, 145, 48, 10
+	CONTROL	"チャンネル2", IDC_RBTN_CHANNEL2, "Button", BS_AUTORADIOBUTTON, 171, 145, 49, 9
+	DEFPUSHBUTTON	"&選択", IDC_CBTN_OK, 91, 169, 50, 14
+	PUSHBUTTON	"&キャンセル", IDC_CBTN_CANCEL, 191, 169, 50, 14
+	CONTROL	"はい、選択したメッセージの'struct'変数を定義します。", IDC_CHKB_WANT_STRUCTURE, "Button", BS_AUTOCHECKBOX |                     WS_TABSTOP, 21, 121, 201, 10, 0, HIDC_CHKB_WANT_STRUCTURE
+	LTEXT	"メッセージリスト", IDC_STATIC, 19, 9, 44, 8
+	LTEXT	"シグナルリスト", IDC_STATIC, 191, 9, 35, 8
+	GROUPBOX	"チャンネルの選択", IDC_STAT_SELCHANNEL, 103, 133, 126, 31, BS_CENTER
+    	COMBOBOX        IDC_CMB_CHANNEL_SEL,27,147,48,30,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    	GROUPBOX        "Channel",IDC_STATIC,15,137,82,27
+END
+
+IDD_EVENT_HANDLER DIALOGEX 0, 0, 124, 85
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "イベントハンドラの追加"
+FONT 9, "MS UI Gothic", 400, 0, 0x1
+BEGIN
+	DEFPUSHBUTTON	"はい", IDOK, 7, 64, 50, 14
+	PUSHBUTTON	"キャンセル", IDCANCEL, 67, 64, 50, 14
+	CONTROL	"データ確認イベント", IDC_CHECK_DATA_CONF, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 16, 98, 10
+	CONTROL	"アドレスクレームイベント", IDC_CHECK_ADDRESS_CLAIM, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 7, 40, 80, 10
+END
+IDD_DLG_BUSEV_HANDLER DIALOGEX 0, 0, 131, 94
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Bus Event Handlers"
+FONT 9, "MS UI Gothic", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,11,63,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,70,63,50,14
+    CONTROL         "Connect",IDC_CHKB_BUSEV_CONNECT_HANDLER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,40,18,43,10
+    CONTROL         "Disconnect",IDC_CHKB_BUSEV_DISCONNECT_HANDLER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,40,38,51,10
+    CONTROL         "Pre-Connect",IDC_CHKB_BUSEV_PRECONNECT_HANDLER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,47,36,56,10
+END
+
+IDD_DLG_ERR_HANDLER_LIN DIALOGEX 0, 0, 132, 100
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Insert Error Handler(s)"
+FONT 9, "MS UI Gothic", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK_LIN,21,79,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL_LIN,72,79,50,14
+    CONTROL         "Error Checksum",IDC_CHK_ERR_CHECKSUM_LIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,8,79,10
+    CONTROL         "Error Receive Frame",IDC_CHK_ERR_FRAME_LIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,26,79,10
+    CONTROL         "Error Slave No Response",IDC_CHK_ERR_SLAVE_NO_RESP_LIN,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,44,94,10
+    CONTROL         "Error Sync",IDC_CHK_ERR_Sync,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,63,86,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_BMP_FUNC_EDITOR     BITMAP                  "res\\bmp_func.bmp"
+IDR_NODE_SIMULATION     BITMAP                  "res\\NodeSimulation.bmp"
+IDB_NODE_SIMULATION     BITMAP                  "res\\NodeSimulation.bmp"
+IDB_NODE_SIMULATION_HOT BITMAP                  "res\\NodeSimulation_hot.bmp"
+IDB_NODE_SIMULATION_DISABLED BITMAP                  "res\\NodeSimulation_Disabled.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_NODE_DEATILS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 372
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 67
+    END
+
+    IDD_DLG_SELECT_FNS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 160
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 152
+    END
+    IDD_DLG_MSG_HANDLERS, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 196
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 255
+    END
+    IDD_DLG_KEY_VALUE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 149
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 53
+    END
+    IDD_DLG_INCLUDE_HEADERS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 172
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 64
+    END
+    IDD_DLG_ERROR_HANDLER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 117
+        BOTTOMMARGIN, 112
+    END
+    IDD_DLG_DLL_HANDLER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 114
+        BOTTOMMARGIN, 66
+    END
+    IDD_DLG_DEFINE_UTILITY_FN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 96
+    END
+    IDD_DLG_DEFINE_TIMER_HANDLER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 188
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 75
+    END
+    IDD_MSG_SG_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 320
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 196
+    END
+    IDD_EVENT_HANDLER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 117
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 78
+    END
+    IDD_DLG_BUSEV_HANDLER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 124
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 116
+    END
+
+    IDD_DLG_ERR_HANDLER_LIN, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 93
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_NODE_SIMULATION TOOLBAR 32, 32
+BEGIN
+    BUTTON      IDM_ADD_NODE
+    BUTTON      IDM_REMOVE_NODE
+    SEPARATOR
+    BUTTON      IDM_EDIT_NODE
+    BUTTON      IDM_CONFIG_NODE
+    SEPARATOR
+    BUTTON      IDM_BUILD_NODE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDM_EDIT_NODE           "Edit Node\nEdit Node"
+    IDM_CONFIG_NODE         "Configure Node\nConfigure Node"
+    IDM_BUILD_NODE          "Build Node\nBuild Node"
+    IDM_REMOVE_NODE         "Remove Node\nRemove Node"
+    IDM_ADD_NODE            "Adds a Node\nAdds a Node"
+END
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "NodeSimEx_resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)\r\n"
+    "LANGUAGE 0x11, 0x01\r\n"
+    "#pragma code_page(932)\r\n"
+    "#include ""l.jpn\\afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+
+#endif    // APSTUDIO_INVOKED
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral (Sys. Default) resources
+
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+LANGUAGE 0x11, 0x01
+#pragma code_page(932)
+#include "..\Localization\l.jpn\afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

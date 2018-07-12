@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "http://docs.oasis-open.org/dita/v1.1/OS/dtd/topic.dtd" []>
+<topic id="log_and_replay" xml:lang="en-us">
+  <title>Logging</title>
+  <prolog>
+    <author/>
+    <copyright>
+      <copyryear year="2011"/>
+      <copyrholder>ROBERT BOSCH ENGINEERING AND BUSINESS SOLUTIONS LIMITED</copyrholder>
+    </copyright>
+    <metadata>
+      <keywords>
+        <indexterm>Log and Replay</indexterm>
+      </keywords>
+    </metadata>
+  </prolog>
+  <body>
+    <section>
+      <title>Description:</title>
+    </section>
+    <section>BUSMASTER CAN Logging feature can be used to log the CAN network into a file for offline analysis.User can configure log file setting using <b>CAN --&gt; Logging --&gt; Configure</b> menu. This will show log file configuration dialog as shown below.</section>
+    <section>
+      <image href="../images/log_config.bmp" alt="Log File Configuration Dialog" placement="break"/>
+    </section>
+    <section>
+      <ul>
+        <li><b>Log Blocks:</b> User can add as many as log files in to the list of Log Files. This list will show the log files that are already configured. To add a new Log file select Add button. This will add a log file with default file name. User can change the file name using &quot;...&quot; button in the Log File Details section. The check box associated with the log file will make the log file eligible for logging. If the check box is not checked logging will not happen to that particular file.</li>
+      </ul>
+    </section>
+    <section>
+      <ul>
+        <li><b>Log File Details:</b> This section will show the configuration details of the selected log file. This will give info of log file path, time mode, numeric mode, file mode, log triggers and log filter.</li>
+      </ul>
+    </section>
+    <section>
+      <ul>
+        <li><b>Log File Path:</b> The file path text box will give the selected log file path. To change the path select &quot;...&quot; button. This will show file selection dialog. On selection of a log file, the file path text box will be updated with selected file path.</li>
+        <li><b>Log File Size:</b> Log file size is fixed to a limit of 50 MB. This limit is set as most of the editors will take lot of time to open if the file size is large.</li>
+      </ul>
+    </section>
+    <section>
+      <ul>
+        <li><b>Time Mode: </b>Logging of messages can be done in three different time modes. System time, Absolute time and Relative time mode. In system time mode time stamping of message is done using real time clock of the system. In absolute time mode the time stamping is done with respect the to the absolute timer that will be stated during connect. In relative time mode the time stamping of a message is with respect to previously received message.Reset Time stamp for every enable logging is provided. If this option is selected then the absolute time will be reset whenever the logging is enabled.</li>
+      </ul>
+      <ul>
+        <li><b>Numeric Mode: </b>This tells the numeric format of log file entries. It has two options Hex and Decimal. Message ID and data bytes of a CAN message will use this as a base while format for logging.</li>
+      </ul>
+      <ul>
+        <li><b>File Mode: </b>In Append file mode, log sessions will be appended at the end of the file. Each logging session will have its own session header and footer. In Overwrite file mode the file will be overwritten for the first session. For consecutive sessions the file name will be suffixed with an incrementing number and each session will be logged in new files. The log file name will be incremented every-time when you stop the logging process.If already log files are created in the previous session and if a new session is started, then the log files created already will be overwritten in both overwrite and append mode. In this case, the successive files already created in the previous session will contain old session data.</li>
+      </ul>
+      <ul>
+        <li><b>Create New Log File</b>:</li>
+        <li>
+          <ol>
+            <li><b>For Every Bus Connect for Transmission: </b>New Log file can be created for every Bus Connect. The new log file will have a file name. Eg: BusmasterLogFile_CAN_<i>
+                <b>Mn</b>
+              </i>.log where &apos;n&apos; is the count, and &apos;M&apos; indicates logging is &apos;Measurement&apos; based.</li>
+            <li><b>After each file size exceeding:</b> New Log file can be created with log file exceeding certain file size. The new log file will have a file name. Eg: BusmasterLogFile_CAN_<b>
+                <i>Sn</i>
+              </b>.log where &apos;n&apos; is the count, and &apos;S&apos; indicates logging is &apos;Size&apos; based.</li>
+            <li><b>After specified time:</b> New Log file can be created for certain interval of time. The new log file will have a file name. Eg: BusmasterLogFile_CAN_<b>
+                <i>Tn</i>
+              </b>.log where &apos;n&apos; is the count, and &apos;T&apos; indicates logging is &apos;Time&apos; based.</li>
+          </ol>
+        </li>
+        <li><b>Comment</b>:User defined Comments can be inserted to the header of the log file.</li>
+      </ul>
+      <ul>
+        <li><b>Filters</b>: Filters can be added for logging.</li>
+      </ul>
+    </section>
+    <example>
+      <p><b>Activating Logging:</b></p>
+      <p>Logging can be activated in two ways.</p>
+      <p><ol>
+          <li><b>Auto Start: </b>Enable the check box <b>Enable/Disable Logging on Tool Connect/Disconnect</b> in Log Configuration window to activate\deactivate logging automatically when the tool is connected.</li>
+          <li><b>Manual Start:</b>use <b>CAN-&gt;Logging-&gt;Activate</b> menu to start\stop Logging Manually</li>
+        </ol></p>
+      <p><b>Logging Indication</b>:</p>
+      <p>Recording or logging is indicated in the status bar for both CAN and J1939. When the logging is enabled and data is logged in to the file, an blinking icon will be shown in the status bar till the logging is stopped.</p>
+    </example>
+  </body>
+</topic>

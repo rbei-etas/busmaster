@@ -4,6 +4,10 @@
   <title>GetErrorCounter : Getter for both Rx and Tx error, given the channel number</title>
   <refbody>
     <section>
+      <title>Synopsis</title>
+      <p>HRESULT GetErrorCounter(UCHAR *Tx, UCHAR *Rx, INT nChannel);</p>
+    </section>
+    <section>
       <title>Description</title>
       <p>This function will provide the TX and RX error count of the specified channel from BUSMASTER.</p>
     </section>
