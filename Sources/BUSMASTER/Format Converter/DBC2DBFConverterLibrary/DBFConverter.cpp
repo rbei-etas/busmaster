@@ -590,8 +590,6 @@ void CDBFConverter::GenerateMessageList(fstream& fileInput)
         for (;;)
         {
             pcLine = acLine;
-            pcLine += strlen(pcLine); // go to last position
-            pcLine --;
 
             if (*pcLine == '\r')
             {
@@ -626,7 +624,13 @@ void CDBFConverter::GenerateMessageList(fstream& fileInput)
                     _flag_BS_ = 2;    // this means just NS_ and BS_ are done.
                 }
             }
-            if(strstr(pcToken, "NS_") != NULL)
+
+            // skip namespace value
+            if(*pcToken == '\t')
+            {
+            	continue;
+            }
+            else if(strcmp(pcToken, "NS_") == 0)
             {
                 if (_flag_BS_ == 0 )
                 {
@@ -877,7 +881,7 @@ void CDBFConverter::GenerateMessageList(fstream& fileInput)
             //comments
             else if(strcmp(pcToken, "CM_") == 0)
             {
-                string comment = pcTok; // for network node - venkat
+                string comment;
                 pcLine = pcLine + strlen(pcToken) + 1;
                 pcToken = strtok_s(pcLine, " ", &pcTok);
                 CComment cm;
