@@ -1,40 +1,32 @@
-//////////////////////////////////////////////////////////////////////////
-// IXXAT Automation GmbH
-//////////////////////////////////////////////////////////////////////////
-/**
-  Common LIN constants, data types and macros.
+/*****************************************************************************
+ HMS Technology Center Ravensburg GmbH
+******************************************************************************
 
-  @file "lintype.h"
+ File    : LINTYPE.H
+ Summary : Common LIN constants, data types and macros.
 
-  @note
-    This file is shared between user and kernel mode components. Request a
-    kernel mode developer before changing the contents of this file.
-*/
-//////////////////////////////////////////////////////////////////////////
-// (C) 2002-2011 IXXAT Automation GmbH, all rights reserved
-//////////////////////////////////////////////////////////////////////////
+ Date    : 2006-03-02
+ Author  : Hartmut Heim
 
-#ifndef LINTYPE_H
-#define LINTYPE_H
+ Compiler: MSVC
 
-//////////////////////////////////////////////////////////////////////////
-//  include files
-//////////////////////////////////////////////////////////////////////////
-#ifdef VCIUSERAPP
+******************************************************************************
+ all rights reserved
+*****************************************************************************/
+
+#ifndef _LINTYPE_H_
+#define _LINTYPE_H_
+
+#include <stdtype.h>
 #include <pshpack1.h>
-#else
-#include <XATpshpack1.h>
-#endif
-
-//////////////////////////////////////////////////////////////////////////
-//  constants, macros, types
-//////////////////////////////////////////////////////////////////////////
 
 /*****************************************************************************
  * controller types
  ****************************************************************************/
 
 #define LIN_CTRL_UNKNOWN     0    // unknown
+#define LIN_CTRL_GENERIC     1    // generic LIN controller (USB-to-CAN II)
+#define LIN_CTRL_SERIAL      2    // LIN controller based on serial chip
 #define LIN_CTRL_MAXVAL      255  // maximum value for controller type
 
 
@@ -46,8 +38,8 @@
 #define LIN_FEATURE_AUTORATE 0x0002 // automatic bitrate detection
 #define LIN_FEATURE_ERRFRAME 0x0004 // reception of error frames
 #define LIN_FEATURE_BUSLOAD  0x0008 // bus load measurement
-#define LIN_FEATURE_SLEEP    0x0010 // support the Sleep message ( Master )
-#define LIN_FEATURE_WAKEUP   0x0020 // support the WakeUp message ( Slave / Master )
+#define LIN_FEATURE_SLEEP    0x0010 // supports sleep message (master only)
+#define LIN_FEATURE_WAKEUP   0x0020 // supports wakeup message
 
 
 /*****************************************************************************
@@ -60,13 +52,13 @@
 
 
 /*****************************************************************************
- * predefined bitrates
+ * predefined bit rates
  ****************************************************************************/
 
-#define LIN_BITRATE_UNDEF    65535 // undefined bit-rate
-#define LIN_BITRATE_AUTO     0     // automatic bit-rate detection
-#define LIN_BITRATE_MIN      1000  // lowest specified bit-rate
-#define LIN_BITRATE_MAX      20000 // highest specified bit-rate
+#define LIN_BITRATE_UNDEF    65535 // undefined bit rate
+#define LIN_BITRATE_AUTO     0     // automatic bit rate detection
+#define LIN_BITRATE_MIN      1000  // lowest specified bit rate
+#define LIN_BITRATE_MAX      20000 // highest specified bit rate
 
 #define LIN_BITRATE_1000     1000  //  1000 baud
 #define LIN_BITRATE_1200     1200  //  1200 baud
@@ -81,6 +73,7 @@
 /*****************************************************************************
  * controller status
  ****************************************************************************/
+
 #define LIN_STATUS_OVRRUN    0x01 // data overrun occurred
 #define LIN_STATUS_ININIT    0x10 // init mode active
 
@@ -91,9 +84,9 @@
 
 typedef struct _LININITLINE
 {
-    UINT8  bOpMode;   // operating mode (see LIN_OPMODE_ constants)
-    UINT8  bReserved; // reserved
-    UINT16 wBitrate;  // bit rate (see LIN_BITRATE_ constants)
+  UINT8  bOpMode;   // operating mode (see LIN_OPMODE_ constants)
+  UINT8  bReserved; // reserved
+  UINT16 wBitrate;  // bit rate (see LIN_BITRATE_ constants)
 } LININITLINE, *PLININITLINE;
 
 
@@ -103,9 +96,9 @@ typedef struct _LININITLINE
 
 typedef struct _LINCAPABILITIES
 {
-    UINT32 dwFeatures;   // supported features (see LIN_FEATURE_ constants)
-    UINT32 dwClockFreq;  // clock frequency of the primary counter in Hz
-    UINT32 dwTscDivisor; // divisor for the message time stamp counter
+  UINT32 dwFeatures;   // supported features (see LIN_FEATURE_ constants)
+  UINT32 dwClockFreq;  // clock frequency of the primary counter in Hz
+  UINT32 dwTscDivisor; // divisor for the message time stamp counter
 } LINCAPABILITIES, *PLINCAPABILITIES;
 
 
@@ -115,10 +108,10 @@ typedef struct _LINCAPABILITIES
 
 typedef struct _LINLINESTATUS
 {
-    UINT8  bOpMode;   // current operating mode
-    UINT8  bReserved; // reserved
-    UINT16 wBitrate;  // current bit rate
-    UINT32 dwStatus;  // status of the LIN controller (see LIN_STATUS_)
+  UINT8  bOpMode;   // current operating mode
+  UINT8  bBusLoad;  // average bus load in percent (0..100)
+  UINT16 wBitrate;  // current bit rate
+  UINT32 dwStatus;  // status of the LIN controller (see LIN_STATUS_)
 } LINLINESTATUS, *PLINLINESTATUS;
 
 
@@ -128,10 +121,10 @@ typedef struct _LINLINESTATUS
 
 typedef struct _LINMONITORSTATUS
 {
-    LINLINESTATUS sLineStatus; // current LIN line status
-    UINT32        fActivated;  // TRUE if the monitor is activated
-    UINT32        fRxOverrun;  // TRUE if receive FIFO overrun occurs
-    UINT8         bRxFifoLoad; // receive FIFO load in percent (0..100)
+  LINLINESTATUS sLineStatus; // current LIN line status
+  BOOL32        fActivated;  // TRUE if the monitor is activated
+  BOOL32        fRxOverrun;  // TRUE if receive FIFO overrun occurs
+  UINT8         bRxFifoLoad; // receive FIFO load in percent (0..100)
 } LINMONITORSTATUS, *PLINMONITORSTATUS;
 
 
@@ -139,31 +132,38 @@ typedef struct _LINMONITORSTATUS
  * LIN message information
  ****************************************************************************/
 
-/*lint -save -e46 (field type should be int) */
 typedef union _LINMSGINFO
 {
-    struct
-    {
-        UINT8  bPid;     // protected id
-        UINT8  bType;    // message type (see LIN_MSGTYPE_ constants)
-        UINT8  bDlen;    // data length
-        UINT8  bFlags;   // flags (see LIN_MSGFLAGS_ constants)
-    } Bytes;
+  struct
+  {
+    UINT8  bPid;     // protected id (see also LIN_MSGPID_IDMASK)
+    UINT8  bType;    // message type (see LIN_MSGTYPE_ constants)
+    UINT8  bDlen;    // data length
+    UINT8  bFlags;   // flags (see LIN_MSGFLAGS_ constants)
+  } Bytes;
 
-    struct
-    {
-        UINT32 pid  : 8; // protected identifier
-        UINT32 type : 8; // message type
-        UINT32 dlen : 8; // data length
-        UINT32 ecs  : 1; // enhanced checksum
-        UINT32 sor  : 1; // sender of response
-        UINT32 ovr  : 1; // possible data overrun
-        UINT32 ido  : 1; // ID only
-        UINT32 res  : 4; // reserved
-    } Bits;
+  struct
+  {
+    UINT32 pid  : 8; // protected identifier
+    UINT32 type : 8; // message type
+    UINT32 dlen : 8; // data length
+    UINT32 ecs  : 1; // enhanced checksum
+    UINT32 sor  : 1; // sender of response
+    UINT32 ovr  : 1; // data overrun
+    UINT32 ido  : 1; // ID only
+    UINT32 res  : 4; // reserved
+  } Bits;
 
 } LINMSGINFO, *PLINMSGINFO;
-/*lint -restore */
+
+
+//
+// bit masks used for protected id field
+//
+
+#define LIN_PIDMASK_ID       0x3F // mask for identifier bits
+#define LIN_PIDMASK_PARITY   0xC0 // mask for parity bits
+
 
 //
 // message types (see <LINMSGINFO.Bytes.bType>)
@@ -207,6 +207,7 @@ typedef union _LINMSGINFO
 #define LIN_ERROR_SYNC       5 // inconsistent sync field error
 #define LIN_ERROR_NOBUS      6 // no bus activity error
 #define LIN_ERROR_OTHER      7 // other (unspecified) error
+#define LIN_ERROR_WAKEUP     8 // wake-up response error
 
 
 /*****************************************************************************
@@ -215,16 +216,10 @@ typedef union _LINMSGINFO
 
 typedef struct _LINMSG
 {
-    UINT32     dwTime;    // time stamp for receive message [ms]
-    LINMSGINFO uMsgInfo;  // message information (bit field)
-    UINT8      abData[8]; // message data
+  UINT32     dwTime;    // time stamp for receive message [ms]
+  LINMSGINFO uMsgInfo;  // message information (bit field)
+  UINT8      abData[8]; // message data
 } LINMSG, *PLINMSG;     // size is 20 bytes
 
-
-#ifdef VCIUSERAPP
 #include <poppack.h>
-#else
-#include <XATpoppack.h>
-#endif
-
 #endif //_LINTYPE_H_

@@ -28,6 +28,7 @@
 
 #include "CAN_IXXAT_VCI_stdafx.h"
 #include "ClientList.h"
+#include "VciTimeStamp.h"
 #include "IxxatCanChannel.h"
 #include "vcinpl.h"
 #include <process.h> // _beginthread
@@ -67,9 +68,6 @@ CIxxatCanChannel::CIxxatCanChannel(void)
 
     m_bRxThreadRunning = FALSE;
     m_lMustQuit = 0;
-
-    m_dwTimerTickResolutionNSec = 0;
-    m_qwTimerOverruns = 0;
 
     m_dwRxErrorFrameCounter = 0;
 
@@ -524,19 +522,12 @@ HRESULT CIxxatCanChannel::CreateCANChannel()
                 hResult = DYNCALL(canChannelGetCaps)( m_hCANChannel, &sCanCapabilities);
             }
 
-            // reset the timer overrun variable after open or reopen a CAN channel
-            m_qwTimerOverruns = 0;
             if (hResult == VCI_OK)
             {
                 if (  (sCanCapabilities.dwTscDivisor != 0)
                         && (sCanCapabilities.dwClockFreq > 0) )
                 {
-                    // use a UINT64 to be sure to have enough place to
-                    // store the values
-                    UINT64 qwTimerRes   =  1000000000 * (UINT64) sCanCapabilities.dwTscDivisor;
-
-                    // calculate now the timer resolution in 1 nSecond ticks
-                    m_dwTimerTickResolutionNSec = DWORD(qwTimerRes / sCanCapabilities.dwClockFreq);
+                    m_VciTimeStamp.SetTimerResolution(sCanCapabilities.dwTscDivisor, sCanCapabilities.dwClockFreq);
                 }
                 else
                 {
@@ -544,7 +535,6 @@ HRESULT CIxxatCanChannel::CreateCANChannel()
 #ifdef _DEBUG
                     ASSERT(false);
 #endif
-                    m_dwTimerTickResolutionNSec = sCanCapabilities.dwClockFreq;
                 }
             }
             //
@@ -653,6 +643,10 @@ void CIxxatCanChannel::HandleReceivedMessage(CANMSG* pCanMsg)
             DispatchFrameToClients(&sStCanData);
             break;
         case CAN_MSGTYPE_INFO:    // info frame
+            if (pCanMsg->abData[0] == CAN_INFO_START)
+            {
+                m_VciTimeStamp.SetCANStartMessage(pCanMsg->dwTime);
+            }
             break;
         case CAN_MSGTYPE_ERROR:   // error frame
             ConvertIxxatErrorToBusmasterMsg(pCanMsg, &sStCanData);
@@ -667,7 +661,7 @@ void CIxxatCanChannel::HandleReceivedMessage(CANMSG* pCanMsg)
         case CAN_MSGTYPE_TIMEOVR: // timer overrun
             // add the overrun count which occurred since the last timer overrun message
             // it is the value in the identifier field.
-            m_qwTimerOverruns += ( (UINT64) pCanMsg->dwMsgId) << 32;
+            m_VciTimeStamp.AddTimerOverruns(pCanMsg->dwMsgId);
             break;
         case CAN_MSGTYPE_TIMERST: // timer reset
             // will never occur (26-04-2012)
@@ -732,11 +726,7 @@ void CIxxatCanChannel::ConvertIxxatCanToBusmasterMsg(CANMSG* pCanMsg, STCANDATA*
     pStCanData->m_uDataInfo.m_sCANMsg.m_bCANFD = false;
     pStCanData->m_uDataInfo.m_sCANMsg.m_ucChannel = m_byChannelNumber;
 
-    pStCanData->m_lTickCount.QuadPart = pCanMsg->dwTime + m_qwTimerOverruns;
-    pStCanData->m_lTickCount.QuadPart *= m_dwTimerTickResolutionNSec;
-
-    // change it to a tick with 0.1 milliseconds
-    pStCanData->m_lTickCount.QuadPart /= 100000;
+    pStCanData->m_lTickCount.QuadPart = m_VciTimeStamp.GetTimeInNanoSeconds(pCanMsg->dwTime) / 100000;
 
     pStCanData->m_uDataInfo.m_sCANMsg.m_unMsgID = pCanMsg->dwMsgId;
     pStCanData->m_uDataInfo.m_sCANMsg.m_ucDataLen = pCanMsg->uMsgInfo.Bits.dlc;
@@ -774,11 +764,8 @@ void CIxxatCanChannel::ConvertIxxatErrorToBusmasterMsg(CANMSG* pCanMsg, STCANDAT
 
     pStCanData->m_uDataInfo.m_sErrInfo.m_ucChannel = m_byChannelNumber;
 
-    pStCanData->m_lTickCount.QuadPart = pCanMsg->dwTime + m_qwTimerOverruns;
-    pStCanData->m_lTickCount.QuadPart *= m_dwTimerTickResolutionNSec;
-
     // change it to a tick with 0.1 milliseconds
-    pStCanData->m_lTickCount.QuadPart /= 100000;
+    pStCanData->m_lTickCount.QuadPart = m_VciTimeStamp.GetTimeInNanoSeconds(pCanMsg->dwTime) / 100000;
 
     pStCanData->m_uDataInfo.m_sErrInfo.m_ucErrType = ERROR_BUS;
 

@@ -107,7 +107,7 @@ protected:
     INTERFACE_HW_LIST m_sSelHwInterface;
     INT m_anSelectedItems[CHANNEL_ALLOWED];
 
-    int  VciDeviceInfoAddToArray(int iStartPosArray, VCIDEVICEINFO* pVciDevInfo, INTERFACE_HW_LIST& sSelHwInterface);
+    int  VciDeviceInfoAddToArray(INT& nStartPosArray, VCIDEVICEINFO* pVciDevInfo, INTERFACE_HW_LIST& sSelHwInterface);
 
 private:
     SYSTEMTIME    m_sCurrSysTime; ///< Current system time, set in CAN_SetAppParams()

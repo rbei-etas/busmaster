@@ -58,8 +58,8 @@
 class CCANControllerConfigDlg : public CDialog, public IChangeRegisters //CPropertyPage
 {
 public:
-	int InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount,UINT );
-	DOUBLE vValidateBaudRate(DOUBLE dbaudrate,int,UINT );
+    int InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount,UINT );
+    DOUBLE vValidateBaudRate(DOUBLE dbaudrate,int,UINT );
     DECLARE_DYNAMIC(CCANControllerConfigDlg)
 
 public:
@@ -97,19 +97,19 @@ protected:
     };
     sCiaBaud m_asBaudList[IXXAT_NUM_OF_CIA_ENTRIES];  ///< List of as baud entries.
 
-	std::map<int, int> m_mapBaudRateToCiaBaudIndex;
-	DWORD m_dwBaudRate; //To store the baud rate selected by the user in channel selection dialog
+    std::map<int, int> m_mapBaudRateToCiaBaudIndex;
+    DWORD m_dwBaudRate; //To store the baud rate selected by the user in channel selection dialog
     DWORD m_dwBTR0; ///< The class member for the bit timing register 0
     DWORD m_dwBTR1; ///< The class member for the bit timing register 1
     std::string m_strSelectedBaudName; ///< The selected baud rate as string
     BOOL   m_bSuppressUpdateCalculation;  ///< internal flag to prevent problems while changing the combox box selection
-	BOOL	m_bDialogCancel;
-	SCONTROLLER_DETAILS m_asDummyControllerDetails[CHANNEL_ALLOWED];
+    BOOL    m_bDialogCancel;
+    SCONTROLLER_DETAILS m_asDummyControllerDetails[CHANNEL_ALLOWED];
     void FillBaudStruct();
     void UpdateBTRFields(int iIndex);
     int  GetListIndexFromBTRRegisters();
     void UpdateComboBoxIndexFromEditFields();
-	void SelectComboBaudRate(); //To set the value in the CANControllerConfigDlg which is set by user in Channel Selection Dlg
+    void SelectComboBaudRate(); //To set the value in the CANControllerConfigDlg which is set by user in Channel Selection Dlg
 public:
     CEdit m_editBTR0; ///< A corresponing member for the edit box bit timing register 0
     CEdit m_editBTR1; ///< A corresponing member for the edit box bit timing register 0

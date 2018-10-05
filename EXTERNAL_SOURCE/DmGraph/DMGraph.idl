@@ -1,0 +1,373 @@
+// (c) Copyright The Code Project Open License (CPOL)
+//  http://www.codeproject.com/info/cpol10.aspx
+//
+//  Marius Samoila, Nikolai Teofilov, 2011
+//
+// FILE NAME
+//		DMGraph.idl : IDL source for DMGraph.dll
+//
+//
+// DESCRIPTION
+// 
+// MODIFICATIONS
+//		01-Dec-2011 MSamoila major re-design of old NTGraph.odl
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (DMGraph.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+	
+
+typedef [ uuid(865EDFD4-9E4D-4752-907A-033D45C1C7F5),
+	      helpstring("Line style constants") ] 
+		  enum { [helpstring ("Solid")] Solid,
+				 [helpstring ("Dash")] Dash,
+				 [helpstring ("Dot")] Dot,
+				 [helpstring ("Dash Dot")] DashDot,
+				 [helpstring ("Dash Dot Dot")] DashDotDot,
+				 [helpstring ("None")] Null,
+				 [helpstring ("XY Step")] XYStep,
+				 [helpstring ("YX Step")] YXStep,
+				 [helpstring ("Bars")] Bars,
+				 [helpstring ("Stick")] Stick
+               } LineType;
+
+typedef [ uuid(A096E330-15BA-42C1-BD53-2C7E0B96CF77),
+	      helpstring("Symbol style constants") ] 
+		  enum { [helpstring ("None")] Nosym,
+			     [helpstring ("Dots")] Dots,
+				 [helpstring ("Rectangles")] Rectangles,
+				 [helpstring ("Diamonds")] Diamonds,
+				 [helpstring ("Asterisk")] Asterisk,
+				 [helpstring ("Down Triangles")] DownTriangles,
+				 [helpstring ("Up Triangles")] UpTriangles,
+				 [helpstring ("Left Triangles")] LeftTriangles,
+				 [helpstring ("Right Triangles")] RightTriangles,
+				} SymbolType;
+
+typedef [ uuid(77D6CAFB-62A7-4916-A188-9A76D6194870),
+	      helpstring("Frame style constants") ] 
+		  enum { [helpstring ("Flat")] Flat,
+			     [helpstring ("Scope")] Scope,
+				 [helpstring ("3D Frame")] Bitmap
+				} FrameStyle;
+
+typedef [ uuid(7F2E3118-D790-42AE-81C9-FA14B54FC817),
+	      helpstring("Tracking Mode constants") ] 
+		  enum { [helpstring ("None")] None,
+			     [helpstring ("Track cursor position")] TrackCursor,
+			     [helpstring ("Track element position")] TrackElement,
+				 [helpstring ("Zoom XY")] Zoom,
+				 [helpstring ("Zoom X")] ZoomX,
+				 [helpstring ("Zoom Y")] ZoomY,
+				 [helpstring ("Pan XY")] PanXY,
+				 [helpstring ("Pan X")] PanX,
+				 [helpstring ("Pan Y")] PanY
+               } TrackModeState;
+
+typedef [ uuid(5075d5fa-ebc1-4023-9c64-e576e7c58854),
+		  helpstring("Cursor mode constants") ] 
+		  enum { [helpstring ("Fixed")] Fixed, 
+				 [helpstring ("Floating")] Floating, 
+				 [helpstring ("Snap")] Snap
+			   } CursorMode;
+
+typedef [ uuid(c2fe71fe-475c-4cfe-a33a-12eba6ffef37),
+		  helpstring("Cursor cross hair") ]
+		  enum { XY, X, Y } Crosshair;
+
+typedef [ uuid(61a2b721-ecb0-49e8-9cdb-0509a62011a7),
+		  helpstring("Axis orientation") ]
+		  enum { HorizontalX, VerticalY } Orientation;
+
+
+	[
+		object,
+		uuid(4ca52ab5-b6ce-41af-9a09-284d00714f8e),
+		dual,
+		helpstring("IDMGraphElement Interface"),
+		pointer_default(unique)
+	]
+	interface IDMGraphElement : IDispatch
+	{
+		[propget, id(1), helpstring("property LineColor")] HRESULT LineColor([out, retval] OLE_COLOR *pVal);
+		[propput, id(1), helpstring("property LineColor")] HRESULT LineColor([in] OLE_COLOR newVal);
+		[propget, id(2), helpstring("property PointColor")] HRESULT PointColor([out, retval] OLE_COLOR *pVal);
+		[propput, id(2), helpstring("property PointColor")] HRESULT PointColor([in] OLE_COLOR newVal);
+		[propget, id(3), helpstring("property Linetype")] HRESULT Linetype([out, retval] LineType *pVal);
+		[propput, id(3), helpstring("property Linetype")] HRESULT Linetype([in] LineType newVal);
+		[propget, id(4), helpstring("property Line Width")] HRESULT LineWidth([out, retval] long *pVal);
+		[propput, id(4), helpstring("property Line Width")] HRESULT LineWidth([in] long newVal);
+		[propget, id(5), helpstring("property PointSymbol")] HRESULT PointSymbol([out, retval] SymbolType *pVal);
+		[propput, id(5), helpstring("property PointSymbol")] HRESULT PointSymbol([in] SymbolType newVal);
+		[propget, id(6), helpstring("property SolidPoint")] HRESULT SolidPoint([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(6), helpstring("property SolidPoint")] HRESULT SolidPoint([in] VARIANT_BOOL newVal);
+		[propget, id(7), helpstring("property Point Size")] HRESULT PointSize([out, retval] long *pVal);
+		[propput, id(7), helpstring("property Point Size")] HRESULT PointSize([in] long newVal);
+		[propget, id(8), helpstring("property Show")] HRESULT Show([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(8), helpstring("property Show")] HRESULT Show([in] VARIANT_BOOL newVal);
+		[propget, id(9), helpstring("property Name")] HRESULT Name([out, retval] BSTR *pVal);
+		[propput, id(9), helpstring("property Name")] HRESULT Name([in] BSTR newVal);
+		[propget, id(10), helpstring("property number of points")] HRESULT Count([out, retval] long *pVal);
+		[propget, id(11), helpstring("property XValue")] HRESULT XValue([in] long index, [out, retval] double *pVal);
+		[propput, id(11), helpstring("property XValue")] HRESULT XValue([in] long index, [in] double newVal);
+		[propget, id(12), helpstring("property YValue")] HRESULT YValue([in] long index, [out, retval] double *pVal);
+		[propput, id(12), helpstring("property YValue")] HRESULT YValue([in] long index, [in] double newVal);
+		[id(13), helpstring("appends a new point PlotXY")] HRESULT PlotXY([in] double X, [in] double Y);
+		[id(14), helpstring("appends a new point PlotY")] HRESULT PlotY([in] double Y);
+		[id(15), helpstring("replace all existing points with new ones then plot them")] 
+		HRESULT Plot([in] VARIANT newXVals, [in] VARIANT newYVals);
+	}
+
+	[
+		object,
+		uuid(7d965dbb-74cd-42d2-a9c6-53ed80188b35),
+		dual,
+		helpstring("IDMGraphAnnotation Interface"),
+		pointer_default(unique)
+	]
+	interface IDMGraphAnnotation : IDispatch
+	{
+		[propget, id(1), helpstring("property LabelCaption")] HRESULT LabelCaption([out, retval] BSTR *pVal);
+		[propput, id(1), helpstring("property LabelCaption")] HRESULT LabelCaption([in] BSTR newVal);
+		[propget, id(2), helpstring("property LabelX")] HRESULT LabelX([out, retval] double *pVal);
+		[propput, id(2), helpstring("property LabelX")] HRESULT LabelX([in] double newVal);
+		[propget, id(3), helpstring("property LabelY")] HRESULT LabelY([out, retval] double *pVal);
+		[propput, id(3), helpstring("property LabelY")] HRESULT LabelY([in] double newVal);
+		[propget, id(4), helpstring("property LabelColor")] HRESULT LabelColor([out, retval] OLE_COLOR *pVal);
+		[propput, id(4), helpstring("property LabelColor")] HRESULT LabelColor([in] OLE_COLOR newVal);
+		[propget, id(5), helpstring("property LabelHorizontal")] HRESULT LabelHorizontal([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(5), helpstring("property LabelHorizontal")] HRESULT LabelHorizontal([in] VARIANT_BOOL newVal);
+		[propget, id(6), helpstring("property Visible")] HRESULT Visible([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(6), helpstring("property Visible")] HRESULT Visible([in] VARIANT_BOOL newVal);
+		[propget, id(7), helpstring("property LabelBkColor")] HRESULT LabelBkColor([out, retval] OLE_COLOR *pVal);
+		[propput, id(7), helpstring("property LabelBkColor")] HRESULT LabelBkColor([in] OLE_COLOR newVal);
+	}
+
+	[
+		object,
+		uuid(fb9b14b4-6acc-4bda-94a4-b75a3c349623),
+		dual,
+		helpstring("IDMGraphCursor Interface"),
+		pointer_default(unique)
+	]
+	interface IDMGraphCursor : IDispatch
+	{
+		[propget, id(1), helpstring("property Color")] HRESULT Color([out, retval] OLE_COLOR *pVal);
+		[propput, id(1), helpstring("property Color")] HRESULT Color([in] OLE_COLOR newVal);
+		[propget, id(2), helpstring("property X")] HRESULT X([out, retval] double *pVal);
+		[propput, id(2), helpstring("property X")] HRESULT X([in] double newVal);
+		[propget, id(3), helpstring("property Y")] HRESULT Y([out, retval] double *pVal);
+		[propput, id(3), helpstring("property Y")] HRESULT Y([in] double newVal);
+		[propget, id(4), helpstring("property Style")] HRESULT Style([out, retval] Crosshair *pVal);
+		[propput, id(4), helpstring("property Style")] HRESULT Style([in] Crosshair newVal);
+		[propget, id(5), helpstring("property Visible")] HRESULT Visible([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(5), helpstring("property Visible")] HRESULT Visible([in] VARIANT_BOOL newVal);
+		[propget, id(6), helpstring("property Mode")] HRESULT Mode([out, retval] CursorMode *pVal);
+		[propput, id(6), helpstring("property Mode")] HRESULT Mode([in] CursorMode newVal);
+		[propget, id(7), helpstring("property Name")] HRESULT Name([out, retval] BSTR *pVal);
+		[propput, id(7), helpstring("property Name")] HRESULT Name([in] BSTR newVal);
+		[propget, id(8), helpstring("property CursorID")] HRESULT CursorID([out, retval] SHORT* pVal);
+		[propput, id(8), helpstring("property CursorID")] HRESULT CursorID([in] SHORT newVal);
+	}
+
+	[
+		object,
+		uuid(c735264e-70bb-48bb-ac9c-93188a12c254),
+		dual,
+		helpstring("IDMGraphAxis Interface"),
+		pointer_default(unique)
+	]
+	interface IDMGraphAxis : IDispatch
+	{
+		[propget, id(1), helpstring("property GridNumber")] HRESULT GridNumber([out, retval] short *pVal);
+		[propput, id(1), helpstring("property GridNumber")] HRESULT GridNumber([in] short newVal);
+		[propget, id(2), helpstring("property Label")] HRESULT Label([out, retval] BSTR *pVal);
+		[propput, id(2), helpstring("property Label")] HRESULT Label([in] BSTR newVal);
+		[propget, id(3), helpstring("TRUE if this axis is in logarithmic scale")] HRESULT Log([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(3), helpstring("set to TRUE if this axis needs to display logarithmic scale")] HRESULT Log([in] VARIANT_BOOL newVal);
+		[propget, id(4), helpstring("TRUE if this axis needs to display date/time")] HRESULT Time([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(4), helpstring("set to TRUE if this axis needs to display date/time")] HRESULT Time([in] VARIANT_BOOL newVal);
+		[propget, id(5), helpstring("property Format")] HRESULT Format([out, retval] BSTR *pVal);
+		[propput, id(5), helpstring("property Format")] HRESULT Format([in] BSTR newVal);
+		[propget, id(6), helpstring("property ShowGrid (horizontal lines for Y axis and vertical lines for X axis)")] 
+		HRESULT ShowGrid([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(6), helpstring("property ShowGrid")] HRESULT ShowGrid([in] VARIANT_BOOL newVal);
+	}
+
+	[
+		object,
+		uuid(022e739f-00bb-40be-bbba-8492e4443493),
+		dual,
+		helpstring("IDMGraphCollection Interface"),
+		pointer_default(unique)
+	]
+	interface IDMGraphCollection : IDispatch
+	{
+		[propget, id(1), helpstring("property Count")] HRESULT Count([out, retval] long *pVal);
+		[propget, id(2), helpstring("property Item")] HRESULT Item([in] long index, [out, retval] IDispatch* *pVal);
+		[propget, id(3), helpstring("Gets the index of selected Item")] HRESULT Selected([out, retval] long* pVal);
+		[propput, id(3), helpstring("Set the index for selected Item")] HRESULT Selected([in] long index);
+		[id(4), helpstring("Creates a new item and adds it to the end")] HRESULT Add([out, retval] IDispatch* *pVal);
+		[id(5), helpstring("Deletes an existing item at specified index")] HRESULT Delete([in] long index);
+	}
+
+	[
+		object,
+		uuid(2DC9C043-D85A-45B3-8867-9E3D035DEC7F),
+		dual,
+		helpstring("IDMGraphCtrl Interface"),
+		pointer_default(unique)
+	]
+	interface IDMGraphCtrl : IDispatch
+	{
+		[propput, id(DISPID_ENABLED)]
+		HRESULT Enabled([in]VARIANT_BOOL vbool);
+		[propget, id(DISPID_ENABLED)]
+		HRESULT Enabled([out,retval]VARIANT_BOOL* pbool);
+		[propput, id(DISPID_CAPTION)]
+		HRESULT Caption([in]BSTR strCaption);
+		[propget, id(DISPID_CAPTION)]
+		HRESULT Caption([out,retval]BSTR* pstrCaption);
+		[propput, id(DISPID_APPEARANCE)]
+		HRESULT Appearance([in]short appearance);
+		[propget, id(DISPID_APPEARANCE)]
+		HRESULT Appearance([out, retval]short* pappearance);
+		[propget, id(1), helpstring("property AxisColor")] HRESULT AxisColor([out, retval] OLE_COLOR *pVal);
+		[propput, id(1), helpstring("property AxisColor")] HRESULT AxisColor([in] OLE_COLOR newVal);
+		[propget, id(2), helpstring("property GridColor")] HRESULT GridColor([out, retval] OLE_COLOR *pVal);
+		[propput, id(2), helpstring("property GridColor")] HRESULT GridColor([in] OLE_COLOR newVal);
+		[propget, id(3), helpstring("property LabelColor")] HRESULT LabelColor([out, retval] OLE_COLOR *pVal);
+		[propput, id(3), helpstring("property LabelColor")] HRESULT LabelColor([in] OLE_COLOR newVal);
+		[propget, id(4), helpstring("property LabelFont")] HRESULT LabelFont([out, retval] IFontDisp* *pVal);
+		[propput, id(4), helpstring("property LabelFont")] HRESULT LabelFont([in] IFontDisp* newVal);
+		[propget, id(5), helpstring("property TickFont")] HRESULT TickFont([out, retval] IFontDisp* *pVal);
+		[propput, id(5), helpstring("property TickFont")] HRESULT TickFont([in] IFontDisp* newVal);
+		[propget, id(6), helpstring("property TitleFont")] HRESULT TitleFont([out, retval] IFontDisp* *pVal);
+		[propput, id(6), helpstring("property TitleFont")] HRESULT TitleFont([in] IFontDisp* newVal);
+		[propget, id(7), helpstring("property IdentFont")] HRESULT IdentFont([out, retval] IFontDisp* *pVal);
+		[propput, id(7), helpstring("property IdentFont")] HRESULT IdentFont([in] IFontDisp* newVal);
+		[propget, id(8), helpstring("property ElementIdentify")] HRESULT ElementIdentify([out, retval] VARIANT_BOOL *pVal);
+		[propput, id(8), helpstring("property ElementIdentify")] HRESULT ElementIdentify([in] VARIANT_BOOL newVal);
+		[propget, id(9), helpstring("property TrackMode")] HRESULT TrackMode([out, retval] TrackModeState *pVal);
+		[propput, id(9), helpstring("property TrackMode")] HRESULT TrackMode([in] TrackModeState newVal);
+		[propget, id(10), helpstring("property ControlFramePicture")] HRESULT ControlFramePicture([out, retval] IPictureDisp* *pVal);
+		[propput, id(10), helpstring("property ControlFramePicture")] HRESULT ControlFramePicture([in] IPictureDisp* newVal);
+		[propget, id(11), helpstring("property PlotAreaPicture")] HRESULT PlotAreaPicture([out, retval] IPictureDisp* *pVal);
+		[propput, id(11), helpstring("property PlotAreaPicture")] HRESULT PlotAreaPicture([in] IPictureDisp* newVal);
+		[propget, id(12), helpstring("property ControlFrameColor")] HRESULT ControlFrameColor([out, retval] OLE_COLOR *pVal);
+		[propput, id(12), helpstring("property ControlFrameColor")] HRESULT ControlFrameColor([in] OLE_COLOR newVal);
+		[propget, id(13), helpstring("property PlotAreaColor")] HRESULT PlotAreaColor([out, retval] OLE_COLOR *pVal);
+		[propput, id(13), helpstring("property PlotAreaColor")] HRESULT PlotAreaColor([in] OLE_COLOR newVal);
+		[propget, id(14), helpstring("property FrameStyle")] HRESULT FrameStyle([out, retval] FrameStyle *pVal);
+		[propput, id(14), helpstring("property FrameStyle")] HRESULT FrameStyle([in] FrameStyle newVal);
+		[propget, id(15), helpstring("property Annotations")] HRESULT Annotations([out, retval] IDMGraphCollection* *pVal);
+		[propget, id(16), helpstring("property Elements")] HRESULT Elements([out, retval] IDMGraphCollection* *pVal);
+		[propget, id(17), helpstring("property Cursors")] HRESULT Cursors([out, retval] IDMGraphCollection* *pVal);
+		[propget, id(18), helpstring("property Asis")] HRESULT Axis([in] Orientation eOrientation, [out, retval] IDMGraphAxis* *pVal);
+
+		[id(20), helpstring("method SetRange")] HRESULT SetRange([in] double xmin, [in] double xmax, [in] double ymin, [in] double ymax);
+		[id(21), helpstring("method GetRange")] HRESULT GetRange([out] double* xmin, [out] double* xmax, [out] double* ymin, [out] double* ymax);
+		[id(22), helpstring("AutoRange. It sets the min/max x/y range based on existing data")] HRESULT AutoRange();
+		[id(23), helpstring("get Auto Range")] HRESULT GetAutoRange([out] double* xmin, [out] double* xmax, [out] double* ymin, [out] double* ymax);
+		[id(24), helpstring("method CopyToClipboard")] HRESULT CopyToClipboard();
+		[id(25), helpstring("method PrintGraph")] HRESULT PrintGraph();
+		[id(26), helpstring("method ClearGraph")] HRESULT ClearGraph();
+		[id(27), helpstring("method ShowProperties")] HRESULT ShowProperties();
+		[id(28), helpstring("method SaveAs")] HRESULT SaveAs([in] BSTR szFilename);
+		
+
+		[id(DISPID_ABOUTBOX)] HRESULT AboutBox();
+		[id(29), helpstring("method ShiftDisplay")] HRESULT ShiftDisplay(SHORT xShift, SHORT yShift);
+		[id(30), helpstring("method GenerateCSVReport")] HRESULT GenerateCSVReport(LPCTSTR pFilename);
+		[id(31), helpstring("method GetElementValueAtCursor")] HRESULT GetElementValueAtCursor([in] SHORT shElementID, [in] DOUBLE dblCursorVal, [out] DOUBLE* dblElemVal);
+	};
+
+[
+	uuid(a5e18713-3023-4fd2-8dcb-e82b6f330f48),
+	version(1.0),
+	helpfile("DMGraph.hlp"),
+	helpstring("DMGraph ActiveX Control module")
+]
+library DMGraphLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	interface IDMGraphElement;
+	interface IDMGraphAnnotation;
+	interface IDMGraphCursor;
+	interface IDMGraphAxis;
+	interface IDMGraphCollection;
+
+	[
+		uuid(9392E24C-430F-467D-99A2-69FA98CBCB78),
+		helpstring("_IDMGraphCtrlEvents Interface")
+	]
+	dispinterface _IDMGraphCtrlEvents
+	{
+		properties:
+		methods:
+			[id(1)] void CursorPosition(double x, double y, short shCursorID);
+			[id(2)] void TrackModeChanged(TrackModeState lNewState);
+			[id(DISPID_CLICK)] void Click();
+	};
+
+	[
+		uuid(AAF89A51-7FC0-43B0-9F81-FFEFF6A8DB43),
+		helpstring("DMGraphCtrl Class")
+	]
+	coclass DMGraphCtrl
+	{
+		[default] interface IDMGraphCtrl;
+		[default, source] dispinterface _IDMGraphCtrlEvents;
+	};
+
+	[
+		uuid(14A14BAD-2949-4186-9529-BBB2CC7F9699),
+		helpstring("ElementPropPage Class")
+	]
+	coclass ElementPropPage
+	{
+		interface IUnknown;
+	};
+
+	[
+		uuid(273DB50A-E76D-4B95-8E1A-0993E14FFEF0),
+		helpstring("AnnoPropPage Class")
+	]
+	coclass AnnoPropPage
+	{
+		interface IUnknown;
+	};
+
+	[
+		uuid(5DF8A597-C334-4ED5-8D45-8884D506044D),
+		helpstring("CursorPropPage Class")
+	]
+	coclass CursorPropPage
+	{
+		interface IUnknown;
+	};
+
+	[
+		uuid(9EE3E072-2B3F-47AB-8612-B6ED7F0CDAE6),
+		helpstring("FormatPropPage Class")
+	]
+	coclass FormatPropPage
+	{
+		interface IUnknown;
+	};
+
+	[
+		uuid(cb32b59d-7aaa-44b5-acdf-a64b9380e48c),
+		helpstring("DMGraphPropPage Class")
+	]
+	coclass DMGraphPropPage
+	{
+		interface IUnknown;
+	};
+};

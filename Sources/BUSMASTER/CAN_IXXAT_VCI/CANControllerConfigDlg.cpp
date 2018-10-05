@@ -41,7 +41,7 @@ BEGIN_MESSAGE_MAP(CCANControllerConfigDlg, CDialog)
 END_MESSAGE_MAP()
 
 /**
- * @fn
+ * @fn CCANControllerConfigDlg::CCANControllerConfigDlg
  *
  * @brief
  *  Constructor of the dialog.
@@ -58,7 +58,7 @@ CCANControllerConfigDlg::CCANControllerConfigDlg(std::string omBaudRate, int iBT
     m_dwBTR0 = (iBTRRegisters & 0xFF00) >> 8;
     m_dwBTR1 = (iBTRRegisters & 0x00FF);
     m_bSuppressUpdateCalculation = FALSE;
-	m_dwBaudRate = strtoul(omBaudRate.c_str(),NULL,0);
+    m_dwBaudRate = strtoul(omBaudRate.c_str(),NULL,0);
 }
 
 /**
@@ -108,11 +108,11 @@ BOOL CCANControllerConfigDlg::OnInitDialog()
         m_comboBoxCiABaudSelection.AddString(m_asBaudList[i].strName.c_str());
     }
 
-	SelectComboBaudRate();//Setting the cursor value in BaudRate Selection Box
+    SelectComboBaudRate();//Setting the cursor value in BaudRate Selection Box
     int iCurIndex = GetListIndexFromBTRRegisters();
     m_comboBoxCiABaudSelection.SetCurSel(iCurIndex);
     UpdateBTRFields(iCurIndex);
-	m_bDialogCancel = FALSE;
+    m_bDialogCancel = FALSE;
 
     return TRUE;
 }
@@ -203,11 +203,11 @@ void CCANControllerConfigDlg::FillBaudStruct()
     m_asBaudList[9].dwBTR1 = m_dwBTR1;
 
     m_strSelectedBaudName = _("User defined");
-	m_mapBaudRateToCiaBaudIndex.clear();
-	for(int index = 0; index<= 9; index++)
-	{
-		m_mapBaudRateToCiaBaudIndex[m_asBaudList[index].dwBaud] =  index;
-	}
+    m_mapBaudRateToCiaBaudIndex.clear();
+    for(int index = 0; index<= 9; index++)
+    {
+        m_mapBaudRateToCiaBaudIndex[m_asBaudList[index].dwBaud] =  index;
+    }
 }
 
 /**
@@ -252,7 +252,7 @@ void CCANControllerConfigDlg::UpdateBTRFields(int iIndex)
 
         m_dwBTR0 = m_asBaudList[iIndex].dwBTR0;
         m_dwBTR1 = m_asBaudList[iIndex].dwBTR1;
-		m_dwBaudRate = m_asBaudList[iIndex].dwBaud;
+        m_dwBaudRate = m_asBaudList[iIndex].dwBaud;
 
         m_bSuppressUpdateCalculation = FALSE;
     }
@@ -394,7 +394,7 @@ void CCANControllerConfigDlg::UpdateComboBoxIndexFromEditFields()
 {
     TCHAR szText[20];
     TCHAR* szDummy;
-	CString omStrBaudRate;
+    CString omStrBaudRate;
     m_editBTR0.GetWindowText(szText, 20);
     m_dwBTR0 = (DWORD) _tcstoul(szText, &szDummy, 16);
 
@@ -404,65 +404,85 @@ void CCANControllerConfigDlg::UpdateComboBoxIndexFromEditFields()
 
     int iIndexInList = GetListIndexFromBTRRegisters();
     m_comboBoxCiABaudSelection.SetCurSel(iIndexInList);
-	m_comboBoxCiABaudSelection.GetWindowText(omStrBaudRate);
-	m_dwBaudRate = strtoul(omStrBaudRate,NULL,0);
+    m_comboBoxCiABaudSelection.GetWindowText(omStrBaudRate);
+    m_dwBaudRate = strtoul(omStrBaudRate,NULL,0);
 }
+
+/**
+ * @brief
+ *  Called when selected a baud rate in the combo box.
+ *
+ */
 void CCANControllerConfigDlg::SelectComboBaudRate()
 {
-	int nBaudrate = m_dwBaudRate/1000; // BaudRate in KBPS 
-	std::map<int, int>::iterator itr = m_mapBaudRateToCiaBaudIndex.find(nBaudrate);
-	if(itr != m_mapBaudRateToCiaBaudIndex.end() && itr->second >= 0)
-	{
-		int nIndex = itr->second;
-		m_comboBoxCiABaudSelection.SetCurSel(nIndex);
-		m_strSelectedBaudName = m_asBaudList[nIndex].strName;
-		m_dwBTR0 = m_asBaudList[nIndex].dwBTR0;
-		m_dwBTR1 = m_asBaudList[nIndex].dwBTR1;
-	}
-	else
-	{
-		m_comboBoxCiABaudSelection.SetCurSel(9);
-	}
+    int nBaudrate = m_dwBaudRate/1000; // BaudRate in KBPS
+    std::map<int, int>::iterator itr = m_mapBaudRateToCiaBaudIndex.find(nBaudrate);
+    if(itr != m_mapBaudRateToCiaBaudIndex.end() && itr->second >= 0)
+    {
+        int nIndex = itr->second;
+        m_comboBoxCiABaudSelection.SetCurSel(nIndex);
+        m_strSelectedBaudName = m_asBaudList[nIndex].strName;
+        m_dwBTR0 = m_asBaudList[nIndex].dwBTR0;
+        m_dwBTR1 = m_asBaudList[nIndex].dwBTR1;
+    }
+    else
+    {
+        m_comboBoxCiABaudSelection.SetCurSel(9);
+    }
 }
+
+/**
+ * @brief
+ *  Called when the user open by button clicked
+ *  the dialog with the advanced baud rate settings.
+ *
+ */
 int CCANControllerConfigDlg::InvokeAdavancedSettings(PSCONTROLLER_DETAILS pControllerDetails, UINT nCount, UINT nSelectedHw)
 {
-	if (pControllerDetails!=nullptr)
-	{
-		m_dwBTR0 = (pControllerDetails[nSelectedHw].m_nBTR0BTR1 & 0xFF00) >> 8;
-		m_dwBTR1 = (pControllerDetails[nSelectedHw].m_nBTR0BTR1 & 0x00FF);
-		m_bSuppressUpdateCalculation = FALSE;
-		m_dwBaudRate = atol(pControllerDetails[nSelectedHw].m_omStrBaudrate.c_str());
-		m_asDummyControllerDetails[nSelectedHw] = pControllerDetails[nSelectedHw];
-		int nRet = DoModal();
-		if(nRet != IDOK) // On Cancel
-		{
-			pControllerDetails[nSelectedHw] = m_asDummyControllerDetails[nSelectedHw];
-		}
-		else
-		{
-			m_bDialogCancel = FALSE;
-			CString omTempBaudRate;
-			omTempBaudRate.Format("%ld",(m_dwBaudRate*1000));
-			pControllerDetails[nSelectedHw].m_omStrBaudrate = omTempBaudRate;
-		}		
-	}
-	return 1;
+    if (pControllerDetails!=nullptr)
+    {
+        m_dwBTR0 = (pControllerDetails[nSelectedHw].m_nBTR0BTR1 & 0xFF00) >> 8;
+        m_dwBTR1 = (pControllerDetails[nSelectedHw].m_nBTR0BTR1 & 0x00FF);
+        m_bSuppressUpdateCalculation = FALSE;
+        m_dwBaudRate = atol(pControllerDetails[nSelectedHw].m_omStrBaudrate.c_str());
+        m_asDummyControllerDetails[nSelectedHw] = pControllerDetails[nSelectedHw];
+        int nRet = DoModal();
+        if(nRet != IDOK) // On Cancel
+        {
+            pControllerDetails[nSelectedHw] = m_asDummyControllerDetails[nSelectedHw];
+        }
+        else
+        {
+            m_bDialogCancel = FALSE;
+            CString omTempBaudRate;
+            omTempBaudRate.Format("%ld",(m_dwBaudRate*1000));
+            pControllerDetails[nSelectedHw].m_omStrBaudrate = omTempBaudRate;
+        }
+    }
+    return 1;
 }
+
+/**
+ * @brief
+ *  This function will validate the user input value of
+ *  baud rate. A valid baud rate will be calculated.
+ * @remark comment from the file ChangeRegisters.cpp
+*/
 DOUBLE CCANControllerConfigDlg::vValidateBaudRate(DOUBLE dBaudRate,int,UINT )
 {
-	int nBaudRate = (int)dBaudRate;
-	int nBaudrate = nBaudRate/1000; // BaudRate in KBPS
-	if(m_mapBaudRateToCiaBaudIndex.size() == 0) 
-	{
-		FillBaudStruct();
-	}
-	std::map<int, int>::iterator itr = m_mapBaudRateToCiaBaudIndex.find(nBaudrate);
-	if(itr != m_mapBaudRateToCiaBaudIndex.end() && itr->second >= 0)
-	{
-		return nBaudRate;
-	}
-	else
-	{
-		return 500000;
-	}
+    int nBaudRate = (int)dBaudRate;
+    int nBaudrate = nBaudRate/1000; // BaudRate in KBPS
+    if(m_mapBaudRateToCiaBaudIndex.size() == 0)
+    {
+        FillBaudStruct();
+    }
+    std::map<int, int>::iterator itr = m_mapBaudRateToCiaBaudIndex.find(nBaudrate);
+    if(itr != m_mapBaudRateToCiaBaudIndex.end() && itr->second >= 0)
+    {
+        return nBaudRate;
+    }
+    else
+    {
+        return 500000;
+    }
 }
