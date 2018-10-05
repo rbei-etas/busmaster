@@ -27,6 +27,7 @@
 
 
 #include "CAN_IXXAT_VCI_stdafx.h"
+#include "VciTimeStamp.h"
 #include "DIL_CAN_IXXAT_VCI.h"
 #include "vcinpldynl.h"
 //#include "DIL_CommonDefs.h"
@@ -160,7 +161,7 @@ int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelL
 
     CWnd objMainWnd;
     objMainWnd.Attach(hParent);
-	IChangeRegisters* pAdvancedSettings = new CCANControllerConfigDlg(InitData[0].m_omStrBaudrate,InitData[0].m_nBTR0BTR1, nullptr);
+    IChangeRegisters* pAdvancedSettings = new CCANControllerConfigDlg(InitData[0].m_omStrBaudrate,InitData[0].m_nBTR0BTR1, nullptr);
     CHardwareListingCAN HwList(psInterfaces, nCount, pnSelList, CAN, CHANNEL_ALLOWED, &objMainWnd, InitData, pAdvancedSettings);
     INT nRet = HwList.DoModal();
     objMainWnd.Detach();
@@ -180,11 +181,6 @@ int ListHardwareInterfaces(HWND hParent, INTERFACE_HW* psInterfaces, int* pnSelL
  * @brief
  *  Create a list will all IXXAT CAN controllers.
  *
- * @todo
- *  At this time only the settings for the first CAN will be set
- *  and no dialog will shown.
- * *
- *
  * @param [in,out]  sSelHwInterface
  *  The selected hardware interface.
  * @param [in,out]  nCount
@@ -202,7 +198,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterf
 #endif
     HRESULT hResult = E_POINTER;
 
-    UINT unDefaultChannelCnt = nCount;
+    INT nDefaultChannelCnt = nCount;
     // default: no IXXAT interface available
     nCount = 0;
     m_iNumberOfCANChannelsTotal = 0;
@@ -218,60 +214,51 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterf
         {
             while (DYNCALL(vciEnumDeviceNext)(hEnum, &sInfo) == VCI_OK)
             {
-                // increment the counter and add the device info to our list
+                // add the device info to our list
                 m_iNumberOfCANChannelsTotal += VciDeviceInfoAddToArray(nCount, &sInfo, m_sSelHwInterface);
+
+				// increment the counter for the next interface
+                // don't do that here, increment where the interface contoller objects are added
+                // to the list = function VciDeviceInfoAddToArray(...)
+                //nCount++;
             }
         }
         int nHwCount = m_iNumberOfCANChannelsTotal;
-        //TODO: currently only 1 interface selected
         if (m_iNumberOfCANChannelsTotal > 0)
         {
             INT64 qiVCIDeviceID = 0;
             int iCANControllerNumber = 0;
             CClientList* pClientList = nullptr;
 
-            //if ( m_iNumberOfCANChannelsTotal == 1 ) /* Only single channel available */
-            //{
-            //    sSelHwInterface[0] = m_sSelHwInterface[0];
-
-            //    /* Rearrange hardware parameters */
-            //    m_arrTmpIxxatCanChannels[0].GetHardwareParams(&qiVCIDeviceID,
-            //            &iCANControllerNumber, (void**)&pClientList);
-            //    m_arrIxxatCanChannels[0].SetHardwareParams(qiVCIDeviceID, iCANControllerNumber,
-            //            pClientList);
-            //}
-            //else    /* Multiple channels available */
+            /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
+            if ( nDefaultChannelCnt && nHwCount >= nDefaultChannelCnt )
             {
-                /* If the default channel count parameter is set, prevent displaying the hardware selection dialog */
-                if ( unDefaultChannelCnt && nHwCount >= unDefaultChannelCnt )
+                for (INT i = 0; i < nDefaultChannelCnt; i++)
                 {
-                    for (UINT i = 0; i < unDefaultChannelCnt; i++)
-                    {
-                        m_anSelectedItems[i] = i;
-                    }
-                    nHwCount  = unDefaultChannelCnt;
+                    m_anSelectedItems[i] = i;
                 }
-                else if ( ListHardwareInterfaces(m_hOwnerWndHandle, m_sSelHwInterface, m_anSelectedItems, nHwCount,InitData) != 0 )
-                {
-                    /* return if user cancels hardware selection */
-                    return HW_INTERFACE_NO_SEL;
-                }
-
-                for ( int nCount = 0; nCount < nHwCount; nCount++ )
-                {
-                    /* Order the hardware information according to user selection */
-                    sSelHwInterface[nCount] = m_sSelHwInterface[m_anSelectedItems[nCount]];
-
-                    /* Rearrange hardware parameters */
-                    m_arrTmpIxxatCanChannels[m_anSelectedItems[nCount]].GetHardwareParams(&qiVCIDeviceID,
-                            &iCANControllerNumber, (void**)&pClientList);
-                    m_arrIxxatCanChannels[nCount].SetHardwareParams(qiVCIDeviceID, iCANControllerNumber,
-                            pClientList);
-                }
-                m_iNumberOfCANChannelsTotal = nHwCount;
+                nHwCount  = nDefaultChannelCnt;
             }
-            nCount = m_iNumberOfCANChannelsTotal;
+            else if ( ListHardwareInterfaces(m_hOwnerWndHandle, m_sSelHwInterface, m_anSelectedItems, nHwCount,InitData) != 0 )
+            {
+                /* return if user cancels hardware selection */
+                return HW_INTERFACE_NO_SEL;
+            }
+
+            for ( int nCount = 0; nCount < nHwCount; nCount++ )
+            {
+                /* Order the hardware information according to user selection */
+                sSelHwInterface[nCount] = m_sSelHwInterface[m_anSelectedItems[nCount]];
+
+                /* Rearrange hardware parameters */
+                m_arrTmpIxxatCanChannels[m_anSelectedItems[nCount]].GetHardwareParams(&qiVCIDeviceID,
+                        &iCANControllerNumber, (void**)&pClientList);
+                m_arrIxxatCanChannels[nCount].SetHardwareParams(qiVCIDeviceID, iCANControllerNumber,
+                        pClientList);
+            }
+            m_iNumberOfCANChannelsTotal = nHwCount;
         }
+        nCount = m_iNumberOfCANChannelsTotal;
 
         if (m_iNumberOfCANChannelsTotal == 0)
         {
@@ -302,9 +289,6 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_ListHwInterfaces(INTERFACE_HW_LIST& sSelHwInterf
  *   Array with the current available CAN controllers.
  * @param nCount [in]
  *  Number of valid entries in the controller array.
- * @todo
- *   At this time the first found CAN Controller will be used and no
- *   dialog will shown!
  *
  * @return
  *   Always S_OK.
@@ -350,7 +334,6 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SelectHwInterface(const INTERFACE_HW_LIST& sSelH
  * @return
  *  Always S_OK.
  *
- * @remarks  TODO: Don't forget to fill in the remarks!
  */
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_DeselectHwInterface(void)
 {
@@ -369,9 +352,6 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_DeselectHwInterface(void)
  *  to be filled with additional information by the dialog.
  * @param [in,out]  Length
  *  The length of the InitData structure.
- * @todo
- *  At this time only the settings for the first CAN will be set
- *  and no dialog will shown.
  *
  * @return
  *  E_POINTER - no IXXAT CAN hardware available.
@@ -447,7 +427,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_StartHardware(void)
     {
         for (int i = 0 ; i < m_iNumberOfCANChannelsTotal ; i++)
         {
-            hResult = m_arrIxxatCanChannels[i].AccessController(i+1);
+            hResult = m_arrIxxatCanChannels[i].AccessController((BYTE) i+1);
             if ( (VCI_OK == hResult) || (HW_INTERFACE_ALREADY_SELECTED == hResult) )
             {
                 hResult = m_arrIxxatCanChannels[i].InitController();
@@ -576,67 +556,6 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SendMsg(DWORD dwClientID, const STCAN_MSG& sCanT
     return hResult;
 }
 
-/**
- * @brief
- *  Fill the given struct with the device information.
- *
- * @todo
- *  no sample what to do here, so return not implemented.
- *
- * @param [in,out]  BoardInfo
- *  Structure to fill with information describing the board.
- *
- * @return
- *  Always E_NOTIMPL;
- *
- */
-//HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetBoardInfo(s_BOARDINFO& BoardInfo)
-//{
-//#ifdef _IXXAT_DEBUG
-//  LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetBoardInfo\n");
-//#endif
-//  return  E_NOTIMPL;
-//}
-
-/**
- * @brief
- *  Fill the given struct with the CAN configuration information.
- *  TODO: no sample what to do here, so return not implemented.
- *
- * @param [in,out]  BusInfo
- *  Structure to fill with information describing the CAN configuration.
- *
- * @return
- *  Always E_NOTIMPL;
- *
- */
-//HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetBusConfigInfo(BYTE* BusInfo)
-//{
-//#ifdef _IXXAT_DEBUG
-//  LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetBusConfigInfo\n");
-//#endif
-//  return  E_NOTIMPL;
-//}
-
-/**
- * @brief
- *  Get version information about the CAN.
- *  TODO: no sample what to do here, so return not implemented.
- *
- * @param [in,out]  sVerInfo
- *  Structure to be filled here with CAN information.
- *
- * @return
- *  Always E_NOTIMPL
- *
- */
-//HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetVersionInfo(VERSIONINFO& sVerInfo)
-//{
-//#ifdef _IXXAT_DEBUG
-//  LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetVersionInfo\n");
-//#endif
-//  return  E_NOTIMPL;
-//}
 
 /**
  * @brief
@@ -680,7 +599,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetLastErrorString(std::string& acErrorStr)
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetControllerParams(LONG& lParam, UINT nChannel, ECONTR_PARAM eContrParam)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetControllerParams\n");
+    // LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetControllerParams\n");
 #endif
     HRESULT hResult = S_OK;
     switch (eContrParam)
@@ -721,6 +640,15 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetControllerParams(LONG& lParam, UINT nChannel,
     return hResult;
 }
 
+/**
+* \brief         Sets the controller parametes of the channel based on the request
+*\ remark        It seems this function is never called
+*\ remark        Function documention from CAN_NSI.cpp made by Arunkumar Karri on 2011-10-12
+* \param[out]    lParam, the value of the controller parameter requested.
+* \param[in]     Value
+* \param[in]     eContrParam, indicates controller parameter
+* \return        S_OK for success, S_FALSE for failure
+*/
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_SetControllerParams(int nValue, ECONTR_PARAM eContrparam)
 {
     return S_OK;
@@ -746,7 +674,7 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_SetControllerParams(int nValue, ECONTR_PARAM eCo
 HRESULT CDIL_CAN_IXXAT_VCI::CAN_GetErrorCount(SERROR_CNT& sErrorCnt, UINT nChannel, ECONTR_PARAM eContrParam)
 {
 #ifdef _IXXAT_DEBUG
-    LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetErrorCount\n");
+    // LogMessage(TRUE, "------> CDIL_CAN_IXXAT_VCI::CAN_GetErrorCount\n");
 #endif
     HRESULT hrRes = HW_INTERFACE_NO_SEL;
     if (nChannel < CHANNEL_CAN_MAX)
@@ -1048,8 +976,9 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_UnloadDriverLibrary(void)
  *      Add the CAN controller information of all IXXAT VCI
  *      devices to the array with the hardware information.
  *
- * @param [in] iStartPosArray
+ * @param [in,out] iStartPosArray
  *  The start position array where to write the data into.
+ *  The veriable will be inremented at every found CAN controller
  * @param [in]  pVciDevInfo
  *  If non-null, information describing the current VCI device
  *  found by the device enumerator.
@@ -1061,11 +990,12 @@ HRESULT CDIL_CAN_IXXAT_VCI::CAN_UnloadDriverLibrary(void)
  *      must use this value to increment the current position in
  *      the hardware array.
  */
-int CDIL_CAN_IXXAT_VCI::VciDeviceInfoAddToArray(int iStartPosArray, VCIDEVICEINFO* pVciDevInfo, INTERFACE_HW_LIST& sSelHwInterface)
+int CDIL_CAN_IXXAT_VCI::VciDeviceInfoAddToArray(INT& nStartPosArray, VCIDEVICEINFO* pVciDevInfo, INTERFACE_HW_LIST& sSelHwInterface)
 {
     int iNumOfCANController = 0;
     HANDLE hDevice = nullptr;
     VCIDEVICECAPS sVciDeviceCaps;
+
 
     // try to open the VCI device
     if ( VCI_OK == DYNCALL(vciDeviceOpen)(pVciDevInfo->VciObjectId, &hDevice) )
@@ -1077,73 +1007,97 @@ int CDIL_CAN_IXXAT_VCI::VciDeviceInfoAddToArray(int iStartPosArray, VCIDEVICEINF
         {
             for (int i=0; i < sVciDeviceCaps.BusCtrlCount; i++)
             {
+#ifdef _IXXAT_DEBUG
+                LogMessage(TRUE, "------> Interface: %s  BusCtrl No.: %u  Type: 0x%.4X\n", pVciDevInfo->Description, i, sVciDeviceCaps.BusCtrlTypes[i]);
+#endif
                 if (VCI_BUS_CAN == VCI_BUS_TYPE(sVciDeviceCaps.BusCtrlTypes[i]))
                 {
                     iNumOfCANController++;
+#ifdef _IXXAT_DEBUG
+                    LogMessage(TRUE, "------> iNumOfCANController: %u\n", iNumOfCANController);
+#endif
+
 
                     // store the current information in our class internal structure
-                    m_arrTmpIxxatCanChannels[iStartPosArray].SetHardwareParams(pVciDevInfo->VciObjectId.AsInt64, i, &m_ClientList);
+                    m_arrTmpIxxatCanChannels[nStartPosArray].SetHardwareParams(pVciDevInfo->VciObjectId.AsInt64, i, &m_ClientList);
 
-                    sSelHwInterface[iStartPosArray].m_dwIdInterface = iStartPosArray;
-                    sSelHwInterface[iStartPosArray].m_bytNetworkID = (BYTE) i;    ///< Controller number inside this device.
-                    sSelHwInterface[iStartPosArray].m_dwVendor = 0; // always 0
+                    sSelHwInterface[nStartPosArray].m_dwIdInterface = nStartPosArray;
+                    sSelHwInterface[nStartPosArray].m_bytNetworkID = (BYTE)i;    ///< Controller number inside this device.
+                    sSelHwInterface[nStartPosArray].m_dwVendor = 0; // always 0
 
                     //strcpy_s(sSelHwInterface[iStartPosArray].m_acDeviceName, MAX_CHAR_SHORT, pVciDevInfo->Description); // the name of the device
-                    sSelHwInterface[iStartPosArray].m_acDeviceName = pVciDevInfo->Description; // the name of the device
+                    sSelHwInterface[nStartPosArray].m_acDeviceName = pVciDevInfo->Description; // the name of the device
 
 
                     std::ostringstream oss;
                     oss<<"CAN "<<i;
-                    sSelHwInterface[iStartPosArray].m_acNameInterface = oss.str();
+                    sSelHwInterface[nStartPosArray].m_acNameInterface = oss.str();
 
                     // if the cantype.h from IXXAT was enhanced then add the new hardware descriptions here
                     switch (VCI_CTL_TYPE(sVciDeviceCaps.BusCtrlTypes[i]))
                     {
                         case CAN_CTRL_82527:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "Intel 82527" );
-                            sSelHwInterface[iStartPosArray].m_acDescription = "Intel 82527";
+                            sSelHwInterface[nStartPosArray].m_acDescription = "Intel 82527";
                             break;
                         case CAN_CTRL_82C200:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "Intel 82C200" );
-                            sSelHwInterface[iStartPosArray].m_acDescription = "Intel 82C200";
+                            sSelHwInterface[nStartPosArray].m_acDescription = "Intel 82C200";
                             break;
-                        case CAN_CTRL_82C90:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "Intel 82C90" );
-                            sSelHwInterface[iStartPosArray].m_acDescription = "Intel 82C90";
+                        case CAN_CTRL_81C90:
+                            sSelHwInterface[nStartPosArray].m_acDescription = "Intel 81C90";
                             break;
-                        case CAN_CTRL_82C92:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "Intel 82C92" );
-                            sSelHwInterface[iStartPosArray].m_acDescription = "Intel 82C92";
+                        case CAN_CTRL_81C92:
+                            sSelHwInterface[nStartPosArray].m_acDescription = "Intel 81C92";
                             break;
                         case CAN_CTRL_SJA1000:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "Philips SJA 1000" );
-                            sSelHwInterface[iStartPosArray].m_acDescription = "Philips SJA 1000";
+                            sSelHwInterface[nStartPosArray].m_acDescription = "Philips SJA 1000";
                             break;
                         case CAN_CTRL_82C900:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "Infinion 82C900 (TwinCAN)" );
-                            sSelHwInterface[iStartPosArray].m_acDescription = "Infinion 82C900 (TwinCAN)";
+                            sSelHwInterface[nStartPosArray].m_acDescription = "Infinion 82C900 (TwinCAN)";
                             break;
                         case CAN_CTRL_TOUCAN:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "Motorola TOUCAN" );
-                            sSelHwInterface[iStartPosArray].m_acDescription = "Motorola TOUCAN";
+                            sSelHwInterface[nStartPosArray].m_acDescription = "Motorola TOUCAN";
                             break;
-                        case CAN_CTRL_IFI:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, "IFI-CAN" );
-                            sSelHwInterface[iStartPosArray].m_acDescription = "IFI-CAN";
+                        case CAN_CTRL_MSCAN:    // Freescale Star12 MSCAN
+                            sSelHwInterface[nStartPosArray].m_acDescription = "Freescale Star12 MSCAN";
                             break;
+                        case CAN_CTRL_FLEXCAN:  // Freescale FlexCAN
+                            sSelHwInterface[nStartPosArray].m_acDescription = "Freescale FlexCAN";
+                            break;
+                        case CAN_CTRL_IFICAN:
+                            sSelHwInterface[nStartPosArray].m_acDescription = "IFI-CAN";
+                            break;
+                        case CAN_CTRL_BCCAN:   // Bosch C_CAN
+                            sSelHwInterface[nStartPosArray].m_acDescription = "Bosch C_CAN";
+                            break;
+                        case CAN_CTRL_BXCAN:   // ST BX_CAN
+                            sSelHwInterface[nStartPosArray].m_acDescription = "ST BX_CAN";
+                            break;
+                        case CAN_CTRL_IFICFD:  // IFI CAN FD Controller
+                            sSelHwInterface[nStartPosArray].m_acDescription = "IFI CAN FD";
+                            break;
+                        case CAN_CTRL_BMCAN:   // Bosch M_CAN
+                            sSelHwInterface[nStartPosArray].m_acDescription = "Bosch M_CAN";
+                            break;
+                        // end
                         default:
-                            //strcpy_s( sSelHwInterface[iStartPosArray].m_acDescription, MAX_CHAR_LONG, _("unknown CAN controller") );
-                            sSelHwInterface[iStartPosArray].m_acDescription = "unknown CAN controller";
+                            sSelHwInterface[nStartPosArray].m_acDescription = "Unknown CAN controller";
                             break;
                     }
                     // jump to the next array entry
-                    iStartPosArray++;
-                    if (iStartPosArray >= CHANNEL_CAN_MAX)
+                    nStartPosArray++;
+                    if (nStartPosArray >= CHANNEL_CAN_MAX)
                     {
                         LogMessage(FALSE, _("Too many IXXAT CAN controllers found. Abort filling hardware list!"));
                         break;
                     }
                 }
+#ifdef _IXXAT_DEBUG
+                else
+                {
+                    // TODO remove
+                    LogMessage(TRUE, "------> Not Added! Interface: %s  BusCtrl No.: %u  Type: 0x%.4X\n", pVciDevInfo->Description, i, sVciDeviceCaps.BusCtrlTypes[i]);
+                }
+#endif
             }
         }
         // close the formerly opened device for later use
@@ -1177,15 +1131,14 @@ void CDIL_CAN_IXXAT_VCI::LogMessage(BOOL bShowOnlyInDebug, LPCTSTR pFormat, ...)
     // resolve the arguments and use a special printf
     va_list args;
     va_start(args, pFormat);
-    TCHAR buffer [255];
-    _vsntprintf_s(buffer, 255, pFormat, args);
+    TCHAR buffer [1024];
+    _vsntprintf_s(buffer, 1024, pFormat, args);
 
 
     // when the flag is set to show it only in debug mode
     if ( (bShowOnlyInDebug) && (bIsInDebugMode) )
     {
         OutputDebugString(buffer);
-
     }
 
     // this message will shown only when we are in release mode

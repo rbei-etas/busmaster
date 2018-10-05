@@ -82,10 +82,8 @@ protected:
     BOOL   m_bRxThreadRunning;    ///< true means that the thread running
     long   m_lMustQuit; ///< Flag to inicate if the thread must quit
 
-    DWORD  m_dwTimerTickResolutionNSec;   ///< The timer tick in nanoseconds
-    UINT64 m_qwTimerOverruns; ///< The number of timer overruns since start
 
-
+    CVciTimeStamp m_VciTimeStamp; ///< Class to handle the timer ticks of the messages
 
     void DestroyCANController();
     HRESULT CreateCANChannel();

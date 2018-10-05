@@ -27,8 +27,9 @@
     lProcAddr &= DYNFUNC(FUNC)!= nullptr?1:0;
 #define UNLOAD_FUNCTION_POINTER(FUNC)   DYNFUNC(FUNC) = nullptr;
 
-//*** Expected Major Version Number
+//*** Expected Major Version Numbers
 #define VCI_V3_NPL_MAJOR_VERION 3
+#define VCI_V4_NPL_MAJOR_VERION 4
 
 //*** VCI V3 NPL DLL Name
 const TCHAR k_tszVciV3NplDllName[] = TEXT("vcinpl.dll");
@@ -206,10 +207,20 @@ HRESULT LoadVciNplLib(void)
                                                  &dwMinorVersion);
             if(hResult == S_OK)
             {
-                if(dwMajorVersion != VCI_V3_NPL_MAJOR_VERION)
+				// the set the result to bad environment as default
+				// this can be made in one line but this here is more understandable
+				hResult = ERROR_BAD_ENVIRONMENT;
+
+                if (dwMajorVersion == VCI_V3_NPL_MAJOR_VERION) 
                 {
-                    hResult = ERROR_BAD_ENVIRONMENT;
+					// if it's VCI version 3 then ok
+					hResult = S_OK;
                 }
+				else if (dwMajorVersion == VCI_V4_NPL_MAJOR_VERION)
+				{
+					// if it's VCI version 4 then ok
+					hResult = S_OK;
+				}
             }
 
             //*** Unload Function Pointers

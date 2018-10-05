@@ -25,6 +25,7 @@
 #include "CAN_IXXAT_VCI_stdafx.h"
 #include <string.h>
 #include "CAN_IXXAT_VCI_Extern.h"
+#include "VciTimeStamp.h"
 #include "CAN_IXXAT_VCI.h"
 #include "DIL_CAN_IXXAT_VCI.h"
 #include "../Application/MultiLanguage.h"
@@ -72,6 +73,7 @@ CCAN_IXXAT_VCIApp theApp;
 BEGIN_MESSAGE_MAP(CCAN_IXXAT_VCIApp, CWinApp)
 END_MESSAGE_MAP()
 
+static HINSTANCE ghLangInst=nullptr;
 
 /**
  * @fn  CCAN_IXXAT_VCIApp::CCAN_IXXAT_VCIApp()
@@ -85,7 +87,6 @@ CCAN_IXXAT_VCIApp::CCAN_IXXAT_VCIApp()
     // Place all significant initialization in InitInstance
 }
 
-
 /**
  * @brief Initializes the instance.
  *
@@ -93,8 +94,6 @@ CCAN_IXXAT_VCIApp::CCAN_IXXAT_VCIApp()
  *  true if it succeeds, false if it fails.
  *
  */
-static HINSTANCE ghLangInst=nullptr;
-
 BOOL CCAN_IXXAT_VCIApp::InitInstance()
 {
     // Begin of Multiple Language support
@@ -154,7 +153,7 @@ int CCAN_IXXAT_VCIApp::ExitInstance( )
 
 /**
 * \brief         Returns the CDIL_CAN_IXXAT_VCI object
-* \param[out]    ppvInterface, is void pointer to take back the reference to CDIL_CAN_IXXAT_VCI object
+* \param[out]    ppvInterface - is void pointer to take back the reference to CDIL_CAN_IXXAT_VCI object
 * \return        S_OK for success, S_FALSE for failure
 * \authors       Copied from Arunkumar Karri / updated by Peter Wucherer
 * \date          07.10.2011 Created / 17.03.2012 Updated
