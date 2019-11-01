@@ -1,8 +1,8 @@
 1. Development environment: To configure a computer for developing BUSMASTER code, refer to file "1. BUSMASTER OSS - Development Environment.doc" in the 'Downloads' folder.
 
-2. BUSMASTER application is cross platform - runs on many different operating systems such as Windows and Linux. Furthermore, it runs simulation mode. Following the instructions in the aforementioned file. The application source code is in the 'Sources' folder. 
+2. BUSMASTER application is cross platform - runs on many different operating systems such as Windows and Linux. The emulation mode does not require any CAN interface hardware. These are also documented in the aforementioned file. The application source code is in the 'Sources' folder. 
 
-3. Connecting BUSMASTER to physical CAN bus - acquire hardware and install device driver software from the respective vendor. 
+3. Connecting BUSMASTER to physical CAN bus - acquire hardware and install device driver software from the respective vendor. For example:
   3.1 PCAN_USB: Peak GmbH.
   3.2 ES 581  : ETAS GmbH. Use the HSP (Hardware Service Pack) driver.
 
@@ -10,7 +10,7 @@
 
 5. Testing: Documentation and scripts are in the 'Test Artifacts' folder.
 
-6. BUSMASTER uses component tools (dependencies). Their binaries will be sufficient to build BUSMASTER. Since these are opensource, complete source code package is available for the discerning developer. The corresponding URLs are listed on the right. 
+6. BUSMASTER has component tools (dependencies). Their binaries will be sufficient to build BUSMASTER. Since these are opensource, complete source code package is available for the discerning developer. The corresponding URLs are listed on the right. 
 	6.1. MinGW, GCC       : http://sourceforge.net/projects/mingw/files/MinGW/
 	6.2. Bison.exe        : http://downloads.sourceforge.net/gnuwin32/bison-2.4.1-src-setup.exe
 	6.3. Flex.exe         : http://flex.sourceforge.net/
