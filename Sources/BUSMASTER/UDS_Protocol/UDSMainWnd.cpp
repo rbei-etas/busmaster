@@ -586,6 +586,7 @@ void CUDSMainWnd::OnBnClickedSendUD()
     KillTimer(ID_TIMER_TP);    //Added to kill the timer everyTime I've pressed the SEND button
     FSending = TRUE;        // This flag is used to know if a message has been sent from the UDSMainWnd
     Bytes_to_Show= ("\r\n   1 -> ");
+    StringToShow.Empty();
     BytesShown_Line = 1;
     m_abDatas = " ";
     CurrentService = m_omMsgDataEdit.Left(NO_OF_CHAR_IN_BYTE); //Baiasu
@@ -640,7 +641,7 @@ Modifications  :
 void  CUDSMainWnd::OnTimer(UINT_PTR nIDEvent)
 {
 
-    //Envía TesterPresent
+    //Envï¿½a TesterPresent
     if(nIDEvent ==ID_TIMER_TP && psTxCanMsgUds->m_psTxMsg != NULL)      //Prepare the message
     {
 
