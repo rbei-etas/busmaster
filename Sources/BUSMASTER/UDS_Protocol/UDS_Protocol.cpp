@@ -55,6 +55,7 @@ int Current_Channel;
 bool FSending = FALSE;
 
 CString Bytes_to_Show= ("\r\n   1-> ");
+CString StringToShow;
 
 /** This variable is used to determinate how many continuos frames will be received */
 float TotalFrames;
@@ -194,6 +195,17 @@ void CUDS_Protocol::Show_ResponseData(unsigned char psMsg[], unsigned char Datal
         for (int ByteCounter = posFirstByte+1; ByteCounter<loc ; ByteCounter++)
         {
             UCHAR TempByte = (psMsg[ByteCounter]) ;
+
+            // Check if the character can be printed, otherwise use '?' instead
+			if ( (TempByte >= 0x20) && (TempByte <= 0x7E) )
+            {
+				StringToShow += TempByte;
+            }
+			else
+			{
+				StringToShow += '?';
+			}
+
             int Temp_char2Int =  TempByte;
             intResp = sprintf (hex,"%02X ",Temp_char2Int);
             Bytes_to_Show = Bytes_to_Show + hex;
@@ -216,8 +228,7 @@ void CUDS_Protocol::Show_ResponseData(unsigned char psMsg[], unsigned char Datal
 
             }
         }
-        omMainWnd->m_abDatas = Bytes_to_Show + '\0';
-
+        omMainWnd->m_abDatas = Bytes_to_Show + "\r\n\r\n" + StringToShow;
         omMainWnd->UpdateData(false);
     }
 }
