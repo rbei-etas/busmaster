@@ -196,6 +196,7 @@ void CUDS_Protocol::Show_ResponseData(unsigned char psMsg[], unsigned char Datal
         {
             UCHAR TempByte = (psMsg[ByteCounter]) ;
 
+            // Check if the character can be printed, otherwise use '?' instead
 			if ( (TempByte >= 0x20) && (TempByte <= 0x7E) )
             {
 				StringToShow += TempByte;
@@ -204,7 +205,6 @@ void CUDS_Protocol::Show_ResponseData(unsigned char psMsg[], unsigned char Datal
 			{
 				StringToShow += '?';
 			}
-
 
             int Temp_char2Int =  TempByte;
             intResp = sprintf (hex,"%02X ",Temp_char2Int);
